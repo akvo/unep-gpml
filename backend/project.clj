@@ -24,6 +24,8 @@
                   :dependencies   [[integrant/repl "0.3.1"]
                                    [eftest "0.5.7"]
                                    [kerodon "0.9.0"]]
+                  :plugins [[jonase/eastwood "0.3.12"]]
+                  :eastwood {:config-files ["eastwood_cfg.clj"]}
                   :repl-options {:init-ns user
                                  :host "0.0.0.0"
                                  :port 47480}}})

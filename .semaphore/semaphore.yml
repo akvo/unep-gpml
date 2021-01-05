@@ -1,0 +1,42 @@
+version: v1.0
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+global_job_config:
+  secrets:
+    - name: docker-hub-credentials
+  prologue:
+    commands:
+      - echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+      - |
+        sudo rm -rf \
+        /usr/local/golang/ \
+        /home/semaphore/.phpbrew \
+        /home/semaphore/.kerl \
+        /home/semaphore/.sbt \
+        /home/semaphore/.nvm \
+        /home/semaphore/.npm \
+        /home/semaphore/.kiex \
+        /usr/lib/jvm \
+        /opt/*
+blocks:
+  - name: "Build and test"
+    skip:
+      when: "tag =~ '.*'"
+    task:
+      prologue:
+        commands:
+          - checkout
+          - cache restore "m2-$(checksum backend/project.clj)"
+#          - cache restore "npm-$(checksum client/package.json)"
+          - cache restore "$SEMAPHORE_PROJECT_ID-$SEMAPHORE_GIT_BRANCH"
+      epilogue:
+        commands:
+          - cache store "m2-$(checksum backend/project.clj)" "$HOME/.m2"
+#          - cache store "npm-$(checksum client/package.json)" "$HOME/.npm"
+          - cache store "$SEMAPHORE_PROJECT_ID-$SEMAPHORE_GIT_BRANCH" "$HOME/.cache"
+      jobs:
+        - name: Build and test
+          commands:
+            - ./ci/build.sh
