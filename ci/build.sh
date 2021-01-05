@@ -5,7 +5,7 @@ set -exuo pipefail
 
 backend_image=$(awk '/clojure/ {print $2}' docker-compose.yml)
 lein_path="${HOME}/.lein"
-m2_path="${HOME}/.lein"
+m2_path="${HOME}/.m2"
 
 mkdir -p "${lein_path}"
 mkdir -p "${m2_path}"
