@@ -1,0 +1,13 @@
+version: "3"
+services:
+  db:
+    ports:
+      - 5432:5432
+  pgadmin:
+    ports:
+      - 5050:5050
+  backend:
+    ports:
+      - 3000:3000
+      - 47480:47480
+    command: ["run-as-user.sh", "lein", "repl", ":headless"]

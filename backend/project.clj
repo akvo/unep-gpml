@@ -1,6 +1,8 @@
 (defproject gpml "1.0.0"
   :description "UNEP - GPML Digital Platform"
   :url "https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
+  :license {:name "AGPL-3.0"
+            :url "https://www.gnu.org/licenses/agpl-3.0.en.html"}
   :min-lein-version "2.0.0"
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [duct/core "0.7.0"]
@@ -15,12 +17,13 @@
   :middleware     [lein-duct.plugin/middleware]
   :profiles
   {:dev  [:project/dev :profiles/dev]
-   :repl {:prep-tasks   ^:replace ["javac" "compile"]
-          :repl-options {:init-ns user}}
    :uberjar {:aot :all}
    :profiles/dev {}
    :project/dev  {:source-paths   ["dev/src"]
                   :resource-paths ["dev/resources"]
                   :dependencies   [[integrant/repl "0.3.1"]
                                    [eftest "0.5.7"]
-                                   [kerodon "0.9.0"]]}})
+                                   [kerodon "0.9.0"]]
+                  :repl-options {:init-ns user
+                                 :host "0.0.0.0"
+                                 :port 47480}}})

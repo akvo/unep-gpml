@@ -7,8 +7,6 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql/data
       - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
-    ports:
-      - 5432:5432
   pgadmin:
     image: dpage/pgadmin4:4.29
     environment:
@@ -17,7 +15,17 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=password
     volumes:
       - ./pgadmin4/servers.json:/pgadmin4/servers.json
-    ports:
-      - 5050:5050
+    depends_on:
+      - db
+  backend:
+    image: akvo/akvo-clojure-lein:20210105.130212.c79490c
+    volumes:
+      - ./backend:/app
+      - ~/.m2:/home/akvo/.m2
+      - ~/.lein:/home/akvo/.lein
+      - ~/.m2:/root/.m2:delegated
+      - ~/.lein:/root/.lein:delegated
+    depends_on:
+      - db
 volumes:
   pg-data:
