@@ -12,6 +12,13 @@ mkdir -p "${m2_path}"
 
 docker run \
        --rm \
+       --volume "$(pwd)/backend:/app" \
+       --workdir /app \
+       borkdude/clj-kondo:2020.12.12 \
+       clj-kondo --lint src --lint test
+
+docker run \
+       --rm \
        --volume "${lein_path}:/home/akvo/.lein" \
        --volume "${m2_path}:/home/akvo/.m2" \
        --volume "$(pwd)/backend:/app" \
