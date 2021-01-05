@@ -1,0 +1,353 @@
+#+PROPERTY: header-args:sql     :exports both
+#+PROPERTY: header-args:sql+    :engine postgresql
+#+PROPERTY: header-args:sql+    :dbhost localhost
+#+PROPERTY: header-args:sql+    :dbuser postgres
+#+PROPERTY: header-args:sql+    :dbpassword akvo
+#+PROPERTY: header-args:sql+    :database unep
+#+STARTUP: showall
+
+#+begin_src sql
+DROP TABLE IF EXISTS geo_coverage CASCADE;
+CREATE TABLE geo_coverage (
+  id serial NOT NULL PRIMARY KEY,
+  geo text NOT NULL UNIQUE
+);
+#+end_src
+
+#+RESULTS:
+| DROP TABLE   |
+|--------------|
+| CREATE TABLE |
+
+#+begin_src sql
+DROP TABLE IF EXISTS country CASCADE;
+CREATE TABLE country (
+  id serial NOT NULL PRIMARY KEY,
+  "name" text NOT NULL UNIQUE
+);
+#+end_src
+
+#+RESULTS:
+| DROP TABLE   |
+|--------------|
+| CREATE TABLE |
+
+
+#+begin_src sql
+DROP TABLE IF EXISTS stakeholder CASCADE;
+CREATE TABLE stakeholder (
+  id serial NOT NULL PRIMARY KEY,
+  picture text,
+  title text,
+  first_name text NOT NULL,
+  last_name text NOT NULL,
+  affiliation text NOT NULL,
+  email text NOT NULL UNIQUE,
+  linkedin text,
+  twitter text,
+  url text,
+  country integer REFERENCES country(id),
+  representation text NOT NULL,
+  summary text,
+  geo_coverage integer REFERENCES geo_coverage(id)
+);
+#+end_src
+
+#+RESULTS:
+| DROP TABLE   |
+|--------------|
+| CREATE TABLE |
+
+
+#+begin_src sql
+\d stakeholder
+#+end_src
+
+#+RESULTS:
+| Table "public.stakeholder"                                                             |         |           |          |                                         |
+|----------------------------------------------------------------------------------------+---------+-----------+----------+-----------------------------------------|
+| Column                                                                                 | Type    | Collation | Nullable | Default                                 |
+| id                                                                                     | integer |           | not null | nextval('stakeholder_id_seq'::regclass) |
+| picture                                                                                | text    |           |          |                                         |
+| title                                                                                  | text    |           |          |                                         |
+| first_name                                                                             | text    |           | not null |                                         |
+| last_name                                                                              | text    |           | not null |                                         |
+| affiliation                                                                            | text    |           | not null |                                         |
+| email                                                                                  | text    |           | not null |                                         |
+| linkedin                                                                               | text    |           |          |                                         |
+| twitter                                                                                | text    |           |          |                                         |
+| url                                                                                    | text    |           |          |                                         |
+| country                                                                                | integer |           |          |                                         |
+| representation                                                                         | text    |           | not null |                                         |
+| summary                                                                                | text    |           |          |                                         |
+| geo_coverage                                                                           | integer |           |          |                                         |
+| Indexes:                                                                               |         |           |          |                                         |
+| "stakeholder_pkey" PRIMARY KEY, btree (id)                                             |         |           |          |                                         |
+| "stakeholder_email_key" UNIQUE CONSTRAINT, btree (email)                               |         |           |          |                                         |
+| Foreign-key constraints:                                                               |         |           |          |                                         |
+| "stakeholder_country_fkey" FOREIGN KEY (country) REFERENCES country(id)                |         |           |          |                                         |
+| "stakeholder_geo_coverage_fkey" FOREIGN KEY (geo_coverage) REFERENCES geo_coverage(id) |         |           |          |                                         |
+
+
+#+begin_src sql
+DROP TABLE IF EXISTS event;
+CREATE TABLE event (
+  id serial NOT NULL PRIMARY KEY,
+  title text NOT NULL,
+  start_date timestamptz NOT NULL,
+  end_date timestamptz NOT NULL,
+  description text NOT NULL,
+  url text,
+  languages text[] NOT NULL, --?
+  geo_coverage integer REFERENCES geo_coverage(id),
+  remarks text
+);
+#+end_src
+
+#+RESULTS:
+| DROP TABLE   |
+|--------------|
+| CREATE TABLE |
+
+
+* Inserting some data
+
+#+begin_src sql
+INSERT INTO geo_coverage(geo) VALUES('global');
+#+end_src
+
+#+RESULTS:
+| INSERT 0 1 |
+|------------|
+
+
+#+begin_src sql
+select * from geo_coverage
+#+end_src
+
+#+RESULTS:
+| id | geo    |
+|----+--------|
+|  3 | global |
+
+
+#+begin_src sql
+INSERT INTO country(name) VALUES ('Global'), ('Kenya');
+#+end_src
+
+#+RESULTS:
+| INSERT 0 2 |
+|------------|
+
+#+begin_src sql
+SELECT * FROM country
+#+end_src
+
+#+RESULTS:
+| id | name   |
+|----+--------|
+|  1 | Global |
+|  2 | Kenya  |
+
+#+begin_src sql
+INSERT INTO stakeholder (title, first_name, last_name,
+                         affiliation, linkedin, email,
+                         country, representation)
+VALUES ('Mr.', 'Saiful', 'Ridwan', 'UNEP',
+        'https://www.linkedin.com/in/saiful-ridwan-b3342516/',
+        'saiful.ridwan@un.org', 1, 'UN');
+#+end_src
+
+#+RESULTS:
+| INSERT 0 1 |
+|------------|
+
+#+begin_src sql
+select * from stakeholder
+#+end_src
+
+#+RESULTS:
+| id | picture | title | first_name | last_name | affiliation | email                | linkedin                                            | twitter | url | country | representation | summary | geo_coverage |
+|----+---------+-------+------------+-----------+-------------+----------------------+-----------------------------------------------------+---------+-----+---------+----------------+---------+--------------|
+|  1 |         | Mr.   | Saiful     | Ridwan    | UNEP        | saiful.ridwan@un.org | https://www.linkedin.com/in/saiful-ridwan-b3342516/ |         |     |       1 | UN             |         |              |
+
+#+begin_src sql
+INSERT INTO stakeholder(title, first_name, last_name, affiliation,
+                        linkedin, email, country, representation,
+                        summary, geo_coverage)
+VALUES ('Ms.', 'Caroline', 'Kamau', 'UNEP', 'https://www.linkedin.com/in/caroline-kamau',
+        'caroline.kamau@un.org', 2, 'UN', 'Machine Learning Developer', 3),
+       ('Ms.', 'Marta', 'Ottogalli', 'UNEP', 'https://www.linkedin.com/in/marta-ottogalli/', 'marta.ottogalli@un.org',
+        1, 'UN', 'Product and Knowledge Manager at UN Environment Programme', null);
+#+end_src
+
+#+RESULTS:
+| INSERT 0 2 |
+|------------|
+
+
+#+begin_src sql
+select * from stakeholder
+#+end_src
+
+#+RESULTS:
+| id | picture | title | first_name | last_name | affiliation | email                  | linkedin                                            | twitter | url | country | representation | summary                                                   | geo_coverage |
+|----+---------+-------+------------+-----------+-------------+------------------------+-----------------------------------------------------+---------+-----+---------+----------------+-----------------------------------------------------------+--------------|
+|  1 |         | Mr.   | Saiful     | Ridwan    | UNEP        | saiful.ridwan@un.org   | https://www.linkedin.com/in/saiful-ridwan-b3342516/ |         |     |       1 | UN             |                                                           |              |
+|  4 |         | Ms.   | Caroline   | Kamau     | UNEP        | caroline.kamau@un.org  | https://www.linkedin.com/in/caroline-kamau          |         |     |       2 | UN             | Machine Learning Developer                                |            3 |
+|  5 |         | Ms.   | Marta      | Ottogalli | UNEP        | marta.ottogalli@un.org | https://www.linkedin.com/in/marta-ottogalli/        |         |     |       1 | UN             | Product and Knowledge Manager at UN Environment Programme |              |
+
+
+#+begin_src sql
+INSERT INTO event (title, start_date, end_date, description, languages, geo_coverage)
+VALUES('Towards a GPML digital platform', now(), now(), 'The webinar "Towards a GPML Digital Platform” offered a high-level overview of the forthcoming GPML Digital Platform, as well as an opportunity to discuss multi-stakeholder functionalities, the data aspects and feedback.', '{"English"}', 3);
+#+end_src
+
+#+RESULTS:
+| INSERT 0 1 |
+|------------|
+
+#+begin_src sql
+SELECT * FROM event
+#+end_src
+
+#+RESULTS:
+| id | title                           | start_date                    | end_date                      | description                                                                                                                                                                                                                  | url | languages | geo_coverage | remarks |
+|----+---------------------------------+-------------------------------+-------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----+-----------+--------------+---------|
+|  2 | Towards a GPML digital platform | 2020-12-24 09:49:01.006098+00 | 2020-12-24 09:49:01.006098+00 | The webinar "Towards a GPML Digital Platform” offered a high-level overview of the forthcoming GPML Digital Platform, as well as an opportunity to discuss multi-stakeholder functionalities, the data aspects and feedback. |     | {English} |            3 |         |
+
+#+begin_src sql
+CREATE TABLE tag_category (
+  id serial NOT NULL PRIMARY KEY,
+  category text NOT NULL UNIQUE
+);
+#+end_src
+
+#+RESULTS:
+| CREATE TABLE |
+|--------------|
+
+
+#+begin_src sql
+INSERT INTO tag_category(category) VALUES('general');
+INSERT INTO tag_category(category) VALUES('technology');
+#+end_src
+
+#+RESULTS:
+| INSERT 0 1 |
+|------------|
+| INSERT 0 1 |
+
+
+#+begin_src sql
+SELECT * FROM tag_category;
+#+end_src
+
+#+RESULTS:
+| id | category   |
+|----+------------|
+|  1 | general    |
+|  2 | technology |
+
+#+begin_src sql
+CREATE TABLE tag (
+  id serial NOT NULL PRIMARY KEY,
+  tag_category integer NOT NULL REFERENCES tag_category(id),
+  tag text NOT NULL
+);
+#+end_src
+
+#+RESULTS:
+| CREATE TABLE |
+|--------------|
+
+
+#+begin_src sql
+INSERT INTO tag(tag_category, tag)
+VALUES (1, 'beach cleanup'),
+(1, 'fishing gear'),
+(2, 'data science'),
+(2, 'spatial data science');
+#+end_src
+
+#+RESULTS:
+| INSERT 0 4 |
+|------------|
+
+
+#+begin_src sql
+SELECT * FROM tag
+#+end_src
+
+#+RESULTS:
+| id | tag_category | tag                  |
+|----+--------------+----------------------|
+|  1 |            1 | beach cleanup        |
+|  2 |            1 | fishing gear         |
+|  3 |            2 | data science         |
+|  4 |            2 | spatial data science |
+
+
+#+begin_src sql
+CREATE TYPE rel_type AS
+ENUM ('owner', 'user', 'reviewer', 'interested in', 'other');
+#+end_src
+
+#+RESULTS:
+| CREATE TYPE |
+|-------------|
+
+#+begin_src sql
+DROP TABLE IF EXISTS stakeholder_event;
+CREATE TABLE stakeholder_event (
+  stakeholder_id integer NOT NULL REFERENCES stakeholder(id),
+  event_id integer NOT NULL REFERENCES event(id),
+  rel_type rel_type NOT NULL,
+  PRIMARY KEY (stakeholder_id, event_id, rel_type)
+);
+#+end_src
+
+#+RESULTS:
+| DROP TABLE   |
+|--------------|
+| CREATE TABLE |
+
+#+begin_src sql
+\d stakeholder_event
+#+end_src
+
+#+RESULTS:
+| Table "public.stakeholder_event"                                                                |          |           |          |         |
+|-------------------------------------------------------------------------------------------------+----------+-----------+----------+---------|
+| Column                                                                                          | Type     | Collation | Nullable | Default |
+| stakeholder_id                                                                                  | integer  |           | not null |         |
+| event_id                                                                                        | integer  |           | not null |         |
+| rel_type                                                                                        | rel_type |           | not null |         |
+| Indexes:                                                                                        |          |           |          |         |
+| "stakeholder_event_pkey" PRIMARY KEY, btree (stakeholder_id, event_id, rel_type)                |          |           |          |         |
+| Foreign-key constraints:                                                                        |          |           |          |         |
+| "stakeholder_event_event_id_fkey" FOREIGN KEY (event_id) REFERENCES event(id)                   |          |           |          |         |
+| "stakeholder_event_stakeholder_id_fkey" FOREIGN KEY (stakeholder_id) REFERENCES stakeholder(id) |          |           |          |         |
+
+
+#+begin_src sql
+INSERT INTO stakeholder_event(stakeholder_id, event_id, rel_type)
+VALUES(1, 2, 'interested in');
+#+end_src
+
+#+RESULTS:
+| INSERT 0 1 |
+|------------|
+
+#+begin_src sql
+SELECT s.email, e.title, se.rel_type
+  FROM stakeholder s, event e, stakeholder_event se
+WHERE s.id = se.stakeholder_id
+  AND e.id = se.event_id
+  AND se.rel_type = 'interested in'
+#+end_src
+
+#+RESULTS:
+| email                | title                           | rel_type      |
+|----------------------+---------------------------------+---------------|
+| saiful.ridwan@un.org | Towards a GPML digital platform | interested in |

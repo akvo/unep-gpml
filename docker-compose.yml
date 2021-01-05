@@ -1,0 +1,23 @@
+version: "3"
+services:
+  db:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_PASSWORD=akvo
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    ports:
+      - 5432:5432
+  pgadmin:
+    image: dpage/pgadmin4:4.29
+    environment:
+      - PGADMIN_LISTEN_PORT=5050
+      - PGADMIN_DEFAULT_EMAIL=dev@akvo.org
+      - PGADMIN_DEFAULT_PASSWORD=password
+    volumes:
+      - ./pgadmin4/servers.json:/pgadmin4/servers.json
+    ports:
+      - 5050:5050
+volumes:
+  pg-data:
