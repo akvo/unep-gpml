@@ -26,6 +26,9 @@
                                    [kerodon "0.9.0"]]
                   :plugins [[jonase/eastwood "0.3.12"]]
                   :eastwood {:config-files ["eastwood_cfg.clj"]}
-                  :repl-options {:init-ns user
+                  :repl-options {:init-ns dev
+                                 :init (do
+                                         (println "Starting backend ...")
+                                         (go))
                                  :host "0.0.0.0"
                                  :port 47480}}})
