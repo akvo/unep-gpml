@@ -27,5 +27,12 @@ services:
       - ~/.lein:/root/.lein:delegated
     depends_on:
       - db
+  frontend:
+    image: akvo/akvo-node-14-alpine:20210106.152005.1864760
+    environment:
+      - PORT=3001
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
 volumes:
   pg-data:
