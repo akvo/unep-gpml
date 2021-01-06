@@ -180,6 +180,67 @@ CREATE TABLE tag (
 | CREATE TABLE |
 
 
+#+begin_src sql
+DROP TABLE IF EXISTS resource CASCADE;
+CREATE TABLE resource (
+  id serial NOT NULL PRIMARY KEY,
+  title text,
+  organisations text[], -- based on stakeholder affiliation; there's also
+                         -- organisation type used in technologies
+  type text, -- enum?
+  publish_year integer,
+  summary text,
+  country integer REFERENCES country(id),
+  url text,
+  value float,  -- change to text? needs currency
+  image text,
+  valid_from date,
+  valid_to date,
+  languages text[],
+  geo_coverage integer REFERENCES geo_coverage(id),
+  attachments text[],
+  remarks text
+);
+#+end_src
+
+#+RESULTS:
+| DROP TABLE   |
+|--------------|
+| CREATE TABLE |
+
+We could create a ~tag_entity~ table instead of multiple ~~tag_*~ tables and use
+polymorphism by using an ~entity_type~ column, but DB consistency is much harder
+to maintain, and doesn't seem to give us a lot of gains. GitLab developer docs
+have a [[https://docs.gitlab.com/ee/development/polymorphic_associations.html][document]] on thier policy for polymorphic associations.
+
+The other option would be to create a ~tag_entity~ table with separate columns
+for each kind of entity - stakeholder, resource, ... and add a [[https://hashrocket.com/blog/posts/modeling-polymorphic-associations-in-a-relational-database#exclusive-belongs-to-aka-exclusive-arc-][check]] that
+ensures that only one of these columns has a value in each row of the table.
+
+#+BEGIN_SRC sql
+  check(
+    (
+      (stakeholder_id is not null)::integer +
+      (resource_id is not null)::integer
+      -- + ...
+    ) = 1
+  )
+#+END_SRC
+
+#+begin_src sql
+DROP TABLE IF EXISTS tag_resource CASCADE;
+CREATE TABLE tag_resource (
+  id serial NOT NULL PRIMARY KEY,
+  tag integer NOT NULL REFERENCES tag(id),
+  resource integer NOT NULL REFERENCES resource(id)
+);
+#+end_src
+
+#+RESULTS:
+| DROP TABLE   |
+|--------------|
+| CREATE TABLE |
+
 * Inserting some data
 
 #+begin_src sql
@@ -359,3 +420,46 @@ WHERE s.id = se.stakeholder_id
 | email      | title                           | rel_type      |
 |------------+---------------------------------+---------------|
 | s.r@un.org | Towards a GPML digital platform | interested in |
+
+
+#+begin_src sql
+INSERT INTO resource (title, organisations, type, summary, country, url, value, languages, geo_coverage)
+VALUES('Closed Loop Infrastructure Fund', '{"Amazon", "3M", "Coca Cola"}', 'Financial Resource', 'The loans are targeted at projects that will develop local recycling infrastructure.', 1, 'https://www.closedlooppartners.com/', 100000000, '{"English"}', 1);
+#+end_src
+
+#+RESULTS:
+| INSERT 0 1 |
+|------------|
+
+
+#+begin_src sql
+SELECT * FROM resource
+#+end_src
+
+#+RESULTS:
+| id | title                           | organisations           | type               | publish_year | country | summary                                                                              | url                                 |     value | image | valid_from | valid_to | languages | geo_coverage | attachments | remarks |
+|----+---------------------------------+-------------------------+--------------------+--------------+---------+--------------------------------------------------------------------------------------+-------------------------------------+-----------+-------+------------+----------+-----------+--------------+-------------+---------|
+|  1 | Closed Loop Infrastructure Fund | {Amazon,3M,"Coca Cola"} | Financial Resource |              |       1 | The loans are targeted at projects that will develop local recycling infrastructure. | https://www.closedlooppartners.com/ | 100000000 |       |            |          | {English} |            1 |             |         |
+
+
+#+begin_src sql
+INSERT INTO tag_resource(tag, resource)
+VALUES (1, 1),
+        (2, 1),
+        (4, 1);
+#+end_src
+
+#+RESULTS:
+| INSERT 0 3 |
+|------------|
+
+#+begin_src sql
+SELECT * FROM tag_resource
+#+end_src
+
+#+RESULTS:
+| id | tag | resource |
+|----+-----+----------|
+|  1 |   1 |        1 |
+|  2 |   2 |        1 |
+|  3 |   4 |        1 |
