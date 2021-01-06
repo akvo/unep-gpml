@@ -10,7 +10,7 @@ services:
     ports:
       - 3000:3000
       - 47480:47480
-    command: ["run-as-user.sh", "lein", "repl", ":headless"]
+    command: ["lein", "repl", ":headless"]
   frontend:
     ports:
       - 3001:3001
