@@ -25,7 +25,9 @@
    :profiles/dev {}
    :project/dev  {:source-paths   ["dev/src"]
                   :resource-paths ["dev/resources"]
-                  :dependencies   [[integrant/repl "0.3.2" :exclusions [integrant]]
+                  :dependencies   [[integrant/repl "0.3.2"]
+                                   [fipp "0.6.21"]
+                                   [hawk "0.2.11"]
                                    [eftest "0.5.9"]
                                    [kerodon "0.9.1"]]
                   :plugins [[jonase/eastwood "0.3.12"]]
