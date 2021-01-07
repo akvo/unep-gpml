@@ -13,7 +13,8 @@
                  [org.postgresql/postgresql "42.2.5"]
                  [metosin/reitit-ring "0.5.11" :exclusions [ring/ring-core]]
                  [metosin/reitit-middleware "0.5.11" :exclusions [ring/ring-core
-                                                                  org.clojure/spec.alpha]]]
+                                                                  org.clojure/spec.alpha]]
+                 [com.layerware/hugsql "0.5.1"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]

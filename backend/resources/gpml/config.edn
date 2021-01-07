@@ -1,7 +1,20 @@
 {:duct.profile/base
  {:duct.core/project-ns gpml
-  :gpml.handler.main/handler {}
-  :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}}
+
+  :gpml.handler.main/handler {:routes [["/" {:get #ig/ref :gpml.handler.main/root}]
+                                       ["/api"
+                                        ["/country" {:get #ig/ref :gpml.handler.country/handler}]]]}
+
+  :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
+
+  :gpml.handler.main/root {}
+  :gpml.handler.country/handler {:db #ig/ref :duct.database.sql/hikaricp}
+
+
+  :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
+  :duct.migrator.ragtime/resources {:path "migrations"}
+
+  }
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"

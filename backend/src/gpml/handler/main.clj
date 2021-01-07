@@ -2,17 +2,23 @@
   (:require [integrant.core :as ig]
             [muuntaja.core :as m]
             [reitit.ring :as ring]
-            [reitit.ring.middleware.muuntaja :as muuntaja]))
+            [reitit.ring.middleware.muuntaja :as muuntaja]
+            [ring.util.response :as resp]))
 
 (defn root
   [_]
-  {:status 200 :body {:status "OK"}})
+  (resp/response {:status "OK"}))
 
-(def router
+(defn router
+  [routes]
   (ring/router
-   ["/" {:get root}]
+   routes
    {:data {:muuntaja m/instance
            :middleware [muuntaja/format-middleware]}}))
 
-(defmethod ig/init-key :gpml.handler.main/handler [_ _options]
-  (ring/ring-handler router (ring/create-default-handler)))
+(defmethod ig/init-key :gpml.handler.main/handler [_ {:keys [routes]}]
+  (ring/ring-handler (router routes)
+                     (ring/create-default-handler)))
+
+(defmethod ig/init-key :gpml.handler.main/root [_ _]
+  root)
