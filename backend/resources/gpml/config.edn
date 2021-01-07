@@ -1,14 +1,13 @@
 {:duct.profile/base
  {:duct.core/project-ns gpml
-
-  :duct.router/cascading []}
+  :gpml.handler.main/handler {}
+  :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}}
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"
  :duct.profile/prod  {}
 
  :duct.module/logging {}
- :duct.module.web/api
- {}
- :duct.module/sql
- {}}
+ :duct.module/sql {}
+ :duct.module/web {}
+ }

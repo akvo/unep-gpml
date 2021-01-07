@@ -9,7 +9,9 @@
                  [duct/module.logging "0.4.0"]
                  [duct/module.sql "0.5.0"]
                  [duct/module.web "0.7.0"]
-                 [org.postgresql/postgresql "42.2.5"]]
+                 [org.postgresql/postgresql "42.2.5"]
+                 [metosin/reitit-ring "0.5.11"]
+                 [metosin/reitit-middleware "0.5.11"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]
