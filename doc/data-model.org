@@ -1,9 +1,9 @@
 #+PROPERTY: header-args:sql     :exports both
 #+PROPERTY: header-args:sql+    :engine postgresql
 #+PROPERTY: header-args:sql+    :dbhost localhost
-#+PROPERTY: header-args:sql+    :dbuser postgres
-#+PROPERTY: header-args:sql+    :dbpassword akvo
-#+PROPERTY: header-args:sql+    :database unep
+#+PROPERTY: header-args:sql+    :dbuser unep
+#+PROPERTY: header-args:sql+    :dbpassword password
+#+PROPERTY: header-args:sql+    :database gpml_test
 #+STARTUP: showall
 
 #+begin_src sql
