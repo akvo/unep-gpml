@@ -22,7 +22,7 @@ services:
     environment:
       - PORT=3001
     volumes:
-      - ./frontend:/app
+      - ./frontend:/app:delegated
     working_dir: /app
 volumes:
   pg-data:
