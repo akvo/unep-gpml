@@ -261,6 +261,22 @@ CREATE TABLE tag_resource (
 #+RESULTS:
 |   |
 
+#+BEGIN_SRC sql
+DROP TABLE IF EXISTS mea CASCADE;
+CREATE TABLE mea (
+  id serial NOT NULL PRIMARY KEY,
+  name text,
+  countries ltree[]
+);
+CREATE INDEX mea_countries_idx ON mea USING GIST (countries);
+#+END_SRC
+
+#+RESULTS:
+| DROP TABLE   |
+|--------------|
+| CREATE TABLE |
+| CREATE INDEX |
+
 #+begin_src sql
 -- ltree extension needs to be created manually (as of now, until we are sure we want to use it)
 -- FIXME: Run "CREATE EXTENSION IF NOT EXISTS ltree;" after selecting the DB.
@@ -268,6 +284,7 @@ DROP TABLE IF EXISTS resource_geo_coverage_location CASCADE;
 CREATE TABLE resource_geo_coverage_location (
   id serial NOT NULL PRIMARY KEY,
   resource integer NOT NULL REFERENCES resource(id),
+  mea integer REFERENCES mea(id),
   location ltree
 );
 CREATE INDEX resource_geo_coverage_location_idx ON resource_geo_coverage_location USING GIST (location);
@@ -474,11 +491,14 @@ VALUES('Closed Loop Infrastructure Fund', '{"Amazon", "3M", "Coca Cola"}', 'Fina
 INSERT INTO resource (title, organisations, type, summary, country, url, value, languages)
 VALUES('Annex to the Leadersʼ Declaration G7 Summit 7-8 June 2015', '{"G7"}', 'Technical Resource', 'The G7 countries Commit to the improvement of countries’ systems as a key goal of the action plan, to prevent, reduce and remove marine litter, including the below listed priority actions.', 1, 'https://asean.org/storage/2019/06/3.-ASEAN-Framework-of-Action-on-Marine-Debris-FINAL.pdf', NULL, '{"English"}');
 
+INSERT INTO resource (title, organisations, type, summary, country, url, value, languages)
+VALUES('Basel Convention Plastic Waste Partnership', '{"Basel Convention"}', 'Technical Resource', 'A new Plastic Waste Partnership...', NULL, 'http://www.basel.int/Implementation/Plasticwastes/PlasticWastePartnership/tabid/8096/Default.aspx', NULL, '{"English"}');
 #+end_src
 
 #+RESULTS:
 | INSERT 0 1 |
 |------------|
+| INSERT 0 1 |
 
 #+begin_src sql
 SELECT COUNT(*) FROM resource;
@@ -487,7 +507,7 @@ SELECT COUNT(*) FROM resource;
 #+RESULTS:
 | count |
 |-------|
-|     2 |
+|     3 |
 
 
 #+begin_src sql
@@ -519,6 +539,34 @@ VALUES (1, 1),
         (4, 1);
 #+end_src
 
+#+begin_src sql
+INSERT INTO mea (name, countries)
+VALUES ('Basel Convention', '{"Global.Africa.Kenya", "Global.Africa.Zimbabwe", "Global.Asia_and_the_Pacific.India", "Global.Europe.Germany"}');
+#+end_src
+
+#+RESULTS:
+| INSERT 0 1 |
+|------------|
+
+#+BEGIN_SRC sql
+SELECT * FROM mea WHERE countries @> 'Global.Africa.Kenya';
+#+END_SRC
+
+
+#+RESULTS:
+| id | name             | countries                                                                      |
+|----+------------------+--------------------------------------------------------------------------------|
+|  1 | Basel Convention | {Global.Africa.Kenya,Global.Africa.Zimbabwe,Global.Asia_and_the_Pacific.India} |
+
+#+BEGIN_SRC sql
+SELECT countries FROM mea WHERE name = 'Basel Convention';
+#+END_SRC
+
+#+RESULTS:
+| countries                                                                      |
+|--------------------------------------------------------------------------------|
+| {Global.Africa.Kenya,Global.Africa.Zimbabwe,Global.Asia_and_the_Pacific.India} |
+
 
 #+begin_src sql
 INSERT INTO resource_geo_coverage_location (resource, location)
@@ -533,21 +581,35 @@ VALUES (1, 'Global.Africa.Kenya'),
 #+begin_src sql
 INSERT INTO resource_geo_coverage_location (resource, location)
 VALUES (2, 'Global.Africa'),
-        (2, 'Global.Asia');
+        (2, 'Global.Asia_and_the_Pacific');
+
+INSERT INTO resource_geo_coverage_location (resource, mea)
+VALUES (2, 1);
 #+end_src
 
 #+RESULTS:
 | INSERT 0 2 |
 |------------|
+| INSERT 0 1 |
 
 #+BEGIN_SRC sql
 SELECT * FROM resource_geo_coverage_location WHERE location @> 'Global.Africa';
 #+END_SRC
 
 #+RESULTS:
-| id | resource | location      |
-|----+----------+---------------|
-|  3 |        2 | Global.Africa |
+| id | resource | mea | location      |
+|----+----------+-----+---------------|
+|  3 |        2 |     | Global.Africa |
+
+#+BEGIN_SRC sql
+SELECT * FROM resource_geo_coverage_location WHERE mea = 1;
+#+END_SRC
+
+#+RESULTS:
+| id | resource | mea | location |
+|----+----------+-----+----------|
+|  5 |        2 |   1 |          |
+
 
 #+BEGIN_SRC sql
 SELECT * FROM resource_geo_coverage_location WHERE location @> 'Global.Asia';
@@ -567,3 +629,34 @@ SELECT * FROM resource_geo_coverage_location WHERE location @> 'Global.Africa.Ke
 |----+----------+---------------------|
 |  1 |        1 | Global.Africa.Kenya |
 |  3 |        2 | Global.Africa       |
+
+#+BEGIN_SRC sql
+SELECT DISTINCT * FROM resource_geo_coverage_location WHERE location @> 'Global.Africa.Kenya' OR mea in (SELECT id FROM mea WHERE countries @> 'Global.Africa.Kenya');
+#+END_SRC
+
+#+RESULTS:
+| id | resource | mea | location            |
+|----+----------+-----+---------------------|
+|  1 |        1 |     | Global.Africa.Kenya |
+|  3 |        2 |     | Global.Africa       |
+|  5 |        2 |   1 |                     |
+
+
+#+BEGIN_SRC sql
+SELECT * FROM resource_geo_coverage_location WHERE location @> (SELECT countries FROM mea WHERE name = 'Basel Convention');
+#+END_SRC
+
+#+RESULTS:
+| id | resource | mea | location            |
+|----+----------+-----+---------------------|
+|  1 |        1 |     | Global.Africa.Kenya |
+|  3 |        2 |     | Global.Africa       |
+
+#+BEGIN_SRC sql
+SELECT * FROM resource_geo_coverage_location WHERE location @> 'Global.Europe.Germany' OR mea in (SELECT id FROM mea WHERE countries @> 'Global.Europe.Germany');
+#+END_SRC
+
+#+RESULTS:
+| id | resource | mea | location |
+|----+----------+-----+----------|
+|  5 |        2 |   1 |          |
