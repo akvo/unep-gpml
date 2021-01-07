@@ -23,4 +23,4 @@ docker run \
        --volume "${m2_path}:/home/akvo/.m2" \
        --volume "$(pwd)/backend:/app" \
        "${backend_image}" \
-       run-as-user.sh lein 'do' eastwood, test
+       lein 'do' eastwood, test
