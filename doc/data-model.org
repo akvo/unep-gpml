@@ -197,7 +197,6 @@ CREATE TABLE resource (
   valid_from date,
   valid_to date,
   languages text[],
-  geo_coverage integer REFERENCES geo_coverage(id),
   attachments text[],
   remarks text
 );
@@ -240,6 +239,25 @@ CREATE TABLE tag_resource (
 | DROP TABLE   |
 |--------------|
 | CREATE TABLE |
+
+#+begin_src sql
+-- ltree extension needs to be created manually (as of now, until we are sure we want to use it)
+-- FIXME: Run "CREATE EXTENSION IF NOT EXISTS ltree;" after selecting the DB.
+DROP TABLE IF EXISTS resource_geo_coverage_location CASCADE;
+CREATE TABLE resource_geo_coverage_location (
+  id serial NOT NULL PRIMARY KEY,
+  resource integer NOT NULL REFERENCES resource(id),
+  location ltree
+);
+CREATE INDEX resource_geo_coverage_location_idx ON resource_geo_coverage_location USING GIST (location);
+#+end_src
+
+#+RESULTS:
+| DROP TABLE   |
+|--------------|
+| CREATE TABLE |
+| CREATE INDEX |
+
 
 * Inserting some data
 
@@ -423,8 +441,8 @@ WHERE s.id = se.stakeholder_id
 
 
 #+begin_src sql
-INSERT INTO resource (title, organisations, type, summary, country, url, value, languages, geo_coverage)
-VALUES('Closed Loop Infrastructure Fund', '{"Amazon", "3M", "Coca Cola"}', 'Financial Resource', 'The loans are targeted at projects that will develop local recycling infrastructure.', 1, 'https://www.closedlooppartners.com/', 100000000, '{"English"}', 1);
+INSERT INTO resource (title, organisations, type, summary, country, url, value, languages)
+VALUES('Closed Loop Infrastructure Fund', '{"Amazon", "3M", "Coca Cola"}', 'Financial Resource', 'The loans are targeted at projects that will develop local recycling infrastructure.', 1, 'https://www.closedlooppartners.com/', 100000000, '{"English"}');
 #+end_src
 
 #+RESULTS:
@@ -433,13 +451,23 @@ VALUES('Closed Loop Infrastructure Fund', '{"Amazon", "3M", "Coca Cola"}', 'Fina
 
 
 #+begin_src sql
-SELECT * FROM resource
+INSERT INTO resource (title, organisations, type, summary, country, url, value, languages)
+VALUES('Annex to the Leadersʼ Declaration G7 Summit 7-8 June 2015', '{"G7"}', 'Technical Resource', 'The G7 countries Commit to the improvement of countries’ systems as a key goal of the action plan, to prevent, reduce and remove marine litter, including the below listed priority actions.', 1, 'https://asean.org/storage/2019/06/3.-ASEAN-Framework-of-Action-on-Marine-Debris-FINAL.pdf', NULL, '{"English"}');
+
 #+end_src
 
 #+RESULTS:
-| id | title                           | organisations           | type               | publish_year | country | summary                                                                              | url                                 |     value | image | valid_from | valid_to | languages | geo_coverage | attachments | remarks |
-|----+---------------------------------+-------------------------+--------------------+--------------+---------+--------------------------------------------------------------------------------------+-------------------------------------+-----------+-------+------------+----------+-----------+--------------+-------------+---------|
-|  1 | Closed Loop Infrastructure Fund | {Amazon,3M,"Coca Cola"} | Financial Resource |              |       1 | The loans are targeted at projects that will develop local recycling infrastructure. | https://www.closedlooppartners.com/ | 100000000 |       |            |          | {English} |            1 |             |         |
+| INSERT 0 1 |
+|------------|
+
+#+begin_src sql
+SELECT COUNT(*) FROM resource;
+#+end_src
+
+#+RESULTS:
+| count |
+|-------|
+|     2 |
 
 
 #+begin_src sql
@@ -463,3 +491,50 @@ SELECT * FROM tag_resource
 |  1 |   1 |        1 |
 |  2 |   2 |        1 |
 |  3 |   4 |        1 |
+#+begin_src sql
+INSERT INTO resource_geo_coverage_location (resource, location)
+VALUES (1, 'Global.Africa.Kenya'),
+        (1, 'Global.Africa.Ghana');
+#+end_src
+
+#+RESULTS:
+| INSERT 0 2 |
+|------------|
+
+#+begin_src sql
+INSERT INTO resource_geo_coverage_location (resource, location)
+VALUES (2, 'Global.Africa'),
+        (2, 'Global.Asia');
+#+end_src
+
+#+RESULTS:
+| INSERT 0 2 |
+|------------|
+
+#+BEGIN_SRC sql
+SELECT * FROM resource_geo_coverage_location WHERE location @> 'Global.Africa';
+#+END_SRC
+
+#+RESULTS:
+| id | resource | location      |
+|----+----------+---------------|
+|  3 |        2 | Global.Africa |
+
+#+BEGIN_SRC sql
+SELECT * FROM resource_geo_coverage_location WHERE location @> 'Global.Asia';
+#+END_SRC
+
+#+RESULTS:
+| id | resource | location    |
+|----+----------+-------------|
+|  4 |        2 | Global.Asia |
+
+#+BEGIN_SRC sql
+SELECT * FROM resource_geo_coverage_location WHERE location @> 'Global.Africa.Kenya';
+#+END_SRC
+
+#+RESULTS:
+| id | resource | location            |
+|----+----------+---------------------|
+|  1 |        1 | Global.Africa.Kenya |
+|  3 |        2 | Global.Africa       |
