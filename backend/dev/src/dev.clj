@@ -1,7 +1,6 @@
 (ns dev
   (:refer-clojure :exclude [test])
   (:require [clojure.repl :refer :all]
-            [fipp.edn :refer [pprint]]
             [clojure.tools.namespace.repl :refer [refresh]]
             [clojure.java.io :as io]
             [duct.core :as duct]

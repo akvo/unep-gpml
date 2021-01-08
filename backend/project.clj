@@ -14,6 +14,9 @@
                  [metosin/reitit-ring "0.5.11" :exclusions [ring/ring-core]]
                  [metosin/reitit-middleware "0.5.11" :exclusions [ring/ring-core
                                                                   org.clojure/spec.alpha]]
+                 [metosin/reitit-malli "0.5.11"]
+                 [metosin/reitit-swagger "0.5.11"]
+                 [metosin/reitit-swagger-ui "0.5.11"]
                  [com.layerware/hugsql "0.5.1"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main

@@ -5,10 +5,9 @@
 
 
 (defmethod ig/init-key :gpml.handler.country/handler [_ {:keys [db]}]
-  (fn [{:keys [query-params]}]
+  (fn [{{{:keys [id]} :query} :parameters}]
     (let [conn (:spec db)
-          id (get query-params "id")
           data (if id
-                 (db.country/country-by-id conn {:id (Long/parseLong id)})
+                 (db.country/country-by-id conn {:id id})
                  (db.country/all-countries conn))]
       (resp/response (or data [])))))
