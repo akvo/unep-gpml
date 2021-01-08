@@ -26,7 +26,9 @@ backend_build() {
 	   --volume "${m2_path}:/home/akvo/.m2" \
 	   --volume "$(pwd)/backend:/app" \
 	   "${backend_image}" \
-	   lein 'do' eastwood, test
+	   bash release.sh
+
+    docker build -t eu.gcr.io/akvo-lumen/gpml/backend backend
 }
 
 frontend_build() {

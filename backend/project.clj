@@ -25,7 +25,13 @@
   :middleware     [lein-duct.plugin/middleware]
   :profiles
   {:dev  [:project/dev :profiles/dev]
-   :uberjar {:aot :all}
+   :uberjar {:aot [gpml.main]
+             :uberjar-name "uberjar.jar"}
+   :metajar {:aot :all
+             :direct-link true
+             :jar-inclusions [#"\.sql$"]
+             :jar-name "app.jar"
+             :plugins [[lein-metajar "0.1.1"]]}
    :profiles/dev {}
    :project/dev  {:source-paths   ["dev/src"]
                   :resource-paths ["dev/resources"]
