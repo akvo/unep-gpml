@@ -35,7 +35,7 @@ frontend_build() {
 	   --volume "$(pwd)/frontend:/app" \
 	   --workdir /app \
 	   "${frontend_image}" \
-	   bash -c 'yarn install --no-progress --production=true --frozen-lock && yarn build'
+	   bash -c 'yarn install --no-progress --frozen-lock && yarn build'
 
 }
 
