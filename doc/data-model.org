@@ -4,6 +4,7 @@
 #+PROPERTY: header-args:sql+    :dbuser unep
 #+PROPERTY: header-args:sql+    :dbpassword password
 #+PROPERTY: header-args:sql+    :database gpml_test
+#+PROPERTY: header-args :tangle data-model.sql
 #+STARTUP: showall
 
 #+begin_src sql
@@ -216,7 +217,7 @@ The other option would be to create a ~tag_entity~ table with separate columns
 for each kind of entity - stakeholder, resource, ... and add a [[https://hashrocket.com/blog/posts/modeling-polymorphic-associations-in-a-relational-database#exclusive-belongs-to-aka-exclusive-arc-][check]] that
 ensures that only one of these columns has a value in each row of the table.
 
-#+BEGIN_SRC sql
+#+BEGIN_SRC sql :tangle no :eval no
   check(
     (
       (stakeholder_id is not null)::integer +
