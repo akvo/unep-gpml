@@ -2,6 +2,7 @@
   (:require [integrant.core :as ig]
             [muuntaja.core :as m]
             [reitit.ring :as ring]
+            [reitit.ring.middleware.parameters]
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [ring.util.response :as resp]))
 
@@ -14,7 +15,8 @@
   (ring/router
    routes
    {:data {:muuntaja m/instance
-           :middleware [muuntaja/format-middleware]}}))
+           :middleware [reitit.ring.middleware.parameters/parameters-middleware
+                        muuntaja/format-middleware]}}))
 
 (defmethod ig/init-key :gpml.handler.main/handler [_ {:keys [routes]}]
   (ring/ring-handler (router routes)
