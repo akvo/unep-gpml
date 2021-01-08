@@ -50,7 +50,7 @@
 (defmethod ig/init-key :gpml.handler.main/handler [_ {:keys [routes]}]
   (ring/ring-handler (router routes)
                      (ring/routes
-                      (swagger-ui/create-swagger-ui-handler {:path "/api"
+                      (swagger-ui/create-swagger-ui-handler {:path "/api/docs"
                                                              :url "/api/swagger.json"
                                                              :validatorUrl nil
                                                              :operationsSorter "alpha"})
