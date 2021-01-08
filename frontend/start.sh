@@ -3,6 +3,6 @@
 
 set -eu
 
-[[ ! -d "node_modules" ]] && yarn
+yarn install --no-progress
 
 yarn start
