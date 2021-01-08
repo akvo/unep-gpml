@@ -36,7 +36,7 @@ blocks:
         commands:
           - cache store "m2-$(checksum backend/project.clj)" "$HOME/.m2"
           - cache store "npm-$(checksum frontend/package.json)" "$HOME/.npm"
-          - cache store "node-modules-$(checksum frontend/package.json)" "$HOME/.npm"
+          - cache store "node-modules-$(checksum frontend/package.json)" "frontend/node_modules"
           - cache store "$SEMAPHORE_PROJECT_ID-$SEMAPHORE_GIT_BRANCH" "$HOME/.cache"
       jobs:
         - name: Build and test
