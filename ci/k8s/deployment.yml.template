@@ -45,7 +45,7 @@ spec:
             mountPath: "/secrets/cloudsql/credentials.json"
             subPath: "cloud-database-service-account.json"
             readOnly: true
-    volumes:
-      - name: unep-gpml-secrets
-        secret:
-          secretName: unep-gpml
+      volumes:
+        - name: unep-gpml-secrets
+          secret:
+            secretName: unep-gpml
