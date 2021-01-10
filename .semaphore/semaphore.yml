@@ -14,6 +14,7 @@ global_job_config:
       - export CI_BRANCH="${SEMAPHORE_GIT_BRANCH}"
       - export CI_TAG="${SEMAPHORE_GIT_TAG_NAME}"
       - export CI_PULL_REQUEST="${SEMAPHORE_GIT_REF_TYPE/pull-request/true}"
+      - export CLOUDSDK_CORE_DISABLE_PROMPTS=1
       - |
         sudo rm -rf \
         /usr/local/golang/ \

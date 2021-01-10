@@ -15,7 +15,7 @@ gcloud config set container/cluster europe-west1-d
 gcloud config set compute/zone europe-west1-d
 gcloud config set container/use_client_certificate False
 
-gcloud auth configure-docker
+gcloud auth configure-docker "eu.gcr.io"
 
 docker push "${image_prefix}/backend:${CI_COMMIT}"
 docker push "${image_prefix}/frontend:${CI_COMMIT}"
