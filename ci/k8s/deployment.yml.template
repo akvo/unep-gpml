@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unep-gpml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        run: unep-gpml
+  template:
+    metadata:
+      labels:
+        run: unep-gpml
+        unep-gpml-version: ${CI_COMMIT}
+    spec:
+      containers:
+      - name: frontend
+        image: eu.gcr.io/akvo-lumen/unep-gpml/frontend:${CI_COMMIT}
+        ports:
+        - containerPort: 80
+      - name: backend
+        image: eu.gcr.io/akvo-lumen/unep-gpml/backend:${CI_COMMIT}
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: database-url
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/secrets/cloudsql/credentials.json"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+        volumeMounts:
+          - name: unep-gpml-secrets
+            mountPath: "/secrets/cloudsql/credentials.json"
+            subPath: "cloud-database-service-account.json"
+            readOnly: true
+    volumes:
+      - name: unep-gpml-secrets
+        secret:
+          secretName: unep-gpml
