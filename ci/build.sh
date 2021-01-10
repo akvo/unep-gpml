@@ -62,5 +62,4 @@ dci () {
 	-f docker-compose.ci.yml "$@"
 }
 
-dci up -d
-dci exec ci ./basic.sh
+dci run ci ./basic.sh

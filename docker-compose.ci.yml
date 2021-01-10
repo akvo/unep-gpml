@@ -10,7 +10,6 @@ services:
       - ./ci/test:/test:ro
     working_dir: /test
     entrypoint: ./entrypoint.sh
-    command: ["tail", "-f", "/dev/null"]
     depends_on:
       - db
       - backend
