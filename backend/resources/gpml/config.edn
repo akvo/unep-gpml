@@ -7,7 +7,8 @@
                                         ["/swagger.json"
                                          {:get {:no-doc true
                                                 :swagger {:info {:title "UNEP GPML"
-                                                                 :description "Digital Platform API"}}
+                                                                 :description "Digital Platform API"
+                                                                 :version "1.0.0"}}
                                                 :handler #ig/ref :gpml.handler.main/swagger-handler}}]
                                         ["/country"
                                          {:get {:summary "List available countries"
