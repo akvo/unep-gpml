@@ -18,6 +18,13 @@ spec:
         image: eu.gcr.io/akvo-lumen/unep-gpml/frontend:${CI_COMMIT}
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "32Mi"
+          limits:
+            cpu: "200m"
+            memory: "64Mi"
       - name: backend
         image: eu.gcr.io/akvo-lumen/unep-gpml/backend:${CI_COMMIT}
         ports:
@@ -45,6 +52,13 @@ spec:
             mountPath: "/secrets/cloudsql/credentials.json"
             subPath: "cloud-database-service-account.json"
             readOnly: true
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
       volumes:
         - name: unep-gpml-secrets
           secret:
