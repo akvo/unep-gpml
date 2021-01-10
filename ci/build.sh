@@ -17,7 +17,7 @@ image_prefix="eu.gcr.io/akvo-lumen/unep-gpml"
 mkdir -p "${lein_path}"
 mkdir -p "${m2_path}"
 
-backend_build() {
+backend_build () {
     docker run \
 	   --rm \
 	   --volume "$(pwd)/backend:/app" \
@@ -38,7 +38,7 @@ backend_build() {
 	   --tag "${image_prefix}/backend:${CI_COMMIT}" backend
 }
 
-frontend_build() {
+frontend_build () {
     docker run \
 	   --rm \
 	   --volume "$(pwd)/frontend:/app" \

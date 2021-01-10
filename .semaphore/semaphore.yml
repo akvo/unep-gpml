@@ -5,10 +5,15 @@ agent:
     os_image: ubuntu1804
 global_job_config:
   secrets:
+    - name: GCP
     - name: docker-hub-credentials
   prologue:
     commands:
       - echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+      - export CI_COMMIT="${SEMAPHORE_GIT_SHA}"
+      - export CI_BRANCH="${SEMAPHORE_GIT_BRANCH}"
+      - export CI_TAG="${SEMAPHORE_GIT_TAG_NAME}"
+      - export CI_PULL_REQUEST="${SEMAPHORE_GIT_REF_TYPE/pull-request/true}"
       - |
         sudo rm -rf \
         /usr/local/golang/ \
@@ -42,3 +47,4 @@ blocks:
         - name: Build and test
           commands:
             - ./ci/build.sh
+            - ./ci/deploy.sh
