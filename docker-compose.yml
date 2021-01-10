@@ -8,17 +8,11 @@ services:
       - pg-data:/var/lib/postgresql/data
       - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
   backend:
-    image: akvo/akvo-clojure-lein:20210106.174854.b84d771
-    volumes:
-      - ./backend:/app
-      - ~/.m2:/home/akvo/.m2
-      - ~/.lein:/home/akvo/.lein
-      - ~/.m2:/root/.m2:delegated
-      - ~/.lein:/root/.lein:delegated
     depends_on:
       - db
+    environment:
+      - DATABASE_URL=jdbc:postgresql://db/gpml?user=unep&password=password
   frontend:
-    image: akvo/akvo-node-14-alpine:20210106.152005.1864760
     environment:
       - PORT=3001
     volumes:
@@ -26,4 +20,3 @@ services:
     working_dir: /app
 volumes:
   pg-data:
-  pg-admin-data:

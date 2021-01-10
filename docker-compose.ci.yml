@@ -1,0 +1,17 @@
+version: "3"
+services:
+  backend:
+    image: eu.gcr.io/akvo-lumen/unep-gpml/backend:latest
+  frontend:
+    image: eu.gcr.io/akvo-lumen/unep-gpml/frontend:latest
+  ci:
+    image: alpine:3.12
+    volumes:
+      - ./ci/test:/test:ro
+    working_dir: /test
+    entrypoint: ./entrypoint.sh
+    command: ["tail", "-f", "/dev/null"]
+    depends_on:
+      - db
+      - backend
+      - frontend

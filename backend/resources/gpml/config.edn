@@ -23,7 +23,7 @@
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
-
+  :duct.database/sql {:connection-uri #duct/env "DATABASE_URL"}
   }
 
  :duct.profile/dev   #duct/include "dev"

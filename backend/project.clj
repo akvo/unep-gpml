@@ -11,12 +11,13 @@
                  [duct/module.sql "0.6.1" :exclusions [medley]]
                  [duct/module.web "0.7.1":exclusions [medley]]
                  [org.postgresql/postgresql "42.2.5"]
+                 [com.google.cloud.sql/postgres-socket-factory "1.2.0"]
                  [metosin/reitit-ring "0.5.11" :exclusions [ring/ring-core]]
                  [metosin/reitit-middleware "0.5.11" :exclusions [ring/ring-core
                                                                   org.clojure/spec.alpha]]
                  [metosin/reitit-malli "0.5.11"]
                  [metosin/reitit-swagger "0.5.11"]
-                 [metosin/reitit-swagger-ui "0.5.11"]
+                 [metosin/reitit-swagger-ui "0.5.11" :exclusions [ring/ring-core]]
                  [com.layerware/hugsql "0.5.1"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
@@ -31,6 +32,7 @@
              :direct-link true
              :jar-inclusions [#"\.sql$"]
              :jar-name "app.jar"
+             :pedantic? :abort
              :plugins [[lein-metajar "0.1.1"]]}
    :profiles/dev {}
    :project/dev  {:source-paths   ["dev/src"]

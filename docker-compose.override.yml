@@ -17,12 +17,23 @@ services:
     depends_on:
       - db
   backend:
+    image: akvo/akvo-clojure-lein:20210106.174854.b84d771
+    command: ["lein", "repl", ":headless"]
     ports:
       - 3000:3000
       - 47480:47480
-    command: ["lein", "repl", ":headless"]
+    volumes:
+      - ./backend:/app
+      - ~/.m2:/home/akvo/.m2
+      - ~/.lein:/home/akvo/.lein
+      - ~/.m2:/root/.m2:delegated
+      - ~/.lein:/root/.lein:delegated
+
   frontend:
+    image: akvo/akvo-node-14-alpine:20210106.152005.1864760
     ports:
       - 3001:3001
     command: ["./start.sh"]
     restart: unless-stopped
+volumes:
+  pg-admin-data:

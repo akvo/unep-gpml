@@ -3,11 +3,15 @@
 
 set -exuo pipefail
 
-backend_image=$(awk '/akvo-clojure/ {print $2}' docker-compose.yml)
-frontend_image=$(awk '/akvo-node/ {print $2}' docker-compose.yml)
+CI_COMMIT="${SEMAPHORE_CI_COMMIT:=local}"
+export CI_COMMIT
+
+backend_image=$(awk '/akvo-clojure/ {print $2}' docker-compose.override.yml)
+frontend_image=$(awk '/akvo-node/ {print $2}' docker-compose.override.yml)
 
 lein_path="${HOME}/.lein"
 m2_path="${HOME}/.m2"
+image_prefix="eu.gcr.io/akvo-lumen/unep-gpml"
 
 mkdir -p "${lein_path}"
 mkdir -p "${m2_path}"
@@ -28,7 +32,9 @@ backend_build() {
 	   "${backend_image}" \
 	   bash release.sh
 
-    docker build -t eu.gcr.io/akvo-lumen/gpml/backend backend
+    docker build \
+	   --tag "${image_prefix}/backend:latest" \
+	   --tag "${image_prefix}/backend:${CI_COMMIT}" backend
 }
 
 frontend_build() {
@@ -37,9 +43,23 @@ frontend_build() {
 	   --volume "$(pwd)/frontend:/app" \
 	   --workdir /app \
 	   "${frontend_image}" \
-	   bash -c 'yarn install --no-progress --frozen-lock && yarn build'
+	   bash release.sh
+
+    docker build \
+	   --tag "${image_prefix}/frontend:latest" \
+	   --tag "${image_prefix}/frontend:${CI_COMMIT}" frontend
 
 }
 
 backend_build
 frontend_build
+
+dci () {
+    docker-compose \
+	--no-ansi \
+	-f docker-compose.yml \
+	-f docker-compose.ci.yml "$@"
+}
+
+dci up -d
+dci exec ci ./basic.sh
