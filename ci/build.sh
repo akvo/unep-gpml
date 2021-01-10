@@ -52,9 +52,6 @@ frontend_build () {
 
 }
 
-backend_build
-frontend_build
-
 dci () {
     docker-compose \
 	--no-ansi \
@@ -62,4 +59,6 @@ dci () {
 	-f docker-compose.ci.yml "$@"
 }
 
+backend_build
+frontend_build
 dci run ci ./basic.sh
