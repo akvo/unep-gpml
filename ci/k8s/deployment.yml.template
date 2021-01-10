@@ -11,7 +11,7 @@ spec:
     metadata:
       labels:
         run: unep-gpml
-        unep-gpml-version: ${CI_COMMIT}
+        unep-gpml-version: "${CI_COMMIT}"
     spec:
       containers:
       - name: frontend
