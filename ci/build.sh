@@ -3,7 +3,8 @@
 
 set -exuo pipefail
 
-CI_COMMIT="${SEMAPHORE_CI_COMMIT:=local}"
+CI_COMMIT="${SEMAPHORE_GIT_SHA:=local}"
+CI_COMMIT="${CI_COMMIT:0:7}"
 export CI_COMMIT
 
 backend_image=$(awk '/akvo-clojure/ {print $2}' docker-compose.override.yml)
