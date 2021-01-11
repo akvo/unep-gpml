@@ -9,5 +9,3 @@
   (jdbc/insert-multi! db :country
     (map (fn [x] {:name (:name x) :iso_code (:code x)})
       (j/read-value (slurp "https://unep.tc.akvo.org/api/countries") j/keyword-keys-object-mapper))))
-
-(seed-country)
