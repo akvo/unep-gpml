@@ -50,6 +50,6 @@
                                  :init (do
                                          (println "Starting backend ...")
                                          (go)
-                                         (seeder/seed-country))
+                                         (seeder/seed))
                                  :host "0.0.0.0"
                                  :port 47480}}})
