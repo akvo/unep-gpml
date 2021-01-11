@@ -1,10 +1,13 @@
 import mapIcons from  './map-icons';
 import disputed from './map-disputed-area';
 import mapZoom from './map-zoom';
+import mapDataRange from './map-datarange';
+import mapToolTip from './map-tooltip';
 
 const Chart = {
     Opt: {
         Maps: {
+            ToolTip: mapToolTip,
             ToolBox: {
                 toolbox: {
                     show: true,
@@ -40,6 +43,7 @@ const Chart = {
                 }
             },
             DisputedArea: disputed,
+            DataRange: mapDataRange,
         }
     },
     Style: {

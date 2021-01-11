@@ -1,25 +1,33 @@
-import React ,{ useState } from 'react'
+import React ,{useState} from 'react'
 import Map from './map'
 
 const Landing = () => {
-    const [data, setData] = useState([{name:'Indonesia', value:40}]);
+    const [country, setCountry] = useState("nothing");
+    const data = [{name:'Indonesia', value:40}];
 
-    const clickEvents = (res) => {
-        console.log(res);
+    const clickEvents = ({name, data}) => {
+        setCountry(name);
     }
 
-    const dispatchData = (param, data) => {
-        setData([{name:'India', value: 20}]);
+    const toolTip = (params) => {
+        if (params.value) {
+            var value = (params.value + '').split('.');
+            value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,');
+            return params.seriesName + '<br/>' + params.name + ': ' + value;
+        }
+        return 'No Data';
     }
 
     return (
+        <>
         <Map
-            title={"Test"}
+            title={`${country} is clicked`}
             subtitle={"Test"}
             data={data}
             clickEvents={clickEvents}
-            clickEffects={dispatchData}
+            toolTip={toolTip}
         />
+        </>
     )
 }
 

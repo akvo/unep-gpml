@@ -6,12 +6,12 @@ const disputed = world.features
         name: x.properties.name,
         itemStyle: {
             areaColor: {
-                image: document.getElementById("map-pattern"),
+                image: document.getElementById('map-area'),
                 repeat: 'repeat',
             },
             emphasis: {
                 areaColor : {
-                    image: document.getElementById("map-pattern"),
+                    image: document.getElementById('map-area'),
                     repeat: 'repeat',
                     shadowColor: 'rgba(0, 0, 0, 0.5)',
                     shadowBlur: 10
