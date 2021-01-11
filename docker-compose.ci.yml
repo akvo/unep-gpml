@@ -1,10 +1,16 @@
 version: "3"
 services:
+  mainnetwork:
+    image: alpine:3.12
+    command: ["tail", "-f", "/dev/null"]
   backend:
+    network_mode: service:mainnetwork
     image: eu.gcr.io/akvo-lumen/unep-gpml/backend:latest
   frontend:
+    network_mode: service:mainnetwork
     image: eu.gcr.io/akvo-lumen/unep-gpml/frontend:latest
   ci:
+    network_mode: service:mainnetwork
     image: alpine:3.12
     volumes:
       - ./ci/test:/test:ro
