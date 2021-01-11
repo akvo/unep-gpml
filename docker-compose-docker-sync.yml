@@ -1,0 +1,8 @@
+version: "3"
+services:
+  frontend:
+    volumes:
+      - unep-gpml-docker-sync:/app/node_modules:nocopy
+volumes:
+  unep-gpml-docker-sync:
+    external: true

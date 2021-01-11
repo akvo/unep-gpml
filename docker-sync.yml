@@ -1,0 +1,5 @@
+version: "2"
+
+syncs:
+  unep-gpml-docker-sync:
+    src: './frontend/node_modules'
