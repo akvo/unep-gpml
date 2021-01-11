@@ -3,7 +3,7 @@ import ReactEcharts from 'echarts-for-react';
 import Chart from '../../utils/charts'
 require("../../utils/charts/map-init.js");
 
-export const generateOptions = ({title, subtitle, data, tooltip}) => ({
+const generateOptions = ({title, subtitle, data, tooltip}) => ({
     title: {
         text: title,
         left: 'center',
@@ -49,7 +49,7 @@ const Map = ({
     custom={},
 }) => {
     data = data.filter(x => x.value !== 0);
-        const options = generateOptions ({title: title, subtitle: subtitle, data: data, tooltip: toolTip});
+    const options = generateOptions({title: title, subtitle: subtitle, data: data, tooltip: toolTip});
     return (
         <ReactEcharts
             option={{...options,...custom}}

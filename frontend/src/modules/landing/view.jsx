@@ -1,5 +1,5 @@
 import React ,{useState} from 'react'
-import Map from './map'
+import Maps from '../../components/Maps'
 
 const Landing = () => {
     const [country, setCountry] = useState("nothing");
@@ -11,23 +11,20 @@ const Landing = () => {
 
     const toolTip = (params) => {
         if (params.value) {
-            var value = (params.value + '').split('.');
+            let value = (params.value + '').split('.');
             value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,');
-            return params.seriesName + '<br/>' + params.name + ': ' + value;
+            return params.name + ': ' + value;
         }
-        return 'No Data';
     }
 
     return (
-        <>
-        <Map
+        <Maps
             title={`${country} is clicked`}
             subtitle={"Test"}
             data={data}
             clickEvents={clickEvents}
             toolTip={toolTip}
         />
-        </>
     )
 }
 
