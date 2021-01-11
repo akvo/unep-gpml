@@ -1,7 +1,7 @@
 CREATE TABLE country (
   id serial NOT NULL PRIMARY KEY,
   name text NOT NULL UNIQUE,
-  iso_code char(3) NOT NULL UNIQUE
+  iso_code char(3) NULL
 );
 -- Sample data
 INSERT INTO country (name, iso_code)
