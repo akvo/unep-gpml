@@ -8,7 +8,8 @@
             [eftest.runner :as eftest]
             [integrant.core :as ig]
             [integrant.repl :refer [clear halt go init prep reset]]
-            [integrant.repl.state :refer [config system]]))
+            [integrant.repl.state :refer [config system]]
+            [gpml.seeder.main :as seeder]))
 
 (duct/load-hierarchy)
 
