@@ -14,13 +14,20 @@
                                          {:get {:summary "List available countries"
                                                 :swagger {:tags ["countries"]}
                                                 :parameters {:query [:map [:id {:optional true} int?]]}
-                                                :handler #ig/ref :gpml.handler.country/handler}}]]]}
+                                                :handler #ig/ref :gpml.handler.country/handler}}]
+
+                                        ["/resource"
+                                         [""
+                                          {:get {:summary "List available resources"
+                                                 :swagger {:tags ["resources"]}
+                                                 :handler #ig/ref :gpml.handler.resource/handler}}]]]]}
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
 
   :gpml.handler.main/root {}
   :gpml.handler.main/swagger-handler {}
   :gpml.handler.country/handler {:db #ig/ref :duct.database.sql/hikaricp}
+  :gpml.handler.resource/handler {:db #ig/ref :duct.database.sql/hikaricp}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
