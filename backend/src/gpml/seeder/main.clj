@@ -53,9 +53,7 @@
     (let [category (jdbc/insert! db :tag_category {:category (first data)})
           category-id (-> category first :id)
           tags (map (fn [e] (assoc {} :tag_category category-id :tag e)) (second data))]
-      (print tags)
-      (jdbc/insert-multi! db :tag tags))
-    ))
+      (jdbc/insert-multi! db :tag tags))))
 
 (defn seed []
   (println "-- Start Seeding")
