@@ -32,7 +32,13 @@
                                          [""
                                           {:get {:summary "List available policies"
                                                  :swagger {:tags ["policies"]}
-                                                 :handler #ig/ref :gpml.handler.policy/handler}}]]]]}
+                                                 :handler #ig/ref :gpml.handler.policy/handler}}]]
+
+                                        ["/technology"
+                                         [""
+                                          {:get {:summary "List available technologies"
+                                                 :swagger {:tags ["technologies"]}
+                                                 :handler #ig/ref :gpml.handler.technology/handler}}]]]]}
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
 
@@ -42,6 +48,7 @@
   :gpml.handler.resource/handler {:db #ig/ref :duct.database.sql/hikaricp}
   :gpml.handler.event/handler {:db #ig/ref :duct.database.sql/hikaricp}
   :gpml.handler.policy/handler {:db #ig/ref :duct.database.sql/hikaricp}
+  :gpml.handler.technology/handler {:db #ig/ref :duct.database.sql/hikaricp}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
