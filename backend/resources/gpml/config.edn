@@ -20,7 +20,13 @@
                                          [""
                                           {:get {:summary "List available resources"
                                                  :swagger {:tags ["resources"]}
-                                                 :handler #ig/ref :gpml.handler.resource/handler}}]]]]}
+                                                 :handler #ig/ref :gpml.handler.resource/handler}}]]
+
+                                        ["/event"
+                                         [""
+                                          {:get {:summary "List available events"
+                                                 :swagger {:tags ["events"]}
+                                                 :handler #ig/ref :gpml.handler.event/handler}}]]]]}
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
 
@@ -28,6 +34,7 @@
   :gpml.handler.main/swagger-handler {}
   :gpml.handler.country/handler {:db #ig/ref :duct.database.sql/hikaricp}
   :gpml.handler.resource/handler {:db #ig/ref :duct.database.sql/hikaricp}
+  :gpml.handler.event/handler {:db #ig/ref :duct.database.sql/hikaricp}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
