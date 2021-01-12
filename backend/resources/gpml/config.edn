@@ -26,7 +26,13 @@
                                          [""
                                           {:get {:summary "List available events"
                                                  :swagger {:tags ["events"]}
-                                                 :handler #ig/ref :gpml.handler.event/handler}}]]]]}
+                                                 :handler #ig/ref :gpml.handler.event/handler}}]]
+
+                                        ["/policy"
+                                         [""
+                                          {:get {:summary "List available policies"
+                                                 :swagger {:tags ["policies"]}
+                                                 :handler #ig/ref :gpml.handler.policy/handler}}]]]]}
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
 
@@ -35,6 +41,7 @@
   :gpml.handler.country/handler {:db #ig/ref :duct.database.sql/hikaricp}
   :gpml.handler.resource/handler {:db #ig/ref :duct.database.sql/hikaricp}
   :gpml.handler.event/handler {:db #ig/ref :duct.database.sql/hikaricp}
+  :gpml.handler.policy/handler {:db #ig/ref :duct.database.sql/hikaricp}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
