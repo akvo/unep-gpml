@@ -44,7 +44,7 @@
                           :modified "2021-01-01T00:00:00Z"}])
 
 (defn policy-sample [_]
-  (resp/response {:results policy-sample-data :next nil}))
+  (resp/response {:results policy-sample-data :next nil :prev nil :total 2 :page 1}))
 
 (defmethod ig/init-key :gpml.handler.policy/handler [_ _]
   #'policy-sample)

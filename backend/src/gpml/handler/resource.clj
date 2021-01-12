@@ -44,7 +44,7 @@
                             :modified "2021-01-01T00:00:00Z"}])
 
 (defn resource-sample [_]
-  (resp/response {:results resource-sample-data :next nil}))
+  (resp/response {:results resource-sample-data :next nil :prev nil :total 2 :page 1}))
 
 (defmethod ig/init-key :gpml.handler.resource/handler [_ _]
   #'resource-sample)

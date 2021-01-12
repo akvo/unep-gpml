@@ -36,7 +36,7 @@
                               :modified "2021-01-01T00:00:00Z"}])
 
 (defn technology-sample [_]
-  (resp/response {:results technology-sample-data :next nil}))
+  (resp/response {:results technology-sample-data :next nil :prev nil :total 2 :page 1}))
 
 (defmethod ig/init-key :gpml.handler.technology/handler [_ _]
   #'technology-sample)
