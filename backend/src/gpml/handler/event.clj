@@ -32,7 +32,7 @@
                          :modified "2021-01-01T00:00:00Z"}])
 
 (defn event-sample [_]
-  (resp/response {:results event-sample-data :next nil}))
+  (resp/response {:results event-sample-data :next nil :prev nil :total 2 :page 1}))
 
 (defmethod ig/init-key :gpml.handler.event/handler [_ _]
   #'event-sample)
