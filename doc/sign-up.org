@@ -1,0 +1,87 @@
+#+PROPERTY: header-args:bash  :results output
+#+PROPERTY: header-args:bash+ :exports both
+
+* Sign-up calling the Auth0 API
+
+#+begin_src javascript :tangle data.json
+{
+    "family_name": "DevOps",
+    "given_name": "Akvo",
+    "username": "devops",
+    "connection": "Username-Password-Authentication",
+    "password": "rigYjUiDUGbYcB8k2PLS",
+    "email": "devops@akvo.org",
+    "client_id": "dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"
+}
+#+end_src
+
+#+begin_src bash
+curl \
+  --verbose \
+  --request POST \
+  --url 'https://unep-gpml-test.eu.auth0.com/dbconnections/signup' \
+  --header 'content-type: application/json' \
+  --data @data.json
+#+end_src
+
+
+#+RESULTS:
+: {"given_name":"Akvo","family_name":"DevOps","_id":"5ffd373f90d0120076462db8","email_verified":false,"email":"devops@akvo.org"}
+
+
+Attempt to signup again
+
+#+begin_src bash
+curl \
+  --verbose \
+  --request POST \
+  --url 'https://unep-gpml-test.eu.auth0.com/dbconnections/signup' \
+  --header 'content-type: application/json' \
+  --data @data.json
+#+end_src
+
+#+RESULTS:
+: {"name":"BadRequestError","code":"invalid_signup","description":"Invalid sign up","statusCode":400}
+
+
+Different user, password too weak
+
+#+begin_src javascript :tangle weak.json
+{
+    "client_id": "dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J",
+    "email": "test.account@signup.com",
+    "password": "PASSWORD",
+    "connection": "Username-Password-Authentication",
+    "username": "johndoe",
+    "given_name": "John",
+    "family_name": "Doe",
+    "name": "John Doe",
+    "nickname": "johnny",
+    "picture": "http://example.org/jdoe.png",
+    "user_metadata": {
+        "plan": "silver",
+        "team_id": "a111"
+    }
+}
+#+end_src
+
+#+begin_src bash
+curl \
+  --verbose \
+  --request POST \
+  --url 'https://unep-gpml-test.eu.auth0.com/dbconnections/signup' \
+  --header 'content-type: application/json' \
+  --data @weak.json
+#+end_src
+
+#+RESULTS:
+: {"name":"PasswordStrengthError","message":"Password is too weak","code":"invalid_password","description":{"rules":[{"message":"At least %d characters in length","format":[8],"code":"lengthAtLeast","verified":true},{"message":"Contain at least %d of the following %d types of characters:","code":"containsAtLeast","format":[3,4],"items":[{"message":"lower case letters (a-z)","code":"lowerCase","verified":false},{"message":"upper case letters (A-Z)","code":"upperCase","verified":true},{"message":"numbers (i.e. 0-9)","code":"numbers","verified":false},{"message":"special characters (e.g. !@#$%^&*)","code":"specialCharacters","verified":false}],"verified":false}],"verified":false},"policy":"* At least 8 characters in length\n* Contain at least 3 of the following 4 types of characters:\n * lower case letters (a-z)\n * upper case letters (A-Z)\n * numbers (i.e. 0-9)\n * special characters (e.g. !@#$%^&*)","statusCode":400}
+
+
+* Useful links
+
+- When using Lock (https://auth0.com/docs/lock) the user is automatically signed in
+  https://auth0.com/rules/email-verified
+
+- Redirect user after successful email validation
+  https://auth0.com/docs/auth0-email-services/manage-email-flow#custom-redirects
