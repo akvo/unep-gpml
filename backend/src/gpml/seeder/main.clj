@@ -1,6 +1,7 @@
 (ns gpml.seeder.main
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.java.io :as io]
+            [clojure.string :as str]
             [jsonista.core :as j]))
 
 (def db {:classname "org.postgresql.Driver"
@@ -31,11 +32,20 @@
   (jdbc/insert-multi! db :currency
     (j/read-value (slurp (io/resource "files/currencies.json")) j/keyword-keys-object-mapper)))
 
+(defn seed-languages[] 
+  (jdbc/delete! db :language [])
+  (jdbc/insert-multi! db :language
+  (reduce (fn [acc [k v]]
+    (conj acc {:iso_code (str/trim (name k)) :english_name (:name v) :native_name (:nativeName v)}))
+    []
+    (j/read-value (slurp (io/resource "files/languages.json")) j/keyword-keys-object-mapper))))
+
 (defn seed []
   (println "-- Start Seeding")
   (seed-countries)
   (seed-country-groups)
   (seed-currencies)
   (seed-organisations)
+  (seed-languages)
   (println "-- Done Seeding")
   )

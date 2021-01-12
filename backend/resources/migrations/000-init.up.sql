@@ -108,8 +108,8 @@ CREATE TABLE resource_tag (
 CREATE TABLE language (
   id serial NOT NULL PRIMARY KEY,
   english_name text NOT NULL UNIQUE,
-  native_name text NOT NULL UNIQUE,
-  iso_code char(3) NOT NULL UNIQUE
+  native_name text NOT NULL,
+  iso_code varchar(3) NOT NULL UNIQUE
 );
 
 CREATE TABLE resource_language_url (
