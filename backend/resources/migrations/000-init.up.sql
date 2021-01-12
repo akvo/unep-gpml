@@ -42,7 +42,7 @@ CREATE TABLE country_group_countries (
 
 CREATE TABLE organisation (
    id serial NOT NULL PRIMARY KEY,
-   name text,
+   name text NOT NULL UNIQUE,
    url text
 );
 
