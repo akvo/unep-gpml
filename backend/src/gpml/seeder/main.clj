@@ -1,5 +1,8 @@
 (ns gpml.seeder.main
   (:require [clojure.java.jdbc :as jdbc]
+            [gpml.db.country :as db.country]
+            [gpml.db.organisation :as db.organisation]
+            [gpml.db.tag :as db.tag]
             [clojure.java.io :as io]
             [clojure.string :as str]
             [jsonista.core :as j]))
@@ -55,6 +58,58 @@
           tags (map (fn [e] (assoc {} :tag_category category-id :tag e)) (second data))]
       (jdbc/insert-multi! db :tag tags))))
 
+(defn get-ids [cmd]
+  (reduce (fn [acc o] (conj acc (:id o))) [] cmd))
+
+(defn get-country [x]
+  (db.country/country-by-names db {:names x}))
+
+(defn get-organisation [x]
+  (db.organisation/organisation-by-names db {:names x}))
+
+(defn get-tag [x]
+  (db.tag/tag-by-tags db {:tags x}))
+
+(defn seed-resources []
+  (jdbc/delete! db :resource_tag [])
+  (jdbc/delete! db :resource_organisation [])
+  (jdbc/delete! db :resource_geo_coverage [])
+  (jdbc/delete! db :resource_language_url [])
+  (jdbc/delete! db :resource [])
+  (doseq [data
+    (->> (get-data "resources")
+         (map (fn [x]
+                (if-let [country (:country x)]
+                  (if-let [data (first (get-country [country]))]
+                    (assoc x :country (:id data))
+                    (assoc x :country nil))
+                  x)))
+         (map (fn [x]
+                (if-let [organisation (:organisation x)]
+                  (assoc x :organisation (get-ids (get-organisation organisation)))
+                  x)))
+         (map (fn [x]
+                (if-let [country (:geo_coverage x)]
+                  (assoc x :geo_coverage (get-ids (get-country country)))
+                  x)))
+         (map (fn [x]
+                (if-let [tags (:tags x)]
+                  (assoc x :tags (get-ids (get-tag tags)))
+                  x))))]
+         (println data)
+         #_(let [resource (jdbc/insert! db :resource data)
+                 resource-id (-> resource first :id)
+                 organisation (map (fn [e] (assoc {} :resource resource-id :country e)) (:organisation data))
+                 geo_coverage (map (fn [e] (assoc {} :resource resource-id :organisation e)) (:geo_coverage data))]
+             (jdbc/insert-multi! db :resource_geo_coverage geo_coverage)
+             (jdbc/insert-multi! db :resource_organisation organisation))
+    ))
+
+
+#_(for [data (get-data "resources") :let [country (:country data)] :when country]
+   {:country 
+    (:id (first (get-country [country])))})
+
 (defn seed []
   (println "-- Start Seeding")
   (seed-countries)
@@ -63,5 +118,5 @@
   (seed-organisations)
   (seed-languages)
   (seed-tags)
-  (println "-- Done Seeding")
-  )
+  (seed-resources)
+  (println "-- Done Seeding"))

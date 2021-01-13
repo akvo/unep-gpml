@@ -21,7 +21,6 @@
    "private for profit",
    "venture capital"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "United States Of America"
@@ -51,7 +50,6 @@
   "tags": [
    "private for profit"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "United States Of America"
@@ -82,7 +80,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -111,7 +108,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Asia And The Pacific"
@@ -140,7 +136,6 @@
    "private not for profit",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -167,7 +162,6 @@
    "national government",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Canada"
@@ -196,7 +190,6 @@
    "private for profit",
    "bilateral"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Indonesia",
@@ -227,7 +220,6 @@
    "private for profit",
    "equity investment"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Asia And The Pacific"
@@ -256,7 +248,6 @@
    "multilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -284,7 +275,6 @@
    "loans",
    "equity investment"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Austria",
@@ -339,7 +329,6 @@
    "private not for profit",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -356,6 +345,7 @@
   "country": null,
   "url": [
    "https://www.thegef.org/news/gef-council-approves-ambitious-work-program-green-cities-nature-and-climate-change",
+   "",
    "http://www.thegef.org/news/taking-fight-frontline-island-states-unite-end-pollution"
   ],
   "value": null,
@@ -367,7 +357,6 @@
    "multilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Antigua And Barbuda",
@@ -425,7 +414,6 @@
    "multilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -452,7 +440,6 @@
    "multilateral",
    "loans"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -479,7 +466,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -506,7 +492,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -533,7 +518,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -549,7 +533,9 @@
   "summary": "Clean Oceans Initiative to support the development and implementation of sustainable projects that will reduce pollution in the worlds oceans over the next five years. This partnership will provide EUR 2 billion long-term financing for projects aiming at reducing marine litter, especially plastics, as well as untreated wastewater discharge, with a view to crowding-in private sector investment. The Clean Oceans Initiative will notably target the following sectors: collection, pre-treatment and recycling of waste and particularly plastics collected on land, from rivers and from the sea, improved waste management in ports and harbours to support the reduction of marine littering from ships and transport on water, support to plastic prevention measures, market development for recycling plastics and other materials and public awareness building and support to the implementation of wastewater treatment plants that enable reduction in the discharge of plastics and other pollutants to rivers and oceans.",
   "country": null,
   "url": [
-   "https://www.kfw.de/KfW-Group/Newsroom/Latest-News/Pressemitteilungen-Details_491008.htmlhttps://www.eib.org/attachments/press/facsheet_coi_final.pdf"
+   "https://www.kfw.de/KfW-Group/Newsroom/Latest-News/Pressemitteilungen-Details_491008.html",
+   "",
+   "https://www.eib.org/attachments/press/facsheet_coi_final.pdf"
   ],
   "value": 2000000000,
   "value_currency": "EUR",
@@ -561,7 +547,6 @@
    "loans",
    "grants"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -590,7 +575,6 @@
    "private not for profit",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -617,7 +601,6 @@
    "private for profit",
    "equity investment"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -644,7 +627,6 @@
    "private not for profit",
    "equity investment"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -671,7 +653,6 @@
    "private not for profit",
    "incubator network"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Asia And The Pacific"
@@ -702,7 +683,6 @@
    "private not for profit",
    "venture capital"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Indonesia"
@@ -731,7 +711,6 @@
    "private not for profit",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "United States Of America",
@@ -764,7 +743,6 @@
    "private not for profit",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Saintt Lucia"
@@ -789,8 +767,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": [
    "Pakistan"
@@ -808,7 +785,10 @@
   "summary": "The Sustainable Manufacturing and Environmental Pollution (SMEP) programme is a \u00a325million research programme funded by DFID-UKaid over a period of 5 FYs. It aims at reducing the levels of pollution generated by manufacturing processes in developing countries.The programme will aim to achieve its objectives by implementing the following activities: Funding research to develop the evidence to support practical solutions with a high chance of take up and impact, developing and testing innovative technology-based solutions that improve the environmental impacts of manufacturing, identifying and developing suitable supporting business models and policies to adopt innovative technology-based solutions, development and testing of new symbiotic production processes that reduce environmental waste and establish new sources of wealth and growth.Funding R&D activities to address the problem of plastic ocean pollution, which was recently highlighted as a key issue in developing countries.Co-design development of toolkits to be used by policy makers and planners.",
   "country": null,
   "url": [
-   "https://unctad.org/meetings/en/Presentation/ditc-ted-09092019-UNtradeforum-DFID.pdfhttps://unctad.org/en/Pages/DITC/Trade-and-Environment/Sustainable-Manufacturing-Environmental-Pollution.aspx",
+   "https://unctad.org/meetings/en/Presentation/ditc-ted-09092019-UNtradeforum-DFID.pdf",
+   "",
+   "https://unctad.org/en/Pages/DITC/Trade-and-Environment/Sustainable-Manufacturing-Environmental-Pollution.aspx",
+   "",
    "https://devtracker.dfid.gov.uk/projects/GB-GOV-1-300124"
   ],
   "value": null,
@@ -820,7 +800,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -836,7 +815,9 @@
   "summary": "Up to \u00a33m to pilot improved waste management approaches in cities in developing Commonwealth countries. Three pilot projects (up to \u00a33m) have been designed in Ghana, Bangladesh and Uganda to test approaches to increasing plastic recycling rates.i. Ghana: Working with businesses to reduce plastic waste in Accra, as part of the World Economic Forum hosted Global Plastics Action Partnership.ii. Bangladesh: Increasing the proportion of plastic waste generated by the capital Dhaka that can be reused by industry, particularly garment manufacturing.iii. Uganda: Support for the Kampala Plastics Recycling Partnership, which includes private companies such as Coca-Cola, the Ugandan Government and other stakeholders, to improve the sustainable management of plastic waste in Greater Kampala.",
   "country": null,
   "url": [
-   "https://devtracker.dfid.gov.uk/projects/GB-GOV-1-300604https://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdf"
+   "https://devtracker.dfid.gov.uk/projects/GB-GOV-1-300604",
+   "",
+   "https://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdf"
   ],
   "value": 3000000,
   "value_currency": "GBP",
@@ -846,7 +827,6 @@
   "tags": [
    "bilateral"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -873,7 +853,6 @@
   "tags": [
    "bilateral"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Antigua And Barbuda",
@@ -944,7 +923,9 @@
   "summary": "The Commonwealth Marine Plastics Research and Innovation Framework will provide a platform and overarching structure for bringing together governments, industry, researchers and practitioners from across the Commonwealth to work together to tackle this global issue. The initiative will comprise both new jointly-funded interdisciplinary research and innovation programmes developed through the Framework, and activities developed and delivered by individual partnering countries and organisations. An important aspect of the Framework will be providing a forum for sharing research plans and emerging findings with all partners, increasing coordination and adding value to individual programmes. The Framework will also support the development of links between researchers and innovators across the Commonwealth, driving new partnerships and strengthening capacity. The Framework will be delivered both by and for the Commonwealth. It will consist of jointly-funded interdisciplinary research and innovation programmes developed through the Framework, and activities developed and delivered by individual partnering countries and organisations",
   "country": null,
   "url": [
-   "https://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdfhttps://www.gov.uk/government/news/uk-launches-new-research-and-innovation-hub-to-tackle-scourge-of-plastic-in-our-seas-and-oceans"
+   "https://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdf",
+   "",
+   "https://www.gov.uk/government/news/uk-launches-new-research-and-innovation-hub-to-tackle-scourge-of-plastic-in-our-seas-and-oceans"
   ],
   "value": null,
   "value_currency": "GBP",
@@ -954,7 +935,6 @@
   "tags": [
    "bilateral"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Antigua And Barbuda",
@@ -1025,7 +1005,9 @@
   "summary": "The Commonwealth Marine Litter Programme (CLIP) is led by the UK through the Centre for Environment Fisheries and Aquaculture Science (Cefas). The programme is supporting a number of ODA-eligible Commonwealth countries to develop national litter action plans focusing on plastics entering the ocean, with an emphasis on capacity building and developing plastics monitoring programmes. Once completed (by 2020) outcomes from this programme will be shared with all CCOA members, and the national litter action plans will be made available for other countries to adapt and implement.",
   "country": null,
   "url": [
-   "https://www.cefas.co.uk/clip/about-clip/https://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdf"
+   "https://www.cefas.co.uk/clip/about-clip/",
+   "",
+   "https://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdf"
   ],
   "value": 6000000,
   "value_currency": "GBP",
@@ -1036,7 +1018,6 @@
    "bilateral",
    "capacity building"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -1052,7 +1033,9 @@
   "summary": "The Global Plastic Action Partnership (GPAP) was forged as a structured global platform for plastic action that enables public, private and civil society leaders and their initiatives to come together. Our common goal is to drive the transition towards a circular plastics economy while helping to restore our natural systems and creating growth opportunities.This investment will support the delivery of ambitions under the Commonwealth Clean Ocean Alliance. The Partnership provides a public-private collaboration platform to help translate political commitments to address plastic pollution into tangible strategies and investible actions plans. The outputs will be: a global plastics collaboration platform; support for national action partnerships to develop fact-based action plans; mobilizing funding of plastics action projects; engaging and leveraging existing expertise among partners; exchanging knowledge and learning to advance systems change. The first collaboration is with the Government of Indonesia. Collaborations in two other coastal nations (one in West Africa and a small island developing state) will be announced in coming months. Other examples could be added to this list, depending on the capacity and additional resourcing brought into the Partnership.",
   "country": null,
   "url": [
-   "https://www.weforum.org/gpaphttps://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdf"
+   "https://www.weforum.org/gpap",
+   "",
+   "https://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdf"
   ],
   "value": null,
   "value_currency": "GBP",
@@ -1064,7 +1047,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Indonesia",
@@ -1095,7 +1077,6 @@
    "bilateral",
    "loans"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Indonesia",
@@ -1128,7 +1109,6 @@
    "national government",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "United States Of America"
@@ -1157,7 +1137,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Indonesia",
@@ -1189,7 +1168,6 @@
    "multilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -1216,7 +1194,6 @@
    "multilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -1243,7 +1220,6 @@
    "multilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Ghana"
@@ -1270,7 +1246,6 @@
    "multilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Albania",
@@ -1304,7 +1279,6 @@
    "multilateral",
    "trust fund"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -1331,7 +1305,6 @@
    "multilateral",
    "loans"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -1356,7 +1329,6 @@
    "multilateral",
    "loans"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Thailand",
@@ -1390,7 +1362,6 @@
    "multilateral",
    "trust fund"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Indonesia"
@@ -1419,7 +1390,6 @@
    "national government",
    "blue bond"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Seychelles"
@@ -1446,7 +1416,6 @@
    "multilateral",
    "sustainable development bond"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -1473,7 +1442,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -1500,7 +1468,6 @@
    "multilateral",
    "sustainable development bond"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -1527,7 +1494,6 @@
    "private not for profit",
    "subsidised credit facility"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Thailand"
@@ -1555,7 +1521,6 @@
   "tags": [
    "grants"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -1582,7 +1547,6 @@
    "multilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -1609,7 +1573,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Asia And The Pacific"
@@ -1638,7 +1601,6 @@
    "national government",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Trinidad And Tobago"
@@ -1667,7 +1629,6 @@
    "multilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -1694,7 +1655,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Asia And The Pacific"
@@ -1712,7 +1672,9 @@
   "summary": "MARPLASTICCs uses an integrated lifecycle approach which supports a global transition from a linear take-make-dispose model to a circular plastics economy",
   "country": null,
   "url": [
-   "https://www.iucn.org/sites/dev/files/marplasticcs_factsheet_updated_august_2019.pdfhttps://www.iucn.org/news/marine-and-polar/201904/iucn-launches-call-proposals-reduce-plastic-leakage-ocean"
+   "https://www.iucn.org/sites/dev/files/marplasticcs_factsheet_updated_august_2019.pdf",
+   "",
+   "https://www.iucn.org/news/marine-and-polar/201904/iucn-launches-call-proposals-reduce-plastic-leakage-ocean"
   ],
   "value": 12,
   "value_currency": "USD",
@@ -1723,7 +1685,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Kenya",
@@ -1757,7 +1718,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -1784,7 +1744,6 @@
    "private not for profit",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Menorca",
@@ -1814,7 +1773,6 @@
    "private not for profit",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -1830,7 +1788,9 @@
   "summary": "The fund: helps fishermen in the transition to sustainable fishing, supports coastal communities in diversifying their economies, finances projects that create new jobs and improve quality of life along European coasts, supports sustainable aquaculture developments, makes it easier for applicants to access financing.The fund assists various projects to fight marine litter.",
   "country": null,
   "url": [
-   "https://ec.europa.eu/fisheries/cfp/emff_enhttps://ec.europa.eu/fisheries/sites/fisheries/files/docs/body/2015-cfp-funding_en.pdf"
+   "https://ec.europa.eu/fisheries/cfp/emff_en",
+   "",
+   "https://ec.europa.eu/fisheries/sites/fisheries/files/docs/body/2015-cfp-funding_en.pdf"
   ],
   "value": null,
   "value_currency": "EUR",
@@ -1841,7 +1801,6 @@
    "multilateral",
    "national government"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Austria",
@@ -1896,7 +1855,6 @@
    "private not for profit",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -1923,7 +1881,6 @@
    "private for profit",
    "grants"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -1949,7 +1906,6 @@
   "tags": [
    "grants"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Canada"
@@ -1975,7 +1931,6 @@
   "tags": [
    "bilateral"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Albania",
@@ -2006,7 +1961,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -2033,7 +1987,6 @@
    "multilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "China",
@@ -2068,7 +2021,6 @@
    "private not for profit",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -2095,7 +2047,6 @@
    "national government",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "New Zealand"
@@ -2111,7 +2062,7 @@
   "type": "Financing Resource",
   "publish_year": null,
   "summary": "The Programme is an agreement between EU member states Denmark, Estonia, Finland, Latvia, Lithuania, Poland, Sweden and the northern parts of Germany as well as partner countries Norway, Belarus and the northwest regions of Russia. Funding is offered within four thematic priorities: capacity for innovation, management of natural resources, sustainable transport, and EU stratefy support.Clear waters and blue growth are two key topics of focus under natural resources.",
-  "country": "Denmark, Estonia, Finland, Latvia, Lithuania, Poland, Sweden, Germany , Norway, Belarus, Russia",
+  "country": "Denmark",
   "url": [
    "https://www.interreg-baltic.eu/about-the-programme.html"
   ],
@@ -2124,7 +2075,6 @@
    "multilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Denmark",
@@ -2163,7 +2113,6 @@
    "private not for profit",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -2190,7 +2139,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -2215,7 +2163,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -2242,7 +2189,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -2267,7 +2213,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -2292,7 +2237,6 @@
    "bilateral",
    "grants"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -2323,7 +2267,6 @@
    "macroplastics",
    "sea-land interface"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -2349,7 +2292,6 @@
   "valid_from": null,
   "valid_to": null,
   "tags": null,
-  "error_tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -2367,7 +2309,7 @@
   "type": "Technical Resource",
   "publish_year": 2013,
   "summary": "The MSFD Technical Subgroup on Marine Litter was tasked to deliver guidance so that European Member States could initiate programmes for monitoring of Descriptor 10 of the MSFD. The present document provides the recommendations and information needed to commence the monitoring required for marine litter, including methodological protocols and categories of items to be used for the assessment of litter on the Beach, Water Column, Seafloor and Biota, including a special section on Microparticles. The MSFD Technical Subgroup on Marine Litter developed a monitoring guidance document in order to facilitate the preparation of monitoring programs for Descriptor 10 of the MSFD by European Member States. The document provides recommendations and information for commencing the monitoring required for marine litter, including methodological harmonization and categories of items to be used for the assessment of litter on the Beach, Water Column, Seafloor and Biota, including a special section on Microparticles. This guidance is being widely used, also within Regional Sea Conventions and provides the basis for a harmonised monitoring, providing comparable results, across Europe and beyond.",
-  "country": "Austria; Belgium; Bulgaria; Croatia; Republic of Cyprus; Czech Republic; Denmark; Estonia; Finland; France; Germany; Greece; Hungary; Ireland; Italy; Latvia; Lithuania; Luxembourg; Malta; Netherlands; Poland; Portugal; Romania; Slovakia; Slovenia; Spain; Sweden.",
+  "country": "Austria",
   "url": [
    "https://mcc.jrc.ec.europa.eu/documents/201702074014.pdf"
   ],
@@ -2380,7 +2322,6 @@
    "methodology",
    "guidance (policy/decision makers)"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Austria",
@@ -2426,7 +2367,7 @@
   "type": "Technical Resource",
   "publish_year": 2016,
   "summary": "Marine litter can impact organisms at different levels of biological organization and habitats in a number of ways namely: through entanglement in, or ingestion of, litter items by individuals, resulting in death and/or severe suffering; through chemical and microbial transfer; as a vector for transport of biota and by altering or modifying assemblages of species. Marine litter is a threat not only to marine species and ecosystems but also carries a risk to human health and has significant implications to human welfare, impacting negatively vital economic sectors such as tourism, fisheries, aquaculture or energy supply and bringing economic losses to individuals, enterprises and communities. This technical report aims to provide clear insight about the major negative impacts from marine litter by describing the mechanisms of harm. Further it provides reflexions about the evidence for harm from marine litter to biota, while also considering the socioeconomic effects, including the influence of marine litter on ecosystem services. General conclusions highlight that understanding the risks and uncertainties with regard to the harm caused by marine litter is closely associated with the precautionary principle. The collected evidence in this report can be regarded as a supporting step to define harm and to provide an evidence base for the various actions needed to be implemented by decision-makers. This improved knowledge about the scale of the harmful effects of marine litter will further support EU Member States (MSs) and Regional Seas Conventions (RSCs) to implement their programme of measures, regional action plans and assessments. General conclusions highlight that understanding the risks and uncertainties with regard to the harm caused by marine litter is closely associated with the precautionary principle. The collected evidence in this report can be regarded as a supporting step to define harm and to provide an evidence base for the various actions needed to be implemented by decision-makers. This improved knowledge about the scale of the harmful effects of marine litter will further support EU Member States (MSs) and Regional Seas Conventions (RSCs) to implement their programme of measures, regional action plans and assessments.",
-  "country": "Austria; Belgium; Bulgaria; Croatia; Republic of Cyprus; Czech Republic; Denmark; Estonia; Finland; France; Germany; Greece; Hungary; Ireland; Italy; Latvia; Lithuania; Luxembourg; Malta; Netherlands; Poland; Portugal; Romania; Slovakia; Slovenia; Spain; Sweden.",
+  "country": "Austria",
   "url": [
    "https://mcc.jrc.ec.europa.eu/documents/201709180716.pdf"
   ],
@@ -2439,7 +2380,6 @@
    "state of knowledge",
    "policy recommendations"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Austria",
@@ -2485,7 +2425,7 @@
   "type": "Technical Resource",
   "publish_year": 2016,
   "summary": "The reduction of marine litter pollution poses a complex challenge for environmental policies, requiring adjustments in human behaviour as well as in the different phases of the life-cycle of products and access multiple economic sectors. The Marine Strategy Framework Directive (MSFD) requires European Member States to monitor marine litter and implement programmes of measures to reduce its occurrence. A crucial step in monitoring and effectively addressing marine litter is the identification of the origin and the pathways that lead to litter entering the marine environment. A given site or region can be subject to litter pollution from a number of sources, which can be local, regional or even distant, as litter can be transported to a specific area by ocean currents and wind drift. For this reason, pinpointing the origin of the different items that make up marine litter is a difficult task and will always have an inherent degree of associated uncertainty. The TG Litter has published a report on the methodologies for identification of litter sources \u2013 a Matrix Score Technique based on likelihoods, which considers the possibility that specific items originate from more than one source. Furthermore, it presents a series of other parameters that can be used to analyse data-sets, with regard to the use, origin and risk of items recorded in the marine or coastal environments. These can further support decision-making when considering preventive measures. Finally, recommendations to help the process of identification of sources are given, from the early stage of data collection and site characterization to bringing in the knowledge of local stakeholders to better determine where litter is coming from and what needs to be done to prevent it.",
-  "country": "Austria; Belgium; Bulgaria; Croatia; Republic of Cyprus; Czech Republic; Denmark; Estonia; Finland; France; Germany; Greece; Hungary; Ireland; Italy; Latvia; Lithuania; Luxembourg; Malta; Netherlands; Poland; Portugal; Romania; Slovakia; Slovenia; Spain; Sweden.",
+  "country": "Austria",
   "url": [
    "https://mcc.jrc.ec.europa.eu/documents/201703030936.pdf"
   ],
@@ -2497,7 +2437,6 @@
   "tags": [
    "methodology"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Austria",
@@ -2543,7 +2482,7 @@
   "type": "Technical Resource",
   "publish_year": 2011,
   "summary": "In 2011 the MSFD Techncial Group on Marine Litter group developed an overview about existing data and methodologies for the monitoring of marine litter. Appropriate monitoring methodologies have been identified for beach, surface water, biota and microlitter, and altogether 15 monitoring tools have been described in relation to the indicators for Marine Litter. Sources of marine litter, issues on targets and objectives relevant to MSFD as well as research needs have been discussed and a roadmap for the further implementation of Descriptor 10 has been developed. This preparatory work has later led to the development of guidance and overall to a structured approach for the implementation of MSFD descriptor 10 in EU Member States.",
-  "country": "Austria; Belgium; Bulgaria; Croatia; Republic of Cyprus; Czech Republic; Denmark; Estonia; Finland; France; Germany; Greece; Hungary; Ireland; Italy; Latvia; Lithuania; Luxembourg; Malta; Netherlands; Poland; Portugal; Romania; Slovakia; Slovenia; Spain; Sweden.",
+  "country": "Austria",
   "url": [
    "https://mcc.jrc.ec.europa.eu/documents/201702071118.pdf"
   ],
@@ -2556,7 +2495,6 @@
    "methodology",
    "technical guidelines"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Austria",
@@ -2602,7 +2540,7 @@
   "type": "Technical Resource",
   "publish_year": null,
   "summary": "A Number of documents, and other guidance for the monitoring of marine litter",
-  "country": "Austria; Belgium; Bulgaria; Croatia; Republic of Cyprus; Czech Republic; Denmark; Estonia; Finland; France; Germany; Greece; Hungary; Ireland; Italy; Latvia; Lithuania; Luxembourg; Malta; Netherlands; Poland; Portugal; Romania; Slovakia; Slovenia; Spain; Sweden.",
+  "country": "Austria",
   "url": [
    "https://mcc.jrc.ec.europa.eu/main/dev.py?N=41&O=434&titre_chap=TG%2520Marine%2520Litter"
   ],
@@ -2615,7 +2553,6 @@
    "methodology",
    "operational guidelines"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Austria",
@@ -2659,7 +2596,7 @@
   "type": "Technical Resource",
   "publish_year": 2013,
   "summary": "The present document is the Final Report \u201cGuidance on Monitoring of Marine Litter in European Seas\u201d, the output of the work of the TSG-ML between 2012 and 2013. The objective of such Guidance is to provide MS with recommendations and information needed to commence the monitoring of the MSFD Descriptor 10. It describes specific protocols and considerations to collect, report and asses data on marine litter, in particular beach litter, floating litter, seafloor litter, litter in biota and microlitter.",
-  "country": "Austria; Belgium; Bulgaria; Croatia; Republic of Cyprus; Czech Republic; Denmark; Estonia; Finland; France; Germany; Greece; Hungary; Ireland; Italy; Latvia; Lithuania; Luxembourg; Malta; Netherlands; Poland; Portugal; Romania; Slovakia; Slovenia; Spain; Sweden.",
+  "country": "Austria",
   "url": [
    "https://mcc.jrc.ec.europa.eu/documents/201702074014.pdf"
   ],
@@ -2674,7 +2611,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Austria",
@@ -2720,7 +2656,7 @@
   "type": "Technical Resource",
   "publish_year": 2018,
   "summary": "In the context of the Plastics Strategy (COM(2018) 28 final), the JRC was entrusted by the Directorate-General for Internal market, Industry, Entrepreneurship and SMEs (DG GROW) with the project \u201cEnvironmental sustainability assessment comparing through the means of lifecycle assessment the potential environ-mental impacts of the use of alternative feedstocks (biomass, recycled plastics, CO2) for plastic articles in comparison to using current feedstocks (oil and gas)\u201d. The objective is to elaborate a consistent LCA method, including the end of life treatment, for different plastics . The approach is to take into account learnings from the Environmental Footprint (Recommendation 2013/179/EU) pilot phase and insights on indirect land use change from the biofuels discussions .",
-  "country": "Austria; Belgium; Bulgaria; Croatia; Republic of Cyprus; Czech Republic; Denmark; Estonia; Finland; France; Germany; Greece; Hungary; Ireland; Italy; Latvia; Lithuania; Luxembourg; Malta; Netherlands; Poland; Portugal; Romania; Slovakia; Slovenia; Spain; Sweden.",
+  "country": "Austria",
   "url": [
    "https://eplca.jrc.ec.europa.eu/permalink/PLASTIC_LCI/Plastic_LCA_Report_I_2018.11.20.pdf"
   ],
@@ -2737,7 +2673,6 @@
    "state of knowledge",
    "recycling"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -2755,7 +2690,7 @@
   "type": "Technical Resource",
   "publish_year": 2012,
   "summary": "Waste management planning is the cornerstone of any national, regional or local policy on waste management. The establishment of a plan allows taking stock of the existing situation, defining the objectives that need to be met, formulating appropriate strategies, and identifying the necessary implementation means. The drawing up of waste management plans is an obligation of EU Member States and is required by Article 28 of the Waste Framework Directive (WFD). Member States can ask the regional or local authorities to draw up regional or local plans. The plans shall cover the entire geographical territory of a Member State and need to be in line with the provisions of Article 1 WFD (protection of environment and human health by preventing or reducing the adverse impacts of the generation and management of waste and by reducing overall impacts of resource use and improving the efficiency of such use), Article 4 WFD (the waste management hierarchy), Article 13 WFD (protection of human health and environment), and Article 16 WFD (principles of self-sufficiency and proximity). Article 28(3) WFD lists the mandatory elements of a waste management plan. Article 28(4) WFD lists additional elements which may be contained in the plan.",
-  "country": "Austria; Belgium; Bulgaria; Croatia; Republic of Cyprus; Czech Republic; Denmark; Estonia; Finland; France; Germany; Greece; Hungary; Ireland; Italy; Latvia; Lithuania; Luxembourg; Malta; Netherlands; Poland; Portugal; Romania; Slovakia; Slovenia; Spain; Sweden.",
+  "country": "Austria",
   "url": [
    "https://ec.europa.eu/environment/waste/plans/pdf/2012_guidance_note.pdf"
   ],
@@ -2768,7 +2703,6 @@
    "guidance (policy/decision makers)",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Austria",
@@ -2827,7 +2761,6 @@
    "guidance (policy/decision makers)",
    "river"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -2860,7 +2793,6 @@
    "best practice",
    "macroplastics"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -2895,7 +2827,6 @@
    "recycling",
    "waste management"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -2928,7 +2859,6 @@
    "recycling",
    "waste management"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -2956,7 +2886,6 @@
   "tags": [
    "state of knowledge"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -2986,7 +2915,6 @@
    "state of knowledge",
    "microplastics"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -3019,7 +2947,6 @@
    "waste management",
    "waste management"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -3051,7 +2978,6 @@
    "monitoring methodology",
    "macroplastics"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -3079,7 +3005,6 @@
   "tags": [
    "best practice"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -3115,7 +3040,6 @@
    "waste management",
    "waste management"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -3148,7 +3072,6 @@
    "policy recommendations",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -3180,7 +3103,6 @@
    "state of knowledge",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Uganda"
@@ -3214,7 +3136,6 @@
    "case study",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -3245,7 +3166,6 @@
   "tags": [
    "case study"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Bosnia And Herzegovina",
@@ -3279,7 +3199,6 @@
   "tags": [
    "guidance (policy/decision makers)"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -3316,7 +3235,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Basel Convention"
@@ -3351,7 +3269,6 @@
    "macroplastics",
    "recycling"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -3385,7 +3302,6 @@
    "operational guidelines",
    "microplastics"
   ],
-  "error_tags": false,
   "resource_language_url": [
    {
     "language": "English",
@@ -3422,7 +3338,6 @@
   "tags": [
    "microplastics"
   ],
-  "error_tags": false,
   "resource_language_url": [
    {
     "language": "English",
@@ -3480,7 +3395,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Basel Convention",
@@ -3513,7 +3427,6 @@
    "operational guidelines",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Basel Convention",
@@ -3549,7 +3462,6 @@
    "sea-land interface",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Basel Convention",
@@ -3584,7 +3496,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -3617,7 +3528,6 @@
    "microplastics",
    "sea-land interface"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -3653,7 +3563,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -3688,7 +3597,6 @@
    "river",
    "sea"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -3721,7 +3629,6 @@
    "best practice",
    "macroplastics"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -3753,7 +3660,6 @@
    "prevention",
    "state of knowledge"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -3784,7 +3690,6 @@
    "monitoring methodology",
    "macroplastics"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -3817,7 +3722,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -3858,7 +3762,6 @@
    "training",
    "training"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -3895,7 +3798,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "United States Of America"
@@ -3934,7 +3836,6 @@
    "inland",
    "sea-land interface"
   ],
-  "error_tags": true,
   "resource_language_url": [
    {
     "language": "Japanese",
@@ -3982,7 +3883,6 @@
    "training",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -4021,7 +3921,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -4053,7 +3952,6 @@
    "mechanism",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "New Zealand"
@@ -4089,7 +3987,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [
    {
     "language": "English",
@@ -4136,7 +4033,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -4153,7 +4049,7 @@
   "type": "Technical Resource",
   "publish_year": null,
   "summary": "The Bank of Actions will provide your organisation with concrete ideas and examples of water protection activities implemented by organisations in the Baltic Sea Challenge network. You can browse these according to the theme, type of actor, country, year or keyword.",
-  "country": "Denmark; Estonia; Finland; Germany; Latvia; Lithuania; Poland; Russia; Sweden;Belarus;",
+  "country": "Denmark",
   "url": [
    "https://www.waterprotectiontools.net/index.php/en/bank-of-actions/"
   ],
@@ -4169,7 +4065,6 @@
    "mechanism",
    "mechanism"
   ],
-  "error_tags": true,
   "resource_language_url": [
    {
     "language": "English",
@@ -4226,7 +4121,6 @@
    "sea-land interface",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -4261,7 +4155,6 @@
    "calculation tool",
    "guidance (policy/decision makers)"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Cyprus",
@@ -4303,7 +4196,6 @@
    "guidance (policy/decision makers)",
    "sea-land interface"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -4333,7 +4225,6 @@
   "tags": [
    "monitoring methodology"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Asia And The Pacific"
@@ -4369,7 +4260,6 @@
    "mechanism",
    "macroplastics"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Asia And The Pacific"
@@ -4408,7 +4298,6 @@
    "lessons learnt",
    "mechanism"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -4438,7 +4327,6 @@
    "inland",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -4472,7 +4360,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [
    {
     "language": "English",
@@ -4524,7 +4411,6 @@
    "sea-land interface",
    "sea"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -4557,7 +4443,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [
    {
     "language": "English",
@@ -4619,7 +4504,6 @@
    "state of knowledge",
    "mechanism"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -4652,7 +4536,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -4689,7 +4572,6 @@
    "sea-land interface",
    "sea"
   ],
-  "error_tags": true,
   "resource_language_url": [
    {
     "language": "English",
@@ -4733,7 +4615,6 @@
    "inland",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -4769,7 +4650,6 @@
    "inland",
    "sea-land interface"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Indonesia"
@@ -4804,7 +4684,6 @@
    "macroplastics",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -4836,7 +4715,6 @@
    "methodology",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -4866,7 +4744,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -4898,7 +4775,6 @@
    "training",
    "training"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Brazil"
@@ -4932,7 +4808,6 @@
    "training",
    "training"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Brazil"
@@ -4966,7 +4841,6 @@
    "microplastics",
    "river"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Brazil"
@@ -4998,7 +4872,6 @@
    "microplastics",
    "river"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Brazil"
@@ -5031,7 +4904,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5064,7 +4936,6 @@
    "macroplastics",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5098,7 +4969,6 @@
    "inland",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5128,7 +4998,6 @@
    "prevention",
    "guidance (policy/decision makers)"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5160,7 +5029,6 @@
    "state of knowledge",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5192,7 +5060,6 @@
    "inventory",
    "mechanism"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5224,7 +5091,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -5256,7 +5122,6 @@
    "policy recommendations",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -5284,7 +5149,6 @@
   "tags": [
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5315,7 +5179,6 @@
    "operational guidelines",
    "guidance (policy/decision makers)"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5346,7 +5209,6 @@
    "state of knowledge",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5379,7 +5241,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5411,7 +5272,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5438,8 +5298,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5471,7 +5330,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5501,7 +5359,6 @@
   "tags": [
    "state of knowledge"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5532,7 +5389,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5565,7 +5421,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5596,7 +5451,6 @@
    "case study",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5628,7 +5482,6 @@
    "inland",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5658,7 +5511,6 @@
   "tags": [
    "state of knowledge"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5686,7 +5538,6 @@
   "tags": [
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5714,7 +5565,6 @@
   "tags": [
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5744,7 +5594,6 @@
   "tags": [
    "operational guidelines"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5776,7 +5625,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -5807,7 +5655,6 @@
    "prevention",
    "state of knowledge"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -5838,7 +5685,6 @@
    "case study",
    "inland"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -5871,7 +5717,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "Brazil"
@@ -5905,7 +5750,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5941,7 +5785,6 @@
    "inland",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -5973,7 +5816,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -6009,7 +5851,6 @@
    "sea-land interface",
    "sea"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -6040,7 +5881,6 @@
    "inland",
    "recycling"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -6071,7 +5911,6 @@
    "guidance (policy/decision makers)",
    "state of knowledge"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -6090,6 +5929,7 @@
   "summary": "The Global Roadmap to Achieve Near-zero Ocean Plastic Leakage provides robust, evidence-driven analysis to policymakers, industry leaders and other key stakeholders to highlight the costs and trade-offs associated with technological and policy changes required to pursue near-zero leakage strategies for different geographic archetypes . The roadmap is solution oriented but implies the development of a leakage estimation model based on different leakage pathways for both macro- and micro- plastics .",
   "country": "global",
   "url": [
+   "",
    "https://www.pewtrusts.org/-/media/assets/2020/07/breakingtheplasticwave_report.pdf"
   ],
   "value": null,
@@ -6104,7 +5944,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -6138,7 +5977,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -6158,7 +5996,7 @@
   "type": "Technical Resource",
   "publish_year": 2020,
   "summary": "Marine Litter Quantification tool 2 for local authorities & decision makers, simplified, planned to be publicly availabl",
-  "country": "Switzerland; Germany; United Kingdom",
+  "country": "Switzerland",
   "url": [
    "https://plasticpollution.leeds.ac.uk/toolkits/wfd/"
   ],
@@ -6173,7 +6011,6 @@
    "application cases",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -6205,7 +6042,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -6235,7 +6071,6 @@
    "methodology",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -6269,7 +6104,6 @@
    "sea-land interface",
    "sea"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -6307,7 +6141,6 @@
    "sea-land interface",
    "sea"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -6339,7 +6172,6 @@
    "macroplastics",
    "inland"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": [
    "South Africa"
@@ -6371,7 +6203,6 @@
    "microplastics",
    "macroplastics"
   ],
-  "error_tags": true,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -6387,7 +6218,7 @@
   "type": "Technical Resource",
   "publish_year": 2020,
   "summary": "Measures against marine litter require quantitative data for the assessment of litter abundance, trends and distribution. While beach litter monitoring has been ongoing in some European areas since years, so far it was yet not possible to obtain an overview and to analyse litter abundance, litter category distribution and trends at the different spatial scales from local to EU. Therefore, the EU Marine Directors and the Marine Strategy Coordination Group mandated, in the context of the MSFD implementation, to the MSFD Technical Group on Marine Litter and the JRC, the compilation and analysis of an EU beach litter dataset. Aim was to derive EU Marine Beach Litter Baselines at different spatial levels. After collection of European beach litter data from EU Member States via the EMODNET chemistry module database, harmonisation of data formats and data clean-up, a 2012-2016 dataset was derived. Following the spatio-temporal aggregation of data. The application of agreed scenario parameters has enabled the calculation of marine beach litter baselines for the years 2015 and 2016 at spatial scales ranging from country and country \u2013region level to sub-regional, regional and EU level. Litter categories have been aggregated and allow analysis of group categories up to EU level, whereas the analysis of single categories could not include all received data due to non-comparable litter type category descriptions. and the identification of possible litter category analysis, different scenarios for baseline setting have been tested and evaluated. The resulting set of baselines enables the future monitoring of progress in reduction, as well as compliance checking developed using the dataset. Furthermore, it provides valuable information for future improving harmonised monitoring through updated guidance, common data treatment and agreed data reporting formats. Beach litter abundance has been found to be very high in large areas of Europe, requiring joint and strong action in Europe and with the neighbours in shared marine basins.",
-  "country": "Austria; Belgium; Bulgaria; Croatia; Republic of Cyprus; Czech Republic; Denmark; Estonia; Finland; France; Germany; Greece; Hungary; Ireland; Italy; Latvia; Lithuania; Luxembourg; Malta; Netherlands; Poland; Portugal; Romania; Slovakia; Slovenia; Spain; Sweden.",
+  "country": "Austria",
   "url": [
    "https://ec.europa.eu/jrc/en/publication/eu-marine-beach-litter-baselines"
   ],
@@ -6400,7 +6231,6 @@
    "toolkit",
    "guidance (policy/decision makers)"
   ],
-  "error_tags": false,
   "resource_language_url": [],
   "geo_coverage": [
    "Austria",
@@ -6453,8 +6283,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -6479,8 +6308,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -6505,8 +6333,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global",
@@ -6531,8 +6358,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global with elements in specific areas",
@@ -6557,8 +6383,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global with elements in specific areas",
@@ -6583,8 +6408,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global with elements in specific areas",
@@ -6609,8 +6433,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global with elements in specific areas",
@@ -6635,8 +6458,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global with elements in specific areas",
@@ -6661,8 +6483,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global with elements in specific areas",
@@ -6687,8 +6508,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global with elements in specific areas",
@@ -6713,8 +6533,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global with elements in specific areas",
@@ -6739,8 +6558,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global with elements in specific areas",
@@ -6765,8 +6583,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global with elements in specific areas",
@@ -6791,8 +6608,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global with elements in specific areas",
@@ -6817,8 +6633,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global with elements in specific areas",
@@ -6843,8 +6658,7 @@
   "image": null,
   "valid_from": 2018,
   "valid_to": 2015,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": "global with elements in specific areas",
@@ -6867,8 +6681,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": [
    "Australia"
@@ -6893,8 +6706,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": [
    "Canada"
@@ -6919,8 +6731,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": [
    "Finland"
@@ -6945,8 +6756,7 @@
   "image": null,
   "valid_from": 2020,
   "valid_to": 2025,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": [
    "France"
@@ -6971,8 +6781,7 @@
   "image": null,
   "valid_from": 2017,
   "valid_to": 2025,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": [
    "Indonesia"
@@ -6997,8 +6806,7 @@
   "image": null,
   "valid_from": 2018,
   "valid_to": 2030,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": [
    "Malaysia"
@@ -7023,8 +6831,7 @@
   "image": null,
   "valid_from": 2017,
   "valid_to": 2019,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": [
    "Canada"
@@ -7049,8 +6856,7 @@
   "image": null,
   "valid_from": 2017,
   "valid_to": 2020,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": [
    "United Kingdom"
@@ -7073,8 +6879,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7095,8 +6900,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7119,8 +6923,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7141,8 +6944,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7163,8 +6965,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7187,8 +6988,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7211,8 +7011,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7228,20 +7027,14 @@
   "summary": "The SC of the IWC reviews regularly research reports on marine litter and microplastics and its impacts on cetaceans, resulting in recommendations to improve the situation. In 2019, a workshop on Marine Debris was hold resulting in a long list of recommendations, including remediation measures and mitigation actions.",
   "country": null,
   "url": [
-   "for",
-   "SC",
-   "reports,",
-   "see",
-   "(e.g.):",
-   "https://archive.iwc.int/pages/view.php?ref=9570&k="
+   "for SC reports, see (e.g.): https://archive.iwc.int/pages/view.php?ref=9570&k="
   ],
   "value": null,
   "value_currency": null,
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7264,8 +7057,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7286,8 +7078,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7308,8 +7099,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7332,8 +7122,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7354,8 +7143,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7378,8 +7166,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7402,8 +7189,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7426,8 +7212,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7450,8 +7235,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7474,8 +7258,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7498,8 +7281,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7522,8 +7304,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7546,8 +7327,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7570,8 +7350,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
@@ -7594,8 +7373,7 @@
   "image": null,
   "valid_from": null,
   "valid_to": null,
-  "tags": [],
-  "error_tags": true,
+  "tags": null,
   "resource_language_url": [],
   "geo_coverage": null,
   "geo_coverage_type": null,
