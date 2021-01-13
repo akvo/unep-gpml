@@ -1,3 +1,5 @@
+@import 'reset-css';
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -8,6 +10,13 @@ body {
 }
 
 #root{
+  .ant-btn{
+    border-radius: 4px;
+  }
+  .ant-btn-primary{
+    background-color: #00AAF1;
+    border-color: #00AAF1;
+  }
   &>.topbar{
     background-color: #036799;
     color: #fff;
@@ -33,6 +42,27 @@ body {
     }
     .ui.container{
       display: flex;
+    }
+    .src{
+      width: 180px;
+      height: 36px;
+      margin-top: 20px;
+      margin-left: 14px;
+    }
+    nav{
+      margin-left: auto;
+      margin-top: 18px;
+      a{
+        color: #666;
+        font-weight: 500;
+        font-size: 18px;
+        text-decoration: none;
+        margin: 0 13px;
+      }
+    }
+    .ant-btn-primary{
+      margin-left: 12px;
+      font-weight: bold;
     }
   }
   #landing{
