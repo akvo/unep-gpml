@@ -6,3 +6,40 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+#root{
+  &>.topbar{
+    background-color: #036799;
+    color: #fff;
+    line-height: 36px;
+    a{
+      color: #fff;
+      text-decoration: none;
+    }
+    .ui.container{
+      display: flex;
+      .rightside{
+        margin-left: auto;
+      }
+    }
+  }
+  &>header{
+    height: 90px;
+    padding-top: 8px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #81B2CC;
+    .logo{
+      width: 227px;
+    }
+    .ui.container{
+      display: flex;
+    }
+  }
+  #landing{
+    .worldmap{
+      border-bottom: 1px solid #81B2CC;
+    }
+  }
+}
+
+@import './container.scss';

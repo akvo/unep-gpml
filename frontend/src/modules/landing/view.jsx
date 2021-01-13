@@ -3,7 +3,7 @@ import Maps from '../../components/Maps'
 
 const Landing = () => {
     const [country, setCountry] = useState("nothing");
-    const data = [{name:'Indonesia', value:40}];
+    const data = [];
 
     const clickEvents = ({name, data}) => {
         setCountry(name);
@@ -18,13 +18,13 @@ const Landing = () => {
     }
 
     return (
+      <div id="landing">
         <Maps
-            title={`${country} is clicked`}
-            subtitle={"Test"}
-            data={data}
-            clickEvents={clickEvents}
-            toolTip={toolTip}
+          data={data}
+          clickEvents={clickEvents}
+          tooltip={toolTip}
         />
+      </div>
     )
 }
 
