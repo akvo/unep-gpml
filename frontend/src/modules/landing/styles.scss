@@ -1,0 +1,58 @@
+#landing{
+  .map-overlay{
+    position: absolute;
+    z-index: 10;
+    left: 60px;
+    top: 200px;
+    .ant-select{
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .summary{
+      width: 170px;
+      border-radius: 3px;
+      overflow: hidden;
+      header{
+        background-color: #DAE9F1;
+        color: #036799;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 30px;
+        padding: 0 10px 2px;
+      }
+      background-color: #fff;
+      border: 2px solid #DAE9F1;
+      ul{
+        padding: 0 5px;
+        li{
+          position: relative;
+          padding-left: 40%;
+          padding-top: 10px;
+          &:not(:last-child){
+            padding-bottom: 10px;
+            border-bottom: 1px solid #DFECF3;
+          }
+          b{
+            position: absolute;
+            width: 30%;
+            text-align: right;
+            left: 3px;
+            top: 14px;
+            font-weight: bold;
+            font-size: 20px;
+            color: #00AAF1;
+          }
+          font-size: 12px;
+          line-height: 16px;
+          .label{
+            color: #00AAF1;
+            font-weight: 700;
+          }
+          span{
+            color: #036799;
+          }
+        }
+      }
+    }
+  }
+}
