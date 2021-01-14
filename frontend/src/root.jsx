@@ -6,6 +6,7 @@ import 'antd/dist/antd.css';
 import Landing from './modules/landing/view'
 import Browse from './modules/browse/view'
 import logo from './images/GPML-logo.svg'
+import Signup from './modules/signup/view';
 
 const Root = () => {
   return [
@@ -36,6 +37,7 @@ const Root = () => {
         </header>
         <Route path="/" exact component={Landing} />
         <Route path="/browse" component={Browse} />
+        <Route path="/signup" component={Signup} />
       </div>
     </Router>
   ]
