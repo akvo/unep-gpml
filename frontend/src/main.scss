@@ -1,4 +1,5 @@
 @import 'reset-css';
+@import './vars.scss';
 
 body {
   margin: 0;
@@ -14,8 +15,8 @@ body {
     border-radius: 4px;
   }
   .ant-btn-primary{
-    background-color: #00AAF1;
-    border-color: #00AAF1;
+    background-color: $primaryColor;
+    border-color: $primaryColor;
   }
   &>.topbar{
     background-color: #036799;
