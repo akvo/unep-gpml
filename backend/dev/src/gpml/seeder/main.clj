@@ -94,28 +94,32 @@
                 (assoc x :tags (get-ids (get-tag tags)))
                 x)))))
 
-
 (defn seed-resources []
   (jdbc/delete! db :resource_tag [])
   (jdbc/delete! db :resource_organisation [])
   (jdbc/delete! db :resource_geo_coverage [])
   (jdbc/delete! db :resource_language_url [])
   (jdbc/delete! db :resource [])
-  #_(doseq [data (get-resources)]
+  (doseq [data (get-resources)]
     (try
-      (db.resource/new-resource db data)
+      (let [res-id (-> (db.resource/new-resource db data) first :id)
+            data-org (:organisation data)
+            data-geo (:geo_coverage data)
+            data-tag (:tags data)]
+        (when (not-empty data-org)
+          (let [res-org (map (fn [x] (assoc {} :resource res-id :organisation x)) data-org)]
+            (jdbc/insert-multi! db :resource_organisation res-org)))
+        (when (not-empty data-geo)
+          (let [res-geo (map (fn [x] (assoc {} :resource res-id :country x)) data-geo)]
+            (jdbc/insert-multi! db :resource_geo_coverage res-geo)))
+        (when (not-empty data-tag)
+          (let [res-tag (map (fn [x] (assoc {} :resource res-id :tag x)) data-tag)]
+            (jdbc/insert-multi! db :resource_tag res-tag))))
       (catch Exception e
         (println data)
         (.printStackTrace e)
         (throw e)))
-    (let [resource (db.resource/new-resource db data)
-          resource-id (-> resource first :id)
-          organisation (map (fn [e] (assoc {} :resource resource-id :country e)) (:organisation data))
-          geo_coverage (map (fn [e] (assoc {} :resource resource-id :organisation e)) (:geo_coverage data))]
-        #_(jdbc/insert-multi! db :resource_geo_coverage geo_coverage)
-        #_(jdbc/insert-multi! db :resource_organisation organisation))
     ))
-
 
 (defn seed []
   (println "-- Start Seeding")
