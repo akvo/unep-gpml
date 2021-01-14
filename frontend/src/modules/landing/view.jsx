@@ -33,7 +33,14 @@ const Landing = () => {
     return (
       <div id="landing">
         <div className="map-overlay">
-          <Select placeholder="Countries" options={data?.map.map(it => ({ value: it.isoCode, label: it.name }))} />
+          <Select
+            showSearch
+            allowClear
+            placeholder="Countries"
+            options={data?.map.map(it => ({ value: it.isoCode, label: it.name }))}
+            optionFilterProp="children"
+            filterOption={(input, option) => option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
+          />
           <div className="summary">
             <header>Global summary</header>
             <ul>
