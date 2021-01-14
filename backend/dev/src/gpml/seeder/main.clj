@@ -101,14 +101,14 @@
   (jdbc/delete! db :resource_geo_coverage [])
   (jdbc/delete! db :resource_language_url [])
   (jdbc/delete! db :resource [])
-  (doseq [data (get-resources)]
+  #_(doseq [data (get-resources)]
     (try
       (db.resource/new-resource db data)
       (catch Exception e
         (println data)
         (.printStackTrace e)
         (throw e)))
-    #_(let [resource (db.resource/new-resource db data)
+    (let [resource (db.resource/new-resource db data)
           resource-id (-> resource first :id)
           organisation (map (fn [e] (assoc {} :resource resource-id :country e)) (:organisation data))
           geo_coverage (map (fn [e] (assoc {} :resource resource-id :organisation e)) (:geo_coverage data))]
