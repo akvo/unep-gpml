@@ -146,12 +146,14 @@
                             :created "2021-01-01T00:00:00Z"
                             :modified "2021-01-01T00:00:00Z"}])
 
-(defn browse-sample [_]
-  (let [data (flatten [(map #(assoc % :type "technology") technology-sample-data)
+(def sample-data
+  (flatten [(map #(assoc % :type "technology") technology-sample-data)
                        (map #(assoc % :type "resource") resource-sample-data)
                        (map #(assoc % :type "event") event-sample-data)
-                       (map #(assoc % :type "policy") policy-sample-data)])]
-    (resp/response {:results data :next nil :prev nil :total (count data) :page 1})))
+                       (map #(assoc % :type "policy") policy-sample-data)]))
+
+(defn browse-sample [_]
+  (resp/response {:results sample-data :next nil :prev nil :total (count sample-data) :page 1}))
 
 (defmethod ig/init-key :gpml.handler.browse/handler [_ _]
   #'browse-sample)
