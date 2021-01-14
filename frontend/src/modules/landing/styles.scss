@@ -1,0 +1,106 @@
+@import '../../vars.scss';
+
+#landing{
+  .map-overlay{
+    position: absolute;
+    z-index: 10;
+    left: 60px;
+    top: 200px;
+    .ant-select{
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .summary{
+      width: 170px;
+      border-radius: 3px;
+      overflow: hidden;
+      header{
+        background-color: #DAE9F1;
+        color: #036799;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 30px;
+        padding: 0 10px 2px;
+      }
+      background-color: #fff;
+      border: 2px solid #DAE9F1;
+      ul{
+        padding: 0 5px;
+        li{
+          position: relative;
+          padding-left: 40%;
+          padding-top: 10px;
+          &:not(:last-child){
+            padding-bottom: 10px;
+            border-bottom: 1px solid #DFECF3;
+          }
+          b{
+            position: absolute;
+            width: 30%;
+            text-align: right;
+            left: 3px;
+            top: 14px;
+            font-weight: bold;
+            font-size: 20px;
+            color: $primaryColor;
+          }
+          font-size: 12px;
+          line-height: 16px;
+          .label{
+            color: $primaryColor;
+            font-weight: 700;
+          }
+          span{
+            color: #036799;
+          }
+        }
+      }
+    }
+  }
+  .topics{
+    margin-top: 40px;
+    .ui.container{
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .topic-item{
+      width: 33%;
+      padding: 10px;
+      .inner{
+        border: 1px solid #DAE9F1;
+        border-radius: 2px;
+        padding: 15px;
+        height: 100%;
+        .type{
+          color: #81B2CC;
+          text-transform: uppercase;
+          font-size: 11px;
+          font-weight: 600;
+        }
+        h2{
+          color: #036799;
+          font-weight: bold;
+          font-size: 20px;
+          margin-bottom: 5px;
+        }
+        ul{
+          margin-top: 0;
+          font-size: 12px;
+          text-transform: uppercase;
+          color: #036799;
+        }
+        p{
+          font-size: 12px;
+        }
+        .ant-btn{
+          color: $primaryColor;
+          padding-left: 0;padding-right: 0;
+          margin-bottom: 0;
+          font-weight: bold;
+          text-transform: uppercase;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}

@@ -19,7 +19,12 @@
                                          [""
                                           {:get {:summary "Browse available entities"
                                                  :swagger {:tags ["browse"]}
-                                                 :handler #ig/ref :gpml.handler.browse/handler}}]]]]}
+                                                 :handler #ig/ref :gpml.handler.browse/handler}}]]
+                                        ["/landing"
+                                         [""
+                                          {:get {:summary "End-point for the landing page"
+                                                 :swagger {:tags ["landing"]}
+                                                 :handler #ig/ref :gpml.handler.landing/handler}}]]]]}
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
 
@@ -27,6 +32,7 @@
   :gpml.handler.main/swagger-handler {}
   :gpml.handler.country/handler {:db #ig/ref :duct.database.sql/hikaricp}
   :gpml.handler.browse/handler {:db #ig/ref :duct.database.sql/hikaricp}
+  :gpml.handler.landing/handler {:db #ig/ref :duct.database.sql/hikaricp}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}

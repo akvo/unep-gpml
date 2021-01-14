@@ -37,8 +37,8 @@
 
 (def event-sample-data [{:id 1
                          :title "Event 1"
-                         :start_date "2021-02-01T10:00:00Z"
-                         :end_date "2021-02-01T12:00:00Z"
+                         :start_date "2021-01-01T10:00:00Z"
+                         :end_date "2021-01-01T12:00:00Z"
                          :description "Description of the event"
                          :image nil
                          :geo_coverage_type "national"
@@ -146,12 +146,37 @@
                             :created "2021-01-01T00:00:00Z"
                             :modified "2021-01-01T00:00:00Z"}])
 
+(def project-sample-data [{:id 1
+                           :title "Project 1"
+                           :summary "Summary of the project"
+                           :geo_coverage_type "national"
+                           :geo_coverage_countries ["Kenya"]
+                           :attachments ["http://example.com/foo.pdf"]
+                           :organisations ["GRID Arendal" "The Global Partnership of Marine Litter" "United Nation Environmental Programme"]
+                           :tags ["microplastics" "sea-land interface" "state of knowledge"]
+                           :remarks "Remarks"
+                           :created "2021-01-01T00:00:00Z"
+                           :modified "2021-01-01T00:00:00Z"}
+                          {:id 2
+                           :title "Resource 2"
+                           :summary "Summary of the project"
+                           :geo_coverage_type "global with elements in specific areas"
+                           :geo_coverage_countries ["Kenya" "Germany" "India"]
+                           :organisations ["GRID Arendal" "The Global Partnership of Marine Litter" "United Nation Environmental Programme"]
+                           :tags ["mechanism" "best practice" "inland" "inventory" "macroplastics" "minimization" "prevention" "state of knowledge"]
+                           :remarks "Remarks"
+                           :created "2021-01-01T00:00:00Z"
+                           :modified "2021-01-01T00:00:00Z"}])
+
+(def sample-data
+  (flatten [(map #(assoc % :type "event") event-sample-data)
+            (take 1 (map #(assoc % :type "technology") technology-sample-data))
+            (take 1 (map #(assoc % :type "resource") resource-sample-data))
+            (take 1 (map #(assoc % :type "project") project-sample-data))
+            (take 1 (map #(assoc % :type "policy") policy-sample-data))]))
+
 (defn browse-sample [_]
-  (let [data (flatten [(map #(assoc % :type "technology") technology-sample-data)
-                       (map #(assoc % :type "resource") resource-sample-data)
-                       (map #(assoc % :type "event") event-sample-data)
-                       (map #(assoc % :type "policy") policy-sample-data)])]
-    (resp/response {:results data :next nil :prev nil :total (count data) :page 1})))
+  (resp/response {:results sample-data :next nil :prev nil :total (count sample-data) :page 1}))
 
 (defmethod ig/init-key :gpml.handler.browse/handler [_ _]
   #'browse-sample)
