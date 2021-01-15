@@ -33,7 +33,7 @@
 
 (defn db-conn
   []
-  (:spec (:duct.database.sql/hikaricp system)))
+  (-> system :duct.database.sql/hikaricp :spec))
 
 (comment
 
