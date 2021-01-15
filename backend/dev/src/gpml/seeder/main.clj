@@ -111,19 +111,17 @@
             data-geo (:geo_coverage data)
             data-tag (:tags data)]
         (when (not-empty data-org)
-          (let [res-org (map (fn [x] (assoc {} :resource res-id :organisation x)) data-org)]
+          (let [res-org (mapv #(assoc {} :resource res-id :organisation %) data-org)]
             (jdbc/insert-multi! db :resource_organisation res-org)))
         (when (not-empty data-geo)
-          (let [res-geo (map (fn [x] (assoc {} :resource res-id :country x)) data-geo)]
+          (let [res-geo (mapv #(assoc {} :resource res-id :country %) data-geo)]
             (jdbc/insert-multi! db :resource_geo_coverage res-geo)))
         (when (not-empty data-tag)
-          (let [res-tag (map (fn [x] (assoc {} :resource res-id :tag x)) data-tag)]
+          (let [res-tag (mapv #(assoc {} :resource res-id :tag %) data-tag)]
             (jdbc/insert-multi! db :resource_tag res-tag))))
       (catch Exception e
-        (println data)
         (.printStackTrace e)
-        (throw e)))
-    ))
+        (throw e)))))
 
 (defn seed []
   (println "-- Start Seeding")
