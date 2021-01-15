@@ -7,6 +7,7 @@
 (defn sample-map-data [countries]
   (map #(merge % {:project (rand-int 10),
                   :event (rand-int 10),
+                  :policy (rand-int 10),
                   :technology (rand-int 10)
                   :resource (rand-int 10)}) countries))
 
