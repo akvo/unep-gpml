@@ -32,8 +32,8 @@
 
 
 (comment
-  (require 'integrant.repl.state)
-  (let [db (:spec (:duct.database.sql/hikaricp integrant.repl.state/system))]
+  (require 'dev)
+  (let [db (dev/db-conn)]
     (map #(merge % {:project 1}) (db.country/all-countries db)))
   (rand-int 10)
   )
