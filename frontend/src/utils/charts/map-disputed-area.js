@@ -1,7 +1,7 @@
-const world = require('../static/unep-map.json');
+const mapSource = require('./map-source').mapSource;
 
-const disputed = world.features
-    .filter(x => x.properties.cd === "XXX")
+const disputed = mapSource.features
+    .filter(x => x.properties.name?.startsWith("disputed"))
     .map(x => ({
         name: x.properties.name,
         itemStyle: {

@@ -13,11 +13,8 @@ const Landing = () => {
     }
 
     const toolTip = (params) => {
-        if (params.value) {
-            let value = (params.value + '').split('.');
-            value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,');
-            return params.name + ': ' + value;
-        }
+        /* Disputed will started with "disputed-" */
+        return params.name;
     }
 
     useEffect(() => {
