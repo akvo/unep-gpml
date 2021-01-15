@@ -12,8 +12,17 @@
                   :resource (rand-int 10)})
        (filter #(some? (:iso_code %)) countries)))
 
+(def sample-summary-data
+  [{:project (rand-int 100) :countries (rand-int 100)}
+   {:event (rand-int 100) :countries (rand-int 100)}
+   {:policy (rand-int 100) :countries (rand-int 100)}
+   {:technology (rand-int 100) :countries (rand-int 100)}
+   {:resource (rand-int 100) :countries (rand-int 100)}])
+
 (defn landing-sample-response [countries]
-  (resp/response {:topics browse/sample-data :map (sample-map-data countries)}))
+  (resp/response {:topics browse/sample-data
+                  :map (sample-map-data countries)
+                  :summary sample-summary-data}))
 
 (defmethod ig/init-key :gpml.handler.landing/handler [_ {:keys [db]}]
   (fn [_]
