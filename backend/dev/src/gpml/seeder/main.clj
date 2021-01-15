@@ -6,6 +6,7 @@
             [gpml.db.organisation :as db.organisation]
             [gpml.db.resource :as db.resource]
             [gpml.db.tag :as db.tag]
+            [gpml.db.language :as db.language]
             [jsonista.core :as j]
             gpml.pg-util))
 
@@ -76,6 +77,12 @@
 (defn get-tag [x]
   (db.tag/tag-by-tags db {:tags x}))
 
+(defn get-language [x]
+  (remove nil?
+          (mapv (fn [y]
+                  (if-let [language-id (db.language/language-by-name db {:name (:language y)})] 
+                    (assoc y :url (:url y) :language (:id language-id)) nil))x)))
+
 (defn- get-resources
   []
   (->> (get-data "resources")
@@ -94,6 +101,11 @@
                 (assoc x :geo_coverage (get-ids (get-country country)))
                 x)))
        (map (fn [x]
+              (if-let [language-url (:resource_language_url x)]
+                (assoc x :resource_language_url (get-language language-url))
+                x))
+            )
+       (map (fn [x]
               (if-let [tags (:tags x)]
                 (assoc x :tags (get-ids (get-tag tags)))
                 x)))))
@@ -109,6 +121,7 @@
       (let [res-id (-> (db.resource/new-resource db data) first :id)
             data-org (:organisation data)
             data-geo (:geo_coverage data)
+            data-lang (:resource_language_url data)
             data-tag (:tags data)]
         (when (not-empty data-org)
           (let [res-org (map (fn [x] (assoc {} :resource res-id :organisation x)) data-org)]
@@ -116,11 +129,14 @@
         (when (not-empty data-geo)
           (let [res-geo (map (fn [x] (assoc {} :resource res-id :country x)) data-geo)]
             (jdbc/insert-multi! db :resource_geo_coverage res-geo)))
+        (when (not-empty data-lang)
+          (let [res-lang (map (fn [x] (assoc x :resource res-id)) data-lang)]
+            (jdbc/insert-multi! db :resource_language_url res-lang)))
         (when (not-empty data-tag)
           (let [res-tag (map (fn [x] (assoc {} :resource res-id :tag x)) data-tag)]
             (jdbc/insert-multi! db :resource_tag res-tag))))
       (catch Exception e
-        (println data)
+        (println (:resource_language_url data))
         (.printStackTrace e)
         (throw e)))
     ))
