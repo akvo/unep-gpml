@@ -5,8 +5,7 @@
 (hugsql/def-db-fns "gpml/db/landing.sql")
 
 (comment
-  (require 'integrant.repl.state)
-  (let [db (:spec (:duct.database.sql/hikaricp integrant.repl.state/system))]
-    (hugsql/def-db-fns "gpml/db/landing.sql")
+  (require 'dev)
+  (let [db (dev/db-conn)]
     (gpml.db.landing/map-counts db))
   )

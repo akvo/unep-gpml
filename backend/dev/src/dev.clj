@@ -31,6 +31,10 @@
 
 (integrant.repl/set-prep! #(duct/prep-config (read-config) profiles))
 
+(defn db-conn
+  []
+  (:spec (:duct.database.sql/hikaricp system)))
+
 (comment
 
   (prep)
