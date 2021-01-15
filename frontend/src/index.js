@@ -1,3 +1,4 @@
+import { Auth0Provider } from '@auth0/auth0-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './main.scss';
@@ -6,7 +7,13 @@ import Root from './root';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Root />
+    <Auth0Provider
+        domain="unep-gpml-test.eu.auth0.com"
+        clientId="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"
+        redirectUri={window.location.origin}
+        >
+      <Root />
+    </Auth0Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
