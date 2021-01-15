@@ -43,7 +43,8 @@
                                    [fipp "0.6.21"]
                                    [hawk "0.2.11"]
                                    [eftest "0.5.9"]
-                                   [kerodon "0.9.1"]]
+                                   [kerodon "0.9.1"]
+                                   [djblue/portal "0.8.0"]]
                   :plugins [[jonase/eastwood "0.3.12"]]
                   :eastwood {:config-files ["eastwood_cfg.clj"]}
                   :repl-options {:init-ns dev

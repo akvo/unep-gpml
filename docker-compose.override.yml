@@ -22,6 +22,7 @@ services:
     ports:
       - 3000:3000
       - 47480:47480
+      - 47481:47481
     volumes:
       - ./backend:/app
       - ~/.m2:/home/akvo/.m2

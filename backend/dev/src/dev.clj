@@ -9,7 +9,8 @@
             [integrant.core :as ig]
             [integrant.repl :refer [clear halt go init prep reset]]
             [integrant.repl.state :refer [config system]]
-            [gpml.seeder.main :as seeder]))
+            [gpml.seeder.main :as seeder]
+            [portal.api :as portal]))
 
 (duct/load-hierarchy)
 
@@ -28,3 +29,13 @@
   (load "local"))
 
 (integrant.repl/set-prep! #(duct/prep-config (read-config) profiles))
+
+(comment
+  (portal/start {:portal.launcher/port 47481
+                 :portal.launcher/host "0.0.0.0"})
+  (portal/tap)
+
+  (str "http://localhost:47481?" (:session-id (portal/open {:portal.colors/theme
+                                                            :portal.colors/solarized-light} )))
+;; => "http://localhost:47481?77d4212e-69d8-4ba6-8917-509d824170a2"
+  ,)
