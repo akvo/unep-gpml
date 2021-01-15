@@ -9,7 +9,8 @@
                   :event (rand-int 10),
                   :policy (rand-int 10),
                   :technology (rand-int 10)
-                  :resource (rand-int 10)}) countries))
+                  :resource (rand-int 10)})
+       (filter #(some? (:iso_code %)) countries)))
 
 (defn landing-sample-response [countries]
   (resp/response {:topics browse/sample-data :map (sample-map-data countries)}))
