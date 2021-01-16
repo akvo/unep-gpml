@@ -24,8 +24,6 @@
   :resource-paths ["resources" "target/resources"]
   :prep-tasks     ["javac" "compile" ["run" ":duct/compiler"]]
   :middleware     [lein-duct.plugin/middleware]
-  :test-selectors {:default (complement :integration)
-                   :integration :integration}
   :profiles
   {:dev  [:project/dev :profiles/dev]
    :uberjar {:aot [gpml.main]
@@ -45,12 +43,16 @@
                                    [eftest "0.5.9"]
                                    [kerodon "0.9.1"]
                                    [djblue/portal "0.8.0"]]
-                  :plugins [[jonase/eastwood "0.3.12"]]
+                  :plugins [[jonase/eastwood "0.3.12"]
+                            [lein-eftest "0.5.9"]]
                   :eastwood {:config-files ["eastwood_cfg.clj"]}
+                  :eftest {:thead-count 4
+                           :fail-fast? true
+                           :report clojure.test/report}
                   :repl-options {:init-ns dev
                                  :init (do
                                          (println "Starting backend ...")
                                          (go)
-                                         (seeder/seed))
+                                         #_(seeder/seed))
                                  :host "0.0.0.0"
                                  :port 47480}}})

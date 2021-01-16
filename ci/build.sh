@@ -17,6 +17,19 @@ image_prefix="eu.gcr.io/akvo-lumen/unep-gpml"
 mkdir -p "${lein_path}"
 mkdir -p "${m2_path}"
 
+dc () {
+    docker-compose \
+	--no-ansi \
+	"$@"
+}
+export -f dc
+
+dci () {
+    dc -f docker-compose.yml \
+       -f docker-compose.ci.yml "$@"
+}
+export -f dci
+
 backend_build () {
     docker run \
 	   --rm \
@@ -25,13 +38,10 @@ backend_build () {
 	   borkdude/clj-kondo:2020.12.12 \
 	   clj-kondo --lint src --lint test
 
-    docker run \
-	   --rm \
-	   --volume "${lein_path}:/home/akvo/.lein" \
-	   --volume "${m2_path}:/home/akvo/.m2" \
-	   --volume "$(pwd)/backend:/app" \
-	   "${backend_image}" \
-	   bash release.sh
+    dc run -T \
+       --rm \
+       backend \
+       bash release.sh
 
     docker build \
 	   --tag "${image_prefix}/backend:latest" \
@@ -49,16 +59,8 @@ frontend_build () {
     docker build \
 	   --tag "${image_prefix}/frontend:latest" \
 	   --tag "${image_prefix}/frontend:${CI_COMMIT}" frontend
-
-}
-
-dci () {
-    docker-compose \
-	--no-ansi \
-	-f docker-compose.yml \
-	-f docker-compose.ci.yml "$@"
 }
 
 backend_build
 frontend_build
-dci run ci ./basic.sh
+dci run -T ci ./basic.sh

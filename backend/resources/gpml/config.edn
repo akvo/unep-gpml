@@ -1,6 +1,5 @@
 {:duct.profile/base
  {:duct.core/project-ns gpml
-
   :gpml.handler.main/handler {:routes [["/"
                                         {:get #ig/ref :gpml.handler.main/root}]
                                        ["/api"
@@ -35,18 +34,19 @@
 
   :gpml.handler.main/root {}
   :gpml.handler.main/swagger-handler {}
-  :gpml.handler.country/handler {:db #ig/ref :duct.database.sql/hikaricp}
-  :gpml.handler.browse/handler {:db #ig/ref :duct.database.sql/hikaricp}
-  :gpml.handler.landing/handler {:db #ig/ref :duct.database.sql/hikaricp}
-  :gpml.handler.profile/handler {:db #ig/ref :duct.database.sql/hikaricp}
+  :gpml.handler.country/handler {:db #ig/ref :duct.database/sql}
+  :gpml.handler.browse/handler {:db #ig/ref :duct.database/sql}
+  :gpml.handler.landing/handler {:db #ig/ref :duct.database/sql}
+  :gpml.handler.profile/handler {:db #ig/ref :duct.database/sql}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
-  :duct.database/sql {:connection-uri #duct/env "DATABASE_URL"}
+  :duct.database/sql {:jdbc-url #duct/env "DATABASE_URL"}
   }
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"
+ :duct.profile/test  #duct/include "test"
  :duct.profile/prod  {}
 
  :duct.module/logging {}
