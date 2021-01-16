@@ -18,7 +18,8 @@
   (duct/read-config (io/resource "gpml/config.edn")))
 
 (defn test []
-  (eftest/run-tests (eftest/find-tests "test")))
+  (eftest/run-tests (eftest/find-tests "test")
+                    {:fail-fast? true}))
 
 (def profiles
   [:duct.profile/dev :duct.profile/local])

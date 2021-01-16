@@ -7,7 +7,7 @@
   (:import [java.util UUID]))
 
 (defonce ^:private lock (Object.))
-(defonce ^:private test-db-migrated? false)
+(defonce ^:private template-test-db-migrated? false)
 (def ^:dynamic *system*)
 
 (duct/load-hierarchy)
@@ -24,12 +24,12 @@
 (defn- migrate-template-test-db
   []
   (locking lock
-    (when-not test-db-migrated?
+    (when-not template-test-db-migrated?
       (println "Migrating template db")
       (-> (test-system)
           (ig/init [:duct/migrator])
           (ig/halt!))
-      (alter-var-root #'test-db-migrated? not)
+      (alter-var-root #'template-test-db-migrated? not)
       (println "Done migrating template db"))))
 
 (defn- create-test-db
@@ -48,7 +48,8 @@
 
 (defn with-test-system
   [f]
-  (migrate-template-test-db)
+  (when-not template-test-db-migrated?
+    (migrate-template-test-db))
   (let [tmp (test-system)
         new-db-name (format "test_db_%s" (str/replace (str (UUID/randomUUID)) "-" "_"))
         jdbc-url (-> tmp :gpml.test/db :connection-uri)
