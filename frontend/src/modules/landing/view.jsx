@@ -66,14 +66,14 @@ const Landing = () => {
         />
         <div className="topics">
           <div className="ui container">
-            {data?.topics.map(topic => <TopicItem {...{ topic }} />)}
+            {data?.topics.map((topic, index) => <TopicItem key={`topic-${index}`} {...{ topic }} />)}
           </div>
         </div>
       </div>
     )
 }
 
-const TopicItem = ({ topic }) => [
+const TopicItem = ({ topic }) => (
   <div className="topic-item">
     <div className="inner">
       <span className="type">latest {topic.type}</span>
@@ -85,6 +85,6 @@ const TopicItem = ({ topic }) => [
       <Button type="link">Find out more</Button>
     </div>
   </div>
-]
+)
 
 export default Landing
