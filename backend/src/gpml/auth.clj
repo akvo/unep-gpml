@@ -49,18 +49,18 @@
 
 (defmethod ig/init-key :gpml.auth/auth-middleware [_ opts]
   (fn [handler]
-    (let [id-token-verifier (token-verifier opts)]
-      (fn [request]
-        (if-let [auth-header (get-in request [:headers "authorization"])]
-          (let [[_ token] (re-find #"^Bearer (\S+)$" auth-header)
-                [valid? msg] (try
-                               (.verify ^IdTokenVerifier id-token-verifier token)
-                               [true "OK"]
-                               (catch Exception e
-                                 [false (.getMessage e)]))]
-            (if valid?
-              (handler (assoc request :jwt-claims (get-claims token)))
-              {:status 403
-               :body {:message msg}}))
-          {:status 401
-           :body {:message "Authentication required"}})))))
+    (fn [request]
+      (if-let [auth-header (get-in request [:headers "authorization"])]
+        (let [id-token-verifier (token-verifier opts)
+              [_ token] (re-find #"^Bearer (\S+)$" auth-header)
+              [valid? msg] (try
+                             (.verify ^IdTokenVerifier id-token-verifier token)
+                             [true "OK"]
+                             (catch Exception e
+                               [false (.getMessage e)]))]
+          (if valid?
+            (handler (assoc request :jwt-claims (get-claims token)))
+            {:status 403
+             :body {:message msg}}))
+        {:status 401
+         :body {:message "Authentication required"}}))))
