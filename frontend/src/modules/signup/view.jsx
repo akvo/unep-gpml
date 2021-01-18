@@ -1,6 +1,7 @@
 import React from 'react'
 import { Row, Col } from 'antd';
 import SignUpForm from '../../components/SignUpForm'
+import './styles.scss'
 
 const Signup = () => {
     return (

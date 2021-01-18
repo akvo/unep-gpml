@@ -14,24 +14,24 @@ const defaultSchema = {
             properties: {
                 firstName: {
                     type: "string",
-                    title: "First Name"
+                    title: "FIRST NAME"
                 },
                 lastName: {
                     type: "string",
-                    title: "Last Name"
+                    title: "LAST NAME"
                 },
                 linkedin: {
                     type: "string",
-                    title: "Linked In",
+                    title: "LINKEDIN",
                 },
                 twitter: {
                     type: "string",
-                    title: "Twitter",
+                    title: "TWITTER",
                 },
                 avatar: {
                     type: "string",
                     format: "data-url",
-                    title: "Avatar Photo",
+                    title: "AVATAR PHOTO",
                 }
             }
         },
@@ -41,20 +41,20 @@ const defaultSchema = {
             properties: {
                 name: {
                     type: "string",
-                    title: "Organisation Name",
+                    title: "ORGANISATION NAME",
                 },
                 website: {
                     type: "string",
-                    title: "Website Url",
+                    title: "WEBSITE URL",
                 },
                 sector: {
                     type: "string",
-                    title: "Sector",
+                    title: "REPRESENTATIVE SECTOR",
                     enum: ["Sector 1","Sector 2"],
                 },
                 country: {
                     type: "string",
-                    title: "Country",
+                    title: "COUNTRY",
                     enum: ["Loading"],
                 }
             }
@@ -65,7 +65,7 @@ const defaultSchema = {
             properties: {
                 details: {
                     type: "string",
-                    title: "Tell About Yourself"
+                    title: "TELL ABOUT YOURSELF"
                 }
             }
         }
@@ -82,7 +82,7 @@ const defaultUISchema = {
         },
         avatar: {
             "ui:options": {accept: [".jpg",".png", ".webp"]},
-            "ui:widget": "file",
+            "ui:widget": "file"
         }
     },
     organisation: {
@@ -102,14 +102,32 @@ const defaultUISchema = {
     other: {
         details: {
             "ui:widget": "textarea",
-            "ui:placeholder": "Max 999 character"
+                "ui:placeholder": "Max 999 character"
         }
     }
 }
 
+const CustomFieldTemplate = ({id, label, help, required, description, errors, children}) => {
+    const isTitle = label ? ["Organisation Details", "Personal Details", "Other"].includes(label) : false;
+    const isForm = id.split('_').length === 3;
+    return (
+        <div style={{marginBottom: "10px"}}>
+            {isForm ? (
+                <label htmlFor={id} style={isTitle ? {color: "#00AAF1", fontWeight: "bold"} : {}}>
+                    {label}{required ? "" : (isForm ? (<span style={{color: "#c2c2c2", fontStyle: "italic"}}> - Optional</span>) : "")}
+                </label>
+            ): ""}
+            {children}
+            {description}
+            {errors}
+            {help}
+        </div>
+    );
+}
+
+
 const SignUpForm = () => {
-    const [schema, setSchema] = useState(defaultSchema);
-    const [uiSchema, ] = useState(defaultUISchema);
+    const [schema, setSchema] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -147,7 +165,7 @@ const SignUpForm = () => {
 
     return (
         <div>
-            <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit}>
+            <Form schema={schema} onSubmit={onSubmit} FieldTemplate={CustomFieldTemplate} uiSchema={loading ? {} : defaultUISchema}>
             <div>
                 <button className={"ant-btn ant-btn-primary"} type="submit">Submit</button>
             </div>
