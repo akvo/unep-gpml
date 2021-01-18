@@ -30,6 +30,16 @@ spec:
         ports:
         - containerPort: 3000
         env:
+        - name: OIDC_ISSUER
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: oidc-issuer
+        - name: OIDC_AUDIENCE
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: oidc-audience
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
