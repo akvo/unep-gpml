@@ -24,11 +24,14 @@
                                           {:get {:summary "End-point for the landing page"
                                                  :swagger {:tags ["landing"]}
                                                  :handler #ig/ref :gpml.handler.landing/handler}}]]
-                                        ["/profile"
+                                        ["/profile" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
                                           {:get {:summary "Get profile information for the authenticated Stakeholder"
                                                  :swagger {:tags ["profile"]}
-                                                 :handler #ig/ref :gpml.handler.profile/handler}}]]]]}
+                                                 :handler #ig/ref :gpml.handler.profile/handler}
+                                           :post {:summary ""
+                                                  :swagger {:tags ["profile"]}
+                                                  :handler #ig/ref :gpml.handler.profile/post}}]]]]}
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
 
@@ -37,13 +40,16 @@
   :gpml.handler.country/handler {:db #ig/ref :duct.database/sql}
   :gpml.handler.browse/handler {:db #ig/ref :duct.database/sql}
   :gpml.handler.landing/handler {:db #ig/ref :duct.database/sql}
+
   :gpml.handler.profile/handler {:db #ig/ref :duct.database/sql}
+  :gpml.handler.profile/post {:db #ig/ref :duct.database/sql}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
   :duct.database/sql {:jdbc-url #duct/env "DATABASE_URL"}
-  :gpml.auth/id-token-verifier {:issuer #duct/env "OIDC_ISSUER"
-                                :audience #duct/env "OIDC_AUDIENCE"}
+  :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
+                              :audience #duct/env "OIDC_AUDIENCE"}
+
   }
 
  :duct.profile/dev   #duct/include "dev"
