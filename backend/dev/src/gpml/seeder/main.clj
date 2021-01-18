@@ -23,9 +23,15 @@
 (defn get-data [x]
   (parse-data (slurp (io/resource (str "files/" x ".json")))))
 
-(defn seed-countries []
+(defn delete-resources []
+  (jdbc/delete! db :resource_tag [])
+  (jdbc/delete! db :resource_organisation [])
   (jdbc/delete! db :resource_geo_coverage [])
+  (jdbc/delete! db :resource_language_url [])
   (jdbc/delete! db :resource [])
+  )
+
+(defn seed-countries []
   (jdbc/delete! db :country [])
   (jdbc/insert-multi! db :country
                       (map (fn [x] {:name (:name x) :iso_code (:code x)})
@@ -37,7 +43,6 @@
                       (get-data "country_group")))
 
 (defn seed-organisations []
-  (jdbc/delete! db :resource_organisation [])
   (jdbc/delete! db :organisation [])
   (jdbc/insert-multi! db :organisation
                       (get-data "organisations")))
@@ -56,7 +61,6 @@
                               (get-data "languages"))))
 
 (defn seed-tags []
-  (jdbc/delete! db :resource_tag [])
   (jdbc/delete! db :tag [])
   (jdbc/delete! db :tag_category [])
   (doseq [data (j/read-value (slurp (io/resource "files/tags.json")))]
@@ -111,11 +115,7 @@
                 x)))))
 
 (defn seed-resources []
-  (jdbc/delete! db :resource_tag [])
-  (jdbc/delete! db :resource_organisation [])
-  (jdbc/delete! db :resource_geo_coverage [])
-  (jdbc/delete! db :resource_language_url [])
-  (jdbc/delete! db :resource [])
+  (delete-resources)
   (doseq [data (get-resources)]
     (try
       (let [res-id (-> (db.resource/new-resource db data) first :id)
@@ -142,6 +142,7 @@
 
 (defn seed []
   (println "-- Start Seeding")
+  (delete-resources)
   (seed-countries)
   (seed-country-groups)
   (seed-currencies)
