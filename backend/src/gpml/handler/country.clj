@@ -4,7 +4,7 @@
             [ring.util.response :as resp]))
 
 
-(defmethod ig/init-key :gpml.handler.country/handler [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.country/get [_ {:keys [db]}]
   (fn [{{{:keys [id]} :query} :parameters}]
     (let [conn (:spec db)
           data (if id

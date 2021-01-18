@@ -13,22 +13,22 @@
                                          {:get {:summary "List available countries"
                                                 :swagger {:tags ["countries"]}
                                                 :parameters {:query [:map [:id {:optional true} int?]]}
-                                                :handler #ig/ref :gpml.handler.country/handler}}]
+                                                :handler #ig/ref :gpml.handler.country/get}}]
                                         ["/browse"
                                          [""
                                           {:get {:summary "Browse available entities"
                                                  :swagger {:tags ["browse"]}
-                                                 :handler #ig/ref :gpml.handler.browse/handler}}]]
+                                                 :handler #ig/ref :gpml.handler.browse/get}}]]
                                         ["/landing"
                                          [""
                                           {:get {:summary "End-point for the landing page"
                                                  :swagger {:tags ["landing"]}
-                                                 :handler #ig/ref :gpml.handler.landing/handler}}]]
+                                                 :handler #ig/ref :gpml.handler.landing/get}}]]
                                         ["/profile" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
                                           {:get {:summary "Get profile information for the authenticated Stakeholder"
                                                  :swagger {:tags ["profile"]}
-                                                 :handler #ig/ref :gpml.handler.profile/handler}
+                                                 :handler #ig/ref :gpml.handler.profile/get}
                                            :post {:summary ""
                                                   :swagger {:tags ["profile"]}
                                                   :handler #ig/ref :gpml.handler.profile/post}}]]]]}
@@ -37,11 +37,11 @@
 
   :gpml.handler.main/root {}
   :gpml.handler.main/swagger-handler {}
-  :gpml.handler.country/handler {:db #ig/ref :duct.database/sql}
-  :gpml.handler.browse/handler {:db #ig/ref :duct.database/sql}
-  :gpml.handler.landing/handler {:db #ig/ref :duct.database/sql}
+  :gpml.handler.country/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.browse/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
 
-  :gpml.handler.profile/handler {:db #ig/ref :duct.database/sql}
+  :gpml.handler.profile/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/post {:db #ig/ref :duct.database/sql}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}

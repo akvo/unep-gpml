@@ -24,7 +24,7 @@
                   :map (sample-map-data countries)
                   :summary sample-summary-data}))
 
-(defmethod ig/init-key :gpml.handler.landing/handler [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.landing/get [_ {:keys [db]}]
   (fn [_]
     (let [conn (:spec db)
           countries (db.country/all-countries conn)]

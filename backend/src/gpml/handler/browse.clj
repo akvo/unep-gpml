@@ -178,5 +178,5 @@
 (defn browse-sample [_]
   (resp/response {:results sample-data :next nil :prev nil :total (count sample-data) :page 1}))
 
-(defmethod ig/init-key :gpml.handler.browse/handler [_ _]
+(defmethod ig/init-key :gpml.handler.browse/get [_ _]
   #'browse-sample)

@@ -10,8 +10,8 @@
 
 (deftest handler-test
   (testing "Country endpoint returns non empty response"
-    (let [system (ig/init fixtures/*system* [::country/handler])
-          handler (::country/handler system)
+    (let [system (ig/init fixtures/*system* [::country/get])
+          handler (::country/get system)
           db (-> system :duct.database.sql/hikaricp :spec)
           _ (db.country/new-country db {:name "The Netherlands" :iso_code "NLD"})
           resp (handler (mock/request :get "/"))]

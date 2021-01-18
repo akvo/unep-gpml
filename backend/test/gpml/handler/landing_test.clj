@@ -9,8 +9,8 @@
 
 (deftest handler-test
   (testing "Landing endpoint returns non empty response"
-    (let [system (ig/init fixtures/*system* [::landing/handler])
-          handler (::landing/handler system)
+    (let [system (ig/init fixtures/*system* [::landing/get])
+          handler (::landing/get system)
           resp (handler (mock/request :get "/"))]
       (is (= 200 (:status resp)))
       (is (not-empty (:body resp))))))
