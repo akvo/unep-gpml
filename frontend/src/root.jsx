@@ -36,13 +36,12 @@ const Root = () => {
         }
         setClaims(response);
       })();
-    });
+    }, [profile, getIdTokenClaims]);
     useEffect(() => {
-      console.log('change auth', isAuthenticated, user)
       if(isAuthenticated && user.email_verified === false){
         setSignupModalVisible(true)
       }
-    }, [isAuthenticated])
+    }, [isAuthenticated, user])
 
     const checkStatus = () => {
         console.log(claims);
