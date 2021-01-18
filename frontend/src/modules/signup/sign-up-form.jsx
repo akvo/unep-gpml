@@ -82,6 +82,9 @@ const defaultUISchema = {
     profile: {
         email: {
             "ui:disabled":"true",
+            extraProps: {
+                kind: "auth0verify"
+            }
         },
         twitter: {
             "ui:placeholder": "Twitter Username",
@@ -92,7 +95,10 @@ const defaultUISchema = {
         avatar: {
             "ui:options": {accept: [".jpg",".png", ".webp"]},
             "ui:widget": "file"
-        }
+        },
+        extraProps: {
+            kind: "title"
+        },
     },
     organisation: {
         name: {
@@ -106,46 +112,55 @@ const defaultUISchema = {
         },
         country: {
             "ui:placeholder": "Select your country",
-        }
+        },
+        extraProps: {
+            kind: "title"
+        },
     },
     other: {
         details: {
             "ui:widget": "textarea",
             "ui:placeholder": "Max 999 character"
-        }
-    }
+        },
+        extraProps: {
+            kind: "title"
+        },
+    },
+    extraProps: {
+        kind: "title"
+    },
 }
 
-const CustomFieldTemplate = ({id, label, help, required, description, errors, children}) => {
-    const {logout} = useAuth0();
-    const isTitle = label ? ["Organisation Details", "Personal Details", "Other"].includes(label) : false;
-    const isForm = id.split('_').length === 3;
-    const emailInfo = description?.props?.description;
-    let extraField = "";
-    if (isForm && label === "EMAIL" && emailInfo) {
-        extraField = (
-            <div style={{marginTop: "10px"}}>
-                <span style={{color: emailInfo !== "Verified" ? "red" : "green"}}>
-                {emailInfo !== "Verified" ? <ExclamationCircleFilled/> : <CheckCircleFilled/>} {emailInfo}
-                </span>
-                {emailInfo !== "Verified" ? (
-                    <>
-                    <span style={{fontWeight: "bold"}}> or </span>
-                        <span style={{textDecoration: "underline", color: "#00AAF1", cursor: "pointer"}} onClick={() => logout()}>use diffrent email</span>
-                    </>
-                ) : ""}
-            </div>
-        )
-    }
+const CustomVerification = ({email}) => {
+    const { logout } = useAuth0();
+    return (
+        <div style={{marginTop: "10px"}}>
+            <span style={{color: email !== "Verified" ? "red" : "green"}}>
+            {email !== "Verified" ? <ExclamationCircleFilled/> : <CheckCircleFilled/>} {email}
+            </span>
+            {email !== "Verified" ? (<span style={{fontWeight: "bold"}}> or </span>) : ""}
+            <button style={{marginLeft: "10px"}} onClick={() => logout()}>use diffrent email</button>
+        </div>
+    )
+
+}
+
+const CustomOptional = () => {
+    return <span style={{color: "#c2c2c2", fontStyle: "italic"}}> - Optional</span>
+}
+
+const CustomFieldTemplate = ({id, label, help, required, description, errors, children, uiSchema}) => {
+    const title = uiSchema?.extraProps?.kind === "title";
+    const warning = uiSchema?.extraProps?.kind === "auth0verify" ? <CustomVerification email={description?.props?.description}/> : "";
     return (
         <div style={{marginBottom: "10px"}}>
-            {isForm ? (
-                <label htmlFor={id} style={isTitle ? {color: "#00AAF1", fontWeight: "bold"} : {}}>
-                    {label}{required ? "" : (isForm ? (<span style={{color: "#c2c2c2", fontStyle: "italic"}}> - Optional</span>) : "")}
+            {title ? "" : (
+                <label htmlFor={id} style={title ? {color: "#00AAF1", fontWeight: "bold"} : {}}>
+                    {label}{required ? "" : <CustomOptional/>}
                 </label>
-            ): ""}
+            )}
             {children}
-            {label !== "EMAIL" ? description : extraField}
+            {warning}
             {errors}
             {help}
         </div>
