@@ -20,7 +20,7 @@
        (ex-info "Invalid IdToken verifier options"
                 (malli/explain verifier-opts opts)))))
 
-(defmacro ig/prep-key :gpml.auth/id-token-verifier [_ opts]
+(defmethod ig/prep-key :gpml.auth/id-token-verifier [_ opts]
   (fn []
     (validate-opts opts)
     opts))
