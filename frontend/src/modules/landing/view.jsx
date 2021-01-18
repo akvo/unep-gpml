@@ -1,11 +1,11 @@
-import { Button, Select } from 'antd';
 import React, { useEffect, useState } from 'react'
+import { Button, Select } from 'antd';
 import axios from 'axios'
 import Maps from './maps'
 import './styles.scss'
 
 const Landing = () => {
-    const [country, setCountry] = useState("nothing");
+    const [country, setCountry] = useState(null);
     const [data, setData] = useState(null)
 
     const clickEvents = ({name, data}) => {
@@ -26,39 +26,29 @@ const Landing = () => {
         setData(resp.data)
       })
     }, [])
-
+    
+    const handleChangeCountry = (iso_code) => {
+      setCountry(iso_code)
+    }
+    const countryOpts = data ? data.map.map(it => ({ value: it.iso_code, label: it.name })) : []
+    const countryObj = data && country && data.map.find(it => it.iso_code === country)
     return (
       <div id="landing">
+        {data &&
         <div className="map-overlay">
           <Select
             showSearch
             allowClear
             placeholder="Countries"
-            options={data?.map.map(it => ({ value: it.isoCode, label: it.name }))}
+            options={countryOpts}
             optionFilterProp="children"
             filterOption={(input, option) => option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
+            value={country}
+            onChange={handleChangeCountry}
           />
-          <div className="summary">
-            <header>Global summary</header>
-            <ul>
-              <li>
-                <b>18</b>
-                <div className="label">projects</div>
-                <span>in 35 countries</span>
-              </li>
-              <li>
-                <b>18</b>
-                <div className="label">projects</div>
-                <span>in 35 countries</span>
-              </li>
-              <li>
-                <b>18</b>
-                <div className="label">projects</div>
-                <span>in 35 countries</span>
-              </li>
-            </ul>
-          </div>
+          <Summary summary={data.summary} country={countryObj} />
         </div>
+        }
         <Maps
           data={[]}
           clickEvents={clickEvents}
@@ -71,6 +61,30 @@ const Landing = () => {
         </div>
       </div>
     )
+}
+
+const topicTypes = ['project', 'event', 'policy', 'technology', 'resource']
+const Summary = ({ summary, country }) => {
+  return (
+    <div className="summary">
+      <header>{!country ? 'Global summary' : 'Summary' }</header>
+      <ul>
+        {!country && summary.map((it, index) =>
+          <li key={`li-${index}`}>
+            <b>{it[Object.keys(it)[0]]}</b>
+            <div className="label">{Object.keys(it)[0]}</div>
+            <span>in {it.countries} countries</span>
+          </li>
+        )}
+        {country && topicTypes.map(type =>
+        <li key={type} className="for-country">
+          <b>{country[type]}</b>
+          <div className="label">{type}</div>
+        </li>
+        )}
+      </ul>
+    </div>
+  )
 }
 
 const TopicItem = ({ topic }) => (
