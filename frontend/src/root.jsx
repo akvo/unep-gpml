@@ -80,13 +80,13 @@ const Root = () => {
             </nav>
           </div>
         </header>
-          {isLoading 
+          {isLoading
               ? "" : (
               <>
+                  {signUp && <Redirect to="/signup"/>}
                   <Route path="/" exact component={Landing} />
                   <Route path="/browse" component={Browse} />
                   <Route path="/signup" component={Signup} />
-                  {signUp && <Redirect to="/signup"/>}
               </>
           )}
       </div>

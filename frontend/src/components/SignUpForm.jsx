@@ -131,7 +131,7 @@ const CustomFieldTemplate = ({id, label, help, required, description, errors, ch
                 {emailInfo !== "Verified" ? (
                     <>
                     <span style={{fontWeight: "bold"}}> or </span>
-                    <span style={{textDecoration: "underline", color: "#00AAF1", cursor: "pointer"}} onClick={() => logout()}>use diffrent email</span>
+                        <span style={{textDecoration: "underline", color: "#00AAF1", cursor: "pointer"}} onClick={() => logout()}>use diffrent email</span>
                     </>
                 ) : ""}
             </div>
@@ -196,7 +196,6 @@ const SignUpForm = () => {
                         }
                     }
                 };
-                console.log()
                 setSchema(newSchema);
             }());
         }
