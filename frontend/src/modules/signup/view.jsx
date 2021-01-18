@@ -1,10 +1,17 @@
 import React from 'react'
+import { Row, Col } from 'antd';
 import SignUpForm from '../../components/SignUpForm'
 
 const Signup = () => {
     return (
         <div className="ui container">
-            <SignUpForm/>
+            <Row>
+                <Col span={12} offset={12}>
+                    <div style={{ padding: '10px 10px', marginTop: '20px' }}>
+                        <SignUpForm/>
+                    </div>
+                </Col>
+            </Row>
         </div>
     )
 }

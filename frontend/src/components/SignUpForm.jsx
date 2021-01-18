@@ -10,6 +10,7 @@ const defaultSchema = {
         profile: {
             type: "object",
             title: "Personal Details",
+            required: ["firstName", "lastName"],
             properties: {
                 firstName: {
                     type: "string",
@@ -22,12 +23,10 @@ const defaultSchema = {
                 linkedin: {
                     type: "string",
                     title: "Linked In",
-                    description: "Optional",
                 },
                 twitter: {
                     type: "string",
                     title: "Twitter",
-                    description: "Optional",
                 },
                 avatar: {
                     type: "string",
@@ -43,22 +42,18 @@ const defaultSchema = {
                 name: {
                     type: "string",
                     title: "Organisation Name",
-                    description: "Optional",
                 },
                 website: {
                     type: "string",
                     title: "Website Url",
-                    description: "Optional",
                 },
                 sector: {
                     type: "string",
-                    description: "Optional",
                     title: "Sector",
                     enum: ["Sector 1","Sector 2"],
                 },
                 country: {
                     type: "string",
-                    description: "Optional",
                     title: "Country",
                     enum: ["Loading"],
                 }
@@ -86,7 +81,8 @@ const defaultUISchema = {
             "ui:placeholder": "Linkedin Username",
         },
         avatar: {
-            "ui:options": {accept: [".jpg",".png", ".webp"]}
+            "ui:options": {accept: [".jpg",".png", ".webp"]},
+            "ui:widget": "file",
         }
     },
     organisation: {
@@ -115,7 +111,7 @@ const SignUpForm = () => {
     const [schema, setSchema] = useState(defaultSchema);
     const [uiSchema, ] = useState(defaultUISchema);
     const [loading, setLoading] = useState(true);
-    //const countries = await axios.get('/api/country');
+
     useEffect(() => {
         async function getCountries() {
             const response = await axios.get('/api/country');
@@ -135,7 +131,6 @@ const SignUpForm = () => {
                         }
                 }
             };
-            console.log(newSchema);
             setSchema(newSchema);
             setLoading(false);
         }
@@ -150,10 +145,13 @@ const SignUpForm = () => {
         return <div>Loading</div>;
     }
 
-    console.log(schema);
     return (
         <div>
-            <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit}/>
+            <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit}>
+            <div>
+                <button className={"ant-btn ant-btn-primary"} type="submit">Submit</button>
+            </div>
+            </Form>
         </div>
     )
 }

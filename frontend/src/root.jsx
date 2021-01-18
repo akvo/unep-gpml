@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react';
 import { Input, Button } from 'antd'
 import { SearchOutlined, CaretDownOutlined } from '@ant-design/icons'
@@ -36,12 +36,12 @@ const Root = () => {
     });
 
     const checkStatus = () => {
+        console.log(claims);
         console.log(profile);
     }
 
-    if (isLoading) {
-        return <div>Loading</div>
-    }
+    const currentPath = window.location.pathname;
+    const signUp = !isLoading && profile.isAuthenticated && !profile.hasProfile && currentPath !== '/signup';
 
     return (
     <Router>
@@ -59,9 +59,11 @@ const Root = () => {
                     </div>
                     :
                     <div className="rightside">
-                        <Link to="/" onClick={() => checkStatus()}>{claims?.name}</Link>
-                        &nbsp;&nbsp;|&nbsp;&nbsp;
-                        <Link to="/" onClick={() => logout({returnTo:"http://localhost:3001"})}>Logout</Link>
+                        <Link to="/signup" onClick={() => checkStatus()}>{claims?.email_vefified ? claims?.name : "Signup"}</Link>
+                        {/*
+                            &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <Link to="/" onClick={() => logout({returnTo:"http://localhost:3001"})}>Logout</Link>
+                        */}
                     </div>
                 }
           </div>
@@ -79,9 +81,15 @@ const Root = () => {
             </nav>
           </div>
         </header>
-        <Route path="/" exact component={Landing} />
-        <Route path="/browse" component={Browse} />
-        <Route path="/signup" component={Signup} />
+          {isLoading 
+              ? (<div>Loading</div>) : (
+              <>
+                  <Route path="/" exact component={Landing} />
+                  <Route path="/browse" component={Browse} />
+                  <Route path="/signup" component={Signup} />
+                  {signUp && <Redirect to="/signup"/>}
+              </>
+          )}
       </div>
     </Router>
     )
