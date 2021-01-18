@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
-import Chart from '../utils/charts'
-require("../utils/charts/map-init.js");
+import Chart from '../../utils/charts'
+require("../../utils/charts/map-init.js");
 
 const generateOptions = ({title, subtitle, data, tooltip}) => ({
     title: {

@@ -1,7 +1,7 @@
 import { Button, Select } from 'antd';
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import Maps from '../../components/Maps'
+import Maps from './maps'
 import './styles.scss'
 
 const Landing = () => {
