@@ -1,4 +1,4 @@
-let maps = require('../static/unep-map.json');
+let maps = require('../static/unep-map-mercator.json');
 let mapValues = maps.features.map((x, i) => {
     return {
         ...x,

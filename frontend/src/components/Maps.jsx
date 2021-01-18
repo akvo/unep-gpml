@@ -58,7 +58,7 @@ const Maps = ({
           className="worldmap"
           option={{...options,...custom}}
           notMerge={true}
-          style={{height: '600px', width:'100%'}}
+          style={{height: '700px', width:'100%'}}
           lazyUpdate={true}
           onEvents={{click: clickEvents}}
         />
