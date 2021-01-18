@@ -4,6 +4,7 @@ import { Theme as AntDTheme } from '@rjsf/antd';
 import axios from 'axios';
 import { ExclamationCircleFilled, CheckCircleFilled } from '@ant-design/icons';
 import { useAuth0 } from '@auth0/auth0-react';
+import { cloneDeep } from 'lodash'
 
 const Form = withTheme(AntDTheme);
 const defaultSchema = {
@@ -112,6 +113,8 @@ const defaultUISchema = {
         },
         country: {
             "ui:placeholder": "Select your country",
+            allowSearch: true,
+            "ui:allowSearch": true
         },
         extraProps: {
             kind: "title"
@@ -176,42 +179,15 @@ const SignUpForm = () => {
             (async function fetchData() {
                 const response = await axios.get('/api/country');
                 const claims = await getIdTokenClaims();
-                const newSchema  = {
-                    loading: false,
-                    schema: {
-                        type: "object",
-                        properties : {
-                            ...defaultSchema.properties,
-                            profile: {
-                                ...defaultSchema.properties.profile,
-                                properties: {
-                                    ...defaultSchema.properties.profile.properties,
-                                    email: {
-                                        ...defaultSchema.properties.profile.properties.email,
-                                        description: claims?.email_verified ? "Verified" : "Please confirm your email address",
-                                    }
-                                },
-                            },
-                            organisation: {
-                                ...defaultSchema.properties.organisation,
-                                properties: {
-                                    ...defaultSchema.properties.organisation.properties,
-                                    country: {
-                                        ...defaultSchema.properties.organisation.properties.country,
-                                        enum: response.data.map(x => x.name)
-                                    }}
-                            }
-                        }
-                    },
-                    data: {
-                        profile: {
-                            email: claims?.email || "",
-                            firstName: claims?.given_name || "",
-                            lastName: claims?.family_name || "",
-                        }
-                    }
-                };
-                setSchema(newSchema);
+                const newSchema = cloneDeep(defaultSchema)
+                newSchema.properties.profile.properties.email.description = claims?.email_verified ? "Verified" : "Please confirm your email address"
+                newSchema.properties.organisation.properties.country.enum = response.data.map(x => x.name)
+                
+              setSchema({
+                ...schema, schema: newSchema, loading: false, data: {
+                  profile: {
+                    email: claims?.email || ""
+                  }}});
             }());
         }
     }, []);
@@ -223,15 +199,12 @@ const SignUpForm = () => {
     return (
         <div className={schema.loading ? "hidden" : ""}>
             <Form
-                schema={schema.schema}
-                onSubmit={onSubmit}
-                FieldTemplate={CustomFieldTemplate}
-                formData={schema.data}
-                uiSchema={defaultUISchema}>
-            <div>
-                <button className={"ant-btn ant-btn-primary"} type="submit">Submit</button>
-            </div>
-            </Form>
+              schema={schema.schema}
+              onSubmit={onSubmit}
+              FieldTemplate={CustomFieldTemplate}
+              formData={schema.data}
+              uiSchema={defaultUISchema}
+            />
         </div>
     )
 }
