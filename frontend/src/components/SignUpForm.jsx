@@ -117,12 +117,12 @@ const defaultUISchema = {
 }
 
 const CustomFieldTemplate = ({id, label, help, required, description, errors, children}) => {
+    const {logout} = useAuth0();
     const isTitle = label ? ["Organisation Details", "Personal Details", "Other"].includes(label) : false;
     const isForm = id.split('_').length === 3;
     const emailInfo = description?.props?.description;
     let extraField = "";
     if (isForm && label === "EMAIL" && emailInfo) {
-        console.log(emailInfo);
         extraField = (
             <div style={{marginTop: "10px"}}>
                 <span style={{color: emailInfo !== "Verified" ? "red" : "green"}}>
@@ -131,7 +131,7 @@ const CustomFieldTemplate = ({id, label, help, required, description, errors, ch
                 {emailInfo !== "Verified" ? (
                     <>
                     <span style={{fontWeight: "bold"}}> or </span>
-                    <span style={{textDecoration: "underline", color: "#00AAF1", cursor: "pointer"}}>use diffrent email</span>
+                    <span style={{textDecoration: "underline", color: "#00AAF1", cursor: "pointer"}} onClick={() => logout()}>use diffrent email</span>
                     </>
                 ) : ""}
             </div>
@@ -156,8 +156,6 @@ const SignUpForm = () => {
     const [schema, setSchema] = useState({schema: defaultSchema, loading: true, data: {}});
     const { getIdTokenClaims } = useAuth0();
 
-    console.log();
-
     useEffect(() => {
         if (schema.loading) {
             (async function fetchData() {
@@ -175,7 +173,7 @@ const SignUpForm = () => {
                                     ...defaultSchema.properties.profile.properties,
                                     email: {
                                         ...defaultSchema.properties.profile.properties.email,
-                                        description: claims.email_verified ? "Verified" : "Please confirm your email address",
+                                        description: claims?.email_verified ? "Verified" : "Please confirm your email address",
                                     }
                                 },
                             },
@@ -192,9 +190,9 @@ const SignUpForm = () => {
                     },
                     data: {
                         profile: {
-                            email: claims.email,
-                            firstName: claims.given_name,
-                            lastName: claims.family_name,
+                            email: claims?.email || "",
+                            firstName: claims?.given_name || "",
+                            lastName: claims?.family_name || "",
                         }
                     }
                 };
