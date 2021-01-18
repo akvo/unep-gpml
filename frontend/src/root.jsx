@@ -17,7 +17,6 @@ const Root = () => {
           isLoading,
           getIdTokenClaims,
           loginWithRedirect,
-          logout,
         } = useAuth0();
     const [claims, setClaims] = useState(null);
     const [profile, setProfile] = useState({isAuthenticated:false});
@@ -82,7 +81,7 @@ const Root = () => {
           </div>
         </header>
           {isLoading 
-              ? (<div>Loading</div>) : (
+              ? "" : (
               <>
                   <Route path="/" exact component={Landing} />
                   <Route path="/browse" component={Browse} />
