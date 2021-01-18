@@ -9,30 +9,40 @@ import Browse from './modules/browse/view'
 import logo from './images/GPML-logo.svg'
 import Signup from './modules/signup/view';
 import axios from 'axios';
+import SignupModal from './modules/signup/signup-modal'
 
 
 const Root = () => {
     const {
-          isAuthenticated,
-          isLoading,
-          getIdTokenClaims,
-          loginWithRedirect,
-        } = useAuth0();
+      isAuthenticated,
+      isLoading,
+      getIdTokenClaims,
+      loginWithPopup,
+      logout,
+      user
+    } = useAuth0();
     const [claims, setClaims] = useState(null);
-    const [profile, setProfile] = useState({isAuthenticated:false});
+    const [profile, setProfile] = useState({ isAuthenticated: false });
+    const [signupModalVisible, setSignupModalVisible] = useState(false)
 
     useEffect(() => {
-        (async function fetchData() {
-            const response = await getIdTokenClaims();
-            if (!profile.isAuthenticated && response) {
-                const theProfile = await axios.get('/api/profile', {headers: {
-                    Authorization: `Bearer ${response._raw}`
-                }});
-                setProfile({isAuthenticated:true, ...theProfile.data});
-            }
-            setClaims(response);
-        })();
+      (async function fetchData() {
+        const response = await getIdTokenClaims();
+        if (!profile.isAuthenticated && response) {
+          const theProfile = await axios.get('/api/profile', {headers: {
+            Authorization: `Bearer ${response._raw}`
+          }});
+          setProfile({ isAuthenticated: true, ...theProfile.data});
+        }
+        setClaims(response);
+      })();
     });
+    useEffect(() => {
+      console.log('change auth', isAuthenticated, user)
+      if(isAuthenticated && user.email_verified === false){
+        setSignupModalVisible(true)
+      }
+    }, [isAuthenticated])
 
     const checkStatus = () => {
         console.log(claims);
@@ -52,13 +62,14 @@ const Root = () => {
             </div>
                 { !isAuthenticated ?
                     <div className="rightside">
-                      <Link to="/" onClick={() => loginWithRedirect()}>Join the GPML</Link>
+                      <Link to="/" onClick={loginWithPopup}>Join the GPML</Link>
                         &nbsp;&nbsp;|&nbsp;&nbsp;
-                      <Link to="/" onClick={() => loginWithRedirect()}>Sign in</Link>
+                      <Link to="/" onClick={loginWithPopup}>Sign in</Link>
                     </div>
                     :
                     <div className="rightside">
                         <Link to="/signup" onClick={() => checkStatus()}>{claims?.email_vefified ? claims?.name : "Signup"}</Link>
+                        <Button type="link" onClick={logout}>Logout</Button>
                         {/*
                             &nbsp;&nbsp;|&nbsp;&nbsp;
                             <Link to="/" onClick={() => logout({returnTo:"http://localhost:3001"})}>Logout</Link>
@@ -90,6 +101,7 @@ const Root = () => {
               </>
           )}
       </div>
+      <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} />
     </Router>
     )
 }
