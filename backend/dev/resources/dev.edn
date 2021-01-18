@@ -1,1 +1,5 @@
-{}
+{
+ :duct.database.sql/hikaricp {:idle-timeout 10000
+                              :minimum-idle 0
+                              :maximum-pool-size 1}
+}

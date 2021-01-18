@@ -42,6 +42,8 @@
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
   :duct.database/sql {:jdbc-url #duct/env "DATABASE_URL"}
+  :gpml.auth/id-token-verifier {:issuer #duct/env "OIDC_ISSUER"
+                                :audience #duct/env "OIDC_AUDIENCE"}
   }
 
  :duct.profile/dev   #duct/include "dev"

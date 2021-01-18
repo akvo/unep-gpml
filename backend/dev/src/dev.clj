@@ -33,6 +33,12 @@
 
 (comment
 
+  (prep)
+
+  (reset)
+
+  config
+
   (test)
 
   (portal/start {:portal.launcher/port 47481

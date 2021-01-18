@@ -21,13 +21,12 @@
                 (malli/explain verifier-opts opts)))))
 
 (defmethod ig/prep-key :gpml.auth/id-token-verifier [_ opts]
-  (fn []
-    (validate-opts opts)
-    opts))
+  (and (validate-opts opts)
+       opts))
 
 (defmethod ig/init-key :gpml.auth/id-token-verifier [_ opts]
   (fn []
-    (let [jwk-provider (-> (:issuer opts)
+    (let [jwk-provider (-> ^String (:issuer opts)
                            (JwkProviderBuilder.)
                            (.build))
           public-key-provider (reify PublicKeyProvider
