@@ -1,0 +1,2199 @@
+[
+ {
+  "id": 1,
+  "name": "Gringgo",
+  "year_founded": 2014,
+  "country": "Indonesia",
+  "organisation_type": "Startup",
+  "development_stage": "Scale up",
+  "specifications_provided": "No",
+  "url": [
+   "http://www.gringgo.co/"
+  ],
+  "email": "info@gringgo.co",
+  "tags": [
+   "waste management",
+   "plastic",
+   "waste management",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers",
+   "partnerships",
+   "waste management",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Indonesia"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 2,
+  "name": "Ichthion",
+  "year_founded": 2017,
+  "country": "England",
+  "organisation_type": "Startup",
+  "development_stage": "Prototype",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.ichthion.com/"
+  ],
+  "email": "hello@remora-marine.co.uk",
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "funding",
+   "partnerships",
+   "funding",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "England"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 3,
+  "name": "Microplastic-sensing Drone",
+  "year_founded": 2001,
+  "country": "United States of America",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Scale up",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.draper.com/"
+  ],
+  "email": "info@sprout.cc",
+  "tags": [
+   "waste management",
+   "early adopters",
+   "plastic",
+   "package",
+   "product",
+   "waste management",
+   "package",
+   "product",
+   "waste collection",
+   "waste recovery",
+   "partnerships",
+   "waste management",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 4,
+  "name": "Nordsense",
+  "year_founded": 2015,
+  "country": "Denmark",
+  "organisation_type": "Startup",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://nordsense.com"
+  ],
+  "email": "contact@nordsense.com",
+  "tags": [
+   "waste management",
+   "waste management",
+   "waste management"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Denmark"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 5,
+  "name": "Orca Sound Project",
+  "year_founded": 2018,
+  "country": "United Kingdom",
+  "organisation_type": "Startup",
+  "development_stage": "Pilot",
+  "specifications_provided": "No",
+  "url": [
+   "http://www.orcasoundproject.com"
+  ],
+  "email": "posey@orcasoundproject.com",
+  "tags": [
+   "plastic",
+   "recycling",
+   "waste",
+   "customers",
+   "partnerships",
+   "recycling",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United Kingdom"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 6,
+  "name": "Recykal",
+  "year_founded": 2015,
+  "country": "India",
+  "organisation_type": "Startup",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://recykal.com/"
+  ],
+  "email": "support@recykal.com",
+  "tags": [
+   "waste management",
+   "logistics",
+   "waste management",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "funding",
+   "partnerships",
+   "funding",
+   "waste management",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "India"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 7,
+  "name": "# tide ocean material",
+  "year_founded": null,
+  "country": "Switzerland",
+  "organisation_type": "Startup",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://tide.earth/#home"
+  ],
+  "email": "hello@tide.earth",
+  "tags": [
+   "plastic",
+   "recycling",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers",
+   "recycling"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Switzerland"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 8,
+  "name": "4Ocean Technologies",
+  "year_founded": 2017,
+  "country": "United States of America",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.4ocean.com/"
+  ],
+  "email": "info@4ocean.com",
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "water"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 9,
+  "name": "Bandalong Litter Trap",
+  "year_founded": 2006,
+  "country": "United States of America",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://stormwatersystems.com/bandalong-litter-trap/"
+  ],
+  "email": "sales@stormwatersystems.com",
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "water",
+   "customers",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 10,
+  "name": "Bantam Ocean Bound Plastic",
+  "year_founded": 2005,
+  "country": "Canada",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.bantamltd.com/ocean-bound-plastic/"
+  ],
+  "email": null,
+  "tags": [
+   "plastic",
+   "materials",
+   "recycling",
+   "waste",
+   "partnerships",
+   "recycling",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Canada"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 11,
+  "name": "Barber",
+  "year_founded": 1966,
+  "country": "United States of America",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "http://www.hbarber.com/Cleaners/Beach_Cleaning_Equipment.html"
+  ],
+  "email": "hbarber@hbarber.com",
+  "tags": [
+   "waste management",
+   "waste management",
+   "waste collection",
+   "waste recovery",
+   "customers",
+   "waste management"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 12,
+  "name": "Blue Ocean Gear",
+  "year_founded": null,
+  "country": "United States of America",
+  "organisation_type": "Startup",
+  "development_stage": "Pilot",
+  "specifications_provided": "No",
+  "url": [
+   "https://blueoceangear.com/"
+  ],
+  "email": null,
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 13,
+  "name": "BluePhin",
+  "year_founded": 2017,
+  "country": "United Arab Emirates",
+  "organisation_type": "Startup",
+  "development_stage": "Scale up",
+  "specifications_provided": "No",
+  "url": [
+   "https://bluephin.io/"
+  ],
+  "email": "info@bluephin.io",
+  "tags": null,
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United Arab Emirates"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 14,
+  "name": "Bureo",
+  "year_founded": 2013,
+  "country": "United States of America",
+  "organisation_type": "Startup",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://bureo.co/pages/about"
+  ],
+  "email": "info@bureoskateboards.com",
+  "tags": [
+   "plastic",
+   "upcycle",
+   "waste"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 15,
+  "name": "Clear Blue Sea",
+  "year_founded": 2016,
+  "country": "United States of America",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Prototype",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://clearbluesea.org/"
+  ],
+  "email": null,
+  "tags": [
+   "plastic",
+   "volunteers",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "water",
+   "customers",
+   "partnerships",
+   "partnerships",
+   "volunteers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 16,
+  "name": "Divers Clean Action",
+  "year_founded": 2015,
+  "country": "Indonesia",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Pilot",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.diverscleanaction.org/"
+  ],
+  "email": "contact@diverscleanaction.org",
+  "tags": [
+   "waste management",
+   "plastic",
+   "sorting",
+   "waste management",
+   "donations",
+   "volunteers",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "water",
+   "funding",
+   "funding",
+   "waste management",
+   "donations",
+   "volunteers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Indonesia"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 17,
+  "name": "Ecoalf",
+  "year_founded": 2009,
+  "country": "Spain",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://ecoalf.com"
+  ],
+  "email": "contact@ecoalf.com",
+  "tags": [
+   "plastic",
+   "fashion",
+   "package",
+   "product",
+   "upcycle",
+   "package",
+   "product",
+   "recycling",
+   "waste",
+   "customers",
+   "recycling"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Spain"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 18,
+  "name": "Empower",
+  "year_founded": 2018,
+  "country": "Norway",
+  "organisation_type": "Startup",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://empower.eco/"
+  ],
+  "email": "hi@empower.eco",
+  "tags": [
+   "recycling",
+   "waste collection",
+   "waste recovery",
+   "recycling"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Norway"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 19,
+  "name": "Fishy Filaments",
+  "year_founded": 2017,
+  "country": "United Kingdom",
+  "organisation_type": "Established Company",
+  "development_stage": "Scale up",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://fishyfilaments.com/"
+  ],
+  "email": "sales@fishyfilaments.com",
+  "tags": [
+   "plastic",
+   "materials",
+   "upcycle",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United Kingdom"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 20,
+  "name": "Floating Trash Barrier",
+  "year_founded": 2010,
+  "country": "India",
+  "organisation_type": "Startup",
+  "development_stage": "Scale up",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://www.alphamers.com"
+  ],
+  "email": null,
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "water",
+   "customers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "India"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 21,
+  "name": "IADYS",
+  "year_founded": 2016,
+  "country": "France",
+  "organisation_type": "Startup",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://www.iadys.com"
+  ],
+  "email": "contact@iadys.com",
+  "tags": null,
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "France"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 22,
+  "name": "Litter Trap",
+  "year_founded": 2014,
+  "country": "The Netherlands",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Scale up",
+  "specifications_provided": "Yes",
+  "url": [
+   "http://www.clearrivers.eu"
+  ],
+  "email": "info@clearrivers.eu",
+  "tags": null,
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "The Netherlands"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 23,
+  "name": "Ministry of Waste",
+  "year_founded": 2017,
+  "country": "United Kingdom",
+  "organisation_type": "Startup",
+  "development_stage": "Prototype",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://www.ministryofwaste.org/"
+  ],
+  "email": "hello@ministryofwaste.org",
+  "tags": [
+   "waste management",
+   "waste management",
+   "waste",
+   "customers",
+   "partnerships",
+   "waste management",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United Kingdom"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 24,
+  "name": "My Little Plastic Footprint",
+  "year_founded": 2011,
+  "country": "The Netherlands",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Scale up",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://mylittleplasticfootprint.org/"
+  ],
+  "email": "pers@plasticsoupfoundation.org",
+  "tags": [
+   "reuse",
+   "waste management",
+   "early adopters",
+   "plastic",
+   "advocacy",
+   "reuse",
+   "waste management",
+   "reuse",
+   "waste",
+   "waste management"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "The Netherlands"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 25,
+  "name": "Net Your Problem",
+  "year_founded": null,
+  "country": "United States of America",
+  "organisation_type": "Startup",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://www.netyourproblem.com/#/"
+  ],
+  "email": "netyourproblem@gmail.com",
+  "tags": [
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 26,
+  "name": "Net-Works",
+  "year_founded": 2012,
+  "country": "Philippines",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "http://net-works.com/"
+  ],
+  "email": "info@net-works.com",
+  "tags": [
+   "plastic",
+   "upcycle",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Philippines"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 27,
+  "name": "Ocean Bound Plastic Certifications",
+  "year_founded": 2019,
+  "country": "France",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://www.obpcert.org/"
+  ],
+  "email": "contact@obpcert.org",
+  "tags": [
+   "plastic",
+   "advocacy",
+   "recycling",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers",
+   "partnerships",
+   "recycling",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "France"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 28,
+  "name": "Ocean Sole",
+  "year_founded": null,
+  "country": "Kenya",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "http://oceansole.co.ke/#first"
+  ],
+  "email": "solemates@oceansole.co.ke",
+  "tags": [
+   "plastic",
+   "upcycle",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Kenya"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 29,
+  "name": "OceanBound Plastics",
+  "year_founded": 2001,
+  "country": "United States of America",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "http://envisionplastics.com/"
+  ],
+  "email": null,
+  "tags": [
+   "plastic"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 30,
+  "name": "Oceanworks",
+  "year_founded": 2016,
+  "country": "United States of America",
+  "organisation_type": "Startup",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "http://www.oceanworks.co/"
+  ],
+  "email": null,
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 31,
+  "name": "One Earth - One Ocean",
+  "year_founded": 2011,
+  "country": "Germany",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Scale up",
+  "specifications_provided": "No",
+  "url": [
+   "https://oneearth-oneocean.com/"
+  ],
+  "email": null,
+  "tags": [
+   "waste management",
+   "plastic",
+   "waste management",
+   "waste",
+   "partnerships",
+   "waste management",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Germany"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 32,
+  "name": "Operation Clean Sweep",
+  "year_founded": null,
+  "country": null,
+  "organisation_type": "Partnerships",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.opcleansweep.org/"
+  ],
+  "email": null,
+  "tags": [
+   "plastic",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": null,
+  "geo_coverage_type": null,
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 33,
+  "name": "Parley",
+  "year_founded": null,
+  "country": "United States of America",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "http://www.parley.tv"
+  ],
+  "email": null,
+  "tags": [
+   "reuse",
+   "plastic",
+   "reduce",
+   "reuse",
+   "reuse",
+   "waste",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 34,
+  "name": "PingMe",
+  "year_founded": null,
+  "country": "Norway",
+  "organisation_type": "Startup",
+  "development_stage": "Pilot",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.osac.no/english"
+  ],
+  "email": "post@osac.no",
+  "tags": [
+   "plastic",
+   "logistics",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Norway"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 35,
+  "name": "Pinovo",
+  "year_founded": 2009,
+  "country": "Norway",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.pinovo.com/"
+  ],
+  "email": "info@pinovo.com",
+  "tags": [
+   "plastic",
+   "materials",
+   "waste",
+   "customers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Norway"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 36,
+  "name": "Plastic Bank",
+  "year_founded": 2013,
+  "country": "Canada",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://plasticbank.com/"
+  ],
+  "email": null,
+  "tags": [
+   "plastic",
+   "packaging",
+   "materials",
+   "sorting",
+   "recycling",
+   "waste collection",
+   "waste recovery",
+   "recycling"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Canada"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 37,
+  "name": "Plastic Soup Surfer",
+  "year_founded": 2009,
+  "country": "The Netherlands",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://plasticsoupsurfer.org/"
+  ],
+  "email": "plasticsoupsurfer@gmail.com",
+  "tags": [
+   "plastic",
+   "advocacy",
+   "waste",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "The Netherlands"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 38,
+  "name": "Plastic Vortex",
+  "year_founded": 2016,
+  "country": "France",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Scale up",
+  "specifications_provided": "No",
+  "url": [
+   "http://plasticvortex.co/"
+  ],
+  "email": "contactplasticvortex@gmail.com",
+  "tags": [
+   "plastic"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "France"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 39,
+  "name": "Plasticoin",
+  "year_founded": 2020,
+  "country": "Uruguay",
+  "organisation_type": "Startup",
+  "development_stage": "Pilot",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.plasticoin.com.uy/"
+  ],
+  "email": "info@plasticoin.com.uy",
+  "tags": [
+   "grants",
+   "early adopters",
+   "pilot",
+   "plastic",
+   "recycling",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers",
+   "partnerships",
+   "recycling",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Uruguay"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 40,
+  "name": "Plastix",
+  "year_founded": 2012,
+  "country": "Denmark",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "http://plastixglobal.com"
+  ],
+  "email": "info@plastixglobal.com",
+  "tags": [
+   "plastic",
+   "materials",
+   "waste",
+   "customers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Denmark"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 41,
+  "name": "Plymouth Marine Laboratory",
+  "year_founded": 2002,
+  "country": "United Kingdom",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Development",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.pml.ac.uk"
+  ],
+  "email": null,
+  "tags": [
+   "waste management",
+   "plastic",
+   "waste management",
+   "waste",
+   "partnerships",
+   "waste management",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United Kingdom"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 42,
+  "name": "Project STOP",
+  "year_founded": null,
+  "country": "Indonesia",
+  "organisation_type": "Partnerships",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://www.stopoceanplastics.com/"
+  ],
+  "email": "info@stopoceanplastics.com",
+  "tags": [
+   "plastic"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Indonesia"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 43,
+  "name": "ReCleanSea",
+  "year_founded": 2018,
+  "country": "France",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Development",
+  "specifications_provided": "No",
+  "url": [
+   "http://www.recleansea.org"
+  ],
+  "email": "contact@recleansea.org",
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "water",
+   "funding",
+   "partnerships",
+   "funding",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "France"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 44,
+  "name": "Renew Oceans",
+  "year_founded": 2019,
+  "country": "India",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Development",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.renewoceans.org/"
+  ],
+  "email": "info@renewoceans.org",
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "India"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 45,
+  "name": "Seabin Smart Tech including Pollution Index",
+  "year_founded": 2015,
+  "country": "Australia &  Spain",
+  "organisation_type": "Startup",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "http://seabinproject.com/"
+  ],
+  "email": "contact@seabinproject.com",
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "water"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Australia &  Spain"
+  ],
+  "geo_coverage_type": "transnational",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 46,
+  "name": "SEAQUAL",
+  "year_founded": 2016,
+  "country": "Spain",
+  "organisation_type": "Startup",
+  "development_stage": "Scale up",
+  "specifications_provided": "No",
+  "url": [
+   "http://www.seaqual.com/"
+  ],
+  "email": "info@seaqual.com",
+  "tags": [
+   "plastic",
+   "fashion",
+   "materials",
+   "upcycle",
+   "waste",
+   "customers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Spain"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 47,
+  "name": "StormX Netting Trash Trap",
+  "year_founded": 2006,
+  "country": "United States of America",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://stormwatersystems.com/stormx-netting-trash-trap/"
+  ],
+  "email": "sales@stormwatersystems.com",
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "water",
+   "customers",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 48,
+  "name": "The Blue Barriers",
+  "year_founded": null,
+  "country": "United Kingdom",
+  "organisation_type": "Startup",
+  "development_stage": "Pilot",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://seadefencesolutions.com"
+  ],
+  "email": null,
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United Kingdom"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 49,
+  "name": "The Great Bubble Barrier",
+  "year_founded": 2015,
+  "country": "The Netherlands",
+  "organisation_type": "Startup",
+  "development_stage": "Scale up",
+  "specifications_provided": "No",
+  "url": [
+   "https://thegreatbubblebarrier.com/"
+  ],
+  "email": null,
+  "tags": [
+   "waste collection",
+   "waste recovery",
+   "funding",
+   "partnerships",
+   "funding",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "The Netherlands"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 50,
+  "name": "The Litter Gitter",
+  "year_founded": 2017,
+  "country": "United States of America",
+  "organisation_type": "Startup",
+  "development_stage": "Scale up",
+  "specifications_provided": "No",
+  "url": [
+   "https://osprey.world/"
+  ],
+  "email": null,
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 51,
+  "name": "The Litterboom Project",
+  "year_founded": 2017,
+  "country": "South Africa",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Pilot",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.thelitterboomproject.com/about"
+  ],
+  "email": "cam@thelitterboomproject.com",
+  "tags": [
+   "waste management",
+   "plastic",
+   "sorting",
+   "waste management",
+   "donations",
+   "volunteers",
+   "waste collection",
+   "waste recovery",
+   "waste seperation",
+   "water",
+   "partnerships",
+   "waste management",
+   "donations",
+   "partnerships",
+   "volunteers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "South Africa"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 52,
+  "name": "The Sea Cleaners",
+  "year_founded": 2016,
+  "country": "France",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Pilot",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.theseacleaners.org/en/"
+  ],
+  "email": null,
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "France"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 53,
+  "name": "Thomsea",
+  "year_founded": 2003,
+  "country": "France",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "http://www.thomsea.com/"
+  ],
+  "email": "info@thomsea.com",
+  "tags": [
+   "plastic"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "France"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 54,
+  "name": "Trash booms",
+  "year_founded": 2019,
+  "country": "Germany",
+  "organisation_type": "Startup",
+  "development_stage": "Scale up",
+  "specifications_provided": "No",
+  "url": [
+   "https://plasticfischer.com/trashbooms"
+  ],
+  "email": "info@plasticfischer.com",
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Germany"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 55,
+  "name": "Trash Wheel",
+  "year_founded": null,
+  "country": "United States of America",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://www.mrtrashwheel.com/"
+  ],
+  "email": null,
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 56,
+  "name": "Waste Free Oceans",
+  "year_founded": 2011,
+  "country": "Belgium",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://www.wastefreeoceans.org/"
+  ],
+  "email": "contact@wastefreeoceans.org",
+  "tags": null,
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Belgium"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 57,
+  "name": "WasteShark",
+  "year_founded": 2016,
+  "country": "The Netherlands",
+  "organisation_type": "Startup",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://www.ranmarine.io"
+  ],
+  "email": "info@ranmarine.io",
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "water",
+   "customers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "The Netherlands"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 58,
+  "name": "Ellipsis",
+  "year_founded": 2019,
+  "country": "United Kingdom",
+  "organisation_type": "Startup",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.ellipsis.earth/"
+  ],
+  "email": "info@ellipsis.earth",
+  "tags": [
+   "waste management",
+   "plastic",
+   "advocacy",
+   "waste management",
+   "waste",
+   "partnerships",
+   "waste management",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United Kingdom"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 59,
+  "name": "Fishing for Litter",
+  "year_founded": 1990,
+  "country": "United Kingdom",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://fishingforlitter.org/"
+  ],
+  "email": "info@kimo.shetland.org",
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "water",
+   "partnerships",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United Kingdom"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 60,
+  "name": "Ho'ola One",
+  "year_founded": null,
+  "country": "Canada",
+  "organisation_type": "Academic Institution",
+  "development_stage": "Pilot",
+  "specifications_provided": "No",
+  "url": [
+   "https://hoolaone.com/"
+  ],
+  "email": "info@hoolaone.com",
+  "tags": [
+   "plastic",
+   "sorting",
+   "waste collection",
+   "waste recovery"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Canada"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 61,
+  "name": "Ocean Polymers",
+  "year_founded": 2017,
+  "country": "England",
+  "organisation_type": "Startup",
+  "development_stage": "Research",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.cleanourocean.com"
+  ],
+  "email": "info@oceanpolymers.co.uk",
+  "tags": [
+   "waste to energy",
+   "plastic",
+   "recycling",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "funding",
+   "partnerships",
+   "funding",
+   "recycling",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "England"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 62,
+  "name": "OceanCycle",
+  "year_founded": 2018,
+  "country": "United States of America",
+  "organisation_type": "Startup",
+  "development_stage": "In market",
+  "specifications_provided": "Yes",
+  "url": [
+   "https://www.oceancycle.co/"
+  ],
+  "email": "info@oceancycle.co",
+  "tags": [
+   "waste management",
+   "plastic",
+   "advocacy",
+   "sorting",
+   "waste management",
+   "recycling",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "partnerships",
+   "recycling",
+   "waste management",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 63,
+  "name": "Planet Patrol App",
+  "year_founded": 2016,
+  "country": "England",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Pilot",
+  "specifications_provided": "No",
+  "url": [
+   "https://planetpatrol.co/"
+  ],
+  "email": null,
+  "tags": [
+   "plastic",
+   "advocacy",
+   "donations",
+   "volunteers",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "donations",
+   "volunteers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "England"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 64,
+  "name": "Plastic Odyssey",
+  "year_founded": 2017,
+  "country": "France",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Development",
+  "specifications_provided": "No",
+  "url": [
+   "https://plasticodyssey.org/en/"
+  ],
+  "email": "expedition@plasticodyssey.org",
+  "tags": [
+   "plastic",
+   "recycling",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "funding",
+   "partnerships",
+   "funding",
+   "recycling",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "France"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 65,
+  "name": "Safegear",
+  "year_founded": 2010,
+  "country": "United Kingdom",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Research",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.bluemarinefoundation.com"
+  ],
+  "email": "info@bluemarinefoundation.com",
+  "tags": [
+   "waste management",
+   "early adopters",
+   "pilot",
+   "waste management",
+   "waste",
+   "funding",
+   "funding",
+   "waste management"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United Kingdom"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 66,
+  "name": "SeaChange",
+  "year_founded": null,
+  "country": "United States of America",
+  "organisation_type": "Non-Profit Org",
+  "development_stage": "Prototype",
+  "specifications_provided": "No",
+  "url": [
+   "https://theseachange.org/"
+  ],
+  "email": "media@theseachange.org",
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "funding",
+   "partnerships",
+   "funding",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 67,
+  "name": "100% Recyclable Pouch",
+  "year_founded": 2016,
+  "country": "Nederland",
+  "organisation_type": "Startup",
+  "development_stage": "Pilot",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.seariousbusiness.com/"
+  ],
+  "email": "connect@seariousbusiness.com",
+  "tags": null,
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Nederland"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 68,
+  "name": "Algae Bioplastic",
+  "year_founded": 2010,
+  "country": "United States of America",
+  "organisation_type": "Research Lab",
+  "development_stage": "Research",
+  "specifications_provided": "No",
+  "url": [
+   "https://azcati.asu.edu/"
+  ],
+  "email": "azcati@asu.edu",
+  "tags": [
+   "early adopters",
+   "pilot",
+   "plastic",
+   "materials"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 69,
+  "name": "Ashored",
+  "year_founded": null,
+  "country": "Canada",
+  "organisation_type": "Startup",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://ashored.ca/"
+  ],
+  "email": "info@ashored.ca",
+  "tags": [
+   "plastic",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Canada"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 70,
+  "name": "Bionic Yarn",
+  "year_founded": 2002,
+  "country": "United States of America",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.bionicyarn.com/about.html"
+  ],
+  "email": null,
+  "tags": [
+   "plastic",
+   "fashion",
+   "materials",
+   "waste",
+   "waste collection",
+   "waste recovery",
+   "customers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 71,
+  "name": "Biogreen",
+  "year_founded": 1989,
+  "country": "France",
+  "organisation_type": "Established Company",
+  "development_stage": "In market",
+  "specifications_provided": "No",
+  "url": [
+   "http://www.biogreen-energy.com"
+  ],
+  "email": null,
+  "tags": [
+   "waste management",
+   "waste to energy",
+   "plastic",
+   "waste management",
+   "waste",
+   "customers",
+   "waste management"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "France"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 72,
+  "name": "Norton Point",
+  "year_founded": 2015,
+  "country": "United States of America",
+  "organisation_type": "Startup",
+  "development_stage": "Scale up",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.nortonpoint.com"
+  ],
+  "email": "info@ nortonpoint.com",
+  "tags": [
+   "plastic",
+   "upcycle",
+   "waste",
+   "customers"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "United States Of America"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 73,
+  "name": "rePurpose",
+  "year_founded": 2016,
+  "country": "India",
+  "organisation_type": "Startup",
+  "development_stage": "Scale up",
+  "specifications_provided": "No",
+  "url": [
+   "https://www.repurpose.global/"
+  ],
+  "email": "peter@repurpose.global",
+  "tags": [
+   "waste collection",
+   "waste recovery"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "India"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 74,
+  "name": "RePurpose Global",
+  "year_founded": null,
+  "country": null,
+  "organisation_type": null,
+  "development_stage": null,
+  "specifications_provided": "No",
+  "url": [
+   "https://plasticneutral.global"
+  ],
+  "email": null,
+  "tags": [
+   "plastic"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": null,
+  "geo_coverage_type": null,
+  "attachments": [],
+  "remarks": null
+ },
+ {
+  "id": 75,
+  "name": "The 3R Initiative",
+  "year_founded": 2019,
+  "country": "Brazil",
+  "organisation_type": "Partnerships",
+  "development_stage": "Development",
+  "specifications_provided": "No",
+  "url": [
+   "https://3rinitiative.org/"
+  ],
+  "email": "contact@3rinitiative.org",
+  "tags": [
+   "reuse",
+   "waste management",
+   "early adopters",
+   "plastic",
+   "reduce",
+   "reuse",
+   "waste management",
+   "recycling",
+   "reuse",
+   "waste collection",
+   "waste recovery",
+   "partnerships",
+   "recycling",
+   "waste management",
+   "partnerships"
+  ],
+  "languages": null,
+  "resource_language_url": null,
+  "geo_coverage": [
+   "Brazil"
+  ],
+  "geo_coverage_type": "national",
+  "attachments": [],
+  "remarks": null
+ }
+]

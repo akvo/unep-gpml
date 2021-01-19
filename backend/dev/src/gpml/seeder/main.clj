@@ -3,6 +3,7 @@
             [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
             [gpml.db.country :as db.country]
+            [gpml.db.country-group :as db.country-group]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.resource :as db.resource]
             [gpml.db.tag :as db.tag]
@@ -23,6 +24,27 @@
 (defn get-data [x]
   (parse-data (slurp (io/resource (str "files/" x ".json")))))
 
+(defn get-ids [cmd]
+  (reduce (fn [acc o] (conj acc (:id o))) [] cmd))
+
+(defn get-country [x]
+  (db.country/country-by-names db {:names x}))
+
+(defn get-country-group [x]
+  (db.country-group/country-group-by-name db {:name x}))
+
+(defn get-organisation [x]
+  (db.organisation/organisation-by-names db {:names x}))
+
+(defn get-tag [x]
+  (db.tag/tag-by-tags db {:tags x}))
+
+(defn get-language [x]
+  (remove nil?
+          (mapv (fn [y]
+                  (if-let [language-id (db.language/language-by-name db {:name (:language y)})] 
+                    (assoc y :url (:url y) :language (:id language-id)) nil))x)))
+
 (defn delete-resources []
   (jdbc/delete! db :resource_tag [])
   (jdbc/delete! db :resource_organisation [])
@@ -32,6 +54,7 @@
   )
 
 (defn seed-countries []
+  (jdbc/delete! db :country_group_countries [])
   (jdbc/delete! db :country [])
   (jdbc/insert-multi! db :country
                       (map (fn [x] {:name (:name x) :iso_code (:code x)})
@@ -41,6 +64,17 @@
   (jdbc/delete! db :country_group [])
   (jdbc/insert-multi! db :country_group
                       (get-data "country_group")))
+
+(defn get-country-group-countries []
+  (into [] (reduce (fn [acc [k v]]
+                  (let [group (:id (get-country-group (name k)))]
+                    (concat acc (map (fn [x] {:country_group group :country x}) (get-ids (get-country v))))))
+                [] (get-data "country_group_countries"))))
+
+(defn seed-country-group-countries []
+  (jdbc/delete! db :country_group_countries [])
+  (jdbc/insert-multi! db :country_group_countries (get-country-group-countries)))
+
 
 (defn seed-organisations []
   (jdbc/delete! db :organisation [])
@@ -56,7 +90,9 @@
   (jdbc/delete! db :language [])
   (jdbc/insert-multi! db :language
                       (reduce (fn [acc [k v]]
-                                (conj acc {:iso_code (str/trim (name k)) :english_name (:name v) :native_name (:nativeName v)}))
+                                (conj acc {:iso_code (str/trim (name k)) 
+                                           :english_name (:name v) 
+                                           :native_name (:nativeName v)}))
                               []
                               (get-data "languages"))))
 
@@ -69,27 +105,11 @@
           tags (map (fn [e] (assoc {} :tag_category category-id :tag e)) (second data))]
       (jdbc/insert-multi! db :tag tags))))
 
-(defn get-ids [cmd]
-  (reduce (fn [acc o] (conj acc (:id o))) [] cmd))
-
-(defn get-country [x]
-  (db.country/country-by-names db {:names x}))
-
-(defn get-organisation [x]
-  (db.organisation/organisation-by-names db {:names x}))
-
-(defn get-tag [x]
-  (db.tag/tag-by-tags db {:tags x}))
-
-(defn get-language [x]
-  (remove nil?
-          (mapv (fn [y]
-                  (if-let [language-id (db.language/language-by-name db {:name (:language y)})] 
-                    (assoc y :url (:url y) :language (:id language-id)) nil))x)))
-
 (defn- get-resources
   []
   (->> (get-data "resources")
+       (map (fn [x]
+                (assoc x :value (:value_amount x))))
        (map (fn [x]
               (if-let [country (:country x)]
                 (if-let [data (first (get-country [country]))]
@@ -145,6 +165,7 @@
   (delete-resources)
   (seed-countries)
   (seed-country-groups)
+  (seed-country-group-countries)
   (seed-currencies)
   (seed-organisations)
   (seed-languages)
