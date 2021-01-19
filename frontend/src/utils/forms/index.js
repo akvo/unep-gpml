@@ -6,25 +6,20 @@ const widgets = {
     FileWidget: FileWidget
 };
 
-export const CustomFieldTemplate = ({ id, label, help, required, description, errors, children, uiSchema }) => {
-    const title = uiSchema?.extraProps?.kind === "title";
+export const CustomFieldTemplate = (props) => {
+    const { id, classNames, label, help, required, errors, children, displayLabel } = props
     return (
-        <div style={{ marginBottom: "10px" }}>
-            {title ? (
-                ""
-            ) : (
-                <label htmlFor={id} style={title ? { color: "#00AAF1", fontWeight: "bold" } : {}}>
-                    {label}
-                    {required ? "" : <span style={{ color: "#c2c2c2", fontStyle: "italic" }}> - Optional</span>}
-                </label>
-            )}
+        <div style={{ marginBottom: "10px" }} className={classNames}>
+            <label htmlFor={id} style={{fontWeight: "bold"}}>
+                {displayLabel ? label : ""}
+                {displayLabel && !required ? <span style={{ color: "#c2c2c2", fontStyle: "italic", fontWeight:"normal" }}> - Optional</span> : ""}
+            </label>
             {children}
             {errors}
             {help}
         </div>
     );
 };
-
 
 export default widgets;
 

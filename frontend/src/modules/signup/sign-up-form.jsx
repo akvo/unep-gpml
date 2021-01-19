@@ -5,12 +5,14 @@ import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { cloneDeep } from "lodash";
 import widgets, { CustomFieldTemplate } from "../../utils/forms";
+import ObjectFieldTemplate from "../../utils/forms/template";
 
 const Form = withTheme(AntDTheme);
 
 const defaultSchema = {
-    type: "object",
-    properties: {
+    title: "",
+    type:"object",
+    properties : {
         profile: {
             type: "object",
             title: "Personal Details",
@@ -70,6 +72,7 @@ const defaultSchema = {
         other: {
             type: "object",
             title: "Other",
+            required: ["details"],
             properties: {
                 details: {
                     type: "string",
@@ -96,9 +99,6 @@ const defaultUISchema = {
             "ui:options": { accept: [".jpg", ".png", ".webp"] },
             "ui:widget": "file"
         },
-        extraProps: {
-            kind: "title"
-        }
     },
     organisation: {
         name: {
@@ -113,22 +113,13 @@ const defaultUISchema = {
         country: {
             "ui:placeholder": "Select your country",
         },
-        extraProps: {
-            kind: "title"
-        }
     },
     other: {
         details: {
             "ui:widget": "textarea",
             "ui:placeholder": "Max 999 character"
         },
-        extraProps: {
-            kind: "title"
-        }
     },
-    extraProps: {
-        kind: "title"
-    }
 };
 
 const SignUpForm = ({initialData, dispatchData}) => {
@@ -164,6 +155,7 @@ const SignUpForm = ({initialData, dispatchData}) => {
         <div className={schema.loading ? "hidden" : ""}>
             <Form
                 schema={schema.schema}
+                ObjectFieldTemplate={ObjectFieldTemplate}
                 FieldTemplate={CustomFieldTemplate}
                 uiSchema={defaultUISchema}
                 formData={initialData}
