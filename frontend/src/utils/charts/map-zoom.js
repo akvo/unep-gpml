@@ -1,21 +1,38 @@
 const echarts = require('echarts');
 
-const mapZoom = (params, charts, zoomType=false) => {
-    let new_zoom = params.option.series[0].zoom;
-    new_zoom = zoomType === "zoom-in" ? (new_zoom + 1) : (new_zoom - 1);
-    new_zoom = new_zoom < 0 ? 0 : (new_zoom > 4 ? 4 : new_zoom);
-    new_zoom = !zoomType ? 0 : new_zoom;
+const updateCharts = (charts, params, zoom) => {
     let options = charts.getOption();
-    options = {
-        ...charts.getOption(),
-        series: [{
-            ...params.option.series[0],
-            zoom: new_zoom
-        }]
+    let new_series = {
+        ...params.option.series[0],
+        zoom: zoom,
     }
-    console.log(options);
-    const thecharts = echarts.init(charts.getDom());
+    options = {...options, series: [new_series]}
+    let id = charts.getDom();
+    const thecharts = echarts.init(id);
     thecharts.setOption(options);
 }
 
-export default mapZoom;
+const zoomIn = (params, charts) => {
+    let zoom = params.option.series[0].zoom + 1;
+    if (zoom > 4) {
+        zoom = 4;
+    }
+    updateCharts(charts, params, zoom)
+    return;
+}
+
+const zoomOut = (params, charts) => {
+    let zoom = params.option.series[0].zoom - 1;
+    if (zoom < 0) {
+        zoom = 0;
+    }
+    updateCharts(charts, params, zoom)
+    return;
+}
+
+const resetZoom = (params, charts) => {
+    updateCharts(charts, params, 0)
+    return;
+}
+
+export {zoomIn, zoomOut, resetZoom};

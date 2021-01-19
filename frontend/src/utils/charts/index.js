@@ -1,6 +1,6 @@
 import mapIcons from  './map-icons';
 import disputed from './map-disputed-area';
-import mapZoom from './map-zoom';
+import {zoomIn, zoomOut, resetZoom } from './map-zoom';
 import mapDataRange from './map-datarange';
 import mapToolTip from './map-tooltip';
 
@@ -16,30 +16,28 @@ const Chart = {
                     top: "top",
                     feature: {
                         myTool1: {
-                            show: true,
                             title: "Zoom In",
                             icon: mapIcons.zoomIn,
                             onclick: (params, charts) => {
-                                mapZoom(params, charts, "zoom-in");
+                                zoomIn(params, charts);
                             },
                         },
                         myTool2: {
-                            show: true,
                             title: "Zoom Out",
                             icon: mapIcons.zoomOut,
                             onclick: (params, charts) => {
-                                mapZoom(params, charts, "zoom-out");
+                                zoomOut(params, charts);
                             },
                         },
                         myTool3: {
-                            show: true,
                             title: "Reset Zoom",
                             icon: mapIcons.reset,
                             onclick: function(params, charts) {
-                                mapZoom(params, charts);
+                                resetZoom(params, charts)
                             },
                         }
-                    }
+                    },
+                    backgroundColor: "#FFF"
                 }
             },
             DisputedArea: disputed,

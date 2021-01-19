@@ -17,7 +17,7 @@ const generateOptions = ({title, subtitle, data, tooltip}) => ({
     series: [{
         name: title,
         type: 'map',
-        roam: 'move',
+        roam: true,
         map: 'unep-map',
         aspectScale: 1,
         emphasis: {
@@ -25,7 +25,6 @@ const generateOptions = ({title, subtitle, data, tooltip}) => ({
                 show: false,
             }
         },
-        zoom: 1,
         itemStyle: {
             areaColor: '#fff',
             borderColor: '#79B0CC',
