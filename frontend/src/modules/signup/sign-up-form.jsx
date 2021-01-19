@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { withTheme } from "@rjsf/core";
 import { Theme as AntDTheme } from "@rjsf/antd";
 import axios from "axios";
-import { ExclamationCircleFilled, CheckCircleFilled } from "@ant-design/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { cloneDeep } from "lodash";
+import widgets, { CustomFieldTemplate } from "../../utils/forms";
 
 const Form = withTheme(AntDTheme);
 
@@ -53,7 +53,6 @@ const defaultSchema = {
                 },
                 website: {
                     type: "string",
-                    format: "url",
                     title: "WEBSITE URL"
                 },
                 sector: {
@@ -132,53 +131,6 @@ const defaultUISchema = {
     }
 };
 
-const Auth0Widget = (props) => {
-  const { logout } = useAuth0();
-  const email = props.schema.description;
-  return (
-    <>
-    <input type="text"
-        className="ant-input"
-        value={props.value}
-        required={props.required}
-        disabled={props.disabled}
-        onChange={(event) => props.onChange(event.target.value)} />
-    <div style={{ marginTop: "10px" }}>
-        <span style={{ color: email !== "Verified" ? "red" : "green" }}>
-            {email !== "Verified" ? <ExclamationCircleFilled /> : <CheckCircleFilled />} {email}
-        </span>
-        {email !== "Verified" ? <span style={{ fontWeight: "bold" }}> or </span> : ""}
-        <button style={{ marginLeft: "10px" }} onClick={() => logout()}>
-            use diffrent email
-        </button>
-    </div>
-    </>
-  );
-};
-
-const widgets = {
-  Auth0Widget: Auth0Widget
-};
-
-const CustomFieldTemplate = ({ id, label, help, required, description, errors, children, uiSchema }) => {
-    const title = uiSchema?.extraProps?.kind === "title";
-    return (
-        <div style={{ marginBottom: "10px" }}>
-            {title ? (
-                ""
-            ) : (
-                <label htmlFor={id} style={title ? { color: "#00AAF1", fontWeight: "bold" } : {}}>
-                    {label}
-                    {required ? "" : <span style={{ color: "#c2c2c2", fontStyle: "italic" }}> - Optional</span>}
-                </label>
-            )}
-            {children}
-            {errors}
-            {help}
-        </div>
-    );
-};
-
 const SignUpForm = ({initialData, dispatchData}) => {
     const [schema, setSchema] = useState({ schema: defaultSchema, loading: true });
     const { getIdTokenClaims } = useAuth0();
@@ -202,7 +154,7 @@ const SignUpForm = ({initialData, dispatchData}) => {
                 setSchema(newSchema);
             })();
         }
-    }, []);
+    }, [schema]);
 
     const onChange = ({formData}) => {
         dispatchData(formData);
@@ -210,7 +162,13 @@ const SignUpForm = ({initialData, dispatchData}) => {
 
     return (
         <div className={schema.loading ? "hidden" : ""}>
-            <Form schema={schema.schema} FieldTemplate={CustomFieldTemplate} uiSchema={defaultUISchema} formData={initialData} onChange={onChange} widgets={widgets}>
+            <Form
+                schema={schema.schema}
+                FieldTemplate={CustomFieldTemplate}
+                uiSchema={defaultUISchema}
+                formData={initialData}
+                onChange={onChange}
+                widgets={widgets}>
                 <button type="submit" style={{display: "none"}}>Fire</button>
             </Form>
         </div>

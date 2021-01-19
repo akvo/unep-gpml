@@ -17,9 +17,6 @@ const SignupModal = ({ visible, onCancel }) => {
                 console.log(data);
             }}
         >
-            <Upload>
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-            </Upload>
             <SignUpForm dispatchData={updateData} initialData={data}/>
         </Modal>
     );
