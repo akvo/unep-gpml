@@ -29,7 +29,12 @@
    "waste management"
   ],
   "languages": "Chinese: http://extwprlegs1.fao.org/docs/pdf/chn142871.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Chinese",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/chn142871.pdf"
+   }
+  ],
   "geo_coverage": [
    "Antigua And Barbuda"
   ],
@@ -66,7 +71,12 @@
    "waste management"
   ],
   "languages": "Chinese: http://www.fao.org/faolex/results/details/en/c/LEX-FAOC177091",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Chinese",
+    "url": "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC177091"
+   }
+  ],
   "geo_coverage": [
    "Antigua And Barbuda"
   ],
@@ -96,7 +106,12 @@
    "waste recovery"
   ],
   "languages": "English: https://www.riigiteataja.ee/en/eli/512102017001/consolide",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.riigiteataja.ee/en/eli/512102017001/consolide"
+   }
+  ],
   "geo_coverage": [
    "Algeria"
   ],
@@ -127,7 +142,12 @@
    "waste"
   ],
   "languages": "English: http://www.fao.org/faolex/results/details/en/c/LEX-FAOC023811/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC023811/"
+   }
+  ],
   "geo_coverage": [
    "Algeria"
   ],
@@ -155,7 +175,12 @@
   "status": "In force",
   "tags": null,
   "languages": "French: http://www.fao.org/faolex/results/details/en/c/LEX-FAOC044405/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC044405/"
+   }
+  ],
   "geo_coverage": [
    "Algeria"
   ],
@@ -183,7 +208,12 @@
   "status": "In force",
   "tags": null,
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/Mor178274.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/Mor178274.pdf"
+   }
+  ],
   "geo_coverage": [
    "Algeria"
   ],
@@ -209,7 +239,12 @@
   "status": "In force",
   "tags": null,
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/Mor177622.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/Mor177622.pdf"
+   }
+  ],
   "geo_coverage": [
    "Algeria"
   ],
@@ -244,7 +279,12 @@
    "waste management"
   ],
   "languages": "Croatian: http://www.fao.org/faolex/results/details/en/c/LEX-FAOC128966",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Croatian",
+    "url": "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC128966"
+   }
+  ],
   "geo_coverage": [
    "Antigua And Barbuda"
   ],
@@ -272,7 +312,12 @@
   "status": "In force",
   "tags": null,
   "languages": "Spanish: http://www0.unsl.edu.ar/~atissera/Leyes%20Nacionales/Ley%20PPMM%2025916%20Residuos%20Domiciliarios.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Spanish",
+    "url": "https://www0.unsl.edu.ar/~atissera/Leyes%20Nacionales/Ley%20PPMM%2025916%20Residuos%20Domiciliarios.pdf"
+   }
+  ],
   "geo_coverage": [
    "Argentina"
   ],
@@ -306,7 +351,12 @@
    "waste management"
   ],
   "languages": "Croatian: http://extwprlegs1.fao.org/docs/pdf/cro132336.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Croatian",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/cro132336.pdf"
+   }
+  ],
   "geo_coverage": [
    "Australia"
   ],
@@ -344,7 +394,12 @@
    "waste management"
   ],
   "languages": "Danish: http://extwprlegs1.fao.org/docs/pdf/den118457.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Danish",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/den118457.pdf"
+   }
+  ],
   "geo_coverage": [
    "Australia"
   ],
@@ -372,7 +427,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: http://laws.gov.ag/wp-content/uploads/2018/08/cap-250.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://laws.gov.ag/wp-content/uploads/2018/08/cap-250.pdf"
+   }
+  ],
   "geo_coverage": [
    "Australia"
   ],
@@ -400,7 +460,12 @@
   "status": null,
   "tags": null,
   "languages": "English: http://laws.gov.ag/wp-content/uploads/2019/02/a2015-11.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://laws.gov.ag/wp-content/uploads/2019/02/a2015-11.pdf"
+   }
+  ],
   "geo_coverage": [
    "Australia"
   ],
@@ -428,7 +493,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English:",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://"
+   }
+  ],
   "geo_coverage": [
    "Australia"
   ],
@@ -454,7 +524,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: https://www.legislation.gov.au/Details/C2017C00162",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.legislation.gov.au/Details/C2017C00162"
+   }
+  ],
   "geo_coverage": [
    "Australia"
   ],
@@ -482,7 +557,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: https://www.legislation.gov.au/Details/C2016C00844",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.legislation.gov.au/Details/C2016C00844"
+   }
+  ],
   "geo_coverage": [
    "Australia"
   ],
@@ -510,7 +590,12 @@
   "status": null,
   "tags": null,
   "languages": "English: https://www.legislation.gov.au/Details/F2011L02093",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.legislation.gov.au/Details/F2011L02093"
+   }
+  ],
   "geo_coverage": [
    "Australia"
   ],
@@ -538,7 +623,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: https://www.legislation.gov.au/Details/C2018C00040",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.legislation.gov.au/Details/C2018C00040"
+   }
+  ],
   "geo_coverage": [
    "Bahamas"
   ],
@@ -566,7 +656,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: https://www.legislation.gov.au/Details/C2017C00349",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.legislation.gov.au/Details/C2017C00349"
+   }
+  ],
   "geo_coverage": [
    "Bahamas"
   ],
@@ -598,7 +693,12 @@
    "plastic carrier bags"
   ],
   "languages": "English: https://nicholasinstitute.duke.edu/sites/default/files/plastics-policies/2363_N_2009_The_Finance_Act.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://nicholasinstitute.duke.edu/sites/default/files/plastics-policies/2363_N_2009_The_Finance_Act.pdf"
+   }
+  ],
   "geo_coverage": [
    "Belgium"
   ],
@@ -626,7 +726,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: https://www.legislation.gov.au/Details/F2018L00160",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.legislation.gov.au/Details/F2018L00160"
+   }
+  ],
   "geo_coverage": [
    "Belize"
   ],
@@ -652,7 +757,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: http://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1987/1987-0004/EnvironmentalHealthServicesAct_1.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1987/1987-0004/EnvironmentalHealthServicesAct_1.pdf"
+   }
+  ],
   "geo_coverage": [
    "Benin"
   ],
@@ -680,7 +790,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: http://laws.bahamas.gov.bs/cms/images/LEGISLATION/SUBORDINATE/2004/2004-0022/EnvironmentalHealthServicesCollectionandDisposalofWasteRegulations_1.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/SUBORDINATE/2004/2004-0022/EnvironmentalHealthServicesCollectionandDisposalofWasteRegulations_1.pdf"
+   }
+  ],
   "geo_coverage": [
    "Bhutan"
   ],
@@ -740,7 +855,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: https://www.legislationline.org/download/id/1744/file/b249d2a58a8d0b9a5630012da8a3.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.legislationline.org/download/id/1744/file/b249d2a58a8d0b9a5630012da8a3.pdf"
+   }
+  ],
   "geo_coverage": [
    "Bhutan"
   ],
@@ -771,7 +891,12 @@
    "extended producer responsibility"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/blz171258.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/blz171258.pdf"
+   }
+  ],
   "geo_coverage": [
    "Bhutan"
   ],
@@ -804,7 +929,12 @@
    "waste management"
   ],
   "languages": "Spanish: https://www.lexivox.org/norms/BO-L-N755.xhtml",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Spanish",
+    "url": "https://www.lexivox.org/norms/BO-L-N755.xhtml"
+   }
+  ],
   "geo_coverage": [
    "Bolivia (Plurinational State Of)"
   ],
@@ -836,7 +966,12 @@
    "waste management"
   ],
   "languages": "Arabic: http://extwprlegs1.fao.org/docs/pdf/jor173241.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Arabic",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/jor173241.pdf"
+   }
+  ],
   "geo_coverage": [
    "Bosnia And Herzegovina"
   ],
@@ -870,7 +1005,12 @@
    "waste management"
   ],
   "languages": "Arabic: http://extwprlegs1.fao.org/docs/pdf/oma44697.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Arabic",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/oma44697.pdf"
+   }
+  ],
   "geo_coverage": [
    "Bosnia And Herzegovina"
   ],
@@ -901,7 +1041,12 @@
    "plastic carrier bags"
   ],
   "languages": "English: https://nicholasinstitute.duke.edu/sites/default/files/plastics-policies/2376_TR_Final_N_Benin%202017%20plastic%20bag%20ban.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://nicholasinstitute.duke.edu/sites/default/files/plastics-policies/2376_TR_Final_N_Benin%202017%20plastic%20bag%20ban.pdf"
+   }
+  ],
   "geo_coverage": [
    "Botswana"
   ],
@@ -932,7 +1077,12 @@
    "plastic"
   ],
   "languages": "English: https://www.mof.gov.bt/wp-content/uploads/2014/07/Rule_SaleTaxCustomsExcise.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.mof.gov.bt/wp-content/uploads/2014/07/Rule_SaleTaxCustomsExcise.pdf"
+   }
+  ],
   "geo_coverage": [
    "Brunei Darussalam"
   ],
@@ -966,7 +1116,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/bhu111283.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/bhu111283.pdf"
+   }
+  ],
   "geo_coverage": [
    "Brunei Darussalam"
   ],
@@ -994,7 +1149,12 @@
   "status": "In force",
   "tags": null,
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/alg43228.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/alg43228.pdf"
+   }
+  ],
   "geo_coverage": [
    "Burkina Faso"
   ],
@@ -1022,7 +1182,12 @@
   "status": null,
   "tags": null,
   "languages": "French:",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://"
+   }
+  ],
   "geo_coverage": [
    "Burkina Faso"
   ],
@@ -1053,7 +1218,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/bru162820.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/bru162820.pdf"
+   }
+  ],
   "geo_coverage": [
    "Cambodia"
   ],
@@ -1087,7 +1257,12 @@
    "waste management"
   ],
   "languages": "Icelandic: http://extwprlegs1.fao.org/docs/pdf/gre116773.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Icelandic",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/gre116773.pdf"
+   }
+  ],
   "geo_coverage": [
    "Cambodia"
   ],
@@ -1123,7 +1298,12 @@
    "waste management"
   ],
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/bkf124369.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/bkf124369.pdf"
+   }
+  ],
   "geo_coverage": [
    "Cameroon"
   ],
@@ -1155,7 +1335,12 @@
    "plastic carrier bags"
   ],
   "languages": "French: https://www.preventionweb.net/files/loi_sachet_plastique.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://www.preventionweb.net/files/loi_sachet_plastique.pdf"
+   }
+  ],
   "geo_coverage": [
    "Cameroon"
   ],
@@ -1189,7 +1374,12 @@
    "waste management"
   ],
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/cmr19578.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/cmr19578.pdf"
+   }
+  ],
   "geo_coverage": [
    "Cameroon"
   ],
@@ -1220,7 +1410,12 @@
    "waste"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/bru85145.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/bru85145.pdf"
+   }
+  ],
   "geo_coverage": [
    "Canada"
   ],
@@ -1255,7 +1450,12 @@
    "waste management"
   ],
   "languages": "English: https://www.ajne.org/sites/default/files/resource/laws/7216/sub-decree-113-on-garbage-and-municipal-waste_management-translated.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.ajne.org/sites/default/files/resource/laws/7216/sub-decree-113-on-garbage-and-municipal-waste_management-translated.pdf"
+   }
+  ],
   "geo_coverage": [
    "Canada"
   ],
@@ -1287,7 +1487,12 @@
    "waste"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/can118703.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/can118703.pdf"
+   }
+  ],
   "geo_coverage": [
    "Canada"
   ],
@@ -1320,7 +1525,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/can23763.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/can23763.pdf"
+   }
+  ],
   "geo_coverage": [
    "Canada"
   ],
@@ -1353,7 +1563,12 @@
    "waste management"
   ],
   "languages": "English: https://laws-lois.justice.gc.ca/PDF/C-10.15.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://laws-lois.justice.gc.ca/PDF/C-10.15.pdf"
+   }
+  ],
   "geo_coverage": [
    "Canada"
   ],
@@ -1386,7 +1601,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/can23691.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/can23691.pdf"
+   }
+  ],
   "geo_coverage": [
    "Canada"
   ],
@@ -1420,7 +1640,12 @@
    "waste management"
   ],
   "languages": "Portuguese: http://extwprlegs1.fao.org/docs/pdf/ang148026.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Portuguese",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/ang148026.pdf"
+   }
+  ],
   "geo_coverage": [
    "Cabo Verde"
   ],
@@ -1451,7 +1676,12 @@
    "plastic"
   ],
   "languages": "French: https://cameroontradeportal.cm/tradeportal/templates/Tip_accueil/docs/arretes/Arrete_minepded_mincommerce.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://cameroontradeportal.cm/tradeportal/templates/Tip_accueil/docs/arretes/Arrete_minepded_mincommerce.pdf"
+   }
+  ],
   "geo_coverage": [
    "Chad"
   ],
@@ -1482,7 +1712,12 @@
    "plastic carrier bags"
   ],
   "languages": "Arabic:symphonyenvironmental.com/wp-content/uploads/2018/12/SASO-Technical-Regulations-English.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Arabic",
+    "url": "https://symphonyenvironmental.com/wp-content/uploads/2018/12/SASO-Technical-Regulations-English.pdf"
+   }
+  ],
   "geo_coverage": [
    "China"
   ],
@@ -1514,7 +1749,12 @@
    "waste management"
   ],
   "languages": "Arabic: http://extwprlegs1.fao.org/docs/pdf/sud150546.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Arabic",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/sud150546.pdf"
+   }
+  ],
   "geo_coverage": [
    "China"
   ],
@@ -1545,7 +1785,12 @@
    "waste disposal"
   ],
   "languages": "Arabic: http://extwprlegs1.fao.org/docs/pdf/uae68172.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Arabic",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/uae68172.pdf"
+   }
+  ],
   "geo_coverage": [
    "Croatia"
   ],
@@ -1578,7 +1823,12 @@
    "waste management"
   ],
   "languages": "Bosnian: http://extwprlegs1.fao.org/docs/pdf/bih65579.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Bosnian",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/bih65579.pdf"
+   }
+  ],
   "geo_coverage": [
    "Croatia"
   ],
@@ -1613,7 +1863,12 @@
    "waste management"
   ],
   "languages": "Khmer: https://data.opendevelopmentmekong.net/laws_record/sub-decree-no-168-on-the-management-of-plastic-bags",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Khmer",
+    "url": "https://data.opendevelopmentmekong.net/laws_record/sub-decree-no-168-on-the-management-of-plastic-bags"
+   }
+  ],
   "geo_coverage": [
    "Cyprus"
   ],
@@ -1645,7 +1900,12 @@
    "recycling"
   ],
   "languages": "Greek: http://extwprlegs1.fao.org/docs/pdf/cyp52418G.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Greek",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/cyp52418G.pdf"
+   }
+  ],
   "geo_coverage": [
    "Cyprus"
   ],
@@ -1675,7 +1935,12 @@
    "plastic"
   ],
   "languages": "French: https://minepded.gov.cm/wp-content/uploads/2020/01/Note-circulaire-n\u00b0096-C-CAB-MINEPDED-du-10-avril-2014.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://minepded.gov.cm/wp-content/uploads/2020/01/Note-circulaire-n\u00b0096-C-CAB-MINEPDED-du-10-avril-2014.pdf"
+   }
+  ],
   "geo_coverage": [
    "Comoros"
   ],
@@ -1708,7 +1973,12 @@
    "waste management"
   ],
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/cha15629.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/cha15629.pdf"
+   }
+  ],
   "geo_coverage": [
    "Congo (Brazzaville)"
   ],
@@ -1741,7 +2011,12 @@
    "waste management"
   ],
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/com11718.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/com11718.pdf"
+   }
+  ],
   "geo_coverage": [
    "C\u00f4te D'Ivoire"
   ],
@@ -1773,7 +2048,12 @@
    "plastic carrier bags"
   ],
   "languages": "French: https://economie.gouv.cg/sites/default/files/Documentation/Decrets/2011/D%20n\u00af2011-485%20du%2020%20juillet%202011.PDF",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://economie.gouv.cg/sites/default/files/Documentation/Decrets/2011/D%20n\u00af2011-485%20du%2020%20juillet%202011.PDF"
+   }
+  ],
   "geo_coverage": [
    "C\u00f4te D'Ivoire"
   ],
@@ -1803,7 +2083,12 @@
    "extended producer responsibility"
   ],
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/ivc122634.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/ivc122634.pdf"
+   }
+  ],
   "geo_coverage": [
    "C\u00f4te D'Ivoire"
   ],
@@ -1833,7 +2118,12 @@
    "waste"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/can1077.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/can1077.pdf"
+   }
+  ],
   "geo_coverage": [
    "Czech Republic"
   ],
@@ -1863,7 +2153,12 @@
    "waste"
   ],
   "languages": "English: https://www.tbs-sct.gc.ca/pol/doc-eng.aspx?id=32573",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.tbs-sct.gc.ca/pol/doc-eng.aspx?id=32573"
+   }
+  ],
   "geo_coverage": [
    "Czech Republic"
   ],
@@ -1898,7 +2193,12 @@
    "waste management"
   ],
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/ivc21344.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/ivc21344.pdf"
+   }
+  ],
   "geo_coverage": [
    "Democratic Republic Of The Congo"
   ],
@@ -1928,7 +2228,12 @@
    "plastic"
   ],
   "languages": "French: http://www.fao.org/faolex/results/details/en/c/LEX-FAOC132141",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC132141"
+   }
+  ],
   "geo_coverage": [
    "Democratic Republic Of The Congo"
   ],
@@ -1963,7 +2268,12 @@
    "waste management"
   ],
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/cng109798.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/cng109798.pdf"
+   }
+  ],
   "geo_coverage": [
    "Democratic Republic Of The Congo"
   ],
@@ -1993,7 +2303,12 @@
    "plastic"
   ],
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/Cng189575.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/Cng189575.pdf"
+   }
+  ],
   "geo_coverage": [
    "Democratic Republic Of The Congo"
   ],
@@ -2021,7 +2336,12 @@
   "status": "In force",
   "tags": null,
   "languages": "Bosnian: https://www.ekopak.ba/files/user/docs/Pravilnik_Federacije_o_ambalazi.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Bosnian",
+    "url": "https://www.ekopak.ba/files/user/docs/Pravilnik_Federacije_o_ambalazi.pdf"
+   }
+  ],
   "geo_coverage": [
    "Denmark"
   ],
@@ -2051,7 +2371,12 @@
    "plastic"
   ],
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/Cng189579.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/Cng189579.pdf"
+   }
+  ],
   "geo_coverage": [
    "Djibouti"
   ],
@@ -2083,7 +2408,12 @@
    "plastic alternatives"
   ],
   "languages": "French: http://www.fao.org/faolex/results/details/en/c/LEX-FAOC133314/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC133314/"
+   }
+  ],
   "geo_coverage": [
    "Djibouti"
   ],
@@ -2113,7 +2443,12 @@
    "plastic"
   ],
   "languages": "English: https://www.mzp.cz/C125750E003B698B/en/packaging_legislation/$FILE/OODP-Act_on_Packaging_No_477_2001-20110111.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.mzp.cz/C125750E003B698B/en/packaging_legislation/$FILE/OODP-Act_on_Packaging_No_477_2001-20110111.pdf"
+   }
+  ],
   "geo_coverage": [
    "Dominica"
   ],
@@ -2148,7 +2483,12 @@
    "waste management"
   ],
   "languages": "English: https://www.mzp.cz/C125750E003B698B/en/used_product_collection/$FILE/Waste%20Act_1852001.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.mzp.cz/C125750E003B698B/en/used_product_collection/$FILE/Waste%20Act_1852001.pdf"
+   }
+  ],
   "geo_coverage": [
    "Dominica"
   ],
@@ -2184,7 +2524,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/dmi111817.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/dmi111817.pdf"
+   }
+  ],
   "geo_coverage": [
    "Dominica"
   ],
@@ -2215,7 +2560,12 @@
    "plastic"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/dmi114167.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/dmi114167.pdf"
+   }
+  ],
   "geo_coverage": [
    "Dominica"
   ],
@@ -2243,7 +2593,12 @@
   "status": "In force",
   "tags": null,
   "languages": "Spanish: https://www.asambleanacional.gob.ec/es/system/files/ro-cod-ambiente-ro-s-983-12-04-2017.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Spanish",
+    "url": "https://www.asambleanacional.gob.ec/es/system/files/ro-cod-ambiente-ro-s-983-12-04-2017.pdf"
+   }
+  ],
   "geo_coverage": [
    "Ecuador"
   ],
@@ -2274,7 +2629,12 @@
    "waste disposal"
   ],
   "languages": "Spanish: https://www.asamblea.gob.sv/sites/default/files/documents/decretos/171117_072935022_archivo_documento_legislativo.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Spanish",
+    "url": "https://www.asamblea.gob.sv/sites/default/files/documents/decretos/171117_072935022_archivo_documento_legislativo.pdf"
+   }
+  ],
   "geo_coverage": [
    "El Salvador"
   ],
@@ -2307,7 +2667,12 @@
    "waste management"
   ],
   "languages": "Spanish: http://extwprlegs1.fao.org/docs/pdf/els21266.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Spanish",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/els21266.pdf"
+   }
+  ],
   "geo_coverage": [
    "El Salvador"
   ],
@@ -2340,7 +2705,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/bhu78334E.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/bhu78334E.pdf"
+   }
+  ],
   "geo_coverage": [
    "Estonia"
   ],
@@ -2372,7 +2742,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/bhu97796.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/bhu97796.pdf"
+   }
+  ],
   "geo_coverage": [
    "Estonia"
   ],
@@ -2403,7 +2778,12 @@
    "packaging"
   ],
   "languages": "English: https://www.riigiteataja.ee/en/eli/ee/527052014002/consolide",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.riigiteataja.ee/en/eli/ee/527052014002/consolide"
+   }
+  ],
   "geo_coverage": [
    "Estonia"
   ],
@@ -2433,7 +2813,12 @@
    "solid waste"
   ],
   "languages": "English: https://www.riigiteataja.ee/en/eli/509012018005/consolide",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.riigiteataja.ee/en/eli/509012018005/consolide"
+   }
+  ],
   "geo_coverage": [
    "Estonia"
   ],
@@ -2463,7 +2848,12 @@
    "waste"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/dmi87468.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/dmi87468.pdf"
+   }
+  ],
   "geo_coverage": [
    "Ethiopia"
   ],
@@ -2497,7 +2887,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/dmi19571.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/dmi19571.pdf"
+   }
+  ],
   "geo_coverage": [
    "Ethiopia"
   ],
@@ -2532,7 +2927,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/eth44282.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/eth44282.pdf"
+   }
+  ],
   "geo_coverage": [
    "Fiji"
   ],
@@ -2568,7 +2968,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/eth95457.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/eth95457.pdf"
+   }
+  ],
   "geo_coverage": [
    "Fiji"
   ],
@@ -2602,7 +3007,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/fij88449.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/fij88449.pdf"
+   }
+  ],
   "geo_coverage": [
    "Fiji"
   ],
@@ -2637,7 +3047,12 @@
    "waste management"
   ],
   "languages": "English: http://www.fao.org/faolex/results/details/en/c/LEX-FAOC099042/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC099042/"
+   }
+  ],
   "geo_coverage": [
    "Fiji"
   ],
@@ -2667,7 +3082,12 @@
    "fees"
   ],
   "languages": "English: http://www.fao.org/faolex/results/details/en/c/LEX-FAOC152216/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC152216/"
+   }
+  ],
   "geo_coverage": [
    "Finland"
   ],
@@ -2699,7 +3119,12 @@
    "plastic carrier bags"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/fij177395.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/fij177395.pdf"
+   }
+  ],
   "geo_coverage": [
    "Finland"
   ],
@@ -2729,7 +3154,12 @@
    "waste"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/fin113466.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/fin113466.pdf"
+   }
+  ],
   "geo_coverage": [
    "Finland"
   ],
@@ -2764,7 +3194,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/fin48204.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/fin48204.pdf"
+   }
+  ],
   "geo_coverage": [
    "Fiji"
   ],
@@ -2799,7 +3234,12 @@
    "waste management"
   ],
   "languages": "French: http://www.fao.org/faolex/results/details/en/c/LEX-FAOC092357/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC092357/"
+   }
+  ],
   "geo_coverage": [
    "France"
   ],
@@ -2831,7 +3271,12 @@
    "plastic carrier bags"
   ],
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/dji155756.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/dji155756.pdf"
+   }
+  ],
   "geo_coverage": [
    "France"
   ],
@@ -2863,7 +3308,12 @@
    "compostable plastics"
   ],
   "languages": "French: https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000041989957/2020-02-12/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000041989957/2020-02-12/"
+   }
+  ],
   "geo_coverage": [
    "France"
   ],
@@ -2894,7 +3344,12 @@
    "plastic carrier bags"
   ],
   "languages": "French: https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000032319878/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000032319878/"
+   }
+  ],
   "geo_coverage": [
    "Gabon"
   ],
@@ -2928,7 +3383,12 @@
    "waste management"
   ],
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/Fra178934.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/Fra178934.pdf"
+   }
+  ],
   "geo_coverage": [
    "Gabon"
   ],
@@ -2970,7 +3430,12 @@
    "recycling"
   ],
   "languages": "English: http://kassi-info.fi/wp-content/uploads/2016/10/Plastic_Carrier_Bag_Agreement.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://kassi-info.fi/wp-content/uploads/2016/10/Plastic_Carrier_Bag_Agreement.pdf"
+   }
+  ],
   "geo_coverage": [
    "The Gambia"
   ],
@@ -3003,7 +3468,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/fij88449.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/fij88449.pdf"
+   }
+  ],
   "geo_coverage": [
    "The Gambia"
   ],
@@ -3036,7 +3506,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/gam173305.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/gam173305.pdf"
+   }
+  ],
   "geo_coverage": [
    "Georgia"
   ],
@@ -3067,7 +3542,12 @@
    "plastic"
   ],
   "languages": "French: https://www.ilo.org/dyn/natlex/docs/SERIAL/94231/110529/F-1046361659/TUN-94231.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://www.ilo.org/dyn/natlex/docs/SERIAL/94231/110529/F-1046361659/TUN-94231.pdf"
+   }
+  ],
   "geo_coverage": [
    "Georgia"
   ],
@@ -3106,7 +3586,12 @@
    "recycling"
   ],
   "languages": "Georgian: http://extwprlegs1.fao.org/docs/pdf/geo181494.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Georgian",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/geo181494.pdf"
+   }
+  ],
   "geo_coverage": [
    "Greece"
   ],
@@ -3140,7 +3625,12 @@
    "waste management"
   ],
   "languages": "Icelandic: http://extwprlegs1.fao.org/docs/pdf/gre51736.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Icelandic",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/gre51736.pdf"
+   }
+  ],
   "geo_coverage": [
    "Greece"
   ],
@@ -3174,7 +3664,12 @@
    "recycling"
   ],
   "languages": "Icelandic: http://extwprlegs1.fao.org/docs/pdf/gre81736.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Icelandic",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/gre81736.pdf"
+   }
+  ],
   "geo_coverage": [
    "Greece"
   ],
@@ -3207,7 +3702,12 @@
    "waste management"
   ],
   "languages": "Spanish: http://extwprlegs1.fao.org/docs/pdf/gua54624.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Spanish",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/gua54624.pdf"
+   }
+  ],
   "geo_coverage": [
    "Guatemala"
   ],
@@ -3244,7 +3744,12 @@
    "recycling"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/gam177744.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/gam177744.pdf"
+   }
+  ],
   "geo_coverage": [
    "Guyana"
   ],
@@ -3287,7 +3792,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/geo166634ENG.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/geo166634ENG.pdf"
+   }
+  ],
   "geo_coverage": [
    "Guyana"
   ],
@@ -3323,7 +3833,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/guy39200.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/guy39200.pdf"
+   }
+  ],
   "geo_coverage": [
    "Guyana"
   ],
@@ -3355,7 +3870,12 @@
    "plastic waste"
   ],
   "languages": "English: https://www.riigiteataja.ee/en/eli/510042017001/consolide",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.riigiteataja.ee/en/eli/510042017001/consolide"
+   }
+  ],
   "geo_coverage": [
    "Hungary"
   ],
@@ -3394,7 +3914,12 @@
    "waste management"
   ],
   "languages": "Hungarian: http://extwprlegs1.fao.org/docs/pdf/hun121650.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Hungarian",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/hun121650.pdf"
+   }
+  ],
   "geo_coverage": [
    "Hungary"
   ],
@@ -3431,7 +3956,12 @@
    "waste management"
   ],
   "languages": "Hungarian: http://extwprlegs1.fao.org/docs/pdf/hun123525.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Hungarian",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/hun123525.pdf"
+   }
+  ],
   "geo_coverage": [
    "Hungary"
   ],
@@ -3459,7 +3989,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/guy152293.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/guy152293.pdf"
+   }
+  ],
   "geo_coverage": [
    "India"
   ],
@@ -3492,7 +4027,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/guy151554.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/guy151554.pdf"
+   }
+  ],
   "geo_coverage": [
    "India"
   ],
@@ -3524,7 +4064,12 @@
    "pollution control"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/ind21695.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/ind21695.pdf"
+   }
+  ],
   "geo_coverage": [
    "India"
   ],
@@ -3609,7 +4154,7 @@
   "type_of_law": "Regulation",
   "record_number": null,
   "implementing_mea": null,
-  "first_publication_date": "18/18/2018",
+  "first_publication_date": null,
   "latest_amendment_date": null,
   "status": "In force",
   "tags": [
@@ -3620,7 +4165,12 @@
    "waste management"
   ],
   "languages": "English: https://www.goa.gov.in/wp-content/uploads/2018/05/DRAFT-CRZ-NOTIFICATION-20181.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.goa.gov.in/wp-content/uploads/2018/05/DRAFT-CRZ-NOTIFICATION-20181.pdf"
+   }
+  ],
   "geo_coverage": [
    "Indonesia"
   ],
@@ -3655,7 +4205,12 @@
    "waste management"
   ],
   "languages": "English: https://www.ilo.org/dyn/natlex/natlex4.detail?p_lang=en&p_isn=84427&p_country=IDN&p_count=611",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.ilo.org/dyn/natlex/natlex4.detail?p_lang=en&p_isn=84427&p_country=IDN&p_count=611"
+   }
+  ],
   "geo_coverage": [
    "Ireland"
   ],
@@ -3687,7 +4242,12 @@
    "waste management"
   ],
   "languages": "English: http://jdih.kemendag.go.id/backendx/image/regulasi/22200711_Permendag_No._31_tahun_2016.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://jdih.kemendag.go.id/backendx/image/regulasi/22200711_Permendag_No._31_tahun_2016.pdf"
+   }
+  ],
   "geo_coverage": [
    "Ireland"
   ],
@@ -3809,7 +4369,12 @@
    "enforcement"
   ],
   "languages": "English: http://www.irishstatutebook.ie/eli/2010/act/8/enacted/en/pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.irishstatutebook.ie/eli/2010/act/8/enacted/en/pdf"
+   }
+  ],
   "geo_coverage": [
    "Israel"
   ],
@@ -4064,7 +4629,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: https://www.legislation.gov.au/Details/F2012C00858",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.legislation.gov.au/Details/F2012C00858"
+   }
+  ],
   "geo_coverage": [
    "Jordan"
   ],
@@ -4100,7 +4670,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/bot91838.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/bot91838.pdf"
+   }
+  ],
   "geo_coverage": [
    "Jordan"
   ],
@@ -4220,7 +4795,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/ken41653.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/ken41653.pdf"
+   }
+  ],
   "geo_coverage": [
    "Kenya"
   ],
@@ -4259,7 +4839,12 @@
    "waste management"
   ],
   "languages": "English: http://kenyalaw.org/caselaw/cases/view/140427/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://kenyalaw.org/caselaw/cases/view/140427/"
+   }
+  ],
   "geo_coverage": [
    "Kiribati"
   ],
@@ -4295,7 +4880,12 @@
    "waste management"
   ],
   "languages": "English: https://www.nema.go.ke/images/Docs/Notices/Statement_on_Clarifications_about_plastic_bags_ban-min.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.nema.go.ke/images/Docs/Notices/Statement_on_Clarifications_about_plastic_bags_ban-min.pdf"
+   }
+  ],
   "geo_coverage": [
    "Kiribati"
   ],
@@ -4321,7 +4911,12 @@
   "status": null,
   "tags": null,
   "languages": "Russian: http://faolex.fao.org/docs/texts/kyr132301.doc",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Russian",
+    "url": "https://faolex.fao.org/docs/texts/kyr132301.doc"
+   }
+  ],
   "geo_coverage": [
    "Kyrgyzstan"
   ],
@@ -4355,7 +4950,12 @@
    "water management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/kir64846.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/kir64846.pdf"
+   }
+  ],
   "geo_coverage": [
    "Lao Peoples Democratic Republic"
   ],
@@ -4391,7 +4991,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/kir35369.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/kir35369.pdf"
+   }
+  ],
   "geo_coverage": [
    "Lao Peoples Democratic Republic"
   ],
@@ -4419,7 +5024,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/lao17659.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/lao17659.pdf"
+   }
+  ],
   "geo_coverage": [
    "Latvia"
   ],
@@ -4453,7 +5063,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/lao151747.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/lao151747.pdf"
+   }
+  ],
   "geo_coverage": [
    "Lesotho"
   ],
@@ -4490,7 +5105,12 @@
    "waste minimization"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/lat73610ENG.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/lat73610ENG.pdf"
+   }
+  ],
   "geo_coverage": [
    "Lithuania"
   ],
@@ -4523,7 +5143,12 @@
    "waste management"
   ],
   "languages": "English: https://www.lesothotradeportal.org.ls/index.php?r=site/display&id=132#38",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.lesothotradeportal.org.ls/index.php?r=site/display&id=132#38"
+   }
+  ],
   "geo_coverage": [
    "The Republic Of North Macedonia"
   ],
@@ -4558,7 +5183,12 @@
    "recycling"
   ],
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/Gab174818.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/Gab174818.pdf"
+   }
+  ],
   "geo_coverage": [
    "Madagascar"
   ],
@@ -4591,7 +5221,12 @@
    "waste storage"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/lit180972.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/lit180972.pdf"
+   }
+  ],
   "geo_coverage": [
    "Malawi"
   ],
@@ -4630,7 +5265,12 @@
    "waste management"
   ],
   "languages": "English: http://www.moepp.gov.mk/wp-content/uploads/2014/10/LAW-ON-MANAGEMENT-OF-PACKAGING-AND-PACKAGING-WASTE.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.moepp.gov.mk/wp-content/uploads/2014/10/LAW-ON-MANAGEMENT-OF-PACKAGING-AND-PACKAGING-WASTE.pdf"
+   }
+  ],
   "geo_coverage": [
    "Malawi"
   ],
@@ -4662,7 +5302,12 @@
    "plastic carrier bags"
   ],
   "languages": "English: https://cepa.rmportal.net/Library/inbox/environment-management-plastics-regulations-2015/view",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://cepa.rmportal.net/Library/inbox/environment-management-plastics-regulations-2015/view"
+   }
+  ],
   "geo_coverage": [
    "Malaysia"
   ],
@@ -4697,7 +5342,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/mlw169354.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/mlw169354.pdf"
+   }
+  ],
   "geo_coverage": [
    "Malaysia"
   ],
@@ -4730,7 +5380,12 @@
    "waste management"
   ],
   "languages": "English: http://www.agc.gov.my/agcportal/uploads/files/Publications/LOM/EN/Act%20127.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.agc.gov.my/agcportal/uploads/files/Publications/LOM/EN/Act%20127.pdf"
+   }
+  ],
   "geo_coverage": [
    "Malaysia"
   ],
@@ -4761,7 +5416,12 @@
    "waste management"
   ],
   "languages": "English: http://www.agc.gov.my/agcportal/uploads/files/Publications/LOM/EN/Act%20327%20(Reprint%202019).pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.agc.gov.my/agcportal/uploads/files/Publications/LOM/EN/Act%20327%20(Reprint%202019).pdf"
+   }
+  ],
   "geo_coverage": [
    "Malaysia"
   ],
@@ -4919,7 +5579,12 @@
    "plastic carrier bags"
   ],
   "languages": "English: https://www.environment.gov.mv/biodiversity/wp-content/uploads/2016/01/Regulation-on-Standard-for-Biodegradable-Plastic-Bags.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.environment.gov.mv/biodiversity/wp-content/uploads/2016/01/Regulation-on-Standard-for-Biodegradable-Plastic-Bags.pdf"
+   }
+  ],
   "geo_coverage": [
    "Malta"
   ],
@@ -4951,7 +5616,12 @@
    "plastic carrier bags"
   ],
   "languages": "English: https://legislation.mt/eli/cap/382/eng/pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://legislation.mt/eli/cap/382/eng/pdf"
+   }
+  ],
   "geo_coverage": [
    "Malta"
   ],
@@ -4988,7 +5658,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/mlt67457.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/mlt67457.pdf"
+   }
+  ],
   "geo_coverage": [
    "Marshall Islands"
   ],
@@ -5022,7 +5697,12 @@
    "recycling"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/mlt103368.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/mlt103368.pdf"
+   }
+  ],
   "geo_coverage": [
    "Marshall Islands"
   ],
@@ -5153,7 +5833,12 @@
    "recycling"
   ],
   "languages": "English: https://rmiparliament.org/cms/images/LEGISLATION/BILLS/2016/2016-0028/StyrofoamandPlasticProductsProhibitionAct2016.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://rmiparliament.org/cms/images/LEGISLATION/BILLS/2016/2016-0028/StyrofoamandPlasticProductsProhibitionAct2016.pdf"
+   }
+  ],
   "geo_coverage": [
    "Mauritius"
   ],
@@ -5278,7 +5963,12 @@
    "plastic carrier bags"
   ],
   "languages": "English: https://tsapps.nist.gov/notifyus/docs/wto_country/MUS/full_text/pdf/MUS5(english).pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://tsapps.nist.gov/notifyus/docs/wto_country/MUS/full_text/pdf/MUS5(english).pdf"
+   }
+  ],
   "geo_coverage": [
    "Mauritius"
   ],
@@ -5400,7 +6090,12 @@
    "waste management"
   ],
   "languages": "French:www.legimonaco.mc",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://www.legimonaco.mc"
+   }
+  ],
   "geo_coverage": [
    "Monaco"
   ],
@@ -5428,7 +6123,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: http://fsmlaw.org./fsm/code/title25/T25_Ch01.htm",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://fsmlaw.org./fsm/code/title25/T25_Ch01.htm"
+   }
+  ],
   "geo_coverage": [
    "Mongolia"
   ],
@@ -5465,7 +6165,12 @@
    "recycling"
   ],
   "languages": "French: https://journaldemonaco.gouv.mc/Journaux/2017/Journal-8315/Ordonnance-Souveraine-n-6.251-du-20-janvier-2017-relative-aux-dechets",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://journaldemonaco.gouv.mc/Journaux/2017/Journal-8315/Ordonnance-Souveraine-n-6.251-du-20-janvier-2017-relative-aux-dechets"
+   }
+  ],
   "geo_coverage": [
    "Morocco"
   ],
@@ -5496,7 +6201,12 @@
    "plastic cutlery"
   ],
   "languages": "English: https://www.legimonaco.mc/305/legismclois.nsf/ViewTNC/FB67D3113A617A86C1257FCC002AE064!OpenDocument",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.legimonaco.mc/305/legismclois.nsf/ViewTNC/FB67D3113A617A86C1257FCC002AE064!OpenDocument"
+   }
+  ],
   "geo_coverage": [
    "Namibia"
   ],
@@ -5537,7 +6247,12 @@
    "waste management"
   ],
   "languages": "English: https://www.legalinfo.mn",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.legalinfo.mn"
+   }
+  ],
   "geo_coverage": [
    "Nauru"
   ],
@@ -5565,7 +6280,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/nam82643.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/nam82643.pdf"
+   }
+  ],
   "geo_coverage": [
    "Nepal"
   ],
@@ -5599,7 +6319,12 @@
    "waste management"
   ],
   "languages": "English: http://www.fao.org/faolex/results/details/en/c/LEX-FAOC109237",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC109237"
+   }
+  ],
   "geo_coverage": [
    "Nepal"
   ],
@@ -5631,7 +6356,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/nep52633.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/nep52633.pdf"
+   }
+  ],
   "geo_coverage": [
    "Netherlands"
   ],
@@ -5668,7 +6398,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/nep137767.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/nep137767.pdf"
+   }
+  ],
   "geo_coverage": [
    "New Zealand"
   ],
@@ -5702,7 +6437,12 @@
    "recycling"
   ],
   "languages": "English: https://afvalfondsverpakkingen.nl/a/i/Overige/notification_draft_2014_336_NL_EN-Packaging-Decree.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://afvalfondsverpakkingen.nl/a/i/Overige/notification_draft_2014_336_NL_EN-Packaging-Decree.pdf"
+   }
+  ],
   "geo_coverage": [
    "New Zealand"
   ],
@@ -5736,7 +6476,12 @@
    "waste management"
   ],
   "languages": "English: http://legislation.govt.nz/act/public/1979/0041/25.0/DLM33082.html",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://legislation.govt.nz/act/public/1979/0041/25.0/DLM33082.html"
+   }
+  ],
   "geo_coverage": [
    "Nigeria"
   ],
@@ -5773,7 +6518,12 @@
    "waste management"
   ],
   "languages": "French: http://extwprlegs1.fao.org/docs/pdf/Gab174571.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/Gab174571.pdf"
+   }
+  ],
   "geo_coverage": [
    "Oman"
   ],
@@ -5806,7 +6556,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/nze83517.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/nze83517.pdf"
+   }
+  ],
   "geo_coverage": [
    "Palau"
   ],
@@ -5839,7 +6594,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/nig120569.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/nig120569.pdf"
+   }
+  ],
   "geo_coverage": [
    "Palau"
   ],
@@ -5870,7 +6630,12 @@
    "plastic"
   ],
   "languages": "Spanish: http://extwprlegs1.fao.org/docs/pdf/pan178033.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Spanish",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/pan178033.pdf"
+   }
+  ],
   "geo_coverage": [
    "Panama"
   ],
@@ -5908,7 +6673,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/pau32789.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/pau32789.pdf"
+   }
+  ],
   "geo_coverage": [
    "Papua New Guinea"
   ],
@@ -5934,7 +6704,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/pau181811.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/pau181811.pdf"
+   }
+  ],
   "geo_coverage": [
    "Philippines"
   ],
@@ -5962,7 +6737,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/png70607.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/png70607.pdf"
+   }
+  ],
   "geo_coverage": [
    "Philippines"
   ],
@@ -6003,7 +6783,12 @@
    "waste management"
   ],
   "languages": "Polish: http://extwprlegs1.fao.org/docs/pdf/pol129623.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Polish",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/pol129623.pdf"
+   }
+  ],
   "geo_coverage": [
    "Poland"
   ],
@@ -6070,7 +6855,12 @@
    "waste management"
   ],
   "languages": "Portuguese: https://dre.pt/application/conteudo/66022084",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Portuguese",
+    "url": "https://dre.pt/application/conteudo/66022084"
+   }
+  ],
   "geo_coverage": [
    "Portugal"
   ],
@@ -6108,7 +6898,12 @@
    "waste management"
   ],
   "languages": "Portuguese: https://dre.pt/application/conteudo/114337042",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Portuguese",
+    "url": "https://dre.pt/application/conteudo/114337042"
+   }
+  ],
   "geo_coverage": [
    "Portugal"
   ],
@@ -6147,7 +6942,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/phi68080.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/phi68080.pdf"
+   }
+  ],
   "geo_coverage": [
    "Qatar"
   ],
@@ -6210,7 +7010,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/phi70789.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/phi70789.pdf"
+   }
+  ],
   "geo_coverage": [
    "Rwanda"
   ],
@@ -6241,7 +7046,12 @@
    "waste management"
   ],
   "languages": "English: https://www.almeezan.qa/LawView.aspx?opt&LawID=4114&language=en",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.almeezan.qa/LawView.aspx?opt&LawID=4114&language=en"
+   }
+  ],
   "geo_coverage": [
    "Rwanda"
   ],
@@ -6475,7 +7285,12 @@
   "status": null,
   "tags": null,
   "languages": "Greek: http://extwprlegs1.fao.org/docs/pdf/cyp110725.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Greek",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/cyp110725.pdf"
+   }
+  ],
   "geo_coverage": [
    "Saudi Arabia"
   ],
@@ -6512,7 +7327,12 @@
    "waste management"
   ],
   "languages": "French: http://www.environnement.gov.ma/images/Mde_PDFs/Fr/Actualisation_Cadre_Legislatif_05082016/6_Loi_28_00_relative_%C3%A0_la_Gestion_et_Elimination_des_D%C3%A9chets.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://www.environnement.gov.ma/images/Mde_PDFs/Fr/Actualisation_Cadre_Legislatif_05082016/6_Loi_28_00_relative_%C3%A0_la_Gestion_et_Elimination_des_D%C3%A9chets.pdf"
+   }
+  ],
   "geo_coverage": [
    "Senegal"
   ],
@@ -6607,7 +7427,12 @@
    "waste management"
   ],
   "languages": "Bosnian: http://extwprlegs1.fao.org/docs/pdf/srb140799.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Bosnian",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/srb140799.pdf"
+   }
+  ],
   "geo_coverage": [
    "Serbia"
   ],
@@ -6644,7 +7469,12 @@
    "waste management"
   ],
   "languages": "Bosnian: http://extwprlegs1.fao.org/docs/pdf/srb140883.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Bosnian",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/srb140883.pdf"
+   }
+  ],
   "geo_coverage": [
    "Serbia"
   ],
@@ -6745,7 +7575,12 @@
    "waste management"
   ],
   "languages": "English: https://seylii.org/sc/Act%2018%20of%202016%20Envt%20Protn%20Act.PDF",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://seylii.org/sc/Act%2018%20of%202016%20Envt%20Protn%20Act.PDF"
+   }
+  ],
   "geo_coverage": [
    "Singapore"
   ],
@@ -6779,7 +7614,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/sey190024.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/sey190024.pdf"
+   }
+  ],
   "geo_coverage": [
    "Singapore"
   ],
@@ -6818,7 +7658,12 @@
    "waste management"
   ],
   "languages": "Slovak: http://extwprlegs1.fao.org/docs/pdf/slo169013.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Slovak",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/slo169013.pdf"
+   }
+  ],
   "geo_coverage": [
    "Slovakia"
   ],
@@ -6860,7 +7705,12 @@
    "waste management"
   ],
   "languages": "Slovak: http://extwprlegs1.fao.org/docs/pdf/slo198891.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Slovak",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/slo198891.pdf"
+   }
+  ],
   "geo_coverage": [
    "Slovakia"
   ],
@@ -6895,7 +7745,12 @@
    "recycling"
   ],
   "languages": "Slovak: http://extwprlegs1.fao.org/docs/html/slo79799.html",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Slovak",
+    "url": "https://extwprlegs1.fao.org/docs/html/slo79799.html"
+   }
+  ],
   "geo_coverage": [
    "Slovakia"
   ],
@@ -6928,7 +7783,12 @@
    "waste management"
   ],
   "languages": "English: https://sso.agc.gov.sg/Act/EPHA1987",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://sso.agc.gov.sg/Act/EPHA1987"
+   }
+  ],
   "geo_coverage": [
    "Solomon Islands"
   ],
@@ -6962,7 +7822,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/sin46865.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/sin46865.pdf"
+   }
+  ],
   "geo_coverage": [
    "South Africa"
   ],
@@ -7001,7 +7866,12 @@
    "waste management"
   ],
   "languages": "English: http://www.fao.org/faolex/results/details/en/c/LEX-FAOC065422",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC065422"
+   }
+  ],
   "geo_coverage": [
    "South Africa"
   ],
@@ -7032,7 +7902,12 @@
    "plastic carrier bags"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/saf73211.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/saf73211.pdf"
+   }
+  ],
   "geo_coverage": [
    "South Africa"
   ],
@@ -7066,7 +7941,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/saf12908.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/saf12908.pdf"
+   }
+  ],
   "geo_coverage": [
    "South Africa"
   ],
@@ -7101,7 +7981,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/saf73211.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/saf73211.pdf"
+   }
+  ],
   "geo_coverage": [
    "South Africa"
   ],
@@ -7138,7 +8023,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/saf73144.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/saf73144.pdf"
+   }
+  ],
   "geo_coverage": [
    "Republic Of Korea"
   ],
@@ -7175,7 +8065,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/saf90450.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/saf90450.pdf"
+   }
+  ],
   "geo_coverage": [
    "Republic Of Korea"
   ],
@@ -7212,7 +8107,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/kor51892.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/kor51892.pdf"
+   }
+  ],
   "geo_coverage": [
    "Sri Lanka"
   ],
@@ -7247,7 +8147,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/kor117318.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/kor117318.pdf"
+   }
+  ],
   "geo_coverage": [
    "Sri Lanka"
   ],
@@ -7281,7 +8186,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/srl13492.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/srl13492.pdf"
+   }
+  ],
   "geo_coverage": [
    "Saint Vincent And The Grenadines"
   ],
@@ -7314,7 +8224,12 @@
    "waste minimization"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/srl5289.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/srl5289.pdf"
+   }
+  ],
   "geo_coverage": [
    "Saint Vincent And The Grenadines"
   ],
@@ -7346,7 +8261,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/stv48944.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/stv48944.pdf"
+   }
+  ],
   "geo_coverage": [
    "Saint Vincent And The Grenadines"
   ],
@@ -7374,7 +8294,12 @@
   "status": "In force",
   "tags": null,
   "languages": "English: https://www.legislation.gov.au/Details/F2016C00914",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.legislation.gov.au/Details/F2016C00914"
+   }
+  ],
   "geo_coverage": [
    "Sudan"
   ],
@@ -7411,7 +8336,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/stv48946.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/stv48946.pdf"
+   }
+  ],
   "geo_coverage": [
    "Eswatini, Kingdom Of"
   ],
@@ -7446,7 +8376,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/stv52994.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/stv52994.pdf"
+   }
+  ],
   "geo_coverage": [
    "Switzerland"
   ],
@@ -7513,7 +8448,12 @@
    "waste management"
   ],
   "languages": "Arabic: http://extwprlegs1.fao.org/docs/pdf/jor193637.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Arabic",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/jor193637.pdf"
+   }
+  ],
   "geo_coverage": [
    "United Arab Emirates"
   ],
@@ -7548,7 +8488,12 @@
    "waste management"
   ],
   "languages": "English: http://www.fao.org/faolex/results/details/en/c/LEX-FAOC042649",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC042649"
+   }
+  ],
   "geo_coverage": [
    "United States Of America"
   ],
@@ -7584,7 +8529,12 @@
    "waste management"
   ],
   "languages": "English: https://www.admin.ch/opc/en/classified-compilation/20141858/index.html",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.admin.ch/opc/en/classified-compilation/20141858/index.html"
+   }
+  ],
   "geo_coverage": [
    "United States Of America"
   ],
@@ -7621,7 +8571,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/usa142962.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/usa142962.pdf"
+   }
+  ],
   "geo_coverage": [
    "United States Of America"
   ],
@@ -7656,7 +8611,12 @@
    "waste management"
   ],
   "languages": "English: https://www.epa.gov/p2/pollution-prevention-act-1990#def",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.epa.gov/p2/pollution-prevention-act-1990#def"
+   }
+  ],
   "geo_coverage": [
    "United States Of America"
   ],
@@ -7689,7 +8649,12 @@
    "waste management"
   ],
   "languages": "English: https://www.congress.gov/106/plaws/publ284/PLAW-106publ284.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.congress.gov/106/plaws/publ284/PLAW-106publ284.pdf"
+   }
+  ],
   "geo_coverage": [
    "United States Of America"
   ],
@@ -7721,7 +8686,12 @@
    "waste management"
   ],
   "languages": "English: https://www.epa.gov/sites/production/files/2017-08/documents/federal-water-pollution-control-act-508full.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.epa.gov/sites/production/files/2017-08/documents/federal-water-pollution-control-act-508full.pdf"
+   }
+  ],
   "geo_coverage": [
    "United States Of America"
   ],
@@ -7759,7 +8729,12 @@
    "waste management"
   ],
   "languages": "Uzbek: https://lex.uz/docs/-3741863",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Uzbek",
+    "url": "https://lex.uz/docs/-3741863"
+   }
+  ],
   "geo_coverage": [
    "Uzbekistan"
   ],
@@ -7793,7 +8768,12 @@
    "waste management"
   ],
   "languages": "Portuguese: http://extwprlegs1.fao.org/docs/pdf/tim119374.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Portuguese",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/tim119374.pdf"
+   }
+  ],
   "geo_coverage": [
    "Timor-Leste"
   ],
@@ -7828,7 +8808,12 @@
    "plastic packaging"
   ],
   "languages": "Portuguese: http://extwprlegs1.fao.org/docs/pdf/tim198631.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Portuguese",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/tim198631.pdf"
+   }
+  ],
   "geo_coverage": [
    "Timor-Leste"
   ],
@@ -7863,7 +8848,12 @@
    "waste management"
   ],
   "languages": "Portuguese: http://extwprlegs1.fao.org/docs/pdf/tim167526.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Portuguese",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/tim167526.pdf"
+   }
+  ],
   "geo_coverage": [
    "Timor-Leste"
   ],
@@ -7894,7 +8884,12 @@
    "ocean debris"
   ],
   "languages": "English: https://www.govinfo.gov/content/pkg/USCODE-2010-title33/pdf/USCODE-2010-title33-chap33.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.govinfo.gov/content/pkg/USCODE-2010-title33/pdf/USCODE-2010-title33-chap33.pdf"
+   }
+  ],
   "geo_coverage": [
    "Tonga"
   ],
@@ -7935,7 +8930,12 @@
    "waste management"
   ],
   "languages": "English: https://www.govinfo.gov/content/pkg/USCODE-2011-title42/pdf/USCODE-2011-title42-chap82.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.govinfo.gov/content/pkg/USCODE-2011-title42/pdf/USCODE-2011-title42-chap82.pdf"
+   }
+  ],
   "geo_coverage": [
    "Tonga"
   ],
@@ -7967,7 +8967,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/ton50684.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/ton50684.pdf"
+   }
+  ],
   "geo_coverage": [
    "Tonga"
   ],
@@ -8000,7 +9005,12 @@
    "waste management"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/ton74653.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/ton74653.pdf"
+   }
+  ],
   "geo_coverage": [
    "Zimbabwe"
   ],
@@ -8057,7 +9067,12 @@
    "plastic"
   ],
   "languages": "English: http://extwprlegs1.fao.org/docs/pdf/zim171720.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://extwprlegs1.fao.org/docs/pdf/zim171720.pdf"
+   }
+  ],
   "geo_coverage": [
    "United Kingdom"
   ],
@@ -8090,7 +9105,12 @@
    "plastic carrier bags"
   ],
   "languages": "Spanish: https://cijuf.org.co/node/13323",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Spanish",
+    "url": "https://cijuf.org.co/node/13323"
+   }
+  ],
   "geo_coverage": [
    "Colombia"
   ],
@@ -8120,7 +9140,12 @@
    "plastic carrier bags"
   ],
   "languages": "English: http://www.zema.org.zm/index.php/lusaka-3rd-december-2018-issuance-of-statutory-instrument-no-65-on-extended-producer-responsibility-regulations/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.zema.org.zm/index.php/lusaka-3rd-december-2018-issuance-of-statutory-instrument-no-65-on-extended-producer-responsibility-regulations/"
+   }
+  ],
   "geo_coverage": [
    "Zimbabwe"
   ],
@@ -8154,7 +9179,12 @@
    "recycling"
   ],
   "languages": "English: https://www.legislation.gov.uk/uksi/2007/871/contents/made",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.legislation.gov.uk/uksi/2007/871/contents/made"
+   }
+  ],
   "geo_coverage": [
    "Zambia"
   ],
@@ -8220,7 +9250,12 @@
    "plastic carrier bags"
   ],
   "languages": "English: https://nicholasinstitute.duke.edu/sites/default/files/plastics-policies/4493_N_2018_Lusaka.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://nicholasinstitute.duke.edu/sites/default/files/plastics-policies/4493_N_2018_Lusaka.pdf"
+   }
+  ],
   "geo_coverage": [
    "Colombia"
   ],
@@ -8252,7 +9287,12 @@
    "recycling"
   ],
   "languages": "English: https://www.legislation.gov.uk/uksi/2007/871/made",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.legislation.gov.uk/uksi/2007/871/made"
+   }
+  ],
   "geo_coverage": [
    "Vanuatu"
   ],
@@ -8283,7 +9323,12 @@
    "plastic carrier bags"
   ],
   "languages": "English: https://cijuf.org.co/node/13323",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://cijuf.org.co/node/13323"
+   }
+  ],
   "geo_coverage": [
    "Vanuatu"
   ],
@@ -8887,7 +9932,12 @@
    "recycling"
   ],
   "languages": "English: http://www.zema.org.zm/index.php/lusaka-3rd-december-2018-issuance-of-statutory-instrument-no-65-on-extended-producer-responsibility-regulations/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.zema.org.zm/index.php/lusaka-3rd-december-2018-issuance-of-statutory-instrument-no-65-on-extended-producer-responsibility-regulations/"
+   }
+  ],
   "geo_coverage": [
    "Uganda"
   ],

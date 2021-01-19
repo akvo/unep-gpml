@@ -2,10 +2,13 @@
   (:require [clojure.java.io :as io]
             [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
+            [clj-time.core :as t]
+            [clj-time.format :as f]
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.resource :as db.resource]
+            [gpml.db.policy :as db.policy]
             [gpml.db.tag :as db.tag]
             [gpml.db.language :as db.language]
             [jsonista.core :as j]
@@ -51,6 +54,13 @@
   (jdbc/delete! db :resource_geo_coverage [])
   (jdbc/delete! db :resource_language_url [])
   (jdbc/delete! db :resource [])
+  )
+
+(defn delete-policies []
+  (jdbc/delete! db :policy_tag [])
+  (jdbc/delete! db :policy_geo_coverage [])
+  (jdbc/delete! db :policy_language_url [])
+  (jdbc/delete! db :policy [])
   )
 
 (defn seed-countries []
@@ -160,9 +170,79 @@
         (.printStackTrace e)
         (throw e)))))
 
+(defn parse-date [x]
+    (f/parse (f/formatter "yyyyMMdd")
+             (str/replace (str/replace x #"-" "") #"/" "")
+             ))
+
+
+(defn- get-policies
+  []
+  (->> (get-data "policies")
+       (map (fn [x]
+                (assoc x :value (:value_amount x))))
+       (map (fn [x]
+              (if-let [country (:country x)]
+                (if-let [data (first (get-country [country]))]
+                  (assoc x :country (:id data))
+                  (assoc x :country nil))
+                x)))
+       (map (fn [x]
+              (if-let [group (:implementing_mea x)]
+                (assoc x :implementing_mea (:id (get-country-group group)))
+                x)))
+       (map (fn [x]
+              (if-let [country (:geo_coverage x)]
+                (assoc x :geo_coverage (get-ids (get-country country)))
+                x)))
+       (map (fn [x]
+              (if-let [language-url (:resource_language_url x)]
+                (assoc x :resource_language_url (get-language language-url))
+                x))
+            )
+       (map (fn [x]
+              (if-let [date (:latest_amendment_date x)]
+                (assoc x :latest_amendment_date (parse-date date))
+                x))
+            )
+       (map (fn [x]
+              (if-let [date (:first_publication_date x)]
+                (if-let [parsed (parse-date date)]
+                  (assoc x :first_publication_date parsed)
+                  x)
+                x))
+            )
+       (map (fn [x]
+              (if-let [tags (:tags x)]
+                (assoc x :tags (get-ids (get-tag tags)))
+                x)))))
+
+(defn seed-policies []
+  (delete-policies)
+  (doseq [data (get-policies)]
+    (try
+      (let [po-id (-> (db.policy/new-policy db data) first :id)
+            data-geo (:geo_coverage data)
+            data-lang (:resource_language_url data)
+            data-tag (:tags data)]
+        (when (not-empty data-geo)
+          (let [po-geo (mapv #(assoc {} :policy po-id :country %) data-geo)]
+            (jdbc/insert-multi! db :policy_geo_coverage po-geo)))
+        (when (not-empty data-lang)
+          (let [po-lang (map (fn [x] (assoc x :policy po-id)) data-lang)]
+            (jdbc/insert-multi! db :policy_language_url po-lang)))
+        (when (not-empty data-tag)
+          (let [po-tag (mapv #(assoc {} :resource po-id :tag %) data-tag)]
+            (jdbc/insert-multi! db :policy_tag po-tag))))
+      (catch Exception e
+        (println (data))
+        (.printStackTrace e)
+        (throw e)))))
+
 (defn seed []
   (println "-- Start Seeding")
   (delete-resources)
+  (delete-policies)
   (seed-countries)
   (seed-country-groups)
   (seed-country-group-countries)
@@ -170,5 +250,6 @@
   (seed-organisations)
   (seed-languages)
   (seed-tags)
+  #_(seed-policies) ;; Wrong number of args (0) passed
   (seed-resources)
   (println "-- Done Seeding"))

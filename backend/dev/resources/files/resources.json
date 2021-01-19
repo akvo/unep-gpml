@@ -24,7 +24,12 @@
    "private for profit"
   ],
   "languages": "English:https://www.closedlooppartners.com/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.closedlooppartners.com/"
+   }
+  ],
   "geo_coverage": [
    "United States Of America"
   ],
@@ -68,7 +73,12 @@
    "private for profit"
   ],
   "languages": "English:https://www.closedlooppartners.com/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.closedlooppartners.com/"
+   }
+  ],
   "geo_coverage": [
    "United States Of America"
   ],
@@ -100,7 +110,12 @@
    "bilateral"
   ],
   "languages": "English:http://mddb.apec.org/Documents/2020/OFWG/OFWG1/20_ofwg1_022.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://mddb.apec.org/Documents/2020/OFWG/OFWG1/20_ofwg1_022.pdf"
+   }
+  ],
   "geo_coverage": [
    "Australia",
    "Brunei Darussalam",
@@ -154,7 +169,12 @@
    "bilateral"
   ],
   "languages": "English:https://www.environment.gov.au/marine/international-activities/pacific-ocean-litter-project",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.environment.gov.au/marine/international-activities/pacific-ocean-litter-project"
+   }
+  ],
   "geo_coverage": [
    "Asia And The Pacific"
   ],
@@ -186,7 +206,12 @@
    "private not for profit"
   ],
   "languages": "English:https://boi.ucsb.edu/active_projects/river-plastics-pollution",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://boi.ucsb.edu/active_projects/river-plastics-pollution"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -216,7 +241,12 @@
    "national government"
   ],
   "languages": "English:https://globalnews.ca/news/5821246/federal-program-cleaning-up-oceans/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://globalnews.ca/news/5821246/federal-program-cleaning-up-oceans/"
+   }
+  ],
   "geo_coverage": [
    "Canada"
   ],
@@ -250,7 +280,12 @@
    "private for profit"
   ],
   "languages": "English:https://www.circulatecapital.com/post/circulate-capital-and-usaid-team-up-to-fight-ocean-plastic-pollution",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.circulatecapital.com/post/circulate-capital-and-usaid-team-up-to-fight-ocean-plastic-pollution"
+   }
+  ],
   "geo_coverage": [
    "Indonesia",
    "Philippines",
@@ -291,7 +326,12 @@
    "private for profit"
   ],
   "languages": "English:https://www.circulatecapital.com",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.circulatecapital.com"
+   }
+  ],
   "geo_coverage": [
    "Asia And The Pacific"
   ],
@@ -323,7 +363,12 @@
    "multilateral"
   ],
   "languages": "English:http://www.basel.int/Implementation/Plasticwastes/PlasticWastePartnership/tabid/8096/Default.aspx",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.basel.int/Implementation/Plasticwastes/PlasticWastePartnership/tabid/8096/Default.aspx"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -354,7 +399,12 @@
    "multilateral"
   ],
   "languages": "English:https://www.eib.org/en/publications/joint-initiative-on-circular-economy",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.eib.org/en/publications/joint-initiative-on-circular-economy"
+   }
+  ],
   "geo_coverage": [
    "Austria",
    "Belgium",
@@ -415,7 +465,12 @@
    "private not for profit"
   ],
   "languages": "English:https://www.beyondplasticmed.org/en/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.beyondplasticmed.org/en/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -448,7 +503,12 @@
    "multilateral"
   ],
   "languages": "English:https://www.thegef.org/news/gef-council-approves-ambitious-work-program-green-cities-nature-and-climate-change",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.thegef.org/news/gef-council-approves-ambitious-work-program-green-cities-nature-and-climate-change"
+   }
+  ],
   "geo_coverage": [
    "Antigua And Barbuda",
    "Barbados",
@@ -510,7 +570,12 @@
    "multilateral"
   ],
   "languages": "English:https://sgp.undp.org",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://sgp.undp.org"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -541,7 +606,12 @@
    "multilateral"
   ],
   "languages": "English:https://www.gefcrew.org",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.gefcrew.org"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -573,7 +643,12 @@
    "bilateral"
   ],
   "languages": "English:https://www.hellenicshippingnews.com/global-project-launched-to-tackle-plastic-litter-from-ships-and-fisheries/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.hellenicshippingnews.com/global-project-launched-to-tackle-plastic-litter-from-ships-and-fisheries/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -636,7 +711,12 @@
    "bilateral"
   ],
   "languages": "English:https://sdg.iisd.org/news/unep-japan-announce-marine-litter-initiative/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://sdg.iisd.org/news/unep-japan-announce-marine-litter-initiative/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -710,7 +790,12 @@
    "private not for profit"
   ],
   "languages": "English:https://oceanconservancy.org/news/trash-free-seas-alliance-members-announce-100-million-investment-fight-ocean-plastic-pollution-500000-tons-virgin-plastic-eliminated-products-packaging/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://oceanconservancy.org/news/trash-free-seas-alliance-members-announce-100-million-investment-fight-ocean-plastic-pollution-500000-tons-virgin-plastic-eliminated-products-packaging/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -740,7 +825,12 @@
    "private for profit"
   ],
   "languages": "English:https://www.odysseyimpactinvestments.com",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.odysseyimpactinvestments.com"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -771,7 +861,12 @@
    "private not for profit"
   ],
   "languages": "English:https://www.soalliance.org/ocean-solutions-accelerator/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.soalliance.org/ocean-solutions-accelerator/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -803,7 +898,12 @@
    "private not for profit"
   ],
   "languages": "English:https://docs.wixstatic.com/ugd/77554d_5c376e5e7e0e4e24990c8449bf4bfc0c.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://docs.wixstatic.com/ugd/77554d_5c376e5e7e0e4e24990c8449bf4bfc0c.pdf"
+   }
+  ],
   "geo_coverage": [
    "Asia And The Pacific"
   ],
@@ -840,7 +940,12 @@
    "private not for profit"
   ],
   "languages": "English:https://www.oppa.id/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.oppa.id/"
+   }
+  ],
   "geo_coverage": [
    "Indonesia"
   ],
@@ -872,7 +977,12 @@
    "private not for profit"
   ],
   "languages": "English:https://www.packard.org/what-we-fund/ocean/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.packard.org/what-we-fund/ocean/"
+   }
+  ],
   "geo_coverage": [
    "United States Of America",
    "Mexico",
@@ -906,7 +1016,12 @@
    "private not for profit"
   ],
   "languages": "English:https://www2.fundsforngos.org/latest-funds-for-ngos/call-for-proposals-for-projects-on-the-management-of-plastic-waste-saint-lucia/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www2.fundsforngos.org/latest-funds-for-ngos/call-for-proposals-for-projects-on-the-management-of-plastic-waste-saint-lucia/"
+   }
+  ],
   "geo_coverage": [
    "Saintt Lucia"
   ],
@@ -939,7 +1054,12 @@
    "bilateral"
   ],
   "languages": "English:https://www.tearfund.org/en/media/press_releases/tearfund_launches_matched_giving_appeal_to_reduce_plastic_pollution_in_pakistan/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.tearfund.org/en/media/press_releases/tearfund_launches_matched_giving_appeal_to_reduce_plastic_pollution_in_pakistan/"
+   }
+  ],
   "geo_coverage": [
    "Pakistan"
   ],
@@ -975,7 +1095,12 @@
    "bilateral"
   ],
   "languages": "English:https://devtracker.dfid.gov.uk/projects/GB-GOV-1-300124",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://devtracker.dfid.gov.uk/projects/GB-GOV-1-300124"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -1007,7 +1132,12 @@
    "bilateral"
   ],
   "languages": "English:https://devtracker.fcdo.gov.uk/projects/GB-GOV-1-300604",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://devtracker.fcdo.gov.uk/projects/GB-GOV-1-300604"
+   }
+  ],
   "geo_coverage": [
    "Ghana",
    "Bangladesh",
@@ -1040,7 +1170,12 @@
    "bilateral"
   ],
   "languages": "English:https://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdf"
+   }
+  ],
   "geo_coverage": [
    "Antigua And Barbuda",
    "Australia",
@@ -1124,7 +1259,12 @@
    "bilateral"
   ],
   "languages": "English:https://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdf"
+   }
+  ],
   "geo_coverage": [
    "Antigua And Barbuda",
    "Australia",
@@ -1209,7 +1349,12 @@
    "bilateral"
   ],
   "languages": "English:https://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://bluecharter.thecommonwealth.org/wp-content/uploads/2019/02/Commonwealth-Clean-Oceans-initiatives-and-funding.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -1240,7 +1385,12 @@
    "private for profit"
   ],
   "languages": "English:https://www.weforum.org/gpap",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.weforum.org/gpap"
+   }
+  ],
   "geo_coverage": [
    "Indonesia",
    "Ghana",
@@ -1275,7 +1425,12 @@
    "bilateral"
   ],
   "languages": "English:https://www.usaid.gov/news-information/press-releases/jun-5-2019-usaid-announces-private-sector-partnership-combat-plastic-pollution",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.usaid.gov/news-information/press-releases/jun-5-2019-usaid-announces-private-sector-partnership-combat-plastic-pollution"
+   }
+  ],
   "geo_coverage": [
    "Indonesia",
    "Philippines",
@@ -1309,7 +1464,12 @@
    "national government"
   ],
   "languages": "English:https://recyclingpartnership.org",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://recyclingpartnership.org"
+   }
+  ],
   "geo_coverage": [
    "United States Of America"
   ],
@@ -1341,7 +1501,12 @@
    "bilateral"
   ],
   "languages": "English:https://www.usaid.gov/vietnam/partnership-opportunities/mwrp-aps-amendment-2",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.usaid.gov/vietnam/partnership-opportunities/mwrp-aps-amendment-2"
+   }
+  ],
   "geo_coverage": [
    "Indonesia",
    "Philippines",
@@ -1376,7 +1541,12 @@
    "multilateral"
   ],
   "languages": "English:https://www.thegef.org/about/funding",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.thegef.org/about/funding"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -1407,7 +1577,12 @@
    "multilateral"
   ],
   "languages": "English:https://www.thegef.org/project/afldc-capacity-strengthening-and-technical-assistance-implementation-stockholm-convention-1",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.thegef.org/project/afldc-capacity-strengthening-and-technical-assistance-implementation-stockholm-convention-1"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -1437,7 +1612,12 @@
    "multilateral"
   ],
   "languages": "English:https://www.thegef.org/project/establishing-circular-economy-framework-plastics-sector-ghana",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.thegef.org/project/establishing-circular-economy-framework-plastics-sector-ghana"
+   }
+  ],
   "geo_coverage": [
    "Ghana"
   ],
@@ -1502,7 +1682,12 @@
    "multilateral"
   ],
   "languages": "English:https://www.worldbank.org/en/topic/environment/brief/the-world-banks-blue-economy-program-and-problue-frequently-asked-questions",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.worldbank.org/en/topic/environment/brief/the-world-banks-blue-economy-program-and-problue-frequently-asked-questions"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -1532,7 +1717,12 @@
    "multilateral"
   ],
   "languages": "English:https://www.ifc.org/wps/wcm/connect/corp_ext_content/ifc_external_corporate_site/home",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.ifc.org/wps/wcm/connect/corp_ext_content/ifc_external_corporate_site/home"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -1597,7 +1787,12 @@
    "multilateral"
   ],
   "languages": "English:http://www.beritajakarta.id/en/read/25352/denmark-norway-ready-to-help-solve-garbage-problems-in-jakarta",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.beritajakarta.id/en/read/25352/denmark-norway-ready-to-help-solve-garbage-problems-in-jakarta"
+   }
+  ],
   "geo_coverage": [
    "Indonesia"
   ],
@@ -1630,7 +1825,12 @@
    "national government"
   ],
   "languages": "English:https://www.worldbank.org/en/news/feature/2018/10/29/sovereign-blue-bond-issuance-frequently-asked-questions",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.worldbank.org/en/news/feature/2018/10/29/sovereign-blue-bond-issuance-frequently-asked-questions"
+   }
+  ],
   "geo_coverage": [
    "Seychelles"
   ],
@@ -1690,7 +1890,12 @@
    "bilateral"
   ],
   "languages": "English:http://www.kgreengrowthpartnership.org",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.kgreengrowthpartnership.org"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -1720,7 +1925,12 @@
    "multilateral"
   ],
   "languages": "English:https://www.worldbank.org/en/news/press-release/2019/04/03/world-bank-launches-bonds-to-highlight-the-challenge-of-plastic-waste-in-oceans",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.worldbank.org/en/news/press-release/2019/04/03/world-bank-launches-bonds-to-highlight-the-challenge-of-plastic-waste-in-oceans"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -1750,7 +1960,12 @@
    "private not for profit"
   ],
   "languages": "English:http://documents.worldbank.org/curated/en/651521537901259717/pdf/130154-WP-PUBLIC-SolvingMarinePollution.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://documents.worldbank.org/curated/en/651521537901259717/pdf/130154-WP-PUBLIC-SolvingMarinePollution.pdf"
+   }
+  ],
   "geo_coverage": [
    "Thailand"
   ],
@@ -1782,7 +1997,12 @@
    "private not for profit"
   ],
   "languages": "English:https://www.nationalgeographic.org/funding-opportunities/innovation-challenges/plastic/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.nationalgeographic.org/funding-opportunities/innovation-challenges/plastic/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -1812,7 +2032,12 @@
    "multilateral"
   ],
   "languages": "English:https://ec.europa.eu/environment/marine/good-environmental-status/descriptor-10/index_en.htm",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://ec.europa.eu/environment/marine/good-environmental-status/descriptor-10/index_en.htm"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -1844,7 +2069,12 @@
    "bilateral"
   ],
   "languages": "English:http://sdg.iisd.org/news/unep-cobsea-and-sweden-announce-project-to-tackle-marine-plastic-pollution-in-sea/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://sdg.iisd.org/news/unep-cobsea-and-sweden-announce-project-to-tackle-marine-plastic-pollution-in-sea/"
+   }
+  ],
   "geo_coverage": [
    "Asia And The Pacific"
   ],
@@ -1876,7 +2106,12 @@
    "national government"
   ],
   "languages": "English:https://www.planning.gov.tt/services/green-fund-services",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.planning.gov.tt/services/green-fund-services"
+   }
+  ],
   "geo_coverage": [
    "Trinidad And Tobago"
   ],
@@ -1908,7 +2143,12 @@
    "multilateral"
   ],
   "languages": "English:http://marinelitternetwork.com/the-partnership/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://marinelitternetwork.com/the-partnership/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -1940,7 +2180,12 @@
    "bilateral"
   ],
   "languages": "English:https://www.unenvironment.org/news-and-stories/press-release/sweden-and-un-environment-announce-6-million-project-beat-plastic",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.unenvironment.org/news-and-stories/press-release/sweden-and-un-environment-announce-6-million-project-beat-plastic"
+   }
+  ],
   "geo_coverage": [
    "Asia And The Pacific"
   ],
@@ -1973,7 +2218,12 @@
    "bilateral"
   ],
   "languages": "English:https://www.iucn.org/news/marine-and-polar/201904/iucn-launches-call-proposals-reduce-plastic-leakage-ocean",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iucn.org/news/marine-and-polar/201904/iucn-launches-call-proposals-reduce-plastic-leakage-ocean"
+   }
+  ],
   "geo_coverage": [
    "Kenya",
    "Mozambique",
@@ -2012,7 +2262,12 @@
    "private not for profit"
   ],
   "languages": "English:https://www.iucn.org/sites/dev/files/pwfi_factsheet_final_0.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iucn.org/sites/dev/files/pwfi_factsheet_final_0.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -2046,7 +2301,12 @@
    "private not for profit"
   ],
   "languages": "English:https://www.iucn.org/regions/mediterranean/projects/current-projects/plastic-waste-free-islands-med-project",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iucn.org/regions/mediterranean/projects/current-projects/plastic-waste-free-islands-med-project"
+   }
+  ],
   "geo_coverage": [
    "Menorca",
    "Cyprus"
@@ -2081,7 +2341,12 @@
    "private not for profit"
   ],
   "languages": "English:https://www.iucn.org/theme/marine-and-polar/our-work/close-plastic-tap-programme/projects",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iucn.org/theme/marine-and-polar/our-work/close-plastic-tap-programme/projects"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -2109,7 +2374,12 @@
    "national government"
   ],
   "languages": "English:https://ec.europa.eu/fisheries/sites/fisheries/files/docs/body/2015-cfp-funding_en.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://ec.europa.eu/fisheries/sites/fisheries/files/docs/body/2015-cfp-funding_en.pdf"
+   }
+  ],
   "geo_coverage": [
    "Austria",
    "Belgium",
@@ -2208,7 +2478,12 @@
    "private for profit"
   ],
   "languages": "English:https://www.syke.fi/en-US/Current/The_winners_of_the_Meriroskahaaste_chall(47950)",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.syke.fi/en-US/Current/The_winners_of_the_Meriroskahaaste_chall(47950)"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -2239,7 +2514,12 @@
    "national government"
   ],
   "languages": "English:https://www.canada.ca/en/environment-climate-change/news/2020/02/environment-and-climate-change-canada-phase-2-recipients-and-nine-new-plastics-and-clean-technology-challenges.html",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.canada.ca/en/environment-climate-change/news/2020/02/environment-and-climate-change-canada-phase-2-recipients-and-nine-new-plastics-and-clean-technology-challenges.html"
+   }
+  ],
   "geo_coverage": [
    "Canada"
   ],
@@ -2302,7 +2582,12 @@
    "bilateral"
   ],
   "languages": "English:https://www.giz.de/en/worldwide/15109.html",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.giz.de/en/worldwide/15109.html"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -2332,7 +2617,12 @@
    "multilateral"
   ],
   "languages": "English:https://knuw.nrw/wp-content/uploads/2019/10/Factsheet-GIZ_plastics-circular-economy.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://knuw.nrw/wp-content/uploads/2019/10/Factsheet-GIZ_plastics-circular-economy.pdf"
+   }
+  ],
   "geo_coverage": [
    "China",
    "Indonesia",
@@ -2370,7 +2660,12 @@
    "private not for profit"
   ],
   "languages": "English:https://www.microsoft.com/en-us/ai/ai-for-earth-grants",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.microsoft.com/en-us/ai/ai-for-earth-grants"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -2400,7 +2695,12 @@
    "national government"
   ],
   "languages": "English:https://www.mfe.govt.nz/more/funding/waste-minimisation-fund/about-waste-minimisation-fund",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.mfe.govt.nz/more/funding/waste-minimisation-fund/about-waste-minimisation-fund"
+   }
+  ],
   "geo_coverage": [
    "New Zealand"
   ],
@@ -2432,7 +2732,12 @@
    "multilateral"
   ],
   "languages": "English:https://www.interreg-baltic.eu/about-the-programme.html",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.interreg-baltic.eu/about-the-programme.html"
+   }
+  ],
   "geo_coverage": [
    "Denmark",
    "Estonia",
@@ -2574,7 +2879,12 @@
    "bilateral"
   ],
   "languages": "English:http://www.basel.int/Implementation/Plasticwaste,MarinePlasticsLitterandMicropla/Overview/Projects/tabid/7991/Default.aspx",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.basel.int/Implementation/Plasticwaste,MarinePlasticsLitterandMicropla/Overview/Projects/tabid/7991/Default.aspx"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -2662,7 +2972,12 @@
    "sea-land interface"
   ],
   "languages": "English:http://www.opc.ca.gov/programs-summary/marine-pollution/oceanlitterstrategyproject/about/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.opc.ca.gov/programs-summary/marine-pollution/oceanlitterstrategyproject/about/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -2690,7 +3005,12 @@
   "valid_to": null,
   "tags": null,
   "languages": "English:https://www.ellenmacarthurfoundation.org/assets/downloads/insight/Circularity-Indicators_Methodology_May2015.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.ellenmacarthurfoundation.org/assets/downloads/insight/Circularity-Indicators_Methodology_May2015.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [
@@ -2722,7 +3042,12 @@
    "methodology"
   ],
   "languages": "English:https://mcc.jrc.ec.europa.eu/documents/201702074014.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://mcc.jrc.ec.europa.eu/documents/201702074014.pdf"
+   }
+  ],
   "geo_coverage": [
    "Austria",
    "Belgium",
@@ -2782,7 +3107,12 @@
    "state of knowledge"
   ],
   "languages": "English:https://mcc.jrc.ec.europa.eu/documents/201709180716.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://mcc.jrc.ec.europa.eu/documents/201709180716.pdf"
+   }
+  ],
   "geo_coverage": [
    "Austria",
    "Belgium",
@@ -3519,7 +3849,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/fileadmin/galleries/About%20ISWA/ISWA_Roadmap_Report.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/fileadmin/galleries/About%20ISWA/ISWA_Roadmap_Report.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -3555,7 +3890,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3115",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3115"
+   }
+  ],
   "geo_coverage": [
    "Uganda"
   ],
@@ -3593,7 +3933,12 @@
    "waste management"
   ],
   "languages": "English:https://www.pseau.org/outils/ouvrages/abrelpe_iswa_solid_waste_guidelines_for_successful_planning_2012.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.pseau.org/outils/ouvrages/abrelpe_iswa_solid_waste_guidelines_for_successful_planning_2012.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -3628,7 +3973,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=2372",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=2372"
+   }
+  ],
   "geo_coverage": [
    "Bosnia And Herzegovina",
    "Croatia",
@@ -3666,7 +4016,12 @@
    "waste management"
   ],
   "languages": "English:https://cwm.unitar.org/national-profiles/publications/cw/wm/UNEP_UNITAR_NWMS_English.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://cwm.unitar.org/national-profiles/publications/cw/wm/UNEP_UNITAR_NWMS_English.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -3704,7 +4059,12 @@
    "macroplastics"
   ],
   "languages": "English:http://www.basel.int/Implementation/Plasticwastes/PlasticWastePartnership/tabid/8096/Default.aspx",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.basel.int/Implementation/Plasticwastes/PlasticWastePartnership/tabid/8096/Default.aspx"
+   }
+  ],
   "geo_coverage": [
    "Basel Convention"
   ],
@@ -3741,7 +4101,12 @@
    "recycling"
   ],
   "languages": "English:https://marinelitter.iswa.org/fileadmin/user_upload/Marine_Task_Force_Report_2017/ISWA_report_interactive.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://marinelitter.iswa.org/fileadmin/user_upload/Marine_Task_Force_Report_2017/ISWA_report_interactive.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [
@@ -3873,7 +4238,12 @@
    "macroplastics"
   ],
   "languages": "English:http://www.basel.int/Implementation/Plasticwastes/Technicalguidelines/Overview/tabid/7992/Default.aspx",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.basel.int/Implementation/Plasticwastes/Technicalguidelines/Overview/tabid/7992/Default.aspx"
+   }
+  ],
   "geo_coverage": [
    "Basel Convention",
    "Rotterdam Convention",
@@ -3911,7 +4281,12 @@
    "waste management"
   ],
   "languages": "English:http://www.basel.int/Implementation/Plasticwastes/Technicalguidelines/Overview/tabid/7992/Default.aspx",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.basel.int/Implementation/Plasticwastes/Technicalguidelines/Overview/tabid/7992/Default.aspx"
+   }
+  ],
   "geo_coverage": [
    "Basel Convention",
    "Rotterdam Convention",
@@ -3952,7 +4327,12 @@
    "waste management"
   ],
   "languages": "English:http://www.basel.int/Implementation/Plasticwastes/Technicalguidelines/Overview/tabid/7992/Default.aspx",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.basel.int/Implementation/Plasticwastes/Technicalguidelines/Overview/tabid/7992/Default.aspx"
+   }
+  ],
   "geo_coverage": [
    "Basel Convention",
    "Rotterdam Convention",
@@ -3988,7 +4368,12 @@
    "microplastics"
   ],
   "languages": "English:https://wedocs.unep.org/bitstream/handle/20.500.11822/25485/plastic_alternative.pdf?sequence=1&isAllowed=y",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://wedocs.unep.org/bitstream/handle/20.500.11822/25485/plastic_alternative.pdf?sequence=1&isAllowed=y"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -4022,7 +4407,12 @@
    "sea-land interface"
   ],
   "languages": "English:http://wedocs.unep.org/bitstream/handle/20.500.11822/9545/-Sources%2c_Fate_and_Effects_of_Microplastics_in_the_Marine_Environment_A_Global_Assessment.pdf?sequence=2&isAllowed=y",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://wedocs.unep.org/bitstream/handle/20.500.11822/9545/-Sources%2c_Fate_and_Effects_of_Microplastics_in_the_Marine_Environment_A_Global_Assessment.pdf?sequence=2&isAllowed=y"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -4059,7 +4449,12 @@
    "microplastics"
   ],
   "languages": "English:http://wedocs.unep.org/bitstream/handle/20.500.11822/9798/-Marine_litter_Vital_graphics-2016MarineLitterVG.pdf.pdf?sequence=3&isAllowed=y",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://wedocs.unep.org/bitstream/handle/20.500.11822/9798/-Marine_litter_Vital_graphics-2016MarineLitterVG.pdf.pdf?sequence=3&isAllowed=y"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -4095,7 +4490,12 @@
    "sea"
   ],
   "languages": "English:http://marinelitternetwork.engr.uga.edu/marine-litter-abandoned-lost-or-otherwise-discarded-fishing-gear/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://marinelitternetwork.engr.uga.edu/marine-litter-abandoned-lost-or-otherwise-discarded-fishing-gear/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -4129,7 +4529,12 @@
    "macroplastics"
   ],
   "languages": "English:https://wedocs.unep.org/bitstream/handle/20.500.11822/25496/singleUsePlastic_sustainability.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://wedocs.unep.org/bitstream/handle/20.500.11822/25496/singleUsePlastic_sustainability.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -4161,7 +4566,12 @@
    "state of knowledge"
   ],
   "languages": "English:https://portals.iucn.org/library/sites/library/files/documents/2019-027-En.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://portals.iucn.org/library/sites/library/files/documents/2019-027-En.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -4193,7 +4603,12 @@
    "macroplastics"
   ],
   "languages": "English:https://www.unece.org/fileadmin/DAM/stats/documents/ece/ces/ge.33/2019/mtg2/S2_1a_Ind_11_6_1_EN.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.unece.org/fileadmin/DAM/stats/documents/ece/ces/ge.33/2019/mtg2/S2_1a_Ind_11_6_1_EN.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -4227,7 +4642,12 @@
    "microplastics"
   ],
   "languages": "English:https://www.iucn.org/theme/marine-and-polar/our-work/close-plastic-tap-programme/reports",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iucn.org/theme/marine-and-polar/our-work/close-plastic-tap-programme/reports"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -4273,7 +4693,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/media/publications/knowledge-base/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/media/publications/knowledge-base/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -4311,7 +4736,12 @@
    "microplastics"
   ],
   "languages": "English:https://www.epa.gov/trash-free-waters",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.epa.gov/trash-free-waters"
+   }
+  ],
   "geo_coverage": [
    "United States Of America"
   ],
@@ -4408,7 +4838,12 @@
    "waste management"
   ],
   "languages": "English:https://www.waterboards.ca.gov/water_issues/programs/stormwater/trash_implementation.html",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.waterboards.ca.gov/water_issues/programs/stormwater/trash_implementation.html"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -4451,7 +4886,12 @@
    "waste management"
   ],
   "languages": "English:https://gefmarineplastics.org/publications?pg=2",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://gefmarineplastics.org/publications?pg=2"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -4578,7 +5018,12 @@
    "microplastics"
   ],
   "languages": "English:https://helcom.fi/action-areas/monitoring-and-assessment/monitoring-manual/litter/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://helcom.fi/action-areas/monitoring-and-assessment/monitoring-manual/litter/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -4672,7 +5117,12 @@
    "waste management"
   ],
   "languages": "English: https://papersmart.unon.org/resolution/uploads/unep_aheg_2018_inf3_full_assessment_en.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://papersmart.unon.org/resolution/uploads/unep_aheg_2018_inf3_full_assessment_en.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -4708,7 +5158,12 @@
    "guidance (policy/decision makers)"
   ],
   "languages": "English:https://www.lifecycleinitiative.org/national-guidance-for-marine-plastic-hotspotting-and-shaping-actions/#",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.lifecycleinitiative.org/national-guidance-for-marine-plastic-hotspotting-and-shaping-actions/#"
+   }
+  ],
   "geo_coverage": [
    "Cyprus",
    "Kenya",
@@ -4751,7 +5206,12 @@
    "sea-land interface"
   ],
   "languages": "English:https://wedocs.unep.org/rest/bitstreams/7859/retrieve",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://wedocs.unep.org/rest/bitstreams/7859/retrieve"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -4782,7 +5242,12 @@
    "monitoring methodology"
   ],
   "languages": "English:https://www.unescap.org/sites/default/files/ESCAP_SDG14_Policy%20Brief_Final.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.unescap.org/sites/default/files/ESCAP_SDG14_Policy%20Brief_Final.pdf"
+   }
+  ],
   "geo_coverage": [
    "Asia And The Pacific"
   ],
@@ -4822,7 +5287,12 @@
    "waste management"
   ],
   "languages": "English:https://www.apec.org/marinedebris/Resources#Resources",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.apec.org/marinedebris/Resources#Resources"
+   }
+  ],
   "geo_coverage": [
    "Asia And The Pacific"
   ],
@@ -4865,7 +5335,12 @@
    "waste management"
   ],
   "languages": "English:https://www.apec.org/Publications?Category=&Keyword=marine+litter&PublicationTitle=&PublicationNumber=&pubType=&ISBN=&KeyOnly=False&StartYear=&StartMonth=&EndYear=&EndMonth=",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.apec.org/Publications?Category=&Keyword=marine+litter&PublicationTitle=&PublicationNumber=&pubType=&ISBN=&KeyOnly=False&StartYear=&StartMonth=&EndYear=&EndMonth="
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -4900,7 +5375,12 @@
    "waste management"
   ],
   "languages": "English:https://wedocs.unep.org/bitstream/handle/20.500.11822/8638/WastePlasticsEST_Compendium_full.pdf?sequence=3&isAllowed=y",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://wedocs.unep.org/bitstream/handle/20.500.11822/8638/WastePlasticsEST_Compendium_full.pdf?sequence=3&isAllowed=y"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -4993,7 +5473,12 @@
    "waste management"
   ],
   "languages": "English:http://www.env.go.jp/en/water/marine_litter/pdf/112576.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.env.go.jp/en/water/marine_litter/pdf/112576.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [
@@ -5124,7 +5609,12 @@
    "macroplastics"
   ],
   "languages": "English:https://openlittermap.com/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://openlittermap.com/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -5255,7 +5745,12 @@
    "waste management"
   ],
   "languages": "English:https://marinelitter.iswa.org/media/news/detail/press-release-marine-litter-calculator",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://marinelitter.iswa.org/media/news/detail/press-release-marine-litter-calculator"
+   }
+  ],
   "geo_coverage": [
    "Indonesia"
   ],
@@ -5296,7 +5791,12 @@
    "waste management"
   ],
   "languages": "English:https://portals.iucn.org/library/sites/library/files/documents/2020-001-En.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://portals.iucn.org/library/sites/library/files/documents/2020-001-En.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [
@@ -5330,7 +5830,12 @@
    "macroplastics"
   ],
   "languages": "English:http://plasticdisclosure.org",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://plasticdisclosure.org"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -5365,7 +5870,12 @@
    "waste management"
   ],
   "languages": "English:https://quantis-intl.com/strategy/collaborative-initiatives/plastic-leak-project/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://quantis-intl.com/strategy/collaborative-initiatives/plastic-leak-project/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -5399,7 +5909,12 @@
    "training"
   ],
   "languages": "Portuguese:http://manejo.io.usp.br/index.php",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Portuguese",
+    "url": "https://manejo.io.usp.br/index.php"
+   }
+  ],
   "geo_coverage": [
    "Brazil"
   ],
@@ -5435,7 +5950,12 @@
    "training"
   ],
   "languages": "Portuguese:https://www.marinha.mil.br/secirm/sites/www.marinha.mil.br.secirm/files/publicacoes/cartilha-mariana.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Portuguese",
+    "url": "https://www.marinha.mil.br/secirm/sites/www.marinha.mil.br.secirm/files/publicacoes/cartilha-mariana.pdf"
+   }
+  ],
   "geo_coverage": [
    "Brazil"
   ],
@@ -5470,7 +5990,12 @@
    "river"
   ],
   "languages": "English:https://www.sciencedirect.com/science/article/abs/pii/S0269749120317589?via%3Dihub",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.sciencedirect.com/science/article/abs/pii/S0269749120317589?via%3Dihub"
+   }
+  ],
   "geo_coverage": [
    "Brazil"
   ],
@@ -5503,7 +6028,12 @@
    "river"
   ],
   "languages": "English:https://www.sciencedirect.com/science/article/abs/pii/S0025326X19304175",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.sciencedirect.com/science/article/abs/pii/S0025326X19304175"
+   }
+  ],
   "geo_coverage": [
    "Brazil"
   ],
@@ -5539,7 +6069,12 @@
    "waste management"
   ],
   "languages": "English:https://www.oneplanetnetwork.org/country-roadmaps",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.oneplanetnetwork.org/country-roadmaps"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -5577,7 +6112,12 @@
    "waste management"
   ],
   "languages": "English:https://c402277.ssl.cf1.rackcdn.com/publications/1212/files/original/SOLVING_PLASTIC_POLLUTION_THROUGH_ACCOUNTABILITY_ENF_SINGLE.pdf?1551798060",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://c402277.ssl.cf1.rackcdn.com/publications/1212/files/original/SOLVING_PLASTIC_POLLUTION_THROUGH_ACCOUNTABILITY_ENF_SINGLE.pdf?1551798060"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -5616,7 +6156,12 @@
    "waste management"
   ],
   "languages": "English:https://www.worldbank.org/en/news/immersive-story/2018/09/20/what-a-waste-an-updated-look-into-the-future-of-solid-waste-management",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.worldbank.org/en/news/immersive-story/2018/09/20/what-a-waste-an-updated-look-into-the-future-of-solid-waste-management"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -5647,7 +6192,12 @@
    "guidance (policy/decision makers)"
   ],
   "languages": "English:https://www.ou.nl/-/unenvironment-mooc-marine-litter",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.ou.nl/-/unenvironment-mooc-marine-litter"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -5684,7 +6234,12 @@
    "waste management"
   ],
   "languages": "English:https://wedocs.unep.org/bitstream/handle/20.500.11822/9672/-Global_Waste_Management_Outlook-2015Global_Waste_Management_Outlook.pdf.pdf?sequence=3&amp%3BisAllowed=",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://wedocs.unep.org/bitstream/handle/20.500.11822/9672/-Global_Waste_Management_Outlook-2015Global_Waste_Management_Outlook.pdf.pdf?sequence=3&amp%3BisAllowed="
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -5717,7 +6272,12 @@
    "mechanism"
   ],
   "languages": "English:https://www.marinelittersolutions.com/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.marinelittersolutions.com/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -5750,7 +6310,12 @@
    "microplastics"
   ],
   "languages": "English:http://www.gesamp.org/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.gesamp.org/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -5786,7 +6351,12 @@
    "waste management"
   ],
   "languages": "English:https://bit.ly/3mQzyI2",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://bit.ly/3mQzyI2"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -5818,7 +6388,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/fileadmin/galleries/Task_Forces/TFGWM_Report_GWM_LR.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/fileadmin/galleries/Task_Forces/TFGWM_Report_GWM_LR.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -5853,7 +6428,12 @@
    "waste management"
   ],
   "languages": "English:http://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3159",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3159"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -5889,7 +6469,12 @@
    "waste management"
   ],
   "languages": "English:http://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3155",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3155"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -5926,7 +6511,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3252",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3252"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -5962,7 +6552,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=4202",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=4202"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -5995,7 +6590,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3224",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3224"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -6031,7 +6631,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=4020",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=4020"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -6065,7 +6670,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/media/publications/knowledge-base/?tx_iswaknowledgebase_searchbox%5Bsearchphrase%5D=Landfill%20Mining%20%202012&cHash=2e8dc8dbf9dad40f74321028ff65e2eb",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/media/publications/knowledge-base/?tx_iswaknowledgebase_searchbox%5Bsearchphrase%5D=Landfill%20Mining%20%202012&cHash=2e8dc8dbf9dad40f74321028ff65e2eb"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -6101,7 +6711,12 @@
    "waste management"
   ],
   "languages": "English: https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=4542",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=4542"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -6139,7 +6754,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=4545",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=4545"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -6174,7 +6794,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3157",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3157"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -6211,7 +6836,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=5071",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=5071"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -6245,7 +6875,12 @@
    "waste management"
   ],
   "languages": "English:https://bit.ly/3mVECLa",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://bit.ly/3mVECLa"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -6277,7 +6912,12 @@
    "waste management"
   ],
   "languages": "English:https://bit.ly/32inE1L",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://bit.ly/32inE1L"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -6309,7 +6949,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=2550",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=2550"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -6343,7 +6988,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=2136",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=2136"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -6379,7 +7029,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=5237",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=5237"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [
@@ -6414,7 +7069,12 @@
    "waste management"
   ],
   "languages": "English:https://bit.ly/353RjgP",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://bit.ly/353RjgP"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -6446,7 +7106,12 @@
    "inland"
   ],
   "languages": "English:https://bit.ly/3k0qs9T",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://bit.ly/3k0qs9T"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -6483,7 +7148,12 @@
    "waste management"
   ],
   "languages": "English: https://bit.ly/351jux2",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://bit.ly/351jux2"
+   }
+  ],
   "geo_coverage": [
    "Brazil"
   ],
@@ -6518,7 +7188,12 @@
    "macroplastics"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3820",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=3820"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -6559,7 +7234,12 @@
    "waste management"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=4920",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=4920"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -6592,7 +7272,12 @@
    "macroplastics"
   ],
   "languages": "English:https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=4561",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.iswa.org/index.php?eID=tx_iswaknowledgebase_download&documentUid=4561"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -6629,7 +7314,12 @@
    "sea-land interface"
   ],
   "languages": "English:https://wedocs.unep.org/bitstream/handle/20.500.11822/13604/rsrs186.pdf?sequence=1&isAllowed=y",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://wedocs.unep.org/bitstream/handle/20.500.11822/13604/rsrs186.pdf?sequence=1&isAllowed=y"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -6665,7 +7355,12 @@
    "waste management"
   ],
   "languages": "English:https://bit.ly/3k0qs9T",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://bit.ly/3k0qs9T"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -6735,7 +7430,12 @@
    "waste management"
   ],
   "languages": "English:https://www.pewtrusts.org/-/media/assets/2020/07/breakingtheplasticwave_report.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.pewtrusts.org/-/media/assets/2020/07/breakingtheplasticwave_report.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [
@@ -6773,7 +7473,12 @@
    "waste management"
   ],
   "languages": "English:https://unece.org/fileadmin/DAM/stats/documents/ece/ces/ge.33/2019/mtg2/S2_1a_Ind_11_6_1_EN.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://unece.org/fileadmin/DAM/stats/documents/ece/ces/ge.33/2019/mtg2/S2_1a_Ind_11_6_1_EN.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [
@@ -6812,7 +7517,12 @@
    "waste management"
   ],
   "languages": "English:https://plasticpollution.leeds.ac.uk/toolkits/wfd/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://plasticpollution.leeds.ac.uk/toolkits/wfd/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -6846,7 +7556,12 @@
    "microplastics"
   ],
   "languages": "English:https://www.plasticsoupfoundation.org/en/2017/10/softlaunch-my-little-plastic-footprint/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.plasticsoupfoundation.org/en/2017/10/softlaunch-my-little-plastic-footprint/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -6881,7 +7596,12 @@
    "waste management"
   ],
   "languages": "English:http://oceanimpact-quickscan.azurewebsites.net/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://oceanimpact-quickscan.azurewebsites.net/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -6916,7 +7636,12 @@
    "sea-land interface"
   ],
   "languages": "English:https://commonseas.com/programmes/plastic-drawdown",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://commonseas.com/programmes/plastic-drawdown"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -6959,7 +7684,12 @@
    "waste management"
   ],
   "languages": "English:https://wedocs.unep.org/bitstream/handle/20.500.11822/31161/k1804196_0e.pdf?sequence=5&isAllowed=y",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://wedocs.unep.org/bitstream/handle/20.500.11822/31161/k1804196_0e.pdf?sequence=5&isAllowed=y"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [
@@ -6995,7 +7725,12 @@
    "waste management"
   ],
   "languages": "English:https://www.unido.org/news/japan-funds-unido-project-south-africa-find-alternatives-single-use-plastic",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.unido.org/news/japan-funds-unido-project-south-africa-find-alternatives-single-use-plastic"
+   }
+  ],
   "geo_coverage": [
    "South Africa"
   ],
@@ -7028,7 +7763,12 @@
    "microplastics"
   ],
   "languages": "English:https://ubuntoo.com/",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://ubuntoo.com/"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -7058,7 +7798,12 @@
    "toolkit"
   ],
   "languages": "English:https://ec.europa.eu/jrc/en/publication/eu-marine-beach-litter-baselines",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://ec.europa.eu/jrc/en/publication/eu-marine-beach-litter-baselines"
+   }
+  ],
   "geo_coverage": [
    "Austria",
    "Belgium",
@@ -7115,7 +7860,12 @@
    "action plan"
   ],
   "languages": "English:https://www.env.go.jp/water/marine_litter/07_mat13_2_%EF%BC%93-2ALD.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.env.go.jp/water/marine_litter/07_mat13_2_%EF%BC%93-2ALD.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": "global",
   "attachments": [],
@@ -7208,7 +7958,12 @@
    "action plan"
   ],
   "languages": "English:https://asean.org/storage/2019/06/3.-ASEAN-Framework-of-Action-on-Marine-Debris-FINAL.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://asean.org/storage/2019/06/3.-ASEAN-Framework-of-Action-on-Marine-Debris-FINAL.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -7237,7 +7992,12 @@
    "action plan"
   ],
   "languages": "English:http://www.blacksea-commission.org/_publ-ML-Annex6-9.asp",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.blacksea-commission.org/_publ-ML-Annex6-9.asp"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -7266,7 +8026,12 @@
    "action plan"
   ],
   "languages": "English:https://www.cbd.int/doc/meetings/mar/mcbem-2014-03/other/mcbem-2014-03-115-en.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.cbd.int/doc/meetings/mar/mcbem-2014-03/other/mcbem-2014-03-115-en.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -7295,7 +8060,12 @@
    "action plan"
   ],
   "languages": "English:https://wedocs.unep.org/bitstream/handle/20.500.11822/30162/RAPMALI_19.pdf?sequence=1&isAllowed=y",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://wedocs.unep.org/bitstream/handle/20.500.11822/30162/RAPMALI_19.pdf?sequence=1&isAllowed=y"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -7324,7 +8094,12 @@
    "action plan"
   ],
   "languages": "English:https://helcom.fi/media/publications/Regional-Action-Plan-for-Marine-Litter.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://helcom.fi/media/publications/Regional-Action-Plan-for-Marine-Litter.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -7353,7 +8128,12 @@
    "action plan"
   ],
   "languages": "English:https://wedocs.unep.org/bitstream/handle/20.500.11822/6012/13ig21_09_annex2_21_07_eng.pdf?sequence=1&isAllowed=y",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://wedocs.unep.org/bitstream/handle/20.500.11822/6012/13ig21_09_annex2_21_07_eng.pdf?sequence=1&isAllowed=y"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -7382,7 +8162,12 @@
    "action plan"
   ],
   "languages": "English:https://nairobiconvention.org/Meeting%20Documents/December%202018/WIO-RAPMaLi_Full%20Revised%20Draft_29102018_Final.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://nairobiconvention.org/Meeting%20Documents/December%202018/WIO-RAPMaLi_Full%20Revised%20Draft_29102018_Final.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -7411,7 +8196,12 @@
    "action plan"
   ],
   "languages": "English:https://wedocs.unep.org/bitstream/handle/20.500.11822/26352/NOWPAP_RAPMALI.pdf?sequence=1&isAllowed=y",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://wedocs.unep.org/bitstream/handle/20.500.11822/26352/NOWPAP_RAPMALI.pdf?sequence=1&isAllowed=y"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -7440,7 +8230,12 @@
    "action plan"
   ],
   "languages": "English:https://www.ospar.org/documents?v=34422",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.ospar.org/documents?v=34422"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -7556,7 +8351,12 @@
    "action plan"
   ],
   "languages": "English:https://www.sprep.org/attachments/Circulars/prap_marine_litter.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.sprep.org/attachments/Circulars/prap_marine_litter.pdf"
+   }
+  ],
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
@@ -7583,7 +8383,12 @@
    "action plan"
   ],
   "languages": "English:http://www.environment.gov.au/protection/waste/publications/national-waste-policy-action-plan",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://www.environment.gov.au/protection/waste/publications/national-waste-policy-action-plan"
+   }
+  ],
   "geo_coverage": [
    "Australia"
   ],
@@ -7670,7 +8475,12 @@
    "action plan"
   ],
   "languages": "French:https://www.ecologie.gouv.fr/dechets-marins",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "French",
+    "url": "https://www.ecologie.gouv.fr/dechets-marins"
+   }
+  ],
   "geo_coverage": [
    "France"
   ],
@@ -7699,7 +8509,12 @@
    "action plan"
   ],
   "languages": "English:https://maritim.go.id/konten/unggahan/2018/03/NAP_Marine_Plastic_Debris_Indonesia_Summary.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://maritim.go.id/konten/unggahan/2018/03/NAP_Marine_Plastic_Debris_Indonesia_Summary.pdf"
+   }
+  ],
   "geo_coverage": [
    "Indonesia"
   ],
@@ -7757,7 +8572,12 @@
    "action plan"
   ],
   "languages": "Spanish:https://www.opengovpartnership.org/wp-content/uploads/2017/10/Panama_Action-Plan_2017-2019.docx",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "Spanish",
+    "url": "https://www.opengovpartnership.org/wp-content/uploads/2017/10/Panama_Action-Plan_2017-2019.docx"
+   }
+  ],
   "geo_coverage": [
    "Canada"
   ],
@@ -7786,7 +8606,12 @@
    "action plan"
   ],
   "languages": "English:https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/630999/litter-strategy-for-england-2017-v2.pdf",
-  "resource_language_url": null,
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/630999/litter-strategy-for-england-2017-v2.pdf"
+   }
+  ],
   "geo_coverage": [
    "United Kingdom"
   ],
