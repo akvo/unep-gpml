@@ -7,6 +7,7 @@ global_job_config:
   secrets:
     - name: GCP
     - name: docker-hub-credentials
+    - name: unep-gpml
   prologue:
     commands:
       - echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
