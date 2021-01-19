@@ -5,6 +5,8 @@ import axios from 'axios'
 import Maps from './maps'
 import './styles.scss'
 
+const topicTypes = ['project', 'event', 'policy', 'technology', 'resource']
+
 const Landing = ({ history }) => {
     const [country, setCountry] = useState(null);
     const [data, setData] = useState(null)
@@ -15,8 +17,18 @@ const Landing = ({ history }) => {
     }
 
     const toolTip = (params) => {
-        /* Disputed will started with "disputed-" */
-        return params.name;
+        const summary = data.map.find(it => it.iso_code === params.name)
+        if(summary){
+          return `
+            <div class="map-tooltip">
+              <h3>${summary.name}</h3>
+              <ul>
+              ${topicTypes.map(topic => `<li><span>${topic}</span><b>${summary[topic]}</b></li>`).join('')}
+              </ul>
+            </div>
+          `
+        }
+        return null
     }
 
     useEffect(() => {
@@ -66,7 +78,6 @@ const Landing = ({ history }) => {
     )
 }
 
-const topicTypes = ['project', 'event', 'policy', 'technology', 'resource']
 const Summary = ({ summary, country }) => {
   return (
     <div className="summary">

@@ -20,13 +20,13 @@ const Root = () => {
       logout
     } = useAuth0();
     const [claims, setClaims] = useState(null);
-    const [profile, setProfile] = useState({});
+    const [profile, setProfile] = useState(null);
     const [signupModalVisible, setSignupModalVisible] = useState(false)
 
     useEffect(() => {
       (async function fetchData() {
         const response = await getIdTokenClaims();
-        if (isAuthenticated) {
+        if (isAuthenticated && !profile) {
             const profile = await axios.get('/api/profile', {headers: {
                 Authorization: `Bearer ${response.__raw}`
             }});
@@ -36,7 +36,7 @@ const Root = () => {
             setClaims(response);
         }
       })();
-    }, [profile, getIdTokenClaims, isAuthenticated]);
+    }, [isAuthenticated]);
 
     return (
     <Router>
