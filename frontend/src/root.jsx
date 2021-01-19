@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react';
 import { Input, Button } from 'antd'
 import { SearchOutlined, CaretDownOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css';
 import Landing from './modules/landing/view'
 import Browse from './modules/browse/view'
-import logo from './images/GPML-logo.svg'
-import Signup from './modules/signup/view';
+import logo from './images/GPML-dp.svg'
 import axios from 'axios';
 import SignupModal from './modules/signup/signup-modal'
 
@@ -18,7 +17,7 @@ const Root = () => {
       isLoading,
       getIdTokenClaims,
       loginWithPopup,
-      logout,
+      logout
     } = useAuth0();
     const [claims, setClaims] = useState(null);
     const [profile, setProfile] = useState({});
@@ -37,10 +36,7 @@ const Root = () => {
             setClaims(response);
         }
       })();
-    }, [isAuthenticated]);
-
-    const currentPath = window.location.pathname;
-    const signUp = !isLoading && profile.isAuthenticated && !profile.hasProfile && currentPath !== '/signup';
+    }, [profile, getIdTokenClaims, isAuthenticated]);
 
     return (
     <Router>
@@ -60,10 +56,6 @@ const Root = () => {
                     <div className="rightside">
                         <Link to="/signup">{claims?.email_vefified ? claims?.name : "Signup"}</Link>
                         <Button type="link" onClick={logout}>Logout</Button>
-                        {/*
-                            &nbsp;&nbsp;|&nbsp;&nbsp;
-                            <Link to="/" onClick={() => logout({returnTo:"http://localhost:3001"})}>Logout</Link>
-                        */}
                     </div>
                 }
           </div>
@@ -71,7 +63,7 @@ const Root = () => {
         <header>
           <div className="ui container">
             <Link to="/"><img src={logo} className="logo" alt="GPML" /></Link>
-            <Input className="src" placeholder="Search for topics" suffix={<SearchOutlined />} />
+            <Input className="src" placeholder="Search for topics" suffix={<SearchOutlined />} size="large" />
             <nav>
               <Link to="/">Who we are</Link>
               <Link to="/">What we do</Link>
@@ -84,10 +76,8 @@ const Root = () => {
           {isLoading
               ? "" : (
               <>
-                  {signUp && <Redirect to="/signup"/>}
                   <Route path="/" exact component={Landing} />
                   <Route path="/browse/country?" component={Browse} />
-                  <Route path="/signup" component={Signup} />
               </>
           )}
       </div>
