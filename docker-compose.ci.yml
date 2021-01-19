@@ -16,6 +16,9 @@ services:
       - ./ci/test:/test:ro
     working_dir: /test
     entrypoint: ./entrypoint.sh
+    environment:
+      - GPML_AUTH0_USER
+      - GPML_AUTH0_PASSWORD
     depends_on:
       - db
       - backend
