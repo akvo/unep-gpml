@@ -54,7 +54,6 @@ const Root = () => {
                     </div>
                     :
                     <div className="rightside">
-                        <Link to="/signup">{claims?.email_vefified ? claims?.name : "Signup"}</Link>
                         <Button type="link" onClick={logout}>Logout</Button>
                     </div>
                 }
