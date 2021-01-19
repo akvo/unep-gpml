@@ -12,8 +12,8 @@
                               :email nil
                               :tags ["collection" "recovery" "partnerships" "funding"]
                               :geo_coverage_type "national"
-                              :geo_coverage_countries ["The Netherlands"]
-                              :urls [{:url "https://thegreatbubblebarrier.com/" :language "English"}]
+                              :geo_coverage_countries ["NLD"]
+                              :urls [{:url "https://thegreatbubblebarrier.com/" :language "en"}]
                               :attachments []
                               :remarks "Remarks"
                               :created "2021-01-01T00:00:00Z"
@@ -21,15 +21,15 @@
                              {:id 2
                               :title "Floating Trash Barrier"
                               :year_founded 2010
-                              :country "India"
+                              :country "IND"
                               :organisation_type "Startup"
                               :development_stage "Scale up"
                               :specifications_provided true
                               :email nil
                               :tags ["collection" "recovery" "plastics" "waste" "water" "customers"]
                               :geo_coverage_type "national"
-                              :geo_coverage_countries ["India"]
-                              :urls [{:url "https://www.alphamers.com/" :language "English"}]
+                              :geo_coverage_countries ["IND"]
+                              :urls [{:url "https://www.alphamers.com/" :language "en"}]
                               :attachments []
                               :remarks "Remarks"
                               :created "2021-01-01T00:00:00Z"
@@ -42,11 +42,11 @@
                          :description "Description of the event"
                          :image nil
                          :geo_coverage_type "national"
-                         :geo_coverage_countries ["Kenya"]
+                         :geo_coverage_countries ["KEN"]
                          :remarks "Remarks"
                          :tags ["microplastics" "sea-land interface" "state of knowledge"]
-                         :urls [{:url "http://example.com/events/en/event1.html" :language "English"}
-                                {:url "http://example.com/events/zh/event2.html" :language "Chinese"}]
+                         :urls [{:url "http://example.com/events/en/event1.html" :language "en"}
+                                {:url "http://example.com/events/zh/event2.html" :language "zh"}]
                          :created "2021-01-01T00:00:00Z"
                          :modified "2021-01-01T00:00:00Z"}
                         {:id 2
@@ -59,8 +59,8 @@
                          :geo_coverage_countries []
                          :remarks "Remarks"
                          :tags ["best practice" "inventory" "macroplastics"]
-                         :urls [{:url "http://example.com/events/en/event2.html" :language "English"}
-                                {:url "http://example.com/events/zh/event2.html" :language "Chinese"}]
+                         :urls [{:url "http://example.com/events/en/event2.html" :language "en"}
+                                {:url "http://example.com/events/zh/event2.html" :language "zh"}]
                          :created "2021-01-01T00:00:00Z"
                          :modified "2021-01-01T00:00:00Z"}])
 
@@ -68,7 +68,7 @@
                           :title "Environment (Protection) Act, 1986 (No. 29 of 1986)"
                           :original_title "The Environment (Protection)Act, 1986"
                           :data_source "FAOLEX"
-                          :country "India"
+                          :country "IND"
                           :abstract "An Act to provide for the protection and improvement of environment and for matters connected therewith"
                           :type_of_law "Legislation"
                           :record_number "LEX-FAOC021695"
@@ -78,8 +78,8 @@
                           :status "In force"
                           :tags ["product ban"]
                           :geo_coverage_type "national"
-                          :geo_coverage_countries ["India"]
-                          :urls [{:url "http://extwprlegs1.fao.org/docs/pdf/guy152293.pdf" :language "English"}]
+                          :geo_coverage_countries ["IND"]
+                          :urls [{:url "http://extwprlegs1.fao.org/docs/pdf/guy152293.pdf" :language "en"}]
                           :attachments ["http://extwprlegs1.fao.org/docs/pdf/guy152293.pdf"]
                           :remarks "Remarks"
                           :created "2021-01-01T00:00:00Z"
@@ -98,8 +98,8 @@
                           :status "In force"
                           :tags []
                           :geo_coverage_type "national"
-                          :geo_coverage_countries ["Jordan"]
-                          :urls [{:url "https://www.legislation.gov.au/Details/F2012C00858" :language "English"}]
+                          :geo_coverage_countries ["JOR"]
+                          :urls [{:url "https://www.legislation.gov.au/Details/F2012C00858" :language "en"}]
                           :attachments ["https://www.legislation.gov.au/Details/F2012C00858"]
                           :remarks "Remarks"
                           :created "2021-01-01T00:00:00Z"
@@ -116,12 +116,12 @@
                             :valid_from "2020-01-01T00:00:00Z"
                             :valid_to "2020-12-31T00:00:00Z"
                             :geo_coverage_type "national"
-                            :geo_coverage_countries ["Kenya"]
+                            :geo_coverage_countries ["KEN"]
                             :attachments ["http://example.com/foo.pdf"]
                             :organisations ["GRID Arendal" "The Global Partnership of Marine Litter" "United Nation Environmental Programme"]
                             :tags ["microplastics" "sea-land interface" "state of knowledge"]
-                            :urls [{:url "http://example.com/en/foo1.pdf" :language "English"}
-                                   {:url "http://example.com/zh/foo1.pdf" :language "Chinese"}]
+                            :urls [{:url "http://example.com/en/foo1.pdf" :language "en"}
+                                   {:url "http://example.com/zh/foo1.pdf" :language "zh"}]
                             :remarks "Remarks"
                             :created "2021-01-01T00:00:00Z"
                             :modified "2021-01-01T00:00:00Z"}
@@ -136,12 +136,12 @@
                             :valid_from "2020-01-01T00:00:00Z"
                             :valid_to "2020-12-31T00:00:00Z"
                             :geo_coverage_type "global with elements in specific areas"
-                            :geo_coverage_countries ["Kenya" "Germany" "India"]
+                            :geo_coverage_countries ["KEN" "DEU" "IND"]
                             :attachments ["http://example.com/foo.pdf"]
                             :organisations ["GRID Arendal" "The Global Partnership of Marine Litter" "United Nation Environmental Programme"]
                             :tags ["mechanism" "best practice" "inland" "inventory" "macroplastics" "minimization" "prevention" "state of knowledge"]
-                            :urls [{:url "http://example.com/en/foo1.pdf" :language "English"}
-                                   {:url "http://example.com/zh/foo1.pdf" :language "Chinese"}]
+                            :urls [{:url "http://example.com/en/foo1.pdf" :language "en"}
+                                   {:url "http://example.com/zh/foo1.pdf" :language "zh"}]
                             :remarks "Remarks"
                             :created "2021-01-01T00:00:00Z"
                             :modified "2021-01-01T00:00:00Z"}])
@@ -150,7 +150,7 @@
                            :title "Project 1"
                            :summary "Summary of the project"
                            :geo_coverage_type "national"
-                           :geo_coverage_countries ["Kenya"]
+                           :geo_coverage_countries ["KEN"]
                            :attachments ["http://example.com/foo.pdf"]
                            :organisations ["GRID Arendal" "The Global Partnership of Marine Litter" "United Nation Environmental Programme"]
                            :tags ["microplastics" "sea-land interface" "state of knowledge"]
@@ -161,7 +161,7 @@
                            :title "Resource 2"
                            :summary "Summary of the project"
                            :geo_coverage_type "global with elements in specific areas"
-                           :geo_coverage_countries ["Kenya" "Germany" "India"]
+                           :geo_coverage_countries ["KEN" "DEU" "IND"]
                            :organisations ["GRID Arendal" "The Global Partnership of Marine Litter" "United Nation Environmental Programme"]
                            :tags ["mechanism" "best practice" "inland" "inventory" "macroplastics" "minimization" "prevention" "state of knowledge"]
                            :remarks "Remarks"
