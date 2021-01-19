@@ -65,7 +65,7 @@ const Landing = ({ history }) => {
         </div>
         }
         <Maps
-          data={country ? [{name:country, itemStyle:{areaColor: "#00AAF1"}}] : []}
+          data={country ? [{ name: country, itemStyle: { areaColor: "#26AE60" }}] : []}
           clickEvents={clickEvents}
           tooltip={toolTip}
         />
