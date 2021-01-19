@@ -34,6 +34,7 @@ const Landing = ({ history }) => {
     }
     const countryOpts = data ? data.map.map(it => ({ value: it.iso_code, label: it.name })) : []
     const countryObj = data && country && data.map.find(it => it.iso_code === country)
+
     return (
       <div id="landing">
         {data &&
@@ -52,7 +53,7 @@ const Landing = ({ history }) => {
         </div>
         }
         <Maps
-          data={[]}
+          data={country ? [{name:country, itemStyle:{areaColor: "#00AAF1"}}] : []}
           clickEvents={clickEvents}
           tooltip={toolTip}
         />
