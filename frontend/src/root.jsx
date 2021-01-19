@@ -86,7 +86,7 @@ const Root = () => {
               <>
                   {signUp && <Redirect to="/signup"/>}
                   <Route path="/" exact component={Landing} />
-                  <Route path="/browse" component={Browse} />
+                  <Route path="/browse/country?" component={Browse} />
                   <Route path="/signup" component={Signup} />
               </>
           )}

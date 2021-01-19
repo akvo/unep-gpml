@@ -53,6 +53,12 @@
           span{
             color: #036799;
           }
+          &.for-country{
+            .label{
+              margin-top: 5px;
+              margin-bottom: 5px;
+            }
+          }
         }
       }
     }
@@ -71,6 +77,8 @@
         border-radius: 2px;
         padding: 15px;
         height: 100%;
+        display: flex;
+        flex-direction: column;
         .type{
           color: #81B2CC;
           text-transform: uppercase;
@@ -91,6 +99,9 @@
         }
         p{
           font-size: 12px;
+        }
+        footer{
+          margin-top: auto;
         }
         .ant-btn{
           color: $primaryColor;
