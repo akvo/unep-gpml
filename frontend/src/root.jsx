@@ -76,7 +76,7 @@ const Root = () => {
               ? "" : (
               <>
                   <Route path="/" exact component={Landing} />
-                  <Route path="/browse/country?" component={Browse} />
+                  <Route path="/browse" component={Browse} />
               </>
           )}
       </div>
