@@ -142,7 +142,7 @@ const Auth0Widget = (props) => {
         value={props.value}
         required={props.required}
         disabled={props.disabled}
-    onChange={(event) => props.onChange(event.target.value)} />
+        onChange={(event) => props.onChange(event.target.value)} />
     <div style={{ marginTop: "10px" }}>
         <span style={{ color: email !== "Verified" ? "red" : "green" }}>
             {email !== "Verified" ? <ExclamationCircleFilled /> : <CheckCircleFilled />} {email}
@@ -179,7 +179,7 @@ const CustomFieldTemplate = ({ id, label, help, required, description, errors, c
     );
 };
 
-const SignUpForm = ({initialData, updateData}) => {
+const SignUpForm = ({initialData, dispatchData}) => {
     const [schema, setSchema] = useState({ schema: defaultSchema, loading: true });
     const { getIdTokenClaims } = useAuth0();
 
@@ -192,7 +192,7 @@ const SignUpForm = ({initialData, updateData}) => {
                 newSchema.schema.properties.profile.properties.email.description = claims?.email_verified ? "Verified" : "Please confirm your email address";
                 newSchema.schema.properties.organisation.properties.country.enum = response.data.map(x => x.name);
                 newSchema.loading = false;
-                updateData({
+                dispatchData({
                     profile: {
                         email: claims?.email || "",
                         firstName: claims?.given_name || "",
@@ -205,7 +205,7 @@ const SignUpForm = ({initialData, updateData}) => {
     }, []);
 
     const onChange = ({formData}) => {
-        updateData(formData);
+        dispatchData(formData);
     }
 
     return (

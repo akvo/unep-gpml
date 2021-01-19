@@ -5,6 +5,7 @@ import SignUpForm from "./sign-up-form";
 
 const SignupModal = ({ visible, onCancel }) => {
     const [data, updateData] = useState({});
+
     return (
         <Modal
             {...{ visible, onCancel }}
@@ -19,7 +20,7 @@ const SignupModal = ({ visible, onCancel }) => {
             <Upload>
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
-            <SignUpForm updateData={updateData} initialData={data}/>
+            <SignUpForm dispatchData={updateData} initialData={data}/>
         </Modal>
     );
 };

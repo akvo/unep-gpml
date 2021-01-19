@@ -4,7 +4,7 @@
 
 (defmethod ig/init-key :gpml.handler.profile/get [_ _]
   (fn [_]
-    (resp/response {:hasProfile false})))
+    (resp/response {})))
 
 (defmethod ig/init-key :gpml.handler.profile/post [_ _]
   (fn [{:keys [jwt-claims body-params]}]

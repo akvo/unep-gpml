@@ -19,35 +19,25 @@ const Root = () => {
       getIdTokenClaims,
       loginWithPopup,
       logout,
-      user
     } = useAuth0();
     const [claims, setClaims] = useState(null);
-    const [profile, setProfile] = useState({ isAuthenticated: false });
+    const [profile, setProfile] = useState({});
     const [signupModalVisible, setSignupModalVisible] = useState(false)
 
     useEffect(() => {
       (async function fetchData() {
         const response = await getIdTokenClaims();
-        if (!profile.isAuthenticated && response) {
-          const theProfile = await axios.get('/api/profile', {headers: {
-            Authorization: `Bearer ${response._raw}`
-          }});
-          setProfile({ isAuthenticated: true, ...theProfile.data});
+        if (isAuthenticated) {
+            const profile = await axios.get('/api/profile', {headers: {
+                Authorization: `Bearer ${response.__raw}`
+            }});
+            setProfile(profile.data);
+            const modal = Object.keys(profile.data).length === 0;
+            setSignupModalVisible(modal);
+            setClaims(response);
         }
-        setClaims(response);
       })();
-    });
-    useEffect(() => {
-      console.log('change auth', isAuthenticated, user)
-      if(isAuthenticated && user.email_verified === false){
-        setSignupModalVisible(true)
-      }
-    }, [isAuthenticated])
-
-    const checkStatus = () => {
-        console.log(claims);
-        console.log(profile);
-    }
+    }, [isAuthenticated]);
 
     const currentPath = window.location.pathname;
     const signUp = !isLoading && profile.isAuthenticated && !profile.hasProfile && currentPath !== '/signup';
@@ -68,7 +58,7 @@ const Root = () => {
                     </div>
                     :
                     <div className="rightside">
-                        <Link to="/signup" onClick={() => checkStatus()}>{claims?.email_vefified ? claims?.name : "Signup"}</Link>
+                        <Link to="/signup">{claims?.email_vefified ? claims?.name : "Signup"}</Link>
                         <Button type="link" onClick={logout}>Logout</Button>
                         {/*
                             &nbsp;&nbsp;|&nbsp;&nbsp;
