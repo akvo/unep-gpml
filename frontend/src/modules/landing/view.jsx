@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Select } from 'antd';
+import { withRouter } from 'react-router-dom'
 import axios from 'axios'
 import Maps from './maps'
 import './styles.scss'
 
-const Landing = () => {
+const Landing = ({ history }) => {
     const [country, setCountry] = useState(null);
     const [data, setData] = useState(null)
 
     const clickEvents = ({name, data}) => {
-        setCountry(name);
+      setCountry(name);
+      history.push(`/browse/${name}`)
     }
 
     const toolTip = (params) => {
@@ -103,4 +105,4 @@ const TopicItem = ({ topic }) => (
   </div>
 )
 
-export default Landing
+export default withRouter(Landing)
