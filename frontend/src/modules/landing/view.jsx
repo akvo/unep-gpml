@@ -4,8 +4,7 @@ import { withRouter } from 'react-router-dom'
 import axios from 'axios'
 import Maps from './maps'
 import './styles.scss'
-
-const topicTypes = ['project', 'event', 'policy', 'technology', 'resource']
+import { topicTypes } from '../../utils/misc';
 
 const Landing = ({ history }) => {
     const [country, setCountry] = useState(null);
@@ -13,7 +12,7 @@ const Landing = ({ history }) => {
 
     const clickEvents = ({name, data}) => {
       setCountry(name);
-      history.push(`/browse/${name}`)
+      history.push(`/browse?country=${name}`)
     }
 
     const toolTip = (params) => {
@@ -65,7 +64,7 @@ const Landing = ({ history }) => {
         </div>
         }
         <Maps
-          data={country ? [{name:country, itemStyle:{areaColor: "#00AAF1"}}] : []}
+          data={country ? [{ name: country, itemStyle: { areaColor: "#26AE60" }}] : []}
           clickEvents={clickEvents}
           tooltip={toolTip}
         />

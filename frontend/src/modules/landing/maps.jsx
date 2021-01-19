@@ -31,8 +31,7 @@ const generateOptions = ({title, subtitle, data, tooltip}) => ({
             borderColor: '#79B0CC',
             emphasis: {
               areaColor: "#26AE60",
-                // shadowColor: 'rgba(0, 0, 0, 0.5)',
-                // shadowBlur: 10
+              borderColor: '#26AE60',
             }
         },
         data: [...data, ...Chart.Opt.Maps.DisputedArea],

@@ -1,0 +1,42 @@
+@import '../../vars.scss';
+
+#browse{
+  padding-top: 30px;
+  .ui.container{
+    display: flex;
+  }
+  aside{
+    width: 330px;
+    .inner{
+      border: 1px solid #D7E6EE;
+      border-radius: 3px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      .ant-select{
+        margin-top: 15px;
+      }
+    }
+  }
+  .main-content{
+    flex: 1;
+    margin-left: 20px;
+    .ant-card{
+      margin-bottom: 15px;
+      position: relative;
+      .type{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        background-color: #A5C9DB;
+        color: #FFF;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 13px;
+        line-height: 22px;
+        padding: 0 5px;
+        border-radius: 3px;
+      }
+    }
+  }
+}

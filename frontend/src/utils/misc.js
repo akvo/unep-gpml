@@ -1,0 +1,1 @@
+export const topicTypes = ['project', 'event', 'policy', 'technology', 'resource']
