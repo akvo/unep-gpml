@@ -115,3 +115,27 @@
     }
   }
 }
+
+.map-tooltip{
+  padding: 0 10px;
+  h3{
+    font-weight: 600;
+    color: #005C93;
+    text-transform: uppercase;
+  }
+  li{
+    display: flex;
+    max-width: 90px;
+    &>div{
+      display: flex;
+    }
+    span{
+      margin-right: 10px;
+      color: #7DB0CB;
+    }
+    b{
+      margin-left: auto;
+      color: #005C93;
+    }
+  }
+}
