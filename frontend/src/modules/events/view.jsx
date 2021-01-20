@@ -1,5 +1,5 @@
 import React from 'react'
-import EventsForm from './events-form'
+import EventForm from './event-form'
 import { Row, Col, Card } from 'antd';
 
 const Events = () => {
@@ -8,7 +8,7 @@ const Events = () => {
             <Row>
                 <Col span={12} offset={12}>
                     <Card style={{margin: "20px"}}>
-                    <EventsForm/>
+                    <EventForm/>
                     </Card>
                 </Col>
             </Row>

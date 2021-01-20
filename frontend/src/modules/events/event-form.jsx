@@ -84,7 +84,7 @@ const defaultUISchema = {
         title: {
             "ui:placeholder": "Twitter Username"
         },
-        startDdate: {
+        startDate: {
             "ui:placeholder": "DD/MM/YYYY"
         },
         endDate: {
@@ -125,7 +125,7 @@ const defaultUISchema = {
 };
 
 
-const EventsForm = () => {
+const EventForm = () => {
     const [schema, setSchema] = useState({ schema: defaultSchema, loading: true });
     const [data, updateData] = useState({});
 
@@ -162,4 +162,4 @@ const EventsForm = () => {
     );
 };
 
-export default EventsForm;
+export default EventForm;
