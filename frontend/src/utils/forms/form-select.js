@@ -51,6 +51,7 @@ const SelectWidget = ({
     readonly,
     // required,
     schema,
+    uiSchema,
     value
 }) => {
     const { readonlyAsDisabled = true } = formContext;
@@ -62,13 +63,13 @@ const SelectWidget = ({
     const stringify = currentValue => (Array.isArray(currentValue) ? value.map(String) : String(value));
     return (
         <Select
-            showSearch
+            showSearch={uiSchema?.["ui:allowSearch"] ? true : false}
             filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             autoFocus={autofocus}
             disabled={disabled || (readonlyAsDisabled && readonly)}
             getPopupContainer={getPopupContainer}
             id={id}
-            mode={typeof multiple !== "undefined" ? "multiple" : undefined}
+            mode={uiSchema?.["ui:allowMultiple"] ? "multiple" : ""}
             name={id}
             onBlur={!readonly ? handleBlur : undefined}
             onChange={!readonly ? handleChange : undefined}

@@ -57,12 +57,12 @@ const defaultSchema = {
             properties: {
                 city: {
                     type: "string",
-                    title: "CITY"
+                    title: "CITY",
                 },
                 country: {
                     type: "string",
                     title: "COUNTRY",
-                    enum: ["Loading"]
+                    enum: ["Loading"],
                 },
             },
         },
@@ -77,7 +77,7 @@ const defaultSchema = {
                 tags: {
                     type: "string",
                     title: "TAGS",
-                    enum: ["Loading"]
+                    enum: ["Tag 1", "Tag 2"]
                 }
             }
         }
@@ -115,7 +115,7 @@ const defaultUISchema = {
             "ui:placeholder": "Select your city"
         },
         country: {
-            "ui:placeholder": "Select your country"
+            "ui:placeholder": "Select your country",
         },
     },
     other: {
@@ -123,8 +123,10 @@ const defaultUISchema = {
             "ui:widget": "textarea",
             "ui:placeholder": "Max 999 character"
         },
-        city: {
-            "ui:placeholder": "Choose as many tags as you want"
+        tags: {
+            "ui:placeholder": "Choose as many tags as you want",
+            "ui:allowSearch": true,
+            "ui:allowMultiple": true,
         },
     }
 };
