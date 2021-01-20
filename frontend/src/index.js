@@ -6,15 +6,13 @@ import reportWebVitals from './reportWebVitals';
 import Root from './root';
 
 ReactDOM.render(
-  <React.StrictMode>
     <Auth0Provider
         domain="unep-gpml-test.eu.auth0.com"
         clientId="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"
         redirectUri={window.location.origin}
         >
       <Root />
-    </Auth0Provider>
-  </React.StrictMode>,
+    </Auth0Provider>,
   document.getElementById('root')
 );
 

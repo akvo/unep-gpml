@@ -16,6 +16,34 @@
       .ant-select{
         margin-top: 15px;
       }
+      .label{
+        text-transform: uppercase;
+        margin-bottom: 0;
+        margin-top: 15px;
+      }
+      .field{
+        width: 100%;
+        .ant-select{
+          margin-top: 0;
+          width: 100%;
+        }
+      }
+      ul.topic-list{
+        line-height: 36px;
+        padding: 0 5px;
+        li{
+          &:not(:last-child){
+            border-bottom: 1px solid #DAE9F1;
+          }
+        }
+        .ant-checkbox{
+          margin-right: 5px;
+          &+span{
+            color: #036799;
+            text-transform: capitalize;
+          }
+        }
+      }
     }
   }
   .main-content{
