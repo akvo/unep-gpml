@@ -116,6 +116,7 @@ const defaultUISchema = {
         },
         country: {
             "ui:placeholder": "Select your country",
+            "ui:allowSearch": true,
         },
     },
     other: {
