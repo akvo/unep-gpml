@@ -7,5 +7,6 @@
 (comment
   (require 'dev)
   (let [db (dev/db-conn)]
-    (gpml.db.landing/map-counts db))
+    (gpml.db.landing/map-counts db)
+    (gpml.db.landing/summary db))
   )
