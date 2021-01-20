@@ -2,13 +2,13 @@
   (:require [clojure.java.io :as io]
             [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
-            [clj-time.core :as t]
             [clj-time.format :as f]
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.resource :as db.resource]
             [gpml.db.policy :as db.policy]
+            [gpml.db.technology :as db.technology]
             [gpml.db.tag :as db.tag]
             [gpml.db.language :as db.language]
             [jsonista.core :as j]
@@ -20,6 +20,12 @@
          :user "unep"
          :password "password"
          :stringtype "unspecified"})
+
+(defn parse-date [x]
+  (f/unparse (f/formatters :date-hour-minute-second-ms)
+             (f/parse (f/formatter "yyyyMMdd")
+                      (str/replace (str/replace x #"-" "") #"/" "")
+                      )))
 
 (defn parse-data [x]
   (j/read-value x j/keyword-keys-object-mapper))
@@ -61,6 +67,12 @@
   (jdbc/delete! db :policy_geo_coverage [])
   (jdbc/delete! db :policy_language_url [])
   (jdbc/delete! db :policy [])
+  )
+
+(defn delete-technologies []
+  (jdbc/delete! db :technology_tag [])
+  (jdbc/delete! db :technology_geo_coverage [])
+  (jdbc/delete! db :technology [])
   )
 
 (defn seed-countries []
@@ -170,14 +182,6 @@
         (.printStackTrace e)
         (throw e)))))
 
-(defn parse-date [x]
-  (f/unparse (f/formatters :date-hour-minute-second-ms)
-             (f/parse (f/formatter "yyyyMMdd")
-                      (str/replace (str/replace x #"-" "") #"/" "")
-                      ))
-             )
-
-
 (defn- get-policies
   []
   (->> (get-data "policies")
@@ -241,6 +245,42 @@
         (.printStackTrace e)
         (throw e)))))
 
+(defn- get-technologies
+  []
+  (->> (get-data "technologies")
+       (map (fn [x]
+              (if-let [country (:country x)]
+                (if-let [data (first (get-country [country]))]
+                  (assoc x :country (:id data))
+                  (assoc x :country nil))
+                x)))
+       (map (fn [x]
+              (if-let [country (:geo_coverage x)]
+                (assoc x :geo_coverage (get-ids (get-country country)))
+                x)))
+       (map (fn [x]
+              (if-let [tags (:tags x)]
+                (assoc x :tags (get-ids (get-tag tags)))
+                x)))))
+
+(defn seed-technologies []
+  (delete-technologies)
+  (doseq [data (get-technologies)]
+    (try
+      (let [tech-id (-> (db.technology/new-technology db data) first :id)
+            data-geo (:geo_coverage data)
+            data-tag (:tags data)]
+        (when (not-empty data-geo)
+          (let [tech-geo (mapv #(assoc {} :technology tech-id :country %) data-geo)]
+            (jdbc/insert-multi! db :technology_geo_coverage tech-geo)))
+        (when (not-empty data-tag)
+          (let [tech-tag (mapv #(assoc {} :technology tech-id :tag %) data-tag)]
+            (jdbc/insert-multi! db :technology_tag tech-tag))))
+      (catch Exception e
+        (println data)
+        (.printStackTrace e)
+        (throw e)))))
+
 (defn seed []
   (println "-- Start Seeding")
   (delete-resources)
@@ -254,4 +294,5 @@
   (seed-tags)
   (seed-policies)
   (seed-resources)
+  (seed-technologies)
   (println "-- Done Seeding"))
