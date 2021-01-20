@@ -19,6 +19,11 @@
                                           {:get {:summary "Browse available entities"
                                                  :swagger {:tags ["browse"]}
                                                  :handler #ig/ref :gpml.handler.browse/get}}]]
+                                        ["/event" ;; {:middleware [#ig/ref :gpml.auth/auth-middleware]}
+                                         [""
+                                          {:post {:summary ""
+                                                  :swagger {:tags ["event"]}
+                                                  :handler #ig/ref :gpml.handler.event/post}}]]
                                         ["/landing"
                                          [""
                                           {:get {:summary "End-point for the landing page"
@@ -40,6 +45,8 @@
   :gpml.handler.country/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.browse/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
+
+  :gpml.handler.event/post {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.profile/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/post {:db #ig/ref :duct.database/sql}
