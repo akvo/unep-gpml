@@ -116,7 +116,7 @@ const defaultUISchema = {
         },
         country: {
             "ui:placeholder": "Select your country",
-            "ui:allowSearch": true,
+            "ui:showSearch": true,
         },
     },
     other: {
@@ -126,8 +126,8 @@ const defaultUISchema = {
         },
         tags: {
             "ui:placeholder": "Choose as many tags as you want",
-            "ui:allowSearch": true,
-            "ui:allowMultiple": true,
+            "ui:showSearch": true,
+            "ui:mode": "multiple",
         },
     }
 };

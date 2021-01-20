@@ -63,13 +63,13 @@ const SelectWidget = ({
     const stringify = currentValue => (Array.isArray(currentValue) ? value.map(String) : String(value));
     return (
         <Select
-            showSearch={uiSchema?.["ui:allowSearch"] ? true : false}
+            showSearch={uiSchema?.["ui:showSearch"] ? true : false}
             filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             autoFocus={autofocus}
             disabled={disabled || (readonlyAsDisabled && readonly)}
             getPopupContainer={getPopupContainer}
             id={id}
-            mode={uiSchema?.["ui:allowMultiple"] ? "multiple" : ""}
+            mode={uiSchema?.["ui:mode"] !== undefined ? uiSchema["ui:mode"] : ""}
             name={id}
             onBlur={!readonly ? handleBlur : undefined}
             onChange={!readonly ? handleChange : undefined}
