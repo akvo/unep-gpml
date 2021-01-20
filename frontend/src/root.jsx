@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react';
 import { Input, Button } from 'antd'
 import { SearchOutlined, CaretDownOutlined } from '@ant-design/icons'
@@ -64,7 +64,12 @@ const Root = () => {
         <header>
           <div className="ui container">
             <Link to="/"><img src={logo} className="logo" alt="GPML" /></Link>
-            <Input className="src" placeholder="Search for topics" suffix={<SearchOutlined />} size="large" />
+            <Switch>
+              <Route path="/browse" />
+              <Route>
+                <Input className="src" placeholder="Search for topics" suffix={<SearchOutlined />} size="large" />
+              </Route>
+            </Switch>
             <nav>
               <Link to="/">Who we are</Link>
               <Link to="/">What we do</Link>

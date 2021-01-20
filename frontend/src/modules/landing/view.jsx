@@ -16,7 +16,7 @@ const Landing = ({ history }) => {
     }
 
     const toolTip = (params) => {
-        const summary = data.map.find(it => it.isoCode === params.name)
+        const summary = data?.map.find(it => it.isoCode === params.name)
         if(summary){
           return `
             <div class="map-tooltip">
