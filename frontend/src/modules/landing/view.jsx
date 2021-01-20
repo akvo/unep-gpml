@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Select } from 'antd';
 import { withRouter } from 'react-router-dom'
-import axios from 'axios'
 import Maps from './maps'
 import './styles.scss'
 import { topicTypes } from '../../utils/misc';
+import api from '../../utils/api';
 
 const Landing = ({ history }) => {
     const [country, setCountry] = useState(null);
@@ -16,7 +16,7 @@ const Landing = ({ history }) => {
     }
 
     const toolTip = (params) => {
-        const summary = data.map.find(it => it.iso_code === params.name)
+        const summary = data.map.find(it => it.isoCode === params.name)
         if(summary){
           return `
             <div class="map-tooltip">
@@ -31,20 +31,17 @@ const Landing = ({ history }) => {
     }
 
     useEffect(() => {
-      axios({
-        method: 'get',
-        url: '/api/landing'
-      })
+      api.get('/landing')
       .then((resp) => {
         setData(resp.data)
       })
     }, [])
     
-    const handleChangeCountry = (iso_code) => {
-      setCountry(iso_code)
+    const handleChangeCountry = (isoCode) => {
+      setCountry(isoCode)
     }
-    const countryOpts = data ? data.map.map(it => ({ value: it.iso_code, label: it.name })) : []
-    const countryObj = data && country && data.map.find(it => it.iso_code === country)
+    const countryOpts = data ? data.map.map(it => ({ value: it.isoCode, label: it.name })) : []
+    const countryObj = data && country && data.map.find(it => it.isoCode === country)
 
     return (
       <div id="landing">
