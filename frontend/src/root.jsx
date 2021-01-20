@@ -21,26 +21,21 @@ const Root = () => {
       loginWithPopup,
       logout
     } = useAuth0();
-    const [claims, setClaims] = useState(null);
     const [profile, setProfile] = useState(null);
     const [signupModalVisible, setSignupModalVisible] = useState(false)
 
     useEffect(() => {
       (async function fetchData() {
         const response = await getIdTokenClaims();
-        if (isAuthenticated && !profile) {
-            const profile = await axios.get('/api/profile', {headers: {
-                Authorization: `Bearer ${response.__raw}`
-            }});
-            setProfile(profile.data);
-            const modal = Object.keys(profile.data).length === 0;
-            setSignupModalVisible(modal);
-            setClaims(response);
-        }
-        if(isAuthenticated){
+        if (isAuthenticated) {
           api.setToken(response.__raw)
         } else {
           api.setToken(null)
+        }
+        if (isAuthenticated && !profile) {
+            const resp = await api.get('/profile')
+            setProfile(resp.data);
+            setSignupModalVisible(Object.keys(resp.data).length === 0);
         }
       })();
     }, [isAuthenticated]);
