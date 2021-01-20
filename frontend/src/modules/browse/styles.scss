@@ -35,6 +35,10 @@
           &:not(:last-child){
             border-bottom: 1px solid #DAE9F1;
           }
+          &:last-child{
+            position: relative;
+            z-index: 2;
+          }
         }
         .ant-checkbox{
           margin-right: 5px;
@@ -42,6 +46,37 @@
             color: #036799;
             text-transform: capitalize;
           }
+        }
+      }
+      .event-fields{
+        background-color: #E0E9EC;
+        position: relative;
+        margin-top: -51px;
+        margin-bottom: -10px;
+        z-index: 0;
+        padding: 30px 5px 17px;
+        .label{
+          text-transform: none;
+          font-weight: 600;
+          font-size: 13px;
+          margin-bottom: 3px;
+        }
+        &:before, &:after{
+          content: " ";
+          position: absolute;
+          top: 0;
+          width: 10px;
+          height: 100%;
+          background-color: #E0E9EC;
+        }
+        &:before{
+          left: -10px;
+        }
+        &:after{
+          right: -10px;
+        }
+        .ant-picker-range{
+          width: 100%;
         }
       }
     }
