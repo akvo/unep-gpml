@@ -1,7 +1,6 @@
 import React, {useState } from "react";
-import { Modal, Upload, Button } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import SignUpForm from "./sign-up-form";
+import { Modal } from "antd";
+import SignUpForm from "./signup-form";
 
 const SignupModal = ({ visible, onCancel }) => {
     const [data, updateData] = useState({});

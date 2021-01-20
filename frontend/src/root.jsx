@@ -6,6 +6,7 @@ import { SearchOutlined, CaretDownOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css';
 import Landing from './modules/landing/view'
 import Browse from './modules/browse/view'
+import Events from './modules/events/view'
 import logo from './images/GPML-dp.svg'
 import axios from 'axios';
 import SignupModal from './modules/signup/signup-modal'
@@ -77,6 +78,7 @@ const Root = () => {
               <>
                   <Route path="/" exact component={Landing} />
                   <Route path="/browse" component={Browse} />
+                  <Route path="/events" component={Events} />
               </>
           )}
       </div>
