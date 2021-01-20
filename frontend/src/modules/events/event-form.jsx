@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { withTheme } from "@rjsf/core";
 import { Theme as AntDTheme } from "@rjsf/antd";
 import { cloneDeep } from "lodash";
+import { Button } from 'antd';
 import widgets, { CustomFieldTemplate } from "../../utils/forms";
 import ObjectFieldTemplate from "../../utils/forms/template";
 import axios from "axios";
@@ -17,6 +18,10 @@ const defaultSchema = {
             title: "Event Details",
             required: ["startDate", "endDate", "url", "description"],
             properties: {
+                title: {
+                    type: "string",
+                    title: "TITLE"
+                },
                 startDate: {
                     type: "string",
                     title: "START DATE",
@@ -29,16 +34,16 @@ const defaultSchema = {
                 },
                 url: {
                     type: "string",
-                    title: "FIRST NAME"
+                    title: "EVENT URL"
                 },
                 description: {
                     type: "string",
-                    title: "LAST NAME"
+                    title: "DESCRIPTION"
                 },
                 image: {
                     type: "string",
                     format: "data-url",
-                    title: "AVATAR PHOTO"
+                    title: "IMAGE"
                 },
                 association: {
                     type: "string",
@@ -67,7 +72,7 @@ const defaultSchema = {
             properties: {
                 additionalInfo: {
                     type: "string",
-                    title: "WEBSITE URL"
+                    title: "ADDITIONAL INFO"
                 },
                 tags: {
                     type: "string",
@@ -82,7 +87,7 @@ const defaultSchema = {
 const defaultUISchema = {
     details: {
         title: {
-            "ui:placeholder": "Twitter Username"
+            "ui:placeholder": "Title"
         },
         startDate: {
             "ui:placeholder": "DD/MM/YYYY"
@@ -145,6 +150,10 @@ const EventForm = () => {
         updateData(formData);
     }
 
+    const sendData = () => {
+        console.log(data);
+    }
+
     return (
         <div className={schema.loading ? "hidden" : ""}>
             <Form
@@ -158,6 +167,7 @@ const EventForm = () => {
                 widgets={widgets}>
                 <button type="submit" style={{display: "none"}}>Fire</button>
             </Form>
+            <Button onClick={() => sendData()}>Add Event</Button>
         </div>
     );
 };
