@@ -171,9 +171,11 @@
         (throw e)))))
 
 (defn parse-date [x]
-    (f/parse (f/formatter "yyyyMMdd")
-             (str/replace (str/replace x #"-" "") #"/" "")
-             ))
+  (f/unparse (f/formatters :date-hour-minute-second-ms)
+             (f/parse (f/formatter "yyyyMMdd")
+                      (str/replace (str/replace x #"-" "") #"/" "")
+                      ))
+             )
 
 
 (defn- get-policies
@@ -232,10 +234,10 @@
           (let [po-lang (map (fn [x] (assoc x :policy po-id)) data-lang)]
             (jdbc/insert-multi! db :policy_language_url po-lang)))
         (when (not-empty data-tag)
-          (let [po-tag (mapv #(assoc {} :resource po-id :tag %) data-tag)]
+          (let [po-tag (mapv #(assoc {} :policy po-id :tag %) data-tag)]
             (jdbc/insert-multi! db :policy_tag po-tag))))
       (catch Exception e
-        (println (data))
+        (println data)
         (.printStackTrace e)
         (throw e)))))
 
@@ -250,6 +252,6 @@
   (seed-organisations)
   (seed-languages)
   (seed-tags)
-  #_(seed-policies) ;; Wrong number of args (0) passed
+  (seed-policies)
   (seed-resources)
   (println "-- Done Seeding"))
