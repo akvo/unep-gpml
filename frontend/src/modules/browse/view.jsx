@@ -5,6 +5,8 @@ import axios from 'axios'
 import './styles.scss'
 import { topicTypes } from '../../utils/misc'
 import { useLocation, withRouter } from 'react-router-dom'
+import Form from 'antd/lib/form/Form'
+import Checkbox from 'antd/lib/checkbox/Checkbox'
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -43,14 +45,23 @@ const Browse = ({ history }) => {
     const newParams = new URLSearchParams(newQuery)
     history.push(`/browse?${newParams.toString()}`)
   }
+  console.log(query)
   return (
     <div id="browse">
       <div className="ui container">
         <aside>
           <div className="inner">
             <Input value={query.src} className="src" placeholder="Search for topics" suffix={<SearchOutlined />} onChange={({ target: { value }}) => updateQuery('src', value)} />
-            <Select value={query.country} placeholder="Countries" mode="multiple" options={countryOpts} allowClear onChange={val => updateQuery('country', val)} />
-            <Select value={query.topic} placeholder="Topics" mode="multiple" options={topicTypes.map(type => ({ value: type, label: type }))} onChange={val => updateQuery('topic', val)} />
+            <div className="field">
+              <div className="label">
+                Country
+              </div>
+              <Select value={query.country} placeholder="Find country" mode="multiple" options={countryOpts} allowClear onChange={val => updateQuery('country', val)} />
+            </div>
+            <div className="field">
+              <div className="label">Topics</div>
+              <TopicSelect value={query.topic} onChange={val => updateQuery('topic', val)} />
+            </div>
           </div>
         </aside>
         <div className="main-content">
@@ -58,6 +69,23 @@ const Browse = ({ history }) => {
         </div>
       </div>
     </div>
+  )
+}
+
+const TopicSelect = ({ value, onChange }) => {
+  const handleChange = (type) => ({target: {checked}}) => {
+    if (checked && value.indexOf(type) === -1) {
+      onChange([...value, type])
+    } else if(!checked && value.indexOf(type) !== -1){
+      onChange(value.filter(it => it !== type))
+    }
+  }
+  return (
+    <ul className="topic-list">
+      {topicTypes.map(type =>
+        <li><Checkbox checked={value.indexOf(type) !== -1} onChange={handleChange(type)}>{type}</Checkbox></li>
+      )}
+    </ul>
   )
 }
 
