@@ -10,6 +10,7 @@ import Events from './modules/events/view'
 import logo from './images/GPML-dp.svg'
 import axios from 'axios';
 import SignupModal from './modules/signup/signup-modal'
+import api from './utils/api';
 
 
 const Root = () => {
@@ -35,6 +36,11 @@ const Root = () => {
             const modal = Object.keys(profile.data).length === 0;
             setSignupModalVisible(modal);
             setClaims(response);
+        }
+        if(isAuthenticated){
+          api.setToken(response.__raw)
+        } else {
+          api.setToken(null)
         }
       })();
     }, [isAuthenticated]);

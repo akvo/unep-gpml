@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Input, Select } from 'antd'
+import { Card, DatePicker, Input, Select, Checkbox } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
-import axios from 'axios'
 import './styles.scss'
 import { topicTypes } from '../../utils/misc'
 import { useLocation, withRouter } from 'react-router-dom'
-import Form from 'antd/lib/form/Form'
-import Checkbox from 'antd/lib/checkbox/Checkbox'
+import api from '../../utils/api'
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -24,20 +22,15 @@ const Browse = ({ history }) => {
   const [countryOpts, setCountryOpts] = useState([])
   const [results, setResults] = useState([])
   useEffect(() => {
-    axios({
-      method: 'get',
-      url: '/api/browse'
-    })
+    api.get('/browse')
     .then((resp) => {
       setResults(resp?.data?.results)
     })
-    axios({
-      methid: 'get',
-      url: '/api/country'
-    })
+    api.get('/country')
     .then((resp) => {
-      setCountryOpts(resp.data.map(it => ({ value: it.iso_code, label: it.name })))
+      setCountryOpts(resp.data.map(it => ({ value: it.isoCode, label: it.name })))
     })
+    api.get('/country')
   }, [])
   const updateQuery = (param, value) => {
     const newQuery = {...query}
@@ -45,7 +38,6 @@ const Browse = ({ history }) => {
     const newParams = new URLSearchParams(newQuery)
     history.push(`/browse?${newParams.toString()}`)
   }
-  console.log(query)
   return (
     <div id="browse">
       <div className="ui container">
@@ -62,6 +54,20 @@ const Browse = ({ history }) => {
               <div className="label">Topics</div>
               <TopicSelect value={query.topic} onChange={val => updateQuery('topic', val)} />
             </div>
+            {query.topic.indexOf('event') !== -1 && (
+              <div className="event-fields">
+                <div className="label">Date range</div>
+                <div className="date-range">
+                  <DatePicker.RangePicker />
+                </div>
+                <div className="label">Event location</div>
+                <Input />
+                <div className="label">Tags</div>
+                <Input />
+                <div className="label">Event language</div>
+                <Input />
+              </div>
+            )}
           </div>
         </aside>
         <div className="main-content">
@@ -96,7 +102,7 @@ const Result = ({ result }) => {
       <div className="type">{result.type}</div>
       <ul className="stats">
         <li>
-          {result.geo_coverage_countries.join(', ')}
+          {result.geoCoverageCountries.join(', ')}
         </li>
       </ul>
       {result.description && <p>{result.description}</p>}
