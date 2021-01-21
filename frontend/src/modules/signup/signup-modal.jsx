@@ -46,7 +46,7 @@ const SignupModal = ({ visible, onCancel }) => {
     })()
   }, []);
     const onSubmit = (vals) => {
-      console.log(vals)
+      api.post('/profile', vals)
     }
     const form = createForm({
       subscription: {},
