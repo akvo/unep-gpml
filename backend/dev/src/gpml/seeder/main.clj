@@ -330,6 +330,10 @@
   []
   (->> (get-data "projects")
        (map (fn [x]
+              (if-let [country (seq(:countries x))]
+                (assoc x :countries (get-ids (get-country country)))
+                x)))
+       (map (fn [x]
               (if-let [codes (:action_codes x)]
                 (assoc x :action_codes (get-ids (map (fn [z] (get-action z)) codes)))
                 x)))
@@ -348,8 +352,12 @@
   (doseq [data (get-projects)]
     (try
       (let [proj-id (-> (db.project/new-project db data) first :id)
+            data-countries (:countries data)
             data-act (:action_codes data)
             data-act-detail (:action_details data)]
+        (when (not-empty data-countries)
+          (let [proj-countries (mapv #(assoc {} :project proj-id :country %) data-countries)]
+            (jdbc/insert-multi! db :project_country proj-countries)))
         (when (not-empty data-act)
           (let [proj-act (mapv #(assoc {} :project proj-id :action %) data-act)]
             (jdbc/insert-multi! db :project_action proj-act)))
@@ -370,6 +378,7 @@
   (delete-resources)
   (delete-policies)
   (delete-technologies)
+  (delete-projects)
   (seed-countries)
   (seed-country-groups)
   (seed-country-group-country)
@@ -386,7 +395,5 @@
   (println "-- Done Seeding"))
 
 (comment
-
   (seed)
-
   ,)
