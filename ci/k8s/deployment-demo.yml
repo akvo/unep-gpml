@@ -15,9 +15,12 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: nginx:1.19.6-alpine
+        image: jmalloc/echo-server:0.1.0
         ports:
         - containerPort: 80
+        env:
+        - name: PORT
+          value: "80"
         resources:
           requests:
             cpu: "100m"
