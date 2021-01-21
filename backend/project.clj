@@ -10,7 +10,7 @@
                  [duct/module.logging "0.5.0"]
                  [duct/module.sql "0.6.1" :exclusions [medley]]
                  [duct/module.web "0.7.1":exclusions [medley]]
-                 [org.postgresql/postgresql "42.2.5"]
+                 [org.postgresql/postgresql "42.2.18"]
                  [com.google.cloud.sql/postgres-socket-factory "1.2.0"]
                  [metosin/reitit-ring "0.5.11" :exclusions [ring/ring-core]]
                  [metosin/reitit-middleware "0.5.11" :exclusions [ring/ring-core

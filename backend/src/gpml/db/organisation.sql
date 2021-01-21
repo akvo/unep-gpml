@@ -9,3 +9,8 @@ select * from organisation where id = :id
 -- :name organisation-by-names :? :*
 -- :doc Get organisation by names
 select * from organisation where name in (:v*:names)
+
+
+-- :name new-organisation :!
+insert into organisation (name)
+values (:name)

@@ -1,37 +1,50 @@
 (ns gpml.seeder.main
-  (:require [clojure.java.io :as io]
+  (:require [clj-time.format :as f]
+            [clojure.java.io :as io]
             [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
-            [clj-time.format :as f]
+            [duct.core :as duct]
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.resource :as db.resource]
-            [gpml.db.policy :as db.policy]
-            [gpml.db.technology :as db.technology]
-            [gpml.db.tag :as db.tag]
+            [gpml.db.currency :as db.currency]
             [gpml.db.language :as db.language]
-            [jsonista.core :as j]
-            gpml.pg-util))
+            [gpml.db.organisation :as db.organisation]
+            [gpml.db.policy :as db.policy]
+            [gpml.db.resource :as db.resource]
+            [gpml.db.tag :as db.tag]
+            [gpml.db.technology :as db.technology]
+            gpml.pg-util
+            [integrant.core :as ig]
+            [jsonista.core :as j]))
 
-(def db {:classname "org.postgresql.Driver"
-         :subprotocol "postgresql"
-         :subname "//db/gpml"
-         :user "unep"
-         :password "password"
-         :stringtype "unspecified"})
+(duct/load-hierarchy)
+
+(defn- dev-system
+  []
+  (-> (duct/resource "gpml/config.edn")
+      (duct/read-config)
+      (duct/prep-config [:duct.profile/dev])))
+
+(defonce db (-> (dev-system)
+            (ig/init [:duct.database.sql/hikaricp])
+            :duct.database.sql/hikaricp
+            :spec))
 
 (defn parse-date [x]
   (f/unparse (f/formatters :date-hour-minute-second-ms)
              (f/parse (f/formatter "yyyyMMdd")
-                      (str/replace (str/replace x #"-" "") #"/" "")
-                      )))
+                      (str/replace (str/replace x #"-" "") #"/" ""))))
 
-(defn parse-data [x]
-  (j/read-value x j/keyword-keys-object-mapper))
+(defn parse-data [s {:keys [keywords?]}]
+  (if keywords?
+    (j/read-value s j/keyword-keys-object-mapper)
+    (j/read-value s)))
 
-(defn get-data [x]
-  (parse-data (slurp (io/resource (str "files/" x ".json")))))
+(defn get-data
+  ([file-name]
+   (get-data file-name {:keywords? true}))
+  ([file-name opts]
+   (parse-data (slurp (io/resource (str "files/" file-name ".json"))) opts)))
 
 (defn get-ids [cmd]
   (reduce (fn [acc o] (conj acc (:id o))) [] cmd))
@@ -51,7 +64,7 @@
 (defn get-language [x]
   (remove nil?
           (mapv (fn [y]
-                  (if-let [language-id (db.language/language-by-name db {:name (:language y)})] 
+                  (if-let [language-id (db.language/language-by-name db {:name (:language y)})]
                     (assoc y :url (:url y) :language (:id language-id)) nil))x)))
 
 (defn delete-resources []
@@ -59,24 +72,21 @@
   (jdbc/delete! db :resource_organisation [])
   (jdbc/delete! db :resource_geo_coverage [])
   (jdbc/delete! db :resource_language_url [])
-  (jdbc/delete! db :resource [])
-  )
+  (jdbc/delete! db :resource []))
 
 (defn delete-policies []
   (jdbc/delete! db :policy_tag [])
   (jdbc/delete! db :policy_geo_coverage [])
   (jdbc/delete! db :policy_language_url [])
-  (jdbc/delete! db :policy [])
-  )
+  (jdbc/delete! db :policy []))
 
 (defn delete-technologies []
   (jdbc/delete! db :technology_tag [])
   (jdbc/delete! db :technology_geo_coverage [])
-  (jdbc/delete! db :technology [])
-  )
+  (jdbc/delete! db :technology []))
 
 (defn seed-countries []
-  (jdbc/delete! db :country_group_countries [])
+  (jdbc/delete! db :country_group_country [])
   (jdbc/delete! db :country [])
   (jdbc/insert-multi! db :country
                       (map (fn [x] {:name (:name x) :iso_code (:code x)})
@@ -84,48 +94,52 @@
 
 (defn seed-country-groups []
   (jdbc/delete! db :country_group [])
-  (jdbc/insert-multi! db :country_group
-                      (get-data "country_group")))
+  (doseq [data (get-data "country_group")]
+    (db.country-group/new-country-group db data)))
 
 (defn get-country-group-countries []
-  (into [] (reduce (fn [acc [k v]]
-                  (let [group (:id (get-country-group (name k)))]
-                    (concat acc (map (fn [x] {:country_group group :country x}) (get-ids (get-country v))))))
-                [] (get-data "country_group_countries"))))
+  (flatten
+   (reduce (fn [acc [k v]]
+             (let [group (:id (get-country-group (name k)))]
+               (conj acc (map (fn [x] {:country_group group :country x})
+                              (get-ids (get-country v))))))
+           []
+           (get-data "country_group_countries"))))
 
-(defn seed-country-group-countries []
-  (jdbc/delete! db :country_group_countries [])
-  (jdbc/insert-multi! db :country_group_countries (get-country-group-countries)))
 
+(defn seed-country-group-country []
+  (jdbc/delete! db :country_group_country [])
+  (doseq [data (get-country-group-countries)]
+    (db.country-group/new-country-group-country db data)))
 
 (defn seed-organisations []
   (jdbc/delete! db :organisation [])
-  (jdbc/insert-multi! db :organisation
-                      (get-data "organisations")))
+  (doseq [data (get-data "organisations")]
+    (db.organisation/new-organisation db data)))
 
 (defn seed-currencies []
   (jdbc/delete! db :currency [])
-  (jdbc/insert-multi! db :currency
-                      (get-data "currencies")))
+  (doseq [data (get-data "currencies")]
+    (db.currency/new-currency db data)))
 
 (defn seed-languages []
   (jdbc/delete! db :language [])
-  (jdbc/insert-multi! db :language
-                      (reduce (fn [acc [k v]]
-                                (conj acc {:iso_code (str/trim (name k)) 
-                                           :english_name (:name v) 
+  (doseq [data (reduce (fn [acc [k v]]
+                                (conj acc {:iso_code (str/trim (name k))
+                                           :english_name (:name v)
                                            :native_name (:nativeName v)}))
                               []
-                              (get-data "languages"))))
+                              (get-data "languages"))]
+    (db.language/new-language db data)))
 
 (defn seed-tags []
   (jdbc/delete! db :tag [])
   (jdbc/delete! db :tag_category [])
-  (doseq [data (j/read-value (slurp (io/resource "files/tags.json")))]
-    (let [category (jdbc/insert! db :tag_category {:category (first data)})
-          category-id (-> category first :id)
-          tags (map (fn [e] (assoc {} :tag_category category-id :tag e)) (second data))]
-      (jdbc/insert-multi! db :tag tags))))
+  (doseq [data (get-data "tags" {:keywords? false})]
+    (let [category (db.tag/new-tag-category db {:category (first data)})
+          category-id (-> category first :id)]
+      (doseq [tag (map #(assoc {} :tag_category category-id :tag %) (second data))]
+        (db.tag/new-tag db tag)))))
 
 (defn- get-resources
   []
@@ -178,7 +192,7 @@
           (let [res-tag (mapv #(assoc {} :resource res-id :tag %) data-tag)]
             (jdbc/insert-multi! db :resource_tag res-tag))))
       (catch Exception e
-        (println (data))
+        (println data)
         (.printStackTrace e)
         (throw e)))))
 
@@ -287,7 +301,7 @@
   (delete-policies)
   (seed-countries)
   (seed-country-groups)
-  (seed-country-group-countries)
+  (seed-country-group-country)
   (seed-currencies)
   (seed-organisations)
   (seed-languages)
@@ -296,3 +310,9 @@
   (seed-resources)
   (seed-technologies)
   (println "-- Done Seeding"))
+
+(comment
+
+  (seed)
+
+  ,)

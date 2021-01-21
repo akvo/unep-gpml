@@ -1,0 +1,2 @@
+ALTER TABLE country_group_countries
+RENAME TO country_group_country;
