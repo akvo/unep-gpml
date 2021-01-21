@@ -37,8 +37,15 @@ const CONTROLS = {
   },
   textarea: ({ input, meta, control, ...props }) => <Input.TextArea {...{ ...input, ...props }} />,
   select: ({ options, input, meta, control, ...props }) => {
+    const allProps = {
+      ...input, ...props
+    }
+    if(props.mode === 'multiple' && input.value === '') allProps.value = []
+    if(props.showSearch){
+      allProps.filterOption = (input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    }
     return (
-      <Select {...{ ...input, ...props }} value={(input.value === '' && props.mode === 'multiple') ? [] : input.value}>
+      <Select {...allProps}>
         {options.map(({ label, value }) => <Select.Option key={value} value={value}>{label}</Select.Option>)}
       </Select>
     )
