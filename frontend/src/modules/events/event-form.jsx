@@ -142,7 +142,8 @@ const EventForm = () => {
             (async function fetchData() {
                 const response = await axios.get("/api/country");
                 const newSchema = cloneDeep(schema);
-                newSchema.schema.properties.location.properties.country.enum = response.data.map(x => x.name);
+                newSchema.schema.properties.location.properties.country.enum = response.data.map(x => x.id);
+                newSchema.schema.properties.location.properties.country.enumNames = response.data.map(x => x.name);
                 newSchema.loading = false;
                 setSchema(newSchema);
             })();
@@ -155,6 +156,22 @@ const EventForm = () => {
 
     const sendData = () => {
         console.log(data);
+        (async function() {
+            const payload = {
+                title: data.details?.title || null,
+                start_date: data.details?.startDate || null,
+                end_date: data.details?.endDate || null,
+                description: data.details?.description || null,
+                remarks: data.other?.additionalInfo || null,
+                // FIXME: Need to allow UI selection
+                geo_coverage_type: null,
+                country: data.location?.country || null,
+                city: data.location?.city || null,
+            };
+            console.log(payload);
+            const response = await axios.post("/api/event", payload);
+            console.log(response);
+        })();
     }
 
     return (
