@@ -5,6 +5,8 @@
             [clojure.string :as str]
             [duct.core :as duct]
             [gpml.db.country :as db.country]
+            [gpml.db.action :as db.action]
+            [gpml.db.action-detail :as db.action-detail]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.currency :as db.currency]
             [gpml.db.language :as db.language]
@@ -13,6 +15,7 @@
             [gpml.db.resource :as db.resource]
             [gpml.db.tag :as db.tag]
             [gpml.db.technology :as db.technology]
+            [gpml.db.project :as db.project]
             gpml.pg-util
             [integrant.core :as ig]
             [jsonista.core :as j]))
@@ -67,6 +70,15 @@
                   (if-let [language-id (db.language/language-by-name db {:name (:language y)})]
                     (assoc y :url (:url y) :language (:id language-id)) nil))x)))
 
+(defn get-action [x]
+  (db.action/action-by-code db {:code x}))
+
+(defn get-actions [x]
+  (db.action/action-by-codes db {:codes x}))
+
+(defn get-action-detail [x]
+  (db.action-detail/action-detail-by-code db {:code x}))
+
 (defn delete-resources []
   (jdbc/delete! db :resource_tag [])
   (jdbc/delete! db :resource_organisation [])
@@ -84,6 +96,12 @@
   (jdbc/delete! db :technology_tag [])
   (jdbc/delete! db :technology_geo_coverage [])
   (jdbc/delete! db :technology []))
+
+(defn delete-projects []
+  (jdbc/delete! db :project_country [])
+  (jdbc/delete! db :project_action [])
+  (jdbc/delete! db :project_action_detail [])
+  (jdbc/delete! db :project []))
 
 (defn seed-countries []
   (jdbc/delete! db :country_group_country [])
@@ -295,10 +313,63 @@
         (.printStackTrace e)
         (throw e)))))
 
+(defn seed-actions []
+  (jdbc/delete! db :action_detail [])
+  (jdbc/delete! db :action [])
+  (jdbc/insert-multi! db :action (get-data "actions")))
+
+(defn get-action-details []
+  (map (fn [x] (if-let [action (get-action (:action x))]
+          (assoc x :action (:id action)) x)) (get-data "action_details")))
+
+(defn seed-action-details []
+  (jdbc/delete! db :action_detail [])
+  (jdbc/insert-multi! db :action_detail (mapv #(dissoc % :type) (get-action-details))))
+
+(defn- get-projects
+  []
+  (->> (get-data "projects")
+       (map (fn [x]
+              (if-let [codes (:action_codes x)]
+                (assoc x :action_codes (get-ids (map (fn [z] (get-action z)) codes)))
+                x)))
+       (map (fn [x]
+              (if-let [codes (:action_details x)]
+                (assoc x :action_details
+                       (map (fn [y]
+                              {:value (:value y)
+                               :action_detail (:id (get-action-detail (:action_detail_code y)))})
+                            codes))
+                x)))
+       ))
+
+(defn seed-projects []
+  (delete-projects)
+  (doseq [data (get-projects)]
+    (try
+      (let [proj-id (-> (db.project/new-project db data) first :id)
+            data-act (:action_codes data)
+            data-act-detail (:action_details data)]
+        (when (not-empty data-act)
+          (let [proj-act (mapv #(assoc {} :project proj-id :action %) data-act)]
+            (jdbc/insert-multi! db :project_action proj-act)))
+        (when (not-empty data-act-detail)
+          (let [proj-act-detail (mapv (fn [z]
+                                        {:project proj-id
+                                         :action_detail (:action_detail z)
+                                         :value (:value z)}
+                                        ) data-act-detail)]
+            (jdbc/insert-multi! db :project_action_detail proj-act-detail))))
+      (catch Exception e
+        (println data)
+        (.printStackTrace e)
+        (throw e)))))
+
 (defn seed []
   (println "-- Start Seeding")
   (delete-resources)
   (delete-policies)
+  (delete-technologies)
   (seed-countries)
   (seed-country-groups)
   (seed-country-group-country)
@@ -309,6 +380,9 @@
   (seed-policies)
   (seed-resources)
   (seed-technologies)
+  (seed-actions)
+  (seed-action-details)
+  (seed-projects)
   (println "-- Done Seeding"))
 
 (comment
