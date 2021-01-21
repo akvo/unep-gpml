@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unep-gpml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        run: unep-gpml
+  template:
+    metadata:
+      labels:
+        run: unep-gpml
+        unep-gpml-version: "demo"
+    spec:
+      containers:
+      - name: frontend
+        image: nginx:1.19.6-alpine
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "32Mi"
+          limits:
+            cpu: "200m"
+            memory: "64Mi"
