@@ -30,7 +30,7 @@ const FileWidget = (props) => {
             <Button onClick={() => inputFile.current.click()} style={{marginTop: "5px"}}>
                 <UploadOutlined/> Choose File
             </Button> <span style={{marginLeft:"20px"}}>{file?.name}</span>
-            <input type="file" onChange={handleChange} ref={inputFile} accept={props.options.accept.join(',')} style={{display:"none"}}/>
+            <input type="file" onChange={handleChange} ref={inputFile} accept={props?.options?.accept.join(',')} style={{display:"none"}}/>
             <br/>
             {file?.name && (<img src={output} alt={file.name} width="100px" style={{borderRadius:"20px", marginTop: "10px"}}/>)}
         </div>
