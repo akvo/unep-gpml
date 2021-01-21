@@ -16,7 +16,7 @@ const defaultSchema = {
         details: {
             type: "object",
             title: "Event Details",
-            required: ["startDate", "endDate", "url", "description"],
+            required: ["title", "startDate", "endDate", "url", "description"],
             properties: {
                 title: {
                     type: "string",
