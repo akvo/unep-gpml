@@ -1,47 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { withTheme } from "@rjsf/core";
 import { Theme as AntDTheme } from "@rjsf/antd";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
 import { cloneDeep } from "lodash";
-import widgets, { CustomFieldTemplate } from "../../utils/forms";
-import ObjectFieldTemplate from "../../utils/forms/template";
+import widgets from "../../utils/forms";
+import ObjectFieldTemplate from "../../utils/forms/object-field-tpl";
+import api from "../../utils/api";
 
 const Form = withTheme(AntDTheme);
 
 const defaultSchema = {
-    title: "",
-    type:"object",
+    type: "object",
     properties : {
         profile: {
             type: "object",
             title: "Personal Details",
             required: ["email", "firstName", "lastName"],
             properties: {
-                email: {
-                    type: "string",
-                    title: "EMAIL"
-                },
                 firstName: {
                     type: "string",
-                    title: "FIRST NAME"
+                    title: "First name"
                 },
                 lastName: {
                     type: "string",
-                    title: "LAST NAME"
+                    title: "Last name"
                 },
                 linkedin: {
                     type: "string",
-                    title: "LINKEDIN"
+                    title: "LinkedIn"
                 },
                 twitter: {
                     type: "string",
-                    title: "TWITTER"
+                    title: "Twitter"
                 },
                 avatar: {
                     type: "string",
                     format: "data-url",
-                    title: "AVATAR PHOTO"
+                    title: "Avatar photo"
                 }
             }
         },
@@ -51,20 +45,20 @@ const defaultSchema = {
             properties: {
                 name: {
                     type: "string",
-                    title: "ORGANISATION NAME"
+                    title: "Organisation Name"
                 },
                 website: {
                     type: "string",
-                    title: "WEBSITE URL"
+                    title: "Website URL"
                 },
                 sector: {
                     type: "string",
-                    title: "REPRESENTATIVE SECTOR",
+                    title: "Representative sector",
                     enum: ["Sector 1", "Sector 2"]
                 },
                 country: {
                     type: "string",
-                    title: "COUNTRY",
+                    title: "Country",
                     enum: ["Loading"]
                 }
             }
@@ -76,7 +70,7 @@ const defaultSchema = {
             properties: {
                 details: {
                     type: "string",
-                    title: "TELL ABOUT YOURSELF"
+                    title: "Tell about yourself"
                 }
             }
         }
@@ -125,24 +119,14 @@ const defaultUISchema = {
 
 const SignUpForm = ({initialData, dispatchData}) => {
     const [schema, setSchema] = useState({ schema: defaultSchema, loading: true });
-    const { getIdTokenClaims } = useAuth0();
 
     useEffect(() => {
         if (schema.loading) {
             (async function fetchData() {
-                const response = await axios.get("/api/country");
-                const claims = await getIdTokenClaims();
+                const response = await api.get('/country')
                 const newSchema = cloneDeep(schema);
-                newSchema.schema.properties.profile.properties.email.description = claims?.email_verified ? "Verified" : "Please confirm your email address";
                 newSchema.schema.properties.organisation.properties.country.enum = response.data.map(x => x.name);
                 newSchema.loading = false;
-                dispatchData({
-                    profile: {
-                        email: claims?.email || "",
-                        firstName: claims?.given_name || "",
-                        lastName: claims?.family_name || ""
-                    }
-                })
                 setSchema(newSchema);
             })();
         }
@@ -155,15 +139,13 @@ const SignUpForm = ({initialData, dispatchData}) => {
     return (
         <div className={schema.loading ? "hidden" : ""}>
             <Form
-                idPrefix="signup_"
-                schema={schema.schema}
-                ObjectFieldTemplate={ObjectFieldTemplate}
-                FieldTemplate={CustomFieldTemplate}
-                uiSchema={defaultUISchema}
-                formData={initialData}
-                onChange={onChange}
-                widgets={widgets}>
-                <button type="submit" style={{display: "none"}}>Fire</button>
+              idPrefix="signup_"
+              schema={schema.schema}
+              ObjectFieldTemplate={ObjectFieldTemplate}
+              uiSchema={defaultUISchema}
+              formData={initialData}
+              onChange={onChange}
+              widgets={widgets}>
             </Form>
         </div>
     );

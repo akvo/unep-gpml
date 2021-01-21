@@ -3,7 +3,7 @@ import { withTheme } from "@rjsf/core";
 import { Theme as AntDTheme } from "@rjsf/antd";
 import { cloneDeep } from "lodash";
 import { Button } from 'antd';
-import widgets, { CustomFieldTemplate } from "../../utils/forms";
+import widgets from "../../utils/forms";
 import ObjectFieldTemplate from "../../utils/forms/template";
 import axios from "axios";
 
@@ -180,7 +180,6 @@ const EventForm = () => {
                 idPrefix="events_"
                 schema={schema.schema}
                 ObjectFieldTemplate={ObjectFieldTemplate}
-                FieldTemplate={CustomFieldTemplate}
                 uiSchema={defaultUISchema}
                 formData={data}
                 onChange={onChange}
