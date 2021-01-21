@@ -12,6 +12,8 @@
                 :end_date "2021-01-01T12:00:00Z"
                 :description "Description of the event"
                 :image nil
+                :country 20,
+                :city "Timbuktu",
                 :geo_coverage_type "national"
                 :geo_coverage_countries ["KEN"]
                 :remarks "Remarks"
@@ -21,6 +23,8 @@
         event2 {:remarks "Remarks",
                 :description "Description of the event",
                 :title "Event 10",
+                :country 10,
+                :city "Timbuktu",
                 :geo_coverage_type nil,
                 :end_date "2021-01-01T12:00:00Z",
                 :start_date "2021-01-01T10:00:00Z"}
