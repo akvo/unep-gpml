@@ -7,3 +7,8 @@ values(:title, :start_date::timestamptz, :end_date::timestamptz, :description, :
 -- :doc Add specified tags to an event
 insert into event_tag(event, tag)
 values :t*:tags RETURNING id;
+
+-- :name add-event-language-urls :<!
+-- :doc Add language URLs to an event
+insert into event_language_url(event, language, url)
+values :t*:urls RETURNING id;
