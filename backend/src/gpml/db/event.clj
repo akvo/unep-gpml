@@ -21,6 +21,7 @@
         event2 {:remarks "Remarks",
                 :description "Description of the event",
                 :title "Event 10",
+                :geo_coverage_type nil,
                 :end_date "2021-01-01T12:00:00Z",
                 :start_date "2021-01-01T10:00:00Z"}]
     (gpml.db.event/new-event db event1)
