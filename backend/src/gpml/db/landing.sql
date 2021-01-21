@@ -9,7 +9,7 @@ WITH resource_count AS (
      resource_count_group AS (
         select COUNT(*) AS resource_g, cgc.country
         from resource_geo_coverage rgc
-        join country_group_countries cgc ON cgc.country_group = rgc.country_group
+        join country_group_country cgc ON cgc.country_group = rgc.country_group
         group by cgc.country
      ),
      event_count AS (
@@ -18,7 +18,7 @@ WITH resource_count AS (
      event_count_group AS (
         select COUNT(*) AS event_g, cgc.country
         from event_geo_coverage egc
-        join country_group_countries cgc ON cgc.country_group = egc.country_group
+        join country_group_country cgc ON cgc.country_group = egc.country_group
         group by cgc.country
      ),
      policy_count AS (
@@ -27,7 +27,7 @@ WITH resource_count AS (
      policy_count_group AS (
         select COUNT(*) AS policy_g, cgc.country
         from policy_geo_coverage pgc
-        join country_group_countries cgc ON cgc.country_group = pgc.country_group
+        join country_group_country cgc ON cgc.country_group = pgc.country_group
         group by cgc.country
      ),
      technology_count AS (
@@ -36,7 +36,7 @@ WITH resource_count AS (
      technology_count_group AS (
         select COUNT(*) AS technology_g, cgc.country
         from technology_geo_coverage tgc
-        join country_group_countries cgc ON cgc.country_group = tgc.country_group
+        join country_group_country cgc ON cgc.country_group = tgc.country_group
         group by cgc.country
      )
      -- FIXME: Add project when tables are created...
@@ -59,7 +59,7 @@ WITH resource_count AS (
 -- :doc Get summary of count of entities and number of countries
 WITH
 resource_countries AS (
-    SELECT c.id FROM resource_geo_coverage r, country_group_countries cgc
+    SELECT c.id FROM resource_geo_coverage r, country_group_country cgc
     JOIN country c ON cgc.country = c.id
     WHERE r.country_group = cgc.country_group
     UNION
@@ -67,7 +67,7 @@ resource_countries AS (
     WHERE r.country IS NOT NULL
 ),
 event_countries AS (
-    SELECT c.id FROM event_geo_coverage e, country_group_countries cgc
+    SELECT c.id FROM event_geo_coverage e, country_group_country cgc
     JOIN country c ON cgc.country = c.id
     WHERE e.country_group = cgc.country_group
     UNION
@@ -75,7 +75,7 @@ event_countries AS (
     WHERE e.country IS NOT NULL
 ),
 policy_countries AS (
-    SELECT c.id FROM policy_geo_coverage p, country_group_countries cgc
+    SELECT c.id FROM policy_geo_coverage p, country_group_country cgc
     JOIN country c ON cgc.country = c.id
     WHERE p.country_group = cgc.country_group
     UNION
@@ -83,7 +83,7 @@ policy_countries AS (
     WHERE p.country IS NOT NULL
 ),
 technology_countries AS (
-    SELECT c.id FROM technology_geo_coverage t, country_group_countries cgc
+    SELECT c.id FROM technology_geo_coverage t, country_group_country cgc
     JOIN country c ON cgc.country = c.id
     WHERE t.country_group = cgc.country_group
     UNION

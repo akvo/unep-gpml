@@ -30,7 +30,7 @@
   (db.country/new-country conn {:name "Kenya" :iso_code "KEN"})
   (db.country-group/new-country-group conn {:name "Asia" :type "region"})
   (db.country-group/new-country-group conn {:name "Europe" :type "region"})
-  (jdbc/insert-multi! conn :country_group_countries
+  (jdbc/insert-multi! conn :country_group_country
                       [{:country_group 1 :country 2}
                        {:country_group 1 :country 3}
                        {:country_group 2 :country 1}])
