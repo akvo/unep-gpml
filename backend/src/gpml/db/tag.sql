@@ -19,3 +19,8 @@ values (:category) returning id
 -- :doc Inser new tag
 insert into tag (tag, tag_category)
 values (:tag, :tag_category)
+
+-- :name tag-by-category :? :*
+-- :doc Get tag by category
+select * from tag WHERE tag_category in
+(select id from tag_category WHERE category LIKE :category);

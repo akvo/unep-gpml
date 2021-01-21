@@ -36,7 +36,12 @@
                                                  :handler #ig/ref :gpml.handler.profile/get}
                                            :post {:summary ""
                                                   :swagger {:tags ["profile"]}
-                                                  :handler #ig/ref :gpml.handler.profile/post}}]]]]}
+                                                  :handler #ig/ref :gpml.handler.profile/post}}]]
+                                        ["/tag"
+                                         ["/:topic-type"
+                                          {:get {:summary "List tags by topic type"
+                                                 :swagger {:tags ["tags"]}
+                                                 :handler #ig/ref :gpml.handler.tag/get}}]]]]}
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
 
@@ -50,6 +55,8 @@
 
   :gpml.handler.profile/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/post {:db #ig/ref :duct.database/sql}
+
+  :gpml.handler.tag/get {:db #ig/ref :duct.database/sql}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
