@@ -1,6 +1,7 @@
 (ns gpml.handler.browse
   (:require [integrant.core :as ig]
-            [ring.util.response :as resp]))
+            [ring.util.response :as resp]
+            [clojure.string :as str]))
 
 (def technology-sample-data [{:id 1
                               :title "The Great Bubble Barrier"
@@ -175,8 +176,36 @@
             (take 1 (map #(assoc % :type "project") project-sample-data))
             (take 1 (map #(assoc % :type "policy") policy-sample-data))]))
 
+(def country-re #"^(\p{Upper}{3})((,\p{Upper}{3})+)?$")
+(def topics (vec (sort ["people" "event" "technology" "policy" "resource" "project"])))
+(def topic-re (re-pattern (format "^(%1$s)((,(%1$s))+)?$" (str/join "|" topics))))
+
+(def query-params
+  [:map
+   [:country {:optional true
+              :swagger {:description "Comma separated list of country codes (ISO 3166-1 Alpha-3 code)"}}
+    [:re country-re]]
+   [:topic {:optional true
+            :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "|" topics))}}
+    [:re topic-re]]
+   [:q {:optional true
+        :swagger {:description "Text search term to be found on the different topics"}}
+    [:string {:min 1}]]])
+
+
+(comment
+
+  (require '[malli.core :as malli])
+
+  (malli/validate query-params {:topic "event"})
+
+  )
+
 (defn browse-sample [_]
   (resp/response {:results sample-data :next nil :prev nil :total (count sample-data) :page 1}))
 
 (defmethod ig/init-key :gpml.handler.browse/get [_ _]
   #'browse-sample)
+
+(defmethod ig/init-key :gpml.handler.browse/query-params [_ _]
+  query-params)
