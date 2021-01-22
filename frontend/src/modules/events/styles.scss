@@ -1,0 +1,59 @@
+@import '../../vars.scss';
+
+#add-event{
+  background-color: #00AAF1;
+  padding-top: 40px;
+  &>.ui.container>.ant-row{
+    &>.ant-col:first-child{
+      *{
+        color: #fff;
+      }
+    }
+  }
+  .ant-card{
+    border-radius: 6px;
+    input, textarea{
+      background-color: #EDF2F6;
+      border-color: #EDF2F6;
+      border-radius: 4px;
+    }
+    .ant-picker, .ant-select, .ant-select-selector{
+      background-color: #EDF2F6;
+      border-color: #EDF2F6;
+    }
+    .ant-select-selector{
+      background-color: #EDF2F6;
+    }
+    .ant-input-group-addon{
+      background-color: $primaryColor;
+      border-color: $primaryColor;
+      color: #fff;
+    }
+    .ant-picker{
+      width: 100%;
+      input{
+        text-align: center;
+      }
+    }
+    .array-item{
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      padding: 15px 15px 0;
+      &:not(:first-child){
+        margin-top: 10px;
+      }
+      display: flex;
+      &>div:first-child{
+        flex: 1;
+      }
+      &>div:last-child{
+        width: 200px;
+        margin-left: 10px;
+      }
+    }
+    .array-btns{
+      margin-bottom: 20px;
+      margin-top: 10px;
+    }
+  }
+}

@@ -54,6 +54,11 @@ const CONTROLS = {
     return (
       <FileWidget {...input} />
     )
+  },
+  'date-range': ({ input, ...props }) => {
+    return (
+      <DatePicker.RangePicker {...{...input, ...props}} />
+    )
   }
   // datepicker: ({ input, disabled, dispatch, ...props }) => {
   //   // transform value to be stored to formatted string
