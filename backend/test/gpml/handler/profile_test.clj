@@ -38,7 +38,7 @@
                         (assoc :body-params (new-profile "Indonesia"))))]
       (is (= 201 (:status resp))))))
 
-(deftest handler-get-test
+(deftest handler-get-test-has-profile
   (testing "Profile endpoint returns non empty response"
     (let [system (ig/init fixtures/*system* [::profile/get])
           handler (::profile/get system)
@@ -49,3 +49,12 @@
                         (assoc :jwt-claims {:email "mail@org"})))]
       (is (= 200 (:status resp)))
       (is (not-empty (:body resp))))))
+
+(deftest handler-get-test-no-profile
+  (testing "Profile endpoint returns empty response"
+    (let [system (ig/init fixtures/*system* [::profile/get])
+          handler (::profile/get system)
+          resp (handler (-> (mock/request :get "/")
+                        (assoc :jwt-claims {:email "mail@org"})))]
+      (is (= 500 (:status resp)))
+      (is (empty (:body resp))))))
