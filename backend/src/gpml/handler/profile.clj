@@ -32,4 +32,22 @@
 
 (defmethod ig/init-key :gpml.handler.profile/post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
-    (resp/created (make-profile (:spec db) jwt-claims body-params))))
+    (if-let [profile (make-profile (:spec db) jwt-claims body-params)]
+      (resp/created profile)
+      (assoc (resp/status 500) :body "Internal Server Error"))))
+
+(defmethod ig/init-key :gpml.handler.profile/put [_ {:keys [db]}]
+  (fn [{:keys [jwt-claims body-params]}]
+    (if-let [data (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
+      (resp/response (conj data body-params))
+      (resp/response {}))))
+
+(defmethod ig/init-key :gpml.handler.profile/approve [_ {:keys [db]}]
+  (fn [{:keys [jwt-claims body-params]}]
+    (let [admin (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
+      (tap> admin)
+      (if (= (:role admin) "ADMIN")
+        (if-let [approved (first (db.stakeholder/stakeholder-approve (:spec db) body-params))]
+          (assoc (resp/status 204) :body {:message "Successfuly Updated", :data approved})
+          (assoc (resp/status 500) :body "Internal Server Error"))
+        (assoc (resp/status 401) :body "Unauthorized")))))

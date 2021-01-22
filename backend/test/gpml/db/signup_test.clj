@@ -23,7 +23,8 @@
    :country (get-country conn country),
    :representation "test"
    :summary "Lorem Ipsum"
-   :geo_coverage_type nil})
+   :geo_coverage_type nil
+   :role "USER"})
 
 (defn add-stakeholder-data [conn]
   (let [country "Indonesia"
