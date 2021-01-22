@@ -74,4 +74,12 @@ body {
   }
 }
 
+.ant-form-item-label{
+  i{
+    padding-left: 6px;
+    opacity: 0.5;
+    font-style: italic;
+  }
+}
+
 @import './container.scss';

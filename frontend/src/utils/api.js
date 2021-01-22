@@ -18,9 +18,9 @@ const API = () => {
     return api.token != null ? {...config, headers: {...config.headers, Authorization: `Bearer ${api.token}`}} : config
   }
   return {
-    get: (url, params) => axios({ url, ...getConfig() }),
-    post: (url, data) => axios({ url, method: 'POST', data: typeof data === 'object' ? data : data, ...getConfig() }),
-    patch: (url, data) => axios({ url, method: 'PATCH', data, ...getConfig() }),
+    get: (url, params, config = {}) => axios({ url, ...getConfig(), ...config }),
+    post: (url, data, config = {}) => axios({ url, method: 'POST', data, ...getConfig(), ...config }),
+    patch: (url, data, config) => axios({ url, method: 'PATCH', data, ...getConfig(), ...config }),
     delete: (url) => axios({ url, method: 'DELETE', ...getConfig() }),
     setToken: (token) => {
       api.token = token

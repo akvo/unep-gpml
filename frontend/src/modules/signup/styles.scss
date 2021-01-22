@@ -1,14 +1,17 @@
 @import '../../vars.scss';
 
-#root_profile,
-#root_organisation,
-#root_other,
-{
-    div.ant-row {
-        div.ant-form-item-label{
-            label {
-                margin-top: 1rem;
-            }
-        }
+.signup-modal{
+  h2{
+    color: $primaryColor;
+    font-size: 22px;
+  }
+  .org-check{
+    margin-bottom: 15px;
+  }
+  .title-name-group{
+    display: flex;
+    .ant-select{
+      width: 70px;
     }
+  }
 }

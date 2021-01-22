@@ -1,35 +1,56 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form } from "antd";
-import { Form as FinalForm } from 'react-final-form'
+import { Modal, Form, Input, Select } from "antd";
+import { Form as FinalForm, Field } from 'react-final-form'
 import { createForm } from 'final-form'
+import _ from 'lodash'
 import FinalField from '../../utils/final-field'
+import axios from 'axios'
+import humps from 'humps'
 import api from "../../utils/api";
 import { cloneDeep } from "lodash";
+import './styles.scss'
+import Checkbox from "antd/lib/checkbox/Checkbox";
+import { LinkedinOutlined, TwitterOutlined } from "@ant-design/icons";
 
+const sectorOptions = ['Governments', 'Private Sector', 'NGOs and MGS', 'Academia and Scientific Community', 'IGOs and multi - lateral processes', 'Other']
+const TitleNameGroup = (props) => {
+  return (
+    <Input.Group compact className="title-name-group">
+      <Field
+        name="title"
+        render={({ input }) => <Select {...input} defaultValue="Mr" options={['Mr', 'Mrs', 'Ms', 'Dr', 'Prof'].map(it => ({ value: it, label: it }))} />}
+      />
+      <Field
+        name="firstName"
+        render={({ input }) => <Input {...input} style={{ flex: 1 }} />}
+      />
+    </Input.Group>
+  )
+}
 const defaultFormSchema = [
-  [
-    { name: 'firstName', label: 'First name', required: true },
-    { name: 'lastName', label: 'Last name', required: true },
-    { name: 'linkedIn', label: 'LinkedIn' },
-    { name: 'twitter', label: 'Twitter' },
-    { name: 'photo', label: 'Photo', control: 'file' }
-  ],
-  [
-    { name: 'orgName', label: 'Organisation Name' },
-    { name: 'orgUrl', label: 'Organisation URL', prefix: 'https://' },
-    { name: 'sector', label: 'Representative sector', control: 'select', mode: 'multiple', options: ['Sector 1', 'Sector 2'].map(it => ({ value: it, label: it}))},
-    { name: 'country', label: 'Country', control: 'select', showSearch: true, options: [{ value: 'loading', label: 'Loading' }] }
-  ],
-  [
-    { name: 'about', label: 'About yourself', control: 'textarea', required: true }
-  ]
+  {
+    firstName: { label: 'First name', required: true, render: TitleNameGroup },
+    lastName: { label: 'Last name', required: true},
+    linkedIn: { label: 'LinkedIn', prefix: <LinkedinOutlined />},
+    twitter: { label: 'Twitter', prefix: <TwitterOutlined /> },
+    photo: { label: 'Photo', control: 'file' },
+    representation: { label: 'Representative sector', control: 'select', options: sectorOptions.map(it => ({ value: it, label: it })) },
+    country: { label: 'Country', control: 'select', showSearch: true, options: [{ value: 'loading', label: 'Loading' }], autoComplete: 'off' }
+  },
+  {
+    'org.name': { label: 'Organisation name'},
+    'org.url': { label: 'Organisation URL', addonBefore: 'https://' },
+  },
+  {
+    about: { label: 'About yourself', control: 'textarea', required: true }
+  }
 ]
 
 const validate = (schema) => (values) => {
   const errors = {}
-  schema.filter(it => it.required).forEach(item => {
-    if(!values[item.name]){
-      errors[item.name] = 'Required'
+  Object.keys(schema).filter(it => schema[it].required).forEach(itemName => {
+    if(!values[itemName]){
+      errors[itemName] = 'Required'
     }
   })
   return errors
@@ -37,20 +58,32 @@ const validate = (schema) => (values) => {
 
 const SignupModal = ({ visible, onCancel }) => {
   const [formSchema, setFormSchema] = useState(defaultFormSchema)
+  const [noOrg, setNoOrg] = useState(false)
   useEffect(() => {
     (async function fetchData() {
       const response = await api.get('/country')
       const newSchema = cloneDeep(defaultFormSchema);
-      newSchema[1].find(it => it.name === 'country').options = response.data.map(x => ({ value: x.name, label: x.name}));
+      newSchema[0].country.options = response.data.map(x => ({ value: x.isoCode, label: x.name}));
       setFormSchema(newSchema);
     })()
   }, []);
     const onSubmit = (vals) => {
-      api.post('/profile', vals)
+      const formData = new FormData()
+      Object.keys(vals).forEach(key => {
+        if (!(_.isObject(vals[key]) && _.isArray(vals[key]) === false)){
+          formData.append(humps.decamelizeKeys(key), vals[key])
+        } else {
+          Object.keys(vals[key]).forEach(subkey => {
+            formData.append(`${humps.decamelizeKeys(key)}.${humps.decamelizeKeys(subkey)}`, vals[key][subkey])
+          })
+        }
+      })
+      api.post('/profile', formData, { headers: { 'Content-Type': 'multipart/form-data' }, transformRequest: []})
     }
     const form = createForm({
       subscription: {},
-      onSubmit, validate: validate(formSchema.reduce((acc, val) => [...acc, ...val], []))
+      initialValues: { title: 'Mr' },
+      onSubmit, validate: validate(formSchema.reduce((acc, val) => ({...acc, ...val}), {})) // combined formSchema sections
     })
     return (
         <Modal
@@ -58,6 +91,7 @@ const SignupModal = ({ visible, onCancel }) => {
           width={600}
           title="Complete your signup"
           okText="Submit"
+          className="signup-modal"
           onOk={() => {
             form.submit()
           }}
@@ -71,15 +105,16 @@ const SignupModal = ({ visible, onCancel }) => {
                     <div>
                     <div className="section">
                       <h2>Personal details</h2>
-                      {formSchema[0].map(field => <FinalField {...field} />)}
+                      <FieldsFromSchema schema={formSchema[0]} />
                     </div>
                     <div className="section">
                       <h2>Organisation details</h2>
-                      {formSchema[1].map(field => <FinalField {...field} />)}
+                      <Checkbox className="org-check" checked={noOrg} onChange={({ target: { checked } }) => setNoOrg(checked)}>I don't belong to an organisation</Checkbox>
+                      {!noOrg && <FieldsFromSchema schema={formSchema[1]} />}
                     </div>
                     <div className="section">
-                      <h2>Additional</h2>
-                      {formSchema[2].map(field => <FinalField {...field} />)}
+                      <h2>Other</h2>
+                      <FieldsFromSchema schema={formSchema[2]} />
                     </div>
                     </div>
                   )
@@ -90,5 +125,11 @@ const SignupModal = ({ visible, onCancel }) => {
         </Modal>
     );
 };
+
+const FieldsFromSchema = ({schema}) => {
+  return Object.keys(schema).map(name => {
+    return <FinalField {...{ name, ...schema[name] }} />
+  })
+}
 
 export default SignupModal;
