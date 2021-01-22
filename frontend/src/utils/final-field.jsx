@@ -57,7 +57,7 @@ const CONTROLS = {
   },
   'date-range': ({ input, ...props }) => {
     return (
-      <DatePicker.RangePicker {...{...input, ...props}} />
+      <DatePicker.RangePicker {...{...input, ...props}} format="DD/MM/YYYY" />
     )
   }
   // datepicker: ({ input, disabled, dispatch, ...props }) => {
