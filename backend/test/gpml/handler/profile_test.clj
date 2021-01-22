@@ -56,5 +56,5 @@
           handler (::profile/get system)
           resp (handler (-> (mock/request :get "/")
                         (assoc :jwt-claims {:email "mail@org"})))]
-      (is (= 500 (:status resp)))
+      (is (= 200 (:status resp)))
       (is (empty (:body resp))))))
