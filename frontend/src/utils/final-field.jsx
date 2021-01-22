@@ -77,6 +77,7 @@ const FinalField = ({ name, ...props }) => {
 }
 
 const Control = (props) => {
+  // if (props.render != null) return props.render(props)
   const { required, label, control = 'input', meta, render, ..._props } = props
   return (
     <Item
@@ -84,7 +85,7 @@ const Control = (props) => {
       help={meta.error && meta.touched && meta.error}
       label={[<span key={label}>{label}</span>, required ? '' : <i key={1}> - optional</i>]}
     >
-      {control != null ? CONTROLS[control]({ ..._props }) : render({ ..._props })}
+      {!render ? CONTROLS[control]({ ..._props }) : render(_props)}
     </Item>
   )
 }

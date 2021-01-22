@@ -5,4 +5,13 @@
     color: $primaryColor;
     font-size: 22px;
   }
+  .org-check{
+    margin-bottom: 15px;
+  }
+  .title-name-group{
+    display: flex;
+    .ant-select{
+      width: 70px;
+    }
+  }
 }
