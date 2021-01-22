@@ -58,6 +58,9 @@
 (defn get-country-group [x]
   (db.country-group/country-group-by-name db {:name x}))
 
+(defn get-country-groups [x]
+  (db.country-group/country-group-by-names db {:names x}))
+
 (defn get-organisation [x]
   (db.organisation/organisation-by-names db {:names x}))
 
@@ -175,9 +178,11 @@
                 (assoc x :organisation (get-ids (get-organisation organisation)))
                 x)))
        (map (fn [x]
-              (if-let [country (:geo_coverage x)]
-                (assoc x :geo_coverage (get-ids (get-country country)))
-                x)))
+              (if (= "regional" (:geo_coverage_type x))
+                (if-let [country-group (:geo_coverage x)]
+                  (assoc x :geo_coverage (get-ids (get-country-groups country-group))) x)
+                (if-let [country (:geo_coverage x)]
+                  (assoc x :geo_coverage (get-ids (get-country country))) x))))
        (map (fn [x]
               (if-let [language-url (:resource_language_url x)]
                 (assoc x :resource_language_url (get-language language-url))
@@ -195,14 +200,19 @@
       (let [res-id (-> (db.resource/new-resource db data) first :id)
             data-org (:organisation data)
             data-geo (:geo_coverage data)
+            data-geo-type (:geo_coverage_type data)
             data-lang (:resource_language_url data)
             data-tag (:tags data)]
         (when (not-empty data-org)
           (let [res-org (mapv #(assoc {} :resource res-id :organisation %) data-org)]
             (jdbc/insert-multi! db :resource_organisation res-org)))
         (when (not-empty data-geo)
-          (let [res-geo (mapv #(assoc {} :resource res-id :country %) data-geo)]
-            (jdbc/insert-multi! db :resource_geo_coverage res-geo)))
+          (if (= "regional" data-geo-type)
+            (let [res-geo (mapv #(assoc {} :resource res-id :country_group %) data-geo)]
+              (jdbc/insert-multi! db :resource_geo_coverage res-geo))
+            (let [res-geo (mapv #(assoc {} :resource res-id :country %) data-geo)]
+              (jdbc/insert-multi! db :resource_geo_coverage res-geo))
+            ))
         (when (not-empty data-lang)
           (let [res-lang (map (fn [x] (assoc x :resource res-id)) data-lang)]
             (jdbc/insert-multi! db :resource_language_url res-lang)))
