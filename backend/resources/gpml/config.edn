@@ -7,7 +7,8 @@
                                          {:get {:no-doc true
                                                 :swagger {:info {:title "UNEP GPML"
                                                                  :description "Digital Platform API"
-                                                                 :version "1.0.0"}}
+                                                                 :version "1.0.0"}
+                                                          :securityDefinitions {:Bearer {:type "apiKey", :name "Authorization", :in "header"}}}
                                                 :handler #ig/ref :gpml.handler.main/swagger-handler}}]
                                         ["/country"
                                          {:get {:summary "List available countries"
@@ -33,17 +34,17 @@
                                         ["/profile" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
                                           {:get {:summary "Get profile information for the authenticated Stakeholder"
-                                                 :swagger {:tags ["profile"]}
+                                                 :swagger {:tags ["profile"] :security {:Bearer []}}
                                                  :handler #ig/ref :gpml.handler.profile/get}
                                            :post {:summary "Sign up authenticated profile to Stakeholder"
-                                                  :swagger {:tags ["profile"]}
+                                                  :swagger {:tags ["profile"] :security {:Bearer []}}
                                                   :handler #ig/ref :gpml.handler.profile/post}
                                            :put {:summary "Update authoenticated profile information"
-                                                  :swagger {:tags ["profile"]}
+                                                  :swagger {:tags ["profile"] :security {:Bearer []}}
                                                   :handler #ig/ref :gpml.handler.profile/put}}]
                                          ["/approve"
                                           {:put {:summary "Approve profile by admin"}
-                                                  :swagger {:tags ["profile"]}
+                                                  :swagger {:tags ["profile"] :security {:Bearer []}}
                                                   :handler #ig/ref :gpml.handler.profile/approve}]
                                          ]
                                         ["/tag"
