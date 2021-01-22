@@ -25,7 +25,7 @@
    {:data {:muuntaja m/instance
 
            :coercion (reitit.coercion.malli/create
-                      {:error-keys #{:errors}
+                      {:error-keys #{:humanized}
                        :compile mu/open-schema
                        :skip-extra-values true
                        :default-values true})

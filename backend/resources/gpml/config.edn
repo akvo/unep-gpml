@@ -20,7 +20,7 @@
                                                  :swagger {:tags ["browse"]}
                                                  :parameters {:query #ig/ref :gpml.handler.browse/query-params}
                                                  :handler #ig/ref :gpml.handler.browse/get}}]]
-                                        ["/event" ;; {:middleware [#ig/ref :gpml.auth/auth-middleware]}
+                                        ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
                                           {:post {:summary ""
                                                   :swagger {:tags ["event"]}
