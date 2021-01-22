@@ -18,7 +18,7 @@ const TitleNameGroup = (props) => {
     <Input.Group compact className="title-name-group">
       <Field
         name="title"
-        render={({ input }) => <Select {...input} defaultValue="Mr" options={['Mr', 'Mrs', 'Ms'].map(it => ({ value: it, label: it }))} />}
+        render={({ input }) => <Select {...input} defaultValue="Mr" options={['Mr', 'Mrs', 'Ms', 'Dr', 'Prof'].map(it => ({ value: it, label: it }))} />}
       />
       <Field
         name="firstName"
