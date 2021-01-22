@@ -5,11 +5,12 @@ import './styles.scss'
 import { topicTypes } from '../../utils/misc'
 import { useLocation, withRouter } from 'react-router-dom'
 import api from '../../utils/api'
+import { debounce } from 'lodash'
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
   const ret = {
-    country: [], topic: [], src: ''
+    country: [], topic: [], q: ''
   }
   for (var key of srcParams.keys()) {
     ret[key] = srcParams.get(key).split(',').filter(it => it !== '')
@@ -21,6 +22,13 @@ const Browse = ({ history }) => {
   const query = useQuery()
   const [countryOpts, setCountryOpts] = useState([])
   const [results, setResults] = useState([])
+  const location = useLocation()
+
+  const getResults = () => {
+    console.log(location.search)
+    api.get(`/browse${location.search}`)
+  }
+  const debounced = debounce(getResults, 250, { 'maxWait': 1000 })
   useEffect(() => {
     api.get('/browse')
     .then((resp) => {
@@ -37,13 +45,14 @@ const Browse = ({ history }) => {
     newQuery[param] = value
     const newParams = new URLSearchParams(newQuery)
     history.push(`/browse?${newParams.toString()}`)
+    debounced()
   }
   return (
     <div id="browse">
       <div className="ui container">
         <aside>
           <div className="inner">
-            <Input value={query.src} className="src" placeholder="Search for topics" suffix={<SearchOutlined />} onChange={({ target: { value }}) => updateQuery('src', value)} />
+            <Input value={query.q} className="src" placeholder="Search for topics" suffix={<SearchOutlined />} onChange={({ target: { value }}) => updateQuery('q', value)} />
             <div className="field">
               <div className="label">
                 Country

@@ -3,14 +3,13 @@ import { Modal, Form, Input, Select } from "antd";
 import { Form as FinalForm, Field } from 'react-final-form'
 import { createForm } from 'final-form'
 import _ from 'lodash'
-import FinalField from '../../utils/final-field'
-import axios from 'axios'
 import humps from 'humps'
 import api from "../../utils/api";
 import { cloneDeep } from "lodash";
 import './styles.scss'
 import Checkbox from "antd/lib/checkbox/Checkbox";
 import { LinkedinOutlined, TwitterOutlined } from "@ant-design/icons";
+import { FieldsFromSchema, validateSchema } from "../../utils/form-utils";
 
 const sectorOptions = ['Governments', 'Private Sector', 'NGOs and MGS', 'Academia and Scientific Community', 'IGOs and multi - lateral processes', 'Other']
 const TitleNameGroup = (props) => {
@@ -46,16 +45,6 @@ const defaultFormSchema = [
   }
 ]
 
-const validate = (schema) => (values) => {
-  const errors = {}
-  Object.keys(schema).filter(it => schema[it].required).forEach(itemName => {
-    if(!values[itemName]){
-      errors[itemName] = 'Required'
-    }
-  })
-  return errors
-}
-
 const SignupModal = ({ visible, onCancel }) => {
   const [formSchema, setFormSchema] = useState(defaultFormSchema)
   const [noOrg, setNoOrg] = useState(false)
@@ -83,7 +72,7 @@ const SignupModal = ({ visible, onCancel }) => {
     const form = createForm({
       subscription: {},
       initialValues: { title: 'Mr' },
-      onSubmit, validate: validate(formSchema.reduce((acc, val) => ({...acc, ...val}), {})) // combined formSchema sections
+      onSubmit, validate: validateSchema(formSchema.reduce((acc, val) => ({...acc, ...val}), {})) // combined formSchema sections
     })
     return (
         <Modal
@@ -126,10 +115,5 @@ const SignupModal = ({ visible, onCancel }) => {
     );
 };
 
-const FieldsFromSchema = ({schema}) => {
-  return Object.keys(schema).map(name => {
-    return <FinalField {...{ name, ...schema[name] }} />
-  })
-}
 
 export default SignupModal;

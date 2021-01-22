@@ -10,6 +10,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1{
+  font-size: 40px;
+  font-weight: 900;
+}
+h2{
+  font-size: 32px;
+  font-weight: 600;
+}
+h3{
+  font-size: 27px;
+  font-weight: 600;
+}
 #root{
   .ant-btn{
     border-radius: 4px;
