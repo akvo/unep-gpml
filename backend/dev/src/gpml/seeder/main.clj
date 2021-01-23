@@ -407,3 +407,43 @@
 (comment
   (seed)
   ,)
+
+(comment
+  (->> (get-country-group-countries)
+       (filter #(= 2 (:country_group %)) ,,,)
+       count)
+
+  (require '[clojure.set :as set])
+
+  (defn missing-names [names]
+    (let [db-names (-> names get-country
+                       (#(map :name %))
+                       set)]
+      (set/difference (set names) db-names)))
+
+
+  (->> (get-data "country_group_countries")
+       vals
+       (#(map missing-names %))
+       (reduce set/union)
+       (run! println))
+
+  (defn geo-name-mimatches [topic]
+    (let [r-countries (->> (get-data topic)
+                           (#(map :geo_coverage %))
+                           flatten
+                           (filter some?)
+                           (filter #(not(= "" %)))
+                           set
+                           )
+          countries (->> (get-data "countries")
+                         (#(map :name %))
+                         set)]
+      (set/difference r-countries countries)))
+
+
+  (println "Technologies Geo Coverage")
+  (doseq [item (geo-name-mimatches "technologies")]
+    (println item))
+
+  )
