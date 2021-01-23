@@ -28,11 +28,6 @@
       (duct/read-config)
       (duct/prep-config [:duct.profile/dev])))
 
-(defonce db (-> (dev-system)
-            (ig/init [:duct.database.sql/hikaricp])
-            :duct.database.sql/hikaricp
-            :spec))
-
 (defn parse-date [x]
   (f/unparse (f/formatters :date-hour-minute-second-ms)
              (f/parse (f/formatter "yyyyMMdd")
@@ -52,98 +47,98 @@
 (defn get-ids [cmd]
   (reduce (fn [acc o] (conj acc (:id o))) [] cmd))
 
-(defn get-country [x]
+(defn get-country [db x]
   (db.country/country-by-names db {:names x}))
 
-(defn get-country-group [x]
+(defn get-country-group [db x]
   (db.country-group/country-group-by-name db {:name x}))
 
-(defn get-country-groups [x]
+(defn get-country-groups [db x]
   (db.country-group/country-group-by-names db {:names x}))
 
-(defn get-organisation [x]
+(defn get-organisation [db x]
   (db.organisation/organisation-by-names db {:names x}))
 
-(defn get-tag [x]
+(defn get-tag [db x]
   (db.tag/tag-by-tags db {:tags x}))
 
-(defn get-language [x]
+(defn get-language [db x]
   (remove nil?
           (mapv (fn [y]
                   (if-let [language-id (db.language/language-by-name db {:name (:language y)})]
                     (assoc y :url (:url y) :language (:id language-id)) nil))x)))
 
-(defn get-action [x]
+(defn get-action [db x]
   (db.action/action-by-code db {:code x}))
 
-(defn get-actions [x]
+(defn get-actions [db x]
   (db.action/action-by-codes db {:codes x}))
 
-(defn get-action-detail [x]
+(defn get-action-detail [db x]
   (db.action-detail/action-detail-by-code db {:code x}))
 
-(defn delete-resources []
+(defn delete-resources [db]
   (jdbc/delete! db :resource_tag [])
   (jdbc/delete! db :resource_organisation [])
   (jdbc/delete! db :resource_geo_coverage [])
   (jdbc/delete! db :resource_language_url [])
   (jdbc/delete! db :resource []))
 
-(defn delete-policies []
+(defn delete-policies [db]
   (jdbc/delete! db :policy_tag [])
   (jdbc/delete! db :policy_geo_coverage [])
   (jdbc/delete! db :policy_language_url [])
   (jdbc/delete! db :policy []))
 
-(defn delete-technologies []
+(defn delete-technologies [db]
   (jdbc/delete! db :technology_tag [])
   (jdbc/delete! db :technology_geo_coverage [])
   (jdbc/delete! db :technology []))
 
-(defn delete-projects []
+(defn delete-projects [db]
   (jdbc/delete! db :project_country [])
   (jdbc/delete! db :project_action [])
   (jdbc/delete! db :project_action_detail [])
   (jdbc/delete! db :project []))
 
-(defn seed-countries []
+(defn seed-countries [db]
   (jdbc/delete! db :country_group_country [])
   (jdbc/delete! db :country [])
   (jdbc/insert-multi! db :country
                       (map (fn [x] {:name (:name x) :iso_code (:code x)})
                            (get-data "countries"))))
 
-(defn seed-country-groups []
+(defn seed-country-groups [db]
   (jdbc/delete! db :country_group [])
   (doseq [data (get-data "country_group")]
     (db.country-group/new-country-group db data)))
 
-(defn get-country-group-countries []
+(defn get-country-group-countries [db]
   (flatten
    (reduce (fn [acc [k v]]
-             (let [group (:id (get-country-group (name k)))]
+             (let [group (:id (get-country-group db (name k)))]
                (conj acc (map (fn [x] {:country_group group :country x})
-                              (get-ids (get-country v))))))
+                              (get-ids (get-country db v))))))
            []
            (get-data "country_group_countries"))))
 
 
-(defn seed-country-group-country []
+(defn seed-country-group-country [db]
   (jdbc/delete! db :country_group_country [])
-  (doseq [data (get-country-group-countries)]
+  (doseq [data (get-country-group-countries db)]
     (db.country-group/new-country-group-country db data)))
 
-(defn seed-organisations []
+(defn seed-organisations [db]
   (jdbc/delete! db :organisation [])
   (doseq [data (get-data "organisations")]
     (db.organisation/new-organisation db data)))
 
-(defn seed-currencies []
+(defn seed-currencies [db]
   (jdbc/delete! db :currency [])
   (doseq [data (get-data "currencies")]
     (db.currency/new-currency db data)))
 
-(defn seed-languages []
+(defn seed-languages [db]
   (jdbc/delete! db :language [])
   (doseq [data (reduce (fn [acc [k v]]
                                 (conj acc {:iso_code (str/trim (name k))
@@ -153,7 +148,7 @@
                               (get-data "languages"))]
     (db.language/new-language db data)))
 
-(defn seed-tags []
+(defn seed-tags [db]
   (jdbc/delete! db :tag [])
   (jdbc/delete! db :tag_category [])
   (doseq [data (get-data "tags" {:keywords? false})]
@@ -162,40 +157,39 @@
       (doseq [tag (map #(assoc {} :tag_category category-id :tag %) (second data))]
         (db.tag/new-tag db tag)))))
 
-(defn- get-resources
-  []
+(defn get-resources [db]
   (->> (get-data "resources")
        (map (fn [x]
                 (assoc x :value (:value_amount x))))
        (map (fn [x]
               (if-let [country (:country x)]
-                (if-let [data (first (get-country [country]))]
+                (if-let [data (first (get-country db [country]))]
                   (assoc x :country (:id data))
                   (assoc x :country nil))
                 x)))
        (map (fn [x]
               (if-let [organisation (:organisation x)]
-                (assoc x :organisation (get-ids (get-organisation organisation)))
+                (assoc x :organisation (get-ids (get-organisation db organisation)))
                 x)))
        (map (fn [x]
               (if (= "regional" (:geo_coverage_type x))
                 (if-let [country-group (:geo_coverage x)]
-                  (assoc x :geo_coverage (get-ids (get-country-groups country-group))) x)
+                  (assoc x :geo_coverage (get-ids (get-country-groups db country-group))) x)
                 (if-let [country (:geo_coverage x)]
-                  (assoc x :geo_coverage (get-ids (get-country country))) x))))
+                  (assoc x :geo_coverage (get-ids (get-country db country))) x))))
        (map (fn [x]
               (if-let [language-url (:resource_language_url x)]
-                (assoc x :resource_language_url (get-language language-url))
+                (assoc x :resource_language_url (get-language db language-url))
                 x))
             )
        (map (fn [x]
               (if-let [tags (:tags x)]
-                (assoc x :tags (get-ids (get-tag tags)))
+                (assoc x :tags (get-ids (get-tag db tags)))
                 x)))))
 
-(defn seed-resources []
-  (delete-resources)
-  (doseq [data (get-resources)]
+(defn seed-resources [db]
+  (delete-resources db)
+  (doseq [data (get-resources db)]
     (try
       (let [res-id (-> (db.resource/new-resource db data) first :id)
             data-org (:organisation data)
@@ -211,8 +205,7 @@
             (let [res-geo (mapv #(assoc {} :resource res-id :country_group %) data-geo)]
               (jdbc/insert-multi! db :resource_geo_coverage res-geo))
             (let [res-geo (mapv #(assoc {} :resource res-id :country %) data-geo)]
-              (jdbc/insert-multi! db :resource_geo_coverage res-geo))
-            ))
+              (jdbc/insert-multi! db :resource_geo_coverage res-geo))))
         (when (not-empty data-lang)
           (let [res-lang (map (fn [x] (assoc x :resource res-id)) data-lang)]
             (jdbc/insert-multi! db :resource_language_url res-lang)))
@@ -224,28 +217,27 @@
         (.printStackTrace e)
         (throw e)))))
 
-(defn- get-policies
-  []
+(defn get-policies [db]
   (->> (get-data "policies")
        (map (fn [x]
                 (assoc x :value (:value_amount x))))
        (map (fn [x]
               (if-let [country (:country x)]
-                (if-let [data (first (get-country [country]))]
+                (if-let [data (first (get-country db [country]))]
                   (assoc x :country (:id data))
                   (assoc x :country nil))
                 x)))
        (map (fn [x]
               (if-let [group (:implementing_mea x)]
-                (assoc x :implementing_mea (:id (get-country-group group)))
+                (assoc x :implementing_mea (:id (get-country-group db group)))
                 x)))
        (map (fn [x]
               (if-let [country (:geo_coverage x)]
-                (assoc x :geo_coverage (get-ids (get-country country)))
+                (assoc x :geo_coverage (get-ids (get-country db country)))
                 x)))
        (map (fn [x]
               (if-let [language-url (:resource_language_url x)]
-                (assoc x :resource_language_url (get-language language-url))
+                (assoc x :resource_language_url (get-language db language-url))
                 x))
             )
        (map (fn [x]
@@ -258,16 +250,15 @@
                 (if-let [parsed (parse-date date)]
                   (assoc x :first_publication_date parsed)
                   x)
-                x))
-            )
+                x)))
        (map (fn [x]
               (if-let [tags (:tags x)]
-                (assoc x :tags (get-ids (get-tag tags)))
+                (assoc x :tags (get-ids (get-tag db tags)))
                 x)))))
 
-(defn seed-policies []
-  (delete-policies)
-  (doseq [data (get-policies)]
+(defn seed-policies [db]
+  (delete-policies db)
+  (doseq [data (get-policies db)]
     (try
       (let [po-id (-> (db.policy/new-policy db data) first :id)
             data-geo (:geo_coverage data)
@@ -287,27 +278,26 @@
         (.printStackTrace e)
         (throw e)))))
 
-(defn- get-technologies
-  []
+(defn get-technologies [db]
   (->> (get-data "technologies")
        (map (fn [x]
               (if-let [country (:country x)]
-                (if-let [data (first (get-country [country]))]
+                (if-let [data (first (get-country db [country]))]
                   (assoc x :country (:id data))
                   (assoc x :country nil))
                 x)))
        (map (fn [x]
               (if-let [country (:geo_coverage x)]
-                (assoc x :geo_coverage (get-ids (get-country country)))
+                (assoc x :geo_coverage (get-ids (get-country db country)))
                 x)))
        (map (fn [x]
               (if-let [tags (:tags x)]
-                (assoc x :tags (get-ids (get-tag tags)))
+                (assoc x :tags (get-ids (get-tag db tags)))
                 x)))))
 
-(defn seed-technologies []
-  (delete-technologies)
-  (doseq [data (get-technologies)]
+(defn seed-technologies [db]
+  (delete-technologies db)
+  (doseq [data (get-technologies db)]
     (try
       (let [tech-id (-> (db.technology/new-technology db data) first :id)
             data-geo (:geo_coverage data)
@@ -323,43 +313,41 @@
         (.printStackTrace e)
         (throw e)))))
 
-(defn seed-actions []
+(defn seed-actions [db]
   (jdbc/delete! db :action_detail [])
   (jdbc/delete! db :action [])
   (jdbc/insert-multi! db :action (get-data "actions")))
 
-(defn get-action-details []
-  (map (fn [x] (if-let [action (get-action (:action x))]
+(defn get-action-details [db]
+  (map (fn [x] (if-let [action (get-action db (:action x))]
           (assoc x :action (:id action)) x)) (get-data "action_details")))
 
-(defn seed-action-details []
+(defn seed-action-details [db]
   (jdbc/delete! db :action_detail [])
-  (jdbc/insert-multi! db :action_detail (mapv #(dissoc % :type) (get-action-details))))
+  (jdbc/insert-multi! db :action_detail (mapv #(dissoc % :type) (get-action-details db))))
 
-(defn- get-projects
-  []
+(defn get-projects [db]
   (->> (get-data "projects")
        (map (fn [x]
               (if-let [country (seq(:countries x))]
-                (assoc x :countries (get-ids (get-country country)))
+                (assoc x :countries (get-ids (get-country db country)))
                 x)))
        (map (fn [x]
               (if-let [codes (:action_codes x)]
-                (assoc x :action_codes (get-ids (map (fn [z] (get-action z)) codes)))
+                (assoc x :action_codes (get-ids (map (fn [z] (get-action db z)) codes)))
                 x)))
        (map (fn [x]
               (if-let [codes (:action_details x)]
                 (assoc x :action_details
                        (map (fn [y]
                               {:value (:value y)
-                               :action_detail (:id (get-action-detail (:action_detail_code y)))})
+                               :action_detail (:id (get-action-detail db (:action_detail_code y)))})
                             codes))
-                x)))
-       ))
+                x)))))
 
-(defn seed-projects []
-  (delete-projects)
-  (doseq [data (get-projects)]
+(defn seed-projects [db]
+  (delete-projects db)
+  (doseq [data (get-projects db)]
     (try
       (let [proj-id (-> (db.project/new-project db data) first :id)
             data-countries (:countries data)
@@ -375,48 +363,103 @@
           (let [proj-act-detail (mapv (fn [z]
                                         {:project proj-id
                                          :action_detail (:action_detail z)
-                                         :value (:value z)}
-                                        ) data-act-detail)]
+                                         :value (:value z)})
+                                      data-act-detail)]
             (jdbc/insert-multi! db :project_action_detail proj-act-detail))))
       (catch Exception e
         (println data)
         (.printStackTrace e)
         (throw e)))))
 
-(defn seed []
-  (println "-- Start Seeding")
-  (delete-resources)
-  (delete-policies)
-  (delete-technologies)
-  (delete-projects)
-  (seed-countries)
-  (seed-country-groups)
-  (seed-country-group-country)
-  (seed-currencies)
-  (seed-organisations)
-  (seed-languages)
-  (seed-tags)
-  (seed-policies)
-  (seed-resources)
-  (seed-technologies)
-  (seed-actions)
-  (seed-action-details)
-  (seed-projects)
-  (println "-- Done Seeding"))
+(defn seed
+  ([db {:keys [country? currency?
+               organisation? language? tag?
+               policy? resource?
+               technology? project?]
+        :or {country? false
+             currency? false
+             organisation? false
+             language? false
+             tag? false
+             policy? false
+             resource? false
+             technology? false
+             project? false}}]
+   (println "-- Start Seeding")
+   (delete-resources db)
+   (delete-policies db)
+   (delete-technologies db)
+   (delete-projects db)
+   (when country?
+     (println "Seeding country...")
+     (seed-countries db)
+     (seed-country-groups db)
+     (seed-country-group-country db))
+   (when currency?
+     (println "Seeding currency...")
+     (seed-currencies db))
+   (when organisation?
+     (println "Seeding organisation...")
+     (seed-organisations db))
+   (when language?
+     (println "Seeding language...")
+     (seed-languages db))
+   (when tag?
+     (println "Seeding tag...")
+     (seed-tags db))
+   (when policy?
+     (println "Seeding policy...")
+     (seed-policies db))
+   (when resource?
+     (println "Seeding resource...")
+     (seed-resources db))
+   (when technology?
+     (println "Seeding technology...")
+     (seed-technologies db))
+   (when project?
+     (println "Seeding project...")
+     (seed-actions db)
+     (seed-action-details db)
+     (seed-projects db))
+   (println "-- Done Seeding"))
+  ([]
+   (seed (-> (dev-system)
+             (ig/init [:duct.database.sql/hikaricp])
+             :duct.database.sql/hikaricp
+             :spec)
+         {:country? true
+          :currency? true
+          :organisation? true
+          :language? true
+          :tag? true
+          :policy? true
+          :resource? true
+          :technology? true
+          :project? true})))
 
 (comment
+
   (seed)
-  ,)
 
-(comment
-  (->> (get-country-group-countries)
+  (time (seed (-> (dev-system)
+             (ig/init [:duct.database.sql/hikaricp])
+             :duct.database.sql/hikaricp
+             :spec)
+              {:resource? true}))
+
+  (def db (-> (dev-system)
+               (ig/init [:duct.database.sql/hikaricp])
+               :duct.database.sql/hikaricp
+               :spec))
+
+  (->> (get-country-group-countries db)
        (filter #(= 2 (:country_group %)) ,,,)
        count)
 
   (require '[clojure.set :as set])
 
   (defn missing-names [names]
-    (let [db-names (-> names get-country
+    (let [db-names (-> (get-country db names)
                        (#(map :name %))
                        set)]
       (set/difference (set names) db-names)))
@@ -445,5 +488,4 @@
   (println "Technologies Geo Coverage")
   (doseq [item (geo-name-mimatches "technologies")]
     (println item))
-
   )
