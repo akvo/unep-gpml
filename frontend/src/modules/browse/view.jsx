@@ -30,7 +30,7 @@ const Browse = ({ history }) => {
   }
   const debounced = debounce(getResults, 250, { 'maxWait': 1000 })
   useEffect(() => {
-    api.get('/browse')
+    api.get(`/browse${location.search}`)
     .then((resp) => {
       setResults(resp?.data?.results)
     })
@@ -38,8 +38,8 @@ const Browse = ({ history }) => {
     .then((resp) => {
       setCountryOpts(resp.data.map(it => ({ value: it.isoCode, label: it.name })))
     })
-    api.get('/country')
-  }, [])
+    //api.get('/country')
+  }, [location.search])
   const updateQuery = (param, value) => {
     const newQuery = {...query}
     newQuery[param] = value
@@ -111,7 +111,7 @@ const Result = ({ result }) => {
       <div className="type">{result.type}</div>
       <ul className="stats">
         <li>
-          {result.geoCoverageCountries.join(', ')}
+          {result?.geoCoverageCountries?.join(', ')}
         </li>
       </ul>
       {result.description && <p>{result.description}</p>}
