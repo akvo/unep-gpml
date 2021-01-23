@@ -32,3 +32,24 @@
         false " "
         false ","
         false ",,"))))
+
+(deftest db-filter-based-on-query-params
+  (testing "Everything is empty"
+    (is (= (browse/get-db-filter {}) {}))
+    (is (= (browse/get-db-filter {:q "" :topic "" :country ""}) {})))
+  (testing "Country is not empty"
+    (is (= (browse/get-db-filter {:country "ESP,IND,IDN"})
+           {:geo-coverage #{"***" "ESP" "IND" "IDN"}})))
+  (testing "Topic is not empty"
+    (is (= (browse/get-db-filter {:topic "technology"})
+           {:topic #{"technology"}})))
+  (testing "Search is not empty"
+    (is (= (browse/get-db-filter {:q "act"})
+           {:search-text "act"})))
+  (testing "None is empty"
+    (is (= (browse/get-db-filter {:q "eco"
+                                  :country "USA"
+                                  :topic "project,event"})
+           {:search-text "eco"
+            :geo-coverage #{"***" "USA"}
+            :topic #{"project" "event"}}))))

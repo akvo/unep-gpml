@@ -1,7 +1,8 @@
 (ns gpml.handler.browse
-  (:require [integrant.core :as ig]
-            [ring.util.response :as resp]
-            [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [gpml.db.browse :as db.browse]
+            [integrant.core :as ig]
+            [ring.util.response :as resp]))
 
 (def technology-sample-data [{:id 1
                               :title "The Great Bubble Barrier"
@@ -184,28 +185,47 @@
   [:map
    [:country {:optional true
               :swagger {:description "Comma separated list of country codes (ISO 3166-1 Alpha-3 code)"}}
-    [:re country-re]]
+    [:or
+     [:string {:max 0}]
+     [:re country-re]]]
    [:topic {:optional true
             :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "|" topics))}}
-    [:re topic-re]]
+    [:or
+     [:string {:max 0}]
+     [:re topic-re]]]
    [:q {:optional true
         :swagger {:description "Text search term to be found on the different topics"}}
-    [:string {:min 1}]]])
+    [:string]]])
 
+(defn get-db-filter
+  [{:keys [q country topic]}]
+  (merge {}
+         (when (seq country)
+           {:geo-coverage (conj (set (str/split country #",")) "***")})
+         (when (seq topic)
+           {:topic (set (str/split topic #","))})
+         (when (seq q)
+           {:search-text (-> q
+                             (str/replace #"&" "")
+                             (str/replace #" " " & "))})))
 
-(comment
+(defn results [query db]
+  (let [data (->> query
+                  (get-db-filter)
+                  (db.browse/filter-topic db)
+                  (map (fn [{:keys [json geo_coverage_iso_code topic]}]
+                         (merge
+                          (assoc json
+                                 :type topic)
+                          (when geo_coverage_iso_code
+                            {:geo_coverage_countries [geo_coverage_iso_code]})))))]
+    (tap> data)
+    data))
 
-  (require '[malli.core :as malli])
+(defmethod ig/init-key :gpml.handler.browse/get [_ {:keys [db]}]
+  (fn [{{:keys [query]} :parameters}]
 
-  (malli/validate query-params {:topic "event"})
-
-  )
-
-(defn browse-sample [_]
-  (resp/response {:results sample-data :next nil :prev nil :total (count sample-data) :page 1}))
-
-(defmethod ig/init-key :gpml.handler.browse/get [_ _]
-  #'browse-sample)
+    (resp/response {:results (#'results query (:spec db))})))
 
 (defmethod ig/init-key :gpml.handler.browse/query-params [_ _]
   query-params)

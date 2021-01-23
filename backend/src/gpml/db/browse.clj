@@ -1,13 +1,13 @@
 (ns gpml.db.browse
   (:require [hugsql.core :as hugsql]))
 
-(declare filter-topic) ;; to make clj-kondo happy
 
 (hugsql/def-db-fns "gpml/db/browse.sql")
 
 (comment
   (require 'dev)
 
+  (declare filter-topic) ;; to make clj-kondo happy
   (def params) ;; to make clj-kondo happy
   (when (seq (:search-text params)) "AND search_text @@ to_tsquery(:search-text)")
   (when (seq (:geo-coverage params)) "AND geo_coverage_iso_code IN (:v*:geo-coverage)")
@@ -31,5 +31,8 @@
   (count (filter-topic db {:search-text "float"
                            :topic ["technology"]}))
   ;; => 1
+
+  (filter-topic db {:search-text "act"
+                    :geo-coverage ["***", "IND"]})
 
   ,)
