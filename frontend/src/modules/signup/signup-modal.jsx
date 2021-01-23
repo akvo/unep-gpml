@@ -57,17 +57,7 @@ const SignupModal = ({ visible, onCancel }) => {
     })()
   }, []);
     const onSubmit = (vals) => {
-      const formData = new FormData()
-      Object.keys(vals).forEach(key => {
-        if (!(_.isObject(vals[key]) && _.isArray(vals[key]) === false)){
-          formData.append(humps.decamelizeKeys(key), vals[key])
-        } else {
-          Object.keys(vals[key]).forEach(subkey => {
-            formData.append(`${humps.decamelizeKeys(key)}.${humps.decamelizeKeys(subkey)}`, vals[key][subkey])
-          })
-        }
-      })
-      api.post('/profile', formData, { headers: { 'Content-Type': 'multipart/form-data' }, transformRequest: []})
+      api.post('/profile', vals, { headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${api.token}` }})
     }
     const form = createForm({
       subscription: {},

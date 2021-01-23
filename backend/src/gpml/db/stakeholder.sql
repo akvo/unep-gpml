@@ -2,6 +2,10 @@
 -- :doc Get all stakeholder
 select * from stakeholder order by id;
 
+-- :name stakeholder-by-id :? :1
+-- :doc Get stakeholder by id
+select * from stakeholder where id = :id;
+
 -- :name stakeholder-by-email :? :1
 -- :doc Get stakeholder by email
 select * from stakeholder where email = :email;
@@ -16,5 +20,5 @@ update stakeholder set approved_at = now()::timestamptz where id = :id;
 
 -- :name new-stakeholder :<!
 -- :doc Insert a new stakeholder (Temporary pre-approved by default)
-insert into stakeholder(picture, title, first_name, last_name, affiliation, email, linkedin, twitter, url, country, representation, summary, geo_coverage_type, approved_at)
-values(:picture, :title, :first_name, :last_name, :affiliation, :email, :linkedin, :twitter, :url, :country::integer, :representation, :summary, :v:geo_coverage_type::geo_coverage_type, now()) RETURNING id;
+insert into stakeholder(picture, title, first_name, last_name, affiliation, email, linked_in, twitter, url, country, representation, about, geo_coverage_type, approved_at)
+values(:picture, :title, :first_name, :last_name, :affiliation, :email, :linked_in, :twitter, :url, :country::integer, :representation, :about, :v:geo_coverage_type::geo_coverage_type, now()) RETURNING id;

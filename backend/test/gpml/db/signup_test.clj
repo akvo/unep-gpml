@@ -10,19 +10,19 @@
 (defn get-country [conn profile]
   (:id (db.country/country-by-name conn {:name (:country profile)})))
 
-(defn make-profile [conn first-name, last-name, email, country]
+(defn make-profile [conn first-name last-name email country]
   {:picture "https://picsum.photos/200"
    :title "mr."
    :first_name first-name
    :last_name last-name
    :affiliation nil
    :email email
-   :linkedin nil
+   :linked_in nil
    :twitter nil
    :url nil
-   :country (get-country conn country),
+   :country (get-country conn country)
    :representation "test"
-   :summary "Lorem Ipsum"
+   :about "Lorem Ipsum"
    :geo_coverage_type nil
    :role "USER"})
 
@@ -30,7 +30,7 @@
   (let [country "Indonesia"
         iso_code "IDN"]
   (db.country/new-country conn {:name country :iso_code iso_code})
-  (db.stakeholder/new-stakeholder conn (make-profile conn "John", "Doe", "mail@org.com", country))))
+  (db.stakeholder/new-stakeholder conn (make-profile conn "John" "Doe" "mail@org.com" country))))
 
 (deftest test-new-profile
   (testing "Test profile is get inserted"
