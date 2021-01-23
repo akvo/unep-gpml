@@ -17,9 +17,12 @@
 (defn read-config []
   (duct/read-config (io/resource "gpml/config.edn")))
 
-(defn test []
-  (eftest/run-tests (eftest/find-tests "test")
-                    {:fail-fast? true}))
+(defn test
+  ([v]
+   (eftest/run-tests [v] {:fail-fast? true}))
+  ([]
+   (eftest/run-tests (eftest/find-tests "test")
+                     {:fail-fast? true})))
 
 (def profiles
   [:duct.profile/dev :duct.profile/local])
@@ -43,7 +46,12 @@
 
   config
 
+  ;; run all tests
   (test)
+
+  ;; run just one test - we assume that the test is already loaded
+  #_:clj-kondo/ignore
+  (test #'gpml.handler.landing-test/handler-test)
 
   (portal/start {:portal.launcher/port 47481
                  :portal.launcher/host "0.0.0.0"})

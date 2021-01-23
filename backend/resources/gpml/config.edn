@@ -2,6 +2,9 @@
  {:duct.core/project-ns gpml
   :gpml.handler.main/handler {:routes [["/"
                                         {:get #ig/ref :gpml.handler.main/root}]
+                                       ["/image/profile/{id}"
+                                        {:get {:handler #ig/ref :gpml.handler.image/profile
+                                               :parameters {:path [:map [:id int?]]}}}]
                                        ["/api"
                                         ["/swagger.json"
                                          {:get {:no-doc true
@@ -76,6 +79,8 @@
   :gpml.handler.profile/approve {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.tag/get {:db #ig/ref :duct.database/sql}
+
+  :gpml.handler.image/profile {:db #ig/ref :duct.database/sql}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
