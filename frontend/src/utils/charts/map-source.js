@@ -1,9 +1,10 @@
 let maps = require('../static/unep-map-mercator.json');
 let mapValues = maps.features.map((x, i) => {
+    const disputed = x.properties.cd.split("")[0] === "x";
     return {
         ...x,
         properties:  {
-            name: x.properties.cd !== "XXX" ? x.properties.cd : "disputed-" + i,
+            name: !disputed ? x.properties.cd : "disputed-" + i,
             cd: x.properties.name,
         }
     }
