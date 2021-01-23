@@ -40,7 +40,7 @@
                                            :post {:summary "Sign up authenticated profile to Stakeholder"
                                                   :swagger {:tags ["profile"] :security {:Bearer []}}
                                                   :handler #ig/ref :gpml.handler.profile/post}
-                                           :put {:summary "Update authoenticated profile information"
+                                           :put {:summary "Update authenticated profile information"
                                                   :swagger {:tags ["profile"] :security {:Bearer []}}
                                                   :handler #ig/ref :gpml.handler.profile/put}}]
                                          ["/approve"
