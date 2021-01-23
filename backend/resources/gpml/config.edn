@@ -42,6 +42,7 @@
                                                  :handler #ig/ref :gpml.handler.profile/get}
                                            :post {:summary "Sign up authenticated profile to Stakeholder"
                                                   :swagger {:tags ["profile"] :security {:Bearer []}}
+                                                  :parameters {:body #ig/ref :gpml.handler.profile/post-params}
                                                   :handler #ig/ref :gpml.handler.profile/post}
                                            :put {:summary "Update authenticated profile information"
                                                   :swagger {:tags ["profile"] :security {:Bearer []}}
@@ -73,6 +74,7 @@
 
   :gpml.handler.profile/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/post {:db #ig/ref :duct.database/sql}
+  :gpml.handler.profile/post-params {}
   :gpml.handler.profile/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/approve {:db #ig/ref :duct.database/sql}
 
