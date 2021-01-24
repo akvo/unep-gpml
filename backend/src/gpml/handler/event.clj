@@ -1,7 +1,8 @@
 (ns gpml.handler.event
   (:require [integrant.core :as ig]
             [gpml.db.event :as db.event]
-            [gpml.db.language :as db.language]))
+            [gpml.db.language :as db.language]
+            [gpml.db.country :as db.country]))
 
 (defn create-event [conn {:keys [tags urls title start_date end_date
                                  description remarks geo_coverage_type
@@ -13,7 +14,7 @@
               :remarks remarks
               :geo_coverage_type geo_coverage_type
               :city city
-              :country country}
+              :country (->> {:name country} (db.country/country-by-code conn) :id)}
         event-id (->> data (db.event/new-event conn) first :id)]
     (when (not-empty tags)
       (db.event/add-event-tags conn {:tags (map #(vector event-id %) tags)}))
@@ -34,8 +35,10 @@
    [:description {:optional true} string?]
    [:image {:optional true} string?]
    [:remarks {:optional true} string?]
-   [:geo_coverage_type [:enum "global", "regional", "national", "transnational", "sub-national", "global with elements in specific areas"]]
-   [:country {:optional true} int?]
+   [:geo_coverage_type
+    [:enum "global", "regional", "national", "transnational",
+     "sub-national", "global with elements in specific areas"]]
+   [:country {:optional true} string?]
    [:city {:optional true} string?]
    [:urls {:optional true}
     [:vector {:optional true}
