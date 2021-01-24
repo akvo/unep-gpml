@@ -17,7 +17,7 @@ services:
     depends_on:
       - db
   backend:
-    image: akvo/akvo-clojure-lein:20210106.174854.b84d771
+    image: akvo/akvo-clojure-lein:20210124.114043.4437caf
     command: ["lein", "repl", ":headless"]
     ports:
       - 3000:3000
