@@ -12,3 +12,8 @@ values :t*:tags RETURNING id;
 -- :doc Add language URLs to an event
 insert into event_language_url(event, language, url)
 values :t*:urls RETURNING id;
+
+-- :name add-event-geo-coverage :<!
+-- :doc Add specified countries or country groups to an event
+insert into event_geo_coverage(event, country_group, country)
+values :t*:geo RETURNING id;

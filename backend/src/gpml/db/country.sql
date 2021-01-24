@@ -18,6 +18,10 @@ select id from country where name = :name
 -- :doc Get country by iso_code
 select id from country where iso_code = :name
 
+-- :name country-by-codes :? :*
+-- :doc Get country by iso_codes
+select id from country where iso_code in (:v*:codes)
+
 -- :name new-country :<!
 -- :doc Insert new country
 insert into country (name, iso_code)

@@ -8,7 +8,7 @@ values(:name, :v:type::country_group_type)
 select * from country_group where name = :name
 
 -- :name country-group-by-names :? :*
--- :doc Get country by names
+-- :doc Get country group by names
 select * from country_group where name in (:v*:names)
 
 -- :name new-country-group-country :!

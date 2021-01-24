@@ -2,11 +2,12 @@
   (:require [integrant.core :as ig]
             [gpml.db.event :as db.event]
             [gpml.db.language :as db.language]
-            [gpml.db.country :as db.country]))
+            [gpml.db.country :as db.country]
+            [gpml.db.country-group :as db.country-group]))
 
 (defn create-event [conn {:keys [tags urls title start_date end_date
                                  description remarks geo_coverage_type
-                                 country city]}]
+                                 country city geo_coverage_value]}]
   (let [data {:title title
               :start_date start_date
               :end_date end_date
@@ -25,7 +26,24 @@
                                          (db.language/language-by-iso-code conn)
                                          :id)
                                     (:url %)) urls)]
-        (db.event/add-event-language-urls conn {:urls lang-urls})))))
+        (db.event/add-event-language-urls conn {:urls lang-urls})))
+    (when (not-empty geo_coverage_value)
+      (let [geo-data
+            (cond
+              (contains?
+               #{"regional" "global with elements in specific areas"}
+               geo_coverage_type)
+              (->> {:names geo_coverage_value}
+                   (db.country-group/country-group-by-names conn)
+                   (map #(vector event-id (:id %) nil)))
+              (contains?
+               #{"national" "transnational"}
+               geo_coverage_type)
+              (->> {:codes geo_coverage_value}
+                   (db.country/country-by-codes conn)
+                   (map #(vector event-id nil (:id %)))))]
+        (when (some? geo-data)
+          (db.event/add-event-geo-coverage conn {:geo geo-data}))))))
 
 (def post-params
   [:map
