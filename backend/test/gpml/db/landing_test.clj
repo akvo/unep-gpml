@@ -10,7 +10,7 @@
 
 (use-fixtures :each fixtures/with-test-system)
 
-(defn make-resource [title]
+(defn make-resource [title geo-coverage]
   {:title title
    :type "Financial Resource"
    :publish_year 2010
@@ -19,7 +19,7 @@
    :image nil
    :valid_from nil
    :valid_to nil
-   :geo_coverage_type nil
+   :geo_coverage_type geo-coverage
    :attachments nil
    :remarks "Remarks"})
 
@@ -34,9 +34,9 @@
                       [{:country_group 1 :country 2}
                        {:country_group 1 :country 3}
                        {:country_group 2 :country 1}])
-  (db.resource/new-resource conn (make-resource "Resource 1"))
-  (db.resource/new-resource conn (make-resource "Resource 2"))
-  (db.resource/new-resource conn (make-resource "Resource 3"))
+  (db.resource/new-resource conn (make-resource "Resource 1" "transnational"))
+  (db.resource/new-resource conn (make-resource "Resource 2" "national"))
+  (db.resource/new-resource conn (make-resource "Resource 3" "regional"))
   (jdbc/insert-multi! conn :resource_geo_coverage
                       [ ;; Resource 1
                        {:resource 1 :country 1}
@@ -45,8 +45,8 @@
                        ;; Resource 2
                        {:resource 2 :country 4}
                        ;; Resource 3
-                       {:resource 2 :country_group 1}
-                       {:resource 2 :country_group 2}]))
+                       {:resource 3 :country_group 1}
+                       {:resource 3 :country_group 2}]))
 
 (deftest test-map-counts
   (testing "Test map counts for landing page"
@@ -54,7 +54,8 @@
           system (ig/init fixtures/*system* [db-key])
           conn (-> system db-key :spec)
           _ (add-resource-data conn)
-          landing (db.landing/map-counts conn)]
+          landing (db.landing/map-counts-grouped conn)]
+      (prn landing)
       (is (= (:resource (first (filter #(= "ESP" (:iso_code %)) landing))) 2))
       (is (= (:resource (first (filter #(= "IND" (:iso_code %)) landing))) 2))
       (is (= (:resource (first (filter #(= "IDN" (:iso_code %)) landing))) 2))
