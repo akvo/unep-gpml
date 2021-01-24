@@ -46,7 +46,9 @@
       [:lang string?]
       [:url [:string {:min 1}]]]]]
    [:tags {:optional true}
-    [:vector {:optional true} int?]]])
+    [:vector {:optional true} int?]]
+   [:geo_coverage_value {:optional true}
+    [:vector {:min 1 :error/message "Need at least one geo coverage value"} string?]]])
 
 (defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
