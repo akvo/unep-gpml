@@ -1,9 +1,11 @@
 {:duct.profile/base
  {:duct.core/project-ns gpml
   :gpml.handler.main/handler {:routes [["/"
-                                        {:get #ig/ref :gpml.handler.main/root}]
+                                        {:get {:no-doc true
+                                               :handler #ig/ref :gpml.handler.main/root}}]
                                        ["/image/profile/{id}"
-                                        {:get {:handler #ig/ref :gpml.handler.image/profile
+                                        {:get {:no-doc true
+                                               :handler #ig/ref :gpml.handler.image/profile
                                                :parameters {:path [:map [:id int?]]}}}]
                                        ["/api"
                                         ["/swagger.json"
