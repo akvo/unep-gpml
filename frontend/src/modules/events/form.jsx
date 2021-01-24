@@ -31,7 +31,7 @@ const GeoCoverageInput = (props) => {
             else if(typeInput.value === 'national' || typeInput.value === 'transnational'){
               selectProps.options = Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name }))
               selectProps.showSearch = true
-              selectProps.filterOption = (input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              selectProps.filterOption = (input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
               if (typeInput.value === 'transnational'){
                 selectProps.mode = 'multiple'
               }
