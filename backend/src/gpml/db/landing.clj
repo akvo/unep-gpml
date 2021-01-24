@@ -4,9 +4,28 @@
 
 (hugsql/def-db-fns "gpml/db/landing.sql")
 
+(defn group-counts [counts]
+  (let [country-code (-> counts first :geo_coverage_iso_code)]
+    (->> counts
+         (map #(assoc {} (keyword (:topic %)) (:count %)))
+         (apply merge)
+         (merge {:iso_code country-code
+                 :resource 0
+                 :project 0
+                 :event 0
+                 :policy 0
+                 :technology 0}))))
+
+(defn map-counts-grouped [conn]
+  (->> (gpml.db.landing/map-counts conn)
+       (filter #(some? (:geo_coverage_iso_code %)))
+       (group-by :geo_coverage_iso_code)
+       vals
+       (map group-counts)))
+
 (comment
   (require 'dev)
   (let [db (dev/db-conn)]
-    (gpml.db.landing/map-counts db)
-    (gpml.db.landing/summary db))
+    (map-counts-grouped db)
+    )
   )

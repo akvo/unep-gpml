@@ -57,7 +57,9 @@
 (defmethod ig/init-key :gpml.handler.profile/post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params headers]}]
     (if-let [id (make-profile (:spec db) jwt-claims body-params)]
-      (resp/created (:referer headers) id)
+    (if-let [profile (db.stakeholder/stakeholder-by-id (:spec db) {:id (:id (first id))})]
+      (resp/created (:referer headers) profile)
+      (assoc (resp/status 500) :body "Internal Server Error"))
       (assoc (resp/status 500) :body "Internal Server Error"))))
 
 (defmethod ig/init-key :gpml.handler.profile/put [_ {:keys [db]}]

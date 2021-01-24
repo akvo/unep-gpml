@@ -11,8 +11,10 @@ const Landing = ({ history }) => {
     const [data, setData] = useState(null)
 
     const clickEvents = ({name, data}) => {
-      setCountry(name);
-      history.push(`/browse?country=${name}`)
+      if (!name.startsWith("disputed")) {
+        setCountry(name);
+        history.push(`/browse?country=${name}`)
+      }
     }
 
     const toolTip = (params) => {

@@ -1,5 +1,4 @@
-let maps = require('../static/unep-map-mercator.json');
-let mapValues = maps.features.map((x, i) => {
+const features = window.__UNEP__MAP__.features.map((x, i) => {
     const disputed = x.properties.cd.split("")[0] === "x";
     return {
         ...x,
@@ -10,4 +9,4 @@ let mapValues = maps.features.map((x, i) => {
     }
 });
 
-export const mapSource =  {...maps, features: mapValues};
+export const mapSource = {...window.__UNEP__MAP__, features: features};
