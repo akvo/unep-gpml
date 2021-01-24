@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, Select } from "antd";
+import { Modal, Form, Input, Select, Button } from "antd";
 import { Form as FinalForm, Field } from 'react-final-form'
 import { createForm } from 'final-form'
 import api from "../../utils/api";
@@ -31,7 +31,7 @@ const defaultFormSchema = [
     linkedIn: { label: 'LinkedIn', prefix: <LinkedinOutlined />},
     twitter: { label: 'Twitter', prefix: <TwitterOutlined /> },
     photo: { label: 'Photo', control: 'file' },
-    representation: { label: 'Representative sector', control: 'select', options: sectorOptions.map(it => ({ value: it, label: it })) },
+    representation: { label: 'Representative sector', required: true, control: 'select', options: sectorOptions.map(it => ({ value: it, label: it })) },
     country: { label: 'Country', control: 'select', showSearch: true, options: [{ value: 'loading', label: 'Loading' }], autoComplete: 'off' }
   },
   {
@@ -46,6 +46,8 @@ const defaultFormSchema = [
 const SignupModal = ({ visible, onCancel }) => {
   const [formSchema, setFormSchema] = useState(defaultFormSchema)
   const [noOrg, setNoOrg] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [step, setStep] = useState(1)
   useEffect(() => {
     (async function fetchData() {
       const response = await api.get('/country')
@@ -55,7 +57,15 @@ const SignupModal = ({ visible, onCancel }) => {
     })()
   }, []);
     const onSubmit = (vals) => {
+      setSending(true)
       api.post('/profile', vals)
+      .then(d => {
+        setSending(false)
+        setStep(2)
+      })
+      .catch(() => {
+        setSending(false)
+      })
     }
     const form = createForm({
       subscription: {},
@@ -72,7 +82,10 @@ const SignupModal = ({ visible, onCancel }) => {
           onOk={() => {
             form.submit()
           }}
+          confirmLoading={sending}
+          footer={step === 2 ? (<Button onClick={onCancel}>Close</Button>) : undefined}
         >
+          {step === 1 &&
           <Form layout="vertical">
             <FinalForm
               form={form}
@@ -99,6 +112,18 @@ const SignupModal = ({ visible, onCancel }) => {
               }
             />
           </Form>
+          }
+          {step === 2 &&
+          <div className="submitted">
+            <h2>Pending approval</h2>
+            <p>
+              We will review your signup request shortly.<br />
+              Meanwhile please confirm your email.
+              <br />
+              <small>Registrations with unconfirmed emails will not be approved</small>
+            </p>
+          </div>
+          }
         </Modal>
     );
 };
