@@ -11,7 +11,7 @@ import api from '../../utils/api';
 import { cloneDeep } from 'lodash';
 
 const geoCoverageTypeOptions = [
-  'Global', 'Regional', 'National', 'Sub-national', 'Transnational', 'Global with elements in specific areas', 'Other'
+  'Global', 'Regional', 'National', 'Sub-national', 'Transnational', 'Global with elements in specific areas'
 ]
 const regionOptions = ['Africa', 'Asia and the Pacific', 'East Asia', 'Europe', 'Latin America and Carribean', 'North America', 'West Asia']
 
