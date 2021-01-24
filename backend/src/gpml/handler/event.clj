@@ -32,7 +32,12 @@
    [:remarks {:optional true} string?]
    [:geo_coverage_type [:enum "global", "regional", "national", "transnational", "sub-national", "global with elements in specific areas"]]
    [:country {:optional true} int?]
-   [:city {:optional true} string?]])
+   [:city {:optional true} string?]
+   [:urls {:optional true}
+    [:vector {:optional true}
+     [:map
+      [:lang string?]
+      [:url [:string {:min 1}]]]]]])
 
 (defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
