@@ -19,7 +19,7 @@
                                                 :handler #ig/ref :gpml.handler.main/swagger-handler}}]
                                         ["/country"
                                          {:get {:summary "List available countries"
-                                                :swagger {:tags ["countries"]}
+                                                :swagger {:tags ["country"]}
                                                 :parameters {:query [:map [:id {:optional true} int?]]}
                                                 :handler #ig/ref :gpml.handler.country/get}}]
                                         ["/browse"
@@ -65,7 +65,18 @@
                                          ["/:topic-type"
                                           {:get {:summary "List tags by topic type"
                                                  :swagger {:tags ["tags"]}
-                                                 :handler #ig/ref :gpml.handler.tag/get}}]]]]}
+                                                 :handler #ig/ref :gpml.handler.tag/get}}]]
+                                        ["/portfolio" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
+                                         [""
+                                          {:get {:summary "Get the portfolio information for the authenticated Stakeholder"
+                                                 :swagger {:tags ["portfolio"]
+                                                           :security [{:id_token []}]}
+                                                 :handler #ig/ref :gpml.handler.portfolio/get}}
+                                          {:post {:summary "Creates or update a new relation for the authenticated user"
+                                                  :swagger {:tags ["portfolio"]
+                                                            :security [{:id_token []}]}
+                                                  :parameters {:body #ig/ref :gpml.handler.portfolio/post-params}
+                                                  :handler #ig/ref :gpml.handler.portfolio/post}}]]]]}
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
 
@@ -90,6 +101,10 @@
   :gpml.handler.tag/get {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.image/profile {:db #ig/ref :duct.database/sql}
+
+  :gpml.handler.portfolio/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.portfolio/post {:db #ig/ref :duct.database/sql}
+  :gpml.handler.portfolio/post-params {}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}

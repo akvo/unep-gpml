@@ -53,6 +53,7 @@
                       (swagger-ui/create-swagger-ui-handler {:path "/api/docs"
                                                              :url "/api/swagger.json"
                                                              :validatorUrl nil
+                                                             :apisSorter "alpha"
                                                              :operationsSorter "alpha"})
                       (ring/create-default-handler))))
 

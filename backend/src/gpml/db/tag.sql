@@ -15,10 +15,10 @@ select * from tag where tag in (:v*:tags)
 insert into tag_category(category)
 values (:category) returning id
 
--- :name new-tag :!
--- :doc Inser new tag
+-- :name new-tag :<!
+-- :doc Insert new tag
 insert into tag (tag, tag_category)
-values (:tag, :tag_category)
+values (:tag, :tag_category) returning id
 
 -- :name tag-by-category :? :*
 -- :doc Get tag by category
