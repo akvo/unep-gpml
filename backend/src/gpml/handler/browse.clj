@@ -184,17 +184,25 @@
 (def query-params
   [:map
    [:country {:optional true
-              :swagger {:description "Comma separated list of country codes (ISO 3166-1 Alpha-3 code)"}}
+              :swagger {:description "Comma separated list of country codes (ISO 3166-1 Alpha-3 code)"
+                        :type "string"
+                        :collectionFormat "csv"
+                        :allowEmptyValue true}}
     [:or
      [:string {:max 0}]
      [:re country-re]]]
    [:topic {:optional true
-            :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "|" topics))}}
+            :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "," topics))
+                      :type "string"
+                      :collectionFormat "csv"
+                      :allowEmptyValue true}}
     [:or
      [:string {:max 0}]
      [:re topic-re]]]
    [:q {:optional true
-        :swagger {:description "Text search term to be found on the different topics"}}
+        :swagger {:description "Text search term to be found on the different topics"
+                  :type "string"
+                  :allowEmptyValue true}}
     [:string]]])
 
 (defn get-db-filter
