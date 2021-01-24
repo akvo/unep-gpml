@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, Select } from "antd";
 import { Form as FinalForm, Field } from 'react-final-form'
 import { createForm } from 'final-form'
-import _ from 'lodash'
-import humps from 'humps'
 import api from "../../utils/api";
 import { cloneDeep } from "lodash";
 import './styles.scss'
@@ -57,7 +55,7 @@ const SignupModal = ({ visible, onCancel }) => {
     })()
   }, []);
     const onSubmit = (vals) => {
-      api.post('/profile', vals, { headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${api.token}` }})
+      api.post('/profile', vals)
     }
     const form = createForm({
       subscription: {},
