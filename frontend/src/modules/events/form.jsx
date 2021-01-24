@@ -67,7 +67,7 @@ const defaultFormSchema = [
   {
     city: { label: 'City' },
     country: { label: 'Country', control: 'select', showSearch: true, options: Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name})) },
-    geoCoverageType: { label: 'Geo coverage type', required: true, control: 'select', options: geoCoverageTypeOptions.map(it => ({ value: it, label: it })) },
+    geoCoverageType: { label: 'Geo coverage type', required: true, control: 'select', options: geoCoverageTypeOptions.map(it => ({ value: it.toLowerCase(), label: it })) },
     geoCoverageValue: {
       label: 'Geo coverage',
       render: GeoCoverageInput

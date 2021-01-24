@@ -30,7 +30,7 @@
    [:description {:optional true} string?]
    [:image {:optional true} string?]
    [:remarks {:optional true} string?]
-   [:geo_coverage_type string?]
+   [:geo_coverage_type [:enum "global", "regional", "national", "transnational", "sub-national", "global with elements in specific areas"]]
    [:country {:optional true} int?]
    [:city {:optional true} string?]])
 
