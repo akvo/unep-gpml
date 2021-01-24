@@ -9,7 +9,7 @@
   (let [data {:title title
               :start_date start_date
               :end_date end_date
-              :description description
+              :description (or description "")
               :remarks remarks
               :geo_coverage_type geo_coverage_type
               :city city
@@ -27,10 +27,10 @@
    [:title string?]
    [:start_date string?]
    [:end_date string?]
-   [:description string?]
+   [:description {:optional true} string?]
    [:image {:optional true} string?]
    [:remarks {:optional true} string?]
-   [:geo_coverage_type {:optional true} string?]
+   [:geo_coverage_type string?]
    [:country {:optional true} int?]
    [:city {:optional true} string?]])
 
