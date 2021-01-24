@@ -38,6 +38,14 @@
   []
   (-> system :duct.database.sql/hikaricp :spec))
 
+(defn launch-portal
+  []
+  (portal/start {:portal.launcher/port 47481
+                 :portal.launcher/host "0.0.0.0"})
+  (portal/tap)
+  (portal/open {:portal.colors/theme
+                :portal.colors/solarized-light}))
+
 (comment
 
   (prep)
@@ -53,11 +61,5 @@
   #_:clj-kondo/ignore
   (test #'gpml.handler.landing-test/handler-test)
 
-  (portal/start {:portal.launcher/port 47481
-                 :portal.launcher/host "0.0.0.0"})
-  (portal/tap)
-
-  (str "http://localhost:47481?" (:session-id (portal/open {:portal.colors/theme
-                                                            :portal.colors/solarized-light} )))
 
   ,)

@@ -28,6 +28,7 @@
   :resource-paths ["resources" "target/resources"]
   :prep-tasks     ["javac" "compile" ["run" ":duct/compiler"]]
   :middleware     [lein-duct.plugin/middleware]
+  :jvm-opts ["-Xmx1g" "-Djava.awt.headless=true"]
   :profiles
   {:dev  [:project/dev :profiles/dev]
    :uberjar {:aot [gpml.main]
@@ -57,6 +58,7 @@
                                  :init (do
                                          (println "Starting backend ...")
                                          (go)
-                                         (seeder/seed))
+                                         (seeder/seed)
+                                         (launch-portal))
                                  :host "0.0.0.0"
                                  :port 47480}}})
