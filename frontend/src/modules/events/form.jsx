@@ -85,6 +85,7 @@ const AddEventForm = () => {
   const onSubmit = (vals) => {
     const data = {...vals}
     delete data.date
+    data.urls = vals.urls.filter(it => it.url.length > 0)
     data.startDate = vals.date[0].toISOString()
     data.endDate = vals.date[1].toISOString()
     api.post('/event', data)
