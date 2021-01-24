@@ -53,7 +53,21 @@
                                (assoc (new-profile "IND" nil)
                                       :org {:name "Akvo" :url "https://www.akvo.org"}
                                       :photo picture))))]
-      (is (= 201 (:status resp))))))
+      (is (= 201 (:status resp)))
+      (is (= "John" (->(:body resp) :first_name)))
+      (is (= "Doe" (->(:body resp) :last_name)))
+      (is (= {:country "IND"
+              :first_name "John"
+              :last_name "Doe"
+              :email "john@org"
+              :picture "/image/profile/1"
+              :twitter "johndoe"
+              :linked_in "johndoe"
+              :org_name "Akvo"
+              :org_url "https://www.akvo.org"
+              :representation "test"
+              } (:body resp)))
+      (is ('clojure.string/includes? "/image/profile" (->(:body resp) :picture))))))
 
 (deftest handler-get-test-has-profile
   (testing "Profile endpoint returns non empty response"
@@ -61,12 +75,16 @@
           handler (::profile/get system)
           db (-> system :duct.database.sql/hikaricp :spec)
           org (db.organisation/new-organisation db {:name "Akvo"})
+          _ (db.country/new-country db {:name "Netherland" :iso_code "NDL"})
           country (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
-          _ (db.stakeholder/new-stakeholder db  (new-profile (:id country) (:id org)))
+          _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
           resp (handler (-> (mock/request :get "/")
                         (assoc :jwt-claims {:email "john@org"})))]
       (is (= 200 (:status resp)))
-      (is (not-empty (:body resp))))))
+      (is (= "John" (-> (:body resp) :first_name)))
+      (is (= "Doe" (-> (:body resp) :last_name)))
+      (is (= (:id (first org)) (-> (:body resp) :affiliation)))
+      (is (= (:id (first country)) (-> (:body resp) :country))))))
 
 (deftest handler-get-test-no-profile
   (testing "Profile endpoint returns empty response"
