@@ -30,8 +30,9 @@
                                                  :handler #ig/ref :gpml.handler.browse/get}}]]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
-                                          {:post {:summary ""
-                                                  :swagger {:tags ["event"]}
+                                          {:post {:summary "Creates a new event"
+                                                  :swagger {:tags ["event"]
+                                                            :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.event/post-params}
                                                   :handler #ig/ref :gpml.handler.event/post}}]]
                                         ["/landing"
