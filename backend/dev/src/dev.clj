@@ -53,6 +53,8 @@
   #_:clj-kondo/ignore
   (test #'gpml.handler.landing-test/handler-test)
 
+  (test #'gpml.handler.profile-test/handler-post-test)
+
   (portal/start {:portal.launcher/port 47481
                  :portal.launcher/host "0.0.0.0"})
   (portal/tap)

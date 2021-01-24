@@ -1,6 +1,8 @@
 (ns gpml.handler.profile
   (:require [integrant.core :as ig]
+            [clojure.string :as str]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.stakeholder-picture :as db.stakeholder-picture]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.country :as db.country]
             [ring.util.response :as resp]))
@@ -13,28 +15,37 @@
     or-id
     (first (db.organisation/new-organisation conn org))))
 
+(defn assoc-picture [conn photo]
+  (if photo
+    (if-let [new-picture (db.stakeholder-picture/new-stakeholder-picture conn {:picture photo})]
+      (str/join ["/image/profile/" (:id (first new-picture))])
+      nil)
+    nil))
 
 (defn make-profile [conn
-                    {:keys [email]}
+                    {:keys [email picture]}
                     {:keys [title first_name
                             last_name linked_in
-                            twitter picture
+                            twitter photo
                             representation country
                             org about]}]
-  (let [profile {:picture picture
-               :title title
-               :first_name first_name
-               :last_name last_name
-               :email email
-               :linked_in linked_in
-               :twitter twitter
-               :url (:url org)
-               :representation representation
-               :about about
-               :geo_coverage_type nil
-               :country (get-country conn country)
-               :affiliation (:id (assoc-organisation conn org))}]
-    (:id (first (db.stakeholder/new-stakeholder conn profile)))))
+  (let [pic-url (if-let [upload-picture (assoc-picture conn photo)]
+                  upload-picture
+                  (if picture picture nil))
+        profile {:picture pic-url
+                 :title title
+                 :first_name first_name
+                 :last_name last_name
+                 :email email
+                 :linked_in linked_in
+                 :twitter twitter
+                 :url (:url org)
+                 :representation representation
+                 :about about
+                 :geo_coverage_type nil
+                 :country (get-country conn country)
+                 :affiliation (:id (assoc-organisation conn org))}]
+    (db.stakeholder/new-stakeholder conn profile)))
 
 (defmethod ig/init-key :gpml.handler.profile/get [_ {:keys [db]}]
   (fn [{:keys [jwt-claims]}]
@@ -72,7 +83,7 @@
    [:last_name string?]
    [:linked_in {:optional true} string?]
    [:twitter {:optional true} string?]
-   [:picture {:optional true} string?]
+   [:photo {:optional true} string?]
    [:representation string?]
    [:country {:optional true} string?]
    [:org {:optional true}
