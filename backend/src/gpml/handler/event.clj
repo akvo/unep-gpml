@@ -44,7 +44,9 @@
     [:vector {:optional true}
      [:map
       [:lang string?]
-      [:url [:string {:min 1}]]]]]])
+      [:url [:string {:min 1}]]]]]
+   [:tags {:optional true}
+    [:vector {:optional true} int?]]])
 
 (defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]

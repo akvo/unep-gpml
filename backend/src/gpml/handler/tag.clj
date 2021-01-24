@@ -8,5 +8,5 @@
   (fn [{{topic-type :topic-type} :path-params}]
     (let [conn (:spec db)
           category (format "%s%%" topic-type)
-          tags (map #(:tag %) (db.tag/tag-by-category conn {:category category}))]
-      (resp/response tags))))
+          category-tags (db.tag/tag-by-category conn {:category category})]
+      (resp/response category-tags))))

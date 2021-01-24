@@ -94,7 +94,7 @@ const AddEventForm = () => {
     (async function fetchData() {
       const response = await api.get('/tag/event')
       const newSchema = cloneDeep(defaultFormSchema);
-      newSchema[2].tags.options = response.data.map(x => ({ value: x, label: x }))
+      newSchema[2].tags.options = response.data.map(x => ({ value: x.id, label: x.tag }))
       newSchema[2].tags.loading = false
       setFormSchema(newSchema);
     })()
