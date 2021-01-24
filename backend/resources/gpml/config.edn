@@ -7,6 +7,10 @@
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.image/profile
                                                :parameters {:path [:map [:id int?]]}}}]
+                                       ["/image/event/{id}"
+                                        {:get {:no-doc true
+                                               :handler #ig/ref :gpml.handler.image/event
+                                               :parameters {:path [:map [:id int?]]}}}]
                                        ["/api"
                                         ["/swagger.json"
                                          {:get {:no-doc true
@@ -101,6 +105,7 @@
   :gpml.handler.tag/get {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.image/profile {:db #ig/ref :duct.database/sql}
+  :gpml.handler.image/event {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.portfolio/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.portfolio/post {:db #ig/ref :duct.database/sql}

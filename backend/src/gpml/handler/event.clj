@@ -1,18 +1,26 @@
 (ns gpml.handler.event
   (:require [integrant.core :as ig]
+            [clojure.string :as str]
             [gpml.db.event :as db.event]
+            [gpml.db.event-image :as db.event-image]
             [gpml.db.language :as db.language]
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]))
 
+(defn assoc-image [conn photo]
+  (if photo
+    (str/join ["/image/event/" (:id (first (db.event-image/new-event-image conn {:image photo})))])
+    nil))
+
 (defn create-event [conn {:keys [tags urls title start_date end_date
                                  description remarks geo_coverage_type
-                                 country city geo_coverage_value]}]
+                                 country city geo_coverage_value photo]}]
   (let [data {:title title
               :start_date start_date
               :end_date end_date
               :description (or description "")
               :remarks remarks
+              :image (assoc-image conn photo)
               :geo_coverage_type geo_coverage_type
               :city city
               :country (->> {:name country} (db.country/country-by-code conn) :id)}
@@ -51,7 +59,7 @@
    [:start_date string?]
    [:end_date string?]
    [:description {:optional true} string?]
-   [:image {:optional true} string?]
+   [:photo {:optional true} string?]
    [:remarks {:optional true} string?]
    [:geo_coverage_type
     [:enum "global", "regional", "national", "transnational",
