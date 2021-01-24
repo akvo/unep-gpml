@@ -1,7 +1,7 @@
 (ns gpml.handler.event
   (:require [integrant.core :as ig]
-            ;; [ring.util.response :as resp]
-            [gpml.db.event :as db.event]))
+            [gpml.db.event :as db.event]
+            [gpml.db.language :as db.language]))
 
 (defn create-event [conn {:keys [tags urls title start_date end_date
                                  description remarks geo_coverage_type
@@ -18,9 +18,13 @@
     (when (not-empty tags)
       (db.event/add-event-tags conn {:tags (map #(vector event-id %) tags)}))
     (when (not-empty urls)
-      (db.event/add-event-language-urls
-       conn
-       {:urls (map #(vector event-id (:language %) (:url %)) urls)}))))
+      (let [lang-urls (map #(vector event-id
+                                    (->> % :lang
+                                         (assoc {} :iso_code)
+                                         (db.language/language-by-iso-code conn)
+                                         :id)
+                                    (:url %)) urls)]
+        (db.event/add-event-language-urls conn {:urls lang-urls})))))
 
 (def post-params
   [:map

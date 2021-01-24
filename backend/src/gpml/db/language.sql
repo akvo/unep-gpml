@@ -6,6 +6,10 @@ select * from language order by id
 -- :doc Get language by name
 select * from language where english_name = :name
 
+-- :name language-by-iso-code :? :1
+-- :doc Get language by iso-code
+select * from language where iso_code = :iso_code
+
 -- :name new-language :!
 -- :doc Insert new language
 insert into language (english_name, native_name, iso_code)
