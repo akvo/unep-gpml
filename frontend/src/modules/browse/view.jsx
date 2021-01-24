@@ -5,7 +5,6 @@ import './styles.scss'
 import { topicTypes } from '../../utils/misc'
 import { useLocation, withRouter } from 'react-router-dom'
 import api from '../../utils/api'
-import { debounce } from 'lodash'
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -18,6 +17,8 @@ function useQuery() {
   return ret
 }
 
+let tmid
+
 const Browse = ({ history }) => {
   const query = useQuery()
   const [countryOpts, setCountryOpts] = useState([])
@@ -25,10 +26,11 @@ const Browse = ({ history }) => {
   const location = useLocation()
 
   const getResults = () => {
-    console.log(location.search)
-    api.get(`/browse${location.search}`)
+    api.get(`/browse${window.location.search}`)
+    .then((resp) => {
+      setResults(resp?.data?.results)
+    })
   }
-  const debounced = debounce(getResults, 250, { 'maxWait': 1000 })
   useEffect(() => {
     api.get(`/browse${location.search}`)
     .then((resp) => {
@@ -38,14 +40,14 @@ const Browse = ({ history }) => {
     .then((resp) => {
       setCountryOpts(resp.data.map(it => ({ value: it.isoCode, label: it.name })))
     })
-    //api.get('/country')
-  }, [location.search])
+  }, [])
   const updateQuery = (param, value) => {
     const newQuery = {...query}
     newQuery[param] = value
     const newParams = new URLSearchParams(newQuery)
     history.push(`/browse?${newParams.toString()}`)
-    debounced()
+    clearTimeout(tmid)
+    tmid = setTimeout(getResults, 1000)
   }
   return (
     <div id="browse">
