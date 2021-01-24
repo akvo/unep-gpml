@@ -8,7 +8,6 @@
             [reitit.ring.middleware.exception :as exception]
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.ring.middleware.parameters :as parameters]
-            [reitit.ring.middleware.multipart :as multipart]
             [reitit.swagger :as swagger]
             [reitit.swagger-ui :as swagger-ui]
             [ring.util.response :as resp]))
@@ -35,8 +34,6 @@
                         swagger/swagger-feature
                         ;; query-params & form-params
                         parameters/parameters-middleware
-                        ;; multipart form-data
-                        multipart/multipart-middleware
                         ;; content-negotiation
                         muuntaja/format-negotiate-middleware
                         ;; encoding response body

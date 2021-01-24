@@ -6,10 +6,10 @@
            java.io.ByteArrayInputStream))
 
 (defmethod ig/init-key :gpml.handler.image/profile [_ {:keys [db]}]
-  (fn [{{:keys [id]} :path-params :as req}]
-    (tap> (Integer/parseInt id))
+  (fn [{{{:keys [id]} :path} :parameters :as req}]
+    (tap> id)
     (tap> req)
-    (let [picture (:picture (db.stakeholder-picture/stakeholder-picture-by-id db {:id (Integer/parseInt id)})) ;; FIXME Error "java.lang.IllegalArgumentException" issue with db
+    (let [picture (:picture (db.stakeholder-picture/stakeholder-picture-by-id (:spec db) {:id id}))
           [_ content-type b64image] (re-find #"^data:(\S+);base64,(.*)$" picture)
           decoder (Base64/getDecoder)]
       (-> (.decode decoder b64image)
