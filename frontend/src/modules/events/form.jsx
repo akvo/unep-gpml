@@ -21,22 +21,22 @@ const GeoCoverageInput = (props) => {
       ({ input: typeInput }) => {
         return <Field name="geoCoverageValue" render={
           ({ input }) => {
-            if(typeInput.value === 'Global') return <Input disabled />
-            if (typeInput.value === 'Sub-national') return <Input placeholder="Type regions here..." {...input} />
+            if(typeInput.value === 'global') return <Input disabled />
+            if (typeInput.value === 'sub-national') return <Input placeholder="Type regions here..." {...input} />
             if(typeInput.value === 'Other') return <Input placeholder="Type here..." {...input} />
             const selectProps = {...input}
-            if(typeInput.value === 'Regional'){
+            if(typeInput.value === 'regional'){
               selectProps.options = regionOptions.map(it => ({ value: it, label: it }))
             }
-            else if(typeInput.value === 'National' || typeInput.value === 'Transnational'){
+            else if(typeInput.value === 'national' || typeInput.value === 'transnational'){
               selectProps.options = Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name }))
               selectProps.showSearch = true
               selectProps.filterOption = (input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              if (typeInput.value === 'Transnational'){
+              if (typeInput.value === 'transnational'){
                 selectProps.mode = 'multiple'
               }
             }
-            else if (typeInput.value === 'Global with elements in specific areas'){
+            else if (typeInput.value === 'global with elements in specific areas'){
               selectProps.options = specificAreasOptions.map(it => ({ value: it, label: it }))
             }
             return <Select {...selectProps} />
