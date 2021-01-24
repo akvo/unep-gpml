@@ -20,7 +20,5 @@
         log('ECharts Map is not loaded')
         return;
     }
-    var mapSource = require('./map-source').mapSource;
-    echarts.registerMap('unep-map', mapSource);
+    echarts.registerMap('unep-map', require('./map-source').mapSource);
 }));
-

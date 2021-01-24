@@ -1,5 +1,4 @@
-const mapSource = require('./map-source').mapSource;
-
+import { mapSource } from './map-source';
 const disputed = mapSource.features
     .filter(x => x.properties.name?.startsWith("disputed"))
     .map(x => ({
