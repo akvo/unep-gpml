@@ -27,6 +27,7 @@ const GeoCoverageInput = (props) => {
             const selectProps = {...input}
             if(typeInput.value === 'regional'){
               selectProps.options = regionOptions.map(it => ({ value: it, label: it }))
+              selectProps.mode = 'multiple'
             }
             else if(typeInput.value === 'national' || typeInput.value === 'transnational'){
               selectProps.options = Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name }))
@@ -38,6 +39,7 @@ const GeoCoverageInput = (props) => {
             }
             else if (typeInput.value === 'global with elements in specific areas'){
               selectProps.options = specificAreasOptions.map(it => ({ value: it, label: it }))
+              selectProps.mode = 'multiple'
             }
             return <Select {...selectProps} />
           }
