@@ -102,8 +102,8 @@ const Summary = ({ summary, country }) => {
 const TopicItem = ({ topic }) => (
   <div className="topic-item">
     <div className="inner">
-      <span className="type">latest {topic.type}</span>
-      <h2>{topic.title}</h2>
+      <span className="type">latest {topic.topicType}</span>
+      <h2>{topic.title || topic.name}</h2>
       <ul>
         <li>27 feb 2021</li>
       </ul>
