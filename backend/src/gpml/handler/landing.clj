@@ -5,15 +5,6 @@
             [gpml.db.country :as db.country]
             [gpml.db.landing :as db.landing]))
 
-(defn sample-map-data [countries]
-  (map #(merge % {:project (rand-int 10),
-                  :event (rand-int 10),
-                  :policy (rand-int 10),
-                  :technology (rand-int 10)
-                  :resource (rand-int 10)})
-       (filter #(some? (:iso_code %)) countries)))
-
-
 (defn map-counts-with-country-names [conn]
   (let [countries (db.country/all-countries conn)
         names (->> countries
