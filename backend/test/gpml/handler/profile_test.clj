@@ -125,7 +125,28 @@
                             (assoc :body-params {:id (get-user db "john@org")})))]
       (is (= 204 (:status resp)))
       (is (= "John" (-> resp :body :data :first_name)))
-      (is (= (not nil) (-> resp :body :data :approved_at))))))
+      (is (inst? (-> resp :body :data :approved_at))))))
+
+(deftest handler-rejected-approval-test
+  (testing "Profile cannot approved by random admin"
+    (let [system (ig/init fixtures/*system* [::profile/approve])
+          handler (::profile/approve system)
+          db (-> system :duct.database.sql/hikaricp :spec)
+          ;; create new organisation
+          org (db.organisation/new-organisation db {:name "Akvo"})
+          ;; create new country
+          country (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
+          ;; create new user name Jane
+          admin (new-profile (:id (first country)) (:id (first org)))
+          _ (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
+          ;; create new user name John
+          _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
+          ;; Jane trying to approve this guy John
+          resp (handler (-> (mock/request :put "/")
+                            (assoc :jwt-claims {:email "jane@org"})
+                            (assoc :body-params {:id (get-user db "john@org")})))]
+      (is (= 401 (:status resp)))
+      (is (= "Unauthorized" (-> resp :body :message))))))
 
 (comment
     #_(def dbtest (dev/db-conn))

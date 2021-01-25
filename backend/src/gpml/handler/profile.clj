@@ -78,7 +78,7 @@
           (assoc (resp/status 204)
                  :body {:message "Successfuly Updated"
                         :data (db.stakeholder/stakeholder-by-id (:spec db) body-params)}))
-        (assoc (resp/status 401) :body "Unauthorized")))))
+        (assoc (resp/status 401) :body {:message "Unauthorized"})))))
 
 (defmethod ig/init-key :gpml.handler.profile/post-params [_ _]
   [:map
