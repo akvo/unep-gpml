@@ -69,5 +69,5 @@
           conn (-> system db-key :spec)
           _ (add-resource-data conn)
           summary (first (db.landing/summary conn))]
-      (is (= (:resource summary) 3))
+      (is (= (:resource summary) 4))
       (is (= (:resource_countries summary) 4)))))
