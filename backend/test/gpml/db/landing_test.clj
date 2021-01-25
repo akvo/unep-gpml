@@ -37,6 +37,7 @@
   (db.resource/new-resource conn (make-resource "Resource 1" "transnational"))
   (db.resource/new-resource conn (make-resource "Resource 2" "national"))
   (db.resource/new-resource conn (make-resource "Resource 3" "regional"))
+  (db.resource/new-resource conn (make-resource "Resource 4" "global"))
   (jdbc/insert-multi! conn :resource_geo_coverage
                       [ ;; Resource 1
                        {:resource 1 :country 1}
@@ -56,10 +57,10 @@
           _ (add-resource-data conn)
           landing (db.landing/map-counts-grouped conn)]
       (prn landing)
-      (is (= (:resource (first (filter #(= "ESP" (:iso_code %)) landing))) 2))
-      (is (= (:resource (first (filter #(= "IND" (:iso_code %)) landing))) 2))
-      (is (= (:resource (first (filter #(= "IDN" (:iso_code %)) landing))) 2))
-      (is (= (:resource (first (filter #(= "KEN" (:iso_code %)) landing))) 1)))))
+      (is (= (:resource (first (filter #(= "ESP" (:iso_code %)) landing))) 3))
+      (is (= (:resource (first (filter #(= "IND" (:iso_code %)) landing))) 3))
+      (is (= (:resource (first (filter #(= "IDN" (:iso_code %)) landing))) 3))
+      (is (= (:resource (first (filter #(= "KEN" (:iso_code %)) landing))) 2)))))
 
 (deftest test-summary
   (testing "Test summary data for landing page"

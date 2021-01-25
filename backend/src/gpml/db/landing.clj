@@ -17,15 +17,19 @@
                  :technology 0}))))
 
 (defn map-counts-grouped [conn]
-  (->> (gpml.db.landing/map-counts conn)
-       (filter #(some? (:geo_coverage_iso_code %)))
-       (group-by :geo_coverage_iso_code)
-       vals
-       (map group-counts)))
+  (let [counts (gpml.db.landing/map-counts conn)
+        grouped-counts (->> counts
+                            (filter #(some? (:geo_coverage_iso_code %)))
+                            (group-by :geo_coverage_iso_code)
+                            vals
+                            (map group-counts))
+        global-counts (->> grouped-counts
+                           (filter #(= (:iso_code %) "***"))
+                           first)]
+    (map #(merge-with + % (dissoc global-counts :iso_code)) grouped-counts)))
 
 (comment
   (require 'dev)
   (let [db (dev/db-conn)]
-    (map-counts-grouped db)
-    )
+    (map-counts-grouped db))
   )
