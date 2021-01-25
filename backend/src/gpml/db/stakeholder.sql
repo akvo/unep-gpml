@@ -13,6 +13,10 @@ where s.id = :id;
 -- :doc Get stakeholder by email
 select * from stakeholder where email = :email;
 
+-- :name approved-stakeholder-by-email :? :1
+-- :doc Get an stakeholder by email filtering by approved
+select * from stakeholder where email = :email and approved_at is not null;
+
 -- :name pending-approval :? :*
 -- :doc Get unapproved of stakeholder profile
 select * from stakeholder where approved_at is null order by created desc;
@@ -23,8 +27,8 @@ update stakeholder set approved_at = now() where id = :id;
 
 -- :name new-stakeholder :<!
 -- :doc Insert a new stakeholder
-insert into stakeholder(picture, title, first_name, last_name, affiliation, email, linked_in, twitter, url, country, representation, about, geo_coverage_type)
-values(:picture, :title, :first_name, :last_name, :affiliation, :email, :linked_in, :twitter, :url, :country::integer, :representation, :about, :v:geo_coverage_type::geo_coverage_type) RETURNING id;
+insert into stakeholder(picture, title, first_name, last_name, affiliation, email, linked_in, twitter, url, country, representation, about, geo_coverage_type, approved_at)
+values(:picture, :title, :first_name, :last_name, :affiliation, :email, :linked_in, :twitter, :url, :country::integer, :representation, :about, :v:geo_coverage_type::geo_coverage_type, now()) RETURNING id;
 
 -- :name update-stakeholder-role :! :n
 -- :doc Update stakeholder role

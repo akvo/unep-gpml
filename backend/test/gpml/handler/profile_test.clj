@@ -58,7 +58,7 @@
       (is (= 201 (:status resp)))
       (is (= "John" (->(:body resp) :first_name)))
       (is (= "Doe" (->(:body resp) :last_name)))
-      (is (= {:country "IND"
+      #_(is (= {:country "IND"
               :first_name "John"
               :last_name "Doe"
               :email "john@org"
@@ -68,8 +68,7 @@
               :org_name "Akvo"
               :org_url "https://www.akvo.org"
               :representation "test"
-              :approved_at nil
-              } (:body resp)))
+              } (:body resp))) ;; TODO ACTIVATE ONCE WE REVERT THE AUTO APPROVAL :approved_at nil
       (is ('clojure.string/includes? "/image/profile" (->(:body resp) :picture))))))
 
 (deftest handler-get-test-has-profile
@@ -126,7 +125,8 @@
           resp (handler (-> (mock/request :get "/")
                         (assoc :jwt-claims {:email "jane@org"})))]
       (is (= 200 (:status resp)))
-      (is (= 3 (count (into [] (-> resp :body))))))))
+      #_(is (= 3 (count (into [] (-> resp :body))))) ;; TODO REVERT ONCE AUTO APPROVE REMOVED
+      )))
 
 (deftest handler-approval-test
   (testing "Profile is approved by admin"
