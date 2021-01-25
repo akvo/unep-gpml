@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, DatePicker, Input, Select, Checkbox, Button, Dropdown } from 'antd'
+import { Card, DatePicker, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
 import { topicTypes } from '../../utils/misc'
@@ -27,6 +27,7 @@ const Browse = ({ history }) => {
   const [countryOpts, setCountryOpts] = useState([])
   const [results, setResults] = useState([])
   const location = useLocation()
+  const [relations, setRelations] = useState([])
 
   const getResults = () => {
     api.get(`/browse${window.location.search}`)
@@ -51,6 +52,15 @@ const Browse = ({ history }) => {
     history.push(`/browse?${newParams.toString()}`)
     clearTimeout(tmid)
     tmid = setTimeout(getResults, 1000)
+  }
+  const handleRelationChange = (relation) => {
+    const relationIndex = relations.findIndex(it => it.topicId === relation.topicId)
+    if(relationIndex !== -1){
+      setRelations([...relations.slice(0, relationIndex), relation, ...relations.slice(relationIndex + 1)])
+    }
+    else {
+      setRelations([...relations, relation])
+    }
   }
   return (
     <div id="browse">
@@ -85,7 +95,7 @@ const Browse = ({ history }) => {
           </div>
         </aside>
         <div className="main-content">
-          {results.map(result => <Result {...{result}} />)}
+          {results.map(result => <Result {...{result, handleRelationChange, relations}} />)}
         </div>
       </div>
     </div>
@@ -109,8 +119,9 @@ const TopicSelect = ({ value, onChange }) => {
   )
 }
 
-const Result = ({ result }) => {
+const Result = ({ result, relations, handleRelationChange }) => {
   const description = result.description || result.abstract || result.summary
+  const relation = relations.find(it => it.topicId === result.id)
   return (
     <Card className="result">
       <h4>{result.title || result.name}</h4>
@@ -125,7 +136,7 @@ const Result = ({ result }) => {
         {result.value && <li><span>Value:</span>{result.valueCurrency && <i>{result.valueCurrency}</i>}{String(result.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
       </ul>
       {description && <p><ShowMoreText lines={5}>{description}</ShowMoreText></p>}
-      <PortfolioBar topic={result} />
+      <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />
     </Card>
   )
 }
@@ -138,20 +149,27 @@ const relationsByTopicType = {
   policy: ['regulator', 'implementor', 'reviewer', 'interested in', 'other']
 }
 
-const PortfolioBar = ({ topic }) => {
+const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
+  const handleChangeRelation = (relationType) => ({ target: { checked } }) => {
+    let relations = relation ? [...relation.relations] : []
+    if(checked) relations = [...relations, relationType]
+    else relations = relations.filter(it => it !== relationType)
+    handleRelationChange({ topicId: topic.id, relations })
+  }
   return (
     <div className="portfolio-bar">
       <Dropdown overlay={(
         <ul className="relations-dropdown">
-          {relationsByTopicType[topic.type].map(relation =>
+          {relationsByTopicType[topic.type].map(relationType =>
           <li>
-            <Checkbox>{relation}</Checkbox>
+            <Checkbox checked={relation && relation.relations && relation.relations.indexOf(relationType) !== -1} onChange={handleChangeRelation(relationType)}>{relationType}</Checkbox>
           </li>)}
         </ul>
       )} trigger={['click']}>
         <Button size="small" icon={<PlusOutlined />} shape="round" />
       </Dropdown>
-      <div className="label">Portfolio</div>
+      {(!relation || relation.relations.length === 0) && <div className="label">Favorites</div>}
+      {relation?.relations?.map(relationType => <Tag color="blue">{relationType}</Tag>)}
     </div>
   )
 }
