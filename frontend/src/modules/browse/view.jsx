@@ -62,6 +62,7 @@ const Browse = ({ history }) => {
     else {
       setRelations([...relations, relation])
     }
+    api.post('/portfolio', relation)
   }
   return (
     <div id="browse">
@@ -153,10 +154,10 @@ const relationsByTopicType = {
 
 const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
   const handleChangeRelation = (relationType) => ({ target: { checked } }) => {
-    let relations = relation ? [...relation.relations] : []
-    if(checked) relations = [...relations, relationType]
-    else relations = relations.filter(it => it !== relationType)
-    handleRelationChange({ topicId: topic.id, relations })
+    let association = relation ? [...relation.association] : []
+    if(checked) association = [...association, relationType]
+    else association = association.filter(it => it !== relationType)
+    handleRelationChange({ topicId: topic.id, association, topic: topic.type })
   }
   return (
     <div className="portfolio-bar">
@@ -164,14 +165,14 @@ const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
         <ul className="relations-dropdown">
           {relationsByTopicType[topic.type].map(relationType =>
           <li>
-            <Checkbox checked={relation && relation.relations && relation.relations.indexOf(relationType) !== -1} onChange={handleChangeRelation(relationType)}>{relationType}</Checkbox>
+            <Checkbox checked={relation && relation.association && relation.association.indexOf(relationType) !== -1} onChange={handleChangeRelation(relationType)}>{relationType}</Checkbox>
           </li>)}
         </ul>
       )} trigger={['click']}>
         <Button size="small" icon={<PlusOutlined />} shape="round" />
       </Dropdown>
-      {(!relation || relation.relations.length === 0) && <div className="label">Favorites</div>}
-      {relation?.relations?.map(relationType => <Tag color="blue">{relationType}</Tag>)}
+      {(!relation || relation.association.length === 0) && <div className="label">Favorites</div>}
+      {relation?.association?.map(relationType => <Tag color="blue">{relationType}</Tag>)}
     </div>
   )
 }
