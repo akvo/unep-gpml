@@ -73,8 +73,7 @@ const defaultFormSchema = [
     geoCoverageValue: {
       label: 'Geo coverage',
       render: GeoCoverageInput
-    },
-    language: { label: 'Event language', control: 'select', showSearch: true, options: Object.keys(languages).map(langCode => ({ value: langCode, label: languages[langCode].name })) }
+    }
   },
   {
     info: { label: 'Additional info', control: 'textarea'},
@@ -84,13 +83,23 @@ const defaultFormSchema = [
 
 const AddEventForm = () => {
   const [formSchema, setFormSchema] = useState(defaultFormSchema)
+  const [sending, setSending] = useState(false)
+  const [step, setStep] = useState(1)
   const onSubmit = (vals) => {
     const data = {...vals}
     delete data.date
     data.urls = vals.urls.filter(it => it.url.length > 0)
     data.startDate = vals.date[0].toISOString()
     data.endDate = vals.date[1].toISOString()
+    if (data.geoCoverageType === 'national'){
+      data.geoCoverageValue = [data.geoCoverageValue]
+    }
+    setSending(true)
     api.post('/event', data)
+    .then(() => {
+      setSending(false)
+      setStep(2)
+    })
   }
   useEffect(() => {
     (async function fetchData() {
@@ -111,6 +120,7 @@ const AddEventForm = () => {
   })
   return (
     <div className="add-event-form">
+      {step === 1 &&
       <Form layout="vertical">
         <FinalForm
           form={form}
@@ -130,13 +140,20 @@ const AddEventForm = () => {
                     <h2>Other</h2>
                     <FieldsFromSchema schema={formSchema[2]} />
                   </div>
-                  <Button type="primary" size="large" onClick={() => handleSubmit()}>Add event</Button>
+                  <Button loading={sending} type="primary" size="large" onClick={() => handleSubmit()}>Add event</Button>
                 </div>
               )
             }
           }
         />
       </Form>
+      }
+      {step === 2 &&
+      <div>
+        <h3>Thank you for adding the event</h3>
+        <p>we'll let you know once an admin has approved it</p>
+      </div>
+      }
     </div>
   )
 }

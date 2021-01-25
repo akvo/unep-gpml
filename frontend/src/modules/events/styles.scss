@@ -3,6 +3,8 @@
 #add-event{
   background-color: #00AAF1;
   padding-top: 40px;
+  padding-bottom: 40px;
+  min-height: calc(100vh - 145px);
   &>.ui.container>.ant-row{
     &>.ant-col:first-child{
       *{

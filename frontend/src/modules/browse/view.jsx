@@ -100,7 +100,7 @@ const TopicSelect = ({ value, onChange }) => {
   return (
     <ul className="topic-list">
       {topicTypes.map(type =>
-        <li><Checkbox checked={value.indexOf(type) !== -1} onChange={handleChange(type)}>{type}</Checkbox></li>
+        <li key={type}><Checkbox checked={value.indexOf(type) !== -1} onChange={handleChange(type)}>{type}</Checkbox></li>
       )}
     </ul>
   )
