@@ -4,12 +4,21 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [ring.util.response :as resp]))
 
+(def associations
+  {:resource #{"owner" "reviewer" "user" "interested in" "other"}
+   :technology #{"owner" "user" "reviewer" "interested in" "other"}
+   :event #{"resource person" "organiser" "participant" "sponsor" "host" "interested in" "other"}
+   :project #{"owner" "implementor" "reviewer" "user" "interested in" "other"}
+   :policy #{"regulator" "implementor" "reviewer" "interested in" "other"}})
+
+;; FIXME: smarter check. We can check the type of association based in the `:topic` value
+;; https://github.com/metosin/malli#fn-schemas
 (def post-params
   [:vector
    [:map
-    [:type [:enum "people" "event" "technology" "policy" "resource" "project"]]
+    [:topic [:enum "event" "technology" "policy" "resource" "project"]]
     [:id int?]
-    [:tag [:string {:min 1}]]]])
+    [:association (into [:enum] (reduce (fn [s [_ v]] (apply conj s v)) #{} associations))]]])
 
 (defn- get-stakeholder-id
   [db email]

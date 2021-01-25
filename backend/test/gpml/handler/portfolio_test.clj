@@ -7,11 +7,11 @@
   (testing "Checking post body params"
     (let [valid? #(malli/validate portfolio/post-params %)]
       (are [expected value] (= expected (valid? value))
-        true [{:type "technology" :id 1 :tag "creator"}]
-        true [{:type "technology" :id 1 :tag "creator"}
-              {:type "event" :id 1 :tag "organizer"}]
+        true [{:topic "technology" :id 1 :association "user"}]
+        true [{:topic "technology" :id 1 :association "user"}
+              {:topic "event" :id 1 :association "organiser"}]
         false [{}]
-        false [{:type "technology"}]
-        false [{:type "technology" :id 1}]
-        false [{:type "technology" :id 1 :tag ""}]
-        false [{:type "random" :id 1 :tag "creator"}]))))
+        false [{:topic "technology"}]
+        false [{:topic "technology" :id 1}]
+        false [{:topic "technology" :id 1 :association "random"}]
+        false [{:topic "random" :id 1 :association "creator"}]))))
