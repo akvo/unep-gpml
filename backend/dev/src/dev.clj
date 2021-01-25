@@ -54,6 +54,8 @@
 
   config
 
+  (launch-portal)
+
   ;; run all tests
   (test)
 
@@ -63,3 +65,36 @@
 
 
   ,)
+
+
+(comment
+
+  (System/getenv "GOOGLE_APPLICATION_CREDENTIALS")
+  ;; => "/credentials/cloud-database-service-account.json"
+
+  (.exists (io/file "/credentials/cloud-database-service-account.json"))
+  ;; => true
+
+  (require '[clojure.java.jdbc :as jdbc])
+  (require '[hikari-cp.core :as hikari])
+
+  (def opts {:jdbc-url (slurp "/credentials/database-url")
+             :register-mbeans false})
+
+  (defonce ds (hikari/make-datasource opts))
+
+  (jdbc/query {:datasource ds}  ["SELECT 1"])
+  ;; => ({:?column? 1})
+
+  (seeder/seed {:datasource ds}
+               {:country? true
+                :currency? true
+                :organisation? true
+                :language? true
+                :tag? true
+                :policy? true
+                :resource? true
+                :technology? true
+                :project? true})
+
+  )

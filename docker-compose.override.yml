@@ -19,6 +19,8 @@ services:
   backend:
     image: akvo/akvo-clojure-lein:20210124.114043.4437caf
     command: ["lein", "repl", ":headless"]
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/cloud-database-service-account.json
     ports:
       - 3000:3000
       - 47480:47480
