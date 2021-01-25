@@ -8,6 +8,7 @@ import './styles.scss'
 import Checkbox from "antd/lib/checkbox/Checkbox";
 import { LinkedinOutlined, TwitterOutlined } from "@ant-design/icons";
 import { FieldsFromSchema, validateSchema } from "../../utils/form-utils";
+import { useAuth0 } from '@auth0/auth0-react';
 
 const sectorOptions = ['Governments', 'Private Sector', 'NGOs and MGS', 'Academia and Scientific Community', 'IGOs and multi - lateral processes', 'Other']
 const TitleNameGroup = (props) => {
@@ -48,6 +49,8 @@ const SignupModal = ({ visible, onCancel }) => {
   const [noOrg, setNoOrg] = useState(false)
   const [sending, setSending] = useState(false)
   const [step, setStep] = useState(1)
+  const {user} = useAuth0();
+
   useEffect(() => {
     (async function fetchData() {
       const response = await api.get('/country')
@@ -117,10 +120,11 @@ const SignupModal = ({ visible, onCancel }) => {
           <div className="submitted">
             <h2>Pending approval</h2>
             <p>
-              We will review your signup request shortly.<br />
+              We will review your signup request shortly.
+              {user.email_verified === false && <span><br />
               Meanwhile please confirm your email.
               <br />
-              <small>Registrations with unconfirmed emails will not be approved</small>
+              <small>Registrations with unconfirmed emails will not be approved</small></span>}
             </p>
           </div>
           }
