@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Card, DatePicker, Input, Select, Checkbox } from 'antd'
-import { SearchOutlined } from '@ant-design/icons'
+import { Card, DatePicker, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
+import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
 import { topicTypes } from '../../utils/misc'
 import { useLocation, withRouter } from 'react-router-dom'
+import moment from 'moment'
 import api from '../../utils/api'
 import { countries } from 'countries-list'
 import countries3to2 from 'countries-list/dist/countries3to2.json'
+import ShowMoreText from 'react-show-more-text'
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -26,6 +28,7 @@ const Browse = ({ history }) => {
   const [countryOpts, setCountryOpts] = useState([])
   const [results, setResults] = useState([])
   const location = useLocation()
+  const [relations, setRelations] = useState([])
 
   const getResults = () => {
     api.get(`/browse${window.location.search}`)
@@ -50,6 +53,16 @@ const Browse = ({ history }) => {
     history.push(`/browse?${newParams.toString()}`)
     clearTimeout(tmid)
     tmid = setTimeout(getResults, 1000)
+  }
+  const handleRelationChange = (relation) => {
+    const relationIndex = relations.findIndex(it => it.topicId === relation.topicId)
+    if(relationIndex !== -1){
+      setRelations([...relations.slice(0, relationIndex), relation, ...relations.slice(relationIndex + 1)])
+    }
+    else {
+      setRelations([...relations, relation])
+    }
+    api.post('/portfolio', relation)
   }
   return (
     <div id="browse">
@@ -84,7 +97,7 @@ const Browse = ({ history }) => {
           </div>
         </aside>
         <div className="main-content">
-          {results.map(result => <Result {...{result}} />)}
+          {results.map(result => <Result {...{result, handleRelationChange, relations}} />)}
         </div>
       </div>
     </div>
@@ -108,11 +121,12 @@ const TopicSelect = ({ value, onChange }) => {
   )
 }
 
-const Result = ({ result }) => {
+const Result = ({ result, relations, handleRelationChange }) => {
   const description = result.description || result.abstract || result.summary
+  const relation = relations.find(it => it.topicId === result.id)
   return (
     <Card className="result">
-      <h3>{result.title || result.name}</h3>
+      <h4>{result.title || result.name}</h4>
       <div className="type">{result.type}</div>
       <ul className="stats">
         {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
@@ -122,9 +136,44 @@ const Result = ({ result }) => {
         {result.yearFounded && <li><span>Founded:</span>{result.yearFounded}</li>}
         {result.developmentStage && <li><span>Stage:</span>{result.developmentStage}</li>}
         {result.value && <li><span>Value:</span>{result.valueCurrency && <i>{result.valueCurrency}</i>}{String(result.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
+        {result.type === 'event' && [<li><span>Starts:</span><i>{moment(result.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(result.endDate).format('DD MMM YYYY')}</i></li>]}
       </ul>
-      {description && <p>{description}</p>}
+      {description && <p><ShowMoreText lines={5}>{description}</ShowMoreText></p>}
+      <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />
     </Card>
+  )
+}
+
+const relationsByTopicType = {
+  resource: ['owner', 'reviewer', 'user', 'interested in', 'other'],
+  technology: ['owner', 'user', 'reviewer', 'interested in', 'other'],
+  event: ['resource person', 'organiser', 'participant', 'sponsor', 'host', 'interested in', 'other'],
+  project: ['owner', 'implementor', 'reviewer', 'user', 'interested in', 'other'],
+  policy: ['regulator', 'implementor', 'reviewer', 'interested in', 'other']
+}
+
+const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
+  const handleChangeRelation = (relationType) => ({ target: { checked } }) => {
+    let association = relation ? [...relation.association] : []
+    if(checked) association = [...association, relationType]
+    else association = association.filter(it => it !== relationType)
+    handleRelationChange({ topicId: topic.id, association, topic: topic.type })
+  }
+  return (
+    <div className="portfolio-bar">
+      <Dropdown overlay={(
+        <ul className="relations-dropdown">
+          {relationsByTopicType[topic.type].map(relationType =>
+          <li>
+            <Checkbox checked={relation && relation.association && relation.association.indexOf(relationType) !== -1} onChange={handleChangeRelation(relationType)}>{relationType}</Checkbox>
+          </li>)}
+        </ul>
+      )} trigger={['click']}>
+        <Button size="small" icon={<PlusOutlined />} shape="round" />
+      </Dropdown>
+      {(!relation || relation.association.length === 0) && <div className="label">Favorites</div>}
+      {relation?.association?.map(relationType => <Tag color="blue">{relationType}</Tag>)}
+    </div>
   )
 }
 

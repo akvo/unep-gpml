@@ -73,10 +73,10 @@
                                                  :handler #ig/ref :gpml.handler.tag/get}}]]
                                         ["/portfolio" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
-                                          {:get {:summary "List of relations between Stakeholder and topics"
+                                          {:get {:summary "List of associations between Stakeholder and topics"
                                                  :swagger {:tags ["portfolio"]}
                                                  :handler #ig/ref :gpml.handler.portfolio/get}
-                                           :post {:summary "Creates or updates a relation between Stakeholder and topics"
+                                           :post {:summary "Creates or updates relations between Stakeholder and topics"
                                                   :swagger {:tags ["portfolio"]}
                                                   :parameters {:body #ig/ref :gpml.handler.portfolio/post-params}
                                                   :handler #ig/ref :gpml.handler.portfolio/post}}]]]]}
