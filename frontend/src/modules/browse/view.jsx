@@ -4,6 +4,7 @@ import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
 import { topicTypes } from '../../utils/misc'
 import { useLocation, withRouter } from 'react-router-dom'
+import moment from 'moment'
 import api from '../../utils/api'
 import { countries } from 'countries-list'
 import countries3to2 from 'countries-list/dist/countries3to2.json'
@@ -134,6 +135,7 @@ const Result = ({ result, relations, handleRelationChange }) => {
         {result.yearFounded && <li><span>Founded:</span>{result.yearFounded}</li>}
         {result.developmentStage && <li><span>Stage:</span>{result.developmentStage}</li>}
         {result.value && <li><span>Value:</span>{result.valueCurrency && <i>{result.valueCurrency}</i>}{String(result.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
+        {result.type === 'event' && [<li><span>Starts:</span><i>{moment(result.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(result.endDate).format('DD MMM YYYY')}</i></li>]}
       </ul>
       {description && <p><ShowMoreText lines={5}>{description}</ShowMoreText></p>}
       <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />
