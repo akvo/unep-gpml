@@ -5,6 +5,8 @@ import './styles.scss'
 import { topicTypes } from '../../utils/misc'
 import { useLocation, withRouter } from 'react-router-dom'
 import api from '../../utils/api'
+import { countries } from 'countries-list'
+import countries3to2 from 'countries-list/dist/countries3to2.json'
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -107,16 +109,21 @@ const TopicSelect = ({ value, onChange }) => {
 }
 
 const Result = ({ result }) => {
+  const description = result.description || result.abstract || result.summary
   return (
     <Card className="result">
-      <h3>{result.title}</h3>
+      <h3>{result.title || result.name}</h3>
       <div className="type">{result.type}</div>
       <ul className="stats">
-        <li>
-          {result?.geoCoverageCountries?.join(', ')}
-        </li>
+        {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
+        {result.geoCoverageCountries && <li>{result.geoCoverageCountries.map(it => countries[countries3to2[it]]?.name).join(', ')}</li>}
+        {result.status && <li><span>Status:</span>{result.status}</li>}
+        {result.organisationType && <li><span>Org:</span>{result.organisationType}</li>}
+        {result.yearFounded && <li><span>Founded:</span>{result.yearFounded}</li>}
+        {result.developmentStage && <li><span>Stage:</span>{result.developmentStage}</li>}
+        {result.value && <li><span>Value:</span>{result.valueCurrency && <i>{result.valueCurrency}</i>}{String(result.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
       </ul>
-      {result.description && <p>{result.description}</p>}
+      {description && <p>{description}</p>}
     </Card>
   )
 }

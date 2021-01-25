@@ -100,6 +100,20 @@
         padding: 0 5px;
         border-radius: 3px;
       }
+      ul.stats{
+        display: flex;
+        li{
+          text-transform: uppercase;
+          opacity: 0.75;
+          margin-right: 10px;
+          font-size: 12px;
+          font-weight: 500;
+          span{
+            opacity: 0.6;
+            margin-right: 5px;
+          }
+        }
+      }
     }
   }
 }
