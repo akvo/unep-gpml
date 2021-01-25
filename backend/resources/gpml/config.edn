@@ -64,6 +64,7 @@
                                            {:put {:summary "Approve profile by admin"
                                                   :swagger {:tags ["profile"]
                                                             :security [{:id_token []}]}
+                                                  :parameters {:body [:map [:id number?]]}
                                                   :handler #ig/ref :gpml.handler.profile/approve}}]]]
                                         ["/tag"
                                          ["/:topic-type"

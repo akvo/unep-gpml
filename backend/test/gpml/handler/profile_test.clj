@@ -46,7 +46,9 @@
     (let [system (ig/init fixtures/*system* [::profile/post])
           handler (::profile/post system)
           db (-> system :duct.database.sql/hikaricp :spec)
+          ;; create new country
           _ (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
+          ;; John trying to sign up with new organisation
           resp (handler (-> (mock/request :post "/")
                         (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
                         (assoc :body-params
@@ -66,6 +68,7 @@
               :org_name "Akvo"
               :org_url "https://www.akvo.org"
               :representation "test"
+              :approved_at nil
               } (:body resp)))
       (is ('clojure.string/includes? "/image/profile" (->(:body resp) :picture))))))
 
@@ -74,10 +77,14 @@
     (let [system (ig/init fixtures/*system* [::profile/get])
           handler (::profile/get system)
           db (-> system :duct.database.sql/hikaricp :spec)
+          ;; create new organisation
           org (db.organisation/new-organisation db {:name "Akvo"})
+          ;; create new country
           _ (db.country/new-country db {:name "Netherland" :iso_code "NDL"})
           country (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
+          ;; create new stakeholder name John
           _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
+          ;; dashboard check if this guy has profile
           resp (handler (-> (mock/request :get "/")
                         (assoc :jwt-claims {:email "john@org"})))]
       (is (= 200 (:status resp)))
@@ -90,32 +97,37 @@
   (testing "Profile endpoint returns empty response"
     (let [system (ig/init fixtures/*system* [::profile/get])
           handler (::profile/get system)
+          ;; dashboard check if this guy has profile
           resp (handler (-> (mock/request :get "/")
                         (assoc :jwt-claims {:email "john@org"})))]
       (is (= 200 (:status resp)))
       (is (empty (:body resp))))))
 
-#_(deftest handler-approval-test
+(deftest handler-approval-test
   (testing "Profile is approved by admin"
     (let [system (ig/init fixtures/*system* [::profile/approve])
           handler (::profile/approve system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          _ (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
-          admin (db.stakeholder/new-stakeholder db (new-admin (get-country db "IND")))
-          _ (db.stakeholder/new-stakeholder db (new-profile (get-country db "IND")))
-          _ (db.stakeholder/stakeholder-set-role db {:role "ADMIN" :id (:id (first admin))})
+          ;; create new organisation
+          org (db.organisation/new-organisation db {:name "Akvo"})
+          ;; create new country
+          country (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
+          ;; create new user name Jane
+          admin (new-profile (:id (first country)) (:id (first org)))
+          admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
+          ;; create new user name John
+          _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
+          ;; Jane become an admin
+          _ (db.stakeholder/update-stakeholder-role db (assoc (first admin) :role "ADMIN"))
+          ;; Jane trying to approve this guy John
           resp (handler (-> (mock/request :put "/")
                             (assoc :jwt-claims {:email "jane@org"})
                             (assoc :body-params {:id (get-user db "john@org")})))]
-      (is (= 200 (:status resp)))
-      (is (not-empty (:body resp))))))
+      (is (= 204 (:status resp)))
+      (is (= "John" (-> resp :body :data :first_name)))
+      (is (= (not nil) (-> resp :body :data :approved_at))))))
 
 (comment
-  (require 'dev)
-  (def db (dev/db-conn))
-  (def admin (db.stakeholder/stakeholder-by-email db {:email "jane@org"}))
-  (def john (db.stakeholder/stakeholder-by-email db {:email "john@org"}))
-  admin
-  john
-  (db.stakeholder/stakeholder-set-role db {:role "USER" :id (:id john)})
+    #_(def dbtest (dev/db-conn))
+    #_(db.stakeholder/update-stakeholder-role dbtest {:id 1 :role "ADMIN"})
   ,)
