@@ -8,7 +8,6 @@ import Landing from './modules/landing/view'
 import Browse from './modules/browse/view'
 import Events from './modules/events/view'
 import logo from './images/GPML-dp.svg'
-import axios from 'axios';
 import SignupModal from './modules/signup/signup-modal'
 import api from './utils/api';
 
@@ -38,7 +37,7 @@ const Root = () => {
             setSignupModalVisible(Object.keys(resp.data).length === 0);
         }
       })();
-    }, [isAuthenticated]);
+    }, [getIdTokenClaims, isAuthenticated, profile]);
 
     return (
     <Router>
