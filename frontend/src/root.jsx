@@ -6,7 +6,7 @@ import { SearchOutlined, CaretDownOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css';
 import Landing from './modules/landing/view'
 import Browse from './modules/browse/view'
-import Events from './modules/events/view'
+import AddEvent from './modules/events/view'
 import logo from './images/GPML-dp.svg'
 import SignupModal from './modules/signup/signup-modal'
 import api from './utils/api';
@@ -74,7 +74,7 @@ const Root = () => {
               <Link to="/">What we do</Link>
               <Link to="/">News</Link>
               <Link to="/browse">Find and Connect</Link>
-              <Button type="primary" size="large">+ Add <CaretDownOutlined /></Button>
+              <AddButton {...{ setSignupModalVisible, isAuthenticated}} />
             </nav>
           </div>
         </header>
@@ -83,13 +83,20 @@ const Root = () => {
               <>
                   <Route path="/" exact component={Landing} />
                   <Route path="/browse" component={Browse} />
-                  <Route path="/events" component={Events} />
+                  <Route path="/add-event" component={AddEvent} />
               </>
           )}
       </div>
       <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} />
     </Router>
     )
+}
+
+const AddButton = ({ isAuthenticated, setSignupModalVisible }) => {
+  if(isAuthenticated){
+    return <Link to="/add-event"><Button type="primary" size="large">+ Add Event</Button></Link>
+  }
+  return <Button type="primary" size="large" onClick={() => setSignupModalVisible(true)}>+ Add Event</Button>
 }
 
 export default Root

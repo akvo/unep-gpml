@@ -1,10 +1,9 @@
 import React from 'react'
-import EventForm from './event-form'
 import { Row, Col, Card } from 'antd';
 import './styles.scss'
 import AddEventForm from './form';
 
-const Events = () => {
+const AddEvent = () => {
   return (
       <div id="add-event">
         <div className="ui container">
@@ -23,4 +22,4 @@ const Events = () => {
   )
 }
 
-export default Events;
+export default AddEvent;
