@@ -27,7 +27,13 @@
 
 (defn get-portfolio
   [db id]
-  (db.portfolio/relation-by-stakeholder db {:stakeholder id}))
+  (let [data (db.portfolio/relation-by-stakeholder db {:stakeholder id})]
+    (reduce (fn [acc [[topic_id topic] v]]
+              (conj acc {:topic_id topic_id
+                         :topic topic
+                         :association (mapv :association v)}))
+            []
+            (group-by (juxt :id :topic) data))))
 
 (defmethod ig/init-key ::get [_ {:keys [db]}]
   (fn [{{:keys [email]} :jwt-claims}]

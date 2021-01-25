@@ -80,10 +80,12 @@
                                         ["/portfolio" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
                                           {:get {:summary "List of associations between Stakeholder and topics"
-                                                 :swagger {:tags ["portfolio"]}
+                                                 :swagger {:tags ["portfolio"]
+                                                           :security [{:id_token []}]}
                                                  :handler #ig/ref :gpml.handler.portfolio/get}
                                            :post {:summary "Creates or updates relations between Stakeholder and topics"
-                                                  :swagger {:tags ["portfolio"]}
+                                                  :swagger {:tags ["portfolio"]
+                                                            :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.portfolio/post-params}
                                                   :handler #ig/ref :gpml.handler.portfolio/post}}]]]]}
 
