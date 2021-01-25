@@ -70,7 +70,7 @@ const Browse = ({ history }) => {
     else {
       setRelations([...relations, relation])
     }
-    api.post('/portfolio', relation)
+    api.post('/portfolio', [relation])
   }
   return (
     <div id="browse">
