@@ -1,14 +1,13 @@
--- :name new-relation :!
+-- :name new-association :!
 -- :doc Upserts a new relation between a stakeholder and a topic
-INSERT INTO stakeholder_portfolio AS sp (stakeholder, tag, topic_type, topic)
-VALUES (:stakeholder, :tag, :v:topic_type::topic_type, :topic)
-ON CONFLICT (stakeholder, tag, topic_type, topic)
-DO UPDATE SET modified = now()
+--~ (format "INSERT INTO stakeholder_%1$s AS sp (stakeholder, %1$s, association, remarks)" (:topic params))
+--~ (format "VALUES (:stakeholder, :id, :v:association::%1$s_association, :remarks)" (:topic params))
+--~ (format "ON CONFLICT (stakeholder, %1$s, association)" (:topic params))
+DO UPDATE SET modified = now(), remarks = EXCLUDED.remarks
     WHERE sp.stakeholder = EXCLUDED.stakeholder
-      AND sp.tag = EXCLUDED.tag
-      AND sp.topic_type = EXCLUDED.topic_type
-      AND sp.topic = EXCLUDED.topic;
+--~ (format "AND sp.%1$s = EXCLUDED.%1$s" (:topic params))
+      AND sp.association = EXCLUDED.association
 
 -- :name relation-by-stakeholder :? :*
 -- :doc Get all relations for a given stakeholder
-SELECT * FROM stakeholder_portfolio WHERE stakeholder = :stakeholder;
+SELECT * FROM v_stakeholder_association WHERE stakeholder = :stakeholder
