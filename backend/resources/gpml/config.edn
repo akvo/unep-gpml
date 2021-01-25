@@ -14,8 +14,8 @@
                                        ["/api"
                                         ["/swagger.json"
                                          {:get {:no-doc true
-                                                :swagger {:info {:title "UNEP GPML"
-                                                                 :description "Digital Platform API"
+                                                :swagger {:info {:title "UNEP GPML Digital Platform"
+                                                                 :description "GPML Digital Platform API"
                                                                  :version "1.0.0"}
                                                           :securityDefinitions {:id_token {:type "apiKey"
                                                                                            :name "Authorization"
@@ -60,11 +60,11 @@
                                                            :security [{:id_token []}]}
                                                  :handler #ig/ref :gpml.handler.profile/put}}]
                                          ["/approve"
-                                          {:put {:summary "Approve profile by admin"
-                                                 :swagger {:tags ["profile"]
-                                                           :security [{:id_token []}]}
-                                                 :handler #ig/ref :gpml.handler.profile/approve}}]
-                                         ]
+                                          [""
+                                           {:put {:summary "Approve profile by admin"
+                                                  :swagger {:tags ["profile"]
+                                                            :security [{:id_token []}]}
+                                                  :handler #ig/ref :gpml.handler.profile/approve}}]]]
                                         ["/tag"
                                          ["/:topic-type"
                                           {:get {:summary "List tags by topic type"
@@ -72,13 +72,11 @@
                                                  :handler #ig/ref :gpml.handler.tag/get}}]]
                                         ["/portfolio" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
-                                          {:get {:summary "Get the portfolio information for the authenticated Stakeholder"
-                                                 :swagger {:tags ["portfolio"]
-                                                           :security [{:id_token []}]}
-                                                 :handler #ig/ref :gpml.handler.portfolio/get}}
-                                          {:post {:summary "Creates or update a new relation for the authenticated user"
-                                                  :swagger {:tags ["portfolio"]
-                                                            :security [{:id_token []}]}
+                                          {:get {:summary "List of relations between Stakeholder and topics"
+                                                 :swagger {:tags ["portfolio"]}
+                                                 :handler #ig/ref :gpml.handler.portfolio/get}
+                                           :post {:summary "Creates or updates a relation between Stakeholder and topics"
+                                                  :swagger {:tags ["portfolio"]}
                                                   :parameters {:body #ig/ref :gpml.handler.portfolio/post-params}
                                                   :handler #ig/ref :gpml.handler.portfolio/post}}]]]]}
 

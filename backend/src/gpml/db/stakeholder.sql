@@ -13,6 +13,10 @@ where s.id = :id;
 -- :doc Get stakeholder by email
 select * from stakeholder where email = :email;
 
+-- :name approved-stakeholder-by-email :? :1
+-- :doc Get an stakeholder by email filtering by approved
+select * from stakeholder where email = :email and approved_at is not null;
+
 -- :name stakeholder-set-role :!
 -- :doc Set stakeholder role
 update stakeholder set role = :v:role::stakeholder_role where id = :id;
