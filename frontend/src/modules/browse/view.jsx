@@ -82,7 +82,7 @@ const Browse = ({ history }) => {
               <div className="label">
                 Country
               </div>
-              <Select value={query.country} placeholder="Find country" mode="multiple" options={Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name }))} allowClear onChange={val => updateQuery('country', val)} />
+              <Select value={query.country} placeholder="Find country" mode="multiple" options={Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name }))} allowClear onChange={val => updateQuery('country', val)} filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
             </div>
             <div className="field">
               <div className="label">Topics</div>
