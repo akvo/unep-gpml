@@ -8,7 +8,9 @@ import moment from 'moment'
 import api from '../../utils/api'
 import { countries } from 'countries-list'
 import countries3to2 from 'countries-list/dist/countries3to2.json'
+import countries2to3 from 'countries-list/dist/countries2to3.json'
 import ShowMoreText from 'react-show-more-text'
+import { useAuth0 } from '@auth0/auth0-react'
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -25,10 +27,10 @@ let tmid
 
 const Browse = ({ history }) => {
   const query = useQuery()
-  const [countryOpts, setCountryOpts] = useState([])
   const [results, setResults] = useState([])
   const location = useLocation()
   const [relations, setRelations] = useState([])
+  const {isAuthenticated} = useAuth0();
 
   const getResults = () => {
     api.get(`/browse${window.location.search}`)
@@ -41,11 +43,17 @@ const Browse = ({ history }) => {
     .then((resp) => {
       setResults(resp?.data?.results)
     })
-    api.get('/country')
-    .then((resp) => {
-      setCountryOpts(resp.data.map(it => ({ value: it.isoCode, label: it.name })))
-    })
   }, [])
+  useEffect(() => {
+    if(isAuthenticated){
+      setTimeout(() => {
+        api.get('/portfolio')
+        .then((resp) => {
+          setRelations(resp.data)
+        })
+      }, 100)
+    }
+  }, [isAuthenticated])
   const updateQuery = (param, value) => {
     const newQuery = {...query}
     newQuery[param] = value
@@ -74,7 +82,7 @@ const Browse = ({ history }) => {
               <div className="label">
                 Country
               </div>
-              <Select value={query.country} placeholder="Find country" mode="multiple" options={countryOpts} allowClear onChange={val => updateQuery('country', val)} />
+              <Select value={query.country} placeholder="Find country" mode="multiple" options={Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name }))} allowClear onChange={val => updateQuery('country', val)} />
             </div>
             <div className="field">
               <div className="label">Topics</div>
