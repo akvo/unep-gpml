@@ -13,12 +13,6 @@
                   :resource (rand-int 10)})
        (filter #(some? (:iso_code %)) countries)))
 
-(def sample-summary-data
-  [{:project (rand-int 100) :countries (rand-int 100)}
-   {:event (rand-int 100) :countries (rand-int 100)}
-   {:policy (rand-int 100) :countries (rand-int 100)}
-   {:technology (rand-int 100) :countries (rand-int 100)}
-   {:resource (rand-int 100) :countries (rand-int 100)}])
 
 (defn map-counts-with-country-names [conn]
   (let [countries (db.country/all-countries conn)
@@ -29,9 +23,16 @@
     (map #(merge {:name (names (:iso_code %))} %) counts)))
 
 (defn landing-sample-response [conn]
-  (resp/response {:topics browse/sample-data
-                  :map (map-counts-with-country-names conn)
-                  :summary sample-summary-data}))
+  (let [topics '("project" "event" "policy" "resource" "technology")
+        summary (first (db.landing/summary conn))
+        summary-data
+        (->> topics
+             (map #(assoc {}
+                          (keyword %) (summary (keyword %))
+                          :countries (summary (keyword (str % "_countries"))))))]
+    (resp/response {:topics browse/sample-data
+                    :map (map-counts-with-country-names conn)
+                    :summary summary-data})))
 
 (defmethod ig/init-key :gpml.handler.landing/get [_ {:keys [db]}]
   (fn [_]
