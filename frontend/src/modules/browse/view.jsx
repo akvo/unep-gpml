@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Card, DatePicker, Input, Select, Checkbox } from 'antd'
-import { SearchOutlined } from '@ant-design/icons'
+import { Card, DatePicker, Input, Select, Checkbox, Button, Dropdown } from 'antd'
+import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
 import { topicTypes } from '../../utils/misc'
 import { useLocation, withRouter } from 'react-router-dom'
 import api from '../../utils/api'
 import { countries } from 'countries-list'
 import countries3to2 from 'countries-list/dist/countries3to2.json'
+import ShowMoreText from 'react-show-more-text'
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -112,7 +113,7 @@ const Result = ({ result }) => {
   const description = result.description || result.abstract || result.summary
   return (
     <Card className="result">
-      <h3>{result.title || result.name}</h3>
+      <h4>{result.title || result.name}</h4>
       <div className="type">{result.type}</div>
       <ul className="stats">
         {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
@@ -123,8 +124,35 @@ const Result = ({ result }) => {
         {result.developmentStage && <li><span>Stage:</span>{result.developmentStage}</li>}
         {result.value && <li><span>Value:</span>{result.valueCurrency && <i>{result.valueCurrency}</i>}{String(result.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
       </ul>
-      {description && <p>{description}</p>}
+      {description && <p><ShowMoreText lines={5}>{description}</ShowMoreText></p>}
+      <PortfolioBar topic={result} />
     </Card>
+  )
+}
+
+const relationsByTopicType = {
+  resource: ['owner', 'reviewer', 'user', 'interested in', 'other'],
+  technology: ['owner', 'user', 'reviewer', 'interested in', 'other'],
+  event: ['resource person', 'organiser', 'participant', 'sponsor', 'host', 'interested in', 'other'],
+  project: ['owner', 'implementor', 'reviewer', 'user', 'interested in', 'other'],
+  policy: ['regulator', 'implementor', 'reviewer', 'interested in', 'other']
+}
+
+const PortfolioBar = ({ topic }) => {
+  return (
+    <div className="portfolio-bar">
+      <Dropdown overlay={(
+        <ul className="relations-dropdown">
+          {relationsByTopicType[topic.type].map(relation =>
+          <li>
+            <Checkbox>{relation}</Checkbox>
+          </li>)}
+        </ul>
+      )} trigger={['click']}>
+        <Button size="small" icon={<PlusOutlined />} shape="round" />
+      </Dropdown>
+      <div className="label">Portfolio</div>
+    </div>
   )
 }
 

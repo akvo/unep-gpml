@@ -22,9 +22,12 @@ h3{
   font-size: 27px;
   font-weight: 600;
 }
+h4{
+  font-size: 22px;
+}
 #root{
   .ant-btn{
-    border-radius: 4px;
+    // border-radius: 4px;
   }
   .ant-btn-primary{
     background-color: $primaryColor;

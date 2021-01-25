@@ -100,6 +100,9 @@
         padding: 0 5px;
         border-radius: 3px;
       }
+      h3{
+        font-size: 24px;
+      }
       ul.stats{
         display: flex;
         li{
@@ -114,6 +117,30 @@
           }
         }
       }
+      .portfolio-bar{
+        display: flex;
+        .label{
+          font-size: 12px;
+          margin-top: 3px;
+          margin-left: 5px;
+          font-weight: 600;
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+}
+
+.relations-dropdown{
+  background-color: #fff;
+  z-index: 10;
+  padding: 3px 10px;
+  border: 1px solid #89B7D0;
+  border-radius: 3px;
+  li{
+    line-height: 30px;
+    &:not(:last-child){
+      border-bottom: 1px solid #E0E9EC;
     }
   }
 }
