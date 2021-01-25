@@ -59,6 +59,12 @@
                                                  :swagger {:tags ["profile"]
                                                            :security [{:id_token []}]}
                                                  :handler #ig/ref :gpml.handler.profile/put}}]
+                                         ["/pending"
+                                          [""
+                                           {:get {:summary "Getting Unapproved list of User",
+                                                  :swagger {:tags ["profile"]
+                                                            :security [{:id_token []}]}
+                                                  :handler #ig/ref :gpml.handler.profile/pending}}]]
                                          ["/approve"
                                           [""
                                            {:put {:summary "Approve profile by admin"
@@ -100,6 +106,7 @@
   :gpml.handler.profile/post-params {}
   :gpml.handler.profile/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/approve {:db #ig/ref :duct.database/sql}
+  :gpml.handler.profile/pending {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.tag/get {:db #ig/ref :duct.database/sql}
 

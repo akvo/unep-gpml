@@ -13,9 +13,9 @@ where s.id = :id;
 -- :doc Get stakeholder by email
 select * from stakeholder where email = :email;
 
--- :name approved-stakeholder-by-email :? :1
--- :doc Get an stakeholder by email filtering by approved
-select * from stakeholder where email = :email and approved_at is not null;
+-- :name pending-approval :? :*
+-- :doc Get unapproved of stakeholder profile
+select * from stakeholder where approved_at is null order by created desc;
 
 -- :name approve-stakeholder :! :n
 -- :doc Approve stakeholder

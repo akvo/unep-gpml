@@ -71,13 +71,18 @@
 (defmethod ig/init-key :gpml.handler.profile/approve [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
     (let [admin (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
-      (tap> body-params)
-      (tap> admin)
       (if (= (:role admin) "ADMIN")
         (when (db.stakeholder/approve-stakeholder (:spec db) body-params)
           (assoc (resp/status 204)
                  :body {:message "Successfuly Updated"
                         :data (db.stakeholder/stakeholder-by-id (:spec db) body-params)}))
+        (assoc (resp/status 401) :body {:message "Unauthorized"})))))
+
+(defmethod ig/init-key :gpml.handler.profile/pending [_ {:keys [db]}]
+  (fn [{:keys [jwt-claims]}]
+    (let [admin (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
+      (if (= (:role admin) "ADMIN")
+        (resp/response (db.stakeholder/pending-approval (:spec db)))
         (assoc (resp/status 401) :body {:message "Unauthorized"})))))
 
 (defmethod ig/init-key :gpml.handler.profile/post-params [_ _]

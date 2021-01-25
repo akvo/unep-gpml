@@ -63,7 +63,6 @@
   #_:clj-kondo/ignore
   (test #'gpml.handler.landing-test/handler-test)
 
-
   ,)
 
 

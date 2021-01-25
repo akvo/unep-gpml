@@ -103,6 +103,31 @@
       (is (= 200 (:status resp)))
       (is (empty (:body resp))))))
 
+(deftest handler-approval-list
+  (testing "Get pending list of the profile"
+    (let [system (ig/init fixtures/*system* [::profile/pending])
+          handler (::profile/pending system)
+          db (-> system :duct.database.sql/hikaricp :spec)
+          ;; create new organisation
+          org (db.organisation/new-organisation db {:name "Akvo"})
+          ;; create new country
+          country (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
+          ;; create new user name Jane
+          admin (new-profile (:id (first country)) (:id (first org)))
+          admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
+          ;; Jane become an admin
+          _ (db.stakeholder/update-stakeholder-role db (assoc (first admin) :role "ADMIN"))
+          ;; create new user name John
+          _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
+          ;; create new user name Nick
+          user (new-profile (:id (first country)) (:id (first org)))
+          _ (db.stakeholder/new-stakeholder db  (assoc user :email "nick@org" :first_name "Nick"))
+          ;; Jane trying to see the list of pending user in this case John and Nick
+          resp (handler (-> (mock/request :get "/")
+                        (assoc :jwt-claims {:email "jane@org"})))]
+      (is (= 200 (:status resp)))
+      (is (= 3 (count (into [] (-> resp :body))))))))
+
 (deftest handler-approval-test
   (testing "Profile is approved by admin"
     (let [system (ig/init fixtures/*system* [::profile/approve])
