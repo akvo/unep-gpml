@@ -1,7 +1,7 @@
 -- :name new-association :!
 -- :doc Upserts a new relation between a stakeholder and a topic
 --~ (format "INSERT INTO stakeholder_%1$s AS sp (stakeholder, %1$s, association, remarks)" (:topic params))
---~ (format "VALUES (:stakeholder, :id, :v:association::%1$s_association, :remarks)" (:topic params))
+--~ (format "VALUES (:stakeholder, :topic_id, :v:association::%1$s_association, :remarks)" (:topic params))
 --~ (format "ON CONFLICT (stakeholder, %1$s, association)" (:topic params))
 DO UPDATE SET modified = now(), remarks = EXCLUDED.remarks
     WHERE sp.stakeholder = EXCLUDED.stakeholder

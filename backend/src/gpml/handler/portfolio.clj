@@ -18,8 +18,8 @@
   [:vector
    [:map
     [:topic [:enum "event" "technology" "policy" "resource" "project"]]
-    [:id int?]
-    [:association (into [:enum] (reduce (fn [s [_ v]] (apply conj s v)) #{} associations))]]])
+    [:topic_id int?]
+    [:association [:vector (into [:enum] (reduce (fn [s [_ v]] (apply conj s v)) #{} associations))]]]])
 
 (defn- get-stakeholder-id
   [db email]
@@ -35,16 +35,23 @@
       (resp/response (get-portfolio (:spec db) stakeholder))
       (resp/bad-request {:message (format "User with email %s does not exist" email)}))))
 
+(defn expand-associations
+  [{:keys [topic topic_id association]}]
+  (vec (for [a association]
+         {:topic topic
+          :topic_id topic_id
+          :association a})))
 
 (defmethod ig/init-key ::post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
     (if-let [stakeholder (get-stakeholder-id (:spec db) (:email jwt-claims))]
       (jdbc/with-db-transaction [conn (:spec db)]
         (doseq [item body-params]
-          (db.portfolio/new-association conn (merge
-                                              {:stakeholder stakeholder
-                                               :remarks nil}
-                                              item)))
+          (doseq [association (expand-associations item)]
+            (db.portfolio/new-association conn (merge
+                                                {:stakeholder stakeholder
+                                                 :remarks nil}
+                                                association))))
         (resp/response {:message "OK"}))
       (resp/bad-request {:message (format "User with email %s does not exist" (:email jwt-claims))}))))
 

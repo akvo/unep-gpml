@@ -35,23 +35,23 @@
       (testing "Creating a new relation between a stakeholder and a technolgy item"
         (db.portfolio/new-association db {:stakeholder sth1-id
                                           :topic "technology"
-                                          :id 1
+                                          :topic_id 1
                                           :association "user"
                                           :remarks nil})
         (db.portfolio/new-association db {:stakeholder sth1-id
                                           :topic "technology"
-                                          :id 1
+                                          :topic_id 1
                                           :association "interested in"
                                           :remarks nil})
         (db.portfolio/new-association db {:stakeholder sth2-id
                                           :topic "technology"
-                                          :id 1
+                                          :topic_id 1
                                           :association "interested in"
                                           :remarks nil}))
       (testing "Attempting to create the same relation doesn't fail"
         (db.portfolio/new-association db {:stakeholder sth1-id
                                           :topic "technology"
-                                          :id 1
+                                          :topic_id 1
                                           :association "user"
                                           :remarks nil}))
       (testing "Getting relations for a given stakeholder"

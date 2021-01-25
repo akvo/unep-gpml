@@ -14,14 +14,14 @@
   (testing "Checking post body params"
     (let [valid? #(malli/validate portfolio/post-params %)]
       (are [expected value] (= expected (valid? value))
-        true [{:topic "technology" :id 1 :association "user"}]
-        true [{:topic "technology" :id 1 :association "user"}
-              {:topic "event" :id 1 :association "organiser"}]
+        true [{:topic "technology" :topic_id 1 :association ["user"]}]
+        true [{:topic "technology" :topic_id 1 :association ["user"]}
+              {:topic "event" :topic_id 1 :association ["organiser" "participant"]}]
         false [{}]
         false [{:topic "technology"}]
-        false [{:topic "technology" :id 1}]
-        false [{:topic "technology" :id 1 :association "random"}]
-        false [{:topic "random" :id 1 :association "creator"}]))))
+        false [{:topic "technology" :topic_id 1}]
+        false [{:topic "technology" :topic_id 1 :association ["random"]}]
+        false [{:topic "random" :topic_id 1 :association ["creator"]}]))))
 
 (defn- new-stakeholder [db email]
   (db.stakeholder/new-stakeholder db
@@ -43,8 +43,9 @@
 (defn- mock-post [email]
   (-> (mock/request :post "/")
       (assoc :jwt-claims {:email email})
-      (assoc :body-params [{:id 1 :topic "technology" :association "user"}
-                           {:id 1 :topic "technology" :association "interested in"}])))
+      (assoc :body-params [{:topic_id 1
+                            :topic "technology"
+                            :association ["user" "interested in"]}])))
 
 (deftest test-post-new-association
   (testing "Creating new association via POST"
