@@ -1,7 +1,8 @@
 (ns gpml.handler.portfolio
-  (:require [integrant.core :as ig]
+  (:require [clojure.java.jdbc :as jdbc]
             [gpml.db.portfolio :as db.portfolio]
             [gpml.db.stakeholder :as db.stakeholder]
+            [integrant.core :as ig]
             [ring.util.response :as resp]))
 
 (def associations
@@ -35,9 +36,17 @@
       (resp/bad-request {:message (format "User with email %s does not exist" email)}))))
 
 
-(defmethod ig/init-key ::post [_ {:keys [_db]}]
-  (fn [{:keys [_jwt-claims _body-params]}]
-    (resp/response {:id 0})))
+(defmethod ig/init-key ::post [_ {:keys [db]}]
+  (fn [{:keys [jwt-claims body-params]}]
+    (if-let [stakeholder (get-stakeholder-id (:spec db) (:email jwt-claims))]
+      (jdbc/with-db-transaction [conn (:spec db)]
+        (doseq [item body-params]
+          (db.portfolio/new-association conn (merge
+                                              {:stakeholder stakeholder
+                                               :remarks nil}
+                                              item)))
+        (resp/response {:message "OK"}))
+      (resp/bad-request {:message (format "User with email %s does not exist" (:email jwt-claims))}))))
 
 (defmethod ig/init-key ::post-params [_ _]
   post-params)
