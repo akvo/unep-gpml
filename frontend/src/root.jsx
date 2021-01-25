@@ -70,9 +70,6 @@ const Root = () => {
               </Route>
             </Switch>
             <nav>
-              <Link to="/">Who we are</Link>
-              <Link to="/">What we do</Link>
-              <Link to="/">News</Link>
               <Link to="/browse">Find and Connect</Link>
               <AddButton {...{ setSignupModalVisible, isAuthenticated}} />
             </nav>
