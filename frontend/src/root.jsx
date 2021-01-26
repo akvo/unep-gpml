@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Switch, withRouter } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react';
 import { Input, Button } from 'antd'
 import { SearchOutlined, CaretDownOutlined } from '@ant-design/icons'
@@ -66,7 +66,7 @@ const Root = () => {
             <Switch>
               <Route path="/browse" />
               <Route>
-                <Input className="src" placeholder="Search for topics" suffix={<SearchOutlined />} size="large" />
+                <Search />
               </Route>
             </Switch>
             <nav>
@@ -88,6 +88,17 @@ const Root = () => {
     </Router>
     )
 }
+
+const Search = withRouter(({ history }) => {
+  const [src, setSrc] = useState('')
+  const handleSrcKeyDown = (e) => {
+    if(e.keyCode === 13 && src.length > 0){
+      history.push(`/browse/?q=${src}`)
+    }
+  }
+
+  return <Input value={src} onChange={ev => setSrc(ev.target.value)} onKeyDown={handleSrcKeyDown} className="src" placeholder="Search for topics" suffix={<SearchOutlined />} size="large" />
+})
 
 const AddButton = ({ isAuthenticated, setSignupModalVisible }) => {
   if(isAuthenticated){
