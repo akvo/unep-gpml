@@ -1,8 +1,8 @@
-(ns gpml.handler.portfolio-test
+(ns gpml.handler.favorite-test
   (:require [clojure.test :refer [deftest testing are is use-fixtures]]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
-            [gpml.handler.portfolio :as portfolio]
+            [gpml.handler.favorite :as favorite]
             [gpml.seeder.main :as seeder]
             [integrant.core :as ig]
             [malli.core :as malli]
@@ -12,7 +12,7 @@
 
 (deftest test-post-body
   (testing "Checking post body params"
-    (let [valid? #(malli/validate portfolio/post-params %)]
+    (let [valid? #(malli/validate favorite/post-params %)]
       (are [expected value] (= expected (valid? value))
         true [{:topic "technology" :topic_id 1 :association ["user"]}]
         true [{:topic "technology" :topic_id 1 :association ["user"]}
@@ -51,9 +51,9 @@
 (deftest test-post-new-association
   (testing "Creating new association via POST"
     (let [system (-> fixtures/*system*
-                     (ig/init [::portfolio/post]))
+                     (ig/init [::favorite/post]))
           db (-> system :duct.database.sql/hikaricp :spec)
-          handler (::portfolio/post system)
+          handler (::favorite/post system)
           _ (seeder/seed db {:country? true
                              :technology? true})
           _ (new-stakeholder db "email@un.org")

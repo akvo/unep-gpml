@@ -77,17 +77,17 @@
                                           {:get {:summary "List tags by topic type"
                                                  :swagger {:tags ["tags"]}
                                                  :handler #ig/ref :gpml.handler.tag/get}}]]
-                                        ["/portfolio" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
+                                        ["/favorite" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
                                           {:get {:summary "List of associations between Stakeholder and topics"
-                                                 :swagger {:tags ["portfolio"]
+                                                 :swagger {:tags ["favorite"]
                                                            :security [{:id_token []}]}
-                                                 :handler #ig/ref :gpml.handler.portfolio/get}
+                                                 :handler #ig/ref :gpml.handler.favorite/get}
                                            :post {:summary "Creates or updates relations between Stakeholder and topics"
-                                                  :swagger {:tags ["portfolio"]
+                                                  :swagger {:tags ["favorite"]
                                                             :security [{:id_token []}]}
-                                                  :parameters {:body #ig/ref :gpml.handler.portfolio/post-params}
-                                                  :handler #ig/ref :gpml.handler.portfolio/post}}]]]]}
+                                                  :parameters {:body #ig/ref :gpml.handler.favorite/post-params}
+                                                  :handler #ig/ref :gpml.handler.favorite/post}}]]]]}
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
 
@@ -115,9 +115,9 @@
   :gpml.handler.image/profile {:db #ig/ref :duct.database/sql}
   :gpml.handler.image/event {:db #ig/ref :duct.database/sql}
 
-  :gpml.handler.portfolio/get {:db #ig/ref :duct.database/sql}
-  :gpml.handler.portfolio/post {:db #ig/ref :duct.database/sql}
-  :gpml.handler.portfolio/post-params {}
+  :gpml.handler.favorite/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.favorite/post {:db #ig/ref :duct.database/sql}
+  :gpml.handler.favorite/post-params {}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}

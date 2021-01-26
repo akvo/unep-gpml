@@ -1,8 +1,8 @@
-(ns gpml.handler.portfolio
+(ns gpml.handler.favorite
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.set :as set]
             [clojure.string :as string]
-            [gpml.db.portfolio :as db.portfolio]
+            [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
@@ -32,9 +32,9 @@
   [db email]
   (:id (db.stakeholder/approved-stakeholder-by-email db {:email email})))
 
-(defn get-portfolio
+(defn get-favorites
   [db id]
-  (let [data (db.portfolio/relation-by-stakeholder db {:stakeholder id})]
+  (let [data (db.favorite/association-by-stakeholder db {:stakeholder id})]
     (reduce (fn [acc [[topic_id topic] v]]
               (conj acc {:topic_id topic_id
                          :topic topic
@@ -45,7 +45,7 @@
 (defmethod ig/init-key ::get [_ {:keys [db]}]
   (fn [{{:keys [email]} :jwt-claims}]
     (if-let [stakeholder (get-stakeholder-id (:spec db) email)]
-      (resp/response (get-portfolio (:spec db) stakeholder))
+      (resp/response (get-favorites (:spec db) stakeholder))
       (resp/bad-request {:message (format "User with email %s does not exist" email)}))))
 
 (defn expand-associations
@@ -61,7 +61,7 @@
       (jdbc/with-db-transaction [conn (:spec db)]
         (doseq [item body-params]
           (doseq [association (expand-associations item)]
-            (db.portfolio/new-association conn (merge
+            (db.favorite/new-association conn (merge
                                                 {:stakeholder stakeholder
                                                  :remarks nil}
                                                 association))))

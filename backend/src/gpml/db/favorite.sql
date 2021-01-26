@@ -8,6 +8,6 @@ DO UPDATE SET modified = now(), remarks = EXCLUDED.remarks
 --~ (format "AND sp.%1$s = EXCLUDED.%1$s" (:topic params))
       AND sp.association = EXCLUDED.association
 
--- :name relation-by-stakeholder :? :*
--- :doc Get all relations for a given stakeholder
+-- :name association-by-stakeholder :? :*
+-- :doc Get all associations for a given stakeholder
 SELECT * FROM v_stakeholder_association WHERE stakeholder = :stakeholder
