@@ -10,12 +10,12 @@ import AddEvent from './modules/events/view'
 import logo from './images/GPML-dp.svg'
 import SignupModal from './modules/signup/signup-modal'
 import api from './utils/api';
+import ProfileView from './modules/profile/view';
 
 
 const Root = () => {
     const {
       isAuthenticated,
-      isLoading,
       getIdTokenClaims,
       loginWithPopup,
       logout,
@@ -41,8 +41,7 @@ const Root = () => {
             }
         }
       })();
-    }, [getIdTokenClaims, isAuthenticated, profile]);
-
+    }, [getIdTokenClaims, isAuthenticated]);
     return (
     <Router>
       <div id="root">
@@ -83,6 +82,7 @@ const Root = () => {
         <Route path="/" exact component={Landing} />
         <Route path="/browse" component={Browse} />
         <Route path="/add-event" component={AddEvent} />
+        <Route path="/profile" render={props => <ProfileView profile={profile} />} />
       </div>
       <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} />
     </Router>

@@ -43,12 +43,11 @@ const formSchema = [
   }
 ]
 
-const SignupForm = ({ onSubmit, formRef }) => {
+const SignupForm = ({ onSubmit, formRef, initialValues }) => {
   const [noOrg, setNoOrg] = useState(false)
-
   const form = createForm({
     subscription: {},
-    initialValues: { title: null },
+    initialValues,
     onSubmit, validate: validateSchema(formSchema.reduce((acc, val) => ({ ...acc, ...val }), {})) // combined formSchema sections
   })
 
