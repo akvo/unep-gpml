@@ -2,6 +2,7 @@
  :duct.database.sql/hikaricp {:idle-timeout 10000
                               :minimum-idle 0
                               :maximum-pool-size 1}
- :duct.migrator/ragtime {:database #ig/ref :gpml.test/db}
+ :duct.migrator/ragtime {:database #ig/ref :gpml.test/db
+                         :strategy :raise-error}
  :gpml.test/db {:connection-uri "jdbc:postgresql://db/gpml_test?user=unep&password=password"}
 }
