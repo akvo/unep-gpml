@@ -87,7 +87,7 @@
 
 (defmethod ig/init-key :gpml.handler.profile/post-params [_ _]
   [:map
-   [:title string?]
+   [:title {:optional true} string?]
    [:first_name string?]
    [:last_name string?]
    [:linked_in {:optional true} string?]
