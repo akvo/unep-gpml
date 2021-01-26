@@ -1,5 +1,6 @@
 (ns gpml.handler.portfolio
   (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
             [gpml.db.portfolio :as db.portfolio]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
@@ -12,14 +13,15 @@
    :project #{"owner" "implementor" "reviewer" "user" "interested in" "other"}
    :policy #{"regulator" "implementor" "reviewer" "interested in" "other"}})
 
-;; FIXME: smarter check. We can check the type of association based in the `:topic` value
-;; https://github.com/metosin/malli#fn-schemas
 (def post-params
   [:vector
-   [:map
-    [:topic [:enum "event" "technology" "policy" "resource" "project"]]
-    [:topic_id int?]
-    [:association [:vector (into [:enum] (reduce (fn [s [_ v]] (apply conj s v)) #{} associations))]]]])
+   [:and
+    [:map
+     [:topic [:enum "event" "technology" "policy" "resource" "project"]]
+     [:topic_id int?]
+     [:association [:vector (into [:enum] (reduce (fn [s [_ v]] (apply conj s v)) #{} associations))]]]
+    [:fn (fn [{:keys [topic association]}]
+           (set/superset? ((keyword topic) associations) association))]]])
 
 (defn- get-stakeholder-id
   [db email]

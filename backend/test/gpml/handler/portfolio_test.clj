@@ -17,6 +17,7 @@
         true [{:topic "technology" :topic_id 1 :association ["user"]}]
         true [{:topic "technology" :topic_id 1 :association ["user"]}
               {:topic "event" :topic_id 1 :association ["organiser" "participant"]}]
+        false [{:topic "technology" :topic_id 1 :association ["sponsor"]}]
         false [{}]
         false [{:topic "technology"}]
         false [{:topic "technology" :topic_id 1}]
