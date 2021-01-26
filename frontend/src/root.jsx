@@ -90,14 +90,14 @@ const Root = () => {
 }
 
 const Search = withRouter(({ history }) => {
-  const [src, setSrc] = useState('')
-  const handleSrcKeyDown = (e) => {
-    if(e.keyCode === 13 && src.length > 0){
+  const handlerPressEnter = (e) => {
+    const src = e.target.value;
+    if (src?.trim().length > 0) {
       history.push(`/browse/?q=${src}`)
     }
   }
 
-  return <Input value={src} onChange={ev => setSrc(ev.target.value)} onKeyDown={handleSrcKeyDown} className="src" placeholder="Search for topics" suffix={<SearchOutlined />} size="large" />
+  return <Input onPressEnter={handlerPressEnter} className="src" placeholder="Search for topics" suffix={<SearchOutlined />} size="large" />
 })
 
 const AddButton = ({ isAuthenticated, setSignupModalVisible }) => {
