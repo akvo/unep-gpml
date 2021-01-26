@@ -47,7 +47,7 @@ const Browse = ({ history }) => {
   useEffect(() => {
     if(isAuthenticated){
       setTimeout(() => {
-        api.get('/portfolio')
+        api.get('/favorite')
         .then((resp) => {
           setRelations(resp.data)
         })
@@ -70,7 +70,7 @@ const Browse = ({ history }) => {
     else {
       setRelations([...relations, relation])
     }
-    api.post('/portfolio', [relation])
+    api.post('/favorite', [relation])
   }
   return (
     <div id="browse">
