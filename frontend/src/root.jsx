@@ -18,7 +18,8 @@ const Root = () => {
       isLoading,
       getIdTokenClaims,
       loginWithPopup,
-      logout
+      logout,
+      user
     } = useAuth0();
     const [profile, setProfile] = useState(null);
     const [signupModalVisible, setSignupModalVisible] = useState(false)
@@ -31,10 +32,13 @@ const Root = () => {
         } else {
           api.setToken(null)
         }
-        if (isAuthenticated && !profile) {
+        if (isAuthenticated) {
             const resp = await api.get('/profile')
-            setProfile(resp.data);
-            setSignupModalVisible(Object.keys(resp.data).length === 0);
+            if (Object.keys(resp.data).length === 0){
+              setSignupModalVisible(Object.keys(resp.data).length === 0);
+            } else {
+              setProfile(resp.data);
+            }
         }
       })();
     }, [getIdTokenClaims, isAuthenticated, profile]);
@@ -55,7 +59,8 @@ const Root = () => {
                     </div>
                     :
                     <div className="rightside">
-                        <Button type="link" onClick={logout}>Logout</Button>
+                      <Link to="/profile">{profile ? profile.firstName : user.nickname}</Link>
+                      <Button type="link" onClick={logout}>Logout</Button>
                     </div>
                 }
           </div>
@@ -71,18 +76,13 @@ const Root = () => {
             </Switch>
             <nav>
               <Link to="/browse">Find and Connect</Link>
-              <AddButton {...{ setSignupModalVisible, isAuthenticated}} />
+              <AddButton {...{ setSignupModalVisible, isAuthenticated, loginWithPopup}} />
             </nav>
           </div>
         </header>
-          {isLoading
-              ? "" : (
-              <>
-                  <Route path="/" exact component={Landing} />
-                  <Route path="/browse" component={Browse} />
-                  <Route path="/add-event" component={AddEvent} />
-              </>
-          )}
+        <Route path="/" exact component={Landing} />
+        <Route path="/browse" component={Browse} />
+        <Route path="/add-event" component={AddEvent} />
       </div>
       <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} />
     </Router>
@@ -100,11 +100,11 @@ const Search = withRouter(({ history }) => {
   return <Input onPressEnter={handlerPressEnter} className="src" placeholder="Search for topics" suffix={<SearchOutlined />} size="large" />
 })
 
-const AddButton = ({ isAuthenticated, setSignupModalVisible }) => {
+const AddButton = ({ isAuthenticated, setSignupModalVisible, loginWithPopup }) => {
   if(isAuthenticated){
     return <Link to="/add-event"><Button type="primary" size="large">+ Add Event</Button></Link>
   }
-  return <Button type="primary" size="large" onClick={() => setSignupModalVisible(true)}>+ Add Event</Button>
+  return <Button type="primary" size="large" onClick={loginWithPopup}>+ Add Event</Button>
 }
 
 export default Root
