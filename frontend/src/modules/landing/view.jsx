@@ -8,6 +8,7 @@ import api from '../../utils/api';
 
 const Landing = ({ history }) => {
     const [country, setCountry] = useState(null);
+    const [countries, setCountries] = useState(null);
     const [data, setData] = useState(null)
 
     const clickEvents = ({name, data}) => {
@@ -20,9 +21,11 @@ const Landing = ({ history }) => {
     const toolTip = (params) => {
         const summary = data?.map.find(it => it.isoCode === params.name)
         if(summary){
+          const countryInfo = countries?.find(it => it.isoCode === summary.isoCode)
+          const countryName = countryInfo?.name || summary.isoCode
           return `
             <div class="map-tooltip">
-              <h3>${summary.name}</h3>
+              <h3>${countryName}</h3>
               <ul>
               ${topicTypes.map(topic => `<li><span>${topic}</span><b>${summary[topic]}</b></li>`).join('')}
               </ul>
@@ -37,8 +40,14 @@ const Landing = ({ history }) => {
       .then((resp) => {
         setData(resp.data)
       })
+
+      api.get('/country')
+      .then((resp) => {
+        setCountries(resp.data)
+      })
+
     }, [])
-    
+
     const handleChangeCountry = (isoCode) => {
       setCountry(isoCode)
     }

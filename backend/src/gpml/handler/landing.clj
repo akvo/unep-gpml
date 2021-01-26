@@ -2,16 +2,7 @@
   (:require [integrant.core :as ig]
             [ring.util.response :as resp]
             [gpml.db.browse :as db.browse]
-            [gpml.db.country :as db.country]
             [gpml.db.landing :as db.landing]))
-
-(defn map-counts-with-country-names [conn]
-  (let [countries (db.country/all-countries conn)
-        names (->> countries
-                   (map #(assoc {} (:iso_code %) (:name %)))
-                   (apply merge))
-        counts (db.landing/map-counts-grouped conn)]
-    (map #(merge {:name (names (:iso_code %))} %) counts)))
 
 (defn landing-response [conn]
   (let [topics '("project" "event" "policy" "resource" "technology")
@@ -30,17 +21,10 @@
                          flatten
                          (map #(merge (:json %) {:topic_type (:topic %)})))]
     (resp/response {:topics topics-data
-                    :map (map-counts-with-country-names conn)
+                    :map (db.landing/map-counts-grouped conn)
                     :summary summary-data})))
 
 (defmethod ig/init-key :gpml.handler.landing/get [_ {:keys [db]}]
   (fn [_]
     (let [conn (:spec db)]
       (landing-response conn))))
-
-(comment
-  (require 'dev)
-  (let [db (dev/db-conn)]
-    (map-counts-with-country-names db))
-  (rand-int 10)
-  )
