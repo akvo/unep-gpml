@@ -1,6 +1,7 @@
 (ns gpml.handler.portfolio
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.set :as set]
+            [clojure.string :as string]
             [gpml.db.portfolio :as db.portfolio]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
@@ -19,9 +20,13 @@
     [:map
      [:topic [:enum "event" "technology" "policy" "resource" "project"]]
      [:topic_id int?]
-     [:association [:vector (into [:enum] (reduce (fn [s [_ v]] (apply conj s v)) #{} associations))]]]
-    [:fn (fn [{:keys [topic association]}]
-           (set/superset? ((keyword topic) associations) association))]]])
+     [:association [:vector string?]]]
+    [:fn {:error/fn (fn [{{:keys [topic]} :value} _]
+                      (let [topic-associations ((keyword topic) associations)
+                            associations-text (string/join ", " topic-associations)]
+                        (format "%s only supports '%s' associations" topic associations-text)))}
+     (fn [{:keys [topic association]}]
+       (set/superset? ((keyword topic) associations) association))]]])
 
 (defn- get-stakeholder-id
   [db email]
