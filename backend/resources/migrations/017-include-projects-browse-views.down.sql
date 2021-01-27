@@ -1,0 +1,23 @@
+ALTER TABLE project DROP COLUMN title CASCADE;
+ALTER TABLE project DROP COLUMN geo_coverage_type CASCADE;
+ALTER TABLE project DROP COLUMN summary CASCADE;
+--;;
+
+DROP TABLE IF EXISTS project_tag CASCADE;
+--;;
+
+DROP VIEW IF EXISTS v_project_geo CASCADE;
+DROP VIEW IF EXISTS v_project_data CASCADE;
+DROP VIEW IF EXISTS v_project_search_text CASCADE;
+DROP VIEW IF EXISTS v_project CASCADE;
+--;;
+
+CREATE OR REPLACE VIEW v_topic AS
+SELECT * FROM v_event
+UNION ALL
+SELECT * FROM v_policy
+UNION ALL
+SELECT * FROM v_resource
+UNION ALL
+SELECT * FROM v_technology;
+--;;

@@ -43,11 +43,10 @@ const formSchema = [
   }
 ]
 
-const SignupForm = ({ onSubmit, formRef, initialValues }) => {
+const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef }) => {
   const [noOrg, setNoOrg] = useState(false)
   const form = createForm({
     subscription: {},
-    initialValues,
     onSubmit, validate: validateSchema(formSchema.reduce((acc, val) => ({ ...acc, ...val }), {})) // combined formSchema sections
   })
 
@@ -55,9 +54,11 @@ const SignupForm = ({ onSubmit, formRef, initialValues }) => {
   return (
     <Form layout="vertical">
       <FinalForm
+        initialValues={initialValues}
         form={form}
         render={
-          () => {
+          ({ handleSubmit }) => {
+            if(handleSubmitRef) handleSubmitRef(handleSubmit)
             return (
               <div>
                 <div className="section">

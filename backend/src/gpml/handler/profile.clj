@@ -47,12 +47,13 @@
                  :affiliation (:id (assoc-organisation conn org))}]
     (db.stakeholder/new-stakeholder conn profile)))
 
-(defn remap-profile [{:keys [photo about
-                             title first_name
+(defn remap-profile [{:keys [id photo about approved_at
+                             title first_name role
                              last_name linked_in
                              twitter representation
                              country org_name org_url]}]
-  {:title title
+  {:id id
+   :title title
    :first_name first_name
    :last_name last_name
    :linked_in linked_in
@@ -62,7 +63,9 @@
    :representation representation
    :org {:name org_name
          :url org_url}
-   :about about})
+   :about about
+   :role role
+   :approved_at approved_at})
 
 (defmethod ig/init-key :gpml.handler.profile/get [_ {:keys [db]}]
   (fn [{:keys [jwt-claims]}]

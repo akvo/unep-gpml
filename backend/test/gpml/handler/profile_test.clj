@@ -1,10 +1,10 @@
 (ns gpml.handler.profile-test
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
+            [gpml.db.country :as db.country]
+            [gpml.db.organisation :as db.organisation]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
             [gpml.handler.profile :as profile]
-            [gpml.db.country :as db.country]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.organisation :as db.organisation]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
@@ -50,26 +50,30 @@
           _ (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
           ;; John trying to sign up with new organisation
           resp (handler (-> (mock/request :post "/")
-                        (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
-                        (assoc :body-params
-                               (assoc (new-profile "IND" nil)
-                                      :org {:name "Akvo" :url "https://www.akvo.org"}
-                                      :photo picture))))]
+                            (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
+                            (assoc :body-params
+                                   (assoc (new-profile "IND" nil)
+                                          :org {:name "Akvo" :url "https://www.akvo.org"}
+                                          :photo picture))))]
       (is (= 201 (:status resp)))
       (is (= "John" (->(:body resp) :first_name)))
       (is (= "Doe" (->(:body resp) :last_name)))
-      #_(is (= {:country "IND"
+      (is (= {:id 1
+              :about "Lorem Ipsum"
+              :country "IND"
               :first_name "John"
               :last_name "Doe"
-              :email "john@org"
-              :picture "/image/profile/1"
-              :twitter "johndoe"
               :linked_in "johndoe"
-              :org_name "Akvo"
-              :org_url "https://www.akvo.org"
+              :org {:name "Akvo"
+                    :url "https://www.akvo.org"}
+              :photo "/image/profile/1"
               :representation "test"
-              } (:body resp))) ;; TODO ACTIVATE ONCE WE REVERT THE AUTO APPROVAL :approved_at nil
-      (is ('clojure.string/includes? "/image/profile" (->(:body resp) :photo))))))
+              :approved_at nil
+              :title "Mr."
+              :role "USER"
+              :twitter "johndoe"}
+             (:body resp)))
+      (is (= "/image/profile/1" (-> resp :body :photo))))))
 
 (deftest handler-get-test-has-profile
   (testing "Profile endpoint returns non empty response"
@@ -85,12 +89,12 @@
           _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
           ;; dashboard check if this guy has profile
           resp (handler (-> (mock/request :get "/")
-                        (assoc :jwt-claims {:email "john@org"})))]
+                            (assoc :jwt-claims {:email "john@org"})))]
       (is (= 200 (:status resp)))
       (is (= "John" (-> (:body resp) :first_name)))
       (is (= "Doe" (-> (:body resp) :last_name)))
-      (is (= "Akvo" (-> (:body resp) :org)))
-      (is (= (:id (first country)) (-> (:body resp) :country))))))
+      (is (= {:name "Akvo" :url "https://akvo.org"} (-> (:body resp) :org)))
+      (is (= "IND" (-> (:body resp) :country))))))
 
 (deftest handler-get-test-no-profile
   (testing "Profile endpoint returns empty response"
@@ -98,7 +102,7 @@
           handler (::profile/get system)
           ;; dashboard check if this guy has profile
           resp (handler (-> (mock/request :get "/")
-                        (assoc :jwt-claims {:email "john@org"})))]
+                            (assoc :jwt-claims {:email "john@org"})))]
       (is (= 200 (:status resp)))
       (is (empty (:body resp))))))
 
@@ -123,10 +127,9 @@
           _ (db.stakeholder/new-stakeholder db  (assoc user :email "nick@org" :first_name "Nick"))
           ;; Jane trying to see the list of pending user in this case John and Nick
           resp (handler (-> (mock/request :get "/")
-                        (assoc :jwt-claims {:email "jane@org"})))]
+                            (assoc :jwt-claims {:email "jane@org"})))]
       (is (= 200 (:status resp)))
-      #_(is (= 3 (count (into [] (-> resp :body))))) ;; TODO REVERT ONCE AUTO APPROVE REMOVED
-      )))
+      (is (= 3 (count (into [] (-> resp :body))))))))
 
 (deftest handler-approval-test
   (testing "Profile is approved by admin"
@@ -174,6 +177,6 @@
       (is (= "Unauthorized" (-> resp :body :message))))))
 
 (comment
-    #_(def dbtest (dev/db-conn))
-    #_(db.stakeholder/update-stakeholder-role dbtest {:id 1 :role "ADMIN"})
+  #_(def dbtest (dev/db-conn))
+  #_(db.stakeholder/update-stakeholder-role dbtest {:id 1 :role "ADMIN"})
   ,)

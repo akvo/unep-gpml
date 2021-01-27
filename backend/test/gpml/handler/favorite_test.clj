@@ -25,21 +25,22 @@
         false [{:topic "random" :topic_id 1 :association ["creator"]}]))))
 
 (defn- new-stakeholder [db email]
-  (db.stakeholder/new-stakeholder db
-                                  {:picture "https://picsum.photos/200"
-                                   :title "Mr."
-                                   :first_name "First name"
-                                   :last_name "Last name"
-                                   :affiliation nil
-                                   :email email
-                                   :linked_in nil
-                                   :twitter nil
-                                   :url nil
-                                   :country 58
-                                   :representation "test"
-                                   :about "Lorem Ipsum"
-                                   :geo_coverage_type nil
-                                   :role "USER"}))
+  (let [sth (db.stakeholder/new-stakeholder db
+                                            {:picture "https://picsum.photos/200"
+                                             :title "Mr."
+                                             :first_name "First name"
+                                             :last_name "Last name"
+                                             :affiliation nil
+                                             :email email
+                                             :linked_in nil
+                                             :twitter nil
+                                             :url nil
+                                             :country 58
+                                             :representation "test"
+                                             :about "Lorem Ipsum"
+                                             :geo_coverage_type nil
+                                             :role "USER"})]
+    (db.stakeholder/approve-stakeholder db {:id (-> sth first :id)})))
 
 (defn- mock-post [email]
   (-> (mock/request :post "/")
