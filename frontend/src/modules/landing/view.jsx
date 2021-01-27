@@ -70,6 +70,8 @@ const Landing = ({ history }) => {
       }
     }
 
+    const selected = data ? data.map.find(x => x.isoCode === country) : false;
+
     return (
       <div id="landing">
         {data &&
@@ -84,7 +86,7 @@ const Landing = ({ history }) => {
             value={country}
             onChange={handleChangeCountry}
           />
-          <Summary clickEvents={handleSummaryClick} summary={data.summary} country={countryObj} counts={counts} />
+          <Summary clickEvents={handleSummaryClick} summary={data.summary} country={countryObj} counts={counts} selected={selected}/>
         </div>
         }
         <Maps
@@ -101,10 +103,10 @@ const Landing = ({ history }) => {
     )
 }
 
-const Summary = ({ clickEvents, summary, country, counts }) => {
+const Summary = ({ clickEvents, summary, country, counts, selected }) => {
   return (
     <div className="summary">
-      <header>{!country ? 'Global summary' : 'Summary' }</header>
+      <header>{!selected ? 'Global summary' : 'Summary' }</header>
       <ul>
         {!country && summary.map((it, index) =>
           <li key={`li-${index}`} onClick={e => clickEvents(Object.keys(it)[0])}>
@@ -117,9 +119,11 @@ const Summary = ({ clickEvents, summary, country, counts }) => {
           </li>
         )}
         {country && topicTypes.map(type =>
-        <li key={type} className="for-country">
-          <b>{country[type]}</b>
-          <div className="label">{type}</div>
+        <li key={type}>
+          <div className="text">
+            <div className="label">{type}</div>
+          </div>
+          <b>{selected?.[type] || 0}</b>
         </li>
         )}
       </ul>
