@@ -46,4 +46,7 @@ SELECT
     (SELECT COUNT(*) FROM policy_countries) AS policy_countries,
     (SELECT COUNT(*) FROM policy) AS policy,
     (SELECT COUNT(*) FROM technology_countries) AS technology_countries,
-    (SELECT COUNT(*) FROM technology) AS technology
+    (SELECT COUNT(*) FROM technology) AS technology,
+    -- NOTE: projects only have countries, no country groups
+    (SELECT COUNT(DISTINCT country) FROM project_country) AS project_countries,
+    (SELECT COUNT(*) FROM project) AS project

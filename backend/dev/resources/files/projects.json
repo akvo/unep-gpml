@@ -108,7 +108,10 @@
     "countries": [
       "India",
       "Thailand"
-    ]
+    ],
+    "title": "Closing the Loop Regional Policy Guide and City Case Studies o Reducing the Environmental Impact of Cities in Terms of Marine Litter",
+    "summary": "Arising from the increasing concern about plastic waste contaminating the natural environment in Asia and the Pacific, ESCAP brings together city actors to highlight associated opportunities for fostering a more inclusive, circular waste management system to address plastic waste pollution. In partnership with cities, the private sector, informal waste worker cooperatives and regional thought leaders, ESCAP encourages more sustainable consumption practices to return plastic resources to the production cycle; reduce plastic waste leakage into the environment and the oceans; and helps contribute to the achievement of the Sustainable Development Goals. ESCAP provides a vital role in supporting capacity building initiatives with local and national governments to promote more circular waste economies.     The project developed and applied an assessment of plastic waste value chains to identify where different actors’ contributions intersect and several potential leakages of plastic waste that contribute to marine litter debris in partnership with waste cooperatives and local governments as well as the Stockholm Environment Institute, Asia Centre. A longer term Phase II of the project is currently being designed.   ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 2,
@@ -139,7 +142,10 @@
     ],
     "countries": [
       "Pakistan"
-    ]
+    ],
+    "title": "Pakistan (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 3,
@@ -228,7 +234,10 @@
     ],
     "countries": [
       "Trinidad and Tobago"
-    ]
+    ],
+    "title": "National Recyclable Solid Waste Collection Project (iCARE project)",
+    "summary": "The National Recyclable Solid Waste Collection Project known as the iCARE project is another initiative of the Government of the Republic of Trinidad and Tobago which is being implemented by the EMA (Environmental Management Authority) that is aimed at encouraging the recycling of waste by establishing infrastructure, namely pilot depots and collection sites across Trinidad to connect communities to recycling facilities.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 4,
@@ -259,7 +268,10 @@
     ],
     "countries": [
       "Sudan"
-    ]
+    ],
+    "title": "Sudan (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 5,
@@ -290,7 +302,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Aquário de Ubatuba – cidade de Ubatuba –SP (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 6,
@@ -321,7 +336,10 @@
     ],
     "countries": [
       "China"
-    ]
+    ],
+    "title": "China (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 7,
@@ -352,7 +370,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "United States of America (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 8,
@@ -383,7 +404,10 @@
     ],
     "countries": [
       "Guyana"
-    ]
+    ],
+    "title": "Guyana (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 9,
@@ -490,7 +514,10 @@
         "value": "2020-07-28 20:49:17 UTC"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "Diploma in Waste and Solid Waste Management",
+    "summary": "Training alternative, providing scientific,  theoretical and methodological tools that  promote training for environmental problems  associated with improper management of  solid waste",
+    "geo_coverage_type": null
   },
   {
     "id": 10,
@@ -650,7 +677,10 @@
     ],
     "countries": [
       "Samoa"
-    ]
+    ],
+    "title": "Greening of the Pacific Games Samoa 2019",
+    "summary": "Assistance was provided to the SPREP region with UNEP funding support along with other partners such as the Government of Australia, Government of New Zealand, Government of France, and United Kingdom, to assist in the implementation of the Pacific Regional Marine Litter Action 2018-2025 that was developed through UNEP and the Regional Seas funding support. The financial support from these partners was specifically provided to Green the XVI Pacific Games in partnership with the Samoan Government, the Pacific Games Office as well as from other donor partners such as Pure Pacific Water, Samoa Pure Water, Zero Bags, Voices of Athletes, and Swire Shipping. The Greening of the Games was implemented through a Greening of the Games Committee that executed the Greening of the Games Strategy delivering on these seven initiatives: a) Improved waste management for the games facility; b) Engagement with villages in waste management measures; c) Engagement with Samoa schools in waste management measures; d) Development of awareness and media resources on marine litter, plastics pollution and effective waste management; e) Legacy of Greening the Games through sporting champions; f) Reducing single-use plastic drinking bottles through dispensing water stations;  and g) Supporting sustainable green alternatives.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 11,
@@ -721,7 +751,10 @@
       "Philippines",
       "Thailand",
       "Viet Nam"
-    ]
+    ],
+    "title": "Systems Based Approach to Plastics Management",
+    "summary": "This project is to identify the leverage points through a system thinking approach, implement the identified solutions and share the lessons-learnt with other countries to achieve the sustainable plastic use and reduced leakage of plastic to the environment. It will also allow UNDP to work on the multiple solutions potentially around Innovation, Governance Action, Data/Monitoring/Accountability/Behavioral Influencing, and Co-creation.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 12,
@@ -801,7 +834,10 @@
     ],
     "countries": [
       "Libya"
-    ]
+    ],
+    "title": "Beach Cleaning Campaign, Libya",
+    "summary": "Beach in Tripoli next to the UN Compound was cleaned. ",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 13,
@@ -902,9 +938,10 @@
         "value": "2020-04-23 13:29:27 UTC"
       }
     ],
-    "countries": [
-      "All"
-    ]
+    "countries": [],
+    "title": "Global Tourism Plastics Initiative",
+    "summary": "The Global Tourism Plastics Initiative unites the tourism sector behind a common vision to address the root causes of plastic pollution. It enables businesses, governments, and other tourism stakeholders to take concerted action, leading by example in the shift towards circularity in the use of plastics.  https://www.oneplanetnetwork.org/sustainable-tourism/global-tourism-plastics-initiative",
+    "geo_coverage_type": "global"
   },
   {
     "id": 14,
@@ -935,7 +972,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "Ocean Conservancy, Washington, DC, USA. (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 15,
@@ -1033,7 +1073,10 @@
     ],
     "countries": [
       "Norway"
-    ]
+    ],
+    "title": "Coastal Cleanup Week",
+    "summary": "Norway's annual Coastal Cleanup Week started as a national clean-up day in 2011 and has gradually developed into a week-long activity. The aim is to remove litter from the environment, raise awareness and collect data through citizen science. Volunteer clean-ups are very popular in Norway, and over 110 000 volunteers took part in cleanup actions in 2019 either during the Coastal Cleanup Week, during Before the Birds Return, as part of KNB's Keep the Autumn Beautiful or in other local or regional activities. Volunteers are encouraged to clean up litter both along the coast and along rivers and lakes. The data registered by the volunteers is Norway's main source of data on marine litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 16,
@@ -1108,7 +1151,10 @@
     ],
     "countries": [
       "Armenia"
-    ]
+    ],
+    "title": "My Step Charitable Foundation",
+    "summary": "The  project offers behavioral change initiatives through awareness-raising campaigns, reward mechanisms and behavioral experiments aiming to replace single-use plastic bags with reusable ones. In addition, it aims to contribute to the overall objective of developing a policy framework and educating conscious citizens who are well aware of plastic pollution consequences and are motivated to act adequately. During the project, 6000 consumers of Tsiran Supermarket (official project partner) will be provided with material tote bags and offered different incentives such as cash bonuses on their loyalty cards and/or special gifts if they replace single-use plastic bags with material ones. For this, the Supermarket has allocated a budget of around $15,000 for the duration of the experiment and expressed readiness to increase it for further phases of the project.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 17,
@@ -1209,7 +1255,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Atendimento ao Público em Sala Temática de Educação Ambiental da Unidade de Estabilização de Animais Marinhos da Univali",
+    "summary": "Atendimento ao público durante a temporada de Verão na sala temática da Unidade de Estabilização de Animais Marinhos da Univali, em Penha (SC). São abordados temas como poluição marinha e os impactos na biodiversidade.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 18,
@@ -1240,7 +1289,10 @@
     ],
     "countries": [
       "Australia"
-    ]
+    ],
+    "title": "Australia (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 19,
@@ -1313,7 +1365,10 @@
     "countries": [
       "Fiji",
       "Vanuatu"
-    ]
+    ],
+    "title": "SDG 14 Accelerator ",
+    "summary": "ESCAP organized a workshop in Fiji in 2018, to apply the SDG14 accelerator methodology in 2018. Also, a Policy brief was developed. The methodology was also presented in a session in the Marine Regions Forum in Berlin (October 2019).    ESCAP is also working with Member States to have a stronger presence of the Asia-Pacific region in the UN Ocean Conference, with a particular focus on policies to tackle plastic pollution in the ocean. Accordingly, ESCAP provided inputs for the Secretary-General’s background note and will be participating in the preparatory meeting in early February 2020.  ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 20,
@@ -1421,7 +1476,10 @@
     ],
     "countries": [
       "Ecuador"
-    ]
+    ],
+    "title": "Limpieza Costera en Galápagos",
+    "summary": "Se realizan viajes en diferentes embarcaciones alrededor de las islas Galápagos, llegando a sitios no turísticos, en los cuales se ha evidenciado la basura plástica marina, se recolecta y clasifica de acuerdo a su tipo y procedencia. Además de realizar actividades y monitoreos con microplásticos.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 21,
@@ -1510,7 +1568,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Microplastic at an Atlantic Amazon Sandy Beach",
+    "summary": "• This is the first estimate of microplastics (MPs) densities at a beach for the whole Amazon coast.    • Fibers were dominant MPs on a relatively preserved coastal sandy beach.    • MPs were widespread at both horizontal and vertical scales at the whole beach.    • MPs density was low, and distribution was similar to preserved beaches at Brazilian southeastern coast.    • MPs availability may lead to its consumption by many economic and locally explored invertebrates and fisheries.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 22,
@@ -1541,7 +1602,10 @@
     ],
     "countries": [
       "Cameroon"
-    ]
+    ],
+    "title": "Cameroon and ICENECDEV(International Centre for Environmental Education and Community Development) (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 23,
@@ -1620,7 +1684,10 @@
       "Albania",
       "Italy",
       "Montenegro"
-    ]
+    ],
+    "title": "WELCOME project",
+    "summary": "Marine litter Adriatic, beach litter",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 24,
@@ -1703,7 +1770,10 @@
     ],
     "countries": [
       "Mexico"
-    ]
+    ],
+    "title": "Assessment of Plastic Bag Ban in Mexico City",
+    "summary": "Characterization and quantification of plastics bags in urban solid waste, before and after the plastic bag ban",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 25,
@@ -1787,7 +1857,10 @@
     ],
     "countries": [
       "Antigua and Barbuda"
-    ]
+    ],
+    "title": "Adopt a Coastline",
+    "summary": "Project is set up to receive sustainable financing from the sales of recycled plastics made into clothes bins, waste and trash bins and also from the creation of waste items found in the beach waste. These are seen as bespoke items in great demand by high end visitors to the island. The items are sold in markets in the yachting areas.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 26,
@@ -1876,9 +1949,10 @@
         "value": "2020-02-11 08:47:15 UTC"
       }
     ],
-    "countries": [
-      "All"
-    ]
+    "countries": [],
+    "title": "GESAMP Working Group 40 WG 40: Plastics and micro-plastic in the Ocean",
+    "summary": "Phase 3 Terms of Reference:    To develop guidelines covering the terminology and methodologies for the sampling and analysis of marine macro-plastics and microplastics, including:    i) size and shape definitions of particles;    ii) sampling protocols for the whole spectrum of particle/object sizes in surface and sub-surface seawater, seabed sediments, shorelines and biota;    iii) methodologies for physical and chemical identification and analysis of polymers and associated chemicals;    iv) requirements for monitoring and assessment.    2. To assess the occurrence and effects of nano-sized plastics on marine organisms, and make research and policy-relevant recommendations.    3. To assess the significance of plastics and microplastics as a vector for indigenous and non-indigenous organisms, and make research and policy-relevant recommendations.",
+    "geo_coverage_type": "global"
   },
   {
     "id": 27,
@@ -1993,7 +2067,10 @@
     ],
     "countries": [
       "Canada"
-    ]
+    ],
+    "title": "Beach Clean-ups; Teaching 3 Rs; raising awareness and personal action of learners and teachers about the sea",
+    "summary": "Beach clean-up and recycling as individual, with company crew (Bluewater Adventures) and with school groups. ",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 28,
@@ -2024,7 +2101,10 @@
     ],
     "countries": [
       "New Zealand"
-    ]
+    ],
+    "title": "Cook Islands -  Hakono Hararanga Incorporated (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 29,
@@ -2139,7 +2219,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Comic Book: \"Mariana e a Batalha Contra os SuperMacabros: A ameaça do lixo nos mares\"(pt)/ \"Mariana and the Battle Against the Ghost Storm: The threat posed by marine debris\" (en) ",
+    "summary": "Comic book; marine pollution; marine debris; awareness raising; behaviour change;  education/training; beach and environmental clean-ups; building capacity strategies",
+    "geo_coverage_type": "national"
   },
   {
     "id": 30,
@@ -2225,7 +2308,10 @@
     ],
     "countries": [
       "Kiribati"
-    ]
+    ],
+    "title": "Plastic Banning",
+    "summary": "Plastic banning targeting (3 items, plastic shopping bag, ice bag plastic & non bio-degradable nappies) under Customs Act 2019",
+    "geo_coverage_type": "national"
   },
   {
     "id": 31,
@@ -2324,7 +2410,10 @@
     ],
     "countries": [
       "Croatia"
-    ]
+    ],
+    "title": "Fishing for Litter",
+    "summary": "Fisheries is a sector that can make a significant contribution to solving the problem of marine litter, by participating in its removal through the \"Fishing for Litter\" (FfL) initiative. This practice relates to the collection of litter from the sea that are caught in the nets during fishing, and its disposal on the shore in communal containers where it is handled within the existing waste management system without reimbursement for fishermen. This report presents the experiences and achievements of the EU ML-REPAIR project in Croatia that could be used to further develop the litter accumulated on sea bottom disposal initiative in the Croatian part of the Adriatic. One of the project goals is to design new strategies to reduce the marine litter quantities in the Adriatic Sea. Project activities were conceived through the cross-border cooperation of partners from the INTEREG ITA-CRO, dealing with the problem of marine litter removing by involving the fisheries sector. These initiatives on the Croatian side of the Adriatic Sea are managed and coordinated by the Institute for Oceanography and Fisheries (IZOR) from Split, one of the partners in the project. The initiative was a reflection of the operational methods of pilot-programs implemented in Western European countries (the Netherlands, Denmark, Sweden and the United Kingdom) based on the experiences of KIMO Networks participating in such programs, such as Fishing-for-Litter Scotland.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 32,
@@ -2432,7 +2521,10 @@
       "Poland",
       "Russian Federation",
       "Sweden"
-    ]
+    ],
+    "title": "Analysis of Sufficiency of Measures on Marine Litter in the Update of the HELCOM Baltic Sea Action Plan",
+    "summary": "Conduction of an analysis of sufficiency of measures to reach HELCOM goals and objectives on marine litter ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 33,
@@ -2534,7 +2626,10 @@
     ],
     "countries": [
       "New Zealand"
-    ]
+    ],
+    "title": "Remix Plastic Project - education program",
+    "summary": "Educate individuals and businesses on waste reduction and circular economy.   Keywords: Workshops, consulting, education resources",
+    "geo_coverage_type": "national"
   },
   {
     "id": 34,
@@ -2644,7 +2739,10 @@
       "Mauritius",
       "Philippines",
       "Saint Lucia"
-    ]
+    ],
+    "title": "National Roadmaps for Low Carbon and Resource Efficient Accommodation",
+    "summary": "The objective of the national roadmaps development has been to provide a strategic plan of  actionable goals and activities for achieving a low carbon, resource-efficient tourism  sector in the Philippines, the Dominican Republic, Mauritius and Saint Lucia.  A long-list of solutions has enabled the identification of hotspots, and resource efficiency  indicators which were validated via the STAG and used as a key input for the identification  of priorities and development of the roadmaps and country action plans.  A series of workshops was organized to prioritize solutions and develop the roadmaps and  specifically, to discuss feasibility, and identify key stakeholders for synergies. Several steps  were taken to refine the shortlisted solutions, such as in-country workshops and steering  committee meetings.  The project team worked with tourism stakeholders in the countries to identify  and develop three systemic solutions to address priority environmental impact hotspots  and develop the roadmap over an 18-month period.     https://www.oneplanetnetwork.org/country-roadmaps",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 35,
@@ -2751,7 +2849,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "WasteWise ",
+    "summary": "WasteWise is a voluntary program where the US Environmental Protection Agency works with businesses, governments, and nonprofit organizations to promote the use and reuse of materials more productively over their entire life cycles.  Partners demonstrate how they reduce waste, practice environmental stewardship and incorporate sustainable materials management into their business model, including their waste-handling processes. Benefits of joining WasteWise include reduced costs for purchasing and waste disposal and opportunities to receive WasteWise Awards for outstanding achievements.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 36,
@@ -2876,7 +2977,10 @@
     ],
     "countries": [
       "Lebanon"
-    ]
+    ],
+    "title": "Reduce Marine Litter & Microplastic",
+    "summary": "Make awareness to change the behavior of people , students, tourists.......",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 37,
@@ -3021,7 +3125,10 @@
       "South Africa",
       "Switzerland",
       "United States of America"
-    ]
+    ],
+    "title": "Marine Environment  Planning and Management",
+    "summary": "1)Marine Science Education,  2) Marine Environmental Planning,  3) Role of Civil Society in Marine Conservation ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 38,
@@ -3052,7 +3159,10 @@
     ],
     "countries": [
       "Germany"
-    ]
+    ],
+    "title": "Germany (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 39,
@@ -3079,7 +3189,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/template_for_implementation_followup_who.pdf"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "World Health Organization (Narrative Submission UN Organizations)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named United Nation  Organization.",
+    "geo_coverage_type": null
   },
   {
     "id": 40,
@@ -3110,7 +3223,10 @@
     ],
     "countries": [
       "Indonesia"
-    ]
+    ],
+    "title": "Indonesia  (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 41,
@@ -3226,7 +3342,10 @@
       "Malaysia",
       "Peru",
       "Other"
-    ]
+    ],
+    "title": "ACT Program : A local value chain for plastic waste",
+    "summary": "- Give value to mixed plastic waste to incentivise its collection  - Local management of plastic waste (population size between 50 000 to 250 000 inhabitants)  - small and medium scale high temperature pyrolisis technology to transform plastic waste into syngas for electricity production ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 42,
@@ -3257,7 +3376,10 @@
     ],
     "countries": [
       "Romania"
-    ]
+    ],
+    "title": "Romania (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 43,
@@ -3351,7 +3473,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "Marine Debris Monitoring and Assessment",
+    "summary": "NOAA ‘s Marine Debris Monitoring and Assessment Project provides information to guide work to compile a record of the amount and types of debris in the environment through engaging partner organizations and volunteers across the nation in completing shoreline marine debris surveys. Through regular monitoring, including from such citizen science, we can track the progress of existing marine debris prevention initiatives and identify targets for future mitigation efforts. ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 44,
@@ -3382,7 +3507,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "UNEP North America Office: Assessing the plastic footprint in agriculture (Narrative Submission UN Organizations)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named United Nation  Organization.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 45,
@@ -3411,7 +3539,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/template_for_implementation_followup_iran_.pdf"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "Islamic Republic of Iran (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": null
   },
   {
     "id": 46,
@@ -3520,11 +3651,10 @@
         "value": "2020-01-14 13:15:32 UTC"
       }
     ],
-    "countries": [
-      "All",
-      "Argentina",
-      "Mexico"
-    ]
+    "countries": [],
+    "title": "Legislative Guidance to Countries on Marine Litter, Microplastics and Single-use Plastics.",
+    "summary": "Legislative assistance to countries",
+    "geo_coverage_type": "global"
   },
   {
     "id": 47,
@@ -3612,7 +3742,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Consciência da Praia",
+    "summary": "O projeto ConsCiência na Praia é um conjunto de atividades de educação ambiental que tem por objetivo sensibilizar e despertar os usuários das praias e a comunidade local do Estaleiro e Estaleirinho (Balneário Camboriú/Santa Catarina/Brasil), à respeito dos principais temas que são um desafio na gestão das praias, dentre eles os resíduos sólidos. E, dessa maneira, promover e estimular um comportamento consciente com o compromisso da conservação",
+    "geo_coverage_type": "national"
   },
   {
     "id": 48,
@@ -3693,7 +3826,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Movimento PLÁSTICO Transforma (Plastic Movement Transforms)",
+    "summary": "The Movimento Plástico Transforma – MPT (Plastic Movement Transforms) was designed to show the potential transformation of plastic. Transformation that brings benefits in virtually all areas: health, agriculture, education, construction, leisure, sports, communication, among others, besides being part of numerous innovation and technology projects worldwide.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 49,
@@ -3793,7 +3929,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Palestras de Educação Ambiental, Voltadas para a Conservação dos Ecossistemas Marinhos",
+    "summary": "Palestras de educação ambiental para alunos de escolas municipais e particulares (ensino fundamental e médio), de municípios da região do litoral norte de Santa Catarina.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 50,
@@ -3900,7 +4039,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Diagnosis of Pollution by Marine Litter Surrounding a Protected Area on the Middle Coast of Rio Grande do Sul, Brazil",
+    "summary": "Monitoring and analysis of pollution by marine litter in order to subsidize the management of the Conservation Unit (Lagoa do Peixe National Park), public policies of the municipalities involved and Environmental Education actions.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 51,
@@ -4020,7 +4162,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Birdwatching Reducing the Global Plastic Pollution",
+    "summary": "Articulating partnerships with public institutions and local associations, the project focuses on reducing contamination by plastics in the area of ​​the Lagoa do Peixe National Park, in the municipalities of Mostardas and Tavares and their resorts. It aims to reduce animal mortality while promoting sustainable tourism in the Conservation Unit through the engagement of birdwatching guides, environmental educating teachers and fishermen to multiply the need to care for the environment and protected marine and migratory species . Through these nature enthusiasts, it intends to involve around 700 people, including residents of the region, students and tourists. Activities such as an itinerant photographic exhibition, diagnostic and awareness meetings, beach cleaning events, workshops and qualification meetings and planning for fisheries and urban waste management are planned, always focusing on reducing plastics, good management and actions transformative collective agreements.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 52,
@@ -4150,7 +4295,10 @@
       "Tonga",
       "Tuvalu",
       "Vanuatu"
-    ]
+    ],
+    "title": "Plastic Blues ",
+    "summary": "Research and education sailing expedition around the globe",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 53,
@@ -4181,7 +4329,10 @@
     ],
     "countries": [
       "Singapore"
-    ]
+    ],
+    "title": "Singapore (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 54,
@@ -4287,7 +4438,10 @@
     ],
     "countries": [
       "Togo"
-    ]
+    ],
+    "title": "Our Coast is Dying",
+    "summary": "Awareness raising, field survey and production of documentaries. Students, activists, local fisherfolk, journalists receive education on marine litter and microplastics as per MOOC organized by UNE/Open University of The Netherlands. Trained on scuba diving, underwater sampling and video shooting",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 55,
@@ -4316,7 +4470,10 @@
         "value": "https://g20mpl.org/partners/russia"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "Russia (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": null
   },
   {
     "id": 56,
@@ -4347,7 +4504,10 @@
     ],
     "countries": [
       "New Zealand"
-    ]
+    ],
+    "title": "New Zealand:  the New Zealand Product Stewardship Council Narrative Submission, Aotearoa Plastic Pollution Alliance, Massey University Political Ecology Research Centre",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 57,
@@ -4378,7 +4538,10 @@
     ],
     "countries": [
       "Ethiopia"
-    ]
+    ],
+    "title": "Ethiopia (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 58,
@@ -4441,7 +4604,10 @@
     ],
     "countries": [
       "Kenya"
-    ]
+    ],
+    "title": "Monthly Trash Cleanup, Kenya",
+    "summary": "Kenya Wildlife Service coordinates monthly trash cleanups at 4 marine protected areas and engages local communities and businesses. Has been doing this for 10 years. As part of this effort, they track the amount and type of trash in 10x10m2 areas each month (5 per MPA) and have collected this information for 10 years.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 59,
@@ -4535,7 +4701,10 @@
     ],
     "countries": [
       "South Sudan"
-    ]
+    ],
+    "title": "Marine Plastic Litter",
+    "summary": "Mobilizing religious leaders to support  a ban(s) on marine plastic litter",
+    "geo_coverage_type": "national"
   },
   {
     "id": 60,
@@ -4613,7 +4782,10 @@
     ],
     "countries": [
       "Other"
-    ]
+    ],
+    "title": "Elaboration and Adoption of the Regional Action Plan on Marine Litter Management",
+    "summary": "Elaboration and adoption of the Regional Action Plan on ML in the Black Sea in October 2018",
+    "geo_coverage_type": "national"
   },
   {
     "id": 61,
@@ -4644,7 +4816,10 @@
     ],
     "countries": [
       "Canada"
-    ]
+    ],
+    "title": "Canada (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 62,
@@ -4801,7 +4976,10 @@
     ],
     "countries": [
       "Azerbaijan"
-    ]
+    ],
+    "title": "Environmental Ethics ",
+    "summary": "Commitment culture   -deposit interest  -environment ethics  -responsibilities on actions  -law enforcement & applying fines ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 63,
@@ -4911,7 +5089,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Espetáculo Mar de Soluções (Sea of Solutions Show)",
+    "summary": "Performance, environmental education, science with art",
+    "geo_coverage_type": "national"
   },
   {
     "id": 64,
@@ -4982,7 +5163,10 @@
     ],
     "countries": [
       "Other"
-    ]
+    ],
+    "title": "New Zealand Plastic Bag Ban",
+    "summary": "Government ban of the use of single-use plastic bags in New Zealand. ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 65,
@@ -5013,7 +5197,10 @@
     ],
     "countries": [
       "Belgium"
-    ]
+    ],
+    "title": "Belgium (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 66,
@@ -5093,7 +5280,10 @@
     ],
     "countries": [
       "Viet Nam"
-    ]
+    ],
+    "title": "Developing the Community-based Plastic Waste Management in Coastal Areas of Ha Long Bay Quang Ninh Province",
+    "summary": "The project is aimed at engaging local communities and relevant stakeholders in the coastal areas of Ha Long Bay to participate voluntarily and actively in collecting plastic waste and mitigating environmental pollution from plastic waste in Ha Long Bay     Specific project activities include:  -\tRaising the community’s awareness on plastic waste (PW); enhancing the capacity of local communities and relevant stakeholders  on PW management, separation, collection and processing; changing behaviors in using plastic products.  -\tContributing to the reduction of PW and environmental pollution by implementing various demonstration of plastic waste collection groups, self-managed groups of plastic waste collection and separation at source by 3R criteria (Reduce, Reuse and Recycle)   -\tDeveloping policy recommendations  in management, mitigation and disposal of plastic waste. ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 67,
@@ -5203,7 +5393,10 @@
         "value": "2020-02-05 13:12:32 UTC"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "National Ecosocialist Technical Tables",
+    "summary": "Social technical organizational structure, where the conservation of biological diversity and national scenic beauties is achieved, the implementation of territory management, the participatory design of plans, programs and projects for the integral management of garbage, the training of citizens and the creation of socio-productive economic circuits",
+    "geo_coverage_type": null
   },
   {
     "id": 68,
@@ -5234,7 +5427,10 @@
     ],
     "countries": [
       "Croatia"
-    ]
+    ],
+    "title": "Croatia (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 69,
@@ -5330,7 +5526,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "EnTenda o Lixo (Understand the debris)",
+    "summary": "Awareness raising activities, education, beach and environmental clean-ups, building capacity strategies",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 70,
@@ -5394,7 +5593,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "AB 1884: Straws on Request Law",
+    "summary": "This law requires that full-service restaurants provide straws only on request from customers",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 71,
@@ -5425,7 +5627,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Nuclear and Energy Research Institute, São Paulo, São Paulo State University, São Vicente, Brazil University of Santa Cecília, Santos, Brazil (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 72,
@@ -5525,7 +5730,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Plastics Sectoral Forum – For a Clean Ocean",
+    "summary": " “Plastics Sectoral Forum – For a Clean Ocean aims at raising society’s awareness of prevention and mitigation of litter entering oceans. The Forum works on the articulation among the sectors involved in production, trading and assessment of the environmental impacts caused by marine litter. The accomplishment of these joint works, as well as the stimulation to discussions on the matter along with the actors involved and among those sectors promote a better understanding of such issue.  In order to do so, the partnership has narrowed the relationship with the Ministry of Environment by means of the Coastguard, the Ministry of Industry, Foreign Trade and Services (MDIC), Brazil Navy and the Ministry of Environment National Plan Organizing Committee to Fight Against Marine Litter.  With actions involving different publics – population, industries and public power – the forum has been acting with the aim to contribute to change the current scenario. ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 73,
@@ -5623,7 +5831,10 @@
     "countries": [
       "Thailand",
       "Viet Nam"
-    ]
+    ],
+    "title": "UNEP-IUCN National Guidance for Plastic Pollution Hotspotting and Shaping Action",
+    "summary": "In collaboration with IUCN, UNEP (and the Life Cycle Initiative) is developing a national guidance on plastic pollution hotspotting and shaping action, to support countries in:  1) Identifying HOTSPOTS related to the most relevant plastic polymers, products, and pathways leaking into the environment and their suspected impacts;  2) Considering key areas of INTERVENTION specific to the local context and enabling the mitigation of the hotspots;  3) Converging with key stakeholders on the best INSTRUMENTS to carry out the action.  The national guidance report will be published in early 2020 and the methodology is planned be piloted by UNEP and IUCN in countries and cities in 2019-2020, including Cyprus, Kenya, Mauritius, Menorca (Spain), Mozambique, Sao Paulo (Brazil), South Africa, Thailand and Vietnam. Currently the piloting is ongoing in Thailand and Vietnam.  ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 74,
@@ -5654,7 +5865,10 @@
     ],
     "countries": [
       "New Zealand"
-    ]
+    ],
+    "title": "Palmy’s Plastic Pollution Challenge Narrative Submission (New Zealand) ",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 75,
@@ -5685,7 +5899,10 @@
     ],
     "countries": [
       "Togo"
-    ]
+    ],
+    "title": "Association Welfare (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 76,
@@ -5799,7 +6016,10 @@
     ],
     "countries": [
       "Burundi"
-    ]
+    ],
+    "title": "Gestion des Déchets Plastiques ",
+    "summary": "La mise en place des textes et lois interdisant l'utilisation des objets non biodégradables ,  La collecte des déchets en plastiques au bord des lacs et rivières   ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 77,
@@ -5868,7 +6088,10 @@
     ],
     "countries": [
       "Thailand"
-    ]
+    ],
+    "title": "Asia Pacific Day for the Ocean",
+    "summary": "ESCAP has institutionalized the Asia-Pacific Day for the Ocean bringing together active participation from all stakeholders, including government, academia, the private sector, NGOs, individual citizens and the youth; and with delegates, participants and speakers from different sub-regions in Asia, including the Pacific. Marine pollution, especially in the form of plastic, stood out as one of the main issues. Nevertheless, civil society (especially the youth) voiced their enthusiasm to transition towards a plastic-free circular economy. The private sector showed evidence of their innovation and incorporation of science to provide sustainable alternatives to plastic. Academics, civil society and governmental organizations presented factual case studies exposing the problems related to marine pollution and highlighting solutions.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 78,
@@ -5899,7 +6122,10 @@
     ],
     "countries": [
       "Jamaica"
-    ]
+    ],
+    "title": "Caribbean Environment Programme (UNEP CEP) Secretariat to the Cartagena Convention based in Kingston, Jamaica (Narrative Submission UN Organizations)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named United Nation  Organization.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 79,
@@ -5988,7 +6214,10 @@
     ],
     "countries": [
       "China"
-    ]
+    ],
+    "title": "The Flux of Plastic Debris from Major Rivers in China",
+    "summary": "Currently, there are arguments or data gaps in the estimation of the flux of plastic debris from rivers globally. This project aimed to collect in situ data in 15 rivers across the coastline of China to do the estimation.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 80,
@@ -6017,7 +6246,10 @@
         "value": "https://g20mpl.org/partners/unitedstates"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "United States of America (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": null
   },
   {
     "id": 81,
@@ -6044,7 +6276,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/template_for_implementation_followup-south_asia_region_submitted_by_sacep.pdf"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "South Asian Seas (SAS) Region (Narrative Submission IGO's)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant  Intergovernmental Organization.",
+    "geo_coverage_type": null
   },
   {
     "id": 82,
@@ -6122,7 +6357,10 @@
       "Madagascar",
       "United Republic of Tanzania",
       "Zambia"
-    ]
+    ],
+    "title": "Reducing UPOPs and Mercury Releases from Health Sector in Africa",
+    "summary": "The project focuses on the healthcare sector in selected Sub-Saharan African countries and aims to reduce the emission of UPOPs as well as Mercury releases. The use of non-incineration technologies also provide for the opportunity to recycle disinfected waste fractions, in particular plastics, and allow model healthcare facilities in project countries to reduce their costs for waste treatment, by selling plastics to recyclers. Examples from project countries on engagement with plastics recycling industry are as follows:  *\tThe project in Madagascar has implemented the collection of recyclable plastics at all five model healthcare facilities (HFCs) and facilitated HFC’s engagement with recycling companies in Antananarivo. The university hospital in Antananarivo, CHU JRB Befelatanana, currently produces pavers from recycling of disinfected (autoclaved) plastics.  *\tThe project in Tanzania focuses on the recycling of plastic that was previously infectious, rather than recovering recyclable materials from the general waste stream. All five model HCFs in Dar es Salaam produces blocks of disinfected plastics. The project identified a plastic recycling facility in Mbagala that will collect the plastic blocks from the HCFs, including Muhimbili National Hospital in Dar es Salaam, and transport these to their sorting facility; the facilities will receive 500 TSH per kg for plastic (0.22 USD/kg).  *\tThe project in Zambia already initiated recycling activities by recovering recyclable plastics from the general waste stream. The local recycling company, Waste Master (Z), currently works with three model HFCs in Lusaka, University Teaching Hospital (UTH), Chilenje and Matero Level 1 Hospitals. The model HCFs supplying Waste Master (Z) in Lusaka receive about 1.15 kwacha per kg of mixed plastics (0.08 USD/kg).  *\tIn Zambia, the project also initiated a demonstration activity, as an example of closed loop recycling of plastic waste, on the local production of high quality sharp waste containers from recycled plastics from disinfected plastics from model HFCs in Lusaka, but the activity was cancelled due to high cost proposals from private sector.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 83,
@@ -6153,7 +6391,10 @@
     ],
     "countries": [
       "France"
-    ]
+    ],
+    "title": "France (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 84,
@@ -6240,9 +6481,10 @@
         "value": "2020-01-21 14:41:48 UTC"
       }
     ],
-    "countries": [
-      "Other"
-    ]
+    "countries": [],
+    "title": "New Plastics Economy Global Commitment led by the Ellen MacArthur Foundation in Collaboration with UNEP",
+    "summary": "The New Plastics Economy Global Commitment (NPEGC) was launched at the Our Oceans Conference in Bali (Indonesia) on 29th October 2018. Led by the Ellen MacArthur Foundation in collaboration with UNEP, the Global Commitment brings together and aligns the efforts of businesses, governments, and other organisations behind a common vision and targets, to address plastic waste and pollution at its source. The Global Commitment aims to act as a lighthouse by suggesting specific actions designed with a systemic perspective for each actor in the plastics value chain, enabling frontrunning businesses and governments to inspire others and lead by example. UNEP leads the engagement of governments under this Initiative. As of October 2019, over 400 institutions have signed the New Plastics Economy Global Commitment, including 19 governments from around the world, and more than 200 businesses of the plastic packaging value chain (jointly representing over 20% of all plastic packaging used globally). ",
+    "geo_coverage_type": "global"
   },
   {
     "id": 85,
@@ -6271,7 +6513,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/cms_template_for_implementation_followup_submission_from_birdlife_international_31_july_2020.pdf#overlay-context=stocktaking-submissions"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "Birdlife International (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": null
   },
   {
     "id": 86,
@@ -6302,7 +6547,10 @@
     ],
     "countries": [
       "Italy"
-    ]
+    ],
+    "title": "Italy (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 87,
@@ -6392,7 +6640,10 @@
     "countries": [
       "United States of America",
       "Other"
-    ]
+    ],
+    "title": "From Pollution to Product",
+    "summary": "The waste from the Great Pacific Garbage Patch is transformed into sustainable products.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 88,
@@ -6493,7 +6744,10 @@
     ],
     "countries": [
       "Togo"
-    ]
+    ],
+    "title": "Raising Awareness Amongst Students",
+    "summary": "Students are organised into clubs . Club leaders receive training on different aspects of Agenda 2030 including on Life under Water. Each Monday afternoon debates are held where students pick a topic. In recent months debates have focused on marine ecosystem , plastics and microplastics. In 2017 this project won the UNEP ENERGY GLOBE AWARD (National Category). Apart from debates students are involved in school afforestation, waste management, community clean-up campaigns and in our projects e.g. Make Lome Plastic Free, Our coastline is dying, stop the silence, etc",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 89,
@@ -6592,7 +6846,10 @@
     ],
     "countries": [
       "Ecuador"
-    ]
+    ],
+    "title": "Environmental Education Campaign Using the Micro Theater and Puppet Works as Communication Tools",
+    "summary": "1. Park ranger training in theatre and communication techniques  2. Elaboration of costumes, puppets and theatres.  3. Presentation of works with topics related to marine litter on the beach to tourists  4. Presentation of works with topics related to marine litter in schools and colleges  5. Presentation of works with topics related to marine litter to the community in general",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 90,
@@ -6623,7 +6880,10 @@
     ],
     "countries": [
       "Australia"
-    ]
+    ],
+    "title": "Minderoo Foundation, Australia (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 91,
@@ -6723,7 +6983,10 @@
     ],
     "countries": [
       "Trinidad and Tobago"
-    ]
+    ],
+    "title": "Trinidad and Tobago Styrofoam Ban",
+    "summary": "1. Policy Decision taken by the Government of Trinidad and Tobago to ban the importation of styrofoam products that are used in the food and beverage industry.    2. The Ministry of the Attorney General and Legal Affairs is working on the legislation to give effect to the ban.    3. Ban to start from January 1st 2020.  ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 92,
@@ -6754,7 +7017,10 @@
     ],
     "countries": [
       "Eritrea"
-    ]
+    ],
+    "title": "Eritrea (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 93,
@@ -6850,7 +7116,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Projeto Desplastifique o Oceano",
+    "summary": "  Replacement of single use plastic bags in fresh produce with recycled and returnable polyamide bags collected from ghost fisheries.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 94,
@@ -6923,9 +7192,10 @@
         "value": "2020-02-11 12:06:47 UTC"
       }
     ],
-    "countries": [
-      "Other"
-    ]
+    "countries": [],
+    "title": "Assessment of Plastic Footprint Methodologies",
+    "summary": "As part of IUCN`s Close the Plastic Tap Programme, and contributing to needs identified in UNEA-3, assessed and evaluated 19 methods used to assess plastic footprints and their approaches.",
+    "geo_coverage_type": "global"
   },
   {
     "id": 95,
@@ -7033,7 +7303,10 @@
     ],
     "countries": [
       "Other"
-    ]
+    ],
+    "title": "Investigate Options to Ship Plastics for Recycling",
+    "summary": "Tongareva Atoll is only 6 metres above sea level.  No depth for land-fill.  Very remote.  Examine options to export waste for reprocessing",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 96,
@@ -7113,7 +7386,10 @@
     ],
     "countries": [
       "India"
-    ]
+    ],
+    "title": "Community Mobilisation for Keeping River Ganga Clean and Plastic Pollution Free",
+    "summary": "Since the River Ganga is one of the 10 rivers responsible for around 90 percent of the plastic that ends up at sea, the India Water Foundation (IWF) undertook on its own, the task of educating and spreading awareness in the village community regarding the ills of using plastics and further on how it is polluting the river and later oceans. We took the holistic understanding of these Ganga Grams (villages on the bank of River Ganga) in the blocks of Hastinapur and Parikshitgarh of district Meerut in state Uttar Pradesh . These villages are close to Ganga river and major polluters for Ganga river. The District Administration was instrumental in supporting our program with their insights and experiences.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 97,
@@ -7225,7 +7501,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Book: \"Lixo nos Mares: Do entendimento à solução\" (pt)/  \"Marine debris: From understanding to the solution\" (en)",
+    "summary": "Awareness raising, behaviour change,  education/traininig, information campaign  ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 98,
@@ -7301,9 +7580,10 @@
         "value": "2020-01-15 11:21:12 UTC"
       }
     ],
-    "countries": [
-      "All"
-    ]
+    "countries": [],
+    "title": "Review of Annexes I and III to the Basel Convention (hazardous characteristics)",
+    "summary": "Action was initiated within the framework of the Basel Convention to review whether any additional hazardous constituents or characteristics in relation to plastic waste should be added to Annex I or III, respectively, to the Basel Convention as a result of the adoption of the Plastic Waste Amendments",
+    "geo_coverage_type": "global"
   },
   {
     "id": 99,
@@ -7381,7 +7661,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "SB 270: Statewide Bag Ban",
+    "summary": "Legislation banning the distribution of single-use plastic bags, and requiring a $0.10 fee on reusable paper or plastic bags provided by a store at the point of sale.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 100,
@@ -7412,7 +7695,10 @@
     ],
     "countries": [
       "India"
-    ]
+    ],
+    "title": "India (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 101,
@@ -7441,7 +7727,10 @@
         "value": "https://g20mpl.org/partners/unitedkingdom"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "United Kingdom (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": null
   },
   {
     "id": 102,
@@ -7553,7 +7842,10 @@
       "Singapore",
       "Thailand",
       "Viet Nam"
-    ]
+    ],
+    "title": "COBSEA Regional Action Plan on Marine Litter (RAP MALI)",
+    "summary": "The overall goal of the COBSEA Regional Action Plan on Marine Litter is to consolidate, coordinate, and facilitate cooperation, and implement the necessary environmental policies, strategies and measures for sustainable,integrated management of marine litter in the East Asian Seas region.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 103,
@@ -7688,7 +7980,10 @@
       "Uganda",
       "United States of America",
       "Viet Nam"
-    ]
+    ],
+    "title": "“Reducing Ocean Plastic Pollution” ",
+    "summary": "National Geographic Society (NGS) developed an RFP titled “Reducing Ocean Plastic Pollution”, which aimed to measurably reduce the flow of marine plastic litter into our oceans. Projects could focus on using science to inform and advance national/subnational policies or management plans, or on implementing innovative behavior change approaches with the potential to inspire large numbers of people to dramatically reduce their consumption of single-use plastics or adopt better recycling/reuse behaviors. ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 104,
@@ -7817,7 +8112,10 @@
       "Somalia",
       "Sudan",
       "Yemen"
-    ]
+    ],
+    "title": "Regional Action for Sustainable Management of Marine Litter in the Red Sea and Gulf of Aden  ",
+    "summary": "Action plans for marine litter reduction; legal framework instrument development and priority actions setting.  ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 105,
@@ -7922,7 +8220,10 @@
     ],
     "countries": [
       "Togo"
-    ]
+    ],
+    "title": "Raising Awareness on the State of Marine Litter Around the Port of Lome ",
+    "summary": "Awareness raising and skills development",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 106,
@@ -8010,9 +8311,10 @@
         "value": "2020-01-08 16:01:14 UTC"
       }
     ],
-    "countries": [
-      "All"
-    ]
+    "countries": [],
+    "title": "Basel Convention Partnership on Plastic Waste",
+    "summary": "The Basel Convention Plastic Waste Partnership was established by the Conference of the Parties to the Basel Convention at its fourteenth meeting held in Geneva in 2019. The goal of the Partnership is to improve and promote the environmentally sound management of plastic waste at the global, regional and national levels and prevent and minimize its generation. It is intended to reduce significantly and, in the long-term, eliminate, the discharge of plastic waste and microplastics into the environment, in particular the marine environment.  The Partnership covers all plastic waste, including waste containing plastics, generated nationally and disposed of at the national level, as well as those which are imported or exported for waste management operations, taking into account the entire life-cycle of plastics.",
+    "geo_coverage_type": "global"
   },
   {
     "id": 107,
@@ -8119,7 +8421,10 @@
       "Poland",
       "Russian Federation",
       "Sweden"
-    ]
+    ],
+    "title": "Survey of Polystyrene Foam (EPS and XPS) in the Baltic Sea",
+    "summary": "Study gathering knowledge on the prevalence and sources of EPS in the Baltic Sea and suggests also possible measures to reduce the environmental load of EPS in the Baltic Sea.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 108,
@@ -8226,7 +8531,10 @@
       "Poland",
       "Russian Federation",
       "Sweden"
-    ]
+    ],
+    "title": "Possible Measures to Reduce Releases of EPS and XPS to the Baltic Sea",
+    "summary": "Chapter 7 of the “Survey of polystyrene foam (EPS and XPS) in the Baltic Sea” identifies possible measures to reduce releases of EPS and XPS to the environment. A proposal for a prioritization of the proposed actions in the catalogue for regional implementation was first considered in autumn 2019 and will continue in spring 2020.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 109,
@@ -8304,7 +8612,10 @@
     ],
     "countries": [
       "Malaysia"
-    ]
+    ],
+    "title": "Coastal Cleanup 2019",
+    "summary": "Coastal clean-up at Klebang Beach, Melaka, Malaysia  - Part of the International Coastal Cleanup Day on 21st Sept 2019",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 110,
@@ -8406,7 +8717,10 @@
     "countries": [
       "Dominican Republic",
       "Saint Lucia"
-    ]
+    ],
+    "title": "Launch of Communication Campaign on Phasing out Single Use Plastics",
+    "summary": "Under the framework of the Project Transforming Tourism Value Chains, in the regional office of LAC, was developed a communication campaign to raise awareness among the tourism sector the relevance on reducing and eliminating the consumption of disposable plastics during vacations. The materials were addresed to tourists and managers from the hotel industry. These materials consisted of posters, social media publicactions and videos; all materials in english and spanish. They were disseminated among all the hotels participating in the Project, Dominican Republic, St. Lucia, Mauritius and Philippines.  ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 111,
@@ -8492,7 +8806,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Workshop \"Oceamo\"",
+    "summary": "Ocean literacy, marine debris awareness, environmental education for children, schools",
+    "geo_coverage_type": "national"
   },
   {
     "id": 112,
@@ -8609,7 +8926,10 @@
       "Canada",
       "Mexico",
       "United States of America"
-    ]
+    ],
+    "title": "Commission for Economic Cooperation (CEC) North American Marine Litter Project",
+    "summary": "Since 2018, U.S. EPA has worked through the CEC to address marine litter in the North American border watersheds through stakeholder engagement at the local level. The CEC projects have totalled over $1 million and have engaged stakeholders in the Salish Sea and Tijuana River watersheds to address land-based sources of marine litter. Projects in the watersheds focused on installing stormwater trash capture devices in Vancouver, Canada, and Bellingham, Washington, USA and monitoring the devices to better identify sources and types of litter entering the watershed. In Tijuana, efforts focused heavily on raising awareness on single-use plastics and solid waste management. ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 113,
@@ -8721,7 +9041,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Limpeza de Praias",
+    "summary": "Ação para coletar resíduos sólidos encontrados na faixa de areia de praias monitoradas pelo PMP-BS/Univali: Praia Central de Navegantes, Santa Catarina - 28/09/2019; Praia da Armação, Penha, Santa Catarina - 21/07/2020; Praia do Gravatá, Navegantes, Santa Catarina - 24/07/2020; Praia Vermelha, Penha, Santa Catarina - 22/07/2020",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 114,
@@ -8799,7 +9122,10 @@
     ],
     "countries": [
       "Kenya"
-    ]
+    ],
+    "title": "Sound Chemicals Management Mainstreaming and UPOPs reduction in Kenya",
+    "summary": "Two main initiatives:   *\tThe project contributed to the consultations, planning and discussions around the Government’s decision to ban plastic bags, which has brought a significant reduction in UPOPs reduction *\tThe project aims to support, as part of the municipal waste management, initiatives of plastics management / recycling.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 115,
@@ -8856,9 +9182,10 @@
         "value": "2020-01-24 16:32:41 UTC"
       }
     ],
-    "countries": [
-      "All"
-    ]
+    "countries": [],
+    "title": "Country Laws on Plastic Bags, Straws and Foam",
+    "summary": "Table of country laws targeting plastic bags, straws and styrofoams",
+    "geo_coverage_type": "global"
   },
   {
     "id": 116,
@@ -8966,7 +9293,10 @@
     ],
     "countries": [
       "Other"
-    ]
+    ],
+    "title": "Collect Oceanic Plastics from our Coastline",
+    "summary": "Beach cleans collecting marine plastics and industrial fishing gear",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 117,
@@ -9118,7 +9448,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Environmental Waste Collection System",
+    "summary": "Cleaning and mangrove reforestation with a view to offering environmental services, such as biodiversity protection, soil protection and water resources.    Carbon fixation and avoided emissions based on the recovery of degraded mangrove areas with a view to mitigating the effects of climate change.    Social inclusion through reverse logistics with circular economy and income generation for vulnerable families.    Environmental education.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 118,
@@ -9149,7 +9482,10 @@
     ],
     "countries": [
       "Croatia"
-    ]
+    ],
+    "title": "MoreSe (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 119,
@@ -9238,7 +9574,10 @@
     ],
     "countries": [
       "Denmark"
-    ]
+    ],
+    "title": "Waste Fishing Nets as Reinforcement in Concrete",
+    "summary": "Research question: can discarded fishing nets replace virgin fibres for early age shrinkage in concrete?",
+    "geo_coverage_type": "national"
   },
   {
     "id": 120,
@@ -9343,9 +9682,10 @@
         "value": "2020-07-24 10:49:09 UTC"
       }
     ],
-    "countries": [
-      "All"
-    ]
+    "countries": [],
+    "title": "OpenLitterMap - High Quality Open Citizen Science Data",
+    "summary": "Citizen Science",
+    "geo_coverage_type": "global"
   },
   {
     "id": 121,
@@ -9456,7 +9796,10 @@
     ],
     "countries": [
       "Canada"
-    ]
+    ],
+    "title": "Bill 152 Plastic Bags Reduction Act",
+    "summary": "Worked with provincial and municipal government as well as NGOs to provide technical input to help develop the Plastic Bags Reduction Act in Nova Scotia, Canada https://nslegislature.ca/legislative-business/bills-statutes/bills/assembly-63-session-2/bill-152",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 122,
@@ -9570,7 +9913,10 @@
     ],
     "countries": [
       "India"
-    ]
+    ],
+    "title": "Rethink, Refurbish, Regenerate",
+    "summary": "•\tReplacement of plastics has raised opportunities towards “Resource Efficiency”, focusing on 3R calling for Reuse Reduce and Recycle strategy but contemporary challenges posed by plastic waste and management has embarked the need to embrace circular principles stressing on Rethinking, Refurbish and Regenerate and so on because circular model builds on economic, natural, and social capital.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 123,
@@ -9645,9 +9991,10 @@
         "value": "2019-12-13 10.00"
       }
     ],
-    "countries": [
-      "All"
-    ]
+    "countries": [],
+    "title": "The Global Partnership on Marine Litter",
+    "summary": "Global multi-stakeholder partnership of actors concerned with marine litter. Acts as an information-sharing and networking platform as well as a resource, providing members with access to webinars and more online content from the GPML Secretariat.",
+    "geo_coverage_type": "global"
   },
   {
     "id": 124,
@@ -9740,7 +10087,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Verão no Clima",
+    "summary": "Environmental education campaign with the beach audience to raise awareness about conscious consumption and the correct disposal of garbage on the beaches",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 125,
@@ -9857,7 +10207,10 @@
       "Poland",
       "Russian Federation",
       "Sweden"
-    ]
+    ],
+    "title": "HELCOM Monitoring Guidelines for Marine Litter on Beaches",
+    "summary": "Common monitoring guidelines for marine litter on beaches for all HELCOM countries were adopted in 2018",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 126,
@@ -9971,7 +10324,10 @@
       "Poland",
       "Russian Federation",
       "Sweden"
-    ]
+    ],
+    "title": "Second HELCOM Holistic Assessment of Ecosystem Health in the Baltic Sea – Dedicated section on marine litter",
+    "summary": "The second HELCOM Holistic Assessment of Ecosystem Health in the Baltic Sea contains for the first time a dedicated section on marine litter",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 127,
@@ -10002,7 +10358,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Brazil – Blue Keepers – By UN Global Compact Network Brazil (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 128,
@@ -10029,7 +10388,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/inputs_on_faos_plastics_reduction_activities_on_bioeconomy_0.pdf"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "Food and Agriculture Organization (Bioeconomy) Narrative Submission UN Organizations",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named United Nation  Organization.",
+    "geo_coverage_type": null
   },
   {
     "id": 129,
@@ -10060,7 +10422,10 @@
     ],
     "countries": [
       "Japan"
-    ]
+    ],
+    "title": "Japan (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 130,
@@ -10165,7 +10530,10 @@
       "Singapore",
       "Thailand",
       "Viet Nam"
-    ]
+    ],
+    "title": "Promotion of International Cooperation",
+    "summary": "Japan has launched the “MARINE Initiative” to advance effective actions to combat marine plastic litter at a global scale focusing on (1) Management of wastes, (2) Recovery of marine litter, (3) Innovation, and (4) Empowerment. Under this initiative, Japan will support empowerment in developing countries to promote waste management, recovery of marine litter, and innovation, including provision of training for 10,000 officials engaging in waste management all over the world by 2025.    Japan provides support to ASEAN countries, based on the ASEAN+3 initiative, for various initiatives such as: awareness raising of local governments, citizens and  business units; development of national action plans on marine litter; capacity building for proper waste management including waste-to-energy infrastructure; as well as establishment of knowledge-hub to promote knowledge-sharing on marine litter management.  ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 131,
@@ -10291,7 +10659,10 @@
     ],
     "countries": [
       "Ecuador"
-    ]
+    ],
+    "title": "Mingas por el Mar Foundation",
+    "summary": "Educate people about plastic pollution throught direct contact with the problem such us beach cleanups, and get information out of those cleanups.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 132,
@@ -10402,7 +10773,10 @@
       "Malaysia",
       "Singapore",
       "Viet Nam"
-    ]
+    ],
+    "title": "Sustainable Procurement Case Studies on Plastic and Procurement Guidance",
+    "summary": "Transforming the tourism value chains to low carbon and resource efficiency requires an increase in sustainable consumption and production practices. By buying more sustainable products and services, corporate buyers in the tourism sector can convey a strong market signal and help drive markets towards more sustainability. Following up the interactive workshop “Leveraging sustainable procurement practices to transform tourism value chains” which took place in October 2018, UN Environment has documented successful sustainable procurement practices in a series of 16 case studies. They illustrate how corporate buyers have effectively embedded sustainability in their procurement processes to improve resource efficiency and reduce GHG emissions.  3 case studies are specifically focused on leveraging sustainable procurement to phase out single use plastics.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 133,
@@ -10488,7 +10862,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Rede De COOPERAÇÃO Para O Plastico",
+    "summary": "The first Brazilian initiative in favor of  a Circular Economy encompassing all the supply chain in the plastic industry.  ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 134,
@@ -10609,7 +10986,10 @@
       "Palau",
       "Switzerland",
       "Other"
-    ]
+    ],
+    "title": "LEARN Program",
+    "summary": "Contribute to the advancement of scientific knowledge on plastic pollution in water",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 135,
@@ -10737,7 +11117,10 @@
     ],
     "countries": [
       "Morocco"
-    ]
+    ],
+    "title": "Plastic Free Beaches Action",
+    "summary": "Plastic Free Beaches Action aims to fight against plastic pollution in different Blue Flag labeled and non-labeled beaches across the kingdom of Morocco for nearly three months by educating and raising awareness of beach users through numerous actions to use less plastics, buy less plastic-packaged products and stop plastic litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 136,
@@ -10823,7 +11206,10 @@
     ],
     "countries": [
       "Japan"
-    ]
+    ],
+    "title": "Promotion of Innovative Solutions",
+    "summary": "Japan is promoting innovation through development and conversion of alternative materials by the following measures;   a) Technological development through public and private partnerships based on \"roadmap for Popularising Development and Introduction of Marine Biodegradable Plastics\"   b) Support for project to promote substitute materials such as biodegradable plastic and paper, for products including fishing gear  c) Promotion of development of marine biodegradable plastic especially for fishing gear that does not necessarily require high durability and strength such as some parts of equiptment used in aquaculture  d) Accelaration of innovation among relevant business operators that compose the plastic value chain through \"Clean Ocean Material Alliance (CLOMA)\"   e) Formulation of a \"Public and private cooperation framework for innovation of marine plastic\" with business, organisations, and researchers who come up with innovative solutions, and transmit information.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 137,
@@ -10850,7 +11236,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/investhill_group_african_foundation_template_for_implementation_followup_1_0.pdf#overlay-context=stocktaking-submissions"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "Investhill Group / African Foundation (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": null
   },
   {
     "id": 138,
@@ -10941,7 +11330,10 @@
     ],
     "countries": [
       "Japan"
-    ]
+    ],
+    "title": "Awareness Raising and Collaboration with Actors",
+    "summary": "To solve marine plastic issues, Japan promotes the “Plastics Smart” campaign. This has been actively promoted, encouraging cooperation and collaboration among a wide range of stakeholders, such as national, local public organizations, citizens, NGOs, businesses, and research institutes. Plastics Smart promotes “the wise use of plastics” to prevent the generation of marine litter.   Clean Ocean Material Alliance: It has become necessary for society to promote worldwide efforts to overcome the marine plastic litter issue, a newly emerging global challenge. To decrease such litter, conducting appropriate control of waste is urgently needed, including through thorough efforts for preventing littering, further enhancement of the 3Rs (Reduce, Reuse and Recycle) initiatives involving plastic products, and further development and adoption of plastics with excellent biodegradability and materials alternative to plastics, for e.g., paper.  We established the Japan Clean Ocean Material Alliance consisting of a wide range of business operators that make up the supply chain and work actively in order to accelerate innovation through public-private partnerships by promoting the 3Rs new efforts and alternative materials that make the use of plastic products more sustainable.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 139,
@@ -11059,7 +11451,10 @@
     ],
     "countries": [
       "Israel"
-    ]
+    ],
+    "title": "Marine Debris Beach Survey",
+    "summary": "This study, conducted between 2012 and 2018, characterized the type, sources distribution and transport of Marine Debris found in the Israeli Mediterranean coastal zone.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 140,
@@ -11137,7 +11532,10 @@
     ],
     "countries": [
       "Armenia"
-    ]
+    ],
+    "title": "Establishment of a Pilot Waste Separation Facility in Dashtaqar Landfill of Ararat Region",
+    "summary": "The project aims to reduce or eliminate (to the extent possible) the environmental and human health risks associated with the operation of the existing municipal solid waste (MSW) disposal site located in Dashtaqar community of the Ararat region,  via construction and operation of the waste sorting and recycling facility. The project initiated construction of a new waste sorting and recycling plant to be located on the territory of Dashtaqar landfill.  The project is envisaged to be implemented in the following two stages: (i) construction of waste sorting facility that will ensure separation of organic and non-organic fractions with subsequent sorting of non-organic materials and separation of plastic, metals, glass, textile, paper, etc and (ii) construction of organic waste processing facility that will produce biogas or organic fertilizers for agricultural needs. This model of sustainable, environmentally safe and financially feasible community-led solid waste management system that operates based on waste reduction principle has a great replication and scaling-up potential.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 141,
@@ -11246,9 +11644,10 @@
         "value": "2020-01-27 17:03:45 UTC"
       }
     ],
-    "countries": [
-      "Other"
-    ]
+    "countries": [],
+    "title": "UNEP Deliverables under the GEF-funded project (2017-2019): “Addressing Marine Plastics-  A  Systemic  Approach” ",
+    "summary": "UNEP, EMF, Ocean Conservancy and GRID Arendal collaborated under a GEF-funded project “Addressing Marine Plastics - A Systemic Approach” (2017-2019). The project aimed at capitalizing on growing a baseline of knowledge on marine plastics sources, pathways and environmental impacts, to recommend actions to build circularity and reduce pollution for the plastic sector. Under this project, a roadmap to circular economy for plastics was developed by UNEP in collaboration with partners. UNEP also developed a report to take stock of the extent of knowledge on plastics in marine environment, a global plastic value chain mapping report and a to-be-published recommendations for action report. 2 multi-stakeholder consultation workshops were held by UNEP to map the plastic value chain and identify recommended actions towards a circular economy for plastics. ",
+    "geo_coverage_type": "global"
   },
   {
     "id": 142,
@@ -11333,7 +11732,10 @@
     ],
     "countries": [
       "Morocco"
-    ]
+    ],
+    "title": "Le Programme National des Déchets Ménagers (PNDM)",
+    "summary": "Le PNDM a été lancé en 2007 et a pour objectifs :  *\tAssurer la collecte des déchets ménagers pour atteindre un taux de collecte en milieu urbain de 90% en 2020   *Réaliser les décharges contrôlées des déchets ménagers et assimilés au profit de tous les centres urbains (100%) à l’horizon 2022   *Fermer ou réhabiliter toutes les décharges sauvages (2022)   *Organiser et développer la filière de tri, recyclage et valorisation pour atteindre un taux de recyclage de 20% et de 30% sous d’autres formes en 2022  *\tSensibilisation et formation des parties prenantes dans le secteur des déchets.  ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 143,
@@ -11427,7 +11829,10 @@
     ],
     "countries": [
       "Ecuador"
-    ]
+    ],
+    "title": "Cleaning of Coastal Areas, Seabed and Mangrove Area",
+    "summary": "Manual removal of marine litter from coastal areas, seabed in coral areas and mangrove areas, with the help of surrounding communities and state organizations",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 144,
@@ -11520,7 +11925,10 @@
     ],
     "countries": [
       "Japan"
-    ]
+    ],
+    "title": "Sharing Scientific Information and Knowledge",
+    "summary": "Japan is conducting the following measures as actions to sharing scientific information and knowledge;  a) promotion of international harmonisation of monitoring methods  b) Investigation and estimation of domestic generation amount and routes, and investigation of floating plastic  c) Research on effects of marine plastic litter including microplastics on human health and on the ecosystem",
+    "geo_coverage_type": "national"
   },
   {
     "id": 145,
@@ -11551,7 +11959,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Brazil - Braskem S.A (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 146,
@@ -11645,7 +12056,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Projeto Oceano Mais Limpo ",
+    "summary": "This action consists of the application and multiplication of the microplastic collection methodology on the beaches of the south and southeast coast of Brazil, simultaneously on two important and tourist islands in Brazil. The generation of microplastic data to provide a data supply for the creation of a database of plastic and microplastics within a Brazilian panorama.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 147,
@@ -11779,7 +12193,10 @@
       "Thailand",
       "Viet Nam",
       "Other"
-    ]
+    ],
+    "title": "Technical Assistance Activities of the Secretariat of the Basel, Rotterdam and Stockholm Conventions Addressing Plastics",
+    "summary": "Provide technical assistance to the Parties in addressing plastic waste, e.g.:  - Development of inventories  - Drafting of legal amendments  - Collection and recycling pilots  - Training enforcement authorities  - Disposal of plastic waste  - Engaging the informal sector  - Development and implementation of ESM guidance  - Implementation of pilot projects with the private sector",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 148,
@@ -11888,7 +12305,10 @@
     ],
     "countries": [
       "Kenya"
-    ]
+    ],
+    "title": "Ban the Bottle Campaign ",
+    "summary": "The Ban the Bottle Campaign is designed to pressure beverage industries to implement a deposit scheme for drinks bottles by 2022 in Kenya. Failing this,  the government should ban the use of PET bottles in packaging of beverage drinks. ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 149,
@@ -11996,7 +12416,10 @@
       "Norway",
       "Sweden",
       "Other"
-    ]
+    ],
+    "title": "Nordic Coastal Clean Up",
+    "summary": "The Nordic Coastal Clean Up aims to mobilize volunteers across the Nordic region to pick litter along the coast and along rivers and lakes. The network also gathers knowledge about the sources of marine litter in the Nordic countries through monitoring and data collection.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 150,
@@ -12091,7 +12514,10 @@
       "Mauritius",
       "Philippines",
       "Saint Lucia"
-    ]
+    ],
+    "title": "Campaign - Phasing out problematic single-use plastic items",
+    "summary": "Campaign targeted to procurers, staff and guests in the tourism industry",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 151,
@@ -12122,7 +12548,10 @@
     ],
     "countries": [
       "Spain"
-    ]
+    ],
+    "title": "Spain  (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 152,
@@ -12220,7 +12649,10 @@
     ],
     "countries": [
       "Trinidad and Tobago"
-    ]
+    ],
+    "title": "Beverage Containers Bill",
+    "summary": "-If passed in Parliament, this legislation will allow the establishment of a deposit and refund system for  prescribed sizes of beverage containers, a regime for the collection  of beverage containers to reduce their disposal into the environment, thereby alleviating the pollution problem and for other related matters",
+    "geo_coverage_type": "national"
   },
   {
     "id": 153,
@@ -12251,7 +12683,10 @@
     ],
     "countries": [
       "Netherlands"
-    ]
+    ],
+    "title": "Netherlands (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 154,
@@ -12360,7 +12795,10 @@
     ],
     "countries": [
       "Other"
-    ]
+    ],
+    "title": "National Campaign for Education and Environmental Awareness and National Campaign to Clean Beaches and Coasts in Summer",
+    "summary": "Design and dissemination of educational material related to marine litter, pamphlet, vignettes.  Formation of local brigades for the collection of garbage on the coasts.  Follow-up and monitoring of activities and actions.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 155,
@@ -12447,9 +12885,10 @@
         "value": "2020-01-24 10:13:43 UTC"
       }
     ],
-    "countries": [
-      "All"
-    ]
+    "countries": [],
+    "title": "SHARE Program",
+    "summary": "Alert decision-makers,  raise public awareness  and educate new generations",
+    "geo_coverage_type": "global"
   },
   {
     "id": 156,
@@ -12476,7 +12915,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/industry_voluntary_submission_-_unep_stocktaking_of_activities_29july2020_0.pdf#overlay-context=stocktaking-submissions"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "International Council of Chemical Association (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": null
   },
   {
     "id": 157,
@@ -12578,7 +13020,10 @@
     ],
     "countries": [
       "Israel"
-    ]
+    ],
+    "title": "Beach Cleanups",
+    "summary": "We plan beach cleanups to intercept plastic as it washes up on beaches and as it reaches the mouth of the Yarkon River towards the Mediterranean.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 158,
@@ -12660,7 +13105,10 @@
     ],
     "countries": [
       "China"
-    ]
+    ],
+    "title": "China's Recent Action on Reducing Plastic Products",
+    "summary": "Opinions on Further Strengthening the Control of Plastic Pollution",
+    "geo_coverage_type": "national"
   },
   {
     "id": 159,
@@ -12765,7 +13213,10 @@
     ],
     "countries": [
       "Kyrgyzstan"
-    ]
+    ],
+    "title": "Measures Taken",
+    "summary": "Minimize the harmful effects of waste on human health",
+    "geo_coverage_type": "national"
   },
   {
     "id": 160,
@@ -12865,7 +13316,10 @@
       "Poland",
       "Russian Federation",
       "Sweden"
-    ]
+    ],
+    "title": "HELCOM Compilation of Information on National Activities on ALDFG",
+    "summary": "HELCOM compilation of information on national activities on ALDFG both from commercial and recreational activities and how they can be possibly developed to a regional approach.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 161,
@@ -12965,7 +13419,10 @@
     ],
     "countries": [
       "Saint Lucia"
-    ]
+    ],
+    "title": "Development of a Waste Study on Single Use Plastics within the Accommodation Sector in Saint Lucia ",
+    "summary": "To understand  the current waste flows in terms of plastic waste and single-use plastics (SUP) more specifically",
+    "geo_coverage_type": "national"
   },
   {
     "id": 162,
@@ -13050,7 +13507,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Workshop \"Vida Secreta dos Objetos\"",
+    "summary": "Workshop, environmental educators, deep ecology",
+    "geo_coverage_type": "national"
   },
   {
     "id": 163,
@@ -13154,7 +13614,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Ações de Educação Ambiental em Praias do Litoral Norte de Santa Catarina",
+    "summary": "Palestras de educação ambiental desenvolvidas em praias monitoradas pela Univali, via Projeto de Monitoramento de Praias da Bacia de Santos: praia Central de Navegantes (SC), 10/03/2018 - Praia Brava, Itajaí (SC), 29/06/2019; Exposição de Tartarugas em Tijucas (SC), 30/08/2019 e 17/09/2019; Projeto Verão, praia de Itapema (SC), 14/01/2020; ação Bandeira Azul, na Praia de Quatro Ilhas, Bombinhas (SC), 1º/02/2020; ação Bandeira Azul, na Praia de Mariscal, Bombinhas (SC), 14/01/2020; ação Bandeira Azul, na Praia de Balneário Piçarras (SC), 25/01/2020",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 164,
@@ -13250,7 +13713,10 @@
     ],
     "countries": [
       "Colombia"
-    ]
+    ],
+    "title": "Establishment of Extended Producer Responsability for Packaging Waste",
+    "summary": "Establishment of a legislation that imposes extender producer responsibility for the management of packaging waste generated by the commercialized products in the country",
+    "geo_coverage_type": "national"
   },
   {
     "id": 165,
@@ -13328,7 +13794,10 @@
     ],
     "countries": [
       "Japan"
-    ]
+    ],
+    "title": "Formulation of Policy Frameworks",
+    "summary": "In May 2019, Japan has formulated the \"National Action Plan for Marine Plastic Litter.\" Focusing on how to prevent the outflow of plastic litter to the ocean.  This action plan lists effective countermeasures to realise a world without additional pollution by plastic.    Japan also formulated the \"Resource Circulation Strategy for Plastics\" with the purpose of comprehensively promoting plastic resource circulation. The main focus includes thorough reduction; effective, efficient and sustainable recycling; promotion of recycled materials and bioplastics use; marine plastic countermeasures; international deployment; and infrastructure development.   In addtion, based on the amendment of the  Act on Promoting the Treatment of Marine Debris on 2018, Japan changed the \"Basic Policy based on the Act on Promoting the Treatment of Marine Debris\". The new basic policy defines treatment of marine debris based on the idea of \"basin area\" and includes measures against microplastics. ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 166,
@@ -13438,7 +13907,10 @@
     ],
     "countries": [
       "France"
-    ]
+    ],
+    "title": "Clean Ile aux Oiseaux",
+    "summary": "Every year, with local leisure club, we are sailing to small desert island to clean plastics, fishing nets, glass or other marine litter , specifically because this island is a migration birds home spot",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 167,
@@ -13553,7 +14025,10 @@
       "Italy",
       "Montenegro",
       "Slovenia"
-    ]
+    ],
+    "title": "DeFishGear Monitoring of Marine Litter in Montenegro",
+    "summary": "Monitoring, South Adriatic, beach litter, sea floor litter, floating litter, proposals of solutions for Government",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 168,
@@ -13635,7 +14110,10 @@
     "countries": [
       "India",
       "Viet Nam"
-    ]
+    ],
+    "title": "Grant Programme",
+    "summary": "Grant programme for combatting Marine Litter from land-based sources",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 169,
@@ -13733,7 +14211,10 @@
     ],
     "countries": [
       "Malaysia"
-    ]
+    ],
+    "title": "Community Recycling Station and Point",
+    "summary": "Conduct recycling activity and awareness campaign at community level ",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 170,
@@ -13850,7 +14331,10 @@
       "Philippines",
       "Thailand",
       "Viet Nam"
-    ]
+    ],
+    "title": "SEA Circular - Solving plastic pollution at source",
+    "summary": "The project aims to reduce the adverse impact of land-based plastic leakage into the marine environment, by ensuring that less plastic is wasted at source and management of the plastic value chain is improved, in South-East Asia. Considering waste management systems in the region remain largely inadequate to process increasing amounts of plastic waste, the project focuses on the lifecycle stages of (i) Production of plastic products, (ii) Plastic use, and (iii) Collection / sorting / recycling, to ensure that less plastic is wasted and strategically prevent plastic litter entering the ocean. To achieve these objectives, project partners include national and local government agencies; businesses, producers, retailers, and associations in the packaging, consumer and institutional products industry. To promote inclusive whole-of-value-chain planning at the national and regional level, project activities will actively engage civil society, consumers, informal waste workers, and communities most vulnerable to the impacts of marine litter.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 171,
@@ -13908,9 +14392,10 @@
         "value": "2020-01-31 15:50:58 UTC"
       }
     ],
-    "countries": [
-      "All"
-    ]
+    "countries": [],
+    "title": "ReSource: Plastic",
+    "summary": "ReSource:Plastic is an activation hub for companies, focused on taking them from commitment to action. It does so through measurement (company footprint analysis), identifying high-impact activities, and multiplying impact through collaboration with others.",
+    "geo_coverage_type": "global"
   },
   {
     "id": 172,
@@ -14028,7 +14513,10 @@
     ],
     "countries": [
       "Jamaica"
-    ]
+    ],
+    "title": "International Coastal Cleanup Day",
+    "summary": "JET has been the national coordinator of International Coastal Cleanup Day in Jamaica since 2008",
+    "geo_coverage_type": "national"
   },
   {
     "id": 173,
@@ -14059,7 +14547,10 @@
     ],
     "countries": [
       "Canada"
-    ]
+    ],
+    "title": "Canada (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 174,
@@ -14134,7 +14625,10 @@
     ],
     "countries": [
       "Israel"
-    ]
+    ],
+    "title": "Clean Coast Program",
+    "summary": "Coastal cleaning and cleanliness monitoring ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 175,
@@ -14215,7 +14709,10 @@
       "Finland",
       "Russian Federation",
       "Sweden"
-    ]
+    ],
+    "title": "Baltic Sea Challenge",
+    "summary": "The Baltic Sea Challenge (BSC) is a network initiative that invites organisations to commit in protecting the Baltic Sea and their local waters, to building their own Baltic Sea Action Plan and to implementing it. In 2020 there are already about 300 member organisations in the BSC Network from the countries around the Baltic Sea. BSC is run by two big coastal cities in Finland, Helsinki and Turku. In addition to inviting organizations to Baltic Sea protection work, the cities themselves are committed to work for the Baltic Sea. The Joint Baltic Sea Action Plan of the cities of Helsinki and Turku 2019-2023 was published last year and it is the third of it's kind. Among the actions there some that especially target marine litter such as organizing annual beach cleaning events in collaborations with the cities of Tallinn and St. Petersburg and local actors. We are also organizing a round of agile experiments that aim to reduce the amount of plastic litter in and around the Baltic Sea.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 176,
@@ -14244,7 +14741,10 @@
         "value": "https://g20mpl.org/partners/europeanunion"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "European Union (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": null
   },
   {
     "id": 177,
@@ -14275,7 +14775,10 @@
     ],
     "countries": [
       "Philippines"
-    ]
+    ],
+    "title": "Philippines (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 178,
@@ -14367,7 +14870,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Limpeza no Manguezal",
+    "summary": "Através das ações, aproveitamos para conscientizar, sobre o descarte dos resíduos as águas.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 179,
@@ -14532,7 +15038,10 @@
       "Singapore",
       "Thailand",
       "Viet Nam"
-    ]
+    ],
+    "title": "Coastal Resource Conservation",
+    "summary": "Mangrove, sea-grass and coral reef conservation",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 180,
@@ -14559,7 +15068,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/unep_cep_gpml_caribe-input_to_stocktaking_resolutions_on_marine_litter_and_plastics-gpml_caribe_compilation_005.pdf"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "Caribbean Environment Programme (UNEP CEP) Narrative Submission UN Organizations",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named United Nation  Organization.",
+    "geo_coverage_type": null
   },
   {
     "id": 181,
@@ -14590,7 +15102,10 @@
     ],
     "countries": [
       "India"
-    ]
+    ],
+    "title": "National Geographic Society (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 182,
@@ -14671,7 +15186,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "Trash Amendments to Water Quality Control Plans",
+    "summary": "Regulations that prohibit the discharge of trash to state waters from stormwater systems.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 183,
@@ -14771,7 +15289,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Participação no Projeto Consciência na Praia",
+    "summary": "O projeto Consciência na Praia integrou as ações de educação ambiental do Programa Bandeira Azul nas Praias de Estaleiro e Estaleirinho, em Balneário Camboriú, litoral Norte de Santa Catarina. A tenda temática abordou temas como a poluição marinha e os impactos na biodiversidade, além de outros assuntos relacionados aos ecossistemas marinho e costeiro.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 184,
@@ -14842,7 +15363,10 @@
     ],
     "countries": [
       "Kenya"
-    ]
+    ],
+    "title": "A Study Report and Proposal to County Government on how to Address the Challenge of Plastic Bottles in the Marine Environment",
+    "summary": "Change of the way marine litter is handled from being reactive to being proactive.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 185,
@@ -14964,7 +15488,10 @@
     ],
     "countries": [
       "Libya"
-    ]
+    ],
+    "title": "Awareness about Hazards of Plastic on the Environment",
+    "summary": "Zwara is a costal city in Libya, with an amazing population.  A local orgnaisation called Bado Society for the Environment was supported by the UNICEF youth programme in Zwara, to conduct a two day campaign with activities involving 250 children, adolescents and young people.  They were introduced to the hazards of plastic, collected all the  plastic they could collect, from the coast and to a certain depth in the water, conducted interactive entertainment activities that raise the awareness on the effects of plastic on marine life, led a competition with prizes, and distributed tokens to all participating children and adolescents. many musicals were involved.  Kids and families were informed about the difference between plastic and its derivatives and other left overs.  In terms of the impact on marine life. the collected plastic was donated to an organisation that works with challenged people in the same city. This organisation (called Latyasoue) collects plastic and sells it to a private company for recycling and they used the money  to support purchasing wheelchairs",
+    "geo_coverage_type": "national"
   },
   {
     "id": 186,
@@ -14993,7 +15520,10 @@
         "value": "https://g20mpl.org/partners/republicofsouthafrica"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "Republic of South Africa  (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": null
   },
   {
     "id": 187,
@@ -15236,7 +15766,10 @@
       "Viet Nam",
       "Zambia",
       "Other"
-    ]
+    ],
+    "title": "THE MANTA",
+    "summary": "The NGO The SeaCleaners acts against plastic pollution, both at sea and on land, through corrective and preventive missions. It set itself four main objectives:    - Protection of the environment with the collection of floating waste  - Promotion of the circular economy  - Scientific research  - Education and pedagogy, with the development of awareness-raising activities.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 188,
@@ -15336,7 +15869,10 @@
       "Denmark",
       "France",
       "Netherlands"
-    ]
+    ],
+    "title": "H2020 ITN Limnoplast",
+    "summary": "Innovative Training Network for PhD Fellows",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 189,
@@ -15426,7 +15962,10 @@
       "Philippines",
       "Thailand",
       "Viet Nam"
-    ]
+    ],
+    "title": "Plastic Smart Cities",
+    "summary": "Knowledge Platform and Pilot Projects",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 190,
@@ -15500,7 +16039,10 @@
     ],
     "countries": [
       "Colombia"
-    ]
+    ],
+    "title": "Follow-up of the Impact of Tax on Plastic Bags and the Implementation of Resolution 668 of 2016",
+    "summary": "Reduction of 53% in the consumption of plastic bags in retailers (From 1,227 million bags to 570 million in 2 years) due to the implementation of the plastic bag tax and Resolution 668 of 2016",
+    "geo_coverage_type": "national"
   },
   {
     "id": 191,
@@ -15629,9 +16171,10 @@
         "value": "2020-07-30 09:56:42 UTC"
       }
     ],
-    "countries": [
-      "All"
-    ]
+    "countries": [],
+    "title": "A Global Policy Analysis; and a Global Scenario Analysis of Pathways Towards Stopping Ocean Plastic Pollution",
+    "summary": "A global policy analysis; and a global scenario analysis of pathways towards stopping ocean plastic pollution",
+    "geo_coverage_type": "global"
   },
   {
     "id": 192,
@@ -15712,7 +16255,10 @@
     ],
     "countries": [
       "Armenia"
-    ]
+    ],
+    "title": "RecycleIt!",
+    "summary": "\"The main objective of the \"\"RecycleIt\"\" initiative is to promote the formation of waste separation and recycling culture in Armenia by installing waste sorting bins and raising awareness on waste management. The project will initiate waste sorting and recycling activities in the capital Yerevan and select village communities, foster new business opportunities in the waste management industry, increase public awareness of recycling and reuse, promote environmental education. Through the SGP grant funding, ISSD NGO plans to install 300 sorting bins in 50 entities including schools, universities, organizations, companies and 10 publicly available collection points for plastic, paper, glass, and metallic waste, which will be transported to the recycling sites.  The project aims to decrease the amount of recyclable waste in landfills by boosting the recycling of 4 types of solid waste. This will primarily contribute to the reduction of hazardous emissions caused by open burning in backyards and landfills causing air, water and soil pollution; biodiversity loss; and human health hazards. Moreover, the project will hold different competitions, training and public events for various stakeholders to raise awareness about the adverse effect of improper waste handling. These activities will also promote separation and collection of additional recyclable waste.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 193,
@@ -15743,7 +16289,10 @@
     ],
     "countries": [
       "Somalia"
-    ]
+    ],
+    "title": "Somalia African Solutions Somalia (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 194,
@@ -15770,7 +16319,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/inputs_on_faos_plastics_reduction_activities_on_plastic_soil_pollution.pdf#overlay-context=stocktaking-submissions"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "Food and Agriculture Organization Headquarters, Rome Italy (Plastic Soil Pollution) Narrative Submission UN Organizations",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named United Nation  Organization.",
+    "geo_coverage_type": null
   },
   {
     "id": 195,
@@ -15797,7 +16349,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/220_ofwg_update_of_2009_apec_report_on_economic_costs_of_marine_debris_to_apec_economies.pdf#overlay-context=node/296/revisions/6771/view"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "Asia-Pacific Economic Cooperation (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": null
   },
   {
     "id": 196,
@@ -15887,7 +16442,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Coleção Didática e Científica de Lixo Marinho - COLIXO/IFBAIANO",
+    "summary": "Elaboração e curadoria de coleção didática e científica do lixo marinho.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 197,
@@ -15918,7 +16476,10 @@
     ],
     "countries": [
       "Haiti"
-    ]
+    ],
+    "title": "Haiti Cholera Research Funding Foundation Inc (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 198,
@@ -15997,7 +16558,10 @@
     ],
     "countries": [
       "Haiti"
-    ]
+    ],
+    "title": "Caracol Beach Cleanup",
+    "summary": "Beach Cleanup",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 199,
@@ -16028,7 +16592,10 @@
     ],
     "countries": [
       "Argentina"
-    ]
+    ],
+    "title": "Argentina (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 200,
@@ -16105,7 +16672,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Environmental Education & Plastics Recycling ",
+    "summary": "The Project is part of a Technical  Cooperation Agreement between Plastivida and the Municipal  Education Office of São Paulo for the execution in Educational Centers  (CEUs). The main objective is to build up environmental education activities that can contribute to the knowledge and understanding on the part of society about the topics on plastics sustainability, conscientious consumption, proper disposal, recycling, reuse, circular economy and the relationship with the post-consumption material.  ",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 201,
@@ -16197,7 +16767,10 @@
     ],
     "countries": [
       "Finland"
-    ]
+    ],
+    "title": "Finnish Summary Translation from 2019 WWF International’s Report Solving Plastic Pollution Through Accountability",
+    "summary": "Aiming at a consolidated knowledge sharing to different stakeholders. Producing communication material. Translating the summary of WWF International’s report Solving Plastic pollution through Accountability, providing infomaterial of the newly adopted legislation on plastics in EU and Finland.  ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 202,
@@ -16361,7 +16934,10 @@
       "Jamaica",
       "Panama",
       "United States of America"
-    ]
+    ],
+    "title": "Trash Free Waters",
+    "summary": "Trash Free Waters works with States, cities, and other stakeholders to identify and prioritize community-based projects to reduce land-based sources of marine litter.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 203,
@@ -16456,7 +17032,10 @@
       "Saint Lucia",
       "Vanuatu",
       "Other"
-    ]
+    ],
+    "title": "Effective, Quantifiable Solutions To Address Plastic Leakage From Small Island Developing States ",
+    "summary": "Adoption of plastic leakage reduction measures by tourism, fisheries and waste management sectors and value chain development  ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 204,
@@ -16487,7 +17066,10 @@
     ],
     "countries": [
       "Republic of Korea"
-    ]
+    ],
+    "title": "Republic of Korea (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 205,
@@ -16518,7 +17100,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Brazillian Plastic Industry Association – ABIPLAST (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 206,
@@ -16599,9 +17184,10 @@
         "value": "2020-01-31 19:38:16 UTC"
       }
     ],
-    "countries": [
-      "Other"
-    ]
+    "countries": [],
+    "title": "Clean Cities Blue Ocean (CCBO)",
+    "summary": "In August 2019, USAID launched Clean Cities, Blue Ocean (CCBO) – the Agency’s global flagship program for combatting ocean plastics pollution. With an investment of $48 million, CCBO is global in scope, with an initial focus on key countries in Asia and Latin America. CCBO will build capacity and commitment for the 3Rs—reduce, reuse, and recycle—and improved solid waste management in areas that are at the heart of the global plastic pollution crisis. Partnership with the private sector at all levels is central to CCBO as an effective way to create sustainable change.",
+    "geo_coverage_type": "global"
   },
   {
     "id": 207,
@@ -16716,7 +17302,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "UFSC sem Plástico (UFSC Plastic Free project)",
+    "summary": "Elimination of single use plastics from campus; implementation of a zero waste programme at the University; promotion of environmental awareness among the academic community regarding production, consumption and responsibility towards the environment and each other.  Main initiatives include:  1. The “Conscious Student Organization” Stamp  2. The “Conscious Establishment” Stamp  3. Reusable Cups Repository  4. Plastic Free Universities Network  5. Campus cleanings  6. Beach cleanings  7. Events: organization and presentation of educational lectures related to waste management, climate change and ocean pollution",
+    "geo_coverage_type": "national"
   },
   {
     "id": 208,
@@ -16827,7 +17416,10 @@
     ],
     "countries": [
       "Israel"
-    ]
+    ],
+    "title": "National Campaign",
+    "summary": "Media campaign: Single Use Plastic Not on my Beach (Video clip, posts, etc.)  Signage, beach cleaning  and awareness activities: 15 municipalities: 10,000 identified participants.  Advancing municipality bylaws forbidding single use plastic on beaches: one city (Eilat) passed the law, more to come.  School programs during the year to 25,000 pupils (6-14)  Advancing banning single use plastic within FEE - Blue Flag program which we lead in Israel  Helped establish a coalition of NGOs involved in reducing single use plastic in Israel.  Partner to the Campaign: Ministry of Protection of the Environment in Israel also many municipalities ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 209,
@@ -16959,7 +17551,10 @@
     "countries": [
       "Bangladesh",
       "India"
-    ]
+    ],
+    "title": "'Sea to Source: Ganges' Expedition ",
+    "summary": "The “Sea to Source: Ganges” river expeditions mobilize a global community of experts to help tackle the global problem of plastic pollution. During the expeditions, the team measures pre-monsoon and post-monsoon plastic pollution levels in the Ganges river and surrounding communities, and conducts interviews, solution workshops, and education sessions at each site. Using the data they collect, the team will work with local and national partners to inform solutions, fill knowledge gaps, and help drive a long-term positive change. The expedition (in partnership with the Wildlife Institute of India (WII), the Indian Institute of Technology, the University of Dhaka, WildTeam Bangladesh, and the Isabela Foundation) also focuses on documenting how plastic waste travels from source to sea and filling the critical knowledge gaps around plastic flow, load, and composition. ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 210,
@@ -17077,7 +17672,10 @@
     "countries": [
       "Brazil",
       "India"
-    ]
+    ],
+    "title": "Wave of Waste Show: From visible to invisible dangers",
+    "summary": "The show Wave of Waste: From Visible to Invisible Dangers, is a space of collaboration between art and science, as a way of awakening and provoking people to act in the battle against plastic pollution, a problem that knows no borders and has caused grave damage. In a sensitive, accessible, complementary and involving way the show in a year of presentations had been watched by more than 4 thousand people of different nationalities and social realities in Brazil and India.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 211,
@@ -17190,7 +17788,10 @@
     ],
     "countries": [
       "Bhutan"
-    ]
+    ],
+    "title": "Survey in Marine Litter and Microplactics",
+    "summary": "Regulatory, implementation, enforcement ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 212,
@@ -17307,9 +17908,10 @@
         "value": "2020-01-16 14:52:10 UTC"
       }
     ],
-    "countries": [
-      "Other"
-    ]
+    "countries": [],
+    "title": "Marine Litter Risk Assessment Method Development",
+    "summary": "Assessment of existing risk assessment methodologies for estimating the impact of marine litter and microplastics, to focus research and target measures",
+    "geo_coverage_type": "global"
   },
   {
     "id": 213,
@@ -17385,7 +17987,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "Legislation: Senate Bill 1263, Microplastics Strategy",
+    "summary": "A law requiring the development of a statewide microplastics strategy to address microplastics in California's marine environment.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 214,
@@ -17491,7 +18096,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Official Beach Clean-up - Volvo Ocean Race Itajaí Stop Over",
+    "summary": "Beach clean up event,  environmental education action,  200 volunteers",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 215,
@@ -17574,7 +18182,10 @@
       "South Africa",
       "Thailand",
       "Viet Nam"
-    ]
+    ],
+    "title": "National Plastic Pollution Assessments using a Common Methodology",
+    "summary": "Field testing the  UN Envrionment/IUCN Hotspot Methodology in 5 countries in Asia and East Africa",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 216,
@@ -17679,7 +18290,10 @@
       "Thailand",
       "United Republic of Tanzania",
       "Viet Nam"
-    ]
+    ],
+    "title": "Training of Trainers on Monitoring and Assessment of Marine Litter and Microplastics",
+    "summary": "- To support establishment of monitoring programmes to address the need for quality data and effective monitoring   - strengthen the capacity of countries to use an evidence-based approach to decision making",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 217,
@@ -17710,7 +18324,10 @@
     ],
     "countries": [
       "France"
-    ]
+    ],
+    "title": "France (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 218,
@@ -17842,7 +18459,10 @@
     ],
     "countries": [
       "Ghana"
-    ]
+    ],
+    "title": "Monitoring and Evaluation",
+    "summary": "Plastic waste management education and sensitization",
+    "geo_coverage_type": "national"
   },
   {
     "id": 219,
@@ -17970,7 +18590,10 @@
       "Singapore",
       "Thailand",
       "Viet Nam"
-    ]
+    ],
+    "title": "Extended Producer Responsibility Project",
+    "summary": "- Mobilize governments in target countries to incorporate EPR into their legal framework   - Facilitate multi-national and local companies to take responsibility for end-of-life impacts of their products and packaging  ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 220,
@@ -18001,7 +18624,10 @@
     ],
     "countries": [
       "Singapore"
-    ]
+    ],
+    "title": "Singapore (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 221,
@@ -18086,7 +18712,10 @@
     ],
     "countries": [
       "Japan"
-    ]
+    ],
+    "title": "Strengthening of Domestic Plastic Waste Management System",
+    "summary": "Japan is aiming to build a domestic resource circulation system by promptly installing plastic products recycling facilities, by utilizing the “Project for promoting installation of advanced equipment such as CO2 saving type recycling” (FY2019 budget: 3.33 billion yen, FY2018 revised budget: 6 billion yen). In addition, it is planned to support recycling technology development of plastic products, as well as promoting efficient use of resources that have not been collected or recycled, under the “Project on building a recycling system for plastics to support decarbonized society” (FY2019 budget: 3.5 billion yen).",
+    "geo_coverage_type": "national"
   },
   {
     "id": 222,
@@ -18113,7 +18742,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/pemsea_template_for_implementation_followup.pdf"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "PEMSEA (Partnerships for Environmental Management in the Seas of East Asia) Narrative Submission IGO's",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant  Intergovernmental Organization.",
+    "geo_coverage_type": null
   },
   {
     "id": 223,
@@ -18144,7 +18776,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "UNEP North America Office: Mississippi River Plastics Reduction Initiative (Narrative Submission UN Organizations)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named United Nation  Organization.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 224,
@@ -18255,7 +18890,10 @@
       "Poland",
       "Russian Federation",
       "Sweden"
-    ]
+    ],
+    "title": "FanpLESStic-sea project – Initiatives to remove microplastics before they enter the sea",
+    "summary": "It is an EU INTERREG Baltic Sea Region project aimed at decreasing and removing microplastics in the Baltic Sea (2019-2021)",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 225,
@@ -18346,7 +18984,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "The Sea Anemone Bunodosoma Cangicum as a Potential Biomonitor for Microplastics Contamination on the Brazilian Amazon Coast",
+    "summary": "This is the first evidence of microplastic ingestion by Amazon invertebrates.    Plastic ingestion was correlated with anemones weight and number of ingested prey.    The polymers identified by FTIR method were PET, PP, PA, PU, PE, ABS, PS and Rayon.    Sea anemones ingested more plastic debris at the most populous sites.    B. cangicum is a potential indicator of plastic pollution at the Amazon coast.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 226,
@@ -18446,7 +19087,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Redeco",
+    "summary": "We collected fishing nets that were going to be discarded by local fishermen to be reused and made into a bag. This bag can be used for fruits and vegetables on the market or for packaging products. But the most important factor is that this product is made using local labour and traditional knowledge from coastal communities, who sew the net bag by hand. We develop the production chain and guarantee its origin and equity. The bag is then sold in our marketplace, completely plastic-free.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 227,
@@ -18522,7 +19166,10 @@
     ],
     "countries": [
       "Finland"
-    ]
+    ],
+    "title": "The National Plastics Roadmap ",
+    "summary": "The Plastics Roadmap identifies measures used to reduce the harm caused by plastic waste and litter, help consumers deliver plastics to waste management, improve the efficiency of plastics recovery, recycling and product design, creating conditions for investments and innovations in the circular economy, and reducing the dependency on fossil raw ingredients by increasing bio-based and biodegradable solutions.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 228,
@@ -18634,7 +19281,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Somos do Mar Research",
+    "summary": "Sample grid, scientific diving, data collect, independent research, beach and dive spots",
+    "geo_coverage_type": "national"
   },
   {
     "id": 229,
@@ -18665,7 +19315,10 @@
     ],
     "countries": [
       "Thailand"
-    ]
+    ],
+    "title": "Thailand (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 230,
@@ -18759,7 +19412,10 @@
         "value": "2020-02-05 16:04:50 UTC"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "Venezuelan Plastic Corporation (Coveplast)",
+    "summary": "Public Company that develops the productive chain of plastic at the national level, facilitating the reduction of import of plastics and recovery of recyclable raw materials at the level: industrial, commercial and domestic; reducing the amount of plastic waste and the application of environmentally friendly technologies",
+    "geo_coverage_type": null
   },
   {
     "id": 231,
@@ -18851,7 +19507,10 @@
     ],
     "countries": [
       "Finland"
-    ]
+    ],
+    "title": "Meriroskahaaste",
+    "summary": "An idea competition was organized by the Ministry of the Environment to collect best ideas for reducing marine litter input.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 232,
@@ -18919,14 +19578,10 @@
         "value": "2020-07-28 14:23:10 UTC"
       }
     ],
-    "countries": [
-      "All",
-      "Dominican Republic",
-      "Indonesia",
-      "Malaysia",
-      "United States of America",
-      "Viet Nam"
-    ]
+    "countries": [],
+    "title": "Research",
+    "summary": "The Ocean Cleanup develops the most optimal cleanup technologies, To do so, it is essential that we truly understand the problem. Unfortunately, very little is known about the properties and dynamics of ocean plastic pollution – this is why we invest in scientific research. By understanding the sources, transport, and fate of plastic in the ocean, we create the foundation onto which we develop our cleanup solutions.",
+    "geo_coverage_type": "global"
   },
   {
     "id": 233,
@@ -19027,7 +19682,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Project \"Building Knowledge to Combat Marine Litter: The plan of monitoring and assessment of marine litter of São Paulo state, Brazil\"",
+    "summary": "To create and engage a stakeholders' network to build a participatory plan for monitoring and assessing marine litter in São Paulo State, Brazil",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 234,
@@ -19054,7 +19712,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/inputs_on_faos_plastics_reduction_activities_in_operations.pdf#overlay-context=stocktaking-submissions"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "Food and Agriculture Organization Headquarters, Rome Italy, Corporate Services Department, Corporate Environmental Responsibility Team (Narrative Submission UN Organizations)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named United Nation  Organization.",
+    "geo_coverage_type": null
   },
   {
     "id": 235,
@@ -19158,7 +19819,10 @@
       "Germany",
       "Poland",
       "Sweden"
-    ]
+    ],
+    "title": "MARELITT Baltic – Reducing the impact of marine litter in the form of derelict fishing gear in the Baltic Sea",
+    "summary": "“MARELITT Baltic – Reducing the impact of marine litter in the form of derelict fishing gear in the Baltic Sea”, and Interreg funded project concluded in 2018. The work conducted during three years has produced among other outputs the so called \"Baltic Sea Blueprint“, a report containing policy recommendations on mapping of hot spots on DFG, their retrieval, the management of the retrieved FG as well as preventive measures.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 236,
@@ -19309,7 +19973,10 @@
       "Tunisia",
       "Uganda",
       "United Republic of Tanzania"
-    ]
+    ],
+    "title": "Waste Wise Cities",
+    "summary": "Waste Wise Cities is a city network launched by Executive Director of UN-Habitat with a call to action for global challenge of waste management. As of 1 February 2020, more than 140 cities joined the campaign all over the world. The campaign has 4 action areas including knowledge and good practice sharing, waste data enhancement, education and advocacy and bankable project development support. ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 237,
@@ -19413,7 +20080,10 @@
       "Philippines",
       "Sri Lanka",
       "Viet Nam"
-    ]
+    ],
+    "title": "Municipal Waste Recycling Program",
+    "summary": "USAID provides financial support and technical assistance to local non-governmental partners, who are working with local businesses, women’s associations, municipal governments and others, to improve solid waste management and waste recycling efforts in and around cities. USAID also  convenes stakeholders to support innovative and/or scalable solid waste management practices and to increase investment in municipal waste recycling. USAID-funded programs also promote social inclusion, empower women and youth, generate jobs and economic growth, and strengthen resilience while addressing the problem of mismanaged plastics waste. USAID’s initial efforts have focused in four Asian countries that are among the largest contributors to plastic waste in the ocean: Indonesia, Philippines, Sri Lanka and Vietnam.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 238,
@@ -19485,7 +20155,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Awareness Raising",
+    "summary": "Awareness raising through social media",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 239,
@@ -19516,7 +20189,10 @@
     ],
     "countries": [
       "New Zealand"
-    ]
+    ],
+    "title": "New Zealand Narrative Submission 1: Northland Regional Council (NRC)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 240,
@@ -19640,7 +20316,10 @@
     ],
     "countries": [
       "Ecuador"
-    ]
+    ],
+    "title": "Abundancia y Distribución Del Plastico En UN Sector De La Zona Marino Costera De Manabi-Ecuador ",
+    "summary": "La recolección se realizó en 8 estaciones, una vez por semana en 3 zonas (turística, comercial y urbana), abarcando desde Bahía de Caráquez hasta la parroquia de Leónidas Plaza. Cada zona estuvo dividida en estaciones, la zona turística 4 estaciones (playa-estuario), 2 estaciones en la zona comercial y 2 estaciones en la zona urbana. La recolección se realizó durante 8 meses, desde mayo hasta diciembre del 2018, donde se abarcaron 2 periodos ambientales: sequía y lluvia. El tramo de recolección fue de 3 kilómetros. Para recolección del plástico se empleó la metodología del barrido, donde participaron cuadrillas de 5 estudiantes por estación, empleándose sacos de yute. Posteriormente, los desechos fueron pesados. Se recolectaron en total 760,4 kg de desechos plásticos procedentes de las 8 estaciones, de los cuales 410,4 kg corresponden a la época de lluvia y 350 kg a la época seca, con la mayor abundancia en la zona turística con 430 Kg, seguida de la zona comercial 166,8 kg y 163,6 kg en la zona poblada. ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 241,
@@ -19757,7 +20436,10 @@
     ],
     "countries": [
       "Bangladesh"
-    ]
+    ],
+    "title": "Integrated Approach Towards Sustainable Plastics Use and (Marine) Litter Prevention in Bangladesh",
+    "summary": "It is expected that the project will start a transition towards sustainable plastics use and marine litter prevention as evidenced through strengthened policy framework, improved institutional capacity and enhanced responsibility and action of key stakeholders in society, industry, local government and the waste management sector.     The project outputs concern the development of policy and the creation of partnerships for implementation, and fostering community awareness and action (on low plastics and litter free consumption), industry awareness and action (on plastics waste minimization through preventive techniques in manufacturing and product design) and recycling sector development (for improved recovery and recycling, reduced leakage and environmentally sound disposal).   ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 242,
@@ -19866,7 +20548,10 @@
     "countries": [
       "New Zealand",
       "Samoa"
-    ]
+    ],
+    "title": "Litter Intelligence: Data, Insights and Action",
+    "summary": "Citizen Science programme and technology platform to monitor beach-cast litter in Aotearoa / New Zealand. Open data. Schools education programme focused on connection to nature, action competence and behaviour change for action to reduce litter and plastics in the marine environment. ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 243,
@@ -19968,7 +20653,10 @@
     ],
     "countries": [
       "Nigeria"
-    ]
+    ],
+    "title": "Interfaith Partnership for Sustainable and Clean Environment in Nigeria/Interfaith Ocean and Land Plastic Litter Initiative",
+    "summary": "° Ocean Plastic Gathering for Bailing  ° Land Plastic Litter Gathering for Bailing  ° Youth Empowerment Programme on Plastic Littering ( Pick 4 Income Initiative)  ° Bailing of Ocean and Land Plastics for Recycling.  ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 244,
@@ -20045,7 +20733,10 @@
     "countries": [
       "United States of America",
       "Other"
-    ]
+    ],
+    "title": "Cleaning the Ocean",
+    "summary": "The Ocean Cleanup is developing a passive cleanup method, which uses the natural oceanic forces to rapidly and cost-effectively clean up the plastic already in the oceans. With a full fleet of cleanup systems in the Great Pacific Garbage Patch, we aim to clean up 50% of its plastic every five years.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 245,
@@ -20121,9 +20812,10 @@
         "value": "2020-02-14 08:14:07 UTC"
       }
     ],
-    "countries": [
-      "All"
-    ]
+    "countries": [],
+    "title": "Assessment on Sources, Pathways and Hazards of Litter including Plastic Litter and Microplastics Pollution",
+    "summary": "Immediately strengthen scientific and technological knowledge with regard to marine litter including marine plastic litter and microplastics  Compiling available scientific and other relevant data and information",
+    "geo_coverage_type": "global"
   },
   {
     "id": 246,
@@ -20154,7 +20846,10 @@
     ],
     "countries": [
       "New Zealand"
-    ]
+    ],
+    "title": "New Zealand Narrative Submission 2: Northland Regional Council (NRC)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 247,
@@ -20185,7 +20880,10 @@
     ],
     "countries": [
       "New Zealand"
-    ]
+    ],
+    "title": "Taupo District Council Narrative Submission (New Zealand)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 248,
@@ -20216,7 +20914,10 @@
     ],
     "countries": [
       "Republic of Korea"
-    ]
+    ],
+    "title": "Republic of Korea (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 249,
@@ -20247,7 +20948,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Brazil – Argonauta Institute for Coastal and Marine Conservation in partnership with the Ubatuba´s Aquarium (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 250,
@@ -20342,7 +21046,10 @@
     ],
     "countries": [
       "Togo"
-    ]
+    ],
+    "title": "Students and Agenda 2030",
+    "summary": "Raise awareness amongst students",
+    "geo_coverage_type": "national"
   },
   {
     "id": 251,
@@ -20451,7 +21158,10 @@
       "Poland",
       "Russian Federation",
       "Sweden"
-    ]
+    ],
+    "title": "Best Practice on the Disposal of Old Pleasure Boats",
+    "summary": "A report on the development of best practice on the disposal of old pleasure boats in the Baltic Sea is available, as well as information on activities and economic incentives aimed at appropriate disposal of End of Life Boats (ELB) including information from OSPAR and Barcelona Secretariats as well as activities at the international level (e.g. IMO London Convention).",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 252,
@@ -20544,7 +21254,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "Funded Project: Unpackaging Alameda",
+    "summary": "Technical assistance to assist restaurants in switching their food serviceware to reusable products.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 253,
@@ -20617,7 +21330,10 @@
     ],
     "countries": [
       "Montenegro"
-    ]
+    ],
+    "title": "Preparation of the Legal Framework",
+    "summary": "The Law on marine environment protection transposing the EU Marine Strategy Framework Directive was adopted by the Parliament of Montenegro in December 2019. This Law sets the framework for the preparation of the national marine environment protection strategy in line with the Directive's requirements. That means that a series of documents will be produced for Montenegro focusing around 11 areas of marine ecosystem including marine litter. This includes also the alignment of the national monitoring program of marine environment with MSFD requirements, including regular monitoring of marine litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 254,
@@ -20717,7 +21433,10 @@
     ],
     "countries": [
       "Ecuador"
-    ]
+    ],
+    "title": "Project for the Recovery of Protected Areas in the City of Guayaquil, Estero Salado and Isla Santay",
+    "summary": "1. Environmental education campaigns  2. Cleaning Mingas with dwellers of the estuary  3. Mangrove area reforestation  4. Control of waste management of commercial devices  5. Recovery of the estuary riverbank",
+    "geo_coverage_type": "national"
   },
   {
     "id": 255,
@@ -20829,7 +21548,10 @@
     ],
     "countries": [
       "Togo"
-    ]
+    ],
+    "title": "Make Lome Plastic Free",
+    "summary": "Public awareness about the impact of plastic on health: breeding ground for disease pathogens, dioxin through burning, etc",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 256,
@@ -20894,7 +21616,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Suape Zero landfill",
+    "summary": "Zero landfill, pvc scrap recycling",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 257,
@@ -20925,7 +21650,10 @@
     ],
     "countries": [
       "Finland"
-    ]
+    ],
+    "title": "Finland (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 258,
@@ -21044,7 +21772,10 @@
     ],
     "countries": [
       "Colombia"
-    ]
+    ],
+    "title": "Formulation of the National Plan for the Sustainable Management of Single-Use Plastics",
+    "summary": "Formulation along with the main stakeholders of a plan which includes:  - Substitution of single-use plastic products  -  Establishment of Extended Producer Responsibility (EPR)  - Establishment of Communication and Citizen Culture program   - Articulation of the productive chain ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 259,
@@ -21075,7 +21806,10 @@
     ],
     "countries": [
       "Trinidad and Tobago"
-    ]
+    ],
+    "title": "Trinidad and Tobago (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 260,
@@ -21172,7 +21906,10 @@
       "South Africa",
       "Thailand",
       "Viet Nam"
-    ]
+    ],
+    "title": "Local and Regional Capacity Building to Facilitate National Action to Control Plastic Pollution",
+    "summary": "Circular economy demonstration projects in 5 countries implemented.  Learning captured and scaled up ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 261,
@@ -21203,7 +21940,10 @@
     ],
     "countries": [
       "Morocco"
-    ]
+    ],
+    "title": "Morocco (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 262,
@@ -21230,7 +21970,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/template_for_implementation_followup_map.pdf"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "UNEP/ Mediterranean Action Plan (MAP) Barcelona Convention Secretariat (Narrative Submission UN Organizations)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named United Nation  Organization.",
+    "geo_coverage_type": null
   },
   {
     "id": 263,
@@ -21301,9 +22044,10 @@
         "value": "2020-01-23 21:26:02 UTC"
       }
     ],
-    "countries": [
-      "Other"
-    ]
+    "countries": [],
+    "title": "UNDP Ocean Innovation Challenge (Global Water and Ocean Governance Support Programme) ",
+    "summary": "In order to protect the oceans from pollution, among other objectives, the Facility plans to support the: design, manufacturing, supply chain and other innovations that serve to reduce plastics utilization and/or enhance plastics recovery, recycling and re-use; introduction of plastics waste collection, recycling and re-use programs in developing country municipalities including mechanisms for full cost recovery (such as container deposit laws) ",
+    "geo_coverage_type": "global"
   },
   {
     "id": 264,
@@ -21403,7 +22147,10 @@
       "Poland",
       "Russian Federation",
       "Sweden"
-    ]
+    ],
+    "title": "Principles for Design Reducing/ Preventing Marine Litter",
+    "summary": "A list of principles to improve the different phases of the design process in terms of reduction/prevention of marine litter generation steamed from the HELCOM-INTERREG Workshop on Marine Litter and Ecodesign held on 15 June 2018 in Berlin (Germany) has been drafted.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 265,
@@ -21498,9 +22245,10 @@
         "value": "2020-01-08 13:54:19 UTC"
       }
     ],
-    "countries": [
-      "All"
-    ]
+    "countries": [],
+    "title": "Updating the Technical Guidelines for the Identification and Environmentally Sound Management of Plastic Wastes and for their Disposal",
+    "summary": "At its sixth meeting held in December 2002, the Conference of the Parties (COP) to the Basel Convention adopted the technical guidelines for the identification and environmentally sound management (ESM) of plastic wastes and for their disposal. At its fourteenth meeting held in May 2019, in its decision BC-14/13, the COP decided to update the technical guidelines on plastic wastes and established a small intersessional working group. The group is led by China, Japan and the United Kingdom of Great Britain and Northern Ireland and consists of experts nominated by Parties and others. The group will prepare draft updated technical guidelines for consideration at the twelfth meeting of the Open-ended Working Group of the Basel Convention to be held in June 2020. A further revised version will then be considered at the fifteenth meeting of the COP to be held in May 2021 for possible adoption.  The technical guidelines include the following:  • Sources of plastic waste (pre-user and post-user)  • Environmentally sound and safe handling, compaction, transport, storage and shipping of plastic waste  • Health and safety issues  • Fire safety  • Second life applications for plastics material  • Energy recovery from plastic waste  • Final disposal of plastic waste  • Technical guidelines on the environmentally sound management of plastic-coated cables scrap  ",
+    "geo_coverage_type": "global"
   },
   {
     "id": 266,
@@ -21527,7 +22275,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/inputs_into_report_on_stocktaking_fia.pdf#overlay-context=stocktaking-submissions"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "Food and Agriculture Organization Fisheries Division Narrative Submission UN Organizations",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named United Nation  Organization.",
+    "geo_coverage_type": null
   },
   {
     "id": 267,
@@ -21558,7 +22309,10 @@
     ],
     "countries": [
       "Madagascar"
-    ]
+    ],
+    "title": "Madagascar (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 268,
@@ -21634,7 +22388,10 @@
     ],
     "countries": [
       "Japan"
-    ]
+    ],
+    "title": "Collection of Discharged Wastes",
+    "summary": "Japan promotes collection and treatment of marine litter by local governments, through utilizing the “Project for promoting local measures against coastal marine debris” based on the “Marine Litter Act” (FY2018 second revised budget: 3.1 billion yen; FY2019 budget: 400 million yen). In addition, fishery multi-functional measures (FY2019 budget: 2.9 billion yen) are being used to encourage fishermen to take action on the collection and treatment of marine litter including marine plastics, for the maintenance and recovery of the marine ecosystem. Furthermore, Japan promotes for local governments to cooperate with fishermen to bring back to port any litter that they collect while they are fishing by utilizing the subsidies under the “Project for promoting local measures against coastal marine debris” based on the “Marine Litter Act”.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 269,
@@ -21733,7 +22490,10 @@
     "countries": [
       "India",
       "Indonesia"
-    ]
+    ],
+    "title": "Clean Oceans through Clean Communities",
+    "summary": "The CLOCC (Clean Oceans through Clean Communities) Project intends to lead the development of waste management plans in communities where the potential to make a positive impact is high. This is done through first, organizing and developing a training program for representatives from local authorities on how to set up a safe and professional solid waste management system.  Second, through receiving assistance in the drafting and finalizing of local waste management plans.  And finally, through the development of innovative ways of raising finance or investments from the private sector. One will be to assist developing sorting centers to develop financially sound business models and bankable projects, the other will be in the form of co-investments with private investors (to reduce risk of their investments) and therefore attract more funding.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 270,
@@ -21854,7 +22614,10 @@
       "Rwanda",
       "Uganda",
       "U.K. of Great Britain and Northern Ireland"
-    ]
+    ],
+    "title": "Networking",
+    "summary": "The Governing Plastics Network is organised by the University of Nairobi in Kenya and the University of Surrey in the UK and is funded by UK Research and Innovation (UKRI) through the Global Challenges Research Fund (GCRF). The network works with policy makers, scientists, NGOs and other stakeholders in Ethiopia, Kenya, Malawi, Rwanda, Tanzania and Uganda and comprises two linked two-year projects:  1. PLASTICS POLLUTION GOVERNANCE FRAMEWORK NETWORK PROJECT  The project demonstrates the global, collaborative scope of the Global Engagement Networks, as researchers will be working with academics, businesses and other stakeholders from across Kenya, Uganda, Tanzania, Ethiopia, Rwanda and Malawi, as well as in the UK, Denmark, Sweden and the Caribbean.  2. THE WICKED PROBLEM OF PLASTICS AND THE DISCOURSE SURROUNDING ITS GOVERNANCE  This project seeks to improve how we use and dispose of plastic by looking at how we talk about plastic. ",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 271,
@@ -21966,7 +22729,10 @@
     "countries": [
       "Brazil",
       "United States of America"
-    ]
+    ],
+    "title": "Beach Cleaning",
+    "summary": "Awareness-raising promotes interaction with the local community and mobilizes them to head to the beach to help.  The action starts with the collection of the garbage in the sand strip, afterwards the counting, weighing and annotation of the obtained data.  At the end, people analyze how was the day and describe in a dynamic their experiences and what they will take of this practice in their lives.  We also provide a marine pollution information stand and games on the theme for children.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 272,
@@ -22067,7 +22833,10 @@
     ],
     "countries": [
       "Other"
-    ]
+    ],
+    "title": "Investigating the Link Between Marine Litter and Mosquito-borne Diseases",
+    "summary": "This study mapped the incidence of mosquito borne public health concerns in the Caribbean to compare this with plastics consumption and to put the findings into the context of the zika virus. Puerto Rico was used to examine this relationship because the marine litter data was extensive and robust. By overlaying GIS data the study was able to investigate potential correlations and analyse various environmental, health, and demographic data to evaluate issues of poverty and gender as they may be related to incidence of disease and risk. This study revealed that there was a relationship between the cases of ZikV and marine debris density, especially of large marine debris (i.e. tires). These results also suggest that coastal communities may want to prioritize the clean up of large marine debris to limit the habitat for Aedes aegypti habitat and subsequent ZikV transmission",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 273,
@@ -22186,7 +22955,10 @@
     ],
     "countries": [
       "Other"
-    ]
+    ],
+    "title": "Community Education",
+    "summary": "Pojects & lessons with island school.  Working with womens and community groups.  Working with uniformed organisations.  Environmental education.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 274,
@@ -22286,7 +23058,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "Marine Debris Removal Activities",
+    "summary": "NOAA’s Marine Debris Program supports locally driven, community-based marine debris removal projects. These projects benefit coastal habitat, waterways, and wildlife including migratory fish. They are also important efforts to engage local communities to build understanding and awareness on the issue of marine debris and to foster more sustainable behaviors for personal and household consumption, recycling and waste management. ",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 275,
@@ -22394,7 +23169,10 @@
       "Poland",
       "Russian Federation",
       "Sweden"
-    ]
+    ],
+    "title": "HELCOM Ministerial Declaration 2018",
+    "summary": "In the Ministerial Meeting held on 2018, HELCOM countries reiterated their commitments to address marine litter.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 276,
@@ -22493,7 +23271,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "Marine Debris Action Planning",
+    "summary": "NOAA’s Marine Debris Program facilitates and coordinates local action to comprehensively address the many aspects of marine debris by leading a stakeholder driven process to develop marine debris action plans and emergency response guides for severe marine debris events. This action plans describe specific goals, objectives, strategies and recommended actions with the overarching goal of reducing marine debris in a discrete geography and thereby reducing its ecological, social and economic impacts.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 277,
@@ -22585,7 +23366,10 @@
     ],
     "countries": [
       "Lebanon"
-    ]
+    ],
+    "title": "Conversion of Plastics Rejects into ROGP",
+    "summary": "Conversion of plastics rejects into a new material which is infinitely recyclable. Creating value and new economy for plastics currently discarded.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 278,
@@ -22683,7 +23467,10 @@
     ],
     "countries": [
       "China"
-    ]
+    ],
+    "title": "Shouhuhaianxian2018-2019",
+    "summary": "‘Guard the Coastline’ China Coastline Monitoring and Cleanup (CCMC),Rendu Ocean decided to utilize its network to motivate China coastal NGOs and volunteers to join marine debris monitoring and cleanup.  The local partners collect data regularly, our research team analyze the data and work out the China’s Beach Litter Status Annual Report.   The Project, launched on year 2014 end, the number of monitoring sites has grown from 12 in 2015 to 49 in 2019. The local partners follow the Operation Manual to implement marine debris sampling on every odd month end, 6 times in total each year. Based on the data collected, we have released China’s Beach Litter Status Annual Report of 2015, 2016 and 2017, and published the 1st China Marine Debris Brand Audit Research Report in 2018.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 279,
@@ -22781,7 +23568,10 @@
     ],
     "countries": [
       "Finland"
-    ]
+    ],
+    "title": "Street Litter/Storm Water Info Campaign",
+    "summary": "Two-week nudging campaign during summer 2019 to visualize the role of storm water drains as a marine litter pathway. Included decorative storm water drains and infographics in Finnish cities along the coastline: Porvoo, Turku and Vantaa. Central messages: most common litter items, role stormwaters as marine litter pathways, hazards of marine litter to the environment.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 280,
@@ -22882,7 +23672,10 @@
       "Poland",
       "Russian Federation",
       "Sweden"
-    ]
+    ],
+    "title": "Proposed Actions to Address ALDFG in the Baltic Sea",
+    "summary": "Preliminary proposed actions to address ALDFG in the Baltic Sea have been identified",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 281,
@@ -22913,7 +23706,10 @@
     ],
     "countries": [
       "New Zealand"
-    ]
+    ],
+    "title": "Algalita Marine Research and Education South Pacific Trust Narrative Submission [Algalita South Pacific] New Zealand",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 282,
@@ -22994,7 +23790,10 @@
       "Indonesia",
       "Malaysia",
       "Viet Nam"
-    ]
+    ],
+    "title": "Rivers Cleanup",
+    "summary": "Rivers are the main source of ocean plastic pollution. They are the arteries that carry waste from land to the ocean. Our research found that 1000 rivers are responsible for roughly 80% of the pollution. The Interceptor is The Ocean Cleanup’s answer for river plastic waste. It is the first scalable solution to prevent plastic from entering the world’s oceans from rivers.  It is 100% solar-powered, extracts plastic autonomously, and is capable of operating in the majority of the world’s most polluting rivers.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 283,
@@ -23138,7 +23937,10 @@
     ],
     "countries": [
       "Ecuador"
-    ]
+    ],
+    "title": "Capacity-building ",
+    "summary": "Our Education Programme is held on public schools at coastal communities in Ecuador. We try to rise ocean awareness through audiovisuals (diving, marine life, marine litter), outdoor experiences (beach clean up and ecomurals), and participatory stories, encouraging kids to change plastic consumption habits, be more familiar to ocean issues, protect marine biodiversity, and be Ocean Heroes.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 284,
@@ -23218,7 +24020,10 @@
       "Singapore",
       "United States of America",
       "Viet Nam"
-    ]
+    ],
+    "title": "APEC - Marine Debris Roadmap",
+    "summary": "A roadmap on marine debris adopted by APEC Economies in August, 2019.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 285,
@@ -23329,7 +24134,10 @@
     ],
     "countries": [
       "Maldives"
-    ]
+    ],
+    "title": "Environmental Protection Awareness Programme for School Children",
+    "summary": "The pilot programme aimed to include young people in exploring how they can become better informed about environmental protection (incl. reduced plastic waste) in their schools and communities. A child friendly toolkit was developed at the end and is ready for scaling up.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 286,
@@ -23360,7 +24168,10 @@
     ],
     "countries": [
       "Israel"
-    ]
+    ],
+    "title": "Israel (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 287,
@@ -23391,7 +24202,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "Global Ghost Gear Initiative (GGGI) is a program of Ocean Conservancy, based in Washington, DC, USA. (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 288,
@@ -23422,7 +24236,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Brazil (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 289,
@@ -23453,7 +24270,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Cristalcopo Descartaveis S/A (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 290,
@@ -23529,7 +24349,10 @@
     ],
     "countries": [
       "India"
-    ]
+    ],
+    "title": "Plastic Waste Management Programme: A Partnership",
+    "summary": "This initiative is designed to minimize negative impacts and risks to environment and to human health in India, by enhancing sustainable Plastic Waste Management practices, through a socio-technical model (segregation/collection/ recycling) while ensuring compliance with regulations, to improve use of resources and in line with Swachh Bharat Mission in India; in this project the waste pickers (Safaii Mitras) will be institutionalized with respective governance mechanisms and attain improved social conditions. Project’s targets at the end of period are, to better manage an amount more than 85,000 MT of plastic waste and to improve socio-economic conditions of 30,000 plus Safaii Mitras. ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 291,
@@ -23654,7 +24477,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "Marine Debris Prevention Activities – Education and outreach",
+    "summary": "The U.S. National Oceanic and Atmospheric Administration Marine Debris Program supports projects in the U.S. that use outreach and education as a way to prevent marine debris. These projects aim to change behavior, especially among the youth age group, and provide them with hands-on experiences that deepen their understanding of the marine debris problem. NOAA Marine Debris Program supports numerous outreach initiatives that aim to increase awareness of this issue and get people involved in the fight against marine debris.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 292,
@@ -23773,7 +24599,10 @@
     ],
     "countries": [
       "South Africa"
-    ]
+    ],
+    "title": "The Project for “Support for Transitioning from Conventional Plastics to More Environmentally Sustainable Alternatives” in South Africa",
+    "summary": "The project would consist of two components: one will support the identification and implementation of opportunities for sustainable alternative materials, including bioplastics, and the second will support the implementation of the Industry Waste Management Plan of the plastic packaging industry by building up the capacity and integration of the informal waste sector; with a view to enhance waste separation at source to increase the quality and amount of collected recyclables. ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 293,
@@ -23904,7 +24733,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Environmental Education Activities - Lectures for graduation students (In Santa Catarina State - Brazil)",
+    "summary": "In addition to marine animal rehabilitation and necropsy activities, we develop environmental education activities, such as lectures for students in schools and universities, showing the real impacts we find on marine animals due to ingestion of waste (such as the number of deaths from marine debris per year) and how we can act as a society member to reduce the use of plastic, with a focus on marine species conservation.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 294,
@@ -24006,7 +24838,10 @@
       "Germany",
       "Indonesia",
       "Switzerland"
-    ]
+    ],
+    "title": "Awareness Raising",
+    "summary": "Awareness raising activities in schools, trade fair, corporate companies",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 295,
@@ -24076,7 +24911,10 @@
     ],
     "countries": [
       "Other"
-    ]
+    ],
+    "title": "ESCAP 76th Commission Theme Study",
+    "summary": "At the 75th Session, Member States requested continuation of the work on the ocean and decided the theme of its seventy-sixth session (18-22 May 2020) as: “Promoting economic, social and environmental cooperation on oceans for sustainable development.” In preparation for the theme of the 76th Commission session, ESCAP is developing a theme study to inform and guide the dialogue sessions of Member States. After identifying the priorities for the Asia-Pacific region, the study was structured around three main focus areas: sustainable maritime connectivity, sustainable fisheries and plastic pollution in the marine environment. ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 296,
@@ -24177,7 +25015,10 @@
     ],
     "countries": [
       "Finland"
-    ]
+    ],
+    "title": "TEKONURMI (Artificial turf)",
+    "summary": "This is a project aiming at identifying the emmission points and pathways of the infill from different football fields ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 297,
@@ -24250,9 +25091,10 @@
         "value": "2020-06-24 20:14:12 UTC"
       }
     ],
-    "countries": [
-      "All"
-    ]
+    "countries": [],
+    "title": "Development and Analysis of a Global Plastics Policy Inventory",
+    "summary": "Study aiming to synthesize the policy response of governments to the global plastic pollution problem, as a basis for more rigorous monitoring of progress (as called for in Resolution 4/6 of the 2019 United Nations Environment Assembly (UNEA) meeting) and to inform future public policies; resulting in an online, publicly accessible global Plastics Policy Inventory that we will update.",
+    "geo_coverage_type": "global"
   },
   {
     "id": 298,
@@ -24283,7 +25125,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Brazil, Instituto Sea Shepherd Brasil (Sea Shepherd Brazil Institute) (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 299,
@@ -24310,7 +25155,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/adhoc_template_for_implementation_followup_1_icenecdev_cameroon2.pdf"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "ICENEDEV (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": null
   },
   {
     "id": 300,
@@ -24341,7 +25189,10 @@
     ],
     "countries": [
       "Denmark"
-    ]
+    ],
+    "title": "Denmark (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 301,
@@ -24372,7 +25223,10 @@
     ],
     "countries": [
       "Mexico"
-    ]
+    ],
+    "title": "Mexico (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 302,
@@ -24508,7 +25362,10 @@
     ],
     "countries": [
       "Canada"
-    ]
+    ],
+    "title": "Nova Scotia Beach Garbage Awareness",
+    "summary": "Collecting marine garbage from The Bay of Fundy shoreline , counting and weighing it, taking photos and posting to FB",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 303,
@@ -24537,7 +25394,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/aheg-uk-stocktake.pdf"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "United Kingdom (Member State Narrative Submission)",
+    "summary": "This submission was made to the stocktake via a narrative reporting on actions taken by the relevant member state.",
+    "geo_coverage_type": null
   },
   {
     "id": 304,
@@ -24568,7 +25428,10 @@
     ],
     "countries": [
       "Netherlands"
-    ]
+    ],
+    "title": "Netherlands (Member State Narrative Submission to G20 Implementation Framework for Actions on Marine Plastic Litter)",
+    "summary": "This narrative was submitted to the G20 Implementation Framework for Actions on Marine Plastic Litter.",
+    "geo_coverage_type": "national"
   },
   {
     "id": 305,
@@ -24597,7 +25460,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/oceancare_submission_stocktacking_unep_20200731.pdf#overlay-context=stocktaking-submissions"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "OceanCare (Narrative Submission Major Group and Stakeholders)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named Major Group or Stakeholder.",
+    "geo_coverage_type": null
   },
   {
     "id": 306,
@@ -24702,7 +25568,10 @@
       "Slovenia",
       "Spain",
       "Tunisia"
-    ]
+    ],
+    "title": "MedBioLitter: An open database on marine litter and biodiversity science",
+    "summary": "MedBioLitter is an open database and spatial geoportal on current scientific knowledge related to marine litter and biodiversity interactions in the Mediterranean region. The database includes, in addition to the geolocation of more than 470 studied areas and species, direct access to more than 100 articles; the most recent scientific literature on marine litter and biodiversity in the Mediterranean including spatial data, metadata and authorship.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 307,
@@ -24806,7 +25675,10 @@
     ],
     "countries": [
       "Brazil"
-    ]
+    ],
+    "title": "Pellets Zero Program - OCS®",
+    "summary": "Plastivida as a licensor of the International Program Operation Clean Sweep OCS® – started the implementation process of Pellets Zero Program - OCS®. The implementation conforms to the requirements established by the Plastics Sectoral Forum ‘For a Clean Ocean’ and is being carried out in the petrochemical industry, companies involved in this industry’s logistics as well as the transformation industry. The program’s goal is to help those companies reduce occasional plastic pellets, flakes and powder loss to the marine environment.   The program basis is the Manual of Pellets Zero Program - OCS®, adapted to the Brazilian reality. The Manual seeks to reach the goals set by Sustainable Development Goal #14 (SDG-14) related to the conservation and sustainable use of oceans as well as the ones committed by the governments of various countries and by civil society international organizations during the United Nations Ocean Conference in 2017.  ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 308,
@@ -24833,7 +25705,10 @@
         "value": "https://papersmart.unon.org/resolution/uploads/escap_template_for_implementation_followup_1.pdf#overlay-context=node/296"
       }
     ],
-    "countries": []
+    "countries": [],
+    "title": "United Nations Economic and Social Commission for Asia and the Pacific (Narrative Submission UN Organizations)",
+    "summary": "This submission was made to the stocktake via a narrative, which reported on actions taken by the named United Nation  Organization.",
+    "geo_coverage_type": null
   },
   {
     "id": 309,
@@ -24932,7 +25807,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "California Ocean Litter Prevention Strategy",
+    "summary": "A high-level strategy document outlining actions the State and stakeholders can take to address ocean litter.",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 310,
@@ -25038,7 +25916,10 @@
     ],
     "countries": [
       "U.K. of Great Britain and Northern Ireland"
-    ]
+    ],
+    "title": "\"On the Go\" Plastic Footprint Calculator",
+    "summary": "An online survey tool to help individuals understand how much plastic they use and what their biggest uses are. They also tell us about actions they take and the barriers they face to taking more action to reduce plastic.  The tool provides recommendations for how they can reduce use of their top three items. ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 311,
@@ -25133,7 +26014,10 @@
     ],
     "countries": [
       "Montenegro"
-    ]
+    ],
+    "title": "Improved Submission of Marine Litter-Related and Strengthened Submission of Socioeconomic-Related Data Required for the Implementation of Selected Measures to Reduce Single Use Plastic Bags and PET Bottles",
+    "summary": "2.1. Develop data inventories to improve submission of marine litter-related data to MED POL Info/MAP system for IMAP Common Indicators 22 and 23:  a.\tDesign and develop IMAP-compatible data inventories for IMAP Common Indicators 22 and 23  b.\tCollect all the available data and information at national level on IMAP Common Indicators 22 and 23, and include them in dedicated inventories;  c.\tCarry out dedicated surveys for beach, seafloor and floating marine litter at national level, based on existing surveys or design new as appropriate, to support the development of the inventories and the submission of the relevant data;  d.\tFormat data and inventories according to the MED POL Data Standards and Data Dictionaries for marine litter;  e.\tSubmit inventories and relevant data to MED POL Info/MAP system.     2.2. Develop data inventories to strengthen the submission of socioeconomic-related data required for the implementation of selected measures to reduce single-use plastic bags and PET bottles, and to support a relevant socioeconomic analysis:  a.\tDesign and develop inventories for the socioeconomic elements/aspects required for the implementation of selected measures for the reduction of single-use plastic bags and PET bottles;  b.\tCollect all the available data and information at national level related to the socio-economic aspects obtained from the implementation of the selected marine litter measures at national level;  c.\tCarry out dedicated surveys to support a socioeconomic analysis for the reduction of single-use plastic bags and PET bottles;  d.\tOrganize multi-stakeholder consultation meetings to address the socio-economic elements for single-use plastic bags and PET bottles, promote the dedicated surveys and engage national stakeholders to the process;  f.\tFormat data and inventories in consultation with MED POL;  g.\tSubmit inventories and relevant data to MED POL.  ",
+    "geo_coverage_type": "national"
   },
   {
     "id": 312,
@@ -25246,7 +26130,10 @@
       "Poland",
       "Russian Federation",
       "Sweden"
-    ]
+    ],
+    "title": "HELCOM Monitoring Sub-programme on Beach Litter",
+    "summary": "Following the adoption of common monitoring guidelines on beach litter in the Baltic Sea, efforts conducted led to the adoption of a HELCOM monitoring sub-programme on beach litter in 2018",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 313,
@@ -25316,7 +26203,10 @@
     ],
     "countries": [
       "United States of America"
-    ]
+    ],
+    "title": "California Container Deposits",
+    "summary": "Deposit return scheme",
+    "geo_coverage_type": "sub-national"
   },
   {
     "id": 314,
@@ -25398,7 +26288,10 @@
       "Malaysia",
       "Singapore",
       "South Africa"
-    ]
+    ],
+    "title": "Plastic Pacts",
+    "summary": "A country-specific multi-stakeholder alliance (civil sector, companies from across the plastics value chain, government) to set ambitious national targets on plastics and creating collective action towards these targets.",
+    "geo_coverage_type": "transnational"
   },
   {
     "id": 315,
@@ -25501,6 +26394,9 @@
     ],
     "countries": [
       "France"
-    ]
+    ],
+    "title": "Interreg Project Preventing Plastic Pollution (PPP)",
+    "summary": "In the Interreg PPP project, plastic pollution entering the catchments will be identified, quantified based on standardised approaches that will be evaluated. These data and conceptual model will be used to identify pollution hotspots and where interventions would be most effective.",
+    "geo_coverage_type": "transnational"
   }
 ]
