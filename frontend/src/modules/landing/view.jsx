@@ -56,6 +56,10 @@ const Landing = ({ history }) => {
     const countryObj = countries && country && countries.find(it => it.isoCode === country)
 
     const handleSummaryClick = (dataType) => {
+      if(counts === dataType.toUpperCase()){
+        setCountries(null)
+        setCounts('')
+      } else {
         const selected = data.map.map(x => ({
             ...x,
             name: x.isoCode,
@@ -63,6 +67,7 @@ const Landing = ({ history }) => {
         }));
         setCountries(selected);
         setCounts(dataType.toUpperCase());
+      }
     }
 
     return (
