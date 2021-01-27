@@ -32,6 +32,7 @@
   (let [pic-url (if-let [upload-picture (assoc-picture conn photo)]
                   upload-picture
                   (if picture picture nil))
+        affiliation (if (:name org) (:id (assoc-organisation conn org)) nil)
         profile {:picture pic-url
                  :title title
                  :first_name first_name
@@ -44,14 +45,15 @@
                  :about about
                  :geo_coverage_type nil
                  :country (get-country conn country)
-                 :affiliation (:id (assoc-organisation conn org))}]
-    (db.stakeholder/new-stakeholder conn profile)))
+                 :affiliation affiliation}]
+      (db.stakeholder/new-stakeholder conn profile)))
 
-(defn remap-profile [{:keys [id photo about approved_at
-                             title first_name role
-                             last_name linked_in
-                             twitter representation
-                             country org_name org_url]}]
+(defn remap-profile
+  [{:keys [id photo about approved_at
+           title first_name role
+           last_name linked_in
+           twitter representation
+           country org_name org_url]}]
   {:id id
    :title title
    :first_name first_name
@@ -84,9 +86,25 @@
 
 (defmethod ig/init-key :gpml.handler.profile/put [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
-    (if-let [profile (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
-      (resp/response (conj profile body-params))
-      (resp/response {}))))
+    (let [profile (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)
+          profile (conj profile body-params)
+          photo (if (:photo body-params)
+                  (if (re-find #"http" (:photo body-params))
+                    (:photo body-params)
+                    (assoc-picture (:spec db) (:photo body-params)))
+                  (:photo profile))
+          profile (assoc profile :picture photo)
+          org (:org profile)
+          profile (if (:url org) (assoc profile :url (:url org)) profile)
+          profile (if (:name org)
+                    (assoc profile :affiliation (:id (assoc-organisation (:spec db) org)))
+                    profile)
+          profile (if (:country body-params)
+                    (assoc profile :country (get-country (:spec db) (:country body-params)))
+                    profile)
+          _ (tap> profile)
+          _ (db.stakeholder/update-stakeholder (:spec db) profile)]
+      (resp/status 204))))
 
 (defmethod ig/init-key :gpml.handler.profile/approve [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
@@ -115,7 +133,7 @@
    [:photo {:optional true} string?]
    [:representation string?]
    [:country {:optional true} string?]
-   [:org {:optional true}
+   [:org {:optional true} map?
     [:map
      [:name {:optional true} string?]
      [:url {:optional true} string?]]]

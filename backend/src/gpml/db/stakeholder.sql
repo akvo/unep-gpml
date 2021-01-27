@@ -72,18 +72,16 @@ where id = :id;
 
 -- :name update-stakeholder :! :n
 -- :doc Update stakeholder column
-update stakeholder
-    set title = :title,
-        first_name = :first_name,
-        last_name = :last_name,
-        affiliation = :affiliation,
-        email = :email,
-        linked_in = :linked_in,
-        twitter = :twitter,
-        url = :url,
-        country = :country::integer,
-        representation = :representation,
-        about = :about,
-        geo_coverage_type = :v:geo_coverage_type::geo_coverage_type,
-        role = :v:role::stakeholder_role
+update stakeholder set
+--~ (when (contains? params :title) "title = :title")
+--~ (when (contains? params :first_name) ",first_name= :first_name")
+--~ (when (contains? params :last_name) ",last_name= :last_name")
+--~ (when (contains? params :affiliation) ",affiliation= :v:affiliation::integer")
+--~ (when (contains? params :linked_in) ",linked_in= :linked_in")
+--~ (when (contains? params :twitter) ",twitter= :twitter")
+--~ (when (contains? params :url) ",url= :url")
+--~ (when (contains? params :picture) ",picture= :picture")
+--~ (when (contains? params :country) ",country= :v:country::integer")
+--~ (when (contains? params :representation) ",representation= :representation")
+--~ (when (contains? params :about) ",about= :about, modified = now()")
 where id = :id;

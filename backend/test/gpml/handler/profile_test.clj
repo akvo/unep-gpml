@@ -30,7 +30,7 @@
    :title "Mr."
    :about "Lorem Ipsum"
    :country country
-   :picture "picture"
+   :picture picture
    :geo_coverage_type nil})
 
 (defn org-params [org-name org-url] {:name org-name :url org-url})
@@ -74,6 +74,82 @@
               :twitter "johndoe"}
              (:body resp)))
       (is (= "/image/profile/1" (-> resp :body :photo))))))
+
+(deftest handler-post-incomplete-test
+  (testing "New profile is created"
+    (let [system (ig/init fixtures/*system* [::profile/post])
+          handler (::profile/post system)
+          db (-> system :duct.database.sql/hikaricp :spec)
+          ;; create new country
+          _ (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
+          ;; John trying to sign up with new organisation
+          resp (handler (-> (mock/request :post "/")
+                            (assoc :jwt-claims {:email "john@org"})
+                            (assoc :body-params
+                                   (dissoc (new-profile "IND" nil)
+                                           :photo :affiliation
+                                           :twitter :linked_in))))]
+      (is (= 201 (:status resp)))
+      (is (= "John" (->(:body resp) :first_name)))
+      (is (= "Doe" (->(:body resp) :last_name)))
+      (is (= {:id 1
+              :about "Lorem Ipsum"
+              :country "IND"
+              :first_name "John"
+              :last_name "Doe"
+              :linked_in nil
+              :org {:name nil
+                    :url nil}
+              :photo nil
+              :representation "test"
+              :approved_at nil
+              :title "Mr."
+              :role "USER"
+              :twitter nil}
+             (:body resp))))))
+
+(deftest handler-put-test
+  (testing "Update profile once its signed up")
+    (let [system (ig/init fixtures/*system* [::profile/put])
+          handler (::profile/put system)
+          db (-> system :duct.database.sql/hikaricp :spec)
+          ;; create new country
+          country (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
+          ;; create other country
+          _ (db.country/new-country db {:name "Spain" :iso_code "SPA"})
+          org (db.organisation/new-organisation db {:name "Akvo"})
+          ;; John created account with country value Indonesia and organisation Akvo
+          _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
+          ;; John trying to edit their profile with newly organistaion
+          resp (handler (-> (mock/request :put "/")
+                            (assoc :jwt-claims {:email "john@org"})
+                            (assoc :body-params
+                                     (assoc (new-profile "IND" nil)
+                                             :about "Dolor sit Amet"
+                                             :country "SPA"
+                                             :first_name "Mark"
+                                             :org {:name "Unep" :url "https://unep.org"}
+                                             :photo "https://image.com"
+                                             :picture nil))))
+          _ (tap> resp)
+          profile (db.stakeholder/stakeholder-by-id db {:id 1})]
+      (is (= 204 (:status resp)))
+      (is (= {:id 1,
+              :email "john@org"
+              :title "Mr.",
+              :first_name "Mark",
+              :last_name "Doe",
+              :approved_at nil,
+              :country "SPA",
+              :linked_in "johndoe",
+              :twitter "johndoe",
+              :org_url "https://unep.org",
+              :org_name "Unep"
+              :photo "https://image.com",
+              :representation "test",
+              :role "USER",
+              :about "Dolor sit Amet"}
+             profile))))
 
 (deftest handler-get-test-has-profile
   (testing "Profile endpoint returns non empty response"
