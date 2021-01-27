@@ -11,7 +11,7 @@
       margin-bottom: 10px;
     }
     .summary{
-      width: 170px;
+      // width: 170px;
       border-radius: 3px;
       overflow: hidden;
       header{
@@ -33,18 +33,27 @@
         li{
           cursor:pointer;
           position: relative;
-          padding-left: 40%;
+          padding-left: 10px;
           padding-top: 10px;
           padding-bottom: 10px;
+          display: flex;
+          .text{
+            display: flex;
+            flex-direction: column;
+          }
           &:not(:last-child){
             border-bottom: 1px solid #DFECF3;
           }
+          .ant-switch{
+            margin-right: 10px;
+          }
+          
           b{
-            position: absolute;
-            width: 30%;
+            margin-left: auto;
+            padding-left: 10px;
+            display: inline-block;
+            margin-right: 10px;
             text-align: right;
-            left: 3px;
-            top: 14px;
             font-weight: bold;
             font-size: 20px;
             color: $primaryColor;
@@ -54,6 +63,7 @@
           .label{
             color: $primaryColor;
             font-weight: 700;
+            text-transform: capitalize;
           }
           span{
             color: #036799;

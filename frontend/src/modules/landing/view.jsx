@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Select } from 'antd';
+import { Button, Select, Switch } from 'antd';
 import { withRouter } from 'react-router-dom'
 import Maps from './maps'
 import './styles.scss'
@@ -79,14 +79,13 @@ const Landing = ({ history }) => {
             value={country}
             onChange={handleChangeCountry}
           />
-          <Summary clickEvents={handleSummaryClick} summary={data.summary} country={countryObj} />
+          <Summary clickEvents={handleSummaryClick} summary={data.summary} country={countryObj} counts={counts} />
         </div>
         }
         <Maps
           data={country ?  [{ name: country, itemStyle: { areaColor: "#26AE60" }}] : (counts ? countries : [])}
           clickEvents={clickEvents}
           tooltip={toolTip}
-          title={counts}
         />
         <div className="topics">
           <div className="ui container">
@@ -97,16 +96,19 @@ const Landing = ({ history }) => {
     )
 }
 
-const Summary = ({ clickEvents, summary, country }) => {
+const Summary = ({ clickEvents, summary, country, counts }) => {
   return (
     <div className="summary">
       <header>{!country ? 'Global summary' : 'Summary' }</header>
       <ul>
         {!country && summary.map((it, index) =>
-        <li key={`li-${index}`} onClick={e => clickEvents(Object.keys(it)[0])}>
+          <li key={`li-${index}`} onClick={e => clickEvents(Object.keys(it)[0])}>
+            <Switch size="small" checked={counts === Object.keys(it)[0].toUpperCase()} />
+            <div className="text">
+              <div className="label">{Object.keys(it)[0]}</div>
+              <span>in {it.countries} countries</span>
+            </div>
             <b>{it[Object.keys(it)[0]]}</b>
-            <div className="label">{Object.keys(it)[0]}</div>
-            <span>in {it.countries} countries</span>
           </li>
         )}
         {country && topicTypes.map(type =>
