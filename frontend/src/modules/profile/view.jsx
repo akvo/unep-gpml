@@ -2,6 +2,7 @@ import { Button, notification, Tabs } from 'antd'
 import React, { useRef, useState } from 'react'
 import api from '../../utils/api'
 import SignupForm from '../signup/signup-form'
+import AdminSection from './admin'
 import './styles.scss'
 const {TabPane} = Tabs
 
@@ -28,6 +29,11 @@ const ProfileView = ({ profile }) => {
             <SignupForm onSubmit={onSubmit} handleSubmitRef={ref => { handleSubmitRef.current = ref }} initialValues={profile} />
             <Button loading={saving} type="primary" onClick={(ev) => { handleSubmitRef.current(ev) }}>Update</Button>
           </TabPane>
+          {profile?.role === 'ADMIN' &&
+          <TabPane tab="Admin section" key="2">
+            <AdminSection />
+          </TabPane>
+          }
         </Tabs>
       </div>
     </div>
