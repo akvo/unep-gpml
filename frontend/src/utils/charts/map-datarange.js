@@ -1,10 +1,4 @@
 const mapDataRange = {
-    markArea: {
-        label: {
-            show:true,
-            distance:5
-        }
-    },
     dataRange: {
         top: 50,
         right: 10,

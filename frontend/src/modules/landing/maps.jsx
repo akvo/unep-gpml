@@ -50,7 +50,7 @@ const generateSteps = (arr) => {
 }
 
 const generateOptions = ({title, subtitle, data, tooltip}) => {
-    const steps = data.length !== 0 ? generateSteps(data) : {};
+    const steps = data.length > 1 ? generateSteps(data) : {};
     return {
         title: {
             text: title,
@@ -61,20 +61,17 @@ const generateOptions = ({title, subtitle, data, tooltip}) => {
         },
         tooltip: Chart.Opt.Maps.ToolTip(tooltip),
         backgroundColor: '#EAF6FD',
-        legend: { show: false },
+        legend: {show: false},
         series: [{
             name: title,
             type: 'map',
-            roam: true,
+            roam: 'move',
             map: 'unep-map',
             aspectScale: 1,
-            label: {show: false},
-            emphasis: {
-                label: {
-                    show: false,
-                }
-            },
             zoom: 1,
+            label: {show:false},
+            symbolSyze: 0,
+            emphasis: {label: {show: false}},
             itemStyle: {
                 areaColor: '#fff',
                 borderColor: '#79B0CC',
@@ -86,11 +83,11 @@ const generateOptions = ({title, subtitle, data, tooltip}) => {
                 }
             },
             data: [...data, ...Chart.Opt.Maps.DisputedArea],
+            showLegendSymbol: data.length === 1,
         }],
         ...steps,
         ...Chart.Opt.Maps.ToolBox,
-        ...Chart.Style.Text,
-        ...Chart.Style.Color}
+        ...Chart.Style.Text}
 }
 
 const Maps = ({

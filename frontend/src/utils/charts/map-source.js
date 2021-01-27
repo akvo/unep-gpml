@@ -8,7 +8,7 @@ const features = feature(
             ...x,
             properties:  {
                 name: !disputed ? x.properties.ISO3CD : "disputed-" + i,
-                cd: x.properties.name,
+                cd: x.properties.ROMNAM,
             }
         }
 });

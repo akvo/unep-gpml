@@ -59,7 +59,7 @@ const Landing = ({ history }) => {
         const selected = data.map.map(x => ({
             ...x,
             name: x.isoCode,
-            value: x[dataType]
+            value: x[dataType],
         }));
         setCountries(selected);
         setCounts(dataType.toUpperCase());
