@@ -12,8 +12,8 @@ const Chart = {
                 toolbox: {
                     show: true,
                     orient: "horizontal",
-                    left: "right",
-                    top: "top",
+                    top: 10,
+                    right: 10,
                     feature: {
                         myTool1: {
                             title: "Zoom In",

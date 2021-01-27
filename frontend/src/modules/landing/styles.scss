@@ -25,13 +25,18 @@
       background-color: #fff;
       border: 2px solid #DAE9F1;
       ul{
-        padding: 0 5px;
+        padding: 0px;
+        margin-bottom: 0px;
+        li:hover{
+          background-color: #EAEAEA;
+        }
         li{
+          cursor:pointer;
           position: relative;
           padding-left: 40%;
           padding-top: 10px;
+          padding-bottom: 10px;
           &:not(:last-child){
-            padding-bottom: 10px;
             border-bottom: 1px solid #DFECF3;
           }
           b{

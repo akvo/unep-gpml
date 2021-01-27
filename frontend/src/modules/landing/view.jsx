@@ -9,7 +9,8 @@ import api from '../../utils/api';
 const Landing = ({ history }) => {
     const [country, setCountry] = useState(null);
     const [countries, setCountries] = useState(null);
-    const [data, setData] = useState(null)
+    const [data, setData] = useState(null);
+    const [counts, setCounts] = useState("");
 
     const clickEvents = ({name, data}) => {
       if (!name.startsWith("disputed")) {
@@ -54,6 +55,16 @@ const Landing = ({ history }) => {
     const countryOpts = data ? data.map.map(it => ({ value: it.isoCode, label: it.name })) : []
     const countryObj = data && country && data.map.find(it => it.isoCode === country)
 
+    const handleSummaryClick = (dataType) => {
+        const selected = data.map.map(x => ({
+            ...x,
+            name: x.isoCode,
+            value: x[dataType]
+        }));
+        setCountries(selected);
+        setCounts(dataType.toUpperCase());
+    }
+
     return (
       <div id="landing">
         {data &&
@@ -68,13 +79,14 @@ const Landing = ({ history }) => {
             value={country}
             onChange={handleChangeCountry}
           />
-          <Summary summary={data.summary} country={countryObj} />
+          <Summary clickEvents={handleSummaryClick} summary={data.summary} country={countryObj} />
         </div>
         }
         <Maps
-          data={country ? [{ name: country, itemStyle: { areaColor: "#26AE60" }}] : []}
+          data={country ?  [{ name: country, itemStyle: { areaColor: "#26AE60" }}] : (counts ? countries : [])}
           clickEvents={clickEvents}
           tooltip={toolTip}
+          title={counts}
         />
         <div className="topics">
           <div className="ui container">
@@ -85,13 +97,13 @@ const Landing = ({ history }) => {
     )
 }
 
-const Summary = ({ summary, country }) => {
+const Summary = ({ clickEvents, summary, country }) => {
   return (
     <div className="summary">
       <header>{!country ? 'Global summary' : 'Summary' }</header>
       <ul>
         {!country && summary.map((it, index) =>
-          <li key={`li-${index}`}>
+        <li key={`li-${index}`} onClick={e => clickEvents(Object.keys(it)[0])}>
             <b>{it[Object.keys(it)[0]]}</b>
             <div className="label">{Object.keys(it)[0]}</div>
             <span>in {it.countries} countries</span>

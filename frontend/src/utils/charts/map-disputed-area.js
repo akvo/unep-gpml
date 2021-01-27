@@ -4,17 +4,9 @@ const disputed = mapSource.features
     .map(x => ({
         name: x.properties.name,
         itemStyle: {
-            areaColor: {
-                image: document.getElementById('map-area'),
-                repeat: 'repeat',
-            },
+            areaColor: '#DDD',
             emphasis: {
-                areaColor : {
-                    image: document.getElementById('map-area'),
-                    repeat: 'repeat',
-                    shadowColor: 'rgba(0, 0, 0, 0.5)',
-                    shadowBlur: 10
-                },
+                areaColor : '#DDD'
             }
         }
     }));

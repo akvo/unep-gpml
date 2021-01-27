@@ -1,12 +1,12 @@
 const mapDataRange = {
     markArea: {
-            label: {
-                show:true,
-                distance:5
-            }
+        label: {
+            show:true,
+            distance:5
+        }
     },
     dataRange: {
-        top: 40,
+        top: 50,
         right: 10,
         splitList: [
             {start: 25, label: 'Above 25'},

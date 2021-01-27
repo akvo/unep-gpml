@@ -1,44 +1,97 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
 import Chart from '../../utils/charts'
+import cloneDeep from 'lodash/cloneDeep';
 require("../../utils/charts/map-init.js");
 
-const generateOptions = ({title, subtitle, data, tooltip}) => ({
-    title: {
-        text: title,
-        left: 'center',
-        top: '20px',
-        subtext: subtitle,
-        ...Chart.Style.Text
-    },
-    tooltip: Chart.Opt.Maps.ToolTip(tooltip),
-    backgroundColor: '#EAF6FD',
-    legend: { show: false },
-    series: [{
-        name: title,
-        type: 'map',
-        roam: true,
-        map: 'unep-map',
-        aspectScale: 1,
-        emphasis: {
-            label: {
-                show: false,
-            }
+const generateSteps = (arr) => {
+    if (arr.length === 0) {
+        return false;
+    }
+    arr = arr.map(x => x.value);
+    const asc = arr => arr.sort((a, b) => a - b);
+    const quantile = (arr, q) => {
+        const sorted = asc(arr);
+        const pos = (sorted.length - 1) * q;
+        const base = Math.floor(pos);
+        const rest = pos - base;
+        return sorted[base + 1] !== undefined
+            ? (sorted[base] + rest * (sorted[base + 1]) - sorted[base])
+            : sorted[base];
+    };
+    const bottom = quantile(arr, .2);
+    const step = ((quantile(arr, 1)) - bottom) / 5;
+    const log10 = Math.ceil(Math.round(100*Math.log(step)/Math.log(10))/100);
+    let steps = [
+        Math.round(bottom, step, Math.pow(10,log10)),
+        Math.round(bottom + (step), step, Math.pow(10,log10)),
+        Math.round(bottom + (step * 2), step, Math.pow(10,log10)),
+        Math.round(bottom + (step * 3), step, Math.pow(10,log10)),
+    ];
+    steps = steps.map((x, i) => {
+        if (i === (steps.length -1)) {
+            return {start: x, label: `Above ${x}`};
+        }
+        if (x === 1) {
+            return false;
+        }
+        if (steps[i - 1] === 1) {
+            return {start: 1, end: x}
+        }
+        if (i === 0) {
+            return {start: 1, end: x}
+        }
+        return {start: steps[i - 1], end: x}
+    });
+    steps = [{end: 0, label:'0'},...steps.filter(x => x)];
+    const datarange = cloneDeep(Chart.Opt.Maps.DataRange);
+    datarange.dataRange.splitList = steps;
+    return datarange;
+}
+
+const generateOptions = ({title, subtitle, data, tooltip}) => {
+    const steps = data.length !== 0 ? generateSteps(data) : {};
+    return {
+        title: {
+            text: title,
+            left: 'center',
+            top: '20px',
+            subtext: subtitle,
+            ...Chart.Style.Text
         },
-        itemStyle: {
-            areaColor: '#fff',
-            borderColor: '#79B0CC',
+        tooltip: Chart.Opt.Maps.ToolTip(tooltip),
+        backgroundColor: '#EAF6FD',
+        legend: { show: false },
+        series: [{
+            name: title,
+            type: 'map',
+            roam: true,
+            map: 'unep-map',
+            aspectScale: 1,
+            label: {show: false},
             emphasis: {
-              areaColor: "#26AE60",
-              borderColor: '#26AE60',
-            }
-        },
-        data: [...data, ...Chart.Opt.Maps.DisputedArea],
-    }],
-    ...Chart.Opt.Maps.ToolBox,
-    ...Chart.Style.Text,
-    ...Chart.Style.Color
-})
+                label: {
+                    show: false,
+                }
+            },
+            zoom: 1,
+            itemStyle: {
+                areaColor: '#fff',
+                borderColor: '#79B0CC',
+                emphasis: {
+                  areaColor: "#26AE60",
+                  borderColor: '#26AE60',
+                  shadowColor: 'rgba(255,255,255,.5)',
+                  shadowBlur: 10,
+                }
+            },
+            data: [...data, ...Chart.Opt.Maps.DisputedArea],
+        }],
+        ...steps,
+        ...Chart.Opt.Maps.ToolBox,
+        ...Chart.Style.Text,
+        ...Chart.Style.Color}
+}
 
 const Maps = ({
     title,
