@@ -93,10 +93,10 @@
     (resp/response (db.event/pending-events (:spec db)))))
 
 (defmethod ig/init-key :gpml.handler.event/approve [_ {:keys [db]}]
-  (fn [{:keys [body-params]}]
+  (fn [{:keys [body-params admin]}]
     (if-let [_ (db.event/pending-event-by-id (:spec db) body-params)]
       (do
-        (db.event/approve-event (:spec db) body-params)
+        (db.event/approve-event (:spec db) (assoc body-params :approved_by (:id admin)))
         (resp/response {:message "Successfully Updated"
-                        :data (db.event/event-by-id (:spec db body-params))}))
+                        :data (db.event/event-by-id (:spec db) body-params)}))
       (resp/bad-request {:message (format "Event id %s does not exist" (:id body-params)) }))))

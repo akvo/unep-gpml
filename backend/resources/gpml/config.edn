@@ -50,6 +50,7 @@
                                            {:put {:summary "Approves the submission of an event"
                                                   :swagger {:tags ["event"]
                                                             :security [{:id_token []}]}
+                                                  :parameters {:body [:map [:id int?]]}
                                                   :handler #ig/ref :gpml.handler.event/approve}}]]]
                                         ["/landing"
                                          [""

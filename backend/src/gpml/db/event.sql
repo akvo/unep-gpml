@@ -35,7 +35,10 @@ select id from event where approved_at is null and id = :id
 
 -- :name approve-event :!
 -- :doc Approves an event by given id
-update event set approved_at = now() approved_by = :admin where id = :id
+update event
+   set approved_at = now(),
+       approved_by = :approved_by
+ where id = :id
 
 
 -- :name event-by-id :? :1
