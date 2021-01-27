@@ -12,6 +12,10 @@
              (map #(assoc {}
                           (keyword %) (summary (keyword %))
                           :countries (summary (keyword (str % "_countries"))))))
+        ;; FIXME: We return 3 events, and a single item for other
+        ;; topics. Events can be reduced to 2 when projects are
+        ;; included. But, the latest front-end shows only 1 event,
+        ;; anyway - so, we can get rid of this?
         take-counts (map #(or (and (= "event" %) 3) 1) topics)
         topics-data (->> topics
                          (map #(assoc {} :topic [%]))
