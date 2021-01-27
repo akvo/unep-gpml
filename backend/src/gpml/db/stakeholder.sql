@@ -27,8 +27,8 @@ update stakeholder set approved_at = now() where id = :id;
 
 -- :name new-stakeholder :<!
 -- :doc Insert a new stakeholder
-insert into stakeholder(picture, title, first_name, last_name, affiliation, email, linked_in, twitter, url, country, representation, about, geo_coverage_type, approved_at)
-values(:picture, :title, :first_name, :last_name, :affiliation, :email, :linked_in, :twitter, :url, :country::integer, :representation, :about, :v:geo_coverage_type::geo_coverage_type, now()) RETURNING id;
+insert into stakeholder(picture, title, first_name, last_name, affiliation, email, linked_in, twitter, url, country, representation, about, geo_coverage_type)
+values(:picture, :title, :first_name, :last_name, :affiliation, :email, :linked_in, :twitter, :url, :country::integer, :representation, :about, :v:geo_coverage_type::geo_coverage_type) RETURNING id;
 
 -- :name update-stakeholder-role :! :n
 -- :doc Update stakeholder role
