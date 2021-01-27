@@ -52,8 +52,8 @@ const Landing = ({ history }) => {
     const handleChangeCountry = (isoCode) => {
       setCountry(isoCode)
     }
-    const countryOpts = data ? data.map.map(it => ({ value: it.isoCode, label: it.name })) : []
-    const countryObj = data && country && data.map.find(it => it.isoCode === country)
+    const countryOpts = countries ? countries.map(it => ({ value: it.isoCode, label: it.name })) : []
+    const countryObj = countries && country && countries.find(it => it.isoCode === country)
 
     const handleSummaryClick = (dataType) => {
         const selected = data.map.map(x => ({
