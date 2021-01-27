@@ -38,7 +38,19 @@
                                                   :swagger {:tags ["event"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.event/post-params}
-                                                  :handler #ig/ref :gpml.handler.event/post}}]]
+                                                  :handler #ig/ref :gpml.handler.event/post}}]
+                                         ["/pending" {:middleware [#ig/ref :gpml.auth/admin-required-middleware]}
+                                          [""
+                                           {:get {:summary "Get the list events pending for approval"
+                                                  :swagger {:tags ["event"]
+                                                            :security [{:id_token []}]}
+                                                  :handler #ig/ref :gpml.handler.event/pending}}]]
+                                         ["/approve" {:middleware [#ig/ref :gpml.auth/admin-required-middleware]}
+                                          [""
+                                           {:put {:summary "Approves the submission of an event"
+                                                  :swagger {:tags ["event"]
+                                                            :security [{:id_token []}]}
+                                                  :handler #ig/ref :gpml.handler.event/approve}}]]]
                                         ["/landing"
                                          [""
                                           {:get {:summary "End-point for the landing page"
@@ -102,6 +114,8 @@
 
   :gpml.handler.event/post {:db #ig/ref :duct.database/sql}
   :gpml.handler.event/post-params {}
+  :gpml.handler.event/pending {:db #ig/ref :duct.database/sql}
+  :gpml.handler.event/approve {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.profile/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/post {:db #ig/ref :duct.database/sql}
@@ -124,7 +138,7 @@
   :duct.database/sql {:jdbc-url #duct/env "DATABASE_URL"}
   :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
                               :audience #duct/env "OIDC_AUDIENCE"}
-
+  :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
   }
 
  :duct.profile/dev   #duct/include "dev"

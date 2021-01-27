@@ -17,3 +17,30 @@ values :t*:urls RETURNING id;
 -- :doc Add specified countries or country groups to an event
 insert into event_geo_coverage(event, country_group, country)
 values :t*:geo RETURNING id;
+
+
+-- :name pending-events :? :*
+-- :doc Returns the list of pending events
+select e.*
+  from ( select e.id, e.title, e.start_date, e.end_date, e.description, e.image, e.geo_coverage_type,
+                e.remarks, e.created, e.modified, e.city, c.iso_code as country, e.languages, e.tags
+           from v_event_data e left join country c on e.country = c.id) e, event pending
+where pending.approved_at is null
+  and e.id = pending.id
+
+
+-- :name pending-event-by-id :? :1
+-- :doc Return the id of an event pending for approval
+select id from event where approved_at is null and id = :id
+
+-- :name approve-event :!
+-- :doc Approves an event by given id
+update event set approved_at = now() approved_by = :admin where id = :id
+
+
+-- :name event-by-id :? :1
+-- :doc Returns the data for a given event
+select e.id, e.title, e.start_date, e.end_date, e.description, e.image, e.geo_coverage_type,
+                e.remarks, e.created, e.modified, e.city, c.iso_code as country, e.languages, e.tags
+           from v_event_data e left join country c on e.country = c.id
+where e.id = :id
