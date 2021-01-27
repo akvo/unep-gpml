@@ -1,7 +1,7 @@
 -- :name new-project :<!
 -- :doc Insert a new projects
-insert into project(uuid, phase, contribution, funds)
-values(:uuid, :phase, :contribution, :funds) returning id;
+insert into project(uuid, phase, contribution, funds, title, summary, geo_coverage_type)
+values(:uuid, :phase, :contribution, :funds, :title, :summary, :geo_coverage_type::geo_coverage_type) returning id;
 
 -- :name new-project-country :<!
 -- :doc Insert a new coutry projects
