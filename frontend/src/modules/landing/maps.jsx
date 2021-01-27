@@ -22,17 +22,15 @@ const generateSteps = (arr) => {
     const bottom = quantile(arr, .2);
     const step = ((quantile(arr, 1)) - bottom) / 5;
     const log10 = Math.ceil(Math.round(100*Math.log(step)/Math.log(10))/100);
+    const max = Math.round(bottom + (step * 3), step, Math.pow(10,log10))
     let steps = [
         Math.round(bottom, step, Math.pow(10,log10)),
         Math.round(bottom + (step), step, Math.pow(10,log10)),
         Math.round(bottom + (step * 2), step, Math.pow(10,log10)),
-        Math.round(bottom + (step * 3), step, Math.pow(10,log10)),
+        max,
     ];
     steps = steps.map((x, i) => {
-        if (i === (steps.length -1)) {
-            return {start: x, label: `Above ${x}`};
-        }
-        if (x === 1) {
+        if (x < 1) {
             return false;
         }
         if (steps[i - 1] === 1) {
@@ -41,9 +39,11 @@ const generateSteps = (arr) => {
         if (i === 0) {
             return {start: 1, end: x}
         }
-        return {start: steps[i - 1], end: x}
+        const start = steps[i - 1];
+        return {start: start || 1, end: x}
     });
-    steps = [{end: 0, label:'0'},...steps.filter(x => x)];
+    steps = [...steps.filter(x => x), {start: max, label: `Above ${max}`}];
+    steps = [{end: 0, label:'0'},...steps];
     const datarange = cloneDeep(Chart.Opt.Maps.DataRange);
     datarange.dataRange.splitList = steps;
     return datarange;
