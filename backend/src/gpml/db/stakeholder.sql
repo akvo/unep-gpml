@@ -4,7 +4,19 @@ select * from stakeholder order by id;
 
 -- :name stakeholder-by-id :? :1
 -- :doc Get stakeholder by id
-select s.first_name, s.last_name, s.email, s.picture, s.linked_in, s.twitter, s.url as org_url, s.representation,c.iso_code as country, o.name as org_name, s.approved_at from stakeholder s
+select
+    s.first_name,
+    s.last_name,
+    s.email,
+    s.picture as photo,
+    s.linked_in,
+    s.twitter,
+    s.url as org_url,
+    s.representation,
+    s.about,
+    c.iso_code as country,
+    o.name as org_name,
+    s.approved_at from stakeholder s
 left join country c on (s.country = c.id)
 left join organisation o on (s.affiliation = o.id)
 where s.id = :id;

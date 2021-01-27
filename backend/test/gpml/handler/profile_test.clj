@@ -69,7 +69,7 @@
               :org_url "https://www.akvo.org"
               :representation "test"
               } (:body resp))) ;; TODO ACTIVATE ONCE WE REVERT THE AUTO APPROVAL :approved_at nil
-      (is ('clojure.string/includes? "/image/profile" (->(:body resp) :picture))))))
+      (is ('clojure.string/includes? "/image/profile" (->(:body resp) :photo))))))
 
 (deftest handler-get-test-has-profile
   (testing "Profile endpoint returns non empty response"
@@ -89,7 +89,7 @@
       (is (= 200 (:status resp)))
       (is (= "John" (-> (:body resp) :first_name)))
       (is (= "Doe" (-> (:body resp) :last_name)))
-      (is (= (:id (first org)) (-> (:body resp) :affiliation)))
+      (is (= "Akvo" (-> (:body resp) :org)))
       (is (= (:id (first country)) (-> (:body resp) :country))))))
 
 (deftest handler-get-test-no-profile

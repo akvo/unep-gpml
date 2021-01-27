@@ -47,18 +47,35 @@
                  :affiliation (:id (assoc-organisation conn org))}]
     (db.stakeholder/new-stakeholder conn profile)))
 
+(defn remap-profile [{:keys [photo about
+                             title first_name
+                             last_name linked_in
+                             twitter representation
+                             country org_name org_url]}]
+  {:title title
+   :first_name first_name
+   :last_name last_name
+   :linked_in linked_in
+   :twitter twitter
+   :photo photo
+   :country country
+   :representation representation
+   :org {:name org_name
+         :url org_url}
+   :about about})
+
 (defmethod ig/init-key :gpml.handler.profile/get [_ {:keys [db]}]
   (fn [{:keys [jwt-claims]}]
     (tap> jwt-claims)
     (if-let [profile (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
-      (resp/response profile)
+      (resp/response (remap-profile profile))
       (resp/response {}))))
 
 (defmethod ig/init-key :gpml.handler.profile/post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params headers]}]
     (if-let [id (make-profile (:spec db) jwt-claims body-params)]
       (if-let [profile (db.stakeholder/stakeholder-by-id (:spec db) {:id (:id (first id))})]
-        (resp/created (:referer headers) profile)
+        (resp/created (:referer headers) (remap-profile profile))
         (assoc (resp/status 500) :body "Internal Server Error"))
       (assoc (resp/status 500) :body "Internal Server Error"))))
 
