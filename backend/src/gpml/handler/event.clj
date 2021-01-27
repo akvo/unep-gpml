@@ -1,11 +1,13 @@
 (ns gpml.handler.event
-  (:require [integrant.core :as ig]
+  (:require [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
+            [gpml.db.country :as db.country]
+            [gpml.db.country-group :as db.country-group]
             [gpml.db.event :as db.event]
             [gpml.db.event-image :as db.event-image]
             [gpml.db.language :as db.language]
-            [gpml.db.country :as db.country]
-            [gpml.db.country-group :as db.country-group]))
+            [integrant.core :as ig]
+            [ring.util.response :as resp]))
 
 (defn assoc-image [conn photo]
   (if photo
@@ -77,10 +79,24 @@
     [:vector {:min 1 :error/message "Need at least one geo coverage value"} string?]]])
 
 (defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db]}]
-  (fn [{:keys [jwt-claims body-params]}]
+  (fn [{:keys [jwt-claims body-params] :as req}]
     (tap> jwt-claims)
-    (create-event (:spec db) body-params)
-    {:status 201 :body {:message "New event created"}}))
+    (jdbc/with-db-transaction [conn (:spec db)]
+      (create-event conn body-params))
+    (resp/created (:referrer req) {:message "New event created"})))
 
 (defmethod ig/init-key :gpml.handler.event/post-params [_ _]
   post-params)
+
+(defmethod ig/init-key :gpml.handler.event/pending [_ {:keys [db]}]
+  (fn [_]
+    (resp/response (db.event/pending-events (:spec db)))))
+
+(defmethod ig/init-key :gpml.handler.event/approve [_ {:keys [db]}]
+  (fn [{:keys [body-params admin]}]
+    (if-let [_ (db.event/pending-event-by-id (:spec db) body-params)]
+      (do
+        (db.event/approve-event (:spec db) (assoc body-params :approved_by (:id admin)))
+        (resp/response {:message "Successfully Updated"
+                        :data (db.event/event-by-id (:spec db) body-params)}))
+      (resp/bad-request {:message (format "Event id %s does not exist" (:id body-params)) }))))

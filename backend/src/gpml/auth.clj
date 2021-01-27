@@ -1,6 +1,7 @@
 (ns gpml.auth
   (:require [integrant.core :as ig]
-            [malli.core :as malli])
+            [malli.core :as malli]
+            [gpml.db.stakeholder :as db.stakeholder])
   (:import [com.auth0.jwk JwkProvider JwkProviderBuilder]
            [com.auth0.jwt JWT]
            [com.auth0.jwt.impl JsonNodeClaim]
@@ -66,3 +67,11 @@
                :body {:message msg}}))
           {:status 401
            :body {:message "Authentication required"}})))))
+
+(defmethod ig/init-key :gpml.auth/admin-required-middleware [_ {:keys [db]}]
+  (fn [handler]
+    (fn [{:keys [jwt-claims] :as request}]
+      (if-let [admin (db.stakeholder/admin-by-email (:spec db) jwt-claims)]
+        (handler (assoc request :admin (first admin)))
+        {:status 403
+         :body {:message "Unauthorized"}}))))

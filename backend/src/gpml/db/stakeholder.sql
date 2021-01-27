@@ -46,6 +46,13 @@ left join country c on (s.country = c.id)
 left join organisation o on (s.affiliation = o.id)
 where s.email = :email;
 
+-- :name admin-by-email :? :1
+-- :doc Get an admin id by email
+select id from stakeholder
+ where email = :email
+   and approved_at is not null
+   and role = 'ADMIN';
+
 -- :name approved-stakeholder-by-email :? :1
 -- :doc Get an stakeholder by email filtering by approved
 select * from stakeholder where email = :email and approved_at is not null;
