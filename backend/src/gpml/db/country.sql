@@ -1,6 +1,6 @@
 -- :name all-countries :? :*
 -- :doc Get all countries
-select * from country order by id
+select * from country where iso_code is not null order by id
 
 -- :name country-by-id :? :1
 -- :doc Get country by id
