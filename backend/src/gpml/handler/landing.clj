@@ -4,27 +4,26 @@
             [gpml.db.browse :as db.browse]
             [gpml.db.landing :as db.landing]))
 
+(def topics '("event" "project" "policy" "resource" "technology"))
+
+(defn topics-data [conn]
+  (let [take-counts (map #(or (and (= "event" %) 2) 1) topics)]
+    (->> topics
+         (map #(assoc {} :topic [%]))
+         (map #(db.browse/filter-topic conn %))
+         (map vector take-counts)
+         (map #(apply take %))
+         flatten
+         (map #(merge (:json %) {:topic_type (:topic %)})))))
+
 (defn landing-response [conn]
-  (let [topics '("project" "event" "policy" "resource" "technology")
-        summary (first (db.landing/summary conn))
+  (let [summary (first (db.landing/summary conn))
         summary-data
         (->> topics
              (map #(assoc {}
                           (keyword %) (summary (keyword %))
-                          :countries (summary (keyword (str % "_countries"))))))
-        ;; FIXME: We return 3 events, and a single item for other
-        ;; topics. Events can be reduced to 2 when projects are
-        ;; included. But, the latest front-end shows only 1 event,
-        ;; anyway - so, we can get rid of this?
-        take-counts (map #(or (and (= "event" %) 3) 1) topics)
-        topics-data (->> topics
-                         (map #(assoc {} :topic [%]))
-                         (map #(db.browse/filter-topic conn %))
-                         (map vector take-counts)
-                         (map #(apply take %))
-                         flatten
-                         (map #(merge (:json %) {:topic_type (:topic %)})))]
-    (resp/response {:topics topics-data
+                          :countries (summary (keyword (str % "_countries"))))))]
+    (resp/response {:topics (topics-data conn)
                     :map (db.landing/map-counts-grouped conn)
                     :summary summary-data})))
 
