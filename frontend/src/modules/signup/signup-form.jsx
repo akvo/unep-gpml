@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Input, Select } from "antd";
 import { Form as FinalForm, Field } from 'react-final-form'
 import { createForm } from 'final-form'
@@ -9,8 +9,6 @@ import { FieldsFromSchema, validateSchema } from "../../utils/form-utils";
 import { countries } from 'countries-list'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
 import specificAreasOptions from '../events/specific-areas.json'
-import cloneDeep from 'lodash/cloneDeep'
-import api from '../../utils/api';
 
 const geoCoverageTypeOptions = ['Global', 'Regional', 'National', 'Sub-national', 'Transnational', 'Global with elements in specific areas']
 const regionOptions = ['Africa', 'Asia and the Pacific', 'East Asia', 'Europe', 'Latin America and Carribean', 'North America', 'West Asia']
@@ -67,7 +65,7 @@ const TitleNameGroup = (props) => {
   )
 }
 
-const defaultFormSchema = [
+const formSchema = [
   {
     firstName: { label: 'First name', required: true, render: TitleNameGroup },
     lastName: { label: 'Last name', required: true },
@@ -97,22 +95,12 @@ const defaultFormSchema = [
 ]
 
 const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef }) => {
-  const [formSchema, setFormSchema] = useState(defaultFormSchema)
   const [noOrg, setNoOrg] = useState(false)
+
   const form = createForm({
     subscription: {},
     onSubmit, validate: validateSchema(formSchema.reduce((acc, val) => ({ ...acc, ...val }), {})) // combined formSchema sections
   })
-
-  useEffect(() => {
-    (async function fetchData() {
-      const response = await api.get('/tag/general')
-      const newSchema = cloneDeep(defaultFormSchema);
-      newSchema[4].tags.options = response.data.map(x => ({ value: x.id, label: x.tag }))
-      newSchema[4].tags.loading = false
-      setFormSchema(newSchema);
-    })()
-  }, [])
 
   if(formRef) formRef(form)
   return (
