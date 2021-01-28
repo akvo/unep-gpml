@@ -52,7 +52,7 @@ blocks:
             - ./ci/deploy.sh
   - name: "Promote to production"
     run:
-      when: "branch = 'main' AND tag =~ 'promote.*'"
+      when: "tag =~ '.*'"
     task:
       jobs:
         - name: Promote to production
