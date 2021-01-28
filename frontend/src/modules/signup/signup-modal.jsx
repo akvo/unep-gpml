@@ -11,7 +11,7 @@ const SignupModal = ({ visible, onCancel }) => {
     const [sending, setSending] = useState(false)
     const [step, setStep] = useState(1)
     const {user} = useAuth0();
-    const formRef = useRef()
+    const handleSubmitRef = useRef()
     const onSubmit = (vals) => {
       setSending(true)
       api.post('/profile', vals)
@@ -35,14 +35,14 @@ const SignupModal = ({ visible, onCancel }) => {
           className="signup-modal"
           cancelButtonProps={{ disabled: true }}
           onOk={() => {
-            formRef.current.submit()
+            handleSubmitRef.current()
           }}
           confirmLoading={sending}
           closable={false}
           footer={step === 2 ? (<Button onClick={onCancel}>Close</Button>) : undefined}
         >
           {step === 1 &&
-            <SignupForm onSubmit={onSubmit} formRef={ref => { formRef.current = ref }} />
+            <SignupForm onSubmit={onSubmit} handleSubmitRef={ref => { handleSubmitRef.current = ref }} />
           }
           {step === 2 &&
           <div className="submitted">
