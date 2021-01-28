@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, DatePicker, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
+import { Card, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
 import { topicTypes, topicNames } from '../../utils/misc'
@@ -11,6 +11,7 @@ import countries3to2 from 'countries-list/dist/countries3to2.json'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
 import ShowMoreText from 'react-show-more-text'
 import { useAuth0 } from '@auth0/auth0-react'
+import humps from 'humps'
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -109,7 +110,7 @@ const TopicSelect = ({ value, onChange }) => {
   return (
     <ul className="topic-list">
       {topicTypes.map(type =>
-        <li key={type}><Checkbox checked={value.indexOf(type) !== -1} onChange={handleChange(type)}>{topicNames[type]}</Checkbox></li>
+        <li key={type}><Checkbox checked={value.indexOf(humps.decamelize(type)) !== -1} onChange={handleChange(humps.decamelize(type))}>{topicNames[type]}</Checkbox></li>
       )}
     </ul>
   )
@@ -121,7 +122,7 @@ const Result = ({ result, relations, handleRelationChange }) => {
   return (
     <Card className="result">
       <h4>{result.title || result.name}</h4>
-      <div className="type">{result.type}</div>
+      <div className="type">{topicNames[humps.camelize(result.type)]}</div>
       <ul className="stats">
         {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
         {result.geoCoverageCountries && <li>{result.geoCoverageCountries.map(it => countries[countries3to2[it]]?.name).join(', ')}</li>}
@@ -138,8 +139,10 @@ const Result = ({ result, relations, handleRelationChange }) => {
   )
 }
 
+const resourceRelations = ['owner', 'reviewer', 'user', 'interested in', 'other']
 const relationsByTopicType = {
-  resource: ['owner', 'reviewer', 'user', 'interested in', 'other'],
+  financing_resource: resourceRelations,
+  technical_resource: resourceRelations,
   technology: ['owner', 'user', 'reviewer', 'interested in', 'other'],
   event: ['resource person', 'organiser', 'participant', 'sponsor', 'host', 'interested in', 'other'],
   project: ['owner', 'implementor', 'reviewer', 'user', 'interested in', 'other'],

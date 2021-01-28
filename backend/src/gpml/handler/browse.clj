@@ -5,7 +5,7 @@
             [ring.util.response :as resp]))
 
 (def country-re #"^(\p{Upper}{3})((,\p{Upper}{3})+)?$")
-(def topics (vec (sort ["people" "event" "technology" "policy" "resource" "project"])))
+(def topics (vec (sort ["people" "event" "technology" "policy" "project" "financing_resource" "technical_resource"])))
 (def topic-re (re-pattern (format "^(%1$s)((,(%1$s))+)?$" (str/join "|" topics))))
 
 (def query-params
