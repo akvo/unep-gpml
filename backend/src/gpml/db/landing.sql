@@ -1,14 +1,17 @@
 -- :name map-counts
 -- :doc Get counts of entities
 
-SELECT geo_coverage_iso_code, REPLACE(lower(json->>'type'),' ','_') AS topic, count(*)
-FROM v_resource
-WHERE geo_coverage_iso_code IS not null
-and json->>'type' IS not null
-GROUP BY geo_coverage_iso_code, REPLACE(lower(json->>'type'),' ','_')
-UNION
-SELECT geo_coverage_iso_code, topic, count(*) FROM v_topic
-WHERE topic <> 'resource' GROUP BY geo_coverage_iso_code, topic;
+SELECT mc.geo_coverage_iso_code AS iso_code, json_object_agg(mc.topic, mc.count) AS counts
+FROM (
+    SELECT geo_coverage_iso_code, REPLACE(lower(json->>'type'),' ','_') AS topic, count(*)
+    FROM v_resource
+    WHERE geo_coverage_iso_code IS NOT NULL AND json->>'type' IS NOT NULL
+    GROUP BY geo_coverage_iso_code, json->>'type'
+    UNION
+    SELECT geo_coverage_iso_code, topic, count(*) FROM v_topic
+    WHERE topic <> 'resource'
+    GROUP BY geo_coverage_iso_code, topic
+) AS mc GROUP BY geo_coverage_iso_code;
 
 -- :name summary
 -- :doc Get summary of count of entities and number of countries

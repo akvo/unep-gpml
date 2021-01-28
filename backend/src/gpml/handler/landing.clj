@@ -22,11 +22,9 @@
              (mapv (fn [{:keys [data, total, countries]}]
                      {(keyword data) total :country countries})))]
     (resp/response {:topics (topics-data conn)
-                    :map (db.landing/map-counts-grouped conn)
+                    :map (db.landing/map-counts+global conn)
                     :summary summary-data})))
 
-
-;; deden test
 
 (defmethod ig/init-key :gpml.handler.landing/get [_ {:keys [db]}]
   (fn [_]

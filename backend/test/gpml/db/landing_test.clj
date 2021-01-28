@@ -12,7 +12,7 @@
 
 (defn make-resource [title geo-coverage]
   {:title title
-   :type "Financial Resource"
+   :type "Financing Resource"
    :publish_year 2010
    :summary "Summary"
    :value 1000000
@@ -55,12 +55,11 @@
           system (ig/init fixtures/*system* [db-key])
           conn (-> system db-key :spec)
           _ (add-resource-data conn)
-          landing (db.landing/map-counts-grouped conn)]
-      (prn landing)
-      (is (= (:resource (first (filter #(= "ESP" (:iso_code %)) landing))) 3))
-      (is (= (:resource (first (filter #(= "IND" (:iso_code %)) landing))) 3))
-      (is (= (:resource (first (filter #(= "IDN" (:iso_code %)) landing))) 3))
-      (is (= (:resource (first (filter #(= "KEN" (:iso_code %)) landing))) 2)))))
+          landing (db.landing/map-counts+global conn)]
+      (is (= (:financing_resource (first (filter #(= "ESP" (:iso_code %)) landing))) 3))
+      (is (= (:financing_resource (first (filter #(= "IND" (:iso_code %)) landing))) 3))
+      (is (= (:financing_resource (first (filter #(= "IDN" (:iso_code %)) landing))) 3))
+      (is (= (:financing_resource (first (filter #(= "KEN" (:iso_code %)) landing))) 2)))))
 
 (deftest test-summary
   (testing "Test summary data for landing page"
