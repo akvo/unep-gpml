@@ -3,7 +3,7 @@
 
 set -exuo pipefail
 
-[[ "${CI_BRANCH}" !=  "main" ]] && { echo "Branch different than main. Skip deploy"; exit 0; }
+[[ "${CI_BRANCH}" !=  "main" && ! "${CI_TAG:=}" =~ promote.* ]] && { echo "Branch different than main and not a tag. Skip deploy"; exit 0; }
 [[ "${CI_PULL_REQUEST}" ==  "true" ]] && { echo "Pull request. Skip deploy"; exit 0; }
 
 auth () {
