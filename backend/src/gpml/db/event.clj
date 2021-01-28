@@ -5,14 +5,16 @@
 
 (comment
   (require 'dev)
+  (require '[gpml.db.country :as db.country])
 
   (let [db (dev/db-conn)
+        country-id (:id (db.country/country-by-code db {:name "IND"}))
         event1 {:title "Event 1"
                 :start_date "2021-01-01T10:00:00Z"
                 :end_date "2021-01-01T12:00:00Z"
                 :description "Description of the event"
                 :image nil
-                :country 20,
+                :country country-id,
                 :city "Timbuktu",
                 :geo_coverage_type "national"
                 :geo_coverage_countries ["KEN"]
@@ -23,20 +25,15 @@
         event2 {:remarks "Remarks",
                 :description "Description of the event",
                 :title "Event 10",
-                :country 10,
+                :country country-id,
                 :city "Timbuktu",
                 :image nil
                 :geo_coverage_type nil,
                 :end_date "2021-01-01T12:00:00Z",
                 :start_date "2021-01-01T10:00:00Z"}
-        tags [2 4]
-        urls [{:language 2 :url "http://foo.com/fr"} {:language 7 :url "http://foo.com/gj"}]
-        event-id (-> (gpml.db.event/new-event db event1) first :id)]
-    (gpml.db.event/new-event db event2)
-    (gpml.db.event/add-event-tags db {:tags (map #(vector event-id %) tags)})
-    (gpml.db.event/add-event-language-urls
-     db
-     {:urls (map #(vector event-id (:language %) (:url %)) urls)}))
+        ]
+    (gpml.db.event/new-event db event1)
+    (gpml.db.event/new-event db event2))
 
 
   )
