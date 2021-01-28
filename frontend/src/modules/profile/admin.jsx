@@ -53,11 +53,11 @@ const AdminSection = () => {
         <div>
           {item.type === 'profile' && (
             <div className="stakeholder-info">
-              {item.photo && <img src={item.photo} />}
+              {item.photo && <img src={item.photo} alt="profile" />}
               <ul>
                 <li>{item.email}</li>
                 <li>{item.about}</li>
-                {item.org && <li><a href={item.org.url} target="_blank">{item.org.name}</a></li>}
+                {item.org && <li><a href={item.org.url} target="_blank" rel="noreferrer">{item.org.name}</a></li>}
               </ul>
             </div>
           )}

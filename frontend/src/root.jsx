@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { BrowserRouter as Router, Route, Link, Switch, withRouter } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react';
 import { Input, Button } from 'antd'
-import { SearchOutlined, CaretDownOutlined } from '@ant-design/icons'
+import { SearchOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css';
 import Landing from './modules/landing/view'
 import Browse from './modules/browse/view'
@@ -98,14 +98,14 @@ const Footer = () => {
     <footer>
       <div className="ui container">
         <div className="col">
-          <a href="https://www.gpmarinelitter.org/" target="_blank">
-            <img src={logo2} />
+          <a href="https://www.gpmarinelitter.org/" target="_blank" rel="noreferrer">
+            <img src={logo2} alt="gpml" />
             <span>Go to the GPML website</span>
           </a>
         </div>
         <div className="col">
-          <img src={unepLogo} className="uneplogo" />
-          <img src={gpmlLogo} className="gpmllogo" />
+          <img src={unepLogo} className="uneplogo" alt="unep" />
+          <img src={gpmlLogo} className="gpmllogo" alt="gpml" />
           <p>
             The Global Partnership on Marine Litter (GPML) is a multi-stakeholder partnership that brings together all actors working to prevent marine litter and microplastics. By providing a unique global platform to share knowledge and experience, partners are able to work together to create and advance solutions to this pressing global issue. 
           </p>
