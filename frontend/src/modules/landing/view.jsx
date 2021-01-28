@@ -140,9 +140,9 @@ const TopicItem = ({ topic }) => (
         <li>27 feb 2021</li>
       </ul>
       {topic.description && <p>{topic.description}</p>}
-      <footer>
+      <div className="bottom">
         <Button type="link">Find out more</Button>
-      </footer>
+      </div>
     </div>
   </div>
 )

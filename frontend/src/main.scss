@@ -105,4 +105,52 @@ h4{
   }
 }
 
+footer{
+  border-top: 1px solid #fff;
+  background-color: $primaryColor;
+  color: #fff;
+  padding-top: 50px;
+  padding-bottom: 40px;
+  a{
+    color: #fff;
+    &:hover{
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+  .ui.container{
+    display: flex;
+  }
+  .col{
+    &:first-child{
+      flex: 1;
+      img{
+        width: 200px;
+        margin-right: 40px;
+      }
+      img+span{
+        font-size: 18px;
+        display: inline-block;
+        margin-top: 7px;
+      }
+    }
+    &:last-child{
+      width: 350px;
+      position: relative;
+      .uneplogo{
+        width: 150px;
+      }
+      .gpmllogo{
+        width: 90px;
+        margin-top: 15px;
+        margin-right: 15px;
+        position: absolute;
+        right: 0;
+      }
+      p{
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
 @import './container.scss';

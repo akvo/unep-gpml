@@ -11,6 +11,9 @@ import logo from './images/GPML-dp.svg'
 import SignupModal from './modules/signup/signup-modal'
 import api from './utils/api';
 import ProfileView from './modules/profile/view';
+import logo2 from './images/GPML-logo-2.svg'
+import unepLogo from './images/UNEP-logo.svg'
+import gpmlLogo from './images/GPML-logo-alone.svg'
 
 
 const Root = () => {
@@ -83,10 +86,33 @@ const Root = () => {
         <Route path="/browse" component={Browse} />
         <Route path="/add-event" component={AddEvent} />
         <Route path="/profile" render={props => <ProfileView profile={profile} />} />
+        <Footer />
       </div>
       <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} />
     </Router>
     )
+}
+
+const Footer = () => {
+  return (
+    <footer>
+      <div className="ui container">
+        <div className="col">
+          <a href="https://www.gpmarinelitter.org/" target="_blank">
+            <img src={logo2} />
+            <span>Go to the GPML website</span>
+          </a>
+        </div>
+        <div className="col">
+          <img src={unepLogo} className="uneplogo" />
+          <img src={gpmlLogo} className="gpmllogo" />
+          <p>
+            The Global Partnership on Marine Litter (GPML) is a multi-stakeholder partnership that brings together all actors working to prevent marine litter and microplastics. By providing a unique global platform to share knowledge and experience, partners are able to work together to create and advance solutions to this pressing global issue. 
+          </p>
+        </div>
+      </div>
+    </footer>
+  )
 }
 
 const Search = withRouter(({ history }) => {
