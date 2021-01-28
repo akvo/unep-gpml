@@ -76,7 +76,7 @@ const defaultFormSchema = [
     }
   },
   {
-    info: { label: 'Additional info', control: 'textarea'},
+    remarks: { label: 'Additional info', control: 'textarea'},
     tags: { label: 'Tags', control: 'select', options: [], loading: true, mode: 'multiple' }
   }
 ]
