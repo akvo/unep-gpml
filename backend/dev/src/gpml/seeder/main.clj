@@ -77,6 +77,11 @@
 (defn get-action-detail [db x]
   (db.action-detail/action-detail-by-code db {:code x}))
 
+(defn delete-stakeholder [db]
+  (jdbc/delete! db :stakeholder_tag [])
+  (jdbc/delete! db :stakeholder_geo_coverage [])
+  (jdbc/delete! db :stakeholder []))
+
 (defn delete-resources [db]
   (jdbc/delete! db :resource_tag [])
   (jdbc/delete! db :resource_organisation [])
@@ -386,6 +391,7 @@
              technology? false
              project? false}}]
    (println "-- Start Seeding")
+   (delete-stakeholder db)
    (delete-resources db)
    (delete-policies db)
    (delete-technologies db)

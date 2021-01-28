@@ -17,15 +17,16 @@
          (map #(merge (:json %) {:topic_type (:topic %)})))))
 
 (defn landing-response [conn]
-  (let [summary (first (db.landing/summary conn))
-        summary-data
-        (->> topics
-             (map #(assoc {}
-                          (keyword %) (summary (keyword %))
-                          :countries (summary (keyword (str % "_countries"))))))]
+  (let [summary-data
+        (->> (gpml.db.landing/new-landing-test conn)
+             (mapv (fn [{:keys [data, total, countries]}]
+                     {(keyword data) total :country countries})))]
     (resp/response {:topics (topics-data conn)
                     :map (db.landing/map-counts-grouped conn)
                     :summary summary-data})))
+
+
+;; deden test
 
 (defmethod ig/init-key :gpml.handler.landing/get [_ {:keys [db]}]
   (fn [_]

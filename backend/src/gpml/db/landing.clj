@@ -23,13 +23,22 @@
                             (group-by :geo_coverage_iso_code)
                             vals
                             (map group-counts))
+        _ (prn group-counts)
         global-counts (->> grouped-counts
                            (filter #(= (:iso_code %) "***"))
                            first)]
     (map #(merge-with + % (dissoc global-counts :iso_code)) grouped-counts)))
 
+;; deden test
+(defn topic-count [conn]
+  (->> (gpml.db.landing/new-landing-test conn)
+       (mapv (fn [{:keys [data, total, countries]}]
+               {(keyword data) total :country countries}))))
+
 (comment
   (require 'dev)
+  (let [db (dev/db-conn)]
+    (topic-count db))
   (let [db (dev/db-conn)]
     (map-counts-grouped db))
   )
