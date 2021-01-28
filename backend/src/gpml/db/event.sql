@@ -23,7 +23,7 @@ values :t*:geo RETURNING id;
 -- :doc Returns the list of pending events
 select e.*
   from ( select e.id, e.title, e.start_date, e.end_date, e.description, e.image, e.geo_coverage_type,
-                e.remarks, e.created, e.modified, e.city, c.iso_code as country, e.languages as urls, e.tags
+                e.remarks, e.created, e.modified, e.city, c.iso_code as country, e.languages as urls, e.tags, e.geo_coverage_values
            from v_event_data e
            left join country c on e.country = c.id) e, event pending
 
