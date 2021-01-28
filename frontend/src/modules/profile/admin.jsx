@@ -63,10 +63,14 @@ const AdminSection = () => {
           )}
           {item.type === 'event' && (
             <div className="event-info">
+              {item.image && <img src={item.image} alt="event" />}
+              {/* TODO fix image url */}
               <ul>
                   <li>{moment(item.startDate).format('DD MMM YYYY')} to {moment(item.endDate).format('DD MMM YYYY')}</li>
-                  <li>{item.geoCoverageType} {item.geoCoverageValue}</li>
+                  <li>{item.geoCoverageType} {item.geoCoverageValues}</li>
                   <li>{item.description}</li>
+                  <li>{item.remarks}</li>
+                  {/* TODO show all data */}
               </ul>
             </div>
           )}

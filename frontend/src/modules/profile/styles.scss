@@ -8,6 +8,7 @@
 }
 
 .admin-view{
+  min-height: calc(100vh - 420px);
   .row{
     display: flex;
     width: 100%;
