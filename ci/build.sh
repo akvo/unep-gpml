@@ -3,12 +3,11 @@
 
 set -exuo pipefail
 
+[[ -n "${CI_TAG:=}" ]] && { echo "Skip build"; exit 0; }
+
 CI_COMMIT="${SEMAPHORE_GIT_SHA:=local}"
 CI_COMMIT="${CI_COMMIT:0:7}"
 export CI_COMMIT
-
-backend_image=$(awk '/akvo-clojure/ {print $2}' docker-compose.override.yml)
-frontend_image=$(awk '/akvo-node/ {print $2}' docker-compose.override.yml)
 
 lein_path="${HOME}/.lein"
 m2_path="${HOME}/.m2"
@@ -49,12 +48,11 @@ backend_build () {
 }
 
 frontend_build () {
-    docker run \
-	   --rm \
-	   --volume "$(pwd)/frontend:/app" \
-	   --workdir /app \
-	   "${frontend_image}" \
-	   bash release.sh
+    dc run -T \
+       --rm \
+       --no-deps \
+       frontend \
+       bash release.sh
 
     docker build \
 	   --tag "${image_prefix}/frontend:latest" \

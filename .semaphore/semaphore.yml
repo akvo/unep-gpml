@@ -50,3 +50,12 @@ blocks:
           commands:
             - ./ci/build.sh
             - ./ci/deploy.sh
+  - name: "Promote to production"
+    run:
+      when: "branch = 'main' AND tag =~ 'promote.*'"
+    task:
+      jobs:
+        - name: Promote to production
+          commands:
+            - checkout
+            - ./ci/deploy.sh

@@ -21,7 +21,13 @@ push_image () {
 }
 
 prepare_deployment () {
-    gcloud container clusters get-credentials test # TODO: Change when promoting
+    cluster="test"
+
+    if [[ "${CI_TAG:=}" =~ promote.* ]]; then
+	cluster="production"
+    fi
+
+    gcloud container clusters get-credentials "${cluster}"
 
     sed "s/\${CI_COMMIT}/${CI_COMMIT}/g" \
 	ci/k8s/deployment.yml.template \
@@ -34,7 +40,11 @@ apply_deployment () {
 }
 
 auth
-push_image backend
-push_image frontend
+
+if [[ -z "${CI_TAG:=}" ]]; then
+    push_image backend
+    push_image frontend
+fi
+
 prepare_deployment
 apply_deployment
