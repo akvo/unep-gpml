@@ -39,7 +39,7 @@
 
 (defn- mock-post []
   (-> (mock/request :post "/")
-      (assoc :admin {:id 1})
+      (assoc :admin {:id 1}) ;; authz middleware
       (assoc :body-params {:id 1})))
 
 (deftest approve-event

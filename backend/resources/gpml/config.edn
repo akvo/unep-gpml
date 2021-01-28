@@ -72,13 +72,13 @@
                                                  :swagger {:tags ["profile"]
                                                            :security [{:id_token []}]}
                                                  :handler #ig/ref :gpml.handler.profile/put}}]
-                                         ["/pending"
+                                         ["/pending" {:middleware [#ig/ref :gpml.auth/admin-required-middleware]}
                                           [""
                                            {:get {:summary "Getting Unapproved list of User",
                                                   :swagger {:tags ["profile"]
                                                             :security [{:id_token []}]}
                                                   :handler #ig/ref :gpml.handler.profile/pending}}]]
-                                         ["/approve"
+                                         ["/approve" {:middleware [#ig/ref :gpml.auth/admin-required-middleware]}
                                           [""
                                            {:put {:summary "Approve profile by admin"
                                                   :swagger {:tags ["profile"]

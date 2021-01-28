@@ -196,6 +196,7 @@
           admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
           ;; Jane become an admin
           _ (db.stakeholder/update-stakeholder-role db (assoc (first admin) :role "ADMIN"))
+          _ (db.stakeholder/approve-stakeholder db (first admin))
           ;; create new user name John
           _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
           ;; create new user name Nick
@@ -203,9 +204,10 @@
           _ (db.stakeholder/new-stakeholder db  (assoc user :email "nick@org" :first_name "Nick"))
           ;; Jane trying to see the list of pending user in this case John and Nick
           resp (handler (-> (mock/request :get "/")
-                            (assoc :jwt-claims {:email "jane@org"})))]
+                            (assoc :jwt-claims {:email "jane@org"}
+                                   :admin (first admin))))]
       (is (= 200 (:status resp)))
-      (is (= 3 (count (into [] (-> resp :body))))))))
+      (is (= 2 (count (into [] (-> resp :body))))))))
 
 (deftest handler-approval-test
   (testing "Profile is approved by admin"
@@ -219,6 +221,7 @@
           ;; create new user name Jane
           admin (new-profile (:id (first country)) (:id (first org)))
           admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
+          _ (db.stakeholder/approve-stakeholder db (first admin))
           ;; create new user name John
           _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
           ;; Jane become an admin
@@ -231,26 +234,6 @@
       (is (= "John" (-> resp :body :data :first_name)))
       (is (inst? (-> resp :body :data :approved_at))))))
 
-(deftest handler-rejected-approval-test
-  (testing "Profile cannot approved by random admin"
-    (let [system (ig/init fixtures/*system* [::profile/approve])
-          handler (::profile/approve system)
-          db (-> system :duct.database.sql/hikaricp :spec)
-          ;; create new organisation
-          org (db.organisation/new-organisation db {:name "Akvo"})
-          ;; create new country
-          country (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
-          ;; create new user name Jane
-          admin (new-profile (:id (first country)) (:id (first org)))
-          _ (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
-          ;; create new user name John
-          _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
-          ;; Jane trying to approve this guy John
-          resp (handler (-> (mock/request :put "/")
-                            (assoc :jwt-claims {:email "jane@org"})
-                            (assoc :body-params {:id (get-user db "john@org")})))]
-      (is (= 401 (:status resp)))
-      (is (= "Unauthorized" (-> resp :body :message))))))
 
 (comment
   #_(def dbtest (dev/db-conn))
