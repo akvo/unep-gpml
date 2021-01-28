@@ -78,7 +78,7 @@ const Browse = ({ history }) => {
       <div className="ui container">
         <aside>
           <div className="inner">
-            <Input value={query.q} className="src" placeholder="Search for topics" suffix={<SearchOutlined />} onChange={({ target: { value }}) => updateQuery('q', value)} />
+            <Input value={query.q} className="src" placeholder="Search for resources" suffix={<SearchOutlined />} onChange={({ target: { value }}) => updateQuery('q', value)} />
             <div className="field">
               <div className="label">
                 Country
@@ -86,7 +86,7 @@ const Browse = ({ history }) => {
               <Select value={query.country} placeholder="Find country" mode="multiple" options={Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name }))} allowClear onChange={val => updateQuery('country', val)} filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
             </div>
             <div className="field">
-              <div className="label">Topics</div>
+              <div className="label">Resources</div>
               <TopicSelect value={query.topic} onChange={val => updateQuery('topic', val)} />
             </div>
           </div>
