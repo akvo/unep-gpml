@@ -120,7 +120,9 @@
   (fn [{:keys [jwt-claims]}]
     (let [admin (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
       (if (= (:role admin) "ADMIN")
-        (resp/response (db.stakeholder/pending-approval (:spec db)))
+        (let [profiles (db.stakeholder/pending-approval (:spec db))
+              profiles (map (fn[x] (remap-profile x)) profiles)]
+        (resp/response profiles))
         (assoc (resp/status 401) :body {:message "Unauthorized"})))))
 
 (defmethod ig/init-key :gpml.handler.profile/post-params [_ _]

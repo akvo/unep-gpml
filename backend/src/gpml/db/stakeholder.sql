@@ -59,7 +59,25 @@ select * from stakeholder where email = :email and approved_at is not null;
 
 -- :name pending-approval :? :*
 -- :doc Get unapproved of stakeholder profile
-select * from stakeholder where approved_at is null order by created desc;
+select
+    s.id,
+    s.title,
+    s.first_name,
+    s.last_name,
+    s.email,
+    s.picture as photo,
+    s.linked_in,
+    s.twitter,
+    s.url as org_url,
+    s.representation,
+    s.about,
+    s.role,
+    c.iso_code as country,
+    o.name as org_name,
+    s.approved_at from stakeholder s
+left join country c on (s.country = c.id)
+left join organisation o on (s.affiliation = o.id)
+where s.approved_at is null order by s.created desc;
 
 -- :name approve-stakeholder :! :n
 -- :doc Approve stakeholder
