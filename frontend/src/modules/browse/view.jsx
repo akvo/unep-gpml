@@ -88,20 +88,6 @@ const Browse = ({ history }) => {
               <div className="label">Topics</div>
               <TopicSelect value={query.topic} onChange={val => updateQuery('topic', val)} />
             </div>
-            {query.topic.indexOf('event') !== -1 && (
-              <div className="event-fields">
-                <div className="label">Date range</div>
-                <div className="date-range">
-                  <DatePicker.RangePicker />
-                </div>
-                <div className="label">Event location</div>
-                <Input />
-                <div className="label">Tags</div>
-                <Input />
-                <div className="label">Event language</div>
-                <Input />
-              </div>
-            )}
           </div>
         </aside>
         <div className="main-content">
