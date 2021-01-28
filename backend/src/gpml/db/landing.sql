@@ -17,59 +17,13 @@ FROM (
 -- :doc Get summary of count of entities and number of countries
 WITH
 resource_countries AS (
-    SELECT c.id FROM resource_geo_coverage r, country_group_country cgc
-    JOIN country c ON cgc.country = c.id
-    WHERE r.country_group = cgc.country_group
-    UNION
-    SELECT r.country AS id FROM resource_geo_coverage r
-    WHERE r.country IS NOT NULL
-),
-event_countries AS (
-    SELECT c.id FROM event_geo_coverage e, country_group_country cgc
-    JOIN country c ON cgc.country = c.id
-    WHERE e.country_group = cgc.country_group
-    UNION
-    SELECT e.country AS id FROM event_geo_coverage e
-    WHERE e.country IS NOT NULL
-),
-policy_countries AS (
-    SELECT c.id FROM policy_geo_coverage p, country_group_country cgc
-    JOIN country c ON cgc.country = c.id
-    WHERE p.country_group = cgc.country_group
-    UNION
-    SELECT p.country AS id FROM policy_geo_coverage p
-    WHERE p.country IS NOT NULL
-),
-technology_countries AS (
-    SELECT c.id FROM technology_geo_coverage t, country_group_country cgc
-    JOIN country c ON cgc.country = c.id
-    WHERE t.country_group = cgc.country_group
-    UNION
-    SELECT t.country AS id FROM technology_geo_coverage t
-    WHERE t.country IS NOT NULL
-)
-SELECT
-    (SELECT count(*) FROM resource_countries) AS resource_countries,
-    (SELECT count(*) FROM resource) AS resource,
-    (SELECT count(*) FROM event_countries) AS event_countries,
-    (SELECT count(*) FROM event) AS event,
-    (SELECT count(*) FROM policy_countries) AS policy_countries,
-    (SELECT count(*) FROM policy) AS policy,
-    (SELECT count(*) FROM technology_countries) AS technology_countries,
-    (SELECT count(*) FROM technology) AS technology,
-    -- NOTE: projects only have countries, no country groups
-    (SELECT count(DISTINCT country) FROM project_country) AS project_countries,
-    (SELECT count(*) FROM project) AS project
-
--- :name new-landing-test
--- :doc Get Test of output
-WITH
-resource_countries AS (
-    SELECT c.id, r.type FROM resource_geo_coverage rg LEFT JOIN resource r ON rg.resource = r.id, country_group_country cgc
+    SELECT c.id, r.type FROM resource_geo_coverage rg
+    LEFT JOIN resource r ON rg.resource = r.id, country_group_country cgc
     JOIN country c ON cgc.country = c.id
     WHERE rg.country_group = cgc.country_group
     UNION
-    SELECT rg.country AS id, r.type FROM resource_geo_coverage rg LEFT JOIN resource r ON rg.resource = r.id
+    SELECT rg.country AS id, r.type FROM resource_geo_coverage rg
+    LEFT JOIN resource r ON rg.resource = r.id
     WHERE rg.country IS NOT NULL
 ),
 event_countries AS (
@@ -96,30 +50,29 @@ technology_countries AS (
     SELECT t.country AS id FROM technology_geo_coverage t
     WHERE t.country IS NOT NULL
 ),
-counts AS (
-    SELECT COUNT(*) as country ,'resource' as data ,1 as o FROM resource_countries
+country_counts AS (
+    SELECT COUNT(DISTINCT country) as country, 'project' as data FROM project_country
     UNION
-    SELECT COUNT(*) as country,
-    replace(lower(type),' ', '_') as data,2 as o
+    SELECT COUNT(*) as country, replace(lower(type),' ', '_') as data
     FROM resource_countries WHERE type IS NOT NULL GROUP BY data
     UNION
-    SELECT COUNT(*) as country,'event' as data,3 as o FROM event_countries
+    SELECT COUNT(*) as country, 'event' as data FROM event_countries
     UNION
-    SELECT COUNT(*) as country,'policy' as data,4 as o FROM policy_countries
+    SELECT COUNT(*) as country, 'policy' as data FROM policy_countries
     UNION
-    SELECT COUNT(*) as country,'technology' as data,5 as o FROM technology_countries
+    SELECT COUNT(*) as country, 'technology' as data FROM technology_countries
 ),
 totals AS (
-    SELECT COUNT(*) as total,'resource' as data,1 as o FROM resource
+    SELECT COUNT(*) as total, 'project' as data, 1 as o FROM project
     UNION
-    SELECT COUNT(*) as total,
-    replace(lower(type),' ','_') as data,2 as o
+    SELECT COUNT(*) as total, replace(lower(type),' ','_') as data, 2 as o
     FROM resource WHERE type IS NOT NULL GROUP BY data
     UNION
-    SELECT COUNT(*) as total,'event' as data,3 as o FROM event
+    SELECT COUNT(*) as total, 'event' as data, 3 as o FROM event
     UNION
-    SELECT COUNT(*) as total,'policy' as data,4 as o FROM policy
+    SELECT COUNT(*) as total, 'policy' as data, 4 as o FROM policy
     UNION
-    SELECT COUNT(*) as total,'technology' as data,5 as o FROM technology
+    SELECT COUNT(*) as total, 'technology' as data, 5 as o FROM technology
 )
-SELECT t.o,t.total,t.data,c.country as countries FROM totals t LEFT JOIN counts c ON t.data = c.data ORDER BY o;
+SELECT t.total AS count, t.data AS resource_type, c.country AS country_count
+FROM totals t JOIN country_counts c ON t.data = c.data ORDER BY o;

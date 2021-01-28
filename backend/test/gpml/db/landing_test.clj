@@ -67,6 +67,9 @@
           system (ig/init fixtures/*system* [db-key])
           conn (-> system db-key :spec)
           _ (add-resource-data conn)
-          summary (first (db.landing/summary conn))]
-      (is (= (:resource summary) 4))
-      (is (= (:resource_countries summary) 4)))))
+          summary (db.landing/summary conn)
+          financing-resource-summary (->> summary
+                                          (filter #(= "financing_resource" (:resource_type %)))
+                                          first)]
+      (is (= (:count financing-resource-summary) 4))
+      (is (= (:country_count financing-resource-summary) 4)))))

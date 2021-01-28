@@ -18,9 +18,9 @@
 
 (defn landing-response [conn]
   (let [summary-data
-        (->> (gpml.db.landing/new-landing-test conn)
-             (mapv (fn [{:keys [data, total, countries]}]
-                     {(keyword data) total :country countries})))]
+        (->> (gpml.db.landing/summary conn)
+             (mapv (fn [{:keys [resource_type count country_count]}]
+                     {(keyword resource_type) count :country country_count})))]
     (resp/response {:topics (topics-data conn)
                     :map (db.landing/map-counts+global conn)
                     :summary summary-data})))
