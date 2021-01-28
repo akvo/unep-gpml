@@ -77,44 +77,16 @@
 (defn get-action-detail [db x]
   (db.action-detail/action-detail-by-code db {:code x}))
 
-(defn delete-stakeholder [db]
-  (jdbc/delete! db :stakeholder_tag [])
-  (jdbc/delete! db :stakeholder_geo_coverage [])
-  (jdbc/delete! db :stakeholder []))
-
-(defn delete-resources [db]
-  (jdbc/delete! db :resource_tag [])
-  (jdbc/delete! db :resource_organisation [])
-  (jdbc/delete! db :resource_geo_coverage [])
-  (jdbc/delete! db :resource_language_url [])
-  (jdbc/delete! db :resource []))
-
-(defn delete-policies [db]
-  (jdbc/delete! db :policy_tag [])
-  (jdbc/delete! db :policy_geo_coverage [])
-  (jdbc/delete! db :policy_language_url [])
-  (jdbc/delete! db :policy []))
-
-(defn delete-technologies [db]
-  (jdbc/delete! db :technology_tag [])
-  (jdbc/delete! db :technology_geo_coverage [])
-  (jdbc/delete! db :technology []))
-
-(defn delete-projects [db]
-  (jdbc/delete! db :project_country [])
-  (jdbc/delete! db :project_action [])
-  (jdbc/delete! db :project_action_detail [])
-  (jdbc/delete! db :project []))
+(defn truncate-db [db]
+  (let [sql (slurp "dev/src/gpml/seeder/truncate.sql")]
+    (jdbc/execute! db [sql])))
 
 (defn seed-countries [db]
-  (jdbc/delete! db :country_group_country [])
-  (jdbc/delete! db :country [])
   (jdbc/insert-multi! db :country
                       (map (fn [x] {:name (:name x) :iso_code (:code x)})
                            (get-data "countries"))))
 
 (defn seed-country-groups [db]
-  (jdbc/delete! db :country_group [])
   (doseq [data (get-data "country_group")]
     (db.country-group/new-country-group db data)))
 
@@ -129,33 +101,27 @@
 
 
 (defn seed-country-group-country [db]
-  (jdbc/delete! db :country_group_country [])
   (doseq [data (get-country-group-countries db)]
     (db.country-group/new-country-group-country db data)))
 
 (defn seed-organisations [db]
-  (jdbc/delete! db :organisation [])
   (doseq [data (get-data "organisations")]
     (db.organisation/new-organisation db data)))
 
 (defn seed-currencies [db]
-  (jdbc/delete! db :currency [])
   (doseq [data (get-data "currencies")]
     (db.currency/new-currency db data)))
 
 (defn seed-languages [db]
-  (jdbc/delete! db :language [])
   (doseq [data (reduce (fn [acc [k v]]
-                                (conj acc {:iso_code (str/trim (name k))
-                                           :english_name (:name v)
-                                           :native_name (:nativeName v)}))
-                              []
-                              (get-data "languages"))]
+                         (conj acc {:iso_code (str/trim (name k))
+                                    :english_name (:name v)
+                                    :native_name (:nativeName v)}))
+                       []
+                       (get-data "languages"))]
     (db.language/new-language db data)))
 
 (defn seed-tags [db]
-  (jdbc/delete! db :tag [])
-  (jdbc/delete! db :tag_category [])
   (doseq [data (get-data "tags" {:keywords? false})]
     (let [category (db.tag/new-tag-category db {:category (first data)})
           category-id (-> category first :id)]
@@ -193,7 +159,6 @@
                 x)))))
 
 (defn seed-resources [db]
-  (delete-resources db)
   (doseq [data (get-resources db)]
     (try
       (let [res-id (-> (db.resource/new-resource db data) first :id)
@@ -262,7 +227,6 @@
                 x)))))
 
 (defn seed-policies [db]
-  (delete-policies db)
   (doseq [data (get-policies db)]
     (try
       (let [po-id (-> (db.policy/new-policy db data) first :id)
@@ -301,7 +265,6 @@
                 x)))))
 
 (defn seed-technologies [db]
-  (delete-technologies db)
   (doseq [data (get-technologies db)]
     (try
       (let [tech-id (-> (db.technology/new-technology db data) first :id)
@@ -319,8 +282,6 @@
         (throw e)))))
 
 (defn seed-actions [db]
-  (jdbc/delete! db :action_detail [])
-  (jdbc/delete! db :action [])
   (jdbc/insert-multi! db :action (get-data "actions")))
 
 (defn get-action-details [db]
@@ -328,7 +289,6 @@
           (assoc x :action (:id action)) x)) (get-data "action_details")))
 
 (defn seed-action-details [db]
-  (jdbc/delete! db :action_detail [])
   (jdbc/insert-multi! db :action_detail (mapv #(dissoc % :type) (get-action-details db))))
 
 (defn get-projects [db]
@@ -351,7 +311,6 @@
                 x)))))
 
 (defn seed-projects [db]
-  (delete-projects db)
   (doseq [data (get-projects db)]
     (try
       (let [proj-id (-> (db.project/new-project db data) first :id)
@@ -391,11 +350,7 @@
              technology? false
              project? false}}]
    (println "-- Start Seeding")
-   (delete-stakeholder db)
-   (delete-resources db)
-   (delete-policies db)
-   (delete-technologies db)
-   (delete-projects db)
+   (truncate-db db)
    (when country?
      (println "Seeding country...")
      (seed-countries db)
