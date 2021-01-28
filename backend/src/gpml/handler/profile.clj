@@ -18,7 +18,7 @@
 (defn assoc-picture [conn photo]
   (if photo
     (if-let [new-picture (db.stakeholder-picture/new-stakeholder-picture conn {:picture photo})]
-      (str/join ["/image/profile/" (:id (first new-picture))])
+      (str/join ["/image/profile/" (:id new-picture)])
       nil)
     nil))
 
