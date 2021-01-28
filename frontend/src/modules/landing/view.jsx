@@ -3,7 +3,7 @@ import { Button, Select, Switch } from 'antd';
 import { withRouter } from 'react-router-dom'
 import Maps from './maps'
 import './styles.scss'
-import { topicTypes } from '../../utils/misc';
+import { topicTypes, topicNames } from '../../utils/misc';
 import api from '../../utils/api';
 
 const Landing = ({ history }) => {
@@ -28,7 +28,7 @@ const Landing = ({ history }) => {
             <div class="map-tooltip">
               <h3>${countryName}</h3>
               <ul>
-              ${topicTypes.map(topic => `<li><span>${topic}</span><b>${summary[topic]}</b></li>`).join('')}
+              ${topicTypes.map(topic => `<li><span>${topicNames[topic]}</span><b>${summary[topic]}</b></li>`).join('')}
               </ul>
             </div>
           `
@@ -121,7 +121,7 @@ const Summary = ({ clickEvents, summary, country, counts, selected }) => {
         {country && topicTypes.map(type =>
         <li key={type}>
           <div className="text">
-            <div className="label">{type}</div>
+            <div className="label">{topicNames[type]}</div>
           </div>
           <b>{selected?.[type] || 0}</b>
         </li>
