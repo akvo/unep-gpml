@@ -110,9 +110,9 @@ const Summary = ({ clickEvents, summary, country, counts, selected }) => {
       <ul>
         {!country && summary.map((it, index) =>
           <li key={`li-${index}`} onClick={e => clickEvents(Object.keys(it)[0])}>
-            <Switch size="small" checked={counts === Object.keys(it)[0].toUpperCase()} />
+            <Switch size="small" checked={counts === topicNames[Object.keys(it)[0].toUpperCase()]} />
             <div className="text">
-              <div className="label">{Object.keys(it)[0]}</div>
+              <div className="label">{topicNames[Object.keys(it)[0]]}</div>
               <span>in {it.countries} countries</span>
             </div>
             <b>{it[Object.keys(it)[0]]}</b>
