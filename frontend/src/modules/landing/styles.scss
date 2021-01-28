@@ -11,7 +11,6 @@
       margin-bottom: 10px;
     }
     .summary{
-      // width: 170px;
       border-radius: 3px;
       overflow: hidden;
       min-width: 220px;
@@ -80,7 +79,10 @@
     }
   }
   .topics{
-    margin-top: 40px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background: url(../../images/landing-gpml.jpg) no-repeat center;
+    background-size: cover;
     .ui.container{
       display: flex;
       flex-wrap: wrap;
@@ -89,7 +91,8 @@
       width: 33%;
       padding: 10px;
       .inner{
-        border: 1px solid #DAE9F1;
+        border-top: 3px solid $primaryColor;
+        background-color: rgba(255, 255, 255, 0.85);
         border-radius: 2px;
         padding: 15px;
         height: 100%;
@@ -142,7 +145,13 @@
   }
   li{
     display: flex;
-    max-width: 90px;
+    max-width: 170px;
+    &:not(:last-child){
+      border-bottom: 1px solid #e7f1f7;
+      padding-bottom: 3px;
+      margin-bottom: 3px;
+    }
+
     &>div{
       display: flex;
     }

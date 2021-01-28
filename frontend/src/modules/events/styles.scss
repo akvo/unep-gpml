@@ -1,10 +1,12 @@
 @import '../../vars.scss';
 
 #add-event{
-  background-color: #00AAF1;
+  // background-color: #00AAF1;
   padding-top: 40px;
   padding-bottom: 40px;
   min-height: calc(100vh - 145px);
+  background: url(../../images/Event-gpml.jpg) no-repeat center;
+  background-size: cover;
   &>.ui.container>.ant-row{
     &>.ant-col:first-child{
       *{
