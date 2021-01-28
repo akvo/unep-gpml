@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Card, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
-import { topicTypes, topicNames } from '../../utils/misc'
+import { topicTypes, topicNames, resourceTypeToTopicType } from '../../utils/misc'
 import { useLocation, withRouter } from 'react-router-dom'
 import moment from 'moment'
 import api from '../../utils/api'
@@ -142,8 +142,6 @@ const Result = ({ result, relations, handleRelationChange }) => {
   )
 }
 
-const resourceSubTypes = ["financing_resource", "technical_resource"]
-const resourceTypeToTopicType = (topicType) => resourceSubTypes.indexOf(topicType) > -1 ? 'resource' : topicType
 const relationsByTopicType = {
   resource: ['owner', 'reviewer', 'user', 'interested in', 'other'],
   technology: ['owner', 'user', 'reviewer', 'interested in', 'other'],
