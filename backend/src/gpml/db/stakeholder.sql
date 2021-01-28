@@ -110,3 +110,21 @@ update stakeholder set
 --~ (when (contains? params :representation) ",representation= :representation")
 --~ (when (contains? params :about) ",about= :about, modified = now()")
 where id = :id;
+
+-- :name add-stakeholder-geocoverage :! :n
+-- :doc add stakeholder geocoverage
+insert into stakeholder_geo_coverage(stakeholder, country, country_group)
+values(:stakeholder::integer, :country::integer, :country_group::integer)
+
+-- :name delete-stakehodler-geocoverage :? :*
+-- :doc remove stakeholder-geocoverage
+delete from stakeholder_geo_coverage id in (:v*:ids)
+
+-- :name add-stakeholder-tag :! :n
+-- :doc add stakeholder tag
+insert into stakeholder_tag(stakeholder, tag)
+values(:stakeholder::integer, :tag::integer)
+
+-- :name delete-stakehodler-tag :? :*
+-- :doc remove stakeholder-tag
+delete from stakeholder_geo_coverage where id in (:v*:ids)

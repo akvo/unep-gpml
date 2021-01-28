@@ -129,7 +129,7 @@
                                              :country "SPA"
                                              :first_name "Mark"
                                              :org {:name "Unep" :url "https://unep.org"}
-                                             :photo "https://image.com"
+                                             :photo picture
                                              :picture nil))))
           _ (tap> resp)
           profile (db.stakeholder/stakeholder-by-id db {:id 1})]
@@ -145,7 +145,7 @@
               :twitter "johndoe",
               :org_url "https://unep.org",
               :org_name "Unep"
-              :photo "https://image.com",
+              :photo "/image/profile/1",
               :representation "test",
               :role "USER",
               :about "Dolor sit Amet"}

@@ -88,11 +88,11 @@
   (fn [{:keys [jwt-claims body-params]}]
     (let [profile (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)
           profile (conj profile body-params)
-          photo (if (:photo body-params)
-                  (if (re-find #"http" (:photo body-params))
-                    (:photo body-params)
-                    (assoc-picture (:spec db) (:photo body-params)))
-                  (:photo profile))
+          photo (:photo body-params)
+          photo (cond
+                  (nil? photo) nil
+                  (re-find #"^\/image\/" photo) photo
+                  :else (assoc-picture (:spec db) photo))
           profile (assoc profile :picture photo)
           org (:org profile)
           profile (if (:url org) (assoc profile :url (:url org)) profile)

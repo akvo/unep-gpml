@@ -10,9 +10,11 @@
             [ring.util.response :as resp]))
 
 (defn assoc-image [conn photo]
-  (if photo
-    (str/join ["/image/event/" (:id (first (db.event-image/new-event-image conn {:image photo})))])
-    nil))
+  (cond
+    (nil? photo) nil
+    (re-find #"^\/image\/" photo) photo
+    :else (str/join ["/image/event"]
+                    (:id (first (db.event-image/new-event-image conn {:image photo}))))))
 
 (defn create-event [conn {:keys [tags urls title start_date end_date
                                  description remarks geo_coverage_type
