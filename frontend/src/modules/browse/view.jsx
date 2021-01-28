@@ -34,6 +34,8 @@ const Browse = ({ history }) => {
   const {isAuthenticated} = useAuth0();
 
   const getResults = () => {
+    // NOTE: Don't this needs to be window.location.search because of
+    // how of how `history` and `location` are interacting!
     api.get(`/browse${window.location.search}`)
     .then((resp) => {
       setResults(resp?.data?.results)
@@ -44,6 +46,7 @@ const Browse = ({ history }) => {
     .then((resp) => {
       setResults(resp?.data?.results)
     })
+    // NOTE: Since we are using `history` and `location`, the dependency needs to be []
   }, [])
   useEffect(() => {
     if(isAuthenticated){
