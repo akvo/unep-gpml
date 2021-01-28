@@ -8,7 +8,7 @@ and json->>'type' IS not null
 GROUP BY geo_coverage_iso_code, REPLACE(lower(json->>'type'),' ','_')
 UNION
 SELECT geo_coverage_iso_code, topic, count(*) FROM v_topic
-GROUP BY geo_coverage_iso_code, topic;
+WHERE topic <> 'resource' GROUP BY geo_coverage_iso_code, topic;
 
 -- :name summary
 -- :doc Get summary of count of entities and number of countries
