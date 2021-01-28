@@ -97,4 +97,12 @@ h4{
   }
 }
 
+.photo-upload{
+  img{
+    width: 100px;
+    border-radius: 20px;
+    margin-top: 10px;
+  }
+}
+
 @import './container.scss';
