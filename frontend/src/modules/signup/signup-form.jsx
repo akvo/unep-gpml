@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Select } from "antd";
 import { Form as FinalForm, Field } from 'react-final-form'
 import { createForm } from 'final-form'
@@ -9,6 +9,8 @@ import { FieldsFromSchema, validateSchema } from "../../utils/form-utils";
 import { countries } from 'countries-list'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
 import specificAreasOptions from '../events/specific-areas.json'
+import api from '../../utils/api';
+import cloneDeep from 'lodash/cloneDeep'
 
 const geoCoverageTypeOptions = ['Global', 'Regional', 'National', 'Sub-national', 'Transnational', 'Global with elements in specific areas']
 const regionOptions = ['Africa', 'Asia and the Pacific', 'East Asia', 'Europe', 'Latin America and Carribean', 'North America', 'West Asia']
@@ -65,38 +67,38 @@ const TitleNameGroup = (props) => {
   )
 }
 
-const formSchema = [
-  {
-    firstName: { label: 'First name', required: true, render: TitleNameGroup },
-    lastName: { label: 'Last name', required: true },
-    linkedIn: { label: 'LinkedIn', prefix: <LinkedinOutlined /> },
-    twitter: { label: 'Twitter', prefix: <TwitterOutlined /> },
-    photo: { label: 'Photo', control: 'file' },
-    representation: { label: 'Representative sector', required: true, control: 'select', options: sectorOptions.map(it => ({ value: it, label: it })) },
-    country: { label: 'Country', control: 'select', showSearch: true, options: Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name })), autoComplete: 'off' }
-  },
-  {
-    'org.name': { label: 'Organisation name' },
-    'org.url': { label: 'Organisation URL', addonBefore: 'https://' },
-  },
-  {
-    about: { label: 'About yourself', control: 'textarea', required: true }
-  },
-  {
-    geoCoverageType: { label: 'Geo coverage type', required: true, control: 'select', options: geoCoverageTypeOptions.map(it => ({ value: it.toLowerCase(), label: it })) },
-    geoCoverageValue: {
-      label: 'Geo coverage',
-      render: GeoCoverageInput
+
+  const formSchema = [
+    {
+      firstName: { label: 'First name', required: true, render: TitleNameGroup },
+      lastName: { label: 'Last name', required: true },
+      linkedIn: { label: 'LinkedIn', prefix: <LinkedinOutlined /> },
+      twitter: { label: 'Twitter', prefix: <TwitterOutlined /> },
+      photo: { label: 'Photo', control: 'file' },
+      representation: { label: 'Representative sector', required: true, control: 'select', options: sectorOptions.map(it => ({ value: it, label: it })) },
+      country: { label: 'Country', control: 'select', showSearch: true, options: Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name })), autoComplete: 'off' }
+    },
+    {
+      'org.name': { label: 'Organisation name' },
+      'org.url': { label: 'Organisation URL', addonBefore: 'https://' },
+    },
+    {
+      about: { label: 'About yourself', control: 'textarea', required: true }
+    },
+    {
+      geoCoverageType: { label: 'Geo coverage type', required: true, control: 'select', options: geoCoverageTypeOptions.map(it => ({ value: it.toLowerCase(), label: it })) },
+      geoCoverageValue: {
+        label: 'Geo coverage',
+        render: GeoCoverageInput
+      }
+    },
+    {
+        tags: { label: 'Tags', control: 'select', options: [], loading: true, mode: 'multiple' }
     }
-  },
-  {
-    tags: { label: 'Tags', control: 'select', options: [], loading: true, mode: 'multiple' }
-  }
-]
+  ]
 
 const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef }) => {
   const [noOrg, setNoOrg] = useState(false)
-
   const form = createForm({
     subscription: {},
     onSubmit, validate: validateSchema(formSchema.reduce((acc, val) => ({ ...acc, ...val }), {})) // combined formSchema sections
