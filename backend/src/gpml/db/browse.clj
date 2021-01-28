@@ -35,4 +35,6 @@
   (filter-topic db {:search-text "act"
                     :geo-coverage ["***", "IND"]})
 
+  (count (filter-topic db {:search-text "closed" :topic ["technical_resource"]}))
+
   ,)

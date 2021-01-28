@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, DatePicker, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
+import { Card, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
 import { topicTypes, topicNames } from '../../utils/misc'
@@ -11,6 +11,7 @@ import countries3to2 from 'countries-list/dist/countries3to2.json'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
 import ShowMoreText from 'react-show-more-text'
 import { useAuth0 } from '@auth0/auth0-react'
+import humps from 'humps'
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -77,7 +78,7 @@ const Browse = ({ history }) => {
       <div className="ui container">
         <aside>
           <div className="inner">
-            <Input value={query.q} className="src" placeholder="Search for topics" suffix={<SearchOutlined />} onChange={({ target: { value }}) => updateQuery('q', value)} />
+            <Input value={query.q} className="src" placeholder="Search for resources" suffix={<SearchOutlined />} onChange={({ target: { value }}) => updateQuery('q', value)} />
             <div className="field">
               <div className="label">
                 Country
@@ -85,7 +86,7 @@ const Browse = ({ history }) => {
               <Select value={query.country} placeholder="Find country" mode="multiple" options={Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name }))} allowClear onChange={val => updateQuery('country', val)} filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
             </div>
             <div className="field">
-              <div className="label">Topics</div>
+              <div className="label">Resources</div>
               <TopicSelect value={query.topic} onChange={val => updateQuery('topic', val)} />
             </div>
           </div>
@@ -109,7 +110,7 @@ const TopicSelect = ({ value, onChange }) => {
   return (
     <ul className="topic-list">
       {topicTypes.map(type =>
-        <li key={type}><Checkbox checked={value.indexOf(type) !== -1} onChange={handleChange(type)}>{topicNames[type]}</Checkbox></li>
+        <li key={type}><Checkbox checked={value.indexOf(humps.decamelize(type)) !== -1} onChange={handleChange(humps.decamelize(type))}>{topicNames[type]}</Checkbox></li>
       )}
     </ul>
   )
@@ -121,7 +122,7 @@ const Result = ({ result, relations, handleRelationChange }) => {
   return (
     <Card className="result">
       <h4>{result.title || result.name}</h4>
-      <div className="type">{result.type}</div>
+      <div className="type">{topicNames[humps.camelize(result.type)]}</div>
       <ul className="stats">
         {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
         {result.geoCoverageCountries && <li>{result.geoCoverageCountries.map(it => countries[countries3to2[it]]?.name).join(', ')}</li>}
@@ -138,6 +139,8 @@ const Result = ({ result, relations, handleRelationChange }) => {
   )
 }
 
+const resourceSubTypes = ["financing_resource", "technical_resource"]
+const resourceTypeToTopicType = (topicType) => resourceSubTypes.indexOf(topicType) > -1 ? 'resource' : topicType
 const relationsByTopicType = {
   resource: ['owner', 'reviewer', 'user', 'interested in', 'other'],
   technology: ['owner', 'user', 'reviewer', 'interested in', 'other'],
@@ -151,13 +154,13 @@ const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
     let association = relation ? [...relation.association] : []
     if(checked) association = [...association, relationType]
     else association = association.filter(it => it !== relationType)
-    handleRelationChange({ topicId: topic.id, association, topic: topic.type })
+    handleRelationChange({ topicId: topic.id, association, topic: resourceTypeToTopicType(topic.type) })
   }
   return (
     <div className="portfolio-bar">
       <Dropdown overlay={(
         <ul className="relations-dropdown">
-          {relationsByTopicType[topic.type].map(relationType =>
+          {relationsByTopicType[resourceTypeToTopicType(topic.type)].map(relationType =>
           <li>
             <Checkbox checked={relation && relation.association && relation.association.indexOf(relationType) !== -1} onChange={handleChangeRelation(relationType)}>{relationType}</Checkbox>
           </li>)}

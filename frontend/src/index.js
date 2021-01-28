@@ -5,10 +5,14 @@ import './main.scss';
 import reportWebVitals from './reportWebVitals';
 import Root from './root';
 
+// hack to reuse the same `issuer` value
+// auth0-react wants the `domain` value only
+const domain = window.__ENV__.auth0.domain.replaceAll(/(https:\/\/|\/)/ig, "");
+
 ReactDOM.render(
     <Auth0Provider
-        domain="unep-gpml-test.eu.auth0.com"
-        clientId="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"
+        domain={domain}
+        clientId={window.__ENV__.auth0.clientId}
         redirectUri={window.location.origin}
         >
       <Root />

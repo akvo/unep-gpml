@@ -23,9 +23,10 @@
       (is (true? (every? valid? browse/topics)))
       (are [expected value] (= expected (valid? value))
         true "technology,project"
-        true "resource,event"
+        true "financing_resource,event"
         true "people,event,policy"
         true (str/join "," browse/topics)
+        false "resource"
         false "technology,"
         false "technology,event,"
         false ""
