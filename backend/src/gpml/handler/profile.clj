@@ -86,24 +86,29 @@
 
 (defmethod ig/init-key :gpml.handler.profile/put [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
-    (let [profile (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)
-          profile (conj profile body-params)
-          photo (if (:photo body-params)
-                  (if (re-find #"http" (:photo body-params))
+    (let [db (:spec db)
+          new-profile (merge
+                        (db.stakeholder/stakeholder-by-email db jwt-claims)
+                        body-params)
+          profile (cond-> new-profile
+
                     (:photo body-params)
-                    (assoc-picture (:spec db) (:photo body-params)))
-                  (:photo profile))
-          profile (assoc profile :picture photo)
-          org (:org profile)
-          profile (if (:url org) (assoc profile :url (:url org)) profile)
-          profile (if (:name org)
-                    (assoc profile :affiliation (:id (assoc-organisation (:spec db) org)))
-                    profile)
-          profile (if (:country body-params)
-                    (assoc profile :country (get-country (:spec db) (:country body-params)))
-                    profile)
+                    (assoc :picture
+                           (if (re-find #"http" (:photo body-params))
+                             (:photo body-params)
+                             (assoc-picture db (:photo body-params))))
+
+                    (-> new-profile :org :url)
+                    (assoc :url (-> new-profile :org :url))
+
+                    (-> new-profile :org :name)
+                    (assoc :affiliation (:id (assoc-organisation db (:org new-profile))))
+
+                    (:country body-params)
+                    (assoc :country (get-country db (:country body-params))))
+
           _ (tap> profile)
-          _ (db.stakeholder/update-stakeholder (:spec db) profile)]
+          _ (db.stakeholder/update-stakeholder db profile)]
       (resp/status 204))))
 
 (defmethod ig/init-key :gpml.handler.profile/approve [_ {:keys [db]}]
