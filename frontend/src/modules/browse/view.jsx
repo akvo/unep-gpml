@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Card, DatePicker, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
-import { topicTypes } from '../../utils/misc'
+import { topicTypes, topicNames } from '../../utils/misc'
 import { useLocation, withRouter } from 'react-router-dom'
 import moment from 'moment'
 import api from '../../utils/api'
@@ -123,7 +123,7 @@ const TopicSelect = ({ value, onChange }) => {
   return (
     <ul className="topic-list">
       {topicTypes.map(type =>
-        <li key={type}><Checkbox checked={value.indexOf(type) !== -1} onChange={handleChange(type)}>{type}</Checkbox></li>
+        <li key={type}><Checkbox checked={value.indexOf(type) !== -1} onChange={handleChange(type)}>{topicNames[type]}</Checkbox></li>
       )}
     </ul>
   )
