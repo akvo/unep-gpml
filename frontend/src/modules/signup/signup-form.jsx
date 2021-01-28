@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Select } from "antd";
 import { Form as FinalForm, Field } from 'react-final-form'
 import { createForm } from 'final-form'
@@ -8,6 +8,48 @@ import { LinkedinOutlined, TwitterOutlined } from "@ant-design/icons";
 import { FieldsFromSchema, validateSchema } from "../../utils/form-utils";
 import { countries } from 'countries-list'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
+import specificAreasOptions from '../events/specific-areas.json'
+import cloneDeep from 'lodash/cloneDeep'
+import api from '../../utils/api';
+
+const geoCoverageTypeOptions = ['Global', 'Regional', 'National', 'Sub-national', 'Transnational', 'Global with elements in specific areas']
+const regionOptions = ['Africa', 'Asia and the Pacific', 'East Asia', 'Europe', 'Latin America and Carribean', 'North America', 'West Asia']
+const GeoCoverageInput = (props) => {
+  return (
+    <Field key={props.name} name="geoCoverageType" render={
+        ({input: typeInput, name}) => {
+        return <Field key={name} name="geoCoverageValue" render={
+          ({ input }) => {
+            if(typeInput.value === 'global') return <Input disabled />
+            if (typeInput.value === 'sub-national') return <Input placeholder="Type regions here..." {...input} />
+            if(typeInput.value === 'Other') return <Input placeholder="Type here..." {...input} />
+            const selectProps = {...input}
+            if(typeInput.value === 'regional'){
+              selectProps.options = regionOptions.map(it => ({ value: it, label: it }))
+              selectProps.mode = 'multiple'
+            }
+            else if(typeInput.value === 'national' || typeInput.value === 'transnational'){
+              selectProps.options = Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name }))
+              selectProps.showSearch = true
+              selectProps.filterOption = (input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              if (typeInput.value === 'transnational'){
+                selectProps.mode = 'multiple'
+              }
+            }
+            else if (typeInput.value === 'global with elements in specific areas'){
+              selectProps.options = specificAreasOptions.map(it => ({ value: it, label: it }))
+              selectProps.mode = 'multiple'
+            }
+            return <Select {...selectProps} />
+          }
+        }
+        />
+      }
+    }
+    />
+  )
+}
+
 
 const sectorOptions = ['Governments', 'Private Sector', 'NGOs and MGS', 'Academia and Scientific Community', 'IGOs and multi - lateral processes', 'Other']
 const TitleNameGroup = (props) => {
@@ -24,7 +66,8 @@ const TitleNameGroup = (props) => {
     </Input.Group>
   )
 }
-const formSchema = [
+
+const defaultFormSchema = [
   {
     firstName: { label: 'First name', required: true, render: TitleNameGroup },
     lastName: { label: 'Last name', required: true },
@@ -40,15 +83,36 @@ const formSchema = [
   },
   {
     about: { label: 'About yourself', control: 'textarea', required: true }
+  },
+  {
+    geoCoverageType: { label: 'Geo coverage type', required: true, control: 'select', options: geoCoverageTypeOptions.map(it => ({ value: it.toLowerCase(), label: it })) },
+    geoCoverageValue: {
+      label: 'Geo coverage',
+      render: GeoCoverageInput
+    }
+  },
+  {
+    tags: { label: 'Tags', control: 'select', options: [], loading: true, mode: 'multiple' }
   }
 ]
 
 const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef }) => {
+  const [formSchema, setFormSchema] = useState(defaultFormSchema)
   const [noOrg, setNoOrg] = useState(false)
   const form = createForm({
     subscription: {},
     onSubmit, validate: validateSchema(formSchema.reduce((acc, val) => ({ ...acc, ...val }), {})) // combined formSchema sections
   })
+
+  useEffect(() => {
+    (async function fetchData() {
+      const response = await api.get('/tag/general')
+      const newSchema = cloneDeep(defaultFormSchema);
+      newSchema[4].tags.options = response.data.map(x => ({ value: x.id, label: x.tag }))
+      newSchema[4].tags.loading = false
+      setFormSchema(newSchema);
+    })()
+  }, [])
 
   if(formRef) formRef(form)
   return (
@@ -71,7 +135,12 @@ const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef }) => {
                   {!noOrg && <FieldsFromSchema schema={formSchema[1]} />}
                 </div>
                 <div className="section">
+                  <h2>Location and Coverage</h2>
+                  <FieldsFromSchema schema={formSchema[3]} />
+                </div>
+                <div className="section">
                   <h2>Other</h2>
+                  <FieldsFromSchema schema={formSchema[4]} />
                   <FieldsFromSchema schema={formSchema[2]} />
                 </div>
               </div>
