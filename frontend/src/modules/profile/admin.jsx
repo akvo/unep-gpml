@@ -1,28 +1,34 @@
-import { Button, Collapse, Space } from 'antd'
+import { Button, Collapse, Space, Spin } from 'antd'
 import React from 'react'
 import { useEffect, useState } from 'react'
 import api from '../../utils/api'
+import moment from 'moment'
 
 
 const AdminSection = () => {
   const [pendingItems, setPendingItems] = useState([])
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
-    api.get('/profile/pending')
-    .then((d) => {
-      setPendingItems(d.data.map(it => ({ type: 'stakeholder', ...it, title: `${it.firstName} ${it.lastName}` })))
-    })
+    (async function fetchData() {
+      const profileResp = await api.get('/profile/pending');
+      const eventResp = await api.get('/event/pending');
+      setPendingItems([
+        ...profileResp.data.map(it => ({ type: 'profile', ...it, title: `${it.firstName} ${it.lastName}` })),
+        ...eventResp.data.map(it => ({ type: 'event', ...it }))
+      ])
+      setLoading(false)
+    })()
   }, [])
   const approve = (item) => () => {
-    if(item.type === 'stakeholder') {
-      api.put('/profile/approve', { id: item.id })
-      .then(() => {
-        setPendingItems(pendingItems.filter(it => it.id !== item.id))
-      })
-    }
+    api.put(`/${item.type}/approve`, { id: item.id })
+    .then(() => {
+      setPendingItems(pendingItems.filter(it => it.id !== item.id))
+    })
   }
   return (
     <div className="admin-view">
       <h2>New approval requests</h2>
+      {loading && <Spin size="large" />}
       <div className="row head">
         <div className="col">Type</div>
         <div className="col">Title</div>
@@ -45,13 +51,22 @@ const AdminSection = () => {
         }
       >
         <div>
-          {item.type === 'stakeholder' && (
+          {item.type === 'profile' && (
             <div className="stakeholder-info">
               {item.photo && <img src={item.photo} />}
               <ul>
                 <li>{item.email}</li>
                 <li>{item.about}</li>
                 {item.org && <li><a href={item.org.url} target="_blank">{item.org.name}</a></li>}
+              </ul>
+            </div>
+          )}
+          {item.type === 'event' && (
+            <div className="event-info">
+              <ul>
+                  <li>{moment(item.startDate).format('DD MMM YYYY')} to {moment(item.endDate).format('DD MMM YYYY')}</li>
+                  <li>{item.geoCoverageType} {item.geoCoverageValue}</li>
+                  <li>{item.description}</li>
               </ul>
             </div>
           )}
