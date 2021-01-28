@@ -1,11 +1,14 @@
 (ns gpml.handler.browse
   (:require [clojure.string :as str]
             [gpml.db.browse :as db.browse]
+            [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
 (def country-re #"^(\p{Upper}{3})((,\p{Upper}{3})+)?$")
-(def topics (vec (sort ["people" "event" "technology" "policy" "project" "financing_resource" "technical_resource"])))
+(def resource-types ["financing_resource" "technical_resource"])
+(def topics
+  (-> ["people" "event" "technology" "policy" "project"] (concat resource-types) sort vec))
 (def topic-re (re-pattern (format "^(%1$s)((,(%1$s))+)?$" (str/join "|" topics))))
 
 (def query-params
@@ -30,11 +33,20 @@
         :swagger {:description "Text search term to be found on the different topics"
                   :type "string"
                   :allowEmptyValue true}}
-    [:string]]])
+    [:string]]
+   [:favorites {:optional true
+                :error/message "Favorites should be 'true' or 'false'"
+                :swagger {:description "Flag to return only favorited items"
+                          :type "boolean"
+                          :allowEmptyValue true}}
+    [:boolean]]])
 
 (defn get-db-filter
-  [{:keys [q country topic]}]
+  [{:keys [q country topic favorites user]}]
   (merge {}
+         (when (and user favorites) {:user user
+                                     :favorites true
+                                     :resource-types resource-types})
          (when (seq country)
            {:geo-coverage (conj (set (str/split country #",")) "***")})
          (when (seq topic)
@@ -58,9 +70,13 @@
     data))
 
 (defmethod ig/init-key :gpml.handler.browse/get [_ {:keys [db]}]
-  (fn [{{:keys [query]} :parameters}]
-
-    (resp/response {:results (#'results query (:spec db))})))
+  (fn [{{:keys [query]} :parameters {:keys [email]} :jwt-claims}]
+    (let [user-id (and email (->> {:email email}
+                                  (db.stakeholder/stakeholder-by-email (:spec db))
+                                  :id))]
+      (resp/response {:results (#'results
+                                (merge query {:user user-id})
+                                (:spec db))}))))
 
 (defmethod ig/init-key :gpml.handler.browse/query-params [_ _]
   query-params)
