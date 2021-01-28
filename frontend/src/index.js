@@ -7,8 +7,8 @@ import Root from './root';
 
 ReactDOM.render(
     <Auth0Provider
-        domain="unep-gpml-test.eu.auth0.com"
-        clientId="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"
+        domain={window.__ENV__.auth0.domain}
+        clientId={window.__ENV__.auth0.clientId}
         redirectUri={window.location.origin}
         >
       <Root />

@@ -11,6 +11,9 @@
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.image/event
                                                :parameters {:path [:map [:id int?]]}}}]
+                                       ["/env.js"
+                                        {:get {:no-doc true
+                                               :handler #ig/ref :gpml.handler.env/get}}]
                                        ["/api"
                                         ["/swagger.json"
                                          {:get {:no-doc true
@@ -133,6 +136,9 @@
   :gpml.handler.favorite/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.favorite/post {:db #ig/ref :duct.database/sql}
   :gpml.handler.favorite/post-params {}
+
+  :gpml.handler.env/get {:auth0 {:domain #duct/env "OIDC_ISSUER"
+                                 :clientId #duct/env "OIDC_AUDIENCE"}}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
