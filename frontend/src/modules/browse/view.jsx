@@ -92,7 +92,7 @@ const Browse = ({ history }) => {
           </div>
         </aside>
         <div className="main-content">
-          {results.map(result => <Result {...{result, handleRelationChange, relations}} />)}
+          {results.map(result => <Result key={`${result.type}-${result.id}`} {...{result, handleRelationChange, relations}} />)}
         </div>
       </div>
     </div>
@@ -161,7 +161,7 @@ const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
       <Dropdown overlay={(
         <ul className="relations-dropdown">
           {relationsByTopicType[resourceTypeToTopicType(topic.type)].map(relationType =>
-          <li>
+          <li key={`${relationType}`}>
             <Checkbox checked={relation && relation.association && relation.association.indexOf(relationType) !== -1} onChange={handleChangeRelation(relationType)}>{relationType}</Checkbox>
           </li>)}
         </ul>
