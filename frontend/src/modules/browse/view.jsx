@@ -139,10 +139,10 @@ const Result = ({ result, relations, handleRelationChange }) => {
   )
 }
 
-const resourceRelations = ['owner', 'reviewer', 'user', 'interested in', 'other']
+const resourceSubTypes = ["financing_resource", "technical_resource"]
+const resourceTypeToTopicType = (topicType) => resourceSubTypes.indexOf(topicType) > -1 ? 'resource' : topicType
 const relationsByTopicType = {
-  financing_resource: resourceRelations,
-  technical_resource: resourceRelations,
+  resource: ['owner', 'reviewer', 'user', 'interested in', 'other'],
   technology: ['owner', 'user', 'reviewer', 'interested in', 'other'],
   event: ['resource person', 'organiser', 'participant', 'sponsor', 'host', 'interested in', 'other'],
   project: ['owner', 'implementor', 'reviewer', 'user', 'interested in', 'other'],
@@ -154,13 +154,13 @@ const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
     let association = relation ? [...relation.association] : []
     if(checked) association = [...association, relationType]
     else association = association.filter(it => it !== relationType)
-    handleRelationChange({ topicId: topic.id, association, topic: topic.type })
+    handleRelationChange({ topicId: topic.id, association, topic: resourceTypeToTopicType(topic.type) })
   }
   return (
     <div className="portfolio-bar">
       <Dropdown overlay={(
         <ul className="relations-dropdown">
-          {relationsByTopicType[topic.type].map(relationType =>
+          {relationsByTopicType[resourceTypeToTopicType(topic.type)].map(relationType =>
           <li>
             <Checkbox checked={relation && relation.association && relation.association.indexOf(relationType) !== -1} onChange={handleChangeRelation(relationType)}>{relationType}</Checkbox>
           </li>)}
