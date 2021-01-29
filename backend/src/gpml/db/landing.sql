@@ -66,6 +66,7 @@ totals AS (
     FROM resource WHERE type IS NOT NULL GROUP BY data
     UNION
     SELECT COUNT(*) as total, 'event' as data, 3 as o FROM event
+    WHERE event.approved_at IS NOT NULL
     UNION
     SELECT COUNT(*) as total, 'policy' as data, 4 as o FROM policy
     UNION

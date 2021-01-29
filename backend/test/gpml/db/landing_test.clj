@@ -5,6 +5,7 @@
             [gpml.db.country-group :as db.country-group]
             [gpml.db.landing :as db.landing]
             [gpml.db.resource :as db.resource]
+            [gpml.db.event :as db.event]
             [gpml.fixtures :as fixtures]
             [integrant.core :as ig]))
 
@@ -75,9 +76,25 @@
           system (ig/init fixtures/*system* [db-key])
           conn (-> system db-key :spec)
           _ (add-resource-data conn)
+          _ (db.event/new-event conn
+                                {:title "any"
+                                 :start_date "2021-10-03"
+                                 :end_date "2021-10-15"
+                                 :description "blah"
+                                 :remarks "blah"
+                                 :geo_coverage_type nil
+                                 :country nil
+                                 :city nil
+                                 :image nil})
           summary (db.landing/summary conn)
-          financing-resource-summary (->> summary
-                                          (filter #(= "financing_resource" (:resource_type %)))
-                                          first)]
-      (is (= (:count financing-resource-summary) 4))
-      (is (= (:country_count financing-resource-summary) 4)))))
+          extract-data (fn [topic]
+                         (->> summary
+                              (filter #(= topic (:resource_type %)))
+                              first))]
+
+      (are [expected topic] (= expected (:count (extract-data topic)))
+        4 "financing_resource"
+        0 "event")
+      (are [expected topic] (= expected (:country_count (extract-data topic)))
+        4 "financing_resource"
+        0 "event"))))
