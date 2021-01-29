@@ -80,7 +80,7 @@ const Root = () => {
                 :
                 <div className="rightside">
                   <Link to="/profile">{profile ? profile.firstName : user.nickname}</Link>
-                  <Button type="link" onClick={logout}>Logout</Button>
+                  <Button type="link" onClick={() => logout({ returnTo: window.location.origin })}>Logout</Button>
                 </div>
               }
           </div>
@@ -125,7 +125,7 @@ const Footer = () => {
           <img src={unepLogo} className="uneplogo" alt="unep" />
           <img src={gpmlLogo} className="gpmllogo" alt="gpml" />
           <p>
-            The Global Partnership on Marine Litter (GPML) is a multi-stakeholder partnership that brings together all actors working to prevent marine litter and microplastics. By providing a unique global platform to share knowledge and experience, partners are able to work together to create and advance solutions to this pressing global issue. 
+            The Global Partnership on Marine Litter (GPML) is a multi-stakeholder partnership that brings together all actors working to prevent marine litter and microplastics. By providing a unique global platform to share knowledge and experience, partners are able to work together to create and advance solutions to this pressing global issue.
           </p>
         </div>
       </div>
