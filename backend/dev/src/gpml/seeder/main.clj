@@ -229,7 +229,7 @@
 (defn seed-policies [db]
   (doseq [data (get-policies db)]
     (try
-      (let [po-id (-> (db.policy/new-policy db data) first :id)
+      (let [po-id (:id (db.policy/new-policy db data))
             data-geo (:geo_coverage data)
             data-lang (:resource_language_url data)
             data-tag (:tags data)]
