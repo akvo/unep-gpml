@@ -68,7 +68,7 @@ const generateOptions = ({title, subtitle, data, tooltip}) => {
             roam: 'move',
             map: 'unep-map',
             aspectScale: 1,
-            zoom: 1,
+            zoom: 1.26,
             label: {show:false},
             symbolSyze: 0,
             emphasis: {label: {show: false}},
