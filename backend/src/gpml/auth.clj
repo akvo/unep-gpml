@@ -75,11 +75,11 @@
         (if-let [auth-header (get-in request [:headers "authorization"])]
           (let [id-token-verifier (token-verifier (assoc opts :signature-verifier signature-verifier))
                 [_ token] (re-find #"^Bearer (\S+)$" auth-header)
-                [valid? msg] (try
-                               (.verify ^IdTokenVerifier id-token-verifier token)
-                               [true "OK"]
-                               (catch Exception e
-                                 [false (.getMessage e)]))]
+                [valid? _] (try
+                             (.verify ^IdTokenVerifier id-token-verifier token)
+                             [true "OK"]
+                             (catch Exception e
+                               [false (.getMessage e)]))]
             (if valid?
               (handler (assoc request :jwt-claims (get-claims token)))
               (handler request)))
