@@ -8,7 +8,7 @@
 (defn landing-response [conn]
   (let [summary-data (->> (gpml.db.landing/summary conn)
                           (mapv (fn [{:keys [resource_type count country_count]}]
-                                  {(keyword resource_type) count :country country_count})))
+                                  {(keyword resource_type) count :countries country_count})))
         topics-data (->> topics
                          (map #(assoc {} :topic [%]))
                          (map #(db.browse/filter-topic conn %))
