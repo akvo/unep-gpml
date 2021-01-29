@@ -87,8 +87,7 @@ const Browse = ({ history }) => {
                 Country
               </div>
               <Select value={query.country} placeholder="Find country" mode="multiple" options={Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name }))} allowClear onChange={val => updateQuery('country', val)} filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
-                {/* FIXME: Hide or disable checkbox if user not logged in */}
-                <Checkbox checked={query?.favorites?.indexOf("true") > -1}  onChange={({ target: { checked }}) => updateQuery('favorites', checked)}>My Favorites</Checkbox>
+                {isAuthenticated && <Checkbox checked={query?.favorites?.indexOf("true") > -1}  onChange={({ target: { checked }}) => updateQuery('favorites', checked)}>My Favorites</Checkbox>}
             </div>
             <div className="field">
               <div className="label">Resources</div>
