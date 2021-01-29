@@ -6,7 +6,7 @@ import AdminSection from './admin'
 import './styles.scss'
 const {TabPane} = Tabs
 
-const ProfileView = ({profile, tagsRef}) => {
+const ProfileView = ({profile, tagsRef, setProfile}) => {
   const handleSubmitRef = useRef()
   const [saving, setSaving] = useState(false)
   const [user, setUser] = useState(false)
@@ -14,6 +14,7 @@ const ProfileView = ({profile, tagsRef}) => {
     setSaving(true)
     api.put('/profile', vals)
     .then(() => {
+      setProfile(vals)
       notification.success({ message: 'Profile updated' })
       setSaving(false)
     })

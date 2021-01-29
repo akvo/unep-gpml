@@ -103,7 +103,7 @@ const Root = () => {
         <Route path="/" exact render={props => <Landing {...{countries, data, setCountries,...props}}/>} />
         <Route path="/browse" component={Browse} />
         <Route path="/add-event" component={AddEvent} />
-        <Route path="/profile" render={props => <ProfileView {...props} profile={profile} tagsRef={profileTag}/>} />
+        <Route path="/profile" render={props => <ProfileView {...props} profile={profile} tagsRef={profileTag} setProfile={setProfile}/>} />
         <Footer />
       </div>
       <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} setProfile={setProfile} tagsRef={profileTag}/>
