@@ -13,7 +13,7 @@
 (defn assoc-organisation [conn org]
   (if-let [or-id (db.organisation/organisation-by-name conn org)]
     or-id
-    (first (db.organisation/new-organisation conn org))))
+    (db.organisation/new-organisation conn org)))
 
 (defn assoc-picture [conn photo]
   (cond

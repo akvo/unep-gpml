@@ -15,6 +15,6 @@ select id from organisation where lower(name) = lower(:name)
 select * from organisation where name in (:v*:names)
 
 
--- :name new-organisation :<!
+-- :name new-organisation :<! :1
 insert into organisation (name)
 values (:name) returning id;
