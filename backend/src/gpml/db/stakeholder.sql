@@ -86,7 +86,7 @@ where s.approved_at is null order by s.created desc;
 -- :doc Approve stakeholder
 update stakeholder set approved_at = now() where id = :id;
 
--- :name new-stakeholder :<!
+-- :name new-stakeholder :<! :1
 -- :doc Insert a new stakeholder
 insert into stakeholder(picture, title, first_name, last_name, affiliation, email, linked_in, twitter, url, country, representation, about, geo_coverage_type)
 values(:picture, :title, :first_name, :last_name, :affiliation, :email, :linked_in, :twitter, :url, :country::integer, :representation, :about, :v:geo_coverage_type::geo_coverage_type) RETURNING id;
@@ -125,8 +125,6 @@ select * from stakeholder_picture where id = :id
 insert into stakeholder_picture (picture)
 values(:picture) returning id;
 
--- :name stakeholder-geocoverage :
-
 -- :name stakeholder-geo-country :? :*
 -- :doc get stakeholder geocoverage country
 select c.iso_code from stakeholder_geo_coverage s
@@ -139,7 +137,7 @@ select c.name from stakeholder_geo_coverage s
 left join country_group c on c.id = s.country_group
 where s.stakeholder = :id
 
--- :name add-stakeholder-geo :<!
+-- :name add-stakeholder-geo :<! :1
 -- :doc add stakeholder geo
 insert into stakeholder_geo_coverage(stakeholder, country_group, country)
 values :t*:geo RETURNING id;
@@ -152,7 +150,7 @@ delete from stakeholder_geo_coverage where stakeholder = :id
 -- :doc get stakeholder tags
 select * from stakeholder_tag where stakeholder = :id
 
--- :name add-stakeholder-tags :<!
+-- :name add-stakeholder-tags :<! :1
 -- :doc add stakeholder tags
 insert into stakeholder_tag(stakeholder, tag)
 values :t*:tags RETURNING id;

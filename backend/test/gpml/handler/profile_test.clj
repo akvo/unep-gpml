@@ -210,8 +210,8 @@
           admin (new-profile 1 1)
           admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
           ;; Jane become an admin
-          _ (db.stakeholder/update-stakeholder-role db (assoc (first admin) :role "ADMIN"))
-          _ (db.stakeholder/approve-stakeholder db (first admin))
+          _ (db.stakeholder/update-stakeholder-role db (assoc admin :role "ADMIN"))
+          _ (db.stakeholder/approve-stakeholder db admin)
           ;; create new user name John
           _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
           ;; create new user name Nick
@@ -220,7 +220,7 @@
           ;; Jane trying to see the list of pending user in this case John and Nick
           resp (handler (-> (mock/request :get "/")
                             (assoc :jwt-claims {:email "jane@org"}
-                                   :admin (first admin))))]
+                                   :admin admin)))]
       (is (= 200 (:status resp)))
       (is (= 2 (count (into [] (-> resp :body))))))))
 
@@ -233,11 +233,11 @@
           ;; create new user name Jane
           admin (new-profile 1 1)
           admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
-          _ (db.stakeholder/approve-stakeholder db (first admin))
+          _ (db.stakeholder/approve-stakeholder db admin)
           ;; create new user name John
           _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
           ;; Jane become an admin
-          _ (db.stakeholder/update-stakeholder-role db (assoc (first admin) :role "ADMIN"))
+          _ (db.stakeholder/update-stakeholder-role db (assoc admin :role "ADMIN"))
           ;; Jane trying to approve this guy John
           resp (handler (-> (mock/request :put "/")
                             (assoc :jwt-claims {:email "jane@org"})

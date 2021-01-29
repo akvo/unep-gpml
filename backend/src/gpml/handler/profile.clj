@@ -97,7 +97,7 @@
 
 (defmethod ig/init-key :gpml.handler.profile/post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params headers]}]
-    (if-let [id (-> (make-profile (:spec db) jwt-claims body-params) first :id)]
+    (if-let [id (:id (make-profile (:spec db) jwt-claims body-params))]
       (let [tags (:tags body-params)
             geo-type (:geo_coverage_type body-params)
             geo-value (:geo_coverage_value body-params)
@@ -109,18 +109,18 @@
           (let [geo-data
                 (cond
                   (contains? #{"regional" "global with elements in specific areas"}
-                   geo-type)
+                             geo-type)
                   (->> {:names geo-value}
                        (db.country-group/country-group-by-names db)
                        (map #(vector id (:id %) nil)))
                   (contains? #{"national" "transnational"}
-                   geo-type)
+                             geo-type)
                   (->> {:codes geo-value}
                        (db.country/country-by-codes db)
                        (map #(vector id nil (:id %)))))]
             (when (some? geo-data)
               (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))
-        (resp/created (:referer headers) 
+        (resp/created (:referer headers)
                       (assoc (remap-profile profile nil nil)
                              :geo_coverage_value (:geo_coverage_type body-params)
                              :geo_coverage_value (:geo_coverage_value body-params)

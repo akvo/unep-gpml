@@ -30,8 +30,8 @@
   (let [db (test-util/db-test-conn)]
     (seeder/seed db {:country? true
                      :technology? true})
-    (let [sth1-id (-> (new-stakeholder db "email1@un.org") first :id)
-          sth2-id (-> (new-stakeholder db "email2@un.org") first :id)]
+    (let [sth1-id (:id (new-stakeholder db "email1@un.org"))
+          sth2-id (:id (new-stakeholder db "email2@un.org"))]
       (testing "Creating a new relation between a stakeholder and a technolgy item"
         (db.favorite/new-association db {:stakeholder sth1-id
                                          :topic "technology"

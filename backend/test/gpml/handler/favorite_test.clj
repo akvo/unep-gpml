@@ -40,7 +40,7 @@
                                              :about "Lorem Ipsum"
                                              :geo_coverage_type nil
                                              :role "USER"})]
-    (db.stakeholder/approve-stakeholder db {:id (-> sth first :id)})))
+    (db.stakeholder/approve-stakeholder db sth)))
 
 (defn- mock-post [email]
   (-> (mock/request :post "/")

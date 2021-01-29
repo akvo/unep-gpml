@@ -24,8 +24,8 @@
                                              :representation "test"
                                              :about "Lorem Ipsum"
                                              :geo_coverage_type nil})]
-    (db.stakeholder/approve-stakeholder db {:id (-> sth first :id)})
-    (db.stakeholder/update-stakeholder-role db {:id (-> sth first :id)
+    (db.stakeholder/approve-stakeholder db sth)
+    (db.stakeholder/update-stakeholder-role db {:id (:id sth)
                                                 :role "ADMIN"})
     (db.event/new-event db {:title "Title"
                             :start_date "2021-02-03T09:00:00Z"
