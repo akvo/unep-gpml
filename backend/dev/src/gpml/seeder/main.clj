@@ -313,7 +313,7 @@
 (defn seed-projects [db]
   (doseq [data (get-projects db)]
     (try
-      (let [proj-id (-> (db.project/new-project db data) first :id)
+      (let [proj-id (:id (db.project/new-project db data))
             data-countries (:countries data)
             data-act (:action_codes data)
             data-act-detail (:action_details data)]
