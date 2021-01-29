@@ -832,5 +832,11 @@ SELECT * FROM resource_locations r WHERE r.location IN (SELECT id FROM loc);
 
 #+BEGIN_SRC sql
 insert into stakeholder(first_name, last_name, email, approved_at, representation)
-values ('p', 'c', 'puneeth@***.org', '2021-01-01T12:00:00Z', 'ngo');
+values ('p', 'c', 'puneeth@****.org', '2021-01-01T12:00:00Z', 'ngo');
+#+END_SRC
+
+#+BEGIN_SRC sql
+update stakeholder
+  set role = 'ADMIN'
+  where email = 'puneeth@****.org';
 #+END_SRC
