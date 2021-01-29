@@ -28,6 +28,7 @@ const Root = () => {
     const [countries, setCountries] = useState(null);
     const [data, setData] = useState(null);
     const [profileTag, setProfileTag] = useState([]);
+    const [initLandingCount, setInitLandingCount] = useState("");
 
     useEffect(() => {
       (async function fetchData() {
@@ -56,6 +57,7 @@ const Root = () => {
       api.get('/country')
       .then((resp) => {
         setCountries(resp.data)
+        setInitLandingCount("project");
       })
       api.get('/tag/general')
       .then((resp) => {
@@ -100,7 +102,9 @@ const Root = () => {
             </nav>
           </div>
         </header>
-        <Route path="/" exact render={props => <Landing {...{countries, data, setCountries,...props}}/>} />
+        <Route path="/" exact render={props => <Landing {...
+          {countries, data, initLandingCount, setCountries, setInitLandingCount,...props}
+          }/>} />
         <Route path="/browse" component={Browse} />
         <Route path="/add-event" component={AddEvent} />
         <Route path="/profile" render={props => <ProfileView {...props} profile={profile} tagsRef={profileTag} setProfile={setProfile}/>} />

@@ -5,7 +5,7 @@ import Maps from './maps'
 import './styles.scss'
 import { topicTypes, topicNames } from '../../utils/misc';
 
-const Landing = ({ history, data, countries, setCountries}) => {
+const Landing = ({ history, data, countries, initLandingCount, setCountries, setInitLandingCount}) => {
     const [country, setCountry] = useState(null);
     const [countryMap, setCountryMap] = useState(null)
     const [counts, setCounts] = useState("");
@@ -41,6 +41,7 @@ const Landing = ({ history, data, countries, setCountries}) => {
     const countryObj = countries && country && countries.find(it => it.isoCode === country)
 
     const handleSummaryClick = (dataType) => {
+      setInitLandingCount("");
       if(counts === dataType){
         setCountryMap(null)
         setCounts('')
@@ -56,6 +57,9 @@ const Landing = ({ history, data, countries, setCountries}) => {
     }
 
     const selected = data ? data.map.find(x => x.isoCode === country) : false;
+    const mapData = country ?  [{ name: country, itemStyle: { areaColor: "#1890ff" }}] : (counts ? countryMap : [])
+    const defaultMapData = initLandingCount !== "" && data ?
+        data.map.map(x => ({...x, name: x.isoCode, value: x[initLandingCount]})) : false;
 
     return (
       <div id="landing">
@@ -71,11 +75,13 @@ const Landing = ({ history, data, countries, setCountries}) => {
             value={country}
             onChange={handleChangeCountry}
           />
-          <Summary clickEvents={handleSummaryClick} summary={data.summary} country={countryObj} counts={counts} selected={selected}/>
+          <Summary clickEvents={handleSummaryClick} summary={data.summary} 
+            country={countryObj} counts={counts} selected={selected}
+            init={initLandingCount}/>
         </div>
         }
         <Maps
-          data={country ?  [{ name: country, itemStyle: { areaColor: "#1890ff" }}] : (counts ? countryMap : [])}
+          data={defaultMapData || mapData}
           clickEvents={clickEvents}
           tooltip={toolTip}
         />
@@ -88,20 +94,23 @@ const Landing = ({ history, data, countries, setCountries}) => {
     )
 }
 
-const Summary = ({ clickEvents, summary, country, counts, selected }) => {
+const Summary = ({ clickEvents, summary, country, counts, selected, init }) => {
   return (
     <div className="summary">
       <header>{!selected ? 'Global summary' : 'Summary' }</header>
       <ul>
           {!country && summary.map((it, index) => {
               const current = Object.keys(it)[0];
-              let className = current !== counts ? "summary-list" : "summary-list-selected";
+              let className = init !== current ? "summary-list" : "summary-list-selected";
+              if (init === "") {
+                  className = current !== counts ? "summary-list" : "summary-list-selected";
                   className = counts === "" ? "" : className;
+              }
               return (
               <li key={`li-${index}`}
                   onClick={e => clickEvents(current)}
                   className={className}>
-                <Switch size="small" checked={counts === current} />
+                <Switch size="small" checked={counts === current || init === current} />
                 <div className="text">
                   <div className="label">{topicNames(current)}</div>
                   <span>in {it.countries} countries</span>
