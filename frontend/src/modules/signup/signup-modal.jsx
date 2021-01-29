@@ -10,12 +10,14 @@ import { useRef } from "react";
 const SignupModal = ({ visible, onCancel }) => {
     const [sending, setSending] = useState(false)
     const [step, setStep] = useState(1)
+    const [profile, setProfile] = useState({})
     const {user} = useAuth0();
     const handleSubmitRef = useRef()
     const onSubmit = (vals) => {
       setSending(true)
       api.post('/profile', vals)
       .then(d => {
+        setProfile(d)
         setSending(false)
         setStep(2)
       })
@@ -42,7 +44,7 @@ const SignupModal = ({ visible, onCancel }) => {
           footer={step === 2 ? (<Button onClick={onCancel}>Close</Button>) : undefined}
         >
           {step === 1 &&
-            <SignupForm onSubmit={onSubmit} handleSubmitRef={ref => { handleSubmitRef.current = ref }} />
+            <SignupForm onSubmit={onSubmit} handleSubmitRef={ref => { handleSubmitRef.current = ref }} initialValues={profile}/>
           }
           {step === 2 &&
           <div className="submitted">
