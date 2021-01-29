@@ -1,5 +1,5 @@
 (ns gpml.auth-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
+  (:require [clojure.test :refer [deftest testing is use-fixtures are]]
             [gpml.auth :as auth]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
@@ -71,3 +71,14 @@
                        post-request
                        handler
                        :status)))))))
+
+(deftest test-check-authentication
+  (testing "Testing check-authentication logic"
+    (are [expected auth-header result] (= expected (select-keys (auth/check-authentication {:headers {"authorization" auth-header}}
+                                                                                           (constantly result))
+                                                                [:status :authenticated?]))
+      {:status 401
+       :authenticated? false} nil nil
+      {:authenticated? true} "any-token-that-is-valid" [true {:any-claim true}]
+      {:status 403
+       :authenticated? false} "not-a-valid-token" [false "IDToken can't be verified"])))

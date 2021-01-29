@@ -29,13 +29,15 @@
                                                 :swagger {:tags ["country"]}
                                                 :parameters {:query [:map [:id {:optional true} int?]]}
                                                 :handler #ig/ref :gpml.handler.country/get}}]
-                                        ["/browse" {:middleware [#ig/ref :gpml.auth/optional-auth-middleware]}
+                                        ["/browse" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
                                           {:get {:summary "Browse available entities"
                                                  :swagger {:tags ["browse"]}
                                                  :parameters {:query #ig/ref :gpml.handler.browse/query-params}
                                                  :handler #ig/ref :gpml.handler.browse/get}}]]
-                                        ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
+                                        ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required
+                                                                #ig/ref :gpml.auth/approved-user]}
                                          [""
                                           {:post {:summary "Creates a new event"
                                                   :swagger {:tags ["event"]
@@ -60,7 +62,8 @@
                                           {:get {:summary "End-point for the landing page"
                                                  :swagger {:tags ["landing"]}
                                                  :handler #ig/ref :gpml.handler.landing/get}}]]
-                                        ["/profile" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
+                                        ["/profile" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                  #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:get {:summary "Get profile information for the authenticated Stakeholder"
                                                  :swagger {:tags ["profile"]
@@ -93,7 +96,8 @@
                                           {:get {:summary "List tags by topic type"
                                                  :swagger {:tags ["tags"]}
                                                  :handler #ig/ref :gpml.handler.tag/get}}]]
-                                        ["/favorite" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
+                                        ["/favorite" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                   #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:get {:summary "List of associations between Stakeholder and topics"
                                                  :swagger {:tags ["favorite"]
@@ -143,10 +147,11 @@
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
   :duct.database/sql {:jdbc-url #duct/env "DATABASE_URL"}
+
   :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
                               :audience #duct/env "OIDC_AUDIENCE"}
-  :gpml.auth/optional-auth-middleware {:issuer #duct/env "OIDC_ISSUER"
-                                       :audience #duct/env "OIDC_AUDIENCE"}
+  :gpml.auth/auth-required {}
+  :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
   }
 

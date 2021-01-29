@@ -49,41 +49,57 @@
   (and (validate-opts opts)
        opts))
 
+(defn check-authentication [request verify-fn]
+  (if-let [auth-header (get-in request [:headers "authorization"])]
+    (let [[_ token] (re-find #"^Bearer (\S+)$" auth-header)
+          [valid? error-msg-or-claims] (verify-fn token)]
+      (if valid?
+        {:authenticated? true
+         :jwt-claims error-msg-or-claims}
+        {:authenticated? false
+         :auth-error-message error-msg-or-claims
+         :status 403}))
+    {:authenticated? false
+     :auth-error-message "Authentication required"
+     :status 401}))
+
+(defn id-token-verifier
+  [signature-verifier opts]
+  (fn [token]
+    (let [id-token-verifier (token-verifier (assoc opts :signature-verifier signature-verifier))]
+      (try
+        (.verify ^IdTokenVerifier id-token-verifier token)
+        [true (get-claims token)]
+        (catch Exception e
+          [false (.getMessage e)])))))
+
 (defmethod ig/init-key :gpml.auth/auth-middleware [_ opts]
   (fn [handler]
     (let [signature-verifier (signature-verifier (:issuer opts))]
       (fn [request]
-        (if-let [auth-header (get-in request [:headers "authorization"])]
-          (let [id-token-verifier (token-verifier (assoc opts :signature-verifier signature-verifier))
-                [_ token] (re-find #"^Bearer (\S+)$" auth-header)
-                [valid? msg] (try
-                               (.verify ^IdTokenVerifier id-token-verifier token)
-                               [true "OK"]
-                               (catch Exception e
-                                 [false (.getMessage e)]))]
-            (if valid?
-              (handler (assoc request :jwt-claims (get-claims token)))
-              {:status 403
-               :body {:message msg}}))
-          {:status 401
-           :body {:message "Authentication required"}})))))
-;; FIXME: De-dup code using defmacro?
-(defmethod ig/init-key :gpml.auth/optional-auth-middleware [_ opts]
+        (handler (merge request (check-authentication request
+                                                      (id-token-verifier signature-verifier
+                                                                         opts))))))))
+
+
+(defmethod ig/init-key :gpml.auth/auth-required [_ _]
   (fn [handler]
-    (let [signature-verifier (signature-verifier (:issuer opts))]
-      (fn [request]
-        (if-let [auth-header (get-in request [:headers "authorization"])]
-          (let [id-token-verifier (token-verifier (assoc opts :signature-verifier signature-verifier))
-                [_ token] (re-find #"^Bearer (\S+)$" auth-header)
-                [valid? _] (try
-                             (.verify ^IdTokenVerifier id-token-verifier token)
-                             [true "OK"]
-                             (catch Exception e
-                               [false (.getMessage e)]))]
-            (if valid?
-              (handler (assoc request :jwt-claims (get-claims token)))
-              (handler request)))
-          (handler request))))))
+    (fn [request]
+      (if (:authenticated? request)
+        (handler request)
+        {:status (:status request)
+         :message (:auth-error-message request)}))))
+
+(defmethod ig/init-key :gpml.auth/approved-user [_ {:keys [db]}]
+  (fn [handler]
+    (fn [{:keys [jwt-claims] :as request}]
+      (if-let [user (db.stakeholder/approved-stakeholder-by-email (:spec db) jwt-claims)]
+        (if (:email_verified jwt-claims)
+          (handler (assoc request :user user))
+          {:status 403
+           :message "User must verify the email address"})
+        {:status 403
+         :message "User does not exist or is not approved yet"}))))
 
 (defmethod ig/init-key :gpml.auth/admin-required-middleware [_ {:keys [db]}]
   (fn [handler]
