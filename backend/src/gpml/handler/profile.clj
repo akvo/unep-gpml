@@ -185,9 +185,3 @@
     [:vector {:min 1 :error/message "Need at least one geo coverage value"} string?]]])
 
 #_(def dbtest (dev/db-conn))
-(comment
-  (def dbtest (dev/db-conn))
-  (-> (db.stakeholder/delete-stakehodler-geo dbtest {:ids 12}))
-  (-> (db.stakeholder/stakeholder-tags dbtest {:id 13}))
-  (db.stakeholder/stakeholder-geo-country dbtest {:id 13})
-  )
