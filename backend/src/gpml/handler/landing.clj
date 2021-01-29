@@ -1,10 +1,9 @@
 (ns gpml.handler.landing
   (:require [integrant.core :as ig]
             [ring.util.response :as resp]
+            [gpml.constants :refer [topics]]
             [gpml.db.browse :as db.browse]
             [gpml.db.landing :as db.landing]))
-
-(def topics '("event" "project" "policy" "resource" "technology"))
 
 (defn topics-data [conn]
   (let [take-counts (map #(or (and (= "event" %) 2) 1) topics)]

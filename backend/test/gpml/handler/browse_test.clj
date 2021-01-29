@@ -1,6 +1,7 @@
 (ns gpml.handler.browse-test
   (:require [clojure.string :as str]
             [clojure.test :refer [deftest testing is are]]
+            [gpml.constants :refer [topics]]
             [gpml.handler.browse :as browse]
             [malli.core :as malli]))
 
@@ -20,12 +21,12 @@
         false "esp,usa")))
   (testing "Topic query parameter validation"
     (let [valid? #(malli/validate [:re browse/topic-re] %)]
-      (is (true? (every? valid? browse/topics)))
+      (is (true? (every? valid? topics)))
       (are [expected value] (= expected (valid? value))
         true "technology,project"
         true "financing_resource,event"
         true "people,event,policy"
-        true (str/join "," browse/topics)
+        true (str/join "," topics)
         false "resource"
         false "technology,"
         false "technology,event,"

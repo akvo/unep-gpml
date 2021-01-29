@@ -1,14 +1,12 @@
 (ns gpml.handler.browse
   (:require [clojure.string :as str]
+            [gpml.constants :refer [topics resource-types]]
             [gpml.db.browse :as db.browse]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
 (def country-re #"^(\p{Upper}{3})((,\p{Upper}{3})+)?$")
-(def resource-types ["financing_resource" "technical_resource"])
-(def topics
-  (-> ["people" "event" "technology" "policy" "project"] (concat resource-types) sort vec))
 (def topic-re (re-pattern (format "^(%1$s)((,(%1$s))+)?$" (str/join "|" topics))))
 
 (def query-params
