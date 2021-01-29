@@ -26,7 +26,7 @@ const Landing = ({ history, data, countries, setCountries}) => {
             <div class="map-tooltip">
               <h3>${countryName}</h3>
               <ul>
-              ${topicTypes.map(topic => `<li><span>${topicNames[topic]}</span><b>${summary[topic]}</b></li>`).join('')}
+              ${topicTypes.map(topic => `<li><span>${topicNames(topic)}</span><b>${summary[topic]}</b></li>`).join('')}
               </ul>
             </div>
           `
@@ -103,7 +103,7 @@ const Summary = ({ clickEvents, summary, country, counts, selected }) => {
                   className={className}>
                 <Switch size="small" checked={counts === current} />
                 <div className="text">
-                  <div className="label">{topicNames[current]}</div>
+                  <div className="label">{topicNames(current)}</div>
                   <span>in {it.countries} countries</span>
                 </div>
                 <b>{it[current]}</b>
@@ -112,7 +112,7 @@ const Summary = ({ clickEvents, summary, country, counts, selected }) => {
         {country && topicTypes.map(type =>
         <li key={type}>
           <div className="text">
-            <div className="label">{topicNames[type]}</div>
+            <div className="label">{topicNames(type)}</div>
           </div>
           <b>{selected?.[type] || 0}</b>
         </li>
@@ -125,7 +125,7 @@ const Summary = ({ clickEvents, summary, country, counts, selected }) => {
 const TopicItem = ({ topic }) => (
   <div className="topic-item">
     <div className="inner">
-      <span className="type">latest {topic.topicType}</span>
+      <span className="type">latest {topicNames(topic.topicType)}</span>
       <h2>{topic.title || topic.name}</h2>
       <ul>
         <li>27 feb 2021</li>

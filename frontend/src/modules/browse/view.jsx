@@ -114,7 +114,7 @@ const TopicSelect = ({ value, onChange }) => {
   return (
     <ul className="topic-list">
       {topicTypes.map(type =>
-        <li key={type}><Checkbox checked={value.indexOf(humps.decamelize(type)) !== -1} onChange={handleChange(humps.decamelize(type))}>{topicNames[type]}</Checkbox></li>
+        <li key={type}><Checkbox checked={value.indexOf(humps.decamelize(type)) !== -1} onChange={handleChange(humps.decamelize(type))}>{topicNames(type)}</Checkbox></li>
       )}
     </ul>
   )
@@ -126,7 +126,7 @@ const Result = ({ result, relations, handleRelationChange }) => {
   return (
     <Card className="result">
       <h4>{result.title || result.name}</h4>
-      <div className="type">{topicNames[humps.camelize(result.type)]}</div>
+      <div className="type">{topicNames(result.type)}</div>
       <ul className="stats">
         {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
         {result.geoCoverageCountries && <li>{result.geoCoverageCountries.map(it => countries[countries3to2[it]]?.name).join(', ')}</li>}
