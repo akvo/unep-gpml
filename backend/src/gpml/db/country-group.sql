@@ -1,4 +1,4 @@
--- :name new-country-group :!
+-- :name new-country-group :! :1
 -- :doc Insert new country group
 insert into country_group (name, type)
 values(:name, :v:type::country_group_type)
@@ -15,7 +15,7 @@ select * from country_group where name in (:v*:names)
 -- :doc Get country group by names
 select names from country_group where name in (:v*:ids)
 
--- :name new-country-group-country :!
+-- :name new-country-group-country :! :1
 -- :doc Insert new country group <-> country
 insert into country_group_country (country_group, country)
 values(:country_group, :country)
