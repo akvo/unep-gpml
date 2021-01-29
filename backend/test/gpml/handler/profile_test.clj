@@ -146,6 +146,7 @@
                             (assoc :jwt-claims {:email "john@org"})
                             (assoc :body-params
                                      (assoc (new-profile "IND" nil)
+                                             :id 1
                                              :about "Dolor sit Amet"
                                              :country "SPA"
                                              :first_name "Mark"
