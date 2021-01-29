@@ -124,7 +124,7 @@
 (defn seed-tags [db]
   (doseq [data (get-data "tags" {:keywords? false})]
     (let [category (db.tag/new-tag-category db {:category (first data)})
-          category-id (-> category first :id)]
+          category-id (:id category)]
       (doseq [tag (map #(assoc {} :tag_category category-id :tag %) (second data))]
         (db.tag/new-tag db tag)))))
 

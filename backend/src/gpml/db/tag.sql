@@ -15,12 +15,12 @@ select * from tag where tag in (:v*:tags)
 insert into tag_category(category)
 values (:category) returning id
 
--- :name new-tag :<!
+-- :name new-tag :<! :1
 -- :doc Insert new tag
 insert into tag (tag, tag_category)
 values (:tag, :tag_category) returning id
 
--- :name tag-by-category :? :*
+-- :name tag-by-category :? :* :1
 -- :doc Get tag by category
 select * from tag WHERE tag_category in
 (select id from tag_category WHERE category LIKE :category);
