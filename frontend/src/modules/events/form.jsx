@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, Form, Input, Select, Button } from "antd";
+import { Form, Input, Select, Button } from "antd";
 import { Form as FinalForm, Field } from 'react-final-form'
 import arrayMutators from 'final-form-arrays'
 import { createForm } from 'final-form'
