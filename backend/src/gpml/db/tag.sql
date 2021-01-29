@@ -10,7 +10,7 @@ select * from tag where id = :id
 -- :doc Get tag by tags
 select * from tag where tag in (:v*:tags)
 
--- :name new-tag-category :<!
+-- :name new-tag-category :<! :1
 -- :doc Insert new tag category
 insert into tag_category(category)
 values (:category) returning id
