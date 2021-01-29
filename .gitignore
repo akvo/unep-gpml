@@ -2,3 +2,5 @@
 *.iml
 pg-data/
 notify.team.sh
+/doc/*.csv
+/doc/*.xlsx
