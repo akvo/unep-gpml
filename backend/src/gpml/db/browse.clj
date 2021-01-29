@@ -8,11 +8,13 @@
   (require 'dev)
 
   (declare filter-topic) ;; to make clj-kondo happy
-  (def params) ;; to make clj-kondo happy
+  (def params {:favorites 1 :user 1 :resource-types 1}) ;; to make clj-kondo happy
   (when (seq (:search-text params)) "AND search_text @@ to_tsquery(:search-text)")
   (when (seq (:geo-coverage params)) "AND geo_coverage_iso_code IN (:v*:geo-coverage)")
   (when (seq (:topic params)) "AND topic IN (:v*:topic)")
   (when-not (or (seq (:geo-coverage params)) (seq (:search-text params))) "LIMIT 50")
+
+  (when (and (:favorites params) (:user params) (:resource-types params)) "JOIN v_stakeholder_association a ON a.stakeholder = :user AND a.id = (t.json->>'id')::int AND (a.topic = t.topic OR (a.topic = 'resource' AND t.topic IN (:v*:resource-types)))")
 
   (def db (dev/db-conn))
 

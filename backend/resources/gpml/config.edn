@@ -29,7 +29,7 @@
                                                 :swagger {:tags ["country"]}
                                                 :parameters {:query [:map [:id {:optional true} int?]]}
                                                 :handler #ig/ref :gpml.handler.country/get}}]
-                                        ["/browse"
+                                        ["/browse" {:middleware [#ig/ref :gpml.auth/optional-auth-middleware]}
                                          [""
                                           {:get {:summary "Browse available entities"
                                                  :swagger {:tags ["browse"]}
@@ -145,6 +145,8 @@
   :duct.database/sql {:jdbc-url #duct/env "DATABASE_URL"}
   :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
                               :audience #duct/env "OIDC_AUDIENCE"}
+  :gpml.auth/optional-auth-middleware {:issuer #duct/env "OIDC_ISSUER"
+                                       :audience #duct/env "OIDC_AUDIENCE"}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
   }
 

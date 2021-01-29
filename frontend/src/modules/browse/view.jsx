@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Card, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
-import { topicTypes, topicNames } from '../../utils/misc'
+import { topicTypes, topicNames, resourceTypeToTopicType } from '../../utils/misc'
 import { useLocation, withRouter } from 'react-router-dom'
 import moment from 'moment'
 import api from '../../utils/api'
@@ -34,6 +34,8 @@ const Browse = ({ history }) => {
   const {isAuthenticated} = useAuth0();
 
   const getResults = () => {
+    // NOTE: Don't this needs to be window.location.search because of
+    // how of how `history` and `location` are interacting!
     api.get(`/browse${window.location.search}`)
     .then((resp) => {
       setResults(resp?.data?.results)
@@ -44,6 +46,7 @@ const Browse = ({ history }) => {
     .then((resp) => {
       setResults(resp?.data?.results)
     })
+    // NOTE: Since we are using `history` and `location`, the dependency needs to be []
   }, [])
   useEffect(() => {
     if(isAuthenticated){
@@ -84,6 +87,8 @@ const Browse = ({ history }) => {
                 Country
               </div>
               <Select value={query.country} placeholder="Find country" mode="multiple" options={Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name }))} allowClear onChange={val => updateQuery('country', val)} filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
+                {/* FIXME: Hide or disable checkbox if user not logged in */}
+                <Checkbox checked={query?.favorites?.indexOf("true") > -1}  onChange={({ target: { checked }}) => updateQuery('favorites', checked)}>My Favorites</Checkbox>
             </div>
             <div className="field">
               <div className="label">Resources</div>
@@ -92,7 +97,7 @@ const Browse = ({ history }) => {
           </div>
         </aside>
         <div className="main-content">
-          {results.map(result => <Result {...{result, handleRelationChange, relations}} />)}
+          {results.map(result => <Result key={`${result.type}-${result.id}`} {...{result, handleRelationChange, relations}} />)}
         </div>
       </div>
     </div>
@@ -139,8 +144,6 @@ const Result = ({ result, relations, handleRelationChange }) => {
   )
 }
 
-const resourceSubTypes = ["financing_resource", "technical_resource"]
-const resourceTypeToTopicType = (topicType) => resourceSubTypes.indexOf(topicType) > -1 ? 'resource' : topicType
 const relationsByTopicType = {
   resource: ['owner', 'reviewer', 'user', 'interested in', 'other'],
   technology: ['owner', 'user', 'reviewer', 'interested in', 'other'],
@@ -161,7 +164,7 @@ const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
       <Dropdown overlay={(
         <ul className="relations-dropdown">
           {relationsByTopicType[resourceTypeToTopicType(topic.type)].map(relationType =>
-          <li>
+          <li key={`${relationType}`}>
             <Checkbox checked={relation && relation.association && relation.association.indexOf(relationType) !== -1} onChange={handleChangeRelation(relationType)}>{relationType}</Checkbox>
           </li>)}
         </ul>

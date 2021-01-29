@@ -67,6 +67,23 @@
                :body {:message msg}}))
           {:status 401
            :body {:message "Authentication required"}})))))
+;; FIXME: De-dup code using defmacro?
+(defmethod ig/init-key :gpml.auth/optional-auth-middleware [_ opts]
+  (fn [handler]
+    (let [signature-verifier (signature-verifier (:issuer opts))]
+      (fn [request]
+        (if-let [auth-header (get-in request [:headers "authorization"])]
+          (let [id-token-verifier (token-verifier (assoc opts :signature-verifier signature-verifier))
+                [_ token] (re-find #"^Bearer (\S+)$" auth-header)
+                [valid? _] (try
+                             (.verify ^IdTokenVerifier id-token-verifier token)
+                             [true "OK"]
+                             (catch Exception e
+                               [false (.getMessage e)]))]
+            (if valid?
+              (handler (assoc request :jwt-claims (get-claims token)))
+              (handler request)))
+          (handler request))))))
 
 (defmethod ig/init-key :gpml.auth/admin-required-middleware [_ {:keys [db]}]
   (fn [handler]
