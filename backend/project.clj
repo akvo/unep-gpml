@@ -4,7 +4,7 @@
   :license {:name "AGPL-3.0"
             :url "https://www.gnu.org/licenses/agpl-3.0.en.html"}
   :min-lein-version "2.0.0"
-  :dependencies [[org.clojure/clojure "1.10.1"]
+  :dependencies [[org.clojure/clojure "1.10.2"]
                  [duct/core "0.8.0"]
                  [integrant "0.8.0"]
                  [duct/module.logging "0.5.0"]

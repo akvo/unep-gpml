@@ -1,8 +1,8 @@
 (ns gpml.handler.profile
   (:require [integrant.core :as ig]
             [clojure.string :as str]
+            [gpml.db.country-group :as db.country-group]
             [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.stakeholder-picture :as db.stakeholder-picture]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.country :as db.country]
             [ring.util.response :as resp]))
@@ -16,11 +16,11 @@
     (first (db.organisation/new-organisation conn org))))
 
 (defn assoc-picture [conn photo]
-  (if photo
-    (if-let [new-picture (db.stakeholder-picture/new-stakeholder-picture conn {:picture photo})]
-      (str/join ["/image/profile/" (:id (first new-picture))])
-      nil)
-    nil))
+  (cond
+    (nil? photo) nil
+    (re-find #"^\/image\/" photo) photo
+    :else (str/join ["/image/profile/"
+                     (:id (db.stakeholder/new-stakeholder-picture conn {:picture photo}))])))
 
 (defn make-profile [conn
                     {:keys [email picture]}
@@ -28,7 +28,7 @@
                             last_name linked_in
                             twitter photo
                             representation country
-                            org about]}]
+                            org about geo_coverage_type]}]
   (let [pic-url (if-let [upload-picture (assoc-picture conn photo)]
                   upload-picture
                   (if picture picture nil))
@@ -43,7 +43,7 @@
                  :url (:url org)
                  :representation representation
                  :about about
-                 :geo_coverage_type nil
+                 :geo_coverage_type geo_coverage_type
                  :country (get-country conn country)
                  :affiliation affiliation}]
       (db.stakeholder/new-stakeholder conn profile)))
@@ -53,7 +53,10 @@
            title first_name role
            last_name linked_in
            twitter representation
-           country org_name org_url]}]
+           country org_name org_url
+           geo_coverage_type]}
+   tags
+   geo]
   {:id id
    :title title
    :first_name first_name
@@ -63,6 +66,9 @@
    :photo photo
    :country country
    :representation representation
+   :tags (mapv #(:tag %) tags)
+   :geo_coverage_type geo_coverage_type
+   :geo_coverage_value geo
    :org {:name org_name
          :url org_url}
    :about about
@@ -73,37 +79,73 @@
   (fn [{:keys [jwt-claims]}]
     (tap> jwt-claims)
     (if-let [profile (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
-      (resp/response (remap-profile profile))
+      (let [conn (:spec db)
+            tags (db.stakeholder/stakeholder-tags conn profile)
+            geo-type (:geo_coverage_type profile)
+            geo (cond
+                  (contains? #{"regional" "global with elements in specific areas"}
+                   geo-type)
+                   (map #(:name %)
+                           (db.stakeholder/stakeholder-geo-country-group conn profile))
+                  (contains? #{"national" "transnational"}
+                   geo-type)
+                   (map #(:iso_code %)
+                           (db.stakeholder/stakeholder-geo-country conn profile)))
+            profile (remap-profile profile tags geo)]
+      (resp/response profile))
       (resp/response {}))))
 
 (defmethod ig/init-key :gpml.handler.profile/post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params headers]}]
-    (if-let [id (make-profile (:spec db) jwt-claims body-params)]
-      (if-let [profile (db.stakeholder/stakeholder-by-id (:spec db) {:id (:id (first id))})]
-        (resp/created (:referer headers) (remap-profile profile))
-        (assoc (resp/status 500) :body "Internal Server Error"))
+    (if-let [id (-> (make-profile (:spec db) jwt-claims body-params) first :id)]
+      (let [tags (:tags body-params)
+            geo-type (:geo_coverage_type body-params)
+            geo-value (:geo_coverage_value body-params)
+            db (:spec db)
+            profile (db.stakeholder/stakeholder-by-id db {:id id})]
+        (when (not-empty tags)
+          (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
+        (when (not-empty geo-value)
+          (let [geo-data
+                (cond
+                  (contains? #{"regional" "global with elements in specific areas"}
+                   geo-type)
+                  (->> {:names geo-value}
+                       (db.country-group/country-group-by-names db)
+                       (map #(vector id (:id %) nil)))
+                  (contains? #{"national" "transnational"}
+                   geo-type)
+                  (->> {:codes geo-value}
+                       (db.country/country-by-codes db)
+                       (map #(vector id nil (:id %)))))]
+            (when (some? geo-data)
+              (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))
+        (resp/created (:referer headers) 
+                      (assoc (remap-profile profile nil nil)
+                             :geo_coverage_value (:geo_coverage_type body-params)
+                             :geo_coverage_value (:geo_coverage_value body-params)
+                             :tags (:tags body-params))))
       (assoc (resp/status 500) :body "Internal Server Error"))))
 
 (defmethod ig/init-key :gpml.handler.profile/put [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
-    (let [profile (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)
-          profile (conj profile body-params)
-          photo (:photo body-params)
-          photo (cond
-                  (nil? photo) nil
-                  (re-find #"^\/image\/" photo) photo
-                  :else (assoc-picture (:spec db) photo))
-          profile (assoc profile :picture photo)
-          org (:org profile)
-          profile (if (:url org) (assoc profile :url (:url org)) profile)
-          profile (if (:name org)
-                    (assoc profile :affiliation (:id (assoc-organisation (:spec db) org)))
-                    profile)
-          profile (if (:country body-params)
-                    (assoc profile :country (get-country (:spec db) (:country body-params)))
-                    profile)
-          _ (tap> profile)
-          _ (db.stakeholder/update-stakeholder (:spec db) profile)]
+    (let [db (:spec db)
+          new-profile (merge
+                        (db.stakeholder/stakeholder-by-email db jwt-claims)
+                        body-params)
+          profile (cond-> new-profile
+                    (:photo body-params)
+                    (assoc :picture
+                           (if (re-find #"http" (:photo body-params))
+                             (:photo body-params)
+                             (assoc-picture db (:photo body-params))))
+                    (-> new-profile :org :url)
+                    (assoc :url (-> new-profile :org :url))
+                    (-> new-profile :org :name)
+                    (assoc :affiliation (:id (assoc-organisation db (:org new-profile))))
+                    (:country body-params)
+                    (assoc :country (get-country db (:country body-params))))
+          _ (db.stakeholder/update-stakeholder db profile)]
       (resp/status 204))))
 
 (defmethod ig/init-key :gpml.handler.profile/approve [_ {:keys [db]}]
@@ -116,7 +158,7 @@
 (defmethod ig/init-key :gpml.handler.profile/pending [_ {:keys [db]}]
   (fn [_]
     (let [profiles (db.stakeholder/pending-approval (:spec db))
-          profiles (map (fn[x] (remap-profile x)) profiles)]
+          profiles (map (fn[x] (remap-profile x nil nil)) profiles)]
       (resp/response profiles))))
 
 (defmethod ig/init-key :gpml.handler.profile/post-params [_ _]
@@ -129,10 +171,23 @@
    [:photo {:optional true} string?]
    [:representation string?]
    [:country {:optional true} string?]
+   [:about string?]
+   [:geo_coverage_type {:optional true}
+    [:enum "global", "regional", "national", "transnational",
+     "sub-national", "global with elements in specific areas"]]
    [:org {:optional true} map?
     [:map
      [:name {:optional true} string?]
      [:url {:optional true} string?]]]
-   [:about string?]])
+   [:tags {:optional true}
+    [:vector {:optional true} int?]]
+   [:geo_coverage_value {:optional true}
+    [:vector {:min 1 :error/message "Need at least one geo coverage value"} string?]]])
 
 #_(def dbtest (dev/db-conn))
+(comment
+  (def dbtest (dev/db-conn))
+  (-> (db.stakeholder/delete-stakehodler-geo dbtest {:ids 12}))
+  (-> (db.stakeholder/stakeholder-tags dbtest {:id 13}))
+  (db.stakeholder/stakeholder-geo-country dbtest {:id 13})
+  )

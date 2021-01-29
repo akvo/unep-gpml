@@ -11,6 +11,10 @@ select * from country_group where name = :name
 -- :doc Get country group by names
 select * from country_group where name in (:v*:names)
 
+-- :name country-group-by-ids :? :*
+-- :doc Get country group by names
+select names from country_group where name in (:v*:ids)
+
 -- :name new-country-group-country :!
 -- :doc Insert new country group <-> country
 insert into country_group_country (country_group, country)

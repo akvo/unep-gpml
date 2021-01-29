@@ -3,7 +3,7 @@
 #+PROPERTY: header-args:sql+    :dbhost localhost
 #+PROPERTY: header-args:sql+    :dbuser unep
 #+PROPERTY: header-args:sql+    :dbpassword password
-#+PROPERTY: header-args:sql+    :database gpml_test
+#+PROPERTY: header-args:sql+    :database gpml
 #+PROPERTY: header-args :tangle data-model.sql
 #+STARTUP: showall
 
@@ -829,3 +829,8 @@ SELECT * FROM resource_locations r WHERE r.location IN (SELECT id FROM loc);
 |----+----------+-----+----------|
 |  1 |        1 |     |        3 |
 |  3 |        2 |     |        2 |
+
+#+BEGIN_SRC sql
+insert into stakeholder(first_name, last_name, email, approved_at, representation)
+values ('p', 'c', 'puneeth@***.org', '2021-01-01T12:00:00Z', 'ngo');
+#+END_SRC

@@ -17,6 +17,7 @@ select
     s.representation,
     s.about,
     s.role,
+    s.geo_coverage_type,
     c.iso_code as country,
     o.name as org_name,
     s.approved_at from stakeholder s
@@ -39,6 +40,7 @@ select
     s.representation,
     s.about,
     s.role,
+    s.geo_coverage_type,
     c.iso_code as country,
     o.name as org_name,
     s.approved_at from stakeholder s
@@ -72,6 +74,7 @@ select
     s.representation,
     s.about,
     s.role,
+    s.geo_coverage_type,
     c.iso_code as country,
     o.name as org_name,
     s.approved_at from stakeholder s
@@ -108,23 +111,52 @@ update stakeholder set
 --~ (when (contains? params :picture) ",picture= :picture")
 --~ (when (contains? params :country) ",country= :v:country::integer")
 --~ (when (contains? params :representation) ",representation= :representation")
+--~ (when (contains? params :geo_coverage_type) ",geo_coverage_type= :v:geo_coverage_type::geo_coverage_type")
 --~ (when (contains? params :about) ",about= :about, modified = now()")
 where id = :id;
 
--- :name add-stakeholder-geocoverage :! :n
--- :doc add stakeholder geocoverage
-insert into stakeholder_geo_coverage(stakeholder, country, country_group)
-values(:stakeholder::integer, :country::integer, :country_group::integer)
 
--- :name delete-stakehodler-geocoverage :? :*
--- :doc remove stakeholder-geocoverage
-delete from stakeholder_geo_coverage id in (:v*:ids)
+-- :name stakeholder-picture-by-id :? :1
+-- :doc Get Stakeholder picture by id
+select * from stakeholder_picture where id = :id
 
--- :name add-stakeholder-tag :! :n
--- :doc add stakeholder tag
+-- :name new-stakeholder-picture :<! :1
+-- :doc Insert new Stakeholder picture
+insert into stakeholder_picture (picture)
+values(:picture) returning id;
+
+-- :name stakeholder-geocoverage :
+
+-- :name stakeholder-geo-country :? :*
+-- :doc get stakeholder geocoverage country
+select c.iso_code from stakeholder_geo_coverage s
+left join country c on c.id = s.country
+where s.stakeholder = :id
+
+-- :name stakeholder-geo-country-group :? :*
+-- :doc get stakeholder geocoverage country group
+select c.name from stakeholder_geo_coverage s
+left join country_group c on c.id = s.country_group
+where s.stakeholder = :id
+
+-- :name add-stakeholder-geo :<!
+-- :doc add stakeholder geo
+insert into stakeholder_geo_coverage(stakeholder, country_group, country)
+values :t*:geo RETURNING id;
+
+-- :name delete-stakehodler-geo :? :*
+-- :doc remove stakeholder geo
+delete from stakeholder_geo_coverage where stakeholder = :id
+
+-- :name stakeholder-tags :? :*
+-- :doc get stakeholder tags
+select * from stakeholder_tag where stakeholder = :id
+
+-- :name add-stakeholder-tags :<!
+-- :doc add stakeholder tags
 insert into stakeholder_tag(stakeholder, tag)
-values(:stakeholder::integer, :tag::integer)
+values :t*:tags RETURNING id;
 
--- :name delete-stakehodler-tag :? :*
--- :doc remove stakeholder-tag
-delete from stakeholder_geo_coverage where id in (:v*:ids)
+-- :name delete-stakehodler-tags :? :*
+-- :doc remove stakeholder-tags
+delete from stakeholder_tag where stakeholder = :id

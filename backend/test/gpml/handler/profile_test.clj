@@ -1,6 +1,8 @@
 (ns gpml.handler.profile-test
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [gpml.db.country :as db.country]
+            [gpml.db.tag :as db.tag]
+            [gpml.db.country-group :as db.country-group]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
@@ -31,7 +33,10 @@
    :about "Lorem Ipsum"
    :country country
    :picture picture
-   :geo_coverage_type nil})
+   :geo_coverage_type "regional"
+   :geo_coverage_value ["Africa" "Europe"]
+   :tags [1 2]}
+  )
 
 (defn org-params [org-name org-url] {:name org-name :url org-url})
 
@@ -41,13 +46,28 @@
 (defn get-user [conn email]
   (:id (db.stakeholder/stakeholder-by-email conn {:email email})))
 
+(defn seed-important-database [db]
+    ;; create new organisation
+    (db.organisation/new-organisation db {:name "Akvo"})
+    ;; create new country
+    (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
+    (db.country/new-country db {:name "Spain" :iso_code "SPA"})
+    ;; create new country group
+    (db.country-group/new-country-group db {:name "Asia" :type "region"})
+    (db.country-group/new-country-group db {:name "Africa" :type "region"})
+    (db.country-group/new-country-group db {:name "Europe" :type "region"})
+    ;; create new tag
+    (db.tag/new-tag-category db {:category "Tag Category"})
+    (db.tag/new-tag db {:tag "Tag 1" :tag_category 1})
+    (db.tag/new-tag db {:tag "Tag 2" :tag_category 1})
+    (db.tag/new-tag db {:tag "Tag 3" :tag_category 1}))
+
 (deftest handler-post-test
   (testing "New profile is created"
     (let [system (ig/init fixtures/*system* [::profile/post])
           handler (::profile/post system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          ;; create new country
-          _ (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
+          _ (seed-important-database db)
           ;; John trying to sign up with new organisation
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
@@ -71,6 +91,9 @@
               :approved_at nil
               :title "Mr."
               :role "USER"
+              :geo_coverage_type "regional"
+              :geo_coverage_value ["Africa" "Europe"]
+              :tags [1 2]
               :twitter "johndoe"}
              (:body resp)))
       (is (= "/image/profile/1" (-> resp :body :photo))))))
@@ -80,8 +103,7 @@
     (let [system (ig/init fixtures/*system* [::profile/post])
           handler (::profile/post system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          ;; create new country
-          _ (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
+          _ (seed-important-database db)
           ;; John trying to sign up with new organisation
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org"})
@@ -105,6 +127,9 @@
               :approved_at nil
               :title "Mr."
               :role "USER"
+              :geo_coverage_type "regional"
+              :geo_coverage_value ["Africa" "Europe"]
+              :tags [1 2]
               :twitter nil}
              (:body resp))))))
 
@@ -113,13 +138,9 @@
     (let [system (ig/init fixtures/*system* [::profile/put])
           handler (::profile/put system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          ;; create new country
-          country (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
-          ;; create other country
-          _ (db.country/new-country db {:name "Spain" :iso_code "SPA"})
-          org (db.organisation/new-organisation db {:name "Akvo"})
+          _ (seed-important-database db)
           ;; John created account with country value Indonesia and organisation Akvo
-          _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
+          _ (db.stakeholder/new-stakeholder db  (new-profile (:id 1) (:id 1)))
           ;; John trying to edit their profile with newly organistaion
           resp (handler (-> (mock/request :put "/")
                             (assoc :jwt-claims {:email "john@org"})
@@ -148,6 +169,7 @@
               :photo "/image/profile/1",
               :representation "test",
               :role "USER",
+              :geo_coverage_type "regional"
               :about "Dolor sit Amet"}
              profile))))
 
@@ -156,13 +178,8 @@
     (let [system (ig/init fixtures/*system* [::profile/get])
           handler (::profile/get system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          ;; create new organisation
-          org (db.organisation/new-organisation db {:name "Akvo"})
-          ;; create new country
-          _ (db.country/new-country db {:name "Netherland" :iso_code "NDL"})
-          country (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
-          ;; create new stakeholder name John
-          _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
+          _ (seed-important-database db)
+          _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
           ;; dashboard check if this guy has profile
           resp (handler (-> (mock/request :get "/")
                             (assoc :jwt-claims {:email "john@org"})))]
@@ -187,20 +204,17 @@
     (let [system (ig/init fixtures/*system* [::profile/pending])
           handler (::profile/pending system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          ;; create new organisation
-          org (db.organisation/new-organisation db {:name "Akvo"})
-          ;; create new country
-          country (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
+          _ (seed-important-database db)
           ;; create new user name Jane
-          admin (new-profile (:id (first country)) (:id (first org)))
+          admin (new-profile 1 1)
           admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
           ;; Jane become an admin
           _ (db.stakeholder/update-stakeholder-role db (assoc (first admin) :role "ADMIN"))
           _ (db.stakeholder/approve-stakeholder db (first admin))
           ;; create new user name John
-          _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
+          _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
           ;; create new user name Nick
-          user (new-profile (:id (first country)) (:id (first org)))
+          user (new-profile 1 1)
           _ (db.stakeholder/new-stakeholder db  (assoc user :email "nick@org" :first_name "Nick"))
           ;; Jane trying to see the list of pending user in this case John and Nick
           resp (handler (-> (mock/request :get "/")
@@ -214,16 +228,13 @@
     (let [system (ig/init fixtures/*system* [::profile/approve])
           handler (::profile/approve system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          ;; create new organisation
-          org (db.organisation/new-organisation db {:name "Akvo"})
-          ;; create new country
-          country (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
+          _ (seed-important-database db)
           ;; create new user name Jane
-          admin (new-profile (:id (first country)) (:id (first org)))
+          admin (new-profile 1 1)
           admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
           _ (db.stakeholder/approve-stakeholder db (first admin))
           ;; create new user name John
-          _ (db.stakeholder/new-stakeholder db  (new-profile (:id (first country)) (:id (first org))))
+          _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
           ;; Jane become an admin
           _ (db.stakeholder/update-stakeholder-role db (assoc (first admin) :role "ADMIN"))
           ;; Jane trying to approve this guy John

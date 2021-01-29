@@ -6,6 +6,10 @@ select * from country where iso_code is not null order by id
 -- :doc Get country by id
 select * from country where id = :id
 
+-- :name country-by-ids :? :*
+-- :doc Get country by ids
+select * from country where id in (:v*:ids)
+
 -- :name country-by-names :? :*
 -- :doc Get country by names
 select * from country where name in (:v*:names)
