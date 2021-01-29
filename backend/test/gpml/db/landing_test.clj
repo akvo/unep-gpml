@@ -1,5 +1,5 @@
 (ns gpml.db.landing-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures are]]
+  (:require [clojure.test :refer [deftest testing use-fixtures are]]
             [clojure.java.jdbc :as jdbc]
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]
