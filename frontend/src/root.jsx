@@ -15,7 +15,6 @@ import logo2 from './images/GPML-logo-2.svg'
 import unepLogo from './images/UNEP-logo.svg'
 import gpmlLogo from './images/GPML-logo-alone.svg'
 
-
 const Root = () => {
     const {
       isAuthenticated,
@@ -53,18 +52,18 @@ const Root = () => {
             <div className="leftside">
             <Link to="/">UN Environment Programme</Link>&nbsp;&nbsp;|&nbsp;&nbsp;<Link to="/">GPML</Link>
             </div>
-                { !isAuthenticated ?
-                    <div className="rightside">
-                      <Link to="/" onClick={loginWithPopup}>Join the GPML</Link>
-                        &nbsp;&nbsp;|&nbsp;&nbsp;
-                      <Link to="/" onClick={loginWithPopup}>Sign in</Link>
-                    </div>
-                    :
-                    <div className="rightside">
-                      <Link to="/profile">{profile ? profile.firstName : user.nickname}</Link>
-                      <Button type="link" onClick={logout}>Logout</Button>
-                    </div>
-                }
+              { !isAuthenticated ?
+                <div className="rightside">
+                    <Link to="/" onClick={loginWithPopup}>Join the GPML</Link>
+                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <Link to="/" onClick={loginWithPopup}>Sign in</Link>
+                </div>
+                :
+                <div className="rightside">
+                  <Link to="/profile">{profile ? profile.firstName : user.nickname}</Link>
+                  <Button type="link" onClick={logout}>Logout</Button>
+                </div>
+              }
           </div>
         </div>
         <header>
@@ -85,10 +84,10 @@ const Root = () => {
         <Route path="/" exact component={Landing} />
         <Route path="/browse" component={Browse} />
         <Route path="/add-event" component={AddEvent} />
-        <Route path="/profile" render={props => <ProfileView profile={profile} />} />
+        <Route path="/profile" render={props => <ProfileView {...props} profile={profile}/>} />
         <Footer />
       </div>
-      <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} />
+      <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} setProfile={setProfile}/>
     </Router>
     )
 }

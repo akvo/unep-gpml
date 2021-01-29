@@ -12,6 +12,7 @@ import countries2to3 from 'countries-list/dist/countries2to3.json'
 import specificAreasOptions from '../events/specific-areas.json'
 import cloneDeep from 'lodash/cloneDeep'
 import api from '../../utils/api';
+import SpinnerLoading from '../../utils/loading.jsx';
 
 const geoCoverageTypeOptions = ['Global', 'Regional', 'National', 'Sub-national', 'Transnational', 'Global with elements in specific areas']
 const regionOptions = ['Africa', 'Asia and the Pacific', 'East Asia', 'Europe', 'Latin America and Carribean', 'North America', 'West Asia']
@@ -93,7 +94,8 @@ const defaultFormSchema = [
     }
   },
   {
-    tags: { label: 'Tags', control: 'select', options: [], loading: true, mode: 'multiple' }
+    tags: { label: 'Tags', control: 'select', options: [], loading: true, mode: 'multiple' },
+    cv: { label: 'CV / Portfolio', control: 'file' },
   }
 ]
 

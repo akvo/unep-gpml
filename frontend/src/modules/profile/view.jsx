@@ -1,14 +1,15 @@
 import { Button, notification, Tabs } from 'antd'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import api from '../../utils/api'
 import SignupForm from '../signup/signup-form'
 import AdminSection from './admin'
 import './styles.scss'
 const {TabPane} = Tabs
 
-const ProfileView = ({ profile }) => {
+const ProfileView = ({profile}) => {
   const handleSubmitRef = useRef()
   const [saving, setSaving] = useState(false)
+  const [user, setUser] = useState(false)
   const onSubmit = (vals) => {
     setSaving(true)
     api.put('/profile', vals)
@@ -21,15 +22,19 @@ const ProfileView = ({ profile }) => {
       setSaving(false)
     })
   }
+  useEffect(() => {
+      setUser(profile)
+  }, [profile]);
+
   return (
     <div id="profile">
       <div className="ui container">
         <Tabs tabPosition="left">
           <TabPane tab="Personal details" key="1">
-            <SignupForm onSubmit={onSubmit} handleSubmitRef={ref => { handleSubmitRef.current = ref }} initialValues={profile} />
+            <SignupForm onSubmit={onSubmit} handleSubmitRef={ref => { handleSubmitRef.current = ref }} initialValues={user} />
             <Button loading={saving} type="primary" onClick={(ev) => { handleSubmitRef.current(ev) }}>Update</Button>
           </TabPane>
-          {profile?.role === 'ADMIN' &&
+          {user?.role === 'ADMIN' &&
           <TabPane tab="Admin section" key="2">
             <AdminSection />
           </TabPane>
