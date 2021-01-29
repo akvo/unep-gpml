@@ -161,7 +161,7 @@
 (defn seed-resources [db]
   (doseq [data (get-resources db)]
     (try
-      (let [res-id (-> (db.resource/new-resource db data) first :id)
+      (let [res-id (:id (db.resource/new-resource db data))
             data-org (:organisation data)
             data-geo (:geo_coverage data)
             data-geo-type (:geo_coverage_type data)
