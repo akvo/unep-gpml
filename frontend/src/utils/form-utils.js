@@ -2,9 +2,9 @@ import FinalField from "./final-field"
 import FinalFieldArray from "./final-field-array"
 
 export const FieldsFromSchema = ({ schema, mutators }) => {
-  return Object.keys(schema).map(name => {
+  return Object.keys(schema).map((name,i) => {
     const Comp = schema[name].type === 'array' ? FinalFieldArray : FinalField
-    return <Comp {...{ name, ...schema[name], mutators }} />
+    return <Comp key={`comp-${i}`} {...{ name, ...schema[name], mutators }} />
   })
 }
 
