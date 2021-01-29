@@ -267,7 +267,7 @@
 (defn seed-technologies [db]
   (doseq [data (get-technologies db)]
     (try
-      (let [tech-id (-> (db.technology/new-technology db data) first :id)
+      (let [tech-id (:id (db.technology/new-technology db data))
             data-geo (:geo_coverage data)
             data-tag (:tags data)]
         (when (not-empty data-geo)
