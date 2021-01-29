@@ -4,7 +4,10 @@ import Chart from '../../utils/charts'
 import cloneDeep from 'lodash/cloneDeep';
 require("../../utils/charts/map-init.js");
 
+const colors = ["#52aacb", "#4891bb", "#3e78ab", "#35619b", "#2c498b", "#23347c", "#1d2964", "#19204b"];
+
 const generateSteps = (arr) => {
+    const datarange = cloneDeep(Chart.Opt.Maps.DataRange);
     if (arr.length === 0) {
         return false;
     }
@@ -34,7 +37,7 @@ const generateSteps = (arr) => {
             return false;
         }
         if (steps[i - 1] === 1) {
-            return {start: 1, end: x}
+            return {start: 0, end: x}
         }
         if (i === 0) {
             return {start: 1, end: x}
@@ -42,9 +45,10 @@ const generateSteps = (arr) => {
         const start = steps[i - 1];
         return {start: start || 1, end: x}
     });
-    steps = [...steps.filter(x => x), {start: max, label: `Above ${max}`}];
-    steps = [{end: 0, label:'0'},...steps];
-    const datarange = cloneDeep(Chart.Opt.Maps.DataRange);
+    steps = [...steps.filter(x => x), {start: max, label: `${max}  >`}];
+    steps = steps.map((x,i) => (
+        {symbol:'rect', color:colors[i],...x}
+    ))
     datarange.dataRange.splitList = steps;
     return datarange;
 }
@@ -76,7 +80,7 @@ const generateOptions = ({title, subtitle, data, tooltip}) => {
                 areaColor: '#fff',
                 borderColor: '#79B0CC',
                 emphasis: {
-                  areaColor: "#26AE60",
+                  areaColor: "#1890ff",
                   borderColor: '#26AE60',
                   shadowColor: 'rgba(255,255,255,.5)',
                   shadowBlur: 10,
