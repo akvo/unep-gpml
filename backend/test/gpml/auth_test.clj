@@ -54,10 +54,13 @@
   (let [system (-> fixtures/*system*
                    (ig/init [::auth/admin-required-middleware]))
         db (-> system :duct.database.sql/hikaricp :spec)
-        middleware (::auth/admin-required-middleware system)]
-    (new-stakeholder db "admin@un.org" "ADMIN")
+        middleware (::auth/admin-required-middleware system)
+        admin (new-stakeholder db "admin@un.org" "ADMIN")]
     (new-stakeholder db "user@un.org" "USER")
-    (let [handler (middleware (fn [_] {:status 200 :body "OK"}))]
+    (let [handler (middleware (fn [{{admin-id :id} :admin}]
+                                (testing "> admin id added correctly to request"
+                                  (is (= admin admin-id)))
+                                {:status 200 :body "OK"}))]
       (testing "An admin is authorized to perform the request"
         (is (= 200 (-> "admin@un.org"
                        post-request

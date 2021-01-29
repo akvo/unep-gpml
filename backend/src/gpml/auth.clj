@@ -89,6 +89,6 @@
   (fn [handler]
     (fn [{:keys [jwt-claims] :as request}]
       (if-let [admin (db.stakeholder/admin-by-email (:spec db) jwt-claims)]
-        (handler (assoc request :admin (first admin)))
+        (handler (assoc request :admin admin))
         {:status 403
          :body {:message "Unauthorized"}}))))
