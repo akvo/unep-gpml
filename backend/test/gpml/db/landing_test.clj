@@ -1,5 +1,5 @@
 (ns gpml.db.landing-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
+  (:require [clojure.test :refer [deftest testing is use-fixtures are]]
             [clojure.java.jdbc :as jdbc]
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]
@@ -28,6 +28,8 @@
   (db.country/new-country conn {:name "India" :iso_code "IND"})
   (db.country/new-country conn {:name "Indonesia" :iso_code "IDN"})
   (db.country/new-country conn {:name "Kenya" :iso_code "KEN"})
+  (db.country/new-country conn {:name "Netherlands" :iso_code "NLD"})
+  (db.country/new-country conn {:name "All" :iso_code nil})
   (db.country-group/new-country-group conn {:name "Asia" :type "region"})
   (db.country-group/new-country-group conn {:name "Europe" :type "region"})
   (jdbc/insert-multi! conn :country_group_country
@@ -55,11 +57,17 @@
           system (ig/init fixtures/*system* [db-key])
           conn (-> system db-key :spec)
           _ (add-resource-data conn)
-          landing (db.landing/map-counts+global conn)]
-      (is (= (:financing_resource (first (filter #(= "ESP" (:iso_code %)) landing))) 3))
-      (is (= (:financing_resource (first (filter #(= "IND" (:iso_code %)) landing))) 3))
-      (is (= (:financing_resource (first (filter #(= "IDN" (:iso_code %)) landing))) 3))
-      (is (= (:financing_resource (first (filter #(= "KEN" (:iso_code %)) landing))) 2)))))
+          landing (db.landing/map-counts+global conn)
+          valid? (fn [iso-code] (->> landing
+                                     (filter #(= iso-code (:iso_code %)))
+                                     first
+                                     :financing_resource))]
+      (are [expected iso-code] (= expected (valid? iso-code))
+        3 "ESP"
+        3 "IND"
+        3 "IDN"
+        2 "KEN"
+        1 "NLD"))))
 
 (deftest test-summary
   (testing "Test summary data for landing page"

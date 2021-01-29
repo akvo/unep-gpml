@@ -1,11 +1,14 @@
 -- :name map-counts
 -- :doc Get counts of entities
 
-SELECT mc.geo_coverage_iso_code AS iso_code, json_object_agg(mc.topic, mc.count) AS counts
+SELECT mc.geo AS iso_code, json_object_agg(COALESCE(mc.topic, 'project'), mc.count) AS counts
 FROM (
-    SELECT geo_coverage_iso_code, topic, count(*) FROM v_topic
-    GROUP BY geo_coverage_iso_code, topic
-) AS mc GROUP BY geo_coverage_iso_code;
+  SELECT COALESCE(iso_code, '***') AS geo, topic, count(topic)
+  FROM country c
+  LEFT JOIN v_topic vt ON (vt.geo_coverage_iso_code = c.iso_code) OR (c.iso_code IS NULL AND vt.geo_coverage_iso_code = '***')
+  WHERE name <> 'Other'
+  GROUP BY iso_code, topic
+) AS mc GROUP BY geo ORDER BY geo;
 
 -- :name summary
 -- :doc Get summary of count of entities and number of countries
