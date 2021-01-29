@@ -130,13 +130,17 @@
 (defmethod ig/init-key :gpml.handler.profile/put [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
     (let [db (:spec db)
+          id (:id body-params)
+          tags (:tags body-params)
+          geo-type (:geo_coverage_type body-params)
+          geo-value (:geo_coverage_value body-params)
           new-profile (merge
                         (db.stakeholder/stakeholder-by-email db jwt-claims)
                         body-params)
           profile (cond-> new-profile
                     (:photo body-params)
                     (assoc :picture
-                           (if (re-find #"http" (:photo body-params))
+                           (if (re-find #"^\/image" (:photo body-params))
                              (:photo body-params)
                              (assoc-picture db (:photo body-params))))
                     (-> new-profile :org :url)
@@ -145,7 +149,26 @@
                     (assoc :affiliation (:id (assoc-organisation db (:org new-profile))))
                     (:country body-params)
                     (assoc :country (get-country db (:country body-params))))
-          _ (db.stakeholder/update-stakeholder db profile)]
+          _ (db.stakeholder/update-stakeholder db profile)
+          _ (db.stakeholder/delete-stakehodler-geo db body-params)
+          _ (db.stakeholder/delete-stakehodler-tags db body-params)]
+        (when (not-empty tags)
+          (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
+        (when (not-empty geo-value)
+          (let [geo-data
+                (cond
+                  (contains? #{"regional" "global with elements in specific areas"}
+                   geo-type)
+                  (->> {:names geo-value}
+                       (db.country-group/country-group-by-names db)
+                       (map #(vector id (:id %) nil)))
+                  (contains? #{"national" "transnational"}
+                   geo-type)
+                  (->> {:codes geo-value}
+                       (db.country/country-by-codes db)
+                       (map #(vector id nil (:id %)))))]
+            (when (some? geo-data)
+              (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))
       (resp/status 204))))
 
 (defmethod ig/init-key :gpml.handler.profile/approve [_ {:keys [db]}]
