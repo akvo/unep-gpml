@@ -2,7 +2,7 @@
 -- :doc Get event image by id
 select * from event_image where id = :id
 
--- :name new-event-image :<!
+-- :name new-event-image :<! :1
 -- :doc Insert new event image
 insert into event_image (image)
 values(:image) returning id;
