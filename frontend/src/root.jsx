@@ -23,7 +23,7 @@ const Root = () => {
       logout,
       user
     } = useAuth0();
-    const [profile, setProfile] = useState(null);
+    const [profile, setProfile] = useState({});
     const [signupModalVisible, setSignupModalVisible] = useState(false)
     const [countries, setCountries] = useState(null);
     const [data, setData] = useState(null);
@@ -106,7 +106,7 @@ const Root = () => {
         <Route path="/profile" render={props => <ProfileView {...props} profile={profile} tagsRef={profileTag} setProfile={setProfile}/>} />
         <Footer />
       </div>
-      <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} setProfile={setProfile} tagsRef={profileTag}/>
+      <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} tagsRef={profileTag} setProfile={setProfile}/>
     </Router>
     )
 }

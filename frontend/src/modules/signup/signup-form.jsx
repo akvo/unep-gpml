@@ -110,10 +110,12 @@ const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef, tagsRef
   })
 
   useEffect(() => {
-      const newSchema = cloneDeep(defaultFormSchema);
-      newSchema[4].tags.options = tagsRef.map(x => ({ value: x.id, label: x.tag }))
-      newSchema[4].tags.loading = false
-      setFormSchema(newSchema);
+      if (tagsRef) {
+          const newSchema = cloneDeep(defaultFormSchema);
+          newSchema[4].tags.options = tagsRef.map(x => ({ value: x.id, label: x.tag }))
+          newSchema[4].tags.loading = false
+          setFormSchema(newSchema);
+      }
   }, [tagsRef])
 
   if(formRef) formRef(form)

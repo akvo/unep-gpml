@@ -7,7 +7,7 @@ import SignupForm from "./signup-form";
 import { useRef } from "react";
 
 
-const SignupModal = ({ visible, onCancel, setProfile, profile }) => {
+const SignupModal = ({ visible, onCancel, setProfile, profile, tagsRef}) => {
     const [sending, setSending] = useState(false)
     const [step, setStep] = useState(1)
     const {user} = useAuth0();
@@ -43,7 +43,7 @@ const SignupModal = ({ visible, onCancel, setProfile, profile }) => {
           footer={step === 2 ? (<Button onClick={onCancel}>Close</Button>) : undefined}
         >
           {step === 1 &&
-            <SignupForm onSubmit={onSubmit} handleSubmitRef={ref => { handleSubmitRef.current = ref }} initialValues={profile}/>
+            <SignupForm onSubmit={onSubmit} handleSubmitRef={ref => { handleSubmitRef.current = ref }} initialValues={profile} tagsRef={tagsRef}/>
           }
           {step === 2 &&
           <div className="submitted">
