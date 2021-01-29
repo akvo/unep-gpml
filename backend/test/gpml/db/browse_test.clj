@@ -23,7 +23,7 @@
   (let [db (test-util/db-test-conn)
         _ (seeder/seed db {:country? true
                            :technology? true})
-        event-id (first (db.event/new-event db event-sample))]
+        event-id (db.event/new-event db event-sample)]
     (testing "Simple text search"
       (is (not-empty (db.browse/filter-topic db {:search-text "plastic"}))))
     (testing "Filtering by geo coverage"

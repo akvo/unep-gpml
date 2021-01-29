@@ -1,19 +1,19 @@
--- :name new-event :<!
+-- :name new-event :<! :1
 -- :doc Insert a new event
 insert into event(title, start_date, end_date, description, remarks, geo_coverage_type, country, city, image)
 values(:title, :start_date::timestamptz, :end_date::timestamptz, :description, :remarks, :geo_coverage_type::geo_coverage_type, :country, :city, :image) RETURNING id;
 
--- :name add-event-tags :<!
+-- :name add-event-tags :<! :1
 -- :doc Add specified tags to an event
 insert into event_tag(event, tag)
 values :t*:tags RETURNING id;
 
--- :name add-event-language-urls :<!
+-- :name add-event-language-urls :<! :1
 -- :doc Add language URLs to an event
 insert into event_language_url(event, language, url)
 values :t*:urls RETURNING id;
 
--- :name add-event-geo-coverage :<!
+-- :name add-event-geo-coverage :<! :1
 -- :doc Add specified countries or country groups to an event
 insert into event_geo_coverage(event, country_group, country)
 values :t*:geo RETURNING id;
@@ -35,7 +35,7 @@ where pending.approved_at is null
 -- :doc Return the id of an event pending for approval
 select id from event where approved_at is null and id = :id
 
--- :name approve-event :!
+-- :name approve-event :! :1
 -- :doc Approves an event by given id
 update event
    set approved_at = now(),

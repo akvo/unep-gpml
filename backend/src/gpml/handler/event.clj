@@ -28,7 +28,7 @@
               :geo_coverage_type geo_coverage_type
               :city city
               :country (->> {:name country} (db.country/country-by-code conn) :id)}
-        event-id (->> data (db.event/new-event conn) first :id)]
+        event-id (->> data (db.event/new-event conn) :id)]
     (when (not-empty tags)
       (db.event/add-event-tags conn {:tags (map #(vector event-id %) tags)}))
     (when (not-empty urls)
