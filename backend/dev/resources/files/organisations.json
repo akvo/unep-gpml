@@ -3,10 +3,10 @@
   "name": "3M"
  },
  {
-  "name": "ASEAN - Association of Southeast Asian Nations"
+  "name": "Aberlpe"
  },
  {
-  "name": "Aberlpe"
+  "name": "Agence Française de Developpement (AFD)"
  },
  {
   "name": "Amazon"
@@ -15,19 +15,40 @@
   "name": "Asia Pacific Economic Cooperation (APEC)"
  },
  {
-  "name": "Baltic Sea Challenge: Tools for Water Protection"
+  "name": "Association of Southeast Asian Nations (ASEAN)"
+ },
+ {
+  "name": "Australian Aid (Department of Foreign Affairs and Trade (DFAT)"
+ },
+ {
+  "name": "Australian Government's Department of Foreign Affairs and Trade"
+ },
+ {
+  "name": "Baltic Sea Challenge"
  },
  {
   "name": "Basel Convention"
  },
  {
+  "name": "Benioff Ocean Initiative"
+ },
+ {
   "name": "Black Sea Commission"
  },
  {
-  "name": "COBSEA - Coordinating Body on the Seas of East Asia"
+  "name": "California Ocean Protection Council"
  },
  {
-  "name": "California Ocean Protection Council"
+  "name": "Canada's Environment and Climate Change (ECCC)"
+ },
+ {
+  "name": "Canadian Federal Government"
+ },
+ {
+  "name": "Chevron Phillips Chemical"
+ },
+ {
+  "name": "Circulate Capital"
  },
  {
   "name": "Closed Loop Partners"
@@ -36,13 +57,28 @@
   "name": "Coca Cola"
  },
  {
+  "name": "Coca-Cola"
+ },
+ {
   "name": "Colgate Palmolive"
  },
  {
   "name": "Common Seas"
  },
  {
+  "name": "Coordinating Body on the Seas of East Asia (COBSEA)"
+ },
+ {
+  "name": "Cyprus Sustainable Tourism Initiative(CSTI)"
+ },
+ {
   "name": "Danone"
+ },
+ {
+  "name": "Didier and Martine Primat Foundation"
+ },
+ {
+  "name": "Dow Chemicals"
  },
  {
   "name": "EA"
@@ -63,16 +99,22 @@
   "name": "European Environment Agency (EEA)"
  },
  {
+  "name": "European Investment Bank"
+ },
+ {
   "name": "European Topic Centre"
  },
  {
-  "name": "Fraunhofer Institute/Ruhruniversity Bochum"
+  "name": "Finnish Environment Institute (SKYE)"
+ },
+ {
+  "name": "Food and Agriculture Organization (FAO)"
+ },
+ {
+  "name": "Fraunhofer Institute (Ruhr university Bochum)"
  },
  {
   "name": "G20"
- },
- {
-  "name": "G20 (lead: Japan)"
  },
  {
   "name": "G7"
@@ -81,13 +123,16 @@
   "name": "GA Circular/companies"
  },
  {
-  "name": "GIZ - Gesellschaft f\u00fcr international Zusammenarbeit (German development agency"
- },
- {
-  "name": "GIZ - Gesellschaft f\u00fcr international Zusammenarbeit (German development agency)"
+  "name": "GIZ - Gesellschaft für international Zusammenarbeit (German development agency)"
  },
  {
   "name": "GRID Arendal"
+ },
+ {
+  "name": "German Federal Ministry for Economic Cooperation and Development (BMZ)"
+ },
+ {
+  "name": "Global Environment Facility (GEF)"
  },
  {
   "name": "Global Environment Facility(GEF)"
@@ -99,7 +144,13 @@
   "name": "Global Pastics Alliance"
  },
  {
-  "name": "Government of Canada G7"
+  "name": "Government of Canada"
+ },
+ {
+  "name": "Government of Norway"
+ },
+ {
+  "name": "Government of Trinidad and Tobago"
  },
  {
   "name": "Granta Design"
@@ -117,13 +168,19 @@
   "name": "Inter-organization programme for the sound management of chemicals (IOMC)"
  },
  {
+  "name": "International Finance Corporation (IFC)"
+ },
+ {
+  "name": "International Maritime Organization (IMO)"
+ },
+ {
   "name": "International Solid Waste Association (ISWA)"
  },
  {
   "name": "International Union for the Conservation of Nature (IUCN )"
  },
  {
-  "name": "Japan"
+  "name": "Interreg Baltic Sea Region Programme"
  },
  {
   "name": "Japan Clean Ocean Material Alliance"
@@ -135,25 +192,61 @@
   "name": "Keurig Dr Pepper"
  },
  {
+  "name": "Korea Green Growth Trust Fund"
+ },
+ {
   "name": "Lifecycle Initiative"
  },
  {
-  "name": "MAP - The Mediterranean Marine Litter Node"
+  "name": "Lottery Foundation"
  },
  {
-  "name": "Ministry of the Environment"
+  "name": "MAVA Foundation"
  },
  {
-  "name": "NOWPAP - Northwest Pacific Action Plan"
+  "name": "Maj and Tor Nessling Foundation"
+ },
+ {
+  "name": "Marc and Lynne Benioff"
+ },
+ {
+  "name": "Microsoft"
+ },
+ {
+  "name": "Ministry of the Environment Japan"
+ },
+ {
+  "name": "Monaco Foundation"
  },
  {
   "name": "Nairobi Convention"
  },
  {
+  "name": "National Geographic"
+ },
+ {
+  "name": "National Research Council of Canada"
+ },
+ {
   "name": "Nestle Waters"
  },
  {
+  "name": "New Zealand Ministry of Environment"
+ },
+ {
+  "name": "Northwest Pacific Action Plan (NOWPAP )"
+ },
+ {
+  "name": "Norwegian Agency for Development Cooperation(NORAD)"
+ },
+ {
+  "name": "Norwegian Ministry of Climate and Environment"
+ },
+ {
   "name": "OSPAR - Convention for the Protection of the Marine Environment of the North-East Atlantic"
+ },
+ {
+  "name": "Observatory of Menorca(OBSAM)"
  },
  {
   "name": "Ocean Conservancy"
@@ -165,19 +258,19 @@
   "name": "Oceanographic Institute of University of Sao Paulo"
  },
  {
+  "name": "Odyssey Impact Investments"
+ },
+ {
   "name": "Open Litter Map"
- },
- {
-  "name": "P&G"
- },
- {
-  "name": "PAME - Protection of the Arctic Marine Environemt"
  },
  {
   "name": "PERSGA - The Regional Organization for the Conservation of the Environment of the Red Sea & Gulf of Aden"
  },
  {
   "name": "PEWTRUST"
+ },
+ {
+  "name": "Pacific Regional Environment Programme (SPREP )"
  },
  {
   "name": "Pepsico"
@@ -189,16 +282,19 @@
   "name": "Plastics Europe"
  },
  {
+  "name": "Procter & Gamble"
+ },
+ {
+  "name": "Programme of the Sustainable Ocean Alliance"
+ },
+ {
+  "name": "Protection of the Arctic Marine Environemt (PAME )"
+ },
+ {
   "name": "Quantis"
  },
  {
   "name": "Rotterdam and Stockholm Conventions"
- },
- {
-  "name": "SACEP - South Asia Co-operative Environment Programme"
- },
- {
-  "name": "SPREP - Pacific Regional Environment Programme"
  },
  {
   "name": "SYSTEMIQ"
@@ -207,22 +303,64 @@
   "name": "Searious Business"
  },
  {
+  "name": "Second Muse"
+ },
+ {
   "name": "Secretariat of the Basel"
  },
  {
   "name": "Sheavly Consultants"
  },
  {
+  "name": "South Asia Co-operative Environment Programme (SACEP)"
+ },
+ {
+  "name": "Starbucks"
+ },
+ {
+  "name": "Surfrider Europe Foundation"
+ },
+ {
   "name": "Sustainable Coastlines Charitable Trust"
  },
  {
-  "name": "The Global Partnership of Marine Litter (GPML"
+  "name": "Swedish International Development Cooperation Agency (SIDA)"
+ },
+ {
+  "name": "Swedish Postcode Foundation"
+ },
+ {
+  "name": "Tara Expeditions Foundation"
+ },
+ {
+  "name": "Tearfund"
+ },
+ {
+  "name": "The David and Lucile Packard Foundation"
  },
  {
   "name": "The Global Partnership of Marine Litter (GPML)"
  },
  {
+  "name": "The Incubation Network"
+ },
+ {
   "name": "The International Environmental Technology Centre (IETC)"
+ },
+ {
+  "name": "The Mediterranean Marine Litter Node (MAP)"
+ },
+ {
+  "name": "The S Group"
+ },
+ {
+  "name": "Together Cyprus"
+ },
+ {
+  "name": "U.S. State Department"
+ },
+ {
+  "name": "UK Department for International Development (DFID)"
  },
  {
   "name": "UN Habitat"
@@ -234,43 +372,46 @@
   "name": "UNEA 4"
  },
  {
-  "name": "UNESCAP"
- },
- {
-  "name": "UNIDO"
- },
- {
   "name": "Unilever"
  },
  {
-  "name": "United Nation Environmental Programme (UNEP)"
+  "name": "United Nation Environment Programme (UNEP)"
  },
  {
-  "name": "United Nations Environment ProgrammeCaribbean Regional Coordinating Unit (UNEP-CAR/RCU)"
+  "name": "United Nations Economic and Social Commission for Asia and the Pacific (UNESCAP)"
+ },
+ {
+  "name": "United Nations Environmental Programme (UNEP)"
+ },
+ {
+  "name": "United Nations Industrial Development Organization (UNIDO)"
+ },
+ {
+  "name": "United States Agency for International Developement  (USAID)"
+ },
+ {
+  "name": "United States Agency for International Development (USAID)"
  },
  {
   "name": "United States Environmental Protection Agency (EPA)"
  },
  {
-  "name": "United States of America"
- },
- {
-  "name": "Universidade Federal do Par\u00e1 (Federal University of Par\u00e1)"
+  "name": "Universidade Federal do Pará (Federal University of Pará)"
  },
  {
   "name": "University of Leeds"
  },
  {
-  "name": "WWF International"
- },
- {
-  "name": "Walmart and Starbucks"
+  "name": "Walmart"
  },
  {
   "name": "Wasteware (UK)"
  },
  {
   "name": "World Bank"
+ },
+ {
+  "name": "World Wildlife Fund (WWF)"
  },
  {
   "name": "ubuntoo"

@@ -36,7 +36,7 @@
   "id": 2,
   "name": "Ichthion",
   "year_founded": 2017,
-  "country": "England",
+  "country": "United Kingdom of Great Britain & Northern Ireland",
   "organisation_type": "Startup",
   "development_stage": "Prototype",
   "specifications_provided": "No",
@@ -57,7 +57,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "England"
+   "United Kingdom Of Great Britain & Northern Ireland"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -129,7 +129,7 @@
   "id": 5,
   "name": "Orca Sound Project",
   "year_founded": 2018,
-  "country": "United Kingdom",
+  "country": "United Kingdom of Great Britain & Northern Ireland",
   "organisation_type": "Startup",
   "development_stage": "Pilot",
   "specifications_provided": "No",
@@ -149,7 +149,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "United Kingdom"
+   "United Kingdom Of Great Britain & Northern Ireland"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -551,7 +551,7 @@
   "id": 19,
   "name": "Fishy Filaments",
   "year_founded": 2017,
-  "country": "United Kingdom",
+  "country": "United Kingdom of Great Britain & Northern Ireland",
   "organisation_type": "Established Company",
   "development_stage": "Scale up",
   "specifications_provided": "Yes",
@@ -571,7 +571,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "United Kingdom"
+   "United Kingdom Of Great Britain & Northern Ireland"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -632,7 +632,7 @@
   "id": 22,
   "name": "Litter Trap",
   "year_founded": 2014,
-  "country": "The Netherlands",
+  "country": "Netherlands",
   "organisation_type": "Non-Profit Org",
   "development_stage": "Scale up",
   "specifications_provided": "Yes",
@@ -644,7 +644,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "The Netherlands"
+   "Netherlands"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -654,7 +654,7 @@
   "id": 23,
   "name": "Ministry of Waste",
   "year_founded": 2017,
-  "country": "United Kingdom",
+  "country": "United Kingdom of Great Britain & Northern Ireland",
   "organisation_type": "Startup",
   "development_stage": "Prototype",
   "specifications_provided": "Yes",
@@ -674,7 +674,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "United Kingdom"
+   "United Kingdom Of Great Britain & Northern Ireland"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -684,7 +684,7 @@
   "id": 24,
   "name": "My Little Plastic Footprint",
   "year_founded": 2011,
-  "country": "The Netherlands",
+  "country": "Netherlands",
   "organisation_type": "Non-Profit Org",
   "development_stage": "Scale up",
   "specifications_provided": "Yes",
@@ -707,7 +707,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "The Netherlands"
+   "Netherlands"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -1063,7 +1063,7 @@
   "id": 37,
   "name": "Plastic Soup Surfer",
   "year_founded": 2009,
-  "country": "The Netherlands",
+  "country": "Netherlands",
   "organisation_type": "Non-Profit Org",
   "development_stage": "In market",
   "specifications_provided": "Yes",
@@ -1081,7 +1081,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "The Netherlands"
+   "Netherlands"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -1177,7 +1177,7 @@
   "id": 41,
   "name": "Plymouth Marine Laboratory",
   "year_founded": 2002,
-  "country": "United Kingdom",
+  "country": "United Kingdom of Great Britain & Northern Ireland",
   "organisation_type": "Non-Profit Org",
   "development_stage": "Development",
   "specifications_provided": "No",
@@ -1197,7 +1197,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "United Kingdom"
+   "United Kingdom Of Great Britain & Northern Ireland"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -1293,7 +1293,7 @@
   "id": 45,
   "name": "Seabin Smart Tech including Pollution Index",
   "year_founded": 2015,
-  "country": "Australia &  Spain",
+  "country": "Spain",
   "organisation_type": "Startup",
   "development_stage": "In market",
   "specifications_provided": "Yes",
@@ -1311,7 +1311,8 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "Australia &  Spain"
+   "Spain",
+   "Australia"
   ],
   "geo_coverage_type": "transnational",
   "attachments": [],
@@ -1381,7 +1382,7 @@
   "id": 48,
   "name": "The Blue Barriers",
   "year_founded": null,
-  "country": "United Kingdom",
+  "country": "United Kingdom of Great Britain & Northern Ireland",
   "organisation_type": "Startup",
   "development_stage": "Pilot",
   "specifications_provided": "Yes",
@@ -1399,7 +1400,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "United Kingdom"
+   "United Kingdom Of Great Britain & Northern Ireland"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -1409,7 +1410,7 @@
   "id": 49,
   "name": "The Great Bubble Barrier",
   "year_founded": 2015,
-  "country": "The Netherlands",
+  "country": "Netherlands",
   "organisation_type": "Startup",
   "development_stage": "Scale up",
   "specifications_provided": "No",
@@ -1428,7 +1429,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "The Netherlands"
+   "Netherlands"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -1637,7 +1638,7 @@
   "id": 57,
   "name": "WasteShark",
   "year_founded": 2016,
-  "country": "The Netherlands",
+  "country": "Netherlands",
   "organisation_type": "Startup",
   "development_stage": "In market",
   "specifications_provided": "Yes",
@@ -1656,7 +1657,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "The Netherlands"
+   "Netherlands"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -1666,7 +1667,7 @@
   "id": 58,
   "name": "Ellipsis",
   "year_founded": 2019,
-  "country": "United Kingdom",
+  "country": "United Kingdom of Great Britain & Northern Ireland",
   "organisation_type": "Startup",
   "development_stage": "In market",
   "specifications_provided": "No",
@@ -1687,7 +1688,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "United Kingdom"
+   "United Kingdom Of Great Britain & Northern Ireland"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -1697,7 +1698,7 @@
   "id": 59,
   "name": "Fishing for Litter",
   "year_founded": 1990,
-  "country": "United Kingdom",
+  "country": "United Kingdom of Great Britain & Northern Ireland",
   "organisation_type": "Non-Profit Org",
   "development_stage": "In market",
   "specifications_provided": "No",
@@ -1717,7 +1718,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "United Kingdom"
+   "United Kingdom Of Great Britain & Northern Ireland"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -1754,7 +1755,7 @@
   "id": 61,
   "name": "Ocean Polymers",
   "year_founded": 2017,
-  "country": "England",
+  "country": "United Kingdom of Great Britain & Northern Ireland",
   "organisation_type": "Startup",
   "development_stage": "Research",
   "specifications_provided": "No",
@@ -1778,7 +1779,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "England"
+   "United Kingdom Of Great Britain & Northern Ireland"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -1824,7 +1825,7 @@
   "id": 63,
   "name": "Planet Patrol App",
   "year_founded": 2016,
-  "country": "England",
+  "country": "United Kingdom of Great Britain & Northern Ireland",
   "organisation_type": "Non-Profit Org",
   "development_stage": "Pilot",
   "specifications_provided": "No",
@@ -1846,7 +1847,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "England"
+   "United Kingdom Of Great Britain & Northern Ireland"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -1889,7 +1890,7 @@
   "id": 65,
   "name": "Safegear",
   "year_founded": 2010,
-  "country": "United Kingdom",
+  "country": "United Kingdom of Great Britain & Northern Ireland",
   "organisation_type": "Non-Profit Org",
   "development_stage": "Research",
   "specifications_provided": "No",
@@ -1910,7 +1911,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "United Kingdom"
+   "United Kingdom Of Great Britain & Northern Ireland"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
@@ -1951,7 +1952,7 @@
   "id": 67,
   "name": "100% Recyclable Pouch",
   "year_founded": 2016,
-  "country": "Nederland",
+  "country": "Netherlands",
   "organisation_type": "Startup",
   "development_stage": "Pilot",
   "specifications_provided": "No",
@@ -1963,7 +1964,7 @@
   "languages": null,
   "resource_language_url": null,
   "geo_coverage": [
-   "Nederland"
+   "Netherlands"
   ],
   "geo_coverage_type": "national",
   "attachments": [],
