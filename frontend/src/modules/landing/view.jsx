@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Select, Switch } from 'antd';
 import { withRouter } from 'react-router-dom'
 import Maps from './maps'
 import './styles.scss'
 import { topicTypes, topicNames } from '../../utils/misc';
-import api from '../../utils/api';
 
-const Landing = ({ history }) => {
+const Landing = ({ history, data, countries, setCountries}) => {
     const [country, setCountry] = useState(null);
-    const [countries, setCountries] = useState(null);
-    const [data, setData] = useState(null);
+    const [countryMap, setCountryMap] = useState(null)
     const [counts, setCounts] = useState("");
 
     const clickEvents = ({name, data}) => {
@@ -36,19 +34,6 @@ const Landing = ({ history }) => {
         return null
     }
 
-    useEffect(() => {
-      api.get('/landing')
-      .then((resp) => {
-        setData(resp.data)
-      })
-
-      api.get('/country')
-      .then((resp) => {
-        setCountries(resp.data)
-      })
-
-    }, [])
-
     const handleChangeCountry = (isoCode) => {
       setCountry(isoCode)
     }
@@ -56,8 +41,8 @@ const Landing = ({ history }) => {
     const countryObj = countries && country && countries.find(it => it.isoCode === country)
 
     const handleSummaryClick = (dataType) => {
-      if(counts === dataType.toUpperCase()){
-        setCountries(null)
+      if(counts === dataType){
+        setCountryMap(null)
         setCounts('')
       } else {
         const selected = data.map.map(x => ({
@@ -65,8 +50,8 @@ const Landing = ({ history }) => {
             name: x.isoCode,
             value: x[dataType],
         }));
-        setCountries(selected);
-        setCounts(dataType.toUpperCase());
+        setCountryMap(selected);
+        setCounts(dataType);
       }
     }
 
@@ -90,7 +75,7 @@ const Landing = ({ history }) => {
         </div>
         }
         <Maps
-          data={country ?  [{ name: country, itemStyle: { areaColor: "#26AE60" }}] : (counts ? countries : [])}
+          data={country ?  [{ name: country, itemStyle: { areaColor: "#26AE60" }}] : (counts ? countryMap : [])}
           clickEvents={clickEvents}
           tooltip={toolTip}
         />
@@ -108,16 +93,22 @@ const Summary = ({ clickEvents, summary, country, counts, selected }) => {
     <div className="summary">
       <header>{!selected ? 'Global summary' : 'Summary' }</header>
       <ul>
-        {!country && summary.map((it, index) =>
-          <li key={`li-${index}`} onClick={e => clickEvents(Object.keys(it)[0])}>
-            <Switch size="small" checked={counts === Object.keys(it)[0].toUpperCase()} />
-            <div className="text">
-              <div className="label">{topicNames[Object.keys(it)[0]]}</div>
-              <span>in {it.countries} countries</span>
-            </div>
-            <b>{it[Object.keys(it)[0]]}</b>
-          </li>
-        )}
+          {!country && summary.map((it, index) => {
+              const current = Object.keys(it)[0];
+              let className = current !== counts ? "summary-list" : "summary-list-selected";
+                  className = counts === "" ? "" : className;
+              return (
+              <li key={`li-${index}`}
+                  onClick={e => clickEvents(current)}
+                  className={className}>
+                <Switch size="small" checked={counts === current} />
+                <div className="text">
+                  <div className="label">{topicNames[current]}</div>
+                  <span>in {it.countries} countries</span>
+                </div>
+                <b>{it[current]}</b>
+              </li>)
+          })}
         {country && topicTypes.map(type =>
         <li key={type}>
           <div className="text">

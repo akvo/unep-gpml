@@ -30,6 +30,12 @@
         li:hover{
           background-color: #EAEAEA;
         }
+        .summary-list-selected {
+            background-color: #DFECF3 !important;
+        }
+        .summary-list {
+            opacity: .5;
+        }
         li{
           cursor:pointer;
           position: relative;
@@ -47,7 +53,6 @@
           .ant-switch{
             margin-right: 10px;
           }
-          
           b{
             margin-left: auto;
             padding-left: 10px;

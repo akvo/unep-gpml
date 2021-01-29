@@ -98,7 +98,7 @@ const defaultFormSchema = [
   }
 ]
 
-const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef }) => {
+const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef, tagsRef }) => {
   const [formSchema, setFormSchema] = useState(defaultFormSchema)
   const [noOrg, setNoOrg] = useState(false)
   const form = createForm({
@@ -110,14 +110,11 @@ const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef }) => {
   })
 
   useEffect(() => {
-    (async function fetchData() {
-      const response = await api.get('/tag/general')
       const newSchema = cloneDeep(defaultFormSchema);
-      newSchema[4].tags.options = response.data.map(x => ({ value: x.id, label: x.tag }))
+      newSchema[4].tags.options = tagsRef.map(x => ({ value: x.id, label: x.tag }))
       newSchema[4].tags.loading = false
       setFormSchema(newSchema);
-    })()
-  }, [])
+  }, [tagsRef])
 
   if(formRef) formRef(form)
   return (

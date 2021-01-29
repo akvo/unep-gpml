@@ -25,6 +25,9 @@ const Root = () => {
     } = useAuth0();
     const [profile, setProfile] = useState(null);
     const [signupModalVisible, setSignupModalVisible] = useState(false)
+    const [countries, setCountries] = useState(null);
+    const [data, setData] = useState(null);
+    const [profileTag, setProfileTag] = useState([]);
 
     useEffect(() => {
       (async function fetchData() {
@@ -44,6 +47,22 @@ const Root = () => {
         }
       })();
     }, [getIdTokenClaims, isAuthenticated]);
+
+    useEffect(() => {
+      api.get('/landing')
+      .then((resp) => {
+        setData(resp.data)
+      })
+      api.get('/country')
+      .then((resp) => {
+        setCountries(resp.data)
+      })
+      api.get('/tag/general')
+      .then((resp) => {
+        setProfileTag(resp.data)
+      })
+    }, [])
+
     return (
     <Router>
       <div id="root">
@@ -81,13 +100,13 @@ const Root = () => {
             </nav>
           </div>
         </header>
-        <Route path="/" exact component={Landing} />
+        <Route path="/" exact render={props => <Landing {...{countries, data, setCountries,...props}}/>} />
         <Route path="/browse" component={Browse} />
         <Route path="/add-event" component={AddEvent} />
-        <Route path="/profile" render={props => <ProfileView {...props} profile={profile}/>} />
+        <Route path="/profile" render={props => <ProfileView {...props} profile={profile} tagsRef={profileTag}/>} />
         <Footer />
       </div>
-      <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} setProfile={setProfile}/>
+      <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} setProfile={setProfile} tagsRef={profileTag}/>
     </Router>
     )
 }
