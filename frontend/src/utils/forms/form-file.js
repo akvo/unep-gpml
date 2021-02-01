@@ -6,9 +6,14 @@ import { Button } from "antd";
 const getBase64 = (file) => {
     return new Promise ((resolve, reject) => {
        var reader = new FileReader();
-       reader.readAsDataURL(file);
-       reader.onload = () => resolve(reader.result);
-       reader.onerror = () => reject(reader.result)
+       if (file) {
+           reader.readAsDataURL(file);
+           reader.onload = () => resolve(reader.result);
+           reader.onerror = () => reject(reader.result)
+       }
+       if (!file){
+           reject('discard')
+       }
     });
 }
 
@@ -31,7 +36,7 @@ const FileWidget = (props) => {
         base64.then(res => {
             setOutput(res);
             props.onChange(res);
-        })
+        }).catch(err => console.log(err))
     }
     return (
         <div className="photo-upload">

@@ -155,7 +155,6 @@ const EventForm = () => {
     }
 
     const sendData = () => {
-        console.log(data);
         (async function() {
             const payload = {
                 title: data.details?.title || null,
@@ -168,7 +167,6 @@ const EventForm = () => {
                 country: data.location?.country || null,
                 city: data.location?.city || null,
             };
-            console.log(payload);
             const response = await axios.post("/api/event", payload);
             console.log(response);
         })();

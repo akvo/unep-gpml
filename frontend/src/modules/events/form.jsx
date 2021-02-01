@@ -81,6 +81,12 @@ const defaultFormSchema = [
   }
 ]
 
+const validation = (formSchema) => {
+    validateSchema(formSchema.reduce((acc, val) =>
+        ({...acc, ...val}), {}
+    ))
+}
+
 const AddEventForm = () => {
   const [formSchema, setFormSchema] = useState(defaultFormSchema)
   const [sending, setSending] = useState(false)
@@ -116,7 +122,7 @@ const AddEventForm = () => {
     mutators: {
     ...arrayMutators
     },
-    onSubmit, validate: validateSchema(formSchema.reduce((acc, val) => ({ ...acc, ...val }), {})) // combined formSchema sections
+    onSubmit, validate: validation(formSchema)
   })
   return (
     <div className="add-event-form">

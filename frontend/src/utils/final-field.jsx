@@ -50,7 +50,7 @@ const CONTROLS = {
       </Select>
     )
   },
-  file: ({ input, accept, maxFileSize}) => {
+  file: ({ input, accept, maxFileSize, ...props}) => {
     return (
       <FileWidget {...input} accept={accept} maxFileSize={maxFileSize}/>
     )
