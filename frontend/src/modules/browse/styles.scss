@@ -18,7 +18,7 @@
       }
       .label{
         text-transform: uppercase;
-        margin-bottom: 0;
+        margin-bottom: 5px;
         margin-top: 15px;
       }
       .field{
@@ -78,6 +78,10 @@
         .ant-picker-range{
           width: 100%;
         }
+      }
+      .my-favorites{
+        margin-top: 15px;
+        text-transform: uppercase;
       }
     }
   }
