@@ -37,7 +37,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
     const handleChangeCountry = (isoCode) => {
       setCountry(isoCode)
     }
-    const countryOpts = countries ? countries.map(it => ({ value: it.isoCode, label: it.name })) : []
+    const countryOpts = countries ? countries.map(it => ({ value: it.isoCode, label: it.name })).sort((a, b) => a.label.localeCompare(b.label)) : []
     const countryObj = countries && country && countries.find(it => it.isoCode === country)
 
     const handleSummaryClick = (dataType) => {
@@ -75,7 +75,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
             value={country}
             onChange={handleChangeCountry}
           />
-          <Summary clickEvents={handleSummaryClick} summary={data.summary} 
+          <Summary clickEvents={handleSummaryClick} summary={data.summary}
             country={countryObj} counts={counts} selected={selected}
             init={initLandingCount}/>
         </div>

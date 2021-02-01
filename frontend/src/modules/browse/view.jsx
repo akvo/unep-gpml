@@ -86,7 +86,7 @@ const Browse = ({ history }) => {
               <div className="label">
                 Country
               </div>
-              <Select value={query.country} placeholder="Find country" mode="multiple" options={Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name }))} allowClear onChange={val => updateQuery('country', val)} filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
+              <Select value={query.country} placeholder="Find country" mode="multiple" options={Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name })).sort((a, b) => a.label.localeCompare(b.label))} allowClear onChange={val => updateQuery('country', val)} filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
               {isAuthenticated && <Checkbox className="my-favorites" checked={query?.favorites?.indexOf("true") > -1}  onChange={({ target: { checked }}) => updateQuery('favorites', checked)}>My Favorites</Checkbox>}
             </div>
             <div className="field">

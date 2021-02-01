@@ -30,7 +30,7 @@ const GeoCoverageInput = (props) => {
               selectProps.mode = 'multiple'
             }
             else if(typeInput.value === 'national' || typeInput.value === 'transnational'){
-              selectProps.options = Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name }))
+              selectProps.options = Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name })).sort((a, b) => a.label.localeCompare(b.label))
               selectProps.showSearch = true
               selectProps.filterOption = (input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
               if (typeInput.value === 'transnational'){
@@ -68,7 +68,7 @@ const defaultFormSchema = [
   },
   {
     city: { label: 'City' },
-    country: { label: 'Country', control: 'select', showSearch: true, options: Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name})) },
+    country: { label: 'Country', control: 'select', showSearch: true, options: Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name})).sort((a, b) => a.label.localeCompare(b.label)) },
     geoCoverageType: { label: 'Geo coverage type', required: true, control: 'select', options: geoCoverageTypeOptions.map(it => ({ value: it.toLowerCase(), label: it })) },
     geoCoverageValue: {
       label: 'Geo coverage',
