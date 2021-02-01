@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Link, Switch, withRouter } from 'react-
 import { useAuth0 } from '@auth0/auth0-react';
 import { Input, Button } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
-import 'antd/dist/antd.css';
 import Landing from './modules/landing/view'
 import Browse from './modules/browse/view'
 import AddEvent from './modules/events/view'
