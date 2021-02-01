@@ -69,7 +69,7 @@ const generateOptions = ({title, subtitle, data, tooltip}) => {
         series: [{
             name: title,
             type: 'map',
-            roam: true,
+            roam: 'move',
             left: window.__UNEP__MAP__LEFT,
             top: window.__UNEP__MAP__TOP,
             map: 'unep-map',
