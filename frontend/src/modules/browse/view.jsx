@@ -26,7 +26,7 @@ function useQuery() {
 
 let tmid
 
-const Browse = ({ history }) => {
+const Browse = ({ history, summary }) => {
   const query = useQuery()
   const [results, setResults] = useState([])
   const location = useLocation()
@@ -76,6 +76,13 @@ const Browse = ({ history }) => {
     }
     api.post('/favorite', [relation])
   }
+  let topicCounts = {}
+  topicTypes.forEach((topic) => {
+    const entry = summary?.find(it => it.hasOwnProperty(topic))
+    if (entry) {
+      topicCounts[topic] = entry[topic]
+    }
+  })
   return (
     <div id="browse">
       <div className="ui container">
@@ -91,7 +98,7 @@ const Browse = ({ history }) => {
             </div>
             <div className="field">
               <div className="label">Resources</div>
-              <TopicSelect value={query.topic} onChange={val => updateQuery('topic', val)} />
+              <TopicSelect counts={topicCounts} value={query.topic} onChange={val => updateQuery('topic', val)} />
             </div>
           </div>
         </aside>
@@ -103,7 +110,7 @@ const Browse = ({ history }) => {
   )
 }
 
-const TopicSelect = ({ value, onChange }) => {
+const TopicSelect = ({ value, onChange, counts }) => {
   const handleChange = (type) => ({target: {checked}}) => {
     if (checked && value.indexOf(type) === -1) {
       onChange([...value, type])
@@ -114,7 +121,7 @@ const TopicSelect = ({ value, onChange }) => {
   return (
     <ul className="topic-list">
       {topicTypes.map(type =>
-        <li key={type}><Checkbox checked={value.indexOf(humps.decamelize(type)) !== -1} onChange={handleChange(humps.decamelize(type))}>{topicNames(type)}</Checkbox></li>
+        <li key={type}><Checkbox checked={value.indexOf(humps.decamelize(type)) !== -1} onChange={handleChange(humps.decamelize(type))}>{topicNames(type)} ({(counts && counts[type]) || 0})</Checkbox></li>
       )}
     </ul>
   )

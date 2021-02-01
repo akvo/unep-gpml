@@ -106,7 +106,7 @@ const Root = () => {
         <Route path="/" exact render={props => <Landing {...
           {countries, data, initLandingCount, setCountries, setInitLandingCount,...props}
           }/>} />
-        <Route path="/browse" component={Browse} />
+        <Route path="/browse" render={props => <Browse {...props} summary={data?.summary}/>} />
         <Route path="/add-event" component={AddEvent} />
         <Route path="/profile" render={props => <ProfileView {...props} profile={profile} tagsRef={profileTag} setProfile={setProfile}/>} />
         <Footer />
