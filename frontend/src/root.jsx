@@ -9,6 +9,7 @@ import Browse from './modules/browse/view'
 import AddEvent from './modules/events/view'
 import logo from './images/GPML-dp.svg'
 import SignupModal from './modules/signup/signup-modal'
+import EventWarningModal from './modules/events/event-warning-modal'
 import api from './utils/api';
 import ProfileView from './modules/profile/view';
 import logo2 from './images/GPML-logo-2.svg'
@@ -25,6 +26,7 @@ const Root = () => {
     } = useAuth0();
     const [profile, setProfile] = useState({});
     const [signupModalVisible, setSignupModalVisible] = useState(false)
+    const [eventWarningVisible, setEventWarningVisible] = useState(false)
     const [countries, setCountries] = useState(null);
     const [data, setData] = useState(null);
     const [profileTag, setProfileTag] = useState([]);
@@ -98,7 +100,7 @@ const Root = () => {
             </Switch>
             <nav>
               <Link to="/browse">Find and Connect</Link>
-              <AddButton {...{ setSignupModalVisible, isAuthenticated, loginWithPopup}} />
+              <AddButton {...{ setSignupModalVisible, isAuthenticated, loginWithPopup,profile, setEventWarningVisible}} />
             </nav>
           </div>
         </header>
@@ -111,6 +113,7 @@ const Root = () => {
         <Footer />
       </div>
       <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} tagsRef={profileTag} setProfile={setProfile}/>
+      <EventWarningModal visible={eventWarningVisible} close={() => setEventWarningVisible(false)}/>
     </Router>
     )
 }
@@ -148,9 +151,12 @@ const Search = withRouter(({ history }) => {
   return <Input onPressEnter={handlerPressEnter} className="src" placeholder="Search for topics" suffix={<SearchOutlined />} size="large" />
 })
 
-const AddButton = ({ isAuthenticated, setSignupModalVisible, loginWithPopup }) => {
+const AddButton = ({ isAuthenticated, setSignupModalVisible, setEventWarningVisible, loginWithPopup,profile}) => {
   if(isAuthenticated){
-    return <Link to="/add-event"><Button type="primary" size="large">+ Add Event</Button></Link>
+      if (profile?.approvedAt) {
+            return <Link to="/add-event"><Button type="primary" size="large">+ Add Event</Button></Link>
+      }
+      return <Button type="primary" size="large" onClick={e => setEventWarningVisible(true)}>+ Add Event</Button>
   }
   return <Button type="primary" size="large" onClick={loginWithPopup}>+ Add Event</Button>
 }

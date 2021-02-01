@@ -66,11 +66,23 @@ const AdminSection = () => {
               {item.image && <img src={item.image} alt="event" />}
               {/* TODO fix image url */}
               <ul>
-                  <li>{moment(item.startDate).format('DD MMM YYYY')} to {moment(item.endDate).format('DD MMM YYYY')}</li>
-                  <li>{item.geoCoverageType} {item.geoCoverageValues}</li>
-                  <li>{item.description}</li>
-                  <li>{item.remarks}</li>
-                  {/* TODO show all data */}
+                  <li>Submitted At: {moment(item.createdAt).format('DD MMM YYYY')}</li>
+                  <li>Event Date: {moment(item.startDate).format('DD MMM YYYY')} to {moment(item.endDate).format('DD MMM YYYY')}</li>
+                  <li>Country: {item.country}</li>
+                  <li>City: {item.city}</li>
+                  <li>Coverage: <b>{item.geoCoverageType}</b>
+                      <ul className={'ul-children'}>
+                      {item.geoCoverageValues.map((x, i) => <li key={`coverage-${i}`}>{x}</li>)}
+                      </ul>
+                  </li>
+                  <li>Description: {item.description}</li>
+                  <li>Remarks: {item.remarks}</li>
+                  <li>Tags: {item.tags.map(x => `${x}, `)}</li>
+                  <li>Urls:
+                      <ul className={'ul-children'}>
+                          {item.urls.map((x, i) => <li key={`url-${i}`}>{x.isoCode}: {x.url}</li>)}
+                      </ul>
+                  </li>
               </ul>
             </div>
           )}
