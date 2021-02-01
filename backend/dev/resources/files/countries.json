@@ -1,5072 +1,1006 @@
 [
-  {
-    "name": "Afghanistan",
-    "code": "AFG",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "أفغانستان"
-      },
-      {
-        "lang": "es",
-        "text": "Afganistán"
-      },
-      {
-        "lang": "fr",
-        "text": "Afghanistan"
-      },
-      {
-        "lang": "ru",
-        "text": "Афганистан"
-      },
-      {
-        "lang": "zh",
-        "text": "阿富汗"
-      }
-    ]
-  },
-  {
-    "name": "Angola",
-    "code": "AGO",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "أنغولا"
-      },
-      {
-        "lang": "es",
-        "text": "Angola"
-      },
-      {
-        "lang": "fr",
-        "text": "Angola"
-      },
-      {
-        "lang": "ru",
-        "text": "Ангола"
-      },
-      {
-        "lang": "zh",
-        "text": "安哥拉"
-      }
-    ]
-  },
-  {
-    "name": "Albania",
-    "code": "ALB",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ألبانيا"
-      },
-      {
-        "lang": "es",
-        "text": "Albania"
-      },
-      {
-        "lang": "fr",
-        "text": "Albanie"
-      },
-      {
-        "lang": "ru",
-        "text": "Албания"
-      },
-      {
-        "lang": "zh",
-        "text": "阿尔巴尼亚"
-      }
-    ]
-  },
-  {
-    "name": "Andorra",
-    "code": "AND",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "أندورا"
-      },
-      {
-        "lang": "es",
-        "text": "Andorra"
-      },
-      {
-        "lang": "fr",
-        "text": "Andorre"
-      },
-      {
-        "lang": "ru",
-        "text": "Андорра"
-      },
-      {
-        "lang": "zh",
-        "text": "安道尔"
-      }
-    ]
-  },
-  {
-    "name": "United Arab Emirates",
-    "code": "ARE",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الإمارات العربية المتحدة"
-      },
-      {
-        "lang": "es",
-        "text": "Emiratos Árabes Unidos"
-      },
-      {
-        "lang": "fr",
-        "text": "Émirats arabes unis"
-      },
-      {
-        "lang": "ru",
-        "text": "Объединенные Арабские Эмираты"
-      },
-      {
-        "lang": "zh",
-        "text": "阿拉伯联合酋长国"
-      }
-    ]
-  },
-  {
-    "name": "Argentina",
-    "code": "ARG",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الأرجنتين"
-      },
-      {
-        "lang": "es",
-        "text": "Argentina"
-      },
-      {
-        "lang": "fr",
-        "text": "Argentine"
-      },
-      {
-        "lang": "ru",
-        "text": "Аргентина"
-      },
-      {
-        "lang": "zh",
-        "text": "阿根廷"
-      }
-    ]
-  },
-  {
-    "name": "Armenia",
-    "code": "ARM",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "أرمينيا"
-      },
-      {
-        "lang": "es",
-        "text": "Armenia"
-      },
-      {
-        "lang": "fr",
-        "text": "Arménie"
-      },
-      {
-        "lang": "ru",
-        "text": "Армения"
-      },
-      {
-        "lang": "zh",
-        "text": "亚美尼亚"
-      }
-    ]
-  },
-  {
-    "name": "Antigua and Barbuda",
-    "code": "ATG",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "أنتيغوا وبربودا"
-      },
-      {
-        "lang": "es",
-        "text": "Antigua y Barbuda"
-      },
-      {
-        "lang": "fr",
-        "text": "Antigua-et-Barbuda"
-      },
-      {
-        "lang": "ru",
-        "text": "Антигуа и Барбуда"
-      },
-      {
-        "lang": "zh",
-        "text": "安提瓜和巴布达"
-      }
-    ]
-  },
-  {
-    "name": "Australia",
-    "code": "AUS",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "أستراليا"
-      },
-      {
-        "lang": "es",
-        "text": "Australia"
-      },
-      {
-        "lang": "fr",
-        "text": "Australie"
-      },
-      {
-        "lang": "ru",
-        "text": "Австралия"
-      },
-      {
-        "lang": "zh",
-        "text": "澳大利亚"
-      }
-    ]
-  },
-  {
-    "name": "Austria",
-    "code": "AUT",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "النمسا"
-      },
-      {
-        "lang": "es",
-        "text": "Austria"
-      },
-      {
-        "lang": "fr",
-        "text": "Autriche"
-      },
-      {
-        "lang": "ru",
-        "text": "Австрия"
-      },
-      {
-        "lang": "zh",
-        "text": "奥地利"
-      }
-    ]
-  },
-  {
-    "name": "Azerbaijan",
-    "code": "AZE",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "أذربيجان"
-      },
-      {
-        "lang": "es",
-        "text": "Azerbaiyán"
-      },
-      {
-        "lang": "fr",
-        "text": "Azerbaïdjan"
-      },
-      {
-        "lang": "ru",
-        "text": "Азербайджан"
-      },
-      {
-        "lang": "zh",
-        "text": "阿塞拜疆"
-      }
-    ]
-  },
-  {
-    "name": "Burundi",
-    "code": "BDI",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بوروندي"
-      },
-      {
-        "lang": "es",
-        "text": "Burundi"
-      },
-      {
-        "lang": "fr",
-        "text": "Burundi"
-      },
-      {
-        "lang": "ru",
-        "text": "Бурунди"
-      },
-      {
-        "lang": "zh",
-        "text": "布隆迪"
-      }
-    ]
-  },
-  {
-    "name": "Belgium",
-    "code": "BEL",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بلجيكا"
-      },
-      {
-        "lang": "es",
-        "text": "Bélgica"
-      },
-      {
-        "lang": "fr",
-        "text": "Belgique"
-      },
-      {
-        "lang": "ru",
-        "text": "Бельгия"
-      },
-      {
-        "lang": "zh",
-        "text": "比利时"
-      }
-    ]
-  },
-  {
-    "name": "Benin",
-    "code": "BEN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بنن"
-      },
-      {
-        "lang": "es",
-        "text": "Benin"
-      },
-      {
-        "lang": "fr",
-        "text": "Bénin"
-      },
-      {
-        "lang": "ru",
-        "text": "Бенин"
-      },
-      {
-        "lang": "zh",
-        "text": "贝宁"
-      }
-    ]
-  },
-  {
-    "name": "Burkina Faso",
-    "code": "BFA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بوركينا فاسو"
-      },
-      {
-        "lang": "es",
-        "text": "Burkina Faso"
-      },
-      {
-        "lang": "fr",
-        "text": "Burkina Faso"
-      },
-      {
-        "lang": "ru",
-        "text": "Буркина-Фасо"
-      },
-      {
-        "lang": "zh",
-        "text": "布基纳法索"
-      }
-    ]
-  },
-  {
-    "name": "Bangladesh",
-    "code": "BGD",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بنغلاديش"
-      },
-      {
-        "lang": "es",
-        "text": "Bangladesh"
-      },
-      {
-        "lang": "fr",
-        "text": "Bangladesh"
-      },
-      {
-        "lang": "ru",
-        "text": "Бангладеш"
-      },
-      {
-        "lang": "zh",
-        "text": "孟加拉国"
-      }
-    ]
-  },
-  {
-    "name": "Bulgaria",
-    "code": "BGR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بلغاريا"
-      },
-      {
-        "lang": "es",
-        "text": "Bulgaria"
-      },
-      {
-        "lang": "fr",
-        "text": "Bulgarie"
-      },
-      {
-        "lang": "ru",
-        "text": "Болгария"
-      },
-      {
-        "lang": "zh",
-        "text": "保加利亚"
-      }
-    ]
-  },
-  {
-    "name": "Bahrain",
-    "code": "BHR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "البحرين"
-      },
-      {
-        "lang": "es",
-        "text": "Bahréin"
-      },
-      {
-        "lang": "fr",
-        "text": "Bahreïn"
-      },
-      {
-        "lang": "ru",
-        "text": "Бахрейн"
-      },
-      {
-        "lang": "zh",
-        "text": "巴林"
-      }
-    ]
-  },
-  {
-    "name": "Bahamas",
-    "code": "BHS",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جزر البهاما"
-      },
-      {
-        "lang": "es",
-        "text": "Bahamas"
-      },
-      {
-        "lang": "fr",
-        "text": "Bahamas"
-      },
-      {
-        "lang": "ru",
-        "text": "Багамские Острова"
-      },
-      {
-        "lang": "zh",
-        "text": "巴哈马"
-      }
-    ]
-  },
-  {
-    "name": "Bosnia and Herzegovina",
-    "code": "BIH",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "البوسنة والهرسك"
-      },
-      {
-        "lang": "es",
-        "text": "Bosnia y Herzegovina"
-      },
-      {
-        "lang": "fr",
-        "text": "Bosnie-Herzégovine"
-      },
-      {
-        "lang": "ru",
-        "text": "Босния и Герцеговина"
-      },
-      {
-        "lang": "zh",
-        "text": "波斯尼亚和黑塞哥维那"
-      }
-    ]
-  },
-  {
-    "name": "Belarus",
-    "code": "BLR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بيلاروس"
-      },
-      {
-        "lang": "es",
-        "text": "Belarús"
-      },
-      {
-        "lang": "fr",
-        "text": "Bélarus"
-      },
-      {
-        "lang": "ru",
-        "text": "Беларусь"
-      },
-      {
-        "lang": "zh",
-        "text": "白俄罗斯"
-      }
-    ]
-  },
-  {
-    "name": "Belize",
-    "code": "BLZ",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بليز"
-      },
-      {
-        "lang": "es",
-        "text": "Belice"
-      },
-      {
-        "lang": "fr",
-        "text": "Belize"
-      },
-      {
-        "lang": "ru",
-        "text": "Белиз"
-      },
-      {
-        "lang": "zh",
-        "text": "伯利兹"
-      }
-    ]
-  },
-  {
-    "name": "Bolivia",
-    "code": "BOL",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بوليفيا (دولة – المتعددة القوميات)"
-      },
-      {
-        "lang": "es",
-        "text": "Bolivia (Estado Plurinacional de)"
-      },
-      {
-        "lang": "fr",
-        "text": "Bolivie"
-      },
-      {
-        "lang": "ru",
-        "text": "Боливия"
-      },
-      {
-        "lang": "zh",
-        "text": "玻利维亚"
-      }
-    ]
-  },
-  {
-    "name": "Brazil",
-    "code": "BRA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "البرازيل"
-      },
-      {
-        "lang": "es",
-        "text": "Brasil"
-      },
-      {
-        "lang": "fr",
-        "text": "Brésil"
-      },
-      {
-        "lang": "ru",
-        "text": "Бразилия"
-      },
-      {
-        "lang": "zh",
-        "text": "巴西"
-      }
-    ]
-  },
-  {
-    "name": "Barbados",
-    "code": "BRB",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بربادوس"
-      },
-      {
-        "lang": "es",
-        "text": "Barbados"
-      },
-      {
-        "lang": "fr",
-        "text": "Barbade"
-      },
-      {
-        "lang": "ru",
-        "text": "Барбадос"
-      },
-      {
-        "lang": "zh",
-        "text": "巴巴多斯"
-      }
-    ]
-  },
-  {
-    "name": "Brunei Darussalam",
-    "code": "BRN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بروني دار السلام"
-      },
-      {
-        "lang": "es",
-        "text": "Brunei Darussalam"
-      },
-      {
-        "lang": "fr",
-        "text": "Brunéi Darussalam"
-      },
-      {
-        "lang": "ru",
-        "text": "Бруней-Даруссалам"
-      },
-      {
-        "lang": "zh",
-        "text": "文莱达鲁萨兰国"
-      }
-    ]
-  },
-  {
-    "name": "Bhutan",
-    "code": "BTN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بوتان"
-      },
-      {
-        "lang": "es",
-        "text": "Bhután"
-      },
-      {
-        "lang": "fr",
-        "text": "Bhoutan"
-      },
-      {
-        "lang": "ru",
-        "text": "Бутан"
-      },
-      {
-        "lang": "zh",
-        "text": "不丹"
-      }
-    ]
-  },
-  {
-    "name": "Botswana",
-    "code": "BWA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بوتسوانا"
-      },
-      {
-        "lang": "es",
-        "text": "Botswana"
-      },
-      {
-        "lang": "fr",
-        "text": "Botswana"
-      },
-      {
-        "lang": "ru",
-        "text": "Ботсвана"
-      },
-      {
-        "lang": "zh",
-        "text": "博茨瓦纳"
-      }
-    ]
-  },
-  {
-    "name": "Central African Republic",
-    "code": "CAF",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جمهورية أفريقيا الوسطى"
-      },
-      {
-        "lang": "es",
-        "text": "República Centroafricana"
-      },
-      {
-        "lang": "fr",
-        "text": "République centrafricaine"
-      },
-      {
-        "lang": "ru",
-        "text": "Центральноафриканская Республика"
-      },
-      {
-        "lang": "zh",
-        "text": "中非共和国"
-      }
-    ]
-  },
-  {
-    "name": "Canada",
-    "code": "CAN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "كندا"
-      },
-      {
-        "lang": "es",
-        "text": "Canadá"
-      },
-      {
-        "lang": "fr",
-        "text": "Canada"
-      },
-      {
-        "lang": "ru",
-        "text": "Канада"
-      },
-      {
-        "lang": "zh",
-        "text": "加拿大"
-      }
-    ]
-  },
-  {
-    "name": "Switzerland",
-    "code": "CHE",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "سويسرا"
-      },
-      {
-        "lang": "es",
-        "text": "Suiza"
-      },
-      {
-        "lang": "fr",
-        "text": "Suisse"
-      },
-      {
-        "lang": "ru",
-        "text": "Швейцария"
-      },
-      {
-        "lang": "zh",
-        "text": "瑞士"
-      }
-    ]
-  },
-  {
-    "name": "Chile",
-    "code": "CHL",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "شيلي"
-      },
-      {
-        "lang": "es",
-        "text": "Chile"
-      },
-      {
-        "lang": "fr",
-        "text": "Chili"
-      },
-      {
-        "lang": "ru",
-        "text": "Чили"
-      },
-      {
-        "lang": "zh",
-        "text": "智利"
-      }
-    ]
-  },
-  {
-    "name": "China",
-    "code": "CHN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الصين"
-      },
-      {
-        "lang": "es",
-        "text": "China"
-      },
-      {
-        "lang": "fr",
-        "text": "Chine"
-      },
-      {
-        "lang": "ru",
-        "text": "Китай"
-      },
-      {
-        "lang": "zh",
-        "text": "中国"
-      }
-    ]
-  },
-  {
-    "name": "Côte d’Ivoire",
-    "code": "CIV",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "كوت ديفوار"
-      },
-      {
-        "lang": "es",
-        "text": "Côte d'Ivoire"
-      },
-      {
-        "lang": "fr",
-        "text": "Côte d’Ivoire"
-      },
-      {
-        "lang": "ru",
-        "text": "Кот-д'Ивуар"
-      },
-      {
-        "lang": "zh",
-        "text": "科特迪瓦"
-      }
-    ]
-  },
-  {
-    "name": "Cameroon",
-    "code": "CMR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الكاميرون"
-      },
-      {
-        "lang": "es",
-        "text": "Camerún"
-      },
-      {
-        "lang": "fr",
-        "text": "Cameroun"
-      },
-      {
-        "lang": "ru",
-        "text": "Камерун"
-      },
-      {
-        "lang": "zh",
-        "text": "喀麦隆"
-      }
-    ]
-  },
-  {
-    "name": "Democratic Republic of the Congo",
-    "code": "COD",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جمهورية الكونغو الديمقراطية"
-      },
-      {
-        "lang": "es",
-        "text": "República Democrática del Congo"
-      },
-      {
-        "lang": "fr",
-        "text": "République démocratique du Congo"
-      },
-      {
-        "lang": "ru",
-        "text": "Демократическая Республика Конго"
-      },
-      {
-        "lang": "zh",
-        "text": "刚果民主共和国"
-      }
-    ]
-  },
-  {
-    "name": "Congo",
-    "code": "COG",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الكونغو"
-      },
-      {
-        "lang": "es",
-        "text": "Congo"
-      },
-      {
-        "lang": "fr",
-        "text": "Congo"
-      },
-      {
-        "lang": "ru",
-        "text": "Конго"
-      },
-      {
-        "lang": "zh",
-        "text": "刚果"
-      }
-    ]
-  },
-  {
-    "name": "Colombia",
-    "code": "COL",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "كولومبيا"
-      },
-      {
-        "lang": "es",
-        "text": "Colombia"
-      },
-      {
-        "lang": "fr",
-        "text": "Colombie"
-      },
-      {
-        "lang": "ru",
-        "text": "Колумбия"
-      },
-      {
-        "lang": "zh",
-        "text": "哥伦比亚"
-      }
-    ]
-  },
-  {
-    "name": "Comoros",
-    "code": "COM",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جزر القمر"
-      },
-      {
-        "lang": "es",
-        "text": "Comoras"
-      },
-      {
-        "lang": "fr",
-        "text": "Comores"
-      },
-      {
-        "lang": "ru",
-        "text": "Коморские Острова"
-      },
-      {
-        "lang": "zh",
-        "text": "科摩罗"
-      }
-    ]
-  },
-  {
-    "name": "Cape Verde",
-    "code": "CPV",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "كابو فيردي"
-      },
-      {
-        "lang": "es",
-        "text": "Cabo Verde"
-      },
-      {
-        "lang": "fr",
-        "text": "Cabo Verde"
-      },
-      {
-        "lang": "ru",
-        "text": "Кабо-Верде"
-      },
-      {
-        "lang": "zh",
-        "text": "佛得角"
-      }
-    ]
-  },
-  {
-    "name": "Costa Rica",
-    "code": "CRI",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "كوستاريكا"
-      },
-      {
-        "lang": "es",
-        "text": "Costa Rica"
-      },
-      {
-        "lang": "fr",
-        "text": "Costa Rica"
-      },
-      {
-        "lang": "ru",
-        "text": "Коста-Рика"
-      },
-      {
-        "lang": "zh",
-        "text": "哥斯达黎加"
-      }
-    ]
-  },
-  {
-    "name": "Cuba",
-    "code": "CUB",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "كوبا"
-      },
-      {
-        "lang": "es",
-        "text": "Cuba"
-      },
-      {
-        "lang": "fr",
-        "text": "Cuba"
-      },
-      {
-        "lang": "ru",
-        "text": "Куба"
-      },
-      {
-        "lang": "zh",
-        "text": "古巴"
-      }
-    ]
-  },
-  {
-    "name": "Cyprus",
-    "code": "CYP",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "قبرص"
-      },
-      {
-        "lang": "es",
-        "text": "Chipre"
-      },
-      {
-        "lang": "fr",
-        "text": "Chypre"
-      },
-      {
-        "lang": "ru",
-        "text": "Кипр"
-      },
-      {
-        "lang": "zh",
-        "text": "塞浦路斯"
-      }
-    ]
-  },
-  {
-    "name": "Czechia",
-    "code": "CZE",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "تشيكيا"
-      },
-      {
-        "lang": "es",
-        "text": "Chequia"
-      },
-      {
-        "lang": "fr",
-        "text": "Tchéquie"
-      },
-      {
-        "lang": "ru",
-        "text": "Чехия"
-      },
-      {
-        "lang": "zh",
-        "text": "捷克"
-      }
-    ]
-  },
-  {
-    "name": "Germany",
-    "code": "DEU",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ألمانيا"
-      },
-      {
-        "lang": "es",
-        "text": "Alemania"
-      },
-      {
-        "lang": "fr",
-        "text": "Allemagne"
-      },
-      {
-        "lang": "ru",
-        "text": "Германия"
-      },
-      {
-        "lang": "zh",
-        "text": "德国"
-      }
-    ]
-  },
-  {
-    "name": "Djibouti",
-    "code": "DJI",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جيبوتي"
-      },
-      {
-        "lang": "es",
-        "text": "Djibouti"
-      },
-      {
-        "lang": "fr",
-        "text": "Djibouti"
-      },
-      {
-        "lang": "ru",
-        "text": "Джибути"
-      },
-      {
-        "lang": "zh",
-        "text": "吉布提"
-      }
-    ]
-  },
-  {
-    "name": "Dominica",
-    "code": "DMA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "دومينيكا"
-      },
-      {
-        "lang": "es",
-        "text": "Dominica"
-      },
-      {
-        "lang": "fr",
-        "text": "Dominique"
-      },
-      {
-        "lang": "ru",
-        "text": "Доминика"
-      },
-      {
-        "lang": "zh",
-        "text": "多米尼克"
-      }
-    ]
-  },
-  {
-    "name": "Denmark",
-    "code": "DNK",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الدانمرك"
-      },
-      {
-        "lang": "es",
-        "text": "Dinamarca"
-      },
-      {
-        "lang": "fr",
-        "text": "Danemark"
-      },
-      {
-        "lang": "ru",
-        "text": "Дания"
-      },
-      {
-        "lang": "zh",
-        "text": "丹麦"
-      }
-    ]
-  },
-  {
-    "name": "Dominican Republic",
-    "code": "DOM",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الجمهورية الدومينيكية"
-      },
-      {
-        "lang": "es",
-        "text": "República Dominicana"
-      },
-      {
-        "lang": "fr",
-        "text": "République dominicaine"
-      },
-      {
-        "lang": "ru",
-        "text": "Доминиканская Республика"
-      },
-      {
-        "lang": "zh",
-        "text": "多米尼加共和国"
-      }
-    ]
-  },
-  {
-    "name": "Algeria",
-    "code": "DZA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الجزائر"
-      },
-      {
-        "lang": "es",
-        "text": "Argelia"
-      },
-      {
-        "lang": "fr",
-        "text": "Algérie"
-      },
-      {
-        "lang": "ru",
-        "text": "Алжир"
-      },
-      {
-        "lang": "zh",
-        "text": "阿尔及利亚"
-      }
-    ]
-  },
-  {
-    "name": "Ecuador",
-    "code": "ECU",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "إكوادور"
-      },
-      {
-        "lang": "es",
-        "text": "Ecuador"
-      },
-      {
-        "lang": "fr",
-        "text": "Équateur"
-      },
-      {
-        "lang": "ru",
-        "text": "Эквадор"
-      },
-      {
-        "lang": "zh",
-        "text": "厄瓜多尔"
-      }
-    ]
-  },
-  {
-    "name": "Egypt",
-    "code": "EGY",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "مصر"
-      },
-      {
-        "lang": "es",
-        "text": "Egipto"
-      },
-      {
-        "lang": "fr",
-        "text": "Égypte"
-      },
-      {
-        "lang": "ru",
-        "text": "Египет"
-      },
-      {
-        "lang": "zh",
-        "text": "埃及"
-      }
-    ]
-  },
-  {
-    "name": "Eritrea",
-    "code": "ERI",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "إريتريا"
-      },
-      {
-        "lang": "es",
-        "text": "Eritrea"
-      },
-      {
-        "lang": "fr",
-        "text": "Érythrée"
-      },
-      {
-        "lang": "ru",
-        "text": "Эритрея"
-      },
-      {
-        "lang": "zh",
-        "text": "厄立特里亚"
-      }
-    ]
-  },
-  {
-    "name": "Spain",
-    "code": "ESP",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "إسبانيا"
-      },
-      {
-        "lang": "es",
-        "text": "España"
-      },
-      {
-        "lang": "fr",
-        "text": "Espagne"
-      },
-      {
-        "lang": "ru",
-        "text": "Испания"
-      },
-      {
-        "lang": "zh",
-        "text": "西班牙"
-      }
-    ]
-  },
-  {
-    "name": "Estonia",
-    "code": "EST",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "إستونيا"
-      },
-      {
-        "lang": "es",
-        "text": "Estonia"
-      },
-      {
-        "lang": "fr",
-        "text": "Estonie"
-      },
-      {
-        "lang": "ru",
-        "text": "Эстония"
-      },
-      {
-        "lang": "zh",
-        "text": "爱沙尼亚"
-      }
-    ]
-  },
-  {
-    "name": "Ethiopia",
-    "code": "ETH",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "إثيوبيا"
-      },
-      {
-        "lang": "es",
-        "text": "Etiopía"
-      },
-      {
-        "lang": "fr",
-        "text": "Éthiopie"
-      },
-      {
-        "lang": "ru",
-        "text": "Эфиопия"
-      },
-      {
-        "lang": "zh",
-        "text": "埃塞俄比亚"
-      }
-    ]
-  },
-  {
-    "name": "Finland",
-    "code": "FIN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "فنلندا"
-      },
-      {
-        "lang": "es",
-        "text": "Finlandia"
-      },
-      {
-        "lang": "fr",
-        "text": "Finlande"
-      },
-      {
-        "lang": "ru",
-        "text": "Финляндия"
-      },
-      {
-        "lang": "zh",
-        "text": "芬兰"
-      }
-    ]
-  },
-  {
-    "name": "Fiji",
-    "code": "FJI",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "فيجي"
-      },
-      {
-        "lang": "es",
-        "text": "Fiji"
-      },
-      {
-        "lang": "fr",
-        "text": "Fidji"
-      },
-      {
-        "lang": "ru",
-        "text": "Фиджи"
-      },
-      {
-        "lang": "zh",
-        "text": "斐济"
-      }
-    ]
-  },
-  {
-    "name": "France",
-    "code": "FRA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "فرنسا"
-      },
-      {
-        "lang": "es",
-        "text": "Francia"
-      },
-      {
-        "lang": "fr",
-        "text": "France"
-      },
-      {
-        "lang": "ru",
-        "text": "Франция"
-      },
-      {
-        "lang": "zh",
-        "text": "法国"
-      }
-    ]
-  },
-  {
-    "name": "Micronesia (Federated States of)",
-    "code": "FSM",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ميكرونيزيا (ولايات - الموحدة)"
-      },
-      {
-        "lang": "es",
-        "text": "Micronesia (Estados Federados de)"
-      },
-      {
-        "lang": "fr",
-        "text": "Micronésie (États fédérés de)"
-      },
-      {
-        "lang": "ru",
-        "text": "Микронезия (Федеративные Штаты)"
-      },
-      {
-        "lang": "zh",
-        "text": "密克罗尼西亚联邦"
-      }
-    ]
-  },
-  {
-    "name": "Gabon",
-    "code": "GAB",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "غابون"
-      },
-      {
-        "lang": "es",
-        "text": "Gabón"
-      },
-      {
-        "lang": "fr",
-        "text": "Gabon"
-      },
-      {
-        "lang": "ru",
-        "text": "Габон"
-      },
-      {
-        "lang": "zh",
-        "text": "加蓬"
-      }
-    ]
-  },
-  {
-    "name": "U.K. of Great Britain and Northern Ireland",
-    "code": "GBR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "المملكة المتحدة لبريطانيا العظمى وأيرلندا الشمالية"
-      },
-      {
-        "lang": "es",
-        "text": "Reino Unido de Gran Bretaña e Irlanda del Norte"
-      },
-      {
-        "lang": "fr",
-        "text": "Royaume-Uni de Grande-Bretagne et d’Irlande du Nord"
-      },
-      {
-        "lang": "ru",
-        "text": "Соединенное Королевство Великобритании и Северной Ирландии"
-      },
-      {
-        "lang": "zh",
-        "text": "大不列颠及北爱尔兰联合王国"
-      }
-    ]
-  },
-  {
-    "name": "Georgia",
-    "code": "GEO",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جورجيا"
-      },
-      {
-        "lang": "es",
-        "text": "Georgia"
-      },
-      {
-        "lang": "fr",
-        "text": "Géorgie"
-      },
-      {
-        "lang": "ru",
-        "text": "Грузия"
-      },
-      {
-        "lang": "zh",
-        "text": "格鲁吉亚"
-      }
-    ]
-  },
-  {
-    "name": "Ghana",
-    "code": "GHA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "غانا"
-      },
-      {
-        "lang": "es",
-        "text": "Ghana"
-      },
-      {
-        "lang": "fr",
-        "text": "Ghana"
-      },
-      {
-        "lang": "ru",
-        "text": "Гана"
-      },
-      {
-        "lang": "zh",
-        "text": "加纳"
-      }
-    ]
-  },
-  {
-    "name": "Guinea",
-    "code": "GIN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "غينيا"
-      },
-      {
-        "lang": "es",
-        "text": "Guinea"
-      },
-      {
-        "lang": "fr",
-        "text": "Guinée"
-      },
-      {
-        "lang": "ru",
-        "text": "Гвинея"
-      },
-      {
-        "lang": "zh",
-        "text": "几内亚"
-      }
-    ]
-  },
-  {
-    "name": "Gambia",
-    "code": "GMB",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "غامبيا"
-      },
-      {
-        "lang": "es",
-        "text": "Gambia"
-      },
-      {
-        "lang": "fr",
-        "text": "Gambie"
-      },
-      {
-        "lang": "ru",
-        "text": "Гамбия"
-      },
-      {
-        "lang": "zh",
-        "text": "冈比亚"
-      }
-    ]
-  },
-  {
-    "name": "Guinea-Bissau",
-    "code": "GNB",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "غينيا - بيساو"
-      },
-      {
-        "lang": "es",
-        "text": "Guinea-Bissau"
-      },
-      {
-        "lang": "fr",
-        "text": "Guinée-Bissau"
-      },
-      {
-        "lang": "ru",
-        "text": "Гвинея-Бисау"
-      },
-      {
-        "lang": "zh",
-        "text": "几内亚比绍"
-      }
-    ]
-  },
-  {
-    "name": "Equatorial Guinea",
-    "code": "GNQ",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "غينيا الاستوائية"
-      },
-      {
-        "lang": "es",
-        "text": "Guinea Ecuatorial"
-      },
-      {
-        "lang": "fr",
-        "text": "Guinée équatoriale"
-      },
-      {
-        "lang": "ru",
-        "text": "Экваториальная Гвинея"
-      },
-      {
-        "lang": "zh",
-        "text": "赤道几内亚"
-      }
-    ]
-  },
-  {
-    "name": "Greece",
-    "code": "GRC",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "اليونان"
-      },
-      {
-        "lang": "es",
-        "text": "Grecia"
-      },
-      {
-        "lang": "fr",
-        "text": "Grèce"
-      },
-      {
-        "lang": "ru",
-        "text": "Греция"
-      },
-      {
-        "lang": "zh",
-        "text": "希腊"
-      }
-    ]
-  },
-  {
-    "name": "Grenada",
-    "code": "GRD",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "غرينادا"
-      },
-      {
-        "lang": "es",
-        "text": "Granada"
-      },
-      {
-        "lang": "fr",
-        "text": "Grenade"
-      },
-      {
-        "lang": "ru",
-        "text": "Гренада"
-      },
-      {
-        "lang": "zh",
-        "text": "格林纳达"
-      }
-    ]
-  },
-  {
-    "name": "Guatemala",
-    "code": "GTM",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "غواتيمالا"
-      },
-      {
-        "lang": "es",
-        "text": "Guatemala"
-      },
-      {
-        "lang": "fr",
-        "text": "Guatemala"
-      },
-      {
-        "lang": "ru",
-        "text": "Гватемала"
-      },
-      {
-        "lang": "zh",
-        "text": "危地马拉"
-      }
-    ]
-  },
-  {
-    "name": "Guyana",
-    "code": "GUY",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "غيانا"
-      },
-      {
-        "lang": "es",
-        "text": "Guyana"
-      },
-      {
-        "lang": "fr",
-        "text": "Guyana"
-      },
-      {
-        "lang": "ru",
-        "text": "Гайана"
-      },
-      {
-        "lang": "zh",
-        "text": "圭亚那"
-      }
-    ]
-  },
-  {
-    "name": "Honduras",
-    "code": "HND",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "هندوراس"
-      },
-      {
-        "lang": "es",
-        "text": "Honduras"
-      },
-      {
-        "lang": "fr",
-        "text": "Honduras"
-      },
-      {
-        "lang": "ru",
-        "text": "Гондурас"
-      },
-      {
-        "lang": "zh",
-        "text": "洪都拉斯"
-      }
-    ]
-  },
-  {
-    "name": "Croatia",
-    "code": "HRV",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "كرواتيا"
-      },
-      {
-        "lang": "es",
-        "text": "Croacia"
-      },
-      {
-        "lang": "fr",
-        "text": "Croatie"
-      },
-      {
-        "lang": "ru",
-        "text": "Хорватия"
-      },
-      {
-        "lang": "zh",
-        "text": "克罗地亚"
-      }
-    ]
-  },
-  {
-    "name": "Haiti",
-    "code": "HTI",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "هايتي"
-      },
-      {
-        "lang": "es",
-        "text": "Haití"
-      },
-      {
-        "lang": "fr",
-        "text": "Haïti"
-      },
-      {
-        "lang": "ru",
-        "text": "Гаити"
-      },
-      {
-        "lang": "zh",
-        "text": "海地"
-      }
-    ]
-  },
-  {
-    "name": "Hungary",
-    "code": "HUN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "هنغاريا"
-      },
-      {
-        "lang": "es",
-        "text": "Hungría"
-      },
-      {
-        "lang": "fr",
-        "text": "Hongrie"
-      },
-      {
-        "lang": "ru",
-        "text": "Венгрия"
-      },
-      {
-        "lang": "zh",
-        "text": "匈牙利"
-      }
-    ]
-  },
-  {
-    "name": "Indonesia",
-    "code": "IDN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "إندونيسيا"
-      },
-      {
-        "lang": "es",
-        "text": "Indonesia"
-      },
-      {
-        "lang": "fr",
-        "text": "Indonésie"
-      },
-      {
-        "lang": "ru",
-        "text": "Индонезия"
-      },
-      {
-        "lang": "zh",
-        "text": "印度尼西亚"
-      }
-    ]
-  },
-  {
-    "name": "India",
-    "code": "IND",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الهند"
-      },
-      {
-        "lang": "es",
-        "text": "India"
-      },
-      {
-        "lang": "fr",
-        "text": "Inde"
-      },
-      {
-        "lang": "ru",
-        "text": "Индия"
-      },
-      {
-        "lang": "zh",
-        "text": "印度"
-      }
-    ]
-  },
-  {
-    "name": "Ireland",
-    "code": "IRL",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "أيرلندا"
-      },
-      {
-        "lang": "es",
-        "text": "Irlanda"
-      },
-      {
-        "lang": "fr",
-        "text": "Irlande"
-      },
-      {
-        "lang": "ru",
-        "text": "Ирландия"
-      },
-      {
-        "lang": "zh",
-        "text": "爱尔兰"
-      }
-    ]
-  },
-  {
-    "name": "Iran  (Islamic Republic of)",
-    "code": "IRN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "إيران (جمهورية – الإسلامية)"
-      },
-      {
-        "lang": "es",
-        "text": "Irán (República Islámica del)"
-      },
-      {
-        "lang": "fr",
-        "text": "Iran (République islamique d’)"
-      },
-      {
-        "lang": "ru",
-        "text": "Иран (Исламская Республика)"
-      },
-      {
-        "lang": "zh",
-        "text": "伊朗伊斯兰共和国"
-      }
-    ]
-  },
-  {
-    "name": "Iraq",
-    "code": "IRQ",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "العراق"
-      },
-      {
-        "lang": "es",
-        "text": "Iraq"
-      },
-      {
-        "lang": "fr",
-        "text": "Iraq"
-      },
-      {
-        "lang": "ru",
-        "text": "Ирак"
-      },
-      {
-        "lang": "zh",
-        "text": "伊拉克"
-      }
-    ]
-  },
-  {
-    "name": "Iceland",
-    "code": "ISL",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "أيسلندا"
-      },
-      {
-        "lang": "es",
-        "text": "Islandia"
-      },
-      {
-        "lang": "fr",
-        "text": "Islande"
-      },
-      {
-        "lang": "ru",
-        "text": "Исландия"
-      },
-      {
-        "lang": "zh",
-        "text": "冰岛"
-      }
-    ]
-  },
-  {
-    "name": "Israel",
-    "code": "ISR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "إسرائيل"
-      },
-      {
-        "lang": "es",
-        "text": "Israel"
-      },
-      {
-        "lang": "fr",
-        "text": "Israël"
-      },
-      {
-        "lang": "ru",
-        "text": "Израиль"
-      },
-      {
-        "lang": "zh",
-        "text": "以色列"
-      }
-    ]
-  },
-  {
-    "name": "Italy",
-    "code": "ITA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "إيطاليا"
-      },
-      {
-        "lang": "es",
-        "text": "Italia"
-      },
-      {
-        "lang": "fr",
-        "text": "Italie"
-      },
-      {
-        "lang": "ru",
-        "text": "Италия"
-      },
-      {
-        "lang": "zh",
-        "text": "意大利"
-      }
-    ]
-  },
-  {
-    "name": "Jamaica",
-    "code": "JAM",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جامايكا"
-      },
-      {
-        "lang": "es",
-        "text": "Jamaica"
-      },
-      {
-        "lang": "fr",
-        "text": "Jamaïque"
-      },
-      {
-        "lang": "ru",
-        "text": "Ямайка"
-      },
-      {
-        "lang": "zh",
-        "text": "牙买加"
-      }
-    ]
-  },
-  {
-    "name": "Jordan",
-    "code": "JOR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الأردن"
-      },
-      {
-        "lang": "es",
-        "text": "Jordania"
-      },
-      {
-        "lang": "fr",
-        "text": "Jordanie"
-      },
-      {
-        "lang": "ru",
-        "text": "Иордания"
-      },
-      {
-        "lang": "zh",
-        "text": "约旦"
-      }
-    ]
-  },
-  {
-    "name": "Japan",
-    "code": "JPN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "اليابان"
-      },
-      {
-        "lang": "es",
-        "text": "Japón"
-      },
-      {
-        "lang": "fr",
-        "text": "Japon"
-      },
-      {
-        "lang": "ru",
-        "text": "Япония"
-      },
-      {
-        "lang": "zh",
-        "text": "日本"
-      }
-    ]
-  },
-  {
-    "name": "Kazakhstan",
-    "code": "KAZ",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "كازاخستان"
-      },
-      {
-        "lang": "es",
-        "text": "Kazajstán"
-      },
-      {
-        "lang": "fr",
-        "text": "Kazakhstan"
-      },
-      {
-        "lang": "ru",
-        "text": "Казахстан"
-      },
-      {
-        "lang": "zh",
-        "text": "哈萨克斯坦"
-      }
-    ]
-  },
-  {
-    "name": "Kenya",
-    "code": "KEN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "كينيا"
-      },
-      {
-        "lang": "es",
-        "text": "Kenya"
-      },
-      {
-        "lang": "fr",
-        "text": "Kenya"
-      },
-      {
-        "lang": "ru",
-        "text": "Кения"
-      },
-      {
-        "lang": "zh",
-        "text": "肯尼亚"
-      }
-    ]
-  },
-  {
-    "name": "Kyrgyzstan",
-    "code": "KGZ",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "قيرغيزستان"
-      },
-      {
-        "lang": "es",
-        "text": "Kirguistán"
-      },
-      {
-        "lang": "fr",
-        "text": "Kirghizistan"
-      },
-      {
-        "lang": "ru",
-        "text": "Кыргызстан"
-      },
-      {
-        "lang": "zh",
-        "text": "吉尔吉斯斯坦"
-      }
-    ]
-  },
-  {
-    "name": "Cambodia",
-    "code": "KHM",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "كمبوديا"
-      },
-      {
-        "lang": "es",
-        "text": "Camboya"
-      },
-      {
-        "lang": "fr",
-        "text": "Cambodge"
-      },
-      {
-        "lang": "ru",
-        "text": "Камбоджа"
-      },
-      {
-        "lang": "zh",
-        "text": "柬埔寨"
-      }
-    ]
-  },
-  {
-    "name": "Kiribati",
-    "code": "KIR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "كيريباس"
-      },
-      {
-        "lang": "es",
-        "text": "Kiribati"
-      },
-      {
-        "lang": "fr",
-        "text": "Kiribati"
-      },
-      {
-        "lang": "ru",
-        "text": "Кирибати"
-      },
-      {
-        "lang": "zh",
-        "text": "基里巴斯"
-      }
-    ]
-  },
-  {
-    "name": "Saint Kitts and Nevis",
-    "code": "KNA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "سانت كيتس ونيفس"
-      },
-      {
-        "lang": "es",
-        "text": "Saint Kitts y Nevis"
-      },
-      {
-        "lang": "fr",
-        "text": "Saint-Kitts-et-Nevis"
-      },
-      {
-        "lang": "ru",
-        "text": "Сент-Китс и Невис"
-      },
-      {
-        "lang": "zh",
-        "text": "圣基茨和尼维斯"
-      }
-    ]
-  },
-  {
-    "name": "Republic of Korea",
-    "code": "KOR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جمهورية كوريا"
-      },
-      {
-        "lang": "es",
-        "text": "República de Corea"
-      },
-      {
-        "lang": "fr",
-        "text": "République de Corée"
-      },
-      {
-        "lang": "ru",
-        "text": "Республика Корея"
-      },
-      {
-        "lang": "zh",
-        "text": "大韩民国"
-      }
-    ]
-  },
-  {
-    "name": "Kuwait",
-    "code": "KWT",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الكويت"
-      },
-      {
-        "lang": "es",
-        "text": "Kuwait"
-      },
-      {
-        "lang": "fr",
-        "text": "Koweït"
-      },
-      {
-        "lang": "ru",
-        "text": "Кувейт"
-      },
-      {
-        "lang": "zh",
-        "text": "科威特"
-      }
-    ]
-  },
-  {
-    "name": "Lao People's Democratic Republic",
-    "code": "LAO",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جمهورية لاو الديمقراطية الشعبية"
-      },
-      {
-        "lang": "es",
-        "text": "República Democrática Popular Lao"
-      },
-      {
-        "lang": "fr",
-        "text": "République démocratique populaire lao"
-      },
-      {
-        "lang": "ru",
-        "text": "Лаосская Народно-Демократическая Республика"
-      },
-      {
-        "lang": "zh",
-        "text": "老挝人民民主共和国"
-      }
-    ]
-  },
-  {
-    "name": "Lebanon",
-    "code": "LBN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "لبنان"
-      },
-      {
-        "lang": "es",
-        "text": "Líbano"
-      },
-      {
-        "lang": "fr",
-        "text": "Liban"
-      },
-      {
-        "lang": "ru",
-        "text": "Ливан"
-      },
-      {
-        "lang": "zh",
-        "text": "黎巴嫩"
-      }
-    ]
-  },
-  {
-    "name": "Liberia",
-    "code": "LBR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ليبريا"
-      },
-      {
-        "lang": "es",
-        "text": "Liberia"
-      },
-      {
-        "lang": "fr",
-        "text": "Libéria"
-      },
-      {
-        "lang": "ru",
-        "text": "Либерия"
-      },
-      {
-        "lang": "zh",
-        "text": "利比里亚"
-      }
-    ]
-  },
-  {
-    "name": "Libya",
-    "code": "LBY",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ليبيا"
-      },
-      {
-        "lang": "es",
-        "text": "Libia"
-      },
-      {
-        "lang": "fr",
-        "text": "Libye"
-      },
-      {
-        "lang": "ru",
-        "text": "Ливия"
-      },
-      {
-        "lang": "zh",
-        "text": "利比亚"
-      }
-    ]
-  },
-  {
-    "name": "Saint Lucia",
-    "code": "LCA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "سانت لوسيا"
-      },
-      {
-        "lang": "es",
-        "text": "Santa Lucía"
-      },
-      {
-        "lang": "fr",
-        "text": "Sainte-Lucie"
-      },
-      {
-        "lang": "ru",
-        "text": "Сент-Люсия"
-      },
-      {
-        "lang": "zh",
-        "text": "圣卢西亚"
-      }
-    ]
-  },
-  {
-    "name": "Liechtenstein",
-    "code": "LIE",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ليختنشتاين"
-      },
-      {
-        "lang": "es",
-        "text": "Liechtenstein"
-      },
-      {
-        "lang": "fr",
-        "text": "Liechtenstein"
-      },
-      {
-        "lang": "ru",
-        "text": "Лихтенштейн"
-      },
-      {
-        "lang": "zh",
-        "text": "列支敦士登"
-      }
-    ]
-  },
-  {
-    "name": "Sri Lanka",
-    "code": "LKA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "سري لانكا"
-      },
-      {
-        "lang": "es",
-        "text": "Sri Lanka"
-      },
-      {
-        "lang": "fr",
-        "text": "Sri Lanka"
-      },
-      {
-        "lang": "ru",
-        "text": "Шри-Ланка"
-      },
-      {
-        "lang": "zh",
-        "text": "斯里兰卡"
-      }
-    ]
-  },
-  {
-    "name": "Lesotho",
-    "code": "LSO",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ليسوتو"
-      },
-      {
-        "lang": "es",
-        "text": "Lesotho"
-      },
-      {
-        "lang": "fr",
-        "text": "Lesotho"
-      },
-      {
-        "lang": "ru",
-        "text": "Лесото"
-      },
-      {
-        "lang": "zh",
-        "text": "莱索托"
-      }
-    ]
-  },
-  {
-    "name": "Lithuania",
-    "code": "LTU",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ليتوانيا"
-      },
-      {
-        "lang": "es",
-        "text": "Lituania"
-      },
-      {
-        "lang": "fr",
-        "text": "Lituanie"
-      },
-      {
-        "lang": "ru",
-        "text": "Литва"
-      },
-      {
-        "lang": "zh",
-        "text": "立陶宛"
-      }
-    ]
-  },
-  {
-    "name": "Luxembourg",
-    "code": "LUX",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "لكسمبرغ"
-      },
-      {
-        "lang": "es",
-        "text": "Luxemburgo"
-      },
-      {
-        "lang": "fr",
-        "text": "Luxembourg"
-      },
-      {
-        "lang": "ru",
-        "text": "Люксембург"
-      },
-      {
-        "lang": "zh",
-        "text": "卢森堡"
-      }
-    ]
-  },
-  {
-    "name": "Latvia",
-    "code": "LVA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "لاتفيا"
-      },
-      {
-        "lang": "es",
-        "text": "Letonia"
-      },
-      {
-        "lang": "fr",
-        "text": "Lettonie"
-      },
-      {
-        "lang": "ru",
-        "text": "Латвия"
-      },
-      {
-        "lang": "zh",
-        "text": "拉脱维亚"
-      }
-    ]
-  },
-  {
-    "name": "Morocco",
-    "code": "MAR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "المغرب"
-      },
-      {
-        "lang": "es",
-        "text": "Marruecos"
-      },
-      {
-        "lang": "fr",
-        "text": "Maroc"
-      },
-      {
-        "lang": "ru",
-        "text": "Марокко"
-      },
-      {
-        "lang": "zh",
-        "text": "摩洛哥"
-      }
-    ]
-  },
-  {
-    "name": "Monaco",
-    "code": "MCO",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "موناكو"
-      },
-      {
-        "lang": "es",
-        "text": "Mónaco"
-      },
-      {
-        "lang": "fr",
-        "text": "Monaco"
-      },
-      {
-        "lang": "ru",
-        "text": "Монако"
-      },
-      {
-        "lang": "zh",
-        "text": "摩纳哥"
-      }
-    ]
-  },
-  {
-    "name": "Moldova, Republic of",
-    "code": "MDA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جمهورية مولدوفا"
-      },
-      {
-        "lang": "es",
-        "text": "Moldova (República de)"
-      },
-      {
-        "lang": "fr",
-        "text": "République de Moldova"
-      },
-      {
-        "lang": "ru",
-        "text": "Республика Молдова"
-      },
-      {
-        "lang": "zh",
-        "text": "摩尔多瓦共和国"
-      }
-    ]
-  },
-  {
-    "name": "Madagascar",
-    "code": "MDG",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "مدغشقر"
-      },
-      {
-        "lang": "es",
-        "text": "Madagascar"
-      },
-      {
-        "lang": "fr",
-        "text": "Madagascar"
-      },
-      {
-        "lang": "ru",
-        "text": "Мадагаскар"
-      },
-      {
-        "lang": "zh",
-        "text": "马达加斯加"
-      }
-    ]
-  },
-  {
-    "name": "Maldives",
-    "code": "MDV",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ملديف"
-      },
-      {
-        "lang": "es",
-        "text": "Maldivas"
-      },
-      {
-        "lang": "fr",
-        "text": "Maldives"
-      },
-      {
-        "lang": "ru",
-        "text": "Мальдивские Острова"
-      },
-      {
-        "lang": "zh",
-        "text": "马尔代夫"
-      }
-    ]
-  },
-  {
-    "name": "Mexico",
-    "code": "MEX",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "المكسيك"
-      },
-      {
-        "lang": "es",
-        "text": "México"
-      },
-      {
-        "lang": "fr",
-        "text": "Mexique"
-      },
-      {
-        "lang": "ru",
-        "text": "Мексика"
-      },
-      {
-        "lang": "zh",
-        "text": "墨西哥"
-      }
-    ]
-  },
-  {
-    "name": "Marshall Islands",
-    "code": "MHL",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جزر مارشال"
-      },
-      {
-        "lang": "es",
-        "text": "Islas Marshall"
-      },
-      {
-        "lang": "fr",
-        "text": "Îles Marshall"
-      },
-      {
-        "lang": "ru",
-        "text": "Маршалловы Острова"
-      },
-      {
-        "lang": "zh",
-        "text": "马绍尔群岛"
-      }
-    ]
-  },
-  {
-    "name": "The former Yugoslav Republic of Macedonia",
-    "code": "MKD",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جمهورية مقدونيا الشمالية"
-      },
-      {
-        "lang": "es",
-        "text": "ex República Yugoslava de Macedonia"
-      },
-      {
-        "lang": "fr",
-        "text": "ex-République yougoslave de Macédoine"
-      },
-      {
-        "lang": "ru",
-        "text": "Бывшая югославская Республика Македония"
-      },
-      {
-        "lang": "zh",
-        "text": "前南斯拉夫的马其顿共和国"
-      }
-    ]
-  },
-  {
-    "name": "Mali",
-    "code": "MLI",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "مالي"
-      },
-      {
-        "lang": "es",
-        "text": "Malí"
-      },
-      {
-        "lang": "fr",
-        "text": "Mali"
-      },
-      {
-        "lang": "ru",
-        "text": "Мали"
-      },
-      {
-        "lang": "zh",
-        "text": "马里"
-      }
-    ]
-  },
-  {
-    "name": "Malta",
-    "code": "MLT",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "مالطة"
-      },
-      {
-        "lang": "es",
-        "text": "Malta"
-      },
-      {
-        "lang": "fr",
-        "text": "Malte"
-      },
-      {
-        "lang": "ru",
-        "text": "Мальта"
-      },
-      {
-        "lang": "zh",
-        "text": "马耳他"
-      }
-    ]
-  },
-  {
-    "name": "Myanmar",
-    "code": "MMR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ميانمار"
-      },
-      {
-        "lang": "es",
-        "text": "Myanmar"
-      },
-      {
-        "lang": "fr",
-        "text": "Myanmar"
-      },
-      {
-        "lang": "ru",
-        "text": "Мьянма"
-      },
-      {
-        "lang": "zh",
-        "text": "缅甸"
-      }
-    ]
-  },
-  {
-    "name": "Montenegro",
-    "code": "MNE",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الجبل الأسود"
-      },
-      {
-        "lang": "es",
-        "text": "Montenegro"
-      },
-      {
-        "lang": "fr",
-        "text": "Monténégro"
-      },
-      {
-        "lang": "ru",
-        "text": "Черногория"
-      },
-      {
-        "lang": "zh",
-        "text": "黑山"
-      }
-    ]
-  },
-  {
-    "name": "Mongolia",
-    "code": "MNG",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "منغوليا"
-      },
-      {
-        "lang": "es",
-        "text": "Mongolia"
-      },
-      {
-        "lang": "fr",
-        "text": "Mongolie"
-      },
-      {
-        "lang": "ru",
-        "text": "Монголия"
-      },
-      {
-        "lang": "zh",
-        "text": "蒙古"
-      }
-    ]
-  },
-  {
-    "name": "Mozambique",
-    "code": "MOZ",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "موزامبيق"
-      },
-      {
-        "lang": "es",
-        "text": "Mozambique"
-      },
-      {
-        "lang": "fr",
-        "text": "Mozambique"
-      },
-      {
-        "lang": "ru",
-        "text": "Мозамбик"
-      },
-      {
-        "lang": "zh",
-        "text": "莫桑比克"
-      }
-    ]
-  },
-  {
-    "name": "Mauritania",
-    "code": "MRT",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "موريتانيا"
-      },
-      {
-        "lang": "es",
-        "text": "Mauritania"
-      },
-      {
-        "lang": "fr",
-        "text": "Mauritanie"
-      },
-      {
-        "lang": "ru",
-        "text": "Мавритания"
-      },
-      {
-        "lang": "zh",
-        "text": "毛里塔尼亚"
-      }
-    ]
-  },
-  {
-    "name": "Mauritius",
-    "code": "MUS",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "موريشيوس"
-      },
-      {
-        "lang": "es",
-        "text": "Mauricio"
-      },
-      {
-        "lang": "fr",
-        "text": "Maurice"
-      },
-      {
-        "lang": "ru",
-        "text": "Маврикий"
-      },
-      {
-        "lang": "zh",
-        "text": "毛里求斯"
-      }
-    ]
-  },
-  {
-    "name": "Malawi",
-    "code": "MWI",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ملاوي"
-      },
-      {
-        "lang": "es",
-        "text": "Malawi"
-      },
-      {
-        "lang": "fr",
-        "text": "Malawi"
-      },
-      {
-        "lang": "ru",
-        "text": "Малави"
-      },
-      {
-        "lang": "zh",
-        "text": "马拉维"
-      }
-    ]
-  },
-  {
-    "name": "Malaysia",
-    "code": "MYS",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ماليزيا"
-      },
-      {
-        "lang": "es",
-        "text": "Malasia"
-      },
-      {
-        "lang": "fr",
-        "text": "Malaisie"
-      },
-      {
-        "lang": "ru",
-        "text": "Малайзия"
-      },
-      {
-        "lang": "zh",
-        "text": "马来西亚"
-      }
-    ]
-  },
-  {
-    "name": "Namibia",
-    "code": "NAM",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ناميبيا"
-      },
-      {
-        "lang": "es",
-        "text": "Namibia"
-      },
-      {
-        "lang": "fr",
-        "text": "Namibie"
-      },
-      {
-        "lang": "ru",
-        "text": "Намибия"
-      },
-      {
-        "lang": "zh",
-        "text": "纳米比亚"
-      }
-    ]
-  },
-  {
-    "name": "Niger",
-    "code": "NER",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "النيجر"
-      },
-      {
-        "lang": "es",
-        "text": "Níger"
-      },
-      {
-        "lang": "fr",
-        "text": "Niger"
-      },
-      {
-        "lang": "ru",
-        "text": "Нигер"
-      },
-      {
-        "lang": "zh",
-        "text": "尼日尔"
-      }
-    ]
-  },
-  {
-    "name": "Nigeria",
-    "code": "NGA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "نيجيريا"
-      },
-      {
-        "lang": "es",
-        "text": "Nigeria"
-      },
-      {
-        "lang": "fr",
-        "text": "Nigéria"
-      },
-      {
-        "lang": "ru",
-        "text": "Нигерия"
-      },
-      {
-        "lang": "zh",
-        "text": "尼日利亚"
-      }
-    ]
-  },
-  {
-    "name": "Nicaragua",
-    "code": "NIC",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "نيكاراغوا"
-      },
-      {
-        "lang": "es",
-        "text": "Nicaragua"
-      },
-      {
-        "lang": "fr",
-        "text": "Nicaragua"
-      },
-      {
-        "lang": "ru",
-        "text": "Никарагуа"
-      },
-      {
-        "lang": "zh",
-        "text": "尼加拉瓜"
-      }
-    ]
-  },
-  {
-    "name": "Netherlands",
-    "code": "NLD",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "هولندا"
-      },
-      {
-        "lang": "es",
-        "text": "Países Bajos"
-      },
-      {
-        "lang": "fr",
-        "text": "Pays-Bas"
-      },
-      {
-        "lang": "ru",
-        "text": "Нидерланды"
-      },
-      {
-        "lang": "zh",
-        "text": "荷兰"
-      }
-    ]
-  },
-  {
-    "name": "Norway",
-    "code": "NOR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "النرويج"
-      },
-      {
-        "lang": "es",
-        "text": "Noruega"
-      },
-      {
-        "lang": "fr",
-        "text": "Norvège"
-      },
-      {
-        "lang": "ru",
-        "text": "Норвегия"
-      },
-      {
-        "lang": "zh",
-        "text": "挪威"
-      }
-    ]
-  },
-  {
-    "name": "Nepal",
-    "code": "NPL",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "نيبال"
-      },
-      {
-        "lang": "es",
-        "text": "Nepal"
-      },
-      {
-        "lang": "fr",
-        "text": "Népal"
-      },
-      {
-        "lang": "ru",
-        "text": "Непал"
-      },
-      {
-        "lang": "zh",
-        "text": "尼泊尔"
-      }
-    ]
-  },
-  {
-    "name": "Nauru",
-    "code": "NRU",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ناورو"
-      },
-      {
-        "lang": "es",
-        "text": "Nauru"
-      },
-      {
-        "lang": "fr",
-        "text": "Nauru"
-      },
-      {
-        "lang": "ru",
-        "text": "Науру"
-      },
-      {
-        "lang": "zh",
-        "text": "瑙鲁"
-      }
-    ]
-  },
-  {
-    "name": "New Zealand",
-    "code": "NZL",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "نيوزيلندا"
-      },
-      {
-        "lang": "es",
-        "text": "Nueva Zelandia"
-      },
-      {
-        "lang": "fr",
-        "text": "Nouvelle-Zélande"
-      },
-      {
-        "lang": "ru",
-        "text": "Новая Зеландия"
-      },
-      {
-        "lang": "zh",
-        "text": "新西兰"
-      }
-    ]
-  },
-  {
-    "name": "Oman",
-    "code": "OMN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "عمان"
-      },
-      {
-        "lang": "es",
-        "text": "Omán"
-      },
-      {
-        "lang": "fr",
-        "text": "Oman"
-      },
-      {
-        "lang": "ru",
-        "text": "Оман"
-      },
-      {
-        "lang": "zh",
-        "text": "阿曼"
-      }
-    ]
-  },
-  {
-    "name": "Pakistan",
-    "code": "PAK",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "باكستان"
-      },
-      {
-        "lang": "es",
-        "text": "Pakistán"
-      },
-      {
-        "lang": "fr",
-        "text": "Pakistan"
-      },
-      {
-        "lang": "ru",
-        "text": "Пакистан"
-      },
-      {
-        "lang": "zh",
-        "text": "巴基斯坦"
-      }
-    ]
-  },
-  {
-    "name": "Panama",
-    "code": "PAN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بنما"
-      },
-      {
-        "lang": "es",
-        "text": "Panamá"
-      },
-      {
-        "lang": "fr",
-        "text": "Panama"
-      },
-      {
-        "lang": "ru",
-        "text": "Панама"
-      },
-      {
-        "lang": "zh",
-        "text": "巴拿马"
-      }
-    ]
-  },
-  {
-    "name": "Peru",
-    "code": "PER",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بيرو"
-      },
-      {
-        "lang": "es",
-        "text": "Perú"
-      },
-      {
-        "lang": "fr",
-        "text": "Pérou"
-      },
-      {
-        "lang": "ru",
-        "text": "Перу"
-      },
-      {
-        "lang": "zh",
-        "text": "秘鲁"
-      }
-    ]
-  },
-  {
-    "name": "Philippines",
-    "code": "PHL",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الفلبين"
-      },
-      {
-        "lang": "es",
-        "text": "Filipinas"
-      },
-      {
-        "lang": "fr",
-        "text": "Philippines"
-      },
-      {
-        "lang": "ru",
-        "text": "Филиппины"
-      },
-      {
-        "lang": "zh",
-        "text": "菲律宾"
-      }
-    ]
-  },
-  {
-    "name": "Palau",
-    "code": "PLW",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بالاو"
-      },
-      {
-        "lang": "es",
-        "text": "Palau"
-      },
-      {
-        "lang": "fr",
-        "text": "Palaos"
-      },
-      {
-        "lang": "ru",
-        "text": "Палау"
-      },
-      {
-        "lang": "zh",
-        "text": "帕劳"
-      }
-    ]
-  },
-  {
-    "name": "Papua New Guinea",
-    "code": "PNG",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بابوا غينيا الجديدة (دولة – المستقلة)"
-      },
-      {
-        "lang": "es",
-        "text": "Papua Nueva Guinea"
-      },
-      {
-        "lang": "fr",
-        "text": "Papouasie-Nouvelle-Guinée"
-      },
-      {
-        "lang": "ru",
-        "text": "Папуа – Новая Гвинея"
-      },
-      {
-        "lang": "zh",
-        "text": "巴布亚新几内亚"
-      }
-    ]
-  },
-  {
-    "name": "Poland",
-    "code": "POL",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "بولندا"
-      },
-      {
-        "lang": "es",
-        "text": "Polonia"
-      },
-      {
-        "lang": "fr",
-        "text": "Pologne"
-      },
-      {
-        "lang": "ru",
-        "text": "Польша"
-      },
-      {
-        "lang": "zh",
-        "text": "波兰"
-      }
-    ]
-  },
-  {
-    "name": "Dem People's Rep of Korea",
-    "code": "PRK",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جمهورية كوريا الشعبية الديمقراطية"
-      },
-      {
-        "lang": "es",
-        "text": "República Popular Democrática de Corea"
-      },
-      {
-        "lang": "fr",
-        "text": "République populaire démocratique de Corée"
-      },
-      {
-        "lang": "ru",
-        "text": "Корейская Народно-Демократическая Республика"
-      },
-      {
-        "lang": "zh",
-        "text": "朝鲜民主主义人民共和国"
-      }
-    ]
-  },
-  {
-    "name": "Portugal",
-    "code": "PRT",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "البرتغال"
-      },
-      {
-        "lang": "es",
-        "text": "Portugal"
-      },
-      {
-        "lang": "fr",
-        "text": "Portugal"
-      },
-      {
-        "lang": "ru",
-        "text": "Португалия"
-      },
-      {
-        "lang": "zh",
-        "text": "葡萄牙"
-      }
-    ]
-  },
-  {
-    "name": "Paraguay",
-    "code": "PRY",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "باراغواي"
-      },
-      {
-        "lang": "es",
-        "text": "Paraguay"
-      },
-      {
-        "lang": "fr",
-        "text": "Paraguay"
-      },
-      {
-        "lang": "ru",
-        "text": "Парагвай"
-      },
-      {
-        "lang": "zh",
-        "text": "巴拉圭"
-      }
-    ]
-  },
-  {
-    "name": "Qatar",
-    "code": "QAT",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "قطر"
-      },
-      {
-        "lang": "es",
-        "text": "Qatar"
-      },
-      {
-        "lang": "fr",
-        "text": "Qatar"
-      },
-      {
-        "lang": "ru",
-        "text": "Катар"
-      },
-      {
-        "lang": "zh",
-        "text": "卡塔尔"
-      }
-    ]
-  },
-  {
-    "name": "Romania",
-    "code": "ROU",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "رومانيا"
-      },
-      {
-        "lang": "es",
-        "text": "Rumania"
-      },
-      {
-        "lang": "fr",
-        "text": "Roumanie"
-      },
-      {
-        "lang": "ru",
-        "text": "Румыния"
-      },
-      {
-        "lang": "zh",
-        "text": "罗马尼亚"
-      }
-    ]
-  },
-  {
-    "name": "Russian Federation",
-    "code": "RUS",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الاتحاد الروسي"
-      },
-      {
-        "lang": "es",
-        "text": "Federación de Rusia"
-      },
-      {
-        "lang": "fr",
-        "text": "Fédération de Russie"
-      },
-      {
-        "lang": "ru",
-        "text": "Российская Федерация"
-      },
-      {
-        "lang": "zh",
-        "text": "俄罗斯联邦"
-      }
-    ]
-  },
-  {
-    "name": "Rwanda",
-    "code": "RWA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "رواندا"
-      },
-      {
-        "lang": "es",
-        "text": "Rwanda"
-      },
-      {
-        "lang": "fr",
-        "text": "Rwanda"
-      },
-      {
-        "lang": "ru",
-        "text": "Руанда"
-      },
-      {
-        "lang": "zh",
-        "text": "卢旺达"
-      }
-    ]
-  },
-  {
-    "name": "Saudi Arabia",
-    "code": "SAU",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "المملكة العربية السعودية"
-      },
-      {
-        "lang": "es",
-        "text": "Arabia Saudita"
-      },
-      {
-        "lang": "fr",
-        "text": "Arabie saoudite"
-      },
-      {
-        "lang": "ru",
-        "text": "Саудовская Аравия"
-      },
-      {
-        "lang": "zh",
-        "text": "沙特阿拉伯"
-      }
-    ]
-  },
-  {
-    "name": "Senegal",
-    "code": "SEN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "السنغال"
-      },
-      {
-        "lang": "es",
-        "text": "Senegal"
-      },
-      {
-        "lang": "fr",
-        "text": "Sénégal"
-      },
-      {
-        "lang": "ru",
-        "text": "Сенегал"
-      },
-      {
-        "lang": "zh",
-        "text": "塞内加尔"
-      }
-    ]
-  },
-  {
-    "name": "Singapore",
-    "code": "SGP",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "سنغافورة"
-      },
-      {
-        "lang": "es",
-        "text": "Singapur"
-      },
-      {
-        "lang": "fr",
-        "text": "Singapour"
-      },
-      {
-        "lang": "ru",
-        "text": "Сингапур"
-      },
-      {
-        "lang": "zh",
-        "text": "新加坡"
-      }
-    ]
-  },
-  {
-    "name": "Solomon Islands",
-    "code": "SLB",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جزر سليمان"
-      },
-      {
-        "lang": "es",
-        "text": "Islas Salomón"
-      },
-      {
-        "lang": "fr",
-        "text": "Îles Salomon"
-      },
-      {
-        "lang": "ru",
-        "text": "Соломоновы Острова"
-      },
-      {
-        "lang": "zh",
-        "text": "所罗门群岛"
-      }
-    ]
-  },
-  {
-    "name": "Sierra Leone",
-    "code": "SLE",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "سيراليون"
-      },
-      {
-        "lang": "es",
-        "text": "Sierra Leona"
-      },
-      {
-        "lang": "fr",
-        "text": "Sierra Leone"
-      },
-      {
-        "lang": "ru",
-        "text": "Сьерра-Леоне"
-      },
-      {
-        "lang": "zh",
-        "text": "塞拉利昂"
-      }
-    ]
-  },
-  {
-    "name": "El Salvador",
-    "code": "SLV",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "السلفادور"
-      },
-      {
-        "lang": "es",
-        "text": "El Salvador"
-      },
-      {
-        "lang": "fr",
-        "text": "El Salvador"
-      },
-      {
-        "lang": "ru",
-        "text": "Сальвадор"
-      },
-      {
-        "lang": "zh",
-        "text": "萨尔瓦多"
-      }
-    ]
-  },
-  {
-    "name": "San Marino",
-    "code": "SMR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "سان مارينو"
-      },
-      {
-        "lang": "es",
-        "text": "San Marino"
-      },
-      {
-        "lang": "fr",
-        "text": "Saint-Marin"
-      },
-      {
-        "lang": "ru",
-        "text": "Сан-Марино"
-      },
-      {
-        "lang": "zh",
-        "text": "圣马力诺"
-      }
-    ]
-  },
-  {
-    "name": "Somalia",
-    "code": "SOM",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الصومال"
-      },
-      {
-        "lang": "es",
-        "text": "Somalia"
-      },
-      {
-        "lang": "fr",
-        "text": "Somalie"
-      },
-      {
-        "lang": "ru",
-        "text": "Сомали"
-      },
-      {
-        "lang": "zh",
-        "text": "索马里"
-      }
-    ]
-  },
-  {
-    "name": "Serbia",
-    "code": "SRB",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "صربيا"
-      },
-      {
-        "lang": "es",
-        "text": "Serbia"
-      },
-      {
-        "lang": "fr",
-        "text": "Serbie"
-      },
-      {
-        "lang": "ru",
-        "text": "Сербия"
-      },
-      {
-        "lang": "zh",
-        "text": "塞尔维亚"
-      }
-    ]
-  },
-  {
-    "name": "Sao Tome and Principe",
-    "code": "STP",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "سان تومي وبرينسيبي"
-      },
-      {
-        "lang": "es",
-        "text": "Santo Tomé y Príncipe"
-      },
-      {
-        "lang": "fr",
-        "text": "Sao Tomé-et-Principe"
-      },
-      {
-        "lang": "ru",
-        "text": "Сан-Томе и Принсипи"
-      },
-      {
-        "lang": "zh",
-        "text": "圣多美和普林西比"
-      }
-    ]
-  },
-  {
-    "name": "Suriname",
-    "code": "SUR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "سورينام"
-      },
-      {
-        "lang": "es",
-        "text": "Suriname"
-      },
-      {
-        "lang": "fr",
-        "text": "Suriname"
-      },
-      {
-        "lang": "ru",
-        "text": "Суринам"
-      },
-      {
-        "lang": "zh",
-        "text": "苏里南"
-      }
-    ]
-  },
-  {
-    "name": "Slovakia",
-    "code": "SVK",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "سلوفاكيا"
-      },
-      {
-        "lang": "es",
-        "text": "Eslovaquia"
-      },
-      {
-        "lang": "fr",
-        "text": "Slovaquie"
-      },
-      {
-        "lang": "ru",
-        "text": "Словакия"
-      },
-      {
-        "lang": "zh",
-        "text": "斯洛伐克"
-      }
-    ]
-  },
-  {
-    "name": "Slovenia",
-    "code": "SVN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "سلوفينيا"
-      },
-      {
-        "lang": "es",
-        "text": "Eslovenia"
-      },
-      {
-        "lang": "fr",
-        "text": "Slovénie"
-      },
-      {
-        "lang": "ru",
-        "text": "Словения"
-      },
-      {
-        "lang": "zh",
-        "text": "斯洛文尼亚"
-      }
-    ]
-  },
-  {
-    "name": "Sweden",
-    "code": "SWE",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "السويد"
-      },
-      {
-        "lang": "es",
-        "text": "Suecia"
-      },
-      {
-        "lang": "fr",
-        "text": "Suède"
-      },
-      {
-        "lang": "ru",
-        "text": "Швеция"
-      },
-      {
-        "lang": "zh",
-        "text": "瑞典"
-      }
-    ]
-  },
-  {
-    "name": "Eswatini",
-    "code": "SWZ",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "إسواتيني"
-      },
-      {
-        "lang": "es",
-        "text": "Eswatini"
-      },
-      {
-        "lang": "fr",
-        "text": "Eswatini"
-      },
-      {
-        "lang": "ru",
-        "text": "Эсватини"
-      },
-      {
-        "lang": "zh",
-        "text": "斯威士兰"
-      }
-    ]
-  },
-  {
-    "name": "Seychelles",
-    "code": "SYC",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "سيشيل"
-      },
-      {
-        "lang": "es",
-        "text": "Seychelles"
-      },
-      {
-        "lang": "fr",
-        "text": "Seychelles"
-      },
-      {
-        "lang": "ru",
-        "text": "Сейшельские Острова"
-      },
-      {
-        "lang": "zh",
-        "text": "塞舌尔"
-      }
-    ]
-  },
-  {
-    "name": "Syrian Arab Republic",
-    "code": "SYR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الجمهورية العربية السورية"
-      },
-      {
-        "lang": "es",
-        "text": "República Árabe Siria"
-      },
-      {
-        "lang": "fr",
-        "text": "République arabe syrienne"
-      },
-      {
-        "lang": "ru",
-        "text": "Сирийская Арабская Республика"
-      },
-      {
-        "lang": "zh",
-        "text": "阿拉伯叙利亚共和国"
-      }
-    ]
-  },
-  {
-    "name": "Chad",
-    "code": "TCD",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "تشاد"
-      },
-      {
-        "lang": "es",
-        "text": "Chad"
-      },
-      {
-        "lang": "fr",
-        "text": "Tchad"
-      },
-      {
-        "lang": "ru",
-        "text": "Чад"
-      },
-      {
-        "lang": "zh",
-        "text": "乍得"
-      }
-    ]
-  },
-  {
-    "name": "Togo",
-    "code": "TGO",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "توغو"
-      },
-      {
-        "lang": "es",
-        "text": "Togo"
-      },
-      {
-        "lang": "fr",
-        "text": "Togo"
-      },
-      {
-        "lang": "ru",
-        "text": "Того"
-      },
-      {
-        "lang": "zh",
-        "text": "多哥"
-      }
-    ]
-  },
-  {
-    "name": "Thailand",
-    "code": "THA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "تايلند"
-      },
-      {
-        "lang": "es",
-        "text": "Tailandia"
-      },
-      {
-        "lang": "fr",
-        "text": "Thaïlande"
-      },
-      {
-        "lang": "ru",
-        "text": "Таиланд"
-      },
-      {
-        "lang": "zh",
-        "text": "泰国"
-      }
-    ]
-  },
-  {
-    "name": "Tadjikistan",
-    "code": "TJK",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "طاجيكستان"
-      },
-      {
-        "lang": "es",
-        "text": "Tayikistán"
-      },
-      {
-        "lang": "fr",
-        "text": "Tadjikistan"
-      },
-      {
-        "lang": "ru",
-        "text": "Таджикистан"
-      },
-      {
-        "lang": "zh",
-        "text": "塔吉克斯坦"
-      }
-    ]
-  },
-  {
-    "name": "Turkmenistan",
-    "code": "TKM",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "تركمانستان"
-      },
-      {
-        "lang": "es",
-        "text": "Turkmenistán"
-      },
-      {
-        "lang": "fr",
-        "text": "Turkménistan"
-      },
-      {
-        "lang": "ru",
-        "text": "Туркменистан"
-      },
-      {
-        "lang": "zh",
-        "text": "土库曼斯坦"
-      }
-    ]
-  },
-  {
-    "name": "Timor-Leste",
-    "code": "TLS",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "تيمور- ليشتي"
-      },
-      {
-        "lang": "es",
-        "text": "Timor-Leste"
-      },
-      {
-        "lang": "fr",
-        "text": "Timor-Leste"
-      },
-      {
-        "lang": "ru",
-        "text": "Тимор-Лешти"
-      },
-      {
-        "lang": "zh",
-        "text": "东帝汶"
-      }
-    ]
-  },
-  {
-    "name": "Tonga",
-    "code": "TON",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "تونغا"
-      },
-      {
-        "lang": "es",
-        "text": "Tonga"
-      },
-      {
-        "lang": "fr",
-        "text": "Tonga"
-      },
-      {
-        "lang": "ru",
-        "text": "Тонга"
-      },
-      {
-        "lang": "zh",
-        "text": "汤加"
-      }
-    ]
-  },
-  {
-    "name": "Trinidad and Tobago",
-    "code": "TTO",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ترينيداد وتوباغو"
-      },
-      {
-        "lang": "es",
-        "text": "Trinidad y Tabago"
-      },
-      {
-        "lang": "fr",
-        "text": "Trinité-et-Tobago"
-      },
-      {
-        "lang": "ru",
-        "text": "Тринидад и Тобаго"
-      },
-      {
-        "lang": "zh",
-        "text": "特立尼达和多巴哥"
-      }
-    ]
-  },
-  {
-    "name": "Tunisia",
-    "code": "TUN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "تونس"
-      },
-      {
-        "lang": "es",
-        "text": "Túnez"
-      },
-      {
-        "lang": "fr",
-        "text": "Tunisie"
-      },
-      {
-        "lang": "ru",
-        "text": "Тунис"
-      },
-      {
-        "lang": "zh",
-        "text": "突尼斯"
-      }
-    ]
-  },
-  {
-    "name": "Turkey",
-    "code": "TUR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "تركيا"
-      },
-      {
-        "lang": "es",
-        "text": "Turquía"
-      },
-      {
-        "lang": "fr",
-        "text": "Turquie"
-      },
-      {
-        "lang": "ru",
-        "text": "Турция"
-      },
-      {
-        "lang": "zh",
-        "text": "土耳其"
-      }
-    ]
-  },
-  {
-    "name": "Tuvalu",
-    "code": "TUV",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "توفالو"
-      },
-      {
-        "lang": "es",
-        "text": "Tuvalu"
-      },
-      {
-        "lang": "fr",
-        "text": "Tuvalu"
-      },
-      {
-        "lang": "ru",
-        "text": "Тувалу"
-      },
-      {
-        "lang": "zh",
-        "text": "图瓦卢"
-      }
-    ]
-  },
-  {
-    "name": "United Republic of Tanzania",
-    "code": "TZA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جمهورية تنزانيا المتحدة"
-      },
-      {
-        "lang": "es",
-        "text": "República Unida de Tanzanía"
-      },
-      {
-        "lang": "fr",
-        "text": "République-Unie de Tanzanie"
-      },
-      {
-        "lang": "ru",
-        "text": "Объединенная Республика Танзания"
-      },
-      {
-        "lang": "zh",
-        "text": "坦桑尼亚联合共和国"
-      }
-    ]
-  },
-  {
-    "name": "Uganda",
-    "code": "UGA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "أوغندا"
-      },
-      {
-        "lang": "es",
-        "text": "Uganda"
-      },
-      {
-        "lang": "fr",
-        "text": "Ouganda"
-      },
-      {
-        "lang": "ru",
-        "text": "Уганда"
-      },
-      {
-        "lang": "zh",
-        "text": "乌干达"
-      }
-    ]
-  },
-  {
-    "name": "Ukraine",
-    "code": "UKR",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "أوكرانيا"
-      },
-      {
-        "lang": "es",
-        "text": "Ucrania"
-      },
-      {
-        "lang": "fr",
-        "text": "Ukraine"
-      },
-      {
-        "lang": "ru",
-        "text": "Украина"
-      },
-      {
-        "lang": "zh",
-        "text": "乌克兰"
-      }
-    ]
-  },
-  {
-    "name": "Uruguay",
-    "code": "URY",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "أوروغواي"
-      },
-      {
-        "lang": "es",
-        "text": "Uruguay"
-      },
-      {
-        "lang": "fr",
-        "text": "Uruguay"
-      },
-      {
-        "lang": "ru",
-        "text": "Уругвай"
-      },
-      {
-        "lang": "zh",
-        "text": "乌拉圭"
-      }
-    ]
-  },
-  {
-    "name": "United States of America",
-    "code": "USA",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الولايات المتحدة الأمريكية"
-      },
-      {
-        "lang": "es",
-        "text": "Estados Unidos de América"
-      },
-      {
-        "lang": "fr",
-        "text": "États-Unis d’Amérique"
-      },
-      {
-        "lang": "ru",
-        "text": "Соединенные Штаты Америки"
-      },
-      {
-        "lang": "zh",
-        "text": "美利坚合众国"
-      }
-    ]
-  },
-  {
-    "name": "Uzbekistan",
-    "code": "UZB",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "أوزبكستان"
-      },
-      {
-        "lang": "es",
-        "text": "Uzbekistán"
-      },
-      {
-        "lang": "fr",
-        "text": "Ouzbékistan"
-      },
-      {
-        "lang": "ru",
-        "text": "Узбекистан"
-      },
-      {
-        "lang": "zh",
-        "text": "乌兹别克斯坦"
-      }
-    ]
-  },
-  {
-    "name": "Saint Vincent and the Grenadines",
-    "code": "VCT",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "سانت فنسنت وجزر غرينادين"
-      },
-      {
-        "lang": "es",
-        "text": "San Vicente y las Granadinas"
-      },
-      {
-        "lang": "fr",
-        "text": "Saint-Vincent-et-les Grenadines"
-      },
-      {
-        "lang": "ru",
-        "text": "Сент-Винсент и Гренадины"
-      },
-      {
-        "lang": "zh",
-        "text": "圣文森特和格林纳丁斯"
-      }
-    ]
-  },
-  {
-    "name": "Venezuela (Bolivarian Republic of)",
-    "code": "VEN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "فنزويلا (جمهورية - البوليفارية)"
-      },
-      {
-        "lang": "es",
-        "text": "Venezuela (República Bolivariana de)"
-      },
-      {
-        "lang": "fr",
-        "text": "Venezuela (République bolivarienne du)"
-      },
-      {
-        "lang": "ru",
-        "text": "Венесуэла (Боливарианская Республика)"
-      },
-      {
-        "lang": "zh",
-        "text": "委内瑞拉玻利瓦尔共和国"
-      }
-    ]
-  },
-  {
-    "name": "Viet Nam",
-    "code": "VNM",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "فييت نام"
-      },
-      {
-        "lang": "es",
-        "text": "Viet Nam"
-      },
-      {
-        "lang": "fr",
-        "text": "Viet Nam"
-      },
-      {
-        "lang": "ru",
-        "text": "Вьетнам"
-      },
-      {
-        "lang": "zh",
-        "text": "越南"
-      }
-    ]
-  },
-  {
-    "name": "Vanuatu",
-    "code": "VUT",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "فانواتو"
-      },
-      {
-        "lang": "es",
-        "text": "Vanuatu"
-      },
-      {
-        "lang": "fr",
-        "text": "Vanuatu"
-      },
-      {
-        "lang": "ru",
-        "text": "Вануату"
-      },
-      {
-        "lang": "zh",
-        "text": "瓦努阿图"
-      }
-    ]
-  },
-  {
-    "name": "Samoa",
-    "code": "WSM",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "ساموا"
-      },
-      {
-        "lang": "es",
-        "text": "Samoa"
-      },
-      {
-        "lang": "fr",
-        "text": "Samoa"
-      },
-      {
-        "lang": "ru",
-        "text": "Самоа"
-      },
-      {
-        "lang": "zh",
-        "text": "萨摩亚"
-      }
-    ]
-  },
-  {
-    "name": "Yemen",
-    "code": "YEM",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "اليمن"
-      },
-      {
-        "lang": "es",
-        "text": "Yemen"
-      },
-      {
-        "lang": "fr",
-        "text": "Yémen"
-      },
-      {
-        "lang": "ru",
-        "text": "Йемен"
-      },
-      {
-        "lang": "zh",
-        "text": "也门"
-      }
-    ]
-  },
-  {
-    "name": "South Africa",
-    "code": "ZAF",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جنوب أفريقيا"
-      },
-      {
-        "lang": "es",
-        "text": "Sudáfrica"
-      },
-      {
-        "lang": "fr",
-        "text": "Afrique du Sud"
-      },
-      {
-        "lang": "ru",
-        "text": "Южная Африка"
-      },
-      {
-        "lang": "zh",
-        "text": "南非"
-      }
-    ]
-  },
-  {
-    "name": "Zambia",
-    "code": "ZMB",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "زامبيا"
-      },
-      {
-        "lang": "es",
-        "text": "Zambia"
-      },
-      {
-        "lang": "fr",
-        "text": "Zambie"
-      },
-      {
-        "lang": "ru",
-        "text": "Замбия"
-      },
-      {
-        "lang": "zh",
-        "text": "赞比亚"
-      }
-    ]
-  },
-  {
-    "name": "Zimbabwe",
-    "code": "ZWE",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "زمبابوي"
-      },
-      {
-        "lang": "es",
-        "text": "Zimbabwe"
-      },
-      {
-        "lang": "fr",
-        "text": "Zimbabwe"
-      },
-      {
-        "lang": "ru",
-        "text": "Зимбабве"
-      },
-      {
-        "lang": "zh",
-        "text": "津巴布韦"
-      }
-    ]
-  },
-  {
-    "name": "Sudan",
-    "code": "SDN",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "السودان"
-      },
-      {
-        "lang": "es",
-        "text": "Sudán"
-      },
-      {
-        "lang": "fr",
-        "text": "Soudan"
-      },
-      {
-        "lang": "ru",
-        "text": "Судан"
-      },
-      {
-        "lang": "zh",
-        "text": "苏丹"
-      }
-    ]
-  },
-  {
-    "name": "South Sudan",
-    "code": "SSD",
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "جنوب السودان"
-      },
-      {
-        "lang": "es",
-        "text": "Sudán del Sur"
-      },
-      {
-        "lang": "fr",
-        "text": "Soudan du Sud"
-      },
-      {
-        "lang": "ru",
-        "text": "Южный Судан"
-      },
-      {
-        "lang": "zh",
-        "text": "南苏丹"
-      }
-    ]
-  },
-  {
-    "name": "All",
-    "code": null,
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "الجميع"
-      },
-      {
-        "lang": "es",
-        "text": "Todos"
-      },
-      {
-        "lang": "fr",
-        "text": "Tous"
-      },
-      {
-        "lang": "ru",
-        "text": "Все"
-      },
-      {
-        "lang": "zh",
-        "text": "所有"
-      }
-    ]
-  },
-  {
-    "name": "Other",
-    "code": null,
-    "locale": [
-      {
-        "lang": "ar",
-        "text": "غير ذلك"
-      },
-      {
-        "lang": "es",
-        "text": "Otros"
-      },
-      {
-        "lang": "fr",
-        "text": "Autre"
-      },
-      {
-        "lang": "ru",
-        "text": "Другие"
-      },
-      {
-        "lang": "zh",
-        "text": "其他"
-      }
-    ]
-  }
+    {
+        "name": "Aruba",
+        "code": "ABW"
+    },
+    {
+        "name": "Afghanistan",
+        "code": "AFG"
+    },
+    {
+        "name": "Angola",
+        "code": "AGO"
+    },
+    {
+        "name": "Anguilla",
+        "code": "AIA"
+    },
+    {
+        "name": "Åland Islands",
+        "code": "ALA"
+    },
+    {
+        "name": "Albania",
+        "code": "ALB"
+    },
+    {
+        "name": "Saba",
+        "code": "ANT"
+    },
+    {
+        "name": "United Arab Emirates",
+        "code": "ARE"
+    },
+    {
+        "name": "Argentina",
+        "code": "ARG"
+    },
+    {
+        "name": "Armenia",
+        "code": "ARM"
+    },
+    {
+        "name": "American Samoa",
+        "code": "ASM"
+    },
+    {
+        "name": "Antarctica",
+        "code": "ATA"
+    },
+    {
+        "name": "French Southern Territories",
+        "code": "ATF"
+    },
+    {
+        "name": "Antigua and Barbuda",
+        "code": "ATG"
+    },
+    {
+        "name": "Australia",
+        "code": "AUS"
+    },
+    {
+        "name": "Austria",
+        "code": "AUT"
+    },
+    {
+        "name": "Azerbaijan",
+        "code": "AZE"
+    },
+    {
+        "name": "Burundi",
+        "code": "BDI"
+    },
+    {
+        "name": "Belgium",
+        "code": "BEL"
+    },
+    {
+        "name": "Benin",
+        "code": "BEN"
+    },
+    {
+        "name": "Bonaire",
+        "code": "BES"
+    },
+    {
+        "name": "Burkina Faso",
+        "code": "BFA"
+    },
+    {
+        "name": "Bangladesh",
+        "code": "BGD"
+    },
+    {
+        "name": "Bulgaria",
+        "code": "BGR"
+    },
+    {
+        "name": "Bahrain",
+        "code": "BHR"
+    },
+    {
+        "name": "Bahamas",
+        "code": "BHS"
+    },
+    {
+        "name": "Bosnia and Herzegovina",
+        "code": "BIH"
+    },
+    {
+        "name": "Saint Barthélemy",
+        "code": "BLM"
+    },
+    {
+        "name": "Belarus",
+        "code": "BLR"
+    },
+    {
+        "name": "Belize",
+        "code": "BLZ"
+    },
+    {
+        "name": "Bermuda",
+        "code": "BMU"
+    },
+    {
+        "name": "Bolivia (Plurinational State of)",
+        "code": "BOL"
+    },
+    {
+        "name": "Brazil",
+        "code": "BRA"
+    },
+    {
+        "name": "Barbados",
+        "code": "BRB"
+    },
+    {
+        "name": "Brunei Darussalam",
+        "code": "BRN"
+    },
+    {
+        "name": "Bhutan",
+        "code": "BTN"
+    },
+    {
+        "name": "Bouvet Island",
+        "code": "BVT"
+    },
+    {
+        "name": "Botswana",
+        "code": "BWA"
+    },
+    {
+        "name": "Central African Republic",
+        "code": "CAF"
+    },
+    {
+        "name": "Canada",
+        "code": "CAN"
+    },
+    {
+        "name": "Cocos (Keeling) Islands",
+        "code": "CCK"
+    },
+    {
+        "name": "Switzerland",
+        "code": "CHE"
+    },
+    {
+        "name": "Chile",
+        "code": "CHL"
+    },
+    {
+        "name": "China",
+        "code": "CHN"
+    },
+    {
+        "name": "Côte d'Ivoire",
+        "code": "CIV"
+    },
+    {
+        "name": "Cameroon",
+        "code": "CMR"
+    },
+    {
+        "name": "Democratic Republic of the Congo",
+        "code": "COD"
+    },
+    {
+        "name": "Congo",
+        "code": "COG"
+    },
+    {
+        "name": "Cook Islands",
+        "code": "COK"
+    },
+    {
+        "name": "Colombia",
+        "code": "COL"
+    },
+    {
+        "name": "Comoros",
+        "code": "COM"
+    },
+    {
+        "name": "Cabo Verde",
+        "code": "CPV"
+    },
+    {
+        "name": "Costa Rica",
+        "code": "CRI"
+    },
+    {
+        "name": "Cuba",
+        "code": "CUB"
+    },
+    {
+        "name": "Curaçao",
+        "code": "CUW"
+    },
+    {
+        "name": "Christmas Island",
+        "code": "CXR"
+    },
+    {
+        "name": "Cayman Islands",
+        "code": "CYM"
+    },
+    {
+        "name": "Cyprus",
+        "code": "CYP"
+    },
+    {
+        "name": "Czechia",
+        "code": "CZE"
+    },
+    {
+        "name": "Germany",
+        "code": "DEU"
+    },
+    {
+        "name": "Djibouti",
+        "code": "DJI"
+    },
+    {
+        "name": "Dominica",
+        "code": "DMA"
+    },
+    {
+        "name": "Denmark",
+        "code": "DNK"
+    },
+    {
+        "name": "Dominican Republic",
+        "code": "DOM"
+    },
+    {
+        "name": "Algeria",
+        "code": "DZA"
+    },
+    {
+        "name": "Ecuador",
+        "code": "ECU"
+    },
+    {
+        "name": "Egypt",
+        "code": "EGY"
+    },
+    {
+        "name": "Eritrea",
+        "code": "ERI"
+    },
+    {
+        "name": "Western Sahara",
+        "code": "ESH"
+    },
+    {
+        "name": "Spain",
+        "code": "ESP"
+    },
+    {
+        "name": "Estonia",
+        "code": "EST"
+    },
+    {
+        "name": "Ethiopia",
+        "code": "ETH"
+    },
+    {
+        "name": "Finland",
+        "code": "FIN"
+    },
+    {
+        "name": "Fiji",
+        "code": "FJI"
+    },
+    {
+        "name": "Falkland Islands (Malvinas)",
+        "code": "FLK"
+    },
+    {
+        "name": "France",
+        "code": "FRA"
+    },
+    {
+        "name": "Faroe Islands",
+        "code": "FRO"
+    },
+    {
+        "name": "Micronesia (Federated States of)",
+        "code": "FSM"
+    },
+    {
+        "name": "Gabon",
+        "code": "GAB"
+    },
+    {
+        "name": "United Kingdom of Great Britain & Northern Ireland",
+        "code": "GBR"
+    },
+    {
+        "name": "Georgia",
+        "code": "GEO"
+    },
+    {
+        "name": "Guernsey",
+        "code": "GGY"
+    },
+    {
+        "name": "Ghana",
+        "code": "GHA"
+    },
+    {
+        "name": "Gibraltar",
+        "code": "GIB"
+    },
+    {
+        "name": "Guinea",
+        "code": "GIN"
+    },
+    {
+        "name": "Guadeloupe",
+        "code": "GLP"
+    },
+    {
+        "name": "Gambia",
+        "code": "GMB"
+    },
+    {
+        "name": "Guinea-Bissau",
+        "code": "GNB"
+    },
+    {
+        "name": "Equatorial Guinea",
+        "code": "GNQ"
+    },
+    {
+        "name": "Greece",
+        "code": "GRC"
+    },
+    {
+        "name": "Grenada",
+        "code": "GRD"
+    },
+    {
+        "name": "Greenland",
+        "code": "GRL"
+    },
+    {
+        "name": "Guatemala",
+        "code": "GTM"
+    },
+    {
+        "name": "French Guiana",
+        "code": "GUF"
+    },
+    {
+        "name": "Guam",
+        "code": "GUM"
+    },
+    {
+        "name": "Guyana",
+        "code": "GUY"
+    },
+    {
+        "name": "Hong Kong",
+        "code": "HKG"
+    },
+    {
+        "name": "Heard Island and McDonald Islands",
+        "code": "HMD"
+    },
+    {
+        "name": "Honduras",
+        "code": "HND"
+    },
+    {
+        "name": "Croatia",
+        "code": "HRV"
+    },
+    {
+        "name": "Haiti",
+        "code": "HTI"
+    },
+    {
+        "name": "Hungary",
+        "code": "HUN"
+    },
+    {
+        "name": "Indonesia",
+        "code": "IDN"
+    },
+    {
+        "name": "Isle of Man",
+        "code": "IMN"
+    },
+    {
+        "name": "India",
+        "code": "IND"
+    },
+    {
+        "name": "Chagos Archipelagio",
+        "code": "IOT"
+    },
+    {
+        "name": "Ireland",
+        "code": "IRL"
+    },
+    {
+        "name": "Iran (Islamic Republic of)",
+        "code": "IRN"
+    },
+    {
+        "name": "Iraq",
+        "code": "IRQ"
+    },
+    {
+        "name": "Iceland",
+        "code": "ISL"
+    },
+    {
+        "name": "Israel",
+        "code": "ISR"
+    },
+    {
+        "name": "Italy",
+        "code": "ITA"
+    },
+    {
+        "name": "Jamaica",
+        "code": "JAM"
+    },
+    {
+        "name": "Jersey",
+        "code": "JEY"
+    },
+    {
+        "name": "Jordan",
+        "code": "JOR"
+    },
+    {
+        "name": "Japan",
+        "code": "JPN"
+    },
+    {
+        "name": "Kazakhstan",
+        "code": "KAZ"
+    },
+    {
+        "name": "Kenya",
+        "code": "KEN"
+    },
+    {
+        "name": "Kyrgyzstan",
+        "code": "KGZ"
+    },
+    {
+        "name": "Cambodia",
+        "code": "KHM"
+    },
+    {
+        "name": "Kiribati",
+        "code": "KIR"
+    },
+    {
+        "name": "Saint Kitts and Nevis",
+        "code": "KNA"
+    },
+    {
+        "name": "Republic of Korea",
+        "code": "KOR"
+    },
+    {
+        "name": "Kuwait",
+        "code": "KWT"
+    },
+    {
+        "name": "Lao People's Democratic Republic",
+        "code": "LAO"
+    },
+    {
+        "name": "Lebanon",
+        "code": "LBN"
+    },
+    {
+        "name": "Liberia",
+        "code": "LBR"
+    },
+    {
+        "name": "Libya",
+        "code": "LBY"
+    },
+    {
+        "name": "Saint Lucia",
+        "code": "LCA"
+    },
+    {
+        "name": "Liechtenstein",
+        "code": "LIE"
+    },
+    {
+        "name": "Sri Lanka",
+        "code": "LKA"
+    },
+    {
+        "name": "Lesotho",
+        "code": "LSO"
+    },
+    {
+        "name": "Lithuania",
+        "code": "LTU"
+    },
+    {
+        "name": "Luxembourg",
+        "code": "LUX"
+    },
+    {
+        "name": "Latvia",
+        "code": "LVA"
+    },
+    {
+        "name": "Macao",
+        "code": "MAC"
+    },
+    {
+        "name": "Saint Martin",
+        "code": "MAF"
+    },
+    {
+        "name": "Morocco",
+        "code": "MAR"
+    },
+    {
+        "name": "Monaco",
+        "code": "MCO"
+    },
+    {
+        "name": "Republic of Moldova",
+        "code": "MDA"
+    },
+    {
+        "name": "Madagascar",
+        "code": "MDG"
+    },
+    {
+        "name": "Maldives",
+        "code": "MDV"
+    },
+    {
+        "name": "Mexico",
+        "code": "MEX"
+    },
+    {
+        "name": "Marshall Islands",
+        "code": "MHL"
+    },
+    {
+        "name": "North Macedonia",
+        "code": "MKD"
+    },
+    {
+        "name": "Mali",
+        "code": "MLI"
+    },
+    {
+        "name": "Malta",
+        "code": "MLT"
+    },
+    {
+        "name": "Myanmar",
+        "code": "MMR"
+    },
+    {
+        "name": "Montenegro",
+        "code": "MNE"
+    },
+    {
+        "name": "Mongolia",
+        "code": "MNG"
+    },
+    {
+        "name": "Northern Mariana Islands",
+        "code": "MNP"
+    },
+    {
+        "name": "Mozambique",
+        "code": "MOZ"
+    },
+    {
+        "name": "Mauritania",
+        "code": "MRT"
+    },
+    {
+        "name": "Montserrat",
+        "code": "MSR"
+    },
+    {
+        "name": "Martinique",
+        "code": "MTQ"
+    },
+    {
+        "name": "Mauritius",
+        "code": "MUS"
+    },
+    {
+        "name": "Malawi",
+        "code": "MWI"
+    },
+    {
+        "name": "Malaysia",
+        "code": "MYS"
+    },
+    {
+        "name": "Mayotte",
+        "code": "MYT"
+    },
+    {
+        "name": "Namibia",
+        "code": "NAM"
+    },
+    {
+        "name": "New Caledonia",
+        "code": "NCL"
+    },
+    {
+        "name": "Niger",
+        "code": "NER"
+    },
+    {
+        "name": "Norfolk Island",
+        "code": "NFK"
+    },
+    {
+        "name": "Nigeria",
+        "code": "NGA"
+    },
+    {
+        "name": "Nicaragua",
+        "code": "NIC"
+    },
+    {
+        "name": "Niue",
+        "code": "NIU"
+    },
+    {
+        "name": "Netherlands",
+        "code": "NLD"
+    },
+    {
+        "name": "Norway",
+        "code": "NOR"
+    },
+    {
+        "name": "Nepal",
+        "code": "NPL"
+    },
+    {
+        "name": "Nauru",
+        "code": "NRU"
+    },
+    {
+        "name": "New Zealand",
+        "code": "NZL"
+    },
+    {
+        "name": "Oman",
+        "code": "OMN"
+    },
+    {
+        "name": "Pakistan",
+        "code": "PAK"
+    },
+    {
+        "name": "Panama",
+        "code": "PAN"
+    },
+    {
+        "name": "Pitcairn",
+        "code": "PCN"
+    },
+    {
+        "name": "Peru",
+        "code": "PER"
+    },
+    {
+        "name": "Philippines",
+        "code": "PHL"
+    },
+    {
+        "name": "Palau",
+        "code": "PLW"
+    },
+    {
+        "name": "Papua New Guinea",
+        "code": "PNG"
+    },
+    {
+        "name": "Poland",
+        "code": "POL"
+    },
+    {
+        "name": "Puerto Rico",
+        "code": "PRI"
+    },
+    {
+        "name": "Democratic People's Republic of Korea",
+        "code": "PRK"
+    },
+    {
+        "name": "Portugal",
+        "code": "PRT"
+    },
+    {
+        "name": "Paraguay",
+        "code": "PRY"
+    },
+    {
+        "name": "Gaza",
+        "code": "PSE"
+    },
+    {
+        "name": "French Polynesia",
+        "code": "PYF"
+    },
+    {
+        "name": "Qatar",
+        "code": "QAT"
+    },
+    {
+        "name": "Réunion",
+        "code": "REU"
+    },
+    {
+        "name": "Romania",
+        "code": "ROU"
+    },
+    {
+        "name": "Russian Federation",
+        "code": "RUS"
+    },
+    {
+        "name": "Rwanda",
+        "code": "RWA"
+    },
+    {
+        "name": "Saudi Arabia",
+        "code": "SAU"
+    },
+    {
+        "name": "Sudan",
+        "code": "SDN"
+    },
+    {
+        "name": "Senegal",
+        "code": "SEN"
+    },
+    {
+        "name": "Singapore",
+        "code": "SGP"
+    },
+    {
+        "name": "South Georgia and the South Sandwich Islands",
+        "code": "SGS"
+    },
+    {
+        "name": "Saint Helena",
+        "code": "SHN"
+    },
+    {
+        "name": "Svalbard and Jan Mayen Islands",
+        "code": "SJM"
+    },
+    {
+        "name": "Solomon Islands",
+        "code": "SLB"
+    },
+    {
+        "name": "Sierra Leone",
+        "code": "SLE"
+    },
+    {
+        "name": "El Salvador",
+        "code": "SLV"
+    },
+    {
+        "name": "San Marino",
+        "code": "SMR"
+    },
+    {
+        "name": "Somalia",
+        "code": "SOM"
+    },
+    {
+        "name": "Saint Pierre et Miquelon",
+        "code": "SPM"
+    },
+    {
+        "name": "Serbia",
+        "code": "SRB"
+    },
+    {
+        "name": "South Sudan",
+        "code": "SSD"
+    },
+    {
+        "name": "Sao Tome and Principe",
+        "code": "STP"
+    },
+    {
+        "name": "Suriname",
+        "code": "SUR"
+    },
+    {
+        "name": "Slovakia",
+        "code": "SVK"
+    },
+    {
+        "name": "Slovenia",
+        "code": "SVN"
+    },
+    {
+        "name": "Sweden",
+        "code": "SWE"
+    },
+    {
+        "name": "Eswatini",
+        "code": "SWZ"
+    },
+    {
+        "name": "Sint Maarten",
+        "code": "SXM"
+    },
+    {
+        "name": "Seychelles",
+        "code": "SYC"
+    },
+    {
+        "name": "Syrian Arab Republic",
+        "code": "SYR"
+    },
+    {
+        "name": "Turks and Caicos Islands",
+        "code": "TCA"
+    },
+    {
+        "name": "Chad",
+        "code": "TCD"
+    },
+    {
+        "name": "Togo",
+        "code": "TGO"
+    },
+    {
+        "name": "Thailand",
+        "code": "THA"
+    },
+    {
+        "name": "Tadjikistan",
+        "code": "TJK"
+    },
+    {
+        "name": "Tokelau",
+        "code": "TKL"
+    },
+    {
+        "name": "Turkmenistan",
+        "code": "TKM"
+    },
+    {
+        "name": "Timor-Leste",
+        "code": "TLS"
+    },
+    {
+        "name": "Tonga",
+        "code": "TON"
+    },
+    {
+        "name": "Trinidad and Tobago",
+        "code": "TTO"
+    },
+    {
+        "name": "Tunisia",
+        "code": "TUN"
+    },
+    {
+        "name": "Turkey",
+        "code": "TUR"
+    },
+    {
+        "name": "Tuvalu",
+        "code": "TUV"
+    },
+    {
+        "name": "Taiwan",
+        "code": "TWN"
+    },
+    {
+        "name": "United Republic of Tanzania",
+        "code": "TZA"
+    },
+    {
+        "name": "Uganda",
+        "code": "UGA"
+    },
+    {
+        "name": "Ukraine",
+        "code": "UKR"
+    },
+    {
+        "name": "Johnston Atoll",
+        "code": "UMI"
+    },
+    {
+        "name": "Uruguay",
+        "code": "URY"
+    },
+    {
+        "name": "United States of America",
+        "code": "USA"
+    },
+    {
+        "name": "Uzbekistan",
+        "code": "UZB"
+    },
+    {
+        "name": "Holy See",
+        "code": "VAT"
+    },
+    {
+        "name": "Saint Vincent and the Grenadines",
+        "code": "VCT"
+    },
+    {
+        "name": "Venezuela",
+        "code": "VEN"
+    },
+    {
+        "name": "British Virgin Islands",
+        "code": "VGB"
+    },
+    {
+        "name": "United States Virgin Islands",
+        "code": "VIR"
+    },
+    {
+        "name": "Viet Nam",
+        "code": "VNM"
+    },
+    {
+        "name": "Vanuatu",
+        "code": "VUT"
+    },
+    {
+        "name": "Wallis and Futuna",
+        "code": "WLF"
+    },
+    {
+        "name": "Samoa",
+        "code": "WSM"
+    },
+    {
+        "name": "Yemen",
+        "code": "YEM"
+    },
+    {
+        "name": "South Africa",
+        "code": "ZAF"
+    },
+    {
+        "name": "Zambia",
+        "code": "ZMB"
+    },
+    {
+        "name": "Zimbabwe",
+        "code": "ZWE"
+    },
+    {
+        "name": "All",
+        "code": null
+    },
+    {
+        "name": "Other",
+        "code": null
+    }
 ]
