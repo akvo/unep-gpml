@@ -13,6 +13,7 @@ docker run \
        --rm \
        --volume "${HOME}/.config:/home/akvo/.config" \
        --volume "$(pwd):/app" \
+       -e ZULIP_CLI_TOKEN \
        --interactive \
        --tty \
        akvo/akvo-devops:20201203.085214.79bec73 \
