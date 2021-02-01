@@ -69,7 +69,7 @@ const generateOptions = ({title, subtitle, data, tooltip}) => {
         series: [{
             name: title,
             type: 'map',
-            roam: 'move',
+            roam: true,
             map: 'unep-map',
             aspectScale: 1,
             zoom: 1.26,
