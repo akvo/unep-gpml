@@ -13,7 +13,7 @@
   (cond
     (nil? photo) nil
     (re-find #"^\/image\/" photo) photo
-    :else (str/join ["/image/event"
+    :else (str/join ["/image/event/"
                     (:id (db.event-image/new-event-image conn {:image photo}))])))
 
 (defn create-event [conn {:keys [tags urls title start_date end_date
