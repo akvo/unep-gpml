@@ -14,6 +14,7 @@ const Chart = {
                     orient: "horizontal",
                     top: 10,
                     right: 10,
+                    zlevel: 2,
                     feature: {
                         myTool1: {
                             title: "Zoom In",

@@ -18,7 +18,6 @@ const zoomIn = (params, charts) => {
         zoom = 4;
     }
     updateCharts(charts, params, zoom)
-    return;
 }
 
 const zoomOut = (params, charts) => {
@@ -27,12 +26,20 @@ const zoomOut = (params, charts) => {
         zoom = 0;
     }
     updateCharts(charts, params, zoom)
-    return;
 }
 
 const resetZoom = (params, charts) => {
-    updateCharts(charts, params, 0)
-    return;
+    let options = charts.getOption();
+    let new_series = {
+        ...params.option.series[0],
+        zoom: window.__UNEP__MAP__ZOOM,
+        z: 0,
+        center: [0, 0],
+    }
+    options = {...options, series: [new_series]}
+    let id = charts.getDom();
+    const thecharts = echarts.init(id);
+    thecharts.setOption(options);
 }
 
 export {zoomIn, zoomOut, resetZoom};

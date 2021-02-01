@@ -70,13 +70,17 @@ const generateOptions = ({title, subtitle, data, tooltip}) => {
             name: title,
             type: 'map',
             roam: true,
+            left: window.__UNEP__MAP__LEFT,
+            top: window.__UNEP__MAP__TOP,
             map: 'unep-map',
             aspectScale: 1,
-            zoom: 1.26,
+            zoom: window.__UNEP__MAP__ZOOM,
+            z: 0,
             label: {show:false},
             symbolSyze: 0,
             emphasis: {label: {show: false}},
             itemStyle: {
+                zlevel: 0,
                 areaColor: '#fff',
                 borderColor: '#79B0CC',
                 emphasis: {
@@ -86,6 +90,7 @@ const generateOptions = ({title, subtitle, data, tooltip}) => {
                   shadowBlur: 10,
                 }
             },
+            center: [0, 0],
             data: [...data, ...Chart.Opt.Maps.DisputedArea],
             showLegendSymbol: data.length === 1,
         }],
