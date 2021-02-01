@@ -23,7 +23,7 @@
   (fn [{{{:keys [id]} :path} :parameters :as req}]
     (tap> id)
     (tap> req)
-    (let [picture (:picture (db.event-image/event-image-by-id (:spec db) {:id id}))
+    (let [picture (:image (db.event-image/event-image-by-id (:spec db) {:id id}))
           [_ content-type b64image] (re-find #"^data:(\S+);base64,(.*)$" picture)
           decoder (Base64/getDecoder)]
       (-> (.decode decoder b64image)

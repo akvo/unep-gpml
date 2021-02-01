@@ -71,17 +71,23 @@ const AdminSection = () => {
                   <li>Country: {item.country}</li>
                   <li>City: {item.city}</li>
                   <li>Coverage: <b>{item.geoCoverageType}</b>
-                      <ul className={'ul-children'}>
-                      {item.geoCoverageValues.map((x, i) => <li key={`coverage-${i}`}>{x}</li>)}
-                      </ul>
+                      {item?.geoCoverageValues &&
+                        <ul className={'ul-children'}>
+                          {item.geoCoverageValues.map((x, i) => <li key={`coverage-${i}`}>{x}</li>)}
+                        </ul>
+                      }
                   </li>
                   <li>Description: {item.description}</li>
                   <li>Remarks: {item.remarks}</li>
-                  <li>Tags: {item.tags.map(x => `${x}, `)}</li>
+                  {item?.tags &&
+                    <li>Tags: {item.tags.map(x => `${x}, `)}</li>
+                  }
                   <li>Urls:
-                      <ul className={'ul-children'}>
+                      {item?.urls &&
+                        <ul className={'ul-children'}>
                           {item.urls.map((x, i) => <li key={`url-${i}`}>{x.isoCode}: {x.url}</li>)}
-                      </ul>
+                        </ul>
+                      }
                   </li>
               </ul>
             </div>
