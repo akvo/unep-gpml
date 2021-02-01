@@ -1,5 +1,13 @@
 @import '../../vars.scss';
 
+.upload-btn,
+.view-cv {
+    display: inline-block;
+}
+.view-cv {
+    float: right;
+}
+
 .signup-modal{
   h2{
     color: $primaryColor;

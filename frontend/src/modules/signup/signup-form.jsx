@@ -93,7 +93,7 @@ const defaultFormSchema = [
   },
   {
     tags: { label: 'Tags', control: 'select', options: [], loading: true, mode: 'multiple' },
-    cv: { label: 'CV / Portfolio', control: 'file' },
+    cv: { label: 'CV / Portfolio', control: 'file',opt: "test" },
   }
 ]
 
