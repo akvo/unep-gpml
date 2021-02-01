@@ -40,7 +40,7 @@ const FileWidget = (props) => {
             </Button> <span style={{marginLeft:"20px"}}>{file?.name}</span>
             {!output && props?.value && props?.name === 'cv' && (<ViewWidget url={props.value} download={false}/>)}
             {props?.name === 'cv' && file?.name && (<ViewWidget url={output} download={file.name}/>)}
-            <input type="file" onChange={handleChange} ref={inputFile} accept={props?.options?.accept.join(',')} style={{display:"none"}}/>
+            <input type="file" onChange={handleChange} ref={inputFile} accept={props?.accept} style={{display:"none"}}/>
             <br/>
             {!output && props?.value && props?.name !== 'cv' && (<img src={props.value} alt="upload" />)}
             {props?.name !== 'cv' && file?.name && (<img src={output} alt={file.name} />)}

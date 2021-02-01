@@ -73,7 +73,7 @@ const defaultFormSchema = [
     lastName: { label: 'Last name', required: true },
     linkedIn: { label: 'LinkedIn', prefix: <LinkedinOutlined /> },
     twitter: { label: 'Twitter', prefix: <TwitterOutlined /> },
-    photo: { label: 'Photo', control: 'file' },
+    photo: { label: 'Photo', control: 'file', maxFileSize: 1, accept: "image/*" },
     representation: { label: 'Representative sector', required: true, control: 'select', options: sectorOptions.map(it => ({ value: it, label: it })) },
     country: { label: 'Country', control: 'select', showSearch: true, options: Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name })), autoComplete: 'off' }
   },
@@ -93,7 +93,7 @@ const defaultFormSchema = [
   },
   {
     tags: { label: 'Tags', control: 'select', options: [], loading: true, mode: 'multiple' },
-    cv: { label: 'CV / Portfolio', control: 'file',opt: "test" },
+    cv: { label: 'CV / Portfolio', control: 'file', maxFileSize: 5, accept: ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, .pdf, image/*" },
   }
 ]
 

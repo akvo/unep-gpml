@@ -64,7 +64,7 @@ const defaultFormSchema = [
       }
     },
     description: { label: 'Event description', control: 'textarea' },
-    photo: { label: 'Photo', control: 'file' }
+    photo: { label: 'Photo', control: 'file', accept:'image/*', maxFileSize: 1}
   },
   {
     city: { label: 'City' },

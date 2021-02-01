@@ -50,9 +50,9 @@ const CONTROLS = {
       </Select>
     )
   },
-  file: ({ input }) => {
+  file: ({ input, accept, maxFileSize}) => {
     return (
-      <FileWidget {...input} />
+      <FileWidget {...input} accept={accept} maxFileSize={maxFileSize}/>
     )
   },
   'date-range': ({ input, ...props }) => {
@@ -71,7 +71,7 @@ const CONTROLS = {
   // }
 }
 
-const FinalField = ({ name, ...props }) => {
+const FinalField = ({name, ...props}) => {
   return (
     <Field
       name={name}
