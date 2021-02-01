@@ -1,21 +1,19 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
-import arrayMutators from 'final-form-arrays'
-import { add } from 'lodash'
 import { FieldArray } from 'react-final-form-arrays'
 import FinalField from './final-field'
 
 const FinalFieldArray = ({ name, addLabel = 'Add another', removeLabel = 'Remove', mutators, ...schema }) => {
   return (
-    <div>
+    <div key={`field-array-${name}`}>
       <FieldArray name={name}>
         {({ fields }) =>
         <div>
           {fields.map((arrFieldName, index) => {
             return (
-              <div className="array-item">
-                {Object.keys(schema.items).map(fieldName =>
-                  <FinalField name={`${arrFieldName}${fieldName}`} {...schema.items[fieldName]} />
+              <div className="array-item" key={`final-field-${arrFieldName}-${index}`}>
+                {Object.keys(schema.items).map((fieldName, ix) =>
+                  <FinalField key={`final-field-${arrFieldName}-${index}-${ix}`} name={`${arrFieldName}${fieldName}`} {...schema.items[fieldName]} />
                 )}
               </div>
             )
