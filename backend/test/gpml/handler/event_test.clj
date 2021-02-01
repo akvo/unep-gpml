@@ -12,6 +12,7 @@
 (defn sample-data [db]
   (let [sth (db.stakeholder/new-stakeholder db
                                             {:picture "https://picsum.photos/200"
+                                             :cv "https://mycv.net"
                                              :title "Mr."
                                              :first_name "First name"
                                              :last_name "Last name"

@@ -22,18 +22,29 @@
     :else (str/join ["/image/profile/"
                      (:id (db.stakeholder/new-stakeholder-picture conn {:picture photo}))])))
 
+(defn assoc-cv [conn cv]
+  (cond
+    (nil? cv) nil
+    (re-find #"^\/cv\/" cv) cv
+    :else (str/join ["/cv/profile/"
+                     (:id (db.stakeholder/new-stakeholder-cv conn {:cv cv}))])))
+
 (defn make-profile [conn
                     {:keys [email picture]}
                     {:keys [title first_name
                             last_name linked_in
-                            twitter photo
+                            twitter photo cv
                             representation country
                             org about geo_coverage_type]}]
   (let [pic-url (if-let [upload-picture (assoc-picture conn photo)]
                   upload-picture
                   (if picture picture nil))
+        cv-url (if-let [upload-cv (assoc-cv conn cv)]
+                 upload-cv
+                 (if cv cv nil))
         affiliation (if (:name org) (:id (assoc-organisation conn org)) nil)
         profile {:picture pic-url
+                 :cv cv-url
                  :title title
                  :first_name first_name
                  :last_name last_name
@@ -51,7 +62,7 @@
 (defn remap-profile
   [{:keys [id photo about approved_at
            title first_name role
-           last_name linked_in
+           last_name linked_in cv
            twitter representation
            country org_name org_url
            geo_coverage_type]}
@@ -64,6 +75,7 @@
    :linked_in linked_in
    :twitter twitter
    :photo photo
+   :cv cv
    :country country
    :representation representation
    :tags (mapv #(:tag %) tags)
@@ -143,6 +155,11 @@
                            (if (re-find #"^\/image" (:photo body-params))
                              (:photo body-params)
                              (assoc-picture db (:photo body-params))))
+                    (:cv body-params)
+                    (assoc :cv
+                           (if (re-find #"^\/cv" (:cv body-params))
+                             (:cv body-params)
+                             (assoc-cv db (:cv body-params))))
                     (-> new-profile :org :url)
                     (assoc :url (-> new-profile :org :url))
                     (-> new-profile :org :name)
@@ -192,6 +209,7 @@
    [:linked_in {:optional true} string?]
    [:twitter {:optional true} string?]
    [:photo {:optional true} string?]
+   [:cv {:optional true} string?]
    [:representation string?]
    [:country {:optional true} string?]
    [:about string?]

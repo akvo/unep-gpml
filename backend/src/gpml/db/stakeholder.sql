@@ -18,6 +18,7 @@ select
     s.about,
     s.role,
     s.geo_coverage_type,
+    s.cv,
     c.iso_code as country,
     o.name as org_name,
     s.approved_at from stakeholder s
@@ -41,6 +42,7 @@ select
     s.about,
     s.role,
     s.geo_coverage_type,
+    s.cv,
     c.iso_code as country,
     o.name as org_name,
     s.approved_at from stakeholder s
@@ -88,8 +90,8 @@ update stakeholder set approved_at = now() where id = :id;
 
 -- :name new-stakeholder :<! :1
 -- :doc Insert a new stakeholder
-insert into stakeholder(picture, title, first_name, last_name, affiliation, email, linked_in, twitter, url, country, representation, about, geo_coverage_type)
-values(:picture, :title, :first_name, :last_name, :affiliation, :email, :linked_in, :twitter, :url, :country::integer, :representation, :about, :v:geo_coverage_type::geo_coverage_type) RETURNING id;
+insert into stakeholder(cv, picture, title, first_name, last_name, affiliation, email, linked_in, twitter, url, country, representation, about, geo_coverage_type)
+values(:cv, :picture, :title, :first_name, :last_name, :affiliation, :email, :linked_in, :twitter, :url, :country::integer, :representation, :about, :v:geo_coverage_type::geo_coverage_type) RETURNING id;
 
 -- :name update-stakeholder-role :! :n
 -- :doc Update stakeholder role
@@ -109,6 +111,7 @@ update stakeholder set
 --~ (when (contains? params :twitter) ",twitter= :twitter")
 --~ (when (contains? params :url) ",url= :url")
 --~ (when (contains? params :picture) ",picture= :picture")
+--~ (when (contains? params :cv) ",cv= :cv")
 --~ (when (contains? params :country) ",country= :v:country::integer")
 --~ (when (contains? params :representation) ",representation= :representation")
 --~ (when (contains? params :geo_coverage_type) ",geo_coverage_type= :v:geo_coverage_type::geo_coverage_type")
@@ -124,6 +127,15 @@ select * from stakeholder_picture where id = :id
 -- :doc Insert new Stakeholder picture
 insert into stakeholder_picture (picture)
 values(:picture) returning id;
+
+-- :name stakeholder-cv-by-id :? :1
+-- :doc Get Stakeholder cv by id
+select * from stakeholder_cv where id = :id
+
+-- :name new-stakeholder-cv :<! :1
+-- :doc Insert new Stakeholder cv
+insert into stakeholder_cv (cv)
+values(:cv) returning id;
 
 -- :name stakeholder-geo-country :? :*
 -- :doc get stakeholder geocoverage country

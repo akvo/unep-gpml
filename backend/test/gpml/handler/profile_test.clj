@@ -33,6 +33,7 @@
    :about "Lorem Ipsum"
    :country country
    :picture picture
+   :cv picture
    :geo_coverage_type "regional"
    :geo_coverage_value ["Africa" "Europe"]
    :tags [1 2]}
@@ -87,6 +88,7 @@
               :org {:name "Akvo"
                     :url "https://www.akvo.org"}
               :photo "/image/profile/1"
+              :cv "/cv/profile/1"
               :representation "test"
               :approved_at nil
               :title "Mr."
@@ -123,6 +125,7 @@
               :org {:name nil
                     :url nil}
               :photo nil
+              :cv "/cv/profile/1"
               :representation "test"
               :approved_at nil
               :title "Mr."
@@ -152,6 +155,7 @@
                                              :first_name "Mark"
                                              :org {:name "Unep" :url "https://unep.org"}
                                              :photo picture
+                                             :cv picture
                                              :picture nil))))
           _ (tap> resp)
           profile (db.stakeholder/stakeholder-by-id db {:id 1})]
@@ -168,6 +172,7 @@
               :org_url "https://unep.org",
               :org_name "Unep"
               :photo "/image/profile/1",
+              :cv "/cv/profile/1",
               :representation "test",
               :role "USER",
               :geo_coverage_type "regional"

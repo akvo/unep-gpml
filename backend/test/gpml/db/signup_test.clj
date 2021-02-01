@@ -11,7 +11,8 @@
   (:id (db.country/country-by-name conn {:name (:country profile)})))
 
 (defn make-profile [conn first-name last-name email country]
-  {:picture "https://picsum.photos/200"
+  {:picture nil
+   :cv nil
    :title "mr."
    :first_name first-name
    :last_name last-name
@@ -40,5 +41,6 @@
           _ (add-stakeholder-data conn)
           stakeholder (db.stakeholder/all-stakeholder conn)]
       (is (= (:first_name (first stakeholder)) "John"))
+      (is (= (:picture (first stakeholder)) nil))
       (is (= (:country (first stakeholder)) (get-country conn "Indonesia")))
       (is (= (:last_name (first stakeholder)) "Doe")))))

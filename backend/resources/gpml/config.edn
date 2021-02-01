@@ -7,6 +7,10 @@
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.image/profile
                                                :parameters {:path [:map [:id int?]]}}}]
+                                       ["/cv/profile/{id}"
+                                        {:get {:no-doc true
+                                               :handler #ig/ref :gpml.handler.file/profile-cv
+                                               :parameters {:path [:map [:id int?]]}}}]
                                        ["/image/event/{id}"
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.image/event
@@ -136,6 +140,8 @@
 
   :gpml.handler.image/profile {:db #ig/ref :duct.database/sql}
   :gpml.handler.image/event {:db #ig/ref :duct.database/sql}
+
+  :gpml.handler.file/profile-cv {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.favorite/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.favorite/post {:db #ig/ref :duct.database/sql}

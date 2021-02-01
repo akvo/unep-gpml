@@ -11,6 +11,7 @@
 (defn- new-stakeholder [db email]
   (db.stakeholder/new-stakeholder db
                                   {:picture "https://picsum.photos/200"
+                                   :cv nil
                                    :title "Mr."
                                    :first_name "First name"
                                    :last_name "Last name"
