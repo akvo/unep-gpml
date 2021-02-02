@@ -15,7 +15,7 @@ const EventWarningModal = ({visible, close}) => {
           <div className="submitted">
             <h2>Pending approval</h2>
             <p>
-              You can add event once your account is approved.
+              You can add an <strong>event</strong> once your account is approved.
               We will review your account shortly.
               {user?.email_verified === false && <span><br />
               Meanwhile please confirm your email.

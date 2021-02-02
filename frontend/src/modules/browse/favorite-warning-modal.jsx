@@ -15,7 +15,7 @@ const FavoriteWarningModal = ({visible, close}) => {
           <div className="submitted">
             <h2>Pending approval</h2>
             <p>
-              You can add favorite once your account is approved.
+              You can add a <strong>favorite</strong> once your account is approved.
               We will review your account shortly.
               {user?.email_verified === false && <span><br />
               Meanwhile please confirm your email.
