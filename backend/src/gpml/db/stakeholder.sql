@@ -118,7 +118,6 @@ update stakeholder set
 --~ (when (contains? params :about) ",about= :about, modified = now()")
 where id = :id;
 
-
 -- :name stakeholder-picture-by-id :? :1
 -- :doc Get Stakeholder picture by id
 select * from stakeholder_picture where id = :id
@@ -128,6 +127,10 @@ select * from stakeholder_picture where id = :id
 insert into stakeholder_picture (picture)
 values(:picture) returning id;
 
+-- :name delete-stakeholder-picture-by-id :! :n
+-- :doc remove stakeholder picture
+delete from stakeholder_picture where id = :id
+
 -- :name stakeholder-cv-by-id :? :1
 -- :doc Get Stakeholder cv by id
 select * from stakeholder_cv where id = :id
@@ -136,6 +139,10 @@ select * from stakeholder_cv where id = :id
 -- :doc Insert new Stakeholder cv
 insert into stakeholder_cv (cv)
 values(:cv) returning id;
+
+-- :name delete-stakeholder-cv-by-id :! :n
+-- :doc remove stakeholder cv
+delete from stakeholder_cv where id = :id
 
 -- :name stakeholder-geo-country :? :*
 -- :doc get stakeholder geocoverage country

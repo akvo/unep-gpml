@@ -51,8 +51,6 @@
   (prep)
 
   (reset)
-  #_:clj-kondo/ignore
-  (test #'gpml.handler.profile-test/handler-put-test)
 
   config
 

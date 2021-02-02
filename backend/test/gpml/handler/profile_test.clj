@@ -143,8 +143,13 @@
           db (-> system :duct.database.sql/hikaricp :spec)
           _ (seed-important-database db)
           ;; John created account with country value Indonesia and organisation Akvo
-          _ (db.stakeholder/new-stakeholder db  (new-profile (:id 1) (:id 1)))
-          ;; John trying to edit their profile with newly organistaion
+          _ (db.stakeholder/new-stakeholder-cv db {:cv picture})
+          _ (db.stakeholder/new-stakeholder-picture db {:picture picture})
+          _ (db.stakeholder/new-stakeholder db  (assoc (new-profile (:id 1) (:id 1)) 
+                                                       :picture "/image/profile/1"
+                                                       :cv "/cv/profile/1"))
+          ;; John trying to edit their profile with newly organisation
+          ;; Also john want to change his cv and profile picture
           resp (handler (-> (mock/request :put "/")
                             (assoc :jwt-claims {:email "john@org"})
                             (assoc :body-params
@@ -157,8 +162,13 @@
                                              :photo picture
                                              :cv picture
                                              :picture nil))))
-          _ (tap> resp)
-          profile (db.stakeholder/stakeholder-by-id db {:id 1})]
+          profile (db.stakeholder/stakeholder-by-id db {:id 1})
+          old-images (db.stakeholder/stakeholder-picture-by-id db {:id 1})
+          old-cv (db.stakeholder/stakeholder-cv-by-id db {:id 1})]
+      ;; Old images should be deleted
+      (is (= nil old-images))
+      ;; Old cv sould be deleted
+      (is (= nil old-cv))
       (is (= 204 (:status resp)))
       (is (= {:id 1,
               :email "john@org"
@@ -171,8 +181,8 @@
               :twitter "johndoe",
               :org_url "https://unep.org",
               :org_name "Unep"
-              :photo "/image/profile/1",
-              :cv "/cv/profile/1",
+              :photo "/image/profile/2",
+              :cv "/cv/profile/2",
               :representation "test",
               :role "USER",
               :geo_coverage_type "regional"

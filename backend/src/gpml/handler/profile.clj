@@ -146,20 +146,23 @@
           tags (:tags body-params)
           geo-type (:geo_coverage_type body-params)
           geo-value (:geo_coverage_value body-params)
-          new-profile (merge
-                        (db.stakeholder/stakeholder-by-email db jwt-claims)
-                        body-params)
+          old-profile (db.stakeholder/stakeholder-by-email db jwt-claims)
+          new-profile (merge old-profile body-params)
           profile (cond-> new-profile
                     (:photo body-params)
                     (assoc :picture
                            (if (re-find #"^\/image" (:photo body-params))
                              (:photo body-params)
                              (assoc-picture db (:photo body-params))))
+                    (= (:photo body-params) nil)
+                    (assoc :picture nil)
                     (:cv body-params)
                     (assoc :cv
                            (if (re-find #"^\/cv" (:cv body-params))
                              (:cv body-params)
                              (assoc-cv db (:cv body-params))))
+                    (= (:cv body-params) nil)
+                    (assoc :cv nil)
                     (-> new-profile :org :url)
                     (assoc :url (-> new-profile :org :url))
                     (-> new-profile :org :name)
@@ -169,6 +172,14 @@
           _ (db.stakeholder/update-stakeholder db profile)
           _ (db.stakeholder/delete-stakehodler-geo db body-params)
           _ (db.stakeholder/delete-stakehodler-tags db body-params)]
+        (when (and (some? (:photo old-profile))
+                   (not= (:photo old-profile) (:picture profile)))
+            (let [old-pic (-> (str/split (:photo old-profile) #"/image/profile/") second Integer/parseInt)]
+            (db.stakeholder/delete-stakehodler-picture-by-id db {:id old-pic})))
+        (when (and (some? (:cv old-profile))
+                   (not= (:cv old-profile) (:cv profile)))
+            (let [old-cv (-> (str/split (:cv old-profile) #"/cv/profile/") second Integer/parseInt)]
+            (db.stakeholder/delete-stakehodler-cv-by-id db {:id old-cv})))
         (when (not-empty tags)
           (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
         (when (not-empty geo-value)
