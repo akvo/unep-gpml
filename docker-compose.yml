@@ -7,6 +7,7 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql/data
       - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+      - ./db/script:/script:ro
   backend:
     depends_on:
       - db
