@@ -161,7 +161,7 @@ where s.stakeholder = :id
 insert into stakeholder_geo_coverage(stakeholder, country_group, country)
 values :t*:geo RETURNING id;
 
--- :name delete-stakehodler-geo :! :n
+-- :name delete-stakeholder-geo :! :n
 -- :doc remove stakeholder geo
 delete from stakeholder_geo_coverage where stakeholder = :id
 
@@ -174,6 +174,6 @@ select * from stakeholder_tag where stakeholder = :id
 insert into stakeholder_tag(stakeholder, tag)
 values :t*:tags RETURNING id;
 
--- :name delete-stakehodler-tags :! :n
+-- :name delete-stakeholder-tags :! :n
 -- :doc remove stakeholder-tags
 delete from stakeholder_tag where stakeholder = :id

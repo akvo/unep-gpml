@@ -170,16 +170,16 @@
                     (:country body-params)
                     (assoc :country (get-country db (:country body-params))))
           _ (db.stakeholder/update-stakeholder db profile)
-          _ (db.stakeholder/delete-stakehodler-geo db body-params)
-          _ (db.stakeholder/delete-stakehodler-tags db body-params)]
+          _ (db.stakeholder/delete-stakeholder-geo db body-params)
+          _ (db.stakeholder/delete-stakeholder-tags db body-params)]
         (when (and (some? (:photo old-profile))
                    (not= (:photo old-profile) (:picture profile)))
             (let [old-pic (-> (str/split (:photo old-profile) #"/image/profile/") second Integer/parseInt)]
-            (db.stakeholder/delete-stakehodler-picture-by-id db {:id old-pic})))
+            (db.stakeholder/delete-stakeholder-picture-by-id db {:id old-pic})))
         (when (and (some? (:cv old-profile))
                    (not= (:cv old-profile) (:cv profile)))
             (let [old-cv (-> (str/split (:cv old-profile) #"/cv/profile/") second Integer/parseInt)]
-            (db.stakeholder/delete-stakehodler-cv-by-id db {:id old-cv})))
+            (db.stakeholder/delete-stakeholder-cv-by-id db {:id old-cv})))
         (when (not-empty tags)
           (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
         (when (not-empty geo-value)
