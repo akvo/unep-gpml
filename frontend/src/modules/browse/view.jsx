@@ -10,6 +10,7 @@ import { countries } from 'countries-list'
 import countries3to2 from 'countries-list/dist/countries3to2.json'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
 import ShowMoreText from 'react-show-more-text'
+import FavoriteWarningModal from './favorite-warning-modal'
 import { useAuth0 } from '@auth0/auth0-react'
 import humps from 'humps'
 
@@ -31,7 +32,8 @@ const Browse = ({ history, summary }) => {
   const [results, setResults] = useState([])
   const location = useLocation()
   const [relations, setRelations] = useState([])
-  const {isAuthenticated} = useAuth0();
+  const {isAuthenticated, loginWithPopup } = useAuth0();
+  const [warningVisible, setWarningVisible] = useState(false)
 
   const getResults = () => {
     // NOTE: Don't this needs to be window.location.search because of
@@ -47,7 +49,7 @@ const Browse = ({ history, summary }) => {
       setResults(resp?.data?.results)
     })
     // NOTE: Since we are using `history` and `location`, the dependency needs to be []
-  }, [])
+  }, [location])
   useEffect(() => {
     if(isAuthenticated){
       setTimeout(() => {
@@ -67,14 +69,21 @@ const Browse = ({ history, summary }) => {
     tmid = setTimeout(getResults, 1000)
   }
   const handleRelationChange = (relation) => {
-    const relationIndex = relations.findIndex(it => it.topicId === relation.topicId)
-    if(relationIndex !== -1){
-      setRelations([...relations.slice(0, relationIndex), relation, ...relations.slice(relationIndex + 1)])
-    }
-    else {
-      setRelations([...relations, relation])
-    }
-    api.post('/favorite', [relation])
+    api.post('/favorite', [relation]).then(res => {
+      const relationIndex = relations.findIndex(it => it.topicId === relation.topicId)
+      if(relationIndex !== -1){
+        setRelations([...relations.slice(0, relationIndex), relation, ...relations.slice(relationIndex + 1)])
+      }
+      else {
+        setRelations([...relations, relation])
+      }
+    }).catch(err => {
+        if (isAuthenticated) {
+            setWarningVisible(true);
+        } else {
+            loginWithPopup();
+        }
+    })
   }
   let topicCounts = {}
   topicTypes.forEach((topic) => {
@@ -106,6 +115,7 @@ const Browse = ({ history, summary }) => {
           {results.map(result => <Result key={`${result.type}-${result.id}`} {...{result, handleRelationChange, relations}} />)}
         </div>
       </div>
+      <FavoriteWarningModal visible={warningVisible} close={() => setWarningVisible(false)}/>
     </div>
   )
 }
@@ -144,7 +154,7 @@ const Result = ({ result, relations, handleRelationChange }) => {
         {result.value && <li><span>Value:</span>{result.valueCurrency && <i>{result.valueCurrency}</i>}{String(result.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
         {result.type === 'event' && [<li><span>Starts:</span><i>{moment(result.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(result.endDate).format('DD MMM YYYY')}</i></li>]}
       </ul>
-      {description && <p><ShowMoreText lines={5}>{description}</ShowMoreText></p>}
+      {description && <ShowMoreText lines={5}>{description}</ShowMoreText>}
       <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />
     </Card>
   )
@@ -178,7 +188,7 @@ const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
         <Button size="small" icon={<PlusOutlined />} shape="round" />
       </Dropdown>
       {(!relation || relation.association.length === 0) && <div className="label">Favorites</div>}
-      {relation?.association?.map(relationType => <Tag color="blue">{relationType}</Tag>)}
+      {relation?.association?.map((relationType, index) => <Tag color="blue" key={`relation-${index}`}>{relationType}</Tag>)}
     </div>
   )
 }
