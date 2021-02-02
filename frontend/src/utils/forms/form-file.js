@@ -54,7 +54,7 @@ const FileWidget = (props) => {
             {props?.name === 'cv' && file?.name && (<ViewWidget url={output} download={file.name}/>)}
             <input type="file" onChange={handleChange} ref={inputFile} accept={props?.accept} style={{display:"none"}}/>
             <br/>
-            {output && props?.value && props?.name !== 'cv' && (<img src={props.value} alt="upload" />)}
+            {(output || props?.value) && props?.name !== 'cv' && (<img src={props?.value || output} alt="upload" />)}
             {props?.value || output
                 ? (<Button
                     onClick={e => removeFile(inputFile, setFile, setOutput, props.onChange)}

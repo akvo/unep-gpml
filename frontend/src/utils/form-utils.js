@@ -18,11 +18,11 @@ export const validateSchema = (schema) => (values) => {
   const errors = {}
   Object.keys(schema).forEach(itemName => {
     const value = values[itemName]
-    if (value && schema[itemName]?.maxFileSize) {
-      const invalidSize = checkFileSize(value, schema[itemName].maxFileSize);
-      if (invalidSize) {
-        errors[itemName] = 'Allowed file size: ' + schema[itemName].maxFileSize + 'mb';
-      }
+    if (value && schema[itemName]?.maxFileSize && !value.startsWith('/')) {
+        const invalidSize = checkFileSize(value, schema[itemName].maxFileSize);
+        if (invalidSize) {
+            errors[itemName] = 'Allowed file size: ' + schema[itemName].maxFileSize + 'mb';
+        }
     }
     if (!value && schema[itemName]?.required) {
       errors[itemName] = 'Required'
