@@ -24,6 +24,13 @@ const ViewWidget = ({url, download}) =>  {
     return (<a className="view-cv ant-btn" href={url} target="_blank" rel="noreferrer">View CV</a>)
 }
 
+const removeFile = (inputFile, setFile, setOutput, onChange) => {
+    inputFile.current.value = "";
+    onChange("");
+    setFile(null);
+    setOutput("");
+}
+
 
 const FileWidget = (props) => {
     const [file, setFile] = useState(null);
@@ -36,7 +43,7 @@ const FileWidget = (props) => {
         base64.then(res => {
             setOutput(res);
             props.onChange(res);
-        }).catch(err => console.log(err))
+        }).catch(err => props.onChange(props?.value || null))
     }
     return (
         <div className="photo-upload">
@@ -47,8 +54,12 @@ const FileWidget = (props) => {
             {props?.name === 'cv' && file?.name && (<ViewWidget url={output} download={file.name}/>)}
             <input type="file" onChange={handleChange} ref={inputFile} accept={props?.accept} style={{display:"none"}}/>
             <br/>
-            {!output && props?.value && props?.name !== 'cv' && (<img src={props.value} alt="upload" />)}
-            {props?.name !== 'cv' && file?.name && (<img src={output} alt={file.name} />)}
+            {output && props?.value && props?.name !== 'cv' && (<img src={props.value} alt="upload" />)}
+            {props?.value || output
+                ? (<Button
+                    onClick={e => removeFile(inputFile, setFile, setOutput, props.onChange)}
+                    style={{marginTop: "10px", display:"block"}}>Remove</Button>)
+            : ""}
         </div>
     )
 }
