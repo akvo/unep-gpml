@@ -15,10 +15,10 @@ const EventWarningModal = ({visible, close}) => {
           <div className="submitted">
             <h2>Pending approval</h2>
             <p>
-              You can add an <strong>event</strong> once your account is approved.
               We will review your account shortly.
+              You can add an <strong>event</strong> once your account is approved.
               {user?.email_verified === false && <span><br />
-              Meanwhile please confirm your email.
+              Meanwhile, please confirm your email.
               <br />
               <small>Registrations with unconfirmed emails will not be approved</small></span>}
             </p>
