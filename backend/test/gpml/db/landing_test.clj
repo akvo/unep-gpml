@@ -22,7 +22,8 @@
    :valid_to nil
    :geo_coverage_type geo-coverage
    :attachments nil
-   :remarks "Remarks"})
+   :remarks "Remarks"
+   :review_status "APPROVED"})
 
 (defn add-resource-data [conn]
   (db.country/new-country conn {:name "Spain" :iso_code "ESP"})
@@ -85,7 +86,8 @@
                                  :geo_coverage_type nil
                                  :country nil
                                  :city nil
-                                 :image nil})
+                                 :image nil
+                                 :review_status "SUBMITTED"})
           summary (db.landing/summary conn)
           extract-data (fn [topic]
                          (->> summary

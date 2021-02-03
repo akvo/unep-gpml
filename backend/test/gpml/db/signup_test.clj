@@ -40,6 +40,7 @@
           conn (-> system db-key :spec)
           _ (add-stakeholder-data conn)
           stakeholder (db.stakeholder/all-stakeholder conn)]
+      (is (= (:review_status (first stakeholder)) "SUBMITTED"))
       (is (= (:first_name (first stakeholder)) "John"))
       (is (= (:picture (first stakeholder)) nil))
       (is (= (:country (first stakeholder)) (get-country conn "Indonesia")))

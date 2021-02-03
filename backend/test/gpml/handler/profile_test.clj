@@ -79,6 +79,7 @@
       (is (= 201 (:status resp)))
       (is (= "John" (->(:body resp) :first_name)))
       (is (= "Doe" (->(:body resp) :last_name)))
+      (is (= "SUBMITTED" (->(:body resp) :review_status)))
       (is (= {:id 1
               :about "Lorem Ipsum"
               :country "IND"
@@ -90,13 +91,15 @@
               :photo "/image/profile/1"
               :cv "/cv/profile/1"
               :representation "test"
-              :approved_at nil
               :title "Mr."
               :role "USER"
               :geo_coverage_type "regional"
               :geo_coverage_value ["Africa" "Europe"]
               :tags [1 2]
-              :twitter "johndoe"}
+              :twitter "johndoe"
+              :reviewed_at nil
+              :reviewed_by nil
+              :review_status "SUBMITTED"}
              (:body resp)))
       (is (= "/image/profile/1" (-> resp :body :photo))))))
 
@@ -127,13 +130,15 @@
               :photo nil
               :cv "/cv/profile/1"
               :representation "test"
-              :approved_at nil
               :title "Mr."
               :role "USER"
               :geo_coverage_type "regional"
               :geo_coverage_value ["Africa" "Europe"]
               :tags [1 2]
-              :twitter nil}
+              :twitter nil
+              :reviewed_at nil
+              :reviewed_by nil
+              :review_status "SUBMITTED"}
              (:body resp))))))
 
 (deftest handler-put-test
@@ -145,7 +150,7 @@
           ;; John created account with country value Indonesia and organisation Akvo
           _ (db.stakeholder/new-stakeholder-cv db {:cv picture})
           _ (db.stakeholder/new-stakeholder-picture db {:picture picture})
-          _ (db.stakeholder/new-stakeholder db  (assoc (new-profile (:id 1) (:id 1)) 
+          _ (db.stakeholder/new-stakeholder db  (assoc (new-profile (:id 1) (:id 1))
                                                        :picture "/image/profile/1"
                                                        :cv "/cv/profile/1"))
           ;; John trying to edit their profile with newly organisation
@@ -175,7 +180,6 @@
               :title "Mr.",
               :first_name "Mark",
               :last_name "Doe",
-              :approved_at nil,
               :country "SPA",
               :linked_in "johndoe",
               :twitter "johndoe",
@@ -186,7 +190,10 @@
               :representation "test",
               :role "USER",
               :geo_coverage_type "regional"
-              :about "Dolor sit Amet"}
+              :about "Dolor sit Amet"
+              :reviewed_at nil,
+              :reviewed_by nil,
+              :review_status "SUBMITTED"}
              profile))))
 
 (deftest handler-get-test-has-profile
@@ -202,6 +209,7 @@
       (is (= 200 (:status resp)))
       (is (= "John" (-> (:body resp) :first_name)))
       (is (= "Doe" (-> (:body resp) :last_name)))
+      (is (= "SUBMITTED" (-> (:body resp) :review_status)))
       (is (= {:name "Akvo" :url "https://akvo.org"} (-> (:body resp) :org)))
       (is (= "IND" (-> (:body resp) :country))))))
 
@@ -225,7 +233,7 @@
           admin (new-profile 1 1)
           admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
           ;; Jane become an admin
-          _ (db.stakeholder/update-stakeholder-role db (assoc admin :role "ADMIN"))
+          _ (db.stakeholder/update-stakeholder-role db (assoc admin :role "ADMIN" :review_status "APPROVED"))
           _ (db.stakeholder/approve-stakeholder db admin)
           ;; create new user name John
           _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
@@ -248,18 +256,22 @@
           ;; create new user name Jane
           admin (new-profile 1 1)
           admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
-          _ (db.stakeholder/approve-stakeholder db admin)
-          ;; create new user name John
-          _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
+          ;; Approve Jane
+          _ (db.stakeholder/approve-stakeholder db (assoc admin :review_status "APPROVED"))
           ;; Jane become an admin
           _ (db.stakeholder/update-stakeholder-role db (assoc admin :role "ADMIN"))
+          ;; create new user name John
+          _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
           ;; Jane trying to approve this guy John
           resp (handler (-> (mock/request :put "/")
                             (assoc :jwt-claims {:email "jane@org"})
-                            (assoc :body-params {:id (get-user db "john@org")})))]
+                            (assoc :body-params {:id (get-user db "john@org")
+                                                 :review_status "APPROVED"})))]
       (is (= 204 (:status resp)))
       (is (= "John" (-> resp :body :data :first_name)))
-      (is (inst? (-> resp :body :data :approved_at))))))
+      (is (= "APPROVED" (-> resp :body :data :review_status)))
+      (is (= 1 (-> resp :body :data :reviewed_by)))
+      (is (inst? (-> resp :body :data :reviewed_at))))))
 
 
 (comment

@@ -16,7 +16,8 @@
                    :image nil
                    :geo_coverage_type nil
                    :end_date "2021-01-01T12:00:00Z"
-                   :approved_at "2021-01-01T12:00:00Z"
+                   :reviewed_at "2021-01-01T12:00:00Z"
+                   :review_status "APPROVED"
                    :start_date "2021-01-01T10:00:00Z"})
 
 (deftest topic-filtering
@@ -39,7 +40,7 @@
     (testing "Filtering of approved events"
       (is (not-empty (do
                        ;; Approve an event
-                       (db.event/approve-event db (merge event-id {:approved_by nil}))
+                       (db.event/approve-event db (merge event-id {:reviewed_by nil}))
                        (db.browse/filter-topic db {:topic #{"event"}})))))
     (testing "Combination of 3 filters"
       (is (not-empty (db.browse/filter-topic db {:search-text "barrier"
