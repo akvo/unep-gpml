@@ -131,7 +131,7 @@
 (defn get-resources [db]
   (->> (get-data "resources")
        (map (fn [x]
-                (assoc x :value (:value_amount x))))
+                (assoc x :value (:value_amount x) :review_status "APPROVED")))
        (map (fn [x]
               (if-let [country (:country x)]
                 (if-let [data (first (get-country db [country]))]
@@ -190,7 +190,7 @@
 (defn get-policies [db]
   (->> (get-data "policies")
        (map (fn [x]
-                (assoc x :value (:value_amount x))))
+                (assoc x :value (:value_amount x) :review_status "APPROVED")))
        (map (fn [x]
               (if-let [country (:country x)]
                 (if-let [data (first (get-country db [country]))]
@@ -250,6 +250,8 @@
 (defn get-technologies [db]
   (->> (get-data "technologies")
        (map (fn [x]
+                (assoc x :review_status "APPROVED")))
+       (map (fn [x]
               (if-let [country (:country x)]
                 (if-let [data (first (get-country db [country]))]
                   (assoc x :country (:id data))
@@ -293,6 +295,8 @@
 
 (defn get-projects [db]
   (->> (get-data "projects")
+       (map (fn [x]
+                (assoc x :review_status "APPROVED")))
        (map (fn [x]
               (if-let [country (seq(:countries x))]
                 (assoc x :countries (get-ids (get-country db country)))
