@@ -146,7 +146,7 @@ const Result = ({ result, relations, handleRelationChange }) => {
       <div className="type">{topicNames(result.type)}</div>
       <ul className="stats">
         {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
-        {result.geoCoverageCountries && <li>{result.geoCoverageCountries.map(it => countries[countries3to2[it]]?.name).join(', ')}</li>}
+        {result.geoCoverageValues && <li>{result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')}</li>}
         {result.status && <li><span>Status:</span>{result.status}</li>}
         {result.organisationType && <li><span>Org:</span>{result.organisationType}</li>}
         {result.yearFounded && <li><span>Founded:</span>{result.yearFounded}</li>}
