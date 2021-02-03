@@ -60,12 +60,13 @@
       (db.stakeholder/new-stakeholder conn profile)))
 
 (defn remap-profile
-  [{:keys [id photo about approved_at
+  [{:keys [id photo about
            title first_name role
            last_name linked_in cv
            twitter representation
            country org_name org_url
-           geo_coverage_type]}
+           geo_coverage_type
+           reviewed_at reviewed_by review_status]}
    tags
    geo]
   {:id id
@@ -85,7 +86,9 @@
          :url org_url}
    :about about
    :role role
-   :approved_at approved_at})
+   :reviewed_at reviewed_at
+   :reviewed_by reviewed_by
+   :review_status review_status})
 
 (defmethod ig/init-key :gpml.handler.profile/get [_ {:keys [db]}]
   (fn [{:keys [jwt-claims]}]
@@ -200,11 +203,13 @@
       (resp/status 204))))
 
 (defmethod ig/init-key :gpml.handler.profile/approve [_ {:keys [db]}]
-  (fn [{:keys [body-params]}]
-    (when (db.stakeholder/approve-stakeholder (:spec db) body-params)
-      (assoc (resp/status 204)
-             :body {:message "Successfuly Updated"
-                    :data (db.stakeholder/stakeholder-by-id (:spec db) body-params)}))))
+  (fn [{:keys [jwt-claims body-params]}]
+    (let [conn (:spec db)
+          admin-id (-> (db.stakeholder/admin-by-email conn jwt-claims) :id)]
+      (when (db.stakeholder/approve-stakeholder conn (assoc body-params :reviewed_by admin-id))
+        (assoc (resp/status 204)
+               :body {:message "Successfuly Updated"
+                      :data (db.stakeholder/stakeholder-by-id conn body-params)})))))
 
 (defmethod ig/init-key :gpml.handler.profile/pending [_ {:keys [db]}]
   (fn [_]

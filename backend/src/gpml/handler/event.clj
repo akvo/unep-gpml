@@ -98,7 +98,7 @@
   (fn [{:keys [body-params admin]}]
     (if-let [_ (db.event/pending-event-by-id (:spec db) body-params)]
       (do
-        (db.event/approve-event (:spec db) (assoc body-params :approved_by (:id admin)))
+        (db.event/approve-event (:spec db) (assoc body-params :reviewed_by (:id admin)))
         (resp/response {:message "Successfully Updated"
                         :data (db.event/event-by-id (:spec db) body-params)}))
       (resp/bad-request {:message (format "Event id %s does not exist" (:id body-params)) }))))
