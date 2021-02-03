@@ -31,20 +31,38 @@ const removeFile = (inputFile, setFile, setOutput, onChange) => {
     setOutput("");
 }
 
-
-const FileWidget = (props) => {
-    const [file, setFile] = useState(null);
-    const [output, setOutput] = useState("");
-    const inputFile = useRef(null);
-    const handleChange = (x) => {
-        const input = x.target.files[0];
+const handleFileChange = (el, props, setFile, setOutput, setError) => {
+    const input = el.target.files[0];
+    let isValid = true;
+    if (!input){
+        return;
+    }
+    if (props?.maxFileSize) {
+        isValid = (props.maxFileSize * 1000000) >= input.size;
+    }
+    if (isValid) {
         setFile(input);
         const base64 = getBase64(input)
         base64.then(res => {
             setOutput(res);
             props.onChange(res);
-        }).catch(err => props.onChange(props?.value || null))
+        }).catch(err => {
+            props.onChange(props?.value || null);
+        })
     }
+    if (!isValid) {
+        setError(`Max filesize is ${props.maxFileSize}mb.`);
+        setTimeout(() => {
+            setError("")
+        }, 5000);
+    }
+}
+
+const FileWidget = (props) => {
+    const [file, setFile] = useState(null);
+    const [output, setOutput] = useState("");
+    const [error, setError] = useState();
+    const inputFile = useRef(null);
     return (
         <div className="photo-upload">
             <Button onClick={() => inputFile.current.click()} style={{marginTop: "5px"}} className="upload-btn">
@@ -52,7 +70,7 @@ const FileWidget = (props) => {
             </Button> <span style={{marginLeft:"20px"}}>{file?.name}</span>
             {!output && props?.value && props?.name === 'cv' && (<ViewWidget url={props.value} download={false}/>)}
             {props?.name === 'cv' && file?.name && (<ViewWidget url={output} download={file.name}/>)}
-            <input type="file" onChange={handleChange} ref={inputFile} accept={props?.accept} style={{display:"none"}}/>
+            <input type="file" onChange={e => handleFileChange(e, props, setFile, setOutput, setError)} ref={inputFile} accept={props?.accept} style={{display:"none"}}/>
             <br/>
             {(output || props?.value) && props?.name !== 'cv' && (<img src={props?.value || output} alt="upload" />)}
             {props?.value || output
@@ -60,6 +78,7 @@ const FileWidget = (props) => {
                     onClick={e => removeFile(inputFile, setFile, setOutput, props.onChange)}
                     style={{marginTop: "10px", display:"block"}}>Remove</Button>)
             : ""}
+            <div className="ant-form-item-explain ant-form-item-explain-error"><div role="alert">{error}</div></div>
         </div>
     )
 }
