@@ -26,6 +26,10 @@
         event-id (db.event/new-event db event-sample)]
     (testing "Simple text search"
       (is (not-empty (db.browse/filter-topic db {:search-text "plastic"}))))
+    (testing "Geo coverage values"
+      (let [results (db.browse/filter-topic db {:search-text "seabin"})]
+        (is (= 1 (count results)))
+        (is (= ["AUS" "ESP"] (-> results first :json :geo_coverage_values)))))
     (testing "Filtering by geo coverage"
       (is (not-empty (db.browse/filter-topic db {:geo-coverage #{"***" "IND"}}))))
     (testing "Filtering by topic"
