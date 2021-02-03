@@ -88,7 +88,7 @@ select
     s.review_status from stakeholder s
 left join country c on (s.country = c.id)
 left join organisation o on (s.affiliation = o.id)
-where s.reviewed_at is null order by s.created desc;
+where s.review_status <> 'APPROVED' order by s.created desc;
 
 -- :name approve-stakeholder :! :n
 -- :doc Approve stakeholder
