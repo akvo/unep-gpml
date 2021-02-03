@@ -1,5 +1,6 @@
 # UNEP - GPML Digital Platform
 
+[![Build Status](https://akvo.semaphoreci.com/badges/unep-gpml/branches/main.svg?style=shields)](https://akvo.semaphoreci.com/projects/unep-gpml)
 
 ## Development
 
