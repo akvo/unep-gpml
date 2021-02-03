@@ -152,8 +152,8 @@ const Search = withRouter(({ history }) => {
 
 const AddButton = ({ isAuthenticated, setSignupModalVisible, setEventWarningVisible, loginWithPopup,profile}) => {
   if(isAuthenticated){
-      if (profile?.approvedAt) {
-            return <Link to="/add-event"><Button type="primary" size="large">+ Add Event</Button></Link>
+      if (profile?.reviewStatus === "APPROVED") {
+          return <Link to="/add-event"><Button type="primary" size="large">+ Add Event</Button></Link>
       }
       return <Button type="primary" size="large" onClick={e => setEventWarningVisible(true)}>+ Add Event</Button>
   }
