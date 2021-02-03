@@ -23,29 +23,38 @@ values :t*:geo RETURNING id;
 -- :doc Returns the list of pending events
 select e.*
   from ( select e.id, e.title, e.start_date, e.end_date, e.description, e.image, e.geo_coverage_type,
-                e.remarks, e.created, e.modified, e.city, c.iso_code as country, e.languages as urls, e.tags, e.geo_coverage_values
+                e.remarks, e.created, e.modified, e.city, c.iso_code as country, e.languages as urls, e.tags, e.geo_coverage_values, e.review_status
            from v_event_data e
            left join country c on e.country = c.id) e, event pending
 
-where pending.approved_at is null
+where pending.review_status <> 'APPROVED'
   and e.id = pending.id
 
 
 -- :name pending-event-by-id :? :1
 -- :doc Return the id of an event pending for approval
-select id from event where approved_at is null and id = :id
+select id from event where reviewed_at is null and id = :id
 
 -- :name approve-event :! :1
 -- :doc Approves an event by given id
 update event
-   set approved_at = now(),
-       approved_by = :approved_by
+   set reviewed_at = now(),
+       reviewed_by = :reviewed_by::integer,
+       review_status = 'APPROVED'
+ where id = :id
+
+-- :name reject-event :! :1
+-- :doc Reject an event by given id
+update event
+   set reviewed_at = now(),
+       reviewed_by = :reviewed_by::integer,
+       review_status = 'REJECTED'
  where id = :id
 
 
 -- :name event-by-id :? :1
 -- :doc Returns the data for a given event
 select e.id, e.title, e.start_date, e.end_date, e.description, e.image, e.geo_coverage_type,
-                e.remarks, e.created, e.modified, e.city, c.iso_code as country, e.languages, e.tags
+                e.remarks, e.created, e.modified, e.city, c.iso_code as country, e.languages, e.tags, e.review_status
            from v_event_data e left join country c on e.country = c.id
 where e.id = :id
