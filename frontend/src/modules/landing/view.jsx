@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import Maps from './maps'
 import './styles.scss'
 import { topicTypes, topicNames } from '../../utils/misc';
+import moment from 'moment'
 
 const Landing = ({ history, data, countries, initLandingCount, setCountries, setInitLandingCount}) => {
     const [country, setCountry] = useState(null);
@@ -137,7 +138,7 @@ const TopicItem = ({ topic }) => (
       <span className="type">latest {topicNames(topic.topicType)}</span>
       <h2>{topic.title || topic.name}</h2>
       <ul>
-        <li>27 feb 2021</li>
+        <li>{moment(topic.created).format('LL')}</li>
       </ul>
       {topic.description && <p>{topic.description}</p>}
       <div className="bottom">
