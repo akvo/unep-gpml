@@ -19,6 +19,9 @@
     list-style: circle;
     margin-left: 40px;
   }
+  .ant-collapse-arrow {
+    top: 10.0005px!important;
+  }
 }
 
 .admin-view{
@@ -49,9 +52,50 @@
   }
   .stakeholder-info{
     display: flex;
-    img{
-      max-width: 100px;
+    .info-img{
+      max-width: 150px;
+      height: auto;
       margin-right: 15px;
+      img{
+        max-width: 100%;
+        padding: 5px;
+        border: #d9d9d9 1px solid;
+      }
+    }
+    ul li{
+        span{
+          width: 100px;
+          display: inline-block;
+        }
+        ul.ul-children {
+          display: inline-block;
+          vertical-align: top;
+          margin-left: -10px;
+        }
+    }
+  }
+  .event-info{
+    display: flex;
+    .info-img{
+      max-width: 150px;
+      height: auto;
+      margin-right: 15px;
+      img{
+        max-width: 100%;
+        padding: 5px;
+        border: #d9d9d9 1px solid;
+      }
+    }
+    ul li{
+        span{
+          width: 100px;
+          display: inline-block;
+        }
+        ul.ul-children {
+          display: inline-block;
+          vertical-align: top;
+          margin-left: -10px;
+        }
     }
   }
 }

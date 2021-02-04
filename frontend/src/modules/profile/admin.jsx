@@ -35,8 +35,9 @@ const AdminSection = () => {
         <div className="col">Action</div>
       </div>
       <Collapse>
-      {pendingItems.map(item =>
+      {pendingItems.map((item, index) =>
       <Collapse.Panel
+        key={`collapse-${index}`}
         header={
           <div className="row">
             <div className="col">{item.type}</div>
@@ -53,7 +54,9 @@ const AdminSection = () => {
         <div>
           {item.type === 'profile' && (
             <div className="stakeholder-info">
-              {item.photo && <img src={item.photo} alt="profile" />}
+              <div className="info-img">
+              {item.photo && <div className="info-img"><img src={item.photo} alt="profile"/></div>}
+              </div>
               <ul>
                 <li>{item.email}</li>
                 <li>{item.about}</li>
@@ -63,26 +66,25 @@ const AdminSection = () => {
           )}
           {item.type === 'event' && (
             <div className="event-info">
-              {item.image && <img src={item.image} alt="event" />}
-              {/* TODO fix image url */}
+              {item.image && <div className="info-img"><img src={item.image} alt="event"/></div>}
               <ul>
-                  <li>Submitted At: {moment(item.createdAt).format('DD MMM YYYY')}</li>
-                  <li>Event Date: {moment(item.startDate).format('DD MMM YYYY')} to {moment(item.endDate).format('DD MMM YYYY')}</li>
-                  <li>Country: {item.country}</li>
-                  <li>City: {item.city}</li>
-                  <li>Coverage: <b>{item.geoCoverageType}</b>
+                  <li><span>Submitted At</span>: {moment(item.createdAt).format('DD MMM YYYY')}</li>
+                  <li><span>Event Date</span>: {moment(item.startDate).format('DD MMM YYYY')} to {moment(item.endDate).format('DD MMM YYYY')}</li>
+                  <li><span>Country</span>: {item.country}</li>
+                  <li><span>City: {item.city}</span></li>
+                  <li><span>Coverage</span>: <b>{item.geoCoverageType}</b>
                       {item?.geoCoverageValues &&
                         <ul className={'ul-children'}>
                           {item.geoCoverageValues.map((x, i) => <li key={`coverage-${i}`}>{x}</li>)}
                         </ul>
                       }
                   </li>
-                  <li>Description: {item.description}</li>
-                  <li>Remarks: {item.remarks}</li>
+                  <li><span>Description</span>: <br/>{item.description}</li>
+                  <li><span>Remarks</span>: {item.remarks}</li>
                   {item?.tags &&
-                    <li>Tags: {item.tags.map(x => `${x}, `)}</li>
+                  <li><span>Tags</span>: {item.tags.map(x => `${x}, `)}</li>
                   }
-                  <li>Urls:
+                  <li><span>Urls</span>:
                       {item?.urls &&
                         <ul className={'ul-children'}>
                           {item.urls.map((x, i) => <li key={`url-${i}`}>{x.isoCode}: {x.url}</li>)}

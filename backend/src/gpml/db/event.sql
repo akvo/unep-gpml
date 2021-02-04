@@ -33,24 +33,15 @@ where pending.review_status <> 'APPROVED'
 
 -- :name pending-event-by-id :? :1
 -- :doc Return the id of an event pending for approval
-select id from event where reviewed_at is null and id = :id
+select id from event where review_status = 'SUBMITTED' and id = :id
 
--- :name approve-event :! :1
+-- :name update-event-status :! :n
 -- :doc Approves an event by given id
 update event
    set reviewed_at = now(),
-       reviewed_by = :reviewed_by::integer,
-       review_status = 'APPROVED'
+    review_status = :v:review_status::review_status
+--~ (when (contains? params :reviewed_by) ",reviewed_by = :reviewed_by::integer")
  where id = :id
-
--- :name reject-event :! :1
--- :doc Reject an event by given id
-update event
-   set reviewed_at = now(),
-       reviewed_by = :reviewed_by::integer,
-       review_status = 'REJECTED'
- where id = :id
-
 
 -- :name event-by-id :? :1
 -- :doc Returns the data for a given event

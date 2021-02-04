@@ -41,14 +41,14 @@
 (defn- mock-post []
   (-> (mock/request :post "/")
       (assoc :admin {:id 1}) ;; authz middleware
-      (assoc :body-params {:id 1})))
+      (assoc :body-params {:id 1 :review_status "APPROVED"})))
 
 (deftest approve-event
   (testing "Approving an event by an admin"
     (let [system (-> fixtures/*system*
-                     (ig/init [::event/approve]))
+                     (ig/init [::event/review]))
           db (-> system :duct.database.sql/hikaricp :spec)
-          handler (::event/approve system)
+          handler (::event/review system)
           _ (sample-data db)
           resp (handler (mock-post))]
       (is (= 200 (:status resp))))))

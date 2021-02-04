@@ -54,13 +54,13 @@
                                                   :swagger {:tags ["event"]
                                                             :security [{:id_token []}]}
                                                   :handler #ig/ref :gpml.handler.event/pending}}]]
-                                         ["/approve" {:middleware [#ig/ref :gpml.auth/admin-required-middleware]}
+                                         ["/review" {:middleware [#ig/ref :gpml.auth/admin-required-middleware]}
                                           [""
-                                           {:put {:summary "Approves the submission of an event"
+                                           {:put {:summary "Review the event submission of an event"
                                                   :swagger {:tags ["event"]
                                                             :security [{:id_token []}]}
-                                                  :parameters {:body [:map [:id int?]]}
-                                                  :handler #ig/ref :gpml.handler.event/approve}}]]]
+                                                  :parameters {:body [:map [:id int? :review_status [:enum "APPROVED" "REJECTED"]]]}
+                                                  :handler #ig/ref :gpml.handler.event/review}}]]]
                                         ["/landing"
                                          [""
                                           {:get {:summary "End-point for the landing page"
@@ -129,7 +129,7 @@
   :gpml.handler.event/post {:db #ig/ref :duct.database/sql}
   :gpml.handler.event/post-params {}
   :gpml.handler.event/pending {:db #ig/ref :duct.database/sql}
-  :gpml.handler.event/approve {:db #ig/ref :duct.database/sql}
+  :gpml.handler.event/review {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.profile/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/post {:db #ig/ref :duct.database/sql}
