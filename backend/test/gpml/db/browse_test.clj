@@ -40,7 +40,7 @@
     (testing "Filtering of approved events"
       (is (not-empty (do
                        ;; Approve an event
-                       (db.event/approve-event db (merge event-id {:reviewed_by nil}))
+                       (db.event/update-event-status db (merge event-id {:review_status "APPROVED"}))
                        (db.browse/filter-topic db {:topic #{"event"}})))))
     (testing "Combination of 3 filters"
       (is (not-empty (db.browse/filter-topic db {:search-text "barrier"
