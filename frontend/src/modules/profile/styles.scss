@@ -1,4 +1,13 @@
 #profile{
+  .review-status {
+    margin-top: 20px;
+  }
+  .review-status.rejected {
+      color: red;
+  }
+  .review-status.approved {
+      color: green;
+  }
   .title-name-group{
     display: flex;
     .ant-select{

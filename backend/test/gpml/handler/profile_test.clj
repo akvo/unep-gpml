@@ -234,7 +234,6 @@
           admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
           ;; Jane become an admin
           _ (db.stakeholder/update-stakeholder-role db (assoc admin :role "ADMIN" :review_status "APPROVED"))
-          _ (db.stakeholder/approve-stakeholder db admin)
           ;; create new user name John
           _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
           ;; create new user name Nick
@@ -249,23 +248,21 @@
 
 (deftest handler-approval-test
   (testing "Profile is approved by admin"
-    (let [system (ig/init fixtures/*system* [::profile/approve])
-          handler (::profile/approve system)
+    (let [system (ig/init fixtures/*system* [::profile/review])
+          handler (::profile/review system)
           db (-> system :duct.database.sql/hikaricp :spec)
           _ (seed-important-database db)
           ;; create new user name Jane
           admin (new-profile 1 1)
           admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
           ;; Approve Jane
-          _ (db.stakeholder/approve-stakeholder db (assoc admin :review_status "APPROVED"))
-          ;; Jane become an admin
-          _ (db.stakeholder/update-stakeholder-role db (assoc admin :role "ADMIN"))
+          _ (db.stakeholder/update-stakeholder-role db (assoc admin :role "ADMIN" :review_status "APPROVED"))
           ;; create new user name John
           _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
           ;; Jane trying to approve this guy John
           resp (handler (-> (mock/request :put "/")
-                            (assoc :jwt-claims {:email "jane@org"})
-                            (assoc :body-params {:id (get-user db "john@org")
+                            (assoc :admin {:id 1}
+                                   :body-params {:id (get-user db "john@org")
                                                  :review_status "APPROVED"})))]
       (is (= 204 (:status resp)))
       (is (= "John" (-> resp :body :data :first_name)))

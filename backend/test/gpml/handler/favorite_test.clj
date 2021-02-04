@@ -41,7 +41,7 @@
                                              :about "Lorem Ipsum"
                                              :geo_coverage_type nil
                                              :role "USER"})]
-    (db.stakeholder/approve-stakeholder db sth)))
+    (db.stakeholder/update-stakeholder-status db (assoc sth :review_status "APPROVED"))))
 
 (defn- mock-post [email]
   (-> (mock/request :post "/")

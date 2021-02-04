@@ -19,8 +19,8 @@ const AdminSection = () => {
       setLoading(false)
     })()
   }, [])
-  const approve = (item) => () => {
-    api.put(`/${item.type}/approve`, { id: item.id })
+  const review = (item, review_status) => () => {
+    api.put(`/${item.type}/review`, { id: item.id, review_status: review_status})
     .then(() => {
       setPendingItems(pendingItems.filter(it => it.id !== item.id))
     })
@@ -43,8 +43,8 @@ const AdminSection = () => {
             <div className="col">{item.title}</div>
             <div className="col" onClick={e => { e.stopPropagation() }}>
               <Space size="middle">
-                <Button type="primary" onClick={approve(item)}>Approve</Button>
-                <Button type="link">Decline</Button>
+                <Button type="primary" onClick={review(item, "APPROVED")}>Approve</Button>
+                <Button type="link" onClick={review(item, "REJECTED")}>Decline</Button>
               </Space>
             </div>
           </div>

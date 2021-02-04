@@ -92,7 +92,6 @@
 
 (defmethod ig/init-key :gpml.handler.profile/get [_ {:keys [db]}]
   (fn [{:keys [jwt-claims]}]
-    (tap> jwt-claims)
     (if-let [profile (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
       (let [conn (:spec db)
             tags (db.stakeholder/stakeholder-tags conn profile)
@@ -202,14 +201,13 @@
               (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))
       (resp/status 204))))
 
-(defmethod ig/init-key :gpml.handler.profile/approve [_ {:keys [db]}]
-  (fn [{:keys [jwt-claims body-params]}]
-    (let [conn (:spec db)
-          admin-id (-> (db.stakeholder/admin-by-email conn jwt-claims) :id)]
-      (when (db.stakeholder/approve-stakeholder conn (assoc body-params :reviewed_by admin-id))
-        (assoc (resp/status 204)
-               :body {:message "Successfuly Updated"
-                      :data (db.stakeholder/stakeholder-by-id conn body-params)})))))
+(defmethod ig/init-key :gpml.handler.profile/review [_ {:keys [db]}]
+  (fn [{:keys [body-params admin]}]
+    (let [db (:spec db)
+          _ (db.stakeholder/update-stakeholder-status db (assoc body-params :reviewed_by (:id admin)))]
+    (assoc (resp/status 204)
+      :body {:message "Successfuly Updated"
+             :data (db.stakeholder/stakeholder-by-id db body-params)}))))
 
 (defmethod ig/init-key :gpml.handler.profile/pending [_ {:keys [db]}]
   (fn [_]

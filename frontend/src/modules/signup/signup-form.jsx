@@ -5,7 +5,12 @@ import { createForm } from 'final-form'
 import arrayMutators from 'final-form-arrays'
 import './styles.scss'
 import Checkbox from "antd/lib/checkbox/Checkbox";
-import { LinkedinOutlined, TwitterOutlined } from "@ant-design/icons";
+import {
+  LinkedinOutlined,
+  TwitterOutlined,
+  CheckCircleOutlined,
+  ExclamationCircleOutlined
+} from "@ant-design/icons";
 import { FieldsFromSchema, validateSchema } from "../../utils/form-utils";
 import { countries } from 'countries-list'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
@@ -97,6 +102,14 @@ const defaultFormSchema = [
   }
 ]
 
+const ReviewText = ({reviewStatus}) => {
+    if (reviewStatus === "SUBMITTED") return <div className="review-status">WAITING FOR APPROVAL</div>
+ const reviewIcon = reviewStatus === "APPROVED"
+        ? (<CheckCircleOutlined/>)
+        : (<ExclamationCircleOutlined/>)
+ return (<div className={`review-status ${reviewStatus.toLowerCase()}`}>{reviewIcon} SUBMISSION IS {reviewStatus}</div>) 
+}
+
 const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef, tagsRef }) => {
   const [formSchema, setFormSchema] = useState(defaultFormSchema)
   const [noOrg, setNoOrg] = useState(false)
@@ -128,6 +141,7 @@ const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef, tagsRef
             if(handleSubmitRef) handleSubmitRef(handleSubmit)
             return (
               <div>
+                {initialValues?.reviewStatus && <ReviewText {...initialValues}/> }
                 <div className="section">
                   <h2>Personal details</h2>
                   <FieldsFromSchema schema={formSchema[0]} />

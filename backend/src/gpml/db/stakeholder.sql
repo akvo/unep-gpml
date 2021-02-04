@@ -90,19 +90,11 @@ left join country c on (s.country = c.id)
 left join organisation o on (s.affiliation = o.id)
 where s.review_status <> 'APPROVED' order by s.created desc;
 
--- :name approve-stakeholder :! :n
+-- :name update-stakeholder-status :! :n
 -- :doc Approve stakeholder
 update stakeholder
 set reviewed_at = now(),
-    review_status = 'APPROVED'
---~ (when (contains? params :reviewed_by) ",reviewed_by = :reviewed_by::integer")
-where id = :id;
-
--- :name reject-stakeholder :! :n
--- :doc Reject stakeholder
-update stakeholder
-set reviewed_at = now(),
-    review_status = 'REJECTED'
+    review_status = :v:review_status::review_status
 --~ (when (contains? params :reviewed_by) ",reviewed_by = :reviewed_by::integer")
 where id = :id;
 

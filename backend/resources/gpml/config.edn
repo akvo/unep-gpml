@@ -88,13 +88,15 @@
                                                   :swagger {:tags ["profile"]
                                                             :security [{:id_token []}]}
                                                   :handler #ig/ref :gpml.handler.profile/pending}}]]
-                                         ["/approve" {:middleware [#ig/ref :gpml.auth/admin-required-middleware]}
+                                         ["/review" {:middleware [#ig/ref :gpml.auth/admin-required-middleware]}
                                           [""
-                                           {:put {:summary "Approve profile by admin"
+                                           {:put {:summary "Profile review by admin"
                                                   :swagger {:tags ["profile"]
                                                             :security [{:id_token []}]}
-                                                  :parameters {:body [:map [:id number?]]}
-                                                  :handler #ig/ref :gpml.handler.profile/approve}}]]]
+                                                  :parameters {:body [:map
+                                                                      [:id number?]
+                                                                      [:review_status [:enum "APPROVED" "REJECTED"]]]}
+                                                  :handler #ig/ref :gpml.handler.profile/review}}]]]
                                         ["/tag"
                                          ["/:topic-type"
                                           {:get {:summary "List tags by topic type"
@@ -133,7 +135,7 @@
   :gpml.handler.profile/post {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/post-params {}
   :gpml.handler.profile/put {:db #ig/ref :duct.database/sql}
-  :gpml.handler.profile/approve {:db #ig/ref :duct.database/sql}
+  :gpml.handler.profile/review {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/pending {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.tag/get {:db #ig/ref :duct.database/sql}

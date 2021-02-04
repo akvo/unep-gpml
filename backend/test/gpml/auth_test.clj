@@ -41,7 +41,7 @@
                                              :representation "test"
                                              :about "Lorem Ipsum"
                                              :geo_coverage_type nil})]
-    (db.stakeholder/approve-stakeholder db sth)
+    (db.stakeholder/update-stakeholder-status db (assoc sth :review_status "APPROVED"))
     (db.stakeholder/update-stakeholder-role db {:id (:id sth)
                                                 :role role})))
 
