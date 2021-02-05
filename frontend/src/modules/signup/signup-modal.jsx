@@ -14,6 +14,9 @@ const SignupModal = ({ visible, onCancel, setProfile, profile, tagsRef}) => {
     const handleSubmitRef = useRef()
     const onSubmit = (vals) => {
       setSending(true)
+      if (vals.geoCoverageType === 'national'){
+          vals.geoCoverageValue = [vals.geoCoverageValue]
+      }
       api.post('/profile', vals)
       .then(d => {
         setProfile(d.data)

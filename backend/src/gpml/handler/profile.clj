@@ -90,6 +90,19 @@
    :reviewed_by reviewed_by
    :review_status review_status})
 
+(defn get-geo-data [db id geo-type geo-value]
+  (cond
+    (contains? #{"regional" "global with elements in specific areas"}
+     geo-type)
+    (->> {:names geo-value}
+         (db.country-group/country-group-by-names db)
+         (map #(vector id (:id %) nil)))
+    (contains? #{"transnational" "national"}
+     geo-type)
+    (->> {:codes geo-value}
+         (db.country/country-by-codes db)
+         (map #(vector id nil (:id %))))))
+
 (defmethod ig/init-key :gpml.handler.profile/get [_ {:keys [db]}]
   (fn [{:keys [jwt-claims]}]
     (if-let [profile (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
@@ -120,18 +133,7 @@
         (when (not-empty tags)
           (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
         (when (not-empty geo-value)
-          (let [geo-data
-                (cond
-                  (contains? #{"regional" "global with elements in specific areas"}
-                             geo-type)
-                  (->> {:names geo-value}
-                       (db.country-group/country-group-by-names db)
-                       (map #(vector id (:id %) nil)))
-                  (contains? #{"national" "transnational"}
-                             geo-type)
-                  (->> {:codes geo-value}
-                       (db.country/country-by-codes db)
-                       (map #(vector id nil (:id %)))))]
+          (let [geo-data (get-geo-data db id geo-type geo-value)]
             (when (some? geo-data)
               (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))
         (resp/created (:referer headers)
@@ -185,18 +187,7 @@
         (when (not-empty tags)
           (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
         (when (not-empty geo-value)
-          (let [geo-data
-                (cond
-                  (contains? #{"regional" "global with elements in specific areas"}
-                   geo-type)
-                  (->> {:names geo-value}
-                       (db.country-group/country-group-by-names db)
-                       (map #(vector id (:id %) nil)))
-                  (contains? #{"national" "transnational"}
-                   geo-type)
-                  (->> {:codes geo-value}
-                       (db.country/country-by-codes db)
-                       (map #(vector id nil (:id %)))))]
+          (let [geo-data (get-geo-data db id geo-type geo-value)]
             (when (some? geo-data)
               (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))
       (resp/status 204))))
