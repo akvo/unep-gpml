@@ -353,40 +353,41 @@
              resource? false
              technology? false
              project? false}}]
-   (println "-- Start Seeding")
-   (truncate-db db)
-   (when country?
-     (println "Seeding country...")
-     (seed-countries db)
-     (seed-country-groups db)
-     (seed-country-group-country db))
-   (when currency?
-     (println "Seeding currency...")
-     (seed-currencies db))
-   (when organisation?
-     (println "Seeding organisation...")
-     (seed-organisations db))
-   (when language?
-     (println "Seeding language...")
-     (seed-languages db))
-   (when tag?
-     (println "Seeding tag...")
-     (seed-tags db))
-   (when policy?
-     (println "Seeding policy...")
-     (seed-policies db))
-   (when resource?
-     (println "Seeding resource...")
-     (seed-resources db))
-   (when technology?
-     (println "Seeding technology...")
-     (seed-technologies db))
-   (when project?
-     (println "Seeding project...")
-     (seed-actions db)
-     (seed-action-details db)
-     (seed-projects db))
-   (println "-- Done Seeding"))
+   (jdbc/with-db-transaction [tx db]
+     (println "-- Start Seeding")
+     (truncate-db tx)
+     (when country?
+       (println "Seeding country...")
+       (seed-countries tx)
+       (seed-country-groups tx)
+       (seed-country-group-country tx))
+     (when currency?
+       (println "Seeding currency...")
+       (seed-currencies tx))
+     (when organisation?
+       (println "Seeding organisation...")
+       (seed-organisations tx))
+     (when language?
+       (println "Seeding language...")
+       (seed-languages tx))
+     (when tag?
+       (println "Seeding tag...")
+       (seed-tags tx))
+     (when policy?
+       (println "Seeding policy...")
+       (seed-policies tx))
+     (when resource?
+       (println "Seeding resource...")
+       (seed-resources tx))
+     (when technology?
+       (println "Seeding technology...")
+       (seed-technologies tx))
+     (when project?
+       (println "Seeding project...")
+       (seed-actions tx)
+       (seed-action-details tx)
+       (seed-projects tx))
+     (println "-- Done Seeding")))
   ([]
    (seed (-> (dev-system)
              (ig/init [:duct.database.sql/hikaricp])
