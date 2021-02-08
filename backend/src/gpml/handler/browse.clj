@@ -54,10 +54,11 @@
                              (str/replace #"&" "")
                              (str/replace #" " " & "))})))
 
-(defn results [query db]
+(defn results [query db approved?]
   (let [data (->> query
                   (get-db-filter)
                   (db.browse/filter-topic db)
+                  (filter (fn [{:keys [topic]}] (or approved? (not (= topic "stakeholder")))))
                   (map (fn [{:keys [json geo_coverage_iso_code topic]}]
                          (merge
                           (assoc json
@@ -69,12 +70,14 @@
 
 (defmethod ig/init-key :gpml.handler.browse/get [_ {:keys [db]}]
   (fn [{{:keys [query]} :parameters {:keys [email]} :jwt-claims}]
-    (let [user-id (and email (->> {:email email}
-                                  (db.stakeholder/stakeholder-by-email (:spec db))
-                                  :id))]
+    (let [stakeholder (and email (->> {:email email}
+                                      (db.stakeholder/stakeholder-by-email (:spec db))))
+          user-id (:id stakeholder)
+          approved? (= "APPROVED" (:review_status stakeholder))]
       (resp/response {:results (#'results
                                 (merge query {:user user-id})
-                                (:spec db))}))))
+                                (:spec db)
+                                approved?)}))))
 
 (defmethod ig/init-key :gpml.handler.browse/query-params [_ _]
   query-params)
