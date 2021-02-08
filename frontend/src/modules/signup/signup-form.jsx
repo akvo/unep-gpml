@@ -98,7 +98,7 @@ const defaultFormSchema = [
   },
   {
     tags: { label: 'Tags', control: 'select', options: [], loading: true, mode: 'multiple' },
-    cv: { label: 'CV / Portfolio', control: 'file', maxFileSize: 5, accept: ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, .pdf, image/*" },
+    cv: { label: 'CV / Portfolio', control: 'file', maxFileSize: 5, accept: ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain" },
   }
 ]
 
@@ -107,7 +107,7 @@ const ReviewText = ({reviewStatus}) => {
  const reviewIcon = reviewStatus === "APPROVED"
         ? (<CheckCircleOutlined/>)
         : (<ExclamationCircleOutlined/>)
- return (<div className={`review-status ${reviewStatus.toLowerCase()}`}>{reviewIcon} SUBMISSION IS {reviewStatus}</div>) 
+ return (<div className={`review-status ${reviewStatus.toLowerCase()}`}>{reviewIcon} SUBMISSION IS {reviewStatus}</div>)
 }
 
 const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef, tagsRef }) => {
