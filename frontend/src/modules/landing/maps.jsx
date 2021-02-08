@@ -83,7 +83,7 @@ const generateOptions = ({title, subtitle, data, tooltip}) => {
             itemStyle: {
                 zlevel: 0,
                 areaColor: '#fff',
-                borderColor: '#eee',
+                borderColor: '#79B0CC',
                 emphasis: {
                   areaColor: "#1890ff",
                 }
