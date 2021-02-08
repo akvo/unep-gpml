@@ -23,3 +23,16 @@
     }
   }
 }
+
+.signup-form{
+  .section:first-child{
+    .ant-form-item:nth-child(2){
+      width: 100px;
+      float: left;
+      margin-right: 15px;
+    }
+    .ant-form-item:nth-child(3){
+      width: 437px;
+    }
+  }
+}

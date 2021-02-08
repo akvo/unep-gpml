@@ -74,7 +74,8 @@ const TitleNameGroup = (props) => {
 
 const defaultFormSchema = [
   {
-    firstName: { label: 'First name', required: true, render: TitleNameGroup },
+    title: { label: 'Title', required: true, control: 'select', options: ['Mr', 'Mrs', 'Ms', 'Dr', 'Prof'].map(it => ({ value: it, label: it })) },
+    firstName: { label: 'First name', required: true },
     lastName: { label: 'Last name', required: true },
     linkedIn: { label: 'LinkedIn', prefix: <LinkedinOutlined /> },
     twitter: { label: 'Twitter', prefix: <TwitterOutlined /> },
@@ -140,7 +141,7 @@ const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef, tagsRef
           ({ handleSubmit }) => {
             if(handleSubmitRef) handleSubmitRef(handleSubmit)
             return (
-              <div>
+              <div className="signup-form">
                 {initialValues?.reviewStatus && <ReviewText {...initialValues}/> }
                 <div className="section">
                   <h2>Personal details</h2>

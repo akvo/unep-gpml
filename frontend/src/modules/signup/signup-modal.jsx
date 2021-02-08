@@ -27,22 +27,17 @@ const SignupModal = ({ visible, onCancel, setProfile, profile, tagsRef}) => {
         setSending(false)
       })
     }
-    const handleOnCancel = () => {
-      if(step === 2) onCancel()
-    }
     return (
         <Modal
-          {...{ visible, onCancel: handleOnCancel }}
+          {...{ visible, onCancel }}
           width={600}
           title="Complete your signup"
           okText="Submit"
           className="signup-modal"
-          cancelButtonProps={{ disabled: true }}
           onOk={() => {
             handleSubmitRef.current()
           }}
           confirmLoading={sending}
-          closable={false}
           footer={step === 2 ? (<Button onClick={onCancel}>Close</Button>) : undefined}
         >
           {step === 1 &&
