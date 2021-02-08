@@ -74,3 +74,47 @@ totals AS (
 )
 SELECT t.total AS count, t.data AS resource_type, c.country AS country_count
 FROM totals t JOIN country_counts c ON t.data = c.data ORDER BY o;
+
+-- :name country-specific
+-- :doc Get summary of specific country data count entities
+
+WITH
+country_specific_resource AS (
+    SELECT COUNT(rgc.resource), r.type as data FROM resource_geo_coverage rgc
+    LEFT JOIN resource r ON r.id = rgc.resource
+    WHERE rgc.country_group IS NULL
+    GROUP BY rgc.resource, r.type
+    HAVING COUNT(rgc.resource) = 1
+),
+country_specific_policy AS (
+    SELECT COUNT(policy), 'Policy' as data FROM policy_geo_coverage
+    WHERE country_group IS NULL
+    GROUP BY policy
+    HAVING COUNT(policy) = 1
+),
+country_specific_project AS (
+    SELECT COUNT(project), 'Project' as data FROM project_country
+    GROUP BY project
+    HAVING COUNT(project) = 1
+),
+country_specific_technology AS (
+    SELECT COUNT(technology), 'Technology' as data FROM technology_geo_coverage
+    WHERE country_group IS NULL
+    GROUP BY technology
+    HAVING COUNT(technology) = 1
+),
+country_specific_event AS (
+    SELECT COUNT(event), 'Event' as data FROM event_geo_coverage
+    WHERE country_group IS NULL
+    GROUP BY event
+    HAVING COUNT(event) = 1
+)
+SELECT COUNT(data), data as resource_type FROM country_specific_resource GROUP BY data
+UNION
+SELECT COUNT(data), data as resource_type FROM country_specific_policy GROUP BY data
+UNION
+SELECT COUNT(data), data as resource_type FROM country_specific_project GROUP BY data
+UNION
+SELECT COUNT(data), data as resource_type FROM country_specific_technology GROUP BY data
+UNION
+SELECT COUNT(data), data as resource_type FROM country_specific_event GROUP BY data;
