@@ -1,6 +1,6 @@
 import humps from 'humps'
 
-export const topicTypes = ['project', 'event', 'policy', 'technology', 'financingResource', 'technicalResource']
+export const topicTypes = ['project', 'event', 'policy', 'technology', 'financingResource', 'technicalResource', 'stakeholder']
 
 export const topicNames = (topic) => {
   const names = {
@@ -10,6 +10,7 @@ export const topicNames = (topic) => {
     'technology': 'Technology',
     'financingResource': 'Financing Resource',
     'technicalResource': 'Technical Resource',
+    'stakeholder': 'Stakeholder',
   };
   return names[humps.camelize(topic)];
 };

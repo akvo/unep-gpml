@@ -165,7 +165,8 @@ const relationsByTopicType = {
   technology: ['owner', 'user', 'reviewer', 'interested in', 'other'],
   event: ['resource person', 'organiser', 'participant', 'sponsor', 'host', 'interested in', 'other'],
   project: ['owner', 'implementor', 'reviewer', 'user', 'interested in', 'other'],
-  policy: ['regulator', 'implementor', 'reviewer', 'interested in', 'other']
+  policy: ['regulator', 'implementor', 'reviewer', 'interested in', 'other'],
+  stakeholder: ['interested in', 'other'],
 }
 
 const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
