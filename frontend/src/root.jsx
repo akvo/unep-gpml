@@ -14,6 +14,7 @@ import ProfileView from './modules/profile/view';
 import logo2 from './images/GPML-logo-2.svg'
 import unepLogo from './images/UNEP-logo.svg'
 import gpmlLogo from './images/GPML-logo-alone.svg'
+import SignupView from './modules/signup/view';
 
 const Root = () => {
     const {
@@ -28,7 +29,7 @@ const Root = () => {
     const [eventWarningVisible, setEventWarningVisible] = useState(false)
     const [countries, setCountries] = useState(null);
     const [data, setData] = useState(null);
-    const [profileTag, setProfileTag] = useState([]);
+    const [tagsRef, setProfileTag] = useState([]);
     const [initLandingCount, setInitLandingCount] = useState("");
 
     useEffect(() => {
@@ -77,7 +78,7 @@ const Root = () => {
             </div>
               { !isAuthenticated ?
                 <div className="rightside">
-                    <Link to="/" onClick={loginWithPopup}>Join the GPML</Link>
+                    <Link to="/signup">Join the GPML</Link>
                     &nbsp;&nbsp;|&nbsp;&nbsp;
                     <Link to="/" onClick={loginWithPopup}>Sign in</Link>
                 </div>
@@ -109,10 +110,11 @@ const Root = () => {
           }/>} />
         <Route path="/browse" render={props => <Browse {...props} summary={data?.summary}/>} />
         <Route path="/add-event" component={AddEvent} />
-        <Route path="/profile" render={props => <ProfileView {...props} profile={profile} tagsRef={profileTag} setProfile={setProfile}/>} />
+        <Route path="/profile" render={props => <ProfileView {...{...props, profile, tagsRef, setProfile }} />} />
+        <Route path="/signup" component={SignupView} />
         <Footer />
       </div>
-      <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} tagsRef={profileTag} setProfile={setProfile}/>
+      <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} {...{ tagsRef, setProfile }} />
       <EventWarningModal visible={eventWarningVisible} close={() => setEventWarningVisible(false)}/>
     </Router>
     )
