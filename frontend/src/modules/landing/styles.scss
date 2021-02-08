@@ -1,11 +1,19 @@
 @import '../../vars.scss';
 
 #landing{
+  .landing-banner{
+    background-color:#84b4cc;
+    color: #FFFFFF;
+    padding: 10px 60px;
+    p {
+      margin-bottom: 0px;
+    }
+  }
   .map-overlay{
     position: absolute;
     z-index: 10;
     left: 60px;
-    top: 200px;
+    top: 264px;
     .ant-select{
       width: 100%;
       margin-bottom: 10px;

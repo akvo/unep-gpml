@@ -19,7 +19,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
     }
 
     const toolTip = (params) => {
-        const summary = data?.map.find(it => it.isoCode === params.name)
+        const summary = data?.specific.find(it => it.isoCode === params.name)
         if(summary){
           const countryInfo = countries?.find(it => it.isoCode === summary.isoCode)
           const countryName = countryInfo?.name || summary.isoCode
@@ -57,13 +57,17 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
       }
     }
 
-    const selected = data ? data.map.find(x => x.isoCode === country) : false;
-    const mapData = country ?  [{ name: country, itemStyle: { areaColor: "#1890ff" }}] : (counts ? countryMap : [])
+    const selected = data ? data.specific.find(x => x.isoCode === country) : false;
+    const mapData = country ? [{ name: country, itemStyle: { areaColor: "#1890ff" }}] : (counts ? countryMap : [])
     const defaultMapData = initLandingCount !== "" && data ?
         data.map.map(x => ({...x, name: x.isoCode, value: x[initLandingCount]})) : false;
 
     return (
       <div id="landing">
+        <div className="landing-banner">
+            <b>Welcome to the Global Partnership on Marine Litter Digital Platform</b>
+            <p>The Digital Platform compiles different resources from around the world in one place. Find out more by exploring the map below. Simply click on a country or filter by resource type.</p>
+        </div>
         {data &&
         <div className="map-overlay">
           <Select
