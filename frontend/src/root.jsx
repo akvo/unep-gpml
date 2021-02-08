@@ -72,7 +72,8 @@ const Root = () => {
         <div className="topbar">
           <div className="ui container">
             <div className="leftside">
-            <Link to="/">UN Environment Programme</Link>&nbsp;&nbsp;|&nbsp;&nbsp;<Link to="/">GPML</Link>
+            <a href="https://www.unep.org/" target="_blank" rel="noreferrer">UN Environment Programme</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <a href="https://gpmarinelitter.org" target="_blank" rel="noreferrer">GPML</a>
             </div>
               { !isAuthenticated ?
                 <div className="rightside">
