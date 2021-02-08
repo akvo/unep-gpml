@@ -1,6 +1,6 @@
--- :name all-countries :? :*
+-- :name all-organisation :? :*
 -- :doc Get all organisations
-select * from organisation order by id
+select id, name from organisation order by id
 
 -- :name organisation-by-id :? :1
 -- :doc Get organisation by id

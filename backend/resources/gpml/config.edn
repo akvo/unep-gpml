@@ -102,6 +102,10 @@
                                           {:get {:summary "List tags by topic type"
                                                  :swagger {:tags ["tags"]}
                                                  :handler #ig/ref :gpml.handler.tag/get}}]]
+                                        ["/organisation"
+                                         {:get {:summary "List all organisation"
+                                                :swagger {:organisation ["organisations"]}
+                                                :handler #ig/ref :gpml.handler.organisation/get}}]
                                         ["/favorite" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                    #ig/ref :gpml.auth/auth-required]}
                                          [""
@@ -139,6 +143,7 @@
   :gpml.handler.profile/pending {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.tag/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.organisation/get {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.image/profile {:db #ig/ref :duct.database/sql}
   :gpml.handler.image/event {:db #ig/ref :duct.database/sql}
