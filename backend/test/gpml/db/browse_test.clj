@@ -2,6 +2,7 @@
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [gpml.db.browse :as db.browse]
             [gpml.db.event :as db.event]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
             [gpml.seeder.main :as seeder]
             [gpml.test-util :as test-util]))
@@ -20,10 +21,28 @@
                    :review_status "APPROVED"
                    :start_date "2021-01-01T10:00:00Z"})
 
+(defn make-profile [first-name last-name email]
+  {:picture nil
+   :cv nil
+   :title "mr."
+   :first_name first-name
+   :last_name last-name
+   :affiliation nil
+   :email email
+   :linked_in nil
+   :twitter nil
+   :url nil
+   :country nil
+   :representation "test"
+   :about "Lorem Ipsum"
+   :geo_coverage_type "global"
+   :role "USER"})
+
 (deftest topic-filtering
   (let [db (test-util/db-test-conn)
         _ (seeder/seed db {:country? true
                            :technology? true})
+        stakeholder-id (db.stakeholder/new-stakeholder db (make-profile "John" "Doe" "mail@org.com"))
         event-id (db.event/new-event db event-sample)]
     (testing "Simple text search"
       (is (not-empty (db.browse/filter-topic db {:search-text "plastic"}))))
@@ -37,6 +56,16 @@
       (is (empty? (db.browse/filter-topic db {:topic #{"policy"}}))))
     (testing "Filtering of unapproved events"
       (is (empty? (db.browse/filter-topic db {:topic #{"event"}}))))
+    (testing "Filtering by stakeholders"
+      (is (empty? (db.browse/filter-topic db {:topic #{"stakeholder"}}))))
+    (testing "Filtering of approved stakeholders"
+      (is (not-empty (do
+                       ;; Approve an event
+                       (db.stakeholder/update-stakeholder-status
+                        db
+                        (merge stakeholder-id {:review_status "APPROVED"}))
+                       (db.browse/filter-topic db {:search-text "Lorem"
+                                                   :topic #{"stakeholder"}})))))
     (testing "Filtering of approved events"
       (is (not-empty (do
                        ;; Approve an event
