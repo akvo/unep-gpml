@@ -115,5 +115,5 @@
         5 "financing_resource"
         0 "event")
       (are [expected topic] (= expected (:country_count (extract-data topic)))
-        5 "financing_resource"
+        4 "financing_resource"
         0 "event"))))
