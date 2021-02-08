@@ -1,23 +1,17 @@
 -- :name map-counts
 -- :doc Get counts of entities
 
-WITH
-entities AS (
-    SELECT COALESCE(iso_code, '***') AS geo, count(topic), topic , CAST(json->'id' AS text) AS topic_id
-    FROM country c
-    LEFT JOIN v_topic vt ON (vt.geo_coverage_iso_code = c.iso_code) OR (c.iso_code IS NULL AND vt.geo_coverage_iso_code = '***')
-    WHERE name <> 'Other'
-    AND topic IS NOT NULL
-    GROUP BY topic_id, geo, topic
-),
-country_entities AS (
-    SELECT count(e.topic_id), ej.geo, ej.topic
-    FROM entities e
-    LEFT JOIN entities ej on e.topic_id = ej.topic_id
-    GROUP BY e.topic_id, ej.geo, ej.topic HAVING COUNT(e.topic_id) = 1
-)
 SELECT mc.geo AS iso_code, json_object_agg(COALESCE(mc.topic, 'project'), mc.count) AS counts
-FROM (SELECT geo, topic, count(topic) FROM country_entities GROUP BY geo, topic) AS mc GROUP BY geo ORDER BY geo;
+FROM (
+  SELECT topic, count(topic),
+  json->'geo_coverage_values'->>0 AS geo
+  FROM v_topic
+  WHERE json_typeof(json->'geo_coverage_values') = 'array'
+  AND CAST(json->'geo_coverage_type' AS text) NOT IN ('"regional"','"global with elements in specific areas"')
+  AND json_array_length(json->'geo_coverage_values') = 1
+  AND json->'geo_coverage_values'->>0 IS NOT NULL
+  GROUP BY topic, json->'geo_coverage_values'->>0
+) AS mc GROUP BY geo ORDER BY geo;
 
 -- :name map-counts-includes-global
 -- :doc Get counts of entities for global and country-specific-resource

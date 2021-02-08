@@ -42,6 +42,7 @@
   (db.resource/new-resource conn (make-resource "Resource 2" "national"))
   (db.resource/new-resource conn (make-resource "Resource 3" "regional"))
   (db.resource/new-resource conn (make-resource "Resource 4" "global"))
+  (db.resource/new-resource conn (make-resource "Resource 5" "national"))
   (jdbc/insert-multi! conn :resource_geo_coverage
                       [ ;; Resource 1
                        {:resource 1 :country 1}
@@ -51,7 +52,8 @@
                        {:resource 2 :country 4}
                        ;; Resource 3
                        {:resource 3 :country_group 1}
-                       {:resource 3 :country_group 2}]))
+                       {:resource 3 :country_group 2}
+                       {:resource 5 :country 3}]))
 
 (deftest test-map-counts
   (testing "Test map counts for landing page"
@@ -67,9 +69,24 @@
       (are [expected iso-code] (= expected (valid? iso-code))
         3 "ESP"
         3 "IND"
-        3 "IDN"
+        4 "IDN"
         2 "KEN"
         1 "NLD"))))
+
+(deftest test-map-specific-counts
+  (testing "Test map counts for landing page"
+    (let [db-key :duct.database.sql/hikaricp
+          system (ig/init fixtures/*system* [db-key])
+          conn (-> system db-key :spec)
+          _ (add-resource-data conn)
+          landing (db.landing/map-specific-counts conn)
+          valid? (fn [iso-code] (->> landing
+                                     (filter #(= iso-code (:iso_code %)))
+                                     first
+                                     :financing_resource))]
+      (are [expected iso-code] (= expected (valid? iso-code))
+        1 "KEN"
+        1 "IDN"))))
 
 (deftest test-summary
   (testing "Test summary data for landing page"
