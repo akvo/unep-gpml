@@ -9236,5 +9236,78 @@
         "geo_coverage_type": null,
         "attachments": [],
         "remarks": null
+    },
+    {
+        "id": 237,
+        "title": "Action Plan to Address Marine Plastic Litter from Ships",
+        "organisation": [
+            "International Maritime Organization (IMO)"
+        ],
+        "type": "Technical Resource",
+        "publish_year": 2018,
+        "summary": "Marine plastic litter enters the marine environment as a result of a wide range of land- and sea-based activities. Both macroplastics (e.g. large plastic items such as plastic bags, water bottles and fishing gear) and microplastics (small plastic particles generally five millimetres or less in size) persist in the marine environment and result in harmful effects on marine life and biodiversity, as well as negative impacts on human health. In addition, marine plastic litter negatively impacts on activities such as tourism, fisheries and shipping. This plastic material has the potential to be brought back into the economy by means of reuse or recycling. Studies demonstrate that despite the existing regulatory framework to prevent marine plastic litter from ships discharges into the sea continue to occur.",
+        "country": null,
+        "url": [
+            "https://wwwcdn.imo.org/localresources/en/MediaCentre/HotTopics/Documents/IMO%20marine%20litter%20action%20plan%20MEPC%2073-19-Add-1.pdf"
+        ],
+        "value_amount": null,
+        "value_currency": null,
+        "value_remaks": null,
+        "image": null,
+        "valid_from": null,
+        "valid_to": null,
+        "tags": [
+            "action plan"
+        ],
+        "languages": "English: https://wwwcdn.imo.org/localresources/en/MediaCentre/HotTopics/Documents/IMO%20marine%20litter%20action%20plan%20MEPC%2073-19-Add-1.pdf",
+        "resource_language_url": [
+            {
+                "language": "English",
+                "url": "https://wwwcdn.imo.org/localresources/en/MediaCentre/HotTopics/Documents/IMO%20marine%20litter%20action%20plan%20MEPC%2073-19-Add-1.pdf"
+            }
+        ],
+        "geo_coverage": null,
+        "geo_coverage_type": "global",
+        "attachments": [],
+        "remarks": null
+    },
+    {
+        "id": 238,
+        "title": "Basura Marina En La Regi\u00f3n Del Pac\u00edfico Sudeste: Una Revisi\u00f3n Del Problema",
+        "organisation": [
+            "Comisi\u00f3n Permanente Del Pac\u00edfico Sur (CPPS)"
+        ],
+        "type": "Technical Resource",
+        "publish_year": 2007,
+        "summary": "La basura marina se ha convertido en un problema mundial que impacta negativamente la biodiversidad, la salud p\u00fablica, y las actividades productivas y recreativas que se desarrollan en costas y oc\u00e9anos. Hist\u00f3ricamente el mar ha sido utilizado como receptor de basura. Sin embargo, las dimensiones de la descarga son impresionantes. La Academia de Ciencias de Estados Unidos de Norteam\u00e9rica ha estimado que 6.4 millones de toneladas de basura entran al oc\u00e9ano cada a\u00f1o. A nivel internacional se han desarrollado m\u00faltiples acciones para contrarrestar el impacto de la basura marina. Por ejemplo, el Convenio de MARPOL 73/78 incluye requerimientos para el manejo de basura producida en buques; el Protocolo para la Protecci\u00f3n del Pac\u00edfico Sudeste contra la Contaminaci\u00f3n Proveniente de Fuentes Terrestres, adoptado por los pa\u00edses del Pac\u00edfico Sudeste en 19832, incluye la obligaci\u00f3n de combatir la contaminaci\u00f3n de varias sustancias incluyendo residuos persistentes. El Programa de Naciones Unidas para el Medio Ambiente (PNUMA) resalta que a\u00fan existen deficiencias en la implementaci\u00f3n de los acuerdos internacionales y regionales al respecto, as\u00ed como limitaciones para el manejo de los residuos persistentes.",
+        "country": "Ecuador",
+        "url": [
+            "http://cpps.dyndns.info/cpps-docs-web/planaccion/docs2014/publicaciones/documentos-tecnicos/programa_basura_marina_espanol.pdf"
+        ],
+        "value_amount": null,
+        "value_currency": null,
+        "value_remaks": null,
+        "image": null,
+        "valid_from": null,
+        "valid_to": null,
+        "tags": [
+            "action plan"
+        ],
+        "languages": "Spanish: http://cpps.dyndns.info/cpps-docs-web/planaccion/docs2014/publicaciones/documentos-tecnicos/programa_basura_marina_espanol.pdf",
+        "resource_language_url": [
+            {
+                "language": "Spanish",
+                "url": "https://cpps.dyndns.info/cpps-docs-web/planaccion/docs2014/publicaciones/documentos-tecnicos/programa_basura_marina_espanol.pdf"
+            }
+        ],
+        "geo_coverage": [
+            "Chile",
+            "Colombia",
+            "Ecuador",
+            "Peru"
+        ],
+        "geo_coverage_type": "transnational",
+        "attachments": [],
+        "remarks": null
     }
 ]
