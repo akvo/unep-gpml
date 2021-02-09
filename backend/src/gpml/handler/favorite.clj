@@ -12,13 +12,14 @@
    :technology #{"owner" "user" "reviewer" "interested in" "other"}
    :event #{"resource person" "organiser" "participant" "sponsor" "host" "interested in" "other"}
    :project #{"owner" "implementor" "reviewer" "user" "interested in" "other"}
-   :policy #{"regulator" "implementor" "reviewer" "interested in" "other"}})
+   :policy #{"regulator" "implementor" "reviewer" "interested in" "other"}
+   :stakeholder #{"interested in" "other"}})
 
 (def post-params
   [:vector
    [:and
     [:map
-     [:topic [:enum "event" "technology" "policy" "resource" "project"]]
+     [:topic [:enum "event" "technology" "policy" "resource" "project" "stakeholder"]]
      [:topic_id int?]
      [:association [:vector string?]]]
     [:fn {:error/fn (fn [{{:keys [topic]} :value} _]
@@ -52,6 +53,7 @@
   [{:keys [topic topic_id association]}]
   (vec (for [a association]
          {:topic topic
+          :column_name (or (and (= "stakeholder" topic) "other_stakeholder") topic)
           :topic_id topic_id
           :association a})))
 
@@ -61,10 +63,11 @@
       (jdbc/with-db-transaction [conn (:spec db)]
         (doseq [item body-params]
           (doseq [association (expand-associations item)]
+            (prn association)
             (db.favorite/new-association conn (merge
-                                                {:stakeholder stakeholder
-                                                 :remarks nil}
-                                                association))))
+                                               {:stakeholder stakeholder
+                                                :remarks nil}
+                                               association))))
         (resp/response {:message "OK"}))
       (resp/bad-request {:message (format "User with email %s does not exist" (:email jwt-claims))}))))
 
