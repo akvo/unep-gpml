@@ -4,7 +4,7 @@ select id, name from organisation order by id
 
 -- :name organisation-by-id :? :1
 -- :doc Get organisation by id
-select o.id, o.name, o.type, o.geo_coverage_type, c.iso_code as country
+select o.id, o.name, o.url, o.type, o.geo_coverage_type, c.iso_code as country
 from organisation o
 left join country c on o.country = c.id
 where o.id = :id;
