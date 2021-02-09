@@ -109,9 +109,9 @@
        (map (fn [x]
               (if-let [group (:country_group x)]
                 (if-let [data (first (get-country-groups db [group]))]
-                  (assoc x :country_group (:id data))
-                  (assoc x :country_group nil))
-                x)))
+                  (assoc x :country_group [(:id data)] :geo_coverage_type "regional")
+                  (assoc x :country_group [] :geo_coverage_type "global"))
+                (assoc x :country_group [] :geo_coverage_type "global"))))
        (map (fn [x]
               (if-let [country (:country x)]
                 (if-let [data (first (get-country db [country]))]
@@ -121,7 +121,11 @@
 
 (defn seed-organisations [db]
   (doseq [data (map-organisation db)]
-    (db.organisation/new-organisation db data)))
+      (let [org-id (:id (db.organisation/new-organisation db data))
+            org-geo (:country_group data)]
+        (when (not-empty org-geo)
+          (let [res-geo (mapv #(assoc {} :organisation org-id :country_group %) org-geo)]
+            (jdbc/insert-multi! db :organisation_geo_coverage res-geo))))))
 
 (defn seed-currencies [db]
   (doseq [data (get-data "currencies")]
