@@ -1,28 +1,11 @@
 -- :name map-counts
--- :doc Get counts of entities
-
+-- :doc Get counts of resources
 SELECT mc.geo AS iso_code, json_object_agg(COALESCE(mc.topic, 'project'), mc.count) AS counts
 FROM (
-  SELECT topic, count(topic),
-  json->'geo_coverage_values'->>0 AS geo
-  FROM v_topic
-  WHERE json_typeof(json->'geo_coverage_values') = 'array'
-  AND CAST(json->'geo_coverage_type' AS text) NOT IN ('"regional"','"global with elements in specific areas"')
-  AND json_array_length(json->'geo_coverage_values') = 1
-  AND json->'geo_coverage_values'->>0 IS NOT NULL
-  GROUP BY topic, json->'geo_coverage_values'->>0
-) AS mc GROUP BY geo ORDER BY geo;
-
--- :name map-counts-includes-global
--- :doc Get counts of entities for global and country-specific-resource
-
-SELECT mc.geo AS iso_code, json_object_agg(COALESCE(mc.topic, 'project'), mc.count) AS counts
-FROM (
-  SELECT COALESCE(iso_code, '***') AS geo, topic, count(topic)
-  FROM country c
-  LEFT JOIN v_topic vt ON (vt.geo_coverage_iso_code = c.iso_code) OR (c.iso_code IS NULL AND vt.geo_coverage_iso_code = '***')
-  WHERE name <> 'Other'
-  GROUP BY iso_code, topic
+  SELECT vt.geo_coverage_iso_code AS geo, topic, count(topic)
+  FROM v_topic vt
+  WHERE vt.geo_coverage_iso_code is NOT NULL AND ((vt.json->>'geo_coverage_type' = 'transnational') OR (vt.json->>'geo_coverage_type' = 'national') OR (vt.json->>'geo_coverage_type' = 'sub-national'))
+  GROUP BY geo, topic
 ) AS mc GROUP BY geo ORDER BY geo;
 
 -- :name summary

@@ -16,8 +16,7 @@
                          flatten
                          (map #(merge (:json %) {:topic_type (:topic %)})))]
     (resp/response {:topics topics-data
-                    :map (db.landing/map-counts+global conn)
-                    :specific (db.landing/map-specific-counts conn)
+                    :map (db.landing/map-counts-explicit conn)
                     :summary summary-data})))
 
 
