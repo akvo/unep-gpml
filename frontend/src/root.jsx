@@ -74,7 +74,7 @@ const Root = () => {
           <div className="ui container">
             <div className="leftside">
             <a href="https://www.unep.org/" target="_blank" rel="noreferrer">UN Environment Programme</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-            <a href="https://gpmarinelitter.org" target="_blank" rel="noreferrer">GPML</a>
+            <a href="https://www.gpmarinelitter.org" target="_blank" rel="noreferrer">GPML</a>
             </div>
               { !isAuthenticated ?
                 <div className="rightside">
@@ -132,7 +132,7 @@ const Footer = () => {
                   <li><a href="https://www.gpmarinelitter.org/what-we-do">What we do</a></li>
                   <li><a href="#">Our members</a></li>
                 </ul>
-              </nav>            
+              </nav>
               <nav>
                 <ul>
                   <li><h4>GPML Digital platform</h4></li>
@@ -147,15 +147,15 @@ const Footer = () => {
               <nav>
                 <ul>
                   <li><h4>Resources</h4></li>
-                  <li><a href="#">Action plans</a></li>
-                  <li><a href="#">Events</a></li>
-                  <li><a href="#">Financial resources</a></li>
-                  <li><a href="#">Technical resources</a></li>                  
-                  <li><a href="#">Technologies</a></li>
-                  <li><a href="#">Policies</a></li>
-                  <li><a href="#">Projects</a></li>
+                  <li><Link to={{pathname: "/browse", search:"?q=action+plan"}}>Action plans</Link></li>
+                  <li><Link to={{pathname: "/browse", search:"?topic=event"}}>Events</Link></li>
+                  <li><Link to={{pathname: "/browse", search:"?topic=financing_resource"}}>Financial resources</Link></li>
+                  <li><Link to={{pathname: "/browse", search:"?topic=technical_resource"}}>Technical plans</Link></li>
+                  <li><Link to={{pathname: "/browse", search:"?topic=technology"}}>Technologies</Link></li>
+                  <li><Link to={{pathname: "/browse", search:"?topic=policy"}}>Policies</Link></li>
+                  <li><Link to={{pathname: "/browse", search:"?topic=project"}}>Projects</Link></li>
                 </ul>
-              </nav>            
+              </nav>
               <nav>
                 <ul>
                   <li><h4>Data</h4></li>
@@ -170,14 +170,14 @@ const Footer = () => {
                 <li><h4>Contact Us</h4></li>
                 <li><a href="mailto:unep-gpmmarinelitter@un.org">unep-gpmmarinelitter@un.org</a></li>
               </ul>
-            </nav>            
+            </nav>
             <nav>
               <ul>
                 <li><h4>Join Us</h4></li>
-                <li><a href="#">Join the GPML Partnership (Organizations Only)</a></li>
-                <li><a href="#">Sign up to the GPML Digital Platform (For All Individuals)</a></li>
+                <li><a href="https://www.gpmarinelitter.org/who-we-are/members/sign-up" target="_blank" rel="noreferrer">Join the GPML Partnership (Organizations Only)</a></li>
+                <li><Link to="/signup">Sign up to the GPML Digital Platform (For All Individuals)</Link></li>
               </ul>
-            </nav>            
+            </nav>
             <nav>
               <ul>
                 <li><h4>Stakeholders</h4></li>
@@ -195,8 +195,9 @@ const Footer = () => {
                 <li><p>© UNEP</p></li>
                 <li><a href="#">Terms of use</a></li>
                 <li><a href="#">Privacy</a></li>
+                <li><a href="https://akvo.org" target="_blank" rel="noreferrer">Built by <strong>Akvo</strong></a></li>
               </ul>
-            </nav>     
+            </nav>
           </div>
           <div className="col">
             <nav>
@@ -207,7 +208,7 @@ const Footer = () => {
                 <li><a href="#"> <LinkedinOutlined /></a></li>
                 <li><a href="#"> <YoutubeOutlined /></a></li>
               </ul>
-            </nav>     
+            </nav>
           </div>
         </div>
       </div>
