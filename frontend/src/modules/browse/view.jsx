@@ -138,11 +138,13 @@ const TopicSelect = ({ value, onChange, counts }) => {
 }
 
 const Result = ({ result, relations, handleRelationChange }) => {
-  const description = result.description || result.abstract || result.summary
+  const fullName = (data) => data.title ? `${data.title} ${data.firstName} ${data.lastName}` : `${data.firstName} ${data.lastName}`
+  const title = (result.type === 'stakeholder' && fullName(result)) || result.title || result.name
+  const description = result.description || result.abstract || result.summary || result.about
   const relation = relations.find(it => it.topicId === result.id)
   return (
     <Card className="result">
-      <h4>{result.title || result.name}</h4>
+      <h4>{title}</h4>
       <div className="type">{topicNames(result.type)}</div>
       <ul className="stats">
         {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
