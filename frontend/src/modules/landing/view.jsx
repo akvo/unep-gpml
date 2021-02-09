@@ -63,7 +63,12 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
     const selected = data?.specific?.find(x => x.isoCode === country)
     const mapData = country ? [{ name: country, itemStyle: { areaColor: "#1890ff" }}] : (counts ? countryMap : [])
     const defaultMapData = initLandingCount !== "" && data ?
-        data.map.map(x => ({...x, name: x.isoCode, value: x[initLandingCount]})) : false;
+          data.map.map(x => ({...x, name: x.isoCode, value: x[initLandingCount]})) : false;
+
+    const summaryData = data?.summary?.filter((it, index) => {
+      const current = Object.keys(it)[0];
+      return tTypes.indexOf(current) > -1;
+    });
 
     return (
       <div id="landing">
@@ -85,7 +90,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
             value={country}
             onChange={handleChangeCountry}
           />
-          <Summary clickEvents={handleSummaryClick} summary={data.summary}
+          <Summary clickEvents={handleSummaryClick} summary={summaryData}
             country={countryObj} counts={counts} selected={selected}
             init={initLandingCount} tTypes={tTypes}/>
         </div>
