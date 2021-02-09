@@ -128,9 +128,9 @@ const Footer = () => {
               <nav>
                 <ul>
                   <li><h4>GPML Partnership</h4></li>
-                  <li><a href="https://www.gpmarinelitter.org/who-we-are">Who we are</a></li>
-                  <li><a href="https://www.gpmarinelitter.org/what-we-do">What we do</a></li>
-                  <li><a href="#">Our members</a></li>
+                  <li><a href="https://www.gpmarinelitter.org/who-we-are" target="_blank" rel="noreferrer">Who we are</a></li>
+                  <li><a href="https://www.gpmarinelitter.org/what-we-do" target="_blank" rel="noreferrer">What we do</a></li>
+                  <li><a href="https://www.gpmarinelitter.org/who-we-are/our-members" target="_blank" rel="noreferrer">Our members</a></li>
                 </ul>
               </nav>
               <nav>
