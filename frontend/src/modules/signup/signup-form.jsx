@@ -16,6 +16,8 @@ import { countries } from 'countries-list'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
 import specificAreasOptions from '../events/specific-areas.json'
 import cloneDeep from 'lodash/cloneDeep'
+import api from "../../utils/api";
+import { offeringKeys, seekingKeys } from "../../utils/misc";
 
 const geoCoverageTypeOptions = ['Global', 'Regional', 'National', 'Sub-national', 'Transnational', 'Global with elements in specific areas']
 const regionOptions = ['Africa', 'Asia and the Pacific', 'East Asia', 'Europe', 'Latin America and Carribean', 'North America', 'West Asia']
@@ -84,11 +86,10 @@ const defaultFormSchema = [
     country: { label: 'Country', control: 'select', showSearch: true, options: Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name })), autoComplete: 'off' }
   },
   {
-    'org.name': { label: 'Organisation name' },
+    // 'org.role': { label: '' },
+    'org.id': { label: 'Organisation name', control: 'select', showSearch: true, options: [], placeholder: 'Start typing...' },
+    // 'org.name': { label: 'Organisation name' },
     'org.url': { label: 'Organisation URL', addonBefore: 'https://' },
-  },
-  {
-    about: { label: 'About yourself', control: 'textarea', required: true }
   },
   {
     geoCoverageType: { label: 'Geo coverage type', required: true, control: 'select', options: geoCoverageTypeOptions.map(it => ({ value: it.toLowerCase(), label: it })) },
@@ -98,7 +99,10 @@ const defaultFormSchema = [
     }
   },
   {
-    tags: { label: 'Tags', control: 'select', options: [], loading: true, mode: 'multiple' },
+    seeking: { label: 'Seeking', control: 'select', mode: 'multiple', options: seekingKeys.map(it => ({ value: it, label: it })) },
+    offering: { label: 'Offering', control: 'select', mode: 'multiple', options: offeringKeys.map(it => ({ value: it, label: it })) },
+    about: { label: 'About yourself', control: 'textarea' },
+    tags: { label: 'Tags', control: 'select', options: [], mode: 'multiple' },
     cv: { label: 'CV / Portfolio', control: 'file', maxFileSize: 5, accept: ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain" },
   }
 ]
@@ -123,13 +127,32 @@ const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef, tagsRef
   })
 
   useEffect(() => {
+    api.get('/organisation')
+    .then(d => {
+      const newSchema = cloneDeep(formSchema)
+      newSchema[1]['org.id'].options = d.data.map(it => ({ value: it.id, label: it.name }))
+      setFormSchema(newSchema)
+    })
+  }, [])
+
+  useEffect(() => {
       if (tagsRef) {
-          const newSchema = cloneDeep(defaultFormSchema);
-          newSchema[4].tags.options = tagsRef.map(x => ({ value: x.id, label: x.tag }))
-          newSchema[4].tags.loading = false
+          const newSchema = cloneDeep(formSchema);
+          newSchema[3].tags.options = tagsRef.map(x => ({ value: x.id, label: x.tag }))
+          newSchema[3].tags.loading = false
           setFormSchema(newSchema);
       }
   }, [tagsRef])
+
+  const handleChangePrivateCitizen = ({ target: { checked } }) => {
+    setNoOrg(checked)
+    const newSchema = cloneDeep(formSchema)
+    Object.keys(newSchema[1]).forEach(key => {
+      newSchema[1][key].disabled = checked
+      newSchema[1][key].required = !checked
+    })
+    setFormSchema(newSchema)
+  }
 
   if(formRef) formRef(form)
   return (
@@ -149,17 +172,16 @@ const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef, tagsRef
                 </div>
                 <div className="section">
                   <h2>Organisation details</h2>
-                  <Checkbox className="org-check" checked={noOrg} onChange={({ target: { checked } }) => setNoOrg(checked)}>I don't belong to an organisation</Checkbox>
-                  {!noOrg && <FieldsFromSchema schema={formSchema[1]} />}
+                  <Checkbox className="org-check" checked={noOrg} onChange={handleChangePrivateCitizen}>I am a private citizen</Checkbox>
+                  <FieldsFromSchema schema={formSchema[1]} />
                 </div>
                 <div className="section">
                   <h2>Location and Coverage</h2>
-                  <FieldsFromSchema schema={formSchema[3]} />
+                  <FieldsFromSchema schema={formSchema[2]} />
                 </div>
                 <div className="section">
-                  <h2>Other</h2>
-                  <FieldsFromSchema schema={formSchema[4]} />
-                  <FieldsFromSchema schema={formSchema[2]} />
+                  <h2>Expertise and activities</h2>
+                  <FieldsFromSchema schema={formSchema[3]} />
                 </div>
               </div>
             )
