@@ -148,7 +148,7 @@ const TopicItem = ({ topic }) => (
       </ul>
       {topic.description && <p>{topic.description}</p>}
       <div className="bottom">
-        <Button type="link">Find out more</Button>
+        {/* <Button type="link">Find out more</Button> */}
       </div>
     </div>
   </div>
