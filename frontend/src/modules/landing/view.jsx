@@ -3,13 +3,16 @@ import { Button, Select, Switch } from 'antd';
 import { withRouter } from 'react-router-dom'
 import Maps from './maps'
 import './styles.scss'
-import { topicTypes, topicNames } from '../../utils/misc';
+import { topicTypes, topicTypesApprovedUser, topicNames } from '../../utils/misc';
 import moment from 'moment'
 
-const Landing = ({ history, data, countries, initLandingCount, setCountries, setInitLandingCount}) => {
+const Landing = ({ history, data, countries, initLandingCount, setCountries, setInitLandingCount, profile}) => {
     const [country, setCountry] = useState(null);
     const [countryMap, setCountryMap] = useState(null)
     const [counts, setCounts] = useState("");
+
+    const isApprovedUser = profile?.reviewStatus === 'APPROVED';
+    const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypes;
 
     const clickEvents = ({name, data}) => {
       if (!name.startsWith("disputed")) {
@@ -27,7 +30,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
             <div class="map-tooltip">
               <h3>${countryName}</h3>
               <ul>
-              ${topicTypes.map(topic => `<li><span>${topicNames(topic)}</span><b>${summary[topic]}</b></li>`).join('')}
+              ${tTypes.map(topic => `<li><span>${topicNames(topic)}</span><b>${summary[topic]}</b></li>`).join('')}
               </ul>
             </div>
           `
@@ -84,7 +87,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
           />
           <Summary clickEvents={handleSummaryClick} summary={data.summary}
             country={countryObj} counts={counts} selected={selected}
-            init={initLandingCount}/>
+            init={initLandingCount} tTypes={tTypes}/>
         </div>
         }
         <Maps
@@ -101,7 +104,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
     )
 }
 
-const Summary = ({ clickEvents, summary, country, counts, selected, init }) => {
+const Summary = ({ clickEvents, summary, country, counts, selected, init, tTypes }) => {
   return (
     <div className="summary">
       <header>{!selected ? 'Global summary' : 'Summary' }</header>
@@ -125,7 +128,7 @@ const Summary = ({ clickEvents, summary, country, counts, selected, init }) => {
                 <b>{it[current]}</b>
               </li>)
           })}
-        {country && topicTypes.map(type =>
+        {country && tTypes.map(type =>
         <li key={type}>
           <div className="text">
             <div className="label">{topicNames(type)}</div>
