@@ -107,7 +107,11 @@
 (defn map-organisation [db]
   (->> (get-data "organisations_new")
        (map (fn [x]
-                (assoc x :country_group nil))) ;; TODO: refactor once UNEP provide country group data
+              (if-let [group (:country_group x)]
+                (if-let [data (first (get-country-groups db [group]))]
+                  (assoc x :country_group (:id data))
+                  (assoc x :country_group nil))
+                x)))
        (map (fn [x]
               (if-let [country (:country x)]
                 (if-let [data (first (get-country db [country]))]
