@@ -61,7 +61,7 @@
           system (ig/init fixtures/*system* [db-key])
           conn (-> system db-key :spec)
           _ (add-resource-data conn)
-          landing (db.landing/map-counts-explicit conn)
+          landing (db.landing/map-counts-include-all-countries conn)
           valid? (fn [iso-code] (->> landing
                                      (filter #(= iso-code (:iso_code %)))
                                      first
@@ -71,7 +71,7 @@
         1 "IND"
         2 "IDN"
         1 "KEN"
-        nil "NLD"))))
+        0 "NLD"))))
 
 (deftest test-summary
   (testing "Test summary data for landing page"
