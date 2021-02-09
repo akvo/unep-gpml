@@ -45,6 +45,14 @@ technology_countries AS (
     SELECT t.country AS id FROM technology_geo_coverage t
     WHERE t.country IS NOT NULL
 ),
+stakeholder_countries AS (
+    SELECT c.id FROM stakeholder_geo_coverage s, country_group_country cgc
+    JOIN country c ON cgc.country = c.id
+    WHERE s.country_group = cgc.country_group
+    UNION
+    SELECT s.country AS id FROM stakeholder_geo_coverage s
+    WHERE s.country IS NOT NULL
+),
 country_counts AS (
     SELECT COUNT(DISTINCT country) as country, 'project' as data FROM project_country
     UNION
@@ -56,6 +64,8 @@ country_counts AS (
     SELECT COUNT(*) as country, 'policy' as data FROM policy_countries
     UNION
     SELECT COUNT(*) as country, 'technology' as data FROM technology_countries
+    UNION
+    SELECT COUNT(*) as country, 'stakeholder' as data FROM stakeholder_countries
 ),
 totals AS (
     SELECT COUNT(*) as total, 'project' as data, 1 as o FROM project
