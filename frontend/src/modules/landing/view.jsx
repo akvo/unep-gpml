@@ -19,7 +19,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
     }
 
     const toolTip = (params) => {
-        const summary = data?.specific.find(it => it.isoCode === params.name)
+        const summary = data?.specific?.find(it => it.isoCode === params.name)
         if(summary){
           const countryInfo = countries?.find(it => it.isoCode === summary.isoCode)
           const countryName = countryInfo?.name || summary.isoCode
