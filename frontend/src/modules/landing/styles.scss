@@ -1,12 +1,16 @@
 @import '../../vars.scss';
 
 #landing{
-  .landing-banner{
+  .landing-container{
     background-color:#84b4cc;
     color: #FFFFFF;
-    padding: 10px 60px;
-    p {
-      margin-bottom: 0px;
+    .landing-banner{
+        padding: 10px 60px;
+        max-width: 1320px;
+        margin: 0 auto;
+        p {
+            margin-bottom: 0px;
+        }
     }
   }
   .map-overlay{
