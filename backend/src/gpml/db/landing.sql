@@ -79,6 +79,8 @@ totals AS (
     SELECT COUNT(*) as total, 'policy' as data, 4 as o FROM policy
     UNION
     SELECT COUNT(*) as total, 'technology' as data, 5 as o FROM technology
+    UNION
+    SELECT COUNT(*) as total, 'stakeholder' as data, 6 as o FROM stakeholder
 )
 SELECT t.total AS count, t.data AS resource_type, c.country AS country_count
 FROM totals t JOIN country_counts c ON t.data = c.data ORDER BY o;
