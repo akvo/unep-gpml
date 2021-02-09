@@ -22,7 +22,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
     }
 
     const toolTip = (params) => {
-        const summary = data?.specific?.find(it => it.isoCode === params.name)
+        const summary = data?.map?.find(it => it.isoCode === params.name)
         if(summary){
           const countryInfo = countries?.find(it => it.isoCode === summary.isoCode)
           const countryName = countryInfo?.name || summary.isoCode
@@ -60,7 +60,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
       }
     }
 
-    const selected = data?.specific?.find(x => x.isoCode === country)
+    const selected = data?.map?.find(x => x.isoCode === country)
     const mapData = country ? [{ name: country, itemStyle: { areaColor: "#1890ff" }}] : (counts ? countryMap : [])
     const defaultMapData = initLandingCount !== "" && data ?
           data.map.map(x => ({...x, name: x.isoCode, value: x[initLandingCount]})) : false;

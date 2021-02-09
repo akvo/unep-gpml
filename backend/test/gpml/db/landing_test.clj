@@ -55,38 +55,23 @@
                        {:resource 3 :country_group 2}
                        {:resource 5 :country 3}]))
 
-(deftest test-map-counts
-  (testing "Test map counts for landing page"
-    (let [db-key :duct.database.sql/hikaricp
-          system (ig/init fixtures/*system* [db-key])
-          conn (-> system db-key :spec)
-          _ (add-resource-data conn)
-          landing (db.landing/map-counts+global conn)
-          valid? (fn [iso-code] (->> landing
-                                     (filter #(= iso-code (:iso_code %)))
-                                     first
-                                     :financing_resource))]
-      (are [expected iso-code] (= expected (valid? iso-code))
-        3 "ESP"
-        3 "IND"
-        4 "IDN"
-        2 "KEN"
-        1 "NLD"))))
-
 (deftest test-map-specific-counts
   (testing "Test map counts for landing page"
     (let [db-key :duct.database.sql/hikaricp
           system (ig/init fixtures/*system* [db-key])
           conn (-> system db-key :spec)
           _ (add-resource-data conn)
-          landing (db.landing/map-specific-counts conn)
+          landing (db.landing/map-counts-include-all-countries conn)
           valid? (fn [iso-code] (->> landing
                                      (filter #(= iso-code (:iso_code %)))
                                      first
                                      :financing_resource))]
       (are [expected iso-code] (= expected (valid? iso-code))
+        1 "ESP"
+        1 "IND"
+        2 "IDN"
         1 "KEN"
-        1 "IDN"))))
+        0 "NLD"))))
 
 (deftest test-summary
   (testing "Test summary data for landing page"

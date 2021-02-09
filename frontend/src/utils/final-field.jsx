@@ -41,7 +41,7 @@ const CONTROLS = {
       ...input, ...props
     }
     if(props.mode === 'multiple' && input.value === '') allProps.value = []
-    if(props.showSearch){
+    if(props.showSearch && !props.filterOption){
       allProps.filterOption = (input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
     }
     return (
@@ -82,7 +82,7 @@ const FinalField = ({name, ...props}) => {
 }
 
 const Control = (props) => {
-  // if (props.render != null) return props.render(props)
+  if (props.fullRender) return props.render(props)
   const { required, label, control = 'input', meta, render, ..._props } = props
   return (
     <Item

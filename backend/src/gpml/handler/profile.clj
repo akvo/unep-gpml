@@ -1,10 +1,11 @@
 (ns gpml.handler.profile
-  (:require [integrant.core :as ig]
+  (:require [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.organisation :as db.organisation]
             [gpml.db.country :as db.country]
+            [gpml.db.country-group :as db.country-group]
+            [gpml.db.organisation :as db.organisation]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [integrant.core :as ig]
             [ring.util.response :as resp]))
 
 (defn get-country [conn country]
@@ -145,52 +146,54 @@
 
 (defmethod ig/init-key :gpml.handler.profile/put [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
-    (let [db (:spec db)
-          id (:id body-params)
-          tags (:tags body-params)
-          geo-type (:geo_coverage_type body-params)
-          geo-value (:geo_coverage_value body-params)
-          old-profile (db.stakeholder/stakeholder-by-email db jwt-claims)
-          new-profile (merge old-profile body-params)
-          profile (cond-> new-profile
-                    (:photo body-params)
-                    (assoc :picture
-                           (if (re-find #"^\/image" (:photo body-params))
-                             (:photo body-params)
-                             (assoc-picture db (:photo body-params))))
-                    (= (:photo body-params) nil)
-                    (assoc :picture nil)
-                    (:cv body-params)
-                    (assoc :cv
-                           (if (re-find #"^\/cv" (:cv body-params))
-                             (:cv body-params)
-                             (assoc-cv db (:cv body-params))))
-                    (= (:cv body-params) nil)
-                    (assoc :cv nil)
-                    (-> new-profile :org :url)
-                    (assoc :url (-> new-profile :org :url))
-                    (-> new-profile :org :name)
-                    (assoc :affiliation (:id (assoc-organisation db (:org new-profile))))
-                    (:country body-params)
-                    (assoc :country (get-country db (:country body-params))))
-          _ (db.stakeholder/update-stakeholder db profile)
-          _ (db.stakeholder/delete-stakeholder-geo db body-params)
-          _ (db.stakeholder/delete-stakeholder-tags db body-params)]
+    (jdbc/with-db-transaction [tx (:spec db)]
+      (let [id (:id body-params)
+            tags (:tags body-params)
+            geo-type (:geo_coverage_type body-params)
+            geo-value (:geo_coverage_value body-params)
+            old-profile (db.stakeholder/stakeholder-by-email tx jwt-claims)
+            new-profile (merge old-profile body-params)
+            profile (cond-> new-profile
+                      (:photo body-params)
+                      (assoc :picture
+                             (cond
+                               (re-find #"^\/image|^http" (:photo body-params))
+                               (:photo body-params)
+                               (re-find #"^data:" (:photo body-params))
+                               (assoc-picture tx (:photo body-params))))
+                      (= (:photo body-params) nil)
+                      (assoc :picture nil)
+                      (:cv body-params)
+                      (assoc :cv
+                             (if (re-find #"^\/cv" (:cv body-params))
+                               (:cv body-params)
+                               (assoc-cv tx (:cv body-params))))
+                      (= (:cv body-params) nil)
+                      (assoc :cv nil)
+                      (-> new-profile :org :url)
+                      (assoc :url (-> new-profile :org :url))
+                      (-> new-profile :org :name)
+                      (assoc :affiliation (:id (assoc-organisation tx (:org new-profile))))
+                      (:country body-params)
+                      (assoc :country (get-country tx (:country body-params))))]
+        (db.stakeholder/update-stakeholder tx profile)
+        (db.stakeholder/delete-stakeholder-geo tx body-params)
+        (db.stakeholder/delete-stakeholder-tags tx body-params)
         (when (and (some? (:photo old-profile))
                    (not= (:photo old-profile) (:picture profile)))
-            (let [old-pic (-> (str/split (:photo old-profile) #"/image/profile/") second Integer/parseInt)]
-            (db.stakeholder/delete-stakeholder-picture-by-id db {:id old-pic})))
+          (let [old-pic (-> (str/split (:photo old-profile) #"/image/profile/") second Integer/parseInt)]
+            (db.stakeholder/delete-stakeholder-picture-by-id tx {:id old-pic})))
         (when (and (some? (:cv old-profile))
                    (not= (:cv old-profile) (:cv profile)))
-            (let [old-cv (-> (str/split (:cv old-profile) #"/cv/profile/") second Integer/parseInt)]
-            (db.stakeholder/delete-stakeholder-cv-by-id db {:id old-cv})))
+          (let [old-cv (-> (str/split (:cv old-profile) #"/cv/profile/") second Integer/parseInt)]
+            (db.stakeholder/delete-stakeholder-cv-by-id tx {:id old-cv})))
         (when (not-empty tags)
-          (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
+          (db.stakeholder/add-stakeholder-tags tx {:tags (map #(vector id %) tags)}))
         (when (not-empty geo-value)
-          (let [geo-data (get-geo-data db id geo-type geo-value)]
+          (let [geo-data (get-geo-data tx id geo-type geo-value)]
             (when (some? geo-data)
-              (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))
-      (resp/status 204))))
+              (db.stakeholder/add-stakeholder-geo tx {:geo geo-data}))))
+        (resp/status 204)))))
 
 (defmethod ig/init-key :gpml.handler.profile/review [_ {:keys [db]}]
   (fn [{:keys [body-params admin]}]

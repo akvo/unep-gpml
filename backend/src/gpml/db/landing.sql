@@ -1,28 +1,11 @@
 -- :name map-counts
--- :doc Get counts of entities
-
+-- :doc Get counts of resources
 SELECT mc.geo AS iso_code, json_object_agg(COALESCE(mc.topic, 'project'), mc.count) AS counts
 FROM (
-  SELECT topic, count(topic),
-  json->'geo_coverage_values'->>0 AS geo
-  FROM v_topic
-  WHERE json_typeof(json->'geo_coverage_values') = 'array'
-  AND CAST(json->'geo_coverage_type' AS text) NOT IN ('"regional"','"global with elements in specific areas"')
-  AND json_array_length(json->'geo_coverage_values') = 1
-  AND json->'geo_coverage_values'->>0 IS NOT NULL
-  GROUP BY topic, json->'geo_coverage_values'->>0
-) AS mc GROUP BY geo ORDER BY geo;
-
--- :name map-counts-includes-global
--- :doc Get counts of entities for global and country-specific-resource
-
-SELECT mc.geo AS iso_code, json_object_agg(COALESCE(mc.topic, 'project'), mc.count) AS counts
-FROM (
-  SELECT COALESCE(iso_code, '***') AS geo, topic, count(topic)
-  FROM country c
-  LEFT JOIN v_topic vt ON (vt.geo_coverage_iso_code = c.iso_code) OR (c.iso_code IS NULL AND vt.geo_coverage_iso_code = '***')
-  WHERE name <> 'Other'
-  GROUP BY iso_code, topic
+  SELECT vt.geo_coverage_iso_code AS geo, topic, count(topic)
+  FROM v_topic vt
+  WHERE vt.geo_coverage_iso_code is NOT NULL AND ((vt.json->>'geo_coverage_type' = 'transnational') OR (vt.json->>'geo_coverage_type' = 'national') OR (vt.json->>'geo_coverage_type' = 'sub-national'))
+  GROUP BY geo, topic
 ) AS mc GROUP BY geo ORDER BY geo;
 
 -- :name summary
@@ -62,6 +45,14 @@ technology_countries AS (
     SELECT t.country AS id FROM technology_geo_coverage t
     WHERE t.country IS NOT NULL
 ),
+stakeholder_countries AS (
+    SELECT c.id FROM stakeholder_geo_coverage s, country_group_country cgc
+    JOIN country c ON cgc.country = c.id
+    WHERE s.country_group = cgc.country_group
+    UNION
+    SELECT s.country AS id FROM stakeholder_geo_coverage s
+    WHERE s.country IS NOT NULL
+),
 country_counts AS (
     SELECT COUNT(DISTINCT country) as country, 'project' as data FROM project_country
     UNION
@@ -73,6 +64,8 @@ country_counts AS (
     SELECT COUNT(*) as country, 'policy' as data FROM policy_countries
     UNION
     SELECT COUNT(*) as country, 'technology' as data FROM technology_countries
+    UNION
+    SELECT COUNT(*) as country, 'stakeholder' as data FROM stakeholder_countries
 ),
 totals AS (
     SELECT COUNT(*) as total, 'project' as data, 1 as o FROM project
@@ -89,47 +82,3 @@ totals AS (
 )
 SELECT t.total AS count, t.data AS resource_type, c.country AS country_count
 FROM totals t JOIN country_counts c ON t.data = c.data ORDER BY o;
-
--- :name country-specific
--- :doc Get summary of specific country data count entities
-
-WITH
-country_specific_resource AS (
-    SELECT COUNT(rgc.resource), r.type as data FROM resource_geo_coverage rgc
-    LEFT JOIN resource r ON r.id = rgc.resource
-    WHERE rgc.country_group IS NULL
-    GROUP BY rgc.resource, r.type
-    HAVING COUNT(rgc.resource) = 1
-),
-country_specific_policy AS (
-    SELECT COUNT(policy), 'Policy' as data FROM policy_geo_coverage
-    WHERE country_group IS NULL
-    GROUP BY policy
-    HAVING COUNT(policy) = 1
-),
-country_specific_project AS (
-    SELECT COUNT(project), 'Project' as data FROM project_country
-    GROUP BY project
-    HAVING COUNT(project) = 1
-),
-country_specific_technology AS (
-    SELECT COUNT(technology), 'Technology' as data FROM technology_geo_coverage
-    WHERE country_group IS NULL
-    GROUP BY technology
-    HAVING COUNT(technology) = 1
-),
-country_specific_event AS (
-    SELECT COUNT(event), 'Event' as data FROM event_geo_coverage
-    WHERE country_group IS NULL
-    GROUP BY event
-    HAVING COUNT(event) = 1
-)
-SELECT COUNT(data), data as resource_type FROM country_specific_resource GROUP BY data
-UNION
-SELECT COUNT(data), data as resource_type FROM country_specific_policy GROUP BY data
-UNION
-SELECT COUNT(data), data as resource_type FROM country_specific_project GROUP BY data
-UNION
-SELECT COUNT(data), data as resource_type FROM country_specific_technology GROUP BY data
-UNION
-SELECT COUNT(data), data as resource_type FROM country_specific_event GROUP BY data;

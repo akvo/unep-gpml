@@ -15,7 +15,7 @@
           geo (db.organisation/geo-coverage conn organisation)
           geo-coverage (cond
                 (= (:geo_coverage_type organisation) "regional")
-                (map (fn [x] (dissoc x :iso_code)) geo)
+                (mapv #(:name %) geo)
                 (= (:geo_coverage_type organisation) "global")
                 (mapv #(:iso_code %) geo))]
       (resp/response (assoc organisation :geo_coverage_value geo-coverage)))))

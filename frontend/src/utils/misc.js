@@ -4,6 +4,10 @@ export const topicTypes = ['project', 'event', 'policy', 'technology', 'financin
 
 export const topicTypesApprovedUser = topicTypes.concat(['stakeholder'])
 
+export const offeringKeys = ['donations', 'environmental scientists', 'funds', 'legal expert', 'marine biologists', 'marine litter experts', 'partnerships', 'plastics expert', 'recyclers', 'software products', 'volunteers', 'waste management services']
+
+export const seekingKeys = ['funding', 'knowledge management', 'legal services', 'marine litter consultancy', 'recycling', 'software development', 'training', 'waste management']
+
 export const topicNames = (topic) => {
   const names = {
     'project': 'Project',
