@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { BrowserRouter as Router, Route, Link, Switch, withRouter } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react';
 import { Input, Button } from 'antd'
-import { SearchOutlined } from '@ant-design/icons'
+import { SearchOutlined, FacebookOutlined, TwitterOutlined, InstagramOutlined, LinkedinOutlined, YoutubeOutlined } from '@ant-design/icons'
 import Landing from './modules/landing/view'
 import Browse from './modules/browse/view'
 import AddEvent from './modules/events/view'
@@ -124,18 +124,91 @@ const Footer = () => {
   return (
     <footer>
       <div className="ui container">
-        <div className="col">
-          <a href="https://www.gpmarinelitter.org/" target="_blank" rel="noreferrer">
-            <img src={logo2} alt="gpml" />
-            <span>Go to the GPML website</span>
-          </a>
+          <div className="col">
+              <nav>
+                <ul>
+                  <li><h4>GPML Partnership</h4></li>
+                  <li><a href="https://www.gpmarinelitter.org/who-we-are">Who we are</a></li>
+                  <li><a href="https://www.gpmarinelitter.org/what-we-do">What we do</a></li>
+                  <li><a href="#">Our members</a></li>
+                </ul>
+              </nav>            
+              <nav>
+                <ul>
+                  <li><h4>GPML Digital platform</h4></li>
+                  <li><a href="#">knowledge exchange</a></li>
+                  <li><a href="#">Connect Stakeholders</a></li>
+                  <li><a href="#">Data Hub</a></li>
+                </ul>
+              </nav>
+              <img src={unepLogo} className="uneplogo" alt="unep" />
+          </div>
+          <div className="col">
+              <nav>
+                <ul>
+                  <li><h4>Resources</h4></li>
+                  <li><a href="#">Action plans</a></li>
+                  <li><a href="#">Events</a></li>
+                  <li><a href="#">Financial resources</a></li>
+                  <li><a href="#">Technical resources</a></li>                  
+                  <li><a href="#">Technologies</a></li>
+                  <li><a href="#">Policies</a></li>
+                  <li><a href="#">Projects</a></li>
+                </ul>
+              </nav>            
+              <nav>
+                <ul>
+                  <li><h4>Data</h4></li>
+                  <li><a href="#">SDG 14 Data</a></li>
+                  <li><a href="#">Citizen Science Data</a></li>
+                </ul>
+              </nav>
         </div>
         <div className="col">
-          <img src={unepLogo} className="uneplogo" alt="unep" />
-          <img src={gpmlLogo} className="gpmllogo" alt="gpml" />
-          <p>
-            The Global Partnership on Marine Litter (GPML) is a multi-stakeholder partnership that brings together all actors working to prevent marine litter and microplastics. By providing a unique global platform to share knowledge and experience, partners are able to work together to create and advance solutions to this pressing global issue.
-          </p>
+            <nav>
+              <ul>
+                <li><h4>Contact Us</h4></li>
+                <li><a href="mailto:unep-gpmmarinelitter@un.org">unep-gpmmarinelitter@un.org</a></li>
+              </ul>
+            </nav>            
+            <nav>
+              <ul>
+                <li><h4>Join Us</h4></li>
+                <li><a href="#">Join the GPML Partnership (Organizations Only)</a></li>
+                <li><a href="#">Sign up to the GPML Digital Platform (For All Individuals)</a></li>
+              </ul>
+            </nav>            
+            <nav>
+              <ul>
+                <li><h4>Stakeholders</h4></li>
+                <li><a href="#">Organizations</a></li>
+                <li><a href="#">Individuals</a></li>
+              </ul>
+            </nav>
+        </div>
+      </div>
+      <div className="ui container">
+        <div className="footBottom">
+          <div className="col">
+            <nav>
+              <ul className="horizonList">
+                <li><p>© UNEP</p></li>
+                <li><a href="#">Terms of use</a></li>
+                <li><a href="#">Privacy</a></li>
+              </ul>
+            </nav>     
+          </div>
+          <div className="col">
+            <nav>
+              <ul className="horizonList socialLink">
+                <li><a href="#"> <FacebookOutlined /></a></li>
+                <li><a href="#"> <TwitterOutlined /> </a></li>
+                <li><a href="#"> <InstagramOutlined /></a></li>
+                <li><a href="#"> <LinkedinOutlined /></a></li>
+                <li><a href="#"> <YoutubeOutlined /></a></li>
+              </ul>
+            </nav>     
+          </div>
         </div>
       </div>
     </footer>
