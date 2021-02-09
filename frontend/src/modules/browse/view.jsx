@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Card, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
-import { topicTypes, topicNames, resourceTypeToTopicType } from '../../utils/misc'
+import { topicTypes, topicTypesApprovedUser, topicNames, resourceTypeToTopicType } from '../../utils/misc'
 import { useLocation, withRouter } from 'react-router-dom'
 import moment from 'moment'
 import api from '../../utils/api'
@@ -85,8 +85,9 @@ const Browse = ({ history, summary, profile }) => {
         }
     })
   }
+  const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypes
   let topicCounts = {}
-  topicTypes.forEach((topic) => {
+  tTypes.forEach((topic) => {
     const entry = summary?.find(it => it.hasOwnProperty(topic))
     if (entry) {
       topicCounts[topic] = entry[topic]
@@ -128,10 +129,11 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
       onChange(value.filter(it => it !== type))
     }
   }
+  const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypes
   return (
     <ul className="topic-list">
-      {topicTypes.map(type =>
-        (isApprovedUser || type !== 'stakeholder') && <li key={type}><Checkbox checked={value.indexOf(humps.decamelize(type)) !== -1} onChange={handleChange(humps.decamelize(type))}>{topicNames(type)} ({(counts && counts[type]) || 0})</Checkbox></li>
+      {tTypes.map(type =>
+        <li key={type}><Checkbox checked={value.indexOf(humps.decamelize(type)) !== -1} onChange={handleChange(humps.decamelize(type))}>{topicNames(type)} ({(counts && counts[type]) || 0})</Checkbox></li>
       )}
     </ul>
   )

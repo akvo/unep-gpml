@@ -1,6 +1,8 @@
 import humps from 'humps'
 
-export const topicTypes = ['project', 'event', 'policy', 'technology', 'financingResource', 'technicalResource', 'stakeholder']
+export const topicTypes = ['project', 'event', 'policy', 'technology', 'financingResource', 'technicalResource']
+
+export const topicTypesApprovedUser = topicTypes.concat(['stakeholder'])
 
 export const topicNames = (topic) => {
   const names = {
