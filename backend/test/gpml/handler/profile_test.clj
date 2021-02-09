@@ -177,22 +177,70 @@
       (is (= 204 (:status resp)))
       (is (= {:id 1,
               :email "john@org"
-              :title "Mr.",
-              :first_name "Mark",
-              :last_name "Doe",
-              :country "SPA",
-              :linked_in "johndoe",
-              :twitter "johndoe",
-              :org_url "https://unep.org",
+              :title "Mr."
+              :first_name "Mark"
+              :last_name "Doe"
+              :country "SPA"
+              :linked_in "johndoe"
+              :twitter "johndoe"
+              :org_url "https://unep.org"
               :org_name "Unep"
-              :photo "/image/profile/2",
-              :cv "/cv/profile/2",
-              :representation "test",
-              :role "USER",
+              :photo "/image/profile/2"
+              :cv "/cv/profile/2"
+              :representation "test"
+              :role "USER"
               :geo_coverage_type "regional"
               :about "Dolor sit Amet"
               :reviewed_at nil,
               :reviewed_by nil,
+              :review_status "SUBMITTED"}
+             profile))))
+
+(deftest handler-put-test-but-the-pic-is-from-outside
+  (testing "Update profile once its signed up")
+    (let [system (ig/init fixtures/*system* [::profile/put])
+          handler (::profile/put system)
+          db (-> system :duct.database.sql/hikaricp :spec)
+          _ (seed-important-database db)
+          ;; John created account with country value Indonesia and organisation Akvo
+          _ (db.stakeholder/new-stakeholder db  (assoc (new-profile (:id 1) (:id 1))
+                                                       :picture "https://lh3.googleusercontent.com"
+                                                       :cv nil))
+          ;; John trying to edit their profile
+          resp (handler (-> (mock/request :put "/")
+                            (assoc :jwt-claims {:email "john@org"})
+                            (assoc :body-params
+                                     (assoc (new-profile "IND" nil)
+                                             :id 1
+                                             :about "Dolor sit Amet"
+                                             :country "SPA"
+                                             :first_name "Mark"
+                                             :org {:name "Unep" :url "https://unep.org"}
+                                             :photo "https://lh3.googleusercontent.com"
+                                             :cv nil
+                                             :picture nil))))
+          profile (db.stakeholder/stakeholder-by-id db {:id 1})
+          old-images (db.stakeholder/stakeholder-picture-by-id db {:id 1})]
+      (is (= nil old-images))
+      (is (= 204 (:status resp)))
+      (is (= {:id 1,
+              :email "john@org"
+              :title "Mr."
+              :first_name "Mark"
+              :last_name "Doe"
+              :country "SPA"
+              :linked_in "johndoe"
+              :twitter "johndoe"
+              :org_url "https://unep.org"
+              :org_name "Unep"
+              :photo "https://lh3.googleusercontent.com"
+              :representation "test"
+              :role "USER"
+              :geo_coverage_type "regional"
+              :about "Dolor sit Amet"
+              :reviewed_at nil
+              :reviewed_by nil
+              :cv nil
               :review_status "SUBMITTED"}
              profile))))
 

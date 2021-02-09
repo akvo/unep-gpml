@@ -156,8 +156,10 @@
             profile (cond-> new-profile
                       (:photo body-params)
                       (assoc :picture
-                             (if (re-find #"^\/image" (:photo body-params))
+                             (cond
+                               (re-find #"^\/image|^http" (:photo body-params))
                                (:photo body-params)
+                               (re-find #"^data:" (:photo body-params))
                                (assoc-picture tx (:photo body-params))))
                       (= (:photo body-params) nil)
                       (assoc :picture nil)
