@@ -101,14 +101,14 @@ const Root = () => {
             </Switch>
             <nav>
               <Link to="/browse">Find and Connect</Link>
-              <AddButton {...{ setSignupModalVisible, isAuthenticated, loginWithPopup,profile, setEventWarningVisible}} />
+              <AddButton {... {setSignupModalVisible, isAuthenticated, loginWithPopup, profile, setEventWarningVisible}} />
             </nav>
           </div>
         </header>
         <Route path="/" exact render={props => <Landing {...
           {countries, data, initLandingCount, setCountries, setInitLandingCount,...props}
           }/>} />
-        <Route path="/browse" render={props => <Browse {...props} summary={data?.summary}/>} />
+        <Route path="/browse" render={props => <Browse {...props} profile={profile} summary={data?.summary}/>} />
         <Route path="/add-event" component={AddEvent} />
         <Route path="/profile" render={props => <ProfileView {...{...props, profile, tagsRef, setProfile }} />} />
         <Route path="/signup" component={SignupView} />
