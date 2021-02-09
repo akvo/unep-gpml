@@ -16,5 +16,17 @@ select * from organisation where name in (:v*:names)
 
 
 -- :name new-organisation :<! :1
-insert into organisation (name)
-values (:name) returning id;
+insert into organisation (
+    name
+--~ (when (contains? params :type) ", type")
+--~ (when (contains? params :country) ", country")
+--~ (when (contains? params :country_group) ", country_group")
+--~ (when (contains? params :url) ", url")
+)
+values (
+    :name
+--~ (when (contains? params :type) ", :type")
+--~ (when (contains? params :country) ", :country::integer")
+--~ (when (contains? params :country_group) ", :country_group::integer")
+--~ (when (contains? params :url) ", :url")
+) returning id;

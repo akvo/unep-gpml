@@ -104,8 +104,19 @@
   (doseq [data (get-country-group-countries db)]
     (db.country-group/new-country-group-country db data)))
 
+(defn map-organisation [db]
+  (->> (get-data "organisations_new")
+       (map (fn [x]
+                (assoc x :country_group nil))) ;; TODO: refactor once UNEP provide country group data
+       (map (fn [x]
+              (if-let [country (:country x)]
+                (if-let [data (first (get-country db [country]))]
+                  (assoc x :country (:id data))
+                  (assoc x :country nil))
+                x)))))
+
 (defn seed-organisations [db]
-  (doseq [data (get-data "organisations")]
+  (doseq [data (map-organisation db)]
     (db.organisation/new-organisation db data)))
 
 (defn seed-currencies [db]
