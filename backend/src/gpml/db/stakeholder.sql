@@ -129,9 +129,6 @@ update stakeholder set
 --~ (when (contains? params :representation) ",representation= :representation")
 --~ (when (contains? params :geo_coverage_type) ",geo_coverage_type= :v:geo_coverage_type::geo_coverage_type")
 --~ (when (contains? params :about) ",about= :about")
---~ (when (contains? params :reviewed_by) ",reviewed_by = :reviewed_by::integer")
---~ (when (contains? params :reviewed_at) ",reviewed_at= :reviewed_at")
---~ (when (contains? params :review_status) ",review_status = :v:review_status::review_status")
     , modified = now()
 where id = :id;
 
