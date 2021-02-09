@@ -12,7 +12,7 @@ const ProfileView = ({profile, tagsRef, setProfile}) => {
   const [user, setUser] = useState(false)
   const onSubmit = (vals) => {
     setSaving(true)
-    if (vals.geoCoverageType === 'national'){
+    if (vals.geoCoverageType === 'national' && typeof(vals.geoCoverageValue) === 'string'){
         vals.geoCoverageValue = [vals.geoCoverageValue]
     }
     api.put('/profile', vals)

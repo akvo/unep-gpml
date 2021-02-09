@@ -18,7 +18,7 @@ mkdir -p "${m2_path}"
 
 dc () {
     docker-compose \
-	--no-ansi \
+	--ansi never \
 	"$@"
 }
 export -f dc

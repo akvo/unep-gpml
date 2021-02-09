@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Card, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
-import { topicTypes, topicNames, resourceTypeToTopicType } from '../../utils/misc'
+import { topicTypes, topicTypesApprovedUser, topicNames, resourceTypeToTopicType } from '../../utils/misc'
 import { useLocation, withRouter } from 'react-router-dom'
 import moment from 'moment'
 import api from '../../utils/api'
@@ -27,14 +27,14 @@ function useQuery() {
 
 let tmid
 
-const Browse = ({ history, summary }) => {
+const Browse = ({ history, summary, profile }) => {
   const query = useQuery()
   const [results, setResults] = useState([])
   const location = useLocation()
   const [relations, setRelations] = useState([])
   const {isAuthenticated, loginWithPopup } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false)
-
+  const isApprovedUser = profile?.reviewStatus === 'APPROVED'
   const getResults = () => {
     // NOTE: Don't this needs to be window.location.search because of
     // how of how `history` and `location` are interacting!
@@ -85,8 +85,9 @@ const Browse = ({ history, summary }) => {
         }
     })
   }
+  const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypes
   let topicCounts = {}
-  topicTypes.forEach((topic) => {
+  tTypes.forEach((topic) => {
     const entry = summary?.find(it => it.hasOwnProperty(topic))
     if (entry) {
       topicCounts[topic] = entry[topic]
@@ -107,7 +108,7 @@ const Browse = ({ history, summary }) => {
             </div>
             <div className="field">
               <div className="label">Resources</div>
-              <TopicSelect counts={topicCounts} value={query.topic} onChange={val => updateQuery('topic', val)} />
+              <TopicSelect counts={topicCounts} isApprovedUser={isApprovedUser} value={query.topic} onChange={val => updateQuery('topic', val)} />
             </div>
           </div>
         </aside>
@@ -120,7 +121,7 @@ const Browse = ({ history, summary }) => {
   )
 }
 
-const TopicSelect = ({ value, onChange, counts }) => {
+const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
   const handleChange = (type) => ({target: {checked}}) => {
     if (checked && value.indexOf(type) === -1) {
       onChange([...value, type])
@@ -128,9 +129,10 @@ const TopicSelect = ({ value, onChange, counts }) => {
       onChange(value.filter(it => it !== type))
     }
   }
+  const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypes
   return (
     <ul className="topic-list">
-      {topicTypes.map(type =>
+      {tTypes.map(type =>
         <li key={type}><Checkbox checked={value.indexOf(humps.decamelize(type)) !== -1} onChange={handleChange(humps.decamelize(type))}>{topicNames(type)} ({(counts && counts[type]) || 0})</Checkbox></li>
       )}
     </ul>
