@@ -57,7 +57,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
       }
     }
 
-    const selected = data ? data.specific.find(x => x.isoCode === country) : false;
+    const selected = data?.specific?.find(x => x.isoCode === country)
     const mapData = country ? [{ name: country, itemStyle: { areaColor: "#1890ff" }}] : (counts ? countryMap : [])
     const defaultMapData = initLandingCount !== "" && data ?
         data.map.map(x => ({...x, name: x.isoCode, value: x[initLandingCount]})) : false;
