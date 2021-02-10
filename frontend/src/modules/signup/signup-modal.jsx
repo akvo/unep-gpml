@@ -7,7 +7,7 @@ import SignupForm from "./signup-form";
 import { useRef } from "react";
 
 
-const SignupModal = ({ visible, onCancel, setProfile, profile, tagsRef}) => {
+const SignupModal = ({ visible, onCancel, setProfile, profile, tags }) => {
     const [sending, setSending] = useState(false)
     const [step, setStep] = useState(1)
     const {user} = useAuth0();
@@ -46,7 +46,7 @@ const SignupModal = ({ visible, onCancel, setProfile, profile, tagsRef}) => {
               onSubmit={onSubmit}
               handleSubmitRef={ref => { handleSubmitRef.current = ref; }}
               initialValues={profile}
-              tagsRef={tagsRef}
+              tags={tags}
             />
           }
           {step === 2 &&

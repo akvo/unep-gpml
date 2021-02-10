@@ -29,7 +29,7 @@ const Root = () => {
     const [eventWarningVisible, setEventWarningVisible] = useState(false)
     const [countries, setCountries] = useState(null);
     const [data, setData] = useState(null);
-    const [tagsRef, setProfileTag] = useState([]);
+    const [tags, setTags] = useState([]);
     const [initLandingCount, setInitLandingCount] = useState("");
 
     useEffect(() => {
@@ -61,9 +61,9 @@ const Root = () => {
         setCountries(resp.data)
         setInitLandingCount("project");
       })
-      api.get('/tag/general')
+      api.get('/tag')
       .then((resp) => {
-        setProfileTag(resp.data)
+        setTags(resp.data)
       })
     }, [])
 
@@ -110,11 +110,11 @@ const Root = () => {
           }/>} />
         <Route path="/browse" render={props => <Browse {...props} profile={profile} summary={data?.summary}/>} />
         <Route path="/add-event" component={AddEvent} />
-        <Route path="/profile" render={props => <ProfileView {...{...props, profile, tagsRef, setProfile }} />} />
+        <Route path="/profile" render={props => <ProfileView {...{...props, profile, tags, setProfile }} />} />
         <Route path="/signup" component={SignupView} />
         <Footer />
       </div>
-      <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} {...{ tagsRef, setProfile }} />
+      <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} {...{ tags, setProfile }} />
       <EventWarningModal visible={eventWarningVisible} close={() => setEventWarningVisible(false)}/>
     </Router>
     )

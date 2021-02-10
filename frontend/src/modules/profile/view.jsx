@@ -6,7 +6,7 @@ import AdminSection from './admin'
 import './styles.scss'
 const {TabPane} = Tabs
 
-const ProfileView = ({profile, tagsRef, setProfile}) => {
+const ProfileView = ({profile, tags, setProfile}) => {
   const handleSubmitRef = useRef()
   const [saving, setSaving] = useState(false)
   const [user, setUser] = useState(false)
@@ -35,7 +35,7 @@ const ProfileView = ({profile, tagsRef, setProfile}) => {
       <div className="ui container">
         <Tabs tabPosition="left">
           <TabPane tab="Personal details" key="1">
-            <SignupForm onSubmit={onSubmit} handleSubmitRef={ref => { handleSubmitRef.current = ref }} initialValues={user} tagsRef={tagsRef}/>
+            <SignupForm {...{onSubmit, tags }} handleSubmitRef={ref => { handleSubmitRef.current = ref }} initialValues={user} />
             <Button loading={saving} type="primary" onClick={(ev) => { handleSubmitRef.current(ev) }}>Update</Button>
           </TabPane>
           {user?.role === 'ADMIN' &&

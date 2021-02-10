@@ -15,7 +15,6 @@ import { countries } from 'countries-list'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
 import cloneDeep from 'lodash/cloneDeep'
 import api from "../../utils/api";
-import { offeringKeys, seekingKeys } from "../../utils/misc";
 import GeoCoverageInput from "./comp/geo-coverage-input";
 import { useRef } from "react";
 
@@ -42,8 +41,8 @@ const defaultFormSchema = [
     'role': { label: 'Your role in the organisation', order: 2, required: true },
   },
   {
-    seeking: { label: 'Seeking', control: 'select', mode: 'multiple', options: seekingKeys.map(it => ({ value: it, label: it })) },
-    offering: { label: 'Offering', control: 'select', mode: 'multiple', options: offeringKeys.map(it => ({ value: it, label: it })) },
+    seeking: { label: 'Seeking', control: 'select', mode: 'multiple', options: [] },
+    offering: { label: 'Offering', control: 'select', mode: 'multiple', options: [] },
     about: { label: 'About yourself', control: 'textarea', placeholder: 'Max 150 words' },
     tags: { label: 'Tags', control: 'select', options: [], mode: 'multiple' },
     cv: { label: 'CV / Portfolio', control: 'file', maxFileSize: 5, accept: ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain" },
@@ -58,7 +57,7 @@ const ReviewText = ({reviewStatus}) => {
  return (<div className={`review-status ${reviewStatus.toLowerCase()}`}>{reviewIcon} SUBMISSION IS {reviewStatus}</div>)
 }
 
-const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, tagsRef }) => {
+const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, tags }) => {
   const [formSchema, setFormSchema] = useState(defaultFormSchema)
   const [noOrg, setNoOrg] = useState(false)
   const prevVals = useRef()
@@ -72,22 +71,25 @@ const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, t
       newSchema[1]['org.id'].filterOption = (input, option) => {
         return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 || option.value === -1
       }
-      if(tagsRef){
-        newSchema[2].tags.options = tagsRef.map(x => ({ value: x.id, label: x.tag }))
-        newSchema[2].tags.loading = false
+      if(tags){
+        newSchema[2].tags.options = tags.general.map(x => ({ value: x.id, label: x.tag }))
+        newSchema[2].offering.options = tags.offering.map(x => ({ value: x.id, label: x.tag }))
+        newSchema[2].seeking.options = tags.seeking.map(x => ({ value: x.id, label: x.tag }))
       }
       setFormSchema(newSchema)
     })
   }, [])
 
   useEffect(() => {
-      if (tagsRef) {
+    console.log(tags)
+      if (tags) {
           const newSchema = cloneDeep(formSchema);
-          newSchema[2].tags.options = tagsRef.map(x => ({ value: x.id, label: x.tag }))
-          newSchema[2].tags.loading = false
+          newSchema[2].tags.options = tags.general.map(x => ({ value: x.id, label: x.tag }))
+          newSchema[2].offering.options = tags.offering.map(x => ({ value: x.id, label: x.tag }))
+          newSchema[2].seeking.options = tags.seeking.map(x => ({ value: x.id, label: x.tag }))
           setFormSchema(newSchema);
       }
-  }, [tagsRef])
+  }, [tags])
 
   const handleChangePrivateCitizen = ({ target: { checked } }) => {
     setNoOrg(checked)
