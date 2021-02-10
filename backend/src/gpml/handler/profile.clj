@@ -29,7 +29,7 @@
                     {:keys [email picture]}
                     {:keys [title first_name
                             last_name linked_in
-                            twitter photo cv
+                            twitter photo cv organisation_role
                             representation country
                             org about geo_coverage_type]}]
   (let [pic-url (if-let [upload-picture (assoc-picture conn photo)]
@@ -47,6 +47,7 @@
                  :linked_in linked_in
                  :twitter twitter
                  :representation representation
+                 :organisation_role organisation_role
                  :about about
                  :geo_coverage_type geo_coverage_type
                  :country (get-country conn country)
@@ -59,11 +60,11 @@
            last_name linked_in cv
            twitter representation
            country geo_coverage_type
-           reviewed_at reviewed_by review_status]}
+           reviewed_at reviewed_by review_status
+           organisation_role]}
    tags
    geo
    org]
-  (tap> tags)
   {:id id
    :title title
    :first_name first_name
@@ -82,6 +83,7 @@
    :org org
    :about about
    :role role
+   :organisation_role organisation_role
    :reviewed_at reviewed_at
    :reviewed_by reviewed_by
    :review_status review_status})
@@ -180,9 +182,12 @@
         (db.stakeholder/delete-stakeholder-geo tx body-params)
         (db.stakeholder/delete-stakeholder-tags tx body-params)
         (when (and (some? (:photo old-profile))
-                   (not= (:photo old-profile) (:picture profile)))
-          (let [old-pic (-> (str/split (:photo old-profile) #"/image/profile/") second Integer/parseInt)]
-            (db.stakeholder/delete-stakeholder-picture-by-id tx {:id old-pic})))
+                   (not= (:photo old-profile) (:picture profile))
+                   (not= "http" (re-find #"^http" (:photo old-profile))))
+          (let [photo-url (str/split (:photo old-profile) #"\/image\/profile\/")]
+            (when (= 2 (count photo-url))
+              (let [old-pic (-> photo-url second Integer/parseInt)]
+                (db.stakeholder/delete-stakeholder-picture-by-id tx {:id old-pic})))))
         (when (and (some? (:cv old-profile))
                    (not= (:cv old-profile) (:cv profile)))
           (let [old-cv (-> (str/split (:cv old-profile) #"/cv/profile/") second Integer/parseInt)]
@@ -221,7 +226,7 @@
    [:representation string?]
    [:country {:optional true} string?]
    [:about {:optional true} string?]
-   [:role string?]
+   [:organisation_role string?]
    [:geo_coverage_type {:optional true}
     [:enum "global", "regional", "national", "transnational",
      "sub-national", "global with elements in specific areas"]]

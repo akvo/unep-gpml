@@ -20,6 +20,7 @@ select
     s.cv,
     c.iso_code as country,
     s.affiliation,
+    s.organisation_role,
     s.reviewed_at,
     s.reviewed_by,
     s.review_status from stakeholder s
@@ -44,6 +45,7 @@ select
     s.cv,
     c.iso_code as country,
     s.affiliation,
+    s.organisation_role,
     s.reviewed_at,
     s.reviewed_by,
     s.review_status from stakeholder s
@@ -78,6 +80,7 @@ select
     s.geo_coverage_type,
     c.iso_code as country,
     s.affiliation,
+    s.organisation_role,
     s.reviewed_at,
     s.reviewed_by,
     s.review_status from stakeholder s
@@ -94,8 +97,37 @@ where id = :id;
 
 -- :name new-stakeholder :<! :1
 -- :doc Insert a new stakeholder
-insert into stakeholder(cv, picture, title, first_name, last_name, affiliation, email, linked_in, twitter, country, representation, about, geo_coverage_type)
-values(:cv, :picture, :title, :first_name, :last_name, :affiliation, :email, :linked_in, :twitter, :country::integer, :representation, :about, :v:geo_coverage_type::geo_coverage_type) RETURNING id;
+insert into stakeholder(
+    picture,
+    title,
+    first_name,
+    last_name,
+    affiliation,
+    email,
+    country,
+    representation,
+    geo_coverage_type
+--~ (when (contains? params :linked_in) ",linked_in")
+--~ (when (contains? params :twitter) ",twitter")
+--~ (when (contains? params :cv) ",cv")
+--~ (when (contains? params :about) ",about")
+--~ (when (contains? params :organisation_role) ",organisation_role")
+) values(
+    :picture,
+    :title,
+    :first_name,
+    :last_name,
+    :affiliation,
+    :email,
+    :country::integer,
+    :representation,
+    :v:geo_coverage_type::geo_coverage_type
+--~ (when (contains? params :linked_in) ",:linked_in")
+--~ (when (contains? params :twitter) ",:twitter")
+--~ (when (contains? params :cv) ",:cv")
+--~ (when (contains? params :about) ",:about")
+--~ (when (contains? params :organisation_role) ",:organisation_role")
+) RETURNING id;
 
 -- :name update-stakeholder-role :! :n
 -- :doc Update stakeholder role
@@ -120,6 +152,7 @@ update stakeholder set
 --~ (when (contains? params :cv) ",cv= :cv")
 --~ (when (contains? params :country) ",country= :v:country::integer")
 --~ (when (contains? params :representation) ",representation= :representation")
+--~ (when (contains? params :organisation_role) ",organisation_role= :organisation_role")
 --~ (when (contains? params :geo_coverage_type) ",geo_coverage_type= :v:geo_coverage_type::geo_coverage_type")
 --~ (when (contains? params :about) ",about= :about")
     , modified = now()

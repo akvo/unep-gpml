@@ -29,14 +29,14 @@
    :representation "test"
    :affiliation org
    :title "Mr."
+   :organisation_role "manager"
    :about "Lorem Ipsum"
    :country country
    :picture picture
    :cv picture
    :geo_coverage_type "regional"
    :geo_coverage_value ["Africa" "Europe"]
-   :tags [1 2]}
-  )
+   :tags [1 2]})
 
 (defn new-admin [country org]
   (assoc (new-profile country org) :email "jane@org" :first_name "Jane"))
@@ -97,6 +97,7 @@
               :geo_coverage_value ["Africa" "Europe"]
               :tags [1 2]
               :twitter "johndoe"
+              :organisation_role "manager"
               :reviewed_at nil
               :reviewed_by nil
               :review_status "SUBMITTED"}
@@ -135,6 +136,7 @@
               :geo_coverage_value ["Africa" "Europe"]
               :tags [1 2]
               :twitter nil
+              :organisation_role "manager"
               :reviewed_at nil
               :reviewed_by nil
               :review_status "SUBMITTED"}
@@ -163,6 +165,7 @@
                                              :country "SPA"
                                              :first_name "Mark"
                                              :org {:id 1 :name "Akvo" :url "https://akvo.org"}
+                                             :organisation_role "content creator"
                                              :photo picture
                                              :cv picture
                                              :picture nil))))
@@ -186,6 +189,7 @@
               :cv "/cv/profile/2"
               :representation "test"
               :role "USER"
+              :organisation_role "content creator"
               :geo_coverage_type "regional"
               :about "Dolor sit Amet"
               :affiliation 1
@@ -215,6 +219,7 @@
                                              :first_name "Mark"
                                              :org {:id 1 :name "Akvo" :url "https://akvo.org"}
                                              :photo "https://lh3.googleusercontent.com"
+                                             :organisation_role "content creator"
                                              :cv nil
                                              :picture nil))))
           profile (db.stakeholder/stakeholder-by-id db {:id 1})
@@ -232,6 +237,7 @@
               :photo "https://lh3.googleusercontent.com"
               :representation "test"
               :role "USER"
+              :organisation_role "content creator"
               :geo_coverage_type "regional"
               :about "Dolor sit Amet"
               :affiliation 1

@@ -22,6 +22,7 @@
    :twitter nil
    :url nil
    :country (get-country conn country)
+   :organisation_role "Account Manager"
    :representation "test"
    :about "Lorem Ipsum"
    :geo_coverage_type nil
@@ -43,5 +44,6 @@
       (is (= (:review_status (first stakeholder)) "SUBMITTED"))
       (is (= (:first_name (first stakeholder)) "John"))
       (is (= (:picture (first stakeholder)) nil))
+      (is (= (:organisation_role (first stakeholder)) "Account Manager"))
       (is (= (:country (first stakeholder)) (get-country conn "Indonesia")))
       (is (= (:last_name (first stakeholder)) "Doe")))))
