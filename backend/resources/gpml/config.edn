@@ -98,10 +98,14 @@
                                                                       [:review_status [:enum "APPROVED" "REJECTED"]]]}
                                                   :handler #ig/ref :gpml.handler.profile/review}}]]]
                                         ["/tag"
+                                         [""
+                                          {:get {:summary "List tags grouped by category"
+                                                 :swagger {:tags ["tags"]}
+                                                 :handler #ig/ref :gpml.handler.tag/all}}]
                                          ["/:topic-type"
                                           {:get {:summary "List tags by topic type"
                                                  :swagger {:tags ["tags"]}
-                                                 :handler #ig/ref :gpml.handler.tag/get}}]]
+                                                 :handler #ig/ref :gpml.handler.tag/by-topic}}]]
                                         ["/organisation"
                                          {:get {:summary "List all organisation"
                                                 :swagger {:organisation ["organisations"]}
@@ -147,7 +151,9 @@
   :gpml.handler.profile/review {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/pending {:db #ig/ref :duct.database/sql}
 
-  :gpml.handler.tag/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.tag/by-topic {:db #ig/ref :duct.database/sql}
+  :gpml.handler.tag/all {:db #ig/ref :duct.database/sql}
+
   :gpml.handler.organisation/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation/get-id {:db #ig/ref :duct.database/sql}
 

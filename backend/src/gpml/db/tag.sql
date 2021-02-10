@@ -24,3 +24,10 @@ values (:tag, :tag_category) returning id
 -- :doc Get tag by category
 select * from tag WHERE tag_category in
 (select id from tag_category WHERE category LIKE :category);
+
+-- :name all-tags :? :*
+-- :doc Get all tags
+select tg.category, t.id, t.tag
+ from tag_category tg, tag t
+where tg.id = t.tag_category
+order by tg.category, t.tag
