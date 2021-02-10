@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form } from "antd";
-import { Form as FinalForm, FormSpy } from 'react-final-form'
-import { createForm } from 'final-form'
+import { Field, Form as FinalForm, FormSpy } from 'react-final-form'
 import arrayMutators from 'final-form-arrays'
 import './styles.scss'
 import Checkbox from "antd/lib/checkbox/Checkbox";
@@ -11,7 +10,7 @@ import {
   CheckCircleOutlined,
   ExclamationCircleOutlined
 } from "@ant-design/icons";
-import { FieldsFromSchema, validateSchema } from "../../utils/form-utils";
+import { FieldsFromSchema } from "../../utils/form-utils";
 import { countries } from 'countries-list'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
 import cloneDeep from 'lodash/cloneDeep'
@@ -68,17 +67,6 @@ const ReviewText = ({reviewStatus}) => {
  return (<div className={`review-status ${reviewStatus.toLowerCase()}`}>{reviewIcon} SUBMISSION IS {reviewStatus}</div>)
 }
 
-// const genForm = ({formSchema, onSubmit}) => {
-//   return createForm({
-//     subscription: {},
-//     mutators: {
-//       ...arrayMutators
-//     },
-//     onSubmit,
-//     validate: validateSchema(formSchema.reduce((acc, val) => ({ ...acc, ...val }), {}))
-//   })
-// }
-
 const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, tagsRef }) => {
   const [formSchema, setFormSchema] = useState(defaultFormSchema)
   const [noOrg, setNoOrg] = useState(false)
@@ -97,7 +85,6 @@ const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, t
         newSchema[2].tags.options = tagsRef.map(x => ({ value: x.id, label: x.tag }))
         newSchema[2].tags.loading = false
       }
-      console.log(formRef.current)
       setFormSchema(newSchema)
     })
   }, [])
@@ -119,6 +106,7 @@ const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, t
       newSchema[1][key].required = !checked
     })
     setFormSchema(newSchema)
+    setTimeout(() => formRef.current?.change('ts', new Date().getTime()))
   }
 
   return (
@@ -128,11 +116,11 @@ const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, t
         subscription={{}}
         mutators={{...arrayMutators}}
         onSubmit={onSubmit}
-        // validate={validateSchema(formSchema.reduce((acc, val) => ({ ...acc, ...val }), {}))}
         render={
           ({ handleSubmit, form, ...props }) => {
             if(handleSubmitRef) handleSubmitRef(handleSubmit)
             if (handleFormRef) handleFormRef(form)
+            formRef.current = form
             return (
               <div className="signup-form">
                 {initialValues?.reviewStatus && <ReviewText {...initialValues}/> }

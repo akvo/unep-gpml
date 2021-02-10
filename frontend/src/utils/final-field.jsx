@@ -76,6 +76,7 @@ const FinalField = ({name, ...props}) => {
     <Field
       name={name}
       component={Control}
+      validate={(value, allValues) => { if(props.required && !value) return 'Required'; else return undefined }}
       {...props}
     />
   )
