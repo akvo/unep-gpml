@@ -116,7 +116,7 @@ const Browse = ({ history, summary, profile }) => {
           </div>
         </aside>
         <div className="main-content">
-          {results.map(result => <Result key={`${result.type}-${result.id}`} {...{result, handleRelationChange, relations}} />)}
+          {results.map(result => <Result key={`${result.type}-${result.id}`} {...{result, handleRelationChange, relations, profile}} />)}
         </div>
       </div>
       <FavoriteWarningModal visible={warningVisible} close={() => setWarningVisible(false)}/>
@@ -142,11 +142,12 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
   )
 }
 
-const Result = ({ result, relations, handleRelationChange }) => {
+const Result = ({ result, relations, handleRelationChange, profile }) => {
   const fullName = (data) => data.title ? `${data.title} ${data.firstName} ${data.lastName}` : `${data.firstName} ${data.lastName}`
   const title = (result.type === 'stakeholder' && fullName(result)) || result.title || result.name
   const description = result.description || result.abstract || result.summary || result.about
   const relation = relations.find(it => it.topicId === result.id)
+  const allowBookmark = result.type !== 'stakeholder' || profile.id !== result.id
   return (
     <Card className="result">
       <h4>{title}</h4>
@@ -162,7 +163,7 @@ const Result = ({ result, relations, handleRelationChange }) => {
         {result.type === 'event' && [<li><span>Starts:</span><i>{moment(result.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(result.endDate).format('DD MMM YYYY')}</i></li>]}
       </ul>
       {description && <ShowMoreText lines={5}>{description}</ShowMoreText>}
-      <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />
+      {allowBookmark && <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />}
     </Card>
   )
 }
