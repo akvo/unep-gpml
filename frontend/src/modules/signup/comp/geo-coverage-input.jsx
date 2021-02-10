@@ -7,15 +7,16 @@ import countries2to3 from 'countries-list/dist/countries2to3.json'
 const regionOptions = ['Africa', 'Asia and the Pacific', 'East Asia', 'Europe', 'Latin America and Carribean', 'North America', 'West Asia']
 
 const GeoCoverageInput = (props) => {
+  const { disabled } = props
   return (
     <Field key={props.name} name="org.geoCoverageType" render={
       ({ input: typeInput, name }) => {
         return <Field key={name} name="org.geoCoverageValue" render={
           ({ input }) => {
             if (typeInput.value === 'global') return <Input disabled />
-            if (typeInput.value === 'sub-national') return <Input placeholder="Type regions here..." {...input} />
-            if (typeInput.value === 'Other') return <Input placeholder="Type here..." {...input} />
-            const selectProps = { ...input }
+            if (typeInput.value === 'sub-national') return <Input placeholder="Type regions here..." {...input} disabled={disabled} />
+            if (typeInput.value === 'Other') return <Input placeholder="Type here..." {...input} disabled={disabled} />
+            const selectProps = { ...input, disabled }
             if (typeInput.value === 'regional') {
               selectProps.options = regionOptions.map(it => ({ value: it, label: it }))
               selectProps.mode = 'multiple'

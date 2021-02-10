@@ -42,9 +42,10 @@ const defaultFormSchema = [
     'org.type': { label: 'Type', control: 'select', options: ['Government', 'Private Sector', 'Academia and Scientific Community', 'NGO and Major Groups and Stakeholders', 'IGO and Multilateral Process Actor', 'Other'].map(it => ({ value: it, label: it })) },
     'org.country': { label: 'Country', order: 3, control: 'select', required: true, showSearch: true, options: Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name })), autoComplete: 'off' },
     'org.url': { label: 'Organisation URL', order: 4, addonBefore: 'https://', required: true },
-    'org.geoCoverageType': { label: 'Geo coverage type', order: 5, required: true, control: 'select', options: geoCoverageTypeOptions.map(it => ({ value: it.toLowerCase(), label: it })) },
+    'org.role': { label: 'Role', order: 5, required: true },
+    'org.geoCoverageType': { label: 'Geo coverage type', order: 6, required: true, control: 'select', options: geoCoverageTypeOptions.map(it => ({ value: it.toLowerCase(), label: it })) },
     'org.geoCoverageValue': {
-      order: 6,
+      order: 7,
       required: true,
       label: 'Geo coverage',
       render: GeoCoverageInput
@@ -67,17 +68,22 @@ const ReviewText = ({reviewStatus}) => {
  return (<div className={`review-status ${reviewStatus.toLowerCase()}`}>{reviewIcon} SUBMISSION IS {reviewStatus}</div>)
 }
 
-const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef, tagsRef }) => {
+// const genForm = ({formSchema, onSubmit}) => {
+//   return createForm({
+//     subscription: {},
+//     mutators: {
+//       ...arrayMutators
+//     },
+//     onSubmit,
+//     validate: validateSchema(formSchema.reduce((acc, val) => ({ ...acc, ...val }), {}))
+//   })
+// }
+
+const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, tagsRef }) => {
   const [formSchema, setFormSchema] = useState(defaultFormSchema)
   const [noOrg, setNoOrg] = useState(false)
-  const form = createForm({
-    subscription: {},
-    mutators: {
-    ...arrayMutators
-    },
-    onSubmit
-  })
   const prevVals = useRef()
+  const formRef = useRef()
 
   useEffect(() => {
     api.get('/organisation')
@@ -87,6 +93,11 @@ const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef, tagsRef
       newSchema[1]['org.id'].filterOption = (input, option) => {
         return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 || option.value === -1
       }
+      if(tagsRef){
+        newSchema[2].tags.options = tagsRef.map(x => ({ value: x.id, label: x.tag }))
+        newSchema[2].tags.loading = false
+      }
+      console.log(formRef.current)
       setFormSchema(newSchema)
     })
   }, [])
@@ -110,16 +121,18 @@ const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef, tagsRef
     setFormSchema(newSchema)
   }
 
-  if(formRef) formRef(form)
   return (
     <Form layout="vertical">
       <FinalForm
         initialValues={initialValues}
-        form={form}
-        validate={validateSchema(formSchema.reduce((acc, val) => ({ ...acc, ...val }), {}))}
+        subscription={{}}
+        mutators={{...arrayMutators}}
+        onSubmit={onSubmit}
+        // validate={validateSchema(formSchema.reduce((acc, val) => ({ ...acc, ...val }), {}))}
         render={
-          ({ handleSubmit, form }) => {
+          ({ handleSubmit, form, ...props }) => {
             if(handleSubmitRef) handleSubmitRef(handleSubmit)
+            if (handleFormRef) handleFormRef(form)
             return (
               <div className="signup-form">
                 {initialValues?.reviewStatus && <ReviewText {...initialValues}/> }
@@ -136,35 +149,35 @@ const SignupForm = ({ onSubmit, formRef, initialValues, handleSubmitRef, tagsRef
                     onChange={({ values }) => {
                       const newSchema = cloneDeep(formSchema)
                       let changedSchema = false
-                      if(values?.org?.id === -1 && prevVals.current?.org?.id !== -1){
+                      if (values?.org?.id === -1 && prevVals.current?.org?.id !== -1) {
                         // Add Name field
                         newSchema[1].name = { label: 'Name', required: true, order: 1 }
                         Object.keys(newSchema[1]).forEach(it => { newSchema[1][it].required = true })
-                        if(values.org.geoCoverageType === 'global') newSchema[1]['org.geoCoverageValue'].required = false
+                        if (values.org.geoCoverageType === 'global') newSchema[1]['org.geoCoverageValue'].required = false
                         changedSchema = true
                       }
-                      if (values?.org != null && values?.org?.id !== -1 && prevVals.current?.org?.id !== values?.org?.id){
-                        if (prevVals.current?.org?.id === -1){
+                      if (values?.org != null && values?.org?.id !== -1 && prevVals.current?.org?.id !== values?.org?.id) {
+                        if (prevVals.current?.org?.id === -1) {
                           delete newSchema[1].name
                         }
-                        Object.keys(newSchema[1]).filter(it => it !== 'org.id').forEach(it => { newSchema[1][it].required = false})
+                        Object.keys(newSchema[1]).filter(it => it !== 'org.id').forEach(it => { newSchema[1][it].required = false })
                         changedSchema = true
                         api.get(`/organisation/${values.org.id}`)
-                        .then(({ data }) => {
-                          ['country', 'geoCoverageType', 'geoCoverageValue', 'type', 'url'].forEach(propKey => {
-                            form.change(`org.${propKey}`, data[propKey])
+                          .then(({ data }) => {
+                            ['country', 'geoCoverageType', 'geoCoverageValue', 'type', 'url'].forEach(propKey => {
+                              form.change(`org.${propKey}`, data[propKey])
+                            })
                           })
-                        })
                       }
-                      if(values.org != null && values?.org?.geoCoverageType !== prevVals.current?.org?.geoCoverageType){
-                        if(values.org.geoCoverageType === 'global'){
+                      if (values.org != null && values?.org?.geoCoverageType !== prevVals.current?.org?.geoCoverageType) {
+                        if (values.org.geoCoverageType === 'global') {
                           newSchema[1]['org.geoCoverageValue'].required = false
                         } else {
                           newSchema[1]['org.geoCoverageValue'].required = true
                         }
                         changedSchema = true
                       }
-                      if(changedSchema){
+                      if (changedSchema) {
                         setFormSchema(newSchema)
                       }
                       prevVals.current = values

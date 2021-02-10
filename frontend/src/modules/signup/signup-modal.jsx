@@ -37,11 +37,17 @@ const SignupModal = ({ visible, onCancel, setProfile, profile, tagsRef}) => {
           onOk={() => {
             handleSubmitRef.current()
           }}
+          closable={false}
           confirmLoading={sending}
           footer={step === 2 ? (<Button onClick={onCancel}>Close</Button>) : undefined}
         >
           {step === 1 &&
-            <SignupForm onSubmit={onSubmit} handleSubmitRef={ref => { handleSubmitRef.current = ref }} initialValues={profile} tagsRef={tagsRef}/>
+            <SignupForm
+              onSubmit={onSubmit}
+              handleSubmitRef={ref => { handleSubmitRef.current = ref; }}
+              initialValues={profile}
+              tagsRef={tagsRef}
+            />
           }
           {step === 2 &&
           <div className="submitted">
