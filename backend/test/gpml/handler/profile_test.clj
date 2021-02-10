@@ -48,8 +48,6 @@
   (:id (db.stakeholder/stakeholder-by-email conn {:email email})))
 
 (defn seed-important-database [db]
-    ;; create new organisation
-    (db.organisation/new-organisation db {:name "Akvo"})
     ;; create new country
     (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
     (db.country/new-country db {:name "Spain" :iso_code "SPA"})
@@ -57,6 +55,11 @@
     (db.country-group/new-country-group db {:name "Asia" :type "region"})
     (db.country-group/new-country-group db {:name "Africa" :type "region"})
     (db.country-group/new-country-group db {:name "Europe" :type "region"})
+    ;; create new organisation
+    (db.organisation/new-organisation db {:name "Akvo"
+                                          :url "https://akvo.org"
+                                          :geo_coverage_type "regional"
+                                          :type "Academia and Research"})
     ;; create new tag
     (db.tag/new-tag-category db {:category "Tag Category"})
     (db.tag/new-tag db {:tag "Tag 1" :tag_category 1})
@@ -74,7 +77,7 @@
                             (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
                             (assoc :body-params
                                    (assoc (new-profile "IND" nil)
-                                          :org {:name "Akvo" :url "https://www.akvo.org"}
+                                          :org (db.organisation/organisation-by-id db {:id 1})
                                           :photo picture))))]
       (is (= 201 (:status resp)))
       (is (= "John" (->(:body resp) :first_name)))
@@ -86,13 +89,12 @@
               :first_name "John"
               :last_name "Doe"
               :linked_in "johndoe"
-              :org {:name "Akvo"
-                    :url "https://www.akvo.org"}
               :photo "/image/profile/1"
               :cv "/cv/profile/1"
               :representation "test"
               :title "Mr."
               :role "USER"
+              :org (db.organisation/organisation-by-id db {:id 1})
               :geo_coverage_type "regional"
               :geo_coverage_value ["Africa" "Europe"]
               :tags [1 2]
@@ -125,8 +127,7 @@
               :first_name "John"
               :last_name "Doe"
               :linked_in nil
-              :org {:name nil
-                    :url nil}
+              :org nil
               :photo nil
               :cv "/cv/profile/1"
               :representation "test"
@@ -163,7 +164,7 @@
                                              :about "Dolor sit Amet"
                                              :country "SPA"
                                              :first_name "Mark"
-                                             :org {:name "Unep" :url "https://unep.org"}
+                                             :org {:id 1 :name "Akvo" :url "https://akvo.org"}
                                              :photo picture
                                              :cv picture
                                              :picture nil))))
@@ -183,16 +184,15 @@
               :country "SPA"
               :linked_in "johndoe"
               :twitter "johndoe"
-              :org_url "https://unep.org"
-              :org_name "Unep"
               :photo "/image/profile/2"
               :cv "/cv/profile/2"
               :representation "test"
               :role "USER"
               :geo_coverage_type "regional"
               :about "Dolor sit Amet"
-              :reviewed_at nil,
-              :reviewed_by nil,
+              :affiliation 1
+              :reviewed_at nil
+              :reviewed_by nil
               :review_status "SUBMITTED"}
              profile))))
 
@@ -215,7 +215,7 @@
                                              :about "Dolor sit Amet"
                                              :country "SPA"
                                              :first_name "Mark"
-                                             :org {:name "Unep" :url "https://unep.org"}
+                                             :org {:id 1 :name "Akvo" :url "https://akvo.org"}
                                              :photo "https://lh3.googleusercontent.com"
                                              :cv nil
                                              :picture nil))))
@@ -231,13 +231,12 @@
               :country "SPA"
               :linked_in "johndoe"
               :twitter "johndoe"
-              :org_url "https://unep.org"
-              :org_name "Unep"
               :photo "https://lh3.googleusercontent.com"
               :representation "test"
               :role "USER"
               :geo_coverage_type "regional"
               :about "Dolor sit Amet"
+              :affiliation 1
               :reviewed_at nil
               :reviewed_by nil
               :cv nil
@@ -258,7 +257,7 @@
       (is (= "John" (-> (:body resp) :first_name)))
       (is (= "Doe" (-> (:body resp) :last_name)))
       (is (= "SUBMITTED" (-> (:body resp) :review_status)))
-      (is (= {:name "Akvo" :url "https://akvo.org"} (-> (:body resp) :org)))
+      (is (= (db.organisation/organisation-by-id db {:id 1}) (-> (:body resp) :org)))
       (is (= "IND" (-> (:body resp) :country))))))
 
 (deftest handler-get-test-no-profile

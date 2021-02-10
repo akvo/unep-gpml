@@ -11,11 +11,6 @@
 (defn get-country [conn country]
   (:id (db.country/country-by-code conn {:name country})))
 
-(defn assoc-organisation [conn org]
-  (if-let [or-id (db.organisation/organisation-by-name conn org)]
-    or-id
-    (db.organisation/new-organisation conn org)))
-
 (defn assoc-picture [conn photo]
   (cond
     (nil? photo) nil
@@ -43,7 +38,6 @@
         cv-url (if-let [upload-cv (assoc-cv conn cv)]
                  upload-cv
                  (if cv cv nil))
-        affiliation (if (:name org) (:id (assoc-organisation conn org)) nil)
         profile {:picture pic-url
                  :cv cv-url
                  :title title
@@ -52,12 +46,11 @@
                  :email email
                  :linked_in linked_in
                  :twitter twitter
-                 :url (:url org)
                  :representation representation
                  :about about
                  :geo_coverage_type geo_coverage_type
                  :country (get-country conn country)
-                 :affiliation affiliation}]
+                 :affiliation (:id org)}]
       (db.stakeholder/new-stakeholder conn profile)))
 
 (defn remap-profile
@@ -65,11 +58,11 @@
            title first_name role
            last_name linked_in cv
            twitter representation
-           country org_name org_url
-           geo_coverage_type
+           country geo_coverage_type
            reviewed_at reviewed_by review_status]}
    tags
-   geo]
+   geo
+   org]
   {:id id
    :title title
    :first_name first_name
@@ -83,8 +76,7 @@
    :tags (mapv #(:tag %) tags)
    :geo_coverage_type geo_coverage_type
    :geo_coverage_value geo
-   :org {:name org_name
-         :url org_url}
+   :org org
    :about about
    :role role
    :reviewed_at reviewed_at
@@ -104,11 +96,21 @@
          (db.country/country-by-codes db)
          (map #(vector id nil (:id %))))))
 
+(defn update-organisation [conn org]
+  (when (not= org (db.organisation/organisation-by-id conn org))
+    (db.organisation/update-organisation conn org)
+    (db.organisation/delete-geo-coverage conn org)
+    (let [geo-data (get-geo-data conn (:id org) (:geo_coverage_type org) (:geo_coverage_value org))]
+            (when (some? geo-data)
+              (db.organisation/add-geo-coverage conn {:geo geo-data})))))
+
+
 (defmethod ig/init-key :gpml.handler.profile/get [_ {:keys [db]}]
   (fn [{:keys [jwt-claims]}]
     (if-let [profile (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
       (let [conn (:spec db)
             tags (db.stakeholder/stakeholder-tags conn profile)
+            org (db.organisation/organisation-by-id conn {:id (:affiliation profile)})
             geo-type (:geo_coverage_type profile)
             geo (cond
                   (contains? #{"regional" "global with elements in specific areas"}
@@ -119,7 +121,7 @@
                    geo-type)
                    (map #(:iso_code %)
                            (db.stakeholder/stakeholder-geo-country conn profile)))
-            profile (remap-profile profile tags geo)]
+            profile (remap-profile profile tags geo org)]
       (resp/response profile))
       (resp/response {}))))
 
@@ -138,7 +140,7 @@
             (when (some? geo-data)
               (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))
         (resp/created (:referer headers)
-                      (assoc (remap-profile profile nil nil)
+                      (assoc (remap-profile profile nil nil (:org body-params))
                              :geo_coverage_value (:geo_coverage_type body-params)
                              :geo_coverage_value (:geo_coverage_value body-params)
                              :tags (:tags body-params))))
@@ -170,10 +172,8 @@
                                (assoc-cv tx (:cv body-params))))
                       (= (:cv body-params) nil)
                       (assoc :cv nil)
-                      (-> new-profile :org :url)
-                      (assoc :url (-> new-profile :org :url))
-                      (-> new-profile :org :name)
-                      (assoc :affiliation (:id (assoc-organisation tx (:org new-profile))))
+                      (-> new-profile :org :id)
+                      (assoc :affiliation (-> new-profile :org :id))
                       (:country body-params)
                       (assoc :country (get-country tx (:country body-params))))]
         (db.stakeholder/update-stakeholder tx profile)
@@ -206,7 +206,7 @@
 (defmethod ig/init-key :gpml.handler.profile/pending [_ {:keys [db]}]
   (fn [_]
     (let [profiles (db.stakeholder/pending-approval (:spec db))
-          profiles (map (fn[x] (remap-profile x nil nil)) profiles)]
+          profiles (map (fn[x] (remap-profile x nil nil nil)) profiles)]
       (resp/response profiles))))
 
 (defmethod ig/init-key :gpml.handler.profile/post-params [_ _]
@@ -224,13 +224,24 @@
    [:geo_coverage_type {:optional true}
     [:enum "global", "regional", "national", "transnational",
      "sub-national", "global with elements in specific areas"]]
+   [:tags {:optional true}
+    [:vector {:min 1 :error/message "Need at least one value for tags"} int?]]
+   [:seeking {:optional true}
+    [:vector {:min 1 :error/message "Need at least one value for seeking"} string?]]
+   [:offering {:optional true}
+    [:vector {:min 1 :error/message "Need at least one value for offering"} string?]]
+   [:geo_coverage_value {:optional true}
+    [:vector {:min 1 :error/message "Need at least one geo coverage value"} string?]]
    [:org {:optional true} map?
     [:map
+     [:id {:optional true} int?]
      [:name {:optional true} string?]
-     [:url {:optional true} string?]]]
-   [:tags {:optional true}
-    [:vector {:optional true} int?]]
-   [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one geo coverage value"} string?]]])
+     [:url {:optional true} string?]
+     [:country {:optional true} string?]
+     [:geo_coverage_type {:optional true}
+      [:enum "global", "regional", "national", "transnational",
+       "sub-national", "global with elements in specific areas"]]
+     [:geo_coverage_value {:optional true}
+      [:vector {:min 1 :error/message "Need at least one of geo coverage value"} string?]]]]])
 
 #_(def dbtest (dev/db-conn))

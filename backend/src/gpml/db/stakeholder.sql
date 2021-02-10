@@ -13,19 +13,17 @@ select
     s.picture as photo,
     s.linked_in,
     s.twitter,
-    s.url as org_url,
     s.representation,
     s.about,
     s.role,
     s.geo_coverage_type,
     s.cv,
     c.iso_code as country,
-    o.name as org_name,
+    s.affiliation,
     s.reviewed_at,
     s.reviewed_by,
     s.review_status from stakeholder s
 left join country c on (s.country = c.id)
-left join organisation o on (s.affiliation = o.id)
 where s.id = :id;
 
 -- :name stakeholder-by-email :? :1
@@ -39,19 +37,17 @@ select
     s.picture as photo,
     s.linked_in,
     s.twitter,
-    s.url as org_url,
     s.representation,
     s.about,
     s.role,
     s.geo_coverage_type,
     s.cv,
     c.iso_code as country,
-    o.name as org_name,
+    s.affiliation,
     s.reviewed_at,
     s.reviewed_by,
     s.review_status from stakeholder s
 left join country c on (s.country = c.id)
-left join organisation o on (s.affiliation = o.id)
 where s.email = :email;
 
 -- :name admin-by-email :? :1
@@ -76,18 +72,16 @@ select
     s.picture as photo,
     s.linked_in,
     s.twitter,
-    s.url as org_url,
     s.representation,
     s.about,
     s.role,
     s.geo_coverage_type,
     c.iso_code as country,
-    o.name as org_name,
+    s.affiliation,
     s.reviewed_at,
     s.reviewed_by,
     s.review_status from stakeholder s
 left join country c on (s.country = c.id)
-left join organisation o on (s.affiliation = o.id)
 where s.review_status <> 'APPROVED' order by s.created desc;
 
 -- :name update-stakeholder-status :! :n
@@ -100,8 +94,8 @@ where id = :id;
 
 -- :name new-stakeholder :<! :1
 -- :doc Insert a new stakeholder
-insert into stakeholder(cv, picture, title, first_name, last_name, affiliation, email, linked_in, twitter, url, country, representation, about, geo_coverage_type)
-values(:cv, :picture, :title, :first_name, :last_name, :affiliation, :email, :linked_in, :twitter, :url, :country::integer, :representation, :about, :v:geo_coverage_type::geo_coverage_type) RETURNING id;
+insert into stakeholder(cv, picture, title, first_name, last_name, affiliation, email, linked_in, twitter, country, representation, about, geo_coverage_type)
+values(:cv, :picture, :title, :first_name, :last_name, :affiliation, :email, :linked_in, :twitter, :country::integer, :representation, :about, :v:geo_coverage_type::geo_coverage_type) RETURNING id;
 
 -- :name update-stakeholder-role :! :n
 -- :doc Update stakeholder role
@@ -122,7 +116,6 @@ update stakeholder set
 --~ (when (contains? params :affiliation) ",affiliation= :v:affiliation::integer")
 --~ (when (contains? params :linked_in) ",linked_in= :linked_in")
 --~ (when (contains? params :twitter) ",twitter= :twitter")
---~ (when (contains? params :url) ",url= :url")
 --~ (when (contains? params :picture) ",picture= :picture")
 --~ (when (contains? params :cv) ",cv= :cv")
 --~ (when (contains? params :country) ",country= :v:country::integer")
