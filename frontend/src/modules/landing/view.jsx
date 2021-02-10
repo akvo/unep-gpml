@@ -73,10 +73,10 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
     return (
       <div id="landing">
         <div className="landing-container">
-            <div className="landing-banner">
+          <div className="landing-banner ui container">
             <b>Welcome to the Global Partnership on Marine Litter Digital Platform</b>
             <p>The Digital Platform compiles different resources from around the world in one place. Find out more by exploring the map below. Simply click on a country or filter by resource type.</p>
-            </div>
+          </div>
         </div>
         {data &&
         <div className="map-overlay">
