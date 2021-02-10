@@ -146,20 +146,24 @@ const Summary = ({ clickEvents, summary, country, counts, selected, init, tTypes
   )
 }
 
-const TopicItem = ({ topic }) => (
-  <div className="topic-item">
-    <div className="inner">
-      <span className="type">latest {topicNames(topic.topicType)}</span>
-      <h2>{topic.title || topic.name}</h2>
-      <ul>
-        <li>{moment(topic.created).format('LL')}</li>
-      </ul>
-      {topic.description && <p>{topic.description}</p>}
-      <div className="bottom">
-        {/* <Button type="link">Find out more</Button> */}
+const TopicItem = ({ topic }) => {
+  const fullName = (data) => data.title ? `${data.title} ${data.firstName} ${data.lastName}` : `${data.firstName} ${data.lastName}`
+  const title = (topic.topicType === 'stakeholder' && fullName(topic)) || topic.title || topic.name;
+  return (
+    <div className="topic-item">
+      <div className="inner">
+        <span className="type">latest {topicNames(topic.topicType)}</span>
+        <h2>{title}</h2>
+        <ul>
+          <li>{moment(topic.created).format('LL')}</li>
+        </ul>
+        {topic.description && <p>{topic.description}</p>}
+        <div className="bottom">
+          {/* <Button type="link">Find out more</Button> */}
+        </div>
       </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default withRouter(Landing)
