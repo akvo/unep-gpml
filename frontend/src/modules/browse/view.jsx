@@ -27,9 +27,10 @@ function useQuery() {
 
 let tmid
 
-const Browse = ({ history, summary, profile }) => {
+const Browse = ({ history, countData, profile }) => {
   const query = useQuery()
   const [results, setResults] = useState([])
+  const [filterCountries, setFilterCountries] = useState([])
   const location = useLocation()
   const [relations, setRelations] = useState([])
   const {isAuthenticated, loginWithPopup } = useAuth0();
@@ -70,6 +71,9 @@ const Browse = ({ history, summary, profile }) => {
     history.push(`/browse?${newParams.toString()}`)
     clearTimeout(tmid)
     tmid = setTimeout(getResults, 1000)
+    if (param === 'country') {
+      setFilterCountries(value)
+    }
   }
   const handleRelationChange = (relation) => {
     api.post('/favorite', [relation]).then(res => {
@@ -91,7 +95,14 @@ const Browse = ({ history, summary, profile }) => {
   const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypes
   const topicCounts = tTypes.reduce((acc, topic) => {
     const data = Object()
-    data[topic] = summary?.find(it => it.hasOwnProperty(topic))?.[topic]
+    if (filterCountries.length === 0) {
+      data[topic] = countData?.summary?.find(it => it.hasOwnProperty(topic))?.[topic]
+    } else {
+      // FIXME: The counts would be incorrect if the countries have common resources which are transnational - those would be double counted!
+      // FIXME: Also, we display global and regional resources, but those are not included in the counts.
+      const count = filterCountries.reduce((acc, isoCode) => acc + countData?.map?.find(it => it.isoCode === isoCode)?.[topic], 0)
+      data[topic] = count
+    }
     return {...acc, ...data}
   }, {})
 
