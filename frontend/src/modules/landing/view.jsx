@@ -96,7 +96,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
         </div>
         }
         <Maps
-          data={(mapData.length > 0 && mapData) || defaultMapData }
+          data={(mapData?.length > 0 && mapData) || defaultMapData }
           clickEvents={clickEvents}
           tooltip={toolTip}
         />
