@@ -181,4 +181,30 @@ footer{
 
 }
 
+h2.loading {
+  font-weight: normal;
+  text-shadow: 0 0 0.25px #096dd9;
+  font-size: 14px;
+  padding-top: 40px;
+  text-align: center;
+  padding-bottom: 1500px;
+}
+
+.fade-in {
+  opacity: 1;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+  animation-duration: .2s;
+}
+
+@keyframes fadeInOpacity {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+
 @import './container.scss';

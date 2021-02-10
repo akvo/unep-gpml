@@ -66,7 +66,7 @@ const generateOptions = ({title, subtitle, data, tooltip, mapLeft}) => {
         tooltip: Chart.Opt.Maps.ToolTip(tooltip),
         backgroundColor: '#EAF6FD',
         legend: {show: false},
-        series: [{
+        series: mapLeft === 0 ? [] : [{
             name: title,
             type: 'map',
             roam: 'move',
@@ -92,9 +92,9 @@ const generateOptions = ({title, subtitle, data, tooltip, mapLeft}) => {
             center: [0, 0],
             data: [...data, ...Chart.Opt.Maps.DisputedArea],
             showLegendSymbol: data.length === 1,
+            animation:true,
+            animationDelay: 1
         }],
-        animation:true,
-        animationDelay: 1,
         ...steps,
         ...Chart.Opt.Maps.ToolBox,
         ...Chart.Style.Text}
@@ -102,6 +102,7 @@ const generateOptions = ({title, subtitle, data, tooltip, mapLeft}) => {
 
 
 const Maps = ({
+    dependency,
     title,
     subtitle,
     data,
@@ -119,15 +120,15 @@ const Maps = ({
 
     useEffect(() => {
         handleResize();
-    },[data])
+    },[dependency])
 
     window.addEventListener('resize', handleResize)
-
     data = data.filter(x => x.value !== 0);
     const options = generateOptions({title, subtitle, data, tooltip, mapLeft});
+
     return (
         <ReactEcharts
-          className="worldmap"
+          className="fade-in worldmap"
           option={{...options,...custom}}
           notMerge={true}
           style={{height: (mapLeft > 300 ? '700px' : '600px'), width:'100%'}}

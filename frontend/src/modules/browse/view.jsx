@@ -13,6 +13,8 @@ import ShowMoreText from 'react-show-more-text'
 import FavoriteWarningModal from './favorite-warning-modal'
 import { useAuth0 } from '@auth0/auth0-react'
 import humps from 'humps'
+import isEmpty from 'lodash/isEmpty'
+import { LoadingOutlined } from '@ant-design/icons';
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -126,7 +128,9 @@ const Browse = ({ history, countData, profile }) => {
           </div>
         </aside>
         <div className="main-content">
-          {results.map(result => <Result key={`${result.type}-${result.id}`} {...{result, handleRelationChange, relations, profile}} />)}
+          {isEmpty(results)
+              ? <h2 className="loading"><LoadingOutlined spin/> Loading</h2>
+              : results.map(result => <Result key={`${result.type}-${result.id}`} {...{result, handleRelationChange, relations, profile}} />)}
         </div>
       </div>
       <FavoriteWarningModal visible={warningVisible} close={() => setWarningVisible(false)}/>
@@ -159,7 +163,7 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
   const relation = relations.find(it => it.topicId === result.id && it.topic === resourceTypeToTopicType(result.type))
   const allowBookmark = result.type !== 'stakeholder' || profile.id !== result.id
   return (
-    <Card className="result">
+    <Card className="result fade-in">
       <h4>{title}</h4>
       <div className="type">{topicNames(result.type)}</div>
       <ul className="stats">

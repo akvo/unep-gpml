@@ -96,9 +96,10 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
         </div>
         }
         <Maps
-          data={(mapData?.length > 0 && mapData) || defaultMapData }
-          clickEvents={clickEvents}
-          tooltip={toolTip}
+            data={(mapData?.length > 0 && mapData) || defaultMapData }
+            clickEvents={clickEvents}
+            tooltip={toolTip}
+            dependency={data}
         />
         <div className="topics">
           <div className="ui container">

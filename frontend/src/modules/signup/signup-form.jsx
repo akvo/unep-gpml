@@ -81,7 +81,6 @@ const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, t
   }, [])
 
   useEffect(() => {
-    console.log(tags)
       if (tags) {
           const newSchema = cloneDeep(formSchema);
           newSchema[2].tags.options = tags.general.map(x => ({ value: x.id, label: x.tag }))
@@ -110,7 +109,7 @@ const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, t
   return (
     <Form layout="vertical">
       <FinalForm
-        initialValues={initialValues}
+        initialValues={initialValues || {}}
         subscription={{}}
         mutators={{...arrayMutators}}
         onSubmit={onSubmit}
