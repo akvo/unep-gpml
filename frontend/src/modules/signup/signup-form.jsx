@@ -33,7 +33,7 @@ const defaultFormSchema = [
     twitter: { label: 'Twitter', prefix: <TwitterOutlined /> },
     photo: { label: 'Photo', control: 'file', maxFileSize: 1, accept: "image/*" },
     representation: { label: 'Representative sector', required: true, control: 'select', options: sectorOptions.map(it => ({ value: it, label: it })) },
-    
+
   },
   {
     'org.id': {
@@ -53,7 +53,7 @@ const defaultFormSchema = [
   {
     seeking: { label: 'Seeking', control: 'select', mode: 'multiple', options: seekingKeys.map(it => ({ value: it, label: it })) },
     offering: { label: 'Offering', control: 'select', mode: 'multiple', options: offeringKeys.map(it => ({ value: it, label: it })) },
-    about: { label: 'About yourself', control: 'textarea' },
+    about: { label: 'About yourself', control: 'textarea', placeholder: 'Max 150 words' },
     tags: { label: 'Tags', control: 'select', options: [], mode: 'multiple' },
     cv: { label: 'CV / Portfolio', control: 'file', maxFileSize: 5, accept: ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain" },
   }
