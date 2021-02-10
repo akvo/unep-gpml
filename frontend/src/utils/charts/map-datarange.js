@@ -1,6 +1,6 @@
 const mapDataRange = {
     dataRange: {
-        top: 580,
+        bottom: 70,
         right: 50,
         padding: 3,
         orient: "horizontal",

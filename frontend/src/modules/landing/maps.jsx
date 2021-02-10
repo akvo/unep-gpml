@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactEcharts from 'echarts-for-react';
 import Chart from '../../utils/charts'
 import cloneDeep from 'lodash/cloneDeep';
@@ -53,7 +53,7 @@ const generateSteps = (arr) => {
     return datarange;
 }
 
-const generateOptions = ({title, subtitle, data, tooltip}) => {
+const generateOptions = ({title, subtitle, data, tooltip, mapLeft}) => {
     const steps = data.length > 1 ? generateSteps(data) : {};
     return {
         title: {
@@ -70,13 +70,14 @@ const generateOptions = ({title, subtitle, data, tooltip}) => {
             name: title,
             type: 'map',
             roam: 'move',
+            left: `${mapLeft}px`,
             right: 0,
-            left: window.__UNEP__MAP__LEFT,
             top: window.__UNEP__MAP__TOP,
             map: 'unep-map',
             aspectScale: 1,
             zoom: window.__UNEP__MAP__ZOOM,
             z: 0,
+            zLevel: 0,
             label: {show:false},
             symbolSyze: 0,
             emphasis: {label: {show: false}},
@@ -92,10 +93,13 @@ const generateOptions = ({title, subtitle, data, tooltip}) => {
             data: [...data, ...Chart.Opt.Maps.DisputedArea],
             showLegendSymbol: data.length === 1,
         }],
+        animation:true,
+        animationDelay: 1,
         ...steps,
         ...Chart.Opt.Maps.ToolBox,
         ...Chart.Style.Text}
 }
+
 
 const Maps = ({
     title,
@@ -105,15 +109,28 @@ const Maps = ({
     tooltip,
     custom={},
 }) => {
+    const [mapLeft, setMapLeft] = useState(0);
+    const handleResize = () => {
+        const box = document.getElementsByClassName("map-overlay");
+        if (box.length === 1) {
+            setMapLeft(box[0].offsetLeft + box[0].offsetWidth)
+        }
+    }
+
+    useEffect(() => {
+        handleResize();
+    },[data])
+
+    window.addEventListener('resize', handleResize)
+
     data = data.filter(x => x.value !== 0);
-    const options = generateOptions({title, subtitle, data, tooltip});
-    options.legend.show = false
+    const options = generateOptions({title, subtitle, data, tooltip, mapLeft});
     return (
         <ReactEcharts
           className="worldmap"
           option={{...options,...custom}}
           notMerge={true}
-          style={{height: '700px', width:'100%'}}
+          style={{height: (mapLeft > 300 ? '700px' : '600px'), width:'100%'}}
           lazyUpdate={true}
           onEvents={{click: clickEvents}}
         />
