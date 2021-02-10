@@ -102,7 +102,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
         />
         <div className="topics">
           <div className="ui container">
-            {data?.topics.map((topic, index) => <TopicItem key={`topic-${index}`} {...{ topic }} />)}
+            {data?.topics.map((topic, index) => (topic.topicType !== 'stakeholder' || isApprovedUser) && <TopicItem key={`topic-${index}`} {...{ topic }} />)}
           </div>
         </div>
       </div>
