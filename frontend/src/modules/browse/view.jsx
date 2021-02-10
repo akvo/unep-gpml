@@ -36,8 +36,8 @@ const Browse = ({ history, summary, profile }) => {
   const [warningVisible, setWarningVisible] = useState(false)
   const isApprovedUser = profile?.reviewStatus === 'APPROVED'
   const getResults = () => {
-    // NOTE: Don't this needs to be window.location.search because of
-    // how of how `history` and `location` are interacting!
+    // NOTE: This needs to be window.location.search because of how of
+    // how `history` and `location` are interacting!
     api.get(`/browse${window.location.search}`)
     .then((resp) => {
       setResults(resp?.data?.results)
@@ -48,8 +48,11 @@ const Browse = ({ history, summary, profile }) => {
     .then((resp) => {
       setResults(resp?.data?.results)
     })
-    // NOTE: Since we are using `history` and `location`, the dependency needs to be []
-  }, [location])
+    // NOTE: Since we are using `history` and `location`, the
+    // dependency needs to be []. Ignore the linter warning, because
+    // adding a dependency here on location makes the FE send multiple
+    // requests to the backend.
+  }, [])
   useEffect(() => {
     if(isAuthenticated){
       setTimeout(() => {

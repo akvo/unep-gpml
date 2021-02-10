@@ -82,7 +82,7 @@ const defaultFormSchema = [
 ]
 
 const validation = (formSchema) => {
-    validateSchema(formSchema.reduce((acc, val) =>
+    return validateSchema(formSchema.reduce((acc, val) =>
         ({...acc, ...val}), {}
     ))
 }

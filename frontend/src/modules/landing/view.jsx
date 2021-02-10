@@ -9,7 +9,7 @@ import moment from 'moment'
 const Landing = ({ history, data, countries, initLandingCount, setCountries, setInitLandingCount, profile}) => {
     const [country, setCountry] = useState(null);
     const [countryMap, setCountryMap] = useState(null)
-    const [counts, setCounts] = useState("");
+    const [counts, setCounts] = useState(initLandingCount);
 
     const isApprovedUser = profile?.reviewStatus === 'APPROVED';
     const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypes;
@@ -62,8 +62,8 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
 
     const selected = data?.map?.find(x => x.isoCode === country)
     const mapData = country ? [{ name: country, itemStyle: { areaColor: "#1890ff" }}] : (counts ? countryMap : [])
-    const defaultMapData = initLandingCount !== "" && data ?
-          data.map.map(x => ({...x, name: x.isoCode, value: x[initLandingCount]})) : false;
+
+    const defaultMapData = initLandingCount !== "" && data?.map?.map(x => ({...x, name: x.isoCode, value: x[initLandingCount]})) || [];
 
     const summaryData = data?.summary?.filter((it, index) => {
       const current = Object.keys(it)[0];
@@ -96,7 +96,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
         </div>
         }
         <Maps
-          data={defaultMapData || mapData}
+          data={(mapData?.length > 0 && mapData) || defaultMapData }
           clickEvents={clickEvents}
           tooltip={toolTip}
         />
