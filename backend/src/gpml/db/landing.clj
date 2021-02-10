@@ -1,19 +1,16 @@
 (ns gpml.db.landing
   (:require [clojure.set :as set]
             [hugsql.core :as hugsql]
+            [gpml.constants :as constants]
             [gpml.db.country :as db.country]
             [gpml.pg-util]))
 
 (hugsql/def-db-fns "gpml/db/landing.sql")
 
 (def topic-counts
-  {:project 0
-   :event 0
-   :financing_resource 0
-   :technical_resource 0
-   :technology 0
-   :policy 0
-   :stakeholder 0})
+  (->> constants/topics
+       (map #(assoc {} (keyword %) 0))
+       (apply merge)))
 
 (defn map-counts-explicit [conn]
   (let [counts (gpml.db.landing/map-counts conn)]
