@@ -89,13 +89,12 @@ const Browse = ({ history, summary, profile }) => {
     })
   }
   const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypes
-  let topicCounts = {}
-  tTypes.forEach((topic) => {
-    const entry = summary?.find(it => it.hasOwnProperty(topic))
-    if (entry) {
-      topicCounts[topic] = entry[topic]
-    }
-  })
+  const topicCounts = tTypes.reduce((acc, topic) => {
+    const data = Object()
+    data[topic] = summary?.find(it => it.hasOwnProperty(topic))?.[topic]
+    return {...acc, ...data}
+  }, {})
+
   return (
     <div id="browse">
       <div className="ui container">
