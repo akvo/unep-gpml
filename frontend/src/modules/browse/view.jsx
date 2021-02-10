@@ -104,7 +104,7 @@ const Browse = ({ history, summary, profile }) => {
                 Country
               </div>
               <Select value={query.country} placeholder="Find country" mode="multiple" options={Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name })).sort((a, b) => a.label.localeCompare(b.label))} allowClear onChange={val => updateQuery('country', val)} filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
-              {isAuthenticated && <Checkbox className="my-favorites" checked={query?.favorites?.indexOf("true") > -1}  onChange={({ target: { checked }}) => updateQuery('favorites', checked)}>My Favorites</Checkbox>}
+              {isAuthenticated && <Checkbox className="my-favorites" checked={query?.favorites?.indexOf("true") > -1}  onChange={({ target: { checked }}) => updateQuery('favorites', checked)}>My Bookmarks</Checkbox>}
             </div>
             <div className="field">
               <div className="label">Resources</div>
@@ -192,7 +192,7 @@ const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
       )} trigger={['click']}>
         <Button size="small" icon={<PlusOutlined />} shape="round" />
       </Dropdown>
-      {(!relation || relation.association.length === 0) && <div className="label">Favorites</div>}
+      {(!relation || relation.association.length === 0) && <div className="label">Bookmarks</div>}
       {relation?.association?.map((relationType, index) => <Tag color="blue" key={`relation-${index}`}>{relationType}</Tag>)}
     </div>
   )
