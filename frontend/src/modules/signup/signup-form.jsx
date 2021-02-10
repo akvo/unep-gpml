@@ -38,7 +38,7 @@ const defaultFormSchema = [
     'org.id': {
       label: 'Organisation', control: 'select', showSearch: true, options: [], placeholder: 'Start typing...', order: 0, required: true,
     },
-    'role': { label: 'Your role in the organisation', order: 2, required: true },
+    'organisationRole': { label: 'Your role in the organisation', order: 2, required: true },
   },
   {
     seeking: { label: 'Seeking', control: 'select', mode: 'multiple', options: [] },
@@ -155,7 +155,7 @@ const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, t
                         if (prevVals.current?.org?.id === -1) {
                           delete newSchema[1].name
                         }
-                        Object.keys(newSchema[1]).filter(it => it !== 'org.id' && it !== 'role').forEach(it => { newSchema[1][it].required = false })
+                        Object.keys(newSchema[1]).filter(it => it !== 'org.id' && it !== 'organisationRole').forEach(it => { newSchema[1][it].required = false })
                         changedSchema = true
                         const resp = await api.get(`/organisation/${values.org.id}`)
                         const { data } = resp;
