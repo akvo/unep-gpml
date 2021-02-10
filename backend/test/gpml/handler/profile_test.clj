@@ -26,7 +26,6 @@
    :last_name "Doe"
    :linked_in "johndoe"
    :twitter "johndoe"
-   :url "https://akvo.org"
    :representation "test"
    :affiliation org
    :title "Mr."
@@ -38,8 +37,6 @@
    :geo_coverage_value ["Africa" "Europe"]
    :tags [1 2]}
   )
-
-(defn org-params [org-name org-url] {:name org-name :url org-url})
 
 (defn new-admin [country org]
   (assoc (new-profile country org) :email "jane@org" :first_name "Jane"))
@@ -61,7 +58,7 @@
                                           :geo_coverage_type "regional"
                                           :type "Academia and Research"})
     ;; create new tag
-    (db.tag/new-tag-category db {:category "Tag Category"})
+    (db.tag/new-tag-category db {:category "general"})
     (db.tag/new-tag db {:tag "Tag 1" :tag_category 1})
     (db.tag/new-tag db {:tag "Tag 2" :tag_category 1})
     (db.tag/new-tag db {:tag "Tag 3" :tag_category 1}))
@@ -84,6 +81,7 @@
       (is (= "Doe" (->(:body resp) :last_name)))
       (is (= "SUBMITTED" (->(:body resp) :review_status)))
       (is (= {:id 1
+              :email "john@org"
               :about "Lorem Ipsum"
               :country "IND"
               :first_name "John"
@@ -122,12 +120,12 @@
       (is (= "John" (->(:body resp) :first_name)))
       (is (= "Doe" (->(:body resp) :last_name)))
       (is (= {:id 1
+              :email "john@org"
               :about "Lorem Ipsum"
               :country "IND"
               :first_name "John"
               :last_name "Doe"
               :linked_in nil
-              :org nil
               :photo nil
               :cv "/cv/profile/1"
               :representation "test"

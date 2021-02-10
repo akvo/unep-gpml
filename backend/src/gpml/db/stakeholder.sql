@@ -174,7 +174,11 @@ delete from stakeholder_geo_coverage where stakeholder = :id
 
 -- :name stakeholder-tags :? :*
 -- :doc get stakeholder tags
-select * from stakeholder_tag where stakeholder = :id
+select json_agg(st.tag) as tags, tc.category from stakeholder_tag st
+left join tag t on t.id = st.tag
+left join tag_category tc on t.tag_category = tc.id
+where st.stakeholder = :id
+group by tc.category;
 
 -- :name add-stakeholder-tags :<! :1
 -- :doc add stakeholder tags

@@ -63,6 +63,7 @@
    tags
    geo
    org]
+  (tap> tags)
   {:id id
    :title title
    :first_name first_name
@@ -73,7 +74,9 @@
    :cv cv
    :country country
    :representation representation
-   :tags (mapv #(:tag %) tags)
+   :tags (-> (filter (comp #{"general"} :category) tags) first :tags)
+   :offering (-> (filter (comp #{"offering"} :category) tags) first :tags)
+   :seeking (-> (filter (comp #{"seeking"} :category) tags) first :tags)
    :geo_coverage_type geo_coverage_type
    :geo_coverage_value geo
    :org org
@@ -128,7 +131,7 @@
 (defmethod ig/init-key :gpml.handler.profile/post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params headers]}]
     (if-let [id (:id (make-profile (:spec db) jwt-claims body-params))]
-      (let [tags (:tags body-params)
+      (let [tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
             geo-type (:geo_coverage_type body-params)
             geo-value (:geo_coverage_value body-params)
             db (:spec db)
@@ -140,17 +143,14 @@
             (when (some? geo-data)
               (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))
         (resp/created (:referer headers)
-                      (assoc (remap-profile profile nil nil (:org body-params))
-                             :geo_coverage_value (:geo_coverage_type body-params)
-                             :geo_coverage_value (:geo_coverage_value body-params)
-                             :tags (:tags body-params))))
+                      (dissoc (merge body-params profile) :affiliation :picture)))
       (assoc (resp/status 500) :body "Internal Server Error"))))
 
 (defmethod ig/init-key :gpml.handler.profile/put [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
     (jdbc/with-db-transaction [tx (:spec db)]
       (let [id (:id body-params)
-            tags (:tags body-params)
+            tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
             geo-type (:geo_coverage_type body-params)
             geo-value (:geo_coverage_value body-params)
             old-profile (db.stakeholder/stakeholder-by-email tx jwt-claims)
@@ -220,16 +220,17 @@
    [:cv {:optional true} string?]
    [:representation string?]
    [:country {:optional true} string?]
-   [:about string?]
+   [:about {:optional true} string?]
+   [:role string?]
    [:geo_coverage_type {:optional true}
     [:enum "global", "regional", "national", "transnational",
      "sub-national", "global with elements in specific areas"]]
    [:tags {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for tags"} int?]]
    [:seeking {:optional true}
-    [:vector {:min 1 :error/message "Need at least one value for seeking"} string?]]
+    [:vector {:min 1 :error/message "Need at least one value for seeking"} int?]]
    [:offering {:optional true}
-    [:vector {:min 1 :error/message "Need at least one value for offering"} string?]]
+    [:vector {:min 1 :error/message "Need at least one value for offering"} int?]]
    [:geo_coverage_value {:optional true}
     [:vector {:min 1 :error/message "Need at least one geo coverage value"} string?]]
    [:org {:optional true} map?
