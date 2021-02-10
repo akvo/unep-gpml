@@ -96,6 +96,7 @@ const Browse = ({ history, summary, profile }) => {
       topicCounts[topic] = entry[topic]
     }
   })
+  console.log(results, relations)
   return (
     <div id="browse">
       <div className="ui container">
@@ -146,7 +147,7 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
   const fullName = (data) => data.title ? `${data.title} ${data.firstName} ${data.lastName}` : `${data.firstName} ${data.lastName}`
   const title = (result.type === 'stakeholder' && fullName(result)) || result.title || result.name
   const description = result.description || result.abstract || result.summary || result.about
-  const relation = relations.find(it => it.topicId === result.id && it.topic === result.type)
+  const relation = relations.find(it => it.topicId === result.id && result.type.indexOf(it.topic) !== -1)
   const allowBookmark = result.type !== 'stakeholder' || profile.id !== result.id
   return (
     <Card className="result">
