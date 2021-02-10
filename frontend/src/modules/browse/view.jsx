@@ -96,7 +96,6 @@ const Browse = ({ history, summary, profile }) => {
       topicCounts[topic] = entry[topic]
     }
   })
-  console.log(results, relations)
   return (
     <div id="browse">
       <div className="ui container">

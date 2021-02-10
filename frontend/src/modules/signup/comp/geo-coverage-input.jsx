@@ -9,9 +9,9 @@ const regionOptions = ['Africa', 'Asia and the Pacific', 'East Asia', 'Europe', 
 const GeoCoverageInput = (props) => {
   const { disabled } = props
   return (
-    <Field key={props.name} name="org.geoCoverageType" render={
+    <Field key={props.name} name={props.input.name.replace('Value', 'Type')} render={
       ({ input: typeInput, name }) => {
-        return <Field key={name} name="org.geoCoverageValue" render={
+        return <Field key={name} name={props.input.name} render={
           ({ input }) => {
             if (typeInput.value === 'global') return <Input disabled />
             if (typeInput.value === 'sub-national') return <Input placeholder="Type regions here..." {...input} disabled={disabled} />
