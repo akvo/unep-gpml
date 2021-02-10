@@ -37,7 +37,7 @@ const SignupModal = ({ visible, onCancel, setProfile, profile, tagsRef}) => {
           onOk={() => {
             handleSubmitRef.current()
           }}
-          closable={false}
+          maskClosable={false}
           confirmLoading={sending}
           footer={step === 2 ? (<Button onClick={onCancel}>Close</Button>) : undefined}
         >
