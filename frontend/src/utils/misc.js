@@ -18,5 +18,5 @@ export const topicNames = (topic) => {
   return names[humps.camelize(topic)];
 };
 
-const resourceSubTypes = ["financing_resource", "technical_resource", "action_plan"]
-export const resourceTypeToTopicType = (topicType) => resourceSubTypes.indexOf(topicType) > -1 ? 'resource' : topicType
+const resourceSubTypes = new Set(["financing_resource", "technical_resource", "action_plan"])
+export const resourceTypeToTopicType = (type) => resourceSubTypes.has(type) ? 'resource' : type
