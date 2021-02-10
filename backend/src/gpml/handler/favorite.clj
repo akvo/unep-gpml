@@ -63,7 +63,6 @@
       (jdbc/with-db-transaction [conn (:spec db)]
         (doseq [item body-params]
           (doseq [association (expand-associations item)]
-            (prn association)
             (db.favorite/new-association conn (merge
                                                {:stakeholder stakeholder
                                                 :remarks nil}
