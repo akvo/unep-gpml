@@ -226,7 +226,7 @@
    [:representation string?]
    [:country {:optional true} string?]
    [:about {:optional true} string?]
-   [:organisation_role string?]
+   [:organisation_role {:optional true} string?]
    [:geo_coverage_type {:optional true}
     [:enum "global", "regional", "national", "transnational",
      "sub-national", "global with elements in specific areas"]]
