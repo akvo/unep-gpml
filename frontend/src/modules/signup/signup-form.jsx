@@ -31,6 +31,7 @@ const defaultFormSchema = [
     twitter: { label: 'Twitter', prefix: <TwitterOutlined /> },
     photo: { label: 'Photo', control: 'file', maxFileSize: 1, accept: "image/*" },
     representation: { label: 'Representative sector', required: true, control: 'select', options: sectorOptions.map(it => ({ value: it, label: it })) },
+    country: { label: 'Country', order: 3, control: 'select', showSearch: true, options: Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name })), autoComplete: 'off' },
     'geoCoverageType': { label: 'Geo coverage type', control: 'select', options: geoCoverageTypeOptions.map(it => ({ value: it.toLowerCase(), label: it })) },
     'geoCoverageValue': { label: 'Geo coverage', render: GeoCoverageInput }
   },
@@ -151,7 +152,7 @@ const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, t
                         if (values.org.geoCoverageType === 'global') newSchema[1]['org.geoCoverageValue'].required = false
                         changedSchema = true
                       }
-                      if (values?.org != null && values?.org?.id !== -1 && prevVals.current?.org?.id !== values?.org?.id) {
+                      if (values?.org != null && values?.org?.id !== -1 && values.org.id != null && prevVals.current?.org?.id !== values?.org?.id) {
                         if (prevVals.current?.org?.id === -1) {
                           delete newSchema[1].name
                         }
