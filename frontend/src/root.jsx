@@ -188,7 +188,7 @@ const Footer = () => {
       </div>
       <div className="ui container unep">
         <div className="col unepLogo"><img src={unepLogo} className="uneplogo" alt="unep" /></div>
-        <div className="col unepInfo"><h2>The Digital Platform is a UNEP contribution to the Global Partnership on Marine Litter</h2></div>
+        <div className="col unepInfo"><h2>The Digital Platform is a UNEP contribution to the Global Partnership on Marine Litter (GPML)</h2></div>
       </div>
       <div className="ui container">
         <div className="footBottom">
