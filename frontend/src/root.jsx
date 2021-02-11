@@ -136,7 +136,7 @@ const Footer = () => {
               <nav>
                 <ul>
                   <li><h4>GPML Digital platform</h4></li>
-                  <li><a href="#">knowledge exchange</a></li>
+                  <li><a href="#">Knowledge Exchange</a></li>
                   <li><a href="#">Connect Stakeholders</a></li>
                   <li><a href="#">Data Hub</a></li>
                 </ul>
@@ -147,10 +147,10 @@ const Footer = () => {
               <nav>
                 <ul>
                   <li><h4>Resources</h4></li>
-                  <li><Link to={{pathname: "/browse", search:"?q=action+plan"}}>Action plans</Link></li>
+                  <li><Link to={{pathname: "/browse", search:"?topic=action_plan"}}>Action plans</Link></li>
                   <li><Link to={{pathname: "/browse", search:"?topic=event"}}>Events</Link></li>
                   <li><Link to={{pathname: "/browse", search:"?topic=financing_resource"}}>Financial resources</Link></li>
-                  <li><Link to={{pathname: "/browse", search:"?topic=technical_resource"}}>Technical plans</Link></li>
+                  <li><Link to={{pathname: "/browse", search:"?topic=technical_resource"}}>Technical resources</Link></li>
                   <li><Link to={{pathname: "/browse", search:"?topic=technology"}}>Technologies</Link></li>
                   <li><Link to={{pathname: "/browse", search:"?topic=policy"}}>Policies</Link></li>
                   <li><Link to={{pathname: "/browse", search:"?topic=project"}}>Projects</Link></li>
@@ -174,14 +174,14 @@ const Footer = () => {
             <nav>
               <ul>
                 <li><h4>Join Us</h4></li>
-                <li><a href="https://www.gpmarinelitter.org/who-we-are/members/sign-up" target="_blank" rel="noreferrer">Join the GPML Partnership (Organizations Only)</a></li>
+                <li><a href="https://www.gpmarinelitter.org/who-we-are/members/sign-up" target="_blank" rel="noreferrer">Join the GPML Partnership (Entities Only)</a></li>
                 <li><Link to="/signup">Sign up to the GPML Digital Platform (For All Individuals)</Link></li>
               </ul>
             </nav>
             <nav>
               <ul>
                 <li><h4>Stakeholders</h4></li>
-                <li><a href="#">Organizations</a></li>
+                <li><a href="#">Entities</a></li>
                 <li><a href="#">Individuals</a></li>
               </ul>
             </nav>
