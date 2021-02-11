@@ -6,7 +6,7 @@ import { SearchOutlined, FacebookOutlined, TwitterOutlined, InstagramOutlined, L
 import Landing from './modules/landing/view'
 import Browse from './modules/browse/view'
 import AddEvent from './modules/events/view'
-import logo from './images/GPML-temporary-logo.svg'
+import logo from './images/GPML-temporary-logo-horiz.jpg'
 import SignupModal from './modules/signup/signup-modal'
 import EventWarningModal from './modules/events/event-warning-modal'
 import api from './utils/api';
