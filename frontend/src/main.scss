@@ -122,17 +122,34 @@ footer{
     font-size: 1.2rem;
   }
   .ui.container {
+    &.unep {
+      padding: .5rem 0;
+      border-top:1px solid white;
+      border-bottom:1px solid white;
+      display: flex;
+      .unepInfo {
+        width: calc(100% - 110px);
+        text-align: center;
+      }
+      h2 {
+        color: white;        
+        font-size: 1.2rem;
+        margin: 1.5rem 0 0 0;
+        font-weight: 400;
+      }
+
+    }
+      .unepLogo {
+          img {
+            width: 100px;
+            margin-left: .5rem;
+          }
+        } 
       &:first-child {
         display: flex;
           .col{
             width:33%;
             flex: 1;
-            &:first-child {
-              img {
-                width: 100px;
-                margin-top: 40px;
-              }
-            }
             nav {
               margin-bottom: 2rem;
               ul {
