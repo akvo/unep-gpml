@@ -198,7 +198,6 @@ const Footer = () => {
                 <li><p>© UNEP</p></li>
                 <li><a href="#">Terms of use</a></li>
                 <li><a href="#">Privacy</a></li>
-                <li><a href="https://akvo.org" target="_blank" rel="noreferrer">Built by <strong>Akvo</strong></a></li>
               </ul>
             </nav>
           </div>

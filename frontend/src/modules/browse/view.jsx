@@ -32,6 +32,7 @@ let tmid
 const Browse = ({ history, countData, profile }) => {
   const query = useQuery()
   const [results, setResults] = useState([])
+  const [loading, setLoading] = useState(true)
   const [filterCountries, setFilterCountries] = useState([])
   const location = useLocation()
   const [relations, setRelations] = useState([])
@@ -41,15 +42,19 @@ const Browse = ({ history, countData, profile }) => {
   const getResults = () => {
     // NOTE: This needs to be window.location.search because of how of
     // how `history` and `location` are interacting!
+    setLoading(true)
     api.get(`/browse${window.location.search}`)
     .then((resp) => {
       setResults(resp?.data?.results)
+      setLoading(false)
     })
   }
   useEffect(() => {
+    setLoading(true)
     api.get(`/browse${location.search}`)
     .then((resp) => {
       setResults(resp?.data?.results)
+      setLoading(false)
     })
     // NOTE: Since we are using `history` and `location`, the
     // dependency needs to be []. Ignore the linter warning, because
@@ -128,9 +133,11 @@ const Browse = ({ history, countData, profile }) => {
           </div>
         </aside>
         <div className="main-content">
-          {isEmpty(results)
+          {loading
               ? <h2 className="loading"><LoadingOutlined spin/> Loading</h2>
-              : results.map(result => <Result key={`${result.type}-${result.id}`} {...{result, handleRelationChange, relations, profile}} />)}
+              : (isEmpty(results)
+                  ? <h2 className="loading">There is no data to display</h2>
+                  : results.map(result => <Result key={`${result.type}-${result.id}`} {...{result, handleRelationChange, relations, profile}} />))}
         </div>
       </div>
       <FavoriteWarningModal visible={warningVisible} close={() => setWarningVisible(false)}/>
