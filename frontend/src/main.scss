@@ -124,17 +124,16 @@ footer{
   .ui.container {
     &.unep {
       padding: .5rem 0;
-      border-top:1px solid white;
-      border-bottom:1px solid white;
       display: flex;
       .unepInfo {
         width: calc(100% - 110px);
-        text-align: center;
+        text-align: left;
+        padding: 0 0 0 5rem;
       }
       h2 {
         color: white;        
-        font-size: 1.2rem;
-        margin: 1.5rem 0 0 0;
+        font-size: .9rem;
+        margin: 1.6rem 0 0 0;
         font-weight: 400;
       }
 
