@@ -137,7 +137,7 @@ const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, t
                       let changedSchema = false
                       if (values?.org?.id === -1 && prevVals.current?.org?.id !== -1) {
                         // Add Name field
-                        newSchema[1].name = { label: 'Name', required: true, order: 1 }
+                        newSchema[1]['org.name'] = { label: 'Name', required: true, order: 1 }
                         newSchema[1]['org.type'] = { label: 'Type of the organisation', required: true, control: 'select', options: ['Government', 'Private Sector', 'Academia and Scientific Community', 'NGO and Major Groups and Stakeholders', 'IGO and Multilateral Process Actor', 'Other'].map(it => ({value: it, label: it })) }
                         newSchema[1]['org.country'] = {label: 'Country', order: 3, control: 'select', required: true, showSearch: true, options: Object.keys(countries).map(iso2 => ({value: countries2to3[iso2], label: countries[iso2].name })), autoComplete: 'off' }
                         newSchema[1]['org.url'] = {label: 'Organisation URL', order: 4, addonBefore: 'https://', required: true }
