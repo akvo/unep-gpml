@@ -74,8 +74,8 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
       <div id="landing">
         <div className="landing-container">
           <div className="landing-banner ui container">
-            <b>Welcome to the Global Partnership on Marine Litter Digital Platform</b>
-            <p>The Digital Platform compiles different resources from around the world in one place. Find out more by exploring the map below. Simply click on a country or filter by resource type.</p>
+              <h2>Welcome to the Global Partnership on Marine Litter Digital Platform!</h2>
+              <p>The Digital Platform is an open-source tool that compiles different resources, connects stakeholders and integrates data to guide action. The resources in this multistakeholder platform are from submissions to United Nations Environment Assembly (UNEA) received until December 2020. The policies featured here are sourced from InforMEA, the United Nations Information Portal on Multilateral Environmental Agreements. Explore the map above by clicking on a country or filter by resource type.</p>
           </div>
         </div>
         {data &&

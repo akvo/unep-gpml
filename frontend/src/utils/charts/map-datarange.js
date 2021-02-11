@@ -1,7 +1,7 @@
 const mapDataRange = {
     dataRange: {
-        bottom: 70,
-        right: 50,
+        bottom: "30px",
+        right: "60px",
         padding: 3,
         orient: "horizontal",
         color: ["#35619b", "#2c498b", "#23347c", "#1d2964", "#19204b"],

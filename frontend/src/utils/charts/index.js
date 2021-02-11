@@ -12,8 +12,8 @@ const Chart = {
                 toolbox: {
                     show: true,
                     orient: "horizontal",
-                    top: 10,
-                    right: 10,
+                    top: 30,
+                    right: 60,
                     zlevel: 2,
                     feature: {
                         myTool1: {

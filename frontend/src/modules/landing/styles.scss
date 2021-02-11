@@ -7,11 +7,14 @@
     .landing-banner{
         padding: 10px 0px;
         font-size: 1em;
-        b{
-          font-size: 1.2em;
+        h2{
+          font-size: 28px;
+          font-weight: bold;
+          color: #FFFFFF;
         }
         p {
-            margin-bottom: 0px;
+            font-size: 18px;
+            text-align: justify;
         }
     }
   }
@@ -19,7 +22,7 @@
     position: absolute;
     z-index: 10;
     left: 60px;
-    top: 264px;
+    top: 400px;
     .ant-select{
       width: 100%;
       margin-bottom: 10px;

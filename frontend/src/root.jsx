@@ -6,14 +6,14 @@ import { SearchOutlined, FacebookOutlined, TwitterOutlined, InstagramOutlined, L
 import Landing from './modules/landing/view'
 import Browse from './modules/browse/view'
 import AddEvent from './modules/events/view'
-import logo from './images/GPML-dp.svg'
+import logo from './images/GPML-temporary-logo.svg'
 import SignupModal from './modules/signup/signup-modal'
 import EventWarningModal from './modules/events/event-warning-modal'
 import api from './utils/api';
 import ProfileView from './modules/profile/view';
-import logo2 from './images/GPML-logo-2.svg'
+// import logo2 from './images/GPML-logo-2.svg'
 import unepLogo from './images/UNEP-logo.svg'
-import gpmlLogo from './images/GPML-logo-alone.svg'
+// import gpmlLogo from './images/GPML-logo-alone.svg'
 import SignupView from './modules/signup/view';
 
 const Root = () => {
