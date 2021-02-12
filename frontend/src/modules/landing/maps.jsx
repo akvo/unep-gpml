@@ -53,8 +53,10 @@ const generateSteps = (arr) => {
     return datarange;
 }
 
-const generateOptions = ({title, subtitle, data, tooltip, mapLeft}) => {
-    const steps = data.length > 1 ? generateSteps(data) : {};
+const generateOptions = ({title, subtitle, data, tooltip, mapPos}) => {
+    let steps = data.length > 1 ? generateSteps(data) : {};
+        steps = {...steps.dataRange, left: mapPos.right};
+    const toolbox = {...Chart.Opt.Maps.ToolBox.toolbox, left: mapPos.right};
     return {
         title: {
             text: title,
@@ -66,12 +68,12 @@ const generateOptions = ({title, subtitle, data, tooltip, mapLeft}) => {
         tooltip: Chart.Opt.Maps.ToolTip(tooltip),
         backgroundColor: '#EAF6FD',
         legend: {show: false},
-        series: mapLeft === 0 ? [] : [{
+        series: mapPos.left === 0 ? [] : [{
             name: title,
             type: 'map',
             roam: 'move',
-            left: `${mapLeft + 10}px`,
-            right: "10px",
+            left: `${mapPos.left + 10}px`,
+            right: `${mapPos.right - 10}px`,
             top: window.__UNEP__MAP__TOP,
             map: 'unep-map',
             aspectScale: 1,
@@ -95,8 +97,8 @@ const generateOptions = ({title, subtitle, data, tooltip, mapLeft}) => {
             animation:true,
             animationDelay: 1
         }],
-        ...steps,
-        ...Chart.Opt.Maps.ToolBox,
+        toolbox: toolbox,
+        dataRange: steps,
         ...Chart.Style.Text}
 }
 
@@ -110,11 +112,13 @@ const Maps = ({
     tooltip,
     custom={},
 }) => {
-    const [mapLeft, setMapLeft] = useState(0);
+    const [mapPos, setMapPos] = useState({left: 0, right: window.innerWidth});
     const handleResize = () => {
         const box = document.getElementsByClassName("map-overlay");
         if (box.length === 1) {
-            setMapLeft(box[0].offsetLeft + box[0].offsetWidth)
+            setMapPos({
+                left: box[0].offsetLeft + box[0].offsetWidth,
+                right: box[0].offsetLeft})
         }
     }
 
@@ -124,14 +128,14 @@ const Maps = ({
 
     window.addEventListener('resize', handleResize)
     data = data.filter(x => x.value !== 0);
-    const options = generateOptions({title, subtitle, data, tooltip, mapLeft});
+    const options = generateOptions({title, subtitle, data, tooltip, mapPos});
 
     return (
         <ReactEcharts
           className="fade-in worldmap"
           option={{...options,...custom}}
           notMerge={true}
-          style={{height: (mapLeft > 300 ? '700px' : '600px'), width:'100%'}}
+          style={{height: '700px', width:'100%'}}
           lazyUpdate={true}
           onEvents={{click: clickEvents}}
         />
