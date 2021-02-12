@@ -1,6 +1,7 @@
 @import '../../vars.scss';
 
 #landing{
+  position: relative;
   .landing-container{
     background-color:#84b4cc;
     color: #FFFFFF;
@@ -20,7 +21,7 @@
     position: absolute;
     z-index: 10;
     left: 60px;
-    top: 400px;
+    top: 230px;
     .ant-select{
       width: 100%;
       margin-bottom: 10px;

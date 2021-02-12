@@ -4,7 +4,7 @@ import Chart from '../../utils/charts'
 import cloneDeep from 'lodash/cloneDeep';
 require("../../utils/charts/map-init.js");
 
-const colors = ["#52aacb", "#4891bb", "#3e78ab", "#35619b", "#2c498b", "#23347c", "#1d2964", "#19204b"];
+const colors = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1", "#50b293", "#35a785", "#039B78"];
 
 const generateSteps = (arr) => {
     const datarange = cloneDeep(Chart.Opt.Maps.DataRange);

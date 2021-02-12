@@ -9,7 +9,7 @@ const mapDataRange = {
         textStyle: {
             fontSize: 12,
             fontWeight:'bold',
-            color: "#DDD",
+            color: "#036799",
         },
         itemWidth: 60,
         itemHeight: 15,
