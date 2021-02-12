@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Button, Select, Switch } from 'antd';
+import { Select, Switch } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import { withRouter } from 'react-router-dom'
 import Maps from './maps'
 import './styles.scss'
@@ -78,6 +79,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
               <p>The Digital Platform is an open-source tool that compiles different resources, connects stakeholders and integrates data to guide action. The resources in this multistakeholder platform are from submissions to United Nations Environment Assembly (UNEA) received until December 2020. The policies featured here are sourced from InforMEA, the United Nations Information Portal on Multilateral Environmental Agreements. Explore the map above by clicking on a country or filter by resource type.</p>
           </div>
         </div>
+        {!data && <h2 className="loading"><LoadingOutlined spin/> Loading Data</h2>}
         {data &&
         <div className="map-overlay">
           <Select

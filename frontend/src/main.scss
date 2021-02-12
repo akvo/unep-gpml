@@ -218,6 +218,9 @@ h2.loading {
   padding-top: 40px;
   text-align: center;
   padding-bottom: 1500px;
+  span {
+    margin-right: 5px;
+  }
 }
 
 .fade-in {
@@ -240,4 +243,3 @@ h2.loading {
 /* End Loading */
 
 @import './container.scss';
-

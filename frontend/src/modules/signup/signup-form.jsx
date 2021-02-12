@@ -47,7 +47,7 @@ const defaultFormSchema = [
     about: { label: 'About yourself', control: 'textarea', placeholder: 'Max 150 words' },
     tags: { label: 'Tags', control: 'select', options: [], mode: 'multiple' },
     cv: { label: 'CV / Portfolio', control: 'file', maxFileSize: 5, accept: ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain" },
-  }
+  },
 ]
 
 const ReviewText = ({reviewStatus}) => {

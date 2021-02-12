@@ -17,6 +17,13 @@
         }
     }
   }
+  h2.loading {
+    color: #036799;
+    font-weight: bold;
+    padding-top: 320px;
+    padding-bottom: 370px;
+    background-color: #EAF6FD;
+  }
   .map-overlay{
     position: absolute;
     z-index: 10;
