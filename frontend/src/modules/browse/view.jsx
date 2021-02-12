@@ -10,7 +10,7 @@ import { countries } from 'countries-list'
 import countries3to2 from 'countries-list/dist/countries3to2.json'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
 import ShowMoreText from 'react-show-more-text'
-import FavoriteWarningModal from './favorite-warning-modal'
+import ModalWarningUser from '../../utils/modal-warning-user'
 import { useAuth0 } from '@auth0/auth0-react'
 import humps from 'humps'
 import isEmpty from 'lodash/isEmpty'
@@ -140,7 +140,7 @@ const Browse = ({ history, countData, profile }) => {
                   : results.map(result => <Result key={`${result.type}-${result.id}`} {...{result, handleRelationChange, relations, profile}} />))}
         </div>
       </div>
-      <FavoriteWarningModal visible={warningVisible} close={() => setWarningVisible(false)}/>
+      <ModalWarningUser visible={warningVisible} close={() => setWarningVisible(false)}/>
     </div>
   )
 }

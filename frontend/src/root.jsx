@@ -8,7 +8,7 @@ import Browse from './modules/browse/view'
 import AddEvent from './modules/events/view'
 import logo from './images/GPML-temporary-logo-horiz.jpg'
 import SignupModal from './modules/signup/signup-modal'
-import EventWarningModal from './modules/events/event-warning-modal'
+import ModalWarningUser from './utils/modal-warning-user'
 import api from './utils/api';
 import ProfileView from './modules/profile/view';
 // import logo2 from './images/GPML-logo-2.svg'
@@ -115,7 +115,7 @@ const Root = () => {
         <Footer />
       </div>
       <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} {...{ tags, setProfile }} />
-      <EventWarningModal visible={eventWarningVisible} close={() => setEventWarningVisible(false)}/>
+      <ModalWarningUser visible={eventWarningVisible} close={() => setEventWarningVisible(false)}/>
     </Router>
     )
 }

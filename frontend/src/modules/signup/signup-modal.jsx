@@ -10,7 +10,6 @@ import { useRef } from "react";
 const SignupModal = ({ visible, onCancel, setProfile, profile, tags }) => {
     const [sending, setSending] = useState(false)
     const [step, setStep] = useState(1)
-    const {user} = useAuth0();
     const handleSubmitRef = useRef()
     const onSubmit = (vals) => {
       setSending(true)
@@ -51,13 +50,9 @@ const SignupModal = ({ visible, onCancel, setProfile, profile, tags }) => {
           }
           {step === 2 &&
           <div className="submitted">
-            <h2>Pending approval</h2>
             <p>
-              We will review your signup request shortly.
-              {user.email_verified === false && <span><br />
-              Meanwhile please confirm your email.
-              <br />
-              <small>Registrations with unconfirmed emails will not be approved</small></span>}
+              <b>Click on the link we sent in your email to verify your email address.</b>
+              We will review your sign-up request as soon as you verify your email address. Please, allow for 1 business day.
             </p>
           </div>
           }

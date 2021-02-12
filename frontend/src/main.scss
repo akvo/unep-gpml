@@ -197,6 +197,20 @@ footer{
 
 }
 
+/* User Warning Modal */
+
+.warning-modal-user {
+ b {
+   display: block;
+   font-size: 16px;
+   margin-bottom: 16px;
+ }
+}
+
+/* End User Warning Modal */
+
+/* Loading */
+
 h2.loading {
   font-weight: normal;
   text-shadow: 0 0 0.25px #096dd9;
@@ -223,4 +237,7 @@ h2.loading {
   }
 }
 
+/* End Loading */
+
 @import './container.scss';
+
