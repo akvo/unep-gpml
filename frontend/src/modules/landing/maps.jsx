@@ -6,7 +6,7 @@ require("../../utils/charts/map-init.js");
 
 const colors = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1", "#50b293", "#35a785", "#039B78"];
 
-const generateSteps = (arr) => {
+const generateSteps = (arr, leftPos) => {
     const datarange = cloneDeep(Chart.Opt.Maps.DataRange);
     if (arr.length === 0) {
         return false;
@@ -50,12 +50,12 @@ const generateSteps = (arr) => {
         {symbol:'rect', color:colors[i],...x}
     ))
     datarange.dataRange.splitList = steps;
+    datarange.dataRange.left = leftPos;
     return datarange;
 }
 
 const generateOptions = ({title, subtitle, data, tooltip, mapPos}) => {
-    let steps = data.length > 1 ? generateSteps(data) : {};
-        steps = {...steps.dataRange, left: mapPos.right};
+    let steps = data.length ? generateSteps(data, mapPos.right) : {};
     const toolbox = {...Chart.Opt.Maps.ToolBox.toolbox, left: mapPos.right};
     return {
         title: {
@@ -98,7 +98,7 @@ const generateOptions = ({title, subtitle, data, tooltip, mapPos}) => {
             animationDelay: 1
         }],
         toolbox: toolbox,
-        dataRange: steps,
+        ...steps,
         ...Chart.Style.Text}
 }
 
