@@ -63,8 +63,8 @@
     (db.tag/new-tag db {:tag "Tag 2" :tag_category 1})
     (db.tag/new-tag db {:tag "Tag 3" :tag_category 1}))
 
-(deftest handler-post-test
-  (testing "New profile is created"
+(deftest handler-post-with-existing-organisation-test
+  (testing "New profile is created with existing organisation"
     (let [system (ig/init fixtures/*system* [::profile/post])
           handler (::profile/post system)
           db (-> system :duct.database.sql/hikaricp :spec)
@@ -73,8 +73,8 @@
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
                             (assoc :body-params
-                                   (assoc (new-profile "IND" nil)
-                                          :org (db.organisation/organisation-by-id db {:id 1})
+                                   (assoc (new-profile "IND" 1)
+                                          :org {:id 1 :name "Akvo"}
                                           :photo picture))))]
       (is (= 201 (:status resp)))
       (is (= "John" (->(:body resp) :first_name)))
@@ -104,8 +104,98 @@
              (:body resp)))
       (is (= "/image/profile/1" (-> resp :body :photo))))))
 
+(deftest handler-post-with-new-organisation-test
+  (testing "New profile is created with new organisation"
+    (let [system (ig/init fixtures/*system* [::profile/post])
+          handler (::profile/post system)
+          db (-> system :duct.database.sql/hikaricp :spec)
+          _ (seed-important-database db)
+          ;; John trying to sign up with new organisation
+          resp (handler (-> (mock/request :post "/")
+                            (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
+                            (assoc :body-params
+                                   (assoc (new-profile "IND" nil)
+                                          :org {:id -1
+                                                :name "My own company"
+                                                :geo_coverage_type "regional"
+                                                :country "IND"
+                                                :geo_coverage_value ["Asia"]
+                                                :type "Company"
+                                                :url "mycompany.org"}
+                                          :photo picture))))]
+      (is (= 201 (:status resp)))
+      (is (= "John" (->(:body resp) :first_name)))
+      (is (= "Doe" (->(:body resp) :last_name)))
+      (is (= "SUBMITTED" (->(:body resp) :review_status)))
+      (is (= {:id 1
+              :email "john@org"
+              :about "Lorem Ipsum"
+              :country "IND"
+              :first_name "John"
+              :last_name "Doe"
+              :linked_in "johndoe"
+              :photo "/image/profile/1"
+              :cv "/cv/profile/1"
+              :representation "test"
+              :title "Mr."
+              :role "USER"
+              :org (db.organisation/organisation-by-id db {:id 2})
+              :geo_coverage_type "regional"
+              :geo_coverage_value ["Africa" "Europe"]
+              :tags [1 2]
+              :twitter "johndoe"
+              :organisation_role "manager"
+              :reviewed_at nil
+              :reviewed_by nil
+              :review_status "SUBMITTED"}
+             (:body resp)))
+      (is (= "/image/profile/1" (-> resp :body :photo))))))
+
+(deftest handler-post-test-as-citizen
+  (testing "New profile without organisation associated is created"
+    (let [system (ig/init fixtures/*system* [::profile/post])
+          handler (::profile/post system)
+          db (-> system :duct.database.sql/hikaricp :spec)
+          _ (seed-important-database db)
+          ;; John trying to sign up without any organisation
+          resp (handler (-> (mock/request :post "/")
+                            (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
+                            (assoc :body-params
+                                   (assoc (new-profile "IND" nil)
+                                          :organisation_role nil
+                                          :org nil
+                                          :photo picture))))]
+      (is (= 201 (:status resp)))
+      (is (= "John" (->(:body resp) :first_name)))
+      (is (= "Doe" (->(:body resp) :last_name)))
+      (is (= "SUBMITTED" (->(:body resp) :review_status)))
+      (is (= nil (->(:body resp) :org)))
+      (is (= {:id 1
+              :email "john@org"
+              :about "Lorem Ipsum"
+              :country "IND"
+              :first_name "John"
+              :last_name "Doe"
+              :linked_in "johndoe"
+              :photo "/image/profile/1"
+              :cv "/cv/profile/1"
+              :representation "test"
+              :title "Mr."
+              :role "USER"
+              :org nil
+              :geo_coverage_type "regional"
+              :geo_coverage_value ["Africa" "Europe"]
+              :tags [1 2]
+              :twitter "johndoe"
+              :organisation_role nil
+              :reviewed_at nil
+              :reviewed_by nil
+              :review_status "SUBMITTED"}
+             (:body resp)))
+      (is (= "/image/profile/1" (-> resp :body :photo))))))
+
 (deftest handler-post-incomplete-test
-  (testing "New profile is created"
+  (testing "New incomplete profile is created"
     (let [system (ig/init fixtures/*system* [::profile/post])
           handler (::profile/post system)
           db (-> system :duct.database.sql/hikaricp :spec)
@@ -134,6 +224,7 @@
               :role "USER"
               :geo_coverage_type "regional"
               :geo_coverage_value ["Africa" "Europe"]
+              :org nil
               :tags [1 2]
               :twitter nil
               :organisation_role "manager"
