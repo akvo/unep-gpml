@@ -51,7 +51,7 @@ where o.organisation = :id
 
 -- :name add-geo-coverage :<! :1
 -- :doc add organisation geo coverage
-insert into organisation_geo_coverage(organisation, country, country_group)
+insert into organisation_geo_coverage(organisation, country_group, country)
 values :t*:geo RETURNING id;
 
 -- :name delete-geo-coverage :! :n

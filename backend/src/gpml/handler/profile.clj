@@ -11,6 +11,27 @@
 (defn get-country [conn country]
   (:id (db.country/country-by-code conn {:name country})))
 
+(defn get-geo-data [db id geo-type geo-value]
+  (cond
+    (contains? #{"regional" "global with elements in specific areas"}
+     geo-type)
+    (->> {:names geo-value}
+         (db.country-group/country-group-by-names db)
+         (map #(vector id (:id %) nil)))
+    (contains? #{"transnational" "national"}
+     geo-type)
+    (->> {:codes geo-value}
+         (db.country/country-by-codes db)
+         (map #(vector id nil (:id %))))))
+
+(defn new-organisation [conn org]
+    (let [country (get-country conn (:country org))
+          org-id (:id (db.organisation/new-organisation conn (assoc org :country country)))
+          org-geo (get-geo-data conn org-id (:geo_coverage_type org) (:geo_coverage_value org))]
+      (when (some? org-geo)
+        (db.organisation/add-geo-coverage conn {:geo org-geo}))
+      org-id))
+
 (defn assoc-picture [conn photo]
   (cond
     (nil? photo) nil
@@ -38,6 +59,9 @@
         cv-url (if-let [upload-cv (assoc-cv conn cv)]
                  upload-cv
                  (if cv cv nil))
+        affiliation (if (= -1 (:id org))
+                      (new-organisation conn org)
+                      (:id org))
         profile {:picture pic-url
                  :cv cv-url
                  :title title
@@ -51,7 +75,7 @@
                  :about about
                  :geo_coverage_type geo_coverage_type
                  :country (get-country conn country)
-                 :affiliation (:id org)}]
+                 :affiliation affiliation}]
       (db.stakeholder/new-stakeholder conn profile)))
 
 (defn remap-profile
@@ -88,28 +112,6 @@
    :reviewed_by reviewed_by
    :review_status review_status})
 
-(defn get-geo-data [db id geo-type geo-value]
-  (cond
-    (contains? #{"regional" "global with elements in specific areas"}
-     geo-type)
-    (->> {:names geo-value}
-         (db.country-group/country-group-by-names db)
-         (map #(vector id (:id %) nil)))
-    (contains? #{"transnational" "national"}
-     geo-type)
-    (->> {:codes geo-value}
-         (db.country/country-by-codes db)
-         (map #(vector id nil (:id %))))))
-
-(defn update-organisation [conn org]
-  (when (not= org (db.organisation/organisation-by-id conn org))
-    (db.organisation/update-organisation conn org)
-    (db.organisation/delete-geo-coverage conn org)
-    (let [geo-data (get-geo-data conn (:id org) (:geo_coverage_type org) (:geo_coverage_value org))]
-            (when (some? geo-data)
-              (db.organisation/add-geo-coverage conn {:geo geo-data})))))
-
-
 (defmethod ig/init-key :gpml.handler.profile/get [_ {:keys [db]}]
   (fn [{:keys [jwt-claims]}]
     (if-let [profile (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
@@ -145,7 +147,12 @@
             (when (some? geo-data)
               (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))
         (resp/created (:referer headers)
-                      (dissoc (merge body-params profile) :affiliation :picture)))
+                      (dissoc
+                       (assoc
+                         (merge body-params profile)
+                         :org (db.organisation/organisation-by-id db {:id (:affiliation profile)}))
+                       :affiliation :picture)
+                      ))
       (assoc (resp/status 500) :body "Internal Server Error"))))
 
 (defmethod ig/init-key :gpml.handler.profile/put [_ {:keys [db]}]
@@ -153,6 +160,7 @@
     (jdbc/with-db-transaction [tx (:spec db)]
       (let [id (:id body-params)
             tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
+            org (:org body-params)
             geo-type (:geo_coverage_type body-params)
             geo-value (:geo_coverage_value body-params)
             old-profile (db.stakeholder/stakeholder-by-email tx jwt-claims)
@@ -174,8 +182,10 @@
                                (assoc-cv tx (:cv body-params))))
                       (= (:cv body-params) nil)
                       (assoc :cv nil)
-                      (-> new-profile :org :id)
-                      (assoc :affiliation (-> new-profile :org :id))
+                      (not= -1 (:id org))
+                      (assoc :affiliation (:id org))
+                      (= -1 (:id org))
+                      (assoc :affiliation (new-organisation tx org))
                       (:country body-params)
                       (assoc :country (get-country tx (:country body-params))))]
         (db.stakeholder/update-stakeholder tx profile)
