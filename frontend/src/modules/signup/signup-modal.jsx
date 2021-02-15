@@ -5,12 +5,14 @@ import './styles.scss'
 import { useAuth0 } from '@auth0/auth0-react';
 import SignupForm from "./signup-form";
 import { useRef } from "react";
+import Checkbox from "antd/lib/checkbox/Checkbox";
 
 
 const SignupModal = ({ visible, onCancel, setProfile, profile, tags }) => {
     const [sending, setSending] = useState(false)
     const [step, setStep] = useState(1)
     const handleSubmitRef = useRef()
+    const [consent, setConsent] = useState(false)
     const onSubmit = (vals) => {
       setSending(true)
       if (vals.geoCoverageType === 'national'){
@@ -36,17 +38,21 @@ const SignupModal = ({ visible, onCancel, setProfile, profile, tags }) => {
           onOk={() => {
             handleSubmitRef.current()
           }}
+          okButtonProps={{ disabled: !consent }}
           maskClosable={false}
           confirmLoading={sending}
           footer={step === 2 ? (<Button onClick={onCancel}>Close</Button>) : undefined}
         >
           {step === 1 &&
-            <SignupForm
-              onSubmit={onSubmit}
-              handleSubmitRef={ref => { handleSubmitRef.current = ref; }}
-              initialValues={profile}
-              tags={tags}
-            />
+            <div>
+              <SignupForm
+                onSubmit={onSubmit}
+                handleSubmitRef={ref => { handleSubmitRef.current = ref; }}
+                initialValues={profile}
+                tags={tags}
+              />
+              <Checkbox className="consent-check" checked={consent} onChange={({ target: { checked }}) => setConsent(checked)}>By submitting this form, I will be included in the public database of GPML Digital Platform members and acknowledge that the provided information will be made public and used to find and connect via smart-matchmaking functionalities with other stakeholders and resources.</Checkbox>
+            </div>
           }
           {step === 2 &&
           <div className="submitted">
