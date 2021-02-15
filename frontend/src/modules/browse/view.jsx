@@ -168,7 +168,7 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
     <div className="field">
       <div className="label">Stakeholders</div>
       <ul className="topic-list">
-        <li><Checkbox checked={value.indexOf('stakeholder') !== -1} onChange={handleChange('stakeholder')}>{topicNames('stakeholder')} ({(counts && counts['stakeholder']) || 0})</Checkbox></li>
+        <li><Checkbox checked={value.indexOf('stakeholder') !== -1} onChange={handleChange('stakeholder')}>Individuals ({(counts && counts['stakeholder']) || 0})</Checkbox></li>
       </ul>
     </div>
     : null
