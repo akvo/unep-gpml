@@ -29,7 +29,7 @@ function useQuery() {
 
 let tmid
 
-const Browse = ({ history, countData, profile }) => {
+const Browse = ({ history, countData, profile, setSignupModalVisible}) => {
   const query = useQuery()
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(true)
@@ -93,7 +93,11 @@ const Browse = ({ history, countData, profile }) => {
       }
     }).catch(err => {
         if (isAuthenticated) {
-            setWarningVisible(true);
+            if (Object.keys(profile).length === 0) {
+                setSignupModalVisible(true);
+            } else {
+                setWarningVisible(true);
+            }
         } else {
             loginWithPopup();
         }

@@ -108,7 +108,7 @@ const Root = () => {
         <Route path="/" exact render={props => <Landing {...
           {profile, countries, data, initLandingCount, setCountries, setInitLandingCount, ...props}
           }/>} />
-        <Route path="/browse" render={props => <Browse {...props} profile={profile} countData={data} />} />
+        <Route path="/browse" render={props => <Browse {...props} profile={profile} countData={data} setSignupModalVisible={setSignupModalVisible}/>} />
         <Route path="/add-event" component={AddEvent} />
         <Route path="/profile" render={props => <ProfileView {...{...props, profile, tags, setProfile }} />} />
         <Route path="/signup" component={SignupView} />
@@ -229,12 +229,12 @@ const Search = withRouter(({ history }) => {
   return <Input onPressEnter={handlerPressEnter} className="src" placeholder="Search for topics" suffix={<SearchOutlined />} size="large" />
 })
 
-const AddButton = ({ isAuthenticated, setSignupModalVisible, setEventWarningVisible, loginWithPopup,profile}) => {
+const AddButton = ({ isAuthenticated, setSignupModalVisible, setEventWarningVisible, loginWithPopup, profile}) => {
   if(isAuthenticated){
       if (profile?.reviewStatus === "APPROVED") {
           return <Link to="/add-event"><Button type="primary" size="large">+ Add Event</Button></Link>
       }
-      return <Button type="primary" size="large" onClick={e => setEventWarningVisible(true)}>+ Add Event</Button>
+      return <Button type="primary" size="large" onClick={e => { Object.keys(profile).length !== 0 ? setEventWarningVisible(true) : setSignupModalVisible(true)}}>+ Add Event</Button>
   }
   return <Button type="primary" size="large" onClick={loginWithPopup}>+ Add Event</Button>
 }
