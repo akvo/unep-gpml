@@ -85,7 +85,7 @@ select
     s.reviewed_by,
     s.review_status from stakeholder s
 left join country c on (s.country = c.id)
-where s.review_status <> 'APPROVED' order by s.created desc;
+where s.review_status = 'SUBMITTED' order by s.created desc;
 
 -- :name update-stakeholder-status :! :n
 -- :doc Approve stakeholder

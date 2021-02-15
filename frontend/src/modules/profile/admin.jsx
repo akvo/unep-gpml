@@ -1,12 +1,35 @@
-import { Button, Collapse, Space, Spin } from 'antd'
+import { Button, Collapse, Space, Spin, Modal } from 'antd'
 import React from 'react'
 import { useEffect, useState } from 'react'
 import api from '../../utils/api'
 import moment from 'moment'
 
+const ModalReject = ({visible, close, reject, item}) => {
+    return (
+        <Modal
+            width={600}
+            okText="Close"
+            visible={visible}
+            footer={
+                <div>
+                <Button onClick={e => reject()}>Yes</Button>
+                <Button onClick={e => close()} type="primary">No</Button>
+                </div>
+            }
+            closable={false}
+        >
+            <div className="warning-modal-user">
+                <p>Are you sure you want to reject this?</p>
+            </div>
+        </Modal>
+    )
+}
+
 
 const AdminSection = () => {
   const [pendingItems, setPendingItems] = useState([])
+  const [modalRejectVisible, setModalRejectVisible] = useState(false)
+  const [modalRejectFunction, setModalRejectFunction] = useState(false);
   const [loading, setLoading] = useState(true)
   useEffect(() => {
     (async function fetchData() {
@@ -23,7 +46,13 @@ const AdminSection = () => {
     api.put(`/${item.type}/review`, { id: item.id, review_status: review_status})
     .then(() => {
       setPendingItems(pendingItems.filter(it => it.id !== item.id))
+      setModalRejectVisible(false);
     })
+  }
+
+  const reject = (item, review_status) => () => {
+      setModalRejectFunction(() => review(item, review_status));
+      setModalRejectVisible(true);
   }
   return (
     <div className="admin-view">
@@ -45,7 +74,7 @@ const AdminSection = () => {
             <div className="col" onClick={e => { e.stopPropagation() }}>
               <Space size="middle">
                 <Button type="primary" onClick={review(item, "APPROVED")}>Approve</Button>
-                <Button type="link" onClick={review(item, "REJECTED")}>Decline</Button>
+                <Button type="link" onClick={reject(item, "REJECTED")}>Decline</Button>
               </Space>
             </div>
           </div>
@@ -98,6 +127,10 @@ const AdminSection = () => {
       </Collapse.Panel>
       )}
       </Collapse>
+      <ModalReject
+        visible={modalRejectVisible}
+        reject={modalRejectFunction}
+        close={() => setModalRejectVisible(false)}/>
     </div>
   )
 }
