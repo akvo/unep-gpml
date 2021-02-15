@@ -130,10 +130,7 @@ const Browse = ({ history, countData, profile, setSignupModalVisible}) => {
               <Select value={query.country} placeholder="Find country" mode="multiple" options={Object.keys(countries).map(iso2 => ({ value: countries2to3[iso2], label: countries[iso2].name })).sort((a, b) => a.label.localeCompare(b.label))} allowClear onChange={val => updateQuery('country', val)} filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}/>
               {isAuthenticated && <Checkbox className="my-favorites" checked={query?.favorites?.indexOf("true") > -1}  onChange={({ target: { checked }}) => updateQuery('favorites', checked)}>My Bookmarks</Checkbox>}
             </div>
-            <div className="field">
-              <div className="label">Resources</div>
-              <TopicSelect counts={topicCounts} isApprovedUser={isApprovedUser} value={query.topic} onChange={val => updateQuery('topic', val)} />
-            </div>
+            <TopicSelect counts={topicCounts} isApprovedUser={isApprovedUser} value={query.topic} onChange={val => updateQuery('topic', val)} />
           </div>
         </aside>
         <div className="main-content">
@@ -157,14 +154,25 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
       onChange(value.filter(it => it !== type))
     }
   }
-  const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypes
-  return (
-    <ul className="topic-list">
-      {tTypes.map(type =>
-        <li key={type}><Checkbox checked={value.indexOf(humps.decamelize(type)) !== -1} onChange={handleChange(humps.decamelize(type))}>{topicNames(type)} ({(counts && counts[type]) || 0})</Checkbox></li>
-      )}
-    </ul>
-  )
+  // const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypes
+  return [
+    <div className="field">
+      <div className="label">Resources</div>
+      <ul className="topic-list">
+        {topicTypes.map(type =>
+          <li key={type}><Checkbox checked={value.indexOf(humps.decamelize(type)) !== -1} onChange={handleChange(humps.decamelize(type))}>{topicNames(type)} ({(counts && counts[type]) || 0})</Checkbox></li>
+        )}
+      </ul>
+    </div>,
+    isApprovedUser ?
+    <div className="field">
+      <div className="label">Stakeholders</div>
+      <ul className="topic-list">
+        <li><Checkbox checked={value.indexOf('stakeholder') !== -1} onChange={handleChange('stakeholder')}>{topicNames('stakeholder')} ({(counts && counts['stakeholder']) || 0})</Checkbox></li>
+      </ul>
+    </div>
+    : null
+  ]
 }
 
 const Result = ({ result, relations, handleRelationChange, profile }) => {
