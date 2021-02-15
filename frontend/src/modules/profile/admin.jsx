@@ -19,7 +19,7 @@ const ModalReject = ({visible, close, reject, item}) => {
             closable={false}
         >
             <div className="warning-modal-user">
-                <p>Are you sure you want to reject this?</p>
+                <p>Are you sure you want to decline?</p>
             </div>
         </Modal>
     )
