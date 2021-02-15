@@ -63,11 +63,16 @@ const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, t
   const [noOrg, setNoOrg] = useState(false)
   const prevVals = useRef()
   const formRef = useRef()
+  const formSchemaRef = useRef(defaultFormSchema)
+
+  useEffect(() => {
+    formSchemaRef.current = formSchema
+  }, [formSchema])
 
   useEffect(() => {
     api.get('/organisation')
     .then(d => {
-      const newSchema = cloneDeep(formSchema)
+      const newSchema = cloneDeep(formSchemaRef.current)
       newSchema[1]['org.id'].options = [...d.data.map(it => ({ value: it.id, label: it.name })), { value: -1, label: 'Other' }]
       newSchema[1]['org.id'].filterOption = (input, option) => {
         return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 || option.value === -1
@@ -79,7 +84,7 @@ const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, t
       }
       setFormSchema(newSchema)
     })
-  }, [])
+  }, []) // eslint-disable-line
 
   useEffect(() => {
       if (tags) {
@@ -89,7 +94,7 @@ const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, t
           newSchema[2].seeking.options = tags.seeking.map(x => ({ value: x.id, label: x.tag }))
           setFormSchema(newSchema);
       }
-  }, [tags])
+  }, [tags]) // eslint-disable-line
 
   const handleChangePrivateCitizen = ({ target: { checked } }) => {
     setNoOrg(checked)
@@ -106,6 +111,12 @@ const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, t
       }
     })
   }
+
+  useEffect(() => {
+    if (initialValues && initialValues.org === null) {
+      handleChangePrivateCitizen({ target: { checked: true } })
+    }
+  }, [initialValues]) // eslint-disable-line
 
   return (
     <Form layout="vertical">
