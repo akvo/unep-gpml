@@ -210,7 +210,7 @@ const relationsByTopicType = {
   stakeholder: ['interested in', 'other'],
 }
 
-const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
+export const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
   const handleChangeRelation = (relationType) => ({ target: { checked } }) => {
     let association = relation ? [...relation.association] : []
     if(checked) association = [...association, relationType]

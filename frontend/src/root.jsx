@@ -11,10 +11,9 @@ import SignupModal from './modules/signup/signup-modal'
 import ModalWarningUser from './utils/modal-warning-user'
 import api from './utils/api';
 import ProfileView from './modules/profile/view';
-// import logo2 from './images/GPML-logo-2.svg'
 import unepLogo from './images/UNEP-logo.svg'
-// import gpmlLogo from './images/GPML-logo-alone.svg'
 import SignupView from './modules/signup/view';
+import DetailsView from './modules/details/view';
 
 const Root = () => {
     const {
@@ -112,6 +111,7 @@ const Root = () => {
         <Route path="/add-event" component={AddEvent} />
         <Route path="/profile" render={props => <ProfileView {...{...props, profile, tags, setProfile }} />} />
         <Route path="/signup" component={SignupView} />
+        <Route path="/:type/:id" component={DetailsView} />
         <Footer />
       </div>
       <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} {...{ tags, setProfile }} />
