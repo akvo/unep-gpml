@@ -3,7 +3,7 @@ import { Card, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
 import { topicTypes, topicTypesApprovedUser, topicNames, resourceTypeToTopicType } from '../../utils/misc'
-import { useLocation, withRouter } from 'react-router-dom'
+import { Link, useLocation, withRouter } from 'react-router-dom'
 import moment from 'moment'
 import api from '../../utils/api'
 import { countries } from 'countries-list'
@@ -181,23 +181,29 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
   const relation = relations.find(it => it.topicId === result.id && it.topic === resourceTypeToTopicType(result.type))
   const allowBookmark = result.type !== 'stakeholder' || profile.id !== result.id
   return (
-    <Card className="result fade-in">
-      <h4>{title}</h4>
-      <div className="type">{topicNames(result.type)}</div>
-      <ul className="stats">
-        {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
-        {result.geoCoverageValues && <li>{result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')}</li>}
-        {result.status && <li><span>Status:</span>{result.status}</li>}
-        {result.organisationType && <li><span>Org:</span>{result.organisationType}</li>}
-        {result.yearFounded && <li><span>Founded:</span>{result.yearFounded}</li>}
-        {result.developmentStage && <li><span>Stage:</span>{result.developmentStage}</li>}
-        {result.value && <li><span>Value:</span>{result.valueCurrency && <i>{result.valueCurrency}</i>}{String(result.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
-        {result.type === 'event' && [<li><span>Starts:</span><i>{moment(result.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(result.endDate).format('DD MMM YYYY')}</i></li>]}
-      </ul>
-      {description && <ShowMoreText lines={5}>{description}</ShowMoreText>}
-      {allowBookmark && <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />}
-    </Card>
+    <Linkify result={result}>
+      <Card className="result fade-in">
+        <h4>{title}</h4>
+        <div className="type">{topicNames(result.type)}</div>
+        <ul className="stats">
+          {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
+          {result.geoCoverageValues && <li>{result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')}</li>}
+          {result.status && <li><span>Status:</span>{result.status}</li>}
+          {result.organisationType && <li><span>Org:</span>{result.organisationType}</li>}
+          {result.yearFounded && <li><span>Founded:</span>{result.yearFounded}</li>}
+          {result.developmentStage && <li><span>Stage:</span>{result.developmentStage}</li>}
+          {result.value && <li><span>Value:</span>{result.valueCurrency && <i>{result.valueCurrency}</i>}{String(result.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
+          {result.type === 'event' && [<li><span>Starts:</span><i>{moment(result.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(result.endDate).format('DD MMM YYYY')}</i></li>]}
+        </ul>
+        {description && <ShowMoreText lines={5}>{description}</ShowMoreText>}
+        {allowBookmark && <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />}
+      </Card>
+    </Linkify>
   )
+}
+const Linkify = ({ result, children }) => {
+  if(result.type === 'stakeholder') return children
+  return <Link to={`/${result.type}/${result.id}`}>{children}</Link>
 }
 
 const relationsByTopicType = {
@@ -217,7 +223,7 @@ export const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
     handleRelationChange({ topicId: topic.id, association, topic: resourceTypeToTopicType(topic.type) })
   }
   return (
-    <div className="portfolio-bar">
+    <div className="portfolio-bar" onClick={e => e.stopPropagation()}>
       <Dropdown overlay={(
         <ul className="relations-dropdown">
           {relationsByTopicType[resourceTypeToTopicType(topic.type)].map(relationType =>
