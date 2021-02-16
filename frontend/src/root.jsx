@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { BrowserRouter as Router, Route, Link, Switch, withRouter } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react';
-import { Input, Button } from 'antd'
+import { Input, Button, Menu, Dropdown } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import Landing from './modules/landing/view'
 import Browse from './modules/browse/view'
@@ -99,7 +99,6 @@ const Root = () => {
               </Route>
             </Switch>
             <nav>
-              <Link to="/browse">Find and Connect</Link>
               <AddButton {... {setSignupModalVisible, isAuthenticated, loginWithPopup, profile, setEventWarningVisible}} />
             </nav>
           </div>
@@ -132,14 +131,22 @@ const Search = withRouter(({ history }) => {
   return <Input onPressEnter={handlerPressEnter} className="src" placeholder="Search for topics" suffix={<SearchOutlined />} size="large" />
 })
 
-const AddButton = ({ isAuthenticated, setSignupModalVisible, setEventWarningVisible, loginWithPopup, profile}) => {
+const AddButton = withRouter(({ isAuthenticated, setSignupModalVisible, setEventWarningVisible, loginWithPopup, profile, history }) => {
   if(isAuthenticated){
       if (profile?.reviewStatus === "APPROVED") {
-          return <Link to="/add-event"><Button type="primary" size="large">+ Add Event</Button></Link>
+          return (
+            <Dropdown overlay={(
+              <Menu className="add-dropdown">
+                <Menu.Item onClick={() => history.push('/add-event')}>Event</Menu.Item>
+              </Menu>
+            )} trigger={['click']}>
+              <Button type="primary" size="large">+ Add</Button>
+            </Dropdown>
+          )
       }
-      return <Button type="primary" size="large" onClick={e => { Object.keys(profile).length !== 0 ? setEventWarningVisible(true) : setSignupModalVisible(true)}}>+ Add Event</Button>
+      return <Button type="primary" size="large" onClick={e => { Object.keys(profile).length !== 0 ? setEventWarningVisible(true) : setSignupModalVisible(true)}}>+ Add</Button>
   }
-  return <Button type="primary" size="large" onClick={loginWithPopup}>+ Add Event</Button>
-}
+  return <Button type="primary" size="large" onClick={loginWithPopup}>+ Add</Button>
+})
 
 export default Root

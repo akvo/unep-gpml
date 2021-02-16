@@ -89,7 +89,14 @@ h4{
     }
   }
 }
-
+.add-dropdown{
+  text-align: right;
+  li{
+    font-weight: 600;
+    font-size: 16px;
+    color: #04A9F1;
+  }
+}
 .ant-form-item-label{
   i{
     padding-left: 6px;
