@@ -154,7 +154,6 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
       onChange(value.filter(it => it !== type))
     }
   }
-  // const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypes
   return [
     <div className="field">
       <div className="label">Resources</div>
