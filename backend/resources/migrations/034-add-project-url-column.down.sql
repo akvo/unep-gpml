@@ -53,5 +53,7 @@ SELECT * FROM v_resource
 UNION ALL
 SELECT * FROM v_technology
 UNION ALL
-SELECT * FROM v_project;
+SELECT * FROM v_project
+UNION ALL
+SELECT * FROM v_stakeholder;
 --;;
