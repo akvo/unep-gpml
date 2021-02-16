@@ -55,7 +55,7 @@ const generateSteps = (arr, leftPos) => {
 }
 
 const generateOptions = ({title, subtitle, data, tooltip, mapPos}) => {
-    let steps = data.length ? generateSteps(data, mapPos.right) : {};
+    let steps = data.length > 1 ? generateSteps(data, mapPos.right) : {};
     const toolbox = {...Chart.Opt.Maps.ToolBox.toolbox, left: mapPos.right};
     return {
         title: {
@@ -88,7 +88,8 @@ const generateOptions = ({title, subtitle, data, tooltip, mapPos}) => {
                 areaColor: '#fff',
                 borderColor: '#79B0CC',
                 emphasis: {
-                  areaColor: "#1890ff",
+                  areaColor: "#84b4cc",
+                  borderColor: "#84b4cc",
                 }
             },
             center: [0, 0],
