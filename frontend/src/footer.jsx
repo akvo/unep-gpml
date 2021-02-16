@@ -40,8 +40,8 @@ const Footer = () => {
           <nav>
             <ul>
               <li><h4>Data</h4></li>
-              <li><a href="#">SDG 14 Data</a></li>
-              <li><a href="#">Citizen Science Data</a></li>
+              <li><a href="https://gpmldatahub-uneplive.hub.arcgis.com/datasets/2e4ea3959913412f8efb0e7f63e46544?showData=true" target="_blank" rel="noreferrer">SDG 14 Data</a></li>
+              <li><a href="https://gpmldatahub-uneplive.hub.arcgis.com/datasets/841b887cfe2d49abac209d21e93fc4cc?showData=true" target="_blank" rel="noreferrer">Citizen Science Data</a></li>
             </ul>
           </nav>
         </div>
