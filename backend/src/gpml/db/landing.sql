@@ -59,7 +59,7 @@ technology_countries AS (
 ),
 stakeholder_countries AS (
     SELECT country AS id FROM stakeholder
-    WHERE country IS NOT NULL
+    WHERE country IS NOT NULL AND review_status = 'APPROVED'
 ),
 country_counts AS (
     SELECT COUNT(DISTINCT country) as country, 'project' as data FROM project_country
@@ -88,7 +88,7 @@ totals AS (
     UNION
     SELECT COUNT(*) as total, 'technology' as data, 5 as o FROM technology
     UNION
-    SELECT COUNT(*) as total, 'stakeholder' as data, 6 as o FROM stakeholder
+    SELECT COUNT(*) as total, 'stakeholder' as data, 6 as o FROM stakeholder WHERE review_status = 'APPROVED'
 )
 SELECT t.total AS count, t.data AS resource_type, c.country AS country_count
 FROM totals t JOIN country_counts c ON t.data = c.data ORDER BY o;
