@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Select, Switch } from 'antd';
+import { Button, Select, Switch } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import Maps from './maps'
 import './styles.scss'
 import { topicTypes, topicTypesApprovedUser, topicNames } from '../../utils/misc';
@@ -162,12 +162,11 @@ const TopicItem = ({ topic }) => {
       <div className="inner">
         <span className="type">latest {topicNames(topic.topicType)}</span>
         <h2>{title}</h2>
-        <ul>
-          <li>{moment(topic.created).format('LL')}</li>
-        </ul>
         {topic.description && <p>{topic.description}</p>}
         <div className="bottom">
-          {/* <Button type="link">Find out more</Button> */}
+          <Link to={`/${topic.topicType}/${topic.id}`}>
+            <Button type="link">Find out more</Button>
+          </Link>
         </div>
       </div>
     </div>
