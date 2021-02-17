@@ -34,7 +34,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
         <div className="ui container">
           <Link to="/browse">All resources</Link>
           <RightOutlined />
-          <Link to={`/browse/${params.type}`}>{topicNames(params.type)}</Link>
+          <Link to={`/browse?topic=${params.type}`}>{topicNames(params.type)}</Link>
           <RightOutlined />
           {/* <i>{data.title}</i> */}
         </div>
