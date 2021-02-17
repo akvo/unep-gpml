@@ -70,6 +70,12 @@
     p{
       margin: 20px 0;
     }
+    .big-btns{
+      display: flex;
+      &>*{
+        margin-right: 5px;
+      }
+    }
     .links{
       margin-top: 10px;
       display: flex;
