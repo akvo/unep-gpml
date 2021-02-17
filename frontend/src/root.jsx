@@ -128,7 +128,7 @@ const Search = withRouter(({ history }) => {
     }
   }
 
-  return <Input onPressEnter={handlerPressEnter} className="src" placeholder="Search for topics" suffix={<SearchOutlined />} size="large" />
+  return <Input onPressEnter={handlerPressEnter} className="src" placeholder="Search for resources and stakeholders" suffix={<SearchOutlined />} size="large" />
 })
 
 const AddButton = withRouter(({ isAuthenticated, setSignupModalVisible, setEventWarningVisible, loginWithPopup, profile, history }) => {

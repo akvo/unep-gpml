@@ -122,7 +122,7 @@ const Browse = ({ history, countData, profile, setSignupModalVisible}) => {
       <div className="ui container">
         <aside>
           <div className="inner">
-            <Input value={query.q} className="src" placeholder="Search for resources" suffix={<SearchOutlined />} onChange={({ target: { value }}) => updateQuery('q', value)} />
+            <Input value={query.q} className="src" placeholder="Search for resources and stakeholders" suffix={<SearchOutlined />} onChange={({ target: { value }}) => updateQuery('q', value)} />
             <div className="field">
               <div className="label">
                 Country
