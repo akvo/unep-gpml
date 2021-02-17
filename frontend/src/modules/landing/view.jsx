@@ -133,7 +133,7 @@ const Summary = ({ clickEvents, summary, country, counts, selected, init, tTypes
                   <div className="label">{topicNames(current)}</div>
                   <span><b>{it[current]}</b> in <b>{it.countries}</b> {it.countries === 1 ? "country" : "countries"}</span>
                 </div>
-                <a href={`/browse?q=${humps.decamelize(topicNames(current)).replace(' ','')}`}>See all ></a>
+                <Link to={{pathname:"/browse", search: `?topic=${humps.decamelize(current)}`}}>See all</Link>
               </li>)
           })}
         {country && tTypes.map(type =>
