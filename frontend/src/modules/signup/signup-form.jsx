@@ -15,6 +15,7 @@ import { countries } from 'countries-list'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
 import cloneDeep from 'lodash/cloneDeep'
 import api from "../../utils/api";
+import { storage } from "../../utils/storage";
 import GeoCoverageInput from "./comp/geo-coverage-input";
 import { useRef } from "react";
 
@@ -51,11 +52,14 @@ const defaultFormSchema = [
 ]
 
 const ReviewText = ({reviewStatus}) => {
-    if (reviewStatus === "SUBMITTED") return <div className="review-status">WAITING FOR APPROVAL</div>
- const reviewIcon = reviewStatus === "APPROVED"
+  if (reviewStatus === "SUBMITTED") return <div className="review-status">WAITING FOR APPROVAL</div>
+  const reviewIcon = reviewStatus === "APPROVED"
         ? (<CheckCircleOutlined/>)
         : (<ExclamationCircleOutlined/>)
- return (<div className={`review-status ${reviewStatus.toLowerCase()}`}>{reviewIcon} SUBMISSION IS {reviewStatus}</div>)
+  if (storage.getCookie('profileMessage') === '0' && reviewStatus === 'APPROVED') {
+    return "";
+  }
+  return (<div className={`review-status ${reviewStatus.toLowerCase()}`}>{reviewIcon} SUBMISSION IS {reviewStatus}</div>)
 }
 
 const SignupForm = ({ onSubmit, handleFormRef, initialValues, handleSubmitRef, tags }) => {

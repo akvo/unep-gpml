@@ -10,6 +10,7 @@ import logo from './images/GPML-temporary-logo-horiz.jpg'
 import SignupModal from './modules/signup/signup-modal'
 import ModalWarningUser from './utils/modal-warning-user'
 import api from './utils/api';
+import { storage } from './utils/storage';
 import ProfileView from './modules/profile/view';
 import SignupView from './modules/signup/view';
 import DetailsView from './modules/details/view';
@@ -45,6 +46,13 @@ const Root = () => {
               setSignupModalVisible(Object.keys(resp.data).length === 0);
             } else {
               setProfile(resp.data);
+              if (storage.getCookie('profile') === 'SUBMITTED' && resp.data.reviewStatus === 'APPROVED') {
+                document.cookie = "profileMessage=1"
+              }
+              if (storage.getCookie('profile') === 'APPROVED' && resp.data.reviewStatus === 'APPROVED') {
+                document.cookie = "profileMessage=0"
+              }
+              document.cookie = `profile=${resp.data.reviewStatus}`
             }
         }
       })();

@@ -23,6 +23,8 @@ const SignupModal = ({ visible, onCancel, setProfile, profile, tags }) => {
       .then(d => {
         setProfile(d.data)
         setSending(false)
+        document.cookie = `profile=SUBMITTED`
+        document.cookie = `profileMessage=1`
         setStep(2)
       })
       .catch(() => {
