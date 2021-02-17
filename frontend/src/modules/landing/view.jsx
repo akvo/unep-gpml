@@ -4,8 +4,8 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { Link, withRouter } from 'react-router-dom'
 import Maps from './maps'
 import './styles.scss'
+import humps from 'humps'
 import { topicTypes, topicTypesApprovedUser, topicNames } from '../../utils/misc';
-import moment from 'moment'
 
 const Landing = ({ history, data, countries, initLandingCount, setCountries, setInitLandingCount, profile}) => {
     const [country, setCountry] = useState(null);
@@ -119,21 +119,21 @@ const Summary = ({ clickEvents, summary, country, counts, selected, init, tTypes
       <ul>
           {!country && summary.map((it, index) => {
               const current = Object.keys(it)[0];
-              let className = init !== current ? "summary-list" : "summary-list-selected";
+              let className = init !== current ? "summary-list" : "summary-list summary-list-selected";
               if (init === "") {
-                  className = current !== counts ? "summary-list" : "summary-list-selected";
+                  className = current !== counts ? "summary-list" : "summary-list summary-list-selected";
                   className = counts === "" ? "" : className;
               }
               return (
               <li key={`li-${index}`}
                   onClick={e => clickEvents(current)}
                   className={className}>
-                <Switch size="small" checked={counts === current || init === current} />
+                <div className="switcher"><Switch size="small" checked={counts === current || init === current} /></div>
                 <div className="text">
                   <div className="label">{topicNames(current)}</div>
-                  <span>in {it.countries} {it.countries === 1 ? "country" : "countries"}</span>
+                  <span><b>{it[current]}</b> in <b>{it.countries}</b> {it.countries === 1 ? "country" : "countries"}</span>
                 </div>
-                <b>{it[current]}</b>
+                <a href={`/browse?q=${humps.decamelize(topicNames(current)).replace(' ','')}`}>See all ></a>
               </li>)
           })}
         {country && tTypes.map(type =>
@@ -144,7 +144,7 @@ const Summary = ({ clickEvents, summary, country, counts, selected, init, tTypes
           <b>{selected?.[type] || 0}</b>
         </li>
         )}
-        <li>
+        <li className="no-hover">
           <div className="disclaimer">
               The boundaries and names shown, and the designations used on this map do not imply official endorsement or acceptance by the United Nations.
           </div>
