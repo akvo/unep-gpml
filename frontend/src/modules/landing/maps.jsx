@@ -56,6 +56,10 @@ const generateSteps = (arr, leftPos) => {
 
 const generateOptions = ({title, subtitle, data, tooltip, mapPos}) => {
     let steps = data.length > 1 ? generateSteps(data, mapPos.right) : {};
+    if (data.length === 1) {
+        data = [{ name: data[0].name, itemStyle: { areaColor: "#84b4cc" }}]
+    }
+    console.log(data);
     const toolbox = {...Chart.Opt.Maps.ToolBox.toolbox, left: mapPos.right};
     return {
         title: {
@@ -89,7 +93,7 @@ const generateOptions = ({title, subtitle, data, tooltip, mapPos}) => {
                 borderColor: '#79B0CC',
                 emphasis: {
                   areaColor: "#84b4cc",
-                  borderColor: "#84b4cc",
+                  borderColor: "#FFFFFF",
                 }
             },
             center: [0, 0],

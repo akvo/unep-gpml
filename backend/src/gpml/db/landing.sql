@@ -2,10 +2,22 @@
 -- :doc Get counts of resources
 SELECT mc.geo AS iso_code, json_object_agg(COALESCE(mc.topic, 'project'), mc.count) AS counts
 FROM (
-  SELECT vt.geo_coverage_iso_code AS geo, topic, count(topic)
-  FROM v_topic vt
-  WHERE vt.geo_coverage_iso_code is NOT NULL AND ((vt.json->>'geo_coverage_type' = 'transnational') OR (vt.json->>'geo_coverage_type' = 'national') OR (vt.json->>'geo_coverage_type' = 'sub-national'))
-  GROUP BY geo, topic
+    SELECT vt.geo_coverage_iso_code AS geo, topic, count(topic)
+    FROM v_topic vt
+    WHERE vt.geo_coverage_iso_code is NOT NULL
+    AND ((vt.json->>'geo_coverage_type' = 'transnational') OR (vt.json->>'geo_coverage_type' = 'national') OR (vt.json->>'geo_coverage_type' = 'sub-national'))
+    AND topic <> 'stakeholder'
+    GROUP BY geo, topic
+    UNION
+    SELECT st.geo, st.topic, count(st.geo) FROM (
+        SELECT c.iso_code AS geo, topic
+        FROM v_topic vt
+        LEFT JOIN country c ON c.id = CAST(vt.json->>'country' AS INTEGER)
+        WHERE vt.geo_coverage_iso_code is NOT NULL
+        AND topic = 'stakeholder'
+        GROUP BY geo, topic, vt.json->>'id'
+        ORDER BY topic
+    ) AS st GROUP BY st.geo, st.topic
 ) AS mc GROUP BY geo ORDER BY geo;
 
 -- :name summary
