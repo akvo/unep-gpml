@@ -56,8 +56,8 @@ const DetailsView = ({ match: { params }, ...props }) => {
             {data.type === 'event' && [<li><span>Starts:</span><i>{moment(data.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(data.endDate).format('DD MMM YYYY')}</i></li>]}
           </ul>
           <h1>{data.title || data.name}</h1>
-          {data.url && <a href={data.url} target="_blank" rel="noreferrer"><Button type="primary" ghost size="large">Visit dashboard</Button></a>}
-          {data.email && <a href={`mailto:${data.email}`}><Button type="primary" ghost size="large">Send email</Button></a>}
+          {data.url && <a href={data.url} target="_blank" rel="noreferrer"><Button type="primary" ghost size="large">Visit website</Button></a>}
+          {data.email && <a href={`mailto:${data.email}`}><Button type="primary" ghost size="large">Contact</Button></a>}
           {data.summary && <p>{data.summary}</p>}
           {data.attachments && data.attachments.length > 0 && (
             <div className="links">
