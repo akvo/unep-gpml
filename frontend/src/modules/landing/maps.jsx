@@ -59,7 +59,6 @@ const generateOptions = ({title, subtitle, data, tooltip, mapPos}) => {
     if (data.length === 1) {
         data = [{ name: data[0].name, itemStyle: { areaColor: "#84b4cc" }}]
     }
-    console.log(data);
     const toolbox = {...Chart.Opt.Maps.ToolBox.toolbox, left: mapPos.right};
     return {
         title: {
