@@ -64,7 +64,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
     const selected = data?.map?.find(x => x.isoCode === country)
     const mapData = country ? [{ name: country, itemStyle: { areaColor: "#84b4cc" }}] : (counts ? countryMap : [])
 
-    const defaultMapData = initLandingCount !== "" && data?.map?.map(x => ({...x, name: x.isoCode, value: x[initLandingCount]})) || [];
+    const defaultMapData = initLandingCount !== "" && data?.map ? data.map.map(x => ({...x, name: x.isoCode, value: x[initLandingCount]})) : [];
 
     const summaryData = data?.summary?.filter((it, index) => {
       const current = Object.keys(it)[0];
@@ -144,6 +144,11 @@ const Summary = ({ clickEvents, summary, country, counts, selected, init, tTypes
           <b>{selected?.[type] || 0}</b>
         </li>
         )}
+        <li>
+          <div className="disclaimer">
+              The boundaries and names shown, and the designations used on this map do not imply official endorsement or acceptance by the United Nations.
+          </div>
+        </li>
       </ul>
     </div>
   )

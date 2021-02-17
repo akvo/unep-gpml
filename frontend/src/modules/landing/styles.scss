@@ -28,7 +28,7 @@
     position: absolute;
     z-index: 10;
     left: 60px;
-    top: 230px;
+    top: 180px;
     .ant-select{
       width: 100%;
       margin-bottom: 10px;
@@ -69,6 +69,14 @@
           .text{
             display: flex;
             flex-direction: column;
+          }
+          .disclaimer{
+            display: flex;
+            font-size:12px;
+            flex-direction: column;
+            max-width:220px;
+            padding-right:5px;
+            color: #036799;
           }
           &:not(:last-child){
             border-bottom: 1px solid #DFECF3;

@@ -50,16 +50,16 @@ const generateSteps = (arr, leftPos) => {
         {symbol:'rect', color:colors[i],...x}
     ))
     datarange.dataRange.splitList = steps;
-    datarange.dataRange.left = leftPos;
+    datarange.dataRange.left = leftPos + 10;
     return datarange;
 }
 
 const generateOptions = ({title, subtitle, data, tooltip, mapPos}) => {
-    let steps = data.length > 1 ? generateSteps(data, mapPos.right) : {};
+    let steps = data.length > 1 ? generateSteps(data, mapPos.left) : {};
     if (data.length === 1) {
         data = [{ name: data[0].name, itemStyle: { areaColor: "#84b4cc" }}]
     }
-    const toolbox = {...Chart.Opt.Maps.ToolBox.toolbox, left: mapPos.right};
+    const toolbox = {...Chart.Opt.Maps.ToolBox.toolbox, left: mapPos.left + 10, top: 40};
     return {
         title: {
             text: title,
@@ -77,7 +77,7 @@ const generateOptions = ({title, subtitle, data, tooltip, mapPos}) => {
             roam: 'move',
             left: `${mapPos.left + 10}px`,
             right: `${mapPos.right - 10}px`,
-            top: window.__UNEP__MAP__TOP,
+            top: window.__UNEP__MAP__TOP + 20,
             map: 'unep-map',
             aspectScale: 1,
             zoom: window.__UNEP__MAP__ZOOM,
