@@ -131,7 +131,7 @@ const Summary = ({ clickEvents, summary, country, counts, selected, init, tTypes
                 <Switch size="small" checked={counts === current || init === current} />
                 <div className="text">
                   <div className="label">{topicNames(current)}</div>
-                  <span>in {it.countries} countries</span>
+                  <span>in {it.countries} {it.countries === 1 ? "country" : "countries"}</span>
                 </div>
                 <b>{it[current]}</b>
               </li>)
