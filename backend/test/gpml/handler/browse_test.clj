@@ -41,7 +41,7 @@
     (is (= (browse/get-db-filter {:q "" :topic "" :country ""}) {})))
   (testing "Country is not empty"
     (is (= (browse/get-db-filter {:country "ESP,IND,IDN"})
-           {:geo-coverage #{"***" "ESP" "IND" "IDN"}})))
+           {:geo-coverage #{"ESP" "IND" "IDN"}})))
   (testing "Topic is not empty"
     (is (= (browse/get-db-filter {:topic "technology"})
            {:topic #{"technology"}})))
@@ -53,5 +53,5 @@
                                   :country "USA"
                                   :topic "project,event"})
            {:search-text "eco"
-            :geo-coverage #{"***" "USA"}
+            :geo-coverage #{"USA"}
             :topic #{"project" "event"}}))))

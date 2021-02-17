@@ -51,7 +51,7 @@
         (is (= 1 (count results)))
         (is (= ["AUS" "ESP"] (-> results first :json :geo_coverage_values)))))
     (testing "Filtering by geo coverage"
-      (is (not-empty (db.browse/filter-topic db {:geo-coverage #{"***" "IND"}}))))
+      (is (not-empty (db.browse/filter-topic db {:geo-coverage #{"IND"}}))))
     (testing "Filtering by topic"
       (is (empty? (db.browse/filter-topic db {:topic #{"policy"}}))))
     (testing "Filtering of unapproved events"
@@ -73,5 +73,5 @@
                        (db.browse/filter-topic db {:topic #{"event"}})))))
     (testing "Combination of 3 filters"
       (is (not-empty (db.browse/filter-topic db {:search-text "barrier"
-                                                 :geo-coverage #{"***" "IND"}
+                                                 :geo-coverage #{"IND"}
                                                  :topic #{"policy" "technology"}}))))))

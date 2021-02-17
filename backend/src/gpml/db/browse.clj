@@ -20,8 +20,9 @@
 
   (filter-topic db {})
 
-  (count (filter-topic db {:geo-coverage ["***" "ESP"]}))
-  ;; => 84
+  (count (filter-topic db {:geo-coverage ["ESP"]}))
+  ;; => 21
+
 
   (count (filter-topic db {:search-text "act"}))
   ;; => 120

@@ -46,7 +46,7 @@
                                      :favorites true
                                      :resource-types resource-types})
          (when (seq country)
-           {:geo-coverage (conj (set (str/split country #",")) "***")})
+           {:geo-coverage (set (str/split country #","))})
          (when (seq topic)
            {:topic (set (str/split topic #","))})
          (when (seq q)
