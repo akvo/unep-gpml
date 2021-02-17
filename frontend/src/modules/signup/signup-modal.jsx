@@ -9,6 +9,7 @@ import Checkbox from "antd/lib/checkbox/Checkbox";
 
 
 const SignupModal = ({ visible, onCancel, setProfile, profile, tags }) => {
+    const {user} = useAuth0();
     const [sending, setSending] = useState(false)
     const [step, setStep] = useState(1)
     const handleSubmitRef = useRef()
@@ -57,7 +58,7 @@ const SignupModal = ({ visible, onCancel, setProfile, profile, tags }) => {
           {step === 2 &&
           <div className="submitted">
             <p>
-              <b>Click on the link we sent in your email to verify your email address.</b>
+              {user?.email_verified === false && <b>Click on the link we sent in your email to verify your email address.</b>}
               We will review your sign-up request as soon as you verify your email address. Please, allow for 1 business day.
             </p>
           </div>
