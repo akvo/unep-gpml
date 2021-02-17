@@ -61,7 +61,7 @@ h4{
       display: flex;
     }
     .src{
-      width: 240px;
+      width: 33%;
       height: 40px;
       border-radius: 3px;
       margin-top: 26px;
@@ -77,10 +77,10 @@ h4{
         text-decoration: none;
         margin: 0 13px;
       }
-    }
-    .ant-btn-primary{
-      margin-left: 12px;
-      font-weight: bold;
+      .ant-btn-primary{
+        margin-left: 12px;
+        font-weight: bold;
+      }
     }
   }
   #landing{

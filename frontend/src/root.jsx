@@ -129,14 +129,13 @@ const Root = () => {
 
 
 const Search = withRouter(({ history }) => {
-  const handlerPressEnter = (e) => {
-    const src = e.target.value;
+  const handleSearch = (src) => {
     if (src?.trim().length > 0) {
       history.push(`/browse/?q=${src}`)
     }
   }
 
-  return <Input onPressEnter={handlerPressEnter} className="src" placeholder="Search for resources and stakeholders" suffix={<SearchOutlined />} size="large" />
+  return <Input.Search onPressEnter={(e) => handleSearch(e.target.value)} onSearch={handleSearch} enterButton className="src" placeholder="Search for resources and stakeholders" size="large" />
 })
 
 const AddButton = withRouter(({ isAuthenticated, setSignupModalVisible, setEventWarningVisible, loginWithPopup, profile, history }) => {
