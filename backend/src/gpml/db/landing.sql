@@ -9,11 +9,15 @@ FROM (
     AND topic <> 'stakeholder'
     GROUP BY geo, topic
     UNION
-    SELECT vt.geo_coverage_iso_code AS geo, topic, count(topic)
-    FROM v_topic vt
-    WHERE vt.geo_coverage_iso_code is NOT NULL
-    AND topic = 'stakeholder'
-    GROUP BY geo, topic
+    SELECT st.geo, st.topic, count(st.geo) FROM (
+        SELECT c.iso_code AS geo, topic
+        FROM v_topic vt
+        LEFT JOIN country c ON c.id = CAST(vt.json->>'country' AS INTEGER)
+        WHERE vt.geo_coverage_iso_code is NOT NULL
+        AND topic = 'stakeholder'
+        GROUP BY geo, topic, vt.json->>'id'
+        ORDER BY topic
+    ) AS st GROUP BY st.geo, st.topic
 ) AS mc GROUP BY geo ORDER BY geo;
 
 -- :name summary
@@ -54,12 +58,8 @@ technology_countries AS (
     WHERE t.country IS NOT NULL
 ),
 stakeholder_countries AS (
-    SELECT c.id FROM stakeholder_geo_coverage s, country_group_country cgc
-    JOIN country c ON cgc.country = c.id
-    WHERE s.country_group = cgc.country_group
-    UNION
-    SELECT s.country AS id FROM stakeholder_geo_coverage s
-    WHERE s.country IS NOT NULL
+    SELECT country AS id FROM stakeholder
+    WHERE country IS NOT NULL AND review_status = 'APPROVED'
 ),
 country_counts AS (
     SELECT COUNT(DISTINCT country) as country, 'project' as data FROM project_country
