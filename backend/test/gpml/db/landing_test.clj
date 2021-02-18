@@ -17,6 +17,8 @@
    :publish_year 2010
    :summary "Summary"
    :value 1000000
+   :value_currency "USD"
+   :value_remarks "Initial Contribution"
    :image nil
    :valid_from nil
    :valid_to nil
