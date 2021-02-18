@@ -36,7 +36,6 @@ const DetailsView = ({ match: { params }, ...props }) => {
           <RightOutlined />
           <Link to={`/browse?topic=${params.type}`}>{topicNames(params.type)}</Link>
           <RightOutlined />
-          {/* <i>{data.title}</i> */}
         </div>
       </div>
       <div className="ui container">
@@ -51,7 +50,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
             {data.organisationType && <li><span className="label">Org:</span>{data.organisationType}</li>}
             {data.yearFounded && <li><span className="label">Founded:</span>{data.yearFounded}</li>}
             {data.developmentStage && <li><span className="label">Stage:</span>{data.developmentStage}</li>}
-            {data.value && <li><span className="label">Value:</span>{data.valueCurrency}{String(data.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} {data.valueRemarks && <small>({data.valueRemarks})</small>}</li>}
+            {data.value && <li><span className="label">Value:</span>{data.valueCurrency} {String(data.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} {data.valueRemarks && <small>({data.valueRemarks})</small>}</li>}
             {data.type === 'event' && [<li><span className="label">Starts:</span><i>{moment(data.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(data.endDate).format('DD MMM YYYY')}</i></li>]}
           </ul>
           <h1>{data.title || data.name}</h1>

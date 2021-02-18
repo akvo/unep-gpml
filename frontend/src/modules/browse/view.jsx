@@ -191,12 +191,12 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
         <div className="type">{topicNames(result.type)}</div>
         <ul className="stats">
           {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
-          {result.geoCoverageValues && <li>{result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')}</li>}
+          {result.geoCoverageValues && <li><Excerpt content={result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')} /></li>}
           {result.status && <li><span>Status:</span>{result.status}</li>}
           {result.organisationType && <li><span>Org:</span>{result.organisationType}</li>}
           {result.yearFounded && <li><span>Founded:</span>{result.yearFounded}</li>}
           {result.developmentStage && <li><span>Stage:</span>{result.developmentStage}</li>}
-          {result.value && <li><span>Value:</span>{result.valueCurrency}{String(result.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
+          {result.value && <li><span>Value:</span>{result.valueCurrency} {String(result.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
           {result.type === 'event' && [<li><span>Starts:</span><i>{moment(result.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(result.endDate).format('DD MMM YYYY')}</i></li>]}
         </ul>
         {description && <ShowMoreText lines={5}>{description}</ShowMoreText>}
@@ -204,6 +204,10 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
       </Card>
     </Linkify>
   )
+}
+const Excerpt = ({ content, max = 40 }) => {
+  if (content.length > max) return `${content.substr(0, max)}...`
+  return content
 }
 const Linkify = ({ result, children }) => {
   if(result.type === 'stakeholder') return children
