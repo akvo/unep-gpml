@@ -44,7 +44,6 @@ const DetailsView = ({ match: { params }, ...props }) => {
           <div className="type-tag">{topicNames(params.type)}</div>
           <ul className="stats">
             {data.geoCoverageType && <li><span className="label">{data.geoCoverageType} geo coverage{data.geoCoverageValues && ':'}</span>{data.geoCoverageValues && data.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')}</li>}
-            {/* {data.geoCoverageValues && <li></li>} */}
             {data.typeOfLaw && <li><span className="label">Type:</span>{data.typeOfLaw}</li>}
             {data.status && <li><span className="label">Status:</span>{data.status}</li>}
             {(data.funds != null) && <li><span className="label">Funds:</span>{String(data.funds).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}

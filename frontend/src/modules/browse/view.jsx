@@ -51,16 +51,20 @@ const Browse = ({ history, countData, profile, setSignupModalVisible}) => {
   }
   useEffect(() => {
     setLoading(true)
-    api.get(`/browse${location.search}`)
-    .then((resp) => {
-      setResults(resp?.data?.results)
-      setLoading(false)
-    })
+    if(isAuthenticated){
+      setTimeout(() => {
+        api.get(`/browse${location.search}`)
+          .then((resp) => {
+            setResults(resp?.data?.results)
+            setLoading(false)
+          })
+      })
+    }
     // NOTE: Since we are using `history` and `location`, the
     // dependency needs to be []. Ignore the linter warning, because
     // adding a dependency here on location makes the FE send multiple
     // requests to the backend.
-  }, []) // eslint-disable-line
+  }, [isAuthenticated]) // eslint-disable-line
   useEffect(() => {
     if(isAuthenticated){
       setTimeout(() => {
