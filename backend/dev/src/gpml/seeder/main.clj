@@ -81,6 +81,10 @@
   (let [sql (slurp "dev/src/gpml/seeder/truncate.sql")]
     (jdbc/execute! db [sql])))
 
+(defn export-db [db, file]
+  (let [sql (slurp (str "dev/src/gpml/exporter/" file ".sql"))]
+    (jdbc/query db [sql])))
+
 (defn seed-countries [db]
   (jdbc/insert-multi! db :country
                       (map (fn [x] {:name (:name x) :iso_code (:code x)})
@@ -436,6 +440,8 @@
                (ig/init [:duct.database.sql/hikaricp])
                :duct.database.sql/hikaricp
                :spec))
+
+  (export-db db "stakeholder")
 
   (->> (get-country-group-countries db)
        (filter #(= 2 (:country_group %)) ,,,)
