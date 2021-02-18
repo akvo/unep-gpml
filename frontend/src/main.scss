@@ -138,7 +138,7 @@ footer{
         padding: 0 0 0 5rem;
       }
       h2 {
-        color: white;        
+        color: white;
         font-size: .9rem;
         margin: 1.6rem 0 0 0;
         font-weight: 400;
@@ -150,7 +150,7 @@ footer{
             width: 100px;
             margin-left: .5rem;
           }
-        } 
+        }
       &:first-child {
         display: flex;
           .col{
@@ -159,7 +159,7 @@ footer{
             nav {
               margin-bottom: 2rem;
               ul {
-                a {
+                a,span {
                   padding-left: 5px;
                 }
               }

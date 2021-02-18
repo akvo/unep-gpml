@@ -1,8 +1,14 @@
-import { Link } from 'react-router-dom'
-import { FacebookOutlined, TwitterOutlined, InstagramOutlined, LinkedinOutlined, YoutubeOutlined } from '@ant-design/icons'
+import { LinkedinOutlined, YoutubeOutlined } from '@ant-design/icons'
 import unepLogo from './images/UNEP-logo.svg'
+import { useAuth0 } from '@auth0/auth0-react'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
+  const {
+    isAuthenticated,
+    loginWithPopup
+  } = useAuth0();
+
   return (
     <footer>
       <div className="ui container">
@@ -18,9 +24,9 @@ const Footer = () => {
           <nav>
             <ul>
               <li><h4>GPML Digital platform</h4></li>
-              <li><a href="#">Knowledge Exchange</a></li>
-              <li><a href="#">Connect Stakeholders</a></li>
-              <li><a href="#">Data Hub</a></li>
+              <li>Knowledge Exchange</li>
+              <li>Connect Stakeholders</li>
+              <li>Data Hub (comming soon)</li>
             </ul>
           </nav>
         </div>
@@ -55,15 +61,25 @@ const Footer = () => {
           <nav>
             <ul>
               <li><h4>Join Us</h4></li>
-              <li><a href="https://www.gpmarinelitter.org/who-we-are/members/sign-up" target="_blank" rel="noreferrer">Join the GPML Partnership (Entities Only)</a></li>
-              <li><Link to="/signup">Sign up to the GPML Digital Platform (For All Individuals)</Link></li>
+              <li><a href="/signup">Join the GPML Partnership (Entities Only)</a></li>
+              <li>{ !isAuthenticated ?
+                  <Link to="/" onClick={loginWithPopup}>Sign up to the GPML Digital Platform (For All Individuals)</Link>
+                  :
+                  <span>Sign up to the GPML Digital Platform (For All Individuals)</span>
+                  }
+              </li>
             </ul>
           </nav>
           <nav>
             <ul>
               <li><h4>Stakeholders</h4></li>
-              <li><a href="#">Entities</a></li>
-              <li><a href="#">Individuals</a></li>
+              <li><span>Entities (coming soon)</span></li>
+              <li>{ !isAuthenticated ?
+                   <Link to="/" onClick={loginWithPopup}>Individuals</Link>
+                   :
+                   <a href="/browse?topic=stakeholder">Individuals</a>
+                   }
+              </li>
             </ul>
           </nav>
         </div>
@@ -86,11 +102,8 @@ const Footer = () => {
           <div className="col">
             <nav>
               <ul className="horizonList socialLink">
-                <li><a href="#"> <FacebookOutlined /></a></li>
-                <li><a href="#"> <TwitterOutlined /> </a></li>
-                <li><a href="#"> <InstagramOutlined /></a></li>
-                <li><a href="#"> <LinkedinOutlined /></a></li>
-                <li><a href="#"> <YoutubeOutlined /></a></li>
+                <li><a href="https://www.linkedin.com/company/global-partnership-on-marine-litter/" target="_blank" rel="noreferrer"><LinkedinOutlined /></a></li>
+                <li><a href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg" target="_blank" rel="noreferrer"><YoutubeOutlined /></a></li>
               </ul>
             </nav>
           </div>
