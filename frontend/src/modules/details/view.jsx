@@ -1,5 +1,5 @@
 import { GlobalOutlined, LoadingOutlined, RightOutlined } from '@ant-design/icons'
-import { Button, Tag } from 'antd'
+import { Button, Tag, Tooltip } from 'antd'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
@@ -43,17 +43,17 @@ const DetailsView = ({ match: { params }, ...props }) => {
         <div className="content-container">
           <div className="type-tag">{topicNames(params.type)}</div>
           <ul className="stats">
-            {data.geoCoverageType && <li><GlobalOutlined /> {data.geoCoverageType}</li>}
-            {data.geoCoverageValues && <li>{data.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')}</li>}
-            {data.typeOfLaw && <li><span>Type:</span>{data.typeOfLaw}</li>}
-            {data.status && <li><span>Status:</span>{data.status}</li>}
-            {(data.funds != null) && <li><span>Funds:</span>{String(data.funds).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
-            {(data.contribution != null && data.contribution > 0) && <li><span>Contribution:</span>{String(data.contribution).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
-            {data.organisationType && <li><span>Org:</span>{data.organisationType}</li>}
-            {data.yearFounded && <li><span>Founded:</span>{data.yearFounded}</li>}
-            {data.developmentStage && <li><span>Stage:</span>{data.developmentStage}</li>}
-            {data.value && <li><span>Value:</span>{data.valueCurrency && <i>{data.valueCurrency}</i>}{String(data.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
-            {data.type === 'event' && [<li><span>Starts:</span><i>{moment(data.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(data.endDate).format('DD MMM YYYY')}</i></li>]}
+            {data.geoCoverageType && <li><span className="label">{data.geoCoverageType} geo coverage{data.geoCoverageValues && ':'}</span>{data.geoCoverageValues && data.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')}</li>}
+            {/* {data.geoCoverageValues && <li></li>} */}
+            {data.typeOfLaw && <li><span className="label">Type:</span>{data.typeOfLaw}</li>}
+            {data.status && <li><span className="label">Status:</span>{data.status}</li>}
+            {(data.funds != null) && <li><span className="label">Funds:</span>{String(data.funds).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
+            {(data.contribution != null && data.contribution > 0) && <li><span className="label">Contribution:</span>{String(data.contribution).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
+            {data.organisationType && <li><span className="label">Org:</span>{data.organisationType}</li>}
+            {data.yearFounded && <li><span className="label">Founded:</span>{data.yearFounded}</li>}
+            {data.developmentStage && <li><span className="label">Stage:</span>{data.developmentStage}</li>}
+            {data.value && <li><span className="label">Value:</span>{data.valueCurrency}{String(data.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} {data.valueRemarks && <small>({data.valueRemarks})</small>}</li>}
+            {data.type === 'event' && [<li><span className="label">Starts:</span><i>{moment(data.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(data.endDate).format('DD MMM YYYY')}</i></li>]}
           </ul>
           <h1>{data.title || data.name}</h1>
           <div className="big-btns">
