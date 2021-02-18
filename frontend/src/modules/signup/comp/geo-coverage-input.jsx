@@ -4,7 +4,7 @@ import { Field } from 'react-final-form'
 import specificAreasOptions from '../../events/specific-areas.json'
 import { countries } from 'countries-list'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
-const regionOptions = ['Africa', 'Asia and the Pacific', 'East Asia', 'Europe', 'Latin America and Carribean', 'North America', 'West Asia']
+const regionOptions = ['Africa', 'Asia and the Pacific', 'East Asia', 'Europe', 'Latin America and Caribbean', 'North America', 'West Asia']
 
 const GeoCoverageInput = (props) => {
   const { disabled } = props
