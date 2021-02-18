@@ -36,7 +36,7 @@ const Browse = ({ history, countData, profile, setSignupModalVisible}) => {
   const [filterCountries, setFilterCountries] = useState([])
   const location = useLocation()
   const [relations, setRelations] = useState([])
-  const {isAuthenticated, loginWithPopup } = useAuth0();
+  const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false)
   const isApprovedUser = profile?.reviewStatus === 'APPROVED'
   const getResults = () => {
@@ -51,7 +51,7 @@ const Browse = ({ history, countData, profile, setSignupModalVisible}) => {
   }
   useEffect(() => {
     setLoading(true)
-    if(isAuthenticated){
+    if(isLoading === false){
       setTimeout(() => {
         api.get(`/browse${location.search}`)
           .then((resp) => {
@@ -64,7 +64,7 @@ const Browse = ({ history, countData, profile, setSignupModalVisible}) => {
     // dependency needs to be []. Ignore the linter warning, because
     // adding a dependency here on location makes the FE send multiple
     // requests to the backend.
-  }, [isAuthenticated]) // eslint-disable-line
+  }, [isLoading]) // eslint-disable-line
   useEffect(() => {
     if(isAuthenticated){
       setTimeout(() => {
