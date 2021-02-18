@@ -76,7 +76,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
         <div className="landing-container">
           <div className="landing-banner ui container">
               <h2>Welcome to the Global Partnership on Marine Litter Digital Platform!</h2>
-              <p>The Digital Platform is an open-source tool that compiles different resources, connects stakeholders and integrates data to guide action. The resources in this multistakeholder platform are from submissions to United Nations Environment Assembly (UNEA) received until December 2020. The policies featured are sourced from the InforMEA platform, the FAOLEX Database and the UNEP Law and Environment Assistance Platform (UNEP-LEAP). Explore the map above by clicking on a country or filter by resource type.</p>
+              <p>The Digital Platform is an open-source tool that compiles different resources, connects stakeholders and integrates data to guide action. The resources in this multi-stakeholder platform have been collected through research based on publicly available information, interviews with experts, and inputs received through submissions taking a value chain approach and looking at the stages in the plastics life cycle with respect to “prevention of litter and waste”, “design and production”, “use and consumption”, “waste management” and “marine litter monitoring and capturing”. Explore the map below by clicking on a country or filter by a resource and learn more about each resource type source <a href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform" target="_blank" rel="noreferrer">here</a>.</p>
           </div>
         </div>
         {!data && <h2 className="loading"><LoadingOutlined spin/> Loading Data</h2>}
