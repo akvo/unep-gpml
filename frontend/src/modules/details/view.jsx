@@ -58,7 +58,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
           <h1>{data.title || data.name}</h1>
           <div className="big-btns">
             {data.url && <a href={data.url} target="_blank" rel="noreferrer"><Button type="primary" ghost size="large">Visit website</Button></a>}
-            {data.type === 'project' && <a href="https://unep.tc.akvo.org" target="_blank" rel="noreferrer"><Button type="primary" ghost size="large">Visit dashboard</Button></a>}
+            {params.type === 'project' && <a href="https://unep.tc.akvo.org" target="_blank" rel="noreferrer"><Button type="primary" ghost size="large">Visit dashboard</Button></a>}
             {data.email && <a href={`mailto:${data.email}`}><Button type="primary" ghost size="large">Contact</Button></a>}
           </div>
           {data.summary && <p>{data.summary}</p>}
