@@ -3,7 +3,7 @@
 #landing{
   position: relative;
   .landing-container{
-    background-color:#84b4cc;
+    background-color:#036799;
     color: #FFFFFF;
     .landing-banner{
         padding: .5rem 0px;
@@ -14,6 +14,11 @@
         p {
             font-size: .95rem;
             text-align: justify;
+        }
+        a {
+          color: white;
+          font-weight: 700;
+          text-decoration: underline;
         }
     }
   }
@@ -157,7 +162,7 @@
   .topics{
     padding-top: 40px;
     padding-bottom: 40px;
-    background: url(../../images/landing-gpml.jpg) no-repeat center;
+    background: url(../../images/landing-gpml.jpg) no-repeat top center;
     background-size: cover;
     .ui.container{
       display: flex;
