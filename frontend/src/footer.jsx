@@ -96,8 +96,7 @@ const Footer = () => {
             <nav>
               <ul className="horizonList">
                 <li><p>© UNEP</p></li>
-                <li><a href="#">Terms of use</a></li>
-                <li><a href="#">Privacy</a></li>
+                <li><a href="/privacy-policy-and-terms-of-use.pdf" target="_blank" rel="noreferrer">Privacy Policy &amp; Terms of use</a></li>
               </ul>
             </nav>
           </div>
