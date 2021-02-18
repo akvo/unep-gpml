@@ -112,7 +112,7 @@ const Root = () => {
           </div>
         </header>
         <Route path="/" exact render={props => <Landing {...
-          {profile, countries, data, initLandingCount, setCountries, setInitLandingCount, ...props}
+          {profile, countries, data, initLandingCount, setCountries, setInitLandingCount, setEventWarningVisible, setSignupModalVisible, loginWithPopup, isAuthenticated, ...props}
           }/>} />
         <Route path="/browse" render={props => <Browse {...props} profile={profile} countData={data} setSignupModalVisible={setSignupModalVisible}/>} />
         <Route path="/add-event" component={AddEvent} />

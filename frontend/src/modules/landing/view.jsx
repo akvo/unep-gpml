@@ -5,15 +5,16 @@ import { Link, withRouter } from 'react-router-dom'
 import Maps from './maps'
 import './styles.scss'
 import humps from 'humps'
-import { topicTypes, topicTypesApprovedUser, topicNames } from '../../utils/misc';
+import { topicNames } from '../../utils/misc';
 
-const Landing = ({ history, data, countries, initLandingCount, setCountries, setInitLandingCount, profile}) => {
+const Landing = ({ history, data, countries, initLandingCount, setCountries, setInitLandingCount, profile, setSignupModalVisible, setEventWarningVisible, isAuthenticated, loginWithPopup }) => {
     const [country, setCountry] = useState(null);
     const [countryMap, setCountryMap] = useState(null)
     const [counts, setCounts] = useState(initLandingCount);
 
     const isApprovedUser = profile?.reviewStatus === 'APPROVED';
-    const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypes;
+    const hasProfile = Object.keys(profile).length > 0;
+    const tTypes = ['project', 'event', 'policy', 'technology', 'financingResource', 'technicalResource', 'actionPlan', 'stakeholder']
 
     const clickEvents = ({name, data}) => {
       if (!name.startsWith("disputed")) {
@@ -61,11 +62,19 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
       }
     }
 
+    const handleSeeAllStakeholderClick = () => {
+        if (!isAuthenticated) {
+            return loginWithPopup();
+        }
+        if (isAuthenticated && !hasProfile) {
+            return setSignupModalVisible(true)
+        }
+        return setEventWarningVisible(true)
+    }
+
     const selected = data?.map?.find(x => x.isoCode === country)
     const mapData = country ? [{ name: country, itemStyle: { areaColor: "#84b4cc" }}] : (counts ? countryMap : [])
-
     const defaultMapData = initLandingCount !== "" && data?.map ? data.map.map(x => ({...x, name: x.isoCode, value: x[initLandingCount]})) : [];
-
     const summaryData = data?.summary?.filter((it, index) => {
       const current = Object.keys(it)[0];
       return tTypes.indexOf(current) > -1;
@@ -92,9 +101,17 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
             value={country}
             onChange={handleChangeCountry}
           />
-          <Summary clickEvents={handleSummaryClick} summary={summaryData}
-            country={countryObj} counts={counts} selected={selected}
-            init={initLandingCount} tTypes={tTypes}/>
+          <Summary
+            clickEvents={handleSummaryClick}
+            seeAllEvents={handleSeeAllStakeholderClick}
+            isApprovedUser={isApprovedUser}
+            summary={summaryData}
+            country={countryObj}
+            counts={counts}
+            selected={selected}
+            init={initLandingCount}
+            tTypes={tTypes}
+            />
         </div>
         }
         <Maps
@@ -105,14 +122,14 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
         />
         <div className="topics">
           <div className="ui container">
-            {data?.topics.map((topic, index) => (topic.topicType !== 'stakeholder' || isApprovedUser) && <TopicItem key={`topic-${index}`} {...{ topic }} />)}
+              {data?.topics.map((topic, index) => (topic.topicType !== 'stakeholder' || isApprovedUser) && <TopicItem key={`topic-${index}`} {...{ topic }} />)}
           </div>
         </div>
       </div>
     )
 }
 
-const Summary = ({ clickEvents, summary, country, counts, selected, init, tTypes }) => {
+const Summary = ({ clickEvents, seeAllEvents, summary, country, counts, selected, init, tTypes, isApprovedUser }) => {
   return (
     <div className="summary">
       <header>{!selected ? 'Global summary' : 'Summary' }</header>
@@ -126,14 +143,17 @@ const Summary = ({ clickEvents, summary, country, counts, selected, init, tTypes
               }
               return (
               <li key={`li-${index}`}
-                  onClick={e => clickEvents(current)}
                   className={className}>
-                <div className="switcher"><Switch size="small" checked={counts === current || init === current} /></div>
-                <div className="text">
+                <div className="switcher" onClick={e => clickEvents(current)}>
+                    <Switch size="small" checked={counts === current || init === current} />
+                </div>
+                <div className="text" onClick={e => clickEvents(current)}>
                   <div className="label">{topicNames(current)}</div>
                   <span><b>{it[current]}</b> in <b>{it.countries}</b> {it.countries === 1 ? "country" : "countries"}</span>
                 </div>
-                <Link to={{pathname:"/browse", search: `?topic=${humps.decamelize(current)}`}}>See all</Link>
+                {current === "stakeholder" && !isApprovedUser
+                    ? <Link to="/" onClick={seeAllEvents}>See all</Link>
+                    : <Link to={{pathname:"/browse", search: `?topic=${humps.decamelize(current)}`}}>See all</Link>}
               </li>)
           })}
         {country && tTypes.map(type =>

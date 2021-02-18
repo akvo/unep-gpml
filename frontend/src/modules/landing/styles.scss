@@ -33,7 +33,7 @@
     position: absolute;
     z-index: 10;
     left: 60px;
-    top: 180px;
+    top: 200px;
     .ant-select{
       width: 100%;
       margin-bottom: 10px;
@@ -123,8 +123,8 @@
           a {
             display: none;
             position: absolute;
-            right: 10px;
-            top: 16px;
+            padding: 10px 8px;
+            right: 0px;
           }
           font-size: 12px;
           line-height: 16px;
