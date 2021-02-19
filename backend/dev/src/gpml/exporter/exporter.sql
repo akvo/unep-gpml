@@ -1,3 +1,4 @@
+--:name get-stakeholder-info :? :*
 SELECT
     s.picture,
     s.title,
@@ -31,3 +32,7 @@ FROM (v_stakeholder_data s
         FROM v_stakeholder_association sa
         GROUP BY sa.stakeholder) sa ON (s.id = sa.stakeholder)
 )
+
+
+--:name get-topic-by-id :? :1
+SELECT row_to_json(t.*) AS json FROM :i:v_topic_data t WHERE id = :id

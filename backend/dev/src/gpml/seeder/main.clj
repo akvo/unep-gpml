@@ -16,6 +16,7 @@
             [gpml.db.tag :as db.tag]
             [gpml.db.technology :as db.technology]
             [gpml.db.project :as db.project]
+            [gpml.exporter :as db.exporter]
             gpml.pg-util
             [integrant.core :as ig]
             [jsonista.core :as j]))
@@ -80,10 +81,6 @@
 (defn truncate-db [db]
   (let [sql (slurp "dev/src/gpml/seeder/truncate.sql")]
     (jdbc/execute! db [sql])))
-
-(defn export-db [db, file]
-  (let [sql (slurp (str "dev/src/gpml/exporter/" file ".sql"))]
-    (jdbc/query db [sql])))
 
 (defn seed-countries [db]
   (jdbc/insert-multi! db :country
@@ -441,19 +438,21 @@
                :duct.database.sql/hikaricp
                :spec))
 
+  ;; get view table of topic
+  (defn view-table-of [association]
+    (->> (assoc association :v_topic_data (str "v_" (:topic association) "_data"))
+         (db.exporter/get-topic-by-id db)
+         :json))
+
   ;; get subscribed topic
   (defn get-subscribed-topic []
-    (->> (export-db db "stakeholder")
-         (#(map :associations %))
-         (remove nil?)
-         (apply concat)
-         (map
-           (fn[x]
-             (assoc x :data (str "select * from v_" (:topic x) "_data where id = " (:id x)))))
-         (map
-           (fn[x]
-             (assoc x :data (first (jdbc/query db (:data x))))))
-         (into [])))
+    (->> (db.exporter/get-stakeholder-info db)
+         (mapv (fn [x]
+             (if-let [topics (:associations x)]
+               (assoc x :associations
+                  (for [topic topics]
+                    (assoc topic :data (view-table-of topic))))
+               x)))))
 
   (->> (get-country-group-countries db)
        (filter #(= 2 (:country_group %)) ,,,)
