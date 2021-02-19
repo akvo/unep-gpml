@@ -441,7 +441,19 @@
                :duct.database.sql/hikaricp
                :spec))
 
-  (export-db db "stakeholder")
+  ;; get subscribed topic
+  (defn get-subscribed-topic []
+    (->> (export-db db "stakeholder")
+         (#(map :associations %))
+         (remove nil?)
+         (apply concat)
+         (map
+           (fn[x]
+             (assoc x :data (str "select * from v_" (:topic x) "_data where id = " (:id x)))))
+         (map
+           (fn[x]
+             (assoc x :data (first (jdbc/query db (:data x))))))
+         (into [])))
 
   (->> (get-country-group-countries db)
        (filter #(= 2 (:country_group %)) ,,,)
