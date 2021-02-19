@@ -16,7 +16,7 @@
             [gpml.db.tag :as db.tag]
             [gpml.db.technology :as db.technology]
             [gpml.db.project :as db.project]
-            [gpml.exporter :as db.exporter]
+            [gpml.exporter.main :as db.exporter]
             gpml.pg-util
             [integrant.core :as ig]
             [jsonista.core :as j]))
