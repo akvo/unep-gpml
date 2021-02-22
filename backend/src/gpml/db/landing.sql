@@ -61,6 +61,19 @@ stakeholder_countries AS (
     SELECT country AS id FROM stakeholder
     WHERE country IS NOT NULL AND review_status = 'APPROVED'
 ),
+organisation_countries AS (
+    WITH approved_orgs AS (
+        select o.country, o.country_group FROM organisation_geo_coverage o
+        LEFT JOIN organisation org ON o.organisation = org.id
+        WHERE org.review_status = 'APPROVED'
+    )
+    SELECT c.id FROM approved_orgs o, country_group_country cgc
+    JOIN country c ON cgc.country = c.id
+    WHERE o.country_group = cgc.country_group
+    UNION
+    SELECT o.country AS id FROM approved_orgs o
+    WHERE o.country IS NOT NULL
+),
 country_counts AS (
     SELECT COUNT(DISTINCT country) as country, 'project' as data FROM project_country
     UNION
@@ -72,6 +85,8 @@ country_counts AS (
     SELECT COUNT(*) as country, 'policy' as data FROM policy_countries
     UNION
     SELECT COUNT(*) as country, 'technology' as data FROM technology_countries
+    UNION
+    SELECT COUNT(*) as country, 'organisation' as data FROM organisation_countries
     UNION
     SELECT COUNT(*) as country, 'stakeholder' as data FROM stakeholder_countries
 ),
@@ -88,7 +103,9 @@ totals AS (
     UNION
     SELECT COUNT(*) as total, 'technology' as data, 5 as o FROM technology
     UNION
-    SELECT COUNT(*) as total, 'stakeholder' as data, 6 as o FROM stakeholder WHERE review_status = 'APPROVED'
+    SELECT COUNT(*) as total, 'organisation' as data, 6 as o FROM organisation WHERE review_status = 'APPROVED'
+    UNION
+    SELECT COUNT(*) as total, 'stakeholder' as data, 7 as o FROM stakeholder WHERE review_status = 'APPROVED'
 )
 SELECT t.total AS count, t.data AS resource_type, c.country AS country_count
 FROM totals t JOIN country_counts c ON t.data = c.data ORDER BY o;

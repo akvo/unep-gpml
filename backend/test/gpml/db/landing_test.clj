@@ -1,5 +1,5 @@
 (ns gpml.db.landing-test
-  (:require [clojure.test :refer [deftest testing use-fixtures are]]
+  (:require [clojure.test :refer [deftest testing use-fixtures are is]]
             [clojure.java.jdbc :as jdbc]
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]
@@ -27,7 +27,7 @@
    :remarks "Remarks"
    :review_status "APPROVED"})
 
-(defn add-resource-data [conn]
+(defn add-country-data [conn]
   (db.country/new-country conn {:name "Spain" :iso_code "ESP"})
   (db.country/new-country conn {:name "India" :iso_code "IND"})
   (db.country/new-country conn {:name "Indonesia" :iso_code "IDN"})
@@ -37,9 +37,12 @@
   (db.country-group/new-country-group conn {:name "Asia" :type "region"})
   (db.country-group/new-country-group conn {:name "Europe" :type "region"})
   (jdbc/insert-multi! conn :country_group_country
-                      [{:country_group 1 :country 2}
-                       {:country_group 1 :country 3}
-                       {:country_group 2 :country 1}])
+    [{:country_group 1 :country 2}
+     {:country_group 1 :country 3}
+     {:country_group 2 :country 1}]))
+
+(defn add-resource-data [conn]
+  (add-country-data conn)
   (db.resource/new-resource conn (make-resource "Resource 1" "transnational"))
   (db.resource/new-resource conn (make-resource "Resource 2" "national"))
   (db.resource/new-resource conn (make-resource "Resource 3" "regional"))
@@ -104,3 +107,57 @@
       (are [expected topic] (= expected (:country_count (extract-data topic)))
         4 "financing_resource"
         0 "event"))))
+
+(def spanish {:country "Spain"
+              :geo_coverage_type "national"
+              :geo_coverage_value ["ESP"]})
+
+(def india {:country "India"
+            :geo_coverage_type "national"
+            :geo_coverage_value ["IND"]})
+
+(def asia {:geo_coverage_type "regional" :geo_coverage_value ["Asia"]})
+
+(def approved {:review_status "APPROVED"})
+
+(defn org [& org-data]
+  (apply merge
+    {:name (str "org" (fixtures/uuid))
+     :review_status "SUBMITTED"}
+    org-data))
+
+(deftest test-organisation
+
+  (testing "Test organisation data for landing page"
+    (let [db-key :duct.database.sql/hikaricp
+          system (ig/init fixtures/*system* [db-key])
+          conn (-> system db-key :spec)
+          _ (add-country-data conn)
+          summary (fn [& orgs]
+                    (doseq [org orgs]
+                      (gpml.handler.profile/new-organisation conn org))
+                    (let [summary (db.landing/summary conn)
+                          orgs-data (->> summary
+                                      (filter #(= "organisation" (:resource_type %)))
+                                      first)]
+                      (clojure.java.jdbc/execute! conn "delete from organisation_geo_coverage")
+                      (clojure.java.jdbc/execute! conn "delete from organisation")
+                      ((juxt :count :country_count) orgs-data)))]
+
+      (testing "Two orgs in one country"
+        (is (= [2 1] (summary (org spanish approved) (org spanish approved)))))
+
+      (testing "One org in a region"
+        (is (= [1 2] (summary (org approved asia)))))
+
+      (testing "One org in a region, another in a country"
+        (is (= [2 3] (summary (org approved spanish) (org approved asia))))
+        (is (= [2 2] (summary (org approved india) (org approved asia)))))
+
+      (testing "One global org"
+        (is (= [1 0] (summary (org approved {:geo_coverage_type "global"})))))
+
+      (testing "Unapproved org is not counted"
+        (is (= [0 0] (summary (org spanish) (org asia) (org {:geo_coverage_type "global"})))))
+
+      )))

@@ -4,4 +4,4 @@
 (def topics
   (vec
    (sort
-       (apply conj resource-types ["people" "event" "technology" "policy" "project" "stakeholder"]))))
+       (apply conj resource-types ["people" "event" "technology" "policy" "project" "stakeholder" "organisation"]))))

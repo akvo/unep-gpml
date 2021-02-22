@@ -46,12 +46,14 @@
   [url db-name]
   (str/replace url "gpml_test" db-name))
 
+(defn uuid [] (str/replace (str (UUID/randomUUID)) "-" "_"))
+
 (defn with-test-system
   [f]
   (when-not template-test-db-migrated?
     (migrate-template-test-db))
   (let [tmp (test-system)
-        new-db-name (format "test_db_%s" (str/replace (str (UUID/randomUUID)) "-" "_"))
+        new-db-name (format "test_db_%s" (uuid))
         jdbc-url (-> tmp :gpml.test/db :connection-uri)
         dev-db-jdbc-url (adapt-jdbc-url jdbc-url "gpml")
         test-db-url (adapt-jdbc-url jdbc-url new-db-name)
