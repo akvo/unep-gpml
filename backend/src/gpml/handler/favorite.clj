@@ -1,8 +1,6 @@
 (ns gpml.handler.favorite
   (:require [clojure.java.jdbc :as jdbc]
-            [clojure.set :as set]
             [clojure.data :as dt]
-            [clojure.string :as string]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
