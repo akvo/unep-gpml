@@ -14,15 +14,14 @@
   (testing "Checking post body params"
     (let [valid? #(malli/validate favorite/post-params %)]
       (are [expected value] (= expected (valid? value))
-        true [{:topic "technology" :topic_id 1 :association ["user"]}]
-        true [{:topic "technology" :topic_id 1 :association ["user"]}
-              {:topic "event" :topic_id 1 :association ["organiser" "participant"]}]
-        false [{:topic "technology" :topic_id 1 :association ["sponsor"]}]
-        false [{}]
-        false [{:topic "technology"}]
-        false [{:topic "technology" :topic_id 1}]
-        false [{:topic "technology" :topic_id 1 :association ["random"]}]
-        false [{:topic "random" :topic_id 1 :association ["creator"]}]))))
+        true {:topic "technology" :topic_id 1 :association ["user"]}
+        true {:topic "technology" :topic_id 1 :association ["user"]}
+        false {:topic "technology" :topic_id 1 :association ["sponsor"]}
+        false {}
+        false {:topic "technology"}
+        false {:topic "technology" :topic_id 1}
+        false {:topic "technology" :topic_id 1 :association ["random"]}
+        false {:topic "random" :topic_id 1 :association ["creator"]}))))
 
 (defn- new-stakeholder [db email]
   (let [sth (db.stakeholder/new-stakeholder db
@@ -46,9 +45,9 @@
 (defn- mock-post [email]
   (-> (mock/request :post "/")
       (assoc :jwt-claims {:email email})
-      (assoc :body-params [{:topic_id 1
-                            :topic "technology"
-                            :association ["user" "interested in"]}])))
+      (assoc :body-params {:topic_id 1
+                           :topic "technology"
+                           :association ["user" "interested in"]})))
 
 (deftest test-post-new-association
   (testing "Creating new association via POST"

@@ -1,6 +1,8 @@
 (ns gpml.handler.favorite
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.data :as dt]
+            [clojure.string :as string]
+            [clojure.set :as set]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
@@ -15,10 +17,17 @@
    :stakeholder #{"interested in" "other"}})
 
 (def post-params
-    [:map
-     [:topic [:enum "event" "technology" "policy" "resource" "project" "stakeholder"]]
-     [:topic_id int?]
-     [:association [:vector string?]]])
+  [:and
+   [:map
+    [:topic [:enum "event" "technology" "policy" "resource" "project" "stakeholder"]]
+    [:topic_id int?]
+    [:association [:vector string?]]]
+   [:fn {:error/fn (fn [{{:keys [topic]} :value} _]
+                      (let [topic-associations ((keyword topic) associations)
+                            associations-text (string/join ", " topic-associations)]
+                        (format "%s only supports '%s' associations" topic associations-text)))}
+     (fn [{:keys [topic association]}]
+       (set/superset? ((keyword topic) associations) association))]])
 
 (defn- get-stakeholder-id
   [db email]
