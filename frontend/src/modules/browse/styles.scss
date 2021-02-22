@@ -91,6 +91,15 @@
     .ant-card{
       margin-bottom: 15px;
       position: relative;
+      a.browse-card {
+        display: block;
+        min-width: 100%;
+        min-height: 100%;
+        left: 0px;
+        position: absolute;
+        top: 0px;
+        z-index:2;
+      }
       .type{
         position: absolute;
         right: 10px;

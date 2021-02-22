@@ -159,19 +159,25 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
     }
   }
   return [
-    <div className="field">
+    <div className="field" key={"topic-select"}>
       <div className="label">Resources</div>
       <ul className="topic-list">
         {topicTypes.map(type =>
-          <li key={type}><Checkbox checked={value.indexOf(humps.decamelize(type)) !== -1} onChange={handleChange(humps.decamelize(type))}>{topicNames(type)} ({(counts && counts[type]) || 0})</Checkbox></li>
+            <li key={type}>
+                <Checkbox checked={value.indexOf(humps.decamelize(type)) !== -1} onChange={handleChange(humps.decamelize(type))}>
+                    {topicNames(type)} ({(counts && counts[type]) || 0})
+                </Checkbox>
+            </li>
         )}
       </ul>
     </div>,
     isApprovedUser ?
-    <div className="field">
+    <div className="field" key={"topic-select-unlisted"}>
       <div className="label">Stakeholders</div>
       <ul className="topic-list">
-        <li><Checkbox checked={value.indexOf('stakeholder') !== -1} onChange={handleChange('stakeholder')}>Individuals ({(counts && counts['stakeholder']) || 0})</Checkbox></li>
+        <li>
+          <Checkbox checked={value.indexOf('stakeholder') !== -1} onChange={handleChange('stakeholder')}>Individuals ({(counts && counts['stakeholder']) || 0})</Checkbox>
+        </li>
       </ul>
     </div>
     : null
@@ -186,7 +192,6 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
   const allowBookmark = result.type !== 'stakeholder' || profile.id !== result.id
   return (
     <Linkify result={result}>
-      <Card className="result fade-in">
         <h4>{title}</h4>
         <div className="type">{topicNames(result.type)}</div>
         <ul className="stats">
@@ -201,7 +206,6 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
         </ul>
         {description && <ShowMoreText lines={5}>{description}</ShowMoreText>}
         {allowBookmark && <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />}
-      </Card>
     </Linkify>
   )
 }
@@ -211,7 +215,12 @@ const Excerpt = ({ content, max = 40 }) => {
 }
 const Linkify = ({ result, children }) => {
   if(result.type === 'stakeholder') return children
-  return <Link to={`/${result.type}/${result.id}`}>{children}</Link>
+    return (
+        <Card className="result fade-in" key={result.id}>
+            <Link to={`/${result.type}/${result.id}`} className="browse-card"></Link>
+            {children}
+        </Card>
+    )
 }
 
 const relationsByTopicType = {

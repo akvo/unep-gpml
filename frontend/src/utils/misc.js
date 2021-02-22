@@ -6,7 +6,7 @@ export const topicTypesApprovedUser = topicTypes.concat(['stakeholder'])
 
 export const topicNames = (topic) => {
   const names = {
-    'project': 'Project',
+    'project': 'Action',
     'event': 'Event',
     'policy': 'Policy',
     'technology': 'Technology',
