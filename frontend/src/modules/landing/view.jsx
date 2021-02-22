@@ -14,7 +14,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
 
     const isApprovedUser = profile?.reviewStatus === 'APPROVED';
     const hasProfile = Object.keys(profile).length > 0;
-    const tTypes = ['project', 'event', 'policy', 'technology', 'financingResource', 'technicalResource', 'actionPlan', 'stakeholder']
+    const tTypes = ['project', 'event', 'policy', 'technology', 'financingResource', 'technicalResource', 'actionPlan', 'organisation', 'stakeholder']
 
     const clickEvents = ({name, data}) => {
       if (!name.startsWith("disputed")) {

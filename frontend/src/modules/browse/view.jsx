@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Card, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
-import { topicTypes, topicTypesApprovedUser, topicNames, resourceTypeToTopicType } from '../../utils/misc'
+import { topicTypes, topicTypesIncludingOrg, topicTypesApprovedUser, topicNames, resourceTypeToTopicType } from '../../utils/misc'
 import { Link, useLocation, withRouter } from 'react-router-dom'
 import moment from 'moment'
 import api from '../../utils/api'
@@ -107,7 +107,7 @@ const Browse = ({ history, countData, profile, setSignupModalVisible}) => {
         }
     })
   }
-  const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypes
+  const tTypes = isApprovedUser ? topicTypesApprovedUser : topicTypesIncludingOrg
   const topicCounts = tTypes.reduce((acc, topic) => {
     const data = Object()
     if (filterCountries.length === 0) {
@@ -171,16 +171,20 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
         )}
       </ul>
     </div>,
-    isApprovedUser ?
     <div className="field" key={"topic-select-unlisted"}>
       <div className="label">Stakeholders</div>
       <ul className="topic-list">
+        {isApprovedUser ?
         <li>
           <Checkbox checked={value.indexOf('stakeholder') !== -1} onChange={handleChange('stakeholder')}>Individuals ({(counts && counts['stakeholder']) || 0})</Checkbox>
         </li>
+        : null
+        }
+        <li>
+          <Checkbox checked={value.indexOf('organisation') !== -1} onChange={handleChange('organisation')}>Organisations ({(counts && counts['organisation']) || 0})</Checkbox>
+        </li>
       </ul>
     </div>
-    : null
   ]
 }
 
