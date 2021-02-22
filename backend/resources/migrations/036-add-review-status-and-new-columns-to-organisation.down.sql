@@ -1,0 +1,5 @@
+ALTER TABLE organisation
+DROP COLUMN IF EXISTS program,
+DROP COLUMN IF EXISTS contribution,
+DROP COLUMN IF EXISTS expertise,
+DROP COLUMN IF EXISTS review_status;

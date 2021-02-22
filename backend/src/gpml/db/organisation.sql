@@ -24,6 +24,10 @@ insert into organisation (
 --~ (when (contains? params :country) ", country")
 --~ (when (contains? params :geo_coverage_type) ", geo_coverage_type")
 --~ (when (contains? params :url) ", url")
+--~ (when (contains? params :program) ", program")
+--~ (when (contains? params :contribution) ", contribution")
+--~ (when (contains? params :expertise) ", expertise")
+--~ (when (contains? params :review_status) ", review_status")
 )
 values (
     :name
@@ -31,6 +35,10 @@ values (
 --~ (when (contains? params :country) ", :country::integer")
 --~ (when (contains? params :geo_coverage_type) ", :geo_coverage_type::geo_coverage_type")
 --~ (when (contains? params :url) ", :url")
+--~ (when (contains? params :program) ", :program")
+--~ (when (contains? params :contribution) ", :contribution")
+--~ (when (contains? params :expertise) ", :expertise")
+--~ (when (contains? params :review_status) ", :v:review_status::review_status")
 ) returning id;
 
 -- :name update-organisation :! :n
