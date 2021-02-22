@@ -13,13 +13,11 @@
 
 (defn get-geo-data [db id geo-type geo-value]
   (cond
-    (contains? #{"regional" "global with elements in specific areas"}
-     geo-type)
+    (#{"regional" "global with elements in specific areas"} geo-type)
     (->> {:names geo-value}
          (db.country-group/country-group-by-names db)
          (map #(vector id (:id %) nil)))
-    (contains? #{"transnational" "national"}
-     geo-type)
+    (#{"transnational" "national"} geo-type)
     (->> {:codes geo-value}
          (db.country/country-by-codes db)
          (map #(vector id nil (:id %))))))
