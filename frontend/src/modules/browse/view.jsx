@@ -87,7 +87,7 @@ const Browse = ({ history, countData, profile, setSignupModalVisible}) => {
     }
   }
   const handleRelationChange = (relation) => {
-    api.post('/favorite', [relation]).then(res => {
+    api.post('/favorite', relation).then(res => {
       const relationIndex = relations.findIndex(it => it.topicId === relation.topicId)
       if(relationIndex !== -1){
         setRelations([...relations.slice(0, relationIndex), relation, ...relations.slice(relationIndex + 1)])

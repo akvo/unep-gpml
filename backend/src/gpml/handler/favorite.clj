@@ -1,6 +1,7 @@
 (ns gpml.handler.favorite
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.set :as set]
+            [clojure.data :as dt]
             [clojure.string :as string]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder :as db.stakeholder]
@@ -16,18 +17,10 @@
    :stakeholder #{"interested in" "other"}})
 
 (def post-params
-  [:vector
-   [:and
     [:map
      [:topic [:enum "event" "technology" "policy" "resource" "project" "stakeholder"]]
      [:topic_id int?]
-     [:association [:vector string?]]]
-    [:fn {:error/fn (fn [{{:keys [topic]} :value} _]
-                      (let [topic-associations ((keyword topic) associations)
-                            associations-text (string/join ", " topic-associations)]
-                        (format "%s only supports '%s' associations" topic associations-text)))}
-     (fn [{:keys [topic association]}]
-       (set/superset? ((keyword topic) associations) association))]]])
+     [:association [:vector string?]]])
 
 (defn- get-stakeholder-id
   [db email]
@@ -60,13 +53,32 @@
 (defmethod ig/init-key ::post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
     (if-let [stakeholder (get-stakeholder-id (:spec db) (:email jwt-claims))]
-      (jdbc/with-db-transaction [conn (:spec db)]
-        (doseq [item body-params]
-          (doseq [association (expand-associations item)]
+      (let [db (:spec db)
+            new-topic (assoc body-params :stakeholder stakeholder)
+            attr {:column_name
+                  (if (= (:topic body-params) "stakeholder")
+                    "other_stakeholder"
+                    (:topic body-params))
+                  :topic (str "stakeholder_" (:topic body-params))}
+            current (merge new-topic attr)
+            current (db.favorite/association-by-stakeholder-topic db current)
+            delete (first
+                     (dt/diff
+                       (set (map #(:association %) current))
+                       (set (:association body-params))))
+            delete (first delete)]
+        (when (some? delete)
+          (let [delete (-> (filter #(= (:association %) delete) current)
+                           first
+                           (merge attr))]
+            (tap> (:id delete))
+            (db.favorite/delete-stakeholder-association db delete)))
+        (jdbc/with-db-transaction [conn db]
+          (doseq [association (expand-associations body-params)]
             (db.favorite/new-association conn (merge
-                                               {:stakeholder stakeholder
-                                                :remarks nil}
-                                               association))))
+                                                {:stakeholder stakeholder
+                                                 :remarks nil}
+                                                association))))
         (resp/response {:message "OK"}))
       (resp/bad-request {:message (format "User with email %s does not exist" (:email jwt-claims))}))))
 

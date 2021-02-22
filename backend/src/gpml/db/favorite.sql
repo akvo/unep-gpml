@@ -11,3 +11,11 @@ DO UPDATE SET modified = now(), remarks = EXCLUDED.remarks
 -- :name association-by-stakeholder :? :*
 -- :doc Get all associations for a given stakeholder
 SELECT * FROM v_stakeholder_association WHERE stakeholder = :stakeholder
+
+-- :name association-by-stakeholder-topic :? :*
+SELECT * FROM :i:topic
+WHERE stakeholder = :stakeholder
+AND :i:column_name = :topic_id
+
+-- :name delete-stakeholder-association :! :n
+DELETE FROM :i:topic WHERE id = :id
