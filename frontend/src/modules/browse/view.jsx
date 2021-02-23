@@ -15,6 +15,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import humps from 'humps'
 import isEmpty from 'lodash/isEmpty'
 import { LoadingOutlined } from '@ant-design/icons';
+import values from 'lodash/values';
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -181,7 +182,7 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
         : null
         }
         <li>
-          <Checkbox checked={value.indexOf('organisation') !== -1} onChange={handleChange('organisation')}>Organisations ({(counts && counts['organisation']) || 0})</Checkbox>
+          <Checkbox checked={value.indexOf('organisation') !== -1} onChange={handleChange('organisation')}>{topicNames('organisation')} ({(counts && counts['organisation']) || 0})</Checkbox>
         </li>
       </ul>
     </div>
@@ -200,6 +201,7 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
         <div className="type">{topicNames(result.type)}</div>
         <ul className="stats">
           {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
+          {result.geoCoverageType === 'global' && <li><Excerpt content={values(countries).map(c => c.name).join(', ')} max={300} /></li>}
           {result.geoCoverageValues && <li><Excerpt content={result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')} /></li>}
           {result.status && <li><span>Status:</span>{result.status}</li>}
           {result.organisationType && <li><span>Org:</span>{result.organisationType}</li>}
@@ -208,7 +210,7 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
           {result.value && <li><span>Value:</span>{result.valueCurrency} {String(result.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
           {result.type === 'event' && [<li><span>Starts:</span><i>{moment(result.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(result.endDate).format('DD MMM YYYY')}</i></li>]}
         </ul>
-        {description && <ShowMoreText lines={5}>{description}</ShowMoreText>}
+        {/* {description && <ShowMoreText lines={5}>{description}</ShowMoreText>} */}
         {allowBookmark && <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />}
     </Linkify>
   )
@@ -227,36 +229,9 @@ const Linkify = ({ result, children }) => {
     )
 }
 
-const relationsByTopicType = {
-  resource: ['owner', 'reviewer', 'user', 'interested in', 'other'],
-  technology: ['owner', 'user', 'reviewer', 'interested in', 'other'],
-  event: ['resource person', 'organiser', 'participant', 'sponsor', 'host', 'interested in', 'other'],
-  project: ['owner', 'implementor', 'reviewer', 'user', 'interested in', 'other'],
-  policy: ['regulator', 'implementor', 'reviewer', 'interested in', 'other'],
-  stakeholder: ['interested in', 'other'],
-  organisation: ['interested in', 'other'],
-}
-
-export const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
-  const handleChangeRelation = (relationType) => ({ target: { checked } }) => {
-    let association = relation ? [...relation.association] : []
-    if(checked) association = [...association, relationType]
-    else association = association.filter(it => it !== relationType)
-    handleRelationChange({ topicId: topic.id, association, topic: resourceTypeToTopicType(topic.type) })
-  }
+export const PortfolioBar = ({ relation }) => {
   return (
     <div className="portfolio-bar" onClick={e => e.stopPropagation()}>
-      <Dropdown overlay={(
-        <ul className="relations-dropdown">
-          {relationsByTopicType[resourceTypeToTopicType(topic.type)].map(relationType =>
-          <li key={`${relationType}`}>
-            <Checkbox checked={relation && relation.association && relation.association.indexOf(relationType) !== -1} onChange={handleChangeRelation(relationType)}>{relationType}</Checkbox>
-          </li>)}
-        </ul>
-      )} trigger={['click']}>
-        <Button size="small" icon={<PlusOutlined />} shape="round" />
-      </Dropdown>
-      {(!relation || relation.association.length === 0) && <div className="label">Bookmarks</div>}
       {relation?.association?.map((relationType, index) => <Tag color="blue" key={`relation-${index}`}>{relationType}</Tag>)}
     </div>
   )
