@@ -14,12 +14,13 @@
    :event #{"resource person" "organiser" "participant" "sponsor" "host" "interested in" "other"}
    :project #{"owner" "implementor" "reviewer" "user" "interested in" "other"}
    :policy #{"regulator" "implementor" "reviewer" "interested in" "other"}
+   :organisation #{"interested in" "other"}
    :stakeholder #{"interested in" "other"}})
 
 (def post-params
   [:and
    [:map
-    [:topic [:enum "event" "technology" "policy" "resource" "project" "stakeholder"]]
+    [:topic [:enum "event" "technology" "policy" "resource" "project" "organisation" "stakeholder"]]
     [:topic_id int?]
     [:association [:vector string?]]]
    [:fn {:error/fn (fn [{{:keys [topic]} :value} _]
