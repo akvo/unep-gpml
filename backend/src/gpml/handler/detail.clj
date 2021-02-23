@@ -9,14 +9,24 @@
             [gpml.db.action-detail :as db.action-detail]
             [clojure.string :as string]))
 
-(defn first-child-replacing-other [action]
-  (let [first-child (-> action :children first)]
-    (or
-      (:value-entered first-child)
-      (:name first-child))))
+(defn other-or-name [action]
+  (or
+    (:value-entered action)
+    (:name action)))
 
-(defn value-list [action-details]
-  (map :value action-details))
+(defn first-child-replacing-other [_ action]
+  (let [first-child (-> action :children first)]
+    (other-or-name first-child)))
+
+(defn value-list [_ action-details]
+  (seq (map :value action-details)))
+
+(defn all-of-the-above [sector-action action]
+  (let [result (first-child-replacing-other sector-action action)]
+    (seq (map other-or-name
+           (if (= "All of the above" result)
+             (take-while #(not= "All of the above" (:name %)) (-> sector-action :children))
+             (:children action))))))
 
 (def data-queries
   {
@@ -48,7 +58,8 @@
    :lifecycle_phase {:action-code 43374916}
 
    ;Sector: Column BY_BZ
-   :sector {:action-code 43374905}
+   :sector {:action-code 43374905
+            :format-fn #'all-of-the-above}
 
    ;Activity Owner: Column AR, AS
    :activity_owner {:action-code 43374862}
@@ -146,9 +157,13 @@
                                    (map (juxt :action_detail :value))
                                    (db.project/project-actions-details db project))
           triplets (map
-                     (fn [[query-name {:keys [fn-to-retrieve-data format-fn] :or {format-fn identity}}]]
+                     (fn [[query-name {:keys [fn-to-retrieve-data format-fn format-params]}]]
                        (let [db-value (fn-to-retrieve-data project-actions project-action-details)]
-                         [query-name (format-fn db-value) db-value]))
+                         [query-name
+                          (if format-fn
+                            (format-fn format-params db-value)
+                            db-value)
+                          db-value]))
                      @cached-hierarchies)]
       (into {} (cons
                  [:raw (into {} (map (juxt first last) triplets))]
@@ -164,11 +179,11 @@
           [query-name (if (:action-code query)
                         (let [hierarchy (get-action-hierarchy db {:code (:action-code query)})]
                           (assoc query
-                            :params hierarchy
+                            :format-params hierarchy
                             :fn-to-retrieve-data (partial (comp remove-extra-keys #'keep-actions) hierarchy)))
                         (let [action-details (db.action-detail/action-detail-by-codes db {:codes (:action-detail-codes query)})]
                           (assoc query
-                            :params action-details
+                            :format-params action-details
                             :fn-to-retrieve-data (partial #'keep-action-details action-details))))]))
       data-queries)))
 
@@ -200,11 +215,14 @@
       (range 1 200)
       (pmap
         #(json/parse-string (slurp (str "http://localhost:3000/api/detail/project/" %)) true))
-      (keep :activity_term)
+      (map (juxt :id :sector))
+      (filter second)
       ;(pmap :children)
       ;(map first)
       ;(clojure.pprint/print-table )
       ))
+
+  (get-action-hierarchy (dev/db-conn) {:code 43374905})
 
   (defn action [code]
     (first (clojure.java.jdbc/query (dev/db-conn) ["select * from action where code = ?" code])))
