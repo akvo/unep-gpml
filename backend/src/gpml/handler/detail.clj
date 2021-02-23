@@ -7,8 +7,13 @@
             [ring.util.response :as resp]
             [gpml.db.action :as db.action]
             [gpml.db.action-detail :as db.action-detail]
-            [clojure.string :as string]
-            [cheshire.core :as json]))
+            [clojure.string :as string]))
+
+(defn first-child-replacing-other [action]
+  (let [first-child (-> action :children first)]
+    (or
+      (:value-entered first-child)
+      (:name first-child))))
 
 (defn value-list [action-details]
   (map :value action-details))
@@ -54,7 +59,8 @@
    ;Third Sector: Column AX, AY
 
    ;Activity Term: CH_CI
-   :activity_term {:action-code 43374943}
+   :activity_term {:action-code 43374943
+                   :format-fn #'first-child-replacing-other}
 
    :info_access_data {:action-detail-codes [43374788]
                       :format-fn #'value-list}
@@ -186,6 +192,20 @@
   (require 'dev)
   (require 'clojure.set)
   (time (cache-hierarchies! (dev/db-conn)))
+
+  (do
+
+    (require '[cheshire.core :as json])
+    (->>
+      (range 1 200)
+      (pmap
+        #(json/parse-string (slurp (str "http://localhost:3000/api/detail/project/" %)) true))
+      (keep :activity_term)
+      ;(pmap :children)
+      ;(map first)
+      ;(clojure.pprint/print-table )
+      ))
+
   (defn action [code]
     (first (clojure.java.jdbc/query (dev/db-conn) ["select * from action where code = ?" code])))
 
