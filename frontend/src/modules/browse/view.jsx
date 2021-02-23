@@ -234,6 +234,7 @@ const relationsByTopicType = {
   project: ['owner', 'implementor', 'reviewer', 'user', 'interested in', 'other'],
   policy: ['regulator', 'implementor', 'reviewer', 'interested in', 'other'],
   stakeholder: ['interested in', 'other'],
+  organisation: ['interested in', 'other'],
 }
 
 export const PortfolioBar = ({ topic, relation, handleRelationChange }) => {
