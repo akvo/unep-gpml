@@ -59,7 +59,7 @@ const generateOptions = ({title, subtitle, data, tooltip, mapPos}) => {
     if (data.length === 1) {
         data = [{ name: data[0].name, itemStyle: { areaColor: "#84b4cc" }}]
     }
-    const toolbox = {...Chart.Opt.Maps.ToolBox.toolbox, left: mapPos.left + 10, top: 40};
+    const toolbox = {...Chart.Opt.Maps.ToolBox.toolbox, left: mapPos.left + 10, top: 0};
     return {
         title: {
             text: title,
@@ -77,7 +77,7 @@ const generateOptions = ({title, subtitle, data, tooltip, mapPos}) => {
             roam: 'move',
             left: `${mapPos.left + 10}px`,
             right: `${mapPos.right - 10}px`,
-            top: window.__UNEP__MAP__TOP + 20,
+            top: window.__UNEP__MAP__TOP + 10,
             map: 'unep-map',
             aspectScale: 1,
             zoom: window.__UNEP__MAP__ZOOM,
@@ -116,13 +116,16 @@ const Maps = ({
     tooltip,
     custom={},
 }) => {
-    const [mapPos, setMapPos] = useState({left: 0, right: window.innerWidth});
+    const [mapPos, setMapPos] = useState({left: 0, right: window.innerWidth, height: 0});
     const handleResize = () => {
         const box = document.getElementsByClassName("map-overlay");
         if (box.length === 1) {
+            console.log(box)
             setMapPos({
                 left: box[0].offsetLeft + box[0].offsetWidth,
-                right: box[0].offsetLeft})
+                right: box[0].offsetLeft,
+                height: box[0].offsetHeight
+            })
         }
     }
 
@@ -139,7 +142,7 @@ const Maps = ({
           className="fade-in worldmap"
           option={{...options,...custom}}
           notMerge={true}
-          style={{height: '700px', width:'100%'}}
+          style={{height: `${mapPos.height}px`, width:'100%'}}
           lazyUpdate={true}
           onEvents={{click: clickEvents}}
         />

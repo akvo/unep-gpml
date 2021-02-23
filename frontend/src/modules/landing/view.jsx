@@ -88,6 +88,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
               <p>The Digital Platform is an open-source, multi-stakeholder platform that compiles different resources, connects stakeholders and integrates data to guide action. The resources have been collected through research based on publicly available information, interviews with experts, and inputs received through submissions. They cover all stages in the plastics life cycle, with respect to prevention of litter and waste, design and production, use and consumption, waste management and marine litter monitoring and capturing. Explore the map below by clicking on a country, or filter by resource. You can learn more about each resource's source <a href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform" target="_blank" rel="noreferrer">here</a>.</p>
           </div>
         </div>
+        <div className="landing-container map-container">
         {!data && <h2 className="loading"><LoadingOutlined spin/> Loading Data</h2>}
         {data &&
         <div className="map-overlay">
@@ -120,6 +121,7 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
             tooltip={toolTip}
             dependency={data}
         />
+        </div>
         <div className="topics">
           <div className="ui container">
               {data?.topics.map((topic, index) => (topic.topicType !== 'stakeholder' || isApprovedUser) && <TopicItem key={`topic-${index}`} {...{ topic }} />)}
