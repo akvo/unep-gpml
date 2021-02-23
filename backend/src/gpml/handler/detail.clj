@@ -29,7 +29,7 @@
    :outcome_and_impact {:action-code 43374934}
 
    ;;Funding Type: CE_ CF
-   :funding_type {:action-code 43374920} ;; action detail in parent node. Should we delete if no action detail even if there is some child?
+   :funding_type {:action-code 43374920}                    ;; action detail in parent node. Should we delete if no action detail even if there is some child?
    ;Funding Name: CG
    ; (def "funding name" 43374844 :action-detail)              ;; this is under Funding type!
 
@@ -52,6 +52,24 @@
 
    ;Activity Term: CH_CI
    :activity_term {:action-code 43374943}
+
+   :info-access-data {:action-detail-codes [43374788]}
+   :info-monitoring-data {:action-detail-codes [43374796]}
+   :info-resource-links {:action-detail-codes [43374810     ;; this is the parent of the rest
+                                               43374839
+                                               43374835
+                                               43374837
+                                               43374822
+                                               43374823]}
+
+   ;; Amount invested and contribution are already in the project table.
+   ;; They are missing the currency but right now all values are in USD, so we can hardcode it.
+   ;; Amount invested
+   ;:amount_invested {:amount 43374826
+   ;                  :currency 43374846}
+   ;; In Kind Contributions: CD – CC
+   ;:in_kind_contribution {:amount 43374827
+   ;                       :currency 43374836}
 
    })
 
@@ -97,9 +115,16 @@
             (assoc :value-entered action-detail)))
         node))))
 
+(defn keep-action-details [action-details-to-return actions-to-keep action-details]
+  (->> action-details-to-return
+    (keep (fn [action-detail-to-return]
+            (when-let [actual-value (get action-details (:id action-detail-to-return))]
+              (assoc action-detail-to-return :value actual-value))))
+    (map (fn [x] (dissoc x :code :parent :action)))))
+
 (defn remove-extra-keys [tree]
   (-> tree
-    (dissoc  :code :parent)
+    (dissoc :code :parent)
     (medley/update-existing :children #(map remove-extra-keys %))))
 
 (defn details-for-project [db project]
@@ -110,9 +135,8 @@
                                    (db.project/project-actions-details db project))]
       (into {}
         (map
-          (fn [[query-name hierarchy]]
-            [query-name
-             (remove-extra-keys (keep-actions hierarchy project-actions project-action-details))])
+          (fn [[query-name {:keys [fn-to-retrieve-data]}]]
+            [query-name (fn-to-retrieve-data project-actions project-action-details)])
           @cached-hierarchies)))
     (catch Exception e
       (.printStackTrace e))))
@@ -122,7 +146,15 @@
     (into {}
       (map
         (fn [[query-name query]]
-          [query-name (get-action-hierarchy db {:code (:action-code query)})]))
+          [query-name (if (:action-code query)
+                        (let [hierarchy (get-action-hierarchy db {:code (:action-code query)})]
+                          (assoc query
+                            :params hierarchy
+                            :fn-to-retrieve-data (partial (comp remove-extra-keys #'keep-actions) hierarchy)))
+                        (let [action-details (db.action-detail/action-detail-by-codes db {:codes (:action-detail-codes query)})]
+                          (assoc query
+                            :params action-details
+                            :fn-to-retrieve-data (partial #'keep-action-details action-details))))]))
       data-queries)))
 
 (defmethod ig/init-key ::get [_ {:keys [db]}]
@@ -154,19 +186,13 @@
 
   (require 'gpml.db.action-detail :reload)
 
+  (db.action-detail/action-detail-by-parent (dev/db-conn) {:code 43374810})
 
-  ;; Info & contacts
+  (find-action "AN")                                        ;; urls to monitoring data
 
-  (def "AM" 43374788 :action_detail)
-  (def "AN" 43374796 :action_detail)
-  (def "Resource Links" 43374810 :action_detail)
+  (dev/db-q "select * from action_detail where code = 43374788")
+  (dev/db-q "select * from project_action_detail where action_detail = 25")
 
-  :amount_invested {:amount 43374826
-                    :currency 43374846}
-
-  ;; In Kind Contributions: CD – CC
-  :in_kind_contribution {:amount 43374827
-                         :currency 43374836}
 
   (get action-detail 52)
 
