@@ -10,6 +10,9 @@
             [clojure.string :as string]
             [cheshire.core :as json]))
 
+(defn value-list [action-details]
+  (map :value action-details))
+
 (def data-queries
   {
    ;; Types of Action (43374939)
@@ -53,14 +56,15 @@
    ;Activity Term: CH_CI
    :activity_term {:action-code 43374943}
 
-   :info-access-data {:action-detail-codes [43374788]}
-   :info-monitoring-data {:action-detail-codes [43374796]}
-   :info-resource-links {:action-detail-codes [43374810     ;; this is the parent of the rest
+   :info_access_data {:action-detail-codes [43374788]}
+   :info_monitoring_data {:action-detail-codes [43374796]}
+   :info_resource_links {:action-detail-codes [43374810     ;; this is the parent of the rest
                                                43374839
                                                43374835
                                                43374837
                                                43374822
-                                               43374823]}
+                                               43374823]
+                         :format-fn #'value-list}
 
    ;; Amount invested and contribution are already in the project table.
    ;; They are missing the currency but right now all values are in USD, so we can hardcode it.
@@ -135,8 +139,8 @@
                                    (db.project/project-actions-details db project))]
       (into {}
         (map
-          (fn [[query-name {:keys [fn-to-retrieve-data]}]]
-            [query-name (fn-to-retrieve-data project-actions project-action-details)])
+          (fn [[query-name {:keys [fn-to-retrieve-data format-fn] :or {format-fn identity}}]]
+            [query-name (format-fn (fn-to-retrieve-data project-actions project-action-details))])
           @cached-hierarchies)))
     (catch Exception e
       (.printStackTrace e))))
@@ -171,35 +175,6 @@
 (comment
 
   (time (cache-hierarchies! (dev/db-conn)))
-  (get-action-hierarchy (dev/db-conn) {:code 105885205})
-
-  (map (juxt :code :name) (h :children))
-  (keep-actions h actions action-details)
-
-  (def h (get-action-hierarchy (dev/db-conn) {:code 43374939}))
-  (keep-actions h actions action-details)
-
-
-  (dev/db-q ["select * from action_detail where parent = 43374810"])
-
-  (declare get-action-detail-hierarchy)
-
-  (require 'gpml.db.action-detail :reload)
-
-  (db.action-detail/action-detail-by-parent (dev/db-conn) {:code 43374810})
-
-  (find-action "AN")                                        ;; urls to monitoring data
-
-  (dev/db-q "select * from action_detail where code = 43374788")
-  (dev/db-q "select * from project_action_detail where action_detail = 25")
-
-
-  (get action-detail 52)
-
-  (dev/db-q "select * from project_action_detail where action_detail = 49")
-  (require 'gpml.db.action :reload)
-  (require 'gpml.db.action-detail :reload)
-
 
   ;;; Code that parses the questionnaire and matches a XLS column to a question
   ;;; example (find-action "W")
