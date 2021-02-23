@@ -18,6 +18,16 @@ FROM (
         GROUP BY geo, topic, vt.json->>'id'
         ORDER BY topic
     ) AS st GROUP BY st.geo, st.topic
+    UNION
+    SELECT st.geo, st.topic, count(st.geo) FROM (
+        SELECT c.iso_code AS geo, topic
+        FROM v_organisation vo
+        LEFT JOIN country c ON c.id = CAST(vo.json->>'country' AS INTEGER)
+        WHERE vo.geo_coverage_iso_code is NOT NULL
+        AND topic = 'organisation'
+        GROUP BY geo, topic, vo.json->>'id'
+        ORDER BY topic
+    ) AS st GROUP BY st.geo, st.topic
 ) AS mc GROUP BY geo ORDER BY geo;
 
 -- :name summary
