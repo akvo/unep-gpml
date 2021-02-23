@@ -5,3 +5,4 @@ notify.team.sh
 /doc/*.csv
 /doc/*.xlsx
 /doc/*.geojson
+/doc/images/*
