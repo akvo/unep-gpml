@@ -1,11 +1,14 @@
 .details-view{
   min-height: calc(100vh - 710px);
-  @media only screen and (min-width: 1200px) {
-    .ui.container {
-      width: 727px;
-      margin-left: auto !important;
-      margin-right: auto !important;
-    }
+  // @media only screen and (min-width: 1200px) {
+  //   .ui.container {
+  //     width: 727px;
+  //     margin-left: auto !important;
+  //     margin-right: auto !important;
+  //   }
+  // }
+  .details-active {
+    font-weight: bold;
   }
   .loading{
     height: calc(100vh - 150px);
@@ -24,34 +27,54 @@
     background-color: #DBE9F1;
     color: #046799;
     line-height: 34px;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
     span{
       margin-left: 8px;
       margin-right: 25px;
     }
   }
-  .content-container{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  // .content-project {
+  //   background-color: #FFF9EA;
+  //   border-bottom: 2px solid #FFD579;
+  // }
+  // .content-non-project {
+  //   background-color: #F0F5F7;
+  //   border-bottom: 2px solid #035B71;
+  // }
+  .content-project, .content-non-project {
+    // box-shadow: 0px 3px 6px #00000029;
+    padding-top: 35px;
+    padding-bottom: 25px;
+    margin-bottom: 30px;
     .type-tag{
-      background-color: #A5C9DB;
-      color: #FFF;
       font-weight: 600;
       text-transform: uppercase;
       font-size: 13px;
       line-height: 22px;
       padding: 0 5px;
-      border-radius: 3px;
+      // border-radius: 3px;
+      color: #28457B;
+      .project-topic, .non-project-topic {
+        padding: 10px;
+        // border-radius: 5px;
+        border-radius: 0px 23px 23px 0px;
+      }
+      .project-topic {
+        background-color: #FFD579;
+      }
+      .non-project-topic {
+        background-color: #035B71;
+        color: #FFF;
+      }
     }
     ul.stats{
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       margin-top: 15px;
       margin-bottom: 0px;
       color: #046799;
       li{
-        text-transform: uppercase;
+        // text-transform: uppercase;
         opacity: 0.75;
         margin-right: 10px;
         font-size: 12px;
@@ -60,14 +83,20 @@
         .label{
           opacity: 0.6;
           margin-right: 5px;
+          .more {
+            color: #01ABF1;
+            opacity: 1;
+          }
         }
       }
     }
     h1{
       margin-bottom: 10px;
-      margin-top: 10px;
+      margin-top: 15px;
       line-height: 46px;
       font-weight: 700;
+      font-size: 38px;
+      color: #28457B;
     }
     p{
       margin: 20px 0;
@@ -78,6 +107,11 @@
         margin-right: 5px;
       }
     }
+  }
+  .content-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     .links{
       margin-top: 10px;
       display: flex;
@@ -102,6 +136,62 @@
       }
       b{
         color: #046799;
+      }
+    }
+  }
+  .content-body {
+    display: flex;
+    justify-content: space-between;
+    @media (max-width: 400px) {
+      .content-body {
+        display: block;
+        .content-column {
+          width: 100%;
+          margin: 0 0 10px 0;
+        }
+      }
+    }
+    .content-column {
+      // flex: 1;
+      width: 48%;
+      .card {
+        margin-bottom: 75px;
+        // padding: 20px 0;
+        // border: 1px solid #B5C3DA;
+        // border-radius: 5px;
+        // box-shadow: 0px 1px 2px #00000029;
+        h3 {
+          color: #126E9B;
+          font-size: 23px;
+          font-weight: normal;
+          margin-bottom: 20px;
+        }
+        .table {
+          .column {
+            display: flex;
+            flex-direction: row;
+            .title {
+              flex: 27%;
+            }
+            .value {
+              flex: 73%;
+              color: #28457B;
+              font-weight: 500;
+            }
+          }
+        }
+        .table-actions {
+          .column {
+            ul {
+              list-style-type:circle;
+              margin-left: 20px;
+            }
+            .value {
+              color: #28457B;
+              font-weight: 500;
+            }
+          }
+        }
       }
     }
   }
