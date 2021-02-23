@@ -121,7 +121,7 @@
             (assoc :value-entered action-detail)))
         node))))
 
-(defn keep-action-details [action-details-to-return actions-to-keep action-details]
+(defn keep-action-details [action-details-to-return _ action-details]
   (->> action-details-to-return
     (keep (fn [action-detail-to-return]
             (when-let [actual-value (get action-details (:id action-detail-to-return))]
@@ -183,6 +183,9 @@
 
   ;;; Code that parses the questionnaire and matches a XLS column to a question
   ;;; example (find-action "W")
+  (require 'clojure.java.jdbc)
+  (require 'dev)
+  (require 'clojure.set)
   (defn action [code]
     (first (clojure.java.jdbc/query (dev/db-conn) ["select * from action where code = ?" code])))
 
