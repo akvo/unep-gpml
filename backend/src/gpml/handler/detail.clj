@@ -179,13 +179,13 @@
 
 (comment
 
-  (time (cache-hierarchies! (dev/db-conn)))
 
   ;;; Code that parses the questionnaire and matches a XLS column to a question
   ;;; example (find-action "W")
   (require 'clojure.java.jdbc)
   (require 'dev)
   (require 'clojure.set)
+  (time (cache-hierarchies! (dev/db-conn)))
   (defn action [code]
     (first (clojure.java.jdbc/query (dev/db-conn) ["select * from action where code = ?" code])))
 
