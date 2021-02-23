@@ -56,8 +56,10 @@
    ;Activity Term: CH_CI
    :activity_term {:action-code 43374943}
 
-   :info_access_data {:action-detail-codes [43374788]}
-   :info_monitoring_data {:action-detail-codes [43374796]}
+   :info_access_data {:action-detail-codes [43374788]
+                      :format-fn #'value-list}
+   :info_monitoring_data {:action-detail-codes [43374796]
+                          :format-fn #'value-list}
    :info_resource_links {:action-detail-codes [43374810     ;; this is the parent of the rest
                                                43374839
                                                43374835
