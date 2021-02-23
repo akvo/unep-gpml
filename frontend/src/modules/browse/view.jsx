@@ -192,7 +192,7 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
 const Result = ({ result, relations, handleRelationChange, profile }) => {
   const fullName = (data) => data.title ? `${data.title} ${data.firstName} ${data.lastName}` : `${data.firstName} ${data.lastName}`
   const title = (result.type === 'stakeholder' && fullName(result)) || result.title || result.name
-  const description = result.description || result.abstract || result.summary || result.about
+  // const description = result.description || result.abstract || result.summary || result.about
   const relation = relations.find(it => it.topicId === result.id && it.topic === resourceTypeToTopicType(result.type))
   const allowBookmark = result.type !== 'stakeholder' || profile.id !== result.id
   return (

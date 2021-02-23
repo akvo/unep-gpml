@@ -156,7 +156,6 @@ const DetailsView = ({ match: { params }, ...props }) => {
   useEffect(() => {
     api.get(`/detail/${params.type}/${params.id}`)
     .then((d) => {
-      console.log(d.data)
       setData(d.data)
     })
   }, [])
@@ -193,7 +192,6 @@ const DetailsView = ({ match: { params }, ...props }) => {
         }
     })
   }
-
   if(!data) return (
     <div className="details-view">
       <div className="loading">
@@ -235,7 +233,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
         <div className="content-body">
           {/* Left */}
           <div className="content-column">
-            <Image style={{marginBottom: '20px'}} width="100%" src="https://via.placeholder.com/600x400" />
+            <Image style={{marginBottom: '20px'}} width="100%" src={data.image || "https://via.placeholder.com/600x400"} />
             <div className="card">
               <h3>Description</h3>
               {data.summary && <p>{data.summary}</p>}

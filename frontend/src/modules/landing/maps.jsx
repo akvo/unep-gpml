@@ -120,7 +120,6 @@ const Maps = ({
     const handleResize = () => {
         const box = document.getElementsByClassName("map-overlay");
         if (box.length === 1) {
-            console.log(box)
             setMapPos({
                 left: box[0].offsetLeft + box[0].offsetWidth,
                 right: box[0].offsetLeft,
