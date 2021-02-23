@@ -21,11 +21,13 @@
 (defn value-list [_ action-details]
   (seq (map :value action-details)))
 
-(defn all-of-the-above [sector-action action]
-  (let [result (first-child-replacing-other sector-action action)]
+(defn all-of-the-above [all-actions action]
+  (let [result (first-child-replacing-other all-actions action)]
     (seq (map other-or-name
            (if (= "All of the above" result)
-             (take-while #(not= "All of the above" (:name %)) (-> sector-action :children))
+             (concat
+               (take-while #(not= "All of the above" (:name %)) (-> all-actions :children))
+               (next (drop-while #(not= "All of the above" (:name %)) (-> action :children))))
              (:children action))))))
 
 (def data-queries
@@ -44,18 +46,26 @@
 
    ;; Reporting and measurements
    :is_action_being_reported {:action-code 43374951}
-   :outcome_and_impact {:action-code 43374934}
+   :outcome_and_impact {:action-code 43374934
+                        :format-fn #'first-child-replacing-other}
 
    ;;Funding Type: CE_ CF
-   :funding_type {:action-code 43374920}                    ;; action detail in parent node. Should we delete if no action detail even if there is some child?
+   :funding {:action-code 43374920
+             :format-fn (fn funding [_ action]
+                          (when action
+                            {:types (map other-or-name (:children action))
+                             :name (get action :value-entered)}))}
+   ;; action detail in parent node. Should we delete if no action detail even if there is some child?
    ;Funding Name: CG
    ; (def "funding name" 43374844 :action-detail)              ;; this is under Funding type!
 
    ;Focus Area: Column BK_BL
-   :focus_area {:action-code 43374915}
+   :focus_area {:action-code 43374915
+                :format-fn #'all-of-the-above}
 
    ;Lifecycle Phase: Column BM_BN
-   :lifecycle_phase {:action-code 43374916}
+   :lifecycle_phase {:action-code 43374916
+                     :format-fn #'all-of-the-above}
 
    ;Sector: Column BY_BZ
    :sector {:action-code 43374905
@@ -212,15 +222,29 @@
 
     (require '[cheshire.core :as json])
     (->>
-      (range 1 200)
+      (range 1 300)
       (pmap
         #(json/parse-string (slurp (str "http://localhost:3000/api/detail/project/" %)) true))
-      (map (juxt :id :sector))
+      (map (juxt :id :is_action_being_reported))
       (filter second)
       ;(pmap :children)
       ;(map first)
       ;(clojure.pprint/print-table )
+      (def all)
+      deref
       ))
+
+  (do
+
+    (->> all
+      (map second)
+      ;(filter (fn [xxx] (medley/find-first (fn [x] (= "All of the above" (:name x))) (:children xxx))))
+      (filter (fn [xxxx] (= 1 (count (:children xxxx)))))
+      (remove (fn [xxxx] (=  {:id 100, :name "Reporting and Evaluations", :children [{:id 101, :name "Yes"}]} xxxx)))
+      ;(map (partial all-of-the-above (-> cached-hierarchies deref :lifecycle_phase :format-params)))
+      ))
+
+
 
   (get-action-hierarchy (dev/db-conn) {:code 43374905})
 
