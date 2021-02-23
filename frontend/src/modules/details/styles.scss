@@ -46,50 +46,67 @@
     padding-top: 35px;
     padding-bottom: 25px;
     margin-bottom: 30px;
-    .type-tag{
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 13px;
-      line-height: 22px;
-      padding: 0 5px;
-      // border-radius: 3px;
-      color: #28457B;
-      .project-topic, .non-project-topic {
-        padding: 10px;
-        // border-radius: 5px;
-        border-radius: 0px 23px 23px 0px;
-      }
-      .project-topic {
-        background-color: #FFD579;
-      }
-      .non-project-topic {
-        background-color: #035B71;
-        color: #FFF;
-      }
-    }
-    ul.stats{
+    .header-container {
       display: flex;
-      flex-direction: row;
-      margin-top: 15px;
-      margin-bottom: 0px;
-      color: #046799;
-      li{
-        // text-transform: uppercase;
-        opacity: 0.75;
-        margin-right: 10px;
-        font-size: 12px;
-        font-weight: 500;
-        margin-bottom: 10px;
-        .label{
-          opacity: 0.6;
-          margin-right: 5px;
-          .more {
-            color: #01ABF1;
-            opacity: 1;
+      justify-content: space-between;
+      align-items: center;
+      .title {
+        width: 90%;
+        .type-tag{
+          font-weight: 600;
+          text-transform: uppercase;
+          font-size: 13px;
+          line-height: 22px;
+          padding: 0 5px;
+          // border-radius: 3px;
+          color: #28457B;
+          .project-topic, .non-project-topic {
+            padding: 10px;
+            // border-radius: 5px;
+            border-radius: 0px 23px 23px 0px;
+          }
+          .project-topic {
+            background-color: #FFD579;
+          }
+          .non-project-topic {
+            background-color: #035B71;
+            color: #FFF;
+          }
+        }
+      }
+      .bookmark {
+        text-align: center;
+        button {
+          background-color: #01ABF1;
+          span {
+            color: white;
           }
         }
       }
     }
+    // ul.stats{
+    //   display: flex;
+    //   flex-direction: row;
+    //   margin-top: 15px;
+    //   margin-bottom: 0px;
+    //   color: #046799;
+    //   li{
+    //     // text-transform: uppercase;
+    //     opacity: 0.75;
+    //     margin-right: 10px;
+    //     font-size: 12px;
+    //     font-weight: 500;
+    //     margin-bottom: 10px;
+    //     .label{
+    //       opacity: 0.6;
+    //       margin-right: 5px;
+    //       .more {
+    //         color: #01ABF1;
+    //         opacity: 1;
+    //       }
+    //     }
+    //   }
+    // }
     h1{
       margin-bottom: 10px;
       margin-top: 15px;
@@ -152,7 +169,6 @@
       }
     }
     .content-column {
-      // flex: 1;
       width: 48%;
       .card {
         margin-bottom: 75px;

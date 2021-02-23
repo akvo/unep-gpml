@@ -118,7 +118,7 @@ const Root = () => {
         <Route path="/add-event" component={AddEvent} />
         <Route path="/profile" render={props => <ProfileView {...{...props, profile, tags, setProfile }} />} />
         <Route path="/signup" component={SignupView} />
-        <Route path="/:type/:id" component={DetailsView} />
+        <Route path="/:type/:id" render={props => <DetailsView {...props} profile={profile} setSignupModalVisible={setSignupModalVisible}/>} />
         <Footer />
       </div>
       <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} {...{ tags, setProfile }} />

@@ -1,13 +1,13 @@
-import { GlobalOutlined, LoadingOutlined, RightOutlined, EnvironmentOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Tag, Tooltip, Image, Divider } from 'antd'
+import { LoadingOutlined, RightOutlined, PlusOutlined } from '@ant-design/icons'
+import { Button, Tag, Image, Divider, Dropdown, Checkbox } from 'antd'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import moment from 'moment'
 import api from '../../utils/api'
-import { topicNames } from '../../utils/misc'
-import { PortfolioBar } from '../browse/view'
+import { topicNames, resourceTypeToTopicType, relationsByTopicType } from '../../utils/misc'
+import { useAuth0 } from '@auth0/auth0-react'
 import { countries } from 'countries-list'
+import ModalWarningUser from '../../utils/modal-warning-user'
 import countries3to2 from 'countries-list/dist/countries3to2.json'
 import './styles.scss'
 
@@ -118,7 +118,7 @@ const renderTypeOfActions = (data) => {
             data.map((item, index) => {
               return (
                 <>
-                  <div className="column" key={index}>
+                  <div className="column" key={`action-${index}`}>
                     <div className="title">{item.name}</div>
                     <ul>
                     {
@@ -141,7 +141,14 @@ const renderTypeOfActions = (data) => {
 }
 
 const DetailsView = ({ match: { params }, ...props }) => {
+  const { profile, setSignupModalVisible } = props;
   const [data, setData] = useState(null)
+  const [relations, setRelations] = useState([])
+  const { isAuthenticated, loginWithPopup } = useAuth0();
+  const [warningVisible, setWarningVisible] = useState(false)
+  const relation = relations.find(it => it.topicId === parseInt(params.id) && it.topic === resourceTypeToTopicType(params.type))
+  const allowBookmark = params.type !== 'stakeholder' || profile.id !== params.id
+
   const contentHeaderStyle = (params.type === 'project') 
       ? {header: 'content-project', topic: 'project-topic'} : {header: 'content-non-project', topic: 'non-project-topic'};
   const content = (params.type === 'project') ? projectStaticData : nonProjectStaticData;
@@ -153,6 +160,40 @@ const DetailsView = ({ match: { params }, ...props }) => {
       setData(d.data)
     })
   }, [])
+
+  useEffect(() => {
+    if(isAuthenticated){
+      setTimeout(() => {
+        api.get('/favorite')
+        .then((resp) => {
+          setRelations(resp.data)
+        })
+      }, 100)
+    }
+  }, [isAuthenticated])
+
+  const handleRelationChange = (relation) => {
+    api.post('/favorite', relation).then(res => {
+      const relationIndex = relations.findIndex(it => it.topicId === relation.topicId)
+      if(relationIndex !== -1){
+        setRelations([...relations.slice(0, relationIndex), relation, ...relations.slice(relationIndex + 1)])
+      }
+      else {
+        setRelations([...relations, relation])
+      }
+    }).catch(err => {
+        if (isAuthenticated) {
+            if (Object.keys(profile).length === 0) {
+                setSignupModalVisible(true);
+            } else {
+                setWarningVisible(true);
+            }
+        } else {
+            loginWithPopup();
+        }
+    })
+  }
+
   if(!data) return (
     <div className="details-view">
       <div className="loading">
@@ -176,60 +217,23 @@ const DetailsView = ({ match: { params }, ...props }) => {
       {/* Header */}
       <div className={contentHeaderStyle.header}>
         <div className="ui container">
-          <div style={{display:'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <div style={{width: '90%'}}>
+          <div className="header-container">
+            <div className="title">
               <div className="type-tag"><span className={contentHeaderStyle.topic}>{topicNames(params.type)}</span></div>
               <h1>{data.title || data.name}</h1>
+              {relation?.association?.map((relationType, index) => <Tag color="blue" key={`relation-${index}`}>{relationType}</Tag>)}
             </div>
-            {/* <ul className="stats"> */}
-              {/*             
-              {data.geoCoverageType && <li><span className="label">{data.geoCoverageType} geo coverage{data.geoCoverageValues && ':'}</span>{data.geoCoverageValues && data.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')}</li>}
-              {data.typeOfLaw && <li><span className="label">Type:</span>{data.typeOfLaw}</li>}
-              {data.status && <li><span className="label">Status:</span>{data.status}</li>}
-              {(data.funds != null) && <li><span className="label">Funds:</span>{String(data.funds).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
-              {(data.contribution != null && data.contribution > 0) && <li><span className="label">Contribution:</span>{String(data.contribution).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
-              {data.organisationType && <li><span className="label">Org:</span>{data.organisationType}</li>}
-              {data.yearFounded && <li><span className="label">Founded:</span>{data.yearFounded}</li>}
-              {data.developmentStage && <li><span className="label">Stage:</span>{data.developmentStage}</li>}
-              {data.value && <li><span className="label">Value:</span>{data.valueCurrency} {String(data.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} {data.valueRemarks && <small>({data.valueRemarks})</small>}</li>}
-              {data.type === 'event' && [<li><span className="label">Starts:</span><i>{moment(data.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(data.endDate).format('DD MMM YYYY')}</i></li>]}
-              */}
-
-              {/* <li><span className="label">UN-Habitat</span></li>
-              <li><span className="label"><GlobalOutlined /> Global</span></li>
-              <li><span className="label"><EnvironmentOutlined /> Austria, Bangladesh, Burundi, Cameroon, Chad, China, Democratic Republic of Congo, Ethiopia, Germany, Ghana, India,Indonesia, Israel,</span><span className="label more">32 more</span></li> */}
-            {/* </ul> */}
-            <div style={{textAlign: 'center'}}>
-              <Button size="large" icon={<PlusOutlined style={{color: 'white'}} />} shape="circle" style={{backgroundColor:'#01ABF1'}} /> 
-              <div style={{color: '#01ABF1', fontWeight: 500}}>Bookmarks</div>
+            <div className="bookmark">
+              {allowBookmark && <BookmarkBtn topic={params} {...{ handleRelationChange, relation }} />}
             </div>
           </div>
         </div>
       </div>
 
+      {/* Body */}
       <div className="ui container">
-        {/* <div className="content-container"> */}
-          {/* <div className="big-btns">
-            {data.url && <a href={data.url} target="_blank" rel="noreferrer"><Button type="primary" ghost size="large">Visit website</Button></a>}
-            {params.type === 'project' && <a href="https://unep.tc.akvo.org" target="_blank" rel="noreferrer"><Button type="primary" ghost size="large">Visit dashboard</Button></a>}
-            {data.email && <a href={`mailto:${data.email}`}><Button type="primary" ghost size="large">Contact</Button></a>}
-          </div>
-          {data.summary && <p>{data.summary}</p>}
-          {data.attachments && data.attachments.length > 0 && (
-            <div className="links">
-              <span>Links: </span>
-              {data.attachments.map(it => <a href={it} target="_blank" rel="noreferrer">{it}</a>)}
-            </div>
-          )}
-          {data.tags && (
-            <div className="tags">
-              <span>Tags: </span>
-              <b>{data.tags.join('; ')}</b>
-            </div>
-          )} */}
-        {/* </div> */}
-        
         <div className="content-body">
+          {/* Left */}
           <div className="content-column">
             <Image style={{marginBottom: '20px'}} width="100%" src="https://via.placeholder.com/600x400" />
             <div className="card">
@@ -238,9 +242,9 @@ const DetailsView = ({ match: { params }, ...props }) => {
             </div>
 
             {content.actions && renderTypeOfActions(content.actions)}
-            
           </div>
 
+          {/* Right */}
           <div className="content-column">
             <div className="card">
               <h3>{topicNames(params.type)} Detail</h3>
@@ -249,7 +253,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
                     content.detail.map((item, index) => {
                       return (
                         <>
-                          <div className="column" key={index}>
+                          <div className="column" key={`detail-${index}`}>
                             <div className="title">{item.name}</div>
                             <div className="value">{(!item.value) ? '-' : item.value}</div>
                           </div>
@@ -268,7 +272,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
                     content.relatedInfo.map((item, index) => {
                       return (
                         <>
-                          <div className="column" key={index}>
+                          <div className="column" key={`info-${index}`}>
                             <div className="title">{item.name}</div>
                             <div className="value">{item.value}</div>
                           </div>
@@ -280,9 +284,34 @@ const DetailsView = ({ match: { params }, ...props }) => {
               </div>
             </div>
           </div>
+
         </div>
-        
       </div>
+      <ModalWarningUser visible={warningVisible} close={() => setWarningVisible(false)}/>
+    </div>
+  )
+}
+
+const BookmarkBtn = ({ topic, relation, handleRelationChange }) => {
+  const handleChangeRelation = (relationType) => ({ target: { checked } }) => {
+    let association = relation ? [...relation.association] : []
+    if(checked) association = [...association, relationType]
+    else association = association.filter(it => it !== relationType)
+    handleRelationChange({ topicId: parseInt(topic.id), association, topic: resourceTypeToTopicType(topic.type) })
+  }
+  return (
+    <div className="portfolio-bar" onClick={e => e.stopPropagation()}>
+      <Dropdown overlay={(
+        <ul className="relations-dropdown">
+          {relationsByTopicType[resourceTypeToTopicType(topic.type)].map(relationType =>
+          <li key={`${relationType}`}>
+            <Checkbox checked={relation && relation.association && relation.association.indexOf(relationType) !== -1} onChange={handleChangeRelation(relationType)}>{relationType}</Checkbox>
+          </li>)}
+        </ul>
+      )} trigger={['click']}>
+        <Button size="large" icon={<PlusOutlined />} shape="circle" />
+      </Dropdown>
+      <div className="label" style={{color: '#01ABF1', fontWeight: 500}}>Bookmarks</div>
     </div>
   )
 }
