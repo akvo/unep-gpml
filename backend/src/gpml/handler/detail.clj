@@ -138,12 +138,15 @@
     (let [project-actions (set (map :action (db.project/project-actions-id db project)))
           project-action-details (into {}
                                    (map (juxt :action_detail :value))
-                                   (db.project/project-actions-details db project))]
-      (into {}
-        (map
-          (fn [[query-name {:keys [fn-to-retrieve-data format-fn] :or {format-fn identity}}]]
-            [query-name (format-fn (fn-to-retrieve-data project-actions project-action-details))])
-          @cached-hierarchies)))
+                                   (db.project/project-actions-details db project))
+          triplets (map
+                     (fn [[query-name {:keys [fn-to-retrieve-data format-fn] :or {format-fn identity}}]]
+                       (let [db-value (fn-to-retrieve-data project-actions project-action-details)]
+                         [query-name (format-fn db-value) db-value]))
+                     @cached-hierarchies)]
+      (into {} (cons
+                 [:raw (into {} (map (juxt first last) triplets))]
+                 (map (juxt first second) triplets))))
     (catch Exception e
       (.printStackTrace e))))
 
