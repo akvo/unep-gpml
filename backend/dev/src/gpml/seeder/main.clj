@@ -17,6 +17,7 @@
             [gpml.db.technology :as db.technology]
             [gpml.db.project :as db.project]
             [gpml.exporter.main :as db.exporter]
+            gpml.handler.detail
             gpml.pg-util
             [integrant.core :as ig]
             [jsonista.core :as j]))
@@ -409,19 +410,21 @@
        (seed-projects tx))
      (println "-- Done Seeding")))
   ([]
-   (seed (-> (dev-system)
-             (ig/init [:duct.database.sql/hikaricp])
-             :duct.database.sql/hikaricp
-             :spec)
-         {:country? true
-          :currency? true
-          :organisation? true
-          :language? true
-          :tag? true
-          :policy? true
-          :resource? true
-          :technology? true
-          :project? true})))
+   (let [db (-> (dev-system)
+              (ig/init [:duct.database.sql/hikaricp])
+              :duct.database.sql/hikaricp
+              :spec)]
+     (seed db
+       {:country? true
+        :currency? true
+        :organisation? true
+        :language? true
+        :tag? true
+        :policy? true
+        :resource? true
+        :technology? true
+        :project? true})
+     (gpml.handler.detail/cache-hierarchies! db))))
 
 (comment
 

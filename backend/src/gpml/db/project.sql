@@ -17,3 +17,9 @@ values(:project, :action);
 -- :doc Insert a new projects action details
 insert into project_action_detail(project, action_detail, value)
 values(:project, :action_detail, :value);
+
+-- :name project-actions-id :? :*
+select action from project_action where project = :id
+
+-- :name project-actions-details :? :*
+select action_detail,value from project_action_detail where project = :id

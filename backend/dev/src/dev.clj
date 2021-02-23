@@ -2,7 +2,9 @@
   (:refer-clojure :exclude [test])
   (:require [clojure.repl :refer :all]
             [clojure.tools.namespace.repl :refer [refresh]]
+            [clojure.java.jdbc :as jdbc]
             [clojure.java.io :as io]
+            clojure.pprint
             [duct.core :as duct]
             [duct.core.repl :as duct-repl]
             [eftest.runner :as eftest]
@@ -37,6 +39,13 @@
 (defn db-conn
   []
   (-> system :duct.database.sql/hikaricp :spec))
+
+(defn db-q
+  ([q] (db-q q false))
+  ([q pp?] (let [result (jdbc/query (db-conn) q)]
+             (if pp?
+               (clojure.pprint/print-table result)
+               result))))
 
 (defn launch-portal
   []
