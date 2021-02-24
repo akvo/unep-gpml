@@ -274,6 +274,10 @@ const DetailsView = ({ match: { params }, ...props }) => {
     })
   }
 
+  useEffect(() => {
+    props.updateDisclaimer(null)
+  }, [])
+
   if(!data) return (
     <div className="details-view">
       <div className="loading">

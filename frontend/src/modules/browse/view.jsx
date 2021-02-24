@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Input, Select, Checkbox, Button, Dropdown, Tag } from 'antd'
+import { Card, Input, Select, Checkbox, Button, Dropdown, Tag, Alert } from 'antd'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
 import { topicTypes, topicTypesIncludingOrg, topicTypesApprovedUser, topicNames, resourceTypeToTopicType } from '../../utils/misc'
@@ -30,7 +30,7 @@ function useQuery() {
 
 let tmid
 
-const Browse = ({ history, countData, profile, setSignupModalVisible}) => {
+const Browse = ({ history, countData, profile, setSignupModalVisible, updateDisclaimer }) => {
   const query = useQuery()
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(true)
@@ -122,8 +122,29 @@ const Browse = ({ history, countData, profile, setSignupModalVisible}) => {
     return {...acc, ...data}
   }, {})
 
+  useEffect(() => {
+    updateDisclaimer('/browse')
+  }, [])
+  // const disclaimer = <>
+  //   UNEP shall not be liable for third party content hosted on the platform. Contact us if you have any concerns with the content at: <a href="mailto:unep-gpmarinelitter@un.org">unep-gpmarinelitter@un.org</a>. 
+  //   Please note that during Beta Testing, content and functionality issues may persist.
+  // </>
+
   return (
     <div id="browse">
+
+      {/* disclaimer */}
+      {/* <div style={{position: 'absolute', top: 0, left: '50%', width: '750px'}}>
+        <div style={{position: 'relative', left: '-50%'}}>
+          <Alert
+            message={disclaimer}
+            type="info"
+            closable
+          />
+        </div>
+      </div> */}
+      {/* disclaimer */}
+
       <div className="ui container">
         <aside>
           <div className="inner">

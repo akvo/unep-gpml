@@ -1,5 +1,5 @@
 import { Button, notification, Tabs } from 'antd'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import api from '../../utils/api'
 import SignupForm from '../signup/signup-form'
 import AdminSection from './admin'
@@ -8,7 +8,7 @@ import isEmpty from 'lodash/isEmpty'
 import { LoadingOutlined } from '@ant-design/icons';
 const {TabPane} = Tabs
 
-const ProfileView = ({profile, tags, setProfile}) => {
+const ProfileView = ({profile, tags, setProfile, updateDisclaimer}) => {
   const handleSubmitRef = useRef()
   const [saving, setSaving] = useState(false)
   const onSubmit = (vals) => {
@@ -27,6 +27,10 @@ const ProfileView = ({profile, tags, setProfile}) => {
       setSaving(false)
     })
   }
+
+  useEffect(() => {
+    updateDisclaimer(null)
+  }, [])
 
   return (
     <div id="profile">

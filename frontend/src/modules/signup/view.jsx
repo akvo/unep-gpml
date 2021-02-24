@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Row, Col, Card } from 'antd';
 import './view-style.scss'
 import { useAuth0 } from '@auth0/auth0-react';
 
-const SignupView = () => {
+const SignupView = ({ ...props }) => {
   const {
     loginWithPopup
   } = useAuth0();
+
+  useEffect(() => {
+    props.updateDisclaimer(null)
+  }, [])
+  
   return (
     <div id="signup-view">
       <div className="ui container">
