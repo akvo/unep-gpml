@@ -246,6 +246,12 @@ const detailTechnology = [
 
 const detailPolicy = [
     {
+        'key' : 'originalTitle',
+        'name' : 'Original Title',
+        'value' : 'originalTitle',
+        'type': 'name',
+    },
+    {
         'key' : 'status',
         'name' : 'Status',
         'value' : 'status',
@@ -311,25 +317,9 @@ const detailPolicy = [
         'value' : 'join',
         'type': 'array',
     },
-    // Original Title: Column C
-    //  Abstract: Column F
-    //  Policy Link: Column G
-    //  Other Links: Column Q
 ];
 
 const detailProject = [
-    {
-        'key' : 'geoCoverageType',
-        'name' : 'Geo-Coverage',
-        'value' : 'geoCoverageType',
-        'type': 'text',
-    },
-    {
-        'key' : 'geoCoverageValues',
-        'name' : 'Country',
-        'value' : 'countries',
-        'type': 'array',
-    },
     {
         'key' : 'funds',
         'name' : 'Amount Invested',
@@ -418,6 +408,30 @@ const detailOrganisation = [
         'type': 'name',
     },
     {
+        'key' : 'areaOfExpertise',
+        'name' : 'Area of Expertise',
+        'value' : 'areaOfExpertise',
+        'type': 'name',
+    },
+    {
+        'key' : 'projectRelatedToMarineLitter',
+        'name' : 'Programs and Projects Related to Marine Litter',
+        'value' : 'projectRelatedToMarineLitter',
+        'type': 'name',
+    },
+    {
+        'key' : 'areaTheApplicantWillContributeTo',
+        'name' : 'Area Applicant Will Contribute To',
+        'value' : 'areaTheApplicantWillContributeTo',
+        'type': 'name',
+    },
+    {
+        'key' : 'url',
+        'name' : 'Website',
+        'value' : 'url',
+        'type': 'link',
+    },
+    {
         'key' : 'geoCoverageType',
         'name' : 'Geo-Coverage',
         'value' : 'geoCoverageType',
@@ -428,36 +442,6 @@ const detailOrganisation = [
         'name' : 'Country',
         'value' : 'countries',
         'type': 'array',
-    },
-    {
-        'key' : 'xxx',
-        'name' : 'Area of Expertise',
-        'value' : 'expertise',
-        'type': 'name',
-    },
-    {
-        'key' : 'xxx',
-        'name' : 'Programs and Projects Related to Marine Litter',
-        'value' : 'program',
-        'type': 'name',
-    },
-    {
-        'key' : 'url',
-        'name' : 'Website',
-        'value' : 'url',
-        'type': 'link',
-    },
-    {
-        'key' : 'xxx',
-        'name' : 'Country',
-        'value' : 'xxx',
-        'type': 'xxx',
-    },
-    {
-        'key' : 'xxx',
-        'name' : 'Region',
-        'value' : 'xxx',
-        'type': 'xxx',
     },
     {
         'key' : null,
