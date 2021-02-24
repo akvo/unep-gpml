@@ -211,10 +211,10 @@ const detailTechnology = [
         'type': 'name',
     },
     {
-        'key' : 'country',
+        'key' : 'headquarters',
         'name' : 'Headquarters',
-        'value' : 'country',
-        'type': 'name',
+        'value' : 'headquarters',
+        'type': 'object',
     },
     {
         'key' : 'developmentStage',

@@ -91,6 +91,7 @@ const renderDetails = (params, data) => {
                       { (value === key) && (type === 'text') && capitalize(data[value]) }
                       { (value === key) && (type === 'number') && capitalize(data[value]) }
                       { (value === key) && (type === 'currency') && 'USD ' + data[value] }
+                      { (value === key) && (type === 'object') && data[value].name }
                       { (value === key) && (type === 'link') && <a target="_blank" href={data['value']}>{data[value]}</a> }
                       { (value === key) && (type === 'date') && moment(data[key]).format('DD MMM YYYY')}
                       { params.type === 'project' && data[key] && (value === 'join') && (type === 'array') && data[key].map(x => x.name).join(', ') }
@@ -218,6 +219,7 @@ const renderDescription = (params, data) => {
     <div className="card">
       <h3>{ text.name}</h3>
       {data[text.key] && <p>{data[text.key]}</p>}
+      {!data[text.key] && <p>There is no data to display</p>}
     </div>
   )
 }
@@ -232,7 +234,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
   const allowBookmark = params.type !== 'stakeholder' || profile.id !== params.id
 
   const contentHeaderStyle = (params.type === 'project') 
-      ? {header: 'content-project', topic: 'project-topic'} : {header: 'content-non-project', topic: 'non-project-topic'};
+      ? {header: 'content-project', topic: 'project-topic ' + params.type} : {header: 'content-non-project', topic: 'non-project-topic ' + params.type};
 
   useEffect(() => {
     api.get(`/detail/${params.type}/${params.id}`)
