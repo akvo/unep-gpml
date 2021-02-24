@@ -24,9 +24,9 @@ const Footer = () => {
           <nav>
             <ul>
               <li><h4>GPML Digital platform</h4></li>
-              <li>Knowledge Exchange</li>
-              <li>Connect Stakeholders</li>
-              <li>Data Hub (comming soon)</li>
+              <li><a href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform" target="_blank" rel="noreferrer">Knowledge Exchange</a></li>
+              <li><a href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform" target="_blank" rel="noreferrer">Connect Stakeholders</a></li>
+              <li>Data Hub (coming soon)</li>
             </ul>
           </nav>
         </div>
@@ -36,7 +36,7 @@ const Footer = () => {
               <li><h4>Resources</h4></li>
               <li><a href="/browse?topic=action_plan">Action plans</a></li>
               <li><a href="/browse?topic=event">Events</a></li>
-              <li><a href="/browse?topic=financing_resource">Financial resources</a></li>
+              <li><a href="/browse?topic=financing_resource">Financing resources</a></li>
               <li><a href="/browse?topic=technical_resource">Technical resources</a></li>
               <li><a href="/browse?topic=technology">Technologies</a></li>
               <li><a href="/browse?topic=policy">Policies</a></li>
