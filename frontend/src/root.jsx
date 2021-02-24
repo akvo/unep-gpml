@@ -16,6 +16,16 @@ import SignupView from './modules/signup/view';
 import DetailsView from './modules/details/view';
 import Footer from './footer'
 
+const disclaimerHome = <>
+  The GPML Digital Platform Phase 1 is now live and currently a Beta Version. Help us test the platform and let us know what you think at <a style={{ color: 'white' }} href="mailto:unep-gpmarinelitter@un.org">unep-gpmarinelitter@un.org</a>. 
+  Take part in shaping the platform’s next releases, until its final launch scheduled for 2023. Stay tuned!
+</>
+
+const disclaimerBrowse = <>
+  UNEP shall not be liable for third party content hosted on the platform. Contact us if you have any concerns with the content at: <a style={{ color: 'white' }} href="mailto:unep-gpmarinelitter@un.org">unep-gpmarinelitter@un.org</a>. 
+  Please note that during Beta Testing, content and functionality issues may persist.
+</>
+
 const Root = () => {
     const {
       isAuthenticated,
@@ -31,6 +41,7 @@ const Root = () => {
     const [data, setData] = useState(null);
     const [tags, setTags] = useState([]);
     const [initLandingCount, setInitLandingCount] = useState("");
+    const [disclaimer, setDisclaimer] = useState(null);
 
     useEffect(() => {
       (async function fetchData() {
@@ -74,9 +85,28 @@ const Root = () => {
       })
     }, [])
 
+    useEffect(() => {
+      if (window.location.pathname === '/') setDisclaimer(disclaimerHome) 
+      else if (window.location.pathname === '/browse') setDisclaimer(disclaimerBrowse)
+      else if (window.location.pathname === '/browse/') setDisclaimer(disclaimerBrowse)
+      else setDisclaimer(null)
+    }, [disclaimer])
+
+    const updateDisclaimer = (page) => {
+      if (page === '/') setDisclaimer(disclaimerHome) 
+      if (page === '/browse') setDisclaimer(disclaimerBrowse)
+      if (page === null) setDisclaimer(null)
+    }
+
     return (
     <Router>
       <div id="root">
+        {
+          (disclaimer) &&
+            <div style={{ backgroundColor: '#27AE60', display: 'flex', justifyContent: 'center', color: 'white', fontSize: '12px', paddingTop: '10px', paddingLeft: '10px', paddingRight: '10px' }}>
+              <p>{disclaimer}</p>
+            </div>
+        }
         <div className="topbar">
           <div className="ui container">
             <div className="leftside">
@@ -113,12 +143,12 @@ const Root = () => {
         </header>
         <Route path="/" exact render={props => <Landing {...
           {profile, countries, data, initLandingCount, setCountries, setInitLandingCount, setEventWarningVisible, setSignupModalVisible, loginWithPopup, isAuthenticated, ...props}
-          }/>} />
-        <Route path="/browse" render={props => <Browse {...props} profile={profile} countData={data} setSignupModalVisible={setSignupModalVisible}/>} />
-        <Route path="/add-event" component={AddEvent} />
-        <Route path="/profile" render={props => <ProfileView {...{...props, profile, tags, setProfile }} />} />
-        <Route path="/signup" component={SignupView} />
-        <Route path="/:type/:id" render={props => <DetailsView {...props} profile={profile} setSignupModalVisible={setSignupModalVisible}/>} />
+          } updateDisclaimer={updateDisclaimer} />} />
+        <Route path="/browse" render={props => <Browse {...props} profile={profile} countData={data} setSignupModalVisible={setSignupModalVisible} updateDisclaimer={updateDisclaimer} />} />
+        <Route path="/add-event" render={props => <AddEvent {...props} updateDisclaimer={updateDisclaimer} />} />
+        <Route path="/profile" render={props => <ProfileView {...{...props, profile, tags, setProfile }} updateDisclaimer={updateDisclaimer} />} />
+        <Route path="/signup" render={props => <SignupView {...props} updateDisclaimer={updateDisclaimer} />} />
+        <Route path="/:type/:id" render={props => <DetailsView {...props} profile={profile} setSignupModalVisible={setSignupModalVisible} updateDisclaimer={updateDisclaimer} />} />
         <Footer />
       </div>
       <SignupModal visible={signupModalVisible} onCancel={() => setSignupModalVisible(false)} {...{ tags, setProfile }} />
