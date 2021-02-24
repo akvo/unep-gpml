@@ -81,16 +81,18 @@ const renderDetails = (params, data) => {
             return (
               <>
               {
-                (data[key] || ((value === 'countries') && (data.geoCoverageType))) && 
+                (data[key] || ((value === 'countries') && (data.geoCoverageType)) || key === null) && 
                   <div className="column">
                     <div className="title">{ name }</div>
                     <div className="value">
+                      { (key === null) && (type === 'static') && value }
                       { params.type === 'project' && (value === key) && (type === 'name') && data[value].name }
                       { params.type !== 'project' && (value === key) && (type === 'name') && data[value] }
                       { (value === key) && (type === 'text') && capitalize(data[value]) }
                       { (value === key) && (type === 'number') && capitalize(data[value]) }
                       { (value === key) && (type === 'currency') && 'USD ' + data[value] }
-                      { (value === key) && (type === 'date') && moment(data[value]).format('DD MMM YYYY')}
+                      { (value === key) && (type === 'link') && <a target="_blank" href={data['value']}>{data[value]}</a> }
+                      { (value === key) && (type === 'date') && moment(data[key]).format('DD MMM YYYY')}
                       { params.type === 'project' && data[key] && (value === 'join') && (type === 'array') && data[key].map(x => x.name).join(', ') }
                       { params.type !== 'project' && data[key] && (value === 'join') && (type === 'array') && data[key].join(', ') }
                       { 
@@ -112,6 +114,10 @@ const renderDetails = (params, data) => {
                       {
                         (value === 'countries') && (data[key] !== null) && (data.geoCoverageType !== 'global') &&
                           data[key].map(x => countries[countries3to2[x]].name).join(', ')
+                      }
+                      {
+                        (value === 'custom') && (type === 'date') &&
+                          moment(data[customValue[0]]).format('DD MMM YYYY') + ' / ' + moment(data[customValue[1]]).format('DD MMM YYYY')
                       }
                       {
                         (value === 'custom') && (type === 'currency') &&
@@ -171,22 +177,30 @@ const renderInfo = (params, data) => {
           info.map((item, index) => {
             const { key, name, value, type } = item;
             return (
-              <div className="column">
-                <div className="title">{ name }</div>
-                <div className="value">
-                  { 
-                    data[key] && (value === 'link') && (type === 'array') && 
-                      data[key].map((x,i) => {
-                        return (
-                          <>
-                          <a target="_blank" href='#' style={{ wordBreak: 'break-word' }}>{x.name}</a>
-                          {(i !== data[key].length - 1) && ", "}
-                          </>
-                        )
-                      })
-                  }
-                </div>
-              </div> 
+              <>
+              {
+                data[key] &&
+                  <div className="column">
+                    <div className="title">{ name }</div>
+                    <div className="value">
+                      { (value === key) && (type === 'name') &&  data[value]}
+                      { (value === key) && (type === 'link') &&  <a target="_blank" href={data[value]} style={{ wordBreak: 'break-word' }}>{data[value]}</a>}
+                      { 
+                        (value === 'link') && (type === 'array') && 
+                          data[key].map((x,i) => {
+                            return (
+                              <>
+                              <a target="_blank" href='#' style={{ wordBreak: 'break-word' }}>{x.name || x}</a>
+                              {(i !== data[key].length - 1) && ", "}
+                              </>
+                            )
+                          })
+                      }
+                    </div>
+                  </div> 
+              }
+              {(data[key] && index !== info.length - 1) && <Divider />}
+              </>
             )
           })
         }
@@ -287,7 +301,16 @@ const DetailsView = ({ match: { params }, ...props }) => {
           <div className="header-container">
             <div className="title">
               <div className="type-tag"><span className={contentHeaderStyle.topic}>{topicNames(params.type)}</span></div>
-              <h1>{data.title || data.name}</h1>
+              {
+                (params.type === 'technology') &&
+                  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                    <div style={{ width: '6%', padding: '15px 0', marginRight: '20px' }}>
+                      <Image width="100%" src={data.logo || "/logo-not-found.png"} />
+                    </div>
+                    <div style={{ width: '90%' }}><h1>{data.title || data.name}</h1></div>
+                  </div>
+              }
+              { (params.type !== 'technology') && <h1>{data.title || data.name}</h1>}
               {relation?.association?.map((relationType, index) => <Tag color="blue" key={`relation-${index}`}>{relationType}</Tag>)}
             </div>
             <div className="bookmark">

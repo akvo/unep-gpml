@@ -159,12 +159,12 @@ const detailEvent = [
         'customValue': ['startDate', 'endDate'],
         'type': 'date',
     },
-    {
-        'key' : 'url',
-        'name' : 'Link',
-        'value' : 'url',
-        'type': 'link',
-    },
+    // {
+    //     'key' : 'url',
+    //     'name' : 'Link',
+    //     'value' : 'url',
+    //     'type': 'link',
+    // },
     {
         'key' : 'geoCoverageType',
         'name' : 'Geo-Coverage',
@@ -294,9 +294,9 @@ const detailPolicy = [
         'type': 'date',
     },
     {
-        'key' : 'latestAmandmentDate',
+        'key' : 'latestAmendmentDate',
         'name' : 'Last Amendment Date',
-        'value' : 'latestAmandmentDate',
+        'value' : 'latestAmendmentDate',
         'type': 'date',
     },
     {
@@ -410,6 +410,63 @@ const detailStakeholder = [
     },
 ];
 
+const detailOrganisation = [
+    {
+        'key' : 'type',
+        'name' : 'Organisation Type',
+        'value' : 'type',
+        'type': 'name',
+    },
+    {
+        'key' : 'geoCoverageType',
+        'name' : 'Geo-Coverage',
+        'value' : 'geoCoverageType',
+        'type': 'text',
+    },
+    {
+        'key' : 'geoCoverageValues',
+        'name' : 'Country',
+        'value' : 'countries',
+        'type': 'array',
+    },
+    {
+        'key' : 'xxx',
+        'name' : 'Area of Expertise',
+        'value' : 'expertise',
+        'type': 'name',
+    },
+    {
+        'key' : 'xxx',
+        'name' : 'Programs and Projects Related to Marine Litter',
+        'value' : 'program',
+        'type': 'name',
+    },
+    {
+        'key' : 'url',
+        'name' : 'Website',
+        'value' : 'url',
+        'type': 'link',
+    },
+    {
+        'key' : 'xxx',
+        'name' : 'Country',
+        'value' : 'xxx',
+        'type': 'xxx',
+    },
+    {
+        'key' : 'xxx',
+        'name' : 'Region',
+        'value' : 'xxx',
+        'type': 'xxx',
+    },
+    {
+        'key' : null,
+        'name' : 'GPML Member',
+        'value' : 'Yes',
+        'type': 'static',
+    },
+];
+
 export const detailMaps = {
     'action_plan' : detailActionPlan,
     'technical_resource' : detailActionPlan,
@@ -419,6 +476,7 @@ export const detailMaps = {
     'policy' : detailPolicy,
     'project' : detailProject,
     // 'stakeholder' : detailStakeholder,
+    'organisation' : detailOrganisation,
 };
 
 const description = {
@@ -428,6 +486,11 @@ const description = {
 
 const eventDescription = {
     'key' : 'description',
+    'name' : 'Description'
+}
+
+const technologyDescription = {
+    'key' : 'remarks',
     'name' : 'Description'
 }
 
@@ -442,7 +505,7 @@ export const descriptionMaps = {
     'technical_resource' : description,
     'financing_resource' : description,
     'event' : eventDescription,
-    //technology
+    'technology' : technologyDescription,
     'policy' : policyDescription,
     // 'stakeholder' : description,
 }
@@ -454,6 +517,42 @@ export const infoMaps = {
             'name' : 'Resource Link' ,
             'value' : 'link',
             'type' : 'array',
+        }
+    ],
+    'event' : [
+        {
+            'key' : 'url',
+            'name' : 'Link' ,
+            'value' : 'url',
+            'type' : 'link',
+        }
+    ],
+    'technology' : [
+        {
+            'key' : 'email',
+            'name' : 'Email' ,
+            'value' : 'email',
+            'type' : 'name',
+        },
+        {
+            'key' : 'url',
+            'name' : 'Resource Link',
+            'value' : 'url',
+            'type' : 'link',
+        }
+    ],
+    'policy' : [
+        {
+            'key' : 'attachments',
+            'name' : 'Other Links' ,
+            'value' : 'link',
+            'type' : 'array',
+        },
+        {
+            'key' : 'url',
+            'name' : 'Policy Link' ,
+            'value' : 'url',
+            'type' : 'link',
         }
     ]
 }
