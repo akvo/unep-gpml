@@ -234,17 +234,13 @@
       deref
       ))
 
-  (do
-
-    (->> all
-      (map second)
-      ;(filter (fn [xxx] (medley/find-first (fn [x] (= "All of the above" (:name x))) (:children xxx))))
-      (filter (fn [xxxx] (= 1 (count (:children xxxx)))))
-      (remove (fn [xxxx] (=  {:id 100, :name "Reporting and Evaluations", :children [{:id 101, :name "Yes"}]} xxxx)))
-      ;(map (partial all-of-the-above (-> cached-hierarchies deref :lifecycle_phase :format-params)))
-      ))
-
-
+  (->> all
+    (map second)
+    ;(filter (fn [xxx] (medley/find-first (fn [x] (= "All of the above" (:name x))) (:children xxx))))
+    (filter (fn [xxxx] (= 1 (count (:children xxxx)))))
+    (remove (fn [xxxx] (=  {:id 100, :name "Reporting and Evaluations", :children [{:id 101, :name "Yes"}]} xxxx)))
+    ;(map (partial all-of-the-above (-> cached-hierarchies deref :lifecycle_phase :format-params)))
+    )
 
   (get-action-hierarchy (dev/db-conn) {:code 43374905})
 
