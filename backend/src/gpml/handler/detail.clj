@@ -33,7 +33,7 @@
              (:children action))))))
 
 (defn action-reported [_ action]
-  (if-let [first-child (-> action :children first)]
+  (when-let [first-child (-> action :children first)]
     (if (= "Yes" (:name first-child))
       {:reports "Yes"}
       (let [reasons (seq (map other-or-name (:children first-child)))]
@@ -271,21 +271,18 @@
   (require 'clojure.set)
   (time (cache-hierarchies! (dev/db-conn)))
 
-  (do
-
-    (require '[cheshire.core :as json])
-    (->>
-      (range 1 300)
-      (pmap
-        #(json/parse-string (slurp (str "http://localhost:3000/api/detail/project/" %)) true))
-      (map (juxt :id :legislation_standards))
-      (filter second)
-      ;(pmap :children)
-      ;(map first)
-      ;(clojure.pprint/print-table )
-      (def all)
-      deref
-      ))
+  (->>
+    (range 1 276)
+    (pmap
+      #(json/parse-string (slurp (str "http://localhost:3000/api/detail/policy/" %)) true))
+    ;(map (juxt :id :funding))
+    ;(filter second)
+    ;(pmap :children)
+    ;(map first)
+    ;(clojure.pprint/print-table )
+    (def all)
+    deref
+    )
 
 
   (do
