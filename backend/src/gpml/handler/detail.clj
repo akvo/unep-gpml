@@ -10,42 +10,43 @@
             [clojure.string :as string]))
 
 (defn other-or-name [action]
-  (or
-    (:value-entered action)
-    (:name action)))
+  (when-let [actual-name (or
+                           (:value-entered action)
+                           (:name action))]
+    {:name actual-name}))
 
 (defn first-child-replacing-other [_ action]
   (let [first-child (-> action :children first)]
     (other-or-name first-child)))
 
 (defn value-list [_ action-details]
-  (seq (map :value action-details)))
+  (seq (map (fn [action-detail] {:name (:value action-detail)}) action-details)))
 
 (defn all-of-the-above [all-actions action]
   (let [result (first-child-replacing-other all-actions action)]
     (seq (map other-or-name
-           (if (= "All of the above" result)
+           (if (= {:name "All of the above"} result)
              (concat
                (take-while #(not= "All of the above" (:name %)) (-> all-actions :children))
                (next (drop-while #(not= "All of the above" (:name %)) (-> action :children))))
              (:children action))))))
 
 (defn action-reported [_ action]
-  (let [first-child (-> action :children first)]
-    (if (= "Yes" (other-or-name first-child))
+  (if-let [first-child (-> action :children first)]
+    (if (= "Yes" (:name first-child))
       {:reports "Yes"}
       (let [reasons (seq (map other-or-name (:children first-child)))]
         (medley/assoc-some
-          {:reports (other-or-name first-child)}
+          {:reports (:name first-child)}
           :reasons (if (= "Not applicable" (-> action :children last other-or-name))
-                     (cons "Not applicable" reasons)
+                     (cons {:name "Not applicable"} reasons)
                      reasons))))))
 
 (defn nested-all-of-the-above [all-actions action]
   (let [all-sub-actions-by-id (into {} (map (juxt :id identity) (:children all-actions)))]
     (seq (map
            (fn [sub-action]
-             (medley/assoc-some {:name (other-or-name sub-action)}
+             (medley/assoc-some (other-or-name sub-action)
                :options (all-of-the-above
                           (get all-sub-actions-by-id (:id sub-action))
                           sub-action)))
@@ -111,8 +112,8 @@
             :format-fn #'all-of-the-above}
 
    ;Activity Owner: Column AR, AS
-   #'nested-all-of-the-above {:action-code 43374862
-                              :format-fn #'nested-all-of-the-above}
+   :activity_owner {:action-code 43374862
+                    :format-fn #'nested-all-of-the-above}
    ;; all these are children of "activity owner"
    ;Entity Type (only the one selected):
    ;Public Administration: Column AT, AU
