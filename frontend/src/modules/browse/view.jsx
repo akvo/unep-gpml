@@ -216,10 +216,12 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
   // const description = result.description || result.abstract || result.summary || result.about
   const relation = relations.find(it => it.topicId === result.id && it.topic === resourceTypeToTopicType(result.type))
   const allowBookmark = result.type !== 'stakeholder' || profile.id !== result.id
+  const tagClassname = "type " + result.type;
+
   return (
     <Linkify result={result}>
         <h4>{title}</h4>
-        <div className="type">{topicNames(result.type)}</div>
+        <div className={tagClassname}>{topicNames(result.type)}</div>
         <ul className="stats">
           {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
           {result.type === 'project' && result.geoCoverageType === 'global' && <li><Excerpt content={values(countries).map(c => c.name).join(', ')} max={300} /></li>}
