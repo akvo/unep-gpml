@@ -275,6 +275,8 @@
        (map (fn [x]
                 (assoc x :review_status "APPROVED")))
        (map (fn [x]
+                (assoc x :url (first (:url x)))))
+       (map (fn [x]
               (if-let [country (:country x)]
                 (if-let [data (first (get-country db [country]))]
                   (assoc x :country (:id data))
