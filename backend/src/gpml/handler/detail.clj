@@ -202,25 +202,22 @@
     (medley/update-existing :children #(map remove-extra-keys %))))
 
 (defn details-for-project [db project]
-  (try
-    (let [project-actions (set (map :action (db.project/project-actions-id db project)))
-          project-action-details (into {}
-                                   (map (juxt :action_detail :value))
-                                   (db.project/project-actions-details db project))
-          triplets (map
-                     (fn [[query-name {:keys [fn-to-retrieve-data format-fn format-params]}]]
-                       (let [db-value (fn-to-retrieve-data project-actions project-action-details)]
-                         [query-name
-                          (if format-fn
-                            (format-fn format-params db-value)
-                            db-value)
-                          db-value]))
-                     @cached-hierarchies)]
-      (into {} (cons
-                 [:raw (into {} (map (juxt first last) triplets))]
-                 (map (juxt first second) triplets))))
-    (catch Exception e
-      (.printStackTrace e))))
+  (let [project-actions (set (map :action (db.project/project-actions-id db project)))
+        project-action-details (into {}
+                                 (map (juxt :action_detail :value))
+                                 (db.project/project-actions-details db project))
+        triplets (map
+                   (fn [[query-name {:keys [fn-to-retrieve-data format-fn format-params]}]]
+                     (let [db-value (fn-to-retrieve-data project-actions project-action-details)]
+                       [query-name
+                        (if format-fn
+                          (format-fn format-params db-value)
+                          db-value)
+                        db-value]))
+                   @cached-hierarchies)]
+    (into {} (cons
+               [:raw (into {} (map (juxt first last) triplets))]
+               (map (juxt first second) triplets)))))
 
 (defn cache-hierarchies! [db]
   (reset! cached-hierarchies
