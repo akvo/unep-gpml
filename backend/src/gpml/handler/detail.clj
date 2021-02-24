@@ -98,7 +98,8 @@
             :format-fn #'all-of-the-above}
 
    ;Activity Owner: Column AR, AS
-   :activity_owner {:action-code 43374862}
+   #'nested-all-of-the-above {:action-code 43374862
+                    :format-fn #'nested-all-of-the-above}
    ;; all these are children of "activity owner"
    ;Entity Type (only the one selected):
    ;Public Administration: Column AT, AU
