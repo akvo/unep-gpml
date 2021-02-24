@@ -51,6 +51,15 @@
                           sub-action)))
            (:children action)))))
 
+(defn monitoring [_ action]
+  (seq (map
+         (fn [{:keys [name value-entered]}]
+           (if (= "Other" name)
+             {:name value-entered}
+             (cond-> {:name name}
+               value-entered (assoc :options [{:name value-entered}]))))
+         (:children action))))
+
 (def data-queries
   {
    ;; Types of Action (43374939)
@@ -61,7 +70,8 @@
                          :format-fn #'nested-all-of-the-above}
    :technology_and_processes {:action-code 105885456
                               :format-fn #'nested-all-of-the-above}
-   :monitoring_and_analysis {:action-code 105885566}
+   :monitoring_and_analysis {:action-code 105885566
+                             :format-fn #'monitoring}
 
    ;; Action Targets
    :target_action {:action-code 43374904
@@ -281,53 +291,55 @@
 
   (get-action-hierarchy (dev/db-conn) {:code 43374905})
 
-  (defn action [code]
-    (first (clojure.java.jdbc/query (dev/db-conn) ["select * from action where code = ?" code])))
+  (do
+    (require '[cheshire.core :as json])
+    (defn action [code]
+      (first (clojure.java.jdbc/query (dev/db-conn) ["select * from action where code = ?" code])))
 
-  (defn action-detail [code]
-    (first (clojure.java.jdbc/query (dev/db-conn) ["select * from action_detail where code = ?" code])))
+    (defn action-detail [code]
+      (first (clojure.java.jdbc/query (dev/db-conn) ["select * from action_detail where code = ?" code])))
 
-  (def questionnaire (json/parse-string (slurp "https://raw.githubusercontent.com/akvo/akvo-tech-consultancy/sites/unep-dashboard/sites/unep-dashboard/database/transformer/source/questionnaire.json") true))
+    (def questionnaire (json/parse-string (slurp "https://raw.githubusercontent.com/akvo/akvo-tech-consultancy/sites/unep-dashboard/sites/unep-dashboard/database/transformer/source/questionnaire.json") true))
 
-  (def all-letters (map (comp clojure.string/upper-case str char) (range 97 123)))
+    (def all-letters (map (comp clojure.string/upper-case str char) (range 97 123)))
 
-  (def columns
-    (concat all-letters
-      (map str (repeat "A") all-letters)
-      (map str (repeat "B") all-letters)
-      (map str (repeat "C") all-letters)))
+    (def columns
+      (concat all-letters
+        (map str (repeat "A") all-letters)
+        (map str (repeat "B") all-letters)
+        (map str (repeat "C") all-letters)))
 
-  (defn extract-column-id [question-str]
-    (string/replace (first (string/split question-str #" ")) #"\.$" ""))
+    (defn extract-column-id [question-str]
+      (string/replace (first (string/split question-str #" ")) #"\.$" ""))
 
-  (def xls-column-to-questions
-    (into {}
-      (map
-        vector
-        columns
-        (map extract-column-id (string/split (slurp "dev/resources/questionnarie-columns.csv") #";")))))
+    (def xls-column-to-questions
+      (into {}
+        (map
+          vector
+          columns
+          (map extract-column-id (string/split (slurp "dev/resources/questionnarie-columns.csv") #";")))))
 
-  (defn clean-up [node]
-    (->
-      node
-      (dissoc :dependencies :layout :show_hints :displayOptionality :data_question_visibility :label :rows :cols :size :mandatory :displayLegend :has_other :is_other)
-      (assoc :xls-column (get (clojure.set/map-invert xls-column-to-questions) (:q_no node)))
-      (medley.core/update-existing :options #(map (fn [option] (dissoc option :class :is_not_applicable :is_other :screen_to_message :value)) %))
-      (medley.core/update-existing :children (fn [nodes] (map clean-up nodes)))))
+    (defn clean-up [node]
+      (->
+        node
+        (dissoc :dependencies :layout :show_hints :displayOptionality :data_question_visibility :label :rows :cols :size :mandatory :displayLegend :has_other :is_other)
+        (assoc :xls-column (get (clojure.set/map-invert xls-column-to-questions) (:q_no node)))
+        (medley.core/update-existing :options #(map (fn [option] (dissoc option :class :is_not_applicable :is_other :screen_to_message :value)) %))
+        (medley.core/update-existing :children (fn [nodes] (map clean-up nodes)))))
 
-  (defn find-action [xls-column]
-    (->>
-      (tree-seq
-        (fn [node] (or (:children node) (:options node)))
-        (fn [node] (concat (:children node) (:options node)))
-        (:top_container questionnaire))
-      (filter (fn [node] (= (xls-column-to-questions xls-column) (:q_no node))))
-      (map clean-up)
-      (map (fn [node]
-             (->
-               node
-               (assoc :action-detail (action-detail (:id node))
-                      :action (action (:id node))))))
-      first))
+    (defn find-action [xls-column]
+      (->>
+        (tree-seq
+          (fn [node] (or (:children node) (:options node)))
+          (fn [node] (concat (:children node) (:options node)))
+          (:top_container questionnaire))
+        (filter (fn [node] (= (xls-column-to-questions xls-column) (:q_no node))))
+        (map clean-up)
+        (map (fn [node]
+               (->
+                 node
+                 (assoc :action-detail (action-detail (:id node))
+                        :action (action (:id node))))))
+        first)))
 
   )
