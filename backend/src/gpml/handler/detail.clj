@@ -99,7 +99,7 @@
 
    ;Activity Owner: Column AR, AS
    #'nested-all-of-the-above {:action-code 43374862
-                    :format-fn #'nested-all-of-the-above}
+                              :format-fn #'nested-all-of-the-above}
    ;; all these are children of "activity owner"
    ;Entity Type (only the one selected):
    ;Public Administration: Column AT, AU
@@ -252,7 +252,7 @@
       (range 1 300)
       (pmap
         #(json/parse-string (slurp (str "http://localhost:3000/api/detail/project/" %)) true))
-      (map (juxt :id :is_action_being_reported))
+      (map (juxt :id :activity_owner))
       (filter second)
       ;(pmap :children)
       ;(map first)
@@ -261,13 +261,18 @@
       deref
       ))
 
-  (->> all
-    (map second)
-    ;(filter (fn [xxx] (medley/find-first (fn [x] (= "All of the above" (:name x))) (:children xxx))))
-    (filter (fn [xxxx] (= 1 (count (:children xxxx)))))
-    (remove (fn [xxxx] (=  {:id 100, :name "Reporting and Evaluations", :children [{:id 101, :name "Yes"}]} xxxx)))
-    ;(map (partial all-of-the-above (-> cached-hierarchies deref :lifecycle_phase :format-params)))
-    )
+
+  (do
+
+    (->> all
+      (map second)
+      ;(filter (fn [xxx] (medley/find-first (fn [x] (= "All of the above" (:name x))) (:children xxx))))
+      ;(filter (fn [xxxx] (= 1 (count (:children xxxx)))))
+      ;(remove (fn [xxxx] (=  {:id 100, :name "Reporting and Evaluations", :children [{:id 101, :name "Yes"}]} xxxx)))
+      (map (partial nested-all-of-the-above (-> cached-hierarchies deref :activity_owner :format-params)))
+      ))
+
+
 
   (get-action-hierarchy (dev/db-conn) {:code 43374905})
 
