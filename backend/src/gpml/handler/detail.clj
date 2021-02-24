@@ -54,10 +54,13 @@
 (def data-queries
   {
    ;; Types of Action (43374939)
-   ;; TODO: also need to add the results of cell "AO" "AP" "AQ"
-   :legislation_standards {:action-code 105885205}
-   :working_with_people {:action-code 105885383}
-   :technology_and_processes {:action-code 105885456}
+   ;; TODO: also need to add the results of cell "AO" "AP" "AQ" ;; Deden mentioned AE
+   :legislation_standards {:action-code 105885205
+                           :format-fn #'nested-all-of-the-above}
+   :working_with_people {:action-code 105885383
+                         :format-fn #'nested-all-of-the-above}
+   :technology_and_processes {:action-code 105885456
+                              :format-fn #'nested-all-of-the-above}
    :monitoring_and_analysis {:action-code 105885566}
 
    ;; Action Targets
@@ -252,7 +255,7 @@
       (range 1 300)
       (pmap
         #(json/parse-string (slurp (str "http://localhost:3000/api/detail/project/" %)) true))
-      (map (juxt :id :activity_owner))
+      (map (juxt :id :legislation_standards))
       (filter second)
       ;(pmap :children)
       ;(map first)
@@ -269,7 +272,9 @@
       ;(filter (fn [xxx] (medley/find-first (fn [x] (= "All of the above" (:name x))) (:children xxx))))
       ;(filter (fn [xxxx] (= 1 (count (:children xxxx)))))
       ;(remove (fn [xxxx] (=  {:id 100, :name "Reporting and Evaluations", :children [{:id 101, :name "Yes"}]} xxxx)))
-      (map (partial nested-all-of-the-above (-> cached-hierarchies deref :activity_owner :format-params)))
+      (map (juxt
+             identity
+             (partial nested-all-of-the-above (-> cached-hierarchies deref :working_with_people :format-params))))
       ))
 
 
