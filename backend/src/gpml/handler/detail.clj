@@ -245,6 +245,10 @@
   (when-let [implementing-mea (:implementing_mea policy)]
     {:implementing_mea (:name (db.country-group/country-group-by-id db {:id implementing-mea}))}))
 
+(defmethod extra-details "technology" [_ db technology]
+  (when-let [headquarters-country (:country technology)]
+    {:headquarters (gpml.db.country/country-by-id db {:id headquarters-country})}))
+
 (defmethod extra-details :nothing [_ _ _]
   nil)
 
