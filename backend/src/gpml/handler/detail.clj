@@ -30,6 +30,16 @@
                (next (drop-while #(not= "All of the above" (:name %)) (-> action :children))))
              (:children action))))))
 
+(defn nested-all-of-the-above [all-actions action]
+  (let [all-sub-actions-by-id (into {} (map (juxt :id identity) (:children all-actions)))]
+    (seq (map
+           (fn [sub-action]
+             (medley/assoc-some {:name (other-or-name sub-action)}
+               :options (all-of-the-above
+                          (get all-sub-actions-by-id (:id sub-action))
+                          sub-action)))
+           (:children action)))))
+
 (def data-queries
   {
    ;; Types of Action (43374939)
@@ -41,8 +51,11 @@
 
    ;; Action Targets
    :target_action {:action-code 43374904}
-   :action_impact_type {:action-code 43374931}
-   :types_contaminants {:action-code 43374917}              ;; "all of the above"
+   :action_impact_type {:action-code 43374931
+                        :format-fn #'all-of-the-above}
+
+   :types_contaminants {:action-code 43374917
+                        :format-fn #'nested-all-of-the-above}
 
    ;; Reporting and measurements
    :is_action_being_reported {:action-code 43374951}
