@@ -7,6 +7,7 @@
             [ring.util.response :as resp]
             [gpml.db.action :as db.action]
             [gpml.db.action-detail :as db.action-detail]
+            [gpml.db.country-group :as db.country-group]
             [clojure.string :as string]))
 
 (defn other-or-name [action]
@@ -235,15 +236,25 @@
                             :fn-to-retrieve-data (partial #'keep-action-details action-details))))]))
       data-queries)))
 
+(defmulti extra-details (fn [topic-type _ _] topic-type) :default :nothing)
+
+(defmethod extra-details "project" [_ db project]
+  (details-for-project db project))
+
+(defmethod extra-details "policy" [_ db policy]
+  (when-let [implementing-mea (:implementing_mea policy)]
+    {:implementing_mea (:name (db.country-group/country-group-by-id db {:id implementing-mea}))}))
+
+(defmethod extra-details :nothing [_ _ _]
+  nil)
+
 (defmethod ig/init-key ::get [_ {:keys [db]}]
   (cache-hierarchies! (:spec db))
   (fn [{:keys [path-params]}]
     (if-let [data (db.detail/get-detail (:spec db) (update path-params :topic-id #(Long/parseLong %)))] ;; TODO: investigate why id value is not coerced
-      (resp/response (if (= "project" (:topic-type path-params))
-                       (merge
-                         (:json data)
-                         (details-for-project (:spec db) (:json data)))
-                       (:json data)))
+      (resp/response (merge
+                       (:json data)
+                       (extra-details (:topic-type path-params) (:spec db) (:json data))))
       (resp/not-found {:message "Not Found"}))))
 
 (comment
