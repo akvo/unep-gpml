@@ -30,7 +30,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_001.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_01_logo.jpg"
  },
  {
   "id": 2,
@@ -61,7 +63,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_002.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_02_logo.jpeg"
  },
  {
   "id": 3,
@@ -97,7 +101,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_003.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_03_logo.jpeg"
  },
  {
   "id": 4,
@@ -123,7 +129,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_004.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_04_logo.jpg"
  },
  {
   "id": 5,
@@ -153,7 +161,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_005.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_05_logo.jpg"
  },
  {
   "id": 6,
@@ -187,7 +197,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_006.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_06_logo.jpeg"
  },
  {
   "id": 7,
@@ -217,7 +229,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_007.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_07_logo.jpeg"
  },
  {
   "id": 8,
@@ -245,7 +259,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_008.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_08_logo.jpg"
  },
  {
   "id": 9,
@@ -276,7 +292,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_009.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_09_logo.PNG"
  },
  {
   "id": 10,
@@ -306,7 +324,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_010.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_10_logo.png"
  },
  {
   "id": 11,
@@ -335,7 +355,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_011.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_11_logo.png"
  },
  {
   "id": 12,
@@ -365,7 +387,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_012.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_12_logo.jpeg"
  },
  {
   "id": 13,
@@ -387,7 +411,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_013.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_13_logo.jpeg"
  },
  {
   "id": 14,
@@ -413,7 +439,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": null,
+  "logo": null
  },
  {
   "id": 15,
@@ -446,7 +474,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_015.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_15_logo.png"
  },
  {
   "id": 16,
@@ -484,7 +514,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_016.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_16_logo.png"
  },
  {
   "id": 17,
@@ -518,7 +550,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_017.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_17_logo.jpg"
  },
  {
   "id": 18,
@@ -545,7 +579,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_018.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_18_logo.jpg"
  },
  {
   "id": 19,
@@ -575,7 +611,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_019.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_19_logo.jpg"
  },
  {
   "id": 20,
@@ -604,7 +642,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_020.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_20_logo.jpeg"
  },
  {
   "id": 21,
@@ -626,7 +666,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_021.JPG",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_21_logo.png"
  },
  {
   "id": 22,
@@ -648,7 +690,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_022.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_22_logo.JPG"
  },
  {
   "id": 23,
@@ -678,7 +722,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_023.JPG",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_23_logo.jpg"
  },
  {
   "id": 24,
@@ -711,7 +757,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_024.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_24_logo.png"
  },
  {
   "id": 25,
@@ -739,7 +787,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_025.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_25_logo.jpg"
  },
  {
   "id": 26,
@@ -769,7 +819,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_026.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_26_logo.jpeg"
  },
  {
   "id": 27,
@@ -802,7 +854,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_027.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_27_logo.jpeg"
  },
  {
   "id": 28,
@@ -832,7 +886,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_028.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_28_logo.jpg"
  },
  {
   "id": 29,
@@ -856,7 +912,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_029.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_29_logo.png"
  },
  {
   "id": 30,
@@ -885,7 +943,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_030.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_30_logo.png"
  },
  {
   "id": 31,
@@ -915,7 +975,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_031.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_31_logo.jpeg"
  },
  {
   "id": 32,
@@ -939,7 +1001,9 @@
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_032.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_32_logo.PNG"
  },
  {
   "id": 33,
@@ -970,7 +1034,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_033.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_33_logo.jpeg"
  },
  {
   "id": 34,
@@ -999,7 +1065,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_034.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_34_logo.jpeg"
  },
  {
   "id": 35,
@@ -1026,7 +1094,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_035.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_35_logo.png"
  },
  {
   "id": 36,
@@ -1057,7 +1127,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_036.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_36_logo.jpg"
  },
  {
   "id": 37,
@@ -1085,7 +1157,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": null,
+  "logo": null
  },
  {
   "id": 38,
@@ -1109,7 +1183,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_038.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_38_logo.png"
  },
  {
   "id": 39,
@@ -1144,7 +1220,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_039.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_39_logo.png"
  },
  {
   "id": 40,
@@ -1171,7 +1249,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": null,
+  "logo": null
  },
  {
   "id": 41,
@@ -1201,7 +1281,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_041.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_41_logo.jpg"
  },
  {
   "id": 42,
@@ -1225,7 +1307,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_042.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_42_logo.jpeg"
  },
  {
   "id": 43,
@@ -1257,7 +1341,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_043.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_43_logo.jpeg"
  },
  {
   "id": 44,
@@ -1287,7 +1373,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_044.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_44_logo.jpg"
  },
  {
   "id": 45,
@@ -1316,7 +1404,9 @@
   ],
   "geo_coverage_type": "transnational",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_045.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_45_logo.jpg"
  },
  {
   "id": 46,
@@ -1345,7 +1435,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_046.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_46_logo.png"
  },
  {
   "id": 47,
@@ -1376,7 +1468,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_047.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_47_logo.jpeg"
  },
  {
   "id": 48,
@@ -1404,7 +1498,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_048.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_48_logo.png"
  },
  {
   "id": 49,
@@ -1433,7 +1529,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_049.gif",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_49_logo.png"
  },
  {
   "id": 50,
@@ -1461,7 +1559,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_050.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_50_logo.jpg"
  },
  {
   "id": 51,
@@ -1499,7 +1599,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_051.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_51_logo.jpeg"
  },
  {
   "id": 52,
@@ -1528,7 +1630,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_052.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_52_logo.jpg"
  },
  {
   "id": 53,
@@ -1552,7 +1656,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_053.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_53_logo.png"
  },
  {
   "id": 54,
@@ -1580,7 +1686,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_054.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_54_logo.png"
  },
  {
   "id": 55,
@@ -1610,7 +1718,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_055.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_55_logo.jpeg"
  },
  {
   "id": 56,
@@ -1632,7 +1742,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_056.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_56_logo.jpg"
  },
  {
   "id": 57,
@@ -1661,7 +1773,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": null,
+  "logo": null
  },
  {
   "id": 58,
@@ -1692,7 +1806,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_058.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_58_logo.jpg"
  },
  {
   "id": 59,
@@ -1722,7 +1838,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_059.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_59_logo.jpg"
  },
  {
   "id": 60,
@@ -1749,7 +1867,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_060.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_60_logo.png"
  },
  {
   "id": 61,
@@ -1783,7 +1903,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_061.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_61_logo.png"
  },
  {
   "id": 62,
@@ -1819,7 +1941,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_062.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_62_logo.jpeg"
  },
  {
   "id": 63,
@@ -1851,7 +1975,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_063.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_63_logo.png"
  },
  {
   "id": 64,
@@ -1884,7 +2010,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_064.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_64_logo.png"
  },
  {
   "id": 65,
@@ -1915,7 +2043,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_065.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_65_logo.jpg"
  },
  {
   "id": 66,
@@ -1946,7 +2076,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_066.PNG",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_66_logo.jpeg"
  },
  {
   "id": 67,
@@ -1968,7 +2100,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_067.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_67_logo.png"
  },
  {
   "id": 68,
@@ -1995,7 +2129,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_068.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_68_logo.png"
  },
  {
   "id": 69,
@@ -2023,7 +2159,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_069.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_69_logo.jpeg"
  },
  {
   "id": 70,
@@ -2053,7 +2191,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_070.jpeg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_70_logo.jpg"
  },
  {
   "id": 71,
@@ -2083,7 +2223,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": null,
+  "logo": null
  },
  {
   "id": 72,
@@ -2110,7 +2252,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_072.jpg",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_72_logo.jpg"
  },
  {
   "id": 73,
@@ -2135,7 +2279,9 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_073.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_73_logo.png"
  },
  {
   "id": 74,
@@ -2157,7 +2303,9 @@
   "geo_coverage": null,
   "geo_coverage_type": null,
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_074.png",
+  "logo": null
  },
  {
   "id": 75,
@@ -2195,6 +2343,8 @@
   ],
   "geo_coverage_type": "national",
   "attachments": [],
-  "remarks": null
+  "remarks": null,
+  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_075.png",
+  "logo": "https://storage.googleapis.com/akvo-unep-gpml/images/technology_75_logo.png"
  }
 ]

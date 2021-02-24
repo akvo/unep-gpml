@@ -321,6 +321,8 @@
 (defn get-projects [db]
   (->> (get-data "projects")
        (map (fn [x]
+              (assoc x :summary (:summary x))))
+       (map (fn [x]
                 (assoc x :review_status "APPROVED")))
        (map (fn [x]
               (if-let [country (seq(:countries x))]
