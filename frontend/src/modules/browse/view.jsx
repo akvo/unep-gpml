@@ -201,8 +201,8 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
         <div className="type">{topicNames(result.type)}</div>
         <ul className="stats">
           {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
-          {result.geoCoverageType === 'global' && <li><Excerpt content={values(countries).map(c => c.name).join(', ')} max={300} /></li>}
-          {result.geoCoverageValues && <li><Excerpt content={result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')} /></li>}
+          {result.type === 'project' && result.geoCoverageType === 'global' && <li><Excerpt content={values(countries).map(c => c.name).join(', ')} max={300} /></li>}
+          {result.type === 'project' && result.geoCoverageValues && <li><Excerpt content={result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')} /></li>}
           {result.status && <li><span>Status:</span>{result.status}</li>}
           {result.organisationType && <li><span>Org:</span>{result.organisationType}</li>}
           {result.yearFounded && <li><span>Founded:</span>{result.yearFounded}</li>}
