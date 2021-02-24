@@ -30,6 +30,17 @@
                (next (drop-while #(not= "All of the above" (:name %)) (-> action :children))))
              (:children action))))))
 
+(defn action-reported [_ action]
+  (let [first-child (-> action :children first)]
+    (if (= "Yes" (other-or-name first-child))
+      {:reports "Yes"}
+      (let [reasons (seq (map other-or-name (:children first-child)))]
+        (medley/assoc-some
+          {:reports (other-or-name first-child)}
+          :reasons (if (= "Not applicable" (-> action :children last other-or-name))
+                     (cons "Not applicable" reasons)
+                     reasons))))))
+
 (defn nested-all-of-the-above [all-actions action]
   (let [all-sub-actions-by-id (into {} (map (juxt :id identity) (:children all-actions)))]
     (seq (map
@@ -50,7 +61,8 @@
    :monitoring_and_analysis {:action-code 105885566}
 
    ;; Action Targets
-   :target_action {:action-code 43374904}
+   :target_action {:action-code 43374904
+                   :format-fn #'all-of-the-above}
    :action_impact_type {:action-code 43374931
                         :format-fn #'all-of-the-above}
 
@@ -58,7 +70,8 @@
                         :format-fn #'nested-all-of-the-above}
 
    ;; Reporting and measurements
-   :is_action_being_reported {:action-code 43374951}
+   :is_action_being_reported {:action-code 43374951
+                              :format-fn #'action-reported}
    :outcome_and_impact {:action-code 43374934
                         :format-fn #'first-child-replacing-other}
 
