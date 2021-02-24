@@ -211,6 +211,8 @@
 (defn get-policies [db]
   (->> (get-data "policies")
        (map (fn [x]
+                (assoc x :image (:image x))))
+       (map (fn [x]
                 (assoc x :value (:value_amount x) :review_status "APPROVED")))
        (map (fn [x]
                 (assoc x :url (first (:url x)))))
@@ -272,6 +274,10 @@
 
 (defn get-technologies [db]
   (->> (get-data "technologies")
+       (map (fn [x]
+                (assoc x :image (:image x))))
+       (map (fn [x]
+                (assoc x :logo (:logo x))))
        (map (fn [x]
                 (assoc x :review_status "APPROVED")))
        (map (fn [x]
