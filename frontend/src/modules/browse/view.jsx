@@ -220,7 +220,7 @@ const Excerpt = ({ content, max = 40 }) => {
   return content
 }
 const Linkify = ({ result, children }) => {
-  if(result.type === 'stakeholder') return children
+  // if(result.type === 'stakeholder') return children
     return (
         <Card className="result fade-in" key={result.id}>
             <Link to={`/${result.type}/${result.id}`} className="browse-card"></Link>

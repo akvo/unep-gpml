@@ -6,136 +6,204 @@ import { Link } from 'react-router-dom'
 import api from '../../utils/api'
 import { topicNames, resourceTypeToTopicType, relationsByTopicType } from '../../utils/misc'
 import { useAuth0 } from '@auth0/auth0-react'
-import { countries } from 'countries-list'
+import { languages, countries } from 'countries-list'
 import ModalWarningUser from '../../utils/modal-warning-user'
 import countries3to2 from 'countries-list/dist/countries3to2.json'
+import capitalize from 'lodash/capitalize';
+import some from 'lodash/some';
 import './styles.scss'
+import { typeOfActionKeys, detailMaps, infoMaps, descriptionMaps } from './mapping';
+import values from 'lodash/values';
+import moment from 'moment';
 
-const projectStaticData = {
-  detail: [
-    {
-      name: 'Organization',
-      value: 'UN-Habitat',
-    },
-    {
-      name: 'Geo-Coverage',
-      value: 'Global',
-    },
-    {
-      name: 'Country',
-      value: 'Austria, Bangladesh, Burundi, Cameroon, Chad, China, Democratic Republic of Congo, Ethiopia, Germany, Ghana, India,Indonesia, Israel, Japan, Jordan, Kenya, Lao People’s Democratic Republic, Lebanon, Lesotho, Malawi, Malaysia, Mexico, Nepal, Pakistan, Peru, Senegal, Sierra Leone, Slovenia, South Africa, South Sudan, Sri lanka, Tunisia, Uganda, United Republic of Tanzania',
-    },
-    {
-      name: 'Amount Invested',
-      value: '$ 500,000',
-    },
-    {
-      name: 'In Kind Contributions',
-      value: '$ 300,000',
-    },
-    {
-      name: 'Funding Types',
-      value: 'Mixed',
-    },
-    {
-      name: 'Funding Name',
-      value: 'JPOs from Italy and Germany. Contribution from foundation',
-    },
-    {
-      name: 'Lifecyle Phase',
-      value: 'Design,Production / Manufacture,Use / consumption,Collection / sorting of plastics after use,Management of collected plastics,Clean-up of plastic from the environment',
-    }
-  ],
-  relatedInfo : [
-    {
-      name: 'Website',
-      value: 'ichthion.com/technology/'
-    },
-  ],
-  actions : [
-    {
-      name: 'Working with people',
-      values: ['Encouraging or enabling others (e.g., education, training, communication, awareness raising, behaviour change programmes)']
-    },
-    {
-      name: 'Technology & Processes',
-      values: [
-        'New technical developments/innovation (e.g., research and development, new product design, new materials, processes etc.)',
-        'Changes in practice',
-        'Operations',
-        'Environmental management and planning',
-        'MONITORING and ANALYSIS: Collecting evidence around plastic discharge to the ocean/waterways? (e.g. monitoring, analysis)'
-      ]
-    }
-  ]
-} 
+const renderTypeOfActions = (params, data) => {
+  const keys = typeOfActionKeys.map(x => x.key);
+  const keyAvailable = keys.map(x => some(data, x)).includes(true);
 
-const nonProjectStaticData = {
-  detail: [
-    {
-      name: 'Organization Type',
-      value: 'Startup',
-    },
-    {
-      name: 'Headquarters',
-      value: 'UK',
-    },
-    {
-      name: 'Development Stage',
-      value: 'Prototype',
-    },
-    {
-      name: 'Year Founded',
-      value: '2017',
-    },
-    {
-      name: 'Languages',
-      value: 'English',
-    },
-    {
-      name: 'Tags',
-      value: 'waste collection; waste recovery; waste; plastic; funding; partnerships',
-    }
-  ],
-  relatedInfo : [
-    {
-      name: 'Website',
-      value: 'ichthion.com/technology/'
-    },
-    {
-      name: 'Contact',
-      value: 'hello@remora-marine.co.uk'
-    }
-  ]
-} 
+  if (!keyAvailable || params.type !== 'project') {
+    return;
+  }
 
-const renderTypeOfActions = (data) => {
   return (
     <div className="card">
       <h3>Type of Actions</h3>
       <div className="table-actions">
-          {
-            data.map((item, index) => {
-              return (
-                <>
-                  <div className="column" key={`action-${index}`}>
-                    <div className="title">{item.name}</div>
+        { 
+          typeOfActionKeys.map((item, index) => {
+            const { key, name, value, child } =  item;
+            return data[key] &&
+              <>
+              <div className="column">
+                <div className="title">{name}</div>
+                {
+                  (value === 'children') && 
+                    <ul>{ data[key].map((value, index) => (<li className="value" key={index}>{(!value) ? '-' : value.name}</li>)) }</ul>
+                }
+
+                {
+                  (value === 'custom') &&
                     <ul>
-                    {
-                      item.values.map((value, index) => {
+                      {
+                        child && child.map((child, index) => {
+                          const { key, name, value } = child;
+                          return (<li className="value" key={index}>{name} : {data[key][value]}</li>)
+                        })
+                      }
+                    </ul>
+                }
+              </div>
+              {(index !== typeOfActionKeys.length - 1) && <Divider />}
+              </>
+          })
+        }
+      </div>
+    </div>
+  )
+}
+
+const Excerpt = ({ content, max = 40 }) => {
+  if (content.length > max) return `${content.substr(0, max)}...`
+  return content
+}
+
+const renderDetails = (params, data) => {
+  const details = detailMaps[params.type];
+  if (!details) {
+    return;
+  }
+  return(
+    <div className="card">
+      <h3>{topicNames(params.type)} Detail</h3>
+      <div className="table">
+        { 
+          details && details.map((detail, index) => {
+            const { key, name, value, type, customValue } = detail;
+            return (
+              <>
+              {
+                (data[key] || ((value === 'countries') && (data.geoCoverageType))) && 
+                  <div className="column">
+                    <div className="title">{ name }</div>
+                    <div className="value">
+                      { params.type === 'project' && (value === key) && (type === 'name') && data[value].name }
+                      { params.type !== 'project' && (value === key) && (type === 'name') && data[value] }
+                      { (value === key) && (type === 'text') && capitalize(data[value]) }
+                      { (value === key) && (type === 'number') && capitalize(data[value]) }
+                      { (value === key) && (type === 'currency') && 'USD ' + data[value] }
+                      { (value === key) && (type === 'date') && moment(data[value]).format('DD MMM YYYY')}
+                      { params.type === 'project' && data[key] && (value === 'join') && (type === 'array') && data[key].map(x => x.name).join(', ') }
+                      { params.type !== 'project' && data[key] && (value === 'join') && (type === 'array') && data[key].join(', ') }
+                      { 
+                        data[key] && (value === 'isoCode') && (type === 'array') && 
+                          data[key].map((x,i) => {
+                            const lang = languages[x.isoCode].name
+                            return (
+                              <>
+                              <a target="_blank" href={x.url}>{lang}</a>
+                              {(i !== data[key].length - 1) && ", "}
+                              </>
+                            )
+                          })
+                      }
+                      {
+                        (value === 'countries') && (data[key] === null || data[key][0] === '***') && (data.geoCoverageType === 'global') &&
+                          <Excerpt content={values(countries).map(c => c.name).join(', ')} max={300} />
+                      }
+                      {
+                        (value === 'countries') && (data[key] !== null) && (data.geoCoverageType !== 'global') &&
+                          data[key].map(x => countries[countries3to2[x]].name).join(', ')
+                      }
+                      {
+                        (value === 'custom') && (type === 'currency') &&
+                          customValue.map(x => data[x]).join(' ')
+                      }
+                      {
+                        (params.type === 'project' && value === 'custom') && (type === 'array') &&
+                          data[key][customValue] && data[key][customValue].map(x => x.name).join(', ')
+                      }
+                      {
+                        (params.type !== 'project' && value === 'custom') && (type === 'array') &&
+                          data[key][customValue] && data[key][customValue].join(', ')
+                      }
+                      {
+                        (value === 'custom') && (type === 'object') &&
+                          data[key][customValue]
+                      }
+                      {
+                        (value === 'custom') && (type === 'haveChild') &&
+                          <ul>
+                          {
+                            data[key].map((x,i) => {
+                              return (
+                                <>
+                                  <li>{x.name}
+                                    <ul>{ x.options.length > 0 && x.options.map((y,i) => <li>{y.name}</li>) }</ul>
+                                  </li>
+                                </>
+                              )
+                            })
+                          }
+                          </ul>
+                      }
+                    </div>
+                  </div>
+              }
+              {(data[key] || ((value === 'countries') && (data.geoCoverageType))) && (index !== details.length - 1) && <Divider />}
+              </>
+            )
+          })          
+        }
+      </div>
+    </div>
+  )
+}
+
+const renderInfo = (params, data) => {
+  const info = infoMaps[params.type];
+  if (!info) {
+    return;
+  }
+  return (
+    <div className="card">
+      <h3>Related Info And Contacts</h3>
+      <div className="table">
+        {
+          info.map((item, index) => {
+            const { key, name, value, type } = item;
+            return (
+              <div className="column">
+                <div className="title">{ name }</div>
+                <div className="value">
+                  { 
+                    data[key] && (value === 'link') && (type === 'array') && 
+                      data[key].map((x,i) => {
                         return (
-                          <li className="value" key={index}>{(!value) ? '-' : value}</li>
+                          <>
+                          <a target="_blank" href='#' style={{ wordBreak: 'break-word' }}>{x.name}</a>
+                          {(i !== data[key].length - 1) && ", "}
+                          </>
                         )
                       })
-                    }
-                    </ul>
-                  </div>
-                  {(index !== data.length - 1) && <Divider />}
-                </>
-              )
-            })
-          }
+                  }
+                </div>
+              </div> 
+            )
+          })
+        }
       </div>
+    </div>
+  )
+}
+
+const renderDescription = (params, data) => {
+  const text = descriptionMaps[params.type];
+  if (!text) {
+    return;
+  }
+  return (
+    <div className="card">
+      <h3>{ text.name}</h3>
+      {data[text.key] && <p>{data[text.key]}</p>}
     </div>
   )
 }
@@ -151,7 +219,6 @@ const DetailsView = ({ match: { params }, ...props }) => {
 
   const contentHeaderStyle = (params.type === 'project') 
       ? {header: 'content-project', topic: 'project-topic'} : {header: 'content-non-project', topic: 'non-project-topic'};
-  const content = (params.type === 'project') ? projectStaticData : nonProjectStaticData;
 
   useEffect(() => {
     api.get(`/detail/${params.type}/${params.id}`)
@@ -192,6 +259,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
         }
     })
   }
+
   if(!data) return (
     <div className="details-view">
       <div className="loading">
@@ -200,6 +268,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
       </div>
     </div>
   )
+
   return (
     <div className="details-view">
       <div className="bc">
@@ -233,54 +302,15 @@ const DetailsView = ({ match: { params }, ...props }) => {
         <div className="content-body">
           {/* Left */}
           <div className="content-column">
-            <Image style={{marginBottom: '20px'}} width="100%" src={data.image || "https://via.placeholder.com/600x400"} />
-            <div className="card">
-              <h3>Description</h3>
-              {data.summary && <p>{data.summary}</p>}
-            </div>
-
-            {content.actions && renderTypeOfActions(content.actions)}
+            <Image style={{marginBottom: '20px'}} width="100%" src={data.image || "/image-not-found.png"} />
+            { renderDescription(params, data) }
+            { renderTypeOfActions(params, data) }
           </div>
 
           {/* Right */}
           <div className="content-column">
-            <div className="card">
-              <h3>{topicNames(params.type)} Detail</h3>
-              <div className="table">
-                  {
-                    content.detail.map((item, index) => {
-                      return (
-                        <>
-                          <div className="column" key={`detail-${index}`}>
-                            <div className="title">{item.name}</div>
-                            <div className="value">{(!item.value) ? '-' : item.value}</div>
-                          </div>
-                          {(index !== content.detail.length - 1) && <Divider />}
-                        </>
-                      )
-                    })
-                  }
-              </div>
-            </div>
-
-            <div className="card">
-              <h3>Related Info And Contacts</h3>
-              <div className="table">
-                  {
-                    content.relatedInfo.map((item, index) => {
-                      return (
-                        <>
-                          <div className="column" key={`info-${index}`}>
-                            <div className="title">{item.name}</div>
-                            <div className="value">{item.value}</div>
-                          </div>
-                          {(index !== content.relatedInfo.length - 1) && <Divider />}
-                        </>
-                      )
-                    })
-                  }
-              </div>
-            </div>
+            { renderDetails(params, data) }
+            { renderInfo(params, data) }
           </div>
 
         </div>
