@@ -575,10 +575,10 @@ export const infoMaps = {
     ],
     'event' : [
         {
-            'key' : 'url',
+            'key' : 'languages',
             'name' : 'Link' ,
-            'value' : 'url',
-            'type' : 'link',
+            'value' : 'resource_url',
+            'type' : 'array',
         }
     ],
     'technology' : [
