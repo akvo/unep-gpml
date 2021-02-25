@@ -263,12 +263,12 @@ const detailPolicy = [
         'value' : 'geoCoverageType',
         'type': 'text',
     },
-    // {
-    //     'key' : 'geoCoverageValues',
-    //     'name' : 'Country',
-    //     'value' : 'countries',
-    //     'type': 'array',
-    // },
+    {
+        'key' : 'geoCoverageValues',
+        'name' : 'Country',
+        'value' : 'countries',
+        'type': 'array',
+    },
     {
         'key' : 'typeOfLaw',
         'name' : 'Type of Law',
