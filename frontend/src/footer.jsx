@@ -40,7 +40,7 @@ const Footer = () => {
               <li><a href="/browse?topic=technical_resource">Technical resources</a></li>
               <li><a href="/browse?topic=technology">Technologies</a></li>
               <li><a href="/browse?topic=policy">Policies</a></li>
-              <li><a href="/browse?topic=project">Projects</a></li>
+              <li><a href="/browse?topic=project">Initiatives</a></li>
             </ul>
           </nav>
           <nav>
