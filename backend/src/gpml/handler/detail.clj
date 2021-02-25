@@ -138,6 +138,9 @@
                                                43374823]
                          :format-fn #'value-list}
 
+   :organisation {:action-detail-codes [43374842]
+                  :format-fn #'value-list}
+
    ;; Amount invested and contribution are already in the project table.
    ;; They are missing the currency but right now all values are in USD, so we can hardcode it.
    ;; Amount invested
