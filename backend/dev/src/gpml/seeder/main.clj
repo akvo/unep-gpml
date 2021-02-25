@@ -152,7 +152,7 @@
 (defn get-resources [db]
   (->> (get-data "resources")
        (map (fn [x]
-                (assoc x :value (:value_amount x) :review_status "APPROVED")))
+                (assoc x :publish_year (:publish_year x) :value (:value_amoount x) :review_status "APPROVED")))
        (map (fn [x]
               (if-let [country (:country x)]
                 (if-let [data (first (get-country db [country]))]

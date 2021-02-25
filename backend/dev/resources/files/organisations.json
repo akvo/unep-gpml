@@ -3,13 +3,28 @@
   "name": "3M"
  },
  {
-  "name": "Aberlpe"
+  "name": "APEC Ocean and Fisheries Working Group (OFWG)"
  },
  {
   "name": "Agence Française de Developpement (AFD)"
  },
  {
+  "name": "Airtable"
+ },
+ {
+  "name": "Algalita Marine Research and Education"
+ },
+ {
   "name": "Amazon"
+ },
+ {
+  "name": "Amcor Limited"
+ },
+ {
+  "name": "American Beverage Association"
+ },
+ {
+  "name": "American Chemistry Council"
  },
  {
   "name": "Asia Pacific Economic Cooperation (APEC)"
@@ -18,22 +33,67 @@
   "name": "Association of Southeast Asian Nations (ASEAN)"
  },
  {
-  "name": "Australian Aid (Department of Foreign Affairs and Trade (DFAT)"
+  "name": "Australian Government"
+ },
+ {
+  "name": "Australian Government Department of Foreign Affairs and Trade (DFAT)"
+ },
+ {
+  "name": "Australian Government Department of the Environment and Energy (DoEE)"
  },
  {
   "name": "Australian Government's Department of Foreign Affairs and Trade"
  },
  {
+  "name": "Autodesk.Foundation"
+ },
+ {
+  "name": "Aws"
+ },
+ {
+  "name": "BNP Paribas"
+ },
+ {
+  "name": "Baltic Marine Environment Protection Commission (HELCOM)"
+ },
+ {
   "name": "Baltic Sea Challenge"
+ },
+ {
+  "name": "Bank Gospodarstwa Krajowego"
+ },
+ {
+  "name": "Bank of America"
  },
  {
   "name": "Basel Convention"
  },
  {
+  "name": "Belize Department of the Environment"
+ },
+ {
   "name": "Benioff Ocean Initiative"
  },
  {
+  "name": "Berry Global"
+ },
+ {
   "name": "Black Sea Commission"
+ },
+ {
+  "name": "Blue Marine Foundation"
+ },
+ {
+  "name": "Brazil Ministry of the Environment"
+ },
+ {
+  "name": "British Plastics Federation"
+ },
+ {
+  "name": "CVS Health"
+ },
+ {
+  "name": "Caisse Des Dépôts"
  },
  {
   "name": "California Ocean Protection Council"
@@ -42,13 +102,34 @@
   "name": "Canada's Environment and Climate Change (ECCC)"
  },
  {
+  "name": "Canadian Council of Ministers of the Environment"
+ },
+ {
   "name": "Canadian Federal Government"
+ },
+ {
+  "name": "Carrefour"
+ },
+ {
+  "name": "Cartagena   Convention"
+ },
+ {
+  "name": "Cassa Depositi e Prestiti"
+ },
+ {
+  "name": "Centre for Environment Fisheries and Aquaculture Science (Cefas)"
+ },
+ {
+  "name": "Chanel"
  },
  {
   "name": "Chevron Phillips Chemical"
  },
  {
   "name": "Circulate Capital"
+ },
+ {
+  "name": "Clean Currents Coalition"
  },
  {
   "name": "Closed Loop Partners"
@@ -63,13 +144,34 @@
   "name": "Colgate Palmolive"
  },
  {
+  "name": "Colombia"
+ },
+ {
   "name": "Comisión Permanente Del Pacífico Sur (CPPS)"
  },
  {
   "name": "Common Seas"
  },
  {
+  "name": "Conservation International"
+ },
+ {
+  "name": "Convention for the Protection of the Marine Environment of the North-East Atlantic (OSPAR)"
+ },
+ {
   "name": "Coordinating Body on the Seas of East Asia (COBSEA)"
+ },
+ {
+  "name": "Coordinating Ministry for Maritime & Investment Affairs"
+ },
+ {
+  "name": "Covanta"
+ },
+ {
+  "name": "Cox Enterprises"
+ },
+ {
+  "name": "Cruise Line Holdings LTD."
  },
  {
   "name": "Cyprus Sustainable Tourism Initiative(CSTI)"
@@ -78,7 +180,22 @@
   "name": "Danone"
  },
  {
+  "name": "Dart Container Corporation"
+ },
+ {
+  "name": "Department for Business"
+ },
+ {
+  "name": "Department for Environment"
+ },
+ {
+  "name": "Department of Agriculture"
+ },
+ {
   "name": "Didier and Martine Primat Foundation"
+ },
+ {
+  "name": "Dow"
  },
  {
   "name": "Dow Chemicals"
@@ -96,25 +213,58 @@
   "name": "Ellen McArthur foundation (EMF)"
  },
  {
+  "name": "Energy & Industrial Strategy"
+ },
+ {
+  "name": "Environment & Climate Change (MESTEC)"
+ },
+ {
   "name": "European Commission"
  },
  {
   "name": "European Environment Agency (EEA)"
  },
  {
-  "name": "European Investment Bank"
+  "name": "European Investment Bank (EIB)"
  },
  {
   "name": "European Topic Centre"
  },
  {
+  "name": "European Union (EU)"
+ },
+ {
+  "name": "Finland Ministry of the Environment"
+ },
+ {
   "name": "Finnish Environment Institute (SKYE)"
+ },
+ {
+  "name": "Fondation Didier et Martine Primat"
+ },
+ {
+  "name": "Fonds Aether"
+ },
+ {
+  "name": "Food & Rural Affairs (Defra)"
  },
  {
   "name": "Food and Agriculture Organization (FAO)"
  },
  {
-  "name": "Fraunhofer Institute (Ruhr university Bochum)"
+  "name": "Food and Agriculture Organization of the United Nations (FAO)"
+ },
+ {
+  "name": "Foreign Commonwealth and Development Office (FCDO)"
+ },
+ {
+  "name": "Foundation Veolia"
+ },
+ {
+  "name": "France Ministry for the Ecological Transition (Ministère de la Transition écologique)"
+ },
+ {
+  "name": "Fraunhofer Institute (Ruhr University Bochum)"
  },
  {
   "name": "G20"
@@ -123,13 +273,22 @@
   "name": "G7"
  },
  {
-  "name": "GA Circular/companies"
+  "name": "GA Circular/Companies"
+ },
+ {
+  "name": "GIZ - Gesellschaft für international Zusammenarbeit (German Development Agency)"
  },
  {
   "name": "GIZ - Gesellschaft für international Zusammenarbeit (German development agency)"
  },
  {
   "name": "GRID Arendal"
+ },
+ {
+  "name": "Georgia Aquarium"
+ },
+ {
+  "name": "German Federal Government"
  },
  {
   "name": "German Federal Ministry for Economic Cooperation and Development (BMZ)"
@@ -147,13 +306,34 @@
   "name": "Global Pastics Alliance"
  },
  {
+  "name": "Google Cloud"
+ },
+ {
   "name": "Government of Canada"
+ },
+ {
+  "name": "Government of Denmark"
+ },
+ {
+  "name": "Government of France"
+ },
+ {
+  "name": "Government of Germany"
+ },
+ {
+  "name": "Government of Iceland"
  },
  {
   "name": "Government of Norway"
  },
  {
+  "name": "Government of Sweden"
+ },
+ {
   "name": "Government of Trinidad and Tobago"
+ },
+ {
+  "name": "Government of th United States"
  },
  {
   "name": "Granta Design"
@@ -165,7 +345,34 @@
   "name": "HELCOM - Baltic Marine Environment Protection Commission"
  },
  {
+  "name": "Haribo"
+ },
+ {
+  "name": "Hubspot"
+ },
+ {
+  "name": "IBM"
+ },
+ {
+  "name": "ICCCAD"
+ },
+ {
+  "name": "ITW Hi-Cone"
+ },
+ {
+  "name": "Indonesia ((Kementerian Koordinator Bidang Kemaritiman dan Investasi Republik Indonesia)"
+ },
+ {
   "name": "Institute European Environmental Policy (IEEP)"
+ },
+ {
+  "name": "Instituto De Crédito Oficial"
+ },
+ {
+  "name": "Inter-American Development Bank (IADB)"
+ },
+ {
+  "name": "Inter-American Development Bank (IDB)"
  },
  {
   "name": "Inter-organization programme for the sound management of chemicals (IOMC)"
@@ -180,10 +387,19 @@
   "name": "International Solid Waste Association (ISWA)"
  },
  {
+  "name": "International Union for Conservation of Nature (IUCN)"
+ },
+ {
   "name": "International Union for the Conservation of Nature (IUCN )"
  },
  {
+  "name": "International Union for the Conservation of Nature (IUCN)"
+ },
+ {
   "name": "Interreg Baltic Sea Region Programme"
+ },
+ {
+  "name": "JDI"
  },
  {
   "name": "Japan Clean Ocean Material Alliance"
@@ -192,7 +408,19 @@
   "name": "Johnson & Johnson"
  },
  {
+  "name": "Keep America Beautiful"
+ },
+ {
   "name": "Keurig Dr Pepper"
+ },
+ {
+  "name": "KfW Group"
+ },
+ {
+  "name": "Kfw (Kreditanstalt Für Wiederaufbau)"
+ },
+ {
+  "name": "Klaxoon"
  },
  {
   "name": "Korea Green Growth Trust Fund"
@@ -210,16 +438,40 @@
   "name": "Maj and Tor Nessling Foundation"
  },
  {
-  "name": "Marc and Lynne Benioff"
+  "name": "Malaysia"
  },
  {
   "name": "Microsoft"
+ },
+ {
+  "name": "Ministry of Energy"
+ },
+ {
+  "name": "Ministry of Foreign Affairs (MOFA)"
+ },
+ {
+  "name": "Ministry of Foreign Trade and Economic Relations of Bosnia and Herzegovina (at Bosnia and Herzegovina state level) and Federal Ministry of Environment and Tourism (for the Federation of Bosnia and Herzegovina)"
+ },
+ {
+  "name": "Ministry of Sustainable Development and Tourism (Montenegro)"
+ },
+ {
+  "name": "Ministry of Tourism and Environment (Albania)"
  },
  {
   "name": "Ministry of the Environment Japan"
  },
  {
   "name": "Monaco Foundation"
+ },
+ {
+  "name": "Monaco Private Label"
+ },
+ {
+  "name": "Monte Carlo Société des Bains de Mer"
+ },
+ {
+  "name": "Mott MacDonald"
  },
  {
   "name": "Nairobi Convention"
@@ -231,7 +483,13 @@
   "name": "National Research Council of Canada"
  },
  {
+  "name": "Nestle"
+ },
+ {
   "name": "Nestle Waters"
+ },
+ {
+  "name": "Nestlé Waters North America Norwegian"
  },
  {
   "name": "New Zealand Ministry of Environment"
@@ -246,7 +504,7 @@
   "name": "Norwegian Ministry of Climate and Environment"
  },
  {
-  "name": "OSPAR - Convention for the Protection of the Marine Environment of the North-East Atlantic"
+  "name": "Norwegian Retailers' Environment Fund"
  },
  {
   "name": "Observatory of Menorca(OBSAM)"
@@ -258,19 +516,22 @@
   "name": "Ocean Recovery Alliance"
  },
  {
+  "name": "Ocean Wise"
+ },
+ {
   "name": "Oceanographic Institute of University of Sao Paulo"
  },
  {
   "name": "Odyssey Impact Investments"
  },
  {
+  "name": "Official Development Assistance (ODA)"
+ },
+ {
   "name": "Open Litter Map"
  },
  {
-  "name": "PERSGA - The Regional Organization for the Conservation of the Environment of the Red Sea & Gulf of Aden"
- },
- {
-  "name": "PEWTRUST"
+  "name": "PEGASYS"
  },
  {
   "name": "Pacific Regional Environment Programme (SPREP )"
@@ -288,7 +549,10 @@
   "name": "Procter & Gamble"
  },
  {
-  "name": "Programme of the Sustainable Ocean Alliance"
+  "name": "Programme of the Sustainable Ocean Alliance (SOA)"
+ },
+ {
+  "name": "Project AWARE"
  },
  {
   "name": "Protection of the Arctic Marine Environemt (PAME )"
@@ -297,10 +561,22 @@
   "name": "Quantis"
  },
  {
+  "name": "RPC Group Plc"
+ },
+ {
   "name": "Rotterdam and Stockholm Conventions"
  },
  {
+  "name": "Rozalia Project for a Clean Ocean"
+ },
+ {
   "name": "SYSTEMIQ"
+ },
+ {
+  "name": "Saint Lucia National Conservation Fund (SLUNCF)"
+ },
+ {
+  "name": "Science"
  },
  {
   "name": "Searious Business"
@@ -318,7 +594,16 @@
   "name": "South Asia Co-operative Environment Programme (SACEP)"
  },
  {
+  "name": "South South North"
+ },
+ {
   "name": "Starbucks"
+ },
+ {
+  "name": "Stockholm Environment Institute (SEI)"
+ },
+ {
+  "name": "Stripe"
  },
  {
   "name": "Surfrider Europe Foundation"
@@ -339,10 +624,34 @@
   "name": "Tearfund"
  },
  {
+  "name": "Technology"
+ },
+ {
+  "name": "The Coca-Cola Company"
+ },
+ {
+  "name": "The Coca-Cola Foundation"
+ },
+ {
+  "name": "The Consumer Goods Forum"
+ },
+ {
   "name": "The David and Lucile Packard Foundation"
  },
  {
+  "name": "The Dow Chemical Company"
+ },
+ {
+  "name": "The European Investment Bank"
+ },
+ {
   "name": "The Global Partnership of Marine Litter (GPML)"
+ },
+ {
+  "name": "The Government of the Republic of Panama"
+ },
+ {
+  "name": "The Government of the United Kingdom"
  },
  {
   "name": "The Incubation Network"
@@ -351,7 +660,22 @@
   "name": "The International Environmental Technology Centre (IETC)"
  },
  {
-  "name": "The Mediterranean Marine Litter Node (MAP)"
+  "name": "The Marine Mammal Center"
+ },
+ {
+  "name": "The Mediterranean Action Plan (MAP)"
+ },
+ {
+  "name": "The Pew Charitable Trust"
+ },
+ {
+  "name": "The Procter & Gamble Company"
+ },
+ {
+  "name": "The Recycling Partnership"
+ },
+ {
+  "name": "The Regional Organization for the Conservation of the Environment of the Red Sea & Gulf of Aden (PERSGA)"
  },
  {
   "name": "The S Group"
@@ -360,10 +684,16 @@
   "name": "Together Cyprus"
  },
  {
+  "name": "Trinet"
+ },
+ {
   "name": "U.S. State Department"
  },
  {
   "name": "UK Department for International Development (DFID)"
+ },
+ {
+  "name": "UN Environment Programme (UNEP)"
  },
  {
   "name": "UN Habitat"
@@ -378,13 +708,19 @@
   "name": "Unilever"
  },
  {
-  "name": "United Nation Environment Programme (UNEP)"
+  "name": "Unilver"
+ },
+ {
+  "name": "United Nations Conference on Trade and Development (UNCTAD)"
+ },
+ {
+  "name": "United Nations Development Program (UNDP)"
  },
  {
   "name": "United Nations Economic and Social Commission for Asia and the Pacific (UNESCAP)"
  },
  {
-  "name": "United Nations Environmental Programme (UNEP)"
+  "name": "United Nations Environment Programme (UNEP)"
  },
  {
   "name": "United Nations Industrial Development Organization (UNIDO)"
@@ -405,16 +741,55 @@
   "name": "University of Leeds"
  },
  {
+  "name": "Veolia"
+ },
+ {
+  "name": "WWF"
+ },
+ {
+  "name": "Waitrose"
+ },
+ {
   "name": "Walmart"
+ },
+ {
+  "name": "Walmart Inc."
+ },
+ {
+  "name": "Waste and Resources Action Programme (WRiAP)"
  },
  {
   "name": "Wasteware (UK)"
  },
  {
+  "name": "Water and the Environment"
+ },
+ {
+  "name": "Wilson Sonsini"
+ },
+ {
+  "name": "World Animal Protection US"
+ },
+ {
   "name": "World Bank"
  },
  {
+  "name": "World Economic Forum (Wef)"
+ },
+ {
+  "name": "World Plastics Council"
+ },
+ {
   "name": "World Wildlife Fund (WWF)"
+ },
+ {
+  "name": "World Wildlife Fund US"
+ },
+ {
+  "name": "the Government of Japan"
+ },
+ {
+  "name": "the Food and Agriculture Organization of the United Nations (FAO)"
  },
  {
   "name": "ubuntoo"
