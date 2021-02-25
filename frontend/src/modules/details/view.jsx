@@ -222,7 +222,7 @@ const renderDescription = (params, data) => {
   </>
 
   const text = descriptionMaps[params.type];
-  const isNarrative = data.uuid.split('-')[0] === '999999'
+  const isNarrative = (params.type === 'project' && data.uuid) ? data.uuid.split('-')[0] === '999999' : false
 
   if (!text) {
     return;
@@ -232,7 +232,7 @@ const renderDescription = (params, data) => {
       <h3>{ text.name}</h3>
       {data[text.key] && <p>{data[text.key]}</p>}
       {!data[text.key] && <p>There is no data to display</p>}
-      {!isNarrative && <p>{staticText}</p>}
+      {(params.type === 'project' && data.uuid) && !isNarrative && <p>{staticText}</p>}
     </div>
   )
 }
