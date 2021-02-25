@@ -198,12 +198,12 @@ const detailTechnology = [
         'value' : 'geoCoverageType',
         'type': 'text',
     },
-    {
-        'key' : 'geoCoverageValues',
-        'name' : 'Country',
-        'value' : 'countries',
-        'type': 'array',
-    },
+    // {
+    //     'key' : 'geoCoverageValues',
+    //     'name' : 'Country',
+    //     'value' : 'countries',
+    //     'type': 'array',
+    // },
     {
         'key' : 'organisationType',
         'name' : 'Organisation Type',
@@ -320,6 +320,12 @@ const detailPolicy = [
 ];
 
 const detailProject = [
+    {
+        'key' : 'organisation',
+        'name' : 'Organisation',
+        'value' : 'join',
+        'type': 'array',
+    },
     {
         'key' : 'geoCoverageType',
         'name' : 'Geo-Coverage',
