@@ -75,7 +75,7 @@ const Footer = () => {
           <nav>
             <ul>
               <li><h4>Stakeholders</h4></li>
-              <li><span>Entities (coming soon)</span></li>
+              <li><a href="/browse?topic=organisation">Entities</a></li>
               <li>{ !isAuthenticated ?
                    <Link to="/" onClick={loginWithPopup}>Individuals</Link>
                    :
