@@ -22,7 +22,8 @@
                  [com.auth0/auth0 "1.25.0" :exclusions [org.jetbrains.kotlin/kotlin-stdlib-common
                                                         com.fasterxml.jackson.core/jackson-databind]]
                  [com.auth0/jwks-rsa "0.15.0" :exclusions [com.fasterxml.jackson.core/jackson-databind]]
-                 [com.auth0/java-jwt "3.12.0" :exclusions [com.fasterxml.jackson.core/jackson-databind]]]
+                 [com.auth0/java-jwt "3.12.0" :exclusions [com.fasterxml.jackson.core/jackson-databind]]
+                 [clj-time "0.12.0"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]
@@ -42,6 +43,7 @@
    :profiles/dev {}
    :seeder {:main seeder
             :source-paths ["dev/src"]
+            :resource-paths ["dev/resources"]
             :prep-tasks ^:replace []}
    :project/dev  {:source-paths   ["dev/src"]
                   :resource-paths ["dev/resources"]
