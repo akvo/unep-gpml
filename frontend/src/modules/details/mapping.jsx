@@ -56,10 +56,10 @@ export const typeOfActionKeys = [
 
 const detailActionPlan = [
     {
-        'key' : 'organisation',
+        'key' : 'organisations',
         'name' : 'Organisation',
-        'value' : 'organisation',
-        'type': 'name',
+        'value' : 'organisations',
+        'type': 'array',
     },
     {
         'key' : 'geoCoverageType',
@@ -123,13 +123,13 @@ const detailFinancingResource = [
         'key' : 'validFrom',
         'name' : 'Valid From',
         'value' : 'validFrom',
-        'type': 'date',
+        'type': 'string',
     },
     {
         'key' : 'validTo',
         'name' : 'Valid Until',
         'value' : 'validTo',
-        'type': 'date',
+        'type': 'string',
     },
     {
         'key' : 'publishYear',
@@ -364,15 +364,15 @@ const detailProject = [
         'value' : 'join',
         'type': 'array',
     },
-    {
-        'key' : 'firstPublicationDate',
-        'name' : 'Lifecycle Phase',
-        'value' : 'firstPublicationDate',
-        'type': 'date',
-    },
+    // {
+    //     'key' : 'firstPublicationDate',
+    //     'name' : 'Lifecycle Phase',
+    //     'value' : 'firstPublicationDate',
+    //     'type': 'date',
+    // },
     {
         'key' : 'lifecyclePhase',
-        'name' : 'Last Amendment Date',
+        'name' : 'Lifecycle Phase',
         'value' : 'join',
         'type': 'array',
     },
@@ -384,7 +384,7 @@ const detailProject = [
     },
     {
         'key' : 'activityOwner',
-        'name' : 'Activity Owner',
+        'name' : 'Initiative Owner',
         'value' : 'custom',
         'customValue': 'children',
         'type': 'haveChild',
@@ -397,7 +397,7 @@ const detailProject = [
     },
     {
         'key' : 'activityTerm',
-        'name' : 'Activity Term',
+        'name' : 'Initiative Term',
         'value' : 'activityTerm',
         'type': 'name',
     },

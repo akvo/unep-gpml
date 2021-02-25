@@ -90,6 +90,7 @@ const renderDetails = (params, data) => {
                       { (key === null) && (type === 'static') && value }
                       { params.type === 'project' && (value === key) && (type === 'name') && data[value].name }
                       { params.type !== 'project' && (value === key) && (type === 'name') && data[value] }
+                      { (value === key) && (type === 'string') && data[value] }
                       { (value === key) && (type === 'text') && capitalize(data[value]) }
                       { (value === key) && (type === 'number') && capitalize(data[value]) }
                       { (value === key) && (type === 'currency') && 'USD ' + data[value] }
