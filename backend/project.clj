@@ -40,6 +40,9 @@
              :pedantic? :abort
              :plugins [[lein-metajar "0.1.1"]]}
    :profiles/dev {}
+   :seeder {:main seeder
+            :source-paths ["dev/src"]
+            :prep-tasks ^:replace []}
    :project/dev  {:source-paths   ["dev/src"]
                   :resource-paths ["dev/resources"]
                   :dependencies   [[integrant/repl "0.3.2"]

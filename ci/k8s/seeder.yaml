@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unep-gpml-seeder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        run: unep-gpml-seeder
+  template:
+    metadata:
+      labels:
+        run: unep-gpml-seeder
+    spec:
+      containers:
+      - name: unep-gpml-seeder
+        image: akvo/akvo-clojure-lein:20210124.114043.4437caf
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: database-url
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/secrets/cloudsql/credentials.json"
+        volumeMounts:
+          - name: unep-gpml-secrets
+            mountPath: "/secrets/cloudsql/credentials.json"
+            subPath: "cloud-database-service-account.json"
+            readOnly: true
+      volumes:
+        - name: unep-gpml-secrets
+          secret:
+            secretName: unep-gpml
