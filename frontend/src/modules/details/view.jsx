@@ -205,17 +205,21 @@ const renderInfo = (params, data) => {
                       { (value === key) && (type === 'link') &&  <a target="_blank" rel="noreferrer" href={data[value]} style={{ wordBreak: 'break-word' }}>{data[value]}</a>}
                       { 
                         (value === 'link') && (type === 'array') && 
-                          data[key].map((x,i) => {
-                            return (
-                              <>
-                              <a target="_blank" rel="noreferrer" href={x.name || x} style={{ wordBreak: 'break-word' }}>{x.name || x}</a>
-                              </>
-                            )
-                          })
+                        <ul>
+                          {
+                            data[key].map((x,i) => {
+                              return (
+                                <li><a target="_blank" rel="noreferrer" href={x.name || x} style={{ wordBreak: 'break-word' }}>{x.name || x}</a></li>
+                                )
+                              })
+                          }
+                        </ul>
                       }
                       {
                         (value === 'resource_url') && (type === 'array') &&
-                          data[key].map((x,i) => <a target="_blank" rel="noreferrer" href={x.url} style={{ wordBreak: 'break-word' }}>{x.url}</a>)
+                          <ul>
+                            { data[key].map((x,i) => <li><a target="_blank" rel="noreferrer" href={x.url} style={{ wordBreak: 'break-word' }}>{x.url}</a></li>)} 
+                          </ul>
                       }
                     </div>
                   </div> 
