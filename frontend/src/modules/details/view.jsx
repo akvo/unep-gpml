@@ -15,6 +15,8 @@ import './styles.scss'
 import { typeOfActionKeys, detailMaps, infoMaps, descriptionMaps } from './mapping';
 import values from 'lodash/values';
 import moment from 'moment';
+import imageNotFound from '../../images/image-not-found.png'
+import logoNotFound from '../../images/logo-not-found.png'
 
 const renderTypeOfActions = (params, data) => {
   const keys = typeOfActionKeys.map(x => x.key);
@@ -92,7 +94,7 @@ const renderDetails = (params, data) => {
                       { (value === key) && (type === 'number') && capitalize(data[value]) }
                       { (value === key) && (type === 'currency') && 'USD ' + data[value] }
                       { (value === key) && (type === 'object') && data[value].name }
-                      { (value === key) && (type === 'link') && <a target="_blank" href={data['value']}>{data[value]}</a> }
+                      { (value === key) && (type === 'link') && <a rel="noreferrer" target="_blank" href={data['value']}>{data[value]}</a> }
                       { (value === key) && (type === 'date') && moment(data[key]).format('DD MMM YYYY') }
                       { (value === key) && (type === 'array') && data[key].map(x => x.name).join(', ') }
                       { (value === key) && (type === 'country') && countries[countries3to2[data[key]]].name }
@@ -328,7 +330,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
                 (params.type === 'technology') &&
                   <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                     <div style={{ width: '6%', padding: '15px 0', marginRight: '20px' }}>
-                      <Image width="100%" src={data.logo || "/logo-not-found.png"} />
+                      <Image width="100%" src={data.logo || logoNotFound} />
                     </div>
                     <div style={{ width: '90%' }}><h1>{data.title || data.name}</h1></div>
                   </div>
@@ -348,7 +350,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
         <div className="content-body">
           {/* Left */}
           <div className="content-column">
-            <Image style={{marginBottom: '20px'}} width="100%" src={data.image || data.picture || "/image-not-found.png"} />
+            <Image style={{marginBottom: '20px'}} width="100%" src={data.image || data.picture || imageNotFound} />
             { renderDescription(params, data) }
             { renderTypeOfActions(params, data) }
           </div>
