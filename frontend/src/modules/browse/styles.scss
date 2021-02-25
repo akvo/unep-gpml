@@ -88,6 +88,11 @@
   .main-content{
     flex: 1;
     margin-left: 20px;
+    .page {
+      text-align: right;
+      font-style: italic;
+      margin-bottom: 5px;
+    }
     .ant-card{
       margin-bottom: 15px;
       position: relative;

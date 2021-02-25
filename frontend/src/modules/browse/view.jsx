@@ -160,6 +160,12 @@ const Browse = ({ history, countData, profile, setSignupModalVisible, updateDisc
           </div>
         </aside>
         <div className="main-content">
+          {
+            !loading && 
+              <div className="page">
+                First 50 records, please filter or search with more precise terms
+              </div>
+          }
           {loading
               ? <h2 className="loading"><LoadingOutlined spin/> Loading</h2>
               : (isEmpty(results)
