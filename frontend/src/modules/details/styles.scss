@@ -225,6 +225,12 @@
               flex: 73%;
               color: #28457B;
               font-weight: 500;
+              ul {
+                list-style-type: circle;
+              }
+              .indent {
+                margin-left: 20px;
+              }
               .scrollable {
                 max-height: 200px;
                 overflow: auto;

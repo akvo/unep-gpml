@@ -83,7 +83,7 @@ const renderDetails = (params, data) => {
             return (
               <>
               {
-                (data[key] || ((value === 'countries') && (data.geoCoverageType)) || key === null) && 
+                (data[key] || data[key] === 0 || ((value === 'countries') && (data.geoCoverageType)) || key === null) && 
                   <div className="column">
                     <div className="title">{ name }</div>
                     <div className="value">
@@ -115,7 +115,6 @@ const renderDetails = (params, data) => {
                       }
                       {
                         (value === 'countries') && (data[key] === null || data[key][0] === '***') && (data.geoCoverageType === 'global') &&
-                          // <Excerpt content={values(countries).map(c => c.name).join(', ')} max={300} />
                           <div className="scrollable">{values(countries).map(c => c.name).join(', ')}</div>
                       }
                       {
@@ -124,8 +123,7 @@ const renderDetails = (params, data) => {
                       }
                       {
                         (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'transnational') &&
-                          // <Excerpt content={values(countries).map(c => c.name).join(', ')} max={300} />
-                          <div className="scrollable">{values(countries).map(c => c.name).join(', ')}</div>
+                          <div className="scrollable">{data[key].map(x => countries[countries3to2[x]].name).join(', ')}</div>
                       }
                       {
                         (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'national' || data.geoCoverageType === 'sub-national') &&
@@ -152,14 +150,18 @@ const renderDetails = (params, data) => {
                           data[key][customValue]
                       }
                       {
-                        (value === 'custom') && (type === 'haveChild') &&
+                        (value === 'custom') && (type === 'haveChild' && (customValue === 'topLevel')) &&
+                          <ul>{ data[key].map((x,i) => <li>{x.name}</li>) }</ul>
+                      }
+                      {
+                        (value === 'custom') && (type === 'haveParent' && (customValue === 'options')) &&
                           <ul>
                           {
                             data[key].map((x,i) => {
                               return (
                                 <>
-                                  <li>{x.name}
-                                    <ul>{ x.options && x.options.length > 0 && x.options.map((y,i) => <li>{y.name}</li>) }</ul>
+                                  <li>{x.name.split('(')[0]}
+                                    <ul className="indent">{ x.options && x.options.length > 0 && x.options.map((y,i) => <li>{y.name}</li>) }</ul>
                                   </li>
                                 </>
                               )
@@ -170,7 +172,7 @@ const renderDetails = (params, data) => {
                     </div>
                   </div>
               }
-              {(data[key] || ((value === 'countries') && (data.geoCoverageType))) && (index !== details.length - 1) && <Divider />}
+              {(data[key] || data[key] === 0 || ((value === 'countries') && (data.geoCoverageType))) && (index !== details.length - 1) && <Divider />}
               </>
             )
           })          

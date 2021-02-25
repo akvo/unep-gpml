@@ -386,14 +386,15 @@ const detailProject = [
         'key' : 'activityOwner',
         'name' : 'Initiative Owner',
         'value' : 'custom',
-        'customValue': 'children',
+        'customValue': 'topLevel',
         'type': 'haveChild',
     },
     {
-        'key' : 'entity',
+        'key' : 'activityOwner',
         'name' : 'Entity Type',
-        'value' : 'entity',
-        'type': 'array',
+        'value' : 'custom',
+        'customValue': 'options',
+        'type': 'haveParent',
     },
     {
         'key' : 'activityTerm',
@@ -546,6 +547,16 @@ export const descriptionMaps = {
     'policy' : policyDescription,
     'stakeholder' : stakeholderDescription,
 }
+
+// for action_plan, technical_resource, financing_resource
+const resourceInfo = [
+    {
+        'key' : 'xxx',
+        'name' : 'Other Links' ,
+        'value' : 'link',
+        'type' : 'array',
+    },
+]
 
 export const infoMaps = {
     'project' : [
