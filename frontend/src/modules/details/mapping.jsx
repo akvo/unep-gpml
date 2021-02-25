@@ -321,6 +321,18 @@ const detailPolicy = [
 
 const detailProject = [
     {
+        'key' : 'geoCoverageType',
+        'name' : 'Geo-Coverage',
+        'value' : 'geoCoverageType',
+        'type': 'text',
+    },
+    {
+        'key' : 'geoCoverageValues',
+        'name' : 'Country',
+        'value' : 'countries',
+        'type': 'array',
+    },
+    {
         'key' : 'funds',
         'name' : 'Amount Invested',
         'value' : 'funds',

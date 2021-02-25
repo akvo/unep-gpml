@@ -104,7 +104,7 @@ const renderDetails = (params, data) => {
                             const lang = languages[x.isoCode].name
                             return (
                               <>
-                              <a target="_blank" href={x.url}>{lang}</a>
+                              <a rel="noreferrer" target="_blank" href={x.url}>{lang}</a>
                               {(i !== data[key].length - 1) && ", "}
                               </>
                             )
@@ -115,7 +115,11 @@ const renderDetails = (params, data) => {
                           <Excerpt content={values(countries).map(c => c.name).join(', ')} max={300} />
                       }
                       {
-                        (value === 'countries') && (data[key] !== null) && (data.geoCoverageType !== 'global') &&
+                        (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'regional') &&
+                          data[key].join(', ')
+                      }
+                      {
+                        (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'national' || data.geoCoverageType === 'sub-national') &&
                           data[key].map(x => countries[countries3to2[x]].name).join(', ')
                       }
                       {
@@ -187,14 +191,14 @@ const renderInfo = (params, data) => {
                     <div className="title">{ name }</div>
                     <div className="value">
                       { (value === key) && (type === 'name') &&  data[value]}
-                      { (value === key) && (type === 'link') &&  <a target="_blank" href={data[value]} style={{ wordBreak: 'break-word' }}>{data[value]}</a>}
+                      { (value === key) && (type === 'link') &&  <a target="_blank" rel="noreferrer" href={data[value]} style={{ wordBreak: 'break-word' }}>{data[value]}</a>}
                       { 
                         (value === 'link') && (type === 'array') && 
                           data[key].map((x,i) => {
                             return (
                               <>
-                              <a target="_blank" href='#' style={{ wordBreak: 'break-word' }}>{x.name || x}</a>
-                              {(i !== data[key].length - 1) && ", "}
+                              <a target="_blank" rel="noreferrer" href={x.name || x} style={{ wordBreak: 'break-word' }}>{x.name || x}</a>
+                              {/* {(i !== data[key].length - 1) && ", "} */}
                               </>
                             )
                           })
@@ -213,7 +217,13 @@ const renderInfo = (params, data) => {
 }
 
 const renderDescription = (params, data) => {
+  const staticText = <>
+    The <a target="_blank" href="https://unep.tc.akvo.org/" rel="noreferrer">interactive dashboard</a> aims to visually summarise the Initiatives results to inspire others to act and as a way of sharing ideas and innovations. It allows the user to visualise key attributes, such as source-to-sea, type of lead organisation, and lifecycle phase, and enables comparisons on country/region level.
+  </>
+
   const text = descriptionMaps[params.type];
+  const isNarrative = data.uuid.split('-')[0] === '999999'
+
   if (!text) {
     return;
   }
@@ -222,6 +232,7 @@ const renderDescription = (params, data) => {
       <h3>{ text.name}</h3>
       {data[text.key] && <p>{data[text.key]}</p>}
       {!data[text.key] && <p>There is no data to display</p>}
+      {!isNarrative && <p>{staticText}</p>}
     </div>
   )
 }
@@ -254,7 +265,6 @@ const DetailsView = ({ match: { params }, ...props }) => {
         })
       }, 100)
     }
-    console.log(data)
   }, [isAuthenticated])
 
   const handleRelationChange = (relation) => {
