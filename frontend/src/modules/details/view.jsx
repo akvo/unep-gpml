@@ -119,6 +119,10 @@ const renderDetails = (params, data) => {
                           data[key].join(', ')
                       }
                       {
+                        (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'transnational') &&
+                          <Excerpt content={values(countries).map(c => c.name).join(', ')} max={300} />
+                      }
+                      {
                         (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'national' || data.geoCoverageType === 'sub-national') &&
                           data[key].map(x => countries[countries3to2[x]].name).join(', ')
                       }
@@ -150,7 +154,7 @@ const renderDetails = (params, data) => {
                               return (
                                 <>
                                   <li>{x.name}
-                                    <ul>{ x.options.length > 0 && x.options.map((y,i) => <li>{y.name}</li>) }</ul>
+                                    <ul>{ x.options && x.options.length > 0 && x.options.map((y,i) => <li>{y.name}</li>) }</ul>
                                   </li>
                                 </>
                               )
