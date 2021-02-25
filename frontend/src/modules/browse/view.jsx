@@ -219,7 +219,7 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
 const Result = ({ result, relations, handleRelationChange, profile }) => {
   const fullName = (data) => data.title ? `${data.title} ${data.firstName} ${data.lastName}` : `${data.firstName} ${data.lastName}`
   const title = (result.type === 'stakeholder' && fullName(result)) || result.title || result.name
-  // const description = result.description || result.abstract || result.summary || result.about
+  const description = result.description || result.abstract || result.summary || result.about
   const relation = relations.find(it => it.topicId === result.id && it.topic === resourceTypeToTopicType(result.type))
   const allowBookmark = result.type !== 'stakeholder' || profile.id !== result.id
   const tagClassname = "type " + result.type;
@@ -230,10 +230,12 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
         <div className={tagClassname}>{topicNames(result.type)}</div>
         <ul className="stats">
           {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
-          {result.geoCoverageType === 'global' && result.geoCoverageValues === null && <li><Excerpt content={values(countries).map(c => c.name).join(', ')} max={500} /></li>}
-          {result.geoCoverageType === 'global' && result.geoCoverageValues !== null && <li><Excerpt content={result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')} /></li>}
-          {result.geoCoverageType === 'regional' && <li><Excerpt content={result.geoCoverageValues.join(', ')} /></li>}
-          {(result.geoCoverageType === 'transnational' || result.geoCoverageType === 'national' || result.geoCoverageType === 'sub-national') && result.geoCoverageValues && <li><Excerpt content={result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')} max={500} /></li>}
+          {/* Global Coverage Value */}
+          {/* {result.geoCoverageType === 'global' && result.geoCoverageValues === null && <li><Excerpt content={values(countries).map(c => c.name).join(', ')} max={500} /></li>} */}
+          {/* {result.geoCoverageType === 'global' && result.geoCoverageValues !== null && <li><Excerpt content={result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')} /></li>} */}
+          {/* {result.geoCoverageType === 'regional' && <li><Excerpt content={result.geoCoverageValues.join(', ')} /></li>} */}
+          {/* {(result.geoCoverageType === 'transnational' || result.geoCoverageType === 'national' || result.geoCoverageType === 'sub-national') && result.geoCoverageValues && <li><Excerpt content={result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')} max={500} /></li>} */}
+          {/* End Global Coverage Value */}
           {result.status && <li><span>Status:</span>{result.status}</li>}
           {result.organisationType && <li><span>Org:</span>{result.organisationType}</li>}
           {result.yearFounded && <li><span>Founded:</span>{result.yearFounded}</li>}
@@ -241,7 +243,7 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
           {result.value && <li><span>Value:</span>{result.valueCurrency} {String(result.value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>}
           {result.type === 'event' && [<li><span>Starts:</span><i>{moment(result.startDate).format('DD MMM YYYY')}</i></li>, <li><span>Ends:</span><i>{moment(result.endDate).format('DD MMM YYYY')}</i></li>]}
         </ul>
-        {/* {description && <ShowMoreText lines={5}>{description}</ShowMoreText>} */}
+        {result.type !== 'project' && description && <ShowMoreText lines={5}>{description}</ShowMoreText>}
         {allowBookmark && <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />}
     </Linkify>
   )
