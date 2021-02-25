@@ -551,9 +551,9 @@ export const descriptionMaps = {
 // for action_plan, technical_resource, financing_resource
 const resourceInfo = [
     {
-        'key' : 'xxx',
-        'name' : 'Other Links' ,
-        'value' : 'link',
+        'key' : 'languages',
+        'name' : 'Resource Link' ,
+        'value' : 'resource_url',
         'type' : 'array',
     },
 ]
@@ -603,4 +603,7 @@ export const infoMaps = {
             'type' : 'link',
         }
     ],
+    'action_plan' : resourceInfo,
+    'technical_resource' : resourceInfo,
+    'financing_resource' : resourceInfo,
 }

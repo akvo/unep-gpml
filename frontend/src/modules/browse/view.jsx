@@ -230,7 +230,8 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
         <div className={tagClassname}>{topicNames(result.type)}</div>
         <ul className="stats">
           {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
-          {result.geoCoverageType === 'global' && <li><Excerpt content={values(countries).map(c => c.name).join(', ')} max={500} /></li>}
+          {result.geoCoverageType === 'global' && result.geoCoverageValues === null && <li><Excerpt content={values(countries).map(c => c.name).join(', ')} max={500} /></li>}
+          {result.geoCoverageType === 'global' && result.geoCoverageValues !== null && <li><Excerpt content={result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')} /></li>}
           {result.geoCoverageType === 'regional' && <li><Excerpt content={result.geoCoverageValues.join(', ')} /></li>}
           {(result.geoCoverageType === 'transnational' || result.geoCoverageType === 'national' || result.geoCoverageType === 'sub-national') && result.geoCoverageValues && <li><Excerpt content={result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')} max={500} /></li>}
           {result.status && <li><span>Status:</span>{result.status}</li>}

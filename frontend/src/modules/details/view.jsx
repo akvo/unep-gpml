@@ -17,6 +17,7 @@ import values from 'lodash/values';
 import moment from 'moment';
 import imageNotFound from '../../images/image-not-found.png'
 import logoNotFound from '../../images/logo-not-found.png'
+import uniqBy from 'lodash/uniqBy';
 
 const renderTypeOfActions = (params, data) => {
   const keys = typeOfActionKeys.map(x => x.key);
@@ -31,7 +32,7 @@ const renderTypeOfActions = (params, data) => {
       <h3>Type of Actions</h3>
       <div className="table-actions">
         { 
-          typeOfActionKeys.map((item, index) => {
+          typeOfActionKeys && typeOfActionKeys.map((item, index) => {
             const { key, name, value, child } =  item;
             return data[key] &&
               <>
@@ -61,11 +62,6 @@ const renderTypeOfActions = (params, data) => {
       </div>
     </div>
   )
-}
-
-const Excerpt = ({ content, max = 40 }) => {
-  if (content.length > max) return `${content.substr(0, max)}...`
-  return content
 }
 
 const renderDetails = (params, data) => {
@@ -103,19 +99,18 @@ const renderDetails = (params, data) => {
                       { params.type !== 'project' && data[key] && (value === 'join') && (type === 'array') && data[key].join(', ') }
                       { 
                         data[key] && (value === 'isoCode') && (type === 'array') && 
-                          data[key].map((x,i) => {
+                          uniqBy(data[key], name).map((x,i) => {
                             const lang = languages[x.isoCode].name
-                            return (
-                              <>
-                              <a rel="noreferrer" target="_blank" href={x.url}>{lang}</a>
-                              {(i !== data[key].length - 1) && ", "}
-                              </>
-                            )
-                          })
+                            return lang;
+                          }).join(', ')
                       }
                       {
                         (value === 'countries') && (data[key] === null || data[key][0] === '***') && (data.geoCoverageType === 'global') &&
                           <div className="scrollable">{values(countries).map(c => c.name).join(', ')}</div>
+                      }
+                      {
+                        (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'global') &&
+                        <div className="scrollable">{data[key].map(x => countries[countries3to2[x]].name).join(', ')}</div>
                       }
                       {
                         (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'regional') &&
@@ -135,7 +130,8 @@ const renderDetails = (params, data) => {
                       }
                       {
                         (value === 'custom') && (type === 'currency') &&
-                          customValue.map(x => data[x]).join(' ')
+                          // customValue.map(x => data[x]).join(' ')
+                          `${data[customValue[0]]} ${data[customValue[1]]} - ${data[customValue[2]]}` 
                       }
                       {
                         (params.type === 'project' && value === 'custom') && (type === 'array') &&
@@ -183,6 +179,10 @@ const renderDetails = (params, data) => {
 }
 
 const renderInfo = (params, data) => {
+  const staticText = <>
+    The <a target="_blank" href="https://unep.tc.akvo.org/" rel="noreferrer">interactive dashboard</a> aims to visually summarise the Initiatives results to inspire others to act and as a way of sharing ideas and innovations. It allows the user to visualise key attributes, such as source-to-sea, type of lead organisation, and lifecycle phase, and enables comparisons on country/region level.
+  </>
+  const isNarrative = (params.type === 'project' && data.uuid) ? data.uuid.split('-')[0] === '999999' : false
   const info = infoMaps[params.type];
   if (!info) {
     return;
@@ -192,7 +192,7 @@ const renderInfo = (params, data) => {
       <h3>Related Info And Contacts</h3>
       <div className="table">
         {
-          info.map((item, index) => {
+          info && info.map((item, index) => {
             const { key, name, value, type } = item;
             return (
               <>
@@ -209,10 +209,13 @@ const renderInfo = (params, data) => {
                             return (
                               <>
                               <a target="_blank" rel="noreferrer" href={x.name || x} style={{ wordBreak: 'break-word' }}>{x.name || x}</a>
-                              {/* {(i !== data[key].length - 1) && ", "} */}
                               </>
                             )
                           })
+                      }
+                      {
+                        (value === 'resource_url') && (type === 'array') &&
+                          data[key].map((x,i) => <a target="_blank" rel="noreferrer" href={x.url} style={{ wordBreak: 'break-word' }}>{x.url}</a>)
                       }
                     </div>
                   </div> 
@@ -223,17 +226,13 @@ const renderInfo = (params, data) => {
           })
         }
       </div>
+      {(params.type === 'project' && data.uuid) && !isNarrative && <><Divider /> <p>{staticText}</p></>}
     </div>
   )
 }
 
 const renderDescription = (params, data) => {
-  const staticText = <>
-    The <a target="_blank" href="https://unep.tc.akvo.org/" rel="noreferrer">interactive dashboard</a> aims to visually summarise the Initiatives results to inspire others to act and as a way of sharing ideas and innovations. It allows the user to visualise key attributes, such as source-to-sea, type of lead organisation, and lifecycle phase, and enables comparisons on country/region level.
-  </>
-
   const text = descriptionMaps[params.type];
-  const isNarrative = (params.type === 'project' && data.uuid) ? data.uuid.split('-')[0] === '999999' : false
 
   if (!text) {
     return;
@@ -243,7 +242,6 @@ const renderDescription = (params, data) => {
       <h3>{ text.name}</h3>
       {data[text.key] && <p>{data[text.key]}</p>}
       {!data[text.key] && <p>There is no data to display</p>}
-      {(params.type === 'project' && data.uuid) && !isNarrative && <p>{staticText}</p>}
     </div>
   )
 }
