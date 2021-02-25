@@ -27,7 +27,7 @@ select e.*
            from v_event_data e
            left join country c on e.country = c.id) e, event pending
 
-where pending.review_status <> 'APPROVED'
+where pending.review_status = 'SUBMITTED'
   and e.id = pending.id
 
 
