@@ -17,20 +17,18 @@
   (let [opts {:jdbc-url (System/getenv "DATABASE_URL")
               :register-mbeans false}
         ds (hikari/make-datasource opts)]
-    (time
-      (println (jdbc/query {:datasource ds} ["SELECT 1"])))
 
-    (if (= "set-admin" (first args))
-      (jdbc/execute! {:datasource ds} ["UPDATE stakeholder SET review_status='APPROVED', role='ADMIN' WHERE email=?" (second args)])
-      (time
-        (seeder/seed
-          {:datasource ds}
-          {:country? true
-           :currency? true
-           :organisation? true
-           :language? true
-           :tag? true
-           :policy? true
-           :resource? true
-           :technology? true
-           :project? true})))))
+    (case (first args)
+      "set-admin" (jdbc/execute! {:datasource ds} ["UPDATE stakeholder SET review_status='APPROVED', role='ADMIN' WHERE email=?" (second args)])
+      "run-seeder" (time
+                     (seeder/seed
+                       {:datasource ds}
+                       {:country? true
+                        :currency? true
+                        :organisation? true
+                        :language? true
+                        :tag? true
+                        :policy? true
+                        :resource? true
+                        :technology? true
+                        :project? true})))))
