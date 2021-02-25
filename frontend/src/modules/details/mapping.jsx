@@ -95,10 +95,10 @@ const detailActionPlan = [
 
 const detailFinancingResource = [
     {
-        'key' : 'organisation',
+        'key' : 'organisations',
         'name' : 'Organisation',
-        'value' : 'organisation',
-        'type': 'name',
+        'value' : 'organisations',
+        'type': 'array',
     },
     {
         'key' : 'value',
@@ -393,10 +393,46 @@ const detailProject = [
 
 const detailStakeholder = [
     {
-        'key' : 'status',
-        'name' : 'Status',
-        'value' : 'status',
+        'key' : 'country',
+        'name' : 'Country',
+        'value' : 'country',
+        'type': 'country',
+    },
+    {
+        'key' : 'geoCoverageType',
+        'name' : 'Geo-Coverage',
+        'value' : 'geoCoverageType',
         'type': 'text',
+    },
+    {
+        'key' : 'geoCoverageValues',
+        'name' : 'Geo-Coverage Country',
+        'value' : 'countries',
+        'type': 'array',
+    },
+    {
+        'key' : 'representation',
+        'name' : 'Representation',
+        'value' : 'representation',
+        'type': 'name',
+    },
+    {
+        'key' : 'linkedIn',
+        'name' : 'Linked In',
+        'value' : 'linkedIn',
+        'type': 'name',
+    },
+    {
+        'key' : 'twitter',
+        'name' : 'Twitter',
+        'value' : 'twitter',
+        'type': 'name',
+    },
+    {
+        'key' : 'tags',
+        'name' : 'Tags',
+        'value' : 'join',
+        'type': 'array',
     },
 ];
 
@@ -459,7 +495,7 @@ export const detailMaps = {
     'technology' : detailTechnology,
     'policy' : detailPolicy,
     'project' : detailProject,
-    // 'stakeholder' : detailStakeholder,
+    'stakeholder' : detailStakeholder,
     'organisation' : detailOrganisation,
 };
 
@@ -483,6 +519,11 @@ const policyDescription = {
     'name' : 'Abstract'
 }
 
+const stakeholderDescription = {
+    'key' : 'about',
+    'name' : 'About'
+}
+
 export const descriptionMaps = {
     'project' : description,
     'action_plan' : description,
@@ -491,7 +532,7 @@ export const descriptionMaps = {
     'event' : eventDescription,
     'technology' : technologyDescription,
     'policy' : policyDescription,
-    // 'stakeholder' : description,
+    'stakeholder' : stakeholderDescription,
 }
 
 export const infoMaps = {
@@ -538,5 +579,5 @@ export const infoMaps = {
             'value' : 'url',
             'type' : 'link',
         }
-    ]
+    ],
 }

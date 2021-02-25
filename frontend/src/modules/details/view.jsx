@@ -93,7 +93,9 @@ const renderDetails = (params, data) => {
                       { (value === key) && (type === 'currency') && 'USD ' + data[value] }
                       { (value === key) && (type === 'object') && data[value].name }
                       { (value === key) && (type === 'link') && <a target="_blank" href={data['value']}>{data[value]}</a> }
-                      { (value === key) && (type === 'date') && moment(data[key]).format('DD MMM YYYY')}
+                      { (value === key) && (type === 'date') && moment(data[key]).format('DD MMM YYYY') }
+                      { (value === key) && (type === 'array') && data[key].map(x => x.name).join(', ') }
+                      { (value === key) && (type === 'country') && countries[countries3to2[data[key]]].name }
                       { params.type === 'project' && data[key] && (value === 'join') && (type === 'array') && data[key].map(x => x.name).join(', ') }
                       { params.type !== 'project' && data[key] && (value === 'join') && (type === 'array') && data[key].join(', ') }
                       { 
@@ -252,6 +254,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
         })
       }, 100)
     }
+    console.log(data)
   }, [isAuthenticated])
 
   const handleRelationChange = (relation) => {
@@ -297,7 +300,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
           <RightOutlined />
           <Link to={`/browse?topic=${params.type}`}>{topicNames(params.type)}</Link>
           <RightOutlined />
-          <span className="details-active">{data.title || data.name}</span>
+          <span className="details-active">{data.title || data.name} {data.firstName} {data.lastName}</span>
         </div>
       </div>
 
@@ -316,7 +319,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
                     <div style={{ width: '90%' }}><h1>{data.title || data.name}</h1></div>
                   </div>
               }
-              { (params.type !== 'technology') && <h1>{data.title || data.name}</h1>}
+              { (params.type !== 'technology') && <h1>{data.title || data.name} {data.firstName} {data.lastName}</h1>}
               {relation?.association?.map((relationType, index) => <Tag color="blue" key={`relation-${index}`}>{relationType}</Tag>)}
             </div>
             <div className="bookmark">
@@ -331,7 +334,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
         <div className="content-body">
           {/* Left */}
           <div className="content-column">
-            <Image style={{marginBottom: '20px'}} width="100%" src={data.image || "/image-not-found.png"} />
+            <Image style={{marginBottom: '20px'}} width="100%" src={data.image || data.picture || "/image-not-found.png"} />
             { renderDescription(params, data) }
             { renderTypeOfActions(params, data) }
           </div>
