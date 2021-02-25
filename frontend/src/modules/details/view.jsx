@@ -99,7 +99,7 @@ const renderDetails = (params, data) => {
                       { params.type !== 'project' && data[key] && (value === 'join') && (type === 'array') && data[key].join(', ') }
                       { 
                         data[key] && (value === 'isoCode') && (type === 'array') && 
-                          uniqBy(data[key], name).map((x,i) => {
+                          uniqBy(data[key], 'isoCode').map((x,i) => {
                             const lang = languages[x.isoCode].name
                             return lang;
                           }).join(', ')
