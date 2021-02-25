@@ -114,7 +114,8 @@ const renderDetails = (params, data) => {
                       }
                       {
                         (value === 'countries') && (data[key] === null || data[key][0] === '***') && (data.geoCoverageType === 'global') &&
-                          <Excerpt content={values(countries).map(c => c.name).join(', ')} max={300} />
+                          // <Excerpt content={values(countries).map(c => c.name).join(', ')} max={300} />
+                          <div className="scrollable">{values(countries).map(c => c.name).join(', ')}</div>
                       }
                       {
                         (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'regional') &&
@@ -122,7 +123,8 @@ const renderDetails = (params, data) => {
                       }
                       {
                         (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'transnational') &&
-                          <Excerpt content={values(countries).map(c => c.name).join(', ')} max={300} />
+                          // <Excerpt content={values(countries).map(c => c.name).join(', ')} max={300} />
+                          <div className="scrollable">{values(countries).map(c => c.name).join(', ')}</div>
                       }
                       {
                         (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'national' || data.geoCoverageType === 'sub-national') &&

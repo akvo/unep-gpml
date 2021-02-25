@@ -225,6 +225,24 @@
               flex: 73%;
               color: #28457B;
               font-weight: 500;
+              .scrollable {
+                max-height: 200px;
+                overflow: auto;
+                padding-right: 8px;
+              }
+              ::-webkit-scrollbar {
+                width: 5px;
+              }
+              ::-webkit-scrollbar-track {
+                background: #f1f1f1;
+              }
+              /* Handle */
+              ::-webkit-scrollbar-thumb {
+                background: #888;
+              }
+              ::-webkit-scrollbar-thumb:hover {
+                background: #555;
+              }
             }
           }
         }
