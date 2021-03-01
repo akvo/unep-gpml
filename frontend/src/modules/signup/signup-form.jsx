@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form } from "antd";
-import { Field, Form as FinalForm, FormSpy } from "react-final-form";
+import { Form as FinalForm, FormSpy } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import "./styles.scss";
 import Checkbox from "antd/lib/checkbox/Checkbox";

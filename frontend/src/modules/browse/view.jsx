@@ -373,11 +373,6 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
   );
 };
 
-const Excerpt = ({ content, max = 40 }) => {
-  if (content.length > max) return `${content.substr(0, max)}...`;
-  return content;
-};
-
 const Linkify = ({ result, children }) => {
   // if(result.type === 'stakeholder') return children
   return (

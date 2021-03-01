@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
 import Landing from "./modules/landing/view";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
