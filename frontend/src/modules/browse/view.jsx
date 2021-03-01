@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Input, Select, Checkbox, Button, Dropdown, Tag, Alert } from 'antd'
-import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
+import { Card, Input, Select, Checkbox, Tag } from 'antd'
+import { SearchOutlined } from '@ant-design/icons'
 import './styles.scss'
 import { topicTypes, topicTypesIncludingOrg, topicTypesApprovedUser, topicNames, resourceTypeToTopicType } from '../../utils/misc'
 import { Link, useLocation, withRouter } from 'react-router-dom'
 import moment from 'moment'
 import api from '../../utils/api'
 import { countries } from 'countries-list'
-import countries3to2 from 'countries-list/dist/countries3to2.json'
 import countries2to3 from 'countries-list/dist/countries2to3.json'
 import ShowMoreText from 'react-show-more-text'
 import ModalWarningUser from '../../utils/modal-warning-user'
@@ -15,7 +14,6 @@ import { useAuth0 } from '@auth0/auth0-react'
 import humps from 'humps'
 import isEmpty from 'lodash/isEmpty'
 import { LoadingOutlined } from '@ant-design/icons';
-import values from 'lodash/values';
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -125,26 +123,9 @@ const Browse = ({ history, countData, profile, setSignupModalVisible, updateDisc
   useEffect(() => {
     updateDisclaimer('/browse')
   }, [])
-  // const disclaimer = <>
-  //   UNEP shall not be liable for third party content hosted on the platform. Contact us if you have any concerns with the content at: <a href="mailto:unep-gpmarinelitter@un.org">unep-gpmarinelitter@un.org</a>. 
-  //   Please note that during Beta Testing, content and functionality issues may persist.
-  // </>
 
   return (
     <div id="browse">
-
-      {/* disclaimer */}
-      {/* <div style={{position: 'absolute', top: 0, left: '50%', width: '750px'}}>
-        <div style={{position: 'relative', left: '-50%'}}>
-          <Alert
-            message={disclaimer}
-            type="info"
-            closable
-          />
-        </div>
-      </div> */}
-      {/* disclaimer */}
-
       <div className="ui container">
         <aside>
           <div className="inner">
@@ -248,10 +229,12 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
     </Linkify>
   )
 }
+
 const Excerpt = ({ content, max = 40 }) => {
   if (content.length > max) return `${content.substr(0, max)}...`
   return content
 }
+
 const Linkify = ({ result, children }) => {
   // if(result.type === 'stakeholder') return children
     return (
@@ -265,7 +248,7 @@ const Linkify = ({ result, children }) => {
 export const PortfolioBar = ({ relation }) => {
   return (
     <div className="portfolio-bar" onClick={e => e.stopPropagation()}>
-      {relation?.association?.map((relationType, index) => <Tag color="blue" key={`relation-${index}`}>{relationType}</Tag>)}
+      {relation?.association?.map((relationType, index) => <Tag color="blue" key={`browse-relation-${index}`}>{relationType}</Tag>)}
     </div>
   )
 }

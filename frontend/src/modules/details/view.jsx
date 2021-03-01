@@ -1,6 +1,6 @@
 import { LoadingOutlined, RightOutlined, PlusOutlined } from '@ant-design/icons'
 import { Button, Tag, Image, Divider, Dropdown, Checkbox } from 'antd'
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../../utils/api'
@@ -19,6 +19,109 @@ import imageNotFound from '../../images/image-not-found.png'
 import logoNotFound from '../../images/logo-not-found.png'
 import uniqBy from 'lodash/uniqBy';
 
+const renderItemValues = (params, mapping, data) => {
+  return mapping && mapping.map((item, index) => {
+    const { key, name, value, type, customValue } = item;
+    return (
+      <Fragment key={`${params.type}-${name}`}>
+      {
+        (data[key] || data[key] === 0 || ((value === 'countries') && (data.geoCoverageType)) || key === null) && 
+          <div key={name+index} className="column">
+            <div className="title">{ name }</div>
+            <div className="value">
+              {/* Same function */}
+              {/*  
+              { (value === key) && (type === 'string') && data[value] }
+              { (value === key) && (type === 'number') && data[value] }
+              { (value === key) && (type === 'object') && data[value].name }
+              { params.type === 'project' && (value === key) && (type === 'name') && data[value].name }
+              { params.type !== 'project' && (value === key) && (type === 'name') && data[value] }
+              { (value === key) && (type === 'link') && <a rel="noreferrer" target="_blank" href={data['value']}>{data[value]}</a> }
+              { (value === key) && (type === 'link') &&  <a target="_blank" rel="noreferrer" href={data[value]} style={{ wordBreak: 'break-word' }}>{data[value]}</a>}s
+              */}
+              {/* EOF Same function */}
+
+              { (key === null) && (type === 'static') && value }
+              { (value === key) && (type === 'name' || type === 'string' || (type === 'number' || type === 'object')) && (data[value].name || data[value]) }
+              { (value === key) && (type === 'text') && capitalize(data[value]) }
+              { (value === key) && (type === 'currency') && 'USD ' + data[value] }
+              { (value === key) && (type === 'link') &&  <a target="_blank" rel="noreferrer" href={data[value]} style={{ wordBreak: 'break-word' }}>{data[value]}</a>}
+              { (value === key) && (type === 'date') && moment(data[key]).format('DD MMM YYYY') }
+              { (value === key) && (type === 'array') && data[key].map(x => x.name).join(', ') }
+              { (value === key) && (type === 'country') && countries[countries3to2[data[key]]].name }
+              { (value === 'custom') && (type === 'object') && data[key][customValue] }
+              { (value === 'custom') && (type === 'date') && moment(data[customValue[0]]).format('DD MMM YYYY') + ' / ' + moment(data[customValue[1]]).format('DD MMM YYYY') }
+              { data[key] && (value === 'isoCode') && (type === 'array') && uniqBy(data[key], 'isoCode').map((x,i) => languages[x.isoCode].name).join(', ') }
+              { params.type === 'project' && data[key] && (value === 'join') && (type === 'array') && data[key].map(x => x.name).join(', ') }
+              { params.type !== 'project' && data[key] && (value === 'join') && (type === 'array') && data[key].join(', ') }
+              { (params.type === 'project' && value === 'custom') && (type === 'array') && data[key][customValue] && data[key][customValue].map(x => x.name).join(', ') }
+              { (params.type !== 'project' && value === 'custom') && (type === 'array') && data[key][customValue] && data[key][customValue].join(', ') }
+
+              {/* Country details */}
+              {
+                (value === 'countries') && (data[key] === null || data[key][0] === '***') && (data.geoCoverageType === 'global') &&
+                  <div className="scrollable">{values(countries).map(c => c.name).join(', ')}</div>
+              }
+              {
+                (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'regional') &&
+                data[key].join(', ')
+              }
+              {
+                (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'global') &&
+                  <div className="scrollable">{data[key].map(x => countries[countries3to2[x]].name).join(', ')}</div>
+              }
+              {
+                (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'transnational') &&
+                  <div className="scrollable">{data[key].map(x => countries[countries3to2[x]].name).join(', ')}</div>
+              }
+              {
+                (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'national' || data.geoCoverageType === 'sub-national') &&
+                  data[key].map(x => countries[countries3to2[x]].name).join(', ')
+              }
+              {/* EOF Country details */}
+
+              { 
+                (value === 'resource_url') && (type === 'array') && 
+                  <ul> { data[key].map((x,i) => <li key={x.url}><a target="_blank" rel="noreferrer" href={x.url} style={{ wordBreak: 'break-word' }}>{x.url}</a></li>)} </ul> 
+              }
+              { 
+                (value === 'link') && (type === 'array') && 
+                  <ul> { data[key].map((x,i) => <li key={x.name || x} ><a target="_blank" rel="noreferrer" href={x.name || x} style={{ wordBreak: 'break-word' }}>{x.name || x}</a></li>) } </ul> 
+              }
+             
+              {
+                (value === 'custom') && (type === 'currency') &&
+                  `${data[customValue[0]] && data[customValue[0]]} ${data[customValue[1]] && data[customValue[1]]} - ${data[customValue[2]] && data[customValue[2]]}` 
+              }
+
+              {
+                (value === 'custom') && (type === 'haveChild' && (customValue === 'topLevel')) &&
+                  <ul>{ data[key].map((x,i) => <li key={x.name}>{x.name}</li>) }</ul>
+              }
+
+              {/* Entity Type */}
+              {
+                (value === 'custom') && (type === 'haveParent' && (customValue === 'options')) &&
+                  <ul>
+                  {
+                    data[key].map((x,i) => 
+                      <li key={x.name.split('(')[0]}>{x.name.split('(')[0]}
+                        <ul className="indent">{ x.options && x.options.length > 0 && x.options.map((y,i) => <li key={y.name}>{y.name}</li>) }</ul>
+                      </li>
+                    )
+                  }
+                  </ul>
+              }
+              {/* EOL Entity Type */}
+            </div>
+          </div> 
+      }
+      {(data[key] || data[key] === 0 || ((value === 'countries') && (data.geoCoverageType))) && (index !== mapping.length - 1) && <Divider key={`d${params.type}-${index}`} />}
+      </Fragment>
+    )
+  })
+}
+
 const renderTypeOfActions = (params, data) => {
   const keys = typeOfActionKeys.map(x => x.key);
   const keyAvailable = keys.map(x => some(data, x)).includes(true);
@@ -28,19 +131,19 @@ const renderTypeOfActions = (params, data) => {
   }
 
   return (
-    <div className="card">
+    <div key="type-of-actions" className="card">
       <h3>Type of Actions</h3>
       <div className="table-actions">
         { 
           typeOfActionKeys && typeOfActionKeys.map((item, index) => {
             const { key, name, value, child } =  item;
             return data[key] &&
-              <>
-              <div className="column">
+              <Fragment key={`fragment-actions${index}-${name}`}>
+              <div key={`actions${index}-${name}`} className="column">
                 <div className="title">{name}</div>
                 {
                   (value === 'children') && 
-                    <ul>{ data[key].map((value, index) => (<li className="value" key={index}>{(!value) ? '-' : value.name}</li>)) }</ul>
+                    <ul>{ data[key].map((value, index) => (<li className="value" key={'key'+index}>{(!value) ? '-' : value.name}</li>)) }</ul>
                 }
 
                 {
@@ -49,14 +152,14 @@ const renderTypeOfActions = (params, data) => {
                       {
                         child && child.map((child, index) => {
                           const { key, name, value } = child;
-                          return (<li className="value" key={index}>{name} : {data[key][value]}</li>)
+                          return (<li className="value" key={name+index}>{name} : {data[key][value]}</li>)
                         })
                       }
                     </ul>
                 }
               </div>
-              {(index !== typeOfActionKeys.length - 1) && <Divider />}
-              </>
+              {(index !== typeOfActionKeys.length - 1) && <Divider key={`dactions${params.type}-${index}`} />}
+              </Fragment>
           })
         }
       </div>
@@ -70,167 +173,27 @@ const renderDetails = (params, data) => {
     return;
   }
   return(
-    <div className="card">
+    <div key={'details'} className="card">
       <h3>{topicNames(params.type)} Detail</h3>
-      <div className="table">
-        { 
-          details && details.map((detail, index) => {
-            const { key, name, value, type, customValue } = detail;
-            return (
-              <>
-              {
-                (data[key] || data[key] === 0 || ((value === 'countries') && (data.geoCoverageType)) || key === null) && 
-                  <div className="column">
-                    <div className="title">{ name }</div>
-                    <div className="value">
-                      { (key === null) && (type === 'static') && value }
-                      { params.type === 'project' && (value === key) && (type === 'name') && data[value].name }
-                      { params.type !== 'project' && (value === key) && (type === 'name') && data[value] }
-                      { (value === key) && (type === 'string') && data[value] }
-                      { (value === key) && (type === 'text') && capitalize(data[value]) }
-                      { (value === key) && (type === 'number') && capitalize(data[value]) }
-                      { (value === key) && (type === 'currency') && 'USD ' + data[value] }
-                      { (value === key) && (type === 'object') && data[value].name }
-                      { (value === key) && (type === 'link') && <a rel="noreferrer" target="_blank" href={data['value']}>{data[value]}</a> }
-                      { (value === key) && (type === 'date') && moment(data[key]).format('DD MMM YYYY') }
-                      { (value === key) && (type === 'array') && data[key].map(x => x.name).join(', ') }
-                      { (value === key) && (type === 'country') && countries[countries3to2[data[key]]].name }
-                      { params.type === 'project' && data[key] && (value === 'join') && (type === 'array') && data[key].map(x => x.name).join(', ') }
-                      { params.type !== 'project' && data[key] && (value === 'join') && (type === 'array') && data[key].join(', ') }
-                      { 
-                        data[key] && (value === 'isoCode') && (type === 'array') && 
-                          uniqBy(data[key], 'isoCode').map((x,i) => {
-                            const lang = languages[x.isoCode].name
-                            return lang;
-                          }).join(', ')
-                      }
-                      {
-                        (value === 'countries') && (data[key] === null || data[key][0] === '***') && (data.geoCoverageType === 'global') &&
-                          <div className="scrollable">{values(countries).map(c => c.name).join(', ')}</div>
-                      }
-                      {
-                        (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'global') &&
-                        <div className="scrollable">{data[key].map(x => countries[countries3to2[x]].name).join(', ')}</div>
-                      }
-                      {
-                        (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'regional') &&
-                          data[key].join(', ')
-                      }
-                      {
-                        (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'transnational') &&
-                          <div className="scrollable">{data[key].map(x => countries[countries3to2[x]].name).join(', ')}</div>
-                      }
-                      {
-                        (value === 'countries') && (data[key] !== null) && (data.geoCoverageType === 'national' || data.geoCoverageType === 'sub-national') &&
-                          data[key].map(x => countries[countries3to2[x]].name).join(', ')
-                      }
-                      {
-                        (value === 'custom') && (type === 'date') &&
-                          moment(data[customValue[0]]).format('DD MMM YYYY') + ' / ' + moment(data[customValue[1]]).format('DD MMM YYYY')
-                      }
-                      {
-                        (value === 'custom') && (type === 'currency') &&
-                          // customValue.map(x => data[x]).join(' ')
-                          `${data[customValue[0]]} ${data[customValue[1]]} - ${data[customValue[2]]}` 
-                      }
-                      {
-                        (params.type === 'project' && value === 'custom') && (type === 'array') &&
-                          data[key][customValue] && data[key][customValue].map(x => x.name).join(', ')
-                      }
-                      {
-                        (params.type !== 'project' && value === 'custom') && (type === 'array') &&
-                          data[key][customValue] && data[key][customValue].join(', ')
-                      }
-                      {
-                        (value === 'custom') && (type === 'object') &&
-                          data[key][customValue]
-                      }
-                      {
-                        (value === 'custom') && (type === 'haveChild' && (customValue === 'topLevel')) &&
-                          <ul>{ data[key].map((x,i) => <li>{x.name}</li>) }</ul>
-                      }
-                      {
-                        (value === 'custom') && (type === 'haveParent' && (customValue === 'options')) &&
-                          <ul>
-                          {
-                            data[key].map((x,i) => {
-                              return (
-                                <>
-                                  <li>{x.name.split('(')[0]}
-                                    <ul className="indent">{ x.options && x.options.length > 0 && x.options.map((y,i) => <li>{y.name}</li>) }</ul>
-                                  </li>
-                                </>
-                              )
-                            })
-                          }
-                          </ul>
-                      }
-                    </div>
-                  </div>
-              }
-              {(data[key] || data[key] === 0 || ((value === 'countries') && (data.geoCoverageType))) && (index !== details.length - 1) && <Divider />}
-              </>
-            )
-          })          
-        }
-      </div>
+      <div className="table">{ renderItemValues(params, details, data) }</div>
     </div>
   )
 }
 
 const renderInfo = (params, data) => {
-  const staticText = <>
+  const staticText = <p>
     The <a target="_blank" href="https://unep.tc.akvo.org/" rel="noreferrer">interactive dashboard</a> aims to visually summarise the Initiatives results to inspire others to act and as a way of sharing ideas and innovations. It allows the user to visualise key attributes, such as source-to-sea, type of lead organisation, and lifecycle phase, and enables comparisons on country/region level.
-  </>
+  </p>
   const isNarrative = (params.type === 'project' && data.uuid) ? data.uuid.split('-')[0] === '999999' : false
   const info = infoMaps[params.type];
   if (!info) {
     return;
   }
   return (
-    <div className="card">
+    <div key="info" className="card">
       <h3>Related Info And Contacts</h3>
-      <div className="table">
-        {
-          info && info.map((item, index) => {
-            const { key, name, value, type } = item;
-            return (
-              <>
-              {
-                data[key] &&
-                  <div className="column">
-                    <div className="title">{ name }</div>
-                    <div className="value">
-                      { (value === key) && (type === 'name') &&  data[value]}
-                      { (value === key) && (type === 'link') &&  <a target="_blank" rel="noreferrer" href={data[value]} style={{ wordBreak: 'break-word' }}>{data[value]}</a>}
-                      { 
-                        (value === 'link') && (type === 'array') && 
-                        <ul>
-                          {
-                            data[key].map((x,i) => {
-                              return (
-                                <li><a target="_blank" rel="noreferrer" href={x.name || x} style={{ wordBreak: 'break-word' }}>{x.name || x}</a></li>
-                                )
-                              })
-                          }
-                        </ul>
-                      }
-                      {
-                        (value === 'resource_url') && (type === 'array') &&
-                          <ul>
-                            { data[key].map((x,i) => <li><a target="_blank" rel="noreferrer" href={x.url} style={{ wordBreak: 'break-word' }}>{x.url}</a></li>)} 
-                          </ul>
-                      }
-                    </div>
-                  </div> 
-              }
-              {(data[key] && index !== info.length - 1) && <Divider />}
-              </>
-            )
-          })
-        }
-      </div>
-      {(params.type === 'project' && data.uuid) && !isNarrative && <><Divider /> <p>{staticText}</p></>}
+      <div className="table">{ renderItemValues(params, info, data) }</div>
+      {(params.type === 'project' && data.uuid) && !isNarrative && <div><Divider key="statictext" /> {staticText}</div>}
     </div>
   )
 }
@@ -242,7 +205,7 @@ const renderDescription = (params, data) => {
     return;
   }
   return (
-    <div className="card">
+    <div key="description" className="card">
       <h3>{ text.name}</h3>
       {data[text.key] && <p>{data[text.key]}</p>}
       {!data[text.key] && <p>There is no data to display</p>}
@@ -337,7 +300,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
                 (params.type === 'technology') &&
                   <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                     <div style={{ width: '6%', padding: '15px 0', marginRight: '20px' }}>
-                      <Image width="100%" src={data.logo || logoNotFound} />
+                      <Image key='logo' width="100%" src={data.logo || logoNotFound} />
                     </div>
                     <div style={{ width: '90%' }}><h1>{data.title || data.name}</h1></div>
                   </div>
@@ -356,14 +319,14 @@ const DetailsView = ({ match: { params }, ...props }) => {
       <div className="ui container">
         <div className="content-body">
           {/* Left */}
-          <div className="content-column">
-            <Image style={{marginBottom: '20px'}} width="100%" src={data.image || data.picture || imageNotFound} />
+          <div key="left" className="content-column">
+            <Image key='desc-image' style={{marginBottom: '20px'}} width="100%" src={data.image || data.picture || imageNotFound} />
             { renderDescription(params, data) }
             { renderTypeOfActions(params, data) }
           </div>
 
           {/* Right */}
-          <div className="content-column">
+          <div key="right" className="content-column">
             { renderDetails(params, data) }
             { renderInfo(params, data) }
           </div>

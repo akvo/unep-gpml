@@ -83,27 +83,9 @@ const Landing = ({ history, data, countries, initLandingCount, setCountries, set
     useEffect(() => {
       updateDisclaimer(window.location.pathname)
     }, [])
-    
-    // const disclaimer = <>
-    //   The GPML Digital Platform Phase 1 is now live and currently a Beta Version. Help us test the platform and let us know what you think at <a href="mailto:unep-gpmarinelitter@un.org">unep-gpmarinelitter@un.org</a>. 
-    //   Take part in shaping the platform’s next releases, until its final launch scheduled for 2023. Stay tuned!
-    // </>
 
     return (
       <div id="landing">
-
-        {/* disclaimer */}
-        {/* <div style={{position: 'absolute', top: '-150px', left: '50%', width: '750px'}}>
-          <div style={{position: 'relative', left: '-50%'}}>
-            <Alert
-              message={disclaimer}
-              type="info"
-              closable
-            />
-          </div>
-        </div> */}
-        {/* disclaimer */}
-
         <div className="landing-container">
           <div className="landing-banner ui container">
               <h2>Welcome to the Global Partnership on Marine Litter Digital Platform!</h2>
