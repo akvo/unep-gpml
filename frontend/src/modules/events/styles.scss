@@ -1,60 +1,63 @@
-@import '../../vars.scss';
+@import "../../vars.scss";
 
-#add-event{
+#add-event {
   padding-top: 40px;
   padding-bottom: 40px;
   min-height: calc(100vh - 145px);
   background: url(../../images/Event-gpml.jpg) no-repeat center;
   background-size: cover;
-  &>.ui.container>.ant-row{
-    &>.ant-col:first-child{
-      *{
+  & > .ui.container > .ant-row {
+    & > .ant-col:first-child {
+      * {
         color: #fff;
       }
     }
   }
-  .ant-card{
+  .ant-card {
     border-radius: 6px;
-    input, textarea{
-      background-color: #EDF2F6;
-      border-color: #EDF2F6;
+    input,
+    textarea {
+      background-color: #edf2f6;
+      border-color: #edf2f6;
       border-radius: 4px;
     }
-    .ant-picker, .ant-select, .ant-select-selector{
-      background-color: #EDF2F6;
-      border-color: #EDF2F6;
+    .ant-picker,
+    .ant-select,
+    .ant-select-selector {
+      background-color: #edf2f6;
+      border-color: #edf2f6;
     }
-    .ant-select-selector{
-      background-color: #EDF2F6;
+    .ant-select-selector {
+      background-color: #edf2f6;
     }
-    .ant-input-group-addon{
+    .ant-input-group-addon {
       background-color: $primaryColor;
       border-color: $primaryColor;
       color: #fff;
     }
-    .ant-picker{
+    .ant-picker {
       width: 100%;
-      input{
+      input {
         text-align: center;
       }
     }
-    .array-item{
+    .array-item {
       border: 1px solid #ccc;
       border-radius: 3px;
       padding: 15px 15px 0;
-      &:not(:first-child){
+      &:not(:first-child) {
         margin-top: 10px;
       }
       display: flex;
-      &>div:first-child{
+      & > div:first-child {
         flex: 1;
       }
-      &>div:last-child{
+      & > div:last-child {
         width: 200px;
         margin-left: 10px;
       }
     }
-    .array-btns{
+    .array-btns {
       margin-bottom: 20px;
       margin-top: 10px;
     }

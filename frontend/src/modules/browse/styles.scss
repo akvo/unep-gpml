@@ -1,91 +1,92 @@
-@import '../../vars.scss';
+@import "../../vars.scss";
 
-#browse{
+#browse {
   padding-top: 30px;
-  .ui.container{
+  .ui.container {
     display: flex;
   }
-  aside{
+  aside {
     width: 330px;
-    .inner{
-      border: 1px solid #D7E6EE;
+    .inner {
+      border: 1px solid #d7e6ee;
       border-radius: 3px;
       padding: 10px;
       display: flex;
       flex-direction: column;
-      .ant-select{
+      .ant-select {
         margin-top: 15px;
       }
-      .label{
+      .label {
         text-transform: uppercase;
         margin-bottom: 5px;
         margin-top: 15px;
       }
-      .field{
+      .field {
         width: 100%;
-        .ant-select{
+        .ant-select {
           margin-top: 0;
           width: 100%;
         }
       }
-      ul.topic-list{
+      ul.topic-list {
         line-height: 36px;
         padding: 0 5px;
-        li{
-          &:not(:last-child){
-            border-bottom: 1px solid #DAE9F1;
+        li {
+          &:not(:last-child) {
+            border-bottom: 1px solid #dae9f1;
           }
-          &:last-child{
+          &:last-child {
             position: relative;
             z-index: 2;
           }
         }
-        .ant-checkbox{
+        .ant-checkbox {
           margin-right: 5px;
-          &+span{
+          & + span {
             color: #036799;
             text-transform: capitalize;
           }
         }
       }
-      .event-fields{
-        background-color: #E0E9EC;
+      .event-fields {
+        background-color: #e0e9ec;
         position: relative;
         margin-top: -51px;
         margin-bottom: -10px;
         z-index: 0;
         padding: 30px 5px 17px;
-        .label{
+        .label {
           text-transform: none;
           font-weight: 600;
           font-size: 13px;
           margin-bottom: 3px;
         }
-        &:before, &:after{
+        &:before,
+        &:after {
           content: " ";
           position: absolute;
           top: 0;
           width: 10px;
           height: 100%;
-          background-color: #E0E9EC;
+          background-color: #e0e9ec;
         }
-        &:before{
+        &:before {
           left: -10px;
         }
-        &:after{
+        &:after {
           right: -10px;
         }
-        .ant-picker-range{
+        .ant-picker-range {
           width: 100%;
         }
       }
-      .my-favorites{
+      .my-favorites {
         margin-top: 15px;
         text-transform: uppercase;
       }
     }
   }
-  .main-content{
+  .main-content {
     flex: 1;
     margin-left: 20px;
     .page {
@@ -93,7 +94,7 @@
       font-style: italic;
       margin-bottom: 5px;
     }
-    .ant-card{
+    .ant-card {
       margin-bottom: 15px;
       position: relative;
       a.browse-card {
@@ -103,14 +104,14 @@
         left: 0px;
         position: absolute;
         top: 0px;
-        z-index:2;
+        z-index: 2;
       }
-      .type{
+      .type {
         position: absolute;
         right: 10px;
         top: 10px;
-        background-color: #A5C9DB;
-        color: #FFF;
+        background-color: #a5c9db;
+        color: #fff;
         font-weight: 600;
         text-transform: uppercase;
         font-size: 13px;
@@ -119,94 +120,95 @@
         border-radius: 3px;
       }
       .project {
-        background-color: #FFD579;
-        color: #28457B;
+        background-color: #ffd579;
+        color: #28457b;
       }
       .event {
-        background-color: #01ABF1;
-        color: #FFFFFF;
+        background-color: #01abf1;
+        color: #ffffff;
       }
       .stakeholder {
-        background-color: #01ABF1;
-        color: #FFFFFF;
+        background-color: #01abf1;
+        color: #ffffff;
       }
       .technology {
-        background-color: #035B71;
-        color: #FFFFFF;
+        background-color: #035b71;
+        color: #ffffff;
       }
       .policy {
-        background-color: #B5C3DA;
-        color: #28457B;
+        background-color: #b5c3da;
+        color: #28457b;
       }
       .financing_resource {
-        background-color: #21A07F;
-        color: #FFFFFF;
+        background-color: #21a07f;
+        color: #ffffff;
       }
       .technical_resource {
-        background-color: #28457B;
-        color: #FFFFFF;
+        background-color: #28457b;
+        color: #ffffff;
       }
       .action_plan {
-        background-color: #126E9B;
-        color: #FFFFFF;
+        background-color: #126e9b;
+        color: #ffffff;
       }
-      h3{
+      h3 {
         font-size: 24px;
       }
       h4 {
         width: 90%;
       }
-      ul.stats{
+      ul.stats {
         display: flex;
         margin-bottom: 1em;
-        li{
+        li {
           text-transform: uppercase;
           opacity: 0.75;
           margin-right: 10px;
           font-size: 12px;
           font-weight: 500;
-          span{
+          span {
             opacity: 0.6;
             margin-right: 5px;
           }
         }
       }
-      .portfolio-bar{
+      .portfolio-bar {
         display: flex;
         margin-top: 15px;
-        .ant-btn{
+        .ant-btn {
           margin-right: 5px;
         }
-        .label{
+        .label {
           font-size: 12px;
           margin-top: 3px;
           font-weight: 600;
           opacity: 0.7;
         }
       }
-      &:before{
+      &:before {
         position: absolute;
         content: "Learn more";
         position: absolute;
         bottom: 0;
         right: 0;
-        color: #00AAF1;
+        color: #00aaf1;
         font-weight: 600;
         padding: 4px 7px;
         opacity: 0;
-        transition: opacity .2s ease-out;
+        transition: opacity 0.2s ease-out;
       }
-      &:after{
+      &:after {
         content: " ";
-        border-bottom: 1px solid #00AAF1;
+        border-bottom: 1px solid #00aaf1;
         position: absolute;
         bottom: 0;
         width: 100%;
         opacity: 0;
-        transition: opacity .2s ease-out;
+        transition: opacity 0.2s ease-out;
       }
-      &:hover{
-        &:after, &:before{
+      &:hover {
+        &:after,
+        &:before {
           opacity: 1;
         }
       }
@@ -214,16 +216,16 @@
   }
 }
 
-.relations-dropdown{
+.relations-dropdown {
   background-color: #fff;
   z-index: 10;
   padding: 3px 10px;
-  border: 1px solid #89B7D0;
+  border: 1px solid #89b7d0;
   border-radius: 3px;
-  li{
+  li {
     line-height: 30px;
-    &:not(:last-child){
-      border-bottom: 1px solid #E0E9EC;
+    &:not(:last-child) {
+      border-bottom: 1px solid #e0e9ec;
     }
   }
 }

@@ -1,47 +1,47 @@
-@import '../../vars.scss';
+@import "../../vars.scss";
 
 .upload-btn,
 .view-cv {
-    display: inline-block;
+  display: inline-block;
 }
 .view-cv {
-    float: right;
+  float: right;
 }
 
-.signup-modal{
-  h2{
+.signup-modal {
+  h2 {
     color: $primaryColor;
     font-size: 22px;
   }
-  .org-check{
+  .org-check {
     margin-bottom: 15px;
   }
-  .title-name-group{
+  .title-name-group {
     display: flex;
-    .ant-select{
+    .ant-select {
       width: 70px;
     }
   }
   .submitted {
-     b {
-       display: block;
-       font-size: 16px;
-       margin-bottom: 16px;
-     }
+    b {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
   }
-  .consent-check{
+  .consent-check {
     font-size: 13px;
   }
 }
 
-.signup-form{
-  .section:first-child{
-    .ant-form-item:nth-child(2){
+.signup-form {
+  .section:first-child {
+    .ant-form-item:nth-child(2) {
       width: 100px;
       float: left;
       margin-right: 15px;
     }
-    .ant-form-item:nth-child(3){
+    .ant-form-item:nth-child(3) {
       width: 437px;
     }
   }
