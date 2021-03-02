@@ -84,9 +84,7 @@
     (jdbc/execute! db [sql])))
 
 (defn seed-countries [db]
-  (jdbc/insert-multi! db :country
-                      (map (fn [x] {:name (:name x) :iso_code (:code x)})
-                           (get-data "countries"))))
+  (jdbc/insert-multi! db :country (get-data "countries")))
 
 (defn seed-country-groups [db]
   (doseq [data (get-data "country_group")]
