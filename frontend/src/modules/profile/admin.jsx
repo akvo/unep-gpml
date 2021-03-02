@@ -3,6 +3,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import api from "../../utils/api";
 import moment from "moment";
+import capitalize from "lodash/capitalize";
 
 const ModalReject = ({ visible, close, reject, item }) => {
   return (
@@ -69,7 +70,7 @@ const AdminSection = () => {
       {loading && <Spin size="large" />}
       <div className="row head">
         <div className="col">Type</div>
-        <div className="col">Title</div>
+        <div className="col">Name</div>
         <div className="col">Action</div>
       </div>
       <Collapse>
@@ -78,7 +79,7 @@ const AdminSection = () => {
             key={`collapse-${index}`}
             header={
               <div className="row">
-                <div className="col">{item.type}</div>
+                <div className="col">{capitalize(item.type)}</div>
                 <div className="col">{item.title}</div>
                 <div
                   className="col"
@@ -101,24 +102,92 @@ const AdminSection = () => {
             <div>
               {item.type === "profile" && (
                 <div className="stakeholder-info">
-                  <div className="info-img">
-                    {item.photo && (
-                      <div className="info-img">
-                        <img src={item.photo} alt="profile" />
-                      </div>
-                    )}
-                  </div>
-                  <ul>
-                    <li>{item.email}</li>
-                    <li>{item.about}</li>
-                    {item.org && (
+                  <div className="left">
+                    <div className="info-img">
+                      {item.photo && (
+                        <div className="info-img">
+                          <img src={item.photo} alt="profile" />
+                        </div>
+                      )}
+                    </div>
+
+                    <ul>
                       <li>
-                        <a href={item.org.url} target="_blank" rel="noreferrer">
-                          {item.org.name}
-                        </a>
+                        <p className="section-title">Personal Details</p>
                       </li>
-                    )}
-                  </ul>
+                      <li>
+                        <span>Email</span>: {" " + (item.email || "-")}
+                      </li>
+                      <li>
+                        <span>Linkedin</span>: {" " + (item.linkedin || "-")}
+                      </li>
+                      <li>
+                        <span>Twitter</span>: {" " + (item.twitter || "-")}
+                      </li>
+                      <li>
+                        <span>Representative sector</span>:
+                        {" " + (item.representation || "-")}
+                      </li>
+                      <li>
+                        <span>Country</span>: {" " + (item.country || "-")}
+                      </li>
+                      <li>
+                        <span>Geo coverage type</span>:
+                        {" " + (capitalize(item.geoCoverageType) || "-")}
+                      </li>
+                      <li>
+                        <span>Geo coverage</span>:
+                        {/* TODO:: load geo coverage with several condition (look to browse view) */}
+                        {" -"}
+                      </li>
+                      <li>
+                        <span>Organisation</span>:&nbsp;
+                        {(item.org && (
+                          <li>
+                            <a
+                              href={item.org.url}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {item.org.name}
+                            </a>
+                          </li>
+                        )) ||
+                          "-"}
+                      </li>
+                      <li>
+                        <span>Organisation Role</span>:
+                        {" " + (item.organisationRole || "-")}
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="right">
+                    <ul>
+                      <li>
+                        <p className="section-title">
+                          Expertise and Activities
+                        </p>
+                      </li>
+                      <li>
+                        <span>Seeking</span>:
+                        {" " +
+                          ((item.seeking && item.seeking.join(", ")) || "-")}
+                      </li>
+                      <li>
+                        <span>Offering</span>:
+                        {" " +
+                          ((item.offering && item.offering.join(", ")) || "-")}
+                      </li>
+                      <li>
+                        <span>About yourself</span>: {" " + (item.about || "-")}
+                      </li>
+                      <li>
+                        <span>Tags</span>:
+                        {" " + ((item.tags && item.tags.join(", ")) || "-")}
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               )}
               {item.type === "event" && (

@@ -32,7 +32,13 @@ import imageNotFound from "../../images/image-not-found.png";
 import logoNotFound from "../../images/logo-not-found.png";
 import uniqBy from "lodash/uniqBy";
 
-const renderItemValues = (params, mapping, data) => {
+const renderItemValues = (params, mapping, data, profile) => {
+  // filter the mapping data for user or admin role
+  if (params.type === "stakeholder" && profile.role.toLowerCase() === "user") {
+    mapping = mapping.filter(
+      (x) => x.role.toLowerCase() === profile.role.toLowerCase()
+    );
+  }
   return (
     mapping &&
     mapping.map((item, index) => {
@@ -304,7 +310,7 @@ const renderTypeOfActions = (params, data) => {
   );
 };
 
-const renderDetails = (params, data) => {
+const renderDetails = (params, data, profile) => {
   const details = detailMaps[params.type];
   if (!details) {
     return;
@@ -312,12 +318,14 @@ const renderDetails = (params, data) => {
   return (
     <div key={"details"} className="card">
       <h3>{topicNames(params.type)} Detail</h3>
-      <div className="table">{renderItemValues(params, details, data)}</div>
+      <div className="table">
+        {renderItemValues(params, details, data, profile)}
+      </div>
     </div>
   );
 };
 
-const renderInfo = (params, data) => {
+const renderInfo = (params, data, profile) => {
   const staticText = (
     <p>
       The{" "}
@@ -342,7 +350,9 @@ const renderInfo = (params, data) => {
   return (
     <div key="info" className="card">
       <h3>Related Info And Contacts</h3>
-      <div className="table">{renderItemValues(params, info, data)}</div>
+      <div className="table">
+        {renderItemValues(params, info, data, profile)}
+      </div>
       {params.type === "project" && data.uuid && !isNarrative && (
         <div>
           <Divider key="statictext" /> {staticText}
@@ -541,8 +551,8 @@ const DetailsView = ({ match: { params }, ...props }) => {
 
           {/* Right */}
           <div key="right" className="content-column">
-            {renderDetails(params, data)}
-            {renderInfo(params, data)}
+            {renderDetails(params, data, profile)}
+            {renderInfo(params, data, profile)}
           </div>
         </div>
       </div>
