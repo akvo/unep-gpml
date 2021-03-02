@@ -72,7 +72,7 @@ const Browse = ({
     if (filters) {
       setFilters({ ...filters, topic: query.topic });
       setFilterCountries(filters.country);
-    };
+    }
 
     setLoading(true);
     if (isLoading === false && !filters) {
@@ -107,7 +107,7 @@ const Browse = ({
   const updateQuery = (param, value) => {
     const newQuery = { ...query };
     newQuery[param] = value;
-    setFilters(newQuery)
+    setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
     history.push(`/browse?${newParams.toString()}`);
     clearTimeout(tmid);
