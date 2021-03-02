@@ -47,7 +47,7 @@ const renderItemValues = (params, mapping, data) => {
               <div className="title">{name}</div>
               <div className="value">
                 {/* Same function */}
-                {/*  
+                {/*
               { (value === key) && (type === 'string') && data[value] }
               { (value === key) && (type === 'number') && data[value] }
               { (value === key) && (type === 'object') && data[value].name }
@@ -166,7 +166,7 @@ const renderItemValues = (params, mapping, data) => {
                   <ul>
                     {" "}
                     {data[key].map((x, i) => (
-                      <li key={x.url}>
+                      <li key={`${x.url}-${i}`}>
                         <a
                           target="_blank"
                           rel="noreferrer"

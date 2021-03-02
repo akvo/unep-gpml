@@ -45,6 +45,8 @@ const Browse = ({
   profile,
   setSignupModalVisible,
   updateDisclaimer,
+  filters,
+  setFilters,
 }) => {
   const query = useQuery();
   const [results, setResults] = useState([]);
@@ -65,14 +67,28 @@ const Browse = ({
     });
   };
   useEffect(() => {
+    // Manage filters display
+    !filters && setFilters(query);
+    if (filters) {
+      setFilters({ ...filters, topic: query.topic });
+      setFilterCountries(filters.country);
+    };
+
     setLoading(true);
-    if (isLoading === false) {
+    if (isLoading === false && !filters) {
       setTimeout(() => {
         api.get(`/browse${location.search}`).then((resp) => {
           setResults(resp?.data?.results);
           setLoading(false);
         });
       });
+    }
+
+    if (isLoading === false && filters) {
+      const newParams = new URLSearchParams({ ...filters, topic: query.topic });
+      history.push(`/browse?${newParams.toString()}`);
+      clearTimeout(tmid);
+      tmid = setTimeout(getResults, 1000);
     }
     // NOTE: Since we are using `history` and `location`, the
     // dependency needs to be []. Ignore the linter warning, because
@@ -91,6 +107,7 @@ const Browse = ({
   const updateQuery = (param, value) => {
     const newQuery = { ...query };
     newQuery[param] = value;
+    setFilters(newQuery)
     const newParams = new URLSearchParams(newQuery);
     history.push(`/browse?${newParams.toString()}`);
     clearTimeout(tmid);

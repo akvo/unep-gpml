@@ -20,6 +20,7 @@ const Landing = ({
   isAuthenticated,
   loginWithPopup,
   updateDisclaimer,
+  setFilters,
 }) => {
   const [country, setCountry] = useState(null);
   const [countryMap, setCountryMap] = useState(null);
@@ -129,6 +130,7 @@ const Landing = ({
   });
 
   useEffect(() => {
+    setFilters(null);
     updateDisclaimer(window.location.pathname);
   }, []);
 

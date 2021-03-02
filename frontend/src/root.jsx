@@ -61,6 +61,7 @@ const Root = () => {
   const [tags, setTags] = useState([]);
   const [initLandingCount, setInitLandingCount] = useState("");
   const [disclaimer, setDisclaimer] = useState(null);
+  const [filters, setFilters] = useState(null);
 
   useEffect(() => {
     (async function fetchData() {
@@ -219,6 +220,7 @@ const Root = () => {
                 setSignupModalVisible,
                 loginWithPopup,
                 isAuthenticated,
+                setFilters,
                 ...props,
               }}
               updateDisclaimer={updateDisclaimer}
@@ -234,6 +236,8 @@ const Root = () => {
               countData={data}
               setSignupModalVisible={setSignupModalVisible}
               updateDisclaimer={updateDisclaimer}
+              filters={filters}
+              setFilters={setFilters}
             />
           )}
         />
