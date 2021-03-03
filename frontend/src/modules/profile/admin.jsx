@@ -79,7 +79,6 @@ const AdminSection = ({ countries }) => {
   };
 
   const findCountries = (item, isCountry = false) => {
-    console.log(item);
     const {
       country,
       geoCoverageType,
@@ -87,7 +86,7 @@ const AdminSection = ({ countries }) => {
       geoCoverageValues,
     } = item;
     if (isCountry) {
-      return find(countries, (x) => x.isoCode === country).name;
+      return country ? find(countries, (x) => x.isoCode === country).name : "-";
     }
 
     if (
@@ -199,7 +198,7 @@ const AdminSection = ({ countries }) => {
                         <li>
                           <div className="detail-title">Linkedin</div>:
                           <div className="detail-content">
-                            {item.linkedin || "-"}
+                            {item.linkedIn || "-"}
                           </div>
                         </li>
                         <li>
