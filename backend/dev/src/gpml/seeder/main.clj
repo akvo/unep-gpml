@@ -17,6 +17,7 @@
             [gpml.db.technology :as db.technology]
             [gpml.db.project :as db.project]
             [gpml.exporter.main :as db.exporter]
+            [gpml.seeder.util :as db.util]
             gpml.handler.detail
             gpml.pg-util
             [integrant.core :as ig]
@@ -397,7 +398,10 @@
        (seed-currencies tx))
      (when organisation?
        (println "Seeding organisation...")
-       (seed-organisations tx))
+       (db.util/drop-constraint-organisation tx)
+       (jdbc/execute! tx ["TRUNCATE table organisation"])
+       (seed-organisations tx)
+       (db.util/add-constraint-organisation tx))
      (when language?
        (println "Seeding language...")
        (seed-languages tx))
