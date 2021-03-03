@@ -6,9 +6,9 @@
 (hugsql/def-db-fns "gpml/seeder/snippet.sql")
 
 (defn set-default-sequence [db param]
-  (let [query (str "ALTER TABLE " (:table param) " ALTER COLUMN id SET DEFAULT ")
-        query (str query "nextval('" (:seq param) "');")]
-  (jdbc/execute! db query)))
+  (jdbc/db-do-commands db (str "ALTER TABLE " (:table param)
+                               " ALTER COLUMN id SET DEFAULT"
+                               " nextval('" (:seq param) "')")))
 
 (defn prepare [param target]
   (let [k (if (:column param) (:column param) target)]

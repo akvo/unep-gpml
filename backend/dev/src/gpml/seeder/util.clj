@@ -31,11 +31,11 @@
   (db.snip/truncate db {:table "organisation_geo_coverage"})
   (db.snip/dissoc-sequence db {:table "organisation"})
   (db.snip/set-sequence db {:table "organisation_geo_coverage" :seq "organisation_geo_coverage_id_seq"})
-  (println "Organisation Refferences Dropped"))
+  (println "Organisation References Dropped"))
 
 (defn add-constraint-organisation [db]
   (db.snip/set-sequence db {:table "organisation" :seq "organisation_id_seq"})
   (db.snip/set-default-sequence db {:table "organisation" :seq "organisation_id_seq"})
   (doseq [query query-organisation]
     (db.snip/add-constraint db query))
-  (println "Organisation Refferences Added"))
+  (println "Organisation References Added"))

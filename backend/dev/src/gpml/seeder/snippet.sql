@@ -5,8 +5,8 @@ DROP CONSTRAINT IF EXISTS :i:key
 -- :name add-constraint :! :1
 ALTER TABLE :i:table
 ADD CONSTRAINT :i:key
-FOREIGN KEY --~(str "(" ":i:column" ")")
-REFERENCES --~(str ":i:target" "(id)")
+FOREIGN KEY (:i:column)
+REFERENCES :i:target
 
 -- :name truncate :! :1
 TRUNCATE TABLE :i:table

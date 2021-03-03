@@ -455,6 +455,13 @@
                :duct.database.sql/hikaricp
                :spec))
 
+  ;; re-seeding without effecting other table example
+  (println "Seeding organisation...")
+  (db.util/drop-constraint-organisation db)
+  (jdbc/execute! db ["TRUNCATE table organisation"])
+  (seed-organisations db)
+  (db.util/add-constraint-organisation db)
+
   ;; get view table of topic
   (defn view-table-of [association]
     (->> (assoc association :v_topic_data (str "v_" (:topic association) "_data"))

@@ -1,0 +1,13 @@
+ALTER INDEX country_group_countries_pkey
+RENAME TO country_group_country_pkey;
+
+ALTER TABLE country_group_country
+RENAME CONSTRAINT country_group_countries_country_fkey
+TO country_group_country_country_fkey;
+
+ALTER TABLE country_group_country
+RENAME CONSTRAINT country_group_countries_country_group_fkey
+TO country_group_country_country_group_fkey;
+
+ALTER SEQUENCE country_group_countries_id_seq
+RENAME TO country_group_country_id_seq;
