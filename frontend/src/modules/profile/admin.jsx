@@ -46,9 +46,15 @@ const AdminSection = ({ countries }) => {
           type: "profile",
           title: `${it.firstName} ${it.lastName}`,
           ...it,
-          offering: it.tags.filter(x => x.category === "offering").map(x => x.tag),
-          seeking: it.tags.filter(x => x.category === "seeking").map(x => x.tag),
-          tags: it.tags.filter(x => x.category === "general").map(x => x.tag),
+          offering: it.tags
+            .filter((x) => x.category === "offering")
+            .map((x) => x.tag),
+          seeking: it.tags
+            .filter((x) => x.category === "seeking")
+            .map((x) => x.tag),
+          tags: it.tags
+            .filter((x) => x.category === "general")
+            .map((x) => x.tag),
         })),
         ...eventResp.data.map((it) => ({ type: "event", ...it })),
       ]);
@@ -185,54 +191,51 @@ const AdminSection = ({ countries }) => {
                           <p className="section-title">Personal Details</p>
                         </li>
                         <li>
-                          <div className="detail-title">Email</div>
+                          <div className="detail-title">Email</div>:
                           <div className="detail-content">
-                            : {" " + (item.email || "-")}
+                            {item.email || "-"}
                           </div>
                         </li>
                         <li>
-                          <div className="detail-title">Linkedin</div>
+                          <div className="detail-title">Linkedin</div>:
                           <div className="detail-content">
-                            : {" " + (item.linkedin || "-")}
+                            {item.linkedin || "-"}
                           </div>
                         </li>
                         <li>
-                          <div className="detail-title">Twitter</div>
+                          <div className="detail-title">Twitter</div>:
                           <div className="detail-content">
-                            : {" " + (item.twitter || "-")}
+                            {item.twitter || "-"}
                           </div>
                         </li>
                         <li>
                           <div className="detail-title">
                             Representative sector
                           </div>
+                          :
                           <div className="detail-content">
-                            : {" " + (item.representation || "-")}
+                            {item.representation || "-"}
                           </div>
                         </li>
                         <li>
-                          <div className="detail-title">Country</div>
+                          <div className="detail-title">Country</div>:
+                          <div className="detail-content">{item.country}</div>
+                        </li>
+                        <li>
+                          <div className="detail-title">Geo coverage type</div>:
                           <div className="detail-content">
-                            : {item.country}
+                            {capitalize(item.geoCoverageType) || "-"}
                           </div>
                         </li>
                         <li>
-                          <div className="detail-title">Geo coverage type</div>
-                          <div className="detail-content">
-                            : {" " + (capitalize(item.geoCoverageType) || "-")}
-                          </div>
-                        </li>
-                        <li>
-                          <div className="detail-title">Geo coverage</div>
+                          <div className="detail-title">Geo coverage</div>:
                           <div className="detail-content">
                             {/* TODO:: load geo coverage with several condition (look to browse view) */}
-                            :
                           </div>
                         </li>
                         <li>
-                          <div className="detail-title">Organisation</div>
+                          <div className="detail-title">Organisation</div>:
                           <div className="detail-content">
-                            :&nbsp;{" "}
                             {(item.org && (
                               <li>
                                 <a
@@ -248,9 +251,9 @@ const AdminSection = ({ countries }) => {
                           </div>
                         </li>
                         <li>
-                          <div className="detail-title">Organisation Role</div>
+                          <div className="detail-title">Organisation Role</div>:
                           <div className="detail-content">
-                            : {" " + (item.organisationRole || "-")}
+                            {item.organisationRole || "-"}
                           </div>
                         </li>
                       </ul>
@@ -264,34 +267,27 @@ const AdminSection = ({ countries }) => {
                           </p>
                         </li>
                         <li>
-                          <div className="detail-title">Seeking</div>
+                          <div className="detail-title">Seeking</div>:
                           <div className="detail-content">
-                            :{" "}
-                            {" " +
-                              ((item.seeking && item.seeking.join(", ")) ||
-                                "-")}
+                            {(item.seeking && item.seeking.join(", ")) || "-"}
                           </div>
                         </li>
                         <li>
-                          <div className="detail-title">Offering</div>
+                          <div className="detail-title">Offering</div>:
                           <div className="detail-content">
-                            :{" "}
-                            {" " +
-                              ((item.offering && item.offering.join(", ")) ||
-                                "-")}
+                            {(item.offering && item.offering.join(", ")) || "-"}
                           </div>
                         </li>
                         <li>
-                          <div className="detail-title">About yourself</div>
+                          <div className="detail-title">About yourself</div>:
                           <div className="detail-content">
-                            : {" " + (item.about || "-")}
+                            {item.about || "-"}
                           </div>
                         </li>
                         <li>
-                          <div className="detail-title">Tags</div>
+                          <div className="detail-title">Tags</div>:
                           <div className="detail-content">
-                            :{" "}
-                            {" " + ((item.tags && item.tags.join(", ")) || "-")}
+                            {(item.tags && item.tags.join(", ")) || "-"}
                           </div>
                         </li>
                       </ul>
@@ -305,70 +301,66 @@ const AdminSection = ({ countries }) => {
                     </div>
                     <ul>
                       <li>
-                        <div className="detail-title">Submitted At</div>
+                        <div className="detail-title">Submitted At</div>:
                         <div className="detail-content">
-                          : {moment(item.createdAt).format("DD MMM YYYY")}
+                          {moment(item.createdAt).format("DD MMM YYYY")}
                         </div>
                       </li>
                       <li>
-                        <div className="detail-title">Event Date</div>
+                        <div className="detail-title">Event Date</div>:
                         <div className="detail-content">
-                          : {moment(item.startDate).format("DD MMM YYYY")} to{" "}
+                          {moment(item.startDate).format("DD MMM YYYY")} to{" "}
                           {moment(item.endDate).format("DD MMM YYYY")}
                         </div>
                       </li>
                       <li>
-                        <div className="detail-title">Country</div>
+                        <div className="detail-title">Country</div>:
                         <div className="detail-content">
-                          : {" " + (findCountries(item, true) || "-")}
+                          {findCountries(item, true) || "-"}
                         </div>
                       </li>
                       <li>
-                        <div className="detail-title">City</div>
-                        <div className="detail-content">
-                          :&nbsp;{item.city || "-"}
-                        </div>
+                        <div className="detail-title">City</div>:
+                        <div className="detail-content">{item.city || "-"}</div>
                       </li>
                       <li>
-                        <div className="detail-title">Geo coverage type</div>
+                        <div className="detail-title">Geo coverage type</div>:
                         <div className="detail-content">
-                          :&nbsp;
                           <b>{capitalize(item.geoCoverageType) || "-"}</b>
                         </div>
                       </li>
                       <li>
-                        <div className="detail-title">Geo coverage</div>
+                        <div className="detail-title">Geo coverage</div>:
                         <div className="detail-content">
-                          :&nbsp;{findCountries(item)}
+                          {findCountries(item)}
                         </div>
                       </li>
                       <li>
-                        <div className="detail-title">Description</div>
+                        <div className="detail-title">Description</div>:
                         <div className="detail-content">
-                          : {item.description || "-"}
+                          {item.description || "-"}
                         </div>
                       </li>
                       <li>
-                        <div className="detail-title">Remarks</div>
+                        <div className="detail-title">Remarks</div>:
                         <div className="detail-content">
-                          : {item.remarks || "-"}
+                          {item.remarks || "-"}
                         </div>
                       </li>
                       <li>
-                        <div className="detail-title">Tags</div>
+                        <div className="detail-title">Tags</div>:
                         <div className="detail-content">
-                          : {(item.tags && item.tags.join(", ")) || "-"}
+                          {(item.tags && item.tags.join(", ")) || "-"}
                         </div>
                       </li>
                       <li>
-                        <div className="detail-title">Urls</div>
+                        <div className="detail-title">Urls</div>:
                         <div className="detail-content">
-                          :
                           {item?.urls && (
                             <ul className={"ul-children"}>
                               {item.urls.map((x, i) => (
                                 <li key={`url-${i}`}>
-                                  {languages[x.isoCode].name}: {x.url}
+                                  {languages[x.isoCode].name} : {x.url}
                                 </li>
                               ))}
                             </ul>

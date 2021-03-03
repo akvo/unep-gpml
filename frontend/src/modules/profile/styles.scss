@@ -97,6 +97,7 @@
         width: 160px;
       }
       .detail-content {
+        margin-left: 5px;
         flex: 1;
         display: flex;
       }
@@ -137,6 +138,7 @@
         width: 160px;
       }
       .detail-content {
+        margin-left: 5px;
         flex: 1;
         display: flex;
       }
@@ -147,7 +149,7 @@
       ul.ul-children {
         display: inline-block;
         vertical-align: top;
-        margin-left: -10px;
+        margin-left: -40px;
       }
     }
   }
@@ -174,6 +176,7 @@
   max-height: 200px;
   overflow: auto;
   padding-right: 8px;
+  margin-bottom: 10px;
 }
 
 .download-container {
