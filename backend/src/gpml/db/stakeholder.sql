@@ -75,16 +75,34 @@ select
     s.linked_in,
     s.twitter,
     s.representation,
+    o.name AS affiliation,
+    s.organisation_role,
     s.about,
     s.role,
     s.geo_coverage_type,
-    c.iso_code as country,
-    s.affiliation,
-    s.organisation_role,
+    c.name as country,
     s.reviewed_at,
     s.reviewed_by,
-    s.review_status from stakeholder s
-left join country c on (s.country = c.id)
+    s.review_status,
+    tag.tags
+FROM (((stakeholder s
+        LEFT JOIN (
+            SELECT st.stakeholder,
+            json_agg(t.*) AS tags
+            FROM (stakeholder_tag st JOIN (
+                    SELECT tg.id, tg.tag, tc.category
+                    FROM tag tg
+                    LEFT JOIN tag_category tc ON tg.tag_category = tc.id) t ON ((st.tag = t.id)))
+            GROUP BY st.stakeholder) tag ON ((s.id = tag.stakeholder)))
+            LEFT JOIN (
+                SELECT sg.stakeholder, json_agg(COALESCE(c_1.iso_code, (cg.name)::bpchar))
+                AS geo_coverage_values
+                FROM ((stakeholder_geo_coverage sg
+                    LEFT JOIN country c_1 ON ((sg.country = c_1.id)))
+                    LEFT JOIN country_group cg ON ((sg.country_group = cg.id)))
+                GROUP BY sg.stakeholder) geo ON ((s.id = geo.stakeholder))
+            LEFT JOIN country c ON ((s.country = c.id)))
+    LEFT JOIN organisation o ON ((s.affiliation = o.id)))
 where s.review_status = 'SUBMITTED' order by s.created desc;
 
 -- :name update-stakeholder-status :! :n

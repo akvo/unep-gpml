@@ -218,8 +218,7 @@
 
 (defmethod ig/init-key :gpml.handler.profile/pending [_ {:keys [db]}]
   (fn [_]
-    (let [profiles (db.stakeholder/pending-approval (:spec db))
-          profiles (map (fn[x] (remap-profile x nil nil nil)) profiles)]
+    (let [profiles (db.stakeholder/pending-approval (:spec db))]
       (resp/response profiles))))
 
 (defmethod ig/init-key :gpml.handler.profile/post-params [_ _]
