@@ -20,6 +20,7 @@ select * from organisation where name in (:v*:names)
 -- :name new-organisation :<! :1
 insert into organisation (
     name
+--~ (when (contains? params :id) ", id")
 --~ (when (contains? params :type) ", type")
 --~ (when (contains? params :country) ", country")
 --~ (when (contains? params :geo_coverage_type) ", geo_coverage_type")
@@ -31,6 +32,7 @@ insert into organisation (
 )
 values (
     :name
+--~ (when (contains? params :id) ", id")
 --~ (when (contains? params :type) ", :type")
 --~ (when (contains? params :country) ", :country::integer")
 --~ (when (contains? params :geo_coverage_type) ", :geo_coverage_type::geo_coverage_type")
