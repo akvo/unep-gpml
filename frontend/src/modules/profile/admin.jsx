@@ -226,7 +226,7 @@ const AdminSection = ({ countries }) => {
                           <div className="detail-title">Geo coverage</div>
                           <div className="detail-content">
                             {/* TODO:: load geo coverage with several condition (look to browse view) */}
-                            :
+                            : {findCountries(item)}
                           </div>
                         </li>
                         <li>
