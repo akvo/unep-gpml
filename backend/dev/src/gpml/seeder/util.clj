@@ -11,19 +11,20 @@
         query (str query "nextval('" (:seq param) "');")]
   (jdbc/execute! db query)))
 
-(defn prepare [param]
-  (let [target (if (:column param) (:column param) (:target param))]
-  (assoc param :key (str/join "_" [(:table param) target "fkey"]))))
+(defn prepare [param target]
+  (let [k (if (:column param) (:column param) target)]
+  (assoc param :key (str/join "_" [(:table param) k "fkey"]) :target target :column k)))
+
+(def get-query-organisation
+  (map (fn [x] (prepare x "organisation")) [{:table "organisation_geo_coverage"}
+                                            {:table "resource_organisation"}
+                                            {:table "stakeholder" :column "affiliation"}
+                                            {:table "stakeholder_organisation"}]))
 
 (defn drop-constraint-organisation [db]
-  (self/drop-constraint db (prepare {:table "resource_organisation"
-                                     :target "organisation"}))
-  (self/drop-constraint db (prepare {:table "stakeholder"
-                                     :target "affiliation"}))
-  (self/drop-constraint db (prepare {:table "stakeholder_organisation"
-                                     :target "organisation"}))
-  (self/drop-constraint db (prepare {:table "organisation_geo_coverage"
-                                     :target "organisation"}))
+  (doseq [query get-query-organisation]
+    (prn "good")
+    (self/drop-constraint db query))
   (self/truncate db {:table "organisation_geo_coverage"})
   (self/dissoc-sequence db {:table "organisation"})
   (self/set-sequence db {:table "organisation_geo_coverage" :seq "organisation_geo_coverage_id_seq"})
@@ -32,21 +33,7 @@
 (defn add-constraint-organisation [db]
   (self/set-sequence db {:table "organisation" :seq "organisation_id_seq"})
   (set-default-sequence db {:table "organisation" :seq "organisation_id_seq"})
-  (prn "good 1")
-  (self/add-constraint db (prepare {:table "organisation_geo_coverage"
-                                     :target "organisation"
-                                     :column "organisation"}))
-  (prn "good 1")
-  (self/add-constraint db (prepare {:table "resource_organisation"
-                                    :target "organisation"
-                                    :column "organisation"}))
-  (prn "good 1")
-  (self/add-constraint db (prepare {:table "stakeholder"
-                                    :target "organisation"
-                                    :column "affiliation"}))
-  (prn "good 1")
-  (self/add-constraint db (prepare {:table "stakeholder_organisation"
-                                    :target "organisation"
-                                    :column "organisation"}))
-  (prn "good 1")
+  (doseq [query get-query-organisation]
+    (prn "good")
+    (self/add-constraint db query))
   (prn "Organisation Refferences Added"))
