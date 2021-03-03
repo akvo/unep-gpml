@@ -6,6 +6,19 @@ export const FieldsFromSchema = ({ schema, mutators, ...props }) => {
     .sort((a, b) => schema[a].order - schema[b].order)
     .map((name, i) => {
       const Comp = schema[name].type === "array" ? FinalFieldArray : FinalField;
+      if (schema[name].mode === "multiple") {
+        return (
+          <Comp
+            filterOption={(input, option) =>
+              option.props.children
+                .toLowerCase()
+                .indexOf(input.toLowerCase()) >= 0
+            }
+            key={`comp-${i}`}
+            {...{ name, ...schema[name], mutators, ...props }}
+          />
+        );
+      }
       return (
         <Comp
           key={`comp-${i}`}
