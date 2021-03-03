@@ -251,7 +251,7 @@ const Root = () => {
           path="/profile"
           render={(props) => (
             <ProfileView
-              {...{ ...props, profile, tags, setProfile }}
+              {...{ ...props, profile, tags, setProfile, countries }}
               updateDisclaimer={updateDisclaimer}
             />
           )}
