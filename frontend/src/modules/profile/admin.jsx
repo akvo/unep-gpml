@@ -44,8 +44,11 @@ const AdminSection = ({ countries }) => {
       setPendingItems([
         ...profileResp.data.map((it) => ({
           type: "profile",
-          ...it,
           title: `${it.firstName} ${it.lastName}`,
+          ...it,
+          offering: it.tags.filter(x => x.category === "offering").map(x => x.tag),
+          seeking: it.tags.filter(x => x.category === "seeking").map(x => x.tag),
+          tags: it.tags.filter(x => x.category === "general").map(x => x.tag),
         })),
         ...eventResp.data.map((it) => ({ type: "event", ...it })),
       ]);
@@ -210,7 +213,7 @@ const AdminSection = ({ countries }) => {
                         <li>
                           <div className="detail-title">Country</div>
                           <div className="detail-content">
-                            : {" " + (findCountries(item, true) || "-")}
+                            : {item.country}
                           </div>
                         </li>
                         <li>
@@ -223,7 +226,7 @@ const AdminSection = ({ countries }) => {
                           <div className="detail-title">Geo coverage</div>
                           <div className="detail-content">
                             {/* TODO:: load geo coverage with several condition (look to browse view) */}
-                            : {findCountries(item)}
+                            :
                           </div>
                         </li>
                         <li>
