@@ -42,3 +42,22 @@
                            :child [{:tbl "country_group_country"
                                     :tbl_seq "country_group_country_id_seq"}]}))
 
+(defn drop-constraint-policy [db]
+  (drop-all-constraint db {:table "policy"
+                           :child [{:tbl "policy_geo_coverage"
+                                    :tbl_seq "policy_geo_coverage_id_seq"}
+                                   {:tbl "policy_language_url"
+                                    :tbl_seq "policy_language_url_id_seq"}
+                                   {:tbl "policy_tag"
+                                    :tbl_seq "policy_tag_id_seq"}]}))
+
+(defn drop-constraint-resource [db]
+  (drop-all-constraint db {:table "resource"
+                           :child [{:tbl "resource_geo_coverage"
+                                    :tbl_seq "resource_geo_coverage_id_seq"}
+                                   {:tbl "resource_language_url"
+                                    :tbl_seq "resource_language_url_id_seq"}
+                                   {:tbl "resource_organisation"
+                                    :tbl_seq "resource_organisation_id_seq"}
+                                   {:tbl "resource_tag"
+                                    :tbl_seq "resource_tag_id_seq"}]}))

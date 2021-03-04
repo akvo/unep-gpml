@@ -375,12 +375,28 @@
 (defn reseed-country [db]
   (db.util/drop-constraint-country db)
   (jdbc/execute! db ["TRUNCATE table country"])
+  (println "Re-seeding country...")
   (seed-countries db)
+  (db.util/revert-constraint db))
+
+(defn reseed-policy [db]
+  (db.util/drop-constraint-policy db)
+  (jdbc/execute! db ["TRUNCATE table policy"])
+  (println "Re-seeding policy...")
+  (seed-policies db)
+  (db.util/revert-constraint db))
+
+(defn reseed-resource [db]
+  (db.util/drop-constraint-resource db)
+  (jdbc/execute! db ["TRUNCATE table resource"])
+  (println "Re-seeding resource...")
+  (seed-resources db)
   (db.util/revert-constraint db))
 
 (defn reseed-organisation [db]
   (db.util/drop-constraint-organisation db)
   (jdbc/execute! db ["TRUNCATE table organisation"])
+  (println "Re-seeding organisation...")
   (seed-organisations db)
   (db.util/revert-constraint db))
 
@@ -467,6 +483,8 @@
 
   ;; example reseeding
   (reseed-country db)
+  (reseed-policy db)
+  (reseed-resource db)
   (reseed-organisation db)
 
   ;; get view table of topic
