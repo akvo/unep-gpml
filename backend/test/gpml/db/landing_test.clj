@@ -29,12 +29,12 @@
    :review_status "APPROVED"})
 
 (defn add-country-data [conn]
-  (db.country/new-country conn {:name "Spain" :iso_code "ESP"})
-  (db.country/new-country conn {:name "India" :iso_code "IND"})
-  (db.country/new-country conn {:name "Indonesia" :iso_code "IDN"})
-  (db.country/new-country conn {:name "Kenya" :iso_code "KEN"})
-  (db.country/new-country conn {:name "Netherlands" :iso_code "NLD"})
-  (db.country/new-country conn {:name "All" :iso_code nil})
+  (db.country/new-country conn {:name "Spain" :description "Member State" :iso_code "ESP"})
+  (db.country/new-country conn {:name "India" :description "Member State" :iso_code "IND"})
+  (db.country/new-country conn {:name "Indonesia" :description "Member State" :iso_code "IDN"})
+  (db.country/new-country conn {:name "Kenya" :description "Member State" :iso_code "KEN"})
+  (db.country/new-country conn {:name "Netherlands" :description "Member State" :iso_code "NLD"})
+  (db.country/new-country conn {:name "All" :description "Member State" :iso_code nil})
   (db.country-group/new-country-group conn {:name "Asia" :type "region"})
   (db.country-group/new-country-group conn {:name "Europe" :type "region"})
   (jdbc/insert-multi! conn :country_group_country

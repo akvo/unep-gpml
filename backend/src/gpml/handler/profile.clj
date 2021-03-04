@@ -24,7 +24,7 @@
 
 (defn new-organisation [conn org]
     (let [country (get-country conn (:country org))
-          org-id (:id (db.organisation/new-organisation conn (assoc org :country country)))
+          org-id (:id (db.organisation/new-organisation conn (assoc (dissoc org :id) :country country)))
           org-geo (get-geo-data conn org-id (:geo_coverage_type org) (:geo_coverage_value org))]
       (when (seq org-geo)
         (db.organisation/add-geo-coverage conn {:geo org-geo}))

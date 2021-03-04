@@ -31,7 +31,7 @@
 (defn add-stakeholder-data [conn]
   (let [country "Indonesia"
         iso_code "IDN"]
-  (db.country/new-country conn {:name country :iso_code iso_code})
+  (db.country/new-country conn {:name country :iso_code iso_code :description "Member State"})
   (db.stakeholder/new-stakeholder conn (make-profile conn "John" "Doe" "mail@org.com" country))))
 
 (deftest test-new-profile

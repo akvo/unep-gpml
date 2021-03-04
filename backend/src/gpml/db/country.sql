@@ -28,5 +28,5 @@ select id from country where iso_code in (:v*:codes) and description = 'Member S
 
 -- :name new-country :<! :1
 -- :doc Insert new country
-insert into country (name, iso_code)
-values(:name, :iso_code) returning id
+insert into country (name, iso_code, description)
+values(:name, :iso_code, :description) returning id

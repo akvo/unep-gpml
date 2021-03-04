@@ -46,8 +46,8 @@
 
 (defn seed-important-database [db]
     ;; create new country
-    (db.country/new-country db {:name "Indonesia" :iso_code "IND"})
-    (db.country/new-country db {:name "Spain" :iso_code "SPA"})
+    (db.country/new-country db {:name "Indonesia" :iso_code "IND" :description "Member State"})
+    (db.country/new-country db {:name "Spain" :iso_code "SPA" :description "Member State"})
     ;; create new country group
     (db.country-group/new-country-group db {:name "Asia" :type "region"})
     (db.country-group/new-country-group db {:name "Africa" :type "region"})
@@ -56,7 +56,11 @@
     (db.organisation/new-organisation db {:name "Akvo"
                                           :url "https://akvo.org"
                                           :geo_coverage_type "regional"
-                                          :type "Academia and Research"})
+                                          :type "Academia and Research"
+                                          :program "Test Program"
+                                          :contribution "Test Contribution"
+                                          :expertise "Test Expertise"
+                                          :review_status "APPROVED"})
     ;; create new tag
     (db.tag/new-tag-category db {:category "general"})
     (db.tag/new-tag db {:tag "Tag 1" :tag_category 1})
