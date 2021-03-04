@@ -5,6 +5,5 @@
 (hugsql/def-db-fns "gpml/seeder/snippet.sql")
 
 (defn set-default-sequence [db data]
-  (jdbc/db-do-commands db (str "ALTER TABLE " (:tbl data) " "
-                               "ALTER COLUMN id "
-                               "SET DEFAULT nextval('" (:tbl data) "')")))
+  (jdbc/db-do-commands db (format "ALTER TABLE %1$s ALTER COLUMN id SET DEFAULT nextval('%1$s')"
+                                  (:tbl data))))
