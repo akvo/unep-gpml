@@ -123,7 +123,13 @@ const defaultFormSchema = [
       control: "textarea",
       placeholder: "Max 150 words",
     },
-    tags: { label: "Tags", control: "select", options: [], mode: "multiple", showSearch: true },
+    tags: {
+      label: "Tags",
+      control: "select",
+      options: [],
+      mode: "multiple",
+      showSearch: true,
+    },
     cv: {
       label: "CV / Portfolio",
       control: "file",
@@ -206,7 +212,10 @@ const SignupForm = ({
           value: x.isoCode,
           label: x.name,
         }));
-        newSchema[0].geoCoverageValue = {...newSchema[0].geoCoverageValue, countries:countries}
+        newSchema[0].geoCoverageValue = {
+          ...newSchema[0].geoCoverageValue,
+          countries: countries,
+        };
       }
       setFormSchema(newSchema);
     });
@@ -219,7 +228,10 @@ const SignupForm = ({
         value: x.isoCode,
         label: x.name,
       }));
-      newSchema[0].geoCoverageValue = {...newSchema[0].geoCoverageValue, countries:countries}
+      newSchema[0].geoCoverageValue = {
+        ...newSchema[0].geoCoverageValue,
+        countries: countries,
+      };
       setFormSchema(newSchema);
     }
   }, [countries]); // eslint-disable-line
@@ -331,7 +343,10 @@ const SignupForm = ({
                         //   value: countries2to3[iso2],
                         //   label: countries[iso2].name,
                         // })),
-                        options: countries.map((it) => ({ value: it.isoCode, label: it.name })),
+                        options: countries.map((it) => ({
+                          value: it.isoCode,
+                          label: it.name,
+                        })),
                         autoComplete: "off",
                       };
                       newSchema[1]["org.url"] = {

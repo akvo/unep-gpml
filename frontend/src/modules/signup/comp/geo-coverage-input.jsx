@@ -16,9 +16,8 @@ const regionOptions = [
 
 const GeoCoverageInput = (props) => {
   const { disabled, countries } = props;
-  const national = countries && countries.map(it => ({value:it.isoCode, label:it.name}));
-  const regions = regionOptions.map((it) => ({value: it, label: it}));
-  const areas = specificAreasOptions.map((it) => ({value: it, label: it}));
+  const national =
+    countries && countries.map((it) => ({ value: it.isoCode, label: it.name }));
   return (
     <Field
       key={props.name}
@@ -29,7 +28,6 @@ const GeoCoverageInput = (props) => {
             key={name}
             name={props.input.name}
             render={({ input }) => {
-              let options = [];
               if (typeInput.value === "global") return <Input disabled />;
               if (typeInput.value === "sub-national")
                 return (
@@ -50,11 +48,10 @@ const GeoCoverageInput = (props) => {
               const selectProps = { ...input, disabled };
               if (typeInput.value === "regional") {
                 if (input.value === "" || input?.[0] === "") input.onChange([]);
-                // selectProps.options = regionOptions.map((it) => ({
-                //   value: it,
-                //   label: it,
-                // }));
-                options = regions;
+                selectProps.options = regionOptions.map((it) => ({
+                  value: it,
+                  label: it,
+                }));
                 selectProps.mode = "multiple";
               } else if (
                 typeInput.value === "national" ||
@@ -64,7 +61,7 @@ const GeoCoverageInput = (props) => {
                 //   value: countries2to3[iso2],
                 //   label: countries[iso2].name,
                 // }));
-                options = national;
+                selectProps.options = national;
                 selectProps.showSearch = true;
                 selectProps.filterOption = (input, option) =>
                   option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
@@ -76,24 +73,14 @@ const GeoCoverageInput = (props) => {
               } else if (
                 typeInput.value === "global with elements in specific areas"
               ) {
-                // selectProps.options = specificAreasOptions.map((it) => ({
-                //   value: it,
-                //   label: it,
-                // }));
-                options = areas;
+                selectProps.options = specificAreasOptions.map((it) => ({
+                  value: it,
+                  label: it,
+                }));
                 selectProps.mode = "multiple";
                 if (input.value === "" || input?.[0] === "") input.onChange([]);
               }
-              // return <Select {...selectProps} />;
-              return (
-                <Select {...selectProps}>
-                  {options.map(({ label, value }, i) => (
-                    <Select.Option key={value+i} value={value}>
-                      {label}
-                    </Select.Option>
-                  ))}
-                </Select>
-              );
+              return <Select {...selectProps} />;
             }}
           />
         );
