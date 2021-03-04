@@ -46,15 +46,15 @@ const AdminSection = ({ countries }) => {
           type: "profile",
           title: `${it.firstName} ${it.lastName}`,
           ...it,
-          offering: it.tags
-            .filter((x) => x.category === "offering")
-            .map((x) => x.tag),
-          seeking: it.tags
-            .filter((x) => x.category === "seeking")
-            .map((x) => x.tag),
-          tags: it.tags
-            .filter((x) => x.category === "general")
-            .map((x) => x.tag),
+          offering:
+            it.tags &&
+            it.tags.filter((x) => x.category === "offering").map((x) => x.tag),
+          seeking:
+            it.tags &&
+            it.tags.filter((x) => x.category === "seeking").map((x) => x.tag),
+          tags:
+            it.tags &&
+            it.tags.filter((x) => x.category === "general").map((x) => x.tag),
         })),
         ...eventResp.data.map((it) => ({ type: "event", ...it })),
       ]);
