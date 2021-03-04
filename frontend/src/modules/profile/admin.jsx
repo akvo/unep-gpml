@@ -32,35 +32,10 @@ const ModalReject = ({ visible, close, reject, item }) => {
   );
 };
 
-const AdminSection = ({ countries }) => {
-  const [pendingItems, setPendingItems] = useState([]);
+const AdminSection = ({ countries, pendingItems, setPendingItems }) => {
   const [modalRejectVisible, setModalRejectVisible] = useState(false);
   const [modalRejectFunction, setModalRejectFunction] = useState(false);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    (async function fetchData() {
-      const profileResp = await api.get("/profile/pending");
-      const eventResp = await api.get("/event/pending");
-      setPendingItems([
-        ...profileResp.data.map((it) => ({
-          type: "profile",
-          title: `${it.firstName} ${it.lastName}`,
-          ...it,
-          offering:
-            it.tags &&
-            it.tags.filter((x) => x.category === "offering").map((x) => x.tag),
-          seeking:
-            it.tags &&
-            it.tags.filter((x) => x.category === "seeking").map((x) => x.tag),
-          tags:
-            it.tags &&
-            it.tags.filter((x) => x.category === "general").map((x) => x.tag),
-        })),
-        ...eventResp.data.map((it) => ({ type: "event", ...it })),
-      ]);
-      setLoading(false);
-    })();
-  }, []);
+
   const review = (item, review_status) => () => {
     api
       .put(`/${item.type}/review`, {
@@ -141,7 +116,7 @@ const AdminSection = ({ countries }) => {
     return (
       <Fragment key="new-approval">
         <h2>New approval requests</h2>
-        {loading && <Spin size="large" />}
+        {/* {loading && <Spin size="large" />} */}
         <div className="row head">
           <div className="col">Type</div>
           <div className="col">Name</div>
@@ -382,7 +357,7 @@ const AdminSection = ({ countries }) => {
     return (
       <div className="archive">
         <h2>Requests archive</h2>
-        {loading && <Spin size="large" />}
+        {/* {loading && <Spin size="large" />} */}
         <Collapse collapsible="disabled">
           {archived &&
             archived.map((item, index) => (

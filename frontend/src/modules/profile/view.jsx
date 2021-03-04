@@ -5,8 +5,36 @@ import SignupForm from "../signup/signup-form";
 import AdminSection from "./admin";
 import "./styles.scss";
 import isEmpty from "lodash/isEmpty";
-import { LoadingOutlined, RightOutlined } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  RightOutlined,
+  StarOutlined,
+  TeamOutlined,
+} from "@ant-design/icons";
 const { TabPane } = Tabs;
+
+const menuItems = [
+  {
+    key: "personal-details",
+    name: "Personal Details",
+    role: "user",
+  },
+  {
+    key: "my-favourites",
+    name: "My Favourites",
+    role: "user",
+  },
+  {
+    key: "my-network",
+    name: "My Network",
+    role: "user",
+  },
+  {
+    key: "admin-section",
+    name: "Admin Section",
+    role: "admin",
+  },
+];
 
 const ProfileView = ({
   profile,
@@ -18,6 +46,36 @@ const ProfileView = ({
   const handleSubmitRef = useRef();
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState("personal-details");
+  const [pendingItems, setPendingItems] = useState([]);
+
+  useEffect(() => {
+    if (profile?.role === "ADMIN") {
+      (async function fetchData() {
+        const profileResp = await api.get("/profile/pending");
+        const eventResp = await api.get("/event/pending");
+        setPendingItems([
+          ...profileResp.data.map((it) => ({
+            type: "profile",
+            title: `${it.firstName} ${it.lastName}`,
+            ...it,
+            offering:
+              it.tags &&
+              it.tags
+                .filter((x) => x.category === "offering")
+                .map((x) => x.tag),
+            seeking:
+              it.tags &&
+              it.tags.filter((x) => x.category === "seeking").map((x) => x.tag),
+            tags:
+              it.tags &&
+              it.tags.filter((x) => x.category === "general").map((x) => x.tag),
+          })),
+          ...eventResp.data.map((it) => ({ type: "event", ...it })),
+        ]);
+      })();
+    }
+  }, [profile]); // eslint-disable-next-line
+
   const onSubmit = (vals) => {
     setSaving(true);
     if (
@@ -43,9 +101,43 @@ const ProfileView = ({
     setMenu(params);
   };
 
+  const renderMenuItem = (profile) => {
+    let menus = menuItems;
+    if (profile?.role !== "ADMIN") {
+      menus = menuItems.filter((it) => it.role === "user");
+    }
+    return menus.map((it) => {
+      return (
+        <Menu.Item key={it.key} onClick={() => handleOnClickMenu(it.key)}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <div>
+              {it.name}
+              &nbsp;&nbsp;&nbsp;
+              {it.key === "my-favourites" && <StarOutlined />}
+              {it.key === "my-network" && <TeamOutlined />}
+            </div>
+            <div>
+              {it.key === "my-favourites" && `(${0})`}
+              {it.key === "my-network" && `(${0})`}
+              {it.key === "admin-section" && `(${pendingItems.length})`}
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <RightOutlined />
+            </div>
+          </div>
+        </Menu.Item>
+      );
+    });
+  };
+
   useEffect(() => {
     updateDisclaimer(null);
-  }, []);
+  }, []); // eslint-disable-next-line
 
   return (
     <div id="profile">
@@ -61,20 +153,10 @@ const ProfileView = ({
                 <Image width="70%" src={profile.photo} />
               </div>
               <Menu
+                defaultSelectedKeys={["personal-details"]}
                 style={{ width: "100%", color: "#046799", fontWeight: "bold" }}
               >
-                <Menu.Item
-                  onClick={() => handleOnClickMenu("personal-details")}
-                >
-                  Personal Details
-                </Menu.Item>
-                <Menu.Item>My Favourites</Menu.Item>
-                <Menu.Item>My Network</Menu.Item>
-                {profile?.role === "ADMIN" && (
-                  <Menu.Item onClick={() => handleOnClickMenu("admin-section")}>
-                    Admin Section
-                  </Menu.Item>
-                )}
+                {renderMenuItem(profile)}
               </Menu>
             </div>
             <div className="content-wrapper">
@@ -100,7 +182,11 @@ const ProfileView = ({
                 </div>
               )}
               {menu === "admin-section" && profile?.role === "ADMIN" && (
-                <AdminSection countries={countries} />
+                <AdminSection
+                  countries={countries}
+                  pendingItems={pendingItems}
+                  setPendingItems={setPendingItems}
+                />
               )}
             </div>
             {/* <Tabs tabPosition="left" className="fade-in">
