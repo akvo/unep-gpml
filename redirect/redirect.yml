@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unep-gpml-redirect
+  namespace: default
+data:
+  default.conf: |
+    server {
+          listen         80;
+          server_name     _;
+          server_tokens off;
+          root          /usr/share/nginx/html;
+          location /healthz {
+              return 200 'OK';
+          }
+          location / {
+              return 301 https://digital.gpmarinelitter.org;
+          }
+      }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unep-gpml-redirect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        run: unep-gpml-redirect
+  template:
+    metadata:
+      labels:
+        run: unep-gpml-redirect
+    spec:
+      containers:
+        - name: proxy
+          image: nginx:1.19.7-alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "32Mi"
+            limits:
+              cpu: "200m"
+              memory: "64Mi"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/conf.d
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 10
+      volumes:
+        - name: config
+          configMap:
+            name: unep-gpml-redirect
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: unep-gpml-redirect
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    run: unep-gpml-redirect
