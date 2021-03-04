@@ -1,7 +1,15 @@
 -- :name new-country-group :! :1
 -- :doc Insert new country group
-insert into country_group (name, type)
-values(:name, :v:type::country_group_type)
+insert into country_group (
+    name,
+    type
+--~ (when (contains? params :id) ", id")
+)
+values(
+    :name,
+    :v:type::country_group_type
+--~ (when (contains? params :id) ", :id")
+)
 
 -- :name country-group-by-name :? :1
 -- :doc Get country group by name

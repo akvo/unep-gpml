@@ -371,6 +371,19 @@
         (.printStackTrace e)
         (throw e)))))
 
+
+(defn reseed-country [db]
+  (db.util/drop-constraint-country db)
+  (jdbc/execute! db ["TRUNCATE table country"])
+  (seed-countries db)
+  (db.util/revert-constraint db))
+
+(defn reseed-organisation [db]
+  (db.util/drop-constraint-organisation db)
+  (jdbc/execute! db ["TRUNCATE table organisation"])
+  (seed-organisations db)
+  (db.util/revert-constraint db))
+
 (defn seed
   ([db {:keys [country? currency?
                organisation? language? tag?
@@ -398,10 +411,7 @@
        (seed-currencies tx))
      (when organisation?
        (println "Seeding organisation...")
-       (db.util/drop-constraint-organisation tx)
-       (jdbc/execute! tx ["TRUNCATE table organisation"])
-       (seed-organisations tx)
-       (db.util/add-constraint-organisation tx))
+       (seed-organisations tx))
      (when language?
        (println "Seeding language...")
        (seed-languages tx))
@@ -455,12 +465,9 @@
                :duct.database.sql/hikaricp
                :spec))
 
-  ;; re-seeding without effecting other table example
-  (println "Seeding organisation...")
-  (db.util/drop-constraint-organisation db)
-  (jdbc/execute! db ["TRUNCATE table organisation"])
-  (seed-organisations db)
-  (db.util/add-constraint-organisation db)
+  ;; example reseeding
+  (reseed-country db)
+  (reseed-organisation db)
 
   ;; get view table of topic
   (defn view-table-of [association]
