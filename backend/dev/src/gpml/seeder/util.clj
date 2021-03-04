@@ -1,6 +1,5 @@
 (ns gpml.seeder.util
   (:require [gpml.seeder.snippet :as db.snip]
-            [gpml.seeder.main :as m]
             [jsonista.core :as j]))
 
 (defn write-cache [data]
