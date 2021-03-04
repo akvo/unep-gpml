@@ -37,7 +37,7 @@ backend_build () {
 	   borkdude/clj-kondo:2020.12.12 \
 	   clj-kondo --lint src --lint test
 
-    dc run -T \
+    dc run \
        --rm \
        backend \
        bash release.sh
@@ -48,7 +48,7 @@ backend_build () {
 }
 
 frontend_build () {
-    dc run -T \
+    dc run \
        --rm \
        --no-deps \
        frontend \
