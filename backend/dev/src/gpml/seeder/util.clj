@@ -1,5 +1,5 @@
 (ns gpml.seeder.util
-  (:require [gpml.seeder.snippet :as db.snip]
+  (:require [gpml.seeder.db :as seeder.db]
             [jsonista.core :as j]))
 
 (defn write-cache [data]
@@ -12,24 +12,24 @@
     j/keyword-keys-object-mapper))
 
 (defn drop-all-constraint [db data]
-  (let [table (db.snip/get-foreign-key db data)]
+  (let [table (seeder.db/get-foreign-key db data)]
     (write-cache table)
     (doseq [query (:deps table)]
       (prn query)
-      (db.snip/drop-constraint db query))
+      (seeder.db/drop-constraint db query))
     (doseq [child-query (:child data)]
-      (db.snip/truncate db child-query))
-    (db.snip/dissoc-sequence db table)
+      (seeder.db/truncate db child-query))
+    (seeder.db/dissoc-sequence db table)
     (doseq [child-query (:child data)]
-      (db.snip/set-sequence db child-query)))
+      (seeder.db/set-sequence db child-query)))
   (println (str "Ref " (:table data) " removed")))
 
 (defn revert-constraint [db]
   (let [table (read-cache)]
-    (db.snip/set-sequence db table)
+    (seeder.db/set-sequence db table)
     (doseq [query (:deps table)]
-      (db.snip/add-constraint db query))
-    (db.snip/set-default-sequence db table)
+      (seeder.db/add-constraint db query))
+    (seeder.db/set-default-sequence db table)
   (println (str "Ref " (:tbl table) " added"))))
 
 (defn drop-constraint-organisation [db]
