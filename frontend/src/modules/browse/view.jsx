@@ -12,8 +12,8 @@ import {
 import { Link, useLocation, withRouter } from "react-router-dom";
 import moment from "moment";
 import api from "../../utils/api";
-import { countries } from "countries-list";
-import countries2to3 from "countries-list/dist/countries2to3.json";
+// import { countries } from "countries-list";
+// import countries2to3 from "countries-list/dist/countries2to3.json";
 import ShowMoreText from "react-show-more-text";
 import ModalWarningUser from "../../utils/modal-warning-user";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -47,6 +47,7 @@ const Browse = ({
   updateDisclaimer,
   filters,
   setFilters,
+  countries,
 }) => {
   const query = useQuery();
   const [results, setResults] = useState([]);
@@ -189,12 +190,21 @@ const Browse = ({
                 value={query.country}
                 placeholder="Find country"
                 mode="multiple"
-                options={Object.keys(countries)
-                  .map((iso2) => ({
-                    value: countries2to3[iso2],
-                    label: countries[iso2].name,
-                  }))
-                  .sort((a, b) => a.label.localeCompare(b.label))}
+                // options={Object.keys(countries)
+                //   .map((iso2) => ({
+                //     value: countries2to3[iso2],
+                //     label: countries[iso2].name,
+                //   }))
+                //   .sort((a, b) => a.label.localeCompare(b.label))}
+                options={
+                  countries &&
+                  countries
+                    .map((it) => ({
+                      value: it.isoCode,
+                      label: it.name,
+                    }))
+                    .sort((a, b) => a.label.localeCompare(b.label))
+                }
                 allowClear
                 onChange={(val) => updateQuery("country", val)}
                 filterOption={(input, option) =>

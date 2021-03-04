@@ -14,9 +14,10 @@ import {
   relationsByTopicType,
 } from "../../utils/misc";
 import { useAuth0 } from "@auth0/auth0-react";
-import { languages, countries } from "countries-list";
+// import { languages, countries } from "countries-list";
+import { languages } from "countries-list";
 import ModalWarningUser from "../../utils/modal-warning-user";
-import countries3to2 from "countries-list/dist/countries3to2.json";
+// import countries3to2 from "countries-list/dist/countries3to2.json";
 import capitalize from "lodash/capitalize";
 import some from "lodash/some";
 import "./styles.scss";
@@ -31,14 +32,16 @@ import moment from "moment";
 import imageNotFound from "../../images/image-not-found.png";
 import logoNotFound from "../../images/logo-not-found.png";
 import uniqBy from "lodash/uniqBy";
+import find from "lodash/find";
 
-const renderItemValues = (params, mapping, data, profile) => {
+const renderItemValues = (params, mapping, data, profile, countries) => {
   // filter the mapping data for user or admin role
   if (params.type === "stakeholder" && profile.role.toLowerCase() === "user") {
     mapping = mapping.filter(
       (x) => x.role.toLowerCase() === profile.role.toLowerCase()
     );
   }
+
   return (
     mapping &&
     mapping.map((item, index) => {
@@ -91,7 +94,8 @@ const renderItemValues = (params, mapping, data, profile) => {
                   data[key].map((x) => x.name).join(", ")}
                 {value === key &&
                   type === "country" &&
-                  countries[countries3to2[data[key]]].name}
+                  // countries[countries3to2[data[key]]].name
+                  find(countries, (it) => it.isoCode === data[key]).name}
                 {value === "custom" &&
                   type === "object" &&
                   data[key][customValue]}
@@ -132,9 +136,12 @@ const renderItemValues = (params, mapping, data, profile) => {
                   (data[key] === null || data[key][0] === "***") &&
                   data.geoCoverageType === "global" && (
                     <div className="scrollable">
-                      {values(countries)
-                        .map((c) => c.name)
-                        .join(", ")}
+                      {
+                        // values(countries)
+                        //   .map((c) => c.name)
+                        //   .join(", ")
+                        countries.map((it) => it.name).join(", ")
+                      }
                     </div>
                   )}
                 {value === "countries" &&
@@ -145,26 +152,47 @@ const renderItemValues = (params, mapping, data, profile) => {
                   data[key] !== null &&
                   data.geoCoverageType === "global" && (
                     <div className="scrollable">
-                      {data[key]
-                        .map((x) => countries[countries3to2[x]].name)
-                        .join(", ")}
+                      {
+                        // data[key]
+                        //   .map((x) => countries[countries3to2[x]].name)
+                        //   .join(", ")
+                        data[key]
+                          .map((x) => {
+                            return find(countries, (it) => it.isoCode === x)
+                              .name;
+                          })
+                          .join(", ")
+                      }
                     </div>
                   )}
                 {value === "countries" &&
                   data[key] !== null &&
                   data.geoCoverageType === "transnational" && (
                     <div className="scrollable">
-                      {data[key]
-                        .map((x) => countries[countries3to2[x]].name)
-                        .join(", ")}
+                      {
+                        // data[key]
+                        //   .map((x) => countries[countries3to2[x]].name)
+                        //   .join(", ")
+                        data[key]
+                          .map((x) => {
+                            return find(countries, (it) => it.isoCode === x)
+                              .name;
+                          })
+                          .join(", ")
+                      }
                     </div>
                   )}
                 {value === "countries" &&
                   data[key] !== null &&
                   (data.geoCoverageType === "national" ||
                     data.geoCoverageType === "sub-national") &&
+                  // data[key]
+                  //   .map((x) => countries[countries3to2[x]].name)
+                  //   .join(", ")
                   data[key]
-                    .map((x) => countries[countries3to2[x]].name)
+                    .map((x) => {
+                      return find(countries, (it) => it.isoCode === x).name;
+                    })
                     .join(", ")}
                 {/* EOF Country details */}
 
@@ -310,7 +338,7 @@ const renderTypeOfActions = (params, data) => {
   );
 };
 
-const renderDetails = (params, data, profile) => {
+const renderDetails = (params, data, profile, countries) => {
   const details = detailMaps[params.type];
   if (!details) {
     return;
@@ -319,13 +347,13 @@ const renderDetails = (params, data, profile) => {
     <div key={"details"} className="card">
       <h3>{topicNames(params.type)} Detail</h3>
       <div className="table">
-        {renderItemValues(params, details, data, profile)}
+        {renderItemValues(params, details, data, profile, countries)}
       </div>
     </div>
   );
 };
 
-const renderInfo = (params, data, profile) => {
+const renderInfo = (params, data, profile, countries) => {
   const staticText = (
     <p>
       The{" "}
@@ -351,7 +379,7 @@ const renderInfo = (params, data, profile) => {
     <div key="info" className="card">
       <h3>Related Info And Contacts</h3>
       <div className="table">
-        {renderItemValues(params, info, data, profile)}
+        {renderItemValues(params, info, data, profile, countries)}
       </div>
       {params.type === "project" && data.uuid && !isNarrative && (
         <div>
@@ -378,7 +406,7 @@ const renderDescription = (params, data) => {
 };
 
 const DetailsView = ({ match: { params }, ...props }) => {
-  const { profile, setSignupModalVisible } = props;
+  const { profile, setSignupModalVisible, countries } = props;
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
@@ -551,8 +579,8 @@ const DetailsView = ({ match: { params }, ...props }) => {
 
           {/* Right */}
           <div key="right" className="content-column">
-            {renderDetails(params, data, profile)}
-            {renderInfo(params, data, profile)}
+            {renderDetails(params, data, profile, countries)}
+            {renderInfo(params, data, profile, countries)}
           </div>
         </div>
       </div>

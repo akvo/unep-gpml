@@ -238,13 +238,18 @@ const Root = () => {
               updateDisclaimer={updateDisclaimer}
               filters={filters}
               setFilters={setFilters}
+              countries={countries}
             />
           )}
         />
         <Route
           path="/add-event"
           render={(props) => (
-            <AddEvent {...props} updateDisclaimer={updateDisclaimer} />
+            <AddEvent
+              {...props}
+              updateDisclaimer={updateDisclaimer}
+              countries={countries}
+            />
           )}
         />
         <Route
@@ -270,6 +275,7 @@ const Root = () => {
               profile={profile}
               setSignupModalVisible={setSignupModalVisible}
               updateDisclaimer={updateDisclaimer}
+              countries={countries}
             />
           )}
         />

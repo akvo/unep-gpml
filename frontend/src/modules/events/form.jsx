@@ -4,8 +4,9 @@ import { Form as FinalForm, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { createForm } from "final-form";
 import { FieldsFromSchema, validateSchema } from "../../utils/form-utils";
-import { languages, countries } from "countries-list";
-import countries2to3 from "countries-list/dist/countries2to3.json";
+import { languages } from "countries-list";
+// import { languages, countries } from "countries-list";
+// import countries2to3 from "countries-list/dist/countries2to3.json";
 import specificAreasOptions from "./specific-areas.json";
 import api from "../../utils/api";
 import { cloneDeep } from "lodash";
@@ -29,6 +30,7 @@ const regionOptions = [
 ];
 
 const GeoCoverageInput = (props) => {
+  const { countries } = props;
   return (
     <Field
       name="geoCoverageType"
@@ -44,6 +46,7 @@ const GeoCoverageInput = (props) => {
                 return <Input placeholder="Type here..." {...input} />;
               const selectProps = { ...input };
               if (typeInput.value === "regional") {
+                if (input.value === "" || input?.[0] === "") input.onChange([]);
                 selectProps.options = regionOptions.map((it) => ({
                   value: it,
                   label: it,
@@ -53,16 +56,26 @@ const GeoCoverageInput = (props) => {
                 typeInput.value === "national" ||
                 typeInput.value === "transnational"
               ) {
-                selectProps.options = Object.keys(countries)
-                  .map((iso2) => ({
-                    value: countries2to3[iso2],
-                    label: countries[iso2].name,
-                  }))
-                  .sort((a, b) => a.label.localeCompare(b.label));
+                // selectProps.options = Object.keys(countries)
+                //   .map((iso2) => ({
+                //     value: countries2to3[iso2],
+                //     label: countries[iso2].name,
+                //   }))
+                //   .sort((a, b) => a.label.localeCompare(b.label));
+                selectProps.options =
+                  countries &&
+                  countries
+                    .map((it) => ({
+                      value: it.isoCode,
+                      label: it.name,
+                    }))
+                    .sort((a, b) => a.label.localeCompare(b.label));
                 selectProps.showSearch = true;
                 selectProps.filterOption = (input, option) =>
                   option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
                 if (typeInput.value === "transnational") {
+                  if (input.value === "" || input?.[0] === "")
+                    input.onChange([]);
                   selectProps.mode = "multiple";
                 }
               } else if (
@@ -73,6 +86,7 @@ const GeoCoverageInput = (props) => {
                   label: it,
                 }));
                 selectProps.mode = "multiple";
+                if (input.value === "" || input?.[0] === "") input.onChange([]);
               }
               return <Select {...selectProps} />;
             }}
@@ -118,12 +132,13 @@ const defaultFormSchema = [
       label: "Country",
       control: "select",
       showSearch: true,
-      options: Object.keys(countries)
-        .map((iso2) => ({
-          value: countries2to3[iso2],
-          label: countries[iso2].name,
-        }))
-        .sort((a, b) => a.label.localeCompare(b.label)),
+      // options: Object.keys(countries)
+      //   .map((iso2) => ({
+      //     value: countries2to3[iso2],
+      //     label: countries[iso2].name,
+      //   }))
+      //   .sort((a, b) => a.label.localeCompare(b.label)),
+      options: [],
     },
     geoCoverageType: {
       label: "Geo coverage type",
@@ -147,6 +162,7 @@ const defaultFormSchema = [
       options: [],
       loading: true,
       mode: "multiple",
+      showSearch: true,
     },
   },
 ];
@@ -157,7 +173,7 @@ const validation = (formSchema) => {
   );
 };
 
-const AddEventForm = () => {
+const AddEventForm = ({ countries }) => {
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [sending, setSending] = useState(false);
   const [step, setStep] = useState(1);
@@ -185,9 +201,39 @@ const AddEventForm = () => {
         label: x.tag,
       }));
       newSchema[2].tags.loading = false;
+      if (countries) {
+        newSchema[1].country.options = countries
+          .map((x) => ({
+            value: x.isoCode,
+            label: x.name,
+          }))
+          .sort((a, b) => a.label.localeCompare(b.label));
+        newSchema[1].geoCoverageValue = {
+          ...newSchema[1].geoCoverageValue,
+          countries: countries,
+        };
+      }
       setFormSchema(newSchema);
     })();
-  }, []);
+  }, []); // eslint-disable-line
+
+  useEffect(() => {
+    if (countries) {
+      const newSchema = cloneDeep(defaultFormSchema);
+      newSchema[1].country.options = countries
+        .map((x) => ({
+          value: x.isoCode,
+          label: x.name,
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label));
+      newSchema[1].geoCoverageValue = {
+        ...newSchema[1].geoCoverageValue,
+        countries: countries,
+      };
+      setFormSchema(newSchema);
+    }
+  }, [countries]); // eslint-disable-line
+
   const form = createForm({
     subscription: {},
     initialValues: { urls: [{ url: "", lang: "en" }] },
