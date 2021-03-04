@@ -7,7 +7,7 @@ import SignupForm from "./signup-form";
 import { useRef } from "react";
 import Checkbox from "antd/lib/checkbox/Checkbox";
 
-const SignupModal = ({ visible, onCancel, setProfile, profile, tags }) => {
+const SignupModal = ({ visible, onCancel, setProfile, profile, tags, countries }) => {
   const { user } = useAuth0();
   const [sending, setSending] = useState(false);
   const [step, setStep] = useState(1);
@@ -57,6 +57,7 @@ const SignupModal = ({ visible, onCancel, setProfile, profile, tags }) => {
             }}
             initialValues={profile}
             tags={tags}
+            countries={countries}
           />
           <Checkbox
             className="consent-check"

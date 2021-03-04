@@ -11,8 +11,8 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { FieldsFromSchema } from "../../utils/form-utils";
-import { countries } from "countries-list";
-import countries2to3 from "countries-list/dist/countries2to3.json";
+// import { countries } from "countries-list";
+// import countries2to3 from "countries-list/dist/countries2to3.json";
 import cloneDeep from "lodash/cloneDeep";
 import api from "../../utils/api";
 import { storage } from "../../utils/storage";
@@ -69,11 +69,12 @@ const defaultFormSchema = [
       order: 3,
       control: "select",
       showSearch: true,
-      options: Object.keys(countries).map((iso2) => ({
-        value: countries2to3[iso2],
-        label: countries[iso2].name,
-      })),
-      autoComplete: "off",
+      // options: Object.keys(countries).map((iso2) => ({
+      //   value: countries2to3[iso2],
+      //   label: countries[iso2].name,
+      // })),
+      options: [],
+      autoComplete: "on",
     },
     geoCoverageType: {
       label: "Geo coverage type",
@@ -84,6 +85,7 @@ const defaultFormSchema = [
       })),
     },
     geoCoverageValue: { label: "Geo coverage", render: GeoCoverageInput },
+    // geoCoverageValue: { label: "Geo coverage" },
   },
   {
     "org.id": {
@@ -106,12 +108,14 @@ const defaultFormSchema = [
       label: "Seeking",
       control: "select",
       mode: "multiple",
+      showSearch: true,
       options: [],
     },
     offering: {
       label: "Offering",
       control: "select",
       mode: "multiple",
+      showSearch: true,
       options: [],
     },
     about: {
@@ -119,7 +123,7 @@ const defaultFormSchema = [
       control: "textarea",
       placeholder: "Max 150 words",
     },
-    tags: { label: "Tags", control: "select", options: [], mode: "multiple" },
+    tags: { label: "Tags", control: "select", options: [], mode: "multiple", showSearch: true },
     cv: {
       label: "CV / Portfolio",
       control: "file",
@@ -158,6 +162,7 @@ const SignupForm = ({
   initialValues,
   handleSubmitRef,
   tags,
+  countries,
 }) => {
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [noOrg, setNoOrg] = useState(false);
@@ -196,9 +201,28 @@ const SignupForm = ({
           label: x.tag,
         }));
       }
+      if (countries) {
+        newSchema[0].country.options = countries.map((x) => ({
+          value: x.isoCode,
+          label: x.name,
+        }));
+        newSchema[0].geoCoverageValue = {...newSchema[0].geoCoverageValue, countries:countries}
+      }
       setFormSchema(newSchema);
     });
   }, []); // eslint-disable-line
+
+  useEffect(() => {
+    if (countries) {
+      const newSchema = cloneDeep(formSchema);
+      newSchema[0].country.options = countries.map((x) => ({
+        value: x.isoCode,
+        label: x.name,
+      }));
+      newSchema[0].geoCoverageValue = {...newSchema[0].geoCoverageValue, countries:countries}
+      setFormSchema(newSchema);
+    }
+  }, [countries]); // eslint-disable-line
 
   useEffect(() => {
     if (tags) {
@@ -303,10 +327,11 @@ const SignupForm = ({
                         control: "select",
                         required: true,
                         showSearch: true,
-                        options: Object.keys(countries).map((iso2) => ({
-                          value: countries2to3[iso2],
-                          label: countries[iso2].name,
-                        })),
+                        // options: Object.keys(countries).map((iso2) => ({
+                        //   value: countries2to3[iso2],
+                        //   label: countries[iso2].name,
+                        // })),
+                        options: countries.map((it) => ({ value: it.isoCode, label: it.name })),
                         autoComplete: "off",
                       };
                       newSchema[1]["org.url"] = {

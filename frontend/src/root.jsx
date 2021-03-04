@@ -278,7 +278,7 @@ const Root = () => {
       <SignupModal
         visible={signupModalVisible}
         onCancel={() => setSignupModalVisible(false)}
-        {...{ tags, setProfile }}
+        {...{ tags, setProfile, countries }}
       />
       <ModalWarningUser
         visible={eventWarningVisible}

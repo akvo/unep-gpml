@@ -86,6 +86,7 @@ const ProfileView = ({
                       handleSubmitRef.current = ref;
                     }}
                     initialValues={profile}
+                    countries={countries}
                   />
                   <Button
                     loading={saving}
