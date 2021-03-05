@@ -31,11 +31,7 @@ FOREIGN KEY (:i:col)
 REFERENCES :i:tbl_ref
 
 -- :name truncate :! :1
-TRUNCATE TABLE :i:tbl
-
--- :name dissoc-sequence :! :1
-ALTER TABLE :i:tbl
-ALTER COLUMN id SET DEFAULT NULL
+TRUNCATE TABLE :i:tbl RESTART IDENTITY
 
 -- :name set-sequence :!
 SELECT setval(:tbl_seq, (SELECT max(id) + 1 FROM :i:tbl));

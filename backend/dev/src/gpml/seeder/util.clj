@@ -15,13 +15,9 @@
   (let [table (seeder.db/get-foreign-key db data)]
     (write-cache table)
     (doseq [query (:deps table)]
-      (prn query)
       (seeder.db/drop-constraint db query))
     (doseq [child-query (:child data)]
-      (seeder.db/truncate db child-query))
-    (seeder.db/dissoc-sequence db table)
-    (doseq [child-query (:child data)]
-      (seeder.db/set-sequence db child-query)))
+      (seeder.db/truncate db child-query)))
   (println (str "Ref " (:table data) " removed")))
 
 (defn revert-constraint [db]
