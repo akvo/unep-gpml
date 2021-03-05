@@ -32,15 +32,20 @@
     (seeder.db/set-default-sequence db table)
   (println (str "Ref " (:tbl table) " added"))))
 
-(defn drop-constraint-organisation [db]
-  (drop-all-constraint db {:table "organisation"
-                           :child [{:tbl "organisation_geo_coverage"
-                                    :tbl_seq "organisation_geo_coverage_id_seq"}]}))
-
 (defn drop-constraint-country [db]
   (drop-all-constraint db {:table "country"
                            :child [{:tbl "country_group_country"
                                     :tbl_seq "country_group_country_id_seq"}]}))
+
+(defn drop-constraint-country-group [db]
+  (drop-all-constraint db {:table "country-group"
+                           :child [{:tbl "country_group_country"
+                                    :tbl_seq "country_group_country_id_seq"}]}))
+
+(defn drop-constraint-organisation [db]
+  (drop-all-constraint db {:table "organisation"
+                           :child [{:tbl "organisation_geo_coverage"
+                                    :tbl_seq "organisation_geo_coverage_id_seq"}]}))
 
 (defn drop-constraint-policy [db]
   (drop-all-constraint db {:table "policy"
@@ -61,3 +66,24 @@
                                     :tbl_seq "resource_organisation_id_seq"}
                                    {:tbl "resource_tag"
                                     :tbl_seq "resource_tag_id_seq"}]}))
+
+(defn drop-constraint-technology [db]
+  (drop-all-constraint db {:table "technology"
+                           :child [{:tbl "technology_geo_coverage"
+                                    :tbl_seq "technology_geo_coverage_id_seq"}
+                                   {:tbl "technology_language_url"
+                                    :tbl_seq "technology_language_url_id_seq"}
+                                   {:tbl "technology_tag"
+                                    :tbl_seq "technology_tag_id_seq"}]}))
+
+(defn drop-constraint-project [db]
+  (drop-all-constraint db {:table "project"
+                           :child [{:tbl "project_action"
+                                    :tbl_seq "project_action_id_seq"}
+                                   {:tbl "project_action_detail"
+                                    :tbl_seq "project_action_detail_id_seq"}
+                                   {:tbl "project_country"
+                                    :tbl_seq "project_country_id_seq"}
+                                   {:tbl "project_tag"
+                                    :tbl_seq "project_tag_id_seq"}]}))
+

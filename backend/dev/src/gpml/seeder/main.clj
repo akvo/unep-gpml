@@ -379,6 +379,21 @@
   (seed-countries db)
   (db.util/revert-constraint db))
 
+(defn reseed-country-group [db]
+  (db.util/drop-constraint-country-group db)
+  (jdbc/execute! db ["TRUNCATE table country group"])
+  (println "Re-seeding country-group...")
+  (seed-country-groups db)
+  (db.util/revert-constraint db)
+  (seed-country-group-country db))
+
+(defn reseed-organisation [db]
+  (db.util/drop-constraint-organisation db)
+  (jdbc/execute! db ["TRUNCATE table organisation"])
+  (println "Re-seeding organisation...")
+  (seed-organisations db)
+  (db.util/revert-constraint db))
+
 (defn reseed-policy [db]
   (db.util/drop-constraint-policy db)
   (jdbc/execute! db ["TRUNCATE table policy"])
@@ -393,11 +408,18 @@
   (seed-resources db)
   (db.util/revert-constraint db))
 
-(defn reseed-organisation [db]
-  (db.util/drop-constraint-organisation db)
-  (jdbc/execute! db ["TRUNCATE table organisation"])
-  (println "Re-seeding organisation...")
-  (seed-organisations db)
+(defn reseed-technology [db]
+  (db.util/drop-constraint-technology db)
+  (jdbc/execute! db ["TRUNCATE table technology"])
+  (println "Re-seeding technology...")
+  (seed-technologies db)
+  (db.util/revert-constraint db))
+
+(defn reseed-project [db]
+  (db.util/drop-constraint-project db)
+  (jdbc/execute! db ["TRUNCATE table project"])
+  (println "Re-seeding project...")
+  (seed-projects db)
   (db.util/revert-constraint db))
 
 (defn seed
@@ -483,9 +505,12 @@
 
   ;; example reseeding
   (reseed-country db)
+  (reseed-country-group db)
   (reseed-policy db)
   (reseed-resource db)
   (reseed-organisation db)
+  (reseed-technology db)
+  (reseed-project db)
 
   ;; get view table of topic
   (defn view-table-of [association]
