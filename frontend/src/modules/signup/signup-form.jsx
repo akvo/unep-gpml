@@ -303,141 +303,147 @@ const SignupForm = ({
           if (handleFormRef) handleFormRef(form);
           formRef.current = form;
           return (
-            <div className={formContainer}>
+            <>
               {initialValues?.reviewStatus && <ReviewText {...initialValues} />}
-              <div className={sectionGrid}>
-                <h2>Personal details</h2>
-                <FieldsFromSchema schema={formSchema[0]} />
-              </div>
-              <div className={sectionGrid}>
-                <h2>Organisation details</h2>
-                <Checkbox
-                  className="org-check"
-                  checked={noOrg}
-                  onChange={handleChangePrivateCitizen}
-                >
-                  I am a private citizen
-                </Checkbox>
-                <FieldsFromSchema schema={formSchema[1]} />
-                <FormSpy
-                  subscription={{ values: true }}
-                  onChange={({ values }) => {
-                    const newSchema = cloneDeep(formSchema);
-                    let changedSchema = false;
-                    if (
-                      values?.org?.id === -1 &&
-                      prevVals.current?.org?.id !== -1
-                    ) {
-                      // Add Name field
-                      newSchema[1]["org.name"] = {
-                        label: "Name",
-                        required: true,
-                        order: 1,
-                      };
-                      newSchema[1]["org.type"] = {
-                        label: "Type of the organisation",
-                        required: true,
-                        control: "select",
-                        options: [
-                          "Government",
-                          "Private Sector",
-                          "Academia and Scientific Community",
-                          "NGO and Major Groups and Stakeholders",
-                          "IGO and Multilateral Process Actor",
-                          "Other",
-                        ].map((it) => ({ value: it, label: it })),
-                      };
-                      newSchema[1]["org.country"] = {
-                        label: "Country",
-                        order: 3,
-                        control: "select",
-                        required: true,
-                        showSearch: true,
-                        options: countries.map((it) => ({
-                          value: it.isoCode,
-                          label: it.name,
-                        })),
-                        autoComplete: "off",
-                      };
-                      newSchema[1]["org.url"] = {
-                        label: "Organisation URL",
-                        order: 4,
-                        addonBefore: "https://",
-                        required: true,
-                      };
-                      newSchema[1]["org.geoCoverageType"] = {
-                        label: "Geo coverage type",
-                        order: 6,
-                        required: true,
-                        control: "select",
-                        options: geoCoverageTypeOptions.map((it) => ({
-                          value: it.toLowerCase(),
-                          label: it,
-                        })),
-                      };
-                      newSchema[1]["org.geoCoverageValue"] = {
-                        order: 7,
-                        required: true,
-                        label: "Geo coverage",
-                        render: GeoCoverageInput,
-                      };
-                      if (values.org.geoCoverageType === "global")
-                        newSchema[1]["org.geoCoverageValue"].required = false;
-                      changedSchema = true;
-                    }
-                    if (
-                      values?.org != null &&
-                      values?.org?.id !== -1 &&
-                      values.org.id != null &&
-                      prevVals.current?.org?.id !== values?.org?.id
-                    ) {
-                      if (prevVals.current?.org?.id === -1) {
-                        delete newSchema[1].name;
-                      }
-                      Object.keys(newSchema[1])
-                        .filter(
-                          (it) => it !== "org.id" && it !== "organisationRole"
-                        )
-                        .forEach((it) => {
-                          newSchema[1][it].required = false;
-                        });
-                      changedSchema = true;
-                      [
-                        "country",
-                        "geoCoverageType",
-                        "geoCoverageValue",
-                        "type",
-                        "url",
-                      ].forEach((propKey) => {
-                        delete newSchema[1][`org.${propKey}`];
-                      });
-                    }
-                    if (
-                      values.org != null &&
-                      values?.org?.geoCoverageType !==
-                        prevVals.current?.org?.geoCoverageType
-                    ) {
-                      if (values.org.geoCoverageType === "global") {
-                        if (newSchema[1]["org.geoCoverageValue"])
+              <div className={formContainer}>
+                <div className={sectionGrid}>
+                  <h2>Personal details</h2>
+                  <FieldsFromSchema schema={formSchema[0]} />
+                </div>
+                <div className={sectionGrid}>
+                  <h2>Organisation details</h2>
+                  <Checkbox
+                    className="org-check"
+                    checked={noOrg}
+                    onChange={handleChangePrivateCitizen}
+                  >
+                    I am a private citizen
+                  </Checkbox>
+                  <FieldsFromSchema schema={formSchema[1]} />
+                  <FormSpy
+                    subscription={{ values: true }}
+                    onChange={({ values }) => {
+                      const newSchema = cloneDeep(formSchema);
+                      let changedSchema = false;
+                      if (
+                        values?.org?.id === -1 &&
+                        prevVals.current?.org?.id !== -1
+                      ) {
+                        // Add Name field
+                        newSchema[1]["org.name"] = {
+                          label: "Name",
+                          required: true,
+                          order: 1,
+                        };
+                        newSchema[1]["org.type"] = {
+                          label: "Type of the organisation",
+                          required: true,
+                          control: "select",
+                          options: [
+                            "Government",
+                            "Private Sector",
+                            "Academia and Scientific Community",
+                            "NGO and Major Groups and Stakeholders",
+                            "IGO and Multilateral Process Actor",
+                            "Other",
+                          ].map((it) => ({ value: it, label: it })),
+                        };
+                        newSchema[1]["org.country"] = {
+                          label: "Country",
+                          order: 3,
+                          control: "select",
+                          required: true,
+                          showSearch: true,
+                          options: countries.map((it) => ({
+                            value: it.isoCode,
+                            label: it.name,
+                          })),
+                          autoComplete: "off",
+                        };
+                        newSchema[1]["org.url"] = {
+                          label: "Organisation URL",
+                          order: 4,
+                          addonBefore: "https://",
+                          required: true,
+                        };
+                        newSchema[1]["org.geoCoverageType"] = {
+                          label: "Geo coverage type",
+                          order: 6,
+                          required: true,
+                          control: "select",
+                          options: geoCoverageTypeOptions.map((it) => ({
+                            value: it.toLowerCase(),
+                            label: it,
+                          })),
+                        };
+                        newSchema[1]["org.geoCoverageValue"] = {
+                          order: 7,
+                          required: true,
+                          label: "Geo coverage",
+                          render: GeoCoverageInput,
+                        };
+                        if (values.org.geoCoverageType === "global")
                           newSchema[1]["org.geoCoverageValue"].required = false;
-                      } else {
-                        if (newSchema[1]["org.geoCoverageValue"])
-                          newSchema[1]["org.geoCoverageValue"].required = true;
+                        changedSchema = true;
                       }
-                      changedSchema = true;
-                    }
-                    if (changedSchema) {
-                      setFormSchema(newSchema);
-                    }
-                    prevVals.current = values;
-                  }}
-                />
+                      if (
+                        values?.org != null &&
+                        values?.org?.id !== -1 &&
+                        values.org.id != null &&
+                        prevVals.current?.org?.id !== values?.org?.id
+                      ) {
+                        if (prevVals.current?.org?.id === -1) {
+                          delete newSchema[1].name;
+                        }
+                        Object.keys(newSchema[1])
+                          .filter(
+                            (it) => it !== "org.id" && it !== "organisationRole"
+                          )
+                          .forEach((it) => {
+                            newSchema[1][it].required = false;
+                          });
+                        changedSchema = true;
+                        [
+                          "country",
+                          "geoCoverageType",
+                          "geoCoverageValue",
+                          "type",
+                          "url",
+                        ].forEach((propKey) => {
+                          delete newSchema[1][`org.${propKey}`];
+                        });
+                      }
+                      if (
+                        values.org != null &&
+                        values?.org?.geoCoverageType !==
+                          prevVals.current?.org?.geoCoverageType
+                      ) {
+                        if (values.org.geoCoverageType === "global") {
+                          if (newSchema[1]["org.geoCoverageValue"])
+                            newSchema[1][
+                              "org.geoCoverageValue"
+                            ].required = false;
+                        } else {
+                          if (newSchema[1]["org.geoCoverageValue"])
+                            newSchema[1][
+                              "org.geoCoverageValue"
+                            ].required = true;
+                        }
+                        changedSchema = true;
+                      }
+                      if (changedSchema) {
+                        setFormSchema(newSchema);
+                      }
+                      prevVals.current = values;
+                    }}
+                  />
+                </div>
+                <div className={sectionGrid}>
+                  <h2>Expertise and activities</h2>
+                  <FieldsFromSchema schema={formSchema[2]} />
+                </div>
               </div>
-              <div className={sectionGrid}>
-                <h2>Expertise and activities</h2>
-                <FieldsFromSchema schema={formSchema[2]} />
-              </div>
-            </div>
+            </>
           );
         }}
       />
