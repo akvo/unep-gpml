@@ -38,7 +38,7 @@
                                     :tbl_seq "country_group_country_id_seq"}]}))
 
 (defn drop-constraint-country-group [db]
-  (drop-all-constraint db {:table "country-group"
+  (drop-all-constraint db {:table "country_group"
                            :child [{:tbl "country_group_country"
                                     :tbl_seq "country_group_country_id_seq"}]}))
 
@@ -86,4 +86,3 @@
                                     :tbl_seq "project_country_id_seq"}
                                    {:tbl "project_tag"
                                     :tbl_seq "project_tag_id_seq"}]}))
-

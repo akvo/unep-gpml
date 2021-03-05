@@ -381,7 +381,7 @@
 
 (defn reseed-country-group [db]
   (db.util/drop-constraint-country-group db)
-  (jdbc/execute! db ["TRUNCATE table country group"])
+  (jdbc/execute! db ["TRUNCATE table country_group"])
   (println "Re-seeding country-group...")
   (seed-country-groups db)
   (db.util/revert-constraint db)
