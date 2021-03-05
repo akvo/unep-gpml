@@ -11,8 +11,6 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { FieldsFromSchema } from "../../utils/form-utils";
-// import { countries } from "countries-list";
-// import countries2to3 from "countries-list/dist/countries2to3.json";
 import cloneDeep from "lodash/cloneDeep";
 import api from "../../utils/api";
 import { storage } from "../../utils/storage";
@@ -82,10 +80,6 @@ const defaultFormSchema = (initValues) => {
         order: 3,
         control: "select",
         showSearch: true,
-        // options: Object.keys(countries).map((iso2) => ({
-        //   value: countries2to3[iso2],
-        //   label: countries[iso2].name,
-        // })),
         options: [],
         autoComplete: "on",
       },
@@ -98,7 +92,6 @@ const defaultFormSchema = (initValues) => {
         })),
       },
       geoCoverageValue: { label: "Geo coverage", render: GeoCoverageInput },
-      // geoCoverageValue: { label: "Geo coverage" },
     },
     {
       "org.id": {
@@ -234,9 +227,6 @@ const SignupForm = ({
           countries: countries,
         };
       }
-      // if (!isModal) {
-      //   newSchema[0].publicEmail = {...newSchema[0].publicEmail, defaultChecked: initialValues.publicEmail}
-      // }
       if (isModal) {
         delete newSchema[0].email;
         delete newSchema[0].publicEmail;
@@ -363,10 +353,6 @@ const SignupForm = ({
                         control: "select",
                         required: true,
                         showSearch: true,
-                        // options: Object.keys(countries).map((iso2) => ({
-                        //   value: countries2to3[iso2],
-                        //   label: countries[iso2].name,
-                        // })),
                         options: countries.map((it) => ({
                           value: it.isoCode,
                           label: it.name,

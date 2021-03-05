@@ -2,8 +2,6 @@ import React from "react";
 import { Input, Select } from "antd";
 import { Field } from "react-final-form";
 import specificAreasOptions from "../../events/specific-areas.json";
-// import { countries } from "countries-list";
-// import countries2to3 from "countries-list/dist/countries2to3.json";
 const regionOptions = [
   "Africa",
   "Asia and the Pacific",
@@ -57,10 +55,6 @@ const GeoCoverageInput = (props) => {
                 typeInput.value === "national" ||
                 typeInput.value === "transnational"
               ) {
-                // selectProps.options = Object.keys(countries).map((iso2) => ({
-                //   value: countries2to3[iso2],
-                //   label: countries[iso2].name,
-                // }));
                 selectProps.options = national;
                 selectProps.showSearch = true;
                 selectProps.filterOption = (input, option) =>

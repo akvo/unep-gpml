@@ -14,10 +14,8 @@ import {
   relationsByTopicType,
 } from "../../utils/misc";
 import { useAuth0 } from "@auth0/auth0-react";
-// import { languages, countries } from "countries-list";
 import { languages } from "countries-list";
 import ModalWarningUser from "../../utils/modal-warning-user";
-// import countries3to2 from "countries-list/dist/countries3to2.json";
 import capitalize from "lodash/capitalize";
 import some from "lodash/some";
 import "./styles.scss";
@@ -79,7 +77,6 @@ const renderItemValues = (params, mapping, data, profile, countries) => {
                   data[key].map((x) => x.name).join(", ")}
                 {value === key &&
                   type === "country" &&
-                  // countries[countries3to2[data[key]]].name
                   find(countries, (it) => it.isoCode === data[key]).name}
                 {value === "custom" &&
                   type === "object" &&
@@ -121,12 +118,7 @@ const renderItemValues = (params, mapping, data, profile, countries) => {
                   (data[key] === null || data[key][0] === "***") &&
                   data.geoCoverageType === "global" && (
                     <div className="scrollable">
-                      {
-                        // values(countries)
-                        //   .map((c) => c.name)
-                        //   .join(", ")
-                        countries.map((it) => it.name).join(", ")
-                      }
+                      {countries.map((it) => it.name).join(", ")}
                     </div>
                   )}
                 {value === "countries" &&
@@ -137,43 +129,28 @@ const renderItemValues = (params, mapping, data, profile, countries) => {
                   data[key] !== null &&
                   data.geoCoverageType === "global" && (
                     <div className="scrollable">
-                      {
-                        // data[key]
-                        //   .map((x) => countries[countries3to2[x]].name)
-                        //   .join(", ")
-                        data[key]
-                          .map((x) => {
-                            return find(countries, (it) => it.isoCode === x)
-                              .name;
-                          })
-                          .join(", ")
-                      }
+                      {data[key]
+                        .map((x) => {
+                          return find(countries, (it) => it.isoCode === x).name;
+                        })
+                        .join(", ")}
                     </div>
                   )}
                 {value === "countries" &&
                   data[key] !== null &&
                   data.geoCoverageType === "transnational" && (
                     <div className="scrollable">
-                      {
-                        // data[key]
-                        //   .map((x) => countries[countries3to2[x]].name)
-                        //   .join(", ")
-                        data[key]
-                          .map((x) => {
-                            return find(countries, (it) => it.isoCode === x)
-                              .name;
-                          })
-                          .join(", ")
-                      }
+                      {data[key]
+                        .map((x) => {
+                          return find(countries, (it) => it.isoCode === x).name;
+                        })
+                        .join(", ")}
                     </div>
                   )}
                 {value === "countries" &&
                   data[key] !== null &&
                   (data.geoCoverageType === "national" ||
                     data.geoCoverageType === "sub-national") &&
-                  // data[key]
-                  //   .map((x) => countries[countries3to2[x]].name)
-                  //   .join(", ")
                   data[key]
                     .map((x) => {
                       return find(countries, (it) => it.isoCode === x).name;

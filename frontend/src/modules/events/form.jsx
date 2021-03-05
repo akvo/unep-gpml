@@ -5,8 +5,6 @@ import arrayMutators from "final-form-arrays";
 import { createForm } from "final-form";
 import { FieldsFromSchema, validateSchema } from "../../utils/form-utils";
 import { languages } from "countries-list";
-// import { languages, countries } from "countries-list";
-// import countries2to3 from "countries-list/dist/countries2to3.json";
 import specificAreasOptions from "./specific-areas.json";
 import api from "../../utils/api";
 import { cloneDeep } from "lodash";
@@ -56,12 +54,6 @@ const GeoCoverageInput = (props) => {
                 typeInput.value === "national" ||
                 typeInput.value === "transnational"
               ) {
-                // selectProps.options = Object.keys(countries)
-                //   .map((iso2) => ({
-                //     value: countries2to3[iso2],
-                //     label: countries[iso2].name,
-                //   }))
-                //   .sort((a, b) => a.label.localeCompare(b.label));
                 selectProps.options =
                   countries &&
                   countries
@@ -132,12 +124,6 @@ const defaultFormSchema = [
       label: "Country",
       control: "select",
       showSearch: true,
-      // options: Object.keys(countries)
-      //   .map((iso2) => ({
-      //     value: countries2to3[iso2],
-      //     label: countries[iso2].name,
-      //   }))
-      //   .sort((a, b) => a.label.localeCompare(b.label)),
       options: [],
     },
     geoCoverageType: {
