@@ -187,6 +187,9 @@ const SignupForm = ({
   const prevVals = useRef();
   const formRef = useRef();
   const formSchemaRef = useRef(defaultFormSchema(initialValues));
+  const formContainer = !isModal ? "signup-form-grid" : "signup-form";
+  const sectionGrid = !isModal ? "section-grid" : "section";
+  console.log(sectionGrid);
 
   useEffect(() => {
     formSchemaRef.current = formSchema;
@@ -301,13 +304,13 @@ const SignupForm = ({
           if (handleFormRef) handleFormRef(form);
           formRef.current = form;
           return (
-            <div className="signup-form">
+            <div className={formContainer}>
               {initialValues?.reviewStatus && <ReviewText {...initialValues} />}
-              <div className="section">
+              <div className={sectionGrid}>
                 <h2>Personal details</h2>
                 <FieldsFromSchema schema={formSchema[0]} />
               </div>
-              <div className="section">
+              <div className={sectionGrid}>
                 <h2>Organisation details</h2>
                 <Checkbox
                   className="org-check"
@@ -431,7 +434,7 @@ const SignupForm = ({
                   }}
                 />
               </div>
-              <div className="section">
+              <div className={sectionGrid}>
                 <h2>Expertise and activities</h2>
                 <FieldsFromSchema schema={formSchema[2]} />
               </div>

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined, FileOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 
 const getBase64 = (file) => {
@@ -80,29 +80,65 @@ const FileWidget = (props) => {
   const inputFile = useRef(null);
   return (
     <div className="photo-upload">
-      <Button
-        onClick={() => inputFile.current.click()}
-        style={{ marginTop: "5px" }}
-        className="upload-btn"
+      {/* Drag drop container */}
+      <div
+        style={{
+          position: "relative",
+          border: "2px dotted lightgray",
+          padding: "25px",
+          borderRadius: "5px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginBottom: "5px",
+        }}
       >
-        <UploadOutlined /> Choose File
-      </Button>{" "}
-      <span style={{ marginLeft: "20px" }}>{file?.name}</span>
+        <FileOutlined style={{ fontSize: "40px", color: "lightgray" }} />
+        <p>Drag and drop your files here or</p>
+        <Button
+          onClick={() => inputFile.current.click()}
+          style={{
+            marginTop: "5px",
+            appearance: "none",
+            position: "relative",
+            zIndex: 1,
+          }}
+          className="upload-btn"
+        >
+          <UploadOutlined /> Choose File
+        </Button>{" "}
+        <input
+          type="file"
+          onChange={(e) =>
+            handleFileChange(e, props, setFile, setOutput, setError)
+          }
+          ref={inputFile}
+          accept={props?.accept}
+          style={{
+            display: "block",
+            width: "100%",
+            height: "100%",
+            border: "none",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            left: 0,
+            opacity: 0,
+          }}
+        />
+      </div>
+      {/* End Drag drop container */}
+
+      <span style={{ marginLeft: "20px", marginTop: "10px" }}>
+        {file?.name}
+      </span>
       {!output && props?.value && props?.name === "cv" && (
         <ViewWidget url={props.value} download={false} />
       )}
       {props?.name === "cv" && file?.name && (
         <ViewWidget url={output} download={file.name} />
       )}
-      <input
-        type="file"
-        onChange={(e) =>
-          handleFileChange(e, props, setFile, setOutput, setError)
-        }
-        ref={inputFile}
-        accept={props?.accept}
-        style={{ display: "none" }}
-      />
       <br />
       {(output || props?.value) && props?.name !== "cv" && (
         <img src={props?.value || output} alt="upload" />
