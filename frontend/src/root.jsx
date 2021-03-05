@@ -74,9 +74,12 @@ const Root = () => {
       if (isAuthenticated) {
         const resp = await api.get("/profile");
         if (Object.keys(resp.data).length === 0) {
-          setSignupModalVisible(Object.keys(resp.data).length === 0);
+          setProfile({ email: response.email });
+          setTimeout(() => {
+            setSignupModalVisible(Object.keys(resp.data).length === 0);
+          }, 100);
         } else {
-          setProfile(resp.data);
+          setProfile({ ...resp.data, email: response.email });
           if (
             storage.getCookie("profile") === "SUBMITTED" &&
             resp.data.reviewStatus === "APPROVED"
@@ -284,7 +287,7 @@ const Root = () => {
       <SignupModal
         visible={signupModalVisible}
         onCancel={() => setSignupModalVisible(false)}
-        {...{ tags, setProfile, countries }}
+        {...{ tags, setProfile, countries, profile }}
       />
       <ModalWarningUser
         visible={eventWarningVisible}

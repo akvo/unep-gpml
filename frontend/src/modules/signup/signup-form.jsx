@@ -36,6 +36,8 @@ const sectorOptions = [
 ];
 
 const defaultFormSchema = (initValues) => {
+  const publicEmailText =
+    initValues && initValues.publicEmail ? "Don't show" : "Show";
   return [
     {
       title: {
@@ -59,7 +61,7 @@ const defaultFormSchema = (initValues) => {
         control: "switch",
         size: "small",
         defaultChecked: initValues && initValues.publicEmail,
-        text: "Show/don't show my email address on public listing",
+        text: `${publicEmailText} my email address on public listing`,
       },
       linkedIn: { label: "LinkedIn", prefix: <LinkedinOutlined /> },
       twitter: { label: "Twitter", prefix: <TwitterOutlined /> },
@@ -226,10 +228,6 @@ const SignupForm = ({
           ...newSchema[0].geoCoverageValue,
           countries: countries,
         };
-      }
-      if (isModal) {
-        delete newSchema[0].email;
-        delete newSchema[0].publicEmail;
       }
       setFormSchema(newSchema);
     });

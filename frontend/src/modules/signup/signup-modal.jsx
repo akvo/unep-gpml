@@ -22,10 +22,10 @@ const SignupModal = ({
   const [consent, setConsent] = useState(false);
   const onSubmit = (vals) => {
     setSending(true);
+    if (!vals?.publicEmail) vals = { ...vals, publicEmail: false };
     if (vals.geoCoverageType === "national") {
       vals.geoCoverageValue = [vals.geoCoverageValue];
     }
-    if (!vals?.publicEmail) vals = { ...vals, publicEmail: false };
     api
       .post("/profile", vals)
       .then((d) => {
