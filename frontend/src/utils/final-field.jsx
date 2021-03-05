@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, InputNumber, Select, DatePicker, Form } from "antd";
+import { Input, InputNumber, Select, DatePicker, Form, Switch } from "antd";
 import { Field } from "react-final-form";
 // import moment from 'moment'
 import FileWidget from "./forms/form-file";
@@ -32,6 +32,7 @@ const validateNumber = (string) => {
     .map((char) => regex.test(char))
     .reduce((val, acc) => val && acc);
 };
+
 const CONTROLS = {
   input: ({ input, meta, control, ...props }) => {
     return <Input {...{ ...input, ...props }} />;
@@ -80,6 +81,14 @@ const CONTROLS = {
   "date-range": ({ input, ...props }) => {
     return (
       <DatePicker.RangePicker {...{ ...input, ...props }} format="DD/MM/YYYY" />
+    );
+  },
+  switch: ({ input, ...props }) => {
+    return (
+      <>
+        <Switch key={props.text} {...{ ...input, ...props }} />
+        &nbsp;&nbsp;&nbsp;{props.text}{" "}
+      </>
     );
   },
   // datepicker: ({ input, disabled, dispatch, ...props }) => {

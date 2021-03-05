@@ -37,108 +37,122 @@ const sectorOptions = [
   "Other",
 ];
 
-const defaultFormSchema = [
-  {
-    title: {
-      label: "Title",
-      required: true,
-      control: "select",
-      options: ["Mr", "Mrs", "Ms", "Dr", "Prof"].map((it) => ({
-        value: it,
-        label: it,
-      })),
+const defaultFormSchema = (initValues) => {
+  return [
+    {
+      title: {
+        label: "Title",
+        required: true,
+        control: "select",
+        options: ["Mr", "Mrs", "Ms", "Dr", "Prof"].map((it) => ({
+          value: it,
+          label: it,
+        })),
+      },
+      firstName: { label: "First name", required: true },
+      lastName: { label: "Last name", required: true },
+      email: {
+        label: "Email",
+        disabled: true,
+        required: true,
+      },
+      publicEmail: {
+        label: "Set email public",
+        control: "switch",
+        size: "small",
+        defaultChecked: initValues && initValues.publicEmail,
+        text: "Show/don't show my email address on public listing",
+      },
+      linkedIn: { label: "LinkedIn", prefix: <LinkedinOutlined /> },
+      twitter: { label: "Twitter", prefix: <TwitterOutlined /> },
+      photo: {
+        label: "Photo",
+        control: "file",
+        maxFileSize: 1,
+        accept: "image/*",
+      },
+      representation: {
+        label: "Representative sector",
+        required: true,
+        control: "select",
+        options: sectorOptions.map((it) => ({ value: it, label: it })),
+      },
+      country: {
+        label: "Country",
+        order: 3,
+        control: "select",
+        showSearch: true,
+        // options: Object.keys(countries).map((iso2) => ({
+        //   value: countries2to3[iso2],
+        //   label: countries[iso2].name,
+        // })),
+        options: [],
+        autoComplete: "on",
+      },
+      geoCoverageType: {
+        label: "Geo coverage type",
+        control: "select",
+        options: geoCoverageTypeOptions.map((it) => ({
+          value: it.toLowerCase(),
+          label: it,
+        })),
+      },
+      geoCoverageValue: { label: "Geo coverage", render: GeoCoverageInput },
+      // geoCoverageValue: { label: "Geo coverage" },
     },
-    firstName: { label: "First name", required: true },
-    lastName: { label: "Last name", required: true },
-    linkedIn: { label: "LinkedIn", prefix: <LinkedinOutlined /> },
-    twitter: { label: "Twitter", prefix: <TwitterOutlined /> },
-    photo: {
-      label: "Photo",
-      control: "file",
-      maxFileSize: 1,
-      accept: "image/*",
+    {
+      "org.id": {
+        label: "Organisation",
+        control: "select",
+        showSearch: true,
+        options: [],
+        placeholder: "Start typing...",
+        order: 0,
+        required: true,
+      },
+      organisationRole: {
+        label: "Your role in the organisation",
+        order: 2,
+        required: true,
+      },
     },
-    representation: {
-      label: "Representative sector",
-      required: true,
-      control: "select",
-      options: sectorOptions.map((it) => ({ value: it, label: it })),
+    {
+      seeking: {
+        label: "Seeking",
+        control: "select",
+        mode: "multiple",
+        showSearch: true,
+        options: [],
+      },
+      offering: {
+        label: "Offering",
+        control: "select",
+        mode: "multiple",
+        showSearch: true,
+        options: [],
+      },
+      about: {
+        label: "About yourself",
+        control: "textarea",
+        placeholder: "Max 150 words",
+      },
+      tags: {
+        label: "Tags",
+        control: "select",
+        options: [],
+        mode: "multiple",
+        showSearch: true,
+      },
+      cv: {
+        label: "CV / Portfolio",
+        control: "file",
+        maxFileSize: 5,
+        accept:
+          ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain",
+      },
     },
-    country: {
-      label: "Country",
-      order: 3,
-      control: "select",
-      showSearch: true,
-      // options: Object.keys(countries).map((iso2) => ({
-      //   value: countries2to3[iso2],
-      //   label: countries[iso2].name,
-      // })),
-      options: [],
-      autoComplete: "on",
-    },
-    geoCoverageType: {
-      label: "Geo coverage type",
-      control: "select",
-      options: geoCoverageTypeOptions.map((it) => ({
-        value: it.toLowerCase(),
-        label: it,
-      })),
-    },
-    geoCoverageValue: { label: "Geo coverage", render: GeoCoverageInput },
-    // geoCoverageValue: { label: "Geo coverage" },
-  },
-  {
-    "org.id": {
-      label: "Organisation",
-      control: "select",
-      showSearch: true,
-      options: [],
-      placeholder: "Start typing...",
-      order: 0,
-      required: true,
-    },
-    organisationRole: {
-      label: "Your role in the organisation",
-      order: 2,
-      required: true,
-    },
-  },
-  {
-    seeking: {
-      label: "Seeking",
-      control: "select",
-      mode: "multiple",
-      showSearch: true,
-      options: [],
-    },
-    offering: {
-      label: "Offering",
-      control: "select",
-      mode: "multiple",
-      showSearch: true,
-      options: [],
-    },
-    about: {
-      label: "About yourself",
-      control: "textarea",
-      placeholder: "Max 150 words",
-    },
-    tags: {
-      label: "Tags",
-      control: "select",
-      options: [],
-      mode: "multiple",
-      showSearch: true,
-    },
-    cv: {
-      label: "CV / Portfolio",
-      control: "file",
-      maxFileSize: 5,
-      accept:
-        ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain",
-    },
-  },
-];
+  ];
+};
 
 const ReviewText = ({ reviewStatus }) => {
   if (reviewStatus === "SUBMITTED")
@@ -169,12 +183,15 @@ const SignupForm = ({
   handleSubmitRef,
   tags,
   countries,
+  isModal,
 }) => {
-  const [formSchema, setFormSchema] = useState(defaultFormSchema);
+  const [formSchema, setFormSchema] = useState(
+    defaultFormSchema(initialValues)
+  );
   const [noOrg, setNoOrg] = useState(false);
   const prevVals = useRef();
   const formRef = useRef();
-  const formSchemaRef = useRef(defaultFormSchema);
+  const formSchemaRef = useRef(defaultFormSchema(initialValues));
 
   useEffect(() => {
     formSchemaRef.current = formSchema;
@@ -216,6 +233,13 @@ const SignupForm = ({
           ...newSchema[0].geoCoverageValue,
           countries: countries,
         };
+      }
+      // if (!isModal) {
+      //   newSchema[0].publicEmail = {...newSchema[0].publicEmail, defaultChecked: initialValues.publicEmail}
+      // }
+      if (isModal) {
+        delete newSchema[0].email;
+        delete newSchema[0].publicEmail;
       }
       setFormSchema(newSchema);
     });

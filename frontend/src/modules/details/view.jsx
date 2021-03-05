@@ -35,13 +35,6 @@ import uniqBy from "lodash/uniqBy";
 import find from "lodash/find";
 
 const renderItemValues = (params, mapping, data, profile, countries) => {
-  // filter the mapping data for user or admin role
-  if (params.type === "stakeholder" && profile.role.toLowerCase() === "user") {
-    mapping = mapping.filter(
-      (x) => x.role.toLowerCase() === profile.role.toLowerCase()
-    );
-  }
-
   return (
     mapping &&
     mapping.map((item, index) => {
@@ -55,18 +48,6 @@ const renderItemValues = (params, mapping, data, profile, countries) => {
             <div key={name + index} className="column">
               <div className="title">{name}</div>
               <div className="value">
-                {/* Same function */}
-                {/*
-              { (value === key) && (type === 'string') && data[value] }
-              { (value === key) && (type === 'number') && data[value] }
-              { (value === key) && (type === 'object') && data[value].name }
-              { params.type === 'project' && (value === key) && (type === 'name') && data[value].name }
-              { params.type !== 'project' && (value === key) && (type === 'name') && data[value] }
-              { (value === key) && (type === 'link') && <a rel="noreferrer" target="_blank" href={data['value']}>{data[value]}</a> }
-              { (value === key) && (type === 'link') &&  <a target="_blank" rel="noreferrer" href={data[value]} style={{ wordBreak: 'break-word' }}>{data[value]}</a>}s
-              */}
-                {/* EOF Same function */}
-
                 {key === null && type === "static" && value}
                 {value === key &&
                   (type === "name" ||
@@ -75,6 +56,10 @@ const renderItemValues = (params, mapping, data, profile, countries) => {
                     type === "object") &&
                   (data[value].name || data[value])}
                 {value === key && type === "text" && capitalize(data[value])}
+                {value === key &&
+                  type === "email" &&
+                  data?.publicEmail &&
+                  data[key]}
                 {value === key && type === "currency" && "USD " + data[value]}
                 {value === key && type === "link" && (
                   <a

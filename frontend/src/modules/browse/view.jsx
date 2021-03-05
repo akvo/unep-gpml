@@ -389,6 +389,12 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
             <i>{moment(result.endDate).format("DD MMM YYYY")}</i>
           </li>,
         ]}
+        {result.type === "stakeholder" && result.publicEmail && (
+          <li>
+            <span>Email:</span>
+            {result.email}
+          </li>
+        )}
       </ul>
       {result.type !== "project" && description && (
         <ShowMoreText lines={5}>{description}</ShowMoreText>

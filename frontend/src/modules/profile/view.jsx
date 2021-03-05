@@ -77,6 +77,7 @@ const ProfileView = ({
   }, [profile]); // eslint-disable-next-line
 
   const onSubmit = (vals) => {
+    if (!vals?.publicEmail) vals = { ...vals, publicEmail: false };
     setSaving(true);
     if (
       vals.geoCoverageType === "national" &&
@@ -169,6 +170,7 @@ const ProfileView = ({
                     }}
                     initialValues={profile}
                     countries={countries}
+                    isModal={false}
                   />
                   <Button
                     loading={saving}

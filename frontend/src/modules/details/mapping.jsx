@@ -412,32 +412,34 @@ const detailProject = [
 
 const detailStakeholder = [
   {
+    key: "email",
+    name: "Email",
+    value: "email",
+    type: "email",
+  },
+  {
     key: "country",
     name: "Country",
     value: "country",
     type: "country",
-    role: "user",
   },
   {
     key: "geoCoverageType",
     name: "Geo-Coverage",
     value: "geoCoverageType",
     type: "text",
-    role: "user",
   },
   {
     key: "geoCoverageValues",
     name: "Geo-Coverage Country",
     value: "countries",
     type: "array",
-    role: "user",
   },
   {
     key: "representation",
     name: "Representation",
     value: "representation",
     type: "name",
-    role: "user",
   },
   {
     key: "affiliation",
@@ -445,7 +447,6 @@ const detailStakeholder = [
     value: "custom",
     customValue: "name",
     type: "object",
-    role: "user",
   },
   {
     key: "affiliation",
@@ -453,7 +454,6 @@ const detailStakeholder = [
     value: "custom",
     customValue: "type",
     type: "object",
-    role: "user",
   },
   {
     key: "affiliation",
@@ -461,28 +461,24 @@ const detailStakeholder = [
     value: "custom",
     customValue: "url",
     type: "object",
-    role: "user",
   },
   {
     key: "linkedIn",
     name: "Linked In",
     value: "linkedIn",
     type: "name",
-    role: "user",
   },
   {
     key: "twitter",
     name: "Twitter",
     value: "twitter",
     type: "name",
-    role: "user",
   },
   {
     key: "tags",
     name: "Tags",
     value: "join",
     type: "array",
-    role: "user",
   },
 ];
 

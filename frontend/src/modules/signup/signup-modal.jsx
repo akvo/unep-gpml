@@ -25,6 +25,7 @@ const SignupModal = ({
     if (vals.geoCoverageType === "national") {
       vals.geoCoverageValue = [vals.geoCoverageValue];
     }
+    if (!vals?.publicEmail) vals = { ...vals, publicEmail: false };
     api
       .post("/profile", vals)
       .then((d) => {
@@ -65,6 +66,7 @@ const SignupModal = ({
             initialValues={profile}
             tags={tags}
             countries={countries}
+            isModal={true}
           />
           <Checkbox
             className="consent-check"
