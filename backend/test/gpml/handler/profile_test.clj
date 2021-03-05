@@ -104,7 +104,8 @@
               :organisation_role "manager"
               :reviewed_at nil
               :reviewed_by nil
-              :review_status "SUBMITTED"}
+              :review_status "SUBMITTED"
+              :public_email false}
              (:body resp)))
       (is (= "/image/profile/1" (-> resp :body :photo))))))
 
@@ -151,7 +152,8 @@
               :organisation_role "manager"
               :reviewed_at nil
               :reviewed_by nil
-              :review_status "SUBMITTED"}
+              :review_status "SUBMITTED"
+              :public_email false}
              (:body resp)))
       (is (= "/image/profile/1" (-> resp :body :photo))))))
 
@@ -194,7 +196,8 @@
               :organisation_role nil
               :reviewed_at nil
               :reviewed_by nil
-              :review_status "SUBMITTED"}
+              :review_status "SUBMITTED"
+              :public_email false}
              (:body resp)))
       (is (= "/image/profile/1" (-> resp :body :photo))))))
 
@@ -234,7 +237,8 @@
               :organisation_role "manager"
               :reviewed_at nil
               :reviewed_by nil
-              :review_status "SUBMITTED"}
+              :review_status "SUBMITTED"
+              :public_email false}
              (:body resp))))))
 
 (deftest handler-put-test
@@ -263,7 +267,8 @@
                                              :organisation_role "content creator"
                                              :photo picture
                                              :cv picture
-                                             :picture nil))))
+                                             :picture nil
+                                             :public_email true))))
           profile (db.stakeholder/stakeholder-by-id db {:id 1})
           old-images (db.stakeholder/stakeholder-picture-by-id db {:id 1})
           old-cv (db.stakeholder/stakeholder-cv-by-id db {:id 1})]
@@ -290,7 +295,8 @@
               :affiliation 1
               :reviewed_at nil
               :reviewed_by nil
-              :review_status "SUBMITTED"}
+              :review_status "SUBMITTED"
+              :public_email true}
              profile))))
 
 (deftest handler-put-test-but-the-pic-is-from-outside
@@ -339,7 +345,8 @@
               :reviewed_at nil
               :reviewed_by nil
               :cv nil
-              :review_status "SUBMITTED"}
+              :review_status "SUBMITTED"
+              :public_email false}
              profile))))
 
 (deftest handler-get-test-has-profile

@@ -83,7 +83,7 @@
            twitter representation
            country geo_coverage_type
            reviewed_at reviewed_by review_status
-           organisation_role]}
+           organisation_role public_email]}
    tags
    geo
    org]
@@ -108,7 +108,8 @@
    :organisation_role organisation_role
    :reviewed_at reviewed_at
    :reviewed_by reviewed_by
-   :review_status review_status})
+   :review_status review_status
+   :public_email public_email})
 
 (defmethod ig/init-key :gpml.handler.profile/get [_ {:keys [db]}]
   (fn [{:keys [jwt-claims]}]
@@ -232,6 +233,7 @@
    [:cv {:optional true} string?]
    [:representation string?]
    [:country {:optional true} string?]
+   [:public_email {:optional true} boolean?]
    [:about {:optional true} string?]
    [:organisation_role {:optional true} string?]
    [:geo_coverage_type {:optional true}

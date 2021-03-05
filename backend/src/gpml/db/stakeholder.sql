@@ -10,6 +10,7 @@ select
     s.first_name,
     s.last_name,
     s.email,
+    s.public_email,
     s.picture as photo,
     s.linked_in,
     s.twitter,
@@ -35,6 +36,7 @@ select
     s.first_name,
     s.last_name,
     s.email,
+    s.public_email,
     s.picture as photo,
     s.linked_in,
     s.twitter,
@@ -131,6 +133,7 @@ insert into stakeholder(
 --~ (when (contains? params :cv) ",cv")
 --~ (when (contains? params :about) ",about")
 --~ (when (contains? params :organisation_role) ",organisation_role")
+--~ (when (contains? params :public_email) ",public_email")
 ) values(
     :picture,
     :title,
@@ -146,6 +149,7 @@ insert into stakeholder(
 --~ (when (contains? params :cv) ",:cv")
 --~ (when (contains? params :about) ",:about")
 --~ (when (contains? params :organisation_role) ",:organisation_role")
+--~ (when (contains? params :public_email) ",:public_email")
 ) RETURNING id;
 
 -- :name update-stakeholder-role :! :n
@@ -174,6 +178,7 @@ update stakeholder set
 --~ (when (contains? params :organisation_role) ",organisation_role= :organisation_role")
 --~ (when (contains? params :geo_coverage_type) ",geo_coverage_type= :v:geo_coverage_type::geo_coverage_type")
 --~ (when (contains? params :about) ",about= :about")
+--~ (when (contains? params :about) ",public_email= :public_email::boolean")
     , modified = now()
 where id = :id;
 

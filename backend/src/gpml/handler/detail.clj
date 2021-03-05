@@ -260,9 +260,9 @@
   (cache-hierarchies! (:spec db))
   (fn [{:keys [path-params]}]
     (if-let [data (db.detail/get-detail (:spec db) (update path-params :topic-id #(Long/parseLong %)))] ;; TODO: investigate why id value is not coerced
-      (resp/response (merge
-                       (:json data)
-                       (extra-details (:topic-type path-params) (:spec db) (:json data))))
+        (resp/response (merge
+                         (:json data)
+                         (extra-details (:topic-type path-params) (:spec db) (:json data))))
       (resp/not-found {:message "Not Found"}))))
 
 #_:clj-kondo/ignore

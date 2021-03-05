@@ -26,7 +26,8 @@
    :representation "test"
    :about "Lorem Ipsum"
    :geo_coverage_type nil
-   :role "USER"})
+   :role "USER"
+   :public_email true})
 
 (defn add-stakeholder-data [conn]
   (let [country "Indonesia"
@@ -40,10 +41,11 @@
           system (ig/init fixtures/*system* [db-key])
           conn (-> system db-key :spec)
           _ (add-stakeholder-data conn)
-          stakeholder (db.stakeholder/all-stakeholder conn)]
-      (is (= (:review_status (first stakeholder)) "SUBMITTED"))
-      (is (= (:first_name (first stakeholder)) "John"))
-      (is (= (:picture (first stakeholder)) nil))
-      (is (= (:organisation_role (first stakeholder)) "Account Manager"))
-      (is (= (:country (first stakeholder)) (get-country conn "Indonesia")))
-      (is (= (:last_name (first stakeholder)) "Doe")))))
+          stakeholder (first (db.stakeholder/all-stakeholder conn))]
+      (is (= (:review_status stakeholder) "SUBMITTED"))
+      (is (= (:first_name stakeholder) "John"))
+      (is (= (:picture stakeholder) nil))
+      (is (= (:organisation_role stakeholder) "Account Manager"))
+      (is (true? (:public_email stakeholder)))
+      (is (= (:country stakeholder) (get-country conn "Indonesia")))
+      (is (= (:last_name stakeholder) "Doe")))))
