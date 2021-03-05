@@ -541,8 +541,8 @@ const DetailsView = ({ match: { params }, ...props }) => {
 
           {/* Right */}
           <div key="right" className="content-column">
-            {renderDetails(params, data, profile, countries)}
-            {renderInfo(params, data, profile, countries)}
+            {countries && renderDetails(params, data, profile, countries)}
+            {countries && renderInfo(params, data, profile, countries)}
           </div>
         </div>
       </div>
