@@ -189,7 +189,6 @@ const SignupForm = ({
   const formSchemaRef = useRef(defaultFormSchema(initialValues));
   const formContainer = !isModal ? "signup-form-grid" : "signup-form";
   const sectionGrid = !isModal ? "section-grid" : "section";
-  console.log(sectionGrid);
 
   useEffect(() => {
     formSchemaRef.current = formSchema;

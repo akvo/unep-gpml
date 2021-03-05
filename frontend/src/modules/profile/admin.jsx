@@ -129,7 +129,7 @@ const AdminSection = ({ countries, pendingItems, setPendingItems }) => {
               header={
                 <div className="row">
                   <div className="col">{capitalize(item.type)}</div>
-                  <div className="col">{item.title}</div>
+                  <div className="col">{`${item.title} ${item.firstName} ${item.lastName}`}</div>
                   <div
                     className="col"
                     onClick={(e) => {
