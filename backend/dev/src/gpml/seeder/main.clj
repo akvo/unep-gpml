@@ -371,53 +371,45 @@
         (.printStackTrace e)
         (throw e)))))
 
-
-(defn reseed-country [db]
+(defn resync-country [db]
   (db.util/drop-constraint-country db)
-  (jdbc/execute! db ["TRUNCATE table country"])
   (println "Re-seeding country...")
   (seed-countries db)
   (db.util/revert-constraint db))
 
-(defn reseed-country-group [db]
+(defn resync-country-group [db]
   (db.util/drop-constraint-country-group db)
-  (jdbc/execute! db ["TRUNCATE table country_group"])
   (println "Re-seeding country-group...")
   (seed-country-groups db)
   (db.util/revert-constraint db)
   (seed-country-group-country db))
 
-(defn reseed-organisation [db]
+(defn resync-organisation [db]
   (db.util/drop-constraint-organisation db)
-  (jdbc/execute! db ["TRUNCATE table organisation"])
   (println "Re-seeding organisation...")
   (seed-organisations db)
   (db.util/revert-constraint db))
 
-(defn reseed-policy [db]
+(defn resync-policy [db]
   (db.util/drop-constraint-policy db)
-  (jdbc/execute! db ["TRUNCATE table policy"])
   (println "Re-seeding policy...")
   (seed-policies db)
   (db.util/revert-constraint db))
 
-(defn reseed-resource [db]
+(defn resync-resource [db]
   (db.util/drop-constraint-resource db)
-  (jdbc/execute! db ["TRUNCATE table resource"])
   (println "Re-seeding resource...")
   (seed-resources db)
   (db.util/revert-constraint db))
 
-(defn reseed-technology [db]
+(defn resync-technology [db]
   (db.util/drop-constraint-technology db)
-  (jdbc/execute! db ["TRUNCATE table technology"])
   (println "Re-seeding technology...")
   (seed-technologies db)
   (db.util/revert-constraint db))
 
-(defn reseed-project [db]
+(defn resync-project [db]
   (db.util/drop-constraint-project db)
-  (jdbc/execute! db ["TRUNCATE table project"])
   (println "Re-seeding project...")
   (seed-projects db)
   (db.util/revert-constraint db))
@@ -503,14 +495,14 @@
                :duct.database.sql/hikaricp
                :spec))
 
-  ;; example reseeding
-  (reseed-country db)
-  (reseed-country-group db)
-  (reseed-policy db)
-  (reseed-resource db)
-  (reseed-organisation db)
-  (reseed-technology db)
-  (reseed-project db)
+  ;; example resyncing
+  (resync-country db)
+  (resync-country-group db)
+  (resync-policy db)
+  (resync-resource db)
+  (resync-organisation db)
+  (resync-technology db)
+  (resync-project db)
 
   ;; get view table of topic
   (defn view-table-of [association]

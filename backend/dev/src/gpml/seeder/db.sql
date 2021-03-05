@@ -30,8 +30,9 @@ ADD CONSTRAINT :i:cons
 FOREIGN KEY (:i:col)
 REFERENCES :i:tbl_ref
 
--- :name truncate :! :1
-TRUNCATE TABLE :i:tbl RESTART IDENTITY
+-- :name delete-rows :! :n
+DELETE FROM :i:tbl
+WHERE :i:col in (:v*:ids)
 
 -- :name set-sequence :!
 SELECT setval(:tbl_seq, (SELECT max(id) + 1 FROM :i:tbl));
