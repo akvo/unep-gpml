@@ -40,8 +40,8 @@
 
 (defn- mock-post []
   (-> (mock/request :post "/")
-      (assoc :admin {:id 1}) ;; authz middleware
-      (assoc :body-params {:id 1 :review_status "APPROVED"})))
+      (assoc :admin {:id 10001}) ;; authz middleware
+      (assoc :body-params {:id 10001 :review_status "APPROVED"})))
 
 (deftest approve-event
   (testing "Approving an event by an admin"

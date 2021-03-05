@@ -25,9 +25,10 @@
                  (auth/validate-opts {:issuer "https://tenant.auth0.com/"
                                       :audience ""})))))
 
-(defn- new-stakeholder [db email role]
+(defn- new-stakeholder [db id email role]
   (let [sth (db.stakeholder/new-stakeholder db
-                                            {:picture "https://picsum.photos/200"
+                                            {:id id
+                                             :picture "https://picsum.photos/200"
                                              :cv nil
                                              :title "Mr."
                                              :first_name "First name"
@@ -56,8 +57,9 @@
                    (ig/init [::auth/admin-required-middleware]))
         db (-> system :duct.database.sql/hikaricp :spec)
         middleware (::auth/admin-required-middleware system)
-        admin (new-stakeholder db "admin@un.org" "ADMIN")]
-    (new-stakeholder db "user@un.org" "USER")
+        admin (new-stakeholder db 1 "admin@un.org" "ADMIN")]
+    (new-stakeholder db 2 "user@un.org" "USER")
+    (prn admin)
     (let [handler (middleware (fn [{{admin-id :id} :admin}]
                                 (testing "> admin id added correctly to request"
                                   (is (= admin admin-id)))

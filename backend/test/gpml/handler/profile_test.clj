@@ -53,7 +53,8 @@
     (db.country-group/new-country-group db {:name "Africa" :type "region"})
     (db.country-group/new-country-group db {:name "Europe" :type "region"})
     ;; create new organisation
-    (db.organisation/new-organisation db {:name "Akvo"
+    (db.organisation/new-organisation db {:id 1
+                                          :name "Akvo"
                                           :url "https://akvo.org"
                                           :geo_coverage_type "regional"
                                           :type "Academia and Research"
@@ -84,7 +85,7 @@
       (is (= "John" (->(:body resp) :first_name)))
       (is (= "Doe" (->(:body resp) :last_name)))
       (is (= "SUBMITTED" (->(:body resp) :review_status)))
-      (is (= {:id 1
+      (is (= {:id 10001
               :email "john@org"
               :about "Lorem Ipsum"
               :country "IND"
@@ -132,7 +133,7 @@
       (is (= "John" (->(:body resp) :first_name)))
       (is (= "Doe" (->(:body resp) :last_name)))
       (is (= "SUBMITTED" (->(:body resp) :review_status)))
-      (is (= {:id 1
+      (is (= {:id 10001
               :email "john@org"
               :about "Lorem Ipsum"
               :country "IND"
@@ -144,7 +145,7 @@
               :representation "test"
               :title "Mr."
               :role "USER"
-              :org (db.organisation/organisation-by-id db {:id 2})
+              :org (db.organisation/organisation-by-id db {:id 10001})
               :geo_coverage_type "regional"
               :geo_coverage_value ["Africa" "Europe"]
               :tags [1 2]
@@ -176,7 +177,7 @@
       (is (= "Doe" (->(:body resp) :last_name)))
       (is (= "SUBMITTED" (->(:body resp) :review_status)))
       (is (= nil (->(:body resp) :org)))
-      (is (= {:id 1
+      (is (= {:id 10001
               :email "john@org"
               :about "Lorem Ipsum"
               :country "IND"
@@ -217,7 +218,7 @@
       (is (= 201 (:status resp)))
       (is (= "John" (->(:body resp) :first_name)))
       (is (= "Doe" (->(:body resp) :last_name)))
-      (is (= {:id 1
+      (is (= {:id 10001
               :email "john@org"
               :about "Lorem Ipsum"
               :country "IND"
@@ -259,7 +260,7 @@
                             (assoc :jwt-claims {:email "john@org"})
                             (assoc :body-params
                                      (assoc (new-profile "IND" nil)
-                                             :id 1
+                                             :id 10001
                                              :about "Dolor sit Amet"
                                              :country "SPA"
                                              :first_name "Mark"
@@ -269,15 +270,15 @@
                                              :cv picture
                                              :picture nil
                                              :public_email true))))
-          profile (db.stakeholder/stakeholder-by-id db {:id 1})
-          old-images (db.stakeholder/stakeholder-picture-by-id db {:id 1})
-          old-cv (db.stakeholder/stakeholder-cv-by-id db {:id 1})]
+          profile (db.stakeholder/stakeholder-by-id db {:id 10001})
+          old-images (db.stakeholder/stakeholder-picture-by-id db {:id 10001})
+          old-cv (db.stakeholder/stakeholder-cv-by-id db {:id 10001})]
       ;; Old images should be deleted
       (is (= nil old-images))
       ;; Old cv sould be deleted
       (is (= nil old-cv))
       (is (= 204 (:status resp)))
-      (is (= {:id 1,
+      (is (= {:id 10001,
               :email "john@org"
               :title "Mr."
               :first_name "Mark"
@@ -314,7 +315,7 @@
                             (assoc :jwt-claims {:email "john@org"})
                             (assoc :body-params
                                      (assoc (new-profile "IND" nil)
-                                             :id 1
+                                             :id 10001
                                              :about "Dolor sit Amet"
                                              :country "SPA"
                                              :first_name "Mark"
@@ -323,11 +324,11 @@
                                              :organisation_role "content creator"
                                              :cv nil
                                              :picture nil))))
-          profile (db.stakeholder/stakeholder-by-id db {:id 1})
+          profile (db.stakeholder/stakeholder-by-id db {:id 10001})
           old-images (db.stakeholder/stakeholder-picture-by-id db {:id 1})]
       (is (= nil old-images))
       (is (= 204 (:status resp)))
-      (is (= {:id 1,
+      (is (= {:id 10001,
               :email "john@org"
               :title "Mr."
               :first_name "Mark"
@@ -414,13 +415,13 @@
           _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
           ;; Jane trying to approve this guy John
           resp (handler (-> (mock/request :put "/")
-                            (assoc :admin {:id 1}
+                            (assoc :admin {:id 10001}
                                    :body-params {:id (get-user db "john@org")
                                                  :review_status "APPROVED"})))]
       (is (= 204 (:status resp)))
       (is (= "John" (-> resp :body :data :first_name)))
       (is (= "APPROVED" (-> resp :body :data :review_status)))
-      (is (= 1 (-> resp :body :data :reviewed_by)))
+      (is (= 10001 (-> resp :body :data :reviewed_by)))
       (is (inst? (-> resp :body :data :reviewed_at))))))
 
 

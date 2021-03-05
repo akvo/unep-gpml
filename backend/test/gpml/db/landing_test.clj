@@ -51,15 +51,15 @@
   (db.resource/new-resource conn (make-resource "Resource 5" "national"))
   (jdbc/insert-multi! conn :resource_geo_coverage
                       [ ;; Resource 1
-                       {:resource 1 :country 1}
-                       {:resource 1 :country 2}
-                       {:resource 1 :country 3}
+                       {:resource 10001 :country 1}
+                       {:resource 10001 :country 2}
+                       {:resource 10001 :country 3}
                        ;; Resource 2
-                       {:resource 2 :country 4}
+                       {:resource 10002 :country 4}
                        ;; Resource 3
-                       {:resource 3 :country_group 1}
-                       {:resource 3 :country_group 2}
-                       {:resource 5 :country 3}]))
+                       {:resource 10003 :country_group 1}
+                       {:resource 10003 :country_group 2}
+                       {:resource 10005 :country 3}]))
 
 (deftest test-map-specific-counts
   (testing "Test map counts for landing page"

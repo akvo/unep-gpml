@@ -134,6 +134,7 @@ insert into stakeholder(
 --~ (when (contains? params :about) ",about")
 --~ (when (contains? params :organisation_role) ",organisation_role")
 --~ (when (contains? params :public_email) ",public_email")
+--~ (when (contains? params :id) ",id")
 ) values(
     :picture,
     :title,
@@ -150,6 +151,7 @@ insert into stakeholder(
 --~ (when (contains? params :about) ",:about")
 --~ (when (contains? params :organisation_role) ",:organisation_role")
 --~ (when (contains? params :public_email) ",:public_email")
+--~ (when (contains? params :id) ",:id")
 ) RETURNING id;
 
 -- :name update-stakeholder-role :! :n
