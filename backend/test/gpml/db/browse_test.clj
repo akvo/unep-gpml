@@ -18,7 +18,7 @@
                    :geo_coverage_type nil
                    :end_date "2021-01-01T12:00:00Z"
                    :reviewed_at "2021-01-01T12:00:00Z"
-                   :review_status "APPROVED"
+                   :review_status "SUBMITTED"
                    :start_date "2021-01-01T10:00:00Z"})
 
 (defn make-profile [first-name last-name email]
