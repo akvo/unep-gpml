@@ -57,6 +57,7 @@ const Root = () => {
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [eventWarningVisible, setEventWarningVisible] = useState(false);
   const [countries, setCountries] = useState(null);
+  const [teritories, setTeritories] = useState(null);
   const [data, setData] = useState(null);
   const [tags, setTags] = useState([]);
   const [initLandingCount, setInitLandingCount] = useState("");
@@ -103,7 +104,8 @@ const Root = () => {
       setData(resp.data);
     });
     api.get("/country").then((resp) => {
-      setCountries(resp.data);
+      setCountries(resp.data.filter(x => x.description === "Member State"));
+      setTeritories(resp.data.filter(x => x.description !== "Member State"));
       setInitLandingCount("project");
     });
     api.get("/tag").then((resp) => {
@@ -215,6 +217,7 @@ const Root = () => {
               {...{
                 profile,
                 countries,
+                teritories,
                 data,
                 initLandingCount,
                 setCountries,

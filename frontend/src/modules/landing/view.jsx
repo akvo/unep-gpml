@@ -11,6 +11,7 @@ const Landing = ({
   history,
   data,
   countries,
+  teritories,
   initLandingCount,
   setCountries,
   setInitLandingCount,
@@ -53,7 +54,26 @@ const Landing = ({
       const countryInfo = countries?.find(
         (it) => it.isoCode === summary.isoCode
       );
-      const countryName = countryInfo?.name || summary.isoCode;
+      const countryName = countryInfo?.name || summary.isoCode
+      const teritory = teritories?.find(it => it.isoCode === countryName);
+      if (teritory) {
+          return `
+            <div class="map-tooltip">
+              <h3>${teritory.name}</h3>
+              <h4>${teritory.description}</h4>
+              <ul>
+              ${tTypes
+                .map(
+                  (topic) =>
+                    `<li><span>${topicNames(topic)}</span><b>${
+                      summary[topic]
+                    }</b></li>`
+                )
+                .join("")}
+              </ul>
+            </div>
+          `
+      }
       return `
             <div class="map-tooltip">
               <h3>${countryName}</h3>
