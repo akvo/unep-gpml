@@ -77,6 +77,7 @@ const Landing = ({
       return `
             <div class="map-tooltip">
               <h3>${countryName}</h3>
+              <h4>Member State</h4>
               <ul>
               ${tTypes
                 .map(
