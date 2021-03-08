@@ -79,6 +79,13 @@
                                    "technology_language_url"
                                    "technology_tag"]}))
 
+(defn drop-constraint-event [db]
+  (drop-all-constraint db {:table "event"
+                           :json "events.json"
+                           :child ["event_geo_coverage"
+                                   "event_language_url"
+                                   "event_tag"]}))
+
 (defn drop-constraint-project [db]
   (drop-all-constraint db {:table "project"
                            :json "projects.json"

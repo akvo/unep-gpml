@@ -13,6 +13,7 @@
             [gpml.db.organisation :as db.organisation]
             [gpml.db.policy :as db.policy]
             [gpml.db.resource :as db.resource]
+            [gpml.db.event :as db.event]
             [gpml.db.tag :as db.tag]
             [gpml.db.technology :as db.technology]
             [gpml.db.project :as db.project]
@@ -202,6 +203,62 @@
         (when (not-empty data-tag)
           (let [res-tag (mapv #(assoc {} :resource res-id :tag %) data-tag)]
             (jdbc/insert-multi! db :resource_tag res-tag))))
+      (catch Exception e
+        (println data)
+        (.printStackTrace e)
+        (throw e)))))
+
+
+(defn get-events [db]
+  (->> (get-data "events")
+       (map (fn [x]
+                (assoc x :city (:city x) :review_status "APPROVED")))
+       (map (fn [x]
+              (if-let [country (:country x)]
+                (if-let [data (first (get-country db [country]))]
+                  (assoc x :country (:id data))
+                  (assoc x :country nil))
+                x)))
+       (map (fn [x]
+              (if-let [organisation (:organisation x)]
+                (assoc x :organisation (get-ids (get-organisation db organisation)))
+                x)))
+       (map (fn [x]
+              (if (= "regional" (:geo_coverage_type x))
+                (if-let [country-group (:geo_coverage x)]
+                  (assoc x :geo_coverage (get-ids (get-country-groups db country-group))) x)
+                (if-let [country (:geo_coverage x)]
+                  (assoc x :geo_coverage (get-ids (get-country db country))) x))))
+       (map (fn [x]
+              (if-let [language-url (:event_language_url x)]
+                (assoc x :event_language_url (get-language db language-url))
+                x))
+            )
+       (map (fn [x]
+              (if-let [tags (:tags x)]
+                (assoc x :tags (get-ids (get-tag db tags)))
+                x)))))
+
+(defn seed-events [db]
+  (doseq [data (get-events db)]
+    (try
+      (let [evt-id (:id (db.event/new-event db data))
+            data-geo (:geo_coverage data)
+            data-geo-type (:geo_coverage_type data)
+            data-lang (:event_language_url data)
+            data-tag (:tags data)]
+        (when (not-empty data-geo)
+          (if (= "regional" data-geo-type)
+            (let [evt-geo (mapv #(assoc {} :event evt-id :country_group %) data-geo)]
+              (jdbc/insert-multi! db :event_geo_coverage evt-geo))
+            (let [evt-geo (mapv #(assoc {} :event evt-id :country %) data-geo)]
+              (jdbc/insert-multi! db :event_geo_coverage evt-geo))))
+        (when (not-empty data-lang)
+          (let [evt-lang (map (fn [x] (assoc x :event evt-id)) data-lang)]
+            (jdbc/insert-multi! db :event_language_url evt-lang)))
+        (when (not-empty data-tag)
+          (let [evt-tag (mapv #(assoc {} :event evt-id :tag %) data-tag)]
+            (jdbc/insert-multi! db :event_tag evt-tag))))
       (catch Exception e
         (println data)
         (.printStackTrace e)
@@ -408,6 +465,12 @@
   (seed-technologies db)
   (db.util/revert-constraint db))
 
+(defn resync-event [db]
+  (db.util/drop-constraint-event db)
+  (println "Re-seeding event...")
+  (seed-events db)
+  (db.util/revert-constraint db))
+
 (defn resync-project [db]
   (db.util/drop-constraint-project db)
   (println "Re-seeding project...")
@@ -418,7 +481,8 @@
   ([db {:keys [country? currency?
                organisation? language? tag?
                policy? resource?
-               technology? project?]
+               technology? event?
+               project?]
         :or {country? false
              currency? false
              organisation? false
@@ -427,6 +491,7 @@
              policy? false
              resource? false
              technology? false
+             event? false
              project? false}}]
    (jdbc/with-db-transaction [tx db]
      (println "-- Start Seeding")
@@ -457,6 +522,9 @@
      (when technology?
        (println "Seeding technology...")
        (seed-technologies tx))
+     (when event?
+       (println "Seeding event...")
+       (seed-events tx))
      (when project?
        (println "Seeding project...")
        (seed-actions tx)
@@ -477,6 +545,7 @@
         :policy? true
         :resource? true
         :technology? true
+        :event? true
         :project? true})
      (gpml.handler.detail/cache-hierarchies! db))))
 
@@ -502,6 +571,7 @@
   (resync-resource db)
   (resync-organisation db)
   (resync-technology db)
+  (resync-event db)
   (resync-project db)
 
   ;; get view table of topic

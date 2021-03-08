@@ -1,0 +1,102 @@
+[
+ {
+  "id": 1,
+  "title": "2nd World Conference on Waste Management",
+  "start_date": "2021-04-03 00:00:00",
+  "end_date": "2021-05-03 00:00:00",
+  "description": "The Second World Conference on Waste Management 2021 will bring scientists, researchers, activists and practitioners from academia and industry to elaborate scientific ideas, share experiences, discuss environmental issues, and find innovative strategies for waste management. The Organizing Committee is gearing up for an exciting and informative conference, including keynote and plenary sessions, research presentations, recognition awards, and High Standard Publication Opportunities, with many networking opportunities.",
+  "url": [
+   "https://wastemanagementconferences.com/"
+  ],
+  "image": null,
+  "tags": null,
+  "languages": "English",
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://wastemanagementconferences.com/"
+   }
+  ],
+  "geo_coverage": [
+   ""
+  ],
+  "geo_coverage_type": "global",
+  "remarks": null,
+  "country": ""
+ },
+ {
+  "id": 2,
+  "title": "Meeting of the Ecosystem Approach Correspondence Group on Monitoring (CorMon) Marine Litter",
+  "start_date": "2021-03-30",
+  "end_date": "2021-03-30",
+  "description": "Meeting of the Ecosystem Approach Correspondence Group on Monitoring (CorMon) Marine Litter",
+  "url": [
+   "https://indico.un.org/event/35704/"
+  ],
+  "image": null,
+  "tags": null,
+  "languages": "English",
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://indico.un.org/event/35704/"
+   }
+  ],
+  "geo_coverage": [
+   ""
+  ],
+  "geo_coverage_type": "global",
+  "remarks": "UNEP/MAP",
+  "country": ""
+ },
+ {
+  "id": 3,
+  "title": "Understanding the State of the Ocean",
+  "start_date": "2021-02-25",
+  "end_date": "2021-02-25",
+  "description": "Understanding the State of the Ocean: a Global Manual on Measuring SDG 14.1.1, SDG 14.2.1, SDG 14.5.1, and the GPML Digital Platform Phase 1 presentationThursday, 25 February, 15:00 - 16:30 (EAT)Monitoring is key to understanding how the state of the ocean is changing, what is causing the change and how well efforts to address these changes are working. The global oceans manual provides guidance on how to bring together traditional monitoring techniques with new technologies and data science in order to better monitor our oceans in the context of the SDGs. The aim of the GPML Digital platform is to facilitate coordination of multi-stakeholder action towards the long-term elimination, through a life-cycle approach, of discharges of litter and microplastics into the oceans using AI capabilities, data mapping and layered functionalities including match-making.The session will review the Phase I release of the platform, discuss next steps as well as highlight opportunities to engage in the shaping of the platform through user consultations and strategic partnerships. Speakers will discuss the above topics, followed by a Q&A session.",
+  "url": [
+   "https://register.gotowebinar.com/register/5976799386104674827"
+  ],
+  "image": null,
+  "tags": null,
+  "languages": "English",
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://register.gotowebinar.com/register/5976799386104674827"
+   }
+  ],
+  "geo_coverage": [
+   ""
+  ],
+  "geo_coverage_type": "global",
+  "remarks": "Download flyer: https://drive.google.com/file/d/1oTThuCQYXs5VE1GNCfNNthQx47b6NbFa/view?usp=sharing",
+  "country": ""
+ },
+ {
+  "id": 4,
+  "title": "UN Environment Assembly (UNEA) 5",
+  "start_date": "2021-02-22",
+  "end_date": "2021-02-23 00:00:00",
+  "description": "The fifth session of the UN Environment Assembly (UNEA-5).",
+  "url": [
+   "https://indico.un.org/event/1000068/"
+  ],
+  "image": null,
+  "tags": null,
+  "languages": "English",
+  "resource_language_url": [
+   {
+    "language": "English",
+    "url": "https://indico.un.org/event/1000068/"
+   }
+  ],
+  "geo_coverage": [
+   ""
+  ],
+  "geo_coverage_type": "global",
+  "remarks": null,
+  "country": ""
+ }
+]

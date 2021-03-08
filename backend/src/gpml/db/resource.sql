@@ -14,8 +14,8 @@ insert into resource(
     geo_coverage_type,
     attachments,
     remarks,
-    review_status
 --~ (when (contains? params :id) ", id")
+--~ (when (contains? params :review_status) ", review_status")
 )
 values(
     :title,
@@ -31,7 +31,7 @@ values(
     :v:geo_coverage_type::geo_coverage_type,
     :v:attachments::text[],
     :remarks,
-    :v:review_status::review_status
 --~ (when (contains? params :id) ", :id")
+--~ (when (contains? params :review_status) ", :v:review_status::review_status")
 )
 returning id;

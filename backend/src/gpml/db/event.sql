@@ -1,7 +1,31 @@
 -- :name new-event :<! :1
 -- :doc Insert a new event
-insert into event(title, start_date, end_date, description, remarks, geo_coverage_type, country, city, image)
-values(:title, :start_date::timestamptz, :end_date::timestamptz, :description, :remarks, :geo_coverage_type::geo_coverage_type, :country, :city, :image) RETURNING id;
+insert into event(
+    title,
+    start_date,
+    end_date,
+    description,
+    remarks,
+    geo_coverage_type,
+    country,
+    city,
+    image
+--~ (when (contains? params :id) ", id")
+--~ (when (contains? params :review_status) ", review_status")
+)
+values(
+    :title,
+    :start_date::timestamptz,
+    :end_date::timestamptz,
+    :description,
+    :remarks,
+    :geo_coverage_type::geo_coverage_type,
+    :country,
+    :city,
+    :image
+--~ (when (contains? params :id) ", :id")
+--~ (when (contains? params :review_status) ", :v:review_status::review_status")
+) RETURNING id;
 
 -- :name add-event-tags :<! :1
 -- :doc Add specified tags to an event
