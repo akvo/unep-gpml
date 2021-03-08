@@ -66,6 +66,11 @@ const Browse = ({
     });
   };
   useEffect(() => {
+    // setFilterCountries if user click from map to browse view
+    query?.country &&
+      query?.country.length > 0 &&
+      setFilterCountries(query.country);
+
     // Manage filters display
     !filters && setFilters(query);
     if (filters) {

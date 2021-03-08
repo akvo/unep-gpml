@@ -54,10 +54,10 @@ const Landing = ({
       const countryInfo = countries?.find(
         (it) => it.isoCode === summary.isoCode
       );
-      const countryName = countryInfo?.name || summary.isoCode
-      const teritory = teritories?.find(it => it.isoCode === countryName);
+      const countryName = countryInfo?.name || summary.isoCode;
+      const teritory = teritories?.find((it) => it.isoCode === countryName);
       if (teritory) {
-          return `
+        return `
             <div class="map-tooltip">
               <h3>${teritory.name}</h3>
               <h4>${teritory.description}</h4>
@@ -72,7 +72,7 @@ const Landing = ({
                 .join("")}
               </ul>
             </div>
-          `
+          `;
       }
       return `
             <div class="map-tooltip">
