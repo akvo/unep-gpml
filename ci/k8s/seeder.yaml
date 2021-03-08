@@ -1,22 +1,22 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: unep-gpml-seeder
+  name: unep-gpml-seeder-${TIMESTAMP}
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-        run: unep-gpml-seeder
   template:
-    metadata:
-      labels:
-        run: unep-gpml-seeder
     spec:
       containers:
       - name: unep-gpml-seeder
         image: akvo/akvo-clojure-lein:20210124.114043.4437caf
-        command: [ "/bin/bash", "-c", "--" ]
-        args: [ "while true; do sleep 30; done;" ]
+        command: ["/bin/bash", "-c"]
+        args:
+          - echo Installing git;
+            apt-get update && apt-get -qq install -y --no-install-recommends --no-install-suggests git;
+            echo Cloning repo;
+            git clone https://github.com/akvo/unep-gpml.git;
+            cd unep-gpml/backend;
+            echo Running seeder;
+            lein with-profile seeder run set-admin change-me@akvo.org
         env:
         - name: DATABASE_URL
           valueFrom:
@@ -34,3 +34,5 @@ spec:
         - name: unep-gpml-secrets
           secret:
             secretName: unep-gpml
+      restartPolicy: Never
+  backoffLimit: 0
