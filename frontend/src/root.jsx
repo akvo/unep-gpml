@@ -104,8 +104,10 @@ const Root = () => {
       setData(resp.data);
     });
     api.get("/country").then((resp) => {
-      setCountries(resp.data.filter((x) => x.description === "Member State"));
-      setTeritories(resp.data.filter((x) => x.description !== "Member State"));
+      // TODO :: UNCOMENT ONCE NEW DATA SEED IS SYNCED AND REMOVE THE LINE BELOW
+      setCountries(resp.data);
+      // setCountries(resp.data.filter((x) => x.description === "Member State"));
+      // setTeritories(resp.data.filter((x) => x.description !== "Member State"));
       setInitLandingCount("project");
     });
     api.get("/tag").then((resp) => {
