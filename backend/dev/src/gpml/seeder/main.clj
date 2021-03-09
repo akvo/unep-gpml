@@ -130,6 +130,7 @@
             (jdbc/insert-multi! db :organisation_geo_coverage res-geo))))))
 
 (defn seed-currencies [db]
+  (jdbc/execute! db ["TRUNCATE TABLE currency"])
   (doseq [data (get-data "currencies")]
     (db.currency/new-currency db data)))
 
@@ -438,7 +439,6 @@
   (db.util/drop-constraint-country-group db)
   (println "Re-seeding country-group...")
   (seed-country-groups db)
-  (jdbc/execute! db ["TRUNCATE TABLE country_group_country"])
   (db.util/revert-constraint db)
   (seed-country-group-country db))
 
@@ -538,10 +538,10 @@
               :spec)]
      (seed db
        {:country? true
-        :currency? false
+        :currency? (= 0 (:count (jdbc/query db ["SELECT COUNT(*) FROM currency"])))
         :organisation? true
-        :language? false
-        :tag? false
+        :language?  (= 0 (:count (jdbc/query db ["SELECT COUNT(*) FROM language"])))
+        :tag?  (= 0 (:count (jdbc/query db ["SELECT COUNT(*) FROM tag"])))
         :policy? true
         :resource? true
         :technology? true
@@ -563,7 +563,6 @@
                (ig/init [:duct.database.sql/hikaricp])
                :duct.database.sql/hikaricp
                :spec))
-
   ;; example resyncing
   (resync-country db)
   (resync-country-group db)
