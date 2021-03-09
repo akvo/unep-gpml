@@ -438,6 +438,7 @@
   (db.util/drop-constraint-country-group db)
   (println "Re-seeding country-group...")
   (seed-country-groups db)
+  (jdbc/execute! db ["TRUNCATE TABLE country_group_country"])
   (db.util/revert-constraint db)
   (seed-country-group-country db))
 
@@ -495,18 +496,17 @@
              project? false}}]
    (jdbc/with-db-transaction [tx db]
      (println "-- Start Seeding")
-     (truncate-db tx)
+     #_(truncate-db tx)
      (when country?
        (println "Seeding country...")
-       (seed-countries tx)
-       (seed-country-groups tx)
-       (seed-country-group-country tx))
+       (resync-country tx)
+       (resync-country-group tx))
      (when currency?
        (println "Seeding currency...")
        (seed-currencies tx))
      (when organisation?
        (println "Seeding organisation...")
-       (seed-organisations tx))
+       (resync-organisation tx))
      (when language?
        (println "Seeding language...")
        (seed-languages tx))
@@ -515,21 +515,21 @@
        (seed-tags tx))
      (when policy?
        (println "Seeding policy...")
-       (seed-policies tx))
+       (resync-policy tx))
      (when resource?
        (println "Seeding resource...")
-       (seed-resources tx))
+       (resync-resource tx))
      (when technology?
        (println "Seeding technology...")
-       (seed-technologies tx))
+       (resync-technology tx))
      (when event?
        (println "Seeding event...")
-       (seed-events tx))
+       (resync-event tx))
      (when project?
        (println "Seeding project...")
-       (seed-actions tx)
-       (seed-action-details tx)
-       (seed-projects tx))
+       #_(seed-actions tx)
+       #_(seed-action-details tx)
+       (resync-project tx))
      (println "-- Done Seeding")))
   ([]
    (let [db (-> (dev-system)
@@ -538,10 +538,10 @@
               :spec)]
      (seed db
        {:country? true
-        :currency? true
+        :currency? false
         :organisation? true
-        :language? true
-        :tag? true
+        :language? false
+        :tag? false
         :policy? true
         :resource? true
         :technology? true
