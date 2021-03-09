@@ -104,10 +104,16 @@ const Root = () => {
       setData(resp.data);
     });
     api.get("/country").then((resp) => {
-      // TODO :: UNCOMENT ONCE NEW DATA SEED IS SYNCED AND REMOVE THE LINE BELOW
-      setCountries(resp.data);
-      // setCountries(resp.data.filter((x) => x.description === "Member State"));
-      // setTeritories(resp.data.filter((x) => x.description !== "Member State"));
+      // TODO Remove no Description after New Country is ready in both test / production
+      const noDescription = resp.data.filter((x) => x.description).length === 0;
+      if (noDescription) {
+        setCountries(resp.data);
+      } else {
+        setCountries(resp.data.filter((x) => x.description === "Member State"));
+        setTeritories(
+          resp.data.filter((x) => x.description !== "Member State")
+        );
+      }
       setInitLandingCount("project");
     });
     api.get("/tag").then((resp) => {

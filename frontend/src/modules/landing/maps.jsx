@@ -158,15 +158,17 @@ const Maps = ({
   data = data.filter((x) => x.value !== 0);
   const options = generateOptions({ title, subtitle, data, tooltip, mapPos });
 
-  return (
+  return mapPos ? (
     <ReactEcharts
       className="fade-in worldmap"
       option={{ ...options, ...custom }}
       notMerge={true}
       style={{ height: `${mapPos.height}px`, width: "100%" }}
-      lazyUpdate={true}
+      lazyUpdate={false}
       onEvents={{ click: clickEvents }}
     />
+  ) : (
+    ""
   );
 };
 
