@@ -33,6 +33,26 @@ import uniqBy from "lodash/uniqBy";
 import find from "lodash/find";
 
 const renderItemValues = (params, mapping, data, profile, countries) => {
+  // check if no data
+  let noData = false;
+  mapping &&
+    mapping.every((it) => {
+      const { key } = it;
+      if (data[key]) {
+        noData = false;
+        return false;
+      }
+      if (!data[key]) {
+        noData = true;
+        return true;
+      }
+      return true;
+    });
+
+  if (noData) {
+    return "There is no data to display";
+  }
+
   return (
     mapping &&
     mapping.map((item, index) => {

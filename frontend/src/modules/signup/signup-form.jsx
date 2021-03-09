@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form } from "antd";
+import { Form, Switch } from "antd";
 import { Form as FinalForm, FormSpy } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import "./styles.scss";
@@ -35,11 +35,9 @@ const sectorOptions = [
   "Other",
 ];
 
-const defaultFormSchema = (initValues) => {
-  const publicEmailText =
-    initValues && initValues.publicEmail ? "Don't show" : "Show";
-  return [
-    {
+const defaultFormSchema = {
+  personalDetails: {
+    account: {
       title: {
         label: "Title",
         required: true,
@@ -56,13 +54,8 @@ const defaultFormSchema = (initValues) => {
         disabled: true,
         required: true,
       },
-      publicEmail: {
-        label: "Set email public",
-        control: "switch",
-        size: "small",
-        defaultChecked: initValues && initValues.publicEmail,
-        text: `${publicEmailText} my email address on public listing`,
-      },
+    },
+    socialLocation: {
       linkedIn: { label: "LinkedIn", prefix: <LinkedinOutlined /> },
       twitter: { label: "Twitter", prefix: <TwitterOutlined /> },
       photo: {
@@ -95,58 +88,58 @@ const defaultFormSchema = (initValues) => {
       },
       geoCoverageValue: { label: "Geo coverage", render: GeoCoverageInput },
     },
-    {
-      "org.id": {
-        label: "Organisation",
-        control: "select",
-        showSearch: true,
-        options: [],
-        placeholder: "Start typing...",
-        order: 0,
-        required: true,
-      },
-      organisationRole: {
-        label: "Your role in the organisation",
-        order: 2,
-        required: true,
-      },
+  },
+  organisation: {
+    "org.id": {
+      label: "Organisation",
+      control: "select",
+      showSearch: true,
+      options: [],
+      placeholder: "Start typing...",
+      order: 0,
+      required: true,
     },
-    {
-      seeking: {
-        label: "Seeking",
-        control: "select",
-        mode: "multiple",
-        showSearch: true,
-        options: [],
-      },
-      offering: {
-        label: "Offering",
-        control: "select",
-        mode: "multiple",
-        showSearch: true,
-        options: [],
-      },
-      about: {
-        label: "About yourself",
-        control: "textarea",
-        placeholder: "Max 150 words",
-      },
-      tags: {
-        label: "Tags",
-        control: "select",
-        options: [],
-        mode: "multiple",
-        showSearch: true,
-      },
-      cv: {
-        label: "CV / Portfolio",
-        control: "file",
-        maxFileSize: 5,
-        accept:
-          ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain",
-      },
+    organisationRole: {
+      label: "Your role in the organisation",
+      order: 2,
+      required: true,
     },
-  ];
+  },
+  expertiesActivities: {
+    seeking: {
+      label: "Seeking",
+      control: "select",
+      mode: "multiple",
+      showSearch: true,
+      options: [],
+    },
+    offering: {
+      label: "Offering",
+      control: "select",
+      mode: "multiple",
+      showSearch: true,
+      options: [],
+    },
+    about: {
+      label: "About yourself",
+      control: "textarea",
+      placeholder: "Max 150 words",
+    },
+    tags: {
+      label: "Tags",
+      control: "select",
+      options: [],
+      mode: "multiple",
+      showSearch: true,
+    },
+    cv: {
+      label: "CV / Portfolio",
+      control: "file",
+      maxFileSize: 5,
+      accept:
+        ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain",
+    },
+  },
 };
 
 const ReviewText = ({ reviewStatus }) => {
@@ -180,13 +173,15 @@ const SignupForm = ({
   countries,
   isModal,
 }) => {
-  const [formSchema, setFormSchema] = useState(
-    defaultFormSchema(initialValues)
-  );
+  const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [noOrg, setNoOrg] = useState(false);
+  const [pubEmail, setPubEmail] = useState({
+    checked: false,
+    text: "Show my email address on public listing",
+  });
   const prevVals = useRef();
   const formRef = useRef();
-  const formSchemaRef = useRef(defaultFormSchema(initialValues));
+  const formSchemaRef = useRef(defaultFormSchema);
   const formContainer = !isModal ? "signup-form-grid" : "signup-form";
   const sectionGrid = !isModal ? "section-grid" : "section";
 
@@ -197,37 +192,45 @@ const SignupForm = ({
   useEffect(() => {
     api.get("/organisation").then((d) => {
       const newSchema = cloneDeep(formSchemaRef.current);
-      newSchema[1]["org.id"].options = [
+      newSchema["organisation"]["org.id"].options = [
         ...d.data.map((it) => ({ value: it.id, label: it.name })),
         { value: -1, label: "Other" },
       ];
-      newSchema[1]["org.id"].filterOption = (input, option) => {
+      newSchema["organisation"]["org.id"].filterOption = (input, option) => {
         return (
           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
           option.value === -1
         );
       };
       if (tags) {
-        newSchema[2].tags.options = tags.general.map((x) => ({
-          value: x.id,
-          label: x.tag,
-        }));
-        newSchema[2].offering.options = tags.offering.map((x) => ({
-          value: x.id,
-          label: x.tag,
-        }));
-        newSchema[2].seeking.options = tags.seeking.map((x) => ({
-          value: x.id,
-          label: x.tag,
-        }));
+        newSchema["expertiesActivities"].tags.options = tags.general.map(
+          (x) => ({
+            value: x.id,
+            label: x.tag,
+          })
+        );
+        newSchema["expertiesActivities"].offering.options = tags.offering.map(
+          (x) => ({
+            value: x.id,
+            label: x.tag,
+          })
+        );
+        newSchema["expertiesActivities"].seeking.options = tags.seeking.map(
+          (x) => ({
+            value: x.id,
+            label: x.tag,
+          })
+        );
       }
       if (countries) {
-        newSchema[0].country.options = countries.map((x) => ({
+        newSchema["personalDetails"][
+          "socialLocation"
+        ].country.options = countries.map((x) => ({
           value: x.isoCode,
           label: x.name,
         }));
-        newSchema[0].geoCoverageValue = {
-          ...newSchema[0].geoCoverageValue,
+        newSchema["personalDetails"]["socialLocation"].geoCoverageValue = {
+          ...newSchema["personalDetails"]["socialLocation"].geoCoverageValue,
           countries: countries,
         };
       }
@@ -238,12 +241,14 @@ const SignupForm = ({
   useEffect(() => {
     if (countries) {
       const newSchema = cloneDeep(formSchema);
-      newSchema[0].country.options = countries.map((x) => ({
+      newSchema["personalDetails"][
+        "socialLocation"
+      ].country.options = countries.map((x) => ({
         value: x.isoCode,
         label: x.name,
       }));
-      newSchema[0].geoCoverageValue = {
-        ...newSchema[0].geoCoverageValue,
+      newSchema["personalDetails"]["socialLocation"].geoCoverageValue = {
+        ...newSchema["personalDetails"]["socialLocation"].geoCoverageValue,
         countries: countries,
       };
       setFormSchema(newSchema);
@@ -253,18 +258,22 @@ const SignupForm = ({
   useEffect(() => {
     if (tags) {
       const newSchema = cloneDeep(formSchema);
-      newSchema[2].tags.options = tags.general.map((x) => ({
+      newSchema["expertiesActivities"].tags.options = tags.general.map((x) => ({
         value: x.id,
         label: x.tag,
       }));
-      newSchema[2].offering.options = tags.offering.map((x) => ({
-        value: x.id,
-        label: x.tag,
-      }));
-      newSchema[2].seeking.options = tags.seeking.map((x) => ({
-        value: x.id,
-        label: x.tag,
-      }));
+      newSchema["expertiesActivities"].offering.options = tags.offering.map(
+        (x) => ({
+          value: x.id,
+          label: x.tag,
+        })
+      );
+      newSchema["expertiesActivities"].seeking.options = tags.seeking.map(
+        (x) => ({
+          value: x.id,
+          label: x.tag,
+        })
+      );
       setFormSchema(newSchema);
     }
   }, [tags]); // eslint-disable-line
@@ -272,9 +281,9 @@ const SignupForm = ({
   const handleChangePrivateCitizen = ({ target: { checked } }) => {
     setNoOrg(checked);
     const newSchema = cloneDeep(formSchema);
-    Object.keys(newSchema[1]).forEach((key) => {
-      newSchema[1][key].disabled = checked;
-      newSchema[1][key].required = !checked;
+    Object.keys(newSchema["organisation"]).forEach((key) => {
+      newSchema["organisation"][key].disabled = checked;
+      newSchema["organisation"][key].required = !checked;
     });
     setFormSchema(newSchema);
     setTimeout(() => {
@@ -285,7 +294,22 @@ const SignupForm = ({
     });
   };
 
+  const handleChangePublicEmail = (checked) => {
+    const preffix = checked ? "Dont' show" : "Show";
+    setPubEmail({
+      checked: checked,
+      text: `${preffix} my email address on public listing`,
+    });
+    setTimeout(() => {
+      formRef.current?.change("ts", new Date().getTime());
+      formRef.current?.change("publicEmail", checked);
+    });
+  };
+
   useEffect(() => {
+    if (initialValues) {
+      handleChangePublicEmail(initialValues.publicEmail);
+    }
     if (initialValues && initialValues.org === null) {
       handleChangePrivateCitizen({ target: { checked: true } });
     }
@@ -308,7 +332,22 @@ const SignupForm = ({
               <div className={formContainer}>
                 <div className={sectionGrid}>
                   <h2>Personal details</h2>
-                  <FieldsFromSchema schema={formSchema[0]} />
+                  <FieldsFromSchema
+                    schema={formSchema["personalDetails"]["account"]}
+                  />
+                  <div className="public-email-container">
+                    <Switch
+                      key="publicEmail"
+                      name="publicEmail"
+                      size="small"
+                      checked={pubEmail.checked}
+                      onChange={handleChangePublicEmail}
+                    />
+                    &nbsp;&nbsp;&nbsp;{pubEmail.text}
+                  </div>
+                  <FieldsFromSchema
+                    schema={formSchema["personalDetails"]["socialLocation"]}
+                  />
                 </div>
                 <div className={sectionGrid}>
                   <h2>Organisation details</h2>
@@ -319,7 +358,7 @@ const SignupForm = ({
                   >
                     I am a private citizen
                   </Checkbox>
-                  <FieldsFromSchema schema={formSchema[1]} />
+                  <FieldsFromSchema schema={formSchema["organisation"]} />
                   <FormSpy
                     subscription={{ values: true }}
                     onChange={({ values }) => {
@@ -330,12 +369,12 @@ const SignupForm = ({
                         prevVals.current?.org?.id !== -1
                       ) {
                         // Add Name field
-                        newSchema[1]["org.name"] = {
+                        newSchema["organisation"]["org.name"] = {
                           label: "Name",
                           required: true,
                           order: 1,
                         };
-                        newSchema[1]["org.type"] = {
+                        newSchema["organisation"]["org.type"] = {
                           label: "Type of the organisation",
                           required: true,
                           control: "select",
@@ -348,7 +387,7 @@ const SignupForm = ({
                             "Other",
                           ].map((it) => ({ value: it, label: it })),
                         };
-                        newSchema[1]["org.country"] = {
+                        newSchema["organisation"]["org.country"] = {
                           label: "Country",
                           order: 3,
                           control: "select",
@@ -360,13 +399,13 @@ const SignupForm = ({
                           })),
                           autoComplete: "off",
                         };
-                        newSchema[1]["org.url"] = {
+                        newSchema["organisation"]["org.url"] = {
                           label: "Organisation URL",
                           order: 4,
                           addonBefore: "https://",
                           required: true,
                         };
-                        newSchema[1]["org.geoCoverageType"] = {
+                        newSchema["organisation"]["org.geoCoverageType"] = {
                           label: "Geo coverage type",
                           order: 6,
                           required: true,
@@ -376,14 +415,16 @@ const SignupForm = ({
                             label: it,
                           })),
                         };
-                        newSchema[1]["org.geoCoverageValue"] = {
+                        newSchema["organisation"]["org.geoCoverageValue"] = {
                           order: 7,
                           required: true,
                           label: "Geo coverage",
                           render: GeoCoverageInput,
                         };
                         if (values.org.geoCoverageType === "global")
-                          newSchema[1]["org.geoCoverageValue"].required = false;
+                          newSchema["organisation"][
+                            "org.geoCoverageValue"
+                          ].required = false;
                         changedSchema = true;
                       }
                       if (
@@ -393,14 +434,14 @@ const SignupForm = ({
                         prevVals.current?.org?.id !== values?.org?.id
                       ) {
                         if (prevVals.current?.org?.id === -1) {
-                          delete newSchema[1].name;
+                          delete newSchema["organisation"].name;
                         }
-                        Object.keys(newSchema[1])
+                        Object.keys(newSchema["organisation"])
                           .filter(
                             (it) => it !== "org.id" && it !== "organisationRole"
                           )
                           .forEach((it) => {
-                            newSchema[1][it].required = false;
+                            newSchema["organisation"][it].required = false;
                           });
                         changedSchema = true;
                         [
@@ -410,7 +451,7 @@ const SignupForm = ({
                           "type",
                           "url",
                         ].forEach((propKey) => {
-                          delete newSchema[1][`org.${propKey}`];
+                          delete newSchema["organisation"][`org.${propKey}`];
                         });
                       }
                       if (
@@ -419,13 +460,13 @@ const SignupForm = ({
                           prevVals.current?.org?.geoCoverageType
                       ) {
                         if (values.org.geoCoverageType === "global") {
-                          if (newSchema[1]["org.geoCoverageValue"])
-                            newSchema[1][
+                          if (newSchema["organisation"]["org.geoCoverageValue"])
+                            newSchema["organisation"][
                               "org.geoCoverageValue"
                             ].required = false;
                         } else {
-                          if (newSchema[1]["org.geoCoverageValue"])
-                            newSchema[1][
+                          if (newSchema["organisation"]["org.geoCoverageValue"])
+                            newSchema["organisation"][
                               "org.geoCoverageValue"
                             ].required = true;
                         }
@@ -440,7 +481,9 @@ const SignupForm = ({
                 </div>
                 <div className={sectionGrid}>
                   <h2>Expertise and activities</h2>
-                  <FieldsFromSchema schema={formSchema[2]} />
+                  <FieldsFromSchema
+                    schema={formSchema["expertiesActivities"]}
+                  />
                 </div>
               </div>
             </>
