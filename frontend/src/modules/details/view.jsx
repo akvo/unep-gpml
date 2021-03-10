@@ -59,9 +59,12 @@ const renderItemValues = (params, mapping, data, profile, countries) => {
       const { key, name, value, type, customValue } = item;
       return (
         <Fragment key={`${params.type}-${name}`}>
+          {/* remove && data.geoCoverageType !== "global" if want to show all country list for global */}
           {(data[key] ||
             data[key] === 0 ||
-            (value === "countries" && data.geoCoverageType) ||
+            (value === "countries" &&
+              data.geoCoverageType &&
+              data.geoCoverageType !== "global") ||
             key === null) && (
             <div key={name + index} className="column">
               <div className="title">{name}</div>
@@ -143,10 +146,6 @@ const renderItemValues = (params, mapping, data, profile, countries) => {
                   )}
                 {value === "countries" &&
                   data[key] !== null &&
-                  data.geoCoverageType === "regional" &&
-                  data[key].join(", ")}
-                {value === "countries" &&
-                  data[key] !== null &&
                   data.geoCoverageType === "global" && (
                     <div className="scrollable">
                       {data[key]
@@ -156,6 +155,10 @@ const renderItemValues = (params, mapping, data, profile, countries) => {
                         .join(", ")}
                     </div>
                   )}
+                {value === "countries" &&
+                  data[key] !== null &&
+                  data.geoCoverageType === "regional" &&
+                  data[key].join(", ")}
                 {value === "countries" &&
                   data[key] !== null &&
                   data.geoCoverageType === "transnational" && (
@@ -254,7 +257,9 @@ const renderItemValues = (params, mapping, data, profile, countries) => {
           )}
           {(data[key] ||
             data[key] === 0 ||
-            (value === "countries" && data.geoCoverageType)) &&
+            (value === "countries" &&
+              data.geoCoverageType &&
+              data.geoCoverageType !== "global")) &&
             index !== mapping.length - 1 && (
               <Divider key={`d${params.type}-${index}`} />
             )}
