@@ -231,7 +231,7 @@
                 (if-let [country (:geo_coverage x)]
                   (assoc x :geo_coverage (get-ids (get-country db country))) x))))
        (map (fn [x]
-              (if-let [language-url (:event_language_url x)]
+              (if-let [language-url (:resource_language_url x)]
                 (assoc x :event_language_url (get-language db language-url))
                 x))
             )
@@ -429,64 +429,73 @@
         (.printStackTrace e)
         (throw e)))))
 
+(defn get-cache-id []
+  (quot (System/currentTimeMillis) 1000))
+
 (defn resync-country [db]
-  (db.util/drop-constraint-country db)
-  (println "Re-seeding country...")
-  (seed-countries db)
-  (db.util/revert-constraint db))
+  (let [cache-id (get-cache-id)]
+    (db.util/drop-constraint-country db cache-id)
+    (println "Re-seeding country...")
+    (seed-countries db)
+    (db.util/revert-constraint db cache-id)))
 
 (defn resync-country-group [db]
-  (db.util/drop-constraint-country-group db)
-  (println "Re-seeding country-group...")
-  (seed-country-groups db)
-  (db.util/revert-constraint db)
-  (seed-country-group-country db))
+  (let [cache-id (get-cache-id)]
+    (db.util/drop-constraint-country-group db cache-id)
+    (println "Re-seeding country-group...")
+    (seed-country-groups db)
+    (db.util/revert-constraint db cache-id)
+    (seed-country-group-country db)))
 
 (defn resync-organisation [db]
-  (db.util/drop-constraint-organisation db)
-  (println "Re-seeding organisation...")
-  (seed-organisations db)
-  (db.util/revert-constraint db))
+  (let [cache-id (get-cache-id)]
+    (db.util/drop-constraint-organisation db cache-id)
+    (println "Re-seeding organisation...")
+    (seed-organisations db)
+    (db.util/revert-constraint db cache-id)))
 
 (defn resync-policy [db]
-  (db.util/drop-constraint-policy db)
-  (println "Re-seeding policy...")
-  (seed-policies db)
-  (db.util/revert-constraint db))
+  (let [cache-id (get-cache-id)]
+    (db.util/drop-constraint-policy db cache-id)
+    (println "Re-seeding policy...")
+    (seed-policies db)
+    (db.util/revert-constraint db cache-id)))
 
 (defn resync-resource [db]
-  (db.util/drop-constraint-resource db)
-  (println "Re-seeding resource...")
-  (seed-resources db)
-  (db.util/revert-constraint db))
+  (let [cache-id (get-cache-id)]
+    (db.util/drop-constraint-resource db cache-id)
+    (println "Re-seeding resource...")
+    (seed-resources db)
+    (db.util/revert-constraint db cache-id)))
 
 (defn resync-technology [db]
-  (db.util/drop-constraint-technology db)
-  (println "Re-seeding technology...")
-  (seed-technologies db)
-  (db.util/revert-constraint db))
+  (let [cache-id (get-cache-id)]
+    (db.util/drop-constraint-technology db cache-id)
+    (println "Re-seeding technology...")
+    (seed-technologies db)
+    (db.util/revert-constraint db cache-id)))
 
 (defn resync-event [db]
-  (db.util/drop-constraint-event db)
-  (println "Re-seeding event...")
-  (seed-events db)
-  (db.util/revert-constraint db))
+  (let [cache-id (get-cache-id)]
+    (db.util/drop-constraint-event db cache-id)
+    (println "Re-seeding event...")
+    (seed-events db)
+    (db.util/revert-constraint db cache-id)))
 
 (defn resync-project [db]
-  (db.util/drop-constraint-project db)
-  (println "Re-seeding project...")
-  (seed-projects db)
-  (db.util/revert-constraint db))
+  (let [cache-id (get-cache-id)]
+    (db.util/drop-constraint-project db cache-id)
+    (println "Re-seeding project...")
+    (seed-projects db)
+    (db.util/revert-constraint db cache-id)))
 
 (defn seed
-  ([db {:keys [resync?
-               country? currency?
-               organisation? language?
-               tag? policy? resource?
+  ([db {:keys [country? currency?
+               organisation? language? tag?
+               policy? resource?
                technology? event?
                project?]
-        :or {resync? false
-             country? false
+        :or {country? false
              currency? false
              organisation? false
              language? false
@@ -498,67 +507,40 @@
              project? false}}]
    (jdbc/with-db-transaction [tx db]
      (println "-- Start Seeding")
-     (when-not resync?
-       (truncate-db tx))
+     #_(truncate-db tx)
      (when country?
-       (when resync?
-         (resync-country tx)
-         (resync-country-group tx))
-       (when-not resync?
-         (println "Seeding country...")
-         (seed-countries tx)
-         (seed-country-groups tx)
-         (seed-country-group-country tx)))
+       (println "Seeding country...")
+       (resync-country tx)
+       (resync-country-group tx))
      (when currency?
-       (when-not resync?
-         (println "Seeding currency...")
-         (seed-currencies tx)))
+       (println "Seeding currency...")
+       (seed-currencies tx))
      (when organisation?
-       (when resync?
-         (resync-organisation tx))
-       (when-not resync?
-        (println "Seeding organisation...")
-        (seed-organisations tx)))
+       (println "Seeding organisation...")
+       (resync-organisation tx))
      (when language?
-       (when-not resync?
-         (println "Seeding language...")
-         (seed-languages tx)))
+       (println "Seeding language...")
+       (seed-languages tx))
      (when tag?
-       (when-not resync?
-         (println "Seeding language...")
-         (seed-tags tx)))
+       (println "Seeding tag...")
+       (seed-tags tx))
      (when policy?
-       (when resync?
-         (resync-policy tx))
-       (when-not resync?
-        (println "Seeding policy...")
-        (seed-policies tx)))
+       (println "Seeding policy...")
+       (resync-policy tx))
      (when resource?
-       (when resync?
-         (resync-resource tx))
-       (when-not resync?
-        (println "Seeding resource...")
-        (seed-resources tx)))
+       (println "Seeding resource...")
+       (resync-resource tx))
      (when technology?
-       (when resync?
-         (resync-technology tx))
-       (when-not resync?
-         (println "Seeding technology...")
-         (seed-technologies tx)))
+       (println "Seeding technology...")
+       (resync-technology tx))
      (when event?
-       (when resync?
-         (resync-event tx))
-       (when-not resync?
-         (println "Seeding event...")
-         (seed-events tx)))
+       (println "Seeding event...")
+       (resync-event tx))
      (when project?
-       (when resync?
-        (resync-project tx))
-       (when-not resync?
-         (println "Seeding project...")
-         (seed-actions tx)
-         (seed-action-details tx)
-         (seed-projects tx)))
+       (println "Seeding project...")
+       #_(seed-actions tx)
+       #_(seed-action-details tx)
+       (resync-project tx))
      (println "-- Done Seeding")))
   ([]
    (let [db (-> (dev-system)
@@ -566,8 +548,7 @@
               :duct.database.sql/hikaricp
               :spec)]
      (seed db
-       {:resync? false
-        :country? true
+       {:country? true
         :currency?  (db.util/is-empty db "currency")
         :organisation? true
         :language?  (db.util/is-empty db "language")
@@ -595,9 +576,15 @@
                :spec))
 
   ;; example resyncing
-  (seed db {:resync? true
-            :organisation? true
-            :policy? true})
+
+  (resync-country db)
+  (resync-country-group db)
+  (resync-policy db)
+  (resync-resource db)
+  (resync-organisation db)
+  (resync-technology db)
+  (resync-event db)
+  (resync-project db)
 
   ;; get view table of topic
   (defn view-table-of [association]
