@@ -100,14 +100,14 @@ const Browse = ({
     // requests to the backend.
   }, [isLoading]); // eslint-disable-line
   useEffect(() => {
-    if (isAuthenticated) {
+    if (profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
         api.get("/favorite").then((resp) => {
           setRelations(resp.data);
         });
       }, 100);
     }
-  }, [isAuthenticated]);
+  }, [profile]);
   const updateQuery = (param, value) => {
     const newQuery = { ...query };
     newQuery[param] = value;
@@ -282,10 +282,10 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
         ))}
       </ul>
     </div>,
-    <div className="field" key={"topic-select-unlisted"}>
-      <div className="label">Stakeholders</div>
-      <ul className="topic-list">
-        {isApprovedUser ? (
+    isApprovedUser ? (
+      <div className="field" key={"topic-select-unlisted"}>
+        <div className="label">Stakeholders</div>
+        <ul className="topic-list">
           <li>
             <Checkbox
               checked={value.indexOf("stakeholder") !== -1}
@@ -294,18 +294,18 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
               Individuals ({(counts && counts["stakeholder"]) || 0})
             </Checkbox>
           </li>
-        ) : null}
-        <li>
-          <Checkbox
-            checked={value.indexOf("organisation") !== -1}
-            onChange={handleChange("organisation")}
-          >
-            {topicNames("organisation")} (
-            {(counts && counts["organisation"]) || 0})
-          </Checkbox>
-        </li>
-      </ul>
-    </div>,
+          <li>
+            <Checkbox
+              checked={value.indexOf("organisation") !== -1}
+              onChange={handleChange("organisation")}
+            >
+              {topicNames("organisation")} (
+              {(counts && counts["organisation"]) || 0})
+            </Checkbox>
+          </li>
+        </ul>
+      </div>
+    ) : null,
   ];
 };
 

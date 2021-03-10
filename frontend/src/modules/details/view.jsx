@@ -416,19 +416,27 @@ const DetailsView = ({ match: { params }, ...props }) => {
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
         api.get("/favorite").then((resp) => {
           setRelations(resp.data);
         });
       }, 100);
     }
-  }, [isAuthenticated]);
+  }, [profile]);
 
   const handleRelationChange = (relation) => {
-    api
-      .post("/favorite", relation)
-      .then((res) => {
+    if (!isAuthenticated) {
+      loginWithPopup();
+    }
+    if (profile.reviewStatus === "SUBMITTED") {
+      setWarningVisible(true);
+    }
+    if (isAuthenticated && profile.reviewStatus === undefined) {
+      setSignupModalVisible(true);
+    }
+    if (profile.reviewStatus === "APPROVED") {
+      api.post("/favorite", relation).then((res) => {
         const relationIndex = relations.findIndex(
           (it) => it.topicId === relation.topicId
         );
@@ -441,23 +449,13 @@ const DetailsView = ({ match: { params }, ...props }) => {
         } else {
           setRelations([...relations, relation]);
         }
-      })
-      .catch((err) => {
-        if (isAuthenticated) {
-          if (Object.keys(profile).length === 0) {
-            setSignupModalVisible(true);
-          } else {
-            setWarningVisible(true);
-          }
-        } else {
-          loginWithPopup();
-        }
       });
+    }
   };
 
   useEffect(() => {
     props.updateDisclaimer(null);
-  }, []);
+  }, [props]);
 
   if (!data)
     return (

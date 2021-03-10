@@ -28,7 +28,7 @@ const Landing = ({
   const [counts, setCounts] = useState(initLandingCount);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
-  const hasProfile = Object.keys(profile).length > 0;
+  const hasProfile = profile?.reviewStatus;
   const tTypes = [
     "project",
     "event",
@@ -153,7 +153,7 @@ const Landing = ({
   useEffect(() => {
     setFilters(null);
     updateDisclaimer(window.location.pathname);
-  }, []);
+  }, [updateDisclaimer, setFilters]);
 
   return (
     <div id="landing">
@@ -249,6 +249,7 @@ const Summary = ({
   tTypes,
   isApprovedUser,
 }) => {
+  const restricted = ["stakeholder", "organisation"];
   return (
     <div className="summary">
       <header>{!selected ? "Global summary" : "Summary"}</header>
@@ -282,7 +283,7 @@ const Summary = ({
                     {it.countries === 1 ? "country" : "countries"}
                   </span>
                 </div>
-                {current === "stakeholder" && !isApprovedUser ? (
+                {restricted.includes(current) && !isApprovedUser ? (
                   <Link to="/" onClick={seeAllEvents}>
                     See all
                   </Link>
