@@ -430,7 +430,7 @@
         (throw e)))))
 
 (defn get-cache-id []
-  (quot (System/currentTimeMillis) 1000))
+  (str (java.util.UUID/randomUUID) "-" (quot (System/currentTimeMillis) 1000)))
 
 (defn resync-country [db]
   (let [cache-id (get-cache-id)]
