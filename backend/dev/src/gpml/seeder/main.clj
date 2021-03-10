@@ -479,12 +479,14 @@
   (db.util/revert-constraint db))
 
 (defn seed
-  ([db {:keys [country? currency?
-               organisation? language? tag?
-               policy? resource?
+  ([db {:keys [resync?
+               country? currency?
+               organisation? language?
+               tag? policy? resource?
                technology? event?
                project?]
-        :or {country? false
+        :or {resync? false
+             country? false
              currency? false
              organisation? false
              language? false
@@ -496,40 +498,67 @@
              project? false}}]
    (jdbc/with-db-transaction [tx db]
      (println "-- Start Seeding")
-     #_(truncate-db tx)
+     (when-not resync?
+       (truncate-db tx))
      (when country?
-       (println "Seeding country...")
-       (resync-country tx)
-       (resync-country-group tx))
+       (when resync?
+         (resync-country tx)
+         (resync-country-group tx))
+       (when-not resync?
+         (println "Seeding country...")
+         (seed-countries tx)
+         (seed-country-groups tx)
+         (seed-country-group-country tx)))
      (when currency?
-       (println "Seeding currency...")
-       (seed-currencies tx))
+       (when-not resync?
+         (println "Seeding currency...")
+         (seed-currencies tx)))
      (when organisation?
-       (println "Seeding organisation...")
-       (resync-organisation tx))
+       (when resync?
+         (resync-organisation tx))
+       (when-not resync?
+        (println "Seeding organisation...")
+        (seed-organisations tx)))
      (when language?
-       (println "Seeding language...")
-       (seed-languages tx))
+       (when-not resync?
+         (println "Seeding language...")
+         (seed-languages tx)))
      (when tag?
-       (println "Seeding tag...")
-       (seed-tags tx))
+       (when-not resync?
+         (println "Seeding language...")
+         (seed-tags tx)))
      (when policy?
-       (println "Seeding policy...")
-       (resync-policy tx))
+       (when resync?
+         (resync-policy tx))
+       (when-not resync?
+        (println "Seeding policy...")
+        (seed-policies tx)))
      (when resource?
-       (println "Seeding resource...")
-       (resync-resource tx))
+       (when resync?
+         (resync-resource tx))
+       (when-not resync?
+        (println "Seeding resource...")
+        (seed-resources tx)))
      (when technology?
-       (println "Seeding technology...")
-       (resync-technology tx))
+       (when resync?
+         (resync-technology tx))
+       (when-not resync?
+         (println "Seeding technology...")
+         (seed-technologies tx)))
      (when event?
-       (println "Seeding event...")
-       (resync-event tx))
+       (when resync?
+         (resync-event tx))
+       (when-not resync?
+         (println "Seeding event...")
+         (seed-events tx)))
      (when project?
-       (println "Seeding project...")
-       #_(seed-actions tx)
-       #_(seed-action-details tx)
-       (resync-project tx))
+       (when resync?
+        (resync-project tx))
+       (when-not resync?
+         (println "Seeding project...")
+         (seed-actions tx)
+         (seed-action-details tx)
+         (seed-projects tx)))
      (println "-- Done Seeding")))
   ([]
    (let [db (-> (dev-system)
@@ -537,7 +566,8 @@
               :duct.database.sql/hikaricp
               :spec)]
      (seed db
-       {:country? true
+       {:resync? false
+        :country? true
         :currency?  (db.util/is-empty db "currency")
         :organisation? true
         :language?  (db.util/is-empty db "language")
@@ -565,14 +595,9 @@
                :spec))
 
   ;; example resyncing
-  (resync-country db)
-  (resync-country-group db)
-  (resync-policy db)
-  (resync-resource db)
-  (resync-organisation db)
-  (resync-technology db)
-  (resync-event db)
-  (resync-project db)
+  (seed db {:resync? true
+            :organisation? true
+            :policy? true})
 
   ;; get view table of topic
   (defn view-table-of [association]
