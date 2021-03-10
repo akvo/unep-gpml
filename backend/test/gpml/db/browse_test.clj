@@ -39,8 +39,8 @@
 
 (deftest topic-filtering
   (let [db (test-util/db-test-conn)
-        _ (seeder/seed-countries db)
-        _ (seeder/seed-technologies db)
+        _ (seeder/seed db {:country? true
+                           :technology? true})
         stakeholder-id (db.stakeholder/new-stakeholder db (make-profile "John" "Doe" "mail@org.com"))
         event-id (db.event/new-event db event-sample)]
     (testing "Simple text search"
