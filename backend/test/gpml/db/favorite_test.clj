@@ -29,8 +29,8 @@
 
 (deftest new-relation-test
   (let [db (test-util/db-test-conn)]
-    (seeder/seed db {:country? true
-                     :technology? true})
+    (seeder/seed-countries db)
+    (seeder/seed-technologies db)
     (let [sth1-id (:id (new-stakeholder db "email1@un.org"))
           sth2-id (:id (new-stakeholder db "email2@un.org"))]
       (testing "Creating a new relation between a stakeholder and a technolgy item"

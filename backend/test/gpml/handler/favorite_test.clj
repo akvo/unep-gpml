@@ -55,8 +55,8 @@
                      (ig/init [::favorite/post]))
           db (-> system :duct.database.sql/hikaricp :spec)
           handler (::favorite/post system)
-          _ (seeder/seed db {:country? true
-                             :technology? true})
+          _ (seeder/seed-countries db)
+          _ (seeder/seed-technology db)
           _ (new-stakeholder db "email@un.org")
           resp (handler (mock-post "email@un.org"))]
       (is (= 200 (:status resp))))))
