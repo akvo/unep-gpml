@@ -5,6 +5,9 @@
 (def ^:private json-path "dev/resources/files/")
 (def ^:private cache-file (str json-path "cache-seed.json"))
 
+(defn is-empty [db x]
+  (= 0 (:count (seeder.db/get-count db {:tbl x}))))
+
 (defn parse-json [json-file]
   (j/read-value
     (slurp json-file)

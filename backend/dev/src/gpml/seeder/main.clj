@@ -538,10 +538,10 @@
               :spec)]
      (seed db
        {:country? true
-        :currency? (= 0 (:count (jdbc/query db ["SELECT COUNT(*) FROM currency"])))
+        :currency?  (db.util/is-empty db "currency")
         :organisation? true
-        :language?  (= 0 (:count (jdbc/query db ["SELECT COUNT(*) FROM language"])))
-        :tag?  (= 0 (:count (jdbc/query db ["SELECT COUNT(*) FROM tag"])))
+        :language?  (db.util/is-empty db "language")
+        :tag?  (db.util/is-empty db "tag")
         :policy? true
         :resource? true
         :technology? true
@@ -563,6 +563,7 @@
                (ig/init [:duct.database.sql/hikaricp])
                :duct.database.sql/hikaricp
                :spec))
+
   ;; example resyncing
   (resync-country db)
   (resync-country-group db)
