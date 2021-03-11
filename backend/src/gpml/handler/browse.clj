@@ -58,7 +58,9 @@
   (let [data (->> query
                   (get-db-filter)
                   (db.browse/filter-topic db)
-                  (filter (fn [{:keys [topic]}] (or approved? (not (= topic "stakeholder")))))
+                  (filter (fn [{:keys [topic]}] (or approved?
+                                                    (not
+                                                      (contains? #{"stakeholder" "organisation"} topic )))))
                   (map (fn [{:keys [json geo_coverage_iso_code topic]}]
                          (merge
                           (assoc json
