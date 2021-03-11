@@ -15,6 +15,8 @@ services:
       - DATABASE_URL=jdbc:postgresql://db/gpml?user=unep&password=password
       - OIDC_ISSUER=https://unep-gpml-test.eu.auth0.com/
       - OIDC_AUDIENCE=dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J
+      - AUTH0_BACKEND_CLIENT_ID
+      - AUTH0_BACKEND_SECRET
   frontend:
     environment:
       - PORT=3001

@@ -50,6 +50,16 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: database-url
+        - name: AUTH0_BACKEND_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: auth0-backend-client-id
+        - name: AUTH0_BACKEND_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: auth0-backend-secret
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/secrets/cloudsql/credentials.json"
         readinessProbe:
