@@ -62,7 +62,6 @@
                   :repl-options {:init-ns dev
                                  :init (do
                                          (println "Starting backend ...")
-                                         (go)
-                                         (seeder/seed))
+                                         (go))
                                  :host "0.0.0.0"
                                  :port 47480}}})

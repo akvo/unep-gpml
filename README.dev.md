@@ -14,3 +14,14 @@ export ts="$(date +%s)"
 sed "s/\${TIMESTAMP}/${ts}/" ci/k8s/seeder.yaml > "/tmp/seeder-${ts}.yml";
 kubectl apply -f "/tmp/seeder-${ts}.yml"
 ```
+
+## Exporting current state of the database
+
+Run the `dump-db.sh` script:
+
+```bash
+./db/script/dump-db.sh
+```
+
+This will make the necessary changes in `./db/docker-entrypoint-initdb.d/001-init.sql` file. Commit
+and push those changes.
