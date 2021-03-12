@@ -311,7 +311,7 @@ ALTER SEQUENCE public.action_id_seq OWNED BY public.action.id;
 --
 
 CREATE TABLE public.country (
-    id integer DEFAULT nextval('public.country'::regclass) NOT NULL,
+    id integer NOT NULL,
     name text NOT NULL,
     iso_code character(3),
     territory character(3),
@@ -326,7 +326,7 @@ ALTER TABLE public.country OWNER TO unep;
 --
 
 CREATE TABLE public.country_group (
-    id integer DEFAULT nextval('public.country_group'::regclass) NOT NULL,
+    id integer NOT NULL,
     name text NOT NULL,
     type public.country_group_type
 );
@@ -453,7 +453,7 @@ ALTER SEQUENCE public.currency_id_seq OWNED BY public.currency.id;
 --
 
 CREATE TABLE public.event (
-    id integer DEFAULT nextval('public.event'::regclass) NOT NULL,
+    id integer NOT NULL,
     title text NOT NULL,
     start_date timestamp with time zone NOT NULL,
     end_date timestamp with time zone NOT NULL,
@@ -678,7 +678,7 @@ ALTER SEQUENCE public.language_id_seq OWNED BY public.language.id;
 --
 
 CREATE TABLE public.organisation (
-    id integer DEFAULT nextval('public.organisation'::regclass) NOT NULL,
+    id integer NOT NULL,
     name text NOT NULL,
     url text,
     type text,
@@ -757,7 +757,7 @@ ALTER SEQUENCE public.organisation_id_seq OWNED BY public.organisation.id;
 --
 
 CREATE TABLE public.policy (
-    id integer DEFAULT nextval('public.policy'::regclass) NOT NULL,
+    id integer NOT NULL,
     title text,
     original_title text,
     data_source text,
@@ -919,7 +919,7 @@ ALTER SEQUENCE public.policy_tag_id_seq OWNED BY public.policy_tag.id;
 --
 
 CREATE TABLE public.project (
-    id integer DEFAULT nextval('public.project'::regclass) NOT NULL,
+    id integer NOT NULL,
     uuid text NOT NULL,
     phase smallint,
     funds numeric,
@@ -1119,7 +1119,7 @@ ALTER TABLE public.ragtime_migrations OWNER TO unep;
 --
 
 CREATE TABLE public.resource (
-    id integer DEFAULT nextval('public.resource'::regclass) NOT NULL,
+    id integer NOT NULL,
     title text,
     type text,
     publish_year smallint,
@@ -1852,7 +1852,7 @@ ALTER SEQUENCE public.tag_id_seq OWNED BY public.tag.id;
 --
 
 CREATE TABLE public.technology (
-    id integer DEFAULT nextval('public.technology'::regclass) NOT NULL,
+    id integer NOT NULL,
     name text,
     year_founded smallint,
     country integer,
@@ -2838,6 +2838,20 @@ ALTER TABLE ONLY public.action_detail ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: country id; Type: DEFAULT; Schema: public; Owner: unep
+--
+
+ALTER TABLE ONLY public.country ALTER COLUMN id SET DEFAULT nextval('public.country_id_seq'::regclass);
+
+
+--
+-- Name: country_group id; Type: DEFAULT; Schema: public; Owner: unep
+--
+
+ALTER TABLE ONLY public.country_group ALTER COLUMN id SET DEFAULT nextval('public.country_group_id_seq'::regclass);
+
+
+--
 -- Name: country_group_country id; Type: DEFAULT; Schema: public; Owner: unep
 --
 
@@ -2849,6 +2863,13 @@ ALTER TABLE ONLY public.country_group_country ALTER COLUMN id SET DEFAULT nextva
 --
 
 ALTER TABLE ONLY public.currency ALTER COLUMN id SET DEFAULT nextval('public.currency_id_seq'::regclass);
+
+
+--
+-- Name: event id; Type: DEFAULT; Schema: public; Owner: unep
+--
+
+ALTER TABLE ONLY public.event ALTER COLUMN id SET DEFAULT nextval('public.event_id_seq'::regclass);
 
 
 --
@@ -2887,10 +2908,24 @@ ALTER TABLE ONLY public.language ALTER COLUMN id SET DEFAULT nextval('public.lan
 
 
 --
+-- Name: organisation id; Type: DEFAULT; Schema: public; Owner: unep
+--
+
+ALTER TABLE ONLY public.organisation ALTER COLUMN id SET DEFAULT nextval('public.organisation_id_seq'::regclass);
+
+
+--
 -- Name: organisation_geo_coverage id; Type: DEFAULT; Schema: public; Owner: unep
 --
 
 ALTER TABLE ONLY public.organisation_geo_coverage ALTER COLUMN id SET DEFAULT nextval('public.organisation_geo_coverage_id_seq'::regclass);
+
+
+--
+-- Name: policy id; Type: DEFAULT; Schema: public; Owner: unep
+--
+
+ALTER TABLE ONLY public.policy ALTER COLUMN id SET DEFAULT nextval('public.policy_id_seq'::regclass);
 
 
 --
@@ -2912,6 +2947,13 @@ ALTER TABLE ONLY public.policy_language_url ALTER COLUMN id SET DEFAULT nextval(
 --
 
 ALTER TABLE ONLY public.policy_tag ALTER COLUMN id SET DEFAULT nextval('public.policy_tag_id_seq'::regclass);
+
+
+--
+-- Name: project id; Type: DEFAULT; Schema: public; Owner: unep
+--
+
+ALTER TABLE ONLY public.project ALTER COLUMN id SET DEFAULT nextval('public.project_id_seq'::regclass);
 
 
 --
@@ -2940,6 +2982,13 @@ ALTER TABLE ONLY public.project_country ALTER COLUMN id SET DEFAULT nextval('pub
 --
 
 ALTER TABLE ONLY public.project_tag ALTER COLUMN id SET DEFAULT nextval('public.project_tag_id_seq'::regclass);
+
+
+--
+-- Name: resource id; Type: DEFAULT; Schema: public; Owner: unep
+--
+
+ALTER TABLE ONLY public.resource ALTER COLUMN id SET DEFAULT nextval('public.resource_id_seq'::regclass);
 
 
 --
@@ -3066,6 +3115,13 @@ ALTER TABLE ONLY public.tag ALTER COLUMN id SET DEFAULT nextval('public.tag_id_s
 --
 
 ALTER TABLE ONLY public.tag_category ALTER COLUMN id SET DEFAULT nextval('public.tag_category_id_seq'::regclass);
+
+
+--
+-- Name: technology id; Type: DEFAULT; Schema: public; Owner: unep
+--
+
+ALTER TABLE ONLY public.technology ALTER COLUMN id SET DEFAULT nextval('public.technology_id_seq'::regclass);
 
 
 --
@@ -4693,6 +4749,7 @@ COPY public.organisation (id, name, url, type, country, geo_coverage_type, progr
 77	ReelCycle Inc	https://www.reelcycle.org	Non-governmental organization	253	global	Fishing for Energy program, monofilament collection and recycling	Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity	waste disposal	APPROVED
 78	Nest	https://www.nest.org.gr	Non-governmental organization	93	regional	\N	waste management, marine litter	environmental protection, awareness raising	APPROVED
 1030	Caisse Des Dépôts	\N	\N	\N	global	\N	\N	\N	SUBMITTED
+1062	Didier and Martine Primat Foundation	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 79	Marine Sciences For Society	https://marine-sciences-for-society.org/	Academia and Research	73	regional	http://micro2016.sciencesconf.org/ ; http://www.plastico0.org/	Connect the Micro2016 International conference http://micro2016.sciencesconf.org/ with your efforts  	Marine Sciences For Society, established in 2007, is a network of concerned scientists who are dedicated to ethically working with and for communities on marine and coastal related concerns.	APPROVED
 80	International Dialogue for Environmental Action (IDEA)	\N	Non-governmental organization	19	regional	\N	Reduced levels and impacts of land-based litter and solid waste introduced into the aquatic environment;	Protection of Azerbaijan's nature, including its marine environment.	APPROVED
 81	Western Metropolitan Regional Council	https://www.plasticfreejuly.org	Government	17	regional	Plastic Free July	Reduced levels and impacts of land-based litter and solid waste introduced into the aquatic environment by promoting the reduce message	Behaviour change, awareness raising, reduce message	APPROVED
@@ -4712,6 +4769,7 @@ COPY public.organisation (id, name, url, type, country, geo_coverage_type, progr
 95	Better Trails LLP	https://www.bettertrails.sg	Private Sector	202	regional	Coastal Clean Up, Kayaking River Clean Up Program	Towards reduced levels and impacts of land-based litter and solid waste introduced into the aquatic environment by giving Marine Litter Talk and pop up booth for awareness and prevention to schools and community groups	Responsible Outdoor Ethics, Leave No Trace Training	APPROVED
 96	Ocean Impact	https://www.oceanimpact.nl	Private Sector	170	regional	Business solutions tor better waste water treatment. Waterdonut to clean up plastics from Dutch rivers. Export knowledge to Asian countries together with Water treatment facilities.	A. Through introduction of the USP (USe of Plastic) Scan for Small and Medium Enterprises. It focuses on ​creating awareness with companies and help SME's tackle the issue of plastic waste. It measures implications and identifies business opportunities of	Initiate innovative projects with multistakeholders to improve business solutions for a clean and living ocean. Set up Oceans and Plastics Platform with IUCN and a Framework for Action with companies.	APPROVED
 1031	California Ocean Protection Council	\N	\N	\N	global	\N	\N	\N	SUBMITTED
+1063	Dow	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 97	Open University of The Netherlands	https://www.ou.nl/-/marine-litter	Academia and Research	170	regional	EDUCATION: 1. Massive Open Online Course on Marine Litter; RESEARCH PROJECTS: 2 The risk of microplastics in Indonesian coastal areas for coastal seafood species and human health 3; Minimisation of the environmental impact of supply and waste management chains for plastics in urban deltas by closing the loop.	Through the Massive Open Online Course we will contribute to: A. Reduced levels and impacts of land-based litter and solid waste introduced into the aquatic environment; B. Reduced levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, ALDFG, and abandoned vessels introduced into the aquatic environment; C. Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity. Through our research programs to: A. Reduced levels and impacts of land-based litter and solid waste introduced into the aquatic environment; C. Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.	Environmental Science, modelling & Supply Chain Management; circular economy	APPROVED
 98	Seven Seas Coffee	https://www.sevenseascoffee.com	Private Sector	253	global	Supporting work in Critical Watershed Management in Coffee Growing Communities; Exploring alternatives to plastic in preservation of coffee quality at industry level.	A.) Promote and educate on plastic alternatives used to transport and preserve quality at various stages of the coffee industry B.) Promote, educate, and support watershed management initiatives the reduction of marine liter in coffee country of origin C.) Lead Beach Cleanups . . As a life long ocean enthusiast and career coffee professionals for the last 20 years, we are working to build resilient and ecologically minded coffee supply partnerships. Seven Seas Coffee combines a deep love of the ocean with expertise in the realm of coffee to minimize industry impact on our seas. We educate and support the need for conservation and protection of the marine environment through the medium and production of coffee.	Coffee Supply Chains	APPROVED
 99	Gulf and Caribbean Fisheries Institute	https://www.gcfi.org/	Non-governmental organization	253	global	Caribbean Node of GPML\nCLME+ Research Strategy on Marine Pollution\nMarine Pollution Research	\N	Caribbean Node of GPML	APPROVED
@@ -4726,6 +4784,7 @@ COPY public.organisation (id, name, url, type, country, geo_coverage_type, progr
 108	Southeast Marine Debris Cleanup Initiative	\N	Non-governmental organization	253	global	Southeast Marine Debris Cleanup Initiative	Marine Debris Cleanups	\N	APPROVED
 109	Plastic Ocean Project, Inc.	https://www.plasticoceanproject.org	Non-governmental organization	253	global	NOAA Marine Debris Research Grant on Black Sea Bass 2017, Fishing4Plastic Tournaments, Traveling marine debris art exhibit, "What goes around comes around"	UNCW and Plastic Ocean Project marine plastic research	Field research	APPROVED
 156	Coocamar - Coop. de catadores de reciclaveis	https://www.mncr.org.br	Non-governmental organization	35	regional	\N	medio ambiente	RECICLAGEM E COLETA SELETIVA EDUCAÇAO AMBIENTAL	APPROVED
+1064	Dow Chemicals	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 110	Flipflopi Project	https://www.theflipflopi.com/	Private Sector	121	regional	The Flipflopi Project champions sustainable United States of Americage and management of plastics by encouraging corporations, governments and individuals to become part of a “plastic revolution”, by reusing and recycling plastics to urgently reduce their environmental impact in Africa and the rest of the world.	1) RECYCLE: Create awareness regionally, and to a global audience, of how much plastic ends up in the ocean by building a 60ft plastic dhow, called “The Flipflopi”, which showcases the value of repurposing plastic waste.\n2) ENGAGE: Build awareness of plastic waste globally by sailing The Flipflopi from Kenya to Cape Town, promoting the key messages of “reduce, reuse and recycle” through mainstream media, social media, community, schools, governmental and stakeholder engagement." LEAD ON:\n1) INSPIRE: Kickstart the #plasticrevolution in Africa by creating a virtual platform for home-grown ideas, innovations, networks and initiatives to grow, which will be backed by capital raised from donors.\n2) ACTIVATE: Play a catalytic role in driving forward Africa’s #plasticrevolution into a worldwide network of innovators, initiatives and people engaged in bringing about a world without single use plastic.	Plastic Pollution and Solutions	APPROVED
 111	Department for Environment, Food and Rural Affairs	https://www.gov.uk/government/organisations/department-for-environment-food-rural-affairs	Government	83	regional	• Published a Litter Strategy for England\n• Committed £450,000 to a Litter Innovation Fund to trial small scale projects that could be replicated more widely, including those aimed at reducing litter entering the marine environment.\n• Developed a ban on microbeads in rinse off personal care products, described as one of the toughest in the world.\n• Introduced a 5p plastic bag charge that has cut the use of plastic bags by over 80 per cent in England\n• Supporting global programmes such as the Global Ghost Gear Initiative\n• Addressing marine litter prevention and/or retrieval through our United Kingdom Marine Strategy and through the OSPAR Regional Action Plan on Marine Litter	Reduced levels and impacts of land-based litter and solid waste introduced into the aquatic environment.	Policy	APPROVED
 112	Network PlaMoWa - Plastic Monitoring in Waters	https://www.plamowa.net	Private Sector	62	regional	Leading research institutions and companies have joined forces in October 2014, creating a holistic network to develop methods and services for the quick analysis of the plastic pollution in waters. Based on reliable and affordable equipment and efficient standardized monitoring procedures, authorities can define and supervise statuatory limits.	Reduced levels and impacts of land-based litter and solid waste introduced into the aquatic environment	R&D on the identification of plastics in waters	APPROVED
@@ -4743,6 +4802,8 @@ COPY public.organisation (id, name, url, type, country, geo_coverage_type, progr
 124	Sustainable Ocean Alliance	\N	Non-governmental organization	253	global	1. Plastic Free Campus Campaign: A campaign carried out by school chapters that focuses on ridding their campus of plastic straws, dishware and cutlery and switching to biodegradable alternatives. 2. Individual Projects: Each of our chapters and ambassadors carries out multiple sustainability projects, many of which focus on reducing marine litter through awareness campaigns, beach clean ups, and working with businesses to make the switch to biodegradable alternatives.	Mobilizing the next generation to develop and implement innovative campaigns and solutions to our growing marine debris problem. Youth engagement in marine debris prevention.	Ocean Sustainability	APPROVED
 125	Universidad Politécnica de Madrid	https://www.etsisi.upm.es/	Academia and Research	73	regional	MOOC on Marine Litter	\N	Computer sciences	APPROVED
 126	Pi Polymers Ltd	\N	Private Sector	83	regional	\N	New technology systems to increase recycled supply chain value development, Decentralised supply chain technology complexes	New recycling technology systems - local supply chain development for polymer value creation - technology innovation.	APPROVED
+1065	EA	\N	\N	\N	global	\N	\N	\N	SUBMITTED
+1066	EAWAG-SANDEC (Switzerland)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 127	Instituto Oceano Vivo	https://www.facebook.com/ongoceanovivo	Non-governmental organization	35	regional	Quantification and qualification Program of litter on the beaches of southern Brazil	A. Reduced levels and impacts of land-based litter and solid waste introduced into the aquatic envirnment; c. Reduced levels and impacts of accumulated marine debris on shorelines, aquatic habitats, and biodiversity. the applicant will contribute to one of the existing sponsored focal areas	marine biology, ecology, cetacean's ecology	APPROVED
 128	Ecologistas en Acción Las Palmas de Gran Canaria	https://www.ecologistasenaccion.org/rubrique76.html	Non-governmental organization	73	regional	Reports on MarineDebris, Beach Clean Ups, workshops and other activities to raise awareness of this global problem.	Raise awareness, sensibilization, dissemination, ...	Marine Debris raising Awareness	APPROVED
 129	Norwegian Institute for Water Research	https://www.niva.no/	Academia and Research	171	regional	Numerous national and EU funded research projects. Collaboration projects in Asia under development.	We are interested in all three focal areas:\n* Reduced levels and impacts of land-based litter and solid waste introduced into the aquatic environment;\n* Reduced levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, ALDFG, and abandoned vessels introduced into the aquatic environment;\n* Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.	Micro and macro plastic, detection and analysis, monitoring in sludge, water, sediment, biota etc. Distribution in Arctic. Capacity building in developing countries. Source identification.	APPROVED
@@ -4761,6 +4822,7 @@ COPY public.organisation (id, name, url, type, country, geo_coverage_type, progr
 142	MARE - Marine and Environmental Sciences Centre	https://www.mare-centre.pt/en	Academia and Research	188	regional	Educational projects and research project	\N	The mission of MARE is to seek excellence in the study of aquatic ecosystems and disseminate knowledge to support policies for sustainable development.	APPROVED
 154	Keep Queensland Beautiful	https://www.keepqueenslandbeautiful.org.au	Non-governmental organization	17	regional	Adopt-a-Spot, Tidy Towns Clean Beaches, Cleaner Greener Schools	Reduce levels and impacts of land-based litter and solid waste introduced into the aquatic environment AND Reduced levels of impacts of marine debris on shorelines, aquatic habitats and biodiversity	Litter reduction programs and campaigns	APPROVED
 1032	Canada's Environment and Climate Change (ECCC)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
+1067	Ellen MacArthur Foundation	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 143	Goodtogather	https://goodtogather.nl	Private Sector	170	regional	Provision of landing nets for cleaning up floating litter in coastal urban areas	Reduced levels and impacts of land-based litter and solid waste introduced into the aquatic environment Certified participant MOOC on Marine Litter, 2016 Manufacturing & supply of long-life landing nets for cleaning up floating litter in coastal urban areas (see our website https://goodtogather.nl) Collaborative research into the manufacture of fishing nets for the removal of plastic litter from recycled nylon from used fishing nets (https://futureproof.community/challenges/goodtogather-partner-gerecyclede-nylon-boetgaren) Talks with local governments on distribution of landing nets to houseboat and quayside dwellers	Landing nets for cleaning up floating litter in coastal urban areas.	APPROVED
 144	Kystlotteriet	\N	Non-governmental organization	171	regional	Beach and coastal clean-up	Focal area A and B We at Kystlotteriet are very interested in joining the Global Partnership on Marine Litter. Kystlotteriet is a project, currently under the framework of the Norwegian Society for the Conservation of Nature, but in the process of becoming its own organization. Our focus area is to provide infrastructure and incentives for on-going voluntary coastal clean-up trough an innovative lottery model. The project is based on cooperation between multiple stakeholders working together to save the ocean from marine litter. Local and national businesses donate prizes, local governments provide (voluntary) funding as well as designated pick up and drop off spots for gear and litter, volunteers pick litter along the coast and join in the lottery for the chance to win prizes in local and national drawings. Through our cooperation with local actors we can guarantee permanent access to gear (garbage bags, gloves etc..) and we make sure that the garbage is being picked up by local renovation companies. What Kystlotteriet is doing is essentially lowering the threshold for voluntary action, ensuring that anyone can contribute to an important cause and in that way building a culture of ownership to nature. In addition to serving as a permanent infrastructure for volunteers wishing to contribute to cleaning up the shoreline, we at Kystlotteriet organize clean-up events where we provide transportation by either buss or boat, clean-up gear, guidance as well as food and drinks. Our organization is growing fast and we are currently anchored in 50 Norwegian and 4 Danish municipalities, organizing over 30 clean-up events during the summer of 2018. One garbage-bag equals one lottery ticket, during 2017 we had over 6000 tickets contributing to removing 40 tones of marine litter from our shoreline. If you require any further information, feel free to contact me at joakim@kystlotteriet.no Kind regards Joakim Gulliksen Project advisor Kystlotteriet Tlf (+47) 98005608 Joakim@kystlotteriet.no	Beach and coastal clean-up	APPROVED
 145	Madiba and Nature	https://www.madibanature.com	Non-governmental organization	48	regional	Pomotion of circular economy through the recycling of marine plastic waste into Ecoboat	Ensures the communication of Madiba & Nature and provide necessary information on projects in progress	\N	APPROVED
@@ -4880,6 +4942,7 @@ COPY public.organisation (id, name, url, type, country, geo_coverage_type, progr
 1051	Convention for the Protection of the Marine Environment of the North-East Atlantic (OSPAR)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 1052	Coordinating Ministry for Maritime & Investment Affairs	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 1053	Covanta	\N	\N	\N	global	\N	\N	\N	SUBMITTED
+1068	Ellen McArthur foundation (EMF)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 242	Club Boomerang	https://boomerangclub.ru/	Non-governmental organization	197	regional	We actively conduct educational events among schoolchildren and citizens about plastic waste and its effect on marine animals	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.	Additional education teacher (Tourism)	APPROVED
 243	Youth for our Planet	https://www.youthforourplanet.com	Non-governmental organization	83	regional	Nature restoration advocacy	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.	Environmental Advocacy Climate Activism	APPROVED
 244	Solidarité Numérique Éducation et Santé Castres (SNESC)	https://www.snesc.fr/	Non-governmental organization	79	regional	Promoting the use of culture and art as a tool for community dialog between cultural and artistic youth groups and institutions; to combat climate change and its impact on the environment in the Euro-Mediterranean region.\nPARTICIPATION OF SNESC IN United	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.	S.N.E.S.C c'est une ONG à Castres son but c'est apporter une expertise, une aide au démarrage, des formations dans le domaine de la santé, de l'éducation, de la culture et de l'écologie.	APPROVED
@@ -4892,6 +4955,7 @@ COPY public.organisation (id, name, url, type, country, geo_coverage_type, progr
 251	Commissariat National du Littoral	\N	Government	67	regional	swim h2020	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity	environnement marin	APPROVED
 1054	Cox Enterprises	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 1055	Cruise Line Holdings LTD.	\N	\N	\N	global	\N	\N	\N	SUBMITTED
+1069	Energy & Industrial Strategy	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 253	ecoSurge	https://www.ecosurge.org	Non-governmental organization	115	regional	Impact of covid-19 on plastic through the analysis of web contents and social media\nAssess impact of covid-19 and raise awareness - Monitor and reduce plastic waste	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment.	Digital technologies (AI,IoT,data analytics) for real-time automatic environmental monitoring, water quality and management, sustainable consumption	APPROVED
 254	T. Paez Integrated High School Boy Scouts Unit	\N	Academia and Research	180	regional	Solid waste management and related	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity\nOur bodies of water in Manila	Social Studies	APPROVED
 255	Environmental Conservation Department	https://www.ecdgov.mm	Government	151	regional	Yes,Now I am working from Environmental Control Sector and access to impact mitigation reports	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.\nI want to give knowledge sharing and how to protect of marine areas and near the surrounding areas of mangrove areas	Marine Science	APPROVED
@@ -4922,6 +4986,7 @@ COPY public.organisation (id, name, url, type, country, geo_coverage_type, progr
 1056	Cyprus Sustainable Tourism Initiative(CSTI)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 1057	Danone	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 1058	Dart Container Corporation	\N	\N	\N	global	\N	\N	\N	SUBMITTED
+1070	Environment & Climate Change (MESTEC)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 279	Fuze Ecoteer outdoor adventures	https://www.fuze-ecoteer.com/	Private Sector	161	regional	Perhentian turtle project Precious plastic recycling machine	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity	Recycling ocean and river waste	APPROVED
 280	VJ ENGINEERING SOLUTIONS SDN BHD	https://www.vjengineering.com.my/v1	Private Sector	161	regional	We are providing solutions to reduce marine litter to industries, rivers, ports, sea and local authorities.	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.	Spill Response Products & Services Preventive Maintenance Product & Services Oil Spill Response Training Provider Preventive Maintenance Training	APPROVED
 281	University of Mauritius	https://www.uom.ac.mu	Academia and Research	159	regional	WIOMSA marine liitter	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.	microplastics/environmental chemistry	APPROVED
@@ -4935,6 +5000,7 @@ COPY public.organisation (id, name, url, type, country, geo_coverage_type, progr
 302	State Environmental Inspectorate of Ukraine	\N	Government	242	regional	Interpol project 30 Days at Sea	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.	Environmental control	APPROVED
 1059	Department for Business	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 1060	Department for Environment	\N	\N	\N	global	\N	\N	\N	SUBMITTED
+1071	European Commission	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 289	Regional Organization for the Conservation of the Red Sea and Gulf of Aden (PERSGA)	https://www.persga.org/	Intergovernmental organization	199	regional	Developed a regional action plan on marine litter and guidelines on coastal beach marine litter in the Red Sea in the Red Sea and Gulf of Aden, and guidelines on how to prepare actions plans for marine litter management. Developing actions plan for marine litter management for PERSGA Member Countries and training & awareness workshops . Developing and producing awareness material	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.	Protection of the marine environment in the Red Sea an Gulf of Aden with multi-disciplinary areas, including training and public awareness	APPROVED
 290	Environmental Action (EA)	https://www.e-a.earth/	Academia and Research	44	regional	UNEP Life Cycle Initiative	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment. Generation of data related to plastic leakage & waste management per polymer and applications	Plastic footprint, LCA, Microplastics, Waste management	APPROVED
 291	Women And Child Welfare Society	https://www.wcwsodisha.simplesite.com/	Non-governmental organization	108	regional	Awareness and activities on clean environment,marine support require to our organisation	To provide volunteers as per supported project	Details in websiteEnergy-PetroleumConservation,RoadSafety etc.Women&ChildWelfareSociety	APPROVED
@@ -4950,6 +5016,7 @@ COPY public.organisation (id, name, url, type, country, geo_coverage_type, progr
 1016	BNP Paribas	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 1017	Baltic Marine Environment Protection Commission (HELCOM)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 1018	Baltic Sea Challenge	\N	\N	\N	global	\N	\N	\N	SUBMITTED
+1072	European Environment Agency (EEA)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 303	HOWTO	https://www.linkedin.com/company/18795026	Non-governmental organization	73	regional	Seacoast & Tourism	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.	Cooperation, Development, Tourism	APPROVED
 304	Aquaworld	\N	Private Sector	167	regional	School outreach on Ocean pollution and plastic pollution.\nPlastic and environmental clean ups.\nOcean clean ups\nPlastic workshop.	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.	Clean Ocean education.\nPlastic Management.\nOrnamental fisheries and Ornamental fisheries craft production.\nFish culture.	APPROVED
 305	Universidade Federal de Pelotas	\N	Academia and Research	35	regional	Microplastic Pollution of Patos Lagoon, South of Brazil	Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment., Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment., Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.	Recycling of polymers	APPROVED
@@ -4998,17 +5065,6 @@ COPY public.organisation (id, name, url, type, country, geo_coverage_type, progr
 1014	Autodesk.Foundation	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 1015	Aws	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 1061	Department of Agriculture	\N	\N	\N	global	\N	\N	\N	SUBMITTED
-1062	Didier and Martine Primat Foundation	\N	\N	\N	global	\N	\N	\N	SUBMITTED
-1063	Dow	\N	\N	\N	global	\N	\N	\N	SUBMITTED
-1064	Dow Chemicals	\N	\N	\N	global	\N	\N	\N	SUBMITTED
-1065	EA	\N	\N	\N	global	\N	\N	\N	SUBMITTED
-1066	EAWAG-SANDEC (Switzerland)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
-1067	Ellen MacArthur Foundation	\N	\N	\N	global	\N	\N	\N	SUBMITTED
-1068	Ellen McArthur foundation (EMF)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
-1069	Energy & Industrial Strategy	\N	\N	\N	global	\N	\N	\N	SUBMITTED
-1070	Environment & Climate Change (MESTEC)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
-1071	European Commission	\N	\N	\N	global	\N	\N	\N	SUBMITTED
-1072	European Environment Agency (EEA)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 1073	European Investment Bank (EIB)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 1074	European Topic Centre	\N	\N	\N	global	\N	\N	\N	SUBMITTED
 1075	European Union (EU)	\N	\N	\N	global	\N	\N	\N	SUBMITTED
@@ -24511,6 +24567,7 @@ COPY public.ragtime_migrations (id, created_at) FROM stdin;
 054-refine-v-stakeholder-view#2377f56e	2021-03-11T12:21:57.192
 055-sequence-adjustment#89386216	2021-03-11T12:21:57.212
 056-fix-sequence-adjustment#ea2c4a62	2021-03-11T12:21:57.230
+057-fix-wrong-sequence-assignment#06bb9285	2021-03-12T09:21:24.059
 \.
 
 
