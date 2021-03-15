@@ -61,9 +61,9 @@ const Landing = ({
         description = description.trim();
         description = description.length
           ? description
-          : `${
+          : `Member State: ${
               countries.find((x) => x.isoCode === countryInfo.territory).name
-            } Territory`;
+            }`;
       }
       return `
             <div class="map-tooltip">
