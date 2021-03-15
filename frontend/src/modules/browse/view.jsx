@@ -12,7 +12,6 @@ import {
 import { Link, useLocation, withRouter } from "react-router-dom";
 import moment from "moment";
 import api from "../../utils/api";
-import ShowMoreText from "react-show-more-text";
 import ModalWarningUser from "../../utils/modal-warning-user";
 import { useAuth0 } from "@auth0/auth0-react";
 import humps from "humps";
@@ -393,9 +392,7 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
           </li>
         )}
       </ul>
-      {result.type !== "project" && description && (
-        <ShowMoreText lines={5}>{description}</ShowMoreText>
-      )}
+      {result.type !== "project" && description && <div>{description}</div>}
       {allowBookmark && (
         <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />
       )}
