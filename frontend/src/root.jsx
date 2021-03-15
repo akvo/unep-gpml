@@ -20,6 +20,7 @@ import ProfileView from "./modules/profile/view";
 import SignupView from "./modules/signup/view";
 import DetailsView from "./modules/details/view";
 import Footer from "./footer";
+import uniqBy from "lodash/uniqBy";
 
 const disclaimerHome = (
   <>
@@ -57,7 +58,6 @@ const Root = () => {
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [eventWarningVisible, setEventWarningVisible] = useState(false);
   const [countries, setCountries] = useState(null);
-  const [teritories, setTeritories] = useState(null);
   const [data, setData] = useState(null);
   const [tags, setTags] = useState([]);
   const [initLandingCount, setInitLandingCount] = useState("");
@@ -104,16 +104,7 @@ const Root = () => {
       setData(resp.data);
     });
     api.get("/country").then((resp) => {
-      // TODO Remove no Description after New Country is ready in both test / production
-      const noDescription = resp.data.filter((x) => x.description).length === 0;
-      if (noDescription) {
-        setCountries(resp.data);
-      } else {
-        setCountries(resp.data.filter((x) => x.description === "Member State"));
-        setTeritories(
-          resp.data.filter((x) => x.description !== "Member State")
-        );
-      }
+      setCountries(uniqBy(resp.data), (e) => e.name);
       setInitLandingCount("project");
     });
     api.get("/tag").then((resp) => {
@@ -225,7 +216,6 @@ const Root = () => {
               {...{
                 profile,
                 countries,
-                teritories,
                 data,
                 initLandingCount,
                 setCountries,

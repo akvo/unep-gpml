@@ -11,7 +11,6 @@ const Landing = ({
   history,
   data,
   countries,
-  teritories,
   initLandingCount,
   setCountries,
   setInitLandingCount,
@@ -51,33 +50,25 @@ const Landing = ({
   const toolTip = (params) => {
     const summary = data?.map?.find((it) => it.isoCode === params.name);
     if (summary) {
-      const countryInfo = countries?.find(
+      let countryInfo = countries?.filter(
         (it) => it.isoCode === summary.isoCode
       );
-      const countryName = countryInfo?.name || summary.isoCode;
-      const teritory = teritories?.find((it) => it.isoCode === countryName);
-      if (teritory) {
-        return `
-            <div class="map-tooltip">
-              <h3>${teritory.name}</h3>
-              <h4>${teritory.description}</h4>
-              <ul>
-              ${tTypes
-                .map(
-                  (topic) =>
-                    `<li><span>${topicNames(topic)}</span><b>${
-                      summary[topic]
-                    }</b></li>`
-                )
-                .join("")}
-              </ul>
-            </div>
-          `;
+      countryInfo =
+        countryInfo.find((x) => x.description === "Member State") ||
+        countryInfo[0];
+      let description = countryInfo?.description;
+      if (description) {
+        description = description.trim();
+        description = description.length
+          ? description
+          : `${
+              countries.find((x) => x.isoCode === countryInfo.territory).name
+            } Territory`;
       }
       return `
             <div class="map-tooltip">
-              <h3>${countryName}</h3>
-              <h4>Member State</h4>
+              <h3>${countryInfo?.name || summary.isoCode}</h3>
+              <h4>${description}</h4>
               <ul>
               ${tTypes
                 .map(
