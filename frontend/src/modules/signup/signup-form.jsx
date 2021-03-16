@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Form, Switch } from "antd";
-import { Form as FinalForm, FormSpy } from "react-final-form";
+import { Form, Switch, Select } from "antd";
+import { Form as FinalForm, FormSpy, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import "./styles.scss";
 import Checkbox from "antd/lib/checkbox/Checkbox";
@@ -72,21 +72,29 @@ const defaultFormSchema = {
       },
       country: {
         label: "Country",
+        required: true,
         order: 3,
         control: "select",
         showSearch: true,
         options: [],
         autoComplete: "on",
       },
-      geoCoverageType: {
-        label: "Geo coverage type",
-        control: "select",
-        options: geoCoverageTypeOptions.map((it) => ({
-          value: it.toLowerCase(),
-          label: it,
-        })),
+    },
+    geoCoverage: {
+      // geoCoverageType: {
+      //   label: "Geo coverage type",
+      //   required: true,
+      //   control: "select",
+      //   options: geoCoverageTypeOptions.map((it) => ({
+      //     value: it.toLowerCase(),
+      //     label: it,
+      //   })),
+      // },
+      geoCoverageValue: {
+        label: "Geo coverage",
+        required: true,
+        render: GeoCoverageInput,
       },
-      geoCoverageValue: { label: "Geo coverage", render: GeoCoverageInput },
     },
   },
   organisation: {
@@ -108,6 +116,7 @@ const defaultFormSchema = {
   expertiesActivities: {
     seeking: {
       label: "Seeking",
+      required: true,
       control: "select",
       mode: "multiple",
       showSearch: true,
@@ -115,6 +124,7 @@ const defaultFormSchema = {
     },
     offering: {
       label: "Offering",
+      required: true,
       control: "select",
       mode: "multiple",
       showSearch: true,
@@ -122,6 +132,7 @@ const defaultFormSchema = {
     },
     about: {
       label: "About yourself",
+      required: true,
       control: "textarea",
       placeholder: "Max 150 words",
     },
@@ -179,6 +190,7 @@ const SignupForm = ({
     checked: false,
     text: "Show my email address on public listing",
   });
+  const [geoType, setGeoType] = useState({ value: null, error: false });
   const prevVals = useRef();
   const formRef = useRef();
   const formSchemaRef = useRef(defaultFormSchema);
@@ -229,8 +241,8 @@ const SignupForm = ({
           value: x.isoCode,
           label: x.name,
         }));
-        newSchema["personalDetails"]["socialLocation"].geoCoverageValue = {
-          ...newSchema["personalDetails"]["socialLocation"].geoCoverageValue,
+        newSchema["personalDetails"]["geoCoverage"].geoCoverageValue = {
+          ...newSchema["personalDetails"]["geoCoverage"].geoCoverageValue,
           countries: countries,
         };
       }
@@ -247,8 +259,8 @@ const SignupForm = ({
         value: x.isoCode,
         label: x.name,
       }));
-      newSchema["personalDetails"]["socialLocation"].geoCoverageValue = {
-        ...newSchema["personalDetails"]["socialLocation"].geoCoverageValue,
+      newSchema["personalDetails"]["geoCoverage"].geoCoverageValue = {
+        ...newSchema["personalDetails"]["geoCoverage"].geoCoverageValue,
         countries: countries,
       };
       setFormSchema(newSchema);
@@ -306,9 +318,24 @@ const SignupForm = ({
     });
   };
 
+  const handleChangeGeoType = (value, setError = true) => {
+    setGeoType({ value, error: setError ? !value : setError });
+    const newSchema = cloneDeep(formSchema);
+    Object.keys(newSchema["personalDetails"]["geoCoverage"]).forEach((key) => {
+      newSchema["personalDetails"]["geoCoverage"][key].required =
+        value !== "global";
+    });
+    setFormSchema(newSchema);
+    setTimeout(() => {
+      formRef.current?.change("ts", new Date().getTime());
+      formRef.current?.change("geoCoverageType", value);
+    });
+  };
+
   useEffect(() => {
     if (initialValues) {
       handleChangePublicEmail(initialValues.publicEmail);
+      handleChangeGeoType(initialValues?.geoCoverageType, false);
     }
     if (initialValues && initialValues.org === null) {
       handleChangePrivateCitizen({ target: { checked: true } });
@@ -347,6 +374,49 @@ const SignupForm = ({
                   </div>
                   <FieldsFromSchema
                     schema={formSchema["personalDetails"]["socialLocation"]}
+                  />
+                  <Field
+                    name="geoCoverageType"
+                    options={geoCoverageTypeOptions}
+                    component={(props) => {
+                      return (
+                        <Form.Item
+                          label="Geo coverage type"
+                          name={props.input.name}
+                          validateStatus={
+                            props.meta.error && props.meta.touched
+                              ? "error"
+                              : ""
+                          }
+                          help={
+                            props.meta.error &&
+                            props.meta.touched &&
+                            props.meta.error
+                          }
+                        >
+                          <Select
+                            onChange={(val) => handleChangeGeoType(val)}
+                            defaultValue={props.input.value}
+                          >
+                            {props.options.map((it) => (
+                              <Select.Option
+                                key={it.toLocaleLowerCase()}
+                                value={it.toLocaleLowerCase()}
+                              >
+                                {it}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      );
+                    }}
+                    validate={(value) => {
+                      if (!value) return "Required";
+                      else return undefined;
+                    }}
+                  />
+                  <FieldsFromSchema
+                    schema={formSchema["personalDetails"]["geoCoverage"]}
                   />
                 </div>
                 <div className={sectionGrid}>

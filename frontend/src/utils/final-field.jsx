@@ -109,6 +109,8 @@ const FinalField = ({ name, ...props }) => {
       component={Control}
       validate={(value, allValues) => {
         if (props.required && !value) return "Required";
+        else if (props.required && Array.isArray(value) && value.length === 0)
+          return "Required";
         else return undefined;
       }}
       {...props}
