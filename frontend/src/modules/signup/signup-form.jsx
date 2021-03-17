@@ -329,6 +329,9 @@ const SignupForm = ({
     setTimeout(() => {
       formRef.current?.change("ts", new Date().getTime());
       formRef.current?.change("geoCoverageType", value);
+      if (value === "global") {
+        formRef.current?.change("geoCoverageValue", []);
+      }
     });
   };
 
