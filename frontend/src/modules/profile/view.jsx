@@ -85,6 +85,9 @@ const ProfileView = ({
     ) {
       vals.geoCoverageValue = [vals.geoCoverageValue];
     }
+    if (vals.geoCoverageType === "global") {
+      vals.geoCoverageValue = null;
+    }
     api
       .put("/profile", vals)
       .then(() => {
