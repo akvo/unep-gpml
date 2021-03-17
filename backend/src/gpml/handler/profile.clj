@@ -23,12 +23,12 @@
          (map #(vector id nil (:id %))))))
 
 (defn new-organisation [conn org]
-    (let [country (get-country conn (:country org))
-          org-id (:id (db.organisation/new-organisation conn (assoc (dissoc org :id) :country country)))
-          org-geo (get-geo-data conn org-id (:geo_coverage_type org) (:geo_coverage_value org))]
-      (when (seq org-geo)
-        (db.organisation/add-geo-coverage conn {:geo org-geo}))
-      org-id))
+  (let [country (get-country conn (:country org))
+        org-id (:id (db.organisation/new-organisation conn (assoc (dissoc org :id) :country country)))
+        org-geo (get-geo-data conn org-id (:geo_coverage_type org) (:geo_coverage_value org))]
+    (when (seq org-geo)
+      (db.organisation/add-geo-coverage conn {:geo org-geo}))
+    org-id))
 
 (defn assoc-picture [conn photo]
   (cond
@@ -74,7 +74,7 @@
                  :geo_coverage_type geo_coverage_type
                  :country (get-country conn country)
                  :affiliation affiliation}]
-      (db.stakeholder/new-stakeholder conn profile)))
+    (db.stakeholder/new-stakeholder conn profile)))
 
 (defn remap-profile
   [{:keys [id photo about
@@ -120,15 +120,15 @@
             geo-type (:geo_coverage_type profile)
             geo (cond
                   (contains? #{"regional" "global with elements in specific areas"}
-                   geo-type)
-                   (map #(:name %)
-                           (db.stakeholder/stakeholder-geo-country-group conn profile))
+                             geo-type)
+                  (map #(:name %)
+                       (db.stakeholder/stakeholder-geo-country-group conn profile))
                   (contains? #{"national" "transnational"}
-                   geo-type)
-                   (map #(:iso_code %)
-                           (db.stakeholder/stakeholder-geo-country conn profile)))
+                             geo-type)
+                  (map #(:iso_code %)
+                       (db.stakeholder/stakeholder-geo-country conn profile)))
             profile (remap-profile profile tags geo org)]
-      (resp/response profile))
+        (resp/response profile))
       (resp/response {}))))
 
 (defmethod ig/init-key :gpml.handler.profile/post [_ {:keys [db]}]
@@ -148,8 +148,8 @@
         (resp/created (:referer headers)
                       (dissoc
                        (assoc
-                         (merge body-params profile)
-                         :org (db.organisation/organisation-by-id db {:id (:affiliation profile)}))
+                        (merge body-params profile)
+                        :org (db.organisation/organisation-by-id db {:id (:affiliation profile)}))
                        :affiliation :picture)
                       ))
       (assoc (resp/status 500) :body "Internal Server Error"))))
@@ -213,9 +213,9 @@
   (fn [{:keys [body-params admin]}]
     (let [db (:spec db)
           _ (db.stakeholder/update-stakeholder-status db (assoc body-params :reviewed_by (:id admin)))]
-    (assoc (resp/status 204)
-      :body {:message "Successfuly Updated"
-             :data (db.stakeholder/stakeholder-by-id db body-params)}))))
+      (assoc (resp/status 204)
+             :body {:message "Successfuly Updated"
+                    :data (db.stakeholder/stakeholder-by-id db body-params)}))))
 
 (defmethod ig/init-key :gpml.handler.profile/pending [_ {:keys [db]}]
   (fn [_]
