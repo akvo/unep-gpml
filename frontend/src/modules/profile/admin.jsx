@@ -205,12 +205,14 @@ const AdminSection = ({ countries, pendingItems, setPendingItems }) => {
                             {capitalize(item.geoCoverageType) || "-"}
                           </div>
                         </li>
-                        <li>
-                          <div className="detail-title">Geo coverage</div>:
-                          <div className="detail-content">
-                            {findCountries(item)}
-                          </div>
-                        </li>
+                        {item.geoCoverageType !== "global" && (
+                          <li>
+                            <div className="detail-title">Geo coverage</div>:
+                            <div className="detail-content">
+                              {findCountries(item)}
+                            </div>
+                          </li>
+                        )}
                         <li>
                           <div className="detail-title">Organisation</div>:
                           <div className="detail-content">
