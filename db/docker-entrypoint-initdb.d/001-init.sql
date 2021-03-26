@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 12.6
--- Dumped by pg_dump version 12.6
+-- Dumped from database version 12.5
+-- Dumped by pg_dump version 12.5
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -3166,40 +3166,40 @@ COPY public.action_detail (id, code, parent, action, name) FROM stdin;
 --
 
 COPY public.country (id, name, iso_code, territory, description) FROM stdin;
-0	Aruba	ABW	NLD	NL Self-Governing Territory
+0	Aruba (Neth.)	ABW	NLD	NL Self-Governing Territory
 1	Afghanistan	AFG	AFG	Member State
 2	Angola	AGO	AGO	Member State
-3	Anguilla	AIA	AIA	UK Non-Self-Governing Territory
+3	Anguilla (UK)	AIA	AIA	UK Non-Self-Governing Territory
 4	Åland Islands	ALA	FIN	 
 5	Albania	ALB	ALB	Member State
 6	Andorra	AND	AND	Member State
-7	Saba	ANT	NLD	 
-8	Sint Eustatius	ANT	NLD	 
+7	Saba (Neth.)	ANT	NLD	 
+8	Sint Eustatius (Neth.)	ANT	NLD	 
 9	United Arab Emirates	ARE	ARE	Member State
 10	Argentina	ARG	ARG	Member State
 11	Armenia	ARM	ARM	Member State
-12	American Samoa	ASM	USA	US Non-Self-Governing Territory
+12	American Samoa (USA)	ASM	USA	US Non-Self-Governing Territory
 13	Antarctica	ATA	ATA	 
-14	French Southern Territories	ATF	FRA	FR Territory
+14	French Southern Territories (Fr.)	ATF	FRA	FR Territory
 15	Antigua and Barbuda	ATG	ATG	Member State
-16	Ashmore and Cartier Islands	AUS	AUS	AU Territory
+16	Ashmore & Cartier Is. (Aust.)	AUS	AUS	AU Territory
 17	Australia	AUS	AUS	Member State
 18	Austria	AUT	AUT	Member State
 19	Azerbaijan	AZE	AZE	Member State
 20	Burundi	BDI	BDI	Member State
 21	Belgium	BEL	BEL	Member State
 22	Benin	BEN	BEN	Member State
-23	Bonaire	BES	NLD	 
+23	Bonaire (Neth.)	BES	NLD	 
 24	Burkina Faso	BFA	BFA	Member State
 25	Bangladesh	BGD	BGD	Member State
 26	Bulgaria	BGR	BGR	Member State
 27	Bahrain	BHR	BHR	Member State
 28	Bahamas	BHS	BHS	Member State
 29	Bosnia and Herzegovina	BIH	BIH	Member State
-30	Saint Barthélemy	BLM	FRA	 
+30	Saint Barthélemy (Fr.)	BLM	FRA	 
 31	Belarus	BLR	BLR	Member State
 32	Belize	BLZ	BLZ	Member State
-33	Bermuda	BMU	GBR	UK Non-Self-Governing Territory
+33	Bermuda (UK)	BMU	GBR	UK Non-Self-Governing Territory
 34	Bolivia (Plurinational State of)	BOL	BOL	Member State
 35	Brazil	BRA	BRA	Member State
 36	Barbados	BRB	BRB	Member State
@@ -3209,7 +3209,7 @@ COPY public.country (id, name, iso_code, territory, description) FROM stdin;
 40	Botswana	BWA	BWA	Member State
 41	Central African Republic	CAF	CAF	Member State
 42	Canada	CAN	CAN	Member State
-43	Cocos (Keeling) Islands	CCK	AUS	AU Territory
+43	Cocos (Keeling) Is. (Aust.)	CCK	AUS	AU Territory
 44	Switzerland	CHE	CHE	Member State
 45	Chile	CHL	CHL	Member State
 46	China	CHN	CHN	Member State
@@ -3217,15 +3217,15 @@ COPY public.country (id, name, iso_code, territory, description) FROM stdin;
 48	Cameroon	CMR	CMR	Member State
 49	Democratic Republic of the Congo	COD	COD	Member State
 50	Congo	COG	COG	Member State
-51	Cook Islands	COK	NZL	NZ Territory
+51	Cook Islands (NZ)	COK	NZL	NZ Territory
 52	Colombia	COL	COL	Member State
 53	Comoros	COM	COM	Member State
 54	Cabo Verde	CPV	CPV	Member State
 55	Costa Rica	CRI	CRI	Member State
 56	Cuba	CUB	CUB	Member State
-57	Curaçao	CUW	NLD	NL Territory
-58	Christmas Island	CXR	AUS	AU Territory
-59	Cayman Islands	CYM	GBR	UK Non-Self-Governing Territory
+57	Curaçao (Neth.)	CUW	NLD	NL Territory
+58	Christmas Is. (Aust.)	CXR	AUS	AU Territory
+59	Cayman Islands (UK)	CYM	GBR	UK Non-Self-Governing Territory
 60	Cyprus	CYP	CYP	Member State
 61	Czechia	CZE	CZE	Member State
 62	Germany	DEU	DEU	Member State
@@ -3238,44 +3238,44 @@ COPY public.country (id, name, iso_code, territory, description) FROM stdin;
 69	Egypt	EGY	EGY	Member State
 70	Eritrea	ERI	ERI	Member State
 71	Western Sahara	ESH	ESH	Non-Self-Governing Territory
-72	Canary Islands	ESP	ESP	 
+72	Canary Is. (Sp.)	ESP	ESP	 
 73	Spain	ESP	ESP	Member State
 74	Estonia	EST	EST	Member State
 75	Ethiopia	ETH	ETH	Member State
 76	Finland	FIN	FIN	Member State
 77	Fiji	FJI	FJI	Member State
-78	Falkland Islands (Malvinas)	FLK	GBR	UK Non-Self-Governing Territory
+78	Falkland Islands (Malvinas) ***	FLK	GBR	UK Non-Self-Governing Territory
 79	France	FRA	FRA	Member State
-80	Faroe Islands	FRO	DNK	DK Territory
+80	Faroe Islands (Denmark)	FRO	DNK	DK Territory
 81	Micronesia (Federated States of)	FSM	FSM	Member State
 82	Gabon	GAB	GAB	Member State
 83	United Kingdom of Great Britain & Northern Ireland	GBR	GBR	Member State
 84	Georgia	GEO	GEO	Member State
-85	Guernsey	GGY	GBR	UK Territory
+85	Guernsey (UK)	GGY	GBR	UK Territory
 86	Ghana	GHA	GHA	Member State
-87	Gibraltar	GIB	GBR	UK Non-Self-Governing Territory
+87	Gibraltar (UK)	GIB	GBR	UK Non-Self-Governing Territory
 88	Guinea	GIN	GIN	Member State
-89	Guadeloupe	GLP	FRA	 
+89	Guadeloupe (Fr.)	GLP	FRA	 
 90	Gambia	GMB	GMB	Member State
 91	Guinea-Bissau	GNB	GNB	Member State
 92	Equatorial Guinea	GNQ	GNQ	Member State
 93	Greece	GRC	GRC	Member State
 94	Grenada	GRD	GRD	Member State
-95	Greenland	GRL	DNK	DK Self-Governing Territory
+95	Greenland (Denmark)	GRL	DNK	DK Self-Governing Territory
 96	Guatemala	GTM	GTM	Member State
-97	French Guiana	GUF	FRA	FR Territory
-98	Guam	GUM	USA	US Non-Self-Governing Territory
+97	French Guiana (Fr.)	GUF	FRA	FR Territory
+98	Guam (USA)	GUM	USA	US Non-Self-Governing Territory
 99	Guyana	GUY	GUY	Member State
-100	Hong Kong	HKG	CHN	CN Special Administrative Region
-101	Heard Island and McDonald Islands	HMD	AUS	AU Territory
+100	Hong Kong, SAR China	HKG	CHN	CN Special Administrative Region
+101	Heard Isl. & McDonald Is. (Aust.)	HMD	AUS	AU Territory
 102	Honduras	HND	HND	Member State
 103	Croatia	HRV	HRV	Member State
 104	Haiti	HTI	HTI	Member State
 105	Hungary	HUN	HUN	Member State
 106	Indonesia	IDN	IDN	Member State
-107	Isle of Man	IMN	GBR	UK territory
+107	Isle of Man (UK)	IMN	GBR	UK territory
 108	India	IND	IND	Member State
-109	Chagos Archipelagio	IOT	GBR	UK Territory
+109	Chagos Archipelagio **	IOT	GBR	UK Territory
 110	Ireland	IRL	IRL	Member State
 111	Iran (Islamic Republic of)	IRN	IRN	Member State
 112	Iraq	IRQ	IRQ	Member State
@@ -3283,7 +3283,7 @@ COPY public.country (id, name, iso_code, territory, description) FROM stdin;
 114	Israel	ISR	ISR	Member State
 115	Italy	ITA	ITA	Member State
 116	Jamaica	JAM	JAM	Member State
-117	Jersey	JEY	GBR	UK Territory
+117	Jersey (UK)	JEY	GBR	UK Territory
 118	Jordan	JOR	JOR	Member State
 119	Japan	JPN	JPN	Member State
 120	Kazakhstan	KAZ	KAZ	Member State
@@ -3305,8 +3305,8 @@ COPY public.country (id, name, iso_code, territory, description) FROM stdin;
 136	Lithuania	LTU	LTU	Member State
 137	Luxembourg	LUX	LUX	Member State
 138	Latvia	LVA	LVA	Member State
-139	Macao	MAC	CHN	CN Special Administrative Region
-140	Saint Martin	MAF	FRA	FR Territory
+139	Macao, SAR China	MAC	CHN	CN Special Administrative Region
+140	Saint Martin (Fr.)	MAF	FRA	FR Territory
 141	Morocco	MAR	MAR	Member State
 142	Monaco	MCO	MCO	Member State
 143	Republic of Moldova	MDA	MDA	Member State
@@ -3314,28 +3314,28 @@ COPY public.country (id, name, iso_code, territory, description) FROM stdin;
 145	Maldives	MDV	MDV	Member State
 146	Mexico	MEX	MEX	Member State
 147	Marshall Islands	MHL	MHL	Member State
-148	North Macedonia	MKD	MKD	Member State
+148	The former Yugoslav Republic of Macedonia	MKD	MKD	Member State
 149	Mali	MLI	MLI	Member State
 150	Malta	MLT	MLT	Member State
 151	Myanmar	MMR	MMR	Member State
 152	Montenegro	MNE	MNE	Member State
 153	Mongolia	MNG	MNG	Member State
-154	Northern Mariana Islands	MNP	USA	US Territory
+154	Northern Mariana Is. (USA)	MNP	USA	US Territory
 155	Mozambique	MOZ	MOZ	Member State
 156	Mauritania	MRT	MRT	Member State
-157	Montserrat	MSR	GBR	UK Non-Self-Governing Territory
-158	Martinique	MTQ	FRA	FR Territory
+157	Montserrat (UK)	MSR	GBR	UK Non-Self-Governing Territory
+158	Martinique (Fr.)	MTQ	FRA	FR Territory
 159	Mauritius	MUS	MUS	Member State
 160	Malawi	MWI	MWI	Member State
 161	Malaysia	MYS	MYS	Member State
-162	Mayotte	MYT	FRA	FR Territory
+162	Mayotte (Fr.)	MYT	FRA	FR Territory
 163	Namibia	NAM	NAM	Member State
-164	New Caledonia	NCL	FRA	FR Non-Self-Governing Territory
+164	New Caledonia (Fr.)	NCL	FRA	FR Non-Self-Governing Territory
 165	Niger	NER	NER	Member State
-166	Norfolk Island	NFK	AUS	AU Territory
+166	Norfolk Is. (Aust.)	NFK	AUS	AU Territory
 167	Nigeria	NGA	NGA	Member State
 168	Nicaragua	NIC	NIC	Member State
-169	Niue	NIU	NZL	NZ Territory
+169	Niue (NZ)	NIU	NZL	NZ Territory
 170	Netherlands	NLD	NLD	Member State
 171	Norway	NOR	NOR	Member State
 172	Nepal	NPL	NPL	Member State
@@ -3344,23 +3344,24 @@ COPY public.country (id, name, iso_code, territory, description) FROM stdin;
 175	Oman	OMN	OMN	Member State
 176	Pakistan	PAK	PAK	Member State
 177	Panama	PAN	PAN	Member State
-178	Pitcairn	PCN	GBR	UK Non-Self-Governing Territory
+178	Pitcairn (UK)	PCN	GBR	UK Non-Self-Governing Territory
 179	Peru	PER	PER	Member State
 180	Philippines	PHL	PHL	Member State
 181	Palau	PLW	PLW	Member State
 182	Papua New Guinea	PNG	PNG	Member State
 183	Poland	POL	POL	Member State
-184	Puerto Rico	PRI	USA	US Territory
+184	Puerto Rico (USA)	PRI	USA	US Territory
 185	Democratic People's Republic of Korea	PRK	PRK	Member State
-186	Azores Islands	PRT	PRT	PT Territory
-187	Madeira Islands	PRT	PRT	PT Territory
+186	Azores Is. (Port.)	PRT	PRT	PT Territory
+187	Madeira Islands (Port.)	PRT	PRT	PT Territory
 188	Portugal	PRT	PRT	Member State
 189	Paraguay	PRY	PRY	Member State
 190	Gaza	PSE	PSE	Occupied Palestinan Territory
-192	Clipperton Island	PYF	FRA	FR Territory
-193	French Polynesia	PYF	FRA	FR Territory
+191	West Bank	PSE	PSE	Occupied Palestinan Territory
+192	Clipperton Is. (Fr.)	PYF	FRA	FR Territory
+193	French Polynesia (Fr.)	PYF	FRA	FR Territory
 194	Qatar	QAT	QAT	Member State
-195	Réunion	REU	FRA	FR Territory
+195	Réunion (Fr.)	REU	FRA	FR Territory
 196	Romania	ROU	ROU	Member State
 197	Russian Federation	RUS	RUS	Member State
 198	Rwanda	RWA	RWA	Member State
@@ -3368,15 +3369,18 @@ COPY public.country (id, name, iso_code, territory, description) FROM stdin;
 200	Sudan	SDN	SDN	Member State
 201	Senegal	SEN	SEN	Member State
 202	Singapore	SGP	SGP	Member State
-203	South Georgia and the South Sandwich Islands	SGS	GBR	UK Territory
-207	Saint Helena	SHN	GBR	UK Non-Self-Governing Territory
-208	Svalbard and Jan Mayen Islands	SJM	NOR	NO Territory
+203	South Georgia and the South Sandwich Islands (UK)	SGS	GBR	UK Territory
+204	Ascencion (UK)	SHN	GBR	UK Non-Self-Governing Territory
+205	Gough (UK)	SHN	GBR	UK Non-Self-Governing Territory
+206	Saint Helena (UK)	SHN	GBR	UK Non-Self-Governing Territory
+207	Tristan da Cunha (UK)	SHN	GBR	UK Non-Self-Governing Territory
+208	Svalbard & Jan Mayen Is. (Norw.)	SJM	NOR	NO Territory
 209	Solomon Islands	SLB	SLB	Member State
 210	Sierra Leone	SLE	SLE	Member State
 211	El Salvador	SLV	SLV	Member State
 212	San Marino	SMR	SMR	Member State
 213	Somalia	SOM	SOM	Member State
-214	Saint Pierre et Miquelon	SPM	FRA	FR Territory
+214	Saint Pierre et Miquelon (Fr.)	SPM	FRA	FR Territory
 215	Serbia	SRB	SRB	Member State
 216	South Sudan	SSD	SSD	Member State
 217	Sao Tome and Principe	STP	STP	Member State
@@ -3385,15 +3389,15 @@ COPY public.country (id, name, iso_code, territory, description) FROM stdin;
 220	Slovenia	SVN	SVN	Member State
 221	Sweden	SWE	SWE	Member State
 222	Eswatini	SWZ	SWZ	Member State
-223	Sint Maarten	SXM	NLD	 
+223	Sint Maarten (Neth.)	SXM	NLD	 
 224	Seychelles	SYC	SYC	Member State
 225	Syrian Arab Republic	SYR	SYR	Member State
-226	Turks and Caicos Islands	TCA	TCA	UK Non-Self-Governing Territory
+226	Turks and Caicos Islands (UK)	TCA	TCA	UK Non-Self-Governing Territory
 227	Chad	TCD	TCD	Member State
 228	Togo	TGO	TGO	Member State
 229	Thailand	THA	THA	Member State
 230	Tadjikistan	TJK	TJK	Member State
-231	Tokelau	TKL	NZL	NZ Non-Self-Governing Territory
+231	Tokelau (NZ)	TKL	NZL	NZ Non-Self-Governing Territory
 232	Turkmenistan	TKM	TKM	Member State
 233	Timor-Leste	TLS	TLS	Member State
 234	Tonga	TON	TON	Member State
@@ -3405,15 +3409,15 @@ COPY public.country (id, name, iso_code, territory, description) FROM stdin;
 240	United Republic of Tanzania	TZA	TZA	Member State
 241	Uganda	UGA	UGA	Member State
 242	Ukraine	UKR	UKR	Member State
-243	Baker Island	UMI	USA	US Territory
-244	Howland Island	UMI	USA	US Territory
-245	Jarvis Island	UMI	USA	US Territory
-246	Johnston Atoll	UMI	USA	US Territory
-247	Kingman Reef	UMI	USA	US Territory
-248	Midway Islands	UMI	USA	US Territory
-249	Navassa Island	UMI	USA	US Territory
-250	Palmyra Atoll	UMI	USA	US Territory
-251	Wake Island	UMI	USA	US Territory
+243	Baker Island (USA)	UMI	USA	US Territory
+244	Howland Is. (USA)	UMI	USA	US Territory
+245	Jarvis Is. (USA)	UMI	USA	US Territory
+246	Johnston Atoll (USA)	UMI	USA	US Territory
+247	Kingman Reef (USA)	UMI	USA	US Territory
+248	Midway Islands (USA)	UMI	USA	US Territory
+249	Navassa Island (USA)	UMI	USA	US Territory
+250	Palmyra Atoll (USA)	UMI	USA	US Territory
+251	Wake Island (USA)	UMI	USA	US Territory
 252	Uruguay	URY	URY	Member State
 253	United States of America	USA	USA	Member State
 254	Uzbekistan	UZB	UZB	Member State
@@ -3421,33 +3425,34 @@ COPY public.country (id, name, iso_code, territory, description) FROM stdin;
 256	Saint Vincent and the Grenadines	VCT	VCT	Member State
 257	Bird Island	VEN	VEN	VE Territory
 258	Venezuela	VEN	VEN	Member State
-259	British Virgin Islands	VGB	GBR	UK Non-Self-Governing Territory
-260	United States Virgin Islands	VIR	USA	US Non-Self-Governing Territory
+259	British Virgin Islands (UK)	VGB	GBR	UK Non-Self-Governing Territory
+260	United States Virgin Islands (USA)	VIR	USA	US Non-Self-Governing Territory
 261	Viet Nam	VNM	VNM	Member State
 262	Vanuatu	VUT	VUT	Member State
-263	Wallis and Futuna	WLF	FRA	FR Territory
+263	Wallis and Futuna (Fr.)	WLF	FRA	FR Territory
 264	Samoa	WSM	WSM	Member State
 265	Abyei	xAB	xAB	Sovereignty unsettled
-266	Aksai Chin	xAC	xAC	Sovereignty unsettled
-267	Arunachal Pradesh	xAP	IND	Sovereignty unsettled
-268	Bassas da India	xFR	FRA	FR Territory
-269	Europa Island	xFR	FRA	FR Territory
-270	Glorioso Islands	xFR	FRA	FR Territory
-271	Juan de Nova Island	xFR	FRA	FR Territory
-272	Tromelin Island	xFR	FRA	FR Territory
-274	Hala'ib Triangle	xHT	SDN	Sovereignty unsettled
-275	Ilemi Triangle	xIT	SSD	Sovereignty unsettled
-276	Jammu and Kashmir	xJK	xJK	Sovereignty unsettled
-277	West Bank	xJL	xxx	Occupied Palestinan Territory
-278	Kuril Islands	xKI	RUS	Sovereignty unsettled
-279	Bi'r Tawīl	xMS	EGY	Sovereignty unsettled
-280	Paracel Islands	xPI	xPI	Sovereignty unsettled
-281	Spratly Islands	xSI	xSI	Sovereignty unsettled
-282	Senkaku Islands	xSK	JPN	Sovereignty unsettled
-283	Scarborough Reef	xSR	xSR	Sovereignty unsettled
-284	Akrotiri	xUK	GBR	 
-285	Dekelia	xUK	GBR	 
-286	China/India	xxx	xxx	Sovereignty unsettled
+266	 	xAC	xAC	Sovereignty unsettled
+267	 	xAP	IND	Sovereignty unsettled
+268	Bassas da India (Fr.)	xFR	FRA	FR Territory
+269	Europa Island (Fr.)	xFR	FRA	FR Territory
+270	Glorioso Islands (Fr.)	xFR	FRA	FR Territory
+271	Juan de Nova Island (Fr.)	xFR	FRA	FR Territory
+272	Tromelin Island (Fr.)	xFR	FRA	FR Territory
+273	 	xHT	SDN	Sovereignty unsettled
+274	 	xHT	SDN	Sovereignty unsettled
+275	 	xIT	SSD	Sovereignty unsettled
+276	Jammu and Kashmir *	xJK	xJK	Sovereignty unsettled
+277	 	xJL	xxx	Occupied Palestinan Territory
+278	 	xKI	RUS	Sovereignty unsettled
+279	 	xMS	EGY	Sovereignty unsettled
+280	 	xPI	xPI	Sovereignty unsettled
+281	 	xSI	xSI	Sovereignty unsettled
+282	 	xSK	JPN	Sovereignty unsettled
+283	 	xSR	xSR	Sovereignty unsettled
+284	Akrotiri (S.B.A.)	xUK	GBR	 
+285	Dekelia (S.B.A.)	xUK	GBR	 
+286	 	xxx	xxx	Sovereignty unsettled
 287	Yemen	YEM	YEM	Member State
 288	South Africa	ZAF	ZAF	Member State
 289	Zambia	ZMB	ZMB	Member State
