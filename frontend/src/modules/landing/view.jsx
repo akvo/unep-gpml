@@ -41,25 +41,67 @@ const Landing = ({
     "stakeholder",
   ];
 
-  const clickEvents = ({ name, data }) => {
+  const getMapData = (ctr, data, topic) => {
+    const memberStates = ctr.filter((x) => x.description === "Member State");
+    return ctr.map((c) => {
+      const availableData = data.find((d) => d.isoCode === c.territory);
+      let description = c.description;
+      if (description !== "Member State") {
+        const memberOf = memberStates.find((it) => it.isoCode === c.territory);
+        description = description.trim();
+        description = description.length
+          ? description
+          : memberOf
+          ? `Member State: ${memberOf.name}`
+          : "";
+      }
+      return {
+        name: c.id,
+        description: description,
+        originalName: c.name,
+        area: ctr.find((d) => d.isoCode === c.territory),
+        isoCode: c.isoCode,
+        value: availableData ? (topic ? availableData[topic] : null) : null,
+        ...availableData,
+      };
+    });
+  };
+
+  const clickEvents = ({ name }) => {
     if (!disputedId.includes(name)) {
+      let ctrs = [];
+      let ctr = countries.find((it) => it.id === name);
+      ctrs = [ctr];
       setCountry(name);
-      history.push(`/browse?country=${data.isoCode}`);
+      if (ctr.description !== "Member State") {
+        let member = countries.find(
+          (it) =>
+            it.isoCode === ctr.territory && it.description === "Member State"
+        );
+        ctrs = member ? [...ctrs, member] : ctrs;
+      }
+      ctrs = ctrs.map((it) => it.isoCode);
+      ctrs = ctrs.join(",");
+      console.log(ctrs);
+      history.push(`/browse?country=${ctrs}`);
     }
   };
 
-  const toolTip = ({ data }) => {
-    if (data) {
+  const toolTip = ({ name }) => {
+    let hover = getMapData(countries, data.map, false).find(
+      (it) => it.name === name
+    );
+    if (hover) {
       return `
             <div class="map-tooltip">
-              <h3>${data?.originalName}</h3>
-              <h4>${data?.description}</h4>
+              <h3>${hover?.originalName}</h3>
+              <h4>${hover?.description}</h4>
               <ul>
               ${tTypes
                 .map(
                   (topic) =>
                     `<li><span>${topicNames(topic)}</span><b>${
-                      data[topic]
+                      hover[topic]
                     }</b></li>`
                 )
                 .join("")}
@@ -81,19 +123,14 @@ const Landing = ({
 
   const countryObj = country && countries.find((it) => it.id === country);
 
-  const handleSummaryClick = (dataType) => {
+  const handleSummaryClick = (topic) => {
     setInitLandingCount("");
-    if (counts === dataType) {
+    if (counts === topic) {
       setCountryMap(null);
       setCounts("");
     } else {
-      const selected = data.map.map((x) => ({
-        ...x,
-        name: x.isoCode,
-        value: x[dataType],
-      }));
-      setCountryMap(selected);
-      setCounts(dataType);
+      setCountryMap(getMapData(countries, data.map, topic));
+      setCounts(topic);
     }
   };
 
@@ -119,32 +156,6 @@ const Landing = ({
     : counts
     ? countryMap
     : [];
-
-  const getMapData = (ctr, data, topic) => {
-    const memberStates = ctr.filter((x) => x.description === "Member State");
-    return ctr.map((c) => {
-      const availableData = data.find((d) => d.isoCode === c.territory);
-      let description = c.description;
-      if (description !== "Member State") {
-        const memberOf = memberStates.find((it) => it.isoCode === c.territory);
-        description = description.trim();
-        description = description.length
-          ? description
-          : memberOf
-          ? `Member State: ${memberOf.name}`
-          : "";
-      }
-      return {
-        name: c.id,
-        description: description,
-        originalName: c.name,
-        area: ctr.find((d) => d.isoCode === c.territory),
-        isoCode: c.isoCode,
-        value: availableData ? availableData[topic] : null,
-        ...availableData,
-      };
-    });
-  };
 
   const defaultMapData =
     initLandingCount !== "" && data?.map && countries
