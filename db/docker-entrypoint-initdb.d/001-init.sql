@@ -24568,6 +24568,7 @@ COPY public.ragtime_migrations (id, created_at) FROM stdin;
 055-sequence-adjustment#89386216	2021-03-11T12:21:57.212
 056-fix-sequence-adjustment#ea2c4a62	2021-03-11T12:21:57.230
 057-fix-wrong-sequence-assignment#06bb9285	2021-03-12T09:21:24.059
+058-drop-unique-country-name#bfff9f45	2021-03-26T15:57:46.505
 \.
 
 
@@ -29061,14 +29062,6 @@ ALTER TABLE ONLY public.country_group
 
 ALTER TABLE ONLY public.country_group
     ADD CONSTRAINT country_group_pkey PRIMARY KEY (id);
-
-
---
--- Name: country country_name_key; Type: CONSTRAINT; Schema: public; Owner: unep
---
-
-ALTER TABLE ONLY public.country
-    ADD CONSTRAINT country_name_key UNIQUE (name);
 
 
 --
