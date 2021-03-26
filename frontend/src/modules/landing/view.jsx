@@ -120,10 +120,6 @@ const Landing = ({
     ? countryMap
     : [];
 
-  const getCountry = (isoCode) => {
-    return countries.find((it) => it.isoCode === isoCode)?.id;
-  };
-
   const getMapData = (ctr, data, topic) => {
     const memberStates = ctr.filter((x) => x.description === "Member State");
     return ctr.map((c) => {
