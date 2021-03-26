@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Select, Switch } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
+import { disputedId } from "../../utils/charts/map-disputed-area";
 import Maps from "./maps";
 import "./styles.scss";
 import humps from "humps";
@@ -41,40 +42,24 @@ const Landing = ({
   ];
 
   const clickEvents = ({ name, data }) => {
-    if (!name.startsWith("disputed")) {
+    if (!disputedId.includes(name)) {
       setCountry(name);
-      history.push(`/browse?country=${name}`);
+      history.push(`/browse?country=${data.isoCode}`);
     }
   };
 
-  const toolTip = (params) => {
-    const summary = data?.map?.find((it) => it.isoCode === params.name);
-    if (summary) {
-      let countryInfo = countries?.filter(
-        (it) => it.isoCode === summary.isoCode
-      );
-      countryInfo =
-        countryInfo.find((x) => x.description === "Member State") ||
-        countryInfo[0];
-      let description = countryInfo?.description;
-      if (description) {
-        description = description.trim();
-        description = description.length
-          ? description
-          : `Member State: ${
-              countries.find((x) => x.isoCode === countryInfo.territory).name
-            }`;
-      }
+  const toolTip = ({ data }) => {
+    if (data) {
       return `
             <div class="map-tooltip">
-              <h3>${countryInfo?.name || summary.isoCode}</h3>
-              <h4>${description}</h4>
+              <h3>${data?.originalName}</h3>
+              <h4>${data?.description}</h4>
               <ul>
               ${tTypes
                 .map(
                   (topic) =>
                     `<li><span>${topicNames(topic)}</span><b>${
-                      summary[topic]
+                      data[topic]
                     }</b></li>`
                 )
                 .join("")}
@@ -85,16 +70,16 @@ const Landing = ({
     return null;
   };
 
-  const handleChangeCountry = (isoCode) => {
-    setCountry(isoCode);
+  const handleChangeCountry = (id) => {
+    setCountry(id);
   };
   const countryOpts = countries
     ? countries
-        .map((it) => ({ value: it.isoCode, label: it.name }))
+        .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
     : [];
-  const countryObj =
-    countries && country && countries.find((it) => it.isoCode === country);
+
+  const countryObj = country && countries.find((it) => it.id === country);
 
   const handleSummaryClick = (dataType) => {
     setInitLandingCount("");
@@ -122,20 +107,54 @@ const Landing = ({
     return setEventWarningVisible(true);
   };
 
-  const selected = data?.map?.find((x) => x.isoCode === country);
+  const selected =
+    countries && country
+      ? data?.map?.find(
+          (x) =>
+            x.isoCode === countries.find((it) => it.id === country).territory
+        )
+      : {};
   const mapData = country
     ? [{ name: country, itemStyle: { areaColor: "#84b4cc" } }]
     : counts
     ? countryMap
     : [];
+
+  const getCountry = (isoCode) => {
+    return countries.find((it) => it.isoCode === isoCode)?.id;
+  };
+
+  const getMapData = (ctr, data, topic) => {
+    const memberStates = ctr.filter((x) => x.description === "Member State");
+    return ctr.map((c) => {
+      const availableData = data.find((d) => d.isoCode === c.territory);
+      let description = c.description;
+      if (description !== "Member State") {
+        const memberOf = memberStates.find((it) => it.isoCode === c.territory);
+        description = description.trim();
+        description = description.length
+          ? description
+          : memberOf
+          ? `Member State: ${memberOf.name}`
+          : "";
+      }
+      return {
+        name: c.id,
+        description: description,
+        originalName: c.name,
+        area: ctr.find((d) => d.isoCode === c.territory),
+        isoCode: c.isoCode,
+        value: availableData ? availableData[topic] : null,
+        ...availableData,
+      };
+    });
+  };
+
   const defaultMapData =
-    initLandingCount !== "" && data?.map
-      ? data.map.map((x) => ({
-          ...x,
-          name: x.isoCode,
-          value: x[initLandingCount],
-        }))
+    initLandingCount !== "" && data?.map && countries
+      ? getMapData(countries, data.map, initLandingCount)
       : [];
+
   const summaryData = data?.summary?.filter((it, index) => {
     const current = Object.keys(it)[0];
     return tTypes.indexOf(current) > -1;
