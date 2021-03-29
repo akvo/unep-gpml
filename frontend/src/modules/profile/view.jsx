@@ -1,5 +1,12 @@
+import { store } from "../../store";
 import { Button, notification, Tabs, Image, Menu, Divider } from "antd";
-import React, { useRef, useState, useEffect, Fragment } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useContext,
+  Fragment,
+} from "react";
 import api from "../../utils/api";
 import SignupForm from "../signup/signup-form";
 import AdminSection from "./admin";
@@ -36,13 +43,10 @@ const menuItems = [
   },
 ];
 
-const ProfileView = ({
-  profile,
-  tags,
-  setProfile,
-  countries,
-  updateDisclaimer,
-}) => {
+const ProfileView = ({ updateDisclaimer }) => {
+  const globalState = useContext(store);
+  const { dispatch } = globalState;
+  const { tags, profile } = globalState.state;
   const handleSubmitRef = useRef();
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState("personal-details");
@@ -91,7 +95,7 @@ const ProfileView = ({
     api
       .put("/profile", vals)
       .then(() => {
-        setProfile(vals);
+        dispatch({ data: vals, type: "STORE PROFILE" });
         notification.success({ message: "Profile updated" });
         setSaving(false);
       })
@@ -141,7 +145,7 @@ const ProfileView = ({
 
   useEffect(() => {
     updateDisclaimer(null);
-  }, []); // eslint-disable-next-line
+  }, [updateDisclaimer]);
 
   return (
     <div id="profile">
@@ -167,12 +171,11 @@ const ProfileView = ({
               {menu === "personal-details" && (
                 <div>
                   <SignupForm
-                    {...{ onSubmit, tags }}
+                    onSubmit={onSubmit}
                     handleSubmitRef={(ref) => {
                       handleSubmitRef.current = ref;
                     }}
                     initialValues={profile}
-                    countries={countries}
                     isModal={false}
                   />
                   <Button
@@ -188,7 +191,6 @@ const ProfileView = ({
               )}
               {menu === "admin-section" && profile?.role === "ADMIN" && (
                 <AdminSection
-                  countries={countries}
                   pendingItems={pendingItems}
                   setPendingItems={setPendingItems}
                 />

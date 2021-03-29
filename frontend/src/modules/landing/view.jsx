@@ -13,7 +13,6 @@ const Landing = ({
   data,
   countries,
   initLandingCount,
-  setCountries,
   setInitLandingCount,
   profile,
   setSignupModalVisible,

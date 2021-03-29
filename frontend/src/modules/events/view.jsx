@@ -6,7 +6,7 @@ import AddEventForm from "./form";
 const AddEvent = ({ ...props }) => {
   useEffect(() => {
     props.updateDisclaimer(null);
-  }, []);
+  }, [props]);
 
   return (
     <div id="add-event">

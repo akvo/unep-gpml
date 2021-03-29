@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { store } from "../../store";
+import React, { useEffect, useState, useContext } from "react";
 import { Form, Input, Select, Button } from "antd";
 import { Form as FinalForm, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
@@ -28,7 +29,8 @@ const regionOptions = [
 ];
 
 const GeoCoverageInput = (props) => {
-  const { countries } = props;
+  const globalState = useContext(store);
+  const { countries } = globalState.state;
   return (
     <Field
       name="geoCoverageType"
@@ -159,7 +161,9 @@ const validation = (formSchema) => {
   );
 };
 
-const AddEventForm = ({ countries }) => {
+const AddEventForm = () => {
+  const globalState = useContext(store);
+  const { countries } = globalState.state;
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [sending, setSending] = useState(false);
   const [step, setStep] = useState(1);
@@ -201,24 +205,7 @@ const AddEventForm = ({ countries }) => {
       }
       setFormSchema(newSchema);
     })();
-  }, []); // eslint-disable-line
-
-  useEffect(() => {
-    if (countries) {
-      const newSchema = cloneDeep(defaultFormSchema);
-      newSchema[1].country.options = countries
-        .map((x) => ({
-          value: x.isoCode,
-          label: x.name,
-        }))
-        .sort((a, b) => a.label.localeCompare(b.label));
-      newSchema[1].geoCoverageValue = {
-        ...newSchema[1].geoCoverageValue,
-        countries: countries,
-      };
-      setFormSchema(newSchema);
-    }
-  }, [countries]); // eslint-disable-line
+  }, [countries]);
 
   const form = createForm({
     subscription: {},

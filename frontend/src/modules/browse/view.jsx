@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { store } from "../../store";
+import React, { useEffect, useState, useContext } from "react";
 import { Card, Input, Select, Checkbox, Tag } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import "./styles.scss";
@@ -39,14 +40,15 @@ let tmid;
 const Browse = ({
   history,
   countData,
-  profile,
   setSignupModalVisible,
   updateDisclaimer,
   filters,
   setFilters,
-  countries,
 }) => {
   const query = useQuery();
+  const globalState = useContext(store);
+  const { dispatch } = globalState;
+  const { profile, countries } = globalState.state;
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
@@ -172,7 +174,7 @@ const Browse = ({
 
   useEffect(() => {
     updateDisclaimer("/browse");
-  }, []);
+  }, [updateDisclaimer]);
 
   return (
     <div id="browse">
@@ -191,7 +193,9 @@ const Browse = ({
               <Select
                 value={
                   countries && query?.country
-                    ? countries.filter((x) => x.isoCode === query.country)?.id
+                    ? countries
+                        .filter((x) => query.country.includes(x.isoCode))
+                        .map((x) => x.id)
                     : []
                 }
                 placeholder="Find country"

@@ -8,7 +8,7 @@ const SignupView = ({ ...props }) => {
 
   useEffect(() => {
     props.updateDisclaimer(null);
-  }, []);
+  }, [props]);
 
   return (
     <div id="signup-view">

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { store } from "./store.js";
+import React, { useState, useEffect, useContext } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -54,12 +55,12 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
-  const [profile, setProfile] = useState({});
+  const globalState = useContext(store);
+  const { dispatch } = globalState;
+  const { countries, tags, profile, organisations } = globalState.state;
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [eventWarningVisible, setEventWarningVisible] = useState(false);
-  const [countries, setCountries] = useState(null);
   const [data, setData] = useState(null);
-  const [tags, setTags] = useState([]);
   const [initLandingCount, setInitLandingCount] = useState("");
   const [disclaimer, setDisclaimer] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -75,12 +76,15 @@ const Root = () => {
       if (isAuthenticated) {
         const resp = await api.get("/profile");
         if (Object.keys(resp.data).length === 0) {
-          setProfile({ email: response.email });
+          dispatch({ data: { email: response.email }, type: "STORE PROFILE" });
           setTimeout(() => {
             setSignupModalVisible(Object.keys(resp.data).length === 0);
           }, 100);
         } else {
-          setProfile({ ...resp.data, email: response.email });
+          dispatch({
+            data: { ...resp.data, email: response.email },
+            type: "STORE PROFILE",
+          });
           if (
             storage.getCookie("profile") === "SUBMITTED" &&
             resp.data.reviewStatus === "APPROVED"
@@ -97,20 +101,26 @@ const Root = () => {
         }
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated]);
+  }, [getIdTokenClaims, isAuthenticated, dispatch]);
 
   useEffect(() => {
     api.get("/landing").then((resp) => {
       setData(resp.data);
     });
     api.get("/country").then((resp) => {
-      setCountries(uniqBy(resp.data), (e) => e.name);
+      dispatch({
+        data: uniqBy(resp.data),
+        type: "STORE COUNTRIES",
+      });
       setInitLandingCount("project");
     });
     api.get("/tag").then((resp) => {
-      setTags(resp.data);
+      dispatch({ data: resp.data, type: "STORE TAGS" });
     });
-  }, []);
+    api.get("/organisation").then((resp) => {
+      dispatch({ data: resp.data, type: "STORE ORGANISATIONS" });
+    });
+  }, [dispatch]);
 
   useEffect(() => {
     if (window.location.pathname === "/") setDisclaimer(disclaimerHome);
@@ -218,7 +228,6 @@ const Root = () => {
                 countries,
                 data,
                 initLandingCount,
-                setCountries,
                 setInitLandingCount,
                 setEventWarningVisible,
                 setSignupModalVisible,
@@ -249,18 +258,14 @@ const Root = () => {
         <Route
           path="/add-event"
           render={(props) => (
-            <AddEvent
-              {...props}
-              updateDisclaimer={updateDisclaimer}
-              countries={countries}
-            />
+            <AddEvent {...props} updateDisclaimer={updateDisclaimer} />
           )}
         />
         <Route
           path="/profile"
           render={(props) => (
             <ProfileView
-              {...{ ...props, profile, tags, setProfile, countries }}
+              {...{ ...props, tags, countries }}
               updateDisclaimer={updateDisclaimer}
             />
           )}
@@ -288,7 +293,6 @@ const Root = () => {
       <SignupModal
         visible={signupModalVisible}
         onCancel={() => setSignupModalVisible(false)}
-        {...{ tags, setProfile, countries, profile }}
       />
       <ModalWarningUser
         visible={eventWarningVisible}
@@ -349,7 +353,7 @@ const AddButton = withRouter(
         <Button
           type="primary"
           size="large"
-          onClick={(e) => {
+          onClick={() => {
             Object.keys(profile).length !== 0
               ? setEventWarningVisible(true)
               : setSignupModalVisible(true);

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { store } from "../../store";
+import React, { useState, useEffect, useContext } from "react";
 import { Form, Switch, Select } from "antd";
 import { Form as FinalForm, FormSpy, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
@@ -12,6 +13,7 @@ import {
 } from "@ant-design/icons";
 import { FieldsFromSchema } from "../../utils/form-utils";
 import cloneDeep from "lodash/cloneDeep";
+import isEmpty from "lodash/isEmpty";
 import api from "../../utils/api";
 import { storage } from "../../utils/storage";
 import GeoCoverageInput from "./comp/geo-coverage-input";
@@ -180,11 +182,10 @@ const SignupForm = ({
   handleFormRef,
   initialValues,
   handleSubmitRef,
-  tags,
-  countries,
   isModal,
 }) => {
-  const [formSchema, setFormSchema] = useState(defaultFormSchema);
+  const globalState = useContext(store);
+  const { countries, tags, profile, organisations } = globalState.state;
   const [noOrg, setNoOrg] = useState(false);
   const [pubEmail, setPubEmail] = useState({
     checked: false,
@@ -197,98 +198,50 @@ const SignupForm = ({
   const formContainer = !isModal ? "signup-form-grid" : "signup-form";
   const sectionGrid = !isModal ? "section-grid" : "section";
 
+  const newSchema = cloneDeep(defaultFormSchema);
+
+  newSchema["organisation"]["org.id"].options = [
+    ...organisations.map((it) => ({ value: it.id, label: it.name })),
+    { value: -1, label: "Other" },
+  ];
+  newSchema["organisation"]["org.id"].filterOption = (input, option) => {
+    return (
+      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
+      option.value === -1
+    );
+  };
+
+  newSchema["expertiesActivities"].tags.options = tags?.general.map((x) => ({
+    value: x.id,
+    label: x.tag,
+  }));
+  newSchema["expertiesActivities"].offering.options = tags?.offering.map(
+    (x) => ({
+      value: x.id,
+      label: x.tag,
+    })
+  );
+  newSchema["expertiesActivities"].seeking.options = tags?.seeking.map((x) => ({
+    value: x.id,
+    label: x.tag,
+  }));
+
+  newSchema["personalDetails"]["geoCoverage"].geoCoverageValue = {
+    ...newSchema["personalDetails"]["geoCoverage"].geoCoverageValue,
+    countries: countries,
+  };
+  newSchema["personalDetails"][
+    "socialLocation"
+  ].country.options = countries.map((x) => ({
+    value: x.isoCode,
+    label: x.name,
+  }));
+
+  const [formSchema, setFormSchema] = useState(newSchema);
+
   useEffect(() => {
     formSchemaRef.current = formSchema;
   }, [formSchema]);
-
-  useEffect(() => {
-    api.get("/organisation").then((d) => {
-      const newSchema = cloneDeep(formSchemaRef.current);
-      newSchema["organisation"]["org.id"].options = [
-        ...d.data.map((it) => ({ value: it.id, label: it.name })),
-        { value: -1, label: "Other" },
-      ];
-      newSchema["organisation"]["org.id"].filterOption = (input, option) => {
-        return (
-          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
-          option.value === -1
-        );
-      };
-      if (tags) {
-        newSchema["expertiesActivities"].tags.options = tags.general.map(
-          (x) => ({
-            value: x.id,
-            label: x.tag,
-          })
-        );
-        newSchema["expertiesActivities"].offering.options = tags.offering.map(
-          (x) => ({
-            value: x.id,
-            label: x.tag,
-          })
-        );
-        newSchema["expertiesActivities"].seeking.options = tags.seeking.map(
-          (x) => ({
-            value: x.id,
-            label: x.tag,
-          })
-        );
-      }
-      if (countries) {
-        newSchema["personalDetails"][
-          "socialLocation"
-        ].country.options = countries.map((x) => ({
-          value: x.isoCode,
-          label: x.name,
-        }));
-        newSchema["personalDetails"]["geoCoverage"].geoCoverageValue = {
-          ...newSchema["personalDetails"]["geoCoverage"].geoCoverageValue,
-          countries: countries,
-        };
-      }
-      setFormSchema(newSchema);
-    });
-  }, []); // eslint-disable-line
-
-  useEffect(() => {
-    if (countries) {
-      const newSchema = cloneDeep(formSchema);
-      newSchema["personalDetails"][
-        "socialLocation"
-      ].country.options = countries.map((x) => ({
-        value: x.isoCode,
-        label: x.name,
-      }));
-      newSchema["personalDetails"]["geoCoverage"].geoCoverageValue = {
-        ...newSchema["personalDetails"]["geoCoverage"].geoCoverageValue,
-        countries: countries,
-      };
-      setFormSchema(newSchema);
-    }
-  }, [countries]); // eslint-disable-line
-
-  useEffect(() => {
-    if (tags) {
-      const newSchema = cloneDeep(formSchema);
-      newSchema["expertiesActivities"].tags.options = tags.general.map((x) => ({
-        value: x.id,
-        label: x.tag,
-      }));
-      newSchema["expertiesActivities"].offering.options = tags.offering.map(
-        (x) => ({
-          value: x.id,
-          label: x.tag,
-        })
-      );
-      newSchema["expertiesActivities"].seeking.options = tags.seeking.map(
-        (x) => ({
-          value: x.id,
-          label: x.tag,
-        })
-      );
-      setFormSchema(newSchema);
-    }
-  }, [tags]); // eslint-disable-line
 
   const handleChangePrivateCitizen = ({ target: { checked } }) => {
     setNoOrg(checked);
