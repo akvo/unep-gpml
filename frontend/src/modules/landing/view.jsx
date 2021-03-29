@@ -44,7 +44,10 @@ const Landing = ({
   const getMapData = (ctr, data, topic) => {
     const memberStates = ctr.filter((x) => x.description === "Member State");
     return ctr.map((c) => {
-      const availableData = data.find((d) => d.isoCode === c.territory);
+      const sameIsoCodes = ctr
+        .filter((x) => c.territory === x.territory)
+        .map((x) => x.id);
+      const availableData = data.find((d) => d.isoCode === c.isoCode);
       let description = c.description;
       if (description !== "Member State") {
         const memberOf = memberStates.find((it) => it.isoCode === c.territory);
@@ -61,18 +64,21 @@ const Landing = ({
         originalName: c.name,
         area: ctr.find((d) => d.isoCode === c.territory),
         isoCode: c.isoCode,
-        value: availableData ? (topic ? availableData[topic] : null) : null,
+        sameIsoCodes: sameIsoCodes,
+        value: availableData[topic] || 0,
         ...availableData,
       };
     });
   };
 
-  const clickEvents = ({ name }) => {
+  const clickEvents = (props) => {
+    const { name, data } = props;
     if (!disputedId.includes(name)) {
       let ctrs = [];
       let ctr = countries.find((it) => it.id === name);
       ctrs = [ctr];
       setCountry(name);
+      /*
       if (ctr.description !== "Member State") {
         let member = countries.find(
           (it) =>
@@ -82,8 +88,9 @@ const Landing = ({
       }
       ctrs = ctrs.map((it) => it.isoCode);
       ctrs = ctrs.join(",");
-      console.log(ctrs);
       history.push(`/browse?country=${ctrs}`);
+      */
+      history.push(`/browse?country=${data.isoCode}`);
     }
   };
 
@@ -151,7 +158,7 @@ const Landing = ({
             x.isoCode === countries.find((it) => it.id === country).territory
         )
       : {};
-  const mapData = country
+  let mapData = country
     ? [{ name: country, itemStyle: { areaColor: "#84b4cc" } }]
     : counts
     ? countryMap

@@ -1,3 +1,4 @@
+import echarts from "echarts";
 import React, { useEffect, useState } from "react";
 import ReactEcharts from "echarts-for-react";
 import Chart from "../../utils/charts";
@@ -63,10 +64,15 @@ const generateSteps = (arr, leftPos) => {
   return datarange;
 };
 
-const generateOptions = ({ title, subtitle, data, tooltip, mapPos }) => {
+const generateOptions = (title, subtitle, data, tooltip, mapPos, init) => {
   let steps = data.length > 1 ? generateSteps(data, mapPos.left) : {};
   if (data.length === 1) {
-    data = [{ name: data[0].name, itemStyle: { areaColor: "#84b4cc" } }];
+    data = [
+      {
+        name: data[0].name,
+        itemStyle: { areaColor: "#84b4cc" },
+      },
+    ];
   }
   const toolbox = {
     ...Chart.Opt.Maps.ToolBox.toolbox,
@@ -89,7 +95,7 @@ const generateOptions = ({ title, subtitle, data, tooltip, mapPos }) => {
         ? []
         : [
             {
-              name: title,
+              name: title || "echart",
               type: "map",
               roam: "move",
               left: `${mapPos.left + 10}px`,
@@ -98,7 +104,6 @@ const generateOptions = ({ title, subtitle, data, tooltip, mapPos }) => {
               map: "unep-map",
               aspectScale: 1,
               zoom: window.__UNEP__MAP__ZOOM,
-              z: 0,
               zLevel: 0,
               label: { show: false },
               symbolSyze: 0,
@@ -125,20 +130,15 @@ const generateOptions = ({ title, subtitle, data, tooltip, mapPos }) => {
   };
 };
 
-const Maps = ({
-  dependency,
-  title,
-  subtitle,
-  data,
-  clickEvents,
-  tooltip,
-  custom = {},
-}) => {
+const Maps = ({ dependency, title, subtitle, data, clickEvents, tooltip }) => {
   const [mapPos, setMapPos] = useState({
     left: 0,
     right: window.innerWidth,
     height: 0,
   });
+  const [option, setMapOption] = useState({});
+  const [refMap, setRefMap] = useState(false);
+
   const handleResize = () => {
     const box = document.getElementsByClassName("map-overlay");
     if (box.length === 1) {
@@ -155,17 +155,45 @@ const Maps = ({
   }, [dependency]);
 
   window.addEventListener("resize", handleResize);
-  data = data.filter((x) => x.value !== 0);
-  const options = generateOptions({ title, subtitle, data, tooltip, mapPos });
+
+  const options = generateOptions(title, subtitle, data, tooltip, mapPos, true);
+
+  const updateData = (props, add = false) => {
+    const ref = refMap.getEchartsInstance();
+    const opt = ref.getOption();
+    let updated = data.map((x) => ({ ...x, selected: false }));
+    if (data && add) {
+      updated = data.map((x) => {
+        if (props.data.sameIsoCodes.includes(x.name)) {
+          return { ...x, selected: true };
+        }
+        return x;
+      });
+    }
+    ref.setOption({ ...opt, series: [{ ...opt.series[0], data: updated }] });
+  };
+
+  const onMouseOut = (props) => {
+    updateData(props);
+  };
+
+  const onMouseOver = (props) => {
+    updateData(props, true);
+  };
 
   return mapPos ? (
     <ReactEcharts
+      ref={(e) => setRefMap(e)}
       className="fade-in worldmap"
-      option={{ ...options, ...custom }}
+      option={options}
       notMerge={true}
       style={{ height: `${mapPos.height}px`, width: "100%" }}
       lazyUpdate={false}
-      onEvents={{ click: clickEvents }}
+      onEvents={{
+        click: clickEvents,
+        mouseover: onMouseOver,
+        mouseout: onMouseOut,
+      }}
     />
   ) : (
     ""
