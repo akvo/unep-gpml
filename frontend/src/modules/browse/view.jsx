@@ -116,7 +116,7 @@ const Browse = ({
     clearTimeout(tmid);
     tmid = setTimeout(getResults, 1000);
     if (param === "country") {
-      setFilterCountries(value);
+      setFilterCountries([value]);
     }
   };
   const handleRelationChange = (relation) => {
@@ -189,20 +189,30 @@ const Browse = ({
             <div className="field">
               <div className="label">Country</div>
               <Select
-                value={query.country}
+                value={
+                  countries && query?.country
+                    ? countries.filter((x) => x.isoCode === query.country)?.id
+                    : []
+                }
                 placeholder="Find country"
                 mode="multiple"
                 options={
                   countries &&
                   countries
                     .map((it) => ({
-                      value: it.isoCode,
+                      value: it.id,
                       label: it.name,
                     }))
                     .sort((a, b) => a.label.localeCompare(b.label))
                 }
                 allowClear
-                onChange={(val) => updateQuery("country", val)}
+                onChange={(val) => {
+                  const selected = countries?.filter((x) => val.includes(x.id));
+                  updateQuery(
+                    "country",
+                    selected.map((x) => x.isoCode)
+                  );
+                }}
                 filterOption={(input, option) =>
                   option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
