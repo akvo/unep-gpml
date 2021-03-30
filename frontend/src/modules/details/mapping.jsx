@@ -624,16 +624,16 @@ export const infoMaps = {
   ],
   policy: [
     {
-      key: "attachments",
-      name: "Other Links",
-      value: "link",
-      type: "array",
-    },
-    {
       key: "url",
       name: "Policy Link",
       value: "url",
       type: "link",
+    },
+    {
+      key: "attachments",
+      name: "Other Links",
+      value: "link",
+      type: "array",
     },
   ],
   action_plan: resourceInfo,

@@ -53,6 +53,10 @@ const renderItemValues = (params, mapping, data) => {
     return "There is no data to display";
   }
 
+  if (countries.length === 0) {
+    return "";
+  }
+
   return (
     mapping &&
     mapping.map((item, index) => {
@@ -198,6 +202,7 @@ const renderItemValues = (params, mapping, data) => {
                     ))}{" "}
                   </ul>
                 )}
+
                 {value === "link" && type === "array" && (
                   <ul>
                     {" "}
