@@ -349,7 +349,7 @@ const TopicItem = ({ topic }) => {
       <div className="inner">
         <span className="type">latest {topicNames(topic.topicType)}</span>
         <h2>{title}</h2>
-        {topic.description && <p>{topic.description}</p>}
+        {/*topic.description && <p>{topic.description}</p>*/}
         <div className="bottom">
           <Link to={`/${topic.topicType}/${topic.id}`}>
             <Button type="link">Find out more</Button>
