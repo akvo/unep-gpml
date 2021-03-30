@@ -9,6 +9,18 @@ import "./styles.scss";
 import humps from "humps";
 import { topicNames } from "../../utils/misc";
 
+const tTypes = [
+  "actionPlan",
+  "event",
+  "financingResource",
+  "technicalResource",
+  "technology",
+  "policy",
+  "project",
+  "organisation",
+  "stakeholder",
+];
+
 const Landing = ({
   history,
   data,
@@ -28,18 +40,6 @@ const Landing = ({
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
-  const tTypes = [
-    "project",
-    "event",
-    "policy",
-    "technology",
-    "financingResource",
-    "technicalResource",
-    "actionPlan",
-    "organisation",
-    "stakeholder",
-  ];
-
   const getMapData = (ctr, data, topic) => {
     const memberStates = ctr.filter((x) => x.description === "Member State");
     return ctr.map((c) => {
@@ -224,7 +224,6 @@ const Landing = ({
               counts={counts}
               selected={selected}
               init={initLandingCount}
-              tTypes={tTypes}
             />
           </div>
         )}
@@ -257,9 +256,13 @@ const Summary = ({
   counts,
   selected,
   init,
-  tTypes,
   isApprovedUser,
 }) => {
+  summary = summary.map((x) => ({
+    ...x,
+    name: Object.keys(x).find((k) => k !== "country"),
+  }));
+  summary = tTypes.map((x) => summary.find((it) => it.name === x));
   const restricted = ["stakeholder", "organisation"];
   return (
     <div className="summary">
