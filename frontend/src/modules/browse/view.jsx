@@ -18,6 +18,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 import { LoadingOutlined } from "@ant-design/icons";
+import TrimText from "../../utils/trim";
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -405,7 +406,7 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
         )}
       </ul>
       {result.type !== "project" && description && (
-        <div className="line-truncated">{description}</div>
+        <TrimText text={description} />
       )}
       {allowBookmark && (
         <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />
