@@ -1,4 +1,4 @@
-import { store } from "../../store";
+import { UIStore, update } from "../../store";
 import { Button, notification, Tabs, Image, Menu, Divider } from "antd";
 import React, {
   useRef,
@@ -44,9 +44,7 @@ const menuItems = [
 ];
 
 const ProfileView = ({ updateDisclaimer }) => {
-  const globalState = useContext(store);
-  const { dispatch } = globalState;
-  const { tags, profile } = globalState.state;
+  const { countries, tags, profile } = UIStore.currentState;
   const handleSubmitRef = useRef();
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState("personal-details");
@@ -95,7 +93,7 @@ const ProfileView = ({ updateDisclaimer }) => {
     api
       .put("/profile", vals)
       .then(() => {
-        dispatch({ data: vals, type: "STORE PROFILE" });
+        update(UIStore, "profile", vals);
         notification.success({ message: "Profile updated" });
         setSaving(false);
       })

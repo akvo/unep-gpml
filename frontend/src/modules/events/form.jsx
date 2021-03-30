@@ -1,4 +1,4 @@
-import { store } from "../../store";
+import { UIStore } from "../../store";
 import React, { useEffect, useState, useContext } from "react";
 import { Form, Input, Select, Button } from "antd";
 import { Form as FinalForm, Field } from "react-final-form";
@@ -29,8 +29,7 @@ const regionOptions = [
 ];
 
 const GeoCoverageInput = (props) => {
-  const globalState = useContext(store);
-  const { countries } = globalState.state;
+  const { countries } = UIStore.currentState;
   return (
     <Field
       name="geoCoverageType"
@@ -162,8 +161,7 @@ const validation = (formSchema) => {
 };
 
 const AddEventForm = () => {
-  const globalState = useContext(store);
-  const { countries } = globalState.state;
+  const { countries } = UIStore.currentState;
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [sending, setSending] = useState(false);
   const [step, setStep] = useState(1);

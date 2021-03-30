@@ -1,3 +1,4 @@
+import { UIStore } from "../../store";
 import { Button, Collapse, Space, Spin, Modal, Form, Select } from "antd";
 import React, { Fragment } from "react";
 import { useEffect, useState } from "react";
@@ -32,7 +33,8 @@ const ModalReject = ({ visible, close, reject, item }) => {
   );
 };
 
-const AdminSection = ({ countries, pendingItems, setPendingItems }) => {
+const AdminSection = ({ pendingItems, setPendingItems }) => {
+  const { countries } = UIStore.currentState;
   const [modalRejectVisible, setModalRejectVisible] = useState(false);
   const [modalRejectFunction, setModalRejectFunction] = useState(false);
 

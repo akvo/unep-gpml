@@ -17,7 +17,7 @@ const AddEvent = ({ ...props }) => {
           </Col>
           <Col span={12}>
             <Card>
-              <AddEventForm countries={props.countries} />
+              <AddEventForm />
             </Card>
           </Col>
         </Row>

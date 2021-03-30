@@ -1,3 +1,4 @@
+import { UIStore } from "../../../store";
 import React from "react";
 import { Input, Select } from "antd";
 import { Field } from "react-final-form";
@@ -13,7 +14,8 @@ const regionOptions = [
 ];
 
 const GeoCoverageInput = (props) => {
-  const { disabled, countries } = props;
+  const { countries } = UIStore.currentState;
+  const { disabled } = props;
   const national =
     countries && countries.map((it) => ({ value: it.isoCode, label: it.name }));
   return (

@@ -1,3 +1,4 @@
+import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
 import { Button, Select, Switch } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -11,10 +12,8 @@ import { topicNames } from "../../utils/misc";
 const Landing = ({
   history,
   data,
-  countries,
   initLandingCount,
   setInitLandingCount,
-  profile,
   setSignupModalVisible,
   setEventWarningVisible,
   isAuthenticated,
@@ -22,6 +21,7 @@ const Landing = ({
   updateDisclaimer,
   setFilters,
 }) => {
+  const { profile, countries } = UIStore.currentState;
   const [country, setCountry] = useState(null);
   const [countryMap, setCountryMap] = useState(null);
   const [counts, setCounts] = useState(initLandingCount);
@@ -77,18 +77,6 @@ const Landing = ({
       let ctr = countries.find((it) => it.id === name);
       ctrs = [ctr];
       setCountry(name);
-      /*
-      if (ctr.description !== "Member State") {
-        let member = countries.find(
-          (it) =>
-            it.isoCode === ctr.territory && it.description === "Member State"
-        );
-        ctrs = member ? [...ctrs, member] : ctrs;
-      }
-      ctrs = ctrs.map((it) => it.isoCode);
-      ctrs = ctrs.join(",");
-      history.push(`/browse?country=${ctrs}`);
-      */
       history.push(`/browse?country=${data.isoCode}`);
     }
   };

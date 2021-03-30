@@ -1,4 +1,4 @@
-import { store } from "../../store";
+import { UIStore } from "../../store";
 import React, { useState, useEffect, useContext } from "react";
 import { Form, Switch, Select } from "antd";
 import { Form as FinalForm, FormSpy, Field } from "react-final-form";
@@ -184,8 +184,7 @@ const SignupForm = ({
   handleSubmitRef,
   isModal,
 }) => {
-  const globalState = useContext(store);
-  const { countries, tags, profile, organisations } = globalState.state;
+  const { countries, tags, profile, organisations } = UIStore.currentState;
   const [noOrg, setNoOrg] = useState(false);
   const [pubEmail, setPubEmail] = useState({
     checked: false,

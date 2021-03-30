@@ -1,11 +1,11 @@
+import { UIStore } from "../../store";
 import {
   LoadingOutlined,
   RightOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
 import { Button, Tag, Image, Divider, Dropdown, Checkbox } from "antd";
-import React, { Fragment, useState } from "react";
-import { useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../../utils/api";
 import {
@@ -14,7 +14,6 @@ import {
   relationsByTopicType,
 } from "../../utils/misc";
 import { useAuth0 } from "@auth0/auth0-react";
-import { languages } from "countries-list";
 import ModalWarningUser from "../../utils/modal-warning-user";
 import capitalize from "lodash/capitalize";
 import some from "lodash/some";
@@ -32,7 +31,8 @@ import logoNotFound from "../../images/logo-not-found.png";
 import uniqBy from "lodash/uniqBy";
 import find from "lodash/find";
 
-const renderItemValues = (params, mapping, data, profile, countries) => {
+const renderItemValues = (params, mapping, data) => {
+  const { profile, countries, languages } = UIStore.currentState;
   // check if no data
   let noData = false;
   mapping &&
@@ -325,7 +325,7 @@ const renderTypeOfActions = (params, data) => {
   );
 };
 
-const renderDetails = (params, data, profile, countries) => {
+const renderDetails = (params, data) => {
   const details = detailMaps[params.type];
   if (!details) {
     return;
@@ -333,14 +333,12 @@ const renderDetails = (params, data, profile, countries) => {
   return (
     <div key={"details"} className="card">
       <h3>{topicNames(params.type)} Detail</h3>
-      <div className="table">
-        {renderItemValues(params, details, data, profile, countries)}
-      </div>
+      <div className="table">{renderItemValues(params, details, data)}</div>
     </div>
   );
 };
 
-const renderInfo = (params, data, profile, countries) => {
+const renderInfo = (params, data) => {
   const staticText = (
     <p>
       The{" "}
@@ -365,9 +363,7 @@ const renderInfo = (params, data, profile, countries) => {
   return (
     <div key="info" className="card">
       <h3>Related Info And Contacts</h3>
-      <div className="table">
-        {renderItemValues(params, info, data, profile, countries)}
-      </div>
+      <div className="table">{renderItemValues(params, info, data)}</div>
       {params.type === "project" && data.uuid && !isNarrative && (
         <div>
           <Divider key="statictext" /> {staticText}
@@ -393,7 +389,8 @@ const renderDescription = (params, data) => {
 };
 
 const DetailsView = ({ match: { params }, ...props }) => {
-  const { profile, setSignupModalVisible, countries } = props;
+  const { profile, countries } = UIStore.currentState;
+  const { setSignupModalVisible } = props;
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
@@ -418,7 +415,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
     api.get(`/detail/${params.type}/${params.id}`).then((d) => {
       setData(d.data);
     });
-  }, []);
+  }, [params]);
 
   useEffect(() => {
     if (profile.reviewStatus === "APPROVED") {

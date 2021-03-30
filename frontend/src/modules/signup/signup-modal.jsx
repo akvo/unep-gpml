@@ -1,4 +1,4 @@
-import { store } from "../../store";
+import { UIStore, update } from "../../store";
 import React, { useState, useContext } from "react";
 import { Modal, Button } from "antd";
 import api from "../../utils/api";
@@ -10,9 +10,7 @@ import Checkbox from "antd/lib/checkbox/Checkbox";
 
 const SignupModal = ({ visible, onCancel }) => {
   const { user } = useAuth0();
-  const globalState = useContext(store);
-  const { dispatch } = globalState;
-  const { profile } = globalState.state;
+  const { countries, tags, profile, organisations } = UIStore.currentState;
   const [sending, setSending] = useState(false);
   const [step, setStep] = useState(1);
   const handleSubmitRef = useRef();
@@ -26,7 +24,7 @@ const SignupModal = ({ visible, onCancel }) => {
     api
       .post("/profile", vals)
       .then((d) => {
-        dispatch({ data: d.data, type: "STORE PROFILE" });
+        update(UIStore, "profile", d.data);
         setSending(false);
         document.cookie = `profile=SUBMITTED`;
         document.cookie = `profileMessage=1`;

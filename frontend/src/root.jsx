@@ -1,4 +1,4 @@
-import { store } from "./store.js";
+import { UIStore, update } from "./store.js";
 import React, { useState, useEffect, useContext } from "react";
 import {
   BrowserRouter as Router,
@@ -55,9 +55,7 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
-  const globalState = useContext(store);
-  const { dispatch } = globalState;
-  const { countries, tags, profile, organisations } = globalState.state;
+  const { countries, tags, profile, organisations } = UIStore.currentState;
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [eventWarningVisible, setEventWarningVisible] = useState(false);
   const [data, setData] = useState(null);
@@ -76,15 +74,11 @@ const Root = () => {
       if (isAuthenticated) {
         const resp = await api.get("/profile");
         if (Object.keys(resp.data).length === 0) {
-          dispatch({ data: { email: response.email }, type: "STORE PROFILE" });
+          update(UIStore, "profile", { email: response.email });
           setTimeout(() => {
             setSignupModalVisible(Object.keys(resp.data).length === 0);
           }, 100);
         } else {
-          dispatch({
-            data: { ...resp.data, email: response.email },
-            type: "STORE PROFILE",
-          });
           if (
             storage.getCookie("profile") === "SUBMITTED" &&
             resp.data.reviewStatus === "APPROVED"
@@ -97,30 +91,28 @@ const Root = () => {
           ) {
             document.cookie = "profileMessage=0";
           }
+          update(UIStore, "profile", resp.data);
           document.cookie = `profile=${resp.data.reviewStatus}`;
         }
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated, dispatch]);
+  }, [getIdTokenClaims, isAuthenticated]);
 
   useEffect(() => {
     api.get("/landing").then((resp) => {
       setData(resp.data);
     });
     api.get("/country").then((resp) => {
-      dispatch({
-        data: uniqBy(resp.data),
-        type: "STORE COUNTRIES",
-      });
+      update(UIStore, "countries", uniqBy(resp.data));
       setInitLandingCount("project");
     });
     api.get("/tag").then((resp) => {
-      dispatch({ data: resp.data, type: "STORE TAGS" });
+      update(UIStore, "tags", resp.data);
     });
     api.get("/organisation").then((resp) => {
-      dispatch({ data: resp.data, type: "STORE ORGANISATIONS" });
+      update(UIStore, "organisations", resp.data);
     });
-  }, [dispatch]);
+  }, [setInitLandingCount]);
 
   useEffect(() => {
     if (window.location.pathname === "/") setDisclaimer(disclaimerHome);
@@ -224,8 +216,6 @@ const Root = () => {
           render={(props) => (
             <Landing
               {...{
-                profile,
-                countries,
                 data,
                 initLandingCount,
                 setInitLandingCount,
@@ -245,13 +235,11 @@ const Root = () => {
           render={(props) => (
             <Browse
               {...props}
-              profile={profile}
               countData={data}
               setSignupModalVisible={setSignupModalVisible}
               updateDisclaimer={updateDisclaimer}
               filters={filters}
               setFilters={setFilters}
-              countries={countries}
             />
           )}
         />
@@ -265,7 +253,7 @@ const Root = () => {
           path="/profile"
           render={(props) => (
             <ProfileView
-              {...{ ...props, tags, countries }}
+              {...{ ...props }}
               updateDisclaimer={updateDisclaimer}
             />
           )}
@@ -281,10 +269,8 @@ const Root = () => {
           render={(props) => (
             <DetailsView
               {...props}
-              profile={profile}
               setSignupModalVisible={setSignupModalVisible}
               updateDisclaimer={updateDisclaimer}
-              countries={countries}
             />
           )}
         />
@@ -327,9 +313,9 @@ const AddButton = withRouter(
     setSignupModalVisible,
     setEventWarningVisible,
     loginWithPopup,
-    profile,
     history,
   }) => {
+    const { profile } = UIStore.currentState;
     if (isAuthenticated) {
       if (profile?.reviewStatus === "APPROVED") {
         return (
