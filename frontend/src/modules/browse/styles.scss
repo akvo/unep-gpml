@@ -2,52 +2,65 @@
 
 #browse {
   padding-top: 30px;
+
   .ui.container {
     display: flex;
   }
+
   aside {
     width: 330px;
+
     .inner {
       border: 1px solid #d7e6ee;
       border-radius: 3px;
       padding: 10px;
       display: flex;
       flex-direction: column;
+
       .ant-select {
         margin-top: 15px;
       }
+
       .label {
         text-transform: uppercase;
         margin-bottom: 5px;
         margin-top: 15px;
       }
+
       .field {
         width: 100%;
+
         .ant-select {
           margin-top: 0;
           width: 100%;
         }
       }
+
       ul.topic-list {
         line-height: 36px;
         padding: 0 5px;
+
         li {
           &:not(:last-child) {
             border-bottom: 1px solid #dae9f1;
           }
+
           &:last-child {
             position: relative;
             z-index: 2;
           }
         }
+
         .ant-checkbox {
           margin-right: 5px;
+
           & + span {
             color: #036799;
             text-transform: capitalize;
           }
         }
       }
+
       .event-fields {
         background-color: #e0e9ec;
         position: relative;
@@ -55,12 +68,14 @@
         margin-bottom: -10px;
         z-index: 0;
         padding: 30px 5px 17px;
+
         .label {
           text-transform: none;
           font-weight: 600;
           font-size: 13px;
           margin-bottom: 3px;
         }
+
         &:before,
         &:after {
           content: " ";
@@ -70,33 +85,48 @@
           height: 100%;
           background-color: #e0e9ec;
         }
+
         &:before {
           left: -10px;
         }
+
         &:after {
           right: -10px;
         }
+
         .ant-picker-range {
           width: 100%;
         }
       }
+
       .my-favorites {
         margin-top: 15px;
         text-transform: uppercase;
       }
     }
   }
+
   .main-content {
     flex: 1;
     margin-left: 20px;
+
     .page {
       text-align: right;
       font-style: italic;
       margin-bottom: 5px;
     }
+
     .ant-card {
       margin-bottom: 15px;
       position: relative;
+
+      .line-truncated {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
       a.browse-card {
         display: block;
         min-width: 100%;
@@ -106,6 +136,7 @@
         top: 0px;
         z-index: 2;
       }
+
       .type {
         position: absolute;
         right: 10px;
@@ -119,65 +150,81 @@
         padding: 0 5px;
         border-radius: 3px;
       }
+
       .project {
         background-color: #ffd579;
         color: #28457b;
       }
+
       .event {
         background-color: #01abf1;
         color: #ffffff;
       }
+
       .stakeholder {
         background-color: #01abf1;
         color: #ffffff;
       }
+
       .technology {
         background-color: #035b71;
         color: #ffffff;
       }
+
       .policy {
         background-color: #b5c3da;
         color: #28457b;
       }
+
       .financing_resource {
         background-color: #21a07f;
         color: #ffffff;
       }
+
       .technical_resource {
         background-color: #28457b;
         color: #ffffff;
       }
+
       .action_plan {
         background-color: #126e9b;
         color: #ffffff;
       }
+
       h3 {
         font-size: 24px;
       }
+
       h4 {
         width: 90%;
       }
+
       ul.stats {
         display: flex;
         margin-bottom: 1em;
+
         li {
           text-transform: uppercase;
           opacity: 0.75;
           margin-right: 10px;
           font-size: 12px;
           font-weight: 500;
+
           span {
             opacity: 0.6;
             margin-right: 5px;
           }
         }
       }
+
       .portfolio-bar {
         display: flex;
         margin-top: 15px;
+
         .ant-btn {
           margin-right: 5px;
         }
+
         .label {
           font-size: 12px;
           margin-top: 3px;
@@ -185,6 +232,7 @@
           opacity: 0.7;
         }
       }
+
       &:before {
         position: absolute;
         content: "Learn more";
@@ -197,6 +245,7 @@
         opacity: 0;
         transition: opacity 0.2s ease-out;
       }
+
       &:after {
         content: " ";
         border-bottom: 1px solid #00aaf1;
@@ -206,6 +255,7 @@
         opacity: 0;
         transition: opacity 0.2s ease-out;
       }
+
       &:hover {
         &:after,
         &:before {
@@ -222,8 +272,10 @@
   padding: 3px 10px;
   border: 1px solid #89b7d0;
   border-radius: 3px;
+
   li {
     line-height: 30px;
+
     &:not(:last-child) {
       border-bottom: 1px solid #e0e9ec;
     }

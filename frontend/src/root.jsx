@@ -1,4 +1,4 @@
-import { UIStore, update } from "./store.js";
+import { UIStore } from "./store.js";
 import React, { useState, useEffect, useContext } from "react";
 import {
   BrowserRouter as Router,
@@ -22,6 +22,22 @@ import SignupView from "./modules/signup/view";
 import DetailsView from "./modules/details/view";
 import Footer from "./footer";
 import uniqBy from "lodash/uniqBy";
+
+api.get("/tag").then((resp) => {
+  UIStore.update((e) => {
+    e.tags = resp.data;
+  });
+});
+api.get("/country").then((resp) => {
+  UIStore.update((e) => {
+    e.countries = uniqBy(resp.data);
+  });
+});
+api.get("/organisation").then((resp) => {
+  UIStore.update((e) => {
+    e.organisations = uniqBy(resp.data);
+  });
+});
 
 const disclaimerHome = (
   <>
@@ -59,11 +75,14 @@ const Root = () => {
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [eventWarningVisible, setEventWarningVisible] = useState(false);
   const [data, setData] = useState(null);
-  const [initLandingCount, setInitLandingCount] = useState("");
+  const [initLandingCount, setInitLandingCount] = useState("project");
   const [disclaimer, setDisclaimer] = useState(null);
   const [filters, setFilters] = useState(null);
 
   useEffect(() => {
+    api.get("/landing").then((resp) => {
+      setData(resp.data);
+    });
     (async function fetchData() {
       const response = await getIdTokenClaims();
       if (isAuthenticated) {
@@ -74,11 +93,16 @@ const Root = () => {
       if (isAuthenticated) {
         const resp = await api.get("/profile");
         if (Object.keys(resp.data).length === 0) {
-          update(UIStore, "profile", { email: response.email });
+          UIStore.update((e) => {
+            e.profile = { email: response.email };
+          });
           setTimeout(() => {
             setSignupModalVisible(Object.keys(resp.data).length === 0);
           }, 100);
         } else {
+          UIStore.update((e) => {
+            e.profile = { ...resp.data, email: response.email };
+          });
           if (
             storage.getCookie("profile") === "SUBMITTED" &&
             resp.data.reviewStatus === "APPROVED"
@@ -91,28 +115,11 @@ const Root = () => {
           ) {
             document.cookie = "profileMessage=0";
           }
-          update(UIStore, "profile", resp.data);
           document.cookie = `profile=${resp.data.reviewStatus}`;
         }
       }
     })();
   }, [getIdTokenClaims, isAuthenticated]);
-
-  useEffect(() => {
-    api.get("/landing").then((resp) => {
-      setData(resp.data);
-    });
-    api.get("/country").then((resp) => {
-      update(UIStore, "countries", uniqBy(resp.data));
-      setInitLandingCount("project");
-    });
-    api.get("/tag").then((resp) => {
-      update(UIStore, "tags", resp.data);
-    });
-    api.get("/organisation").then((resp) => {
-      update(UIStore, "organisations", resp.data);
-    });
-  }, [setInitLandingCount]);
 
   useEffect(() => {
     if (window.location.pathname === "/") setDisclaimer(disclaimerHome);
@@ -133,18 +140,7 @@ const Root = () => {
     <Router>
       <div id="root">
         {disclaimer && (
-          <div
-            style={{
-              backgroundColor: "#27AE60",
-              display: "flex",
-              justifyContent: "center",
-              color: "white",
-              fontSize: "12px",
-              paddingTop: "10px",
-              paddingLeft: "10px",
-              paddingRight: "10px",
-            }}
-          >
+          <div className="panel-disclaimer">
             <p>{disclaimer}</p>
           </div>
         )}
@@ -203,7 +199,6 @@ const Root = () => {
                   setSignupModalVisible,
                   isAuthenticated,
                   loginWithPopup,
-                  profile,
                   setEventWarningVisible,
                 }}
               />

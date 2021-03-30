@@ -203,6 +203,7 @@ const SignupForm = ({
     ...organisations.map((it) => ({ value: it.id, label: it.name })),
     { value: -1, label: "Other" },
   ];
+
   newSchema["organisation"]["org.id"].filterOption = (input, option) => {
     return (
       option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||

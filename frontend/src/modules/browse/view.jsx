@@ -404,7 +404,9 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
           </li>
         )}
       </ul>
-      {result.type !== "project" && description && <div>{description}</div>}
+      {result.type !== "project" && description && (
+        <div className="line-truncated">{description}</div>
+      )}
       {allowBookmark && (
         <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />
       )}

@@ -1,4 +1,4 @@
-import { UIStore, update } from "../../store";
+import { UIStore } from "../../store";
 import { Button, notification, Tabs, Image, Menu, Divider } from "antd";
 import React, {
   useRef,
@@ -76,7 +76,7 @@ const ProfileView = ({ updateDisclaimer }) => {
         ]);
       })();
     }
-  }, [profile]); // eslint-disable-next-line
+  }, [profile]);
 
   const onSubmit = (vals) => {
     if (!vals?.publicEmail) vals = { ...vals, publicEmail: false };
@@ -93,7 +93,9 @@ const ProfileView = ({ updateDisclaimer }) => {
     api
       .put("/profile", vals)
       .then(() => {
-        update(UIStore, "profile", vals);
+        UIStore.update((e) => {
+          e.profile = vals;
+        });
         notification.success({ message: "Profile updated" });
         setSaving(false);
       })

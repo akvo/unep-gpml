@@ -15,51 +15,64 @@ h1 {
   font-size: 40px;
   font-weight: 900;
 }
+
 h2 {
   font-size: 32px;
   font-weight: 600;
 }
+
 h3 {
   font-size: 27px;
   font-weight: 600;
 }
+
 h4 {
   font-size: 22px;
 }
+
 #root {
   .ant-btn {
     // border-radius: 4px;
   }
+
   .ant-btn-primary {
     background-color: $primaryColor;
     border-color: $primaryColor;
   }
+
   & > .topbar {
     background-color: #036799;
     color: #fff;
     line-height: 36px;
+
     a {
       color: #fff;
       text-decoration: none;
     }
+
     .ui.container {
       display: flex;
+
       .rightside {
         margin-left: auto;
       }
     }
   }
+
   & > header {
     height: 110px;
     padding-top: 8px;
     box-sizing: border-box;
     border-bottom: 1px solid #81b2cc;
+
     .logo {
       width: 310px;
     }
+
     .ui.container {
       display: flex;
     }
+
     .src {
       width: 33%;
       height: 40px;
@@ -67,9 +80,11 @@ h4 {
       margin-top: 26px;
       margin-left: 40px;
     }
+
     nav {
       margin-left: auto;
       margin-top: 26px;
+
       a {
         color: #666;
         font-weight: 500;
@@ -77,26 +92,42 @@ h4 {
         text-decoration: none;
         margin: 0 13px;
       }
+
       .ant-btn-primary {
         margin-left: 12px;
         font-weight: bold;
       }
     }
   }
+
+  .panel-disclaimer {
+    background-color: #27ae60;
+    display: flex;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
   #landing {
     .map-container {
       border-bottom: 1px solid #81b2cc;
     }
   }
 }
+
 .add-dropdown {
   text-align: right;
+
   li {
     font-weight: 600;
     font-size: 16px;
     color: #04a9f1;
   }
 }
+
 .ant-form-item-label {
   i {
     padding-left: 6px;
@@ -118,25 +149,31 @@ footer {
   background-color: $primaryColor;
   color: #fff;
   padding: 50px 0 0 0;
+
   a {
     color: #fff;
+
     &:hover {
       color: rgba(255, 255, 255, 0.6);
     }
   }
+
   h4 {
     color: #fff;
     font-size: 1.2rem;
   }
+
   .ui.container {
     &.unep {
       padding: 0.5rem 0;
       display: flex;
+
       .unepInfo {
         width: calc(100% - 110px);
         text-align: left;
         padding: 0 0 0 5rem;
       }
+
       h2 {
         color: white;
         font-size: 0.9rem;
@@ -144,19 +181,24 @@ footer {
         font-weight: 400;
       }
     }
+
     .unepLogo {
       img {
         width: 100px;
         margin-left: 0.5rem;
       }
     }
+
     &:first-child {
       display: flex;
+
       .col {
         width: 33%;
         flex: 1;
+
         nav {
           margin-bottom: 2rem;
+
           ul {
             a,
             span {
@@ -167,13 +209,16 @@ footer {
       }
     }
   }
+
   .footBottom {
     width: 100%;
     margin: 5px 0 0 0;
     padding: 20px 0;
     display: flex;
+
     .col {
       width: 50%;
+
       &:last-child {
         text-align: right;
       }
@@ -183,14 +228,18 @@ footer {
       &.horizonList {
         > li {
           display: inline-block;
+
           a {
             margin-left: 10px;
           }
         }
+
         &.socialLink {
           margin-right: 0;
+
           li {
             margin-left: 5px;
+
             a {
               font-size: 1.5rem;
               margin-left: 0;
@@ -223,6 +272,7 @@ h2.loading {
   padding-top: 40px;
   text-align: center;
   padding-bottom: 1500px;
+
   span {
     margin-right: 5px;
   }
@@ -240,6 +290,7 @@ h2.loading {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }

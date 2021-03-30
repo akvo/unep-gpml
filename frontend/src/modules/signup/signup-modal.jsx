@@ -1,4 +1,4 @@
-import { UIStore, update } from "../../store";
+import { UIStore } from "../../store";
 import React, { useState, useContext } from "react";
 import { Modal, Button } from "antd";
 import api from "../../utils/api";
@@ -24,7 +24,9 @@ const SignupModal = ({ visible, onCancel }) => {
     api
       .post("/profile", vals)
       .then((d) => {
-        update(UIStore, "profile", d.data);
+        UIStore.update((e) => {
+          e.profile = d.data;
+        });
         setSending(false);
         document.cookie = `profile=SUBMITTED`;
         document.cookie = `profileMessage=1`;

@@ -1,13 +1,5 @@
 import { languages } from "countries-list";
 import { Store } from "pullstate";
-import React, { createContext, useReducer } from "react";
-
-const initialState = {
-  tags: {},
-  countries: [],
-  profile: {},
-  organisations: [],
-};
 
 const UIStore = new Store({
   tags: {},
@@ -17,11 +9,4 @@ const UIStore = new Store({
   languages: languages,
 });
 
-const update = (store, key, data) => {
-  store.update((s) => ({
-    ...s,
-    [key]: data,
-  }));
-};
-
-export { UIStore, update };
+export { UIStore };
