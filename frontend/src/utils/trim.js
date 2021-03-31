@@ -1,71 +1,55 @@
-const PUNCTUATION_LIST = [".", ",", ";"];
+const lastCharEscape = [".", ",", ";"];
+const escapeRegex = /\(([^)]+)\)\s\w+/g;
 
-const TrimText = ({ text, min = 200, ideal = 300, max = 300 }) => {
-  if (max < min || ideal > max || ideal < min) {
-    throw new Error(
-      "The minimum length must be less than the maximum, and the ideal must be between the minimum and maximum."
+const TrimText = ({ text, max = 400 }) => {
+  if (text.length < max) {
+    return <div>{text}</div>;
+  }
+
+  let escaped = [];
+  escaped = [...escaped, ...text.matchAll(escapeRegex)];
+  escaped.forEach((x, i) => {
+    const replacer = x[0].replaceAll(/\s/g, "###");
+    text = text.replace(x[0], replacer);
+  });
+
+  let arrayText = text.split(" ");
+  arrayText = arrayText.filter((x) => x.length);
+  text = "";
+  let startIndex = 0;
+
+  while (text.length < max - 1 && arrayText[startIndex]) {
+    text +=
+      arrayText[startIndex].replaceAll("###", " ").replaceAll("·", "") + " ";
+    startIndex++;
+  }
+  text = text.slice(0, -1);
+
+  if (text.slice(-1).match(/[0-9]/)) {
+    text = text.slice(0, -1);
+  }
+
+  lastCharEscape.forEach((x) => {
+    if (text.endsWith(x)) {
+      text = text.slice(0, -1);
+    }
+  });
+
+  if (text.endsWith(")") && arrayText[startIndex + 1]) {
+    return (
+      <div>
+        {text} {arrayText[startIndex + 1]}
+        {" ... "}
+      </div>
     );
   }
 
-  if (text.length < ideal) {
-    return <div>{text.slice(0, -1)} ...</div>;
-  }
-
-  let pointerOne = ideal;
-  let pointerTwo = ideal;
-  let firstSpace, resultIdx;
-
-  const setSpace = (idx) => {
-    if (spaceMatch(text[idx])) {
-      firstSpace = firstSpace || idx;
-    }
-  };
-
-  while (pointerOne < max || pointerTwo > min) {
-    if (checkMatch(pointerOne, text, max, min)) {
-      resultIdx = pointerOne + 1;
-      break;
-    } else if (checkMatch(pointerTwo, text, max, min)) {
-      resultIdx = pointerTwo + 1;
-      break;
-    } else {
-      setSpace(pointerOne);
-      setSpace(pointerTwo);
-    }
-
-    pointerOne++;
-    pointerTwo--;
-  }
-
-  if (resultIdx === undefined) {
-    if (firstSpace && firstSpace >= min && firstSpace <= max) {
-      resultIdx = firstSpace;
-    } else if (ideal - min < max - ideal) {
-      resultIdx = min;
-    } else {
-      resultIdx = max;
-    }
-  }
-  return <div>{text.slice(0, resultIdx).slice(0, -1)} ... </div>;
-};
-
-const spaceMatch = (character) => {
-  if (character === " ") {
-    return true;
-  }
-};
-
-const punctuationMatch = (idx, text) => {
-  let punctuationIdx = PUNCTUATION_LIST.indexOf(text[idx]);
-  if (punctuationIdx >= 0 && spaceMatch(text[idx + 1])) {
-    return true;
-  }
-};
-
-const checkMatch = (idx, text, max, min) => {
-  if (idx < max && idx > min && punctuationMatch(idx, text)) {
-    return true;
-  }
+  return (
+    <div>
+      {text}
+      {" ... "}
+    </div>
+  );
 };
 
 export default TrimText;
