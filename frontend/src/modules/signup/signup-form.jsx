@@ -29,11 +29,11 @@ const geoCoverageTypeOptions = [
 ];
 
 const sectorOptions = [
-  "Governments",
-  "Private Sector",
-  "NGOs and MGS",
-  "Academia and Scientific Community",
-  "IGOs and multi - lateral processes",
+  "Government",
+  "Industry, Business and Private Sector",
+  "Scientific and Technological Community and Academia",
+  "Foundation, Non-Governmental Organization (NGO) and other Major Groups and Stakeholder",
+  "Intergovernmental Organization (IGOs) and Multi-lateral Processes Actors",
   "Other",
 ];
 
@@ -94,7 +94,7 @@ const defaultFormSchema = {
       // },
       geoCoverageValue: {
         label: "Geo coverage",
-        required: true,
+        // required: true,
         render: GeoCoverageInput,
       },
     },
