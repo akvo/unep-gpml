@@ -198,6 +198,28 @@
       }
     }
   }
+
+  // add event - enable mobile view
+  #add-event {
+    .ant-card {
+      h3 {
+        font-size: 20px !important;
+      }
+      .array-item {
+        flex-direction: column;
+        &:not(:first-child) {
+          margin-top: 10px;
+        }
+        & > div:first-child {
+          width: 100% !important;
+        }
+        & > div:last-child {
+          width: 100% !important;
+          margin-left: 0 !important;
+        }
+      }
+    }
+  }
 }
 
 /* Tablet */

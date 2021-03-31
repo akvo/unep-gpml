@@ -231,11 +231,11 @@ const AddEventForm = () => {
                     />
                   </div>
                   <div className="section">
-                    <h2>Location & coverage</h2>
+                    <h3>Location & coverage</h3>
                     <FieldsFromSchema schema={formSchema[1]} />
                   </div>
                   <div className="section">
-                    <h2>Other</h2>
+                    <h3>Other</h3>
                     <FieldsFromSchema schema={formSchema[2]} />
                   </div>
                   <Button
