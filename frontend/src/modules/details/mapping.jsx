@@ -346,7 +346,7 @@ const detailProject = [
   },
   {
     key: "contribution",
-    name: "In Kind Contributions:",
+    name: "In Kind Contributions",
     value: "contribution",
     type: "currency",
   },

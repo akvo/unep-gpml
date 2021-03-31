@@ -14,8 +14,8 @@
 @media only screen and (max-width: 767px) {
   .ui.container {
     width: auto !important;
-    margin-left: 1em !important;
-    margin-right: 1em !important;
+    margin-left: 1.2em !important;
+    margin-right: 1.2em !important;
     // enable mobile view
     flex-direction: column;
     .topic-item {
@@ -50,6 +50,7 @@
     display: none;
   }
 
+  // root
   #root {
     // enable mobile view -- topbar
     & > .topbar {
@@ -145,6 +146,58 @@
       }
     }
   }
+
+  // browse - enable mobile view
+  #browse {
+    aside {
+      width: 100% !important;
+    }
+    .main-content {
+      margin-top: 25px;
+      margin-left: 0 !important;
+      .page {
+        font-size: 12px;
+      }
+      .ant-card {
+        h4 {
+          font-size: 18px !important;
+          width: 70% !important;
+        }
+      }
+    }
+  }
+
+  // details - enable mobile view
+  .details-view {
+    .header-container {
+      .title {
+        width: 75% !important;
+        h1 {
+          font-size: 20px;
+          line-height: 30px;
+        }
+      }
+    }
+    .content-body {
+      flex-direction: column;
+      .content-column {
+        width: 100% !important;
+        .card {
+          margin-bottom: 35px !important;
+        }
+      }
+    }
+    .table {
+      .column {
+        .title {
+          flex: 30% !important;
+        }
+        .value {
+          flex: 70% !important;
+        }
+      }
+    }
+  }
 }
 
 /* Tablet */
@@ -191,6 +244,43 @@
   .echarts-for-react.fade-in.worldmap {
     margin-top: 25px;
     padding-right: 20px;
+  }
+
+  // browse - enable mobile view
+  #browse {
+    aside {
+      width: 250px !important;
+    }
+    .main-content {
+      .ant-card {
+        h4 {
+          font-size: 18px !important;
+          width: 75% !important;
+        }
+      }
+    }
+  }
+
+  // details - enable mobile view
+  .details-view {
+    .header-container {
+      .title {
+        h1 {
+          font-size: 26px;
+          line-height: 36px;
+        }
+      }
+    }
+    .table {
+      .column {
+        .title {
+          flex: 30% !important;
+        }
+        .value {
+          flex: 70% !important;
+        }
+      }
+    }
   }
 }
 
