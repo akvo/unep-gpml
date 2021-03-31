@@ -300,19 +300,19 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
         <ul className="topic-list">
           <li>
             <Checkbox
-              checked={value.indexOf("stakeholder") !== -1}
-              onChange={handleChange("stakeholder")}
-            >
-              Individuals ({(counts && counts["stakeholder"]) || 0})
-            </Checkbox>
-          </li>
-          <li>
-            <Checkbox
               checked={value.indexOf("organisation") !== -1}
               onChange={handleChange("organisation")}
             >
               {topicNames("organisation")} (
               {(counts && counts["organisation"]) || 0})
+            </Checkbox>
+          </li>
+          <li>
+            <Checkbox
+              checked={value.indexOf("stakeholder") !== -1}
+              onChange={handleChange("stakeholder")}
+            >
+              Individual ({(counts && counts["stakeholder"]) || 0})
             </Checkbox>
           </li>
         </ul>

@@ -27,15 +27,15 @@ export const topicTypesApprovedUser = topicTypesIncludingOrg.concat([
 
 export const topicNames = (topic) => {
   const names = {
-    actionPlan: "Action Plans",
-    event: "Events",
+    actionPlan: "Action Plan",
+    event: "Event",
     financingResource: "Financing Resources",
     technicalResource: "Technical Resources",
-    technology: "Technologies",
-    policy: "Policies",
-    project: "Initiatives",
-    stakeholder: "Stakeholder",
+    technology: "Technology",
+    policy: "Policy",
+    project: "Initiative",
     organisation: "Entity",
+    stakeholder: "Individual",
   };
   return names[humps.camelize(topic)];
 };
