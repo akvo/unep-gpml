@@ -101,7 +101,7 @@ const defaultFormSchema = {
   },
   organisation: {
     "org.id": {
-      label: "Organisation",
+      label: "Entity",
       control: "select",
       showSearch: true,
       options: [],
@@ -110,7 +110,7 @@ const defaultFormSchema = {
       required: true,
     },
     organisationRole: {
-      label: "Your role in the organisation",
+      label: "Your role in the entity",
       order: 2,
       required: true,
     },
@@ -373,7 +373,7 @@ const SignupForm = ({
                   />
                 </div>
                 <div className={sectionGrid}>
-                  <h2>Organisation details</h2>
+                  <h2>Entity details</h2>
                   <Checkbox
                     className="org-check"
                     checked={noOrg}
@@ -398,7 +398,7 @@ const SignupForm = ({
                           order: 1,
                         };
                         newSchema["organisation"]["org.type"] = {
-                          label: "Type of the organisation",
+                          label: "Type of the entity",
                           required: true,
                           control: "select",
                           options: [
@@ -423,7 +423,7 @@ const SignupForm = ({
                           autoComplete: "off",
                         };
                         newSchema["organisation"]["org.url"] = {
-                          label: "Organisation URL",
+                          label: "Entity URL",
                           order: 4,
                           addonBefore: "https://",
                           required: true,

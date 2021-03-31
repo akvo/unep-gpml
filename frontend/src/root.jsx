@@ -22,6 +22,7 @@ import SignupView from "./modules/signup/view";
 import DetailsView from "./modules/details/view";
 import Footer from "./footer";
 import uniqBy from "lodash/uniqBy";
+import sortBy from "lodash/sortBy";
 
 api.get("/tag").then((resp) => {
   UIStore.update((e) => {
@@ -35,7 +36,7 @@ api.get("/country").then((resp) => {
 });
 api.get("/organisation").then((resp) => {
   UIStore.update((e) => {
-    e.organisations = uniqBy(resp.data);
+    e.organisations = uniqBy(sortBy(resp.data, ["name"]));
   });
 });
 
