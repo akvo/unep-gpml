@@ -140,12 +140,19 @@ const Maps = ({ dependency, title, subtitle, data, clickEvents, tooltip }) => {
   const [refMap, setRefMap] = useState(false);
 
   const handleResize = () => {
+    const { innerWidth, innerHeight } = window;
     const box = document.getElementsByClassName("map-overlay");
     if (box.length === 1) {
+      const left =
+        innerWidth >= 768 && innerWidth <= 991
+          ? 20
+          : box[0].offsetLeft + box[0].offsetWidth;
+      const height =
+        innerWidth >= 768 && innerWidth <= 991 ? 500 : box[0].offsetHeight;
       setMapPos({
-        left: box[0].offsetLeft + box[0].offsetWidth,
+        left: left,
         right: box[0].offsetLeft,
-        height: box[0].offsetHeight,
+        height: height,
       });
     }
   };
