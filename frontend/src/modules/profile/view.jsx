@@ -1,5 +1,14 @@
 import { UIStore } from "../../store";
-import { Button, notification, Tabs, Image, Menu, Divider } from "antd";
+import {
+  Button,
+  notification,
+  Tabs,
+  Image,
+  Menu,
+  Dividerm,
+  Row,
+  Col,
+} from "antd";
 import React, {
   useRef,
   useState,
@@ -155,8 +164,8 @@ const ProfileView = ({ updateDisclaimer }) => {
             <LoadingOutlined spin /> Loading Profile
           </h2>
         ) : (
-          <div className="menu-container">
-            <div className="menu-wrapper">
+          <Row className="menu-container">
+            <Col xs={24} md={8} lg={6} className="menu-wrapper">
               <div className="photo">
                 <Image width="70%" src={profile.photo} />
               </div>
@@ -166,8 +175,8 @@ const ProfileView = ({ updateDisclaimer }) => {
               >
                 {renderMenuItem(profile)}
               </Menu>
-            </div>
-            <div className="content-wrapper">
+            </Col>
+            <Col xs={24} md={16} lg={18} className="content-wrapper">
               {menu === "personal-details" && (
                 <div>
                   <SignupForm
@@ -195,7 +204,7 @@ const ProfileView = ({ updateDisclaimer }) => {
                   setPendingItems={setPendingItems}
                 />
               )}
-            </div>
+            </Col>
             {/* <Tabs tabPosition="left" className="fade-in">
               <TabPane tab="Personal details" key="1">
                 <SignupForm
@@ -221,7 +230,7 @@ const ProfileView = ({ updateDisclaimer }) => {
                 </TabPane>
               )}
             </Tabs> */}
-          </div>
+          </Row>
         )}
       </div>
     </div>
