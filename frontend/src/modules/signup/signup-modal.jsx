@@ -1,5 +1,5 @@
 import { UIStore } from "../../store";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Modal, Button } from "antd";
 import api from "../../utils/api";
 import "./styles.scss";
@@ -36,6 +36,24 @@ const SignupModal = ({ visible, onCancel }) => {
         setSending(false);
       });
   };
+
+  useEffect(() => {
+    if (!visible) {
+      return;
+    }
+    let modal = document.getElementsByClassName("signup-modal");
+    if (modal) {
+      let modalContent = document.getElementsByClassName("ant-modal-wrap");
+      modalContent[0].addEventListener("scroll", (e) => {
+        setTimeout(() => {
+          document
+            .getElementsByClassName("ant-select-dropdown")
+            .forEach((x) => x.classList.add("ant-select-dropdown-hidden"));
+        }, 50);
+      });
+    }
+  }, [visible]);
+
   return (
     <Modal
       {...{ visible, onCancel }}
