@@ -41,14 +41,17 @@ const ObjectFieldTemplate = ({
 
   const findSchema = (element) => element.content.props.schema;
   const findSchemaType = (element) => findSchema(element).type;
+  const findSchemaDepend = (element) => findSchema(element).depend;
   const findUiSchema = (element) => element.content.props.uiSchema;
   const findUiSchemaField = (element) => findUiSchema(element)["ui:field"];
   const findUiSchemaWidget = (element) => findUiSchema(element)["ui:widget"];
+  const findUiSchemaSpan = (element) => findUiSchema(element)["ui:span"];
 
   const calculateColSpan = (element) => {
     const type = findSchemaType(element);
     const field = findUiSchemaField(element);
     const widget = findUiSchemaWidget(element);
+    const span = findUiSchemaSpan(element);
 
     const defaultColSpan =
       properties.length < 2 || // Single or no field in object.
@@ -58,6 +61,9 @@ const ObjectFieldTemplate = ({
         ? 24
         : 12;
 
+    if (span) {
+      return span;
+    }
     if (isObject(colSpan)) {
       return (
         colSpan[widget] || colSpan[field] || colSpan[type] || defaultColSpan
@@ -72,9 +78,35 @@ const ObjectFieldTemplate = ({
   const filterHidden = (element) =>
     element.content.props.uiSchema["ui:widget"] !== "hidden";
 
+  const formGroup = (ui) => {
+    const group = ui["ui:group"];
+    if (group) {
+      return `group-${group}`;
+    }
+    return;
+  };
+
+  // hide and show form when dependent
+  const dependHidden = (element) => {
+    const deppend = findSchemaDepend(element);
+    if (deppend) {
+      let answer = formData[deppend.id];
+      answer = typeof answer === "string" ? answer.toLowerCase() : answer;
+      let dependValue = deppend.value;
+      dependValue = Array.isArray(dependValue)
+        ? dependValue.includes(answer)
+        : dependValue === answer;
+      if (dependValue) {
+        return { display: "block" };
+      }
+      return { display: "none" };
+    }
+    return { display: "block" };
+  };
+
   return (
     <fieldset id={idSchema.$id}>
-      <Row gutter={rowGutter}>
+      <Row gutter={rowGutter} className={formGroup(uiSchema)}>
         {uiSchema["ui:title"] !== false && (uiSchema["ui:title"] || title) && (
           <Col className={labelColClassName} span={24}>
             <h1
@@ -97,7 +129,11 @@ const ObjectFieldTemplate = ({
             </Col>
           )}
         {properties.filter(filterHidden).map((element) => (
-          <Col key={element.name} span={calculateColSpan(element)}>
+          <Col
+            key={element.name}
+            span={calculateColSpan(element)}
+            style={dependHidden(element)}
+          >
             {element.content}
           </Col>
         ))}
