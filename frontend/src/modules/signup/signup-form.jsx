@@ -14,7 +14,6 @@ import {
 import { FieldsFromSchema } from "../../utils/form-utils";
 import cloneDeep from "lodash/cloneDeep";
 import isEmpty from "lodash/isEmpty";
-import api from "../../utils/api";
 import { storage } from "../../utils/storage";
 import GeoCoverageInput from "./comp/geo-coverage-input";
 import { useRef } from "react";

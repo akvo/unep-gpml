@@ -152,7 +152,9 @@ const Footer = ({
                     onClick={(e) => {
                       Object.keys(profile).length > 1
                         ? setWarningModalVisible(true)
-                        : setSignupModalVisible(true);
+                        : isAuthenticated
+                        ? setSignupModalVisible(true)
+                        : loginWithPopup();
                     }}
                   >
                     Sign up to the GPML Digital Platform (For All Individuals)
@@ -175,7 +177,9 @@ const Footer = ({
                     onClick={(e) => {
                       Object.keys(profile).length > 1
                         ? setWarningModalVisible(true)
-                        : setSignupModalVisible(true);
+                        : isAuthenticated
+                        ? setSignupModalVisible(true)
+                        : loginWithPopup();
                     }}
                   >
                     Entities
@@ -191,7 +195,9 @@ const Footer = ({
                     onClick={(e) => {
                       Object.keys(profile).length > 1
                         ? setWarningModalVisible(true)
-                        : setSignupModalVisible(true);
+                        : isAuthenticated
+                        ? setSignupModalVisible(true)
+                        : loginWithPopup();
                     }}
                   >
                     Individuals
