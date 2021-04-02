@@ -39,9 +39,17 @@
                                                  :swagger {:tags ["browse"]}
                                                  :parameters {:query #ig/ref :gpml.handler.browse/query-params}
                                                  :handler #ig/ref :gpml.handler.browse/get}}]]
+                                        ["/archive" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                  #ig/ref :gpml.auth/auth-required
+                                                                  #ig/ref :gpml.auth/approved-user]}
+                                         [""
+                                          {:get {:summary "Get the archived list of approval"
+                                                 :swagger {:tags ["archive"] :security [{:id_token []}]}
+                                                 :handler #ig/ref :gpml.handler.archive/get}}]]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required
-                                                                #ig/ref :gpml.auth/approved-user]}
+                                                                #ig/ref :gpml.auth/approved-user
+                                                                #ig/ref :gpml.auth/admin-required-middleware]}
                                          [""
                                           {:post {:summary "Creates a new event"
                                                   :swagger {:tags ["event"]
@@ -143,6 +151,8 @@
 
   :gpml.handler.browse/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.browse/query-params {}
+
+  :gpml.handler.archive/get {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
 

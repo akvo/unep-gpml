@@ -28,7 +28,7 @@
    :twitter "johndoe"
    :representation "test"
    :affiliation org
-   :title "Mr."
+   :title "Mr"
    :organisation_role "manager"
    :about "Lorem Ipsum"
    :country country
@@ -95,7 +95,7 @@
               :photo "/image/profile/1"
               :cv "/cv/profile/1"
               :representation "test"
-              :title "Mr."
+              :title "Mr"
               :role "USER"
               :org (db.organisation/organisation-by-id db {:id 1})
               :geo_coverage_type "regional"
@@ -143,7 +143,7 @@
               :photo "/image/profile/1"
               :cv "/cv/profile/1"
               :representation "test"
-              :title "Mr."
+              :title "Mr"
               :role "USER"
               :org (db.organisation/organisation-by-id db {:id 10001})
               :geo_coverage_type "regional"
@@ -228,7 +228,7 @@
               :photo nil
               :cv "/cv/profile/1"
               :representation "test"
-              :title "Mr."
+              :title "Mr"
               :role "USER"
               :geo_coverage_type "regional"
               :geo_coverage_value ["Africa" "Europe"]
