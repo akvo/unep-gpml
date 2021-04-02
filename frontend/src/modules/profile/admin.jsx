@@ -1,7 +1,7 @@
 import { UIStore } from "../../store";
 import { Button, Collapse, Space, Spin, Modal, Form, Select } from "antd";
 import React, { Fragment } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import api from "../../utils/api";
 import moment from "moment";
 import capitalize from "lodash/capitalize";
@@ -33,8 +33,13 @@ const ModalReject = ({ visible, close, reject, item }) => {
   );
 };
 
-const AdminSection = ({ pendingItems, setPendingItems }) => {
-  const { countries } = UIStore.currentState;
+const AdminSection = ({
+  pendingItems,
+  setPendingItems,
+  archiveItems,
+  setArchiveItems,
+}) => {
+  const { countries, profile } = UIStore.currentState;
   const [modalRejectVisible, setModalRejectVisible] = useState(false);
   const [modalRejectFunction, setModalRejectFunction] = useState(false);
 
@@ -45,6 +50,18 @@ const AdminSection = ({ pendingItems, setPendingItems }) => {
         review_status: review_status,
       })
       .then(() => {
+        let title = item.title;
+        title = item?.firstName ? `${title} ${item.firstName}` : title;
+        title = item?.lastName ? `${title} ${item.lastName}` : title;
+        const newArchive = {
+          ...item,
+          title: title,
+          type: item.type,
+          reviewStatus: review_status,
+          reviewedBy: profile.firstName + " " + profile.lastName,
+          reviewedAt: moment().format("L LT"),
+        };
+        setArchiveItems([newArchive, ...archiveItems]);
         setPendingItems(pendingItems.filter((it) => it.id !== item.id));
         setModalRejectVisible(false);
       });
@@ -218,18 +235,20 @@ const AdminSection = ({ pendingItems, setPendingItems }) => {
                         <li>
                           <div className="detail-title">Organisation</div>:
                           <div className="detail-content">
-                            {(item.org && (
-                              <li>
-                                <a
-                                  href={item.org.url}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                >
-                                  {item.org.name}
-                                </a>
-                              </li>
-                            )) ||
-                              "-"}
+                            <ul>
+                              {(item.org && (
+                                <li>
+                                  <a
+                                    href={item.org.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    {item.org.name}
+                                  </a>
+                                </li>
+                              )) ||
+                                "-"}
+                            </ul>
                           </div>
                         </li>
                         <li>
@@ -361,14 +380,18 @@ const AdminSection = ({ pendingItems, setPendingItems }) => {
   };
 
   const renderArchiveRequests = () => {
-    const archived = null;
     return (
       <div className="archive">
         <h2>Requests archive</h2>
         {/* {loading && <Spin size="large" />} */}
-        <Collapse collapsible="disabled">
-          {archived &&
-            archived.map((item, index) => (
+        <div className="row head">
+          <div className="col">Type</div>
+          <div className="col">Name</div>
+          <div className="col">Status</div>
+        </div>
+        <Collapse>
+          {archiveItems.length > 0 ? (
+            archiveItems.map((item, index) => (
               <Collapse.Panel
                 showArrow={false}
                 key={`collapse-archive-${index}`}
@@ -376,12 +399,31 @@ const AdminSection = ({ pendingItems, setPendingItems }) => {
                   <div className="row">
                     <div className="col">{capitalize(item.type)}</div>
                     <div className="col">{item.title}</div>
-                    <div className="col">{capitalize(item.reviewStatus)}</div>
+                    <div className="col status">
+                      {capitalize(item.reviewStatus)}
+                    </div>
                   </div>
                 }
-              ></Collapse.Panel>
-            ))}
-          {!archived && (
+              >
+                <div className="event-info">
+                  <ul>
+                    <li>
+                      <div className="detail-title">Reviewed by</div>:
+                      {item.reviewedBy.trim() !== "" ? (
+                        <div className="detail-content">{item.reviewedBy}</div>
+                      ) : (
+                        <div className="detail-content">Auto Approved</div>
+                      )}
+                    </li>
+                    <li>
+                      <div className="detail-title">Reviewed At</div>:
+                      <div className="detail-content">{item.reviewedAt}</div>
+                    </li>
+                  </ul>
+                </div>
+              </Collapse.Panel>
+            ))
+          ) : (
             <Collapse.Panel
               showArrow={false}
               key="collapse-archive-no-data"
@@ -398,7 +440,7 @@ const AdminSection = ({ pendingItems, setPendingItems }) => {
       <div className="download-container">
         <p>Download the data</p>
         <Select showSearch style={{ width: 350 }} placeholder="Select data">
-          <Option value="demo">Demo</Option>
+          <Select.Option value="demo">Demo</Select.Option>
         </Select>
         <div className="btn-download">
           <Button type="primary">Download as .csv</Button>

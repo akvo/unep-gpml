@@ -58,6 +58,7 @@ const ProfileView = ({ updateDisclaimer }) => {
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState("personal-details");
   const [pendingItems, setPendingItems] = useState([]);
+  const [archiveItems, setArchiveItems] = useState([]);
 
   useEffect(() => {
     if (profile?.role === "ADMIN") {
@@ -83,6 +84,10 @@ const ProfileView = ({ updateDisclaimer }) => {
           })),
           ...eventResp.data.map((it) => ({ type: "event", ...it })),
         ]);
+      })();
+      (async function fetchData() {
+        const archive = await api.get("/archive");
+        setArchiveItems(archive.data);
       })();
     }
   }, [profile]);
@@ -202,6 +207,8 @@ const ProfileView = ({ updateDisclaimer }) => {
                 <AdminSection
                   pendingItems={pendingItems}
                   setPendingItems={setPendingItems}
+                  archiveItems={archiveItems}
+                  setArchiveItems={setArchiveItems}
                 />
               )}
             </Col>
