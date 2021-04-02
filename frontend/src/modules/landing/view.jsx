@@ -27,7 +27,7 @@ const Landing = ({
   initLandingCount,
   setInitLandingCount,
   setSignupModalVisible,
-  setEventWarningVisible,
+  setWarningModalVisible,
   isAuthenticated,
   loginWithPopup,
   updateDisclaimer,
@@ -135,7 +135,7 @@ const Landing = ({
     if (isAuthenticated && !hasProfile) {
       return setSignupModalVisible(true);
     }
-    return setEventWarningVisible(true);
+    return setWarningModalVisible(true);
   };
 
   const selected =

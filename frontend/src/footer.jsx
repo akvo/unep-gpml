@@ -1,11 +1,15 @@
 import { LinkedinOutlined, YoutubeOutlined } from "@ant-design/icons";
 import unepLogo from "./images/UNEP-logo.svg";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
+import { UIStore } from "./store.js";
 
-const Footer = () => {
-  const { isAuthenticated, loginWithPopup } = useAuth0();
-
+const Footer = ({
+  isAuthenticated,
+  loginWithPopup,
+  setSignupModalVisible,
+  setWarningModalVisible,
+}) => {
+  const { profile } = UIStore.currentState;
   return (
     <footer>
       <div className="ui container">
@@ -133,15 +137,24 @@ const Footer = () => {
                 <h4>Join Us</h4>
               </li>
               <li>
-                <a href="/signup">Join the GPML Partnership (Entities Only)</a>
+                <Link to="/signup">
+                  Join the GPML Partnership (Entities Only)
+                </Link>
               </li>
               <li>
-                {!isAuthenticated ? (
-                  <Link to="/" onClick={loginWithPopup}>
-                    Sign up to the GPML Digital Platform (For All Individuals)
-                  </Link>
-                ) : (
+                {profile?.reviewStatus === "APPROVED" ? (
                   <span>
+                    Sign up to the GPML Digital Platform (For All Individuals)
+                  </span>
+                ) : (
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      Object.keys(profile).length > 1
+                        ? setWarningModalVisible(true)
+                        : setSignupModalVisible(true);
+                    }}
+                  >
                     Sign up to the GPML Digital Platform (For All Individuals)
                   </span>
                 )}
@@ -154,15 +167,35 @@ const Footer = () => {
                 <h4>Stakeholders</h4>
               </li>
               <li>
-                <a href="/browse?topic=organisation">Entities</a>
+                {profile?.reviewStatus === "APPROVED" ? (
+                  <a href="/browse?topic=organisation">Entities</a>
+                ) : (
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      Object.keys(profile).length > 1
+                        ? setWarningModalVisible(true)
+                        : setSignupModalVisible(true);
+                    }}
+                  >
+                    Entities
+                  </span>
+                )}
               </li>
               <li>
-                {!isAuthenticated ? (
-                  <Link to="/" onClick={loginWithPopup}>
-                    Individuals
-                  </Link>
-                ) : (
+                {profile?.reviewStatus === "APPROVED" ? (
                   <a href="/browse?topic=stakeholder">Individuals</a>
+                ) : (
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      Object.keys(profile).length > 1
+                        ? setWarningModalVisible(true)
+                        : setSignupModalVisible(true);
+                    }}
+                  >
+                    Individuals
+                  </span>
                 )}
               </li>
             </ul>

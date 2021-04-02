@@ -1,4 +1,3 @@
-import { UIStore } from "./store.js";
 import React, { useState, useEffect, useContext } from "react";
 import {
   BrowserRouter as Router,
@@ -17,6 +16,7 @@ import SignupModal from "./modules/signup/signup-modal";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
 import { storage } from "./utils/storage";
+import { UIStore } from "./store.js";
 import ProfileView from "./modules/profile/view";
 import SignupView from "./modules/signup/view";
 import DetailsView from "./modules/details/view";
@@ -74,7 +74,7 @@ const Root = () => {
   } = useAuth0();
   const { countries, tags, profile, organisations } = UIStore.currentState;
   const [signupModalVisible, setSignupModalVisible] = useState(false);
-  const [eventWarningVisible, setEventWarningVisible] = useState(false);
+  const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
   const [initLandingCount, setInitLandingCount] = useState("project");
   const [disclaimer, setDisclaimer] = useState(null);
@@ -200,7 +200,7 @@ const Root = () => {
                   setSignupModalVisible,
                   isAuthenticated,
                   loginWithPopup,
-                  setEventWarningVisible,
+                  setWarningModalVisible,
                 }}
               />
             </nav>
@@ -215,7 +215,7 @@ const Root = () => {
                 data,
                 initLandingCount,
                 setInitLandingCount,
-                setEventWarningVisible,
+                setWarningModalVisible,
                 setSignupModalVisible,
                 loginWithPopup,
                 isAuthenticated,
@@ -270,15 +270,20 @@ const Root = () => {
             />
           )}
         />
-        <Footer />
+        <Footer
+          setSignupModalVisible={setSignupModalVisible}
+          setWarningModalVisible={setWarningModalVisible}
+          isAuthenticated={isAuthenticated}
+          loginWithPopup={loginWithPopup}
+        />
       </div>
       <SignupModal
         visible={signupModalVisible}
         onCancel={() => setSignupModalVisible(false)}
       />
       <ModalWarningUser
-        visible={eventWarningVisible}
-        close={() => setEventWarningVisible(false)}
+        visible={warningModalVisible}
+        close={() => setWarningModalVisible(false)}
       />
     </Router>
   );
@@ -307,7 +312,7 @@ const AddButton = withRouter(
   ({
     isAuthenticated,
     setSignupModalVisible,
-    setEventWarningVisible,
+    setWarningModalVisible,
     loginWithPopup,
     history,
   }) => {
@@ -336,8 +341,8 @@ const AddButton = withRouter(
           type="primary"
           size="large"
           onClick={() => {
-            Object.keys(profile).length !== 0
-              ? setEventWarningVisible(true)
+            Object.keys(profile).length > 1
+              ? setWarningModalVisible(true)
               : setSignupModalVisible(true);
           }}
         >
