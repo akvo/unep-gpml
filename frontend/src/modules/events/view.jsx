@@ -12,10 +12,10 @@ const AddEvent = ({ ...props }) => {
     <div id="add-event">
       <div className="ui container">
         <Row>
-          <Col xs={24} md={12}>
+          <Col xs={24} lg={12}>
             <h1>Add event</h1>
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} lg={12}>
             <Card>
               <AddEventForm />
             </Card>

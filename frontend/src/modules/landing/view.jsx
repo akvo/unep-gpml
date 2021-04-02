@@ -33,6 +33,7 @@ const Landing = ({
   updateDisclaimer,
   setFilters,
 }) => {
+  const { innerWidth, innerHeight } = window;
   const { profile, countries } = UIStore.currentState;
   const [country, setCountry] = useState(null);
   const [countryMap, setCountryMap] = useState(null);
@@ -227,12 +228,15 @@ const Landing = ({
             />
           </div>
         )}
-        <Maps
-          data={(mapData?.length > 0 && mapData) || defaultMapData}
-          clickEvents={clickEvents}
-          tooltip={toolTip}
-          dependency={data}
-        />
+        {/* Dont render maps on mobile */}
+        {innerWidth >= 768 && (
+          <Maps
+            data={(mapData?.length > 0 && mapData) || defaultMapData}
+            clickEvents={clickEvents}
+            tooltip={toolTip}
+            dependency={data}
+          />
+        )}
       </div>
       <div className="topics">
         <div className="ui container">

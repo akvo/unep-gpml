@@ -131,16 +131,16 @@ const generateOptions = (title, subtitle, data, tooltip, mapPos, init) => {
 };
 
 const Maps = ({ dependency, title, subtitle, data, clickEvents, tooltip }) => {
+  const { innerWidth, innerHeight } = window;
   const [mapPos, setMapPos] = useState({
     left: 0,
-    right: window.innerWidth,
+    right: innerWidth,
     height: 0,
   });
   const [option, setMapOption] = useState({});
   const [refMap, setRefMap] = useState(false);
 
   const handleResize = () => {
-    const { innerWidth, innerHeight } = window;
     const box = document.getElementsByClassName("map-overlay");
     if (box.length === 1) {
       const left =

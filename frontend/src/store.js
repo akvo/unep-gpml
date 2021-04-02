@@ -7,6 +7,7 @@ const UIStore = new Store({
   profile: {},
   organisations: [],
   languages: languages,
+  formData: {},
 });
 
 export { UIStore };

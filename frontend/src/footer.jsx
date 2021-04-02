@@ -71,7 +71,9 @@ const Footer = ({
                   Connect Stakeholders
                 </a>
               </li>
-              <li>Data Hub (coming soon)</li>
+              <li>
+                <span>Data Hub (coming soon)</span>
+              </li>
             </ul>
           </nav>
         </div>

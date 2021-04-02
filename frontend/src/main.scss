@@ -106,9 +106,7 @@ h4 {
     justify-content: center;
     color: white;
     font-size: 12px;
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-top: 12px;
   }
 
   #landing {
@@ -202,6 +200,7 @@ footer {
           ul {
             a,
             span {
+              display: block;
               padding-left: 5px;
             }
           }

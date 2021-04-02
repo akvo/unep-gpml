@@ -23,6 +23,7 @@ import DetailsView from "./modules/details/view";
 import Footer from "./footer";
 import uniqBy from "lodash/uniqBy";
 import sortBy from "lodash/sortBy";
+// import AddResource from "./modules/resources/view";
 
 api.get("/tag").then((resp) => {
   UIStore.update((e) => {
@@ -142,7 +143,7 @@ const Root = () => {
       <div id="root">
         {disclaimer && (
           <div className="panel-disclaimer">
-            <p>{disclaimer}</p>
+            <p className="ui container">{disclaimer}</p>
           </div>
         )}
         <div className="topbar">
@@ -245,6 +246,12 @@ const Root = () => {
             <AddEvent {...props} updateDisclaimer={updateDisclaimer} />
           )}
         />
+        {/* <Route
+          path="/add-resource"
+          render={(props) => (
+            <AddResource {...props} updateDisclaimer={updateDisclaimer} />
+          )}
+        /> */}
         <Route
           path="/profile"
           render={(props) => (
@@ -326,6 +333,9 @@ const AddButton = withRouter(
                 <Menu.Item onClick={() => history.push("/add-event")}>
                   Event
                 </Menu.Item>
+                {/* <Menu.Item onClick={() => history.push("/add-resource")}>
+                  Resource
+                </Menu.Item> */}
               </Menu>
             }
             trigger={["click"]}
