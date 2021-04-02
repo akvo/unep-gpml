@@ -187,7 +187,7 @@
               :photo "/image/profile/1"
               :cv "/cv/profile/1"
               :representation "test"
-              :title "Mr."
+              :title "Mr"
               :role "USER"
               :org nil
               :geo_coverage_type "regional"
@@ -280,7 +280,7 @@
       (is (= 204 (:status resp)))
       (is (= {:id 10001,
               :email "john@org"
-              :title "Mr."
+              :title "Mr"
               :first_name "Mark"
               :last_name "Doe"
               :country "SPA"
@@ -330,7 +330,7 @@
       (is (= 204 (:status resp)))
       (is (= {:id 10001,
               :email "john@org"
-              :title "Mr."
+              :title "Mr"
               :first_name "Mark"
               :last_name "Doe"
               :country "SPA"
