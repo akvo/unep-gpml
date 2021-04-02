@@ -69,8 +69,12 @@
 
     // enable mobile view -- header
     & > header {
-      height: 230px;
-      padding-top: 12spx;
+      height: auto !important;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      .logo {
+        width: 95%;
+      }
       .ui.container {
         align-items: center;
       }
@@ -317,9 +321,9 @@
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .ui.container {
-    width: 723px;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    width: auto !important;
+    margin-left: 30px !important;
+    margin-right: 30px !important;
   }
 
   .ui.grid.container {
@@ -340,7 +344,7 @@
       .map-overlay {
         position: unset !important;
         width: 100% !important;
-        padding: 0 20px;
+        padding: 0 30px;
         .summary {
           ul {
             li {
@@ -356,7 +360,7 @@
   // enable mobile view - maps
   .echarts-for-react.fade-in.worldmap {
     margin-top: 25px;
-    padding-right: 20px;
+    // padding-right: 4.5vw;
   }
 
   // browse - enable mobile view
@@ -465,9 +469,9 @@
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .ui.container {
-    width: 933px;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    width: auto !important;
+    margin-left: 30px !important;
+    margin-right: 30px !important;
   }
 
   .ui.grid.container {
@@ -480,6 +484,15 @@
 
   .ui.very.relaxed.grid.container {
     width: calc(933px + 5rem) !important;
+  }
+
+  // enable mobile view - maps
+  #landing {
+    .landing-container.map-container {
+      .map-overlay {
+        left: 35px !important;
+      }
+    }
   }
 }
 

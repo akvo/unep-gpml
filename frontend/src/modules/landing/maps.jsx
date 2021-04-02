@@ -145,13 +145,15 @@ const Maps = ({ dependency, title, subtitle, data, clickEvents, tooltip }) => {
     if (box.length === 1) {
       const left =
         innerWidth >= 768 && innerWidth <= 991
-          ? 20
+          ? 23
           : box[0].offsetLeft + box[0].offsetWidth;
+      const right =
+        innerWidth >= 768 && innerWidth <= 991 ? 50 : box[0].offsetLeft;
       const height =
         innerWidth >= 768 && innerWidth <= 991 ? 500 : box[0].offsetHeight;
       setMapPos({
         left: left,
-        right: box[0].offsetLeft,
+        right: right,
         height: height,
       });
     }
