@@ -44,13 +44,15 @@ const SignupModal = ({ visible, onCancel }) => {
     let modal = document.getElementsByClassName("signup-modal");
     if (modal) {
       let modalContent = document.getElementsByClassName("ant-modal-wrap");
-      modalContent[0].addEventListener("scroll", (e) => {
-        setTimeout(() => {
-          document
-            .getElementsByClassName("ant-select-dropdown")
-            .forEach((x) => x.classList.add("ant-select-dropdown-hidden"));
-        }, 50);
-      });
+      modalContent &&
+        modalContent[0].addEventListener("scroll", (e) => {
+          setTimeout(() => {
+            document.getElementsByClassName("ant-select-dropdown") &&
+              document
+                .getElementsByClassName("ant-select-dropdown")
+                .forEach((x) => x.classList.add("ant-select-dropdown-hidden"));
+          }, 50);
+        });
     }
   }, [visible]);
 
