@@ -579,9 +579,9 @@
 
   (resync-country db)
   (resync-country-group db)
+  (resync-organisation db)
   (resync-policy db)
   (resync-resource db)
-  (resync-organisation db)
   (resync-technology db)
   (resync-event db)
   (resync-project db)

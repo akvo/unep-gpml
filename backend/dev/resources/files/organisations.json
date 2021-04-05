@@ -87,6 +87,9 @@
   "name": "Brazil Ministry of the Environment"
  },
  {
+  "name": "Brazilian Fund for Biodiversity (FUNBIO)"
+ },
+ {
   "name": "British Plastics Federation"
  },
  {
@@ -142,9 +145,6 @@
  },
  {
   "name": "Colgate Palmolive"
- },
- {
-  "name": "Colombia"
  },
  {
   "name": "Comisión Permanente Del Pacífico Sur (CPPS)"
@@ -366,6 +366,9 @@
   "name": "Institute European Environmental Policy (IEEP)"
  },
  {
+  "name": "Institute for Advanced Studies"
+ },
+ {
   "name": "Instituto De Crédito Oficial"
  },
  {
@@ -480,6 +483,12 @@
   "name": "National Geographic"
  },
  {
+  "name": "National Ocean Service"
+ },
+ {
+  "name": "National Oceanic and Atmospheric Administration"
+ },
+ {
   "name": "National Research Council of Canada"
  },
  {
@@ -501,6 +510,9 @@
   "name": "Norwegian Agency for Development Cooperation(NORAD)"
  },
  {
+  "name": "Norwegian Embassy"
+ },
+ {
   "name": "Norwegian Ministry of Climate and Environment"
  },
  {
@@ -520,6 +532,9 @@
  },
  {
   "name": "Oceanographic Institute of University of Sao Paulo"
+ },
+ {
+  "name": "Oceanographic Institute of the University of São Paulo"
  },
  {
   "name": "Odyssey Impact Investments"
@@ -583,6 +598,9 @@
  },
  {
   "name": "Second Muse"
+ },
+ {
+  "name": "Secretariat of Infrastructure and Environment of the State of São Paulo"
  },
  {
   "name": "Secretariat of the Basel"
@@ -687,6 +705,9 @@
   "name": "Trinet"
  },
  {
+  "name": "U.S. Department of Commerce"
+ },
+ {
   "name": "U.S. State Department"
  },
  {
@@ -703,6 +724,9 @@
  },
  {
   "name": "UNEA 4"
+ },
+ {
+  "name": "UNESCO Chair for Sustainability of the Ocean"
  },
  {
   "name": "Unilever"

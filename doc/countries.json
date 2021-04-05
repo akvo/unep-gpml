@@ -1,0 +1,2621 @@
+[
+  {
+    "FID": 0,
+    "ISO3CD": "ABW",
+    "ROMNAM": "Aruba",
+    "MAPLAB": "Aruba (Neth.)",
+    "MAPCLR": "NLD",
+    "STATUS": "NL Self-Governing Territory",
+    "CAPITAL": "Oranjestad"
+  },
+  {
+    "FID": 1,
+    "ISO3CD": "AFG",
+    "ROMNAM": "Afghanistan",
+    "MAPLAB": "Afghanistan",
+    "MAPCLR": "AFG",
+    "STATUS": "Member State",
+    "CAPITAL": "Kabul"
+  },
+  {
+    "FID": 2,
+    "ISO3CD": "AGO",
+    "ROMNAM": "Angola",
+    "MAPLAB": "Angola",
+    "MAPCLR": "AGO",
+    "STATUS": "Member State",
+    "CAPITAL": "Luanda"
+  },
+  {
+    "FID": 3,
+    "ISO3CD": "AIA",
+    "ROMNAM": "Anguilla",
+    "MAPLAB": "Anguilla (UK)",
+    "MAPCLR": "AIA",
+    "STATUS": "UK Non-Self-Governing Territory",
+    "CAPITAL": "The Valley"
+  },
+  {
+    "FID": 4,
+    "ISO3CD": "ALA",
+    "ROMNAM": "Åland Islands",
+    "MAPLAB": "Åland Islands",
+    "MAPCLR": "FIN",
+    "STATUS": " ",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 5,
+    "ISO3CD": "ALB",
+    "ROMNAM": "Albania",
+    "MAPLAB": "Albania",
+    "MAPCLR": "ALB",
+    "STATUS": "Member State",
+    "CAPITAL": "Tirana"
+  },
+  {
+    "FID": 6,
+    "ISO3CD": "AND",
+    "ROMNAM": "Andorra",
+    "MAPLAB": "Andorra",
+    "MAPCLR": "AND",
+    "STATUS": "Member State",
+    "CAPITAL": "Andorra la Vella"
+  },
+  {
+    "FID": 7,
+    "ISO3CD": "ANT",
+    "ROMNAM": "Saba",
+    "MAPLAB": "Saba (Neth.)",
+    "MAPCLR": "NLD",
+    "STATUS": " ",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 8,
+    "ISO3CD": "ANT",
+    "ROMNAM": "Sint Eustatius",
+    "MAPLAB": "Sint Eustatius (Neth.)",
+    "MAPCLR": "NLD",
+    "STATUS": " ",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 9,
+    "ISO3CD": "ARE",
+    "ROMNAM": "United Arab Emirates",
+    "MAPLAB": "United Arab Emirates",
+    "MAPCLR": "ARE",
+    "STATUS": "Member State",
+    "CAPITAL": "Abu Dhabi"
+  },
+  {
+    "FID": 10,
+    "ISO3CD": "ARG",
+    "ROMNAM": "Argentina",
+    "MAPLAB": "Argentina",
+    "MAPCLR": "ARG",
+    "STATUS": "Member State",
+    "CAPITAL": "Buenos Aires"
+  },
+  {
+    "FID": 11,
+    "ISO3CD": "ARM",
+    "ROMNAM": "Armenia",
+    "MAPLAB": "Armenia",
+    "MAPCLR": "ARM",
+    "STATUS": "Member State",
+    "CAPITAL": "Yerevan"
+  },
+  {
+    "FID": 12,
+    "ISO3CD": "ASM",
+    "ROMNAM": "American Samoa",
+    "MAPLAB": "American Samoa (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Non-Self-Governing Territory",
+    "CAPITAL": "Pago Pago"
+  },
+  {
+    "FID": 13,
+    "ISO3CD": "ATA",
+    "ROMNAM": "Antarctica",
+    "MAPLAB": "Antarctica",
+    "MAPCLR": "ATA",
+    "STATUS": " ",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 14,
+    "ISO3CD": "ATF",
+    "ROMNAM": "French Southern Territories",
+    "MAPLAB": "French Southern Territories (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 15,
+    "ISO3CD": "ATG",
+    "ROMNAM": "Antigua and Barbuda",
+    "MAPLAB": "Antigua and Barbuda",
+    "MAPCLR": "ATG",
+    "STATUS": "Member State",
+    "CAPITAL": "St John's"
+  },
+  {
+    "FID": 16,
+    "ISO3CD": "AUS",
+    "ROMNAM": "Ashmore and Cartier Islands",
+    "MAPLAB": "Ashmore & Cartier Is. (Aust.)",
+    "MAPCLR": "AUS",
+    "STATUS": "AU Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 17,
+    "ISO3CD": "AUS",
+    "ROMNAM": "Australia",
+    "MAPLAB": "Australia",
+    "MAPCLR": "AUS",
+    "STATUS": "Member State",
+    "CAPITAL": "Canberra"
+  },
+  {
+    "FID": 18,
+    "ISO3CD": "AUT",
+    "ROMNAM": "Austria",
+    "MAPLAB": "Austria",
+    "MAPCLR": "AUT",
+    "STATUS": "Member State",
+    "CAPITAL": "Vienna"
+  },
+  {
+    "FID": 19,
+    "ISO3CD": "AZE",
+    "ROMNAM": "Azerbaijan",
+    "MAPLAB": "Azerbaijan",
+    "MAPCLR": "AZE",
+    "STATUS": "Member State",
+    "CAPITAL": "Baku"
+  },
+  {
+    "FID": 20,
+    "ISO3CD": "BDI",
+    "ROMNAM": "Burundi",
+    "MAPLAB": "Burundi",
+    "MAPCLR": "BDI",
+    "STATUS": "Member State",
+    "CAPITAL": "Bujumbura"
+  },
+  {
+    "FID": 21,
+    "ISO3CD": "BEL",
+    "ROMNAM": "Belgium",
+    "MAPLAB": "Belgium",
+    "MAPCLR": "BEL",
+    "STATUS": "Member State",
+    "CAPITAL": "Brussels"
+  },
+  {
+    "FID": 22,
+    "ISO3CD": "BEN",
+    "ROMNAM": "Benin",
+    "MAPLAB": "Benin",
+    "MAPCLR": "BEN",
+    "STATUS": "Member State",
+    "CAPITAL": "Porto-Novo (constituti"
+  },
+  {
+    "FID": 23,
+    "ISO3CD": "BES",
+    "ROMNAM": "Bonaire",
+    "MAPLAB": "Bonaire (Neth.)",
+    "MAPCLR": "NLD",
+    "STATUS": " ",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 24,
+    "ISO3CD": "BFA",
+    "ROMNAM": "Burkina Faso",
+    "MAPLAB": "Burkina Faso",
+    "MAPCLR": "BFA",
+    "STATUS": "Member State",
+    "CAPITAL": "Ouagadougou"
+  },
+  {
+    "FID": 25,
+    "ISO3CD": "BGD",
+    "ROMNAM": "Bangladesh",
+    "MAPLAB": "Bangladesh",
+    "MAPCLR": "BGD",
+    "STATUS": "Member State",
+    "CAPITAL": "Dhaka"
+  },
+  {
+    "FID": 26,
+    "ISO3CD": "BGR",
+    "ROMNAM": "Bulgaria",
+    "MAPLAB": "Bulgaria",
+    "MAPCLR": "BGR",
+    "STATUS": "Member State",
+    "CAPITAL": "Sofia"
+  },
+  {
+    "FID": 27,
+    "ISO3CD": "BHR",
+    "ROMNAM": "Bahrain",
+    "MAPLAB": "Bahrain",
+    "MAPCLR": "BHR",
+    "STATUS": "Member State",
+    "CAPITAL": "Manama"
+  },
+  {
+    "FID": 28,
+    "ISO3CD": "BHS",
+    "ROMNAM": "Bahamas",
+    "MAPLAB": "Bahamas",
+    "MAPCLR": "BHS",
+    "STATUS": "Member State",
+    "CAPITAL": "Nassau"
+  },
+  {
+    "FID": 29,
+    "ISO3CD": "BIH",
+    "ROMNAM": "Bosnia and Herzegovina",
+    "MAPLAB": "Bosnia and Herzegovina",
+    "MAPCLR": "BIH",
+    "STATUS": "Member State",
+    "CAPITAL": "Sarajevo"
+  },
+  {
+    "FID": 30,
+    "ISO3CD": "BLM",
+    "ROMNAM": "Saint Barthélemy",
+    "MAPLAB": "Saint Barthélemy (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": " ",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 31,
+    "ISO3CD": "BLR",
+    "ROMNAM": "Belarus",
+    "MAPLAB": "Belarus",
+    "MAPCLR": "BLR",
+    "STATUS": "Member State",
+    "CAPITAL": "Minsk"
+  },
+  {
+    "FID": 32,
+    "ISO3CD": "BLZ",
+    "ROMNAM": "Belize",
+    "MAPLAB": "Belize",
+    "MAPCLR": "BLZ",
+    "STATUS": "Member State",
+    "CAPITAL": "Belmopan"
+  },
+  {
+    "FID": 33,
+    "ISO3CD": "BMU",
+    "ROMNAM": "Bermuda",
+    "MAPLAB": "Bermuda (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Non-Self-Governing Territory",
+    "CAPITAL": "Hamilton"
+  },
+  {
+    "FID": 34,
+    "ISO3CD": "BOL",
+    "ROMNAM": "Bolivia (Plurinational State of)",
+    "MAPLAB": "Bolivia (Plurinational State of)",
+    "MAPCLR": "BOL",
+    "STATUS": "Member State",
+    "CAPITAL": "La Paz  (adm.)"
+  },
+  {
+    "FID": 35,
+    "ISO3CD": "BRA",
+    "ROMNAM": "Brazil",
+    "MAPLAB": "Brazil",
+    "MAPCLR": "BRA",
+    "STATUS": "Member State",
+    "CAPITAL": "Bras¡lia"
+  },
+  {
+    "FID": 36,
+    "ISO3CD": "BRB",
+    "ROMNAM": "Barbados",
+    "MAPLAB": "Barbados",
+    "MAPCLR": "BRB",
+    "STATUS": "Member State",
+    "CAPITAL": "Bridgetown"
+  },
+  {
+    "FID": 37,
+    "ISO3CD": "BRN",
+    "ROMNAM": "Brunei Darussalam",
+    "MAPLAB": "Brunei Darussalam",
+    "MAPCLR": "BRN",
+    "STATUS": "Member State",
+    "CAPITAL": "Bandar Seri Begawan"
+  },
+  {
+    "FID": 38,
+    "ISO3CD": "BTN",
+    "ROMNAM": "Bhutan",
+    "MAPLAB": "Bhutan",
+    "MAPCLR": "BTN",
+    "STATUS": "Member State",
+    "CAPITAL": "Thimphu"
+  },
+  {
+    "FID": 39,
+    "ISO3CD": "BVT",
+    "ROMNAM": "Bouvet Island",
+    "MAPLAB": "Bouvet Island",
+    "MAPCLR": "NOR",
+    "STATUS": "NO Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 40,
+    "ISO3CD": "BWA",
+    "ROMNAM": "Botswana",
+    "MAPLAB": "Botswana",
+    "MAPCLR": "BWA",
+    "STATUS": "Member State",
+    "CAPITAL": "Gaborone"
+  },
+  {
+    "FID": 41,
+    "ISO3CD": "CAF",
+    "ROMNAM": "Central African Republic",
+    "MAPLAB": "Central African Republic",
+    "MAPCLR": "CAF",
+    "STATUS": "Member State",
+    "CAPITAL": "Bangui"
+  },
+  {
+    "FID": 42,
+    "ISO3CD": "CAN",
+    "ROMNAM": "Canada",
+    "MAPLAB": "Canada",
+    "MAPCLR": "CAN",
+    "STATUS": "Member State",
+    "CAPITAL": "Ottawa"
+  },
+  {
+    "FID": 43,
+    "ISO3CD": "CCK",
+    "ROMNAM": "Cocos (Keeling) Islands",
+    "MAPLAB": "Cocos (Keeling) Is. (Aust.)",
+    "MAPCLR": "AUS",
+    "STATUS": "AU Territory",
+    "CAPITAL": "West Island"
+  },
+  {
+    "FID": 44,
+    "ISO3CD": "CHE",
+    "ROMNAM": "Switzerland",
+    "MAPLAB": "Switzerland",
+    "MAPCLR": "CHE",
+    "STATUS": "Member State",
+    "CAPITAL": "Bern"
+  },
+  {
+    "FID": 45,
+    "ISO3CD": "CHL",
+    "ROMNAM": "Chile",
+    "MAPLAB": "Chile",
+    "MAPCLR": "CHL",
+    "STATUS": "Member State",
+    "CAPITAL": "Santiago"
+  },
+  {
+    "FID": 46,
+    "ISO3CD": "CHN",
+    "ROMNAM": "China",
+    "MAPLAB": "China",
+    "MAPCLR": "CHN",
+    "STATUS": "Member State",
+    "CAPITAL": "Beijing"
+  },
+  {
+    "FID": 47,
+    "ISO3CD": "CIV",
+    "ROMNAM": "Côte d'Ivoire",
+    "MAPLAB": "Côte d'Ivoire",
+    "MAPCLR": "CIV",
+    "STATUS": "Member State",
+    "CAPITAL": "Yamoussoukro"
+  },
+  {
+    "FID": 48,
+    "ISO3CD": "CMR",
+    "ROMNAM": "Cameroon",
+    "MAPLAB": "Cameroon",
+    "MAPCLR": "CMR",
+    "STATUS": "Member State",
+    "CAPITAL": "Yaound‚"
+  },
+  {
+    "FID": 49,
+    "ISO3CD": "COD",
+    "ROMNAM": "Democratic Republic of the Congo",
+    "MAPLAB": "Democratic Republic of the Congo",
+    "MAPCLR": "COD",
+    "STATUS": "Member State",
+    "CAPITAL": "Kinshasa"
+  },
+  {
+    "FID": 50,
+    "ISO3CD": "COG",
+    "ROMNAM": "Congo",
+    "MAPLAB": "Congo",
+    "MAPCLR": "COG",
+    "STATUS": "Member State",
+    "CAPITAL": "Brazzaville"
+  },
+  {
+    "FID": 51,
+    "ISO3CD": "COK",
+    "ROMNAM": "Cook Islands",
+    "MAPLAB": "Cook Islands (NZ)",
+    "MAPCLR": "NZL",
+    "STATUS": "NZ Territory",
+    "CAPITAL": "Avarua"
+  },
+  {
+    "FID": 52,
+    "ISO3CD": "COL",
+    "ROMNAM": "Colombia",
+    "MAPLAB": "Colombia",
+    "MAPCLR": "COL",
+    "STATUS": "Member State",
+    "CAPITAL": "Bogot "
+  },
+  {
+    "FID": 53,
+    "ISO3CD": "COM",
+    "ROMNAM": "Comoros",
+    "MAPLAB": "Comoros",
+    "MAPCLR": "COM",
+    "STATUS": "Member State",
+    "CAPITAL": "Moroni"
+  },
+  {
+    "FID": 54,
+    "ISO3CD": "CPV",
+    "ROMNAM": "Cabo Verde",
+    "MAPLAB": "Cabo Verde",
+    "MAPCLR": "CPV",
+    "STATUS": "Member State",
+    "CAPITAL": "Praia"
+  },
+  {
+    "FID": 55,
+    "ISO3CD": "CRI",
+    "ROMNAM": "Costa Rica",
+    "MAPLAB": "Costa Rica",
+    "MAPCLR": "CRI",
+    "STATUS": "Member State",
+    "CAPITAL": "San Jos‚"
+  },
+  {
+    "FID": 56,
+    "ISO3CD": "CUB",
+    "ROMNAM": "Cuba",
+    "MAPLAB": "Cuba",
+    "MAPCLR": "CUB",
+    "STATUS": "Member State",
+    "CAPITAL": "Havana"
+  },
+  {
+    "FID": 57,
+    "ISO3CD": "CUW",
+    "ROMNAM": "Curaçao",
+    "MAPLAB": "Curaçao (Neth.)",
+    "MAPCLR": "NLD",
+    "STATUS": "NL Territory",
+    "CAPITAL": "Willemstad"
+  },
+  {
+    "FID": 58,
+    "ISO3CD": "CXR",
+    "ROMNAM": "Christmas Island",
+    "MAPLAB": "Christmas Is. (Aust.)",
+    "MAPCLR": "AUS",
+    "STATUS": "AU Territory",
+    "CAPITAL": "The Settlement"
+  },
+  {
+    "FID": 59,
+    "ISO3CD": "CYM",
+    "ROMNAM": "Cayman Islands",
+    "MAPLAB": "Cayman Islands (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Non-Self-Governing Territory",
+    "CAPITAL": "George Town"
+  },
+  {
+    "FID": 60,
+    "ISO3CD": "CYP",
+    "ROMNAM": "Cyprus",
+    "MAPLAB": "Cyprus",
+    "MAPCLR": "CYP",
+    "STATUS": "Member State",
+    "CAPITAL": "Nicosia"
+  },
+  {
+    "FID": 61,
+    "ISO3CD": "CZE",
+    "ROMNAM": "Czechia",
+    "MAPLAB": "Czechia",
+    "MAPCLR": "CZE",
+    "STATUS": "Member State",
+    "CAPITAL": "Prague"
+  },
+  {
+    "FID": 62,
+    "ISO3CD": "DEU",
+    "ROMNAM": "Germany",
+    "MAPLAB": "Germany",
+    "MAPCLR": "DEU",
+    "STATUS": "Member State",
+    "CAPITAL": "Berlin"
+  },
+  {
+    "FID": 63,
+    "ISO3CD": "DJI",
+    "ROMNAM": "Djibouti",
+    "MAPLAB": "Djibouti",
+    "MAPCLR": "DJI",
+    "STATUS": "Member State",
+    "CAPITAL": "Djibouti"
+  },
+  {
+    "FID": 64,
+    "ISO3CD": "DMA",
+    "ROMNAM": "Dominica",
+    "MAPLAB": "Dominica",
+    "MAPCLR": "DMA",
+    "STATUS": "Member State",
+    "CAPITAL": "Roseau"
+  },
+  {
+    "FID": 65,
+    "ISO3CD": "DNK",
+    "ROMNAM": "Denmark",
+    "MAPLAB": "Denmark",
+    "MAPCLR": "DNK",
+    "STATUS": "Member State",
+    "CAPITAL": "Copenhagen"
+  },
+  {
+    "FID": 66,
+    "ISO3CD": "DOM",
+    "ROMNAM": "Dominican Republic",
+    "MAPLAB": "Dominican Republic",
+    "MAPCLR": "DOM",
+    "STATUS": "Member State",
+    "CAPITAL": "Santo Domingo"
+  },
+  {
+    "FID": 67,
+    "ISO3CD": "DZA",
+    "ROMNAM": "Algeria",
+    "MAPLAB": "Algeria",
+    "MAPCLR": "DZA",
+    "STATUS": "Member State",
+    "CAPITAL": "Algiers"
+  },
+  {
+    "FID": 68,
+    "ISO3CD": "ECU",
+    "ROMNAM": "Ecuador",
+    "MAPLAB": "Ecuador",
+    "MAPCLR": "ECU",
+    "STATUS": "Member State",
+    "CAPITAL": "Quito"
+  },
+  {
+    "FID": 69,
+    "ISO3CD": "EGY",
+    "ROMNAM": "Egypt",
+    "MAPLAB": "Egypt",
+    "MAPCLR": "EGY",
+    "STATUS": "Member State",
+    "CAPITAL": "Cairo"
+  },
+  {
+    "FID": 70,
+    "ISO3CD": "ERI",
+    "ROMNAM": "Eritrea",
+    "MAPLAB": "Eritrea",
+    "MAPCLR": "ERI",
+    "STATUS": "Member State",
+    "CAPITAL": "Asmara"
+  },
+  {
+    "FID": 71,
+    "ISO3CD": "ESH",
+    "ROMNAM": "Western Sahara",
+    "MAPLAB": "Western Sahara",
+    "MAPCLR": "ESH",
+    "STATUS": "Non-Self-Governing Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 72,
+    "ISO3CD": "ESP",
+    "ROMNAM": "Canary Islands",
+    "MAPLAB": "Canary Is. (Sp.)",
+    "MAPCLR": "ESP",
+    "STATUS": " ",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 73,
+    "ISO3CD": "ESP",
+    "ROMNAM": "Spain",
+    "MAPLAB": "Spain",
+    "MAPCLR": "ESP",
+    "STATUS": "Member State",
+    "CAPITAL": "Madrid"
+  },
+  {
+    "FID": 74,
+    "ISO3CD": "EST",
+    "ROMNAM": "Estonia",
+    "MAPLAB": "Estonia",
+    "MAPCLR": "EST",
+    "STATUS": "Member State",
+    "CAPITAL": "Tallinn"
+  },
+  {
+    "FID": 75,
+    "ISO3CD": "ETH",
+    "ROMNAM": "Ethiopia",
+    "MAPLAB": "Ethiopia",
+    "MAPCLR": "ETH",
+    "STATUS": "Member State",
+    "CAPITAL": "Addis-Ababa"
+  },
+  {
+    "FID": 76,
+    "ISO3CD": "FIN",
+    "ROMNAM": "Finland",
+    "MAPLAB": "Finland",
+    "MAPCLR": "FIN",
+    "STATUS": "Member State",
+    "CAPITAL": "Helsinki"
+  },
+  {
+    "FID": 77,
+    "ISO3CD": "FJI",
+    "ROMNAM": "Fiji",
+    "MAPLAB": "Fiji",
+    "MAPCLR": "FJI",
+    "STATUS": "Member State",
+    "CAPITAL": "Suva"
+  },
+  {
+    "FID": 78,
+    "ISO3CD": "FLK",
+    "ROMNAM": "Falkland Islands (Malvinas)",
+    "MAPLAB": "Falkland Islands (Malvinas) ***",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Non-Self-Governing Territory",
+    "CAPITAL": "Stanley"
+  },
+  {
+    "FID": 79,
+    "ISO3CD": "FRA",
+    "ROMNAM": "France",
+    "MAPLAB": "France",
+    "MAPCLR": "FRA",
+    "STATUS": "Member State",
+    "CAPITAL": "Paris"
+  },
+  {
+    "FID": 80,
+    "ISO3CD": "FRO",
+    "ROMNAM": "Faroe Islands",
+    "MAPLAB": "Faroe Islands (Denmark)",
+    "MAPCLR": "DNK",
+    "STATUS": "DK Territory",
+    "CAPITAL": "T¢rshavn"
+  },
+  {
+    "FID": 81,
+    "ISO3CD": "FSM",
+    "ROMNAM": "Micronesia (Federated States of)",
+    "MAPLAB": "Micronesia (Federated States of)",
+    "MAPCLR": "FSM",
+    "STATUS": "Member State",
+    "CAPITAL": "Palikir"
+  },
+  {
+    "FID": 82,
+    "ISO3CD": "GAB",
+    "ROMNAM": "Gabon",
+    "MAPLAB": "Gabon",
+    "MAPCLR": "GAB",
+    "STATUS": "Member State",
+    "CAPITAL": "Libreville"
+  },
+  {
+    "FID": 83,
+    "ISO3CD": "GBR",
+    "ROMNAM": "United Kingdom of Great Britain & Northern Ireland",
+    "MAPLAB": "United Kingdom of Great Britain & Northern Ireland",
+    "MAPCLR": "GBR",
+    "STATUS": "Member State",
+    "CAPITAL": "London"
+  },
+  {
+    "FID": 84,
+    "ISO3CD": "GEO",
+    "ROMNAM": "Georgia",
+    "MAPLAB": "Georgia",
+    "MAPCLR": "GEO",
+    "STATUS": "Member State",
+    "CAPITAL": "Tbilisi"
+  },
+  {
+    "FID": 85,
+    "ISO3CD": "GGY",
+    "ROMNAM": "Guernsey",
+    "MAPLAB": "Guernsey (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 86,
+    "ISO3CD": "GHA",
+    "ROMNAM": "Ghana",
+    "MAPLAB": "Ghana",
+    "MAPCLR": "GHA",
+    "STATUS": "Member State",
+    "CAPITAL": "Accra"
+  },
+  {
+    "FID": 87,
+    "ISO3CD": "GIB",
+    "ROMNAM": "Gibraltar",
+    "MAPLAB": "Gibraltar (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Non-Self-Governing Territory",
+    "CAPITAL": "Gibraltar"
+  },
+  {
+    "FID": 88,
+    "ISO3CD": "GIN",
+    "ROMNAM": "Guinea",
+    "MAPLAB": "Guinea",
+    "MAPCLR": "GIN",
+    "STATUS": "Member State",
+    "CAPITAL": "Conakry"
+  },
+  {
+    "FID": 89,
+    "ISO3CD": "GLP",
+    "ROMNAM": "Guadeloupe",
+    "MAPLAB": "Guadeloupe (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": " ",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 90,
+    "ISO3CD": "GMB",
+    "ROMNAM": "Gambia",
+    "MAPLAB": "Gambia",
+    "MAPCLR": "GMB",
+    "STATUS": "Member State",
+    "CAPITAL": "Banjul"
+  },
+  {
+    "FID": 91,
+    "ISO3CD": "GNB",
+    "ROMNAM": "Guinea-Bissau",
+    "MAPLAB": "Guinea-Bissau",
+    "MAPCLR": "GNB",
+    "STATUS": "Member State",
+    "CAPITAL": "Bissau"
+  },
+  {
+    "FID": 92,
+    "ISO3CD": "GNQ",
+    "ROMNAM": "Equatorial Guinea",
+    "MAPLAB": "Equatorial Guinea",
+    "MAPCLR": "GNQ",
+    "STATUS": "Member State",
+    "CAPITAL": "Malabo"
+  },
+  {
+    "FID": 93,
+    "ISO3CD": "GRC",
+    "ROMNAM": "Greece",
+    "MAPLAB": "Greece",
+    "MAPCLR": "GRC",
+    "STATUS": "Member State",
+    "CAPITAL": "Athens"
+  },
+  {
+    "FID": 94,
+    "ISO3CD": "GRD",
+    "ROMNAM": "Grenada",
+    "MAPLAB": "Grenada",
+    "MAPCLR": "GRD",
+    "STATUS": "Member State",
+    "CAPITAL": "Saint George's"
+  },
+  {
+    "FID": 95,
+    "ISO3CD": "GRL",
+    "ROMNAM": "Greenland",
+    "MAPLAB": "Greenland (Denmark)",
+    "MAPCLR": "DNK",
+    "STATUS": "DK Self-Governing Territory",
+    "CAPITAL": "Nuuk"
+  },
+  {
+    "FID": 96,
+    "ISO3CD": "GTM",
+    "ROMNAM": "Guatemala",
+    "MAPLAB": "Guatemala",
+    "MAPCLR": "GTM",
+    "STATUS": "Member State",
+    "CAPITAL": "Guatemala"
+  },
+  {
+    "FID": 97,
+    "ISO3CD": "GUF",
+    "ROMNAM": "French Guiana",
+    "MAPLAB": "French Guiana (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": "Cayenne"
+  },
+  {
+    "FID": 98,
+    "ISO3CD": "GUM",
+    "ROMNAM": "Guam",
+    "MAPLAB": "Guam (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Non-Self-Governing Territory",
+    "CAPITAL": "Agana"
+  },
+  {
+    "FID": 99,
+    "ISO3CD": "GUY",
+    "ROMNAM": "Guyana",
+    "MAPLAB": "Guyana",
+    "MAPCLR": "GUY",
+    "STATUS": "Member State",
+    "CAPITAL": "Georgetown"
+  },
+  {
+    "FID": 100,
+    "ISO3CD": "HKG",
+    "ROMNAM": "Hong Kong",
+    "MAPLAB": "Hong Kong, SAR China",
+    "MAPCLR": "CHN",
+    "STATUS": "CN Special Administrative Region",
+    "CAPITAL": "Hong Kong"
+  },
+  {
+    "FID": 101,
+    "ISO3CD": "HMD",
+    "ROMNAM": "Heard Island and McDonald Islands",
+    "MAPLAB": "Heard Isl. & McDonald Is. (Aust.)",
+    "MAPCLR": "AUS",
+    "STATUS": "AU Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 102,
+    "ISO3CD": "HND",
+    "ROMNAM": "Honduras",
+    "MAPLAB": "Honduras",
+    "MAPCLR": "HND",
+    "STATUS": "Member State",
+    "CAPITAL": "Tegucigalpa"
+  },
+  {
+    "FID": 103,
+    "ISO3CD": "HRV",
+    "ROMNAM": "Croatia",
+    "MAPLAB": "Croatia",
+    "MAPCLR": "HRV",
+    "STATUS": "Member State",
+    "CAPITAL": "Zagreb"
+  },
+  {
+    "FID": 104,
+    "ISO3CD": "HTI",
+    "ROMNAM": "Haiti",
+    "MAPLAB": "Haiti",
+    "MAPCLR": "HTI",
+    "STATUS": "Member State",
+    "CAPITAL": "Port-au-Prince"
+  },
+  {
+    "FID": 105,
+    "ISO3CD": "HUN",
+    "ROMNAM": "Hungary",
+    "MAPLAB": "Hungary",
+    "MAPCLR": "HUN",
+    "STATUS": "Member State",
+    "CAPITAL": "Budapest"
+  },
+  {
+    "FID": 106,
+    "ISO3CD": "IDN",
+    "ROMNAM": "Indonesia",
+    "MAPLAB": "Indonesia",
+    "MAPCLR": "IDN",
+    "STATUS": "Member State",
+    "CAPITAL": "Jakarta"
+  },
+  {
+    "FID": 107,
+    "ISO3CD": "IMN",
+    "ROMNAM": "Isle of Man",
+    "MAPLAB": "Isle of Man (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 108,
+    "ISO3CD": "IND",
+    "ROMNAM": "India",
+    "MAPLAB": "India",
+    "MAPCLR": "IND",
+    "STATUS": "Member State",
+    "CAPITAL": "New Delhi"
+  },
+  {
+    "FID": 109,
+    "ISO3CD": "IOT",
+    "ROMNAM": "Chagos Archipelagio",
+    "MAPLAB": "Chagos Archipelagio **",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 110,
+    "ISO3CD": "IRL",
+    "ROMNAM": "Ireland",
+    "MAPLAB": "Ireland",
+    "MAPCLR": "IRL",
+    "STATUS": "Member State",
+    "CAPITAL": "Dublin"
+  },
+  {
+    "FID": 111,
+    "ISO3CD": "IRN",
+    "ROMNAM": "Iran (Islamic Republic of)",
+    "MAPLAB": "Iran (Islamic Republic of)",
+    "MAPCLR": "IRN",
+    "STATUS": "Member State",
+    "CAPITAL": "Tehran"
+  },
+  {
+    "FID": 112,
+    "ISO3CD": "IRQ",
+    "ROMNAM": "Iraq",
+    "MAPLAB": "Iraq",
+    "MAPCLR": "IRQ",
+    "STATUS": "Member State",
+    "CAPITAL": "Baghdad"
+  },
+  {
+    "FID": 113,
+    "ISO3CD": "ISL",
+    "ROMNAM": "Iceland",
+    "MAPLAB": "Iceland",
+    "MAPCLR": "ISL",
+    "STATUS": "Member State",
+    "CAPITAL": "Reykjav¡k"
+  },
+  {
+    "FID": 114,
+    "ISO3CD": "ISR",
+    "ROMNAM": "Israel",
+    "MAPLAB": "Israel",
+    "MAPCLR": "ISR",
+    "STATUS": "Member State",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 115,
+    "ISO3CD": "ITA",
+    "ROMNAM": "Italy",
+    "MAPLAB": "Italy",
+    "MAPCLR": "ITA",
+    "STATUS": "Member State",
+    "CAPITAL": "Rome"
+  },
+  {
+    "FID": 116,
+    "ISO3CD": "JAM",
+    "ROMNAM": "Jamaica",
+    "MAPLAB": "Jamaica",
+    "MAPCLR": "JAM",
+    "STATUS": "Member State",
+    "CAPITAL": "Kingston"
+  },
+  {
+    "FID": 117,
+    "ISO3CD": "JEY",
+    "ROMNAM": "Jersey",
+    "MAPLAB": "Jersey (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Territory",
+    "CAPITAL": "St. Helier"
+  },
+  {
+    "FID": 118,
+    "ISO3CD": "JOR",
+    "ROMNAM": "Jordan",
+    "MAPLAB": "Jordan",
+    "MAPCLR": "JOR",
+    "STATUS": "Member State",
+    "CAPITAL": "Amman"
+  },
+  {
+    "FID": 119,
+    "ISO3CD": "JPN",
+    "ROMNAM": "Japan",
+    "MAPLAB": "Japan",
+    "MAPCLR": "JPN",
+    "STATUS": "Member State",
+    "CAPITAL": "Tokyo"
+  },
+  {
+    "FID": 120,
+    "ISO3CD": "KAZ",
+    "ROMNAM": "Kazakhstan",
+    "MAPLAB": "Kazakhstan",
+    "MAPCLR": "KAZ",
+    "STATUS": "Member State",
+    "CAPITAL": "Astana"
+  },
+  {
+    "FID": 121,
+    "ISO3CD": "KEN",
+    "ROMNAM": "Kenya",
+    "MAPLAB": "Kenya",
+    "MAPCLR": "KEN",
+    "STATUS": "Member State",
+    "CAPITAL": "Nairobi"
+  },
+  {
+    "FID": 122,
+    "ISO3CD": "KGZ",
+    "ROMNAM": "Kyrgyzstan",
+    "MAPLAB": "Kyrgyzstan",
+    "MAPCLR": "KGZ",
+    "STATUS": "Member State",
+    "CAPITAL": "Bishkek"
+  },
+  {
+    "FID": 123,
+    "ISO3CD": "KHM",
+    "ROMNAM": "Cambodia",
+    "MAPLAB": "Cambodia",
+    "MAPCLR": "KHM",
+    "STATUS": "Member State",
+    "CAPITAL": "Phnom Penh"
+  },
+  {
+    "FID": 124,
+    "ISO3CD": "KIR",
+    "ROMNAM": "Kiribati",
+    "MAPLAB": "Kiribati",
+    "MAPCLR": "KIR",
+    "STATUS": "Member State",
+    "CAPITAL": "Tarawa"
+  },
+  {
+    "FID": 125,
+    "ISO3CD": "KNA",
+    "ROMNAM": "Saint Kitts and Nevis",
+    "MAPLAB": "Saint Kitts and Nevis",
+    "MAPCLR": "KNA",
+    "STATUS": "Member State",
+    "CAPITAL": "Basseterre"
+  },
+  {
+    "FID": 126,
+    "ISO3CD": "KOR",
+    "ROMNAM": "Republic of Korea",
+    "MAPLAB": "Republic of Korea",
+    "MAPCLR": "KOR",
+    "STATUS": "Member State",
+    "CAPITAL": "Seoul"
+  },
+  {
+    "FID": 127,
+    "ISO3CD": "KWT",
+    "ROMNAM": "Kuwait",
+    "MAPLAB": "Kuwait",
+    "MAPCLR": "KWT",
+    "STATUS": "Member State",
+    "CAPITAL": "Kuwait"
+  },
+  {
+    "FID": 128,
+    "ISO3CD": "LAO",
+    "ROMNAM": "Lao People's Democratic Republic",
+    "MAPLAB": "Lao People's Democratic Republic",
+    "MAPCLR": "LAO",
+    "STATUS": "Member State",
+    "CAPITAL": "Vientiane"
+  },
+  {
+    "FID": 129,
+    "ISO3CD": "LBN",
+    "ROMNAM": "Lebanon",
+    "MAPLAB": "Lebanon",
+    "MAPCLR": "LBN",
+    "STATUS": "Member State",
+    "CAPITAL": "Beirut"
+  },
+  {
+    "FID": 130,
+    "ISO3CD": "LBR",
+    "ROMNAM": "Liberia",
+    "MAPLAB": "Liberia",
+    "MAPCLR": "LBR",
+    "STATUS": "Member State",
+    "CAPITAL": "Monrovia"
+  },
+  {
+    "FID": 131,
+    "ISO3CD": "LBY",
+    "ROMNAM": "Libya",
+    "MAPLAB": "Libya",
+    "MAPCLR": "LBY",
+    "STATUS": "Member State",
+    "CAPITAL": "Tripoli"
+  },
+  {
+    "FID": 132,
+    "ISO3CD": "LCA",
+    "ROMNAM": "Saint Lucia",
+    "MAPLAB": "Saint Lucia",
+    "MAPCLR": "LCA",
+    "STATUS": "Member State",
+    "CAPITAL": "Castries"
+  },
+  {
+    "FID": 133,
+    "ISO3CD": "LIE",
+    "ROMNAM": "Liechtenstein",
+    "MAPLAB": "Liechtenstein",
+    "MAPCLR": "LIE",
+    "STATUS": "Member State",
+    "CAPITAL": "Vaduz"
+  },
+  {
+    "FID": 134,
+    "ISO3CD": "LKA",
+    "ROMNAM": "Sri Lanka",
+    "MAPLAB": "Sri Lanka",
+    "MAPCLR": "LKA",
+    "STATUS": "Member State",
+    "CAPITAL": "Sri Jayewardenepura Ko"
+  },
+  {
+    "FID": 135,
+    "ISO3CD": "LSO",
+    "ROMNAM": "Lesotho",
+    "MAPLAB": "Lesotho",
+    "MAPCLR": "LSO",
+    "STATUS": "Member State",
+    "CAPITAL": "Maseru"
+  },
+  {
+    "FID": 136,
+    "ISO3CD": "LTU",
+    "ROMNAM": "Lithuania",
+    "MAPLAB": "Lithuania",
+    "MAPCLR": "LTU",
+    "STATUS": "Member State",
+    "CAPITAL": "Vilnius"
+  },
+  {
+    "FID": 137,
+    "ISO3CD": "LUX",
+    "ROMNAM": "Luxembourg",
+    "MAPLAB": "Luxembourg",
+    "MAPCLR": "LUX",
+    "STATUS": "Member State",
+    "CAPITAL": "Luxembourg"
+  },
+  {
+    "FID": 138,
+    "ISO3CD": "LVA",
+    "ROMNAM": "Latvia",
+    "MAPLAB": "Latvia",
+    "MAPCLR": "LVA",
+    "STATUS": "Member State",
+    "CAPITAL": "Riga"
+  },
+  {
+    "FID": 139,
+    "ISO3CD": "MAC",
+    "ROMNAM": "Macao",
+    "MAPLAB": "Macao, SAR China",
+    "MAPCLR": "CHN",
+    "STATUS": "CN Special Administrative Region",
+    "CAPITAL": "Macau"
+  },
+  {
+    "FID": 140,
+    "ISO3CD": "MAF",
+    "ROMNAM": "Saint Martin",
+    "MAPLAB": "Saint Martin (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": "Basse-Terre"
+  },
+  {
+    "FID": 141,
+    "ISO3CD": "MAR",
+    "ROMNAM": "Morocco",
+    "MAPLAB": "Morocco",
+    "MAPCLR": "MAR",
+    "STATUS": "Member State",
+    "CAPITAL": "Rabat"
+  },
+  {
+    "FID": 142,
+    "ISO3CD": "MCO",
+    "ROMNAM": "Monaco",
+    "MAPLAB": "Monaco",
+    "MAPCLR": "MCO",
+    "STATUS": "Member State",
+    "CAPITAL": "Monaco"
+  },
+  {
+    "FID": 143,
+    "ISO3CD": "MDA",
+    "ROMNAM": "Republic of Moldova",
+    "MAPLAB": "Republic of Moldova",
+    "MAPCLR": "MDA",
+    "STATUS": "Member State",
+    "CAPITAL": "Chisinau"
+  },
+  {
+    "FID": 144,
+    "ISO3CD": "MDG",
+    "ROMNAM": "Madagascar",
+    "MAPLAB": "Madagascar",
+    "MAPCLR": "MDG",
+    "STATUS": "Member State",
+    "CAPITAL": "Antananarivo"
+  },
+  {
+    "FID": 145,
+    "ISO3CD": "MDV",
+    "ROMNAM": "Maldives",
+    "MAPLAB": "Maldives",
+    "MAPCLR": "MDV",
+    "STATUS": "Member State",
+    "CAPITAL": "Male"
+  },
+  {
+    "FID": 146,
+    "ISO3CD": "MEX",
+    "ROMNAM": "Mexico",
+    "MAPLAB": "Mexico",
+    "MAPCLR": "MEX",
+    "STATUS": "Member State",
+    "CAPITAL": "M‚xico"
+  },
+  {
+    "FID": 147,
+    "ISO3CD": "MHL",
+    "ROMNAM": "Marshall Islands",
+    "MAPLAB": "Marshall Islands",
+    "MAPCLR": "MHL",
+    "STATUS": "Member State",
+    "CAPITAL": "Majuro"
+  },
+  {
+    "FID": 148,
+    "ISO3CD": "MKD",
+    "ROMNAM": "North Macedonia",
+    "MAPLAB": "The former Yugoslav Republic of Macedonia",
+    "MAPCLR": "MKD",
+    "STATUS": "Member State",
+    "CAPITAL": "Skopje"
+  },
+  {
+    "FID": 149,
+    "ISO3CD": "MLI",
+    "ROMNAM": "Mali",
+    "MAPLAB": "Mali",
+    "MAPCLR": "MLI",
+    "STATUS": "Member State",
+    "CAPITAL": "Bamako"
+  },
+  {
+    "FID": 150,
+    "ISO3CD": "MLT",
+    "ROMNAM": "Malta",
+    "MAPLAB": "Malta",
+    "MAPCLR": "MLT",
+    "STATUS": "Member State",
+    "CAPITAL": "Valletta"
+  },
+  {
+    "FID": 151,
+    "ISO3CD": "MMR",
+    "ROMNAM": "Myanmar",
+    "MAPLAB": "Myanmar",
+    "MAPCLR": "MMR",
+    "STATUS": "Member State",
+    "CAPITAL": "Yangon"
+  },
+  {
+    "FID": 152,
+    "ISO3CD": "MNE",
+    "ROMNAM": "Montenegro",
+    "MAPLAB": "Montenegro",
+    "MAPCLR": "MNE",
+    "STATUS": "Member State",
+    "CAPITAL": "Podgorica"
+  },
+  {
+    "FID": 153,
+    "ISO3CD": "MNG",
+    "ROMNAM": "Mongolia",
+    "MAPLAB": "Mongolia",
+    "MAPCLR": "MNG",
+    "STATUS": "Member State",
+    "CAPITAL": "Ulaanbaatar"
+  },
+  {
+    "FID": 154,
+    "ISO3CD": "MNP",
+    "ROMNAM": "Northern Mariana Islands",
+    "MAPLAB": "Northern Mariana Is. (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Territory",
+    "CAPITAL": "Saipan"
+  },
+  {
+    "FID": 155,
+    "ISO3CD": "MOZ",
+    "ROMNAM": "Mozambique",
+    "MAPLAB": "Mozambique",
+    "MAPCLR": "MOZ",
+    "STATUS": "Member State",
+    "CAPITAL": "Maputo"
+  },
+  {
+    "FID": 156,
+    "ISO3CD": "MRT",
+    "ROMNAM": "Mauritania",
+    "MAPLAB": "Mauritania",
+    "MAPCLR": "MRT",
+    "STATUS": "Member State",
+    "CAPITAL": "Nouakchott"
+  },
+  {
+    "FID": 157,
+    "ISO3CD": "MSR",
+    "ROMNAM": "Montserrat",
+    "MAPLAB": "Montserrat (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Non-Self-Governing Territory",
+    "CAPITAL": "Plymouth"
+  },
+  {
+    "FID": 158,
+    "ISO3CD": "MTQ",
+    "ROMNAM": "Martinique",
+    "MAPLAB": "Martinique (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": "Fort-de-France"
+  },
+  {
+    "FID": 159,
+    "ISO3CD": "MUS",
+    "ROMNAM": "Mauritius",
+    "MAPLAB": "Mauritius",
+    "MAPCLR": "MUS",
+    "STATUS": "Member State",
+    "CAPITAL": "Port Louis"
+  },
+  {
+    "FID": 160,
+    "ISO3CD": "MWI",
+    "ROMNAM": "Malawi",
+    "MAPLAB": "Malawi",
+    "MAPCLR": "MWI",
+    "STATUS": "Member State",
+    "CAPITAL": "Lilongwe"
+  },
+  {
+    "FID": 161,
+    "ISO3CD": "MYS",
+    "ROMNAM": "Malaysia",
+    "MAPLAB": "Malaysia",
+    "MAPCLR": "MYS",
+    "STATUS": "Member State",
+    "CAPITAL": "Kuala Lumpur"
+  },
+  {
+    "FID": 162,
+    "ISO3CD": "MYT",
+    "ROMNAM": "Mayotte",
+    "MAPLAB": "Mayotte (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": "Mamoudzou"
+  },
+  {
+    "FID": 163,
+    "ISO3CD": "NAM",
+    "ROMNAM": "Namibia",
+    "MAPLAB": "Namibia",
+    "MAPCLR": "NAM",
+    "STATUS": "Member State",
+    "CAPITAL": "Windhoek"
+  },
+  {
+    "FID": 164,
+    "ISO3CD": "NCL",
+    "ROMNAM": "New Caledonia",
+    "MAPLAB": "New Caledonia (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Non-Self-Governing Territory",
+    "CAPITAL": "Noum‚a"
+  },
+  {
+    "FID": 165,
+    "ISO3CD": "NER",
+    "ROMNAM": "Niger",
+    "MAPLAB": "Niger",
+    "MAPCLR": "NER",
+    "STATUS": "Member State",
+    "CAPITAL": "Niamey"
+  },
+  {
+    "FID": 166,
+    "ISO3CD": "NFK",
+    "ROMNAM": "Norfolk Island",
+    "MAPLAB": "Norfolk Is. (Aust.)",
+    "MAPCLR": "AUS",
+    "STATUS": "AU Territory",
+    "CAPITAL": "Kingston"
+  },
+  {
+    "FID": 167,
+    "ISO3CD": "NGA",
+    "ROMNAM": "Nigeria",
+    "MAPLAB": "Nigeria",
+    "MAPCLR": "NGA",
+    "STATUS": "Member State",
+    "CAPITAL": "Abuja"
+  },
+  {
+    "FID": 168,
+    "ISO3CD": "NIC",
+    "ROMNAM": "Nicaragua",
+    "MAPLAB": "Nicaragua",
+    "MAPCLR": "NIC",
+    "STATUS": "Member State",
+    "CAPITAL": "Managua"
+  },
+  {
+    "FID": 169,
+    "ISO3CD": "NIU",
+    "ROMNAM": "Niue",
+    "MAPLAB": "Niue (NZ)",
+    "MAPCLR": "NZL",
+    "STATUS": "NZ Territory",
+    "CAPITAL": "Alofi"
+  },
+  {
+    "FID": 170,
+    "ISO3CD": "NLD",
+    "ROMNAM": "Netherlands",
+    "MAPLAB": "Netherlands",
+    "MAPCLR": "NLD",
+    "STATUS": "Member State",
+    "CAPITAL": "Amsterdam"
+  },
+  {
+    "FID": 171,
+    "ISO3CD": "NOR",
+    "ROMNAM": "Norway",
+    "MAPLAB": "Norway",
+    "MAPCLR": "NOR",
+    "STATUS": "Member State",
+    "CAPITAL": "Oslo"
+  },
+  {
+    "FID": 172,
+    "ISO3CD": "NPL",
+    "ROMNAM": "Nepal",
+    "MAPLAB": "Nepal",
+    "MAPCLR": "NPL",
+    "STATUS": "Member State",
+    "CAPITAL": "Kathmandu"
+  },
+  {
+    "FID": 173,
+    "ISO3CD": "NRU",
+    "ROMNAM": "Nauru",
+    "MAPLAB": "Nauru",
+    "MAPCLR": "NRU",
+    "STATUS": "Member State",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 174,
+    "ISO3CD": "NZL",
+    "ROMNAM": "New Zealand",
+    "MAPLAB": "New Zealand",
+    "MAPCLR": "NZL",
+    "STATUS": "Member State",
+    "CAPITAL": "Wellington"
+  },
+  {
+    "FID": 175,
+    "ISO3CD": "OMN",
+    "ROMNAM": "Oman",
+    "MAPLAB": "Oman",
+    "MAPCLR": "OMN",
+    "STATUS": "Member State",
+    "CAPITAL": "Muscat"
+  },
+  {
+    "FID": 176,
+    "ISO3CD": "PAK",
+    "ROMNAM": "Pakistan",
+    "MAPLAB": "Pakistan",
+    "MAPCLR": "PAK",
+    "STATUS": "Member State",
+    "CAPITAL": "Islamabad"
+  },
+  {
+    "FID": 177,
+    "ISO3CD": "PAN",
+    "ROMNAM": "Panama",
+    "MAPLAB": "Panama",
+    "MAPCLR": "PAN",
+    "STATUS": "Member State",
+    "CAPITAL": "Panam "
+  },
+  {
+    "FID": 178,
+    "ISO3CD": "PCN",
+    "ROMNAM": "Pitcairn",
+    "MAPLAB": "Pitcairn (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Non-Self-Governing Territory",
+    "CAPITAL": "Adamstown"
+  },
+  {
+    "FID": 179,
+    "ISO3CD": "PER",
+    "ROMNAM": "Peru",
+    "MAPLAB": "Peru",
+    "MAPCLR": "PER",
+    "STATUS": "Member State",
+    "CAPITAL": "Lima"
+  },
+  {
+    "FID": 180,
+    "ISO3CD": "PHL",
+    "ROMNAM": "Philippines",
+    "MAPLAB": "Philippines",
+    "MAPCLR": "PHL",
+    "STATUS": "Member State",
+    "CAPITAL": "Manila"
+  },
+  {
+    "FID": 181,
+    "ISO3CD": "PLW",
+    "ROMNAM": "Palau",
+    "MAPLAB": "Palau",
+    "MAPCLR": "PLW",
+    "STATUS": "Member State",
+    "CAPITAL": "Koror"
+  },
+  {
+    "FID": 182,
+    "ISO3CD": "PNG",
+    "ROMNAM": "Papua New Guinea",
+    "MAPLAB": "Papua New Guinea",
+    "MAPCLR": "PNG",
+    "STATUS": "Member State",
+    "CAPITAL": "Port Moresby"
+  },
+  {
+    "FID": 183,
+    "ISO3CD": "POL",
+    "ROMNAM": "Poland",
+    "MAPLAB": "Poland",
+    "MAPCLR": "POL",
+    "STATUS": "Member State",
+    "CAPITAL": "Warsaw"
+  },
+  {
+    "FID": 184,
+    "ISO3CD": "PRI",
+    "ROMNAM": "Puerto Rico",
+    "MAPLAB": "Puerto Rico (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Territory",
+    "CAPITAL": "San Juan"
+  },
+  {
+    "FID": 185,
+    "ISO3CD": "PRK",
+    "ROMNAM": "Democratic People's Republic of Korea",
+    "MAPLAB": "Democratic People's Republic of Korea",
+    "MAPCLR": "PRK",
+    "STATUS": "Member State",
+    "CAPITAL": "Pyongyang"
+  },
+  {
+    "FID": 186,
+    "ISO3CD": "PRT",
+    "ROMNAM": "Azores Islands",
+    "MAPLAB": "Azores Is. (Port.)",
+    "MAPCLR": "PRT",
+    "STATUS": "PT Territory",
+    "CAPITAL": "Ponta Delgada"
+  },
+  {
+    "FID": 187,
+    "ISO3CD": "PRT",
+    "ROMNAM": "Madeira Islands",
+    "MAPLAB": "Madeira Islands (Port.)",
+    "MAPCLR": "PRT",
+    "STATUS": "PT Territory",
+    "CAPITAL": "Funchal"
+  },
+  {
+    "FID": 188,
+    "ISO3CD": "PRT",
+    "ROMNAM": "Portugal",
+    "MAPLAB": "Portugal",
+    "MAPCLR": "PRT",
+    "STATUS": "Member State",
+    "CAPITAL": "Lisbon"
+  },
+  {
+    "FID": 189,
+    "ISO3CD": "PRY",
+    "ROMNAM": "Paraguay",
+    "MAPLAB": "Paraguay",
+    "MAPCLR": "PRY",
+    "STATUS": "Member State",
+    "CAPITAL": "Asunci¢n"
+  },
+  {
+    "FID": 190,
+    "ISO3CD": "PSE",
+    "ROMNAM": "Gaza",
+    "MAPLAB": "Gaza",
+    "MAPCLR": "PSE",
+    "STATUS": "Occupied Palestinan Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 191,
+    "ISO3CD": "PSE",
+    "ROMNAM": "West Bank",
+    "MAPLAB": "West Bank",
+    "MAPCLR": "PSE",
+    "STATUS": "Occupied Palestinan Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 192,
+    "ISO3CD": "PYF",
+    "ROMNAM": "Clipperton Island",
+    "MAPLAB": "Clipperton Is. (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 193,
+    "ISO3CD": "PYF",
+    "ROMNAM": "French Polynesia",
+    "MAPLAB": "French Polynesia (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": "Papeete"
+  },
+  {
+    "FID": 194,
+    "ISO3CD": "QAT",
+    "ROMNAM": "Qatar",
+    "MAPLAB": "Qatar",
+    "MAPCLR": "QAT",
+    "STATUS": "Member State",
+    "CAPITAL": "Doha"
+  },
+  {
+    "FID": 195,
+    "ISO3CD": "REU",
+    "ROMNAM": "Réunion",
+    "MAPLAB": "Réunion (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": "Saint-Denis"
+  },
+  {
+    "FID": 196,
+    "ISO3CD": "ROU",
+    "ROMNAM": "Romania",
+    "MAPLAB": "Romania",
+    "MAPCLR": "ROU",
+    "STATUS": "Member State",
+    "CAPITAL": "Bucharest"
+  },
+  {
+    "FID": 197,
+    "ISO3CD": "RUS",
+    "ROMNAM": "Russian Federation",
+    "MAPLAB": "Russian Federation",
+    "MAPCLR": "RUS",
+    "STATUS": "Member State",
+    "CAPITAL": "Moskva"
+  },
+  {
+    "FID": 198,
+    "ISO3CD": "RWA",
+    "ROMNAM": "Rwanda",
+    "MAPLAB": "Rwanda",
+    "MAPCLR": "RWA",
+    "STATUS": "Member State",
+    "CAPITAL": "Kigali"
+  },
+  {
+    "FID": 199,
+    "ISO3CD": "SAU",
+    "ROMNAM": "Saudi Arabia",
+    "MAPLAB": "Saudi Arabia",
+    "MAPCLR": "SAU",
+    "STATUS": "Member State",
+    "CAPITAL": "Riyadh"
+  },
+  {
+    "FID": 200,
+    "ISO3CD": "SDN",
+    "ROMNAM": "Sudan",
+    "MAPLAB": "Sudan",
+    "MAPCLR": "SDN",
+    "STATUS": "Member State",
+    "CAPITAL": "Khartoum"
+  },
+  {
+    "FID": 201,
+    "ISO3CD": "SEN",
+    "ROMNAM": "Senegal",
+    "MAPLAB": "Senegal",
+    "MAPCLR": "SEN",
+    "STATUS": "Member State",
+    "CAPITAL": "Dakar"
+  },
+  {
+    "FID": 202,
+    "ISO3CD": "SGP",
+    "ROMNAM": "Singapore",
+    "MAPLAB": "Singapore",
+    "MAPCLR": "SGP",
+    "STATUS": "Member State",
+    "CAPITAL": "Singapore"
+  },
+  {
+    "FID": 203,
+    "ISO3CD": "SGS",
+    "ROMNAM": "South Georgia and the South Sandwich Islands",
+    "MAPLAB": "South Georgia and the South Sandwich Islands (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 204,
+    "ISO3CD": "SHN",
+    "ROMNAM": "Saint Helena",
+    "MAPLAB": "Ascencion (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Non-Self-Governing Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 205,
+    "ISO3CD": "SHN",
+    "ROMNAM": "Saint Helena",
+    "MAPLAB": "Gough (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Non-Self-Governing Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 206,
+    "ISO3CD": "SHN",
+    "ROMNAM": "Saint Helena",
+    "MAPLAB": "Saint Helena (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Non-Self-Governing Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 207,
+    "ISO3CD": "SHN",
+    "ROMNAM": "Saint Helena",
+    "MAPLAB": "Tristan da Cunha (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Non-Self-Governing Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 208,
+    "ISO3CD": "SJM",
+    "ROMNAM": "Svalbard and Jan Mayen Islands",
+    "MAPLAB": "Svalbard & Jan Mayen Is. (Norw.)",
+    "MAPCLR": "NOR",
+    "STATUS": "NO Territory",
+    "CAPITAL": "Longyearbyen"
+  },
+  {
+    "FID": 209,
+    "ISO3CD": "SLB",
+    "ROMNAM": "Solomon Islands",
+    "MAPLAB": "Solomon Islands",
+    "MAPCLR": "SLB",
+    "STATUS": "Member State",
+    "CAPITAL": "Honiara"
+  },
+  {
+    "FID": 210,
+    "ISO3CD": "SLE",
+    "ROMNAM": "Sierra Leone",
+    "MAPLAB": "Sierra Leone",
+    "MAPCLR": "SLE",
+    "STATUS": "Member State",
+    "CAPITAL": "Freetown"
+  },
+  {
+    "FID": 211,
+    "ISO3CD": "SLV",
+    "ROMNAM": "El Salvador",
+    "MAPLAB": "El Salvador",
+    "MAPCLR": "SLV",
+    "STATUS": "Member State",
+    "CAPITAL": "San Salvador"
+  },
+  {
+    "FID": 212,
+    "ISO3CD": "SMR",
+    "ROMNAM": "San Marino",
+    "MAPLAB": "San Marino",
+    "MAPCLR": "SMR",
+    "STATUS": "Member State",
+    "CAPITAL": "San Marino"
+  },
+  {
+    "FID": 213,
+    "ISO3CD": "SOM",
+    "ROMNAM": "Somalia",
+    "MAPLAB": "Somalia",
+    "MAPCLR": "SOM",
+    "STATUS": "Member State",
+    "CAPITAL": "Mogadishu"
+  },
+  {
+    "FID": 214,
+    "ISO3CD": "SPM",
+    "ROMNAM": "Saint Pierre et Miquelon",
+    "MAPLAB": "Saint Pierre et Miquelon (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": "Saint-Pierre"
+  },
+  {
+    "FID": 215,
+    "ISO3CD": "SRB",
+    "ROMNAM": "Serbia",
+    "MAPLAB": "Serbia",
+    "MAPCLR": "SRB",
+    "STATUS": "Member State",
+    "CAPITAL": "Belgrade"
+  },
+  {
+    "FID": 216,
+    "ISO3CD": "SSD",
+    "ROMNAM": "South Sudan",
+    "MAPLAB": "South Sudan",
+    "MAPCLR": "SSD",
+    "STATUS": "Member State",
+    "CAPITAL": "Juba"
+  },
+  {
+    "FID": 217,
+    "ISO3CD": "STP",
+    "ROMNAM": "Sao Tome and Principe",
+    "MAPLAB": "Sao Tome and Principe",
+    "MAPCLR": "STP",
+    "STATUS": "Member State",
+    "CAPITAL": "S?o Tom‚"
+  },
+  {
+    "FID": 218,
+    "ISO3CD": "SUR",
+    "ROMNAM": "Suriname",
+    "MAPLAB": "Suriname",
+    "MAPCLR": "SUR",
+    "STATUS": "Member State",
+    "CAPITAL": "Paramaribo"
+  },
+  {
+    "FID": 219,
+    "ISO3CD": "SVK",
+    "ROMNAM": "Slovakia",
+    "MAPLAB": "Slovakia",
+    "MAPCLR": "SVK",
+    "STATUS": "Member State",
+    "CAPITAL": "Bratislava"
+  },
+  {
+    "FID": 220,
+    "ISO3CD": "SVN",
+    "ROMNAM": "Slovenia",
+    "MAPLAB": "Slovenia",
+    "MAPCLR": "SVN",
+    "STATUS": "Member State",
+    "CAPITAL": "Ljubljana"
+  },
+  {
+    "FID": 221,
+    "ISO3CD": "SWE",
+    "ROMNAM": "Sweden",
+    "MAPLAB": "Sweden",
+    "MAPCLR": "SWE",
+    "STATUS": "Member State",
+    "CAPITAL": "Stockholm"
+  },
+  {
+    "FID": 222,
+    "ISO3CD": "SWZ",
+    "ROMNAM": "Eswatini",
+    "MAPLAB": "Eswatini",
+    "MAPCLR": "SWZ",
+    "STATUS": "Member State",
+    "CAPITAL": "Mbabane (adm.)"
+  },
+  {
+    "FID": 223,
+    "ISO3CD": "SXM",
+    "ROMNAM": "Sint Maarten",
+    "MAPLAB": "Sint Maarten (Neth.)",
+    "MAPCLR": "NLD",
+    "STATUS": " ",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 224,
+    "ISO3CD": "SYC",
+    "ROMNAM": "Seychelles",
+    "MAPLAB": "Seychelles",
+    "MAPCLR": "SYC",
+    "STATUS": "Member State",
+    "CAPITAL": "Victoria"
+  },
+  {
+    "FID": 225,
+    "ISO3CD": "SYR",
+    "ROMNAM": "Syrian Arab Republic",
+    "MAPLAB": "Syrian Arab Republic",
+    "MAPCLR": "SYR",
+    "STATUS": "Member State",
+    "CAPITAL": "Damascus"
+  },
+  {
+    "FID": 226,
+    "ISO3CD": "TCA",
+    "ROMNAM": "Turks and Caicos Islands",
+    "MAPLAB": "Turks and Caicos Islands (UK)",
+    "MAPCLR": "TCA",
+    "STATUS": "UK Non-Self-Governing Territory",
+    "CAPITAL": "Cockburn Town"
+  },
+  {
+    "FID": 227,
+    "ISO3CD": "TCD",
+    "ROMNAM": "Chad",
+    "MAPLAB": "Chad",
+    "MAPCLR": "TCD",
+    "STATUS": "Member State",
+    "CAPITAL": "N'Djamena"
+  },
+  {
+    "FID": 228,
+    "ISO3CD": "TGO",
+    "ROMNAM": "Togo",
+    "MAPLAB": "Togo",
+    "MAPCLR": "TGO",
+    "STATUS": "Member State",
+    "CAPITAL": "Lom‚"
+  },
+  {
+    "FID": 229,
+    "ISO3CD": "THA",
+    "ROMNAM": "Thailand",
+    "MAPLAB": "Thailand",
+    "MAPCLR": "THA",
+    "STATUS": "Member State",
+    "CAPITAL": "Bangkok"
+  },
+  {
+    "FID": 230,
+    "ISO3CD": "TJK",
+    "ROMNAM": "Tadjikistan",
+    "MAPLAB": "Tadjikistan",
+    "MAPCLR": "TJK",
+    "STATUS": "Member State",
+    "CAPITAL": "Dushanbe"
+  },
+  {
+    "FID": 231,
+    "ISO3CD": "TKL",
+    "ROMNAM": "Tokelau",
+    "MAPLAB": "Tokelau (NZ)",
+    "MAPCLR": "NZL",
+    "STATUS": "NZ Non-Self-Governing Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 232,
+    "ISO3CD": "TKM",
+    "ROMNAM": "Turkmenistan",
+    "MAPLAB": "Turkmenistan",
+    "MAPCLR": "TKM",
+    "STATUS": "Member State",
+    "CAPITAL": "Ashgabat"
+  },
+  {
+    "FID": 233,
+    "ISO3CD": "TLS",
+    "ROMNAM": "Timor-Leste",
+    "MAPLAB": "Timor-Leste",
+    "MAPCLR": "TLS",
+    "STATUS": "Member State",
+    "CAPITAL": "Dili"
+  },
+  {
+    "FID": 234,
+    "ISO3CD": "TON",
+    "ROMNAM": "Tonga",
+    "MAPLAB": "Tonga",
+    "MAPCLR": "TON",
+    "STATUS": "Member State",
+    "CAPITAL": "Nuku'alofa"
+  },
+  {
+    "FID": 235,
+    "ISO3CD": "TTO",
+    "ROMNAM": "Trinidad and Tobago",
+    "MAPLAB": "Trinidad and Tobago",
+    "MAPCLR": "TTO",
+    "STATUS": "Member State",
+    "CAPITAL": "Port of Spain"
+  },
+  {
+    "FID": 236,
+    "ISO3CD": "TUN",
+    "ROMNAM": "Tunisia",
+    "MAPLAB": "Tunisia",
+    "MAPCLR": "TUN",
+    "STATUS": "Member State",
+    "CAPITAL": "Tunis"
+  },
+  {
+    "FID": 237,
+    "ISO3CD": "TUR",
+    "ROMNAM": "Turkey",
+    "MAPLAB": "Turkey",
+    "MAPCLR": "TUR",
+    "STATUS": "Member State",
+    "CAPITAL": "Ankara"
+  },
+  {
+    "FID": 238,
+    "ISO3CD": "TUV",
+    "ROMNAM": "Tuvalu",
+    "MAPLAB": "Tuvalu",
+    "MAPCLR": "TUV",
+    "STATUS": "Member State",
+    "CAPITAL": "Funafuti"
+  },
+  {
+    "FID": 239,
+    "ISO3CD": "TWN",
+    "ROMNAM": "Taiwan",
+    "MAPLAB": "Taiwan",
+    "MAPCLR": "CHN",
+    "STATUS": "CN Province",
+    "CAPITAL": "Taipei"
+  },
+  {
+    "FID": 240,
+    "ISO3CD": "TZA",
+    "ROMNAM": "United Republic of Tanzania",
+    "MAPLAB": "United Republic of Tanzania",
+    "MAPCLR": "TZA",
+    "STATUS": "Member State",
+    "CAPITAL": "Dodoma"
+  },
+  {
+    "FID": 241,
+    "ISO3CD": "UGA",
+    "ROMNAM": "Uganda",
+    "MAPLAB": "Uganda",
+    "MAPCLR": "UGA",
+    "STATUS": "Member State",
+    "CAPITAL": "Kampala"
+  },
+  {
+    "FID": 242,
+    "ISO3CD": "UKR",
+    "ROMNAM": "Ukraine",
+    "MAPLAB": "Ukraine",
+    "MAPCLR": "UKR",
+    "STATUS": "Member State",
+    "CAPITAL": "Ky‹v"
+  },
+  {
+    "FID": 243,
+    "ISO3CD": "UMI",
+    "ROMNAM": "Baker Island",
+    "MAPLAB": "Baker Island (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 244,
+    "ISO3CD": "UMI",
+    "ROMNAM": "Howland Island",
+    "MAPLAB": "Howland Is. (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 245,
+    "ISO3CD": "UMI",
+    "ROMNAM": "Jarvis Island",
+    "MAPLAB": "Jarvis Is. (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 246,
+    "ISO3CD": "UMI",
+    "ROMNAM": "Johnston Atoll",
+    "MAPLAB": "Johnston Atoll (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 247,
+    "ISO3CD": "UMI",
+    "ROMNAM": "Kingman Reef",
+    "MAPLAB": "Kingman Reef (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 248,
+    "ISO3CD": "UMI",
+    "ROMNAM": "Midway Islands",
+    "MAPLAB": "Midway Islands (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 249,
+    "ISO3CD": "UMI",
+    "ROMNAM": "Navassa Island",
+    "MAPLAB": "Navassa Island (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 250,
+    "ISO3CD": "UMI",
+    "ROMNAM": "Palmyra Atoll",
+    "MAPLAB": "Palmyra Atoll (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 251,
+    "ISO3CD": "UMI",
+    "ROMNAM": "Wake Island",
+    "MAPLAB": "Wake Island (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 252,
+    "ISO3CD": "URY",
+    "ROMNAM": "Uruguay",
+    "MAPLAB": "Uruguay",
+    "MAPCLR": "URY",
+    "STATUS": "Member State",
+    "CAPITAL": "Montevideo"
+  },
+  {
+    "FID": 253,
+    "ISO3CD": "USA",
+    "ROMNAM": "United States of America",
+    "MAPLAB": "United States of America",
+    "MAPCLR": "USA",
+    "STATUS": "Member State",
+    "CAPITAL": "Washington, D.C."
+  },
+  {
+    "FID": 254,
+    "ISO3CD": "UZB",
+    "ROMNAM": "Uzbekistan",
+    "MAPLAB": "Uzbekistan",
+    "MAPCLR": "UZB",
+    "STATUS": "Member State",
+    "CAPITAL": "Tashkent"
+  },
+  {
+    "FID": 255,
+    "ISO3CD": "VAT",
+    "ROMNAM": "Holy See",
+    "MAPLAB": "Holy See",
+    "MAPCLR": "VAT",
+    "STATUS": "The City of Vatican",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 256,
+    "ISO3CD": "VCT",
+    "ROMNAM": "Saint Vincent and the Grenadines",
+    "MAPLAB": "Saint Vincent and the Grenadines",
+    "MAPCLR": "VCT",
+    "STATUS": "Member State",
+    "CAPITAL": "Kingstown"
+  },
+  {
+    "FID": 257,
+    "ISO3CD": "VEN",
+    "ROMNAM": "Bird Island",
+    "MAPLAB": "Bird Island",
+    "MAPCLR": "VEN",
+    "STATUS": "VE Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 258,
+    "ISO3CD": "VEN",
+    "ROMNAM": "Venezuela",
+    "MAPLAB": "Venezuela",
+    "MAPCLR": "VEN",
+    "STATUS": "Member State",
+    "CAPITAL": "Caracas"
+  },
+  {
+    "FID": 259,
+    "ISO3CD": "VGB",
+    "ROMNAM": "British Virgin Islands",
+    "MAPLAB": "British Virgin Islands (UK)",
+    "MAPCLR": "GBR",
+    "STATUS": "UK Non-Self-Governing Territory",
+    "CAPITAL": "Road Town"
+  },
+  {
+    "FID": 260,
+    "ISO3CD": "VIR",
+    "ROMNAM": "United States Virgin Islands",
+    "MAPLAB": "United States Virgin Islands (USA)",
+    "MAPCLR": "USA",
+    "STATUS": "US Non-Self-Governing Territory",
+    "CAPITAL": "Charlotte Amalie"
+  },
+  {
+    "FID": 261,
+    "ISO3CD": "VNM",
+    "ROMNAM": "Viet Nam",
+    "MAPLAB": "Viet Nam",
+    "MAPCLR": "VNM",
+    "STATUS": "Member State",
+    "CAPITAL": "Hanoi"
+  },
+  {
+    "FID": 262,
+    "ISO3CD": "VUT",
+    "ROMNAM": "Vanuatu",
+    "MAPLAB": "Vanuatu",
+    "MAPCLR": "VUT",
+    "STATUS": "Member State",
+    "CAPITAL": "Port-Vila"
+  },
+  {
+    "FID": 263,
+    "ISO3CD": "WLF",
+    "ROMNAM": "Wallis and Futuna",
+    "MAPLAB": "Wallis and Futuna (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": "Mata-Utu"
+  },
+  {
+    "FID": 264,
+    "ISO3CD": "WSM",
+    "ROMNAM": "Samoa",
+    "MAPLAB": "Samoa",
+    "MAPCLR": "WSM",
+    "STATUS": "Member State",
+    "CAPITAL": "Apia"
+  },
+  {
+    "FID": 265,
+    "ISO3CD": "xAB",
+    "ROMNAM": "Abyei",
+    "MAPLAB": "Abyei",
+    "MAPCLR": "xAB",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 266,
+    "ISO3CD": "xAC",
+    "ROMNAM": "Aksai Chin",
+    "MAPLAB": " ",
+    "MAPCLR": "xAC",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 267,
+    "ISO3CD": "xAP",
+    "ROMNAM": "Arunachal Pradesh",
+    "MAPLAB": " ",
+    "MAPCLR": "IND",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 268,
+    "ISO3CD": "xFR",
+    "ROMNAM": "Bassas da India",
+    "MAPLAB": "Bassas da India (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 269,
+    "ISO3CD": "xFR",
+    "ROMNAM": "Europa Island",
+    "MAPLAB": "Europa Island (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 270,
+    "ISO3CD": "xFR",
+    "ROMNAM": "Glorioso Islands",
+    "MAPLAB": "Glorioso Islands (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 271,
+    "ISO3CD": "xFR",
+    "ROMNAM": "Juan de Nova Island",
+    "MAPLAB": "Juan de Nova Island (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 272,
+    "ISO3CD": "xFR",
+    "ROMNAM": "Tromelin Island",
+    "MAPLAB": "Tromelin Island (Fr.)",
+    "MAPCLR": "FRA",
+    "STATUS": "FR Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 273,
+    "ISO3CD": "xHT",
+    "ROMNAM": "Hala'ib Triangle",
+    "MAPLAB": " ",
+    "MAPCLR": "SDN",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 274,
+    "ISO3CD": "xHT",
+    "ROMNAM": "Hala'ib Triangle",
+    "MAPLAB": " ",
+    "MAPCLR": "SDN",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 275,
+    "ISO3CD": "xIT",
+    "ROMNAM": "Ilemi Triangle",
+    "MAPLAB": " ",
+    "MAPCLR": "SSD",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 276,
+    "ISO3CD": "xJK",
+    "ROMNAM": "Jammu and Kashmir",
+    "MAPLAB": "Jammu and Kashmir *",
+    "MAPCLR": "xJK",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 277,
+    "ISO3CD": "xJL",
+    "ROMNAM": "West Bank",
+    "MAPLAB": " ",
+    "MAPCLR": "xxx",
+    "STATUS": "Occupied Palestinan Territory",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 278,
+    "ISO3CD": "xKI",
+    "ROMNAM": "Kuril Islands",
+    "MAPLAB": " ",
+    "MAPCLR": "RUS",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 279,
+    "ISO3CD": "xMS",
+    "ROMNAM": "Bi'r Tawīl",
+    "MAPLAB": " ",
+    "MAPCLR": "EGY",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 280,
+    "ISO3CD": "xPI",
+    "ROMNAM": "Paracel Islands",
+    "MAPLAB": " ",
+    "MAPCLR": "xPI",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 281,
+    "ISO3CD": "xSI",
+    "ROMNAM": "Spratly Islands",
+    "MAPLAB": " ",
+    "MAPCLR": "xSI",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 282,
+    "ISO3CD": "xSK",
+    "ROMNAM": "Senkaku Islands",
+    "MAPLAB": " ",
+    "MAPCLR": "JPN",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 283,
+    "ISO3CD": "xSR",
+    "ROMNAM": "Scarborough Reef",
+    "MAPLAB": " ",
+    "MAPCLR": "xSR",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 284,
+    "ISO3CD": "xUK",
+    "ROMNAM": "Akrotiri",
+    "MAPLAB": "Akrotiri (S.B.A.)",
+    "MAPCLR": "GBR",
+    "STATUS": " ",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 285,
+    "ISO3CD": "xUK",
+    "ROMNAM": "Dekelia",
+    "MAPLAB": "Dekelia (S.B.A.)",
+    "MAPCLR": "GBR",
+    "STATUS": " ",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 286,
+    "ISO3CD": "xxx",
+    "ROMNAM": "China/India",
+    "MAPLAB": " ",
+    "MAPCLR": "xxx",
+    "STATUS": "Sovereignty unsettled",
+    "CAPITAL": " "
+  },
+  {
+    "FID": 287,
+    "ISO3CD": "YEM",
+    "ROMNAM": "Yemen",
+    "MAPLAB": "Yemen",
+    "MAPCLR": "YEM",
+    "STATUS": "Member State",
+    "CAPITAL": "Sanaa"
+  },
+  {
+    "FID": 288,
+    "ISO3CD": "ZAF",
+    "ROMNAM": "South Africa",
+    "MAPLAB": "South Africa",
+    "MAPCLR": "ZAF",
+    "STATUS": "Member State",
+    "CAPITAL": "Pretoria (Adm.)"
+  },
+  {
+    "FID": 289,
+    "ISO3CD": "ZMB",
+    "ROMNAM": "Zambia",
+    "MAPLAB": "Zambia",
+    "MAPCLR": "ZMB",
+    "STATUS": "Member State",
+    "CAPITAL": "Lusaka"
+  },
+  {
+    "FID": 290,
+    "ISO3CD": "ZWE",
+    "ROMNAM": "Zimbabwe",
+    "MAPLAB": "Zimbabwe",
+    "MAPCLR": "ZWE",
+    "STATUS": "Member State",
+    "CAPITAL": "Harare"
+  }
+]

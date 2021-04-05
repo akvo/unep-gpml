@@ -1,102 +1,1269 @@
 [
- {
-  "id": 1,
-  "title": "2nd World Conference on Waste Management",
-  "start_date": "2021-04-03 00:00:00",
-  "end_date": "2021-05-03 00:00:00",
-  "description": "The Second World Conference on Waste Management 2021 will bring scientists, researchers, activists and practitioners from academia and industry to elaborate scientific ideas, share experiences, discuss environmental issues, and find innovative strategies for waste management. The Organizing Committee is gearing up for an exciting and informative conference, including keynote and plenary sessions, research presentations, recognition awards, and High Standard Publication Opportunities, with many networking opportunities.",
-  "url": [
-   "https://wastemanagementconferences.com/"
-  ],
-  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/event_001.png",
-  "tags": null,
-  "languages": "English",
-  "resource_language_url": [
-   {
-    "language": "English",
-    "url": "https://wastemanagementconferences.com/"
-   }
-  ],
-  "geo_coverage": [
-   ""
-  ],
-  "geo_coverage_type": "global",
-  "remarks": null,
-  "country": ""
- },
- {
-  "id": 2,
-  "title": "Meeting of the Ecosystem Approach Correspondence Group on Monitoring (CorMon) Marine Litter",
-  "start_date": "2021-03-30",
-  "end_date": "2021-03-30",
-  "description": "Meeting of the Ecosystem Approach Correspondence Group on Monitoring (CorMon) Marine Litter",
-  "url": [
-   "https://indico.un.org/event/35704/"
-  ],
-  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/event_002.png",
-  "tags": null,
-  "languages": "English",
-  "resource_language_url": [
-   {
-    "language": "English",
-    "url": "https://indico.un.org/event/35704/"
-   }
-  ],
-  "geo_coverage": [
-   ""
-  ],
-  "geo_coverage_type": "global",
-  "remarks": "UNEP/MAP",
-  "country": ""
- },
- {
-  "id": 3,
-  "title": "Understanding the State of the Ocean",
-  "start_date": "2021-02-25",
-  "end_date": "2021-02-25",
-  "description": "Understanding the State of the Ocean: a Global Manual on Measuring SDG 14.1.1, SDG 14.2.1, SDG 14.5.1, and the GPML Digital Platform Phase 1 presentationThursday, 25 February, 15:00 - 16:30 (EAT)Monitoring is key to understanding how the state of the ocean is changing, what is causing the change and how well efforts to address these changes are working. The global oceans manual provides guidance on how to bring together traditional monitoring techniques with new technologies and data science in order to better monitor our oceans in the context of the SDGs. The aim of the GPML Digital platform is to facilitate coordination of multi-stakeholder action towards the long-term elimination, through a life-cycle approach, of discharges of litter and microplastics into the oceans using AI capabilities, data mapping and layered functionalities including match-making.The session will review the Phase I release of the platform, discuss next steps as well as highlight opportunities to engage in the shaping of the platform through user consultations and strategic partnerships. Speakers will discuss the above topics, followed by a Q&A session.",
-  "url": [
-   "https://register.gotowebinar.com/register/5976799386104674827"
-  ],
-  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/event_003.png",
-  "tags": null,
-  "languages": "English",
-  "resource_language_url": [
-   {
-    "language": "English",
-    "url": "https://register.gotowebinar.com/register/5976799386104674827"
-   }
-  ],
-  "geo_coverage": [
-   ""
-  ],
-  "geo_coverage_type": "global",
-  "remarks": "Download flyer: https://drive.google.com/file/d/1oTThuCQYXs5VE1GNCfNNthQx47b6NbFa/view?usp=sharing",
-  "country": ""
- },
- {
-  "id": 4,
-  "title": "UN Environment Assembly (UNEA) 5",
-  "start_date": "2021-02-22",
-  "end_date": "2021-02-23 00:00:00",
-  "description": "The fifth session of the UN Environment Assembly (UNEA-5).",
-  "url": [
-   "https://indico.un.org/event/1000068/"
-  ],
-  "image": "https://storage.googleapis.com/akvo-unep-gpml/images/event_004.png",
-  "tags": null,
-  "languages": "English",
-  "resource_language_url": [
-   {
-    "language": "English",
-    "url": "https://indico.un.org/event/1000068/"
-   }
-  ],
-  "geo_coverage": [
-   ""
-  ],
-  "geo_coverage_type": "global",
-  "remarks": null,
-  "country": ""
- }
+  {
+    "id": 1,
+    "title": "2nd World Conference on Waste Management",
+    "start_date": "2021-04-03 00:00:00",
+    "end_date": "2021-05-03 00:00:00",
+    "description": "The Second World Conference on Waste Management 2021 will bring scientists, researchers, activists and practitioners from academia and industry to elaborate scientific ideas, share experiences, discuss environmental issues, and find innovative strategies for waste management. The Organizing Committee is gearing up for an exciting and informative conference, including keynote and plenary sessions, research presentations, recognition awards, and High Standard Publication Opportunities, with many networking opportunities.",
+    "url": [
+      "https://wastemanagementconferences.com/"
+    ],
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/event_001.png",
+    "tags": [
+      "conference"
+    ],
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://wastemanagementconferences.com/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": "https://wastemanagementconferences.com/online-registration/",
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 2,
+    "title": "Meeting of the Ecosystem Approach Correspondence Group on Monitoring (CorMon) Marine Litter",
+    "start_date": "2021-03-30",
+    "end_date": "2021-03-30",
+    "description": "Meeting of the Ecosystem Approach Correspondence Group on Monitoring (CorMon) Marine Litter",
+    "url": [
+      "https://indico.un.org/event/35704/"
+    ],
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/event_002.png",
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://indico.un.org/event/35704/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": "UNEP/MAP",
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 3,
+    "title": "Understanding the State of the Ocean",
+    "start_date": "2021-02-25",
+    "end_date": "2021-02-25",
+    "description": "Understanding the State of the Ocean: a Global Manual on Measuring SDG 14.1.1, SDG 14.2.1, SDG 14.5.1, and the GPML Digital Platform Phase 1 presentationThursday, 25 February, 15:00 - 16:30 (EAT)Monitoring is key to understanding how the state of the ocean is changing, what is causing the change and how well efforts to address these changes are working. The global oceans manual provides guidance on how to bring together traditional monitoring techniques with new technologies and data science in order to better monitor our oceans in the context of the SDGs. The aim of the GPML Digital platform is to facilitate coordination of multi-stakeholder action towards the long-term elimination, through a life-cycle approach, of discharges of litter and microplastics into the oceans using AI capabilities, data mapping and layered functionalities including match-making.The session will review the Phase I release of the platform, discuss next steps as well as highlight opportunities to engage in the shaping of the platform through user consultations and strategic partnerships. Speakers will discuss the above topics, followed by a Q&A session.",
+    "url": [
+      "https://register.gotowebinar.com/register/5976799386104674827"
+    ],
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/event_003.png",
+    "tags": [
+      "conference"
+    ],
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://register.gotowebinar.com/register/5976799386104674827"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": "Download flyer: https://drive.google.com/file/d/1oTThuCQYXs5VE1GNCfNNthQx47b6NbFa/view?usp=sharing",
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 4,
+    "title": "UN Environment Assembly (UNEA) 5",
+    "start_date": "2021-02-22",
+    "end_date": "2021-02-23 00:00:00",
+    "description": "The fifth session of the UN Environment Assembly (UNEA-5) provides leadership, catalyzes, intergovernmental actions on the environment, and contributes to the implementation of the UN 2030 Agenda for Sustainable Development and its Sustainable Development Goals (SDGs).In light of the COVID-19 pandemic, and based on broad consultations with Member States and Stakeholders, the UNEA Bureau decided on 8 October 2020 that UNEA-5 should take place in a two-step approach. The first session of UNEA-5 was be conducted virtually on 22-23 February 2021 with a revised and streamlined agenda that focused on urgent and procedural decisions. Substantive matters that require in-depth negotiations will be deferred to a resumed in-person session of UNEA-5 in February 2022 in a format to be defined and agreed on at a later stage.The overall theme of UNEA-5 was “Strengthening Actions for Nature to Achieve the Sustainable Development Goals”.The theme called for strengthened action to protect and restore nature and the nature-based solutions to achieve the SDGs in its three complementary dimensions (social, economic and environmental). UNEA-5 provides Member States and stakeholders with a platform for sharing and implementing successful approaches that contribute to the achievement of the environmental dimension of the 2030 Agenda and the SDGs, including the goals related to the eradication of poverty and sustainable patterns of consumption and production. UNEA-5 will also provide an opportunity for Member States and Stakeholders to take ambitious steps towards building back better and greener by ensuring that investments in economic recovery after the COVID-19 pandemic contribute to sustainable development.",
+    "url": [
+      "https://www.unep.org/environmentassembly/unea5"
+    ],
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/event_004.png",
+    "tags": [
+      "conference"
+    ],
+    "languages": "Arabic; Chinese; English; French; Russian; Spanish",
+    "resource_language_url": [
+      {
+        "language": "Arabic",
+        "url": "https://www.unep.org/environmentassembly/unea5"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": "https://indico.un.org/event/1000068/",
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 5,
+    "title": "UN Decade of Ocean Science for Sustainable Development (UN-Oceans) (2021-30)",
+    "start_date": "2021-01-01 00:00:00",
+    "end_date": "2030-12-31 00:00:00",
+    "description": "The United Nations has proclaimed a Decade of Ocean Science for Sustainable Development (2021-2030) to support efforts to reverse the cycle of decline in ocean health and gather ocean stakeholders worldwide behind a common framework that will ensure ocean science can fully support countries in creating improved conditions for sustainable development of the Ocean.The marine realm is the largest component of the Earths system that stabilizes climate and support life on Earth and human well-being. However, the First World Ocean Assessment released in 2016 found that much of the ocean is now seriously degraded, with changes and losses in the structure, function and benefits from marine systems.In addition, the impact of multiple stressors on the ocean is projected to increase as the human population grows towards the expected 9 billion by 2050.Adaptation strategies and science-informed policy responses to global change are urgently needed.Scientific understanding of the oceans responses to pressures and management action is fundamental for sustainable development. Ocean observations and research are also essential to predict the consequences of change, design mitigation and guide adaptation.As mandated by the UN General Assembly, the Intergovernmental Oceanographic Commission (IOC) of UNESCO will coordinate the Decades preparatory process, inviting the global ocean community to plan for the next ten years in ocean science and technology to deliver, together, the ocean we need for the future we want!",
+    "url": [
+      "https://www.oceandecade.org/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.oceandecade.org/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": "UNESCO",
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": "https://www.oceandecade.org/contact",
+    "country": ""
+  },
+  {
+    "id": 6,
+    "title": "UN Decade of Healthy Ageing (WHO) (2021-30)",
+    "start_date": "2021-01-01 00:00:00",
+    "end_date": "2030-12-31 00:00:00",
+    "description": "The United Nations Decade of Healthy Ageing (2021-2030) is an opportunity to bring together governments, civil society, international agencies, professionals, academia, the media, and the private sector for ten years of concerted, catalytic and collaborative action to improve the lives of older people, their families, and the communities in which they live.Populations around the world are ageing at a faster pace than in the past and this demographic transition will have an impact on almost all aspects of society. The world has united around the 2030 Agenda for Sustainable Development: all countries and all stakeholders pledged that no one will be left behind and determined to ensure that every human being can fulfil their potential in dignity and equality and in a healthy environment.A decade of concerted global action on Healthy Ageing is urgently needed. The COVID-19 pandemic has highlighted the seriousness of existing gaps in policies, systems and services. Already, there are more than 1 billion people aged 60 years or older, with most living in low- and middle-income countries. Many do not have access to even the basic resources necessary for a life of meaning and of dignity. Many others confront multiple barriers that prevent their full participation in society.",
+    "url": [
+      "https://www.who.int/initiatives/decade-of-healthy-ageing"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.who.int/initiatives/decade-of-healthy-ageing"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": "WHO",
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": "https://www.who.int/about/who-we-are/contact-us",
+    "country": ""
+  },
+  {
+    "id": 7,
+    "title": "XXII Forum of Ministers of Environment of Latin America and the Caribbean",
+    "start_date": "2021-02-01 00:00:00",
+    "end_date": "2021-02-02 00:00:00",
+    "description": "The XXII Meeting of the Forum of Ministers of Environment of Latin America and the Caribbean will take place on 1-2 February 2021, and will address the pressing environmental issues of the region, opportunities for green recovery, and urgent actions for nature in the next decade to achieve the Sustainable Development Goals.In the context of the COVID-19 pandemic and the ongoing restrictions to prevent the further transmission of the virus, the regional gathering will be held in a virtual format for the first time, and will be organized by Barbados, the current president of the forum, and the Regional Office for Latin America and the Caribbean of the United Nations Environment Programme (UNEP).",
+    "url": [
+      "https://www.unep.org/events/unep-event/xxii-forum-ministers-environment-latin-america-and-caribbean"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": null,
+    "resource_language_url": null,
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "transnational",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 8,
+    "title": "Thirty-fourth Session, Committee on Fisheries",
+    "start_date": "2021-02-01 00:00:00",
+    "end_date": "2021-02-05 00:00:00",
+    "description": "The FAO Committee on Fisheries (COFI) brought together policymakers, researchers, industry representatives and civil society groups from across the world to consider the latest initiatives, regulations and research in the areas of fisheries and aquaculture governance and development. In its observer role, WorldFish has submitted a number of statements/ policy recommendations that cover varied global and specific issues on which WorldFish and partners of the CGIAR Research Program on Fish Agri-Food Systems currently conduct research and innovation work.WorldFish and FAO has had a long-standing partnership to enhance the impact of fish on the well-being of millions of consumers, producers and fisheries-dependent people worldwide. During the 33rd Session of the Committee on Fisheries (COFI33), WorldFishs Director General, Gareth Johnstone signed an agreement with FAO to combine research skills,  experience and policy-making capacity to build the sustainability, resilience and inclusivity of global fisheries and aquaculture production and value chains.During last years virtual dialogue on the path to COFI34, the Illuminating Hidden Harvest study was featured in a side-event with research experts from WorldFish, FAO and Duke Univeristy. Check out the event recording and the event questions and answers report.To learn more about the outcomes, key takeaways and statements from this years COFI34, including check out the official page and follow @FAOFish and the hashtags on #COFI34 and #COFIDialogues to check out past conversations on Twitter.",
+    "url": [
+      "https://www.worldfishcenter.org/events/thirty-fourth-session-committee-fisheries-cofi34"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.worldfishcenter.org/events/thirty-fourth-session-committee-fisheries-cofi34"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": "FAO",
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 9,
+    "title": "3rd COBSEA webinar on the post-2020 Global Biodiversity Framework",
+    "start_date": "2021-02-04 00:00:00",
+    "end_date": "2021-02-04 00:00:00",
+    "description": "The COBSEA Secretariat hosted a webinar series on the post-2020 global biodiversity framework, providing a platform for dialogue on how COBSEA can be leveraged to support countries during the development, delivery and tracking of the framework. The third webinar discussed outcomes of the second consultation workshop of biodiversity-related conventions on the post-2020 global biodiversity framework (Bern-II), presented an update of meetings of subsidiary bodies, and provided an overview of the Data reporting tool for Multilateral Environmental Agreements (DaRT). The event further provided an opportunity to learn from experiences of individual COBSEA countries in relation to the development of the framework. As always, there was be time for discussion and exchange of views on efforts through COBSEA, including from COBSEA country representatives.",
+    "url": [
+      "https://www.unep.org/cobsea/events/webinar/third-cobsea-webinar-post-2020-global-biodiversity-framework"
+    ],
+    "image": null,
+    "tags": [
+      "conference"
+    ],
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.unep.org/cobsea/events/webinar/third-cobsea-webinar-post-2020-global-biodiversity-framework"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "transnational",
+    "remarks": "COBSEA",
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 10,
+    "title": "Science Business Policy Forum Workshop and Presentation",
+    "start_date": "2021-02-18 00:00:00",
+    "end_date": "2021-02-21 00:00:00",
+    "description": "The Third Global Session of the Forum, convened from 18 to 20 February 2021, in support of UNEA 5.  The event, held online under the theme: Integrated Solutions #For Nature. aimed to strengthen the interface and collaboration between key sectors and stakeholders in support of UNEPs new Medium Term Strategy and the Programme of Work.The UNEP Science-Policy-Business Forum brought together influential actors from the business, technology and finance sectors, as well as Government ministers, public policy experts, policy makers, leading scientists, civil society and the media.  The Third Global Session witnessed the launch of the Youth work stream of the Forum, which focuses on green technology and green jobs.The Forum witnessed the launch of joint pilots facilitated by the Forum and announcements of decarbonization and sustainability milestones and by partner industries and enterprises. The event unleashed access to (and understanding of the latest technologies, including AI, which can fast-track and power the implementation of the SDGs.  Ethics, equity, equality and fair and inclusive sustainable development is at the heart of our discussions and collaborations.",
+    "url": [
+      "https://un-spbf.org/"
+    ],
+    "image": null,
+    "tags": [
+      "workshop"
+    ],
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://un-spbf.org/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": "https://www.youtube.com/watch?v=Brw3OY_e6Ls&list=PLPyCiV4gCeNT8uVjKblSgUfZ5PpHPAxCl",
+    "event_slides": null,
+    "event_documents": "http://un-spbf.org/wp-content/uploads/2021/03/UNEPSPBF-Third-Global-Session-2021_Summary-of-Key-Outcomes-and-Recommendations.pdf",
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 11,
+    "title": "World Water Day",
+    "start_date": "2021-03-22 00:00:00",
+    "end_date": "2021-03-22 00:00:00",
+    "description": "Water means different things to different people.This conversation is about what water means to you.How is water important to your home and family life, your livelihood, your cultural practices, your wellbeing, your local environment?In households, schools and workplaces, water can mean health, hygiene, dignity and productivity.In cultural, religious and spiritual places, water can mean a connection with creation, community and oneself.In natural spaces, water can mean peace, harmony and preservation.Today, water is under extreme threat from a growing population, increasing demands of agriculture and industry, and the worsening impacts of climate change.Tell us your stories, thoughts and feelings about water.By recording - and celebrating - all the different ways water benefits our lives, we can value water properly and safeguard it effectively for everyone.Join the conversation about what water means to you.",
+    "url": [
+      "https://www.worldwaterday.org/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": null,
+    "resource_language_url": null,
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": "https://www.worldwaterday.org/share",
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 12,
+    "title": "38th ASEAN Summit",
+    "start_date": "2021-04-01 00:00:00",
+    "end_date": "2021-05-31 00:00:00",
+    "description": "The ASEAN Summit is a biannual meeting held by the members of the Association of Southeast Asian Nations (ASEAN) in relation to economic, political, security, and socio-cultural development of Southeast Asian countries. In addition, it serves as a prominent regional (Asia) and international (worldwide) conference, with world leaders attending its related summits and meetings to discuss various problems and global issues, strengthening co-operation, and making decisions. The summit has been praised by world leaders for its success and ability to produce results on a global level.",
+    "url": [
+      "https://www.ap.org/live-and-location-services/events/38th-asean-summit"
+    ],
+    "image": null,
+    "tags": [
+      "conference"
+    ],
+    "languages": null,
+    "resource_language_url": null,
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "transnational",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 13,
+    "title": "International Day for Biological Diversity",
+    "start_date": "2021-05-22 00:00:00",
+    "end_date": "2021-05-22 00:00:00",
+    "description": "The United Nations has proclaimed May 22 The International Day for Biological Diversity (IDB) to increase understanding and awareness of biodiversity issues. When first created by the Second Committee of the UN General Assembly in late 1993, 29 December (the date of entry into force of the Convention of Biological Diversity), was designated The International Day for Biological Diversity. In December 2000, the UN General Assembly adopted 22 May as IDB, to commemorate the adoption of the text of the Convention on 22 May 1992 by the Nairobi Final Act of the Conference for the Adoption of the Agreed Text of the Convention on Biological Diversity. This was partly done because it was difficult for many countries to plan and carry out suitable celebrations for the date of 29 December, given the number of holidays that coincide around that time of year.",
+    "url": [
+      "https://www.cbd.int/idb/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.cbd.int/idb/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 14,
+    "title": "EU Green Week",
+    "start_date": "2021-05-24 00:00:00",
+    "end_date": "2021-06-04 00:00:00",
+    "description": "Pollution affects everybody – through the air we breathe, the water we drink or the land we grow our food on. It is the largest environmental cause of multiple mental and physical diseases, and of premature deaths, especially among children, people with certain medical conditions and the elderly. But pollution does not affect everybody equally. People who live in more deprived areas very often live close to contaminated sites or in areas where there is a very high flow of traffic. Pollution is also one of the main reasons for the loss of biodiversity. It reduces the ability of ecosystems to provide services such as carbon sequestration and decontamination.But it can be prevented. The EU Action Plan toward a Zero Pollution Ambition is a key action of the European Green Deal scheduled for spring 2021. It will help to create a toxic-free environment across the EU by better monitoring and, reporting, and by preventing and remedying pollution from air, water, soil, and consumer products.It will also support the post-COVID 19 recovery by helping to rebuild a more sustainable EU economy, creating job opportunities and reducing social inequalities. The European Green Week 2021 will be dedicated to the zero pollution ambition. It will also look at other relevant European Green Deal initiatives, such the climate initiatives, the upcoming Chemicals Strategy, as well as initiatives in the field of energy, industry, mobility, agriculture, fisheries, health and biodiversity.EU Green Week 2021 will be an opportunity to engage with all stakeholders and interested citizens on how we can work together to make the ambition for a zero pollution and toxic-free environment a reality.",
+    "url": [
+      "https://www.eugreenweek.eu/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.eugreenweek.eu/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "transnational",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": "ENV-GREENWEEK@ec.europa.eu",
+    "country": ""
+  },
+  {
+    "id": 15,
+    "title": "World Reef Awareness Day",
+    "start_date": "2021-06-01 00:00:00",
+    "end_date": "2021-06-01 00:00:00",
+    "description": "June 1, is a call to action for consumers, businesses, and organizations to reflect on the delicate ecosystem of our oceans coral reefs. The day brings together the general public and opinion leaders to create active change through education and engagement.",
+    "url": [
+      "https://worldreefday.org/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://worldreefday.org/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 16,
+    "title": "World Environment Day",
+    "start_date": "2021-06-05 00:00:00",
+    "end_date": "2021-06-05 00:00:00",
+    "description": "The theme of this years World Environment Day is Ecosystem Restoration. Pakistan will act as global host of the day.World Environment Day 2021 will see the launch of the UN Decade on Ecosystem Restoration.Ecosystem restoration can take many forms: Growing trees, greening cities, rewilding gardens, changing diets or cleaning up rivers and coasts. This is the generation that can make peace with nature.To learn more about ecosystem restoration and the UN Decade, visit:www.decadeonrestoration.org",
+    "url": [
+      "https://www.worldenvironmentday.global/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "Arabic; Chinese; English; French; Russian; Spanish",
+    "resource_language_url": [
+      {
+        "language": "Arabic",
+        "url": "https://www.worldenvironmentday.global/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": "https://www.worldenvironmentday.global/media-centre",
+    "country": ""
+  },
+  {
+    "id": 17,
+    "title": "World Ocean Day",
+    "start_date": "2021-06-08 00:00:00",
+    "end_date": "2021-06-08 00:00:00",
+    "description": "When we think of public health risks, we may not think of the ocean. Increasingly, however, the health of the ocean is intimately tied to our health. Some may be surprised to read that organisms discovered at extreme depths are used to speed up the detection of COVID-19, and probably even more to learn that, it is the environment that could give a solution to humankind.This is one of the multiple reasons why we should celebrate World Oceans Day: to remind everyone of the major role the oceans have in everyday life. They are the lungs of our planet, providing most of the oxygen we breathe. The purpose of the Day is to inform the public of the impact of human actions on the ocean, develop a worldwide movement of citizens for the ocean, and mobilize and unite the worlds population on a project for the sustainable management of the world's oceans. They are a major source of food and medicine and a critical part of the biosphere. In the end, it is a day to celebrate together the beauty, the wealth and the promise of the ocean.",
+    "url": [
+      "https://worldoceanday.org/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://worldoceanday.org/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 18,
+    "title": "Our Ocean Conference",
+    "start_date": "2021-07-01 00:00:00",
+    "end_date": "2021-07-01 00:00:00",
+    "description": "The seventh Our Ocean Conference will draw partners globally to identify solutions to sustainably manage marine resources, increase the oceans resilience to climate change and safeguard its health for generations to come.This meeting was originally scheduled to take place in December 2020 in Palau. It has been postponed, due to the global COVID-19 pandemic. The six areas originally selected for the focus of the conference are as follows: climate change, marine pollution, marine protected areas, sustainable fisheries, sustainable blue economy, and maritime security. The sixth Our Ocean Conference took place in Oslo, Norway, from 23-24 October 2019.  The SDG Knowledge Hub Summary is available here. Summaries for previous years are also available for: 2017,  2016, 2015 and 2014.date: 1 July 2021 [tentative]location: Palauwww: https://www.ourocean2020.pw/",
+    "url": [
+      "https://sdg.iisd.org/events/our-ocean-conference-2020/"
+    ],
+    "image": null,
+    "tags": [
+      "conference"
+    ],
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://sdg.iisd.org/events/our-ocean-conference-2020/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 19,
+    "title": "High Level Political Forum 2021",
+    "start_date": "2021-07-06 00:00:00",
+    "end_date": "2021-07-15 00:00:00",
+    "description": "The high-level political forum on sustainable development (HLPF) is the core United Nations platform for follow-up and review of the 2030 Agenda for Sustainable Development and its 17 Sustainable Development Goals.The meeting of the HLPF in 2021 will be held from Tuesday, 6 July, to Thursday, 15 July 2021, under the auspices of the Economic and Social Council. This includes the three-day ministerial meeting of the forum from Tuesday, 13 July, to Thursday, 15 July 2021 as part of the high-level segment of the Council.The theme will be Sustainable and resilient recovery from the COVID-19 pandemic that promotes the economic, social and environmental dimensions of sustainable development: building an inclusive and effective path for the achievement of the 2030 Agenda in the context of the decade of action and delivery for sustainable development.The HLPF in 2021 will discuss Sustainable Development Goals 1 on no poverty, 2 on zero hunger, 3 on good health and well-being, 8 on decent work and economic growth, 10 on reduced inequalities, 12 on responsible consumption and production, 13 on climate action, 16 on peace, justice and strong institutions, and 17 on partnerships in depth. The Forum will also consider the integrated, indivisible and interlinked nature of the Sustainable Development Goals.In the 2021 HLPF, participants will be able to explore various aspects of the response to the COVID-19 pandemic and the various measures and types of international cooperation that can control the pandemic and its impacts and put the world back on track to achieve the SDGs by 2030, within the decade of action and delivery for sustainable development.Countries will also carry out voluntary national reviews (VNRs) of their implementation of the 2030 Agenda in the 2021 HLPF.The HLPF will adopt a Ministerial Declaration as the outcome of its session. The President of ECOSOC will also prepare a summary to capture the key messages of the discussions.",
+    "url": [
+      "https://sustainabledevelopment.un.org/hlpf/2021"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://sustainabledevelopment.un.org/hlpf/2021"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 20,
+    "title": "Meetings of the conferences of the Parties to the Basel, Rotterdam and Stockholm conventions",
+    "start_date": "2021-07-19 00:00:00",
+    "end_date": "2021-07-30 00:00:00",
+    "description": "The bureaux of the conferences of the Parties to the Basel, Rotterdam and Stockholm conventions met from 27 to 29 January 2021 and on 26 February 2021 to discuss the organization of the 2021 meetings of the conferences of the Parties, considering the implications of the COVID-19 pandemic on the meetings.Under the current COVID-19 pandemic situation, the bureaux came to the conclusion that it was not possible to proceed with the organization of the 2021 meetings of the conferences of the Parties as originally planned as face to face meetings from 19 to 30 July 2021 in Geneva, Switzerland, and agreed that the meetings would be held in two segments, an online segment over 5 days in 2021, and a face-to-face segment over two weeks in 2022. The online segment will be held from 26 to 30 July 2021, and the face-to-face segment is tentatively scheduled in June 2022, in Geneva.The theme of the meetings will be Global Agreements for a Healthy Planet: Sound management of chemicals and waste.",
+    "url": [
+      "http://www.brsmeas.org/2021COPs/Overview/tabid/8395/language/en-US/Default.aspx"
+    ],
+    "image": null,
+    "tags": [
+      "conference"
+    ],
+    "languages": "Arabic; Chinese; English; French; Russian; Spanish",
+    "resource_language_url": [
+      {
+        "language": "Arabic",
+        "url": "https://www.brsmeas.org/2021COPs/Overview/tabid/8395/language/en-US/Default.aspx"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": null,
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 21,
+    "title": "IUCN World Conservation Congress",
+    "start_date": "2021-09-03 00:00:00",
+    "end_date": "2021-09-11 00:00:00",
+    "description": "Held once every four years, the IUCN World Conservation Congress brings together several thousand leaders and decision-makers from government, civil society, indigenous peoples, business, and academia, with the goal of conserving the environment and harnessing the solutions nature offers to global challenges.",
+    "url": [
+      "https://www.iucn.org/news/secretariat/202012/iucn-world-conservation-congress-be-held-3-11-september-2021-marseille"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English; French; Spanish",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.iucn.org/news/secretariat/202012/iucn-world-conservation-congress-be-held-3-11-september-2021-marseille"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": "press@iucn.org",
+    "country": ""
+  },
+  {
+    "id": 22,
+    "title": "World Cleanup Day",
+    "start_date": "2021-09-09 00:00:00",
+    "end_date": "2021-09-09 00:00:00",
+    "description": "World Cleanup Day on 18 September 2021 will unite more than 20 million people in 180 countries.  On that day volunteers and partners worldwide will come together again to  rid our planet of trash – cleaning up litter and mismanaged waste from  our beaches, rivers, forests, and streets.World Cleanup Day harnesses the power of everyday people to achieve  incredible things by joining together. Its beauty lies in cooperation  and collaboration: building bridges between disparate communities, and  including all levels of society – from citizens to business, to  government. On September 18, 2021, more than 25 million people in 190 countries will join in one gigantic cleanup.  Were all in this together.",
+    "url": [
+      "http://www.worldcleanupday.org/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": null,
+    "resource_language_url": null,
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": "https://digital.worldcleanupday.org/",
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 23,
+    "title": "World Circular Economy Forum",
+    "start_date": "2021-09-13 00:00:00",
+    "end_date": "2021-09-15 00:00:00",
+    "description": "The 2021 edition of the landmark circular economy event of the year, the World Circular Economy Forum (WCEF), will be held in Toronto, Ontario, at the Beanfield Centre, from September 13 to 15. WCEF2021 will mark the first time the forum is held in North America.The event will focus on the cross-cutting issues and topics that are central to economic recovery and the circular transition. WCEF2021 will identify the key actions and systemic changes needed to create the conditions for long-term success on the path to a thriving global circular economy.To learn more, please reach out to ec.fmec-wcef.ec@canada.ca.",
+    "url": [
+      "https://www.canada.ca/en/services/environment/conservation/sustainability/circular-economy/world-forum-2021.html"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.canada.ca/en/services/environment/conservation/sustainability/circular-economy/world-forum-2021.html"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": "ec.2021wcef-fmec.ec@canada.ca",
+    "country": ""
+  },
+  {
+    "id": 24,
+    "title": "World Rivers Day",
+    "start_date": "2021-09-26 00:00:00",
+    "end_date": "2021-09-26 00:00:00",
+    "description": "World Rivers Day is a celebration of the worlds waterways. It highlights the many values of our rivers, strives to increase public awareness, and encourages the improved stewardship of all rivers around the world.  Rivers in virtually every country face an array of threats, and only through our active involvement can we ensure their health in the years ahead.In 2005, the United Nations launched the Water for Life Decade to help create a greater awareness of the need to better care for our water resources. Following this, the establishment of World Rivers Day was in response to a proposal initiated by internationally renowned river advocate, Mark Angelo.The proposal for a  global event to celebrate rivers was based on the success of BC Rivers Day, which Mark Angelo had founded and led in western Canada since 1980.  A World Rivers Day event was seen by agencies of the UN as a good fit for the aims of the Water for Life Decade and the proposal was approved.  River enthusiasts from around the world came together to organize the inaugural WRD event.  That first event in 2005 was a great success and Rivers Day was celebrated across dozens of countries.  Since then, the event has continued to grow.  It is annually celebrated on the fourth Sunday of every September.  Last year, several million people in up to 100 countries celebrated the many values of our waterways.",
+    "url": [
+      "https://worldriversday.com/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://worldriversday.com/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": "sdenkers.wrd@gmail.com",
+    "country": ""
+  },
+  {
+    "id": 25,
+    "title": "World Maritime Day",
+    "start_date": "2021-09-30 00:00:00",
+    "end_date": "2021-09-30 00:00:00",
+    "description": "The COVID-19 pandemic has highlighted the professionalism and sacrifice of the two million seafarers who serve on the worlds merchant fleet. Shipping has continued to transport more than 80% of world trade, including vital medical supplies, food and other basic goods that are critical for the COVID-19 response and recovery – but hundreds of thousands of seafarers face a humanitarian crisis as they have been stranded at sea, unable to get off the ships they operate with contracts extended by many months. This needs to be addressed urgently, through Governments designating seafarers as essential workers and ensuring safe crew changes can take place.2021 Theme: Seafarers at the core of shippings futureThe theme for this year reflects a clear need to raise awareness of seafarersʹ crucial role in world trade and increase their visibility. As a result of the COVID-19 pandemic, the crew change crisis in 2020 has highlighted seafarersʹ exceptional contribution as key and essential workers on the front line of delivering vital goods through a pandemic and in ordinary times. The international community has seen how the ability for shipping services and seafarers to ensure the functioning of the global supply chains has been central to responding to, and eventually overcoming, this pandemic. This could not happen without the professionalism and dedication of the worlds seafarers.The World Maritime theme for 2021 will provide the opportunity to focus on seafarers as the people at the heart of shipping, while also allowing for activities to delve into specific topics relevant to the role of the seafarer in safety, maritime security, environmental protection and seafarersʹ well-being; and the future of seafaring against a backdrop of increased digitalization and automation. The theme also links to the United Nations Sustainable Development Goals (SDGs), particularly SDG 4 on education and training; SDG 8 related to decent work; SDG 9 on innovation and industry, which links to the promotion of a resilient maritime sector; and SDG 5 on gender equality, linked to efforts to promote seafaring as a career for all, including women, in particular.",
+    "url": [
+      "https://www.un.org/en/observances/maritime-day"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "Arabic; Chinese; English; French; Russian; Spanish",
+    "resource_language_url": [
+      {
+        "language": "Arabic",
+        "url": "https://www.un.org/en/observances/maritime-day"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 26,
+    "title": "World Habitat Day",
+    "start_date": "2021-10-04 00:00:00",
+    "end_date": "2021-10-04 00:00:00",
+    "description": "The purpose of World Habitat Day is to reflect on the state of our towns and cities, and on the basic right of all to adequate shelter. It is also intended to remind the world that we all have the power and the responsibility to shape the future of our cities and towns. World Habitat Day was established in 1985 by the United Nations General Assembly through Resolution 40/202, and was first celebrated in 1986. It takes place on the first Monday of October.",
+    "url": [
+      "https://unhabitat.org/events/world-habitat-day-2021"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": null,
+    "resource_language_url": null,
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 27,
+    "title": "G20",
+    "start_date": "2021-10-30 00:00:00",
+    "end_date": "2021-10-31 00:00:00",
+    "description": "The G20 is the international forum that brings together the worlds major economies. Its members account for more than 80% of world GDP, 75% of global trade and 60% of the population of the planet.The forum has met every year since 1999 and includes, since 2008, a yearly Summit, with the participation of the respective Heads of State and Government.In addition to the Summit, ministerial meetings, Sherpa meetings (in charge of carrying out negotiations and building consensus among Leaders), working groups and special events are organized throughout the year.",
+    "url": [
+      "https://www.g20.org/"
+    ],
+    "image": null,
+    "tags": [
+      "conference"
+    ],
+    "languages": null,
+    "resource_language_url": null,
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "transnational",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 28,
+    "title": "Glasgow Climate Change Conference",
+    "start_date": "2021-11-01 00:00:00",
+    "end_date": "2021-11-12 00:00:00",
+    "description": "The 2021 United Nations Climate Change Conference, also known as COP26, is the 26th United Nations Climate Change conference. It is scheduled to be held in Glasgow, Scotland, from 1 to 12 November 2021 under the presidency of the United Kingdom. The conference is set to incorporate the 26th Conference of the Parties to the United Nations Framework Convention on Climate Change (UNFCCC), the 16th meeting of the parties to the Kyoto Protocol (CMP16), and the third meeting of the parties to the Paris Agreement (CMA3).This conference is the first time that Parties are expected to commit to enhanced ambition since COP21. Parties are required to carry out every five years, as outlined in the Paris Agreement, a process colloquially known as the 'ratchet mechanism'.The venue for the conference is the SEC Centre in Central Glasgow. Originally due to be held in November 2020 at the same venue,[4] the event was postponed for twelve months in light of the COVID-19 pandemic in Scotland.",
+    "url": [
+      "https://unfccc.int/process-and-meetings/conferences/glasgow-climate-change-conference"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://unfccc.int/process-and-meetings/conferences/glasgow-climate-change-conference"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 29,
+    "title": "Barcelona Convention COP22",
+    "start_date": "2021-12-07 00:00:00",
+    "end_date": "2021-12-10 00:00:00",
+    "description": "The 22nd Meeting of the Contracting Parties to the Barcelona Convention and its Protocols is scheduled to take place in December 2021.COP 22 is expected to discuss agenda items including: assessing and controlling marine pollution; ensuring sustainable management of natural marine and coastal resources; protecting the marine environment and coastal zones through preventing and reducing, and as far as possible, eliminating pollution; protecting natural and cultural heritage; strengthening solidarity among Mediterranean coastal States; and contributing to improving quality of life.",
+    "url": [
+      "https://sdg.iisd.org/events/barcelona-convention-cop-22/"
+    ],
+    "image": null,
+    "tags": [
+      "conference"
+    ],
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://sdg.iisd.org/events/barcelona-convention-cop-22/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "transnational",
+    "remarks": "Africa, Europe, North America",
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 30,
+    "title": "Reef Futures Symposium",
+    "start_date": "2021-12-12 00:00:00",
+    "end_date": "2021-12-17 00:00:00",
+    "description": "Reef Futures is the only venue that brings together coral restoration practitioners, researchers, students, and resource managers from around the world to share the latest techniques, technologies, and science to dramatically scale-up the impact and reach of coral reef restoration. Whether you are a local resource manager from a small island looking to learn from seasoned hands, or a topical expert looking to make your work meaningful to a local community, Reef Futures is the place to be. Leave your sadness and despair about the state of coral reefs at the door and come help shape the future you want coral reefs to have!",
+    "url": [
+      "https://www.icriforum.org/events/reef-futures-2021/"
+    ],
+    "image": null,
+    "tags": [
+      "conference",
+      "workshop"
+    ],
+    "languages": null,
+    "resource_language_url": null,
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 31,
+    "title": "Launch of the Global Alliance on Circular Economy and Resource Efficiency (GACERE)",
+    "start_date": "2021-02-22",
+    "end_date": "2021-02-22",
+    "description": "Bringing together governments and relevant networks and organisations, the Global Alliance on Circular Economy and Resource Efficiency (GACERE) aims to provide a global impetus for initiatives related to the circular economy transition, resource efficiency and sustainable consumption and production, building on efforts being deployed internationally.",
+    "url": [
+      "https://ec.europa.eu/environment/events/launch-global-alliance-circular-economy-and-resource-efficiency-gacere_en"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://ec.europa.eu/environment/events/launch-global-alliance-circular-economy-and-resource-efficiency-gacere_en"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 32,
+    "title": "G-STIC Conference First Edition",
+    "start_date": "2021-10-24",
+    "end_date": "2021-10-27",
+    "description": "The World Expo in Dubai will focus on knowledge and technologies that are crucial to achieving the 17 Sustainable Development Goals. It will be an accelerator and testing ground for breakthrough technological solutions that the world needs to shape a post-pandemic world and create a better future for all. Its therefore the perfect opportunity to hold the fifth G-STIC conference, the first one taking place outside of Brussels (Belgium).",
+    "url": [
+      "https://www.gstic.org/dubai-conference/"
+    ],
+    "image": null,
+    "tags": [
+      "conference"
+    ],
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.gstic.org/dubai-conference/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 33,
+    "title": "G-STIC Conference Second Edition",
+    "start_date": "2022-01-17",
+    "end_date": "2022-01-19",
+    "description": "The World Expo in Dubai will focus on knowledge and technologies that are crucial to achieving the 17 Sustainable Development Goals. It will be an accelerator and testing ground for breakthrough technological solutions that the world needs to shape a post-pandemic world and create a better future for all. Its therefore the perfect opportunity to hold the fifth G-STIC conference, the first one taking place outside of Brussels (Belgium).",
+    "url": [
+      "https://www.gstic.org/dubai-conference/"
+    ],
+    "image": null,
+    "tags": [
+      "conference"
+    ],
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.gstic.org/dubai-conference/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 34,
+    "title": "OCEANVISIONS2021 SUMMIT",
+    "start_date": "2021-05-18",
+    "end_date": "2021-05-21",
+    "description": "The Ocean Visions 2021 Summit May 18-21, 2021 “Towards a Global Ecosystem for Ocean Solutions” will bring together a multi-sector community of researchers, innovators, decision-makers, funders, and more to develop roadmaps for solving great ocean challenges including ocean-based solutions to climate, equitable coastal solutions strategies for resilience and adaptation, marine circular economies, ocean & human health, and how to transform research from academia into sustainable businesses. ​Online Virtual Format​The Summit will be held virtually on the campus of the Scripps Institution of Oceanography, USA, between May 18-21, 2021. The summit is linked and co-organized with satellite virtual campuses in Hobart, Australia, Cape Town, South Africa, Mindelo, Cabo Verde, and Kiel, Germany.",
+    "url": [
+      "https://www.oceanvisions.org/summit-2021"
+    ],
+    "image": null,
+    "tags": [
+      "conference"
+    ],
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.oceanvisions.org/summit-2021"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 35,
+    "title": "Addressing marine litter in the Northwest Pacific Region",
+    "start_date": "2021-03-29",
+    "end_date": "2021-03-29",
+    "description": "The first of the 2021 GPML Webinar Series is hosted by our Northwest Pacific (NOWPAP) Regional Node, on 'Addressing Marine Litter in the Northwest Pacific Region'. The GPML will also present on the release of the proof of concept for the GPML Digital Platform Data Hub and next steps for Phase II.",
+    "url": [
+      "https://attendee.gotowebinar.com/register/4889193271338842126"
+    ],
+    "image": null,
+    "tags": [
+      "conference"
+    ],
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://attendee.gotowebinar.com/register/4889193271338842126"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "transnational",
+    "remarks": null,
+    "registration_link": "https://attendee.gotowebinar.com/register/4889193271338842126",
+    "recording": "https://www.youtube.com/watch?v=mbpWNWTww-g",
+    "event_slides": null,
+    "event_documents": "https://drive.google.com/file/d/1QEeFissHL4_BH06kibJn3eMAESwa1q_g/view",
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 36,
+    "title": "Action for the Oceans – Youth leaders raising awareness for the Oceans, together!",
+    "start_date": "2021-11-06 00:00:00",
+    "end_date": "2021-11-06 00:00:00",
+    "description": "Join us for this special hybrid event with a virtual platform to showcase inspiring actions for the oceans from youth leaders around the world!  Peace Boats Ocean and Climate Youth Ambassadors from Small Island Developing States and “Youth for the SDGs” scholars will be presenting their work from various countries including Fiji, Seychelles, Trinidad and Tobago, India, Mauritius, Chile, Mexico and more. Through a storytelling training program in partnership with the creative changency, Pendulum, this years ocean youth leaders will share their experiences to highlight the 2021 UN World Oceans Day theme of The Ocean: Life and Livelihoods.Through education and outreach, Action for the Oceans aims to strengthen creative skills and innovative solutions to achieve the United Nations Sustainable Development Goals, with a focus on SDG 14 for Life Below Water.Works will be shared via our digital platform and a reception will be held at the Selina Hotel in Chelsea, New York on the evening of June 11, Friday.",
+    "url": [
+      "https://unworldoceansday.org/events/action-for-the-oceans-youth-leaders-raising-awareness-for-the-oceans-together/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://unworldoceansday.org/events/action-for-the-oceans-youth-leaders-raising-awareness-for-the-oceans-together/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": "http://bit.ly/Action-Oceans-2021",
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 37,
+    "title": "COVE Demo Day — Virtual",
+    "start_date": "2021-10-06 00:00:00",
+    "end_date": "2021-10-06 00:00:00",
+    "description": "COVE – Where the best ideas in ocean technology come to life!Located in what was once the Canadian Coast Guard facility on Halifax Harbour, COVE is home to local and global ocean technology businesses, post-secondary institutions, and marine-based and service businesses that support the ocean sector. The COVE site features extensive marine facilities with two large, deep-water piers, office space, an incubator and space for shops and labs.COVE is a community that brings together the best and the brightest to push ocean tech advances to market. Its a space that fosters innovation and cross-pollinates expertise, ideas, and resources among members, COVE is where business growth, opportunity, and technical advances happen.On June 8 and June 10, 2021, attendees of the H2O Conference will have the opportunity to watch the latest in ocean technology highlighted on the Halifax Harbour. One registration to the H2O Conference also gets you access to COVE Demo Day broadcasts, too!",
+    "url": [
+      "https://unworldoceansday.org/events/cove-demo-day-virtual/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://unworldoceansday.org/events/cove-demo-day-virtual/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": "info@coveocean.com",
+    "country": ""
+  },
+  {
+    "id": 38,
+    "title": "H2OO World Ocean Day Virtual Hill Day",
+    "start_date": "2021-09-06 00:00:00",
+    "end_date": "2021-09-06 00:00:00",
+    "description": "Heirs To Our Oceans is hosting a virtual ocean-based Hill Day for World Oceans Day, aiming for June 9th but date will be dependent upon congressional schedule, and currently uncertain if 1 or 2 days.  Exact dates soon TBD.  Marketing/promo materials coming soon.",
+    "url": [
+      "https://unworldoceansday.org/events/h2oo-world-ocean-day-virtual-hill-day/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://unworldoceansday.org/events/h2oo-world-ocean-day-virtual-hill-day/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 39,
+    "title": "Achieving a plastic-free ocean for Limbe, Cameroon",
+    "start_date": "2021-08-06 00:00:00",
+    "end_date": "2021-08-06 00:00:00",
+    "description": "The overall goal of the project is to enhance environmental management of the coastal areas of Cameroon by minimizing the plastic and waste litter in these areas. Indiscriminate dumping of plastics and other waste is rampant in the South West coastal region and of particular interest, the principal coastline of Ngeme-Batoke. The area is home to sensitive ecosystems, critically endangered species, endangered bird species, and other species listed as Vulnerable by IUCN. This area is also greatly dependent on tourism to sustain its local economy and it is therefore vital to ensure that efforts are taken to preserve its natural ecosystem from the menace of plastic pollution. Our aim is to change the behaviors of local communities that contribute significantly to this problem by embarking on an Awareness Educational Campaign about maintaining a clean coastline through a Beach Cleanup. This project will engage 300 volunteers.ASCOA has been bringing together passionate ocean lovers and helping them contribute to a vision for trash free seas in Cameroon. ASCOA aims to prevent trash from entering the waters by working with everyone from individuals to businesses to change the products, practices and behaviors that lead to ocean trash. It is intended to carry out regular and effective activities to maintain Cameroons beaches clean and trash-free by carrying out a varied approach, to solve the problem in the long run. Waste bins will be installed and awareness campaigns will be conducted to reduce littering in the long run. ASCOA intends to organize beach cleanup during world Ocean day 8 June 2021.",
+    "url": [
+      "https://unworldoceansday.org/events/achieving-a-plastic-free-ocean-for-limbe-cameroon/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://unworldoceansday.org/events/achieving-a-plastic-free-ocean-for-limbe-cameroon/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": null,
+    "remarks": null,
+    "registration_link": null,
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 40,
+    "title": "World Oceans Day Art Gallery 2021",
+    "start_date": "2021-05-15",
+    "end_date": "2021-05-15",
+    "description": "High-school student, Sophie Goldstein, in partnership with Oceanic Global is hosting a World Oceans Day art gallery again this year after a successful youth art gallery for World Oceans Day 2020! This years art gallery is centered around the United Nations World Oceans Day 2021 theme “The Ocean: Life & Livelihoods”. To honor that theme, for this art gallery we are calling on YOU to show us in your preferred artistic medium how youre connected to the ocean.Please submit your artwork to us using this form, you will need to create a different submission if you wish to submit multiple pieces. We ask for details about the physical piece as well as a title and artists description that can be used to display the work in the virtual gallery.*The deadline for submissions is May 1st.*Selected submissions will be featured on the Oceanic Global website in a gallery as well as have the opportunity to present at the gallery exhibition event on Thursday, May 13th at 5pm EST.",
+    "url": [
+      "https://unworldoceansday.org/events/world-oceans-day-art-gallery-2021/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://unworldoceansday.org/events/world-oceans-day-art-gallery-2021/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": "https://forms.gle/i2TcBELt7vAZHAiM7",
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  },
+  {
+    "id": 41,
+    "title": "Oceanic Globals Earth Day 2021: Ancient Wisdom & the Ocean",
+    "start_date": "2021-04-20",
+    "end_date": "2021-04-20",
+    "description": "For Earth Day 2021, Oceanic Global is hosting an educational campaign and virtual event around the theme “Ancient Wisdom & the Ocean.” The event will highlight the role of traditional, indigenous, and local knowledge in ocean conservation and the importance of incorporating it hand-in-hand with conventional science to find long-term solutions for a truly sustainable future.As part of the days programming, Oceanic Global will be hosting four discussion circles around the key themes of Protecting Our Marine Areas, Fisheries, Climate Resiliency, and Oceanic Biodiversity. Leading up to the event, Oceanic Global will be launching an associated social media storytelling campaign leading up to April 22nd, 2021.",
+    "url": [
+      "https://unworldoceansday.org/events/oceanic-globals-earth-day-2021-ancient-wisdom-the-ocean/"
+    ],
+    "image": null,
+    "tags": null,
+    "languages": "English",
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://unworldoceansday.org/events/oceanic-globals-earth-day-2021-ancient-wisdom-the-ocean/"
+      }
+    ],
+    "geo_coverage": [
+      ""
+    ],
+    "geo_coverage_type": "global",
+    "remarks": null,
+    "registration_link": "https://www.eventbrite.com/e/earth-week-2021-ancient-wisdom-the-ocean-tickets-148639369355",
+    "recording": null,
+    "event_slides": null,
+    "event_documents": null,
+    "questions_and_answers": null,
+    "contacts": null,
+    "country": ""
+  }
 ]
