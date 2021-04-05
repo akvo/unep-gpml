@@ -84,7 +84,7 @@ const SelectWidget = ({
       {enumOptions.map(({ value: optionValue, label: optionLabel }, i) => (
         <Select.Option
           disabled={enumDisabled && enumDisabled.indexOf(optionValue) !== -1}
-          key={String(optionValue)+i.toString(36)}
+          key={String(optionValue) + i.toString(36)}
           value={String(optionValue)}
         >
           {optionLabel}
