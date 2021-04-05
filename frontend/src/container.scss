@@ -43,6 +43,10 @@
     .ant-select {
       max-width: 100% !important;
     }
+
+    li.no-hover {
+      display: none !important;
+    }
   }
 
   // enable mobile view - remove map
