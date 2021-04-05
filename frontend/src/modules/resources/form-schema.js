@@ -3,10 +3,10 @@ export const schema = {
   required: [
     "title",
     "organisation",
-    "valueAmount",
-    "valueCurrency",
-    "validFrom",
-    "languages",
+    // "valueAmount",
+    // "valueCurrency",
+    // "validFrom",
+    // "languages",
     "country",
     "geoCoverageType",
     "tags",
@@ -72,6 +72,7 @@ export const schema = {
     },
     geoCoverageValue: {
       title: "RESOURCE GEO_COVERAGE",
+      type: "string",
       enum: [],
       depend: {
         id: "geoCoverageType",
@@ -91,6 +92,7 @@ export const schema = {
     image: {
       title: "RESOURCE IMAGE",
       type: "string",
+      format: "data-url",
     },
     tags: {
       title: "TAGS",
@@ -109,6 +111,7 @@ export const schema = {
           },
           languages: {
             title: "LANGUAGES",
+            type: "string",
             enum: [],
           },
         },
@@ -122,6 +125,7 @@ export const uiSchema = {
     "ui:placeholder": "Type in resource title",
   },
   organisation: {
+    "ui:showSearch": true,
     "ui:placeholder": "Chose organisation",
   },
   publicationYear: {
@@ -179,6 +183,7 @@ export const uiSchema = {
     "ui:options": {
       orderable: false,
     },
+    "ui:group": "border",
     items: {
       link: {
         "ui:placeholder": "URL Address",

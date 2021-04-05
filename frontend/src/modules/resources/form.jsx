@@ -179,18 +179,20 @@ const AddResourceForm = () => {
   };
 
   useEffect(() => {
-    console.log(formData);
+    // console.log(formData);
   }, [formData]);
 
   return (
     <div className="add-resource-form">
       {step === 1 && (
         <Form
+          idPrefix="resource_"
           schema={formSchema.schema}
           uiSchema={formUiSchema}
           formData={formData}
           onChange={(e) => handleFormOnChange(e)}
-          // onSubmit={(e) => console.log(e)}
+          onSubmit={(e) => console.log(e)}
+          // onError={(error) => console.log(error)}
           ArrayFieldTemplate={ArrayFieldTemplate}
           ObjectFieldTemplate={ObjectFieldTemplate}
           FieldTemplate={CustomFieldTemplate}

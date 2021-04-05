@@ -81,10 +81,10 @@ const SelectWidget = ({
       style={SELECT_STYLE}
       value={typeof value !== "undefined" ? stringify(value) : undefined}
     >
-      {enumOptions.map(({ value: optionValue, label: optionLabel }) => (
+      {enumOptions.map(({ value: optionValue, label: optionLabel }, i) => (
         <Select.Option
           disabled={enumDisabled && enumDisabled.indexOf(optionValue) !== -1}
-          key={String(optionValue)}
+          key={String(optionValue)+i.toString(36)}
           value={String(optionValue)}
         >
           {optionLabel}

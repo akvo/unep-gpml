@@ -27,6 +27,7 @@ const ArrayFieldTemplateItem = ({
   onDropIndexClick,
   onReorderClick,
   readonly,
+  showToolbar,
 }) => {
   const { rowGutter = 24, toolbarAlign = "top" } = formContext;
 
@@ -34,7 +35,7 @@ const ArrayFieldTemplateItem = ({
     <Row align={toolbarAlign} key={`array-item-${index}`} gutter={rowGutter}>
       <Col flex="1">{children}</Col>
 
-      {/* {hasToolbar && (
+      {hasToolbar && showToolbar && (
         <Col flex="192px">
           <Button.Group style={BTN_GRP_STYLE}>
             {(hasMoveUp || hasMoveDown) && (
@@ -69,7 +70,7 @@ const ArrayFieldTemplateItem = ({
             )}
           </Button.Group>
         </Col>
-      )} */}
+      )}
     </Row>
   );
 };

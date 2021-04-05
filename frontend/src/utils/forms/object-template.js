@@ -105,8 +105,8 @@ const ObjectFieldTemplate = ({
   };
 
   return (
-    <fieldset id={idSchema.$id}>
-      <Row gutter={rowGutter} className={formGroup(uiSchema)}>
+    <fieldset id={idSchema.$id} className={formGroup(uiSchema)}>
+      <Row gutter={rowGutter}>
         {uiSchema["ui:title"] !== false && (uiSchema["ui:title"] || title) && (
           <Col className={labelColClassName} span={24}>
             <h1
