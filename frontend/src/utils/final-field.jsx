@@ -68,7 +68,10 @@ const CONTROLS = {
     return (
       <Select {...allProps}>
         {options.map(({ label, value }, i) => (
-          <Select.Option key={value + i} value={value}>
+          <Select.Option
+            key={`${label}-${value}-${i.toString(36)}`}
+            value={value}
+          >
             {label}
           </Select.Option>
         ))}
