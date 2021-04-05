@@ -412,7 +412,7 @@ const AdminSection = ({
                       {item.reviewedBy.trim() !== "" ? (
                         <div className="detail-content">{item.reviewedBy}</div>
                       ) : (
-                        <div className="detail-content">Auto Approved</div>
+                        <div className="detail-content">Imported</div>
                       )}
                     </li>
                     <li>
