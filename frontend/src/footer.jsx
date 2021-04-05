@@ -84,29 +84,29 @@ const Footer = ({
                 <h4>Resources</h4>
               </li>
               <li>
-                <a href="/browse?topic=action_plan">Action plans</a>
+                <a href="/browse?topic=project">Initiative</a>
               </li>
               <li>
-                <a href="/browse?topic=event">Events</a>
+                <a href="/browse?topic=action_plan">Action Plan</a>
               </li>
               <li>
-                <a href="/browse?topic=financing_resource">
-                  Financing resources
-                </a>
+                <a href="/browse?topic=policy">Policy</a>
               </li>
               <li>
                 <a href="/browse?topic=technical_resource">
-                  Technical resources
+                  Technical Resources
                 </a>
               </li>
               <li>
-                <a href="/browse?topic=technology">Technologies</a>
+                <a href="/browse?topic=financing_resource">
+                  Financing Resources
+                </a>
               </li>
               <li>
-                <a href="/browse?topic=policy">Policies</a>
+                <a href="/browse?topic=event">Event</a>
               </li>
               <li>
-                <a href="/browse?topic=project">Initiatives</a>
+                <a href="/browse?topic=technology">Technology</a>
               </li>
             </ul>
           </nav>
@@ -172,7 +172,7 @@ const Footer = ({
               </li>
               <li>
                 {profile?.reviewStatus === "APPROVED" ? (
-                  <a href="/browse?topic=organisation">Entities</a>
+                  <a href="/browse?topic=organisation">Entity</a>
                 ) : (
                   <span
                     style={{ cursor: "pointer" }}
@@ -184,13 +184,13 @@ const Footer = ({
                         : loginWithPopup();
                     }}
                   >
-                    Entities
+                    Entity
                   </span>
                 )}
               </li>
               <li>
                 {profile?.reviewStatus === "APPROVED" ? (
-                  <a href="/browse?topic=stakeholder">Individuals</a>
+                  <a href="/browse?topic=stakeholder">Individual</a>
                 ) : (
                   <span
                     style={{ cursor: "pointer" }}
@@ -202,7 +202,7 @@ const Footer = ({
                         : loginWithPopup();
                     }}
                   >
-                    Individuals
+                    Individual
                   </span>
                 )}
               </li>

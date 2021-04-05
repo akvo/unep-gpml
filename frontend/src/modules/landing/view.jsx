@@ -10,13 +10,13 @@ import humps from "humps";
 import { topicNames } from "../../utils/misc";
 
 const tTypes = [
-  "actionPlan",
-  "event",
-  "financingResource",
-  "technicalResource",
-  "technology",
-  "policy",
   "project",
+  "actionPlan",
+  "policy",
+  "technicalResource",
+  "financingResource",
+  "event",
+  "technology",
   "organisation",
   "stakeholder",
 ];

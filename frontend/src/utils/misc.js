@@ -1,23 +1,23 @@
 import humps from "humps";
 
 export const topicTypes = [
-  "actionPlan",
-  "event",
-  "financingResource",
-  "technicalResource",
-  "technology",
-  "policy",
   "project",
+  "actionPlan",
+  "policy",
+  "technicalResource",
+  "financingResource",
+  "event",
+  "technology",
 ];
 
 export const topicTypesIncludingOrg = [
-  "actionPlan",
-  "event",
-  "financingResource",
-  "technicalResource",
-  "technology",
-  "policy",
   "project",
+  "actionPlan",
+  "policy",
+  "technicalResource",
+  "financingResource",
+  "event",
+  "technology",
   "organisation",
 ];
 
@@ -27,13 +27,13 @@ export const topicTypesApprovedUser = topicTypesIncludingOrg.concat([
 
 export const topicNames = (topic) => {
   const names = {
-    actionPlan: "Action Plan",
-    event: "Event",
-    financingResource: "Financing Resources",
-    technicalResource: "Technical Resources",
-    technology: "Technology",
-    policy: "Policy",
     project: "Initiative",
+    actionPlan: "Action Plan",
+    policy: "Policy",
+    technicalResource: "Technical Resources",
+    financingResource: "Financing Resources",
+    event: "Event",
+    technology: "Technology",
     organisation: "Entity",
     stakeholder: "Individual",
   };
