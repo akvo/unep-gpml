@@ -190,6 +190,7 @@ const Browse = ({
             <div className="field">
               <div className="label">Country</div>
               <Select
+                virtual={false}
                 value={
                   countries && query?.country
                     ? countries

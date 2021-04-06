@@ -76,7 +76,7 @@ const GeoCoverageInput = (props) => {
                 selectProps.mode = "multiple";
                 if (input.value === "" || input?.[0] === "") input.onChange([]);
               }
-              return <Select {...selectProps} />;
+              return <Select {...selectProps} virtual={false} />;
             }}
           />
         );

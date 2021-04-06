@@ -215,6 +215,7 @@ const Landing = ({
               }
               value={country}
               onChange={handleChangeCountry}
+              virtual={false}
             />
             <Summary
               clickEvents={handleSummaryClick}
