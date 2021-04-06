@@ -49,6 +49,12 @@
       (let [results (db.browse/filter-topic db {:search-text "seabin"})]
         (is (= 1 (count results)))
         (is (= ["AUS" "ESP"] (-> results first :json :geo_coverage_values)))))
+    (testing "Search with pagination"
+      (let [results (db.browse/filter-topic db {:search-text "" :limit 20})
+            results1 (db.browse/filter-topic db {:search-text "" :limit 20 :offset 10})]
+        (is (= 20 (count results)))
+        (is (= 20 (count results1)))
+        (is (= (nth results1 0) (nth results 10)))))
     (testing "Filtering by geo coverage"
       (is (not-empty (db.browse/filter-topic db {:geo-coverage #{"IND"}}))))
     (testing "Filtering by topic"

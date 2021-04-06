@@ -8,4 +8,5 @@ SELECT DISTINCT ON (t.topic, (t.json->>'id')::int) t.topic, t.geo_coverage_iso_c
 --~ (when (seq (:geo-coverage params)) "AND t.geo_coverage_iso_code IN (:v*:geo-coverage)")
 --~ (when (seq (:topic params)) "AND t.topic IN (:v*:topic)")
 ORDER BY t.topic, (t.json->>'id')::int, (t.json->>'created')::timestamptz
---~ (when-not (or (seq (:geo-coverage params)) (seq (:search-text params))) "LIMIT 50")
+--~ (format "LIMIT %s" (or (and (contains? params :limit) (:limit params)) 50))
+--~ (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))

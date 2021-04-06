@@ -37,11 +37,19 @@
                 :swagger {:description "Flag to return only favorited items"
                           :type "boolean"
                           :allowEmptyValue true}}
-    [:boolean]]])
+    [:boolean]]
+   [:limit {:optional true}
+    [:int {:min 0 :max 100}]]
+   [:offset {:optional true}
+    [:int {:min 0}]]])
 
 (defn get-db-filter
-  [{:keys [q country topic favorites user]}]
+  [{:keys [q country topic favorites user limit offset]}]
   (merge {}
+         (when offset
+           {:offset offset})
+         (when limit
+           {:limit limit})
          (when (and user favorites) {:user user
                                      :favorites true
                                      :resource-types resource-types})
