@@ -15,6 +15,7 @@ const SignupModal = ({ visible, onCancel }) => {
   const [step, setStep] = useState(1);
   const handleSubmitRef = useRef();
   const [consent, setConsent] = useState(false);
+
   const onSubmit = (vals) => {
     setSending(true);
     if (!vals?.publicEmail) vals = { ...vals, publicEmail: false };
@@ -46,12 +47,10 @@ const SignupModal = ({ visible, onCancel }) => {
       let modalContent = document.getElementsByClassName("ant-modal-wrap");
       modalContent &&
         modalContent[0].addEventListener("scroll", (e) => {
-          setTimeout(() => {
-            document.getElementsByClassName("ant-select-dropdown") &&
-              document
-                .getElementsByClassName("ant-select-dropdown")
-                .forEach((x) => x.classList.add("ant-select-dropdown-hidden"));
-          }, 50);
+          document.getElementsByClassName("ant-select-dropdown") &&
+            document
+              .getElementsByClassName("ant-select-dropdown")
+              .forEach((x) => x.classList.add("ant-select-dropdown-hidden"));
         });
     }
   }, [visible]);
@@ -82,6 +81,8 @@ const SignupModal = ({ visible, onCancel }) => {
             }}
             initialValues={profile}
             isModal={true}
+            dropdownOpen
+            setDropdownOpen
           />
           <Checkbox
             className="consent-check"
