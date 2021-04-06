@@ -105,6 +105,14 @@
                                                                       [:id number?]
                                                                       [:review_status [:enum "APPROVED" "REJECTED"]]]}
                                                   :handler #ig/ref :gpml.handler.profile/review}}]]]
+                                        ["/resource" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                   #ig/ref :gpml.auth/auth-required]}
+                                         [""
+                                           :post {:summary "Create new resource"
+                                                  :swagger {:tags ["resource"]
+                                                            :security [{:id_token []}]}
+                                                  :parameters {:body #ig/ref :gpml.handler.resource/post-params}
+                                                  :handler #ig/ref :gpml.handler.resource/post}]]
                                         ["/tag"
                                          [""
                                           {:get {:summary "List tags grouped by category"
@@ -167,6 +175,9 @@
   :gpml.handler.profile/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/review {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/pending {:db #ig/ref :duct.database/sql}
+
+  :gpml.handler.resource/post {:db #ig/ref :duct.database/sql}
+  :gpml.handler.resource/post-params {}
 
   :gpml.handler.tag/by-topic {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/all {:db #ig/ref :duct.database/sql}

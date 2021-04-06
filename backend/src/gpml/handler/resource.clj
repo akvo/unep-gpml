@@ -6,6 +6,7 @@
             [gpml.db.organisation :as db.organisation]
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
+            [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -28,7 +29,7 @@
     (nil? image) nil
     (re-find #"^\/image\/" image) image
     :else (str/join ["/image/resource/"
-                    (:id (db.resource/new-image conn {:image image}))])))
+                    (:id (db.resource/new-resource-image conn {:image image}))])))
 
 (defn new-organisation [conn org]
   (let [country (get-country conn (:country org))
@@ -44,8 +45,8 @@
                                     geo_coverage_type geo_coverage_value
                                     attachments country urls tags remarks]}]
   (let [organisation (if (= -1 (:id org))
-                      (new-organisation conn org)
-                      (:id org))
+                      [(new-organisation conn org)]
+                      [(:id org)])
         data {:type resource_type
               :title title
               :publish_year publish_year
@@ -62,9 +63,11 @@
               :remarks remarks}
         resource-id (->> data (db.resource/new-resource conn) :id)]
     (when (not-empty organisation)
-      (db.resource/add-resource-organisations conn {:organisation (map #(vector resource-id %) [organisation])}))
+      (db.resource/add-resource-organisations conn {:organisations
+                                                    (map #(vector resource-id %) organisation)}))
     (when (not-empty tags)
-      (db.resource/add-resource-tags conn {:tags (map #(vector resource-id %) tags)}))
+      (db.resource/add-resource-tags conn {:tags
+                                           (map #(vector resource-id %) tags)}))
     (when (not-empty urls)
       (let [lang-urls (map #(vector resource-id
                                     (->> % :lang
@@ -89,20 +92,23 @@
                    (db.country/country-by-codes conn)
                    (map #(vector resource-id nil (:id %)))))]
         (when (some? geo-data)
-          (db.resource/add-resource-geo-coverage conn {:geo geo-data}))))))
+          (db.resource/add-resource-geo conn {:geo geo-data}))))
+    resource-id))
 
 (defmethod ig/init-key :gpml.handler.resource/post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
-    (tap> jwt-claims)
     (jdbc/with-db-transaction [conn (:spec db)]
-      (create-resource conn body-params))
-    (resp/created (:referrer req) {:message "New resource created"})))
+      (tap> jwt-claims)
+      (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
+            resource-id (create-resource conn (assoc body-params :submitted_by user))]
+    (resp/created (:referrer req) {:message "New resource created" :id resource-id})))))
 
 (def post-params
   [:map
    [:resource_type
     [:enum "Financing Resource", "Technical Resource", "Action Plan"]]
    [:title string?]
+   [:country integer?]
    [:org {:optional true} map?
     [:map
      [:id {:optional true} int?]
@@ -128,7 +134,6 @@
     [:vector {:min 1 :error/message "Need at least one geo coverage value"} string?]]
    [:image {:optional true} string?]
    [:remarks {:optional true} string?]
-   [:country integer?]
    [:urls {:optional true}
     [:vector {:optional true}
      [:map

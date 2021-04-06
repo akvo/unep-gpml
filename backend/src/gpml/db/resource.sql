@@ -5,10 +5,10 @@ insert into resource(
     type,
     publish_year,
     summary,
-    image,
     valid_from,
     valid_to,
-    geo_coverage_type,
+    geo_coverage_type
+--~ (when (contains? params :country) ", country")
 --~ (when (contains? params :value) ", value")
 --~ (when (contains? params :value_currency) ", value_currency")
 --~ (when (contains? params :value_remarks) ", value_remarks")
@@ -25,7 +25,8 @@ values(
     :summary,
     :valid_from,
     :valid_to,
-    :v:geo_coverage_type::geo_coverage_type,
+    :v:geo_coverage_type::geo_coverage_type
+--~ (when (contains? params :country) ", :country")
 --~ (when (contains? params :value) ", :value")
 --~ (when (contains? params :value_currency) ", :value_currency")
 --~ (when (contains? params :value_remarks) ", :value_remarks")
@@ -48,6 +49,38 @@ insert into resource_geo_coverage(resource, country_group, country)
 values :t*:geo RETURNING id;
 
 -- :name add-resource-language-urls :<! :1
--- :doc Add language URLs to an resource
+-- :doc Add language URLs to a resource
 insert into resource_language_url(resource, language, url)
 values :t*:urls RETURNING id;
+
+-- :name add-resource-organisations :<! :1
+-- :doc Add organisation to a resource
+insert into resource_organisation(resource, organisation)
+values :t*:organisations RETURNING id;
+
+-- :name new-resource-image :<! :1
+-- :doc Insert new resource image
+insert into resource_image(image)
+values(:image) returning id;
+
+-- :name resource-by-id :? :1
+select
+    id,
+    type,
+    title,
+    summary,
+    image,
+    country,
+    geo_coverage_type,
+    geo_coverage_values,
+    publish_year,
+    valid_from,
+    valid_to,
+    value,
+    value_currency,
+    value_remarks,
+    remarks,
+    organisations as org,
+    languages as urls,
+    tags
+from v_resource_data where id = :id;
