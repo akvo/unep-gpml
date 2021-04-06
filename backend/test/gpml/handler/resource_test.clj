@@ -34,7 +34,7 @@
    :tags [4 5]})
 
 (deftest handler-post-test
-  (testing "New resource is created with available organisation"
+  (testing "New resource is created"
     (let [system (ig/init fixtures/*system* [::resource/post])
           handler (::resource/post system)
           db (-> system :duct.database.sql/hikaricp :spec)
@@ -54,27 +54,29 @@
           ;; create new user name John
           user (db.stakeholder/new-stakeholder db (profile-test/new-profile 1 1))
           _ (db.stakeholder/update-stakeholder-status db (assoc user :review_status "APPROVED"))
-          resp (handler (-> (mock/request :post "/")
-                            (assoc :jwt-claims {:email "john@org"})
-                            (assoc :body-params new-resource)))
-          _ (tap> resp)
-          resource (db.resource/resource-by-id db (:body resp))]
-      (is (= 201 (:status resp)))
-      (is (= {:id 10001
-              :type "Financing Resource"
-              :title "Financing Resource Title"
-              :summary "Financing Resource Summary"
-              :publish_year 2021
-              :image "/image/resource/1"
-              :org [{:id 1 :name "Akvo"}]
-              :country 1
-              :valid_from "2018"
-              :valid_to "Ongoing"
-              :value "2000"
-              :value_remarks "Value Remarks"
-              :value_currency "USD"
-              :geo_coverage_type "regional"
-              :geo_coverage_values ["Asia" "Europe"]
-              :remarks nil
-              :urls [{:iso_code "id" :url "https://www.test.org"}]
-              :tags ["RT 1" "RT 2"]} resource)))))
+          ;; create John create new resource with available organisation
+          resp-one (handler (-> (mock/request :post "/")
+                                (assoc :jwt-claims {:email "john@org"})
+                                (assoc :body-params new-resource)))
+          ;; create John create new resource with new organisation
+          resp-two (handler (-> (mock/request :post "/")
+                                (assoc :jwt-claims {:email "john@org"})
+                                (assoc :body-params (assoc new-resource :org
+                                                           {:id -1
+                                                            :name "New Era"
+                                                            :geo_coverage_type "regional"
+                                                            :geo_coverage_value ["Asia"]
+                                                            :country "IDN"}))))
+          resource-one (db.resource/resource-by-id db (:body resp-one))
+          resource-two (db.resource/resource-by-id db (:body resp-two))]
+      (is (= 201 (:status resp-one)))
+      (is (= (assoc new-resource
+                    :id 10001
+                    :image "/image/resource/1"
+                    :org {:id 1 :name "Akvo"}
+                    :value "2000") resource-one))
+      (is (= (assoc new-resource
+                    :id 10002
+                    :org {:id 10001 :name "New Era"}
+                    :image "/image/resource/2"
+                    :value "2000") resource-two)))))

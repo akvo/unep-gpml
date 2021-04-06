@@ -66,13 +66,13 @@ values(:image) returning id;
 -- :name resource-by-id :? :1
 select
     id,
-    type,
+    type as resource_type,
     title,
     summary,
     image,
     country,
     geo_coverage_type,
-    geo_coverage_values,
+    geo_coverage_values as geo_coverage_value,
     publish_year,
     valid_from,
     valid_to,
@@ -80,7 +80,15 @@ select
     value_currency,
     value_remarks,
     remarks,
-    organisations as org,
-    languages as urls,
-    tags
-from v_resource_data where id = :id;
+    (select json_build_object('id',o.id,'name',o.name)
+        from resource_organisation ro
+        left join organisation o on o.id = ro.organisation
+        where ro.resource = :id
+        limit 1) as org,
+    (select json_agg(json_build_object('url',rlu.url, 'lang', l.iso_code))
+        from resource_language_url rlu
+        left join language l on l.id = rlu.language
+        where rlu.resource = :id) as urls,
+    (select json_agg(tag)
+        from resource_tag where resource = :id) as tags
+from v_resource_data where id = :id
