@@ -1,6 +1,6 @@
 import { UIStore } from "../../store";
 import React, { useEffect, useState } from "react";
-import { Card, Input, Select, Checkbox, Tag } from "antd";
+import { Card, Input, Select, Checkbox, Tag, Pagination } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import {
@@ -171,6 +171,20 @@ const Browse = ({
     return { ...acc, ...data };
   }, {});
 
+  // Choose topics to count, based on whether user is approved or not,
+  // and if any topic filters are active.
+  const topicsForTotal = isApprovedUser ? topicTypesIncludingOrg : topicTypes;
+  const filteredTopics =
+    filters?.topic?.length > 0
+      ? topicsForTotal.filter(
+          (t) => filters?.topic?.indexOf(humps.decamelize(t)) > -1
+        )
+      : topicsForTotal;
+  const totalItems = filteredTopics.reduce(
+    (acc, topic) => acc + topicCounts[topic],
+    0
+  );
+
   useEffect(() => {
     updateDisclaimer("/browse");
   }, [updateDisclaimer]);
@@ -244,7 +258,14 @@ const Browse = ({
         <div className="main-content">
           {!loading && (
             <div className="page">
-              First 50 records, please filter or search with more precise terms
+              <Pagination
+                defaultCurrent={1}
+                current={(filters?.offset || 0) / 50 + 1}
+                pageSize={50}
+                total={totalItems}
+                showSizeChanger={false}
+                onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
+              />
             </div>
           )}
           {loading ? (
