@@ -55,3 +55,38 @@
            {:search-text "eco"
             :geo-coverage #{"USA"}
             :topic #{"project" "event"}}))))
+
+(deftest db-filter-based-on-approved-status
+  (testing "Modifying topics for unapproved users"
+    (is (= (browse/modify-db-filter-topics
+            {:approved false
+             :search-text "eco"
+             :geo-coverage #{"USA"}
+             :topic #{"project" "event" "stakeholder"}})
+
+           {:approved false
+            :search-text "eco"
+            :geo-coverage #{"USA"}
+            :topic #{"project" "event"}}))
+
+    (is (= (browse/modify-db-filter-topics
+            {:approved false
+             :search-text "eco"
+             :geo-coverage #{"USA"}})
+           {:approved false
+            :search-text "eco"
+            :geo-coverage #{"USA"}
+            :topic #{"project" "event" "technology" "financing_resource" "people"
+                     "technical_resource" "action_plan" "policy"}})))
+
+  (testing "Topics for approved users unchanged"
+    (is (= (browse/modify-db-filter-topics
+            {:approved true
+             :search-text "eco"
+             :geo-coverage #{"USA"}
+             :topic #{"project" "event" "stakeholder"}})
+
+           {:approved true
+            :search-text "eco"
+            :geo-coverage #{"USA"}
+            :topic #{"project" "event" "stakeholder"}}))))

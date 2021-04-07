@@ -62,13 +62,26 @@
                              (str/replace #"&" "")
                              (str/replace #" " " & "))})))
 
+(defn maybe-filter-private-topics [topics approved?]
+  (or (and approved? topics)
+      (->> topics
+           (filter #(not (contains? #{"stakeholder" "organisation"} %)))
+           vec)))
+
+(defn modify-db-filter-topics [db-filter]
+  (let [approved? (:approved db-filter)]
+    (if approved?
+      db-filter
+      (let [t (or (:topic db-filter) topics)
+            filtered-topics (set (maybe-filter-private-topics t approved?))]
+        (merge db-filter {:topic filtered-topics})))))
+
 (defn results [query db approved?]
   (let [data (->> query
                   (get-db-filter)
+                  (merge {:approved approved?})
+                  (modify-db-filter-topics)
                   (db.browse/filter-topic db)
-                  (filter (fn [{:keys [topic]}] (or approved?
-                                                    (not
-                                                      (contains? #{"stakeholder" "organisation"} topic )))))
                   (map (fn [{:keys [json geo_coverage_iso_code topic]}]
                          (merge
                           (assoc json
