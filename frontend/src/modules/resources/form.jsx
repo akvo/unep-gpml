@@ -29,7 +29,7 @@ const AddResourceForm = () => {
   const handleOnSubmit = () => {
     const data = { ...formData, resourceType: "Financing Resource" };
 
-    data.org = {id: formData.org}
+    data.org = { id: formData.org };
     if (formData.org === -1) {
       // new organisation
     }
