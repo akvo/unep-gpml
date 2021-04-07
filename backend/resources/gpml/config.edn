@@ -69,6 +69,16 @@
                                                             :security [{:id_token []}]}
                                                   :parameters {:body [:map [:id int? :review_status [:enum "APPROVED" "REJECTED"]]]}
                                                   :handler #ig/ref :gpml.handler.event/review}}]]]
+                                        ["/resource" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                   #ig/ref :gpml.auth/auth-required
+                                                                   #ig/ref :gpml.auth/approved-user
+                                                                   #ig/ref :gpml.auth/admin-required-middleware]}
+                                         [""
+                                           {:post {:summary "Create new resource"
+                                                  :swagger {:tags ["resource"]
+                                                            :security [{:id_token []}]}
+                                                  :parameters {:body #ig/ref :gpml.handler.resource/post-params}
+                                                  :handler #ig/ref :gpml.handler.resource/post}}]]
                                         ["/landing"
                                          [""
                                           {:get {:summary "End-point for the landing page"
@@ -105,14 +115,10 @@
                                                                       [:id number?]
                                                                       [:review_status [:enum "APPROVED" "REJECTED"]]]}
                                                   :handler #ig/ref :gpml.handler.profile/review}}]]]
-                                        ["/resource" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                   #ig/ref :gpml.auth/auth-required]}
-                                         [""
-                                           :post {:summary "Create new resource"
-                                                  :swagger {:tags ["resource"]
-                                                            :security [{:id_token []}]}
-                                                  :parameters {:body #ig/ref :gpml.handler.resource/post-params}
-                                                  :handler #ig/ref :gpml.handler.resource/post}]]
+                                        ["/currency"
+                                         {:get {:summary "List of currency"
+                                                :swagger {:tags ["currency"]}
+                                                :handler #ig/ref :gpml.handler.currency/all}}]
                                         ["/tag"
                                          [""
                                           {:get {:summary "List tags grouped by category"
@@ -169,6 +175,9 @@
   :gpml.handler.event/pending {:db #ig/ref :duct.database/sql}
   :gpml.handler.event/review {:db #ig/ref :duct.database/sql}
 
+  :gpml.handler.resource/post {:db #ig/ref :duct.database/sql}
+  :gpml.handler.resource/post-params {}
+
   :gpml.handler.profile/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/post {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/post-params {}
@@ -176,8 +185,7 @@
   :gpml.handler.profile/review {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/pending {:db #ig/ref :duct.database/sql}
 
-  :gpml.handler.resource/post {:db #ig/ref :duct.database/sql}
-  :gpml.handler.resource/post-params {}
+  :gpml.handler.currency/all {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.tag/by-topic {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/all {:db #ig/ref :duct.database/sql}
