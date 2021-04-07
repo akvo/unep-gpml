@@ -43,7 +43,8 @@
                                     summary value value_currency
                                     value_remarks valid_from valid_to image
                                     geo_coverage_type geo_coverage_value
-                                    attachments country urls tags remarks]}]
+                                    attachments country urls tags remarks
+                                    created_by]}]
   (let [organisation (if (= -1 (:id org))
                       [(new-organisation conn org)]
                       [(:id org)])
@@ -60,7 +61,8 @@
               :geo_coverage_type geo_coverage_type
               :country country
               :attachments attachments
-              :remarks remarks}
+              :remarks remarks
+              :created_by created_by}
         resource-id (->> data (db.resource/new-resource conn) :id)]
     (when (not-empty organisation)
       (db.resource/add-resource-organisations conn {:organisations
@@ -98,9 +100,8 @@
 (defmethod ig/init-key :gpml.handler.resource/post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
     (jdbc/with-db-transaction [conn (:spec db)]
-      (tap> jwt-claims)
       (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-            resource-id (create-resource conn (assoc body-params :submitted_by user))]
+            resource-id (create-resource conn (assoc body-params :created_by (:id user)))]
     (resp/created (:referrer req) {:message "New resource created" :id resource-id})))))
 
 (def post-params

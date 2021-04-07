@@ -74,9 +74,11 @@
                     :id 10001
                     :image "/image/resource/1"
                     :org {:id 1 :name "Akvo"}
-                    :value "2000") resource-one))
+                    :value "2000"
+                    :created_by 10001) resource-one))
       (is (= (assoc new-resource
                     :id 10002
                     :org {:id 10001 :name "New Era"}
                     :image "/image/resource/2"
-                    :value "2000") resource-two)))))
+                    :value "2000"
+                    :created_by 10001) resource-two)))))

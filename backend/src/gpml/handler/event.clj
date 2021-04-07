@@ -6,6 +6,7 @@
             [gpml.db.event :as db.event]
             [gpml.db.event-image :as db.event-image]
             [gpml.db.language :as db.language]
+            [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -18,7 +19,8 @@
 
 (defn create-event [conn {:keys [tags urls title start_date end_date
                                  description remarks geo_coverage_type
-                                 country city geo_coverage_value photo]}]
+                                 country city geo_coverage_value photo
+                                 created_by]}]
   (let [data {:title title
               :start_date start_date
               :end_date end_date
@@ -27,7 +29,8 @@
               :image (assoc-image conn photo)
               :geo_coverage_type geo_coverage_type
               :city city
-              :country (->> {:name country} (db.country/country-by-code conn) :id)}
+              :country (->> {:name country} (db.country/country-by-code conn) :id)
+              :created_by created_by}
         event-id (->> data (db.event/new-event conn) :id)]
     (when (not-empty tags)
       (db.event/add-event-tags conn {:tags (map #(vector event-id %) tags)}))
@@ -82,9 +85,10 @@
 
 (defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
-    (tap> jwt-claims)
     (jdbc/with-db-transaction [conn (:spec db)]
-      (create-event conn body-params))
+      (create-event conn (assoc body-params
+                                :created_by
+                                (-> (db.stakeholder/stakeholder-by-email conn jwt-claims) :id))))
     (resp/created (:referrer req) {:message "New event created"})))
 
 (defmethod ig/init-key :gpml.handler.event/post-params [_ _]

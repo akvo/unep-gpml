@@ -57,6 +57,7 @@ const AdminSection = ({
           ...item,
           title: title,
           type: item.type,
+          createdBy: item.submitter ? item.submitter : null,
           reviewStatus: review_status,
           reviewedBy: profile.firstName + " " + profile.lastName,
           reviewedAt: moment().format("L LT"),
@@ -308,6 +309,12 @@ const AdminSection = ({
                         </div>
                       </li>
                       <li>
+                        <div className="detail-title">Submitted By</div>:
+                        <div className="detail-content">
+                          <b>{item?.submitter && item.submitter}</b>
+                        </div>
+                      </li>
+                      <li>
                         <div className="detail-title">Event Date</div>:
                         <div className="detail-content">
                           {moment(item.startDate).format("DD MMM YYYY")} to{" "}
@@ -408,11 +415,19 @@ const AdminSection = ({
                 <div className="event-info">
                   <ul>
                     <li>
+                      <div className="detail-title">Submitted by</div>:
+                      {item.createdBy ? (
+                        <div className="detail-content">{item.createdBy}</div>
+                      ) : (
+                        <div className="detail-content">Imported</div>
+                      )}
+                    </li>
+                    <li>
                       <div className="detail-title">Reviewed by</div>:
                       {item.reviewedBy.trim() !== "" ? (
                         <div className="detail-content">{item.reviewedBy}</div>
                       ) : (
-                        <div className="detail-content">Imported</div>
+                        <div className="detail-content">Auto Approved</div>
                       )}
                     </li>
                     <li>

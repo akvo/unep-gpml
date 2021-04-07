@@ -12,6 +12,7 @@ insert into event(
     image
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :review_status) ", review_status")
+--~ (when (contains? params :created_by) ", created_by")
 )
 values(
     :title,
@@ -25,6 +26,7 @@ values(
     :image
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
+--~ (when (contains? params :created_by) ", :created_by")
 ) RETURNING id;
 
 -- :name add-event-tags :<! :1
@@ -47,9 +49,13 @@ values :t*:geo RETURNING id;
 -- :doc Returns the list of pending events
 select e.*
   from ( select e.id, e.title, e.start_date, e.end_date, e.description, e.image, e.geo_coverage_type,
-                e.remarks, e.created, e.modified, e.city, c.iso_code as country, e.languages as urls, e.tags, e.geo_coverage_values, e.review_status
-           from v_event_data e
-           left join country c on e.country = c.id) e, event pending
+                e.remarks, e.created, e.modified, e.city, c.iso_code as country,
+                e.languages as urls, e.tags, e.geo_coverage_values, e.review_status, s.email as submitter
+                from v_event_data e
+                left join country c on e.country = c.id
+                left join event ev on ev.id = e.id
+                left join stakeholder s on ev.created_by = s.id
+    ) e, event pending
 
 where pending.review_status = 'SUBMITTED'
   and e.id = pending.id

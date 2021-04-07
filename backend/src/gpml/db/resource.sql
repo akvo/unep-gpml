@@ -17,6 +17,7 @@ insert into resource(
 --~ (when (contains? params :remarks) ", remarks")
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :review_status) ", review_status")
+--~ (when (contains? params :created_by) ", created_by")
 )
 values(
     :title,
@@ -35,6 +36,7 @@ values(
 --~ (when (contains? params :remarks) ", :remarks")
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
+--~ (when (contains? params :created_by) ", :created_by")
 )
 returning id;
 
@@ -90,5 +92,8 @@ select
         left join language l on l.id = rlu.language
         where rlu.resource = :id) as urls,
     (select json_agg(tag)
-        from resource_tag where resource = :id) as tags
-from v_resource_data where id = :id
+        from resource_tag where resource = :id) as tags,
+    (select created_by
+        from resource where id = :id) as created_by
+from v_resource_data
+where id = :id
