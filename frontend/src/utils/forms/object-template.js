@@ -94,7 +94,7 @@ const ObjectFieldTemplate = ({
       answer = typeof answer === "string" ? answer.toLowerCase() : answer;
       let dependValue = deppend.value;
       dependValue = Array.isArray(dependValue)
-        ? dependValue.includes(answer)
+        ? dependValue.includes(answer) // use intersect lodash
         : dependValue === answer;
       if (dependValue) {
         return { display: "block" };

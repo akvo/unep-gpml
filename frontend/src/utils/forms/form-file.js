@@ -113,7 +113,7 @@ const FileWidget = (props) => {
             handleFileChange(e, props, setFile, setOutput, setError)
           }
           ref={inputFile}
-          accept={props?.accept}
+          accept={props?.accept || props?.uiSchema?.["ui:options"]?.accept}
           style={{
             display: "block",
             width: "100%",

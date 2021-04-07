@@ -50,7 +50,7 @@ const NormalArrayFieldTemplate = ({
   }, []);
 
   const group = uiSchema["ui:group"];
-  const formGroup = group && `group-${group}`;
+  const formGroup = group && items.length !== 0 && `group-${group}`;
 
   return (
     <>
@@ -126,7 +126,7 @@ const NormalArrayFieldTemplate = ({
               danger
               disabled={disabled || readonly || items.length <= 1}
               onClick={
-                items.length > 0 &&
+                items.length !== 0 &&
                 items[items.length - 1].onDropIndexClick(items.length - 1)
               }
               type="link"

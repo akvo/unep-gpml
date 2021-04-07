@@ -1,14 +1,23 @@
+import { UIStore } from "../../store";
+import specificAreasOptions from "./specific-areas.json";
+
+const {
+  languages,
+  geoCoverageTypeOptions,
+  regionOptions,
+} = UIStore.currentState;
+
 export const schema = {
   type: "object",
   required: [
     "title",
-    "organisation",
-    // "valueAmount",
-    // "valueCurrency",
-    // "validFrom",
-    // "languages",
+    "org",
     "country",
     "geoCoverageType",
+    // "geoCoverageValueNational",
+    // "geoCoverageValueRegional",
+    // "geoCoverageValueGlobalSpesific",
+    // "geoCoverageValueSubNational",
     "tags",
   ],
   properties: {
@@ -16,18 +25,70 @@ export const schema = {
       title: "TITLE",
       type: "string",
     },
-    organisation: {
-      title: "ORGANISATION",
-      type: "string",
+    org: {
+      title: "ENTITY",
       enum: [],
     },
+    // newOrg: {
+    //   title: "ENTITY DETAILS",
+    //   type: "object",
+    //   required: [],
+    //   properties: {
+    //     name: {
+    //       title: "NAME",
+    //       type: "string",
+    //     },
+    //     type: {
+    //       title: "TYPE OF THE ENTITY",
+    //       enum: [],
+    //     },
+    //     country: {
+    //       $ref: "#/properties/country",
+    //     },
+    //     url: {
+    //       title: "ENTITY URL",
+    //       type: "string",
+    //     },
+    //     geoCoverageType: {
+    //       $ref: "#/properties/geoCoverageType",
+    //     },
+    //     geoCoverageValueRegional: {
+    //       $ref: "#/properties/geoCoverageValueRegional",
+    //       depend: {
+    //         id: "geoCoverageType",
+    //         value: ["regional"],
+    //       },
+    //     },
+    //     geoCoverageValueNational: {
+    //       $ref: "#/properties/geoCoverageValueNational",
+    //       depend: {
+    //         id: "geoCoverageType",
+    //         value: ["national", "transnational"],
+    //       },
+    //     },
+    //     geoCoverageValueSubNational: {
+    //       $ref: "#/properties/geoCoverageValueSubNational",
+    //       depend: {
+    //         id: "geoCoverageType",
+    //         value: ["sub-national"],
+    //       },
+    //     },
+    //     geoCoverageValueGlobalSpesific: {
+    //       $ref: "#/properties/geoCoverageValueGlobalSpesific",
+    //       depend: {
+    //         id: "geoCoverageType",
+    //         value: ["global with elements in specific areas"],
+    //       },
+    //     },
+    //   },
+    // },
     publicationYear: {
       title: "PUBLICATION YEAR",
       type: "number",
     },
     value: {
       type: "object",
-      title: null,
+      title: "",
       required: ["valueAmount", "valueCurrency"],
       properties: {
         valueAmount: {
@@ -36,9 +97,9 @@ export const schema = {
         },
         valueCurrency: {
           title: "VALUE CURRENCY",
-          enum: [1, 2],
+          enum: ["USD", "Rp"],
           enumNames: ["$ US dollars", "Rp Rupiah"],
-          default: 1,
+          default: "USD",
         },
         valueRemark: {
           title: "VALUE REMARK",
@@ -48,9 +109,9 @@ export const schema = {
     },
     date: {
       type: "object",
-      title: null,
+      title: "",
+      required: ["validFrom"],
       properties: {
-        required: ["validFrom"],
         validFrom: {
           title: "VALID FROM",
           type: "string",
@@ -63,29 +124,47 @@ export const schema = {
     },
     country: {
       title: "COUNTRY",
-      type: "string",
       enum: [],
     },
     geoCoverageType: {
       title: "RESOURCE GEO_COVERAGE TYPE",
-      enum: [],
+      enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
+      enumNames: geoCoverageTypeOptions,
     },
-    geoCoverageValue: {
+    // create separate geocoverage value foreach geocoveragetype and used the depend option
+    geoCoverageValueRegional: {
       title: "RESOURCE GEO_COVERAGE",
-      type: "string",
+      enum: regionOptions,
+      depend: {
+        id: "geoCoverageType",
+        value: ["regional"],
+      },
+    },
+    geoCoverageValueNational: {
+      title: "RESOURCE GEO_COVERAGE",
       enum: [],
       depend: {
         id: "geoCoverageType",
-        value: [
-          "regional",
-          "national",
-          "sub-national",
-          "transnational",
-          "global with elements in specific areas",
-        ],
+        value: ["national", "transnational"],
       },
     },
-    description: {
+    geoCoverageValueSubNational: {
+      title: "RESOURCE GEO_COVERAGE",
+      type: "string",
+      depend: {
+        id: "geoCoverageType",
+        value: ["sub-national"],
+      },
+    },
+    geoCoverageValueGlobalSpesific: {
+      title: "RESOURCE GEO_COVERAGE",
+      enum: specificAreasOptions,
+      depend: {
+        id: "geoCoverageType",
+        value: ["global with elements in specific areas"],
+      },
+    },
+    summary: {
       title: "DESCRIPTION",
       type: "string",
     },
@@ -96,23 +175,25 @@ export const schema = {
     },
     tags: {
       title: "TAGS",
-      type: "string",
       enum: [],
     },
     urls: {
-      title: null,
+      title: "",
       type: "array",
       items: {
         type: "object",
         properties: {
-          link: {
+          url: {
             title: "RESOURCE EXTERNAL LINKS",
             type: "string",
           },
-          languages: {
+          lang: {
             title: "LANGUAGES",
             type: "string",
-            enum: [],
+            enum: Object.keys(languages).map((langCode) => langCode),
+            enumNames: Object.keys(languages).map(
+              (langCode) => languages[langCode].name
+            ),
           },
         },
       },
@@ -124,7 +205,7 @@ export const uiSchema = {
   title: {
     "ui:placeholder": "Type in resource title",
   },
-  organisation: {
+  org: {
     "ui:showSearch": true,
     "ui:placeholder": "Chose organisation",
   },
@@ -158,15 +239,30 @@ export const uiSchema = {
   },
   country: {
     "ui:showSearch": true,
+    "ui:widget": "select",
     "ui:placeholder": "Choose the resource country",
   },
   geoCoverageType: {
     "ui:placeholder": "Choose the resource coverage type",
   },
-  geoCoverageValue: {
+  geoCoverageValueRegional: {
     "ui:placeholder": "Choose the resource coverage",
+    "ui:showSearch": true,
+    "ui:mode": "multiple",
   },
-  description: {
+  geoCoverageValueNational: {
+    "ui:placeholder": "Choose the resource coverage",
+    "ui:showSearch": true,
+  },
+  geoCoverageValueSubNational: {
+    "ui:placeholder": "Type regions here...",
+  },
+  geoCoverageValueGlobalSpesific: {
+    "ui:placeholder": "Choose the resource coverage",
+    "ui:showSearch": true,
+    "ui:mode": "multiple",
+  },
+  summary: {
     "ui:placeholder": "Max 9999 characters",
     "ui:widget": "textarea",
   },
@@ -176,6 +272,7 @@ export const uiSchema = {
   },
   tags: {
     "ui:placeholder": "Pick at least one tag",
+    "ui:widget": "select",
     "ui:showSearch": true,
     "ui:mode": "multiple",
   },
@@ -185,11 +282,11 @@ export const uiSchema = {
     },
     "ui:group": "border",
     items: {
-      link: {
+      url: {
         "ui:placeholder": "URL Address",
         "ui:span": 16,
       },
-      languages: {
+      lang: {
         "ui:showSearch": true,
         "ui:placeholder": "Choose the language",
         "ui:span": 8,

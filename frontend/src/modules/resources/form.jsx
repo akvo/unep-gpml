@@ -1,5 +1,6 @@
 import { UIStore } from "../../store";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { Button } from "antd";
 import specificAreasOptions from "./specific-areas.json";
 import api from "../../utils/api";
 import { withTheme } from "@rjsf/core";
@@ -7,37 +8,15 @@ import { Theme as AntDTheme } from "@rjsf/antd";
 import { schema, uiSchema } from "./form-schema";
 import ObjectFieldTemplate from "../../utils/forms/object-template";
 import ArrayFieldTemplate from "../../utils/forms/array-template";
-import widgets, { CustomFieldTemplate } from "../../utils/forms";
+import FieldTemplate from "../../utils/forms/field-template";
+import widgets from "../../utils/forms";
 import cloneDeep from "lodash/cloneDeep";
+import { over } from "lodash";
 
 const Form = withTheme(AntDTheme);
 
-const geoCoverageTypeOptions = [
-  "Global",
-  "Regional",
-  "National",
-  "Sub-national",
-  "Transnational",
-  "Global with elements in specific areas",
-];
-
-const regionOptions = [
-  "Africa",
-  "Asia and the Pacific",
-  "East Asia",
-  "Europe",
-  "Latin America and Carribean",
-  "North America",
-  "West Asia",
-];
-
 const AddResourceForm = () => {
-  const {
-    formData,
-    languages,
-    countries,
-    organisations,
-  } = UIStore.currentState;
+  const { formData, countries, organisations, tags } = UIStore.currentState;
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -45,68 +24,90 @@ const AddResourceForm = () => {
   const [formUiSchema, setFormUiSchema] = useState(uiSchema);
   const [sending, setSending] = useState(false);
   const [step, setStep] = useState(1);
+  const btnSubmit = useRef();
 
-  const onSubmit = (vals) => {
-    const data = { ...vals };
-    delete data.date;
-    data.urls = vals.urls.filter((it) => it.url.length > 0);
-    data.startDate = vals.date[0].toISOString();
-    data.endDate = vals.date[1].toISOString();
-    if (data.geoCoverageType === "national") {
-      data.geoCoverageValue = [data.geoCoverageValue];
+  const handleOnSubmit = () => {
+    const data = { ...formData, resourceType: "Financing Resource" };
+
+    data.org = {id: formData.org}
+    if (formData.org === -1) {
+      // new organisation
     }
-    setSending(true);
-    api.post("/resource", data).then(() => {
-      setSending(false);
-      setStep(2);
-    });
+
+    delete data.value;
+    data.value = formData.value.valueAmount;
+    data.valueCurrency = formData.value.valueCurrency;
+    if (formData?.value?.valueRemark)
+      data.valueRemarks = formData.value.valueRemark;
+
+    delete data.date;
+    data.validFrom = formData.date.validFrom;
+    data.validTo = formData?.date?.validTo ? formData.date.validTo : "Ongoing";
+
+    if (data?.urls[0]?.url)
+      data.urls = formData.urls.filter((it) => it.url.length > 0);
+    if (!data?.urls[0]?.url) delete data.urls;
+
+    delete data.geoCoverageValueNational;
+    delete data.geoCoverageValueRegional;
+    delete data.geoCoverageValueGlobalSpesific;
+    delete data.geoCoverageValueSubNational;
+    if (
+      data.geoCoverageType === "national" ||
+      data.geoCoverageType === "transnational"
+    )
+      data.geoCoverageValue = [formData.geoCoverageValueNational];
+    if (data.geoCoverageType === "regional")
+      data.geoCoverageValue = formData.geoCoverageValueRegional;
+    if (data.geoCoverageType === "global with elements in specific areas")
+      data.geoCoverageValue = formData.geoCoverageValueGlobalSpesific;
+    if (data.geoCoverageType === "sub-national")
+      data.geoCoverageValue = formData.geoCoverageValueSubNational;
+
+    data?.image === "" && delete data.image;
+
+    // setSending(true);
+    // api.post("/resource", data).then(() => {
+    //   setSending(false);
+    //   setStep(2);
+    // });
+    console.log(data);
   };
 
   useEffect(() => {
-    if (formSchema.loading && countries.length > 0) {
+    if (
+      formSchema.loading &&
+      countries.length > 0 &&
+      tags?.financingMechanism
+    ) {
       const newSchema = cloneDeep(formSchema);
-      api
-        .get("/tag/financing mechanism")
-        .then((res) => {
-          newSchema.schema.properties.tags.enum = res.data.map((x) => x.id);
-          newSchema.schema.properties.tags.enumNames = res.data.map(
-            (x) => x.tag
-          );
-          return true;
-        })
-        .then((res) => {
-          newSchema.schema.properties.organisation.enum = organisations.map(
-            (it) => it.id
-          );
-          newSchema.schema.properties.organisation.enumNames = organisations.map(
-            (it) => it.name
-          );
-          newSchema.schema.properties.country.enum = sortedCountries(
-            countries
-          ).map((x) => x.value);
-          newSchema.schema.properties.country.enumNames = sortedCountries(
-            countries
-          ).map((x) => x.label);
-          newSchema.schema.properties.geoCoverageType.enum = geoCoverageTypeOptions;
-          newSchema.schema.properties.urls.items.properties.languages.enum = Object.keys(
-            languages
-          ).map((langCode) => langCode);
-          newSchema.schema.properties.urls.items.properties.languages.enumNames = Object.keys(
-            languages
-          ).map((langCode) => languages[langCode].name);
-          newSchema.loading = false;
-          setFormSchema(newSchema);
-        });
+      newSchema.schema.properties.org = {
+        ...newSchema.schema.properties.org,
+        enum: organisations.map((it) => it.id),
+        enumNames: organisations.map((it) => it.name),
+      };
+      newSchema.schema.properties.country = {
+        ...newSchema.schema.properties.country,
+        enum: sortedCountries(countries).map((x, i) => x.id),
+        enumNames: sortedCountries(countries).map((x) => x.name),
+      };
+      newSchema.schema.properties.tags = {
+        ...newSchema.schema.properties.tags,
+        enum: tags.financingMechanism.map((x) => String(x.id)),
+        enumNames: tags.financingMechanism.map((x) => x.tag),
+      };
+      newSchema.schema.properties.geoCoverageValueNational = {
+        ...newSchema.schema.properties.geoCoverageValueNational,
+        enum: sortedCountries(countries).map((x, i) => x.isoCode),
+        enumNames: sortedCountries(countries).map((x) => x.name),
+      };
+      newSchema.loading = false;
+      setFormSchema(newSchema);
     }
-  }, [countries, formSchema]);
+  }, [tags, organisations, countries]);
 
   const sortedCountries = (countries) => {
-    return countries
-      .map((x) => ({
-        value: x.isoCode,
-        label: x.name,
-      }))
-      .sort((a, b) => a.label.localeCompare(b.label));
+    return countries.map((x) => x).sort((a, b) => a.name.localeCompare(b.name));
   };
 
   const handleFormOnChange = ({ formData }) => {
@@ -115,89 +116,68 @@ const AddResourceForm = () => {
     });
     const type =
       formData?.geoCoverageType && formData?.geoCoverageType.toLowerCase();
-    const newUiSchema = cloneDeep(formUiSchema);
     const newSchema = cloneDeep(formSchema);
-
-    if (type === "global") {
-      // revert to default value
-      newSchema.schema.required = schema.required;
-      newSchema.schema.properties.geoCoverageValue =
-        schema.properties.geoCoverageValue;
-      newUiSchema.geoCoverageValue = uiSchema.geoCoverageValue;
-      newUiSchema.geoCoverageValue = { "ui:disabled": true };
-    } else if (type === "sub-national") {
-      newSchema.schema.required = [
-        ...newSchema.schema.required,
-        "geoCoverageValue",
-      ];
-      newSchema.schema.properties.geoCoverageValue = {
-        title: "RESOURCE GEO_COVERAGE",
-        type: "string",
-      };
-      newUiSchema.geoCoverageValue = uiSchema.geoCoverageValue;
-      newUiSchema.geoCoverageValue = {
-        "ui:placeholder": "Type regions here...",
-      };
-    } else if (type === "national" || type === "transnational") {
-      newSchema.schema.required = [
-        ...newSchema.schema.required,
-        "geoCoverageValue",
-      ];
-      newSchema.schema.properties.geoCoverageValue.enum = sortedCountries(
-        countries
-      ).map((x) => x.value);
-      newSchema.schema.properties.geoCoverageValue.enumNames = sortedCountries(
-        countries
-      ).map((x) => x.label);
-      newUiSchema.geoCoverageValue = {
-        "ui:showSearch": true,
-        "ui:mode": "multiple",
-      };
-    } else if (type === "regional") {
-      newSchema.schema.required = [
-        ...newSchema.schema.required,
-        "geoCoverageValue",
-      ];
-      newSchema.schema.properties.geoCoverageValue.enum = regionOptions;
-      newUiSchema.geoCoverageValue = {
-        "ui:showSearch": true,
-        "ui:mode": "multiple",
-      };
-    } else if (type === "global with elements in specific areas") {
-      newSchema.schema.required = [
-        ...newSchema.schema.required,
-        "geoCoverageValue",
-      ];
-      newSchema.schema.properties.geoCoverageValue.enum = specificAreasOptions;
-      newUiSchema.geoCoverageValue = {
-        "ui:showSearch": true,
-        "ui:mode": "multiple",
-      };
-    }
-    setFormUiSchema(newUiSchema);
+    const { required } = schema;
+    let newRequired = [...required];
+    if (type === "national" || type === "transnational")
+      newRequired = [...required, "geoCoverageValueNational"];
+    if (type === "regional")
+      newRequired = [...required, "geoCoverageValueRegional"];
+    if (type === "global with elements in specific areas")
+      newRequired = [...required, "geoCoverageValueGlobalSpesific"];
+    if (type === "sub-national")
+      newRequired = [...required, "geoCoverageValueSubNational"];
+    newSchema.schema.required = newRequired;
+    console.log(required);
     setFormSchema(newSchema);
   };
 
-  useEffect(() => {
-    // console.log(formData);
-  }, [formData]);
+  const handleValidation = (errors) => {
+    // override "is a required property" message
+    errors = errors.map((x) => {
+      if (x.name === "required") x.message = "Required";
+      return x;
+    });
+    // override enum "should be equal to one of the allowed values" validation
+    // override enum "uniqueItems" - "should NOT have duplicate items" validation
+    let override = errors.filter(
+      (x) => x.name !== "enum" && x.name !== "uniqueItems"
+    );
+    return override;
+  };
 
   return (
     <div className="add-resource-form">
       {step === 1 && (
-        <Form
-          idPrefix="resource_"
-          schema={formSchema.schema}
-          uiSchema={formUiSchema}
-          formData={formData}
-          onChange={(e) => handleFormOnChange(e)}
-          onSubmit={(e) => console.log(e)}
-          // onError={(error) => console.log(error)}
-          ArrayFieldTemplate={ArrayFieldTemplate}
-          ObjectFieldTemplate={ObjectFieldTemplate}
-          FieldTemplate={CustomFieldTemplate}
-          widgets={widgets}
-        />
+        <>
+          <Form
+            idPrefix="resource_"
+            schema={formSchema.schema}
+            uiSchema={formUiSchema}
+            formData={formData}
+            onChange={(e) => handleFormOnChange(e)}
+            onSubmit={() => handleOnSubmit()}
+            ArrayFieldTemplate={ArrayFieldTemplate}
+            ObjectFieldTemplate={ObjectFieldTemplate}
+            FieldTemplate={FieldTemplate}
+            widgets={widgets}
+            transformErrors={(errors) => handleValidation(errors)}
+            showErrorList={false}
+          >
+            <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
+              Fire
+            </button>
+          </Form>
+          <hr />
+          <Button
+            // loading={sending}
+            type="primary"
+            size="large"
+            onClick={(e) => btnSubmit.current.click()}
+          >
+            Submit
+          </Button>
+        </>
       )}
       {step === 2 && (
         <div>

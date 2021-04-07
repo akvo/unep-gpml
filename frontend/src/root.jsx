@@ -338,9 +338,9 @@ const AddButton = withRouter(
                 <Menu.Item onClick={() => history.push("/add-event")}>
                   Event
                 </Menu.Item>
-                {/* <Menu.Item onClick={() => history.push("/add-resource")}>
+                <Menu.Item onClick={() => history.push("/add-resource")}>
                   Resource
-                </Menu.Item> */}
+                </Menu.Item>
               </Menu>
             }
             trigger={["click"]}
