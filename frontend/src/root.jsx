@@ -30,6 +30,11 @@ api.get("/tag").then((resp) => {
     e.tags = resp.data;
   });
 });
+api.get("/currency").then((resp) => {
+  UIStore.update((e) => {
+    e.currencies = resp.data;
+  });
+});
 api.get("/country").then((resp) => {
   UIStore.update((e) => {
     e.countries = uniqBy(resp.data);
