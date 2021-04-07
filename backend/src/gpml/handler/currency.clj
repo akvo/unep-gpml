@@ -5,4 +5,4 @@
 
 (defmethod ig/init-key :gpml.handler.currency/all [_ {:keys [db]}]
   (fn [_]
-    (resp/response (-> (db.currency/all-currencies (:spec db)) :array_agg))))
+    (resp/response (db.currency/all-currencies (:spec db)))))
