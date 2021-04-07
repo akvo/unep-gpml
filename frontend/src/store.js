@@ -20,6 +20,15 @@ const regionOptions = [
   "West Asia",
 ];
 
+const organisationType = [
+  "Government",
+  "Private Sector",
+  "Academia and Scientific Community",
+  "NGO and Major Groups and Stakeholders",
+  "IGO and Multilateral Process Actor",
+  "Other",
+];
+
 const UIStore = new Store({
   tags: {},
   countries: [],
@@ -29,6 +38,7 @@ const UIStore = new Store({
   languages: languages,
   geoCoverageTypeOptions: geoCoverageTypeOptions,
   regionOptions: regionOptions,
+  organisationType: organisationType,
   formData: {},
 });
 

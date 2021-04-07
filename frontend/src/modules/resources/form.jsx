@@ -16,7 +16,13 @@ import { over } from "lodash";
 const Form = withTheme(AntDTheme);
 
 const AddResourceForm = () => {
-  const { formData, countries, organisations, tags } = UIStore.currentState;
+  const {
+    formData,
+    countries,
+    organisations,
+    tags,
+    currencies,
+  } = UIStore.currentState;
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -26,12 +32,39 @@ const AddResourceForm = () => {
   const [step, setStep] = useState(1);
   const btnSubmit = useRef();
 
-  const handleOnSubmit = () => {
-    const data = { ...formData, resourceType: "Financing Resource" };
+  const handleGeoCoverageValue = (data, currentValue) => {
+    delete data.geoCoverageValueNational;
+    delete data.geoCoverageValueRegional;
+    delete data.geoCoverageValueGlobalSpesific;
+    delete data.geoCoverageValueSubNational;
+    if (
+      data.geoCoverageType === "national" ||
+      data.geoCoverageType === "transnational"
+    )
+      data.geoCoverageValue = [currentValue.geoCoverageValueNational];
+    if (data.geoCoverageType === "regional")
+      data.geoCoverageValue = currentValue.geoCoverageValueRegional;
+    if (data.geoCoverageType === "global with elements in specific areas")
+      data.geoCoverageValue = currentValue.geoCoverageValueGlobalSpesific;
+    if (data.geoCoverageType === "sub-national")
+      data.geoCoverageValue = currentValue.geoCoverageValueSubNational;
 
+    return data;
+  };
+
+  const handleOnSubmit = () => {
+    let data = { ...formData, resourceType: "Financing Resource" };
+
+    data?.newOrg && delete data.newOrg;
     data.org = { id: formData.org };
     if (formData.org === -1) {
-      // new organisation
+      data.org = {
+        ...formData.newOrg,
+        id: formData.org,
+      };
+      const country = countries.find((x) => x.id === formData.newOrg.country);
+      data.org.country = country.isoCode;
+      data.org = handleGeoCoverageValue(data.org, formData.newOrg);
     }
 
     delete data.value;
@@ -48,30 +81,15 @@ const AddResourceForm = () => {
       data.urls = formData.urls.filter((it) => it.url.length > 0);
     if (!data?.urls[0]?.url) delete data.urls;
 
-    delete data.geoCoverageValueNational;
-    delete data.geoCoverageValueRegional;
-    delete data.geoCoverageValueGlobalSpesific;
-    delete data.geoCoverageValueSubNational;
-    if (
-      data.geoCoverageType === "national" ||
-      data.geoCoverageType === "transnational"
-    )
-      data.geoCoverageValue = [formData.geoCoverageValueNational];
-    if (data.geoCoverageType === "regional")
-      data.geoCoverageValue = formData.geoCoverageValueRegional;
-    if (data.geoCoverageType === "global with elements in specific areas")
-      data.geoCoverageValue = formData.geoCoverageValueGlobalSpesific;
-    if (data.geoCoverageType === "sub-national")
-      data.geoCoverageValue = formData.geoCoverageValueSubNational;
-
+    data = handleGeoCoverageValue(data, formData);
     data?.image === "" && delete data.image;
+    data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
-    // setSending(true);
-    // api.post("/resource", data).then(() => {
-    //   setSending(false);
-    //   setStep(2);
-    // });
-    console.log(data);
+    setSending(true);
+    api.post("/resource", data).then(() => {
+      setSending(false);
+      setStep(2);
+    });
   };
 
   useEffect(() => {
@@ -81,10 +99,13 @@ const AddResourceForm = () => {
       tags?.financingMechanism
     ) {
       const newSchema = cloneDeep(formSchema);
+      const newOrganisations = [...organisations, { id: -1, name: "Other" }]
+        .map((x) => x)
+        .sort((a, b) => a.name.localeCompare(b.name));
       newSchema.schema.properties.org = {
         ...newSchema.schema.properties.org,
-        enum: organisations.map((it) => it.id),
-        enumNames: organisations.map((it) => it.name),
+        enum: newOrganisations.map((it) => it.id),
+        enumNames: newOrganisations.map((it) => it.name),
       };
       newSchema.schema.properties.country = {
         ...newSchema.schema.properties.country,
@@ -101,6 +122,11 @@ const AddResourceForm = () => {
         enum: sortedCountries(countries).map((x, i) => x.isoCode),
         enumNames: sortedCountries(countries).map((x) => x.name),
       };
+      newSchema.schema.properties.value.properties.valueCurrency = {
+        ...newSchema.schema.properties.value.properties.valueCurrency,
+        enum: currencies.map((x, i) => x.value),
+        enumNames: currencies.map((x) => x.label),
+      };
       newSchema.loading = false;
       setFormSchema(newSchema);
     }
@@ -114,6 +140,7 @@ const AddResourceForm = () => {
     UIStore.update((e) => {
       e.formData = formData;
     });
+    /*
     const type =
       formData?.geoCoverageType && formData?.geoCoverageType.toLowerCase();
     const newSchema = cloneDeep(formSchema);
@@ -128,8 +155,8 @@ const AddResourceForm = () => {
     if (type === "sub-national")
       newRequired = [...required, "geoCoverageValueSubNational"];
     newSchema.schema.required = newRequired;
-    console.log(required);
     setFormSchema(newSchema);
+    */
   };
 
   const handleValidation = (errors) => {
@@ -138,10 +165,13 @@ const AddResourceForm = () => {
       if (x.name === "required") x.message = "Required";
       return x;
     });
+    console.log(errors);
     // override enum "should be equal to one of the allowed values" validation
     // override enum "uniqueItems" - "should NOT have duplicate items" validation
+    // override enum "minItems" - "should NOT have fewer than 1 items" validation
     let override = errors.filter(
-      (x) => x.name !== "enum" && x.name !== "uniqueItems"
+      (x) =>
+        x.name !== "enum" && x.name !== "uniqueItems" && x.name !== "minItems"
     );
     return override;
   };
@@ -162,6 +192,7 @@ const AddResourceForm = () => {
             FieldTemplate={FieldTemplate}
             widgets={widgets}
             transformErrors={(errors) => handleValidation(errors)}
+            // validate={e => console.log(e)}
             showErrorList={false}
           >
             <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
@@ -170,7 +201,7 @@ const AddResourceForm = () => {
           </Form>
           <hr />
           <Button
-            // loading={sending}
+            loading={sending}
             type="primary"
             size="large"
             onClick={(e) => btnSubmit.current.click()}

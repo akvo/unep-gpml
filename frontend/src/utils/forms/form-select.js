@@ -80,6 +80,7 @@ const SelectWidget = ({
       placeholder={placeholder}
       style={SELECT_STYLE}
       value={typeof value !== "undefined" ? stringify(value) : undefined}
+      virtual={false}
     >
       {enumOptions.map(({ value: optionValue, label: optionLabel }, i) => (
         <Select.Option

@@ -5,6 +5,7 @@ const {
   languages,
   geoCoverageTypeOptions,
   regionOptions,
+  organisationType,
 } = UIStore.currentState;
 
 export const schema = {
@@ -14,10 +15,10 @@ export const schema = {
     "org",
     "country",
     "geoCoverageType",
-    // "geoCoverageValueNational",
-    // "geoCoverageValueRegional",
-    // "geoCoverageValueGlobalSpesific",
-    // "geoCoverageValueSubNational",
+    "geoCoverageValueNational",
+    "geoCoverageValueRegional",
+    "geoCoverageValueGlobalSpesific",
+    "geoCoverageValueSubNational",
     "tags",
   ],
   properties: {
@@ -29,60 +30,75 @@ export const schema = {
       title: "ENTITY",
       enum: [],
     },
-    // newOrg: {
-    //   title: "ENTITY DETAILS",
-    //   type: "object",
-    //   required: [],
-    //   properties: {
-    //     name: {
-    //       title: "NAME",
-    //       type: "string",
-    //     },
-    //     type: {
-    //       title: "TYPE OF THE ENTITY",
-    //       enum: [],
-    //     },
-    //     country: {
-    //       $ref: "#/properties/country",
-    //     },
-    //     url: {
-    //       title: "ENTITY URL",
-    //       type: "string",
-    //     },
-    //     geoCoverageType: {
-    //       $ref: "#/properties/geoCoverageType",
-    //     },
-    //     geoCoverageValueRegional: {
-    //       $ref: "#/properties/geoCoverageValueRegional",
-    //       depend: {
-    //         id: "geoCoverageType",
-    //         value: ["regional"],
-    //       },
-    //     },
-    //     geoCoverageValueNational: {
-    //       $ref: "#/properties/geoCoverageValueNational",
-    //       depend: {
-    //         id: "geoCoverageType",
-    //         value: ["national", "transnational"],
-    //       },
-    //     },
-    //     geoCoverageValueSubNational: {
-    //       $ref: "#/properties/geoCoverageValueSubNational",
-    //       depend: {
-    //         id: "geoCoverageType",
-    //         value: ["sub-national"],
-    //       },
-    //     },
-    //     geoCoverageValueGlobalSpesific: {
-    //       $ref: "#/properties/geoCoverageValueGlobalSpesific",
-    //       depend: {
-    //         id: "geoCoverageType",
-    //         value: ["global with elements in specific areas"],
-    //       },
-    //     },
-    //   },
-    // },
-    publicationYear: {
+    newOrg: {
+      title: "ENTITY DETAILS",
+      type: "object",
+      depend: {
+        id: "org",
+        value: [-1],
+      },
+      required: [
+        "name",
+        "type",
+        "country",
+        "url",
+        "geoCoverageType",
+        "geoCoverageValueNational",
+        "geoCoverageValueRegional",
+        "geoCoverageValueGlobalSpesific",
+        "geoCoverageValueSubNational",
+      ],
+      properties: {
+        name: {
+          title: "NAME",
+          type: "string",
+        },
+        type: {
+          title: "TYPE OF THE ENTITY",
+          enum: organisationType.map((x) => x.toLocaleLowerCase()),
+          enumNames: organisationType,
+        },
+        country: {
+          $ref: "#/properties/country",
+        },
+        url: {
+          title: "ENTITY URL",
+          type: "string",
+        },
+        geoCoverageType: {
+          $ref: "#/properties/geoCoverageType",
+        },
+        geoCoverageValueRegional: {
+          $ref: "#/properties/geoCoverageValueRegional",
+          depend: {
+            id: "geoCoverageType",
+            value: ["regional"],
+          },
+        },
+        geoCoverageValueNational: {
+          $ref: "#/properties/geoCoverageValueNational",
+          depend: {
+            id: "geoCoverageType",
+            value: ["national", "transnational"],
+          },
+        },
+        geoCoverageValueSubNational: {
+          $ref: "#/properties/geoCoverageValueSubNational",
+          depend: {
+            id: "geoCoverageType",
+            value: ["sub-national"],
+          },
+        },
+        geoCoverageValueGlobalSpesific: {
+          $ref: "#/properties/geoCoverageValueGlobalSpesific",
+          depend: {
+            id: "geoCoverageType",
+            value: ["global with elements in specific areas"],
+          },
+        },
+      },
+    },
+    publishYear: {
       title: "PUBLICATION YEAR",
       type: "number",
     },
@@ -97,9 +113,7 @@ export const schema = {
         },
         valueCurrency: {
           title: "VALUE CURRENCY",
-          enum: ["USD", "Rp"],
-          enumNames: ["$ US dollars", "Rp Rupiah"],
-          default: "USD",
+          enum: [],
         },
         valueRemark: {
           title: "VALUE REMARK",
@@ -158,7 +172,8 @@ export const schema = {
     },
     geoCoverageValueGlobalSpesific: {
       title: "RESOURCE GEO_COVERAGE",
-      enum: specificAreasOptions,
+      enum: specificAreasOptions.map((x) => x.toLocaleLowerCase()),
+      enumNames: specificAreasOptions,
       depend: {
         id: "geoCoverageType",
         value: ["global with elements in specific areas"],
@@ -207,19 +222,57 @@ export const uiSchema = {
   },
   org: {
     "ui:showSearch": true,
-    "ui:placeholder": "Chose organisation",
+    "ui:placeholder": "Choose organisation",
   },
-  publicationYear: {
+  newOrg: {
+    "ui:group": "border",
+    name: {
+      "ui:placeholder": "Type in entity name",
+    },
+    type: {
+      "ui:placeholder": "Choose entity type",
+    },
+    country: {
+      "ui:showSearch": true,
+      "ui:widget": "select",
+      "ui:placeholder": "Choose the resource country",
+    },
+    url: {
+      "ui:placeholder": "URL Address",
+    },
+    geoCoverageType: {
+      "ui:placeholder": "Choose the entity coverage type",
+    },
+    geoCoverageValueRegional: {
+      "ui:placeholder": "Choose the entity coverage",
+      "ui:showSearch": true,
+      "ui:mode": "multiple",
+    },
+    geoCoverageValueNational: {
+      "ui:placeholder": "Choose the entity coverage",
+      "ui:showSearch": true,
+    },
+    geoCoverageValueSubNational: {
+      "ui:placeholder": "Type regions here...",
+    },
+    geoCoverageValueGlobalSpesific: {
+      "ui:placeholder": "Choose the entity coverage",
+      "ui:showSearch": true,
+      "ui:mode": "multiple",
+    },
+  },
+  publishYear: {
     "ui:placeholder": "YYYY",
   },
   value: {
     "ui:group": "border",
     valueAmount: {
       "ui:placeholder": "Type in the value amount",
-      "ui:span": 16,
+      "ui:span": 14,
     },
     valueCurrency: {
-      "ui:span": 8,
+      "ui:span": 10,
+      "ui:showSearch": true,
     },
     valueRemark: {
       "ui:placeholder": "Value remark",
