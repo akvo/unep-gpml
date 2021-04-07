@@ -117,7 +117,7 @@ const Browse = ({
     clearTimeout(tmid);
     tmid = setTimeout(getResults, 1000);
     if (param === "country") {
-      setFilterCountries([value]);
+      setFilterCountries(value);
     }
   };
   const handleRelationChange = (relation) => {
