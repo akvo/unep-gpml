@@ -85,7 +85,7 @@ const AddResourceForm = () => {
     data?.image === "" && delete data.image;
     data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
-    // setSending(true);
+    setSending(true);
     api.post("/resource", data).then(() => {
       setSending(false);
       setStep(2);
@@ -231,7 +231,6 @@ const AddResourceForm = () => {
               Fire
             </button>
           </Form>
-          <hr />
           <Button
             loading={sending}
             type="primary"

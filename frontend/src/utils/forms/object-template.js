@@ -131,7 +131,8 @@ const ObjectFieldTemplate = ({
         {properties.filter(filterHidden).map((element) => (
           <Col
             key={element.name}
-            span={calculateColSpan(element)}
+            xs={24}
+            lg={calculateColSpan(element)}
             style={dependHidden(element)}
           >
             {element.content}

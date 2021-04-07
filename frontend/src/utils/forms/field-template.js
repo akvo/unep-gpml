@@ -58,6 +58,7 @@ const FieldTemplate = ({
                 color: "#c2c2c2",
                 fontStyle: "italic",
                 fontWeight: "normal",
+                marginLeft: "3px",
               }}
             >
               {" "}

@@ -12,10 +12,10 @@ const AddResource = ({ ...props }) => {
     <div id="add-resource">
       <div className="ui container">
         <Row>
-          <Col span={12}>
+          <Col xs={24} lg={11}>
             <h1>Add resource</h1>
           </Col>
-          <Col span={12}>
+          <Col xs={24} lg={13}>
             <Card>
               <AddResourceForm countries={props.countries} />
             </Card>
