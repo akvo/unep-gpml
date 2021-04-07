@@ -52,7 +52,7 @@ const AddResourceForm = () => {
     return data;
   };
 
-  const handleOnSubmit = () => {
+  const handleOnSubmit = ({ formData }) => {
     let data = { ...formData, resourceType: "Financing Resource" };
 
     data?.newOrg && delete data.newOrg;
@@ -85,7 +85,7 @@ const AddResourceForm = () => {
     data?.image === "" && delete data.image;
     data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
-    setSending(true);
+    // setSending(true);
     api.post("/resource", data).then(() => {
       setSending(false);
       setStep(2);
@@ -140,23 +140,6 @@ const AddResourceForm = () => {
     UIStore.update((e) => {
       e.formData = formData;
     });
-    /*
-    const type =
-      formData?.geoCoverageType && formData?.geoCoverageType.toLowerCase();
-    const newSchema = cloneDeep(formSchema);
-    const { required } = schema;
-    let newRequired = [...required];
-    if (type === "national" || type === "transnational")
-      newRequired = [...required, "geoCoverageValueNational"];
-    if (type === "regional")
-      newRequired = [...required, "geoCoverageValueRegional"];
-    if (type === "global with elements in specific areas")
-      newRequired = [...required, "geoCoverageValueGlobalSpesific"];
-    if (type === "sub-national")
-      newRequired = [...required, "geoCoverageValueSubNational"];
-    newSchema.schema.required = newRequired;
-    setFormSchema(newSchema);
-    */
   };
 
   const handleValidation = (errors) => {
@@ -165,7 +148,6 @@ const AddResourceForm = () => {
       if (x.name === "required") x.message = "Required";
       return x;
     });
-    console.log(errors);
     // override enum "should be equal to one of the allowed values" validation
     // override enum "uniqueItems" - "should NOT have duplicate items" validation
     // override enum "minItems" - "should NOT have fewer than 1 items" validation
@@ -174,6 +156,56 @@ const AddResourceForm = () => {
         x.name !== "enum" && x.name !== "uniqueItems" && x.name !== "minItems"
     );
     return override;
+  };
+
+  const handleGeoCoverageValidation = (data, error) => {
+    const type = data?.geoCoverageType && data?.geoCoverageType.toLowerCase();
+    if (type === "national" || type === "transnational")
+      !data["geoCoverageValueNational"] &&
+        error["geoCoverageValueNational"].addError("Required");
+    if (type === "regional")
+      !data["geoCoverageValueRegional"] &&
+        error["geoCoverageValueRegional"].addError("Required");
+    if (type === "global with elements in specific areas")
+      !data["geoCoverageValueGlobalSpesific"] &&
+        error["geoCoverageValueGlobalSpesific"].addError("Required");
+    if (type === "sub-national")
+      !data["geoCoverageValueSubNational"] &&
+        error["geoCoverageValueSubNational"].addError("Required");
+    return error;
+  };
+
+  const manualValidation = (formData, errors) => {
+    errors = handleGeoCoverageValidation(formData, errors);
+    !formData["title"] && errors["title"].addError("Required");
+    !formData["org"] && errors["org"].addError("Required");
+    !formData["country"] && errors["country"].addError("Required");
+    !formData["tags"] && errors["tags"].addError("Required");
+    !formData["geoCoverageType"] &&
+      errors["geoCoverageType"].addError("Required");
+    if (formData["org"] && formData["org"] === -1) {
+      !formData["newOrg"]["country"] &&
+        errors["newOrg"]["country"].addError("Required");
+      !formData["newOrg"]["type"] &&
+        errors["newOrg"]["type"].addError("Required");
+      !formData["newOrg"]["url"] &&
+        errors["newOrg"]["url"].addError("Required");
+      !formData["newOrg"]["name"] &&
+        errors["newOrg"]["name"].addError("Required");
+      !formData["newOrg"]["geoCoverageType"] &&
+        errors["newOrg"]["geoCoverageType"].addError("Required");
+      errors["newOrg"] = handleGeoCoverageValidation(
+        formData["newOrg"],
+        errors["newOrg"]
+      );
+    }
+    !formData["value"]["valueAmount"] &&
+      errors["value"]["valueAmount"].addError("Required");
+    !formData["value"]["valueCurrency"] &&
+      errors["value"]["valueCurrency"].addError("Required");
+    !formData["date"]["validFrom"] &&
+      errors["date"]["validFrom"].addError("Required");
+    return errors;
   };
 
   return (
@@ -186,13 +218,13 @@ const AddResourceForm = () => {
             uiSchema={formUiSchema}
             formData={formData}
             onChange={(e) => handleFormOnChange(e)}
-            onSubmit={() => handleOnSubmit()}
+            onSubmit={(e) => handleOnSubmit(e)}
             ArrayFieldTemplate={ArrayFieldTemplate}
             ObjectFieldTemplate={ObjectFieldTemplate}
             FieldTemplate={FieldTemplate}
             widgets={widgets}
             transformErrors={(errors) => handleValidation(errors)}
-            // validate={e => console.log(e)}
+            validate={manualValidation}
             showErrorList={false}
           >
             <button ref={btnSubmit} type="submit" style={{ display: "none" }}>

@@ -9,6 +9,7 @@ const {
 } = UIStore.currentState;
 
 export const schema = {
+  title: "",
   type: "object",
   required: [
     "title",
@@ -55,7 +56,7 @@ export const schema = {
         },
         type: {
           title: "TYPE OF THE ENTITY",
-          enum: organisationType.map((x) => x.toLocaleLowerCase()),
+          enum: organisationType,
           enumNames: organisationType,
         },
         country: {
@@ -172,8 +173,7 @@ export const schema = {
     },
     geoCoverageValueGlobalSpesific: {
       title: "RESOURCE GEO_COVERAGE",
-      enum: specificAreasOptions.map((x) => x.toLocaleLowerCase()),
-      enumNames: specificAreasOptions,
+      enum: specificAreasOptions,
       depend: {
         id: "geoCoverageType",
         value: ["global with elements in specific areas"],
@@ -204,7 +204,6 @@ export const schema = {
           },
           lang: {
             title: "LANGUAGES",
-            type: "string",
             enum: Object.keys(languages).map((langCode) => langCode),
             enumNames: Object.keys(languages).map(
               (langCode) => languages[langCode].name
