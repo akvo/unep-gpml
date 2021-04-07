@@ -36,13 +36,13 @@ Assuming you have access to `Country_Polygon.json`, move to the folder where you
 
 ```bash
 docker run \
-       --rm \
-       --volume "$(pwd):/data" \
-	   --workdir /data \
-	   --entrypoint /usr/local/bin/mapshaper \
-	   akvo/akvo-mapshaper:20210405.085951.20f9d8d \
-	   -i Country_Polygon.json snap -simplify percentage=0.05 keep-shapes -o unep-map.topo.json format=topojson
+    --rm \
+    --volume "$(pwd):/data" \
+    --workdir /data \
+    --entrypoint /usr/local/bin/mapshaper \
+    akvo/akvo-mapshaper:20210405.085951.20f9d8d \
+    -i Country_Polygon.json snap -simplify percentage=0.05 keep-shapes -o unep-gpml.topo.json format=topojson
 ```
 
 We run the `mapshaper` command line version with the proper arguments. This will generate a
-simplified file (`unep-map.topo.json`) in [TopoJSON](https://github.com/topojson/topojson) format.
+simplified file (`unep-gpml.topo.json`) in [TopoJSON](https://github.com/topojson/topojson) format.
