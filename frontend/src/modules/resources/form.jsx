@@ -10,8 +10,8 @@ import ObjectFieldTemplate from "../../utils/forms/object-template";
 import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
 import widgets from "../../utils/forms";
+import { collectDependSchema, overideValidation } from "../../utils/forms";
 import cloneDeep from "lodash/cloneDeep";
-import difference from "lodash/difference";
 
 const Form = withTheme(AntDTheme);
 
@@ -35,7 +35,7 @@ const AddResourceForm = () => {
 
   const findCountryIsoCode = (value) => {
     const country = countries.find((x) => x.id === value);
-    return country.isoCode;
+    return country?.isoCode;
   };
 
   const handleGeoCoverageValue = (data, currentValue) => {
@@ -148,69 +148,14 @@ const AddResourceForm = () => {
     UIStore.update((e) => {
       e.formData = formData;
     });
-    // TODO :: transform this to function
-    let dependValue = [];
-    // collect depend schema
-    const { schema } = formSchema;
-    if (schema?.properties) {
-      Object.keys(schema.properties).forEach((key) => {
-        if (
-          schema.properties[key]?.depend &&
-          !schema.properties[key]?.depend.value.includes(
-            formData[schema.properties[key]?.depend.id]
-          )
-        ) {
-          // add not required value to array
-          dependValue.push(`.${key}`);
-        }
-        if (schema.properties[key]?.properties) {
-          Object.keys(schema.properties[key].properties).forEach((key2) => {
-            if (
-              schema.properties[key].properties[key2]?.depend &&
-              !schema.properties[key].properties[key2]?.depend.value.includes(
-                formData[key][
-                  schema.properties[key].properties[key2]?.depend.id
-                ]
-              )
-            ) {
-              // add not required value to array
-              dependValue.push(`.${key}.${key2}`);
-            }
-          });
-        }
-      });
-    }
-    setDependValue(dependValue);
+    // to overide validation
+    let tmp = [];
+    collectDependSchema(tmp, formData, formSchema.schema);
+    setDependValue(tmp);
   };
 
   const handleValidation = (errors) => {
-    // override "is a required property" message
-    errors = errors.map((x) => {
-      if (x.name === "required") x.message = "Required";
-      return x;
-    });
-    // override enum "should be equal to one of the allowed values" validation
-    // override enum "uniqueItems" - "should NOT have duplicate items" validation
-    // override enum "minItems" - "should NOT have fewer than 1 items" validation
-    let override = errors.filter(
-      (x) =>
-        x.name !== "enum" &&
-        x.name !== "uniqueItems" &&
-        x.name !== "minItems" &&
-        x.name !== "type" &&
-        !dependValue.includes(x.property)
-    );
-    // check for nested dependencies validation
-    let tmp = [];
-    override.forEach((x) => {
-      const check = dependValue.forEach((y) => {
-        if (x.property.includes(y)) {
-          tmp.push(x);
-        }
-      });
-    });
-    override = difference(override, tmp);
-    return override;
+    return overideValidation(errors, dependValue);
   };
 
   return (
