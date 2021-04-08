@@ -1,4 +1,5 @@
 import { UIStore } from "../../store";
+import { Store } from "pullstate";
 import React, { useEffect, useState, useRef } from "react";
 import { Button } from "antd";
 import specificAreasOptions from "./specific-areas.json";
@@ -43,7 +44,7 @@ const handleGeoCoverageValue = (data, currentValue, countries) => {
   return data;
 };
 
-const getSchema = ({ countries, organisations, tags, currencies }) => {
+const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
   const prop = cloneDeep(schema.properties);
   const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
   prop.org.enum = orgs?.map((it) => it.id);
@@ -64,22 +65,25 @@ const getSchema = ({ countries, organisations, tags, currencies }) => {
       ...schema,
       properties: prop,
     },
+    loading: loading,
   };
 };
 
+const resourceData = new Store({ data: {} });
+
 const AddResourceForm = () => {
-  const {
-    formData,
-    countries,
-    organisations,
-    tags,
-    currencies,
-  } = UIStore.currentState;
+  const { countries, organisations, tags, currencies } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
   const [sending, setSending] = useState(false);
   const [step, setStep] = useState(1);
   const btnSubmit = useRef();
-  const formSchema = getSchema(UIStore.currentState);
+  const [formSchema, setFormSchema] = useState({ schema: {}, loading: true });
+
+  useEffect(() => {
+    if (formSchema.loading) {
+      setFormSchema(getSchema(UIStore.currentState, false));
+    }
+  }, [formSchema]);
 
   const handleOnSubmit = ({ formData }) => {
     let data = { ...formData, resourceType: "Financing Resource" };
@@ -103,7 +107,7 @@ const AddResourceForm = () => {
 
     delete data.date;
     data.validFrom = formData.date.validFrom;
-    data.validTo = formData?.date?.validTo ? formData.date.validTo : "Ongoing";
+    data.validTo = formData?.date?.validTo || "Ongoing";
 
     if (data?.urls[0]?.url)
       data.urls = formData.urls.filter((it) => it.url.length > 0);
@@ -121,8 +125,8 @@ const AddResourceForm = () => {
   };
 
   const handleFormOnChange = ({ formData }) => {
-    UIStore.update((e) => {
-      e.formData = formData;
+    resourceData.update((e) => {
+      e.data = formData;
     });
     // to overide validation
     let tmp = [];
@@ -138,7 +142,7 @@ const AddResourceForm = () => {
             idPrefix="resource_"
             schema={formSchema.schema}
             uiSchema={uiSchema}
-            formData={formData}
+            formData={resourceData.currentState.data}
             onChange={(e) => handleFormOnChange(e)}
             onSubmit={(e) => handleOnSubmit(e)}
             ArrayFieldTemplate={ArrayFieldTemplate}
