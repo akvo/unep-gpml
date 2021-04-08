@@ -8,6 +8,7 @@ import {
   Form,
   Select,
   Pagination,
+  Tooltip,
 } from "antd";
 import React, { Fragment } from "react";
 import { useState } from "react";
@@ -175,9 +176,24 @@ const AdminSection = ({
                     }}
                   >
                     <Space size="middle">
-                      <Button type="primary" onClick={review(item, "APPROVED")}>
-                        Approve
-                      </Button>
+                      {item.emailVerified ? (
+                        <Button
+                          type="primary"
+                          onClick={review(item, "APPROVED")}
+                        >
+                          Approve
+                        </Button>
+                      ) : (
+                        <Tooltip title="Profile cannot be approved since email is not verified">
+                          <Button
+                            type="primary"
+                            disabled={true}
+                            onClick={review(item, "APPROVED")}
+                          >
+                            Approve
+                          </Button>
+                        </Tooltip>
+                      )}
                       <Button type="link" onClick={reject(item, "REJECTED")}>
                         Decline
                       </Button>

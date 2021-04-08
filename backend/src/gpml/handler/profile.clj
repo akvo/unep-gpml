@@ -1,6 +1,7 @@
 (ns gpml.handler.profile
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
+            [gpml.auth0-util :as auth0]
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.organisation :as db.organisation]
@@ -111,6 +112,16 @@
    :review_status review_status
    :public_email public_email})
 
+(defn pending-profiles-response [conn auth0-config]
+  (let [profiles (db.stakeholder/pending-approval conn)
+        verified-emails (set (auth0/list-auth0-verified-emails auth0-config))
+        profiles-with-verified-flag (map
+                                     #(merge %
+                                             {:email_verified
+                                              (contains? verified-emails (:email %))})
+                                     profiles)]
+    (resp/response profiles-with-verified-flag)))
+
 (defmethod ig/init-key :gpml.handler.profile/get [_ {:keys [db]}]
   (fn [{:keys [jwt-claims]}]
     (if-let [profile (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
@@ -217,10 +228,10 @@
              :body {:message "Successfuly Updated"
                     :data (db.stakeholder/stakeholder-by-id db body-params)}))))
 
-(defmethod ig/init-key :gpml.handler.profile/pending [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.profile/pending [_ {:keys [db auth0]}]
   (fn [_]
-    (let [profiles (db.stakeholder/pending-approval (:spec db))]
-      (resp/response profiles))))
+    (let [conn (:spec db)]
+      (pending-profiles-response conn auth0))))
 
 (defmethod ig/init-key :gpml.handler.profile/post-params [_ _]
   [:map
