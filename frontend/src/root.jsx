@@ -37,12 +37,16 @@ api.get("/currency").then((resp) => {
 });
 api.get("/country").then((resp) => {
   UIStore.update((e) => {
-    e.countries = uniqBy(resp.data);
+    e.countries = uniqBy(resp.data).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
   });
 });
 api.get("/organisation").then((resp) => {
   UIStore.update((e) => {
-    e.organisations = uniqBy(sortBy(resp.data, ["name"]));
+    e.organisations = uniqBy(sortBy(resp.data, ["name"])).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
   });
 });
 

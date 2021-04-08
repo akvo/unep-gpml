@@ -15,6 +15,58 @@ import cloneDeep from "lodash/cloneDeep";
 
 const Form = withTheme(AntDTheme);
 
+const findCountryIsoCode = (value, countries) => {
+  const country = countries.find((x) => x.id === value);
+  return country?.isoCode;
+};
+
+const handleGeoCoverageValue = (data, currentValue, countries) => {
+  delete data.geoCoverageValueNational;
+  delete data.geoCoverageValueRegional;
+  delete data.geoCoverageValueGlobalSpesific;
+  delete data.geoCoverageValueSubNational;
+  if (
+    data.geoCoverageType === "national" ||
+    data.geoCoverageType === "transnational"
+  ) {
+    data.geoCoverageValue = [
+      findCountryIsoCode(currentValue.geoCoverageValueNational, countries),
+    ];
+  }
+  if (data.geoCoverageType === "regional")
+    data.geoCoverageValue = currentValue.geoCoverageValueRegional;
+  if (data.geoCoverageType === "global with elements in specific areas")
+    data.geoCoverageValue = currentValue.geoCoverageValueGlobalSpesific;
+  if (data.geoCoverageType === "sub-national")
+    data.geoCoverageValue = currentValue.geoCoverageValueSubNational;
+
+  return data;
+};
+
+const getSchema = ({ countries, organisations, tags, currencies }) => {
+  const prop = cloneDeep(schema.properties);
+  const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
+  prop.org.enum = orgs?.map((it) => it.id);
+  prop.org.enumNames = orgs?.map((it) => it.name);
+  prop.value.properties.valueCurrency = {
+    ...prop.value.properties.valueCurrency,
+    enum: currencies?.map((x, i) => x.value),
+    enumNames: currencies?.map((x, i) => x.label),
+  };
+  prop.country.enum = countries?.map((x, i) => x.id);
+  prop.country.enumNames = countries?.map((x, i) => x.name);
+  prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
+  prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
+  prop.tags.enum = tags.financingMechanism?.map((x) => String(x.id));
+  prop.tags.enumNames = tags.financingMechanism?.map((x) => x.tag);
+  return {
+    schema: {
+      ...schema,
+      properties: prop,
+    },
+  };
+};
+
 const AddResourceForm = () => {
   const {
     formData,
@@ -24,42 +76,10 @@ const AddResourceForm = () => {
     currencies,
   } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
-  const [formSchema, setFormSchema] = useState({
-    schema: schema,
-    loading: true,
-  });
-  const [formUiSchema, setFormUiSchema] = useState(uiSchema);
   const [sending, setSending] = useState(false);
   const [step, setStep] = useState(1);
   const btnSubmit = useRef();
-
-  const findCountryIsoCode = (value) => {
-    const country = countries.find((x) => x.id === value);
-    return country?.isoCode;
-  };
-
-  const handleGeoCoverageValue = (data, currentValue) => {
-    delete data.geoCoverageValueNational;
-    delete data.geoCoverageValueRegional;
-    delete data.geoCoverageValueGlobalSpesific;
-    delete data.geoCoverageValueSubNational;
-    if (
-      data.geoCoverageType === "national" ||
-      data.geoCoverageType === "transnational"
-    ) {
-      data.geoCoverageValue = [
-        findCountryIsoCode(currentValue.geoCoverageValueNational),
-      ];
-    }
-    if (data.geoCoverageType === "regional")
-      data.geoCoverageValue = currentValue.geoCoverageValueRegional;
-    if (data.geoCoverageType === "global with elements in specific areas")
-      data.geoCoverageValue = currentValue.geoCoverageValueGlobalSpesific;
-    if (data.geoCoverageType === "sub-national")
-      data.geoCoverageValue = currentValue.geoCoverageValueSubNational;
-
-    return data;
-  };
+  const formSchema = getSchema(UIStore.currentState);
 
   const handleOnSubmit = ({ formData }) => {
     let data = { ...formData, resourceType: "Financing Resource" };
@@ -71,8 +91,8 @@ const AddResourceForm = () => {
         ...formData.newOrg,
         id: formData.org,
       };
-      data.org.country = findCountryIsoCode(formData.newOrg.country);
-      data.org = handleGeoCoverageValue(data.org, formData.newOrg);
+      data.org.country = findCountryIsoCode(formData.newOrg.country, countries);
+      data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
     }
 
     delete data.value;
@@ -89,7 +109,7 @@ const AddResourceForm = () => {
       data.urls = formData.urls.filter((it) => it.url.length > 0);
     if (!data?.urls[0]?.url) delete data.urls;
 
-    data = handleGeoCoverageValue(data, formData);
+    data = handleGeoCoverageValue(data, formData, countries);
     data?.image === "" && delete data.image;
     data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
@@ -98,50 +118,6 @@ const AddResourceForm = () => {
       setSending(false);
       setStep(2);
     });
-  };
-
-  useEffect(() => {
-    if (
-      formSchema.loading &&
-      countries.length > 0 &&
-      tags?.financingMechanism
-    ) {
-      const newSchema = cloneDeep(formSchema);
-      const newOrganisations = [...organisations, { id: -1, name: "Other" }]
-        .map((x) => x)
-        .sort((a, b) => a.name.localeCompare(b.name));
-      newSchema.schema.properties.org = {
-        ...newSchema.schema.properties.org,
-        enum: newOrganisations.map((it) => it.id),
-        enumNames: newOrganisations.map((it) => it.name),
-      };
-      newSchema.schema.properties.value.properties.valueCurrency = {
-        ...newSchema.schema.properties.value.properties.valueCurrency,
-        enum: currencies.map((x, i) => x.value),
-        enumNames: currencies.map((x) => x.label),
-      };
-      newSchema.schema.properties.country = {
-        ...newSchema.schema.properties.country,
-        enum: sortedCountries(countries).map((x, i) => x.id),
-        enumNames: sortedCountries(countries).map((x) => x.name),
-      };
-      newSchema.schema.properties.geoCoverageValueNational = {
-        ...newSchema.schema.properties.geoCoverageValueNational,
-        enum: sortedCountries(countries).map((x, i) => x.id),
-        enumNames: sortedCountries(countries).map((x) => x.name),
-      };
-      newSchema.schema.properties.tags = {
-        ...newSchema.schema.properties.tags,
-        enum: tags.financingMechanism.map((x) => String(x.id)),
-        enumNames: tags.financingMechanism.map((x) => x.tag),
-      };
-      newSchema.loading = false;
-      setFormSchema(newSchema);
-    }
-  }, [tags, organisations, countries]);
-
-  const sortedCountries = (countries) => {
-    return countries.map((x) => x).sort((a, b) => a.name.localeCompare(b.name));
   };
 
   const handleFormOnChange = ({ formData }) => {
@@ -154,10 +130,6 @@ const AddResourceForm = () => {
     setDependValue(tmp);
   };
 
-  const handleValidation = (errors) => {
-    return overideValidation(errors, dependValue);
-  };
-
   return (
     <div className="add-resource-form">
       {step === 1 && (
@@ -165,7 +137,7 @@ const AddResourceForm = () => {
           <Form
             idPrefix="resource_"
             schema={formSchema.schema}
-            uiSchema={formUiSchema}
+            uiSchema={uiSchema}
             formData={formData}
             onChange={(e) => handleFormOnChange(e)}
             onSubmit={(e) => handleOnSubmit(e)}
@@ -173,7 +145,7 @@ const AddResourceForm = () => {
             ObjectFieldTemplate={ObjectFieldTemplate}
             FieldTemplate={FieldTemplate}
             widgets={widgets}
-            transformErrors={(errors) => handleValidation(errors)}
+            transformErrors={(errors) => overideValidation(errors, dependValue)}
             showErrorList={false}
           >
             <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
