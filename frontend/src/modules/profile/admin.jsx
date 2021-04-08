@@ -426,7 +426,6 @@ const AdminSection = ({
           {archiveData.length > 0 ? (
             archiveData.map((item, index) => (
               <Collapse.Panel
-                showArrow={false}
                 key={`collapse-archive-${index}`}
                 header={
                   <div className="row">
@@ -474,8 +473,10 @@ const AdminSection = ({
         </Collapse>
         <div style={{ padding: "10px 0px" }}>
           <Pagination
+            defaultCurrent={1}
             current={archiveItems.page}
             onChange={onChangePageArchive}
+            pageSize={archiveItems.limit}
             total={archiveItems.count}
             defaultPageSize={archiveItems.limit}
             onShowSizeChange={onChangePageArchiveSize}

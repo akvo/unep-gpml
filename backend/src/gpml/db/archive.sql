@@ -9,6 +9,12 @@ archived AS (
     SELECT 'event' AS type, title, review_status, reviewed_at, reviewed_by, created_by
     FROM event where review_status <> 'SUBMITTED'
     UNION
+    SELECT 'technology' as type, name as title, review_status, reviewed_at, reviewed_by, created_by
+    FROM technology where review_status <> 'SUBMITTED'
+    UNION
+    SELECT 'policy' as type, original_title as title, review_status, reviewed_at, reviewed_by, created_by
+    FROM policy where review_status <> 'SUBMITTED'
+    UNION
     SELECT type, title, review_status, reviewed_at, reviewed_by, created_by
     FROM resource where review_status <> 'SUBMITTED'
     ORDER BY reviewed_at DESC NULLS LAST
