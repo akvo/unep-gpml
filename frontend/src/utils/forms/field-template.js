@@ -87,7 +87,7 @@ const FieldTemplate = ({
       }
       return false;
     }
-    return true;
+    return required;
   };
 
   return (
@@ -116,7 +116,11 @@ const FieldTemplate = ({
           labelCol={labelCol}
           // required={required}
           style={wrapperStyle}
-          validateStatus={rawErrors && required ? "error" : undefined}
+          validateStatus={
+            rawErrors && required && requiredDependHidden()
+              ? "error"
+              : undefined
+          }
           wrapperCol={wrapperCol}
         >
           {children}

@@ -23,6 +23,7 @@ const AddResourceForm = () => {
     tags,
     currencies,
   } = UIStore.currentState;
+  const [dependValue, setDependValue] = useState([]);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -32,6 +33,11 @@ const AddResourceForm = () => {
   const [step, setStep] = useState(1);
   const btnSubmit = useRef();
 
+  const findCountryIsoCode = (value) => {
+    const country = countries.find((x) => x.id === value);
+    return country.isoCode;
+  };
+
   const handleGeoCoverageValue = (data, currentValue) => {
     delete data.geoCoverageValueNational;
     delete data.geoCoverageValueRegional;
@@ -40,8 +46,11 @@ const AddResourceForm = () => {
     if (
       data.geoCoverageType === "national" ||
       data.geoCoverageType === "transnational"
-    )
-      data.geoCoverageValue = [currentValue.geoCoverageValueNational];
+    ) {
+      data.geoCoverageValue = [
+        findCountryIsoCode(currentValue.geoCoverageValueNational),
+      ];
+    }
     if (data.geoCoverageType === "regional")
       data.geoCoverageValue = currentValue.geoCoverageValueRegional;
     if (data.geoCoverageType === "global with elements in specific areas")
@@ -62,8 +71,7 @@ const AddResourceForm = () => {
         ...formData.newOrg,
         id: formData.org,
       };
-      const country = countries.find((x) => x.id === formData.newOrg.country);
-      data.org.country = country.isoCode;
+      data.org.country = findCountryIsoCode(formData.newOrg.country);
       data.org = handleGeoCoverageValue(data.org, formData.newOrg);
     }
 
@@ -85,7 +93,8 @@ const AddResourceForm = () => {
     data?.image === "" && delete data.image;
     data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
-    setSending(true);
+    // setSending(true);
+    console.log(data);
     api.post("/resource", data).then(() => {
       setSending(false);
       setStep(2);
@@ -107,8 +116,18 @@ const AddResourceForm = () => {
         enum: newOrganisations.map((it) => it.id),
         enumNames: newOrganisations.map((it) => it.name),
       };
+      newSchema.schema.properties.value.properties.valueCurrency = {
+        ...newSchema.schema.properties.value.properties.valueCurrency,
+        enum: currencies.map((x, i) => x.value),
+        enumNames: currencies.map((x) => x.label),
+      };
       newSchema.schema.properties.country = {
         ...newSchema.schema.properties.country,
+        enum: sortedCountries(countries).map((x, i) => x.id),
+        enumNames: sortedCountries(countries).map((x) => x.name),
+      };
+      newSchema.schema.properties.geoCoverageValueNational = {
+        ...newSchema.schema.properties.geoCoverageValueNational,
         enum: sortedCountries(countries).map((x, i) => x.id),
         enumNames: sortedCountries(countries).map((x) => x.name),
       };
@@ -116,16 +135,6 @@ const AddResourceForm = () => {
         ...newSchema.schema.properties.tags,
         enum: tags.financingMechanism.map((x) => String(x.id)),
         enumNames: tags.financingMechanism.map((x) => x.tag),
-      };
-      newSchema.schema.properties.geoCoverageValueNational = {
-        ...newSchema.schema.properties.geoCoverageValueNational,
-        enum: sortedCountries(countries).map((x, i) => x.isoCode),
-        enumNames: sortedCountries(countries).map((x) => x.name),
-      };
-      newSchema.schema.properties.value.properties.valueCurrency = {
-        ...newSchema.schema.properties.value.properties.valueCurrency,
-        enum: currencies.map((x, i) => x.value),
-        enumNames: currencies.map((x) => x.label),
       };
       newSchema.loading = false;
       setFormSchema(newSchema);
@@ -140,6 +149,39 @@ const AddResourceForm = () => {
     UIStore.update((e) => {
       e.formData = formData;
     });
+    // TODO :: transform this to function
+    let dependValue = [];
+    // collect depend schema
+    const { schema } = formSchema;
+    if (schema?.properties) {
+      Object.keys(schema.properties).forEach((key) => {
+        if (
+          schema.properties[key]?.depend &&
+          !schema.properties[key]?.depend.value.includes(
+            formData[schema.properties[key]?.depend.id]
+          )
+        ) {
+          // add not required value to array
+          dependValue.push(`.${key}`);
+        }
+        if (schema.properties[key]?.properties) {
+          Object.keys(schema.properties[key].properties).forEach((key2) => {
+            if (
+              schema.properties[key].properties[key2]?.depend &&
+              !schema.properties[key].properties[key2]?.depend.value.includes(
+                formData[key][
+                  schema.properties[key].properties[key2]?.depend.id
+                ]
+              )
+            ) {
+              // add not required value to array
+              dependValue.push(`.${key}.${key2}`);
+            }
+          });
+        }
+      });
+    }
+    setDependValue(dependValue);
   };
 
   const handleValidation = (errors) => {
@@ -153,59 +195,13 @@ const AddResourceForm = () => {
     // override enum "minItems" - "should NOT have fewer than 1 items" validation
     let override = errors.filter(
       (x) =>
-        x.name !== "enum" && x.name !== "uniqueItems" && x.name !== "minItems"
+        x.name !== "enum" &&
+        x.name !== "uniqueItems" &&
+        x.name !== "minItems" &&
+        x.name !== "type" &&
+        !dependValue.includes(x.property)
     );
     return override;
-  };
-
-  const handleGeoCoverageValidation = (data, error) => {
-    const type = data?.geoCoverageType && data?.geoCoverageType.toLowerCase();
-    if (type === "national" || type === "transnational")
-      !data["geoCoverageValueNational"] &&
-        error["geoCoverageValueNational"].addError("Required");
-    if (type === "regional")
-      !data["geoCoverageValueRegional"] &&
-        error["geoCoverageValueRegional"].addError("Required");
-    if (type === "global with elements in specific areas")
-      !data["geoCoverageValueGlobalSpesific"] &&
-        error["geoCoverageValueGlobalSpesific"].addError("Required");
-    if (type === "sub-national")
-      !data["geoCoverageValueSubNational"] &&
-        error["geoCoverageValueSubNational"].addError("Required");
-    return error;
-  };
-
-  const manualValidation = (formData, errors) => {
-    errors = handleGeoCoverageValidation(formData, errors);
-    !formData["title"] && errors["title"].addError("Required");
-    !formData["org"] && errors["org"].addError("Required");
-    !formData["country"] && errors["country"].addError("Required");
-    !formData["tags"] && errors["tags"].addError("Required");
-    !formData["geoCoverageType"] &&
-      errors["geoCoverageType"].addError("Required");
-    if (formData["org"] && formData["org"] === -1) {
-      !formData["newOrg"]["country"] &&
-        errors["newOrg"]["country"].addError("Required");
-      !formData["newOrg"]["type"] &&
-        errors["newOrg"]["type"].addError("Required");
-      !formData["newOrg"]["url"] &&
-        errors["newOrg"]["url"].addError("Required");
-      !formData["newOrg"]["name"] &&
-        errors["newOrg"]["name"].addError("Required");
-      !formData["newOrg"]["geoCoverageType"] &&
-        errors["newOrg"]["geoCoverageType"].addError("Required");
-      errors["newOrg"] = handleGeoCoverageValidation(
-        formData["newOrg"],
-        errors["newOrg"]
-      );
-    }
-    !formData["value"]["valueAmount"] &&
-      errors["value"]["valueAmount"].addError("Required");
-    !formData["value"]["valueCurrency"] &&
-      errors["value"]["valueCurrency"].addError("Required");
-    !formData["date"]["validFrom"] &&
-      errors["date"]["validFrom"].addError("Required");
-    return errors;
   };
 
   return (
@@ -224,7 +220,6 @@ const AddResourceForm = () => {
             FieldTemplate={FieldTemplate}
             widgets={widgets}
             transformErrors={(errors) => handleValidation(errors)}
-            validate={manualValidation}
             showErrorList={false}
           >
             <button ref={btnSubmit} type="submit" style={{ display: "none" }}>

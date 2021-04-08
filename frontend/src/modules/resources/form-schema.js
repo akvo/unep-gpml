@@ -16,8 +16,8 @@ export const schema = {
     "org",
     "country",
     "geoCoverageType",
-    "geoCoverageValueNational",
     "geoCoverageValueRegional",
+    "geoCoverageValueNational",
     "geoCoverageValueGlobalSpesific",
     "geoCoverageValueSubNational",
     "tags",
@@ -53,21 +53,41 @@ export const schema = {
         name: {
           title: "NAME",
           type: "string",
+          depend: {
+            id: "org",
+            value: [-1],
+          },
         },
         type: {
           title: "TYPE OF THE ENTITY",
           enum: organisationType,
           enumNames: organisationType,
+          depend: {
+            id: "org",
+            value: [-1],
+          },
         },
         country: {
           $ref: "#/properties/country",
+          depend: {
+            id: "org",
+            value: [-1],
+          },
         },
         url: {
           title: "ENTITY URL",
           type: "string",
+          depend: {
+            id: "org",
+            value: [-1],
+          },
         },
         geoCoverageType: {
           $ref: "#/properties/geoCoverageType",
+          depend: {
+            id: "org",
+            value: [-1],
+          },
         },
         geoCoverageValueRegional: {
           $ref: "#/properties/geoCoverageValueRegional",
@@ -130,10 +150,12 @@ export const schema = {
         validFrom: {
           title: "VALID FROM",
           type: "string",
+          format: "date",
         },
         validTo: {
           title: "VALID TO",
           type: "string",
+          format: "date",
         },
       },
     },
@@ -146,7 +168,6 @@ export const schema = {
       enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
       enumNames: geoCoverageTypeOptions,
     },
-    // create separate geocoverage value foreach geocoveragetype and used the depend option
     geoCoverageValueRegional: {
       title: "RESOURCE GEO_COVERAGE",
       enum: regionOptions,
@@ -230,6 +251,7 @@ export const uiSchema = {
     },
     type: {
       "ui:placeholder": "Choose entity type",
+      "ui:widget": "select",
     },
     country: {
       "ui:showSearch": true,
@@ -241,14 +263,17 @@ export const uiSchema = {
     },
     geoCoverageType: {
       "ui:placeholder": "Choose the entity coverage type",
+      "ui:widget": "select",
     },
     geoCoverageValueRegional: {
       "ui:placeholder": "Choose the entity coverage",
+      "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple",
     },
     geoCoverageValueNational: {
       "ui:placeholder": "Choose the entity coverage",
+      "ui:widget": "select",
       "ui:showSearch": true,
     },
     geoCoverageValueSubNational: {
@@ -256,6 +281,7 @@ export const uiSchema = {
     },
     geoCoverageValueGlobalSpesific: {
       "ui:placeholder": "Choose the entity coverage",
+      "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple",
     },
@@ -271,6 +297,7 @@ export const uiSchema = {
     },
     valueCurrency: {
       "ui:span": 10,
+      "ui:widget": "select",
       "ui:showSearch": true,
     },
     valueRemark: {
@@ -290,20 +317,23 @@ export const uiSchema = {
     },
   },
   country: {
-    "ui:showSearch": true,
-    "ui:widget": "select",
     "ui:placeholder": "Choose the resource country",
+    "ui:widget": "select",
+    "ui:showSearch": true,
   },
   geoCoverageType: {
     "ui:placeholder": "Choose the resource coverage type",
+    "ui:widget": "select",
   },
   geoCoverageValueRegional: {
     "ui:placeholder": "Choose the resource coverage",
+    "ui:widget": "select",
     "ui:showSearch": true,
     "ui:mode": "multiple",
   },
   geoCoverageValueNational: {
     "ui:placeholder": "Choose the resource coverage",
+    "ui:widget": "select",
     "ui:showSearch": true,
   },
   geoCoverageValueSubNational: {
@@ -311,6 +341,7 @@ export const uiSchema = {
   },
   geoCoverageValueGlobalSpesific: {
     "ui:placeholder": "Choose the resource coverage",
+    "ui:widget": "select",
     "ui:showSearch": true,
     "ui:mode": "multiple",
   },
@@ -340,6 +371,7 @@ export const uiSchema = {
       },
       lang: {
         "ui:showSearch": true,
+        "ui:widget": "select",
         "ui:placeholder": "Choose the language",
         "ui:span": 8,
       },
