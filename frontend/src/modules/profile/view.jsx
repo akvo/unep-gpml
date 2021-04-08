@@ -58,7 +58,13 @@ const ProfileView = ({ updateDisclaimer }) => {
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState("personal-details");
   const [pendingItems, setPendingItems] = useState([]);
-  const [archiveItems, setArchiveItems] = useState([]);
+  const [archiveItems, setArchiveItems] = useState({
+    data: [],
+    limit: 10,
+    page: 0,
+    count: 1,
+    pages: 0,
+  });
 
   useEffect(() => {
     if (profile?.role === "ADMIN") {

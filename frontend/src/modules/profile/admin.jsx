@@ -1,5 +1,14 @@
 import { UIStore } from "../../store";
-import { Button, Collapse, Space, Spin, Modal, Form, Select } from "antd";
+import {
+  Button,
+  Collapse,
+  Space,
+  Spin,
+  Modal,
+  Form,
+  Select,
+  Pagination,
+} from "antd";
 import React, { Fragment } from "react";
 import { useState } from "react";
 import api from "../../utils/api";
@@ -39,6 +48,7 @@ const AdminSection = ({
   archiveItems,
   setArchiveItems,
 }) => {
+  const archiveData = archiveItems.data;
   const { countries, profile } = UIStore.currentState;
   const [modalRejectVisible, setModalRejectVisible] = useState(false);
   const [modalRejectFunction, setModalRejectFunction] = useState(false);
@@ -62,7 +72,11 @@ const AdminSection = ({
           reviewedBy: profile.firstName + " " + profile.lastName,
           reviewedAt: moment().format("L LT"),
         };
-        setArchiveItems([newArchive, ...archiveItems]);
+        setArchiveItems({
+          ...archiveItems,
+          data: [newArchive, ...archiveData],
+          count: archiveItems.count + 1,
+        });
         setPendingItems(pendingItems.filter((it) => it.id !== item.id));
         setModalRejectVisible(false);
       });
@@ -387,9 +401,21 @@ const AdminSection = ({
   };
 
   const renderArchiveRequests = () => {
+    const onChangePageArchive = (p) => {
+      api
+        .get("/archive?page=" + p + "&limit=" + archiveItems.limit)
+        .then((res) => {
+          setArchiveItems(res.data);
+        });
+    };
+    const onChangePageArchiveSize = (p, l) => {
+      api.get("/archive?page=" + p + "&limit=" + l).then((res) => {
+        setArchiveItems(res.data);
+      });
+    };
     return (
       <div className="archive">
-        <h2>Requests archive</h2>
+        <h2>Requests archive ({archiveItems.count})</h2>
         {/* {loading && <Spin size="large" />} */}
         <div className="row head">
           <div className="col">Type</div>
@@ -397,8 +423,8 @@ const AdminSection = ({
           <div className="col">Status</div>
         </div>
         <Collapse>
-          {archiveItems.length > 0 ? (
-            archiveItems.map((item, index) => (
+          {archiveData.length > 0 ? (
+            archiveData.map((item, index) => (
               <Collapse.Panel
                 showArrow={false}
                 key={`collapse-archive-${index}`}
@@ -446,6 +472,15 @@ const AdminSection = ({
             ></Collapse.Panel>
           )}
         </Collapse>
+        <div style={{ padding: "10px 0px" }}>
+          <Pagination
+            current={archiveItems.page}
+            onChange={onChangePageArchive}
+            total={archiveItems.count}
+            defaultPageSize={archiveItems.limit}
+            onShowSizeChange={onChangePageArchiveSize}
+          />
+        </div>
       </div>
     );
   };

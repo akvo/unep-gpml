@@ -4,7 +4,6 @@
             [ring.util.response :as resp]))
 
 (defmethod ig/init-key :gpml.handler.archive/get [_ {:keys [db]}]
-  (fn [_]
-    (let [archive (db.archive/all (:spec db))
-          _ (tap> archive)]
+  (fn [{{:keys [query]} :parameters}]
+    (let [archive (-> (db.archive/pages (:spec db) query) :result)]
       (resp/response archive))))

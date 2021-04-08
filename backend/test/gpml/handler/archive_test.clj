@@ -51,13 +51,16 @@
           ;; Jane trying to see the list of archive user in this case Nick
           resp (handler (-> (mock/request :get "/")
                             (assoc :jwt-claims {:email "jane@org"}
-                                   :admin admin)))]
+                                   :admin admin
+                                   :parameters {:query {:page 1
+                                                        :limit 10}})))]
       (is (= 200 (:status resp)))
       ;; Jane, Justin and Bob, Exclude John
-      (is (= 3 (count (into [] (-> resp :body)))))
-      (is (= "profile" (-> resp :body first :type)))
-      (is (= "Jane Doe" (-> resp :body first :reviewed_by)))
-      (is (= "APPROVED" (-> resp :body first :review_status)))
-      (is (= "Mr. Doe Justin" (-> resp :body first :title)))
-      (is (= "Mr. Doe Bob" (-> resp :body second :title)))
-      (is (= "REJECTED" (-> resp :body second :review_status))))))
+      (is (= 3 (-> resp :body :count)))
+      (is (= 3 (count (-> resp :body :data))))
+      (is (= "profile" (-> resp :body :data first :type)))
+      (is (= "Jane Doe" (-> resp :body :data first :reviewed_by)))
+      (is (= "APPROVED" (-> resp :body :data first :review_status)))
+      (is (= "Mr. Doe Justin" (-> resp :body :data first :title)))
+      (is (= "Mr. Doe Bob" (-> resp :body :data second :title)))
+      (is (= "REJECTED" (-> resp :body :data second :review_status))))))

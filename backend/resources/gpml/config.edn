@@ -45,6 +45,10 @@
                                          [""
                                           {:get {:summary "Get the archived list of approval"
                                                  :swagger {:tags ["archive"] :security [{:id_token []}]}
+                                                 :parameters {:query [:map [:page {:optional true
+                                                                                   :default 1} int?]
+                                                                           [:limit {:optional true
+                                                                                    :default 10} int?]]}
                                                  :handler #ig/ref :gpml.handler.archive/get}}]]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required
