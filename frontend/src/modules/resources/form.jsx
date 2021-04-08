@@ -11,7 +11,7 @@ import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
 import widgets from "../../utils/forms";
 import cloneDeep from "lodash/cloneDeep";
-import { over } from "lodash";
+import difference from "lodash/difference";
 
 const Form = withTheme(AntDTheme);
 
@@ -93,8 +93,7 @@ const AddResourceForm = () => {
     data?.image === "" && delete data.image;
     data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
-    // setSending(true);
-    console.log(data);
+    setSending(true);
     api.post("/resource", data).then(() => {
       setSending(false);
       setStep(2);
@@ -201,6 +200,16 @@ const AddResourceForm = () => {
         x.name !== "type" &&
         !dependValue.includes(x.property)
     );
+    // check for nested dependencies validation
+    let tmp = [];
+    override.forEach((x) => {
+      const check = dependValue.forEach((y) => {
+        if (x.property.includes(y)) {
+          tmp.push(x);
+        }
+      });
+    });
+    override = difference(override, tmp);
     return override;
   };
 

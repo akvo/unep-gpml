@@ -53,41 +53,21 @@ export const schema = {
         name: {
           title: "NAME",
           type: "string",
-          depend: {
-            id: "org",
-            value: [-1],
-          },
         },
         type: {
           title: "TYPE OF THE ENTITY",
           enum: organisationType,
           enumNames: organisationType,
-          depend: {
-            id: "org",
-            value: [-1],
-          },
         },
         country: {
           $ref: "#/properties/country",
-          depend: {
-            id: "org",
-            value: [-1],
-          },
         },
         url: {
           title: "ENTITY URL",
           type: "string",
-          depend: {
-            id: "org",
-            value: [-1],
-          },
         },
         geoCoverageType: {
           $ref: "#/properties/geoCoverageType",
-          depend: {
-            id: "org",
-            value: [-1],
-          },
         },
         geoCoverageValueRegional: {
           $ref: "#/properties/geoCoverageValueRegional",
