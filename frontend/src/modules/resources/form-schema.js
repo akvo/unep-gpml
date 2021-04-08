@@ -80,7 +80,14 @@ export const schema = {
           $ref: "#/properties/geoCoverageValueNational",
           depend: {
             id: "geoCoverageType",
-            value: ["national", "transnational"],
+            value: ["national"],
+          },
+        },
+        geoCoverageValueTransnational: {
+          $ref: "#/properties/geoCoverageValueTransnational",
+          depend: {
+            id: "geoCoverageType",
+            value: ["transnational"],
           },
         },
         geoCoverageValueSubNational: {
@@ -161,7 +168,15 @@ export const schema = {
       enum: [],
       depend: {
         id: "geoCoverageType",
-        value: ["national", "transnational"],
+        value: ["national"],
+      },
+    },
+    geoCoverageValueTransnational: {
+      title: "RESOURCE GEO_COVERAGE",
+      enum: [],
+      depend: {
+        id: "geoCoverageType",
+        value: ["transnational"],
       },
     },
     geoCoverageValueSubNational: {
@@ -256,6 +271,12 @@ export const uiSchema = {
       "ui:widget": "select",
       "ui:showSearch": true,
     },
+    geoCoverageValueTransnational: {
+      "ui:placeholder": "Choose the resource coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple",
+    },
     geoCoverageValueSubNational: {
       "ui:placeholder": "Type regions here...",
     },
@@ -315,6 +336,12 @@ export const uiSchema = {
     "ui:placeholder": "Choose the resource coverage",
     "ui:widget": "select",
     "ui:showSearch": true,
+  },
+  geoCoverageValueTransnational: {
+    "ui:placeholder": "Choose the resource coverage",
+    "ui:widget": "select",
+    "ui:showSearch": true,
+    "ui:mode": "multiple",
   },
   geoCoverageValueSubNational: {
     "ui:placeholder": "Type regions here...",

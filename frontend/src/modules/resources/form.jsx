@@ -12,37 +12,10 @@ import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
 import widgets from "../../utils/forms";
 import { collectDependSchema, overideValidation } from "../../utils/forms";
+import { findCountryIsoCode, handleGeoCoverageValue } from "./utils";
 import cloneDeep from "lodash/cloneDeep";
 
 const Form = withTheme(AntDTheme);
-
-const findCountryIsoCode = (value, countries) => {
-  const country = countries.find((x) => x.id === value);
-  return country?.isoCode;
-};
-
-const handleGeoCoverageValue = (data, currentValue, countries) => {
-  delete data.geoCoverageValueNational;
-  delete data.geoCoverageValueRegional;
-  delete data.geoCoverageValueGlobalSpesific;
-  delete data.geoCoverageValueSubNational;
-  if (
-    data.geoCoverageType === "national" ||
-    data.geoCoverageType === "transnational"
-  ) {
-    data.geoCoverageValue = [
-      findCountryIsoCode(currentValue.geoCoverageValueNational, countries),
-    ];
-  }
-  if (data.geoCoverageType === "regional")
-    data.geoCoverageValue = currentValue.geoCoverageValueRegional;
-  if (data.geoCoverageType === "global with elements in specific areas")
-    data.geoCoverageValue = currentValue.geoCoverageValueGlobalSpesific;
-  if (data.geoCoverageType === "sub-national")
-    data.geoCoverageValue = currentValue.geoCoverageValueSubNational;
-
-  return data;
-};
 
 const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
   const prop = cloneDeep(schema.properties);
@@ -58,6 +31,12 @@ const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
   prop.country.enumNames = countries?.map((x, i) => x.name);
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
   prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
+  prop.geoCoverageValueTransnational.enum = countries?.map((x, i) =>
+    String(x.id)
+  );
+  prop.geoCoverageValueTransnational.enumNames = countries?.map(
+    (x, i) => x.name
+  );
   prop.tags.enum = tags.financingMechanism?.map((x) => String(x.id));
   prop.tags.enumNames = tags.financingMechanism?.map((x) => x.tag);
   return {
@@ -77,13 +56,16 @@ const AddResourceForm = () => {
   const [sending, setSending] = useState(false);
   const [step, setStep] = useState(1);
   const btnSubmit = useRef();
-  const [formSchema, setFormSchema] = useState({ schema: {}, loading: true });
+  const [formSchema, setFormSchema] = useState({
+    schema: schema,
+    loading: true,
+  });
 
   useEffect(() => {
-    if (formSchema.loading) {
+    if (formSchema.loading && tags?.financingMechanism) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [formSchema]);
+  }, [tags?.financingMechanism]);
 
   const handleOnSubmit = ({ formData }) => {
     let data = { ...formData, resourceType: "Financing Resource" };

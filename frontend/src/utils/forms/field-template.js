@@ -1,5 +1,4 @@
 import React from "react";
-import { UIStore } from "../../store";
 import Form from "antd/lib/form";
 import WrapIfAdditional from "./wrap-if-additional";
 
@@ -36,8 +35,6 @@ const FieldTemplate = ({
     wrapperStyle,
   } = formContext;
 
-  const { formData } = UIStore.currentState;
-
   if (hidden) {
     return <div className="field-hidden">{children}</div>;
   }
@@ -72,24 +69,6 @@ const FieldTemplate = ({
     return "";
   };
 
-  // hide and show form when dependent
-  const requiredDependHidden = () => {
-    const deppend = schema?.depend;
-    if (deppend) {
-      let answer = formData[deppend.id];
-      answer = typeof answer === "string" ? answer.toLowerCase() : answer;
-      let dependValue = deppend.value;
-      dependValue = Array.isArray(dependValue)
-        ? dependValue.includes(answer) // use intersect lodash
-        : dependValue === answer;
-      if (dependValue) {
-        return true;
-      }
-      return false;
-    }
-    return required;
-  };
-
   return (
     <WrapIfAdditional
       classNames={classNames}
@@ -116,11 +95,7 @@ const FieldTemplate = ({
           labelCol={labelCol}
           // required={required}
           style={wrapperStyle}
-          validateStatus={
-            rawErrors && required && requiredDependHidden()
-              ? "error"
-              : undefined
-          }
+          validateStatus={rawErrors && required ? "error" : undefined}
           wrapperCol={wrapperCol}
         >
           {children}
