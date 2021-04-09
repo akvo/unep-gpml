@@ -58,7 +58,7 @@ const SignupModal = ({ visible, onCancel }) => {
   return (
     <Modal
       {...{ visible, onCancel }}
-      width={600}
+      width={800}
       title="Complete your signup"
       okText="Submit"
       className="signup-modal"

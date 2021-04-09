@@ -10,6 +10,16 @@
 }
 
 .signup-modal {
+  // Mobile screen
+  @media only screen and (max-width: 767px) {
+    width: 98% !important;
+  }
+
+  // Tablet screen
+  @media only screen and (min-width: 768px) and (max-width: 991px) {
+    width: 98% !important;
+  }
+
   h2 {
     color: $primaryColor;
     font-size: 22px;
