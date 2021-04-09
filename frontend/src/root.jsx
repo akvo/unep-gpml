@@ -23,7 +23,9 @@ import DetailsView from "./modules/details/view";
 import Footer from "./footer";
 import uniqBy from "lodash/uniqBy";
 import sortBy from "lodash/sortBy";
-import AddResource from "./modules/resources/view";
+import AddFinancingResource from "./modules/financing-resource/view";
+import AddTechnicalResource from "./modules/technical-resource/view";
+// import AddInitiative from "./modules/initiative/view";
 
 api.get("/tag").then((resp) => {
   UIStore.update((e) => {
@@ -256,11 +258,29 @@ const Root = () => {
           )}
         />
         <Route
-          path="/add-resource"
+          path="/add-financing-resource"
           render={(props) => (
-            <AddResource {...props} updateDisclaimer={updateDisclaimer} />
+            <AddFinancingResource
+              {...props}
+              updateDisclaimer={updateDisclaimer}
+            />
           )}
         />
+        <Route
+          path="/add-technical-resource"
+          render={(props) => (
+            <AddTechnicalResource
+              {...props}
+              updateDisclaimer={updateDisclaimer}
+            />
+          )}
+        />
+        {/* <Route
+          path="/add-initiative"
+          render={(props) => (
+            <AddInitiative {...props} updateDisclaimer={updateDisclaimer} />
+          )}
+        /> */}
         <Route
           path="/profile"
           render={(props) => (
@@ -342,9 +362,19 @@ const AddButton = withRouter(
                 <Menu.Item onClick={() => history.push("/add-event")}>
                   Event
                 </Menu.Item>
-                <Menu.Item onClick={() => history.push("/add-resource")}>
-                  Resource
+                <Menu.Item
+                  onClick={() => history.push("/add-financing-resource")}
+                >
+                  Financing Resource
                 </Menu.Item>
+                <Menu.Item
+                  onClick={() => history.push("/add-technical-resource")}
+                >
+                  Technical Resource
+                </Menu.Item>
+                {/* <Menu.Item onClick={() => history.push("/add-initiative")}>
+                  Initiative
+                </Menu.Item> */}
               </Menu>
             }
             trigger={["click"]}

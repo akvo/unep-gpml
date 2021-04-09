@@ -2,7 +2,6 @@ import { UIStore } from "../../store";
 import { Store } from "pullstate";
 import React, { useEffect, useState, useRef } from "react";
 import { Button } from "antd";
-import specificAreasOptions from "./specific-areas.json";
 import api from "../../utils/api";
 import { withTheme } from "@rjsf/core";
 import { Theme as AntDTheme } from "@rjsf/antd";
@@ -11,8 +10,12 @@ import ObjectFieldTemplate from "../../utils/forms/object-template";
 import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
 import widgets from "../../utils/forms";
-import { collectDependSchema, overideValidation } from "../../utils/forms";
-import { findCountryIsoCode, handleGeoCoverageValue } from "./utils";
+import {
+  collectDependSchema,
+  overideValidation,
+  findCountryIsoCode,
+  handleGeoCoverageValue,
+} from "../../utils/forms";
 import cloneDeep from "lodash/cloneDeep";
 
 const Form = withTheme(AntDTheme);

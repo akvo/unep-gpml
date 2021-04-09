@@ -3,7 +3,7 @@ import { Row, Col, Card } from "antd";
 import "./styles.scss";
 import AddResourceForm from "./form";
 
-const AddResource = ({ ...props }) => {
+const AddFinancingResource = ({ ...props }) => {
   useEffect(() => {
     props.updateDisclaimer(null);
   }, []);
@@ -13,11 +13,11 @@ const AddResource = ({ ...props }) => {
       <div className="ui container">
         <Row>
           <Col xs={24} lg={11}>
-            <h1>Add resource</h1>
+            <h1>Add Financing Resource</h1>
           </Col>
           <Col xs={24} lg={13}>
             <Card>
-              <AddResourceForm countries={props.countries} />
+              <AddResourceForm />
             </Card>
           </Col>
         </Row>
@@ -26,4 +26,4 @@ const AddResource = ({ ...props }) => {
   );
 };
 
-export default AddResource;
+export default AddFinancingResource;
