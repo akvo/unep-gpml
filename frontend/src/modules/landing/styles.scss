@@ -53,7 +53,6 @@
       .ant-select {
         width: 100%;
         margin-bottom: 10px;
-        max-width: 244px;
       }
 
       .summary {
@@ -200,6 +199,36 @@
       @media screen and (min-width: 1600px) {
         left: calc((100% - 1560px) / 2);
       }
+    }
+  }
+
+  .map-buttons {
+    position: absolute;
+    z-index: 999;
+
+    button {
+      margin-left: 10px;
+    }
+  }
+
+  .legends {
+    position: absolute;
+    bottom: 10px;
+    z-index: 999;
+    left: 20px;
+    border: 2px solid #daeaf1;
+    line-height: 10px;
+
+    .legend {
+      font-weight: bold;
+      text-align: center;
+      display: inline-block;
+      padding: 5px 10px;
+      color: #226799;
+      width: 80px;
+      font-size: 12px;
+      border-right: solid 2px #daeaf1;
+      line-height: 10px;
     }
   }
 

@@ -88,7 +88,6 @@ const Root = () => {
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
-  const [initLandingCount, setInitLandingCount] = useState("project");
   const [disclaimer, setDisclaimer] = useState(null);
   const [filters, setFilters] = useState(null);
 
@@ -225,8 +224,6 @@ const Root = () => {
             <Landing
               {...{
                 data,
-                initLandingCount,
-                setInitLandingCount,
                 setWarningModalVisible,
                 setSignupModalVisible,
                 loginWithPopup,

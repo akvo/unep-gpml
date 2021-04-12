@@ -1,5 +1,17 @@
 import humps from "humps";
 
+export const tTypes = [
+  "project",
+  "actionPlan",
+  "policy",
+  "technicalResource",
+  "financingResource",
+  "event",
+  "technology",
+  "organisation",
+  "stakeholder",
+];
+
 export const topicTypes = [
   "project",
   "actionPlan",

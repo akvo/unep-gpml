@@ -297,4 +297,16 @@ h2.loading {
 
 /* End Loading */
 
+/* Remove on focus on Map Path */
+path {
+  &:focus {
+    outline: -webkit-focus-ring-color auto 0px !important;
+  }
+}
+
+/* Remove on tooltip transparency */
+.opaque {
+  opacity: 1 !important;
+}
+
 @import "./container.scss";

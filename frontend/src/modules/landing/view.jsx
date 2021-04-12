@@ -3,29 +3,14 @@ import React, { useState, useEffect } from "react";
 import { Button, Select, Switch } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
-import { disputedId } from "../../utils/charts/map-disputed-area";
 import Maps from "./maps";
 import "./styles.scss";
 import humps from "humps";
-import { topicNames } from "../../utils/misc";
-
-const tTypes = [
-  "project",
-  "actionPlan",
-  "policy",
-  "technicalResource",
-  "financingResource",
-  "event",
-  "technology",
-  "organisation",
-  "stakeholder",
-];
+import { topicNames, tTypes } from "../../utils/misc";
 
 const Landing = ({
   history,
   data,
-  initLandingCount,
-  setInitLandingCount,
   setSignupModalVisible,
   setWarningModalVisible,
   isAuthenticated,
@@ -36,75 +21,13 @@ const Landing = ({
   const { innerWidth, innerHeight } = window;
   const { profile, countries } = UIStore.currentState;
   const [country, setCountry] = useState(null);
-  const [countryMap, setCountryMap] = useState(null);
-  const [counts, setCounts] = useState(initLandingCount);
+  const [counts, setCounts] = useState("project");
+  const [mapData, setMapData] = useState([]);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
-  const getMapData = (ctr, data, topic) => {
-    const memberStates = ctr.filter((x) => x.description === "Member State");
-    return ctr.map((c) => {
-      const sameIsoCodes = ctr
-        .filter((x) => c.territory === x.territory)
-        .map((x) => x.id);
-      const availableData = data.find((d) => d.isoCode === c.isoCode);
-      let description = c.description;
-      if (description !== "Member State") {
-        const memberOf = memberStates.find((it) => it.isoCode === c.territory);
-        description = description.trim();
-        description = description.length
-          ? description
-          : memberOf
-          ? `Member State: ${memberOf.name}`
-          : "";
-      }
-      return {
-        name: c.id,
-        description: description,
-        originalName: c.name,
-        area: ctr.find((d) => d.isoCode === c.territory),
-        isoCode: c.isoCode,
-        sameIsoCodes: sameIsoCodes,
-        value: availableData[topic] || 0,
-        ...availableData,
-      };
-    });
-  };
-
-  const clickEvents = (props) => {
-    const { name, data } = props;
-    if (!disputedId.includes(name)) {
-      let ctrs = [];
-      let ctr = countries.find((it) => it.id === name);
-      ctrs = [ctr];
-      setCountry(name);
-      history.push(`/browse?country=${data.isoCode}`);
-    }
-  };
-
-  const toolTip = ({ name }) => {
-    let hover = getMapData(countries, data.map, false).find(
-      (it) => it.name === name
-    );
-    if (hover) {
-      return `
-            <div class="map-tooltip">
-              <h3>${hover?.originalName}</h3>
-              <h4>${hover?.description}</h4>
-              <ul>
-              ${tTypes
-                .map(
-                  (topic) =>
-                    `<li><span>${topicNames(topic)}</span><b>${
-                      hover[topic]
-                    }</b></li>`
-                )
-                .join("")}
-              </ul>
-            </div>
-          `;
-    }
-    return null;
+  const clickCountry = (name) => {
+    history.push(`/browse?country=${name}`);
   };
 
   const handleChangeCountry = (id) => {
@@ -119,12 +42,9 @@ const Landing = ({
   const countryObj = country && countries.find((it) => it.id === country);
 
   const handleSummaryClick = (topic) => {
-    setInitLandingCount("");
     if (counts === topic) {
-      setCountryMap(null);
       setCounts("");
     } else {
-      setCountryMap(getMapData(countries, data.map, topic));
       setCounts(topic);
     }
   };
@@ -146,16 +66,6 @@ const Landing = ({
             x.isoCode === countries.find((it) => it.id === country).territory
         )
       : {};
-  let mapData = country
-    ? [{ name: country, itemStyle: { areaColor: "#84b4cc" } }]
-    : counts
-    ? countryMap
-    : [];
-
-  const defaultMapData =
-    initLandingCount !== "" && data?.map && countries
-      ? getMapData(countries, data.map, initLandingCount)
-      : [];
 
   const summaryData = data?.summary?.filter((it, index) => {
     const current = Object.keys(it)[0];
@@ -225,17 +135,17 @@ const Landing = ({
               country={countryObj}
               counts={counts}
               selected={selected}
-              init={initLandingCount}
+              init={counts}
             />
           </div>
         )}
         {/* Dont render maps on mobile */}
         {innerWidth >= 768 && (
           <Maps
-            data={(mapData?.length > 0 && mapData) || defaultMapData}
-            clickEvents={clickEvents}
-            tooltip={toolTip}
-            dependency={data}
+            data={data?.map || []}
+            clickEvents={clickCountry}
+            topic={counts}
+            country={countries.find((x) => x.id === country)}
           />
         )}
       </div>
