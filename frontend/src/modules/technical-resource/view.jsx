@@ -1,15 +1,51 @@
-import React, { useEffect } from "react";
-import { Row, Col, Card } from "antd";
+import React, { useEffect, useRef, useState } from "react";
+import { Row, Col, Card, Button, Switch } from "antd";
 import "./styles.scss";
 import AddResourceForm from "./form";
 
 const AddTechnicalResource = ({ ...props }) => {
+  const btnSubmit = useRef();
+  const [sending, setSending] = useState(false);
+  const [highlight, setHighlight] = useState(false);
+
   useEffect(() => {
     props.updateDisclaimer(null);
   }, []);
 
   return (
     <div id="add-technical-resource">
+      <div className="form-info-wrapper">
+        <div className="ui container">
+          <Row>
+            <Col xs={24} lg={11}>
+              <div className="form-title">
+                <span className="subtitle">Add New</span>
+                <span className="title">Technical Resource</span>
+              </div>
+            </Col>
+            <Col xs={24} lg={13}>
+              <div className="form-meta">
+                <div>
+                  {/* <Switch
+                    checked={highlight}
+                    size="small"
+                    onChange={(status) => setHighlight(status)}
+                  />{" "}
+                  Highlight required */}
+                </div>
+                <Button
+                  loading={sending}
+                  type="primary"
+                  size="large"
+                  onClick={(e) => btnSubmit.current.click()}
+                >
+                  Submit
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </div>
       <div className="ui container">
         <Row>
           <Col xs={24} lg={11}>
@@ -17,7 +53,13 @@ const AddTechnicalResource = ({ ...props }) => {
           </Col>
           <Col xs={24} lg={13}>
             <Card>
-              <AddResourceForm />
+              <AddResourceForm
+                btnSubmit={btnSubmit}
+                sending={sending}
+                setSending={setSending}
+                highlight={highlight}
+                setHighlight={setHighlight}
+              />
             </Card>
           </Col>
         </Row>

@@ -1,7 +1,7 @@
 @import "../../vars.scss";
 
 #add-technical-resource {
-  padding-top: 40px;
+  // padding-top: 40px;
   padding-bottom: 40px;
   min-height: calc(100vh - 145px);
   background: url(../../images/Resource-gpml.jpg) no-repeat center;
@@ -11,6 +11,32 @@
       * {
         color: #fff;
       }
+    }
+  }
+  .form-info-wrapper {
+    margin-bottom: 40px;
+    background-color: #046799;
+    padding: 15px 0;
+    .ui.container {
+      color: #fff;
+    }
+    .form-title {
+      display: grid;
+      .subtitle {
+        color: #22ba9a;
+        text-transform: uppercase;
+        font-size: 14px;
+      }
+      .title {
+        font-size: 20px;
+        font-weight: 500;
+      }
+    }
+    .form-meta {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
   .ant-card {
@@ -93,6 +119,7 @@
     }
   }
   .ant-btn-primary {
-    margin-top: 20px;
+    // margin-top: 20px;
+    text-transform: uppercase;
   }
 }

@@ -1,7 +1,6 @@
 import { UIStore } from "../../store";
 import { Store } from "pullstate";
 import React, { useEffect, useState, useRef } from "react";
-import { Button } from "antd";
 import api from "../../utils/api";
 import { withTheme } from "@rjsf/core";
 import { Theme as AntDTheme } from "@rjsf/antd";
@@ -51,14 +50,18 @@ const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
   };
 };
 
-const resourceData = new Store({ data: {} });
+export const resourceData = new Store({ data: {} });
 
-const AddResourceForm = () => {
+const AddResourceForm = ({
+  btnSubmit,
+  sending,
+  setSending,
+  highlight,
+  setHighlight,
+}) => {
   const { countries, organisations, tags, currencies } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
-  const [sending, setSending] = useState(false);
   const [step, setStep] = useState(1);
-  const btnSubmit = useRef();
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -124,7 +127,7 @@ const AddResourceForm = () => {
       {step === 1 && (
         <>
           <Form
-            idPrefix="resource_"
+            idPrefix="financing-resource_"
             schema={formSchema.schema}
             uiSchema={uiSchema}
             formData={resourceData.currentState.data}
@@ -141,14 +144,6 @@ const AddResourceForm = () => {
               Fire
             </button>
           </Form>
-          <Button
-            loading={sending}
-            type="primary"
-            size="large"
-            onClick={(e) => btnSubmit.current.click()}
-          >
-            Submit
-          </Button>
         </>
       )}
       {step === 2 && (
