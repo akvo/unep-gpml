@@ -61,8 +61,7 @@ const Legend = ({ data }) => {
 const Maps = ({ data, topic, clickEvents, country }) => {
   const [selected, setSelected] = useState(null);
   const [content, setContent] = useState("");
-  const [zoom, setZoom] = useState(1);
-  const [center, setCenter] = useState([0, 0]);
+  const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   const [scale, setScale] = useState(170);
   const [mapPos, setMapPos] = useState({
     left: 0,
@@ -132,9 +131,10 @@ const Maps = ({ data, topic, clickEvents, country }) => {
             type="secondary"
             icon={<ZoomOutOutlined />}
             onClick={() => {
-              zoom > 1 && setZoom(zoom - 0.5);
+              position.zoom > 1 &&
+                setPosition({ ...position, zoom: position.zoom - 0.5 });
             }}
-            disabled={zoom <= 1}
+            disabled={position.zoom <= 1}
           />
         </Tooltip>
         <Tooltip title="zoom in">
@@ -142,7 +142,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
             type="secondary"
             icon={<ZoomInOutlined />}
             onClick={() => {
-              setZoom(zoom + 0.5);
+              setPosition({ ...position, zoom: position.zoom + 0.5 });
             }}
           />
         </Tooltip>
@@ -151,8 +151,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
             type="secondary"
             icon={<FullscreenOutlined />}
             onClick={() => {
-              setZoom(1);
-              setCenter([0, 0]);
+              setPosition({ coordinates: [0, 0], zoom: 1 });
             }}
           />
         </Tooltip>
@@ -166,11 +165,10 @@ const Maps = ({ data, topic, clickEvents, country }) => {
         style={{ position: "absolute" }}
       >
         <ZoomableGroup
-          center={center}
-          zoom={zoom}
+          zoom={position.zoom}
+          center={position.coordinates}
           onMoveEnd={(x) => {
-            setZoom(x.zoom);
-            setCenter(x.coordinates);
+            setPosition(x);
           }}
         >
           <Geographies geography={geoUrl}>

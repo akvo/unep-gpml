@@ -17,8 +17,6 @@
     "d3-geo": "^2.0.1",
     "d3-scale": "^3.2.4",
     "dayjs": "^1.10.3",
-    "echarts": "^4.6.0",
-    "echarts-for-react": "2.0.16",
     "final-form": "^4.20.1",
     "final-form-arrays": "^3.0.2",
     "humps": "^2.0.1",
@@ -34,7 +32,6 @@
     "react-simple-maps": "^2.3.0",
     "react-tooltip": "^4.2.17",
     "reset-css": "^5.0.1",
-    "topojson-client": "^3.1.0",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
