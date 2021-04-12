@@ -62,6 +62,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
   const [selected, setSelected] = useState(null);
   const [content, setContent] = useState("");
   const [zoom, setZoom] = useState(1);
+  const [center, setCenter] = useState([0, 0]);
   const [scale, setScale] = useState(170);
   const [mapPos, setMapPos] = useState({
     left: 0,
@@ -151,6 +152,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
             icon={<FullscreenOutlined />}
             onClick={() => {
               setZoom(1);
+              setCenter([0, 0]);
             }}
           />
         </Tooltip>
@@ -163,7 +165,14 @@ const Maps = ({ data, topic, clickEvents, country }) => {
         height={mapPos.height}
         style={{ position: "absolute" }}
       >
-        <ZoomableGroup zoom={zoom}>
+        <ZoomableGroup
+          center={center}
+          zoom={zoom}
+          onMoveEnd={(x) => {
+            setZoom(x.zoom);
+            setCenter(x.coordinates);
+          }}
+        >
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
               geographies.map((geo) => {
