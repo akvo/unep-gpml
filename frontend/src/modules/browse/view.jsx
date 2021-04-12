@@ -111,6 +111,9 @@ const Browse = ({
   const updateQuery = (param, value) => {
     const newQuery = { ...query };
     newQuery[param] = value;
+    if (param !== "offset") {
+      newQuery["offset"] = 0;
+    }
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
     history.push(`/browse?${newParams.toString()}`);
