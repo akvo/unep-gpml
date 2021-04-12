@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import { isObject, isNumber } from "lodash";
+import { isObject, isNumber, intersection } from "lodash";
 
 import { utils } from "@rjsf/core";
 import Button from "antd/lib/button";
@@ -93,9 +93,14 @@ const ObjectFieldTemplate = ({
       let answer = formData[deppend.id];
       answer = typeof answer === "string" ? answer.toLowerCase() : answer;
       let dependValue = deppend.value;
-      dependValue = Array.isArray(dependValue)
-        ? dependValue.includes(answer) // use intersect lodash
-        : dependValue === answer;
+      if (Array.isArray(answer)) {
+        dependValue = intersection(dependValue, answer).length !== 0;
+      }
+      if (!Array.isArray(answer)) {
+        dependValue = Array.isArray(dependValue)
+          ? dependValue.includes(answer)
+          : dependValue === answer;
+      }
       if (dependValue) {
         return { display: "block" };
       }

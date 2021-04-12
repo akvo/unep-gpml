@@ -1,0 +1,251 @@
+{
+  "S1": {
+    "classNames": "list-group",
+    "S1_1": {
+      "ui:widget": "radio"
+    },
+    "ui:order": ["S1_1"]
+  },
+  "S2": {
+    "classNames": "list-group",
+    "S2_G1": {
+      "classNames": "list-group-item",
+      "S2_G1_2": {},
+      "S2_G1_3": {},
+      "S2_G1_4": {
+        "ui:widget": "checkboxes"
+      },
+      "S2_G1_4.1.1": {
+        "ui:widget": "checkboxes"
+      },
+      "S2_G1_4.1.2": {},
+      "S2_G1_4.2.1": {
+        "ui:widget": "checkboxes"
+      },
+      "S2_G1_4.2.2": {},
+      "S2_G1_4.3.1": {
+        "ui:widget": "checkboxes"
+      },
+      "S2_G1_4.3.2": {},
+      "S2_G1_4.4.1": {
+        "ui:widget": "checkboxes"
+      },
+      "S2_G1_4.4.2": {},
+      "S2_G1_4.4.3": {},
+      "S2_G1_4.4.4": {},
+      "S2_G1_4.4.5": {},
+      "ui:order": [
+        "S2_G1_2",
+        "S2_G1_3",
+        "S2_G1_4",
+        "S2_G1_4.1.1",
+        "S2_G1_4.1.2",
+        "S2_G1_4.2.1",
+        "S2_G1_4.2.2",
+        "S2_G1_4.3.1",
+        "S2_G1_4.3.2",
+        "S2_G1_4.4.1",
+        "S2_G1_4.4.2",
+        "S2_G1_4.4.3",
+        "S2_G1_4.4.4",
+        "S2_G1_4.4.5"
+      ]
+    },
+    "S2_G2": {
+      "classNames": "list-group-item",
+      "S2_G2_5": {
+        "ui:widget": "radio"
+      },
+      "S2_G2_6": {},
+      "S2_G2_7": {
+        "ui:widget": "checkboxes"
+      },
+      "S2_G2_7.1": {
+        "ui:widget": "checkboxes"
+      },
+      "S2_G2_7.1_1": {
+        "ui:widget": "checkboxes"
+      },
+      "S2_G2_7.1_2": {
+        "ui:widget": "checkboxes"
+      },
+      "S2_G2_7.2": {
+        "ui:widget": "checkboxes"
+      },
+      "S2_G2_7.3": {},
+      "S2_G2_8": {
+        "ui:widget": "radio"
+      },
+      "S2_G2_9": {},
+      "S2_G2_10": {
+        "ui:widget": "radio"
+      },
+      "S2_G2_11": {
+        "ui:widget": "checkboxes"
+      },
+      "S2_G2_12": {},
+      "S2_G2_13": {},
+      "ui:order": [
+        "S2_G2_5",
+        "S2_G2_6",
+        "S2_G2_7",
+        "S2_G2_7.1",
+        "S2_G2_7.1_1",
+        "S2_G2_7.1_2",
+        "S2_G2_7.2",
+        "S2_G2_7.3",
+        "S2_G2_8",
+        "S2_G2_9",
+        "S2_G2_10",
+        "S2_G2_11",
+        "S2_G2_12",
+        "S2_G2_13"
+      ]
+    },
+    "S2_G3": {
+      "classNames": "list-group-item",
+      "S2_G3_14": {
+        "ui:widget": "checkboxes"
+      },
+      "S2_G3_15": {
+        "ui:widget": "checkboxes"
+      },
+      "ui:order": ["S2_G3_14", "S2_G3_15"]
+    },
+    "ui:order": ["S2_G1", "S2_G2", "S2_G3"]
+  },
+  "S3": {
+    "classNames": "list-group",
+    "S3_G1": {
+      "classNames": "list-group-item",
+      "S3_G1_16": {
+        "ui:widget": "radio"
+      },
+      "S3_G1_17": {},
+      "S3_G1_18": {
+        "ui:widget": "radio"
+      },
+      "S3_G1_19": {},
+      "S3_G1_20": {
+        "ui:widget": "radio"
+      },
+      "S3_G1_21": {},
+      "ui:order": [
+        "S3_G1_16",
+        "S3_G1_17",
+        "S3_G1_18",
+        "S3_G1_19",
+        "S3_G1_20",
+        "S3_G1_21"
+      ]
+    },
+    "S3_G2": {
+      "classNames": "list-group-item",
+      "S3_G2_22": {},
+      "S3_G2_23": {
+        "ui:widget": "select"
+      },
+      "S3_G2_24": {
+        "ui:widget": "select"
+      },
+      "S3_G2_24.1": {
+        "ui:widget": "select"
+      },
+      "S3_G2_24.2": {
+        "ui:widget": "select",
+        "ui:mode": "multiple"
+      },
+      "S3_G2_24.3": {
+        "ui:widget": "select",
+        "ui:mode": "multiple"
+      },
+      "S3_G2_24.4": {
+        "ui:widget": "select",
+        "ui:mode": "multiple"
+      },
+      "S3_G2_24.5": {},
+      "ui:order": [
+        "S3_G2_22",
+        "S3_G2_23",
+        "S3_G2_24",
+        "S3_G2_24.1",
+        "S3_G2_24.2",
+        "S3_G2_24.3",
+        "S3_G2_24.4",
+        "S3_G2_24.5"
+      ]
+    },
+    "S3_G3": {
+      "classNames": "list-group-item",
+      "S3_G3_26": {
+        "ui:widget": "checkboxes"
+      },
+      "S3_G3_27": {},
+      "S3_G3_28": {
+        "ui:widget": "checkboxes"
+      },
+      "S3_G3_29": {},
+      "S3_G3_30": {
+        "ui:widget": "checkboxes"
+      },
+      "S3_G3_31": {},
+      "S3_G3_32": {
+        "ui:widget": "checkboxes"
+      },
+      "ui:order": [
+        "S3_G3_26",
+        "S3_G3_27",
+        "S3_G3_28",
+        "S3_G3_29",
+        "S3_G3_30",
+        "S3_G3_31",
+        "S3_G3_32"
+      ]
+    },
+    "S3_G4": {
+      "classNames": "list-group-item",
+      "S3_G4_33": {},
+      "S3_G4_34": {},
+      "ui:order": ["S3_G4_33", "S3_G4_34"]
+    },
+    "S3_G5": {
+      "classNames": "list-group-item",
+      "S3_G5_35": {
+        "ui:widget": "radio"
+      },
+      "S3_G5_36": {},
+      "S3_G5_36.1": {
+        "ui:widget": "select"
+      },
+      "S3_G5_37": {},
+      "S3_G5_37.1": {
+        "ui:widget": "select"
+      },
+      "ui:order": [
+        "S3_G5_35",
+        "S3_G5_36",
+        "S3_G5_36.1",
+        "S3_G5_37",
+        "S3_G5_37.1"
+      ]
+    },
+    "S3_G6": {
+      "classNames": "list-group-item",
+      "S3_G6_38": {
+        "ui:widget": "radio"
+      },
+      "S3_G6_39": {},
+      "ui:order": ["S3_G6_38", "S3_G6_39"]
+    },
+    "S3_G7": {
+      "classNames": "list-group-item",
+      "S3_G7_40": {},
+      "S3_G7_41": {
+        "ui:widget": "radio"
+      },
+      "S3_G7_41.1": {},
+      "ui:order": ["S3_G7_40", "S3_G7_41", "S3_G7_41.1"]
+    },
+    "ui:order": ["S3_G1", "S3_G2", "S3_G3", "S3_G4", "S3_G5", "S3_G6", "S3_G7"]
+  }
+}

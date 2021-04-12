@@ -25,7 +25,7 @@ import uniqBy from "lodash/uniqBy";
 import sortBy from "lodash/sortBy";
 import AddFinancingResource from "./modules/financing-resource/view";
 import AddTechnicalResource from "./modules/technical-resource/view";
-// import AddInitiative from "./modules/initiative/view";
+import AddInitiative from "./modules/initiative/view";
 
 api.get("/tag").then((resp) => {
   UIStore.update((e) => {
@@ -275,12 +275,12 @@ const Root = () => {
             />
           )}
         />
-        {/* <Route
+        <Route
           path="/add-initiative"
           render={(props) => (
             <AddInitiative {...props} updateDisclaimer={updateDisclaimer} />
           )}
-        /> */}
+        />
         <Route
           path="/profile"
           render={(props) => (
@@ -372,9 +372,9 @@ const AddButton = withRouter(
                 >
                   Technical Resource
                 </Menu.Item>
-                {/* <Menu.Item onClick={() => history.push("/add-initiative")}>
+                <Menu.Item onClick={() => history.push("/add-initiative")}>
                   Initiative
-                </Menu.Item> */}
+                </Menu.Item>
               </Menu>
             }
             trigger={["click"]}
