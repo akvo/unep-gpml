@@ -9,7 +9,7 @@ import api from "./utils/api";
 
 // hack to reuse the same `issuer` value
 // auth0-react wants the `domain` value only
-const domain = window.__ENV__.auth0.domain.replaceAll(/(https:\/\/|\/)/gi, "");
+const domain = window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, "");
 
 ReactDOM.render(
   <Auth0Provider
