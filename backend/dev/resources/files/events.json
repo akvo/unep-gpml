@@ -8,7 +8,7 @@
     "url": [
       "https://wastemanagementconferences.com/"
     ],
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/event_001.png",
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_001.png",
     "tags": [
       "conference"
     ],
@@ -35,7 +35,7 @@
     "url": [
       "https://indico.un.org/event/35704/"
     ],
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/event_002.png",
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_002.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -60,7 +60,7 @@
     "url": [
       "https://register.gotowebinar.com/register/5976799386104674827"
     ],
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/event_003.png",
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_003.png",
     "tags": [
       "conference"
     ],
@@ -87,7 +87,7 @@
     "url": [
       "https://www.unep.org/environmentassembly/unea5"
     ],
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/event_004.png",
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_004.png",
     "tags": [
       "conference"
     ],
@@ -114,7 +114,7 @@
     "url": [
       "https://www.oceandecade.org/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_005.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -139,7 +139,7 @@
     "url": [
       "https://www.who.int/initiatives/decade-of-healthy-ageing"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_006.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -164,7 +164,7 @@
     "url": [
       "https://www.unep.org/events/unep-event/xxii-forum-ministers-environment-latin-america-and-caribbean"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_007.png",
     "tags": null,
     "languages": null,
     "resource_language_url": [
@@ -189,7 +189,7 @@
     "url": [
       "https://www.worldfishcenter.org/events/thirty-fourth-session-committee-fisheries-cofi34"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_008.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -214,7 +214,7 @@
     "url": [
       "https://www.unep.org/cobsea/events/webinar/third-cobsea-webinar-post-2020-global-biodiversity-framework"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_009.png",
     "tags": [
       "conference"
     ],
@@ -241,7 +241,7 @@
     "url": [
       "https://un-spbf.org/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_010.png",
     "tags": [
       "workshop"
     ],
@@ -268,7 +268,7 @@
     "url": [
       "https://www.worldwaterday.org/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_011.png",
     "tags": null,
     "languages": null,
     "resource_language_url": [
@@ -293,7 +293,7 @@
     "url": [
       "http://www.asean2021.bn/Theme/index.aspx"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_012.png",
     "tags": [
       "conference"
     ],
@@ -320,7 +320,7 @@
     "url": [
       "https://www.cbd.int/idb/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_013.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -345,7 +345,7 @@
     "url": [
       "https://www.eugreenweek.eu/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_014.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -370,7 +370,7 @@
     "url": [
       "https://worldreefday.org/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_015.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -395,7 +395,7 @@
     "url": [
       "https://www.worldenvironmentday.global/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_016.png",
     "tags": null,
     "languages": "Arabic; Chinese; English; French; Russian; Spanish",
     "resource_language_url": [
@@ -420,7 +420,7 @@
     "url": [
       "https://worldoceanday.org/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_017.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -445,7 +445,7 @@
     "url": [
       "https://sdg.iisd.org/events/our-ocean-conference-2020/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_018.png",
     "tags": [
       "conference"
     ],
@@ -472,7 +472,7 @@
     "url": [
       "https://sustainabledevelopment.un.org/hlpf/2021"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_019.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -497,7 +497,7 @@
     "url": [
       "http://www.brsmeas.org/2021COPs/Overview/tabid/8395/language/en-US/Default.aspx"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_020.png",
     "tags": [
       "conference"
     ],
@@ -719,7 +719,7 @@
     "url": [
       "https://www.iucn.org/news/secretariat/202012/iucn-world-conservation-congress-be-held-3-11-september-2021-marseille"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_021.png",
     "tags": null,
     "languages": "English; French; Spanish",
     "resource_language_url": [
@@ -744,7 +744,7 @@
     "url": [
       "http://www.worldcleanupday.org/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_022.png",
     "tags": null,
     "languages": null,
     "resource_language_url": [
@@ -769,7 +769,7 @@
     "url": [
       "https://www.canada.ca/en/services/environment/conservation/sustainability/circular-economy/world-forum-2021.html"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_023.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -794,7 +794,7 @@
     "url": [
       "https://worldriversday.com/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_024.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -819,7 +819,7 @@
     "url": [
       "https://www.un.org/en/observances/maritime-day"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_025.png",
     "tags": null,
     "languages": "Arabic; Chinese; English; French; Russian; Spanish",
     "resource_language_url": [
@@ -844,7 +844,7 @@
     "url": [
       "https://unhabitat.org/events/world-habitat-day-2021"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_026.png",
     "tags": null,
     "languages": null,
     "resource_language_url": [
@@ -869,7 +869,7 @@
     "url": [
       "https://www.g20.org/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_027.png",
     "tags": [
       "conference"
     ],
@@ -896,7 +896,7 @@
     "url": [
       "https://unfccc.int/process-and-meetings/conferences/glasgow-climate-change-conference"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_028.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -921,7 +921,7 @@
     "url": [
       "https://sdg.iisd.org/events/barcelona-convention-cop-22/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_029.png",
     "tags": [
       "conference"
     ],
@@ -948,7 +948,7 @@
     "url": [
       "https://reeffutures.com/coralrestorationconsortium/frontend/reg/thome.csp?pageID=44&eventID=1&traceRedir=2"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_030.png",
     "tags": [
       "conference",
       "workshop"
@@ -976,7 +976,7 @@
     "url": [
       "https://ec.europa.eu/environment/events/launch-global-alliance-circular-economy-and-resource-efficiency-gacere_en"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_031.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -1001,7 +1001,7 @@
     "url": [
       "https://www.gstic.org/dubai-conference/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_032.png",
     "tags": [
       "conference"
     ],
@@ -1028,7 +1028,7 @@
     "url": [
       "https://www.gstic.org/dubai-conference/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_033.png",
     "tags": [
       "conference"
     ],
@@ -1055,7 +1055,7 @@
     "url": [
       "https://www.oceanvisions.org/summit-2021"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_034.png",
     "tags": [
       "conference"
     ],
@@ -1082,7 +1082,7 @@
     "url": [
       "https://attendee.gotowebinar.com/register/4889193271338842126"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_035.png",
     "tags": [
       "conference"
     ],
@@ -1107,7 +1107,7 @@
     "url": [
       "https://unworldoceansday.org/events/action-for-the-oceans-youth-leaders-raising-awareness-for-the-oceans-together/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_036.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -1132,7 +1132,7 @@
     "url": [
       "https://unworldoceansday.org/events/cove-demo-day-virtual/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_037.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -1157,7 +1157,7 @@
     "url": [
       "https://unworldoceansday.org/events/h2oo-world-ocean-day-virtual-hill-day/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_038.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -1182,7 +1182,7 @@
     "url": [
       "https://unworldoceansday.org/events/achieving-a-plastic-free-ocean-for-limbe-cameroon/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_039.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -1207,7 +1207,7 @@
     "url": [
       "https://unworldoceansday.org/events/world-oceans-day-art-gallery-2021/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_040.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
@@ -1232,7 +1232,7 @@
     "url": [
       "https://unworldoceansday.org/events/oceanic-globals-earth-day-2021-ancient-wisdom-the-ocean/"
     ],
-    "image": null,
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/events_041.png",
     "tags": null,
     "languages": "English",
     "resource_language_url": [
