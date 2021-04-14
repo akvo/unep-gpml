@@ -42,11 +42,7 @@ const Landing = ({
   const countryObj = country && countries.find((it) => it.id === country);
 
   const handleSummaryClick = (topic) => {
-    if (counts === topic) {
-      setCounts("");
-    } else {
-      setCounts(topic);
-    }
+    setCounts(topic);
   };
 
   const handleSeeAllStakeholderClick = () => {

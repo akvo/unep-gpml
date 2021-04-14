@@ -36,26 +36,37 @@ const ToolTipContent = ({ data, geo }) => {
 };
 
 const Legend = ({ data }) => {
+  data = Array.from(new Set(data.map((x) => Math.floor(x))));
+  data = data.filter((x) => x !== 0);
   const range = data.map((x, i) => (
     <div
       key={i + 1}
       className="legend"
       style={{ backgroundColor: colorRange[i] }}
     >
-      {i === data.length - 1 && "> "}
-      {Math.floor(x)} {i !== data.length - 1 && " - " + Math.floor(data[i + 1])}
+      {i === 0 && x === 1 ? x : i === 0 ? "1 - " + x : data[i - 1] + " - " + x}
     </div>
   ));
-  return (
-    <div className="legends">
-      {[
-        <div key={0} className="legend" style={{ backgroundColor: "#FFF" }}>
-          {"0"} - {Math.floor(data[0])}
-        </div>,
-        ...range,
-      ]}
-    </div>
-  );
+  if (data.length)
+    return (
+      <div className="legends">
+        {[
+          <div key={0} className="legend" style={{ backgroundColor: "#FFF" }}>
+            0
+          </div>,
+          ...range,
+          <div
+            key={"last"}
+            className="legend"
+            style={{ backgroundColor: colorRange[range.length] }}
+          >
+            {"> "}
+            {data[data.length - 1]}
+          </div>,
+        ]}
+      </div>
+    );
+  return "";
 };
 
 const Maps = ({ data, topic, clickEvents, country }) => {
