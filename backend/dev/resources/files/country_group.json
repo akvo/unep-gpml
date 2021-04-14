@@ -262,7 +262,7 @@
   {
     "id": 53,
     "type": "mea",
-    "name": "Nagoya \u2013 Kuala Lumpur Supplementary Protocol"
+    "name": "Nagoya – Kuala Lumpur Supplementary Protocol"
   },
   {
     "id": 54,
@@ -503,5 +503,100 @@
     "id": 101,
     "type": "mea",
     "name": "World Heritage Convention"
+  },
+  {
+    "id": 102,
+    "type": "mea",
+    "name": "COBSEA"
+  },
+  {
+    "id": 103,
+    "type": "mea",
+    "name": "NOWPAP"
+  },
+  {
+    "id": 104,
+    "type": "mea",
+    "name": "MAP Barcelona"
+  },
+  {
+    "id": 105,
+    "type": "mea",
+    "name": "Tehran"
+  },
+  {
+    "id": 106,
+    "type": "mea",
+    "name": "Wider Caribbean"
+  },
+  {
+    "id": 107,
+    "type": "region",
+    "name": "Black Sea"
+  },
+  {
+    "id": 108,
+    "type": "mea",
+    "name": "OSPAR"
+  },
+  {
+    "id": 109,
+    "type": "mea",
+    "name": "Red Sea and Gulf of Aden (PERSGA)"
+  },
+  {
+    "id": 110,
+    "type": "mea",
+    "name": "ROPME Sea Area"
+  },
+  {
+    "id": 111,
+    "type": "region",
+    "name": "South Asia Seas"
+  },
+  {
+    "id": 112,
+    "type": "region",
+    "name": "South East Pacific"
+  },
+  {
+    "id": 113,
+    "type": "region",
+    "name": "Pacific"
+  },
+  {
+    "id": 114,
+    "type": "region",
+    "name": "Artic"
+  },
+  {
+    "id": 115,
+    "type": "region",
+    "name": "Antarctic"
+  },
+  {
+    "id": 116,
+    "type": "region",
+    "name": "Baltic Sea"
+  },
+  {
+    "id": 117,
+    "type": "region",
+    "name": "North East Pacific"
+  },
+  {
+    "id": 118,
+    "type": "mea",
+    "name": "Small Island Developing States"
+  },
+  {
+    "id": 119,
+    "type": "mea",
+    "name": "Least Developed Countries"
+  },
+  {
+    "id": 120,
+    "type": "region",
+    "name": "South East Asia"
   }
 ]

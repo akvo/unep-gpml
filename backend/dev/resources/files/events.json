@@ -24,12 +24,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": "https://wastemanagementconferences.com/online-registration/",
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -54,13 +48,7 @@
       ""
     ],
     "geo_coverage_type": "global",
-    "remarks": "UNEP/MAP",
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
+    "remarks": null,
     "country": ""
   },
   {
@@ -87,13 +75,7 @@
       ""
     ],
     "geo_coverage_type": "global",
-    "remarks": "Download flyer: https://drive.google.com/file/d/1oTThuCQYXs5VE1GNCfNNthQx47b6NbFa/view?usp=sharing",
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
+    "remarks": null,
     "country": ""
   },
   {
@@ -121,12 +103,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": "https://indico.un.org/event/1000068/",
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -151,13 +127,7 @@
       ""
     ],
     "geo_coverage_type": "global",
-    "remarks": "UNESCO",
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": "https://www.oceandecade.org/contact",
+    "remarks": null,
     "country": ""
   },
   {
@@ -182,13 +152,7 @@
       ""
     ],
     "geo_coverage_type": "global",
-    "remarks": "WHO",
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": "https://www.who.int/about/who-we-are/contact-us",
+    "remarks": null,
     "country": ""
   },
   {
@@ -203,18 +167,17 @@
     "image": null,
     "tags": null,
     "languages": null,
-    "resource_language_url": null,
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.unep.org/events/unep-event/xxii-forum-ministers-environment-latin-america-and-caribbean"
+      }
+    ],
     "geo_coverage": [
-      ""
+      "Latin American and Caribbean"
     ],
     "geo_coverage_type": "transnational",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -239,13 +202,7 @@
       ""
     ],
     "geo_coverage_type": "global",
-    "remarks": "FAO",
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
+    "remarks": null,
     "country": ""
   },
   {
@@ -269,16 +226,10 @@
       }
     ],
     "geo_coverage": [
-      ""
+      "East Asian Seas"
     ],
     "geo_coverage_type": "transnational",
-    "remarks": "COBSEA",
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
+    "remarks": null,
     "country": ""
   },
   {
@@ -306,12 +257,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": "https://www.youtube.com/watch?v=Brw3OY_e6Ls&list=PLPyCiV4gCeNT8uVjKblSgUfZ5PpHPAxCl",
-    "event_slides": null,
-    "event_documents": "http://un-spbf.org/wp-content/uploads/2021/03/UNEPSPBF-Third-Global-Session-2021_Summary-of-Key-Outcomes-and-Recommendations.pdf",
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -326,18 +271,17 @@
     "image": null,
     "tags": null,
     "languages": null,
-    "resource_language_url": null,
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.worldwaterday.org/"
+      }
+    ],
     "geo_coverage": [
       ""
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": "https://www.worldwaterday.org/share",
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -347,25 +291,24 @@
     "end_date": "2021-05-31 00:00:00",
     "description": "The ASEAN Summit is a biannual meeting held by the members of the Association of Southeast Asian Nations (ASEAN) in relation to economic, political, security, and socio-cultural development of Southeast Asian countries. In addition, it serves as a prominent regional (Asia) and international (worldwide) conference, with world leaders attending its related summits and meetings to discuss various problems and global issues, strengthening co-operation, and making decisions. The summit has been praised by world leaders for its success and ability to produce results on a global level.",
     "url": [
-      "https://www.ap.org/live-and-location-services/events/38th-asean-summit"
+      "http://www.asean2021.bn/Theme/index.aspx"
     ],
     "image": null,
     "tags": [
       "conference"
     ],
     "languages": null,
-    "resource_language_url": null,
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.asean2021.bn/Theme/index.aspx"
+      }
+    ],
     "geo_coverage": [
-      ""
+      "ASEAN"
     ],
     "geo_coverage_type": "transnational",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -391,12 +334,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -418,16 +355,10 @@
       }
     ],
     "geo_coverage": [
-      ""
+      "EU"
     ],
     "geo_coverage_type": "transnational",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": "ENV-GREENWEEK@ec.europa.eu",
     "country": ""
   },
   {
@@ -453,12 +384,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -484,12 +409,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": "https://www.worldenvironmentday.global/media-centre",
     "country": ""
   },
   {
@@ -515,12 +434,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -548,12 +461,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -579,12 +486,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -608,16 +509,205 @@
       }
     ],
     "geo_coverage": [
-      ""
+      "Basel Convention",
+      "Rotterdam Convention",
+      "Stockholm Convention",
+      "Afghanistan",
+      "Albania",
+      "Algeria",
+      "Andorra",
+      "Angola",
+      "Antigua and Barbuda",
+      "Argentina",
+      "Armenia",
+      "Australia",
+      "Austria",
+      "Azerbaijan",
+      "Bahamas",
+      "Bahrain",
+      "Bangladesh",
+      "Barbados",
+      "Belarus",
+      "Belgium",
+      "Belize",
+      "Benin",
+      "Bhutan",
+      "Bolivia (Plurinational State of)",
+      "Bosnia and Herzegovina",
+      "Botswana",
+      "Brazil",
+      "Brunei Darussalam",
+      "Bulgaria",
+      "Burkina Faso",
+      "Burundi",
+      "Cabo Verde",
+      "Cambodia",
+      "Cameroon",
+      "Canada",
+      "Central African Republic",
+      "Chad",
+      "Chile",
+      "China",
+      "Colombia",
+      "Comoros",
+      "Congo",
+      "Cook Islands",
+      "Costa Rica",
+      "Côte d'Ivoire",
+      "Croatia",
+      "Cuba",
+      "Cyprus",
+      "Czechia",
+      "Democratic People's Republic of Korea",
+      "Democratic Republic of the Congo",
+      "Denmark",
+      "Djibouti",
+      "Dominica",
+      "Dominican Republic",
+      "Ecuador",
+      "Egypt",
+      "El Salvador",
+      "Equatorial Guinea",
+      "Eritrea",
+      "Estonia",
+      "Eswatini",
+      "Ethiopia",
+      "European Union",
+      "Finland",
+      "France",
+      "Gabon",
+      "Gambia",
+      "Georgia",
+      "Germany",
+      "Ghana",
+      "Greece",
+      "Guatemala",
+      "Guinea",
+      "Guinea-Bissau",
+      "Guyana",
+      "Haiti",
+      "Honduras",
+      "Hungary",
+      "Iceland",
+      "India",
+      "Indonesia",
+      "Iran (Islamic Republic of)",
+      "Iraq",
+      "Ireland",
+      "Israel",
+      "Italy",
+      "Jamaica",
+      "Japan",
+      "Jordan",
+      "Kazakhstan",
+      "Kenya",
+      "Kiribati",
+      "Kuwait",
+      "Kyrgyzstan",
+      "Lao People's Democratic Republic",
+      "Latvia",
+      "Lebanon",
+      "Lesotho",
+      "Liberia",
+      "Libya",
+      "Liechtenstein",
+      "Lithuania",
+      "Luxembourg",
+      "Madagascar",
+      "Malawi",
+      "Malaysia",
+      "Maldives",
+      "Mali",
+      "Malta",
+      "Marshall Islands",
+      "Mauritania",
+      "Mauritius",
+      "Mexico",
+      "Micronesia (Federated States of)",
+      "Monaco",
+      "Mongolia",
+      "Montenegro",
+      "Morocco",
+      "Mozambique",
+      "Myanmar",
+      "Namibia",
+      "Nauru",
+      "Nepal",
+      "Netherlands",
+      "New Zealand",
+      "Nicaragua",
+      "Niger",
+      "Nigeria",
+      "North Macedonia",
+      "Norway",
+      "Oman",
+      "Pakistan",
+      "Palau",
+      "Panama",
+      "Papua New Guinea",
+      "Paraguay",
+      "Peru",
+      "Philippines",
+      "Poland",
+      "Portugal",
+      "Qatar",
+      "Republic of Korea",
+      "Republic of Moldova",
+      "Romania",
+      "Russian Federation",
+      "Rwanda",
+      "Saint Kitts and Nevis",
+      "Saint Lucia",
+      "Saint Vincent and the Grenadines",
+      "Samoa",
+      "Sao Tome and Principe",
+      "Saudi Arabia",
+      "Senegal",
+      "Serbia",
+      "Seychelles",
+      "Sierra Leone",
+      "Singapore",
+      "Slovakia",
+      "Slovenia",
+      "Somalia",
+      "South Africa",
+      "Spain",
+      "Sri Lanka",
+      "Sudan",
+      "Suriname",
+      "Sweden",
+      "Switzerland",
+      "Syrian Arab Republic",
+      "Tajikistan",
+      "Thailand",
+      "Togo",
+      "Tonga",
+      "Trinidad and Tobago",
+      "Tunisia",
+      "Turkey",
+      "Turkmenistan",
+      "Tuvalu",
+      "Uganda",
+      "Ukraine",
+      "United Arab Emirates",
+      "United Kingdom of Great Britain and Northern Ireland",
+      "United Republic of Tanzania",
+      "United States of America",
+      "Uruguay",
+      "Uzbekistan",
+      "Vanuatu",
+      "Venezuela (Bolivarian Republic of)",
+      "Viet Nam",
+      "Yemen",
+      "Zambia",
+      "Zimbabwe",
+      "Fiji",
+      "Niue",
+      "Solomon Islands",
+      "United Kingdom of Great Britain & Northern Ireland"
     ],
-    "geo_coverage_type": null,
+    "geo_coverage_type": "transnational",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -643,12 +733,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": "press@iucn.org",
     "country": ""
   },
   {
@@ -663,18 +747,17 @@
     "image": null,
     "tags": null,
     "languages": null,
-    "resource_language_url": null,
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.worldcleanupday.org/"
+      }
+    ],
     "geo_coverage": [
       ""
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": "https://digital.worldcleanupday.org/",
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -700,12 +783,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": "ec.2021wcef-fmec.ec@canada.ca",
     "country": ""
   },
   {
@@ -731,12 +808,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": "sdenkers.wrd@gmail.com",
     "country": ""
   },
   {
@@ -762,12 +833,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -782,18 +847,17 @@
     "image": null,
     "tags": null,
     "languages": null,
-    "resource_language_url": null,
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://unhabitat.org/events/world-habitat-day-2021"
+      }
+    ],
     "geo_coverage": [
       ""
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -810,18 +874,17 @@
       "conference"
     ],
     "languages": null,
-    "resource_language_url": null,
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://www.g20.org/"
+      }
+    ],
     "geo_coverage": [
-      ""
+      "G20"
     ],
     "geo_coverage_type": "transnational",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -847,12 +910,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -876,16 +933,10 @@
       }
     ],
     "geo_coverage": [
-      ""
+      "Mediterranean"
     ],
     "geo_coverage_type": "transnational",
-    "remarks": "Africa, Europe, North America",
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
+    "remarks": null,
     "country": ""
   },
   {
@@ -895,7 +946,7 @@
     "end_date": "2021-12-17 00:00:00",
     "description": "Reef Futures is the only venue that brings together coral restoration practitioners, researchers, students, and resource managers from around the world to share the latest techniques, technologies, and science to dramatically scale-up the impact and reach of coral reef restoration. Whether you are a local resource manager from a small island looking to learn from seasoned hands, or a topical expert looking to make your work meaningful to a local community, Reef Futures is the place to be. Leave your sadness and despair about the state of coral reefs at the door and come help shape the future you want coral reefs to have!",
     "url": [
-      "https://www.icriforum.org/events/reef-futures-2021/"
+      "https://reeffutures.com/coralrestorationconsortium/frontend/reg/thome.csp?pageID=44&eventID=1&traceRedir=2"
     ],
     "image": null,
     "tags": [
@@ -903,18 +954,17 @@
       "workshop"
     ],
     "languages": null,
-    "resource_language_url": null,
+    "resource_language_url": [
+      {
+        "language": "English",
+        "url": "https://reeffutures.com/coralrestorationconsortium/frontend/reg/thome.csp?pageID=44&eventID=1&traceRedir=2"
+      }
+    ],
     "geo_coverage": [
       ""
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -940,12 +990,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -973,12 +1017,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -1006,17 +1044,11 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
     "id": 34,
-    "title": "OCEANVISIONS2021 SUMMIT",
+    "title": "OCEANVISIONS 2021 SUMMIT",
     "start_date": "2021-05-18",
     "end_date": "2021-05-21",
     "description": "The Ocean Visions 2021 Summit May 18-21, 2021 “Towards a Global Ecosystem for Ocean Solutions” will bring together a multi-sector community of researchers, innovators, decision-makers, funders, and more to develop roadmaps for solving great ocean challenges including ocean-based solutions to climate, equitable coastal solutions strategies for resilience and adaptation, marine circular economies, ocean & human health, and how to transform research from academia into sustainable businesses. ​Online Virtual Format​The Summit will be held virtually on the campus of the Scripps Institution of Oceanography, USA, between May 18-21, 2021. The summit is linked and co-organized with satellite virtual campuses in Hobart, Australia, Cape Town, South Africa, Mindelo, Cabo Verde, and Kiel, Germany.",
@@ -1039,12 +1071,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -1067,17 +1093,9 @@
         "url": "https://attendee.gotowebinar.com/register/4889193271338842126"
       }
     ],
-    "geo_coverage": [
-      ""
-    ],
-    "geo_coverage_type": "transnational",
+    "geo_coverage": null,
+    "geo_coverage_type": null,
     "remarks": null,
-    "registration_link": "https://attendee.gotowebinar.com/register/4889193271338842126",
-    "recording": "https://www.youtube.com/watch?v=mbpWNWTww-g",
-    "event_slides": null,
-    "event_documents": "https://drive.google.com/file/d/1QEeFissHL4_BH06kibJn3eMAESwa1q_g/view",
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -1103,12 +1121,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": "http://bit.ly/Action-Oceans-2021",
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -1134,12 +1146,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": "info@coveocean.com",
     "country": ""
   },
   {
@@ -1165,12 +1171,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -1192,16 +1192,10 @@
       }
     ],
     "geo_coverage": [
-      ""
+      "Cameroon"
     ],
-    "geo_coverage_type": null,
+    "geo_coverage_type": "national",
     "remarks": null,
-    "registration_link": null,
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -1227,12 +1221,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": "https://forms.gle/i2TcBELt7vAZHAiM7",
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   },
   {
@@ -1258,12 +1246,6 @@
     ],
     "geo_coverage_type": "global",
     "remarks": null,
-    "registration_link": "https://www.eventbrite.com/e/earth-week-2021-ancient-wisdom-the-ocean-tickets-148639369355",
-    "recording": null,
-    "event_slides": null,
-    "event_documents": null,
-    "questions_and_answers": null,
-    "contacts": null,
     "country": ""
   }
 ]
