@@ -247,3 +247,9 @@ values :t*:tags RETURNING id;
 -- :name delete-stakeholder-tags :! :n
 -- :doc remove stakeholder-tags
 delete from stakeholder_tag where stakeholder = :id
+
+-- :name get-admins :?
+-- :doc Get information of all the admins
+select id, first_name, last_name, email from stakeholder
+ where role = 'ADMIN'
+   and review_status = 'APPROVED';
