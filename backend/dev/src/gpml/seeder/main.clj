@@ -577,7 +577,7 @@
 
   ;; example resyncing
 
-  ;; (resync-country db)
+  (resync-country db)
   (resync-country-group db)
   (resync-organisation db)
   (resync-policy db)
