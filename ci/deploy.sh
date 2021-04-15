@@ -22,14 +22,18 @@ push_image () {
 
 prepare_deployment () {
     cluster="test"
+    APP_NAME="UNEP GPML (test)"
+    APP_DOMAIN="unep-gpml.akvotest.org"
 
     if [[ "${CI_TAG:=}" =~ promote.* ]]; then
 	cluster="production"
+        APP_NAME="UNEP GPML"
+        APP_DOMAIN="digital.gpmarinelitter.org"
     fi
 
     gcloud container clusters get-credentials "${cluster}"
 
-    sed "s/\${CI_COMMIT}/${CI_COMMIT}/g" \
+    sed -e "s/\${CI_COMMIT}/${CI_COMMIT}/g; s/\${APP_NAME}/${APP_NAME}/g; s/\${APP_DOMAIN}/${APP_DOMAIN}/g" \
 	ci/k8s/deployment.yml.template \
 	> ci/k8s/deployment.yml
 }

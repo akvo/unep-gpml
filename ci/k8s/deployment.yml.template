@@ -35,6 +35,10 @@ spec:
         ports:
         - containerPort: 3000
         env:
+        - name: APP_NAME
+          value: "${APP_NAME}"
+        - name: APP_URL
+          value: "https://${APP_DOMAIN}"
         - name: OIDC_ISSUER
           valueFrom:
             secretKeyRef:

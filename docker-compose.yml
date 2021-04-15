@@ -15,8 +15,12 @@ services:
       - DATABASE_URL=jdbc:postgresql://db/gpml?user=unep&password=password
       - OIDC_ISSUER=https://unep-gpml-test.eu.auth0.com/
       - OIDC_AUDIENCE=dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J
+      - APP_NAME=UNEP GPML (test)
+      - APP_DOMAIN=http://localhost
       - AUTH0_BACKEND_CLIENT_ID
       - AUTH0_BACKEND_SECRET
+      - MAILJET_API_KEY
+      - MAILJET_SECRET_KEY
   frontend:
     environment:
       - PORT=3001
