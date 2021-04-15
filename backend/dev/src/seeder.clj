@@ -1,8 +1,9 @@
 (ns seeder
-  (:require [clojure.java.io :as io]
+  (:require [clojure.edn :as edn]
+            [clojure.java.io :as io]
             [clojure.java.jdbc :as jdbc]
-            [hikari-cp.core :as hikari]
-            [gpml.seeder.main :as seeder]))
+            [gpml.seeder.main :as seeder]
+            [hikari-cp.core :as hikari]))
 
 ;; Seeder main function to run from Kubernetes
 
@@ -23,12 +24,4 @@
       "run-seeder" (time
                      (seeder/seed
                        {:datasource ds}
-                       {:country? true
-                        :currency? true
-                        :organisation? true
-                        :language? true
-                        :tag? true
-                        :policy? true
-                        :resource? true
-                        :technology? true
-                        :project? true})))))
+                       (edn/read-string (second args)))))))

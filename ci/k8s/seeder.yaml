@@ -16,7 +16,7 @@ spec:
             git clone https://github.com/akvo/unep-gpml.git;
             cd unep-gpml/backend;
             echo Running seeder;
-            lein with-profile seeder run set-admin change-me@akvo.org
+            lein with-profile seeder run run-seeder '{:policy? true :resource? true :technology? true :organisation true :event true}'
         env:
         - name: DATABASE_URL
           valueFrom:
