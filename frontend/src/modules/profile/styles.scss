@@ -72,19 +72,11 @@
 
     .col:nth-child(2) {
       font-weight: bold;
-      text-overflow: ellipsis;
-      max-height: 30px;
-      white-space: nowrap;
-      overflow: hidden;
       flex: 1;
     }
 
     .col:nth-child(3) {
       width: 200px;
-    }
-
-    .col.status {
-      padding-left: 20px;
     }
   }
 

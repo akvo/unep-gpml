@@ -19,5 +19,4 @@
                 (= tbl "profile")
                 "v_stakeholder_data")
           detail (-> (db.submission/detail (:spec db) {:table-name tbl :id (:id path)}))]
-      (tap> detail)
       (resp/response detail))))

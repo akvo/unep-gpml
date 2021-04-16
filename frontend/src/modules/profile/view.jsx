@@ -57,39 +57,26 @@ const ProfileView = ({ updateDisclaimer }) => {
   const handleSubmitRef = useRef();
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState("personal-details");
-  const [pendingItems, setPendingItems] = useState([]);
+  const [pendingItems, setPendingItems] = useState({
+    data: [],
+    limit: 10,
+    page: 0,
+    count: 0,
+    pages: 0,
+  });
   const [archiveItems, setArchiveItems] = useState({
     data: [],
     limit: 10,
     page: 0,
-    count: 1,
+    count: 0,
     pages: 0,
   });
 
   useEffect(() => {
     if (profile?.role === "ADMIN") {
       (async function fetchData() {
-        const profileResp = await api.get("/profile/pending");
-        const eventResp = await api.get("/event/pending");
-        setPendingItems([
-          ...profileResp.data.map((it) => ({
-            type: "profile",
-            title: `${it.firstName} ${it.lastName}`,
-            ...it,
-            offering:
-              it.tags &&
-              it.tags
-                .filter((x) => x.category === "offering")
-                .map((x) => x.tag),
-            seeking:
-              it.tags &&
-              it.tags.filter((x) => x.category === "seeking").map((x) => x.tag),
-            tags:
-              it.tags &&
-              it.tags.filter((x) => x.category === "general").map((x) => x.tag),
-          })),
-          ...eventResp.data.map((it) => ({ type: "event", ...it })),
-        ]);
+        const resp = await api.get("submission");
+        setPendingItems(resp.data);
       })();
       (async function fetchData() {
         const archive = await api.get("/archive");
@@ -153,7 +140,7 @@ const ProfileView = ({ updateDisclaimer }) => {
             <div>
               {it.key === "my-favourites" && `(${0})`}
               {it.key === "my-network" && `(${0})`}
-              {it.key === "admin-section" && `(${pendingItems.length})`}
+              {it.key === "admin-section" && `(${pendingItems.count})`}
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <RightOutlined />
             </div>
