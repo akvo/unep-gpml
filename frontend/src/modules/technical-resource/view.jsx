@@ -43,7 +43,9 @@ const AddTechnicalResource = ({ ...props }) => {
                     size="small"
                     onChange={(status) => setHighlight(status)}
                   />{" "}
-                  Highlight required
+                  {highlight
+                    ? "Required fields highlighted"
+                    : "Highlight required"}
                 </div>
                 <Button
                   loading={sending}
