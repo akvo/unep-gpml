@@ -79,3 +79,6 @@ select e.id, e.title, e.start_date, e.end_date, e.description, e.image, e.geo_co
                 e.remarks, e.created, e.modified, e.city, c.iso_code as country, e.languages, e.tags, e.review_status
            from v_event_data e left join country c on e.country = c.id
 where e.id = :id
+
+-- :name dummy
+select count(*) from event where title like 'Dummy%';
