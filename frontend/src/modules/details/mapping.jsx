@@ -589,6 +589,12 @@ const resourceInfo = [
     value: "resource_url",
     type: "array",
   },
+  {
+    key: "attachments",
+    name: "Attachments",
+    value: "link",
+    type: "array",
+  },
 ];
 
 export const infoMaps = {
