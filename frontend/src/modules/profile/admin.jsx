@@ -16,7 +16,7 @@ import api from "../../utils/api";
 import moment from "moment";
 import capitalize from "lodash/capitalize";
 import find from "lodash/find";
-import { EventPreview, ProfilePreview } from "./preview";
+import { ProfilePreview, GeneralPreview } from "./preview";
 
 const ModalReject = ({ visible, close, reject, item }) => {
   return (
@@ -101,10 +101,10 @@ const AdminSection = ({
 
   const DetailCollapse = ({ data, item }) => {
     switch (item.type) {
-      case "event":
-        return <EventPreview item={data} />;
+      case "profile":
+        return <ProfilePreview item={{ ...data, ...item }} />;
       default:
-        return <ProfilePreview item={data} />;
+        return <GeneralPreview item={{ ...data, ...item }} />;
     }
   };
 
@@ -228,7 +228,7 @@ const AdminSection = ({
                   </div>
                 }
               >
-                <div className="event-info">
+                <div className="general-info">
                   <ul>
                     <li>
                       <div className="detail-title">Submitted by</div>:

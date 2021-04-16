@@ -64,42 +64,104 @@ const findCountries = (countries, item, isCountry = false) => {
   return "-";
 };
 
-export const EventPreview = ({ item }) => {
+export const GeneralPreview = ({ item }) => {
   const { countries } = UIStore.currentState;
+  const country = countries.find((x) => x.id === item.country)?.name || "-";
   return (
-    <div className="event-info">
+    <div className="general-info">
       <div className="info-img">
-        <img src={item.image || imageNotFound} alt="event" />
+        <img
+          src={item.image || imageNotFound}
+          alt={item.image || imageNotFound}
+        />
       </div>
       <ul>
+        <li className="has-border">
+          <p className="section-title">{item.type} detail</p>
+        </li>
         <li>
-          <div className="detail-title">Submitted At</div>:
+          <div className="detail-title">Title</div>:
+          <div className="detail-content">
+            <b>{item.title}</b>
+          </div>
+        </li>
+        <li>
+          <div className="detail-title">Submitted at</div>:
           <div className="detail-content">
             {moment(item.createdAt).format("DD MMM YYYY")}
           </div>
         </li>
         <li>
-          <div className="detail-title">Submitted By</div>:
+          <div className="detail-title">Submitted by</div>:
           <div className="detail-content">
-            <b>{item?.submitter && item.submitter}</b>
+            <b>{item?.createdBy && item.createdBy}</b>
           </div>
         </li>
         <li>
-          <div className="detail-title">Event Date</div>:
+          {item.type === "event" && (
+            <div className="detail-title">Description</div>
+          )}
+          {["Financing Resource", "Technology resource"].includes(
+            item.type
+          ) && <div className="detail-title">Summary</div>}
+          :
           <div className="detail-content">
-            {moment(item.startDate).format("DD MMM YYYY")} to{" "}
-            {moment(item.endDate).format("DD MMM YYYY")}
+            {item.description || item.summary || "-"}
           </div>
         </li>
+        <li>
+          <div className="detail-title">Remarks</div>:
+          <div className="detail-content">{item.remarks || "-"}</div>
+        </li>
+        {item?.publishYear && (
+          <li>
+            <div className="detail-title">Publish year</div>:
+            <div className="detail-content">{item.publishYear}</div>
+          </li>
+        )}
+        {item.type === "Financing Resource" &&
+          [item.validFrom, item.validTo].map((x, i) => (
+            <li key={"valid" + i}>
+              <div className="detail-title">
+                Valid {i === 0 ? "from" : "to"}
+              </div>
+              :
+              <div className="detail-content">
+                {moment(x, "YYYY-MM-DD", true).isValid()
+                  ? moment(x).format("DD MMM YYYY")
+                  : x}
+              </div>
+            </li>
+          ))}
+        {["Financing Resource", "Technology resource"].includes(item.type) && (
+          <li>
+            <div className="detail-title">Organisation</div>:
+            <div className="detail-content">
+              {item?.organisations?.map((x) => x.name).join(",")}
+            </div>
+          </li>
+        )}
+        {item.type === "event" && (
+          <li>
+            <div className="detail-title">Event Date</div>:
+            <div className="detail-content">
+              {moment(item.startDate).format("DD MMM YYYY")} to{" "}
+              {moment(item.endDate).format("DD MMM YYYY")}
+            </div>
+          </li>
+        )}
         <li>
           <div className="detail-title">Country</div>:
-          <div className="detail-content">
-            {findCountries(countries, item, true) || "-"}
-          </div>
+          <div className="detail-content">{country}</div>
         </li>
-        <li>
-          <div className="detail-title">City</div>:
-          <div className="detail-content">{item.city || "-"}</div>
+        {item.type === "event" && (
+          <li>
+            <div className="detail-title">City</div>:
+            <div className="detail-content">{item.city || "-"}</div>
+          </li>
+        )}
+        <li className="has-border">
+          <p className="section-title">Geo Coverage</p>
         </li>
         <li>
           <div className="detail-title">Geo coverage type</div>:
@@ -115,32 +177,27 @@ export const EventPreview = ({ item }) => {
             </div>
           </li>
         )}
-        <li>
-          <div className="detail-title">Description</div>:
-          <div className="detail-content">{item.description || "-"}</div>
-        </li>
-        <li>
-          <div className="detail-title">Remarks</div>:
-          <div className="detail-content">{item.remarks || "-"}</div>
-        </li>
-        <li>
-          <div className="detail-title">Tags</div>:
-          <div className="detail-content">
-            {(item.tags && item.tags.join(", ")) || "-"}
-          </div>
+        <li className="has-border">
+          <p className="section-title">Links</p>
         </li>
         <li>
           <div className="detail-title">Urls</div>:
           <div className="detail-content">
-            {item?.urls && (
+            {item?.languages && (
               <ul className={"ul-children"}>
-                {item.urls.map((x, i) => (
+                {item.languages.map((x, i) => (
                   <li key={`url-${i}`}>
                     {languages[x.isoCode].name} : {x.url}
                   </li>
                 ))}
               </ul>
             )}
+          </div>
+        </li>
+        <li>
+          <div className="detail-title">Tags</div>:
+          <div className="detail-content">
+            {(item.tags && item.tags.join(", ")) || "-"}
           </div>
         </li>
       </ul>
@@ -164,12 +221,20 @@ export const ProfilePreview = ({ item }) => {
         </div>
 
         <ul>
-          <li>
+          <li className="has-border">
             <p className="section-title">Personal Details</p>
           </li>
           <li>
+            <div className="detail-title">First name</div>:
+            <div className="detail-content">{item.firstName}</div>
+          </li>
+          <li>
+            <div className="detail-title">Last name</div>:
+            <div className="detail-content">{item.lastName}</div>
+          </li>
+          <li>
             <div className="detail-title">Email</div>:
-            <div className="detail-content">{item.email || "-"}</div>
+            <div className="detail-content">{item.createdBy}</div>
           </li>
           <li>
             <div className="detail-title">Linkedin</div>:
@@ -214,10 +279,7 @@ export const ProfilePreview = ({ item }) => {
             <div className="detail-title">Organisation Role</div>:
             <div className="detail-content">{item.organisationRole || "-"}</div>
           </li>
-          <li>
-            <hr />
-          </li>
-          <li>
+          <li className="has-border">
             <p className="section-title">Expertise and Activities</p>
           </li>
           <li>

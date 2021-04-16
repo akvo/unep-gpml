@@ -35,4 +35,6 @@ SELECT json_build_object(
 
 -- :name detail :? :1
 -- :doc get detail of submission
-SELECT * from :i:table-name where id = :id::integer;
+SELECT *
+from :i:table-name
+where id = :id::integer;

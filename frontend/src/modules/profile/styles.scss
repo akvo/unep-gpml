@@ -112,42 +112,51 @@
       flex: 1;
     }
 
-    ul li {
-      display: flex;
-      flex-wrap: wrap;
-      line-height: 30px;
-      color: #0d6799;
-
-      .detail-title {
-        width: 160px;
+    ul {
+      .has-border {
+        margin: 10px 0px 5px;
+        border-bottom: solid 2px #eee;
+        font-weight: bold;
+        font-size: 12px;
       }
 
-      .detail-content {
-        margin-left: 5px;
-        flex: 1;
+      li {
         display: flex;
-      }
+        flex-wrap: wrap;
+        line-height: 30px;
+        color: #0d6799;
 
-      p.section-title {
-        color: #707070;
-        text-transform: uppercase;
-      }
+        .detail-title {
+          width: 160px;
+        }
 
-      span {
-        color: #707070;
-        width: 160px;
-        display: inline-block;
-      }
+        .detail-content {
+          margin-left: 5px;
+          flex: 1;
+          display: flex;
+        }
 
-      ul.ul-children {
-        display: inline-block;
-        vertical-align: top;
-        margin-left: -10px;
+        p.section-title {
+          color: #707070;
+          text-transform: uppercase;
+        }
+
+        span {
+          color: #707070;
+          width: 160px;
+          display: inline-block;
+        }
+
+        ul.ul-children {
+          display: inline-block;
+          vertical-align: top;
+          margin-left: -10px;
+        }
       }
     }
   }
 
-  .event-info {
+  .general-info {
     display: flex;
 
     .info-img {
@@ -162,31 +171,45 @@
       }
     }
 
-    ul li {
-      display: flex;
-      flex-wrap: wrap;
-      line-height: 30px;
-      color: #0d6799;
-
-      .detail-title {
-        width: 160px;
+    ul {
+      .has-border {
+        margin: 10px 0px 5px;
+        border-bottom: solid 2px #eee;
+        font-weight: bold;
+        font-size: 12px;
       }
 
-      .detail-content {
-        margin-left: 5px;
-        flex: 1;
+      li {
         display: flex;
-      }
+        flex-wrap: wrap;
+        line-height: 30px;
+        color: #0d6799;
 
-      span {
-        width: 160px;
-        display: inline-block;
-      }
+        .detail-title {
+          width: 160px;
+        }
 
-      ul.ul-children {
-        display: inline-block;
-        vertical-align: top;
-        margin-left: -40px;
+        .detail-content {
+          margin-left: 5px;
+          flex: 1;
+          display: flex;
+        }
+
+        p.section-title {
+          color: #707070;
+          text-transform: uppercase;
+        }
+
+        span {
+          width: 160px;
+          display: inline-block;
+        }
+
+        ul.ul-children {
+          display: inline-block;
+          vertical-align: top;
+          margin-left: -40px;
+        }
       }
     }
   }
