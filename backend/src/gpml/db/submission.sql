@@ -33,3 +33,6 @@ SELECT json_build_object(
     'pages', (SELECT COUNT(*) FROM submission) / :limit,
     'limit', :limit) as result;
 
+-- :name detail :? :1
+-- :doc get detail of submission
+SELECT * from :i:table-name where id = :id::integer;

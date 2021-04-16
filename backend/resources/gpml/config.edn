@@ -60,7 +60,13 @@
                                                                                    :default 1} int?]
                                                                            [:limit {:optional true
                                                                                     :default 10} int?]]}
-                                                 :handler #ig/ref :gpml.handler.submission/get}}]]
+                                                 :handler #ig/ref :gpml.handler.submission/get}}]
+                                         ["/{submission}/{id}"
+                                          {:get {:summary "Get the detail of pending submission"
+                                                 :swagger {:tags ["submission"] :security [{:id_token []}]}
+                                                 :parameters {:path [:map [:submission string?] [:id int?]]}
+                                                 :handler #ig/ref :gpml.handler.submission/get-detail}}]
+                                         ]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required
                                                                 #ig/ref :gpml.auth/approved-user
@@ -183,6 +189,7 @@
 
   :gpml.handler.archive/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.submission/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.submission/get-detail {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
 
