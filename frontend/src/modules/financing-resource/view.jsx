@@ -1,3 +1,4 @@
+import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Card, Button, Switch } from "antd";
 import "./styles.scss";
@@ -11,6 +12,17 @@ const AddFinancingResource = ({ ...props }) => {
   useEffect(() => {
     props.updateDisclaimer(null);
   }, []);
+
+  useEffect(() => {
+    UIStore.update((e) => {
+      e.highlight = highlight;
+    });
+  }, [highlight]);
+
+  const handleOnClickBtnSubmit = (e) => {
+    setHighlight(true);
+    btnSubmit.current.click();
+  };
 
   return (
     <div id="add-resource">
@@ -26,18 +38,18 @@ const AddFinancingResource = ({ ...props }) => {
             <Col xs={24} lg={13}>
               <div className="form-meta">
                 <div>
-                  {/* <Switch
+                  <Switch
                     checked={highlight}
                     size="small"
                     onChange={(status) => setHighlight(status)}
                   />{" "}
-                  Highlight required */}
+                  Highlight required
                 </div>
                 <Button
                   loading={sending}
                   type="primary"
                   size="large"
-                  onClick={(e) => btnSubmit.current.click()}
+                  onClick={(e) => handleOnClickBtnSubmit(e)}
                 >
                   Submit
                 </Button>

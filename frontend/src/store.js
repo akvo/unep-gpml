@@ -39,6 +39,7 @@ const UIStore = new Store({
   geoCoverageTypeOptions: geoCoverageTypeOptions,
   regionOptions: regionOptions,
   organisationType: organisationType,
+  highlight: false,
 });
 
 export { UIStore };

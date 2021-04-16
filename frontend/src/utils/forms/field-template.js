@@ -1,3 +1,4 @@
+import { UIStore } from "../../store";
 import React from "react";
 import Form from "antd/lib/form";
 import WrapIfAdditional from "./wrap-if-additional";
@@ -34,6 +35,8 @@ const FieldTemplate = ({
     wrapperCol = VERTICAL_WRAPPER_COL,
     wrapperStyle,
   } = formContext;
+
+  const { highlight } = UIStore.currentState;
 
   if (hidden) {
     return <div className="field-hidden">{children}</div>;
@@ -89,13 +92,20 @@ const FieldTemplate = ({
           colon={colon}
           // extra={!!rawDescription && description}
           hasFeedback={schema.type !== "array" && schema.type !== "object"}
-          help={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
+          help={
+            (!!rawHelp && help) ||
+            (!!rawErrors && highlight && renderFieldErrors())
+          }
           htmlFor={id}
           label={handleCustomLabel()}
           labelCol={labelCol}
           // required={required}
           style={wrapperStyle}
-          validateStatus={rawErrors && required ? "error" : undefined}
+          validateStatus={
+            (rawErrors && required && highlight) || (highlight && required)
+              ? "error"
+              : undefined
+          }
           wrapperCol={wrapperCol}
         >
           {children}

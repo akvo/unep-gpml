@@ -71,7 +71,16 @@ const AddResourceForm = ({
     if (formSchema.loading && tags?.financingMechanism) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [tags?.financingMechanism]);
+  }, [tags?.financingMechanism, formSchema]);
+
+  useEffect(() => {
+    if (!formSchema.loading) {
+      setFormSchema({ schema: schema, loading: true });
+    }
+    if (formSchema.loading && tags?.financingMechanism) {
+      setFormSchema(getSchema(UIStore.currentState, false));
+    }
+  }, [highlight]);
 
   const handleOnSubmit = ({ formData }) => {
     let data = { ...formData, resourceType: "Financing Resource" };

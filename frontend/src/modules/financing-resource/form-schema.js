@@ -212,6 +212,7 @@ export const schema = {
       title: "",
       type: "array",
       items: {
+        title: "",
         type: "object",
         properties: {
           url: {
