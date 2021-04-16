@@ -1,6 +1,7 @@
 import { Store } from "pullstate";
-import React, { useEffect } from "react";
-import { Row, Col, Card, Menu, Steps, Tabs } from "antd";
+import { UIStore } from "../../store";
+import React, { useEffect, useRef, useState } from "react";
+import { Row, Col, Card, Menu, Steps, Tabs, Switch, Button } from "antd";
 import "./styles.scss";
 import AddInitiativeForm from "./form";
 
@@ -99,6 +100,9 @@ export const initiativeData = new Store({
 
 const AddInitiative = ({ ...props }) => {
   const { data } = initiativeData.useState();
+  const btnSubmit = useRef();
+  const [sending, setSending] = useState(false);
+  const [highlight, setHighlight] = useState(false);
 
   useEffect(() => {
     props.updateDisclaimer(null);
@@ -121,6 +125,8 @@ const AddInitiative = ({ ...props }) => {
   };
 
   const handleOnStepClick = (current, section) => {
+    const id = `initiative_${section}_${section}_G${current + 1}`;
+    // window.location.hash = `#${id}`;
     initiativeData.update((e) => {
       e.data = {
         ...e.data,
@@ -134,9 +140,54 @@ const AddInitiative = ({ ...props }) => {
 
   return (
     <div id="add-initiative">
+      <div className="form-info-wrapper">
+        <div className="ui container">
+          <Row>
+            <Col xs={24} lg={14}>
+              <div className="form-title-wrapper">
+                <div className="form-title">
+                  <span className="subtitle">Add New</span>
+                  <span className="title">Initiative</span>
+                </div>
+                <div className="initiative-title">
+                  {data?.S2?.S2_G1?.S2_G1_2
+                    ? data?.S2?.S2_G1?.S2_G1_2
+                    : "Untitled Initiative"}
+                </div>
+              </div>
+            </Col>
+            <Col xs={24} lg={10}>
+              <div className="form-meta">
+                <div className="highlight">
+                  <Switch
+                    checked={highlight}
+                    size="small"
+                    onChange={(status) => setHighlight(status)}
+                  />{" "}
+                  {highlight
+                    ? "Required fields highlighted"
+                    : "Highlight required"}
+                </div>
+                <Button
+                  loading={sending}
+                  type="primary"
+                  size="large"
+                  onClick={(e) => handleOnClickBtnSubmit(e)}
+                >
+                  Submit
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </div>
       <div className="ui container">
         <div className="form-container">
-          <Tabs type="card" onChange={(e) => handleOnTabChange(e)}>
+          <Tabs
+            type="card"
+            activeKey={data.tabs[0]}
+            onChange={(e) => handleOnTabChange(e)}
+          >
             {tabs.map(({ key, title, desc, steps }) => (
               <TabPane tab={title} key={key}>
                 <Row>
@@ -152,7 +203,13 @@ const AddInitiative = ({ ...props }) => {
                   </Col>
                   <Col xs={20} lg={16}>
                     <Card>
-                      <AddInitiativeForm />
+                      <AddInitiativeForm
+                        btnSubmit={btnSubmit}
+                        sending={sending}
+                        setSending={setSending}
+                        highlight={highlight}
+                        setHighlight={setHighlight}
+                      />
                     </Card>
                   </Col>
                 </Row>

@@ -48,13 +48,17 @@ const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
   };
 };
 
-const AddInitiativeForm = () => {
+const AddInitiativeForm = ({
+  btnSubmit,
+  sending,
+  setSending,
+  highlight,
+  setHighlight,
+}) => {
   const initiativeFormData = initiativeData.useState();
   const { countries, organisations, tags, currencies } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
-  const [sending, setSending] = useState(false);
   const [step, setStep] = useState(1);
-  const btnSubmit = useRef();
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -125,7 +129,7 @@ const AddInitiativeForm = () => {
       {step === 1 && (
         <>
           <Form
-            idPrefix="resource_"
+            idPrefix="initiative"
             schema={formSchema.schema}
             uiSchema={uiSchema}
             formData={initiativeFormData.data}
@@ -142,14 +146,6 @@ const AddInitiativeForm = () => {
               Fire
             </button>
           </Form>
-          <Button
-            loading={sending}
-            type="primary"
-            size="large"
-            onClick={(e) => btnSubmit.current.click()}
-          >
-            Submit
-          </Button>
         </>
       )}
       {step === 2 && (

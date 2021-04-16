@@ -10,8 +10,13 @@
     "classNames": "list-group",
     "S2_G1": {
       "classNames": "list-group-item",
-      "S2_G1_2": {},
-      "S2_G1_3": {},
+      "S2_G1_2": {
+        "ui:placeholder": "Please enter a name/title for this Initiative."
+      },
+      "S2_G1_3": {
+        "ui:placeholder": "Please provide a very short summary of the Initiative.",
+        "ui:widget": "textarea"
+      },
       "S2_G1_4": {
         "ui:widget": "checkboxes",
         "ui:options": {
