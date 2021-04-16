@@ -4,6 +4,10 @@
     "S1": {
       "title": "SUBMITTER",
       "type": "object",
+      "depend": {
+        "id": "tabs",
+        "value": ["S1"]
+      },
       "properties": {
         "S1_1": {
           "title": "1. Are you submitting as an individual or on behalf of an Entity?",
@@ -16,6 +20,10 @@
     "S2": {
       "title": "TYPE OF INITIATIVE",
       "type": "object",
+      "depend": {
+        "id": "tabs",
+        "value": ["S2"]
+      },
       "properties": {
         "S2_G1": {
           "title": "G1. General",
@@ -579,6 +587,10 @@
     "S3": {
       "title": "SECTION 3: INITIATIVE DETAILS",
       "type": "object",
+      "depend": {
+        "id": "tabs",
+        "value": ["S3"]
+      },
       "properties": {
         "S3_G1": {
           "title": "G1. Part 1: Entities Involved",

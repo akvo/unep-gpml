@@ -1,5 +1,5 @@
 import { UIStore } from "../../store";
-import { Store } from "pullstate";
+import { initiativeData } from "./view";
 import React, { useEffect, useState, useRef } from "react";
 import { Button } from "antd";
 import api from "../../utils/api";
@@ -10,7 +10,7 @@ import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
 import widgets from "../../utils/forms";
 import { collectDependSchema, overideValidation } from "../../utils/forms";
-// import { findCountryIsoCode, handleGeoCoverageValue } from "./utils";
+import { findCountryIsoCode, handleGeoCoverageValue } from "../../utils/forms";
 import cloneDeep from "lodash/cloneDeep";
 import schema from "./schema.json";
 import uiSchema from "./uiSchema.json";
@@ -48,9 +48,8 @@ const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
   };
 };
 
-const resourceData = new Store({ data: {} });
-
 const AddInitiativeForm = () => {
+  const initiativeFormData = initiativeData.useState();
   const { countries, organisations, tags, currencies } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
   const [sending, setSending] = useState(false);
@@ -107,10 +106,14 @@ const AddInitiativeForm = () => {
   };
 
   const handleFormOnChange = ({ formData }) => {
-    console.log(formData);
-    resourceData.update((e) => {
-      e.data = formData;
+    // console.log(formData);
+    initiativeData.update((e) => {
+      e.data = {
+        ...e.data,
+        ...formData,
+      };
     });
+    // # TODO:: Need to check and refactor this function. can't map deep more than 2 children
     // to overide validation
     // let tmp = [];
     // collectDependSchema(tmp, formData, formSchema.schema);
@@ -125,7 +128,7 @@ const AddInitiativeForm = () => {
             idPrefix="resource_"
             schema={formSchema.schema}
             uiSchema={uiSchema}
-            formData={resourceData.currentState.data}
+            formData={initiativeFormData.data}
             onChange={(e) => handleFormOnChange(e)}
             onSubmit={(e) => handleOnSubmit(e)}
             ArrayFieldTemplate={ArrayFieldTemplate}

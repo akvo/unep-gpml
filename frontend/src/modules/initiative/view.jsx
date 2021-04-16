@@ -1,3 +1,4 @@
+import { Store } from "pullstate";
 import React, { useEffect } from "react";
 import { Row, Col, Card, Menu, Steps, Tabs } from "antd";
 import "./styles.scss";
@@ -8,48 +9,97 @@ const { TabPane } = Tabs;
 
 const tabs = [
   {
-    key: "submitter",
+    key: "S1",
     title: "Submitter",
     desc: "",
     steps: [
       {
-        key: "personal-information",
+        key: "S1-p1-personal-information",
         title: "Personal Information",
         desc: "",
       },
     ],
   },
   {
-    key: "type-of-initiative",
+    key: "S2",
     title: "Type of Initiative",
     desc: "",
     steps: [
       {
-        key: "general",
-        title: "General",
+        key: "S2-p1-general",
+        title: "Part 1: General",
         desc: "",
       },
       {
-        key: "reporting-and-measuring",
-        title: "Reporting and Measuring",
+        key: "S2-p2-reporting-and-measuring",
+        title: "Part 2: Reporting and Measuring",
         desc: "",
       },
       {
-        key: "drivers-and-barriers",
-        title: "Drivers and Barriers",
+        key: "S2-p3-drivers-and-barriers",
+        title: "Part 3: Drivers and Barriers",
         desc: "",
       },
     ],
   },
   {
-    key: "initiative-details",
+    key: "S3",
     title: "Initiative Details",
     desc: "",
-    steps: [],
+    steps: [
+      {
+        key: "S3-p1-entities-involved",
+        title: "Part 1: Entities Involved",
+        desc: "",
+      },
+      {
+        key: "S3-p2-location-and-coverage",
+        title: "Part 2: Location & Coverage",
+        desc: "",
+      },
+      {
+        key: "S3-p3-initiative-scope-and-target",
+        title: "Part 3: Initiative Scope & Target",
+        desc: "",
+      },
+      {
+        key: "S3-p4-total-stakeholders-engaged",
+        title: "Part 4: Total Stakeholders Engaged",
+        desc: "",
+      },
+      {
+        key: "S3-p5-funding",
+        title: "Part 5: Funding",
+        desc: "",
+      },
+      {
+        key: "S3-p6-duration",
+        title: "Part 6: Duration",
+        desc: "",
+      },
+      {
+        key: "S3-p7-related-resource-and-contact",
+        title: "Part 7: Related Resource and Contact",
+        desc: "",
+      },
+    ],
   },
 ];
 
+export const initiativeData = new Store({
+  data: {
+    tabs: ["S1"],
+    steps: {
+      S1: 0,
+      S2: 0,
+      S3: 0,
+    },
+  },
+});
+
 const AddInitiative = ({ ...props }) => {
+  const { data } = initiativeData.useState();
+
   useEffect(() => {
     props.updateDisclaimer(null);
   }, []);
@@ -61,11 +111,32 @@ const AddInitiative = ({ ...props }) => {
     ));
   };
 
+  const handleOnTabChange = (key) => {
+    initiativeData.update((e) => {
+      e.data = {
+        ...e.data,
+        tabs: [key],
+      };
+    });
+  };
+
+  const handleOnStepClick = (current, section) => {
+    initiativeData.update((e) => {
+      e.data = {
+        ...e.data,
+        steps: {
+          ...e.data.steps,
+          [section]: current,
+        },
+      };
+    });
+  };
+
   return (
     <div id="add-initiative">
       <div className="ui container">
         <div className="form-container">
-          <Tabs type="card">
+          <Tabs type="card" onChange={(e) => handleOnTabChange(e)}>
             {tabs.map(({ key, title, desc, steps }) => (
               <TabPane tab={title} key={key}>
                 <Row>
@@ -73,14 +144,15 @@ const AddInitiative = ({ ...props }) => {
                     <Steps
                       direction="vertical"
                       size="small"
-                      onChange={(e) => console.log(e)}
+                      current={data.steps[key]}
+                      onChange={(e) => handleOnStepClick(e, key)}
                     >
                       {renderSteps(steps)}
                     </Steps>
                   </Col>
                   <Col xs={20} lg={16}>
                     <Card>
-                      <AddInitiativeForm countries={props.countries} />
+                      <AddInitiativeForm />
                     </Card>
                   </Col>
                 </Row>
@@ -88,59 +160,6 @@ const AddInitiative = ({ ...props }) => {
             ))}
           </Tabs>
         </div>
-        {/* <Row className="form-container">
-          <Col xs={4} lg={8}>
-            <Menu
-              defaultSelectedKeys={["submitter"]}
-              style={{
-                width: "100%",
-                color: "#046799",
-                fontWeight: "bold",
-                backgroundColor: "#fff",
-              }}
-            >
-              <Menu.Item key="submitter" onClick={() => console.log("click")}>
-                <Steps direction="vertical" size="small" current={1}>
-                  <Step
-                    title="Submitter"
-                    description="Total Required fields: 1 out of 1 filled in."
-                  />
-                  <Step
-                    title="Personal information"
-                    description="Required fields: 0 out of 1 filled in."
-                  />
-                </Steps>
-              </Menu.Item>
-              <Menu.Item
-                key="type-of-initiative"
-                onClick={() => console.log("click")}
-              >
-                <Steps direction="vertical" size="small">
-                  <Step
-                    title="Type of Initiative"
-                    description="Total Required fields: 1 out of 1 filled in."
-                  />
-                </Steps>
-              </Menu.Item>
-              <Menu.Item
-                key="initiative-details"
-                onClick={() => console.log("click")}
-              >
-                <Steps direction="vertical" size="small">
-                  <Step
-                    title="Initiative Details"
-                    description="Total Required fields: 1 out of 1 filled in."
-                  />
-                </Steps>
-              </Menu.Item>
-            </Menu>
-          </Col>
-          <Col xs={20} lg={16}>
-            <Card>
-              <AddInitiativeForm countries={props.countries} />
-            </Card>
-          </Col>
-        </Row> */}
       </div>
     </div>
   );

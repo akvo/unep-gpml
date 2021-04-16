@@ -13,22 +13,37 @@
       "S2_G1_2": {},
       "S2_G1_3": {},
       "S2_G1_4": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S2_G1_4.1.1": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S2_G1_4.1.2": {},
       "S2_G1_4.2.1": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S2_G1_4.2.2": {},
       "S2_G1_4.3.1": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S2_G1_4.3.2": {},
       "S2_G1_4.4.1": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S2_G1_4.4.2": {},
       "S2_G1_4.4.3": {},
@@ -58,19 +73,34 @@
       },
       "S2_G2_6": {},
       "S2_G2_7": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S2_G2_7.1": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S2_G2_7.1_1": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S2_G2_7.1_2": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S2_G2_7.2": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S2_G2_7.3": {},
       "S2_G2_8": {
@@ -81,7 +111,10 @@
         "ui:widget": "radio"
       },
       "S2_G2_11": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S2_G2_12": {},
       "S2_G2_13": {},
@@ -105,10 +138,16 @@
     "S2_G3": {
       "classNames": "list-group-item",
       "S2_G3_14": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S2_G3_15": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "ui:order": ["S2_G3_14", "S2_G3_15"]
     },
@@ -178,19 +217,31 @@
     "S3_G3": {
       "classNames": "list-group-item",
       "S3_G3_26": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S3_G3_27": {},
       "S3_G3_28": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S3_G3_29": {},
       "S3_G3_30": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "S3_G3_31": {},
       "S3_G3_32": {
-        "ui:widget": "checkboxes"
+        "ui:widget": "checkboxes",
+        "ui:options": {
+          "inline": true
+        }
       },
       "ui:order": [
         "S3_G3_26",
