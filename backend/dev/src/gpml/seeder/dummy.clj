@@ -125,13 +125,10 @@
               :spec))
 
   ;; Create New Account as Admin
-  (get-or-create-profile db "ivan@akvo.org" "Iván Perdomo")
-  #_(associate-geo db {:stakeholder 1} ["Africa" "Europe"])
+  (get-or-create-profile db "test@akvo.org" "Testing Profile")
 
   ;; Create New Account or Get Account
   ;; Then create dummy events with the account
-  (submit-dummy-event db "deden@akvo.org" "Deden Bangkit")
-
-  (associate-url db {:event 1})
+  (submit-dummy-event db "test@akvo.org" "Testing Profile")
 
   )
