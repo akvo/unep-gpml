@@ -46,3 +46,36 @@ docker run \
 
 We run the `mapshaper` command line version with the proper arguments. This will generate a
 simplified file (`unep-gpml.topo.json`) in [TopoJSON](https://github.com/topojson/topojson) format.
+
+
+## Seed Dummy Data
+
+Dummy data is used for UI test with live data and to simplify the process of account registration.
+
+```clojure
+(:require [duct.core :as duct]
+          [gpml.seeder.dummy :as dummy]
+          [integrant.core :as ig])
+
+(defn- dev-system
+  []
+  (-> (duct/resource "gpml/config.edn")
+      (duct/read-config)
+      (duct/prep-config [:duct.profile/dev])))
+
+(def db (-> (dev-system)
+              (ig/init [:duct.database.sql/hikaricp])
+              :duct.database.sql/hikaricp
+              :spec))
+
+  ;; Create New Account as Admin
+  ;; Params: db, email, fullname
+  (dummy/get-or-create-profile db "test@akvo.org" "Testing Profile")
+
+  ;; Create New Account or Get Account
+  ;; Then create dummy events with the account
+  ;; Params: db, email, fullname
+  (dummy/submit-dummy-event db "test@akvo.org" "Testing Profile")
+
+```
+For further detail, please check: [dummy.clj](https://github.com/akvo/unep-gpml/blob/6698da2c9fbac2679ec54a5998860d67f064f578/backend/dev/src/gpml/seeder/dummy.clj) file
