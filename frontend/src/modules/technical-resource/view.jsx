@@ -1,3 +1,4 @@
+import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Card, Button, Switch } from "antd";
 import "./styles.scss";
@@ -12,6 +13,17 @@ const AddTechnicalResource = ({ ...props }) => {
     props.updateDisclaimer(null);
   }, []);
 
+  useEffect(() => {
+    UIStore.update((e) => {
+      e.highlight = highlight;
+    });
+  }, [highlight]);
+
+  const handleOnClickBtnSubmit = (e) => {
+    setHighlight(true);
+    btnSubmit.current.click();
+  };
+
   return (
     <div id="add-technical-resource">
       <div className="form-info-wrapper">
@@ -25,19 +37,19 @@ const AddTechnicalResource = ({ ...props }) => {
             </Col>
             <Col xs={24} lg={13}>
               <div className="form-meta">
-                <div>
-                  {/* <Switch
+                <div className="highlight">
+                  <Switch
                     checked={highlight}
                     size="small"
                     onChange={(status) => setHighlight(status)}
                   />{" "}
-                  Highlight required */}
+                  Highlight required
                 </div>
                 <Button
                   loading={sending}
                   type="primary"
                   size="large"
-                  onClick={(e) => btnSubmit.current.click()}
+                  onClick={(e) => handleOnClickBtnSubmit(e)}
                 >
                   Submit
                 </Button>

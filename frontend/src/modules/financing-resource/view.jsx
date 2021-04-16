@@ -37,7 +37,7 @@ const AddFinancingResource = ({ ...props }) => {
             </Col>
             <Col xs={24} lg={13}>
               <div className="form-meta">
-                <div>
+                <div className="highlight">
                   <Switch
                     checked={highlight}
                     size="small"

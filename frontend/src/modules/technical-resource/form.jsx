@@ -66,7 +66,16 @@ const AddResourceForm = ({
     if (formSchema.loading && tags?.technicalResourceType) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [tags?.technicalResourceType]);
+  }, [tags?.technicalResourceType, formSchema]);
+
+  useEffect(() => {
+    if (!formSchema.loading) {
+      setFormSchema({ schema: schema, loading: true });
+    }
+    if (formSchema.loading && tags?.financingMechanism) {
+      setFormSchema(getSchema(UIStore.currentState, false));
+    }
+  }, [highlight]);
 
   const handleOnSubmit = ({ formData }) => {
     let data = { ...formData, resourceType: "Technical Resource" };
@@ -107,6 +116,12 @@ const AddResourceForm = ({
     setDependValue(tmp);
   };
 
+  const handleTransformErrors = (errors, dependValue) => {
+    const res = overideValidation(errors, dependValue);
+    (res.length === 0) && setHighlight(false);
+    return res;
+  }
+
   return (
     <div className="add-resource-form">
       {step === 1 && (
@@ -122,7 +137,7 @@ const AddResourceForm = ({
             ObjectFieldTemplate={ObjectFieldTemplate}
             FieldTemplate={FieldTemplate}
             widgets={widgets}
-            transformErrors={(errors) => overideValidation(errors, dependValue)}
+            transformErrors={(errors) => handleTransformErrors(errors, dependValue)}
             showErrorList={false}
           >
             <button ref={btnSubmit} type="submit" style={{ display: "none" }}>

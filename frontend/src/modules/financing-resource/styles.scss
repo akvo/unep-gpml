@@ -37,6 +37,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .highlight {
+        font-weight: 500;
+      }
     }
   }
   .ant-card {
@@ -121,5 +124,6 @@
   .ant-btn-primary {
     // margin-top: 20px;
     text-transform: uppercase;
+    font-weight: 500;
   }
 }
