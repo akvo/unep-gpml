@@ -105,6 +105,7 @@
     (resp/created (:referrer req) {:message "New resource created" :id resource-id})))))
 
 (def post-params
+  [:and
   [:map
    [:resource_type
     [:enum "Financing Resource", "Technical Resource", "Action Plan"]]
@@ -123,11 +124,11 @@
       [:vector {:min 1 :error/message "Need at least one of geo coverage value"} string?]]]]
    [:publish_year integer?]
    [:summary {:optional true} string?]
-   [:value integer?]
-   [:value_currency string?]
+   [:value {:optional true} integer?]
+   [:value_currency {:optional true} string?]
    [:value_remarks {:optional true} string?]
-   [:valid_from string?]
-   [:valid_to string?]
+   [:valid_from {:optional true} string?]
+   [:valid_to {:optional true} string?]
    [:geo_coverage_type
     [:enum "global", "regional", "national", "transnational",
      "sub-national", "global with elements in specific areas"]]
@@ -141,8 +142,31 @@
       [:lang string?]
       [:url [:string {:min 1}]]]]]
    [:tags {:optional true}
-    [:vector {:optional true} int?]]])
+    [:vector {:optional true} int?]]]
+  [:fn {:error/message "value is required" :error/path [:value]}
+      (fn [{:keys [resource_type value]}]
+        (or
+         (and (= "Technical Resource" resource_type) (empty? value))
+         (and (= "Financing Resource" resource_type) (some? value))
+        ))]
+  [:fn {:error/message "value_currency is required" :error/path [:value_currency]}
+      (fn [{:keys [resource_type value_currency]}]
+        (or
+         (and (= "Technical Resource" resource_type) (empty? value_currency))
+         (and (= "Financing Resource" resource_type) (some? value_currency))
+        ))]
+  [:fn {:error/message "valid_from is required" :error/path [:valid_from]}
+      (fn [{:keys [resource_type valid_from]}]
+        (or
+         (and (= "Technical Resource" resource_type) (empty? valid_from))
+         (and (= "Financing Resource" resource_type) (some? valid_from))
+        ))]
+  [:fn {:error/message "valid_to is required" :error/path [:valid_to]}
+      (fn [{:keys [resource_type valid_to]}]
+        (or
+         (and (= "Technical Resource" resource_type) (empty? valid_to))
+         (and (= "Financing Resource" resource_type) (some? valid_to))
+         ))]])
 
 (defmethod ig/init-key :gpml.handler.resource/post-params [_ _]
   post-params)
-
