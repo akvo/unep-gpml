@@ -54,10 +54,19 @@ const AdminSection = ({
   const [previewContent, storePreviewContent] = useState({});
 
   const review = (item, review_status) => () => {
+    const itemType =
+      item.type === "profile"
+        ? "stakeholder"
+        : ["Technical Resource", "Financing Resource", "Action Plan"].includes(
+            item.type
+          )
+        ? "resource"
+        : item.type;
     api
-      .put(`/${item.type}/review`, {
+      .put("submission", {
         id: item.id,
-        review_status: review_status,
+        itemType: itemType,
+        reviewStatus: review_status,
       })
       .then(() => {
         let title = item.title;
@@ -77,7 +86,16 @@ const AdminSection = ({
           data: [newArchive, ...archiveData],
           count: archiveItems.count + 1,
         });
-        setPendingItems(pendingItems.filter((it) => it.id !== item.id));
+        api
+          .get(
+            "/submission?page=" +
+              pendingItems.page +
+              "&limit=" +
+              pendingItems.limit
+          )
+          .then((res) => {
+            setPendingItems(res.data);
+          });
         setModalRejectVisible(false);
       });
   };
@@ -144,23 +162,32 @@ const AdminSection = ({
                     }}
                   >
                     <Space size="middle">
-                      {item.emailVerified ? (
+                      {item.type === "profile" ? (
+                        item.emailVerified ? (
+                          <Button
+                            type="primary"
+                            onClick={review(item, "APPROVED")}
+                          >
+                            Approve
+                          </Button>
+                        ) : (
+                          <Tooltip title="Profile cannot be approved since email is not verified">
+                            <Button
+                              type="secondary"
+                              disabled={true}
+                              onClick={review(item, "APPROVED")}
+                            >
+                              Approve
+                            </Button>
+                          </Tooltip>
+                        )
+                      ) : (
                         <Button
                           type="primary"
                           onClick={review(item, "APPROVED")}
                         >
                           Approve
                         </Button>
-                      ) : (
-                        <Tooltip title="Profile cannot be approved since email is not verified">
-                          <Button
-                            type="primary"
-                            disabled={true}
-                            onClick={review(item, "APPROVED")}
-                          >
-                            Approve
-                          </Button>
-                        </Tooltip>
                       )}
                       <Button type="link" onClick={reject(item, "REJECTED")}>
                         Decline

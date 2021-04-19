@@ -68,7 +68,7 @@
    :affiliation (:id (get-org-id db))
    :picture "https://directory.growasia.org/wp-content/uploads/solution_logos/0.jpg"})
 
-(defn get-or-create-profile [db my-email my-name]
+(defn get-or-create-profile [db my-email my-name role review-status]
   (let [profile (db.stakeholder/stakeholder-by-email db {:email my-email})]
     (if profile
       profile
@@ -82,7 +82,7 @@
                                     :geo_coverage_type "regional"
                                     :geo_coverage_value ["Africa" "Europe"]}))]
         (db.stakeholder/update-stakeholder-role
-          db (assoc new-profile :role "ADMIN" :review_status "APPROVED"))
+          db (assoc new-profile :role role :review_status review-status))
         (doseq [tag ["general" "seeking" "offering"]]
           (jdbc/insert-multi!
             db :stakeholder_tag (associate-tags db {:stakeholder (:id new-profile)} tag)))
@@ -92,7 +92,7 @@
         (db.stakeholder/stakeholder-by-id db new-profile)))))
 
 (defn submit-dummy-event [db my-email my-name]
-  (let [profile (get-or-create-profile db my-email my-name)
+  (let [profile (get-or-create-profile db my-email my-name "ADMIN" "APPROVED")
         dummies (map-indexed (fn [idx data]
                        (-> data
                            (assoc :title (str "Dummy Event - " idx)
@@ -125,7 +125,9 @@
               :spec))
 
   ;; Create New Account as Admin
-  (get-or-create-profile db "test@akvo.org" "Testing Profile")
+  (get-or-create-profile db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
+  ;; Create New Account as Unreviewed user
+  (get-or-create-profile db "anothertest@akvo.org" "Another Testing" "USER" "SUBMITTED")
 
   ;; Create New Account or Get Account
   ;; Then create dummy events with the account

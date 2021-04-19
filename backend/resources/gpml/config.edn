@@ -52,7 +52,8 @@
                                                  :handler #ig/ref :gpml.handler.archive/get}}]]
                                         ["/submission" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                      #ig/ref :gpml.auth/auth-required
-                                                                     #ig/ref :gpml.auth/approved-user]}
+                                                                     #ig/ref :gpml.auth/approved-user
+                                                                     #ig/ref :gpml.auth/admin-required-middleware]}
                                          [""
                                           {:get {:summary "Get the list of pending submission"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
@@ -60,7 +61,11 @@
                                                                                    :default 1} int?]
                                                                            [:limit {:optional true
                                                                                     :default 10} int?]]}
-                                                 :handler #ig/ref :gpml.handler.submission/get}}]
+                                                 :handler #ig/ref :gpml.handler.submission/get}
+                                           :put {:summary "Update pending submission"
+                                                 :swagger {:tags ["submission"] :security [{:id_token []}]}
+                                                 :parameters {:body #ig/ref :gpml.handler.submission/put-params}
+                                                 :handler #ig/ref :gpml.handler.submission/put}}]
                                          ["/{submission}/{id}"
                                           {:get {:summary "Get the detail of pending submission"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
@@ -188,8 +193,14 @@
   :gpml.handler.browse/query-params {}
 
   :gpml.handler.archive/get {:db #ig/ref :duct.database/sql}
-  :gpml.handler.submission/get {:db #ig/ref :duct.database/sql}
+
+  :gpml.handler.submission/get {:db #ig/ref :duct.database/sql
+                                :auth0 {:domain #duct/env "OIDC_ISSUER"
+                                        :client-id #duct/env "AUTH0_BACKEND_CLIENT_ID"
+                                        :secret #duct/env "AUTH0_BACKEND_SECRET"}}
   :gpml.handler.submission/get-detail {:db #ig/ref :duct.database/sql}
+  :gpml.handler.submission/put {:db #ig/ref :duct.database/sql}
+  :gpml.handler.submission/put-params {}
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
 
