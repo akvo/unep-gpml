@@ -43,14 +43,17 @@ const SignupModal = ({ visible, onCancel }) => {
       return;
     }
     let modal = document.getElementsByClassName("signup-modal");
-    if (modal) {
+    if (modal.length > 0) {
       let modalContent = document.getElementsByClassName("ant-modal-wrap");
-      modalContent &&
+      modalContent.length > 0 &&
         modalContent[0].addEventListener("scroll", (e) => {
-          document.getElementsByClassName("ant-select-dropdown") &&
-            document
-              .getElementsByClassName("ant-select-dropdown")
-              .forEach((x) => x.classList.add("ant-select-dropdown-hidden"));
+          let selectDropdown = document.getElementsByClassName(
+            "ant-select-dropdown"
+          );
+          selectDropdown.length > 0 &&
+            Array.prototype.forEach.call(selectDropdown, (x) =>
+              x.classList.add("ant-select-dropdown-hidden")
+            );
         });
     }
   }, [visible]);
