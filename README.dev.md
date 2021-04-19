@@ -69,13 +69,12 @@ Dummy data is used for UI test with live data and to simplify the process of acc
               :spec))
 
   ;; Create New Account as Admin
-  ;; Params: db, email, fullname
-  (dummy/get-or-create-profile db "test@akvo.org" "Testing Profile")
+  (get-or-create-profile db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
+  ;; Create New Account as Unapproved user
+  (get-or-create-profile db "anothertest@akvo.org" "Another Testing" "USER" "SUBMITTED")
 
-  ;; Create New Account or Get Account
-  ;; Then create dummy events with the account
-  ;; Params: db, email, fullname
-  (dummy/submit-dummy-event db "test@akvo.org" "Testing Profile")
-
+  ;; Create New Admin Account or Get Account
+  ;; Then create unapproved dummy events with the account
+  (submit-dummy-event db "test@akvo.org" "Testing Profile")
 ```
 For further detail, please check: [dummy.clj](https://github.com/akvo/unep-gpml/blob/6698da2c9fbac2679ec54a5998860d67f064f578/backend/dev/src/gpml/seeder/dummy.clj) file

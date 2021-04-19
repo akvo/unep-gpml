@@ -126,11 +126,11 @@
 
   ;; Create New Account as Admin
   (get-or-create-profile db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
-  ;; Create New Account as Unreviewed user
+  ;; Create New Account as Unapproved user
   (get-or-create-profile db "anothertest@akvo.org" "Another Testing" "USER" "SUBMITTED")
 
   ;; Create New Account or Get Account
-  ;; Then create dummy events with the account
+  ;; Then create unapproved dummy events with the account
   (submit-dummy-event db "test@akvo.org" "Testing Profile")
 
   )
