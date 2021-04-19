@@ -62,7 +62,7 @@
             {:approved false
              :search-text "eco"
              :geo-coverage #{"USA"}
-             :topic #{"project" "event"}})
+             :topic #{"project" "event" "stakeholder"}})
 
            {:approved false
             :search-text "eco"
@@ -77,7 +77,7 @@
             :search-text "eco"
             :geo-coverage #{"USA"}
             :topic #{"project" "event" "technology" "financing_resource" "people"
-                     "technical_resource" "action_plan" "policy" "stakeholder"}})))
+                     "technical_resource" "action_plan" "policy"}})))
 
   (testing "Topics for approved users unchanged"
     (is (= (browse/modify-db-filter-topics

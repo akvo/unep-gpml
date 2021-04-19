@@ -65,7 +65,7 @@
 (defn maybe-filter-private-topics [topics approved?]
   (or (and approved? topics)
       (->> topics
-           (filter #(not (contains? #{"organisation"} %)))
+           (filter #(not (contains? #{"organisation" "stakeholder"} %)))
            vec)))
 
 (defn modify-db-filter-topics [db-filter]
@@ -80,9 +80,7 @@
   (let [data (->> query
                   (get-db-filter)
                   (merge {:approved approved?})
-                  ;; (Deden) comment this stakeholder since migration 061
-                  ;; @puneeth please verify if it's correct
-                  #_(modify-db-filter-topics)
+                  (modify-db-filter-topics)
                   (db.browse/filter-topic db)
                   (map (fn [{:keys [json geo_coverage_iso_code topic]}]
                          (merge

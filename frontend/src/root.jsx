@@ -359,7 +359,6 @@ const AddButton = withRouter(
                 <Menu.Item onClick={() => history.push("/add-event")}>
                   Event
                 </Menu.Item>
-                {/*
                 <Menu.Item
                   onClick={() => history.push("/add-financing-resource")}
                 >
@@ -372,7 +371,7 @@ const AddButton = withRouter(
                 </Menu.Item>
                 <Menu.Item onClick={() => history.push("/add-initiative")}>
                   Initiative
-                </Menu.Item>*/}
+                </Menu.Item>
               </Menu>
             }
             trigger={["click"]}
