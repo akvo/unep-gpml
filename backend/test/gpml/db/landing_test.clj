@@ -136,11 +136,11 @@
           _ (add-country-data conn)
           summary (fn [& orgs]
                     (doseq [org orgs]
-                      (handler.profile/new-organisation conn org))
+                      (handler.profile/new-organisation conn {} org))
                     (let [summary (db.landing/summary conn)
                           orgs-data (->> summary
-                                      (filter #(= "organisation" (:resource_type %)))
-                                      first)]
+                                         (filter #(= "organisation" (:resource_type %)))
+                                         first)]
                       (clojure.java.jdbc/execute! conn "delete from organisation_geo_coverage")
                       (clojure.java.jdbc/execute! conn "delete from organisation")
                       ((juxt :count :country_count) orgs-data)))]
