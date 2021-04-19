@@ -64,6 +64,16 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: auth0-backend-secret
+        - name: MAILJET_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: mailjet-api-key
+        - name: MAILJET_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: mailjet-secret-key
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/secrets/cloudsql/credentials.json"
         readinessProbe:
