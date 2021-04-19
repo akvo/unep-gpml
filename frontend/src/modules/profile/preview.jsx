@@ -101,9 +101,9 @@ export const GeneralPreview = ({ item }) => {
           {item.type === "event" && (
             <div className="detail-title">Description</div>
           )}
-          {["Financing Resource", "Technology resource"].includes(
-            item.type
-          ) && <div className="detail-title">Summary</div>}
+          {["Financing Resource", "Technical Resource"].includes(item.type) && (
+            <div className="detail-title">Summary</div>
+          )}
           :
           <div className="detail-content">
             {item.description || item.summary || "-"}
@@ -133,7 +133,7 @@ export const GeneralPreview = ({ item }) => {
               </div>
             </li>
           ))}
-        {["Financing Resource", "Technology resource"].includes(item.type) && (
+        {["Financing Resource", "Technical Resource"].includes(item.type) && (
           <li>
             <div className="detail-title">Organisation</div>:
             <div className="detail-content">
