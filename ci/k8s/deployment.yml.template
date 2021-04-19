@@ -37,7 +37,7 @@ spec:
         env:
         - name: APP_NAME
           value: "${APP_NAME}"
-        - name: APP_URL
+        - name: APP_DOMAIN
           value: "https://${APP_DOMAIN}"
         - name: OIDC_ISSUER
           valueFrom:
