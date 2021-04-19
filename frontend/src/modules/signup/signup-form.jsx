@@ -18,25 +18,7 @@ import { storage } from "../../utils/storage";
 import GeoCoverageInput from "./comp/geo-coverage-input";
 import { useRef } from "react";
 
-const geoCoverageTypeOptions = [
-  "Global",
-  "Regional",
-  "National",
-  "Sub-national",
-  "Transnational",
-  "Global with elements in specific areas",
-];
-
-const sectorOptions = [
-  "Government",
-  "Private Sector",
-  "Foundations",
-  "Scientific and Technological Community and Academia",
-  "Non-Governmental Organization (NGO) and other Major Groups and Stakeholder (MGS)",
-  "Intergovernmental Organization (IGOs) and Multilateral Processes Actors",
-  "Private Citizens",
-];
-
+const { sectorOptions } = UIStore.currentState;
 const defaultFormSchema = {
   personalDetails: {
     account: {
@@ -184,7 +166,14 @@ const SignupForm = ({
   handleSubmitRef,
   isModal,
 }) => {
-  const { countries, tags, profile, organisations } = UIStore.currentState;
+  const {
+    countries,
+    tags,
+    profile,
+    organisations,
+    organisationType,
+    geoCoverageTypeOptions,
+  } = UIStore.currentState;
   const [noOrg, setNoOrg] = useState(false);
   const [pubEmail, setPubEmail] = useState({
     checked: false,
@@ -401,14 +390,10 @@ const SignupForm = ({
                           label: "Type of the entity",
                           required: true,
                           control: "select",
-                          options: [
-                            "Government",
-                            "Private Sector",
-                            "Academia and Scientific Community",
-                            "NGO and Major Groups and Stakeholders",
-                            "IGO and Multilateral Process Actor",
-                            "Other",
-                          ].map((it) => ({ value: it, label: it })),
+                          options: organisationType.map((it) => ({
+                            value: it,
+                            label: it,
+                          })),
                         };
                         newSchema["organisation"]["org.country"] = {
                           label: "Country",

@@ -20,6 +20,16 @@ const regionOptions = [
   "West Asia",
 ];
 
+const sectorOptions = [
+  "Government",
+  "Private Sector",
+  "Foundations",
+  "Scientific and Technological Community and Academia",
+  "Non-Governmental Organization (NGO) and other Major Groups and Stakeholder (MGS)",
+  "Intergovernmental Organization (IGOs) and Multilateral Processes Actors",
+  "Private Citizens",
+];
+
 const organisationType = [
   "Government",
   "Private Sector",
@@ -38,7 +48,8 @@ const UIStore = new Store({
   languages: languages,
   geoCoverageTypeOptions: geoCoverageTypeOptions,
   regionOptions: regionOptions,
-  organisationType: organisationType,
+  organisationType: sectorOptions,
+  sectorOptions: sectorOptions,
   highlight: false,
 });
 
