@@ -90,10 +90,14 @@ const tabs = [
 export const initiativeData = new Store({
   data: {
     tabs: ["S1"],
-    steps: {
-      S1: 0,
-      S2: 0,
-      S3: 0,
+    S1: {
+      steps: 0,
+    },
+    S2: {
+      steps: 0,
+    },
+    S3: {
+      steps: 0,
     },
   },
 });
@@ -107,6 +111,12 @@ const AddInitiative = ({ ...props }) => {
   useEffect(() => {
     props.updateDisclaimer(null);
   }, []);
+
+  useEffect(() => {
+    UIStore.update((e) => {
+      e.highlight = highlight;
+    });
+  }, [highlight]);
 
   const renderSteps = (steps) => {
     if (steps.length === 0) return;
@@ -125,17 +135,25 @@ const AddInitiative = ({ ...props }) => {
   };
 
   const handleOnStepClick = (current, section) => {
+    // move to form location when step clicked
     const id = `initiative_${section}_${section}_G${current + 1}`;
-    // window.location.hash = `#${id}`;
+    let element = document.getElementById(id);
+    element.scrollIntoView({ behavior: "smooth", block: "start" });
+
     initiativeData.update((e) => {
       e.data = {
         ...e.data,
-        steps: {
-          ...e.data.steps,
-          [section]: current,
+        [section]: {
+          ...e.data[section],
+          steps: current,
         },
       };
     });
+  };
+
+  const handleOnClickBtnSubmit = (e) => {
+    setHighlight(true);
+    btnSubmit.current.click();
   };
 
   return (
@@ -195,7 +213,7 @@ const AddInitiative = ({ ...props }) => {
                     <Steps
                       direction="vertical"
                       size="small"
-                      current={data.steps[key]}
+                      current={data[key]?.steps}
                       onChange={(e) => handleOnStepClick(e, key)}
                     >
                       {renderSteps(steps)}

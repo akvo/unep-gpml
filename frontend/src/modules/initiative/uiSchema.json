@@ -163,15 +163,18 @@
     "S3_G1": {
       "classNames": "list-group-item",
       "S3_G1_16": {
-        "ui:widget": "radio"
+        "ui:widget": "select",
+        "ui:showSearch": true
       },
       "S3_G1_17": {},
       "S3_G1_18": {
-        "ui:widget": "radio"
+        "ui:widget": "select",
+        "ui:showSearch": true
       },
       "S3_G1_19": {},
       "S3_G1_20": {
-        "ui:widget": "radio"
+        "ui:widget": "select",
+        "ui:showSearch": true
       },
       "S3_G1_21": {},
       "ui:order": [
@@ -187,27 +190,32 @@
       "classNames": "list-group-item",
       "S3_G2_22": {},
       "S3_G2_23": {
-        "ui:widget": "select"
+        "ui:widget": "select",
+        "ui:showSearch": true
       },
       "S3_G2_24": {
         "ui:widget": "select"
       },
       "S3_G2_24.1": {
-        "ui:widget": "select"
+        "ui:widget": "select",
+        "ui:mode": "multiple",
+        "ui:showSearch": true
       },
       "S3_G2_24.2": {
         "ui:widget": "select",
-        "ui:mode": "multiple"
+        "ui:showSearch": true
       },
-      "S3_G2_24.3": {
-        "ui:widget": "select",
-        "ui:mode": "multiple"
-      },
+      "S3_G2_24.3": {},
       "S3_G2_24.4": {
         "ui:widget": "select",
-        "ui:mode": "multiple"
+        "ui:mode": "multiple",
+        "ui:showSearch": true
       },
-      "S3_G2_24.5": {},
+      "S3_G2_24.5": {
+        "ui:widget": "select",
+        "ui:mode": "multiple",
+        "ui:showSearch": true
+      },
       "ui:order": [
         "S3_G2_22",
         "S3_G2_23",
@@ -243,10 +251,9 @@
       },
       "S3_G3_31": {},
       "S3_G3_32": {
-        "ui:widget": "checkboxes",
-        "ui:options": {
-          "inline": true
-        }
+        "ui:widget": "select",
+        "ui:showSearch": true,
+        "ui:mode": "multiple"
       },
       "ui:order": [
         "S3_G3_26",
@@ -271,11 +278,13 @@
       },
       "S3_G5_36": {},
       "S3_G5_36.1": {
-        "ui:widget": "select"
+        "ui:widget": "select",
+        "ui:showSearch": true
       },
       "S3_G5_37": {},
       "S3_G5_37.1": {
-        "ui:widget": "select"
+        "ui:widget": "select",
+        "ui:showSearch": true
       },
       "ui:order": [
         "S3_G5_35",
@@ -295,7 +304,12 @@
     },
     "S3_G7": {
       "classNames": "list-group-item",
-      "S3_G7_40": {},
+      "S3_G7_40": {
+        "ui:options": {
+          "showToolbar": true,
+          "orderable": false
+        }
+      },
       "S3_G7_41": {
         "ui:widget": "radio"
       },

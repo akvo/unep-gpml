@@ -31,12 +31,17 @@ const ArrayFieldTemplateItem = ({
 }) => {
   const { rowGutter = 24, toolbarAlign = "top" } = formContext;
 
+  // custom styling
+  const toolbarFlex = hasMoveDown || hasMoveUp ? "192px" : "80px";
+  const overideRemoveBtnStyle =
+    hasMoveDown || hasMoveUp ? BTN_STYLE : { width: "100%" };
+
   return (
     <Row align={toolbarAlign} key={`array-item-${index}`} gutter={rowGutter}>
       <Col flex="1">{children}</Col>
 
       {hasToolbar && showToolbar && (
-        <Col flex="192px">
+        <Col flex={toolbarFlex}>
           <Button.Group style={BTN_GRP_STYLE}>
             {(hasMoveUp || hasMoveDown) && (
               <Button
@@ -64,8 +69,8 @@ const ArrayFieldTemplateItem = ({
                 disabled={disabled || readonly}
                 icon={<DeleteOutlined />}
                 onClick={onDropIndexClick(index)}
-                style={BTN_STYLE}
-                type="primary"
+                style={overideRemoveBtnStyle}
+                type="danger"
               />
             )}
           </Button.Group>

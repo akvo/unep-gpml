@@ -5,6 +5,7 @@ import WrapIfAdditional from "./wrap-if-additional";
 
 const VERTICAL_LABEL_COL = { span: 24 };
 const VERTICAL_WRAPPER_COL = { span: 24 };
+const LABEL_STYLE = { marginBottom: "-3px" };
 
 const FieldTemplate = ({
   children,
@@ -51,8 +52,8 @@ const FieldTemplate = ({
     if (displayLabel) {
       if (!required) {
         return (
-          <>
-            {label}{" "}
+          <p style={LABEL_STYLE}>
+            {label}
             <span
               style={{
                 color: "#c2c2c2",
@@ -64,10 +65,10 @@ const FieldTemplate = ({
               {" "}
               - Optional
             </span>
-          </>
+          </p>
         );
       }
-      return label;
+      return <p style={LABEL_STYLE}>{label}</p>;
     }
     return "";
   };

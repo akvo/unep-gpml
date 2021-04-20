@@ -42,15 +42,17 @@ const NormalArrayFieldTemplate = ({
     // labelCol.className,
   );
 
-  useEffect(() => {
-    // add one items by default
-    if (items.length === 0) {
-      onAddClick();
-    }
-  }, []);
-
+  // custom options
+  const showToolbar = uiSchema["ui:options"]?.["showToolbar"];
   const group = uiSchema["ui:group"];
   const formGroup = group && items.length !== 0 && `group-${group}`;
+
+  useEffect(() => {
+    // add one items by default
+    if (group && items.length === 0) {
+      onAddClick();
+    }
+  }, [group]);
 
   return (
     <>
@@ -82,7 +84,7 @@ const NormalArrayFieldTemplate = ({
               items.map((itemProps) => (
                 <ArrayFieldTemplateItem
                   {...itemProps}
-                  showToolbar={false}
+                  showToolbar={showToolbar}
                   formContext={formContext}
                 />
               ))}
