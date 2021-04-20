@@ -29,7 +29,6 @@ import moment from "moment";
 import imageNotFound from "../../images/image-not-found.png";
 import logoNotFound from "../../images/logo-not-found.png";
 import uniqBy from "lodash/uniqBy";
-import find from "lodash/find";
 
 const renderItemValues = (params, mapping, data) => {
   const { profile, countries, languages } = UIStore.currentState;
@@ -104,7 +103,7 @@ const renderItemValues = (params, mapping, data) => {
                   data[key].map((x) => x.name).join(", ")}
                 {value === key &&
                   type === "country" &&
-                  find(countries, (it) => it.isoCode === data[key]).name}
+                  countries.find((it) => it.isoCode === data[key]).name}
                 {value === "custom" &&
                   type === "object" &&
                   data[key][customValue]}
@@ -154,7 +153,7 @@ const renderItemValues = (params, mapping, data) => {
                     <div className="scrollable">
                       {data[key]
                         .map((x) => {
-                          return find(countries, (it) => it.isoCode === x).name;
+                          return countries.find((it) => it.isoCode === x).name;
                         })
                         .join(", ")}
                     </div>
@@ -169,7 +168,7 @@ const renderItemValues = (params, mapping, data) => {
                     <div className="scrollable">
                       {data[key]
                         .map((x) => {
-                          return find(countries, (it) => it.isoCode === x).name;
+                          return countries.find((it) => it.isoCode === x).name;
                         })
                         .join(", ")}
                     </div>
@@ -180,7 +179,7 @@ const renderItemValues = (params, mapping, data) => {
                     data.geoCoverageType === "sub-national") &&
                   data[key]
                     .map((x) => {
-                      return find(countries, (it) => it.isoCode === x).name;
+                      return countries.find((it) => it.isoCode === x).name;
                     })
                     .join(", ")}
                 {/* EOF Country details */}
