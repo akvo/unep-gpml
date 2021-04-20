@@ -103,7 +103,7 @@ const renderItemValues = (params, mapping, data) => {
                   data[key].map((x) => x.name).join(", ")}
                 {value === key &&
                   type === "country" &&
-                  countries.find((it) => it.isoCode === data[key]).name}
+                  countries.find((it) => it.id === data[key]).name}
                 {value === "custom" &&
                   type === "object" &&
                   data[key][customValue]}
