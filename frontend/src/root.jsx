@@ -26,6 +26,8 @@ import sortBy from "lodash/sortBy";
 import AddFinancingResource from "./modules/financing-resource/view";
 import AddTechnicalResource from "./modules/technical-resource/view";
 import AddInitiative from "./modules/initiative/view";
+import AddActionPlan from "./modules/action-plan/view";
+import AddTechnology from "./modules/technology/view";
 
 api.get("/tag").then((resp) => {
   UIStore.update((e) => {
@@ -255,6 +257,18 @@ const Root = () => {
           )}
         />
         <Route
+          path="/add-technology"
+          render={(props) => (
+            <AddTechnology {...props} updateDisclaimer={updateDisclaimer} />
+          )}
+        />
+        <Route
+          path="/add-action-plan"
+          render={(props) => (
+            <AddActionPlan {...props} updateDisclaimer={updateDisclaimer} />
+          )}
+        />
+        <Route
           path="/add-financing-resource"
           render={(props) => (
             <AddFinancingResource
@@ -359,7 +373,9 @@ const AddButton = withRouter(
                 <Menu.Item onClick={() => history.push("/add-event")}>
                   Event
                 </Menu.Item>
-                {/*
+                {/* <Menu.Item onClick={() => history.push("/add-action-plan")}>
+                  Action Plan
+                </Menu.Item>
                 <Menu.Item
                   onClick={() => history.push("/add-financing-resource")}
                 >
@@ -372,7 +388,10 @@ const AddButton = withRouter(
                 </Menu.Item>
                 <Menu.Item onClick={() => history.push("/add-initiative")}>
                   Initiative
-                </Menu.Item>*/}
+                </Menu.Item>
+                <Menu.Item onClick={() => history.push("/add-technology")}>
+                  Technology
+                </Menu.Item> */}
               </Menu>
             }
             trigger={["click"]}
