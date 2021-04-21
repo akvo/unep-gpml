@@ -21,14 +21,9 @@ const Form = withTheme(AntDTheme);
 
 const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
   const prop = cloneDeep(schema.properties);
-  const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
-  prop.org.enum = orgs?.map((it) => it.id);
-  prop.org.enumNames = orgs?.map((it) => it.name);
-  // prop.value.properties.valueCurrency = {
-  //   ...prop.value.properties.valueCurrency,
-  //   enum: currencies?.map((x, i) => x.value),
-  //   enumNames: currencies?.map((x, i) => x.label),
-  // };
+  // const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
+  // prop.org.enum = orgs?.map((it) => it.id);
+  // prop.org.enumNames = orgs?.map((it) => it.name);
   prop.country.enum = countries?.map((x, i) => x.id);
   prop.country.enumNames = countries?.map((x, i) => x.name);
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
@@ -75,7 +70,6 @@ const AddTechnologyForm = ({
 
   useEffect(() => {
     if (!formSchema.loading) {
-      console.log(tags);
       setFormSchema({ schema: schema, loading: true });
     }
     if (formSchema.loading && tags?.technology) {
@@ -86,31 +80,21 @@ const AddTechnologyForm = ({
   const handleOnSubmit = ({ formData }) => {
     let data = { ...formData, resourceType: "Action Plan" };
 
-    data?.newOrg && delete data.newOrg;
-    data.org = { id: formData.org };
-    if (formData.org === -1) {
-      data.org = {
-        ...formData.newOrg,
-        id: formData.org,
-      };
-      data.org.country = findCountryIsoCode(formData.newOrg.country, countries);
-      data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
-    }
-
-    // delete data.value;
-    // data.value = formData.value.valueAmount;
-    // data.valueCurrency = formData.value.valueCurrency;
-    // if (formData?.value?.valueRemark)
-    //   data.valueRemarks = formData.value.valueRemark;
-
-    // delete data.date;
-    // data.validFrom = formData.date.validFrom;
-    // data.validTo = formData?.date?.validTo || "Ongoing";
+    // data?.newOrg && delete data.newOrg;
+    // data.org = { id: formData.org };
+    // if (formData.org === -1) {
+    //   data.org = {
+    //     ...formData.newOrg,
+    //     id: formData.org,
+    //   };
+    //   data.org.country = findCountryIsoCode(formData.newOrg.country, countries);
+    //   data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
+    // }
 
     if (data?.relatedInfo?.email) data.email = formData.relatedInfo.email;
     if (data?.relatedInfo?.urls[0]?.url)
       data.urls = formData.relatedInfo.urls.filter((it) => it.url.length > 0);
-    delete data.relatedInfo;
+    data?.relatedInfo && delete data.relatedInfo;
 
     data = handleGeoCoverageValue(data, formData, countries);
     data?.image === "" && delete data.image;
