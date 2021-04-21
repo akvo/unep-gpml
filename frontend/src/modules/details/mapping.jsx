@@ -62,6 +62,12 @@ const detailActionPlan = [
     type: "array",
   },
   {
+    key: "country",
+    name: "Country of Origin",
+    value: "country",
+    type: "country",
+  },
+  {
     key: "geoCoverageValues",
     name: "Geo-Coverage",
     value: "geoCoverage",
@@ -130,6 +136,12 @@ const detailFinancingResource = [
     name: "Languages",
     value: "isoCode",
     type: "array",
+  },
+  {
+    key: "country",
+    name: "Country of Origin",
+    value: "country",
+    type: "country",
   },
   {
     key: "tags",
