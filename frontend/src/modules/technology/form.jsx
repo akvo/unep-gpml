@@ -78,7 +78,7 @@ const AddTechnologyForm = ({
   }, [highlight]);
 
   const handleOnSubmit = ({ formData }) => {
-    let data = { ...formData, resourceType: "Action Plan" };
+    let data = { ...formData };
 
     // data?.newOrg && delete data.newOrg;
     // data.org = { id: formData.org };
