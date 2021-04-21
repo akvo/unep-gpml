@@ -5,6 +5,9 @@ import { UIStore } from "../../store";
 import imageNotFound from "../../images/image-not-found.png";
 import { languages } from "countries-list";
 
+const currencyFormat = (cur) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: cur });
+
 const findCountries = (countries, item, isCountry = false) => {
   const {
     country,
@@ -109,27 +112,28 @@ export const GeneralPreview = ({ item }) => {
             {item.description || item.summary || "-"}
           </div>
         </li>
-        <li>
-          <div className="detail-title">Remarks</div>:
-          <div className="detail-content">{item.remarks || "-"}</div>
-        </li>
         {item?.publishYear && (
           <li>
             <div className="detail-title">Publish year</div>:
             <div className="detail-content">{item.publishYear}</div>
           </li>
         )}
-        {item.type === "Financing Resource" &&
-          [item.value, item.valueCurrency, item.valueRemarks].map((x, i) => (
-            <li key={"value" + i}>
-              <div className="detail-title">
-                {(i === 0 && "Value") ||
-                  (i === 1 && "Value Currency") ||
-                  "Value Remarks"}
+        {item.type === "Financing Resource" && (
+          <>
+            <li>
+              <div className="detail-title">Value</div>:
+              <div className="detail-content">
+                {(item.value &&
+                  currencyFormat(item.valueCurrency).format(item.value)) ||
+                  "-"}
               </div>
-              :<div className="detail-content">{x || "-"}</div>
             </li>
-          ))}
+            <li>
+              <div className="detail-title">Value Remarks</div>:
+              <div className="detail-content">{item?.valueRemarks || "-"}</div>
+            </li>
+          </>
+        )}
         {["Financing Resource", "Action Plan"].includes(item.type) &&
           [item.validFrom, item.validTo].map((x, i) => (
             <li key={"valid" + i}>
@@ -158,7 +162,7 @@ export const GeneralPreview = ({ item }) => {
           <li>
             <div className="detail-title">Event Date</div>:
             <div className="detail-content">
-              {moment(item.startDate).format("DD MMM YYYY")} to{" "}
+              {moment(item.startDate).format("DD MMM YYYY")} {"- "}
               {moment(item.endDate).format("DD MMM YYYY")}
             </div>
           </li>
@@ -173,6 +177,10 @@ export const GeneralPreview = ({ item }) => {
             <div className="detail-content">{item.city || "-"}</div>
           </li>
         )}
+        <li>
+          <div className="detail-title">Remarks</div>:
+          <div className="detail-content">{item.remarks || "-"}</div>
+        </li>
         <li className="has-border">
           <p className="section-title">Geo Coverage</p>
         </li>
@@ -200,7 +208,14 @@ export const GeneralPreview = ({ item }) => {
               <ul className={"ul-children"}>
                 {item.languages.map((x, i) => (
                   <li key={`url-${i}`}>
-                    {languages[x.isoCode].name} : {x.url}
+                    <a
+                      href={`https://${x.url.replace(/^.*:\/\//i, "")}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {`https://${x.url.replace(/^.*:\/\//i, "")}`}
+                    </a>{" "}
+                    <span className="lang">{languages[x.isoCode].name}</span>
                   </li>
                 ))}
               </ul>

@@ -23,6 +23,17 @@
   ul.ul-children li {
     list-style: circle;
     margin-left: 40px;
+    display: inline-block;
+
+    .lang {
+      &:after {
+        content: ")";
+      }
+
+      &:before {
+        content: "(";
+      }
+    }
   }
 
   .ant-collapse-arrow {
