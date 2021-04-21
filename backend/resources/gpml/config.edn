@@ -3,9 +3,6 @@
   :gpml.handler.main/handler {:routes [["/"
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.main/root}}]
-                                       ["/healthz"
-                                        {:get {:no-doc true
-                                               :handler #ig/ref :gpml.handler.main/root}}]
                                        ["/image/profile/{id}"
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.image/profile
@@ -22,6 +19,9 @@
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.env/get}}]
                                        ["/api"
+                                        ["/healthz"
+                                         {:get {:no-doc true
+                                                :handler #ig/ref :gpml.handler.main/root}}]
                                         ["/swagger.json"
                                          {:get {:no-doc true
                                                 :swagger {:info {:title "UNEP GPML Digital Platform"
