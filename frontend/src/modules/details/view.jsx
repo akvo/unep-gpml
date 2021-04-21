@@ -66,16 +66,15 @@ const renderItemValues = (params, mapping, data) => {
         data[key] ||
         data[key] === 0 ||
         key === null ||
-        (value === "countries" &&
-          data.geoCoverageType === "global" &&
-          showAllCountryList);
+        (value === "geoCoverage" && data.geoCoverageType);
 
       // Calculate country info to be displayed, based on geo coverage type
       let dataCountries = null;
-      if (value === "countries") {
+      if (value === "geoCoverage") {
         if (data.geoCoverageType === "global") {
-          dataCountries =
-            showAllCountryList && countries.map((it) => it.name).join(", ");
+          dataCountries = showAllCountryList
+            ? countries.map((it) => it.name).join(", ")
+            : null;
         } else if (data.geoCoverageType === "regional") {
           dataCountries = data[key]?.join(", ");
         } else {
@@ -160,8 +159,13 @@ const renderItemValues = (params, mapping, data) => {
                   data[key][customValue] &&
                   data[key][customValue].join(", ")}
 
-                {dataCountries && (
-                  <div className="scrollable">{dataCountries}</div>
+                {value === "geoCoverage" && (
+                  <>
+                    {capitalize(data.geoCoverageType)}
+                    {dataCountries && (
+                      <div className="scrollable">{dataCountries}</div>
+                    )}
+                  </>
                 )}
 
                 {value === "resource_url" && type === "array" && (

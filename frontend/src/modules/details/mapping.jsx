@@ -62,15 +62,9 @@ const detailActionPlan = [
     type: "array",
   },
   {
-    key: "geoCoverageType",
-    name: "Geo-Coverage",
-    value: "geoCoverageType",
-    type: "text",
-  },
-  {
     key: "geoCoverageValues",
-    name: "Country",
-    value: "countries",
+    name: "Geo-Coverage",
+    value: "geoCoverage",
     type: "array",
   },
   {
@@ -108,15 +102,9 @@ const detailFinancingResource = [
     type: "currency",
   },
   {
-    key: "geoCoverageType",
-    name: "Geo-Coverage",
-    value: "geoCoverageType",
-    type: "text",
-  },
-  {
     key: "geoCoverageValues",
-    name: "Country",
-    value: "countries",
+    name: "Geo-Coverage",
+    value: "geoCoverage",
     type: "array",
   },
   {
@@ -166,15 +154,9 @@ const detailEvent = [
   //     'type': 'link',
   // },
   {
-    key: "geoCoverageType",
-    name: "Geo-Coverage",
-    value: "geoCoverageType",
-    type: "text",
-  },
-  {
     key: "geoCoverageValues",
-    name: "Country",
-    value: "countries",
+    name: "Geo-Coverage",
+    value: "geoCoverage",
     type: "array",
   },
   {
@@ -193,17 +175,11 @@ const detailEvent = [
 
 const detailTechnology = [
   {
-    key: "geoCoverageType",
+    key: "geoCoverageValues",
     name: "Geo-Coverage",
-    value: "geoCoverageType",
-    type: "text",
+    value: "geoCoverage",
+    type: "array",
   },
-  // {
-  //     'key' : 'geoCoverageValues',
-  //     'name' : 'Country',
-  //     'value' : 'countries',
-  //     'type': 'array',
-  // },
   {
     key: "organisationType",
     name: "Organisation Type",
@@ -258,15 +234,9 @@ const detailPolicy = [
     type: "text",
   },
   {
-    key: "geoCoverageType",
-    name: "Geo-Coverage",
-    value: "geoCoverageType",
-    type: "text",
-  },
-  {
     key: "geoCoverageValues",
-    name: "Country",
-    value: "countries",
+    name: "Geo-Coverage",
+    value: "geoCoverage",
     type: "array",
   },
   {
@@ -327,15 +297,9 @@ const detailProject = [
     type: "array",
   },
   {
-    key: "geoCoverageType",
-    name: "Geo-Coverage",
-    value: "geoCoverageType",
-    type: "text",
-  },
-  {
     key: "geoCoverageValues",
-    name: "Country",
-    value: "countries",
+    name: "Geo-Coverage",
+    value: "geoCoverage",
     type: "array",
   },
   {
@@ -424,15 +388,9 @@ const detailStakeholder = [
     type: "country",
   },
   {
-    key: "geoCoverageType",
-    name: "Geo-Coverage",
-    value: "geoCoverageType",
-    type: "text",
-  },
-  {
     key: "geoCoverageValues",
-    name: "Geo-Coverage Country",
-    value: "countries",
+    name: "Geo-Coverage",
+    name: "Geo-Coverage",
     type: "array",
   },
   {
@@ -514,15 +472,9 @@ const detailOrganisation = [
     type: "link",
   },
   {
-    key: "geoCoverageType",
-    name: "Geo-Coverage",
-    value: "geoCoverageType",
-    type: "text",
-  },
-  {
     key: "geoCoverageValues",
-    name: "Country",
-    value: "countries",
+    name: "Geo-Coverage",
+    value: "geoCoverage",
     type: "array",
   },
   {
