@@ -3,6 +3,9 @@
   :gpml.handler.main/handler {:routes [["/"
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.main/root}}]
+                                       ["/healthz"
+                                        {:get {:no-doc true
+                                               :handler #ig/ref :gpml.handler.main/root}}]
                                        ["/image/profile/{id}"
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.image/profile
