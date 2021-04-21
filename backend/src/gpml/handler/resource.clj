@@ -105,8 +105,8 @@
     (resp/created (:referrer req) {:message "New resource created" :id resource-id})))))
 
 (defn or-and [resource_type validator]
-  (or (and (= "Technical Resource" resource_type) (empty? validator))
-      (and (= "Action Plan" resource_type))
+  (or (= "Action Plan" resource_type)
+      (and (= "Technical Resource" resource_type) (empty? validator))
       (and (= "Financing Resource" resource_type) (some? validator))))
 
 (def post-params
