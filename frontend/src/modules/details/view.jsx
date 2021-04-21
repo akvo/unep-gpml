@@ -86,6 +86,20 @@ const renderItemValues = (params, mapping, data) => {
         }
       }
 
+      // Calculate custom currency value to display
+      const [currency, amount, remarks] =
+        customValue?.map((it) => data[it]) || [];
+      const customCurrency =
+        value === "custom" &&
+        type === "currency" &&
+        (remarks
+          ? currency
+            ? `${currency} ${amount} - ${remarks}`
+            : `${amount} - ${remarks}`
+          : currency
+          ? `${currency} ${amount}`
+          : `${amount}`);
+
       return (
         <Fragment key={`${params.type}-${name}`}>
           {displayEntry && (
@@ -204,11 +218,7 @@ const renderItemValues = (params, mapping, data) => {
                   </ul>
                 )}
 
-                {value === "custom" &&
-                  type === "currency" &&
-                  `${data[customValue[0]] && data[customValue[0]]} ${
-                    data[customValue[1]] && data[customValue[1]]
-                  } - ${data[customValue[2]] && data[customValue[2]]}`}
+                {customCurrency}
 
                 {value === "custom" &&
                   type === "haveChild" &&
