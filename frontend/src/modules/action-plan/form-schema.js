@@ -106,10 +106,10 @@ export const schema = {
         },
       },
     },
-    // publishYear: {
-    //   title: "PUBLICATION YEAR",
-    //   type: "number",
-    // },
+    publishYear: {
+      title: "PUBLICATION YEAR",
+      type: "number",
+    },
     // value: {
     //   type: "object",
     //   title: "",
@@ -129,23 +129,23 @@ export const schema = {
     //     },
     //   },
     // },
-    // date: {
-    //   type: "object",
-    //   title: "",
-    //   required: ["validFrom"],
-    //   properties: {
-    //     validFrom: {
-    //       title: "VALID FROM",
-    //       type: "string",
-    //       format: "date",
-    //     },
-    //     validTo: {
-    //       title: "VALID TO",
-    //       type: "string",
-    //       format: "date",
-    //     },
-    //   },
-    // },
+    date: {
+      type: "object",
+      title: "",
+      required: ["validFrom"],
+      properties: {
+        validFrom: {
+          title: "VALID FROM",
+          type: "string",
+          format: "date",
+        },
+        validTo: {
+          title: "VALID TO",
+          type: "string",
+          format: "date",
+        },
+      },
+    },
     country: {
       title: "COUNTRY",
       enum: [],
@@ -288,9 +288,9 @@ export const uiSchema = {
       "ui:mode": "multiple",
     },
   },
-  // publishYear: {
-  //   "ui:placeholder": "YYYY",
-  // },
+  publishYear: {
+    "ui:placeholder": "YYYY",
+  },
   // value: {
   //   "ui:group": "border",
   //   valueAmount: {
@@ -306,18 +306,18 @@ export const uiSchema = {
   //     "ui:placeholder": "Value remark",
   //   },
   // },
-  // date: {
-  //   validFrom: {
-  //     "ui:placeholder": "YYYY-MM-DD",
-  //     "ui:widget": "date",
-  //     "ui:span": 12,
-  //   },
-  //   validTo: {
-  //     "ui:placeholder": "YYYY-MM-DD - Leave empty if ongoing",
-  //     "ui:widget": "date",
-  //     "ui:span": 12,
-  //   },
-  // },
+  date: {
+    validFrom: {
+      "ui:placeholder": "YYYY-MM-DD",
+      "ui:widget": "date",
+      "ui:span": 12,
+    },
+    validTo: {
+      "ui:placeholder": "YYYY-MM-DD - Leave empty if ongoing",
+      "ui:widget": "date",
+      "ui:span": 12,
+    },
+  },
   country: {
     "ui:placeholder": "Choose the resource country",
     "ui:widget": "select",

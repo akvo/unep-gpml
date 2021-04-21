@@ -102,9 +102,9 @@ const AddActionPlanForm = ({
     // if (formData?.value?.valueRemark)
     //   data.valueRemarks = formData.value.valueRemark;
 
-    // delete data.date;
-    // data.validFrom = formData.date.validFrom;
-    // data.validTo = formData?.date?.validTo || "Ongoing";
+    delete data.date;
+    data.validFrom = formData.date.validFrom;
+    data.validTo = formData?.date?.validTo || "Ongoing";
 
     if (data?.urls[0]?.url)
       data.urls = formData.urls.filter((it) => it.url.length > 0);
@@ -114,12 +114,11 @@ const AddActionPlanForm = ({
     data?.image === "" && delete data.image;
     data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
-    console.log(data);
-    // setSending(true);
-    // api.post("/resource", data).then(() => {
-    //   setSending(false);
-    //   setStep(2);
-    // });
+    setSending(true);
+    api.post("/resource", data).then(() => {
+      setSending(false);
+      setStep(2);
+    });
   };
 
   const handleFormOnChange = ({ formData }) => {
