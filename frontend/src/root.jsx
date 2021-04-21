@@ -28,6 +28,7 @@ import AddTechnicalResource from "./modules/technical-resource/view";
 import AddInitiative from "./modules/initiative/view";
 import AddActionPlan from "./modules/action-plan/view";
 import AddTechnology from "./modules/technology/view";
+import AddPolicy from "./modules/policy/view";
 
 api.get("/tag").then((resp) => {
   UIStore.update((e) => {
@@ -263,6 +264,12 @@ const Root = () => {
           )}
         />
         <Route
+          path="/add-policy"
+          render={(props) => (
+            <AddPolicy {...props} updateDisclaimer={updateDisclaimer} />
+          )}
+        />
+        <Route
           path="/add-action-plan"
           render={(props) => (
             <AddActionPlan {...props} updateDisclaimer={updateDisclaimer} />
@@ -391,6 +398,9 @@ const AddButton = withRouter(
                 </Menu.Item>
                 <Menu.Item onClick={() => history.push("/add-technology")}>
                   Technology
+                </Menu.Item>
+                <Menu.Item onClick={() => history.push("/add-policy")}>
+                  Policy
                 </Menu.Item> */}
               </Menu>
             }
