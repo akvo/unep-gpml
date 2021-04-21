@@ -60,15 +60,18 @@ const renderItemValues = (params, mapping, data) => {
     mapping &&
     mapping.map((item, index) => {
       const { key, name, value, type, customValue } = item;
+      // Set to true to display all country list for global
+      const showAllCountryList = false;
+      const displayEntry =
+        data[key] ||
+        data[key] === 0 ||
+        key === null ||
+        (value === "countries" &&
+          data.geoCoverageType === "global" &&
+          showAllCountryList);
       return (
         <Fragment key={`${params.type}-${name}`}>
-          {/* remove && data.geoCoverageType !== "global" if want to show all country list for global */}
-          {(data[key] ||
-            data[key] === 0 ||
-            (value === "countries" &&
-              data.geoCoverageType &&
-              data.geoCoverageType !== "global") ||
-            key === null) && (
+          {displayEntry && (
             <div key={name + index} className="column">
               <div className="title">{name}</div>
               <div className="value">
@@ -141,21 +144,10 @@ const renderItemValues = (params, mapping, data) => {
 
                 {/* Country details */}
                 {value === "countries" &&
-                  (data[key] === null || data[key][0] === "***") &&
-                  data.geoCoverageType === "global" && (
+                  data.geoCoverageType === "global" &&
+                  showAllCountryList && (
                     <div className="scrollable">
                       {countries.map((it) => it.name).join(", ")}
-                    </div>
-                  )}
-                {value === "countries" &&
-                  data[key] !== null &&
-                  data.geoCoverageType === "global" && (
-                    <div className="scrollable">
-                      {data[key]
-                        .map((x) => {
-                          return countries.find((it) => it.isoCode === x).name;
-                        })
-                        .join(", ")}
                     </div>
                   )}
                 {value === "countries" &&
@@ -259,14 +251,9 @@ const renderItemValues = (params, mapping, data) => {
               </div>
             </div>
           )}
-          {(data[key] ||
-            data[key] === 0 ||
-            (value === "countries" &&
-              data.geoCoverageType &&
-              data.geoCoverageType !== "global")) &&
-            index !== mapping.length - 1 && (
-              <Divider key={`d${params.type}-${index}`} />
-            )}
+          {displayEntry && index !== mapping.length - 1 && (
+            <Divider key={`d${params.type}-${index}`} />
+          )}
         </Fragment>
       );
     })
