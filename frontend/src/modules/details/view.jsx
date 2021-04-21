@@ -69,6 +69,24 @@ const renderItemValues = (params, mapping, data) => {
         (value === "countries" &&
           data.geoCoverageType === "global" &&
           showAllCountryList);
+
+      // Calculate country info to be displayed, based on geo coverage type
+      let dataCountries = null;
+      if (value === "countries") {
+        if (data.geoCoverageType === "global") {
+          dataCountries =
+            showAllCountryList && countries.map((it) => it.name).join(", ");
+        } else if (data.geoCoverageType === "regional") {
+          dataCountries = data[key]?.join(", ");
+        } else {
+          dataCountries = data[key]
+            ?.map((x) => {
+              return countries.find((it) => it.isoCode === x).name;
+            })
+            .join(", ");
+        }
+      }
+
       return (
         <Fragment key={`${params.type}-${name}`}>
           {displayEntry && (
@@ -142,39 +160,9 @@ const renderItemValues = (params, mapping, data) => {
                   data[key][customValue] &&
                   data[key][customValue].join(", ")}
 
-                {/* Country details */}
-                {value === "countries" &&
-                  data.geoCoverageType === "global" &&
-                  showAllCountryList && (
-                    <div className="scrollable">
-                      {countries.map((it) => it.name).join(", ")}
-                    </div>
-                  )}
-                {value === "countries" &&
-                  data[key] !== null &&
-                  data.geoCoverageType === "regional" &&
-                  data[key].join(", ")}
-                {value === "countries" &&
-                  data[key] !== null &&
-                  data.geoCoverageType === "transnational" && (
-                    <div className="scrollable">
-                      {data[key]
-                        .map((x) => {
-                          return countries.find((it) => it.isoCode === x).name;
-                        })
-                        .join(", ")}
-                    </div>
-                  )}
-                {value === "countries" &&
-                  data[key] !== null &&
-                  (data.geoCoverageType === "national" ||
-                    data.geoCoverageType === "sub-national") &&
-                  data[key]
-                    .map((x) => {
-                      return countries.find((it) => it.isoCode === x).name;
-                    })
-                    .join(", ")}
-                {/* EOF Country details */}
+                {dataCountries && (
+                  <div className="scrollable">{dataCountries}</div>
+                )}
 
                 {value === "resource_url" && type === "array" && (
                   <ul>
