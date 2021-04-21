@@ -159,12 +159,6 @@ const detailEvent = [
     customValue: ["startDate", "endDate"],
     type: "date",
   },
-  // {
-  //     'key' : 'url',
-  //     'name' : 'Link',
-  //     'value' : 'url',
-  //     'type': 'link',
-  // },
   {
     key: "geoCoverageValues",
     name: "Geo-Coverage",
