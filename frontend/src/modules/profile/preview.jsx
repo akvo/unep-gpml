@@ -101,9 +101,9 @@ export const GeneralPreview = ({ item }) => {
           {item.type === "event" && (
             <div className="detail-title">Description</div>
           )}
-          {["Financing Resource", "Technical Resource"].includes(item.type) && (
-            <div className="detail-title">Summary</div>
-          )}
+          {["Financing Resource", "Technical Resource", "Action Plan"].includes(
+            item.type
+          ) && <div className="detail-title">Summary</div>}
           :
           <div className="detail-content">
             {item.description || item.summary || "-"}
@@ -120,6 +120,17 @@ export const GeneralPreview = ({ item }) => {
           </li>
         )}
         {item.type === "Financing Resource" &&
+          [item.value, item.valueCurrency, item.valueRemarks].map((x, i) => (
+            <li key={"value" + i}>
+              <div className="detail-title">
+                {(i === 0 && "Value") ||
+                  (i === 1 && "Value Currency") ||
+                  "Value Remarks"}
+              </div>
+              :<div className="detail-content">{x || "-"}</div>
+            </li>
+          ))}
+        {["Financing Resource", "Action Plan"].includes(item.type) &&
           [item.validFrom, item.validTo].map((x, i) => (
             <li key={"valid" + i}>
               <div className="detail-title">
@@ -133,7 +144,9 @@ export const GeneralPreview = ({ item }) => {
               </div>
             </li>
           ))}
-        {["Financing Resource", "Technical Resource"].includes(item.type) && (
+        {["Financing Resource", "Technical Resource", "Action Plan"].includes(
+          item.type
+        ) && (
           <li>
             <div className="detail-title">Organisation</div>:
             <div className="detail-content">

@@ -37,7 +37,7 @@
           tbl (cond
                 (contains? #{"event" "technology" "policy"} tbl)
                 (str "v_" tbl "_data")
-                (contains? #{"Financing Resource" "Technical Resource"} tbl)
+                (contains? #{"Financing Resource" "Technical Resource", "Action Plan"} tbl)
                 "v_resource_data"
                 (= tbl "profile")
                 "v_stakeholder_data")

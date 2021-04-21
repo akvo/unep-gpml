@@ -106,6 +106,7 @@
 
 (defn or-and [resource_type validator]
   (or (and (= "Technical Resource" resource_type) (empty? validator))
+      (and (= "Action Plan" resource_type))
       (and (= "Financing Resource" resource_type) (some? validator))))
 
 (def post-params
