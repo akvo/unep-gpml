@@ -42,7 +42,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_001.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_001.png"
   },
   {
     "id": 2,
@@ -87,7 +87,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_002.png"
+    "image": null
   },
   {
     "id": 3,
@@ -132,7 +132,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_003.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_003.png"
   },
   {
     "id": 4,
@@ -177,7 +177,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_004.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_004.png"
   },
   {
     "id": 5,
@@ -222,7 +222,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_005.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_005.png"
   },
   {
     "id": 6,
@@ -267,7 +267,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_006.png"
+    "image": null
   },
   {
     "id": 7,
@@ -303,7 +303,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_007.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_007.png"
   },
   {
     "id": 8,
@@ -339,7 +339,7 @@
     "implemented _by": null,
     "repeals": "External Trade (Import Prohibition) Order, 2016, S.I. No 16 of 2016",
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_008.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_008.png"
   },
   {
     "id": 9,
@@ -384,7 +384,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_009.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_009.png"
   },
   {
     "id": 10,
@@ -399,7 +399,7 @@
     "type_of_law": "Legislation",
     "record_number": "C2017C00162",
     "implementing_mea": null,
-    "first_publication_date": "1983-04-14",
+    "first_publication_date": "1983-01-01",
     "latest_amendment_date": "2017-06-16",
     "status": "In force",
     "tags": null,
@@ -429,7 +429,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_010.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_010.png"
   },
   {
     "id": 11,
@@ -444,7 +444,7 @@
     "type_of_law": "Legislation",
     "record_number": "C2016C00844",
     "implementing_mea": null,
-    "first_publication_date": "1994-04-14",
+    "first_publication_date": "1994-01-01",
     "latest_amendment_date": "2016-07-01",
     "status": "In force",
     "tags": null,
@@ -474,7 +474,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_011.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_011.png"
   },
   {
     "id": 12,
@@ -489,7 +489,7 @@
     "type_of_law": "Legislation",
     "record_number": "F2012C00858",
     "implementing_mea": "Basel Convention",
-    "first_publication_date": "1998-04-14",
+    "first_publication_date": "1998-01-01",
     "latest_amendment_date": null,
     "status": "In force",
     "tags": null,
@@ -519,7 +519,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_012.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_012.png"
   },
   {
     "id": 13,
@@ -534,7 +534,7 @@
     "type_of_law": "Legislation",
     "record_number": "F2016C00914",
     "implementing_mea": "Convention on Biological Diversity",
-    "first_publication_date": "1999-04-14",
+    "first_publication_date": "1999-01-01",
     "latest_amendment_date": "2016-10-01",
     "status": "In force",
     "tags": null,
@@ -564,7 +564,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_013.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_013.png"
   },
   {
     "id": 14,
@@ -609,7 +609,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_014.png"
+    "image": null
   },
   {
     "id": 15,
@@ -654,7 +654,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_015.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_015.png"
   },
   {
     "id": 16,
@@ -699,7 +699,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_016.png"
+    "image": null
   },
   {
     "id": 17,
@@ -744,7 +744,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_017.png"
+    "image": null
   },
   {
     "id": 18,
@@ -759,7 +759,7 @@
     "type_of_law": "Legislation",
     "record_number": null,
     "implementing_mea": null,
-    "first_publication_date": "1987-04-14",
+    "first_publication_date": "1987-01-01",
     "latest_amendment_date": null,
     "status": "In force",
     "tags": null,
@@ -789,7 +789,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_018.png"
+    "image": null
   },
   {
     "id": 19,
@@ -834,7 +834,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_019.png"
+    "image": null
   },
   {
     "id": 20,
@@ -849,7 +849,7 @@
     "type_of_law": "Constitution",
     "record_number": null,
     "implementing_mea": null,
-    "first_publication_date": "1831-04-14",
+    "first_publication_date": "1831-01-01",
     "latest_amendment_date": null,
     "status": "In force",
     "tags": null,
@@ -879,7 +879,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_020.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_020.png"
   },
   {
     "id": 21,
@@ -924,7 +924,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_021.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_021.png"
   },
   {
     "id": 22,
@@ -962,7 +962,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_022.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_022.png"
   },
   {
     "id": 23,
@@ -1007,7 +1007,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_023.png"
+    "image": null
   },
   {
     "id": 24,
@@ -1052,7 +1052,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_024.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_024.png"
   },
   {
     "id": 25,
@@ -1097,7 +1097,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_025.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_025.png"
   },
   {
     "id": 26,
@@ -1142,7 +1142,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_026.png"
+    "image": null
   },
   {
     "id": 27,
@@ -1180,7 +1180,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_027.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_027.png"
   },
   {
     "id": 28,
@@ -1225,7 +1225,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_028.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_028.png"
   },
   {
     "id": 29,
@@ -1270,7 +1270,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_029.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_029.png"
   },
   {
     "id": 30,
@@ -1315,7 +1315,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_030.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_030.png"
   },
   {
     "id": 31,
@@ -1360,7 +1360,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_031.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_031.png"
   },
   {
     "id": 32,
@@ -1405,7 +1405,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_032.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_032.png"
   },
   {
     "id": 33,
@@ -1450,7 +1450,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_033.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_033.png"
   },
   {
     "id": 34,
@@ -1495,7 +1495,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_034.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_034.png"
   },
   {
     "id": 35,
@@ -1540,7 +1540,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_035.png"
+    "image": null
   },
   {
     "id": 36,
@@ -1585,7 +1585,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_036.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_036.png"
   },
   {
     "id": 37,
@@ -1630,7 +1630,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_037.png"
+    "image": null
   },
   {
     "id": 38,
@@ -1675,7 +1675,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_038.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_038.png"
   },
   {
     "id": 39,
@@ -1720,7 +1720,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_039.png"
+    "image": null
   },
   {
     "id": 40,
@@ -1765,7 +1765,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_040.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_040.png"
   },
   {
     "id": 41,
@@ -1810,7 +1810,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_041.png"
+    "image": null
   },
   {
     "id": 42,
@@ -1855,7 +1855,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_042.png"
+    "image": null
   },
   {
     "id": 43,
@@ -1900,7 +1900,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_043.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_043.png"
   },
   {
     "id": 44,
@@ -1947,7 +1947,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_044.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_044.png"
   },
   {
     "id": 45,
@@ -1994,7 +1994,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_045.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_045.png"
   },
   {
     "id": 46,
@@ -2039,7 +2039,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_046.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_046.png"
   },
   {
     "id": 47,
@@ -2084,7 +2084,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_047.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_047.png"
   },
   {
     "id": 48,
@@ -2135,7 +2135,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_048.png"
+    "image": null
   },
   {
     "id": 49,
@@ -2184,7 +2184,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_049.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_049.png"
   },
   {
     "id": 50,
@@ -2239,7 +2239,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_050.png"
+    "image": null
   },
   {
     "id": 51,
@@ -2290,7 +2290,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_051.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_051.png"
   },
   {
     "id": 52,
@@ -2337,7 +2337,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_052.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_052.png"
   },
   {
     "id": 53,
@@ -2382,7 +2382,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_053.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_053.png"
   },
   {
     "id": 54,
@@ -2427,7 +2427,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_054.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_054.png"
   },
   {
     "id": 55,
@@ -2472,7 +2472,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_055.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_055.png"
   },
   {
     "id": 56,
@@ -2519,7 +2519,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_056.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_056.png"
   },
   {
     "id": 57,
@@ -2564,7 +2564,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_057.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_057.png"
   },
   {
     "id": 58,
@@ -2609,7 +2609,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_058.png"
+    "image": null
   },
   {
     "id": 59,
@@ -2654,7 +2654,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_059.png"
+    "image": null
   },
   {
     "id": 60,
@@ -2699,7 +2699,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_060.png"
+    "image": null
   },
   {
     "id": 61,
@@ -2744,7 +2744,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_061.png"
+    "image": null
   },
   {
     "id": 62,
@@ -2789,7 +2789,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_062.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_062.png"
   },
   {
     "id": 63,
@@ -2834,7 +2834,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_063.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_063.png"
   },
   {
     "id": 64,
@@ -2879,7 +2879,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_064.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_064.png"
   },
   {
     "id": 65,
@@ -2935,7 +2935,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_065.png"
+    "image": null
   },
   {
     "id": 66,
@@ -2980,7 +2980,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_066.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_066.png"
   },
   {
     "id": 67,
@@ -3025,7 +3025,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_067.png"
+    "image": null
   },
   {
     "id": 68,
@@ -3070,7 +3070,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_068.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_068.png"
   },
   {
     "id": 69,
@@ -3115,7 +3115,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_069.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_069.png"
   },
   {
     "id": 70,
@@ -3160,7 +3160,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_070.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_070.png"
   },
   {
     "id": 71,
@@ -3205,7 +3205,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_071.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_071.png"
   },
   {
     "id": 72,
@@ -3250,7 +3250,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_072.png"
+    "image": null
   },
   {
     "id": 73,
@@ -3295,7 +3295,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_073.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_073.png"
   },
   {
     "id": 74,
@@ -3340,7 +3340,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_074.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_074.png"
   },
   {
     "id": 75,
@@ -3385,7 +3385,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_075.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_075.png"
   },
   {
     "id": 76,
@@ -3430,7 +3430,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_076.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_076.png"
   },
   {
     "id": 77,
@@ -3475,7 +3475,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_077.png"
+    "image": null
   },
   {
     "id": 78,
@@ -3520,7 +3520,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_078.png"
+    "image": null
   },
   {
     "id": 79,
@@ -3565,7 +3565,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_079.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_079.png"
   },
   {
     "id": 80,
@@ -3610,7 +3610,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_080.png"
+    "image": null
   },
   {
     "id": 81,
@@ -3655,7 +3655,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_081.png"
+    "image": null
   },
   {
     "id": 82,
@@ -3700,7 +3700,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_082.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_082.png"
   },
   {
     "id": 83,
@@ -3747,7 +3747,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_083.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_083.png"
   },
   {
     "id": 84,
@@ -3792,7 +3792,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_084.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_084.png"
   },
   {
     "id": 85,
@@ -3839,7 +3839,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_085.png"
+    "image": null
   },
   {
     "id": 86,
@@ -3884,7 +3884,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_086.png"
+    "image": null
   },
   {
     "id": 87,
@@ -3899,7 +3899,7 @@
     "type_of_law": "Legislation",
     "record_number": null,
     "implementing_mea": null,
-    "first_publication_date": "2015-04-14",
+    "first_publication_date": "2015-01-01",
     "latest_amendment_date": null,
     "status": null,
     "tags": [
@@ -3944,7 +3944,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_087.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_087.png"
   },
   {
     "id": 88,
@@ -3995,7 +3995,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_088.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_088.png"
   },
   {
     "id": 89,
@@ -4040,7 +4040,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_089.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_089.png"
   },
   {
     "id": 90,
@@ -4085,7 +4085,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_090.png"
+    "image": null
   },
   {
     "id": 91,
@@ -4130,7 +4130,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_091.png"
+    "image": null
   },
   {
     "id": 92,
@@ -4175,7 +4175,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_092.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_092.png"
   },
   {
     "id": 93,
@@ -4220,7 +4220,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_093.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_093.png"
   },
   {
     "id": 94,
@@ -4265,7 +4265,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_094.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_094.png"
   },
   {
     "id": 95,
@@ -4310,7 +4310,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_095.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_095.png"
   },
   {
     "id": 96,
@@ -4355,7 +4355,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_096.png"
+    "image": null
   },
   {
     "id": 97,
@@ -4400,7 +4400,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_097.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_097.png"
   },
   {
     "id": 98,
@@ -4445,7 +4445,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_098.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_098.png"
   },
   {
     "id": 99,
@@ -4490,7 +4490,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_099.png"
+    "image": null
   },
   {
     "id": 100,
@@ -4535,7 +4535,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_100.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_100.png"
   },
   {
     "id": 101,
@@ -4580,7 +4580,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_101.png"
+    "image": null
   },
   {
     "id": 102,
@@ -4625,7 +4625,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_102.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_102.png"
   },
   {
     "id": 103,
@@ -4670,7 +4670,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_103.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_103.png"
   },
   {
     "id": 104,
@@ -4715,7 +4715,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_104.png"
+    "image": null
   },
   {
     "id": 105,
@@ -4760,7 +4760,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_105.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_105.png"
   },
   {
     "id": 106,
@@ -4817,7 +4817,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_106.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_106.png"
   },
   {
     "id": 107,
@@ -4868,7 +4868,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_107.png"
+    "image": null
   },
   {
     "id": 108,
@@ -4917,7 +4917,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_108.png"
+    "image": null
   },
   {
     "id": 109,
@@ -4962,7 +4962,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_109.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_109.png"
   },
   {
     "id": 110,
@@ -5007,7 +5007,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_110.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_110.png"
   },
   {
     "id": 111,
@@ -5052,7 +5052,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_111.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_111.png"
   },
   {
     "id": 112,
@@ -5088,7 +5088,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_112.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_112.png"
   },
   {
     "id": 113,
@@ -5133,7 +5133,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_113.png"
+    "image": null
   },
   {
     "id": 114,
@@ -5169,7 +5169,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_114.png"
+    "image": null
   },
   {
     "id": 115,
@@ -5205,7 +5205,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_115.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_115.png"
   },
   {
     "id": 116,
@@ -5241,7 +5241,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_116.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_116.png"
   },
   {
     "id": 117,
@@ -5288,7 +5288,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_117.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_117.png"
   },
   {
     "id": 118,
@@ -5324,7 +5324,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_118.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_118.png"
   },
   {
     "id": 119,
@@ -5360,7 +5360,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_119.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_119.png"
   },
   {
     "id": 120,
@@ -5396,7 +5396,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_120.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_120.png"
   },
   {
     "id": 121,
@@ -5432,7 +5432,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_121.png"
+    "image": null
   },
   {
     "id": 122,
@@ -5468,7 +5468,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_122.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_122.png"
   },
   {
     "id": 123,
@@ -5506,7 +5506,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_123.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_123.png"
   },
   {
     "id": 124,
@@ -5544,7 +5544,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_124.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_124.png"
   },
   {
     "id": 125,
@@ -5580,7 +5580,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_125.png"
+    "image": null
   },
   {
     "id": 126,
@@ -5616,7 +5616,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_126.png"
+    "image": null
   },
   {
     "id": 127,
@@ -5654,7 +5654,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_127.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_127.png"
   },
   {
     "id": 128,
@@ -5699,7 +5699,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_128.png"
+    "image": null
   },
   {
     "id": 129,
@@ -5744,7 +5744,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_129.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_129.png"
   },
   {
     "id": 130,
@@ -5780,7 +5780,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_130.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_130.png"
   },
   {
     "id": 131,
@@ -5825,7 +5825,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_131.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_131.png"
   },
   {
     "id": 132,
@@ -5870,7 +5870,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_132.png"
+    "image": null
   },
   {
     "id": 133,
@@ -5915,7 +5915,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_133.png"
+    "image": null
   },
   {
     "id": 134,
@@ -5960,7 +5960,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_134.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_134.png"
   },
   {
     "id": 135,
@@ -6005,7 +6005,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_135.png"
+    "image": null
   },
   {
     "id": 136,
@@ -6043,7 +6043,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_136.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_136.png"
   },
   {
     "id": 137,
@@ -6088,7 +6088,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_137.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_137.png"
   },
   {
     "id": 138,
@@ -6133,7 +6133,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_138.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_138.png"
   },
   {
     "id": 139,
@@ -6187,7 +6187,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_139.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_139.png"
   },
   {
     "id": 140,
@@ -6232,7 +6232,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_140.png"
+    "image": null
   },
   {
     "id": 141,
@@ -6277,7 +6277,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_141.png"
+    "image": null
   },
   {
     "id": 142,
@@ -6322,7 +6322,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_142.png"
+    "image": null
   },
   {
     "id": 143,
@@ -6358,7 +6358,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_143.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_143.png"
   },
   {
     "id": 144,
@@ -6403,7 +6403,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_144.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_144.png"
   },
   {
     "id": 145,
@@ -6448,7 +6448,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_145.png"
+    "image": null
   },
   {
     "id": 146,
@@ -6493,7 +6493,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_146.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_146.png"
   },
   {
     "id": 147,
@@ -6538,7 +6538,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_147.png"
+    "image": null
   },
   {
     "id": 148,
@@ -6574,7 +6574,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_148.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_148.png"
   },
   {
     "id": 149,
@@ -6610,7 +6610,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_149.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_149.png"
   },
   {
     "id": 150,
@@ -6648,7 +6648,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_150.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_150.png"
   },
   {
     "id": 151,
@@ -6684,7 +6684,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_151.png"
+    "image": null
   },
   {
     "id": 152,
@@ -6720,7 +6720,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_152.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_152.png"
   },
   {
     "id": 153,
@@ -6765,7 +6765,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_153.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_153.png"
   },
   {
     "id": 154,
@@ -6810,7 +6810,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_154.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_154.png"
   },
   {
     "id": 155,
@@ -6855,7 +6855,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_155.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_155.png"
   },
   {
     "id": 156,
@@ -6891,7 +6891,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_156.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_156.png"
   },
   {
     "id": 157,
@@ -6936,7 +6936,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_157.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_157.png"
   },
   {
     "id": 158,
@@ -6972,7 +6972,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_158.jpg"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_158.jpg"
   },
   {
     "id": 159,
@@ -7008,7 +7008,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_159.jpg"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_159.jpg"
   },
   {
     "id": 160,
@@ -7044,7 +7044,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_160.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_160.png"
   },
   {
     "id": 161,
@@ -7080,7 +7080,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_161.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_161.png"
   },
   {
     "id": 162,
@@ -7116,7 +7116,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_162.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_162.png"
   },
   {
     "id": 163,
@@ -7161,7 +7161,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_163.png"
+    "image": null
   },
   {
     "id": 164,
@@ -7197,7 +7197,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_164.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_164.png"
   },
   {
     "id": 165,
@@ -7233,7 +7233,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_165.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_165.png"
   },
   {
     "id": 166,
@@ -7278,7 +7278,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_166.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_166.png"
   },
   {
     "id": 168,
@@ -7328,7 +7328,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_168.png"
+    "image": null
   },
   {
     "id": 169,
@@ -7385,7 +7385,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_169.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_169.png"
   },
   {
     "id": 170,
@@ -7437,7 +7437,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_170.png"
+    "image": null
   },
   {
     "id": 171,
@@ -7488,7 +7488,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_171.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_171.png"
   },
   {
     "id": 172,
@@ -7533,7 +7533,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_172.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_172.png"
   },
   {
     "id": 173,
@@ -7585,7 +7585,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_173.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_173.png"
   },
   {
     "id": 174,
@@ -7630,7 +7630,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_174.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_174.png"
   },
   {
     "id": 175,
@@ -7683,7 +7683,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_175.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_175.png"
   },
   {
     "id": 176,
@@ -7734,7 +7734,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_176.png"
+    "image": null
   },
   {
     "id": 177,
@@ -7785,7 +7785,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_177.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_177.png"
   },
   {
     "id": 178,
@@ -7836,7 +7836,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_178.png"
+    "image": null
   },
   {
     "id": 179,
@@ -7886,7 +7886,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_179.png"
+    "image": null
   },
   {
     "id": 180,
@@ -7937,7 +7937,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_180.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_180.png"
   },
   {
     "id": 181,
@@ -7992,7 +7992,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_181.png"
+    "image": null
   },
   {
     "id": 182,
@@ -8052,7 +8052,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_182.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_182.png"
   },
   {
     "id": 183,
@@ -8109,7 +8109,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_183.png"
+    "image": null
   },
   {
     "id": 184,
@@ -8154,7 +8154,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_184.png"
+    "image": null
   },
   {
     "id": 185,
@@ -8206,7 +8206,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_185.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_185.png"
   },
   {
     "id": 186,
@@ -8258,7 +8258,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_186.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_186.png"
   },
   {
     "id": 187,
@@ -8316,7 +8316,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_187.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_187.png"
   },
   {
     "id": 188,
@@ -8352,7 +8352,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_188.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_188.png"
   },
   {
     "id": 189,
@@ -8397,7 +8397,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_189.png"
+    "image": null
   },
   {
     "id": 190,
@@ -8442,7 +8442,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_190.png"
+    "image": null
   },
   {
     "id": 191,
@@ -8487,7 +8487,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_191.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_191.png"
   },
   {
     "id": 192,
@@ -8523,7 +8523,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_192.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_192.png"
   },
   {
     "id": 193,
@@ -8559,7 +8559,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_193.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_193.png"
   },
   {
     "id": 194,
@@ -8595,7 +8595,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_194.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_194.png"
   },
   {
     "id": 195,
@@ -8631,7 +8631,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_195.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_195.png"
   },
   {
     "id": 196,
@@ -8669,7 +8669,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_196.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_196.png"
   },
   {
     "id": 197,
@@ -8705,7 +8705,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_197.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_197.png"
   },
   {
     "id": 198,
@@ -8741,7 +8741,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_198.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_198.png"
   },
   {
     "id": 199,
@@ -8794,7 +8794,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_199.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_199.png"
   },
   {
     "id": 200,
@@ -8839,7 +8839,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_200.png"
+    "image": null
   },
   {
     "id": 201,
@@ -8875,7 +8875,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_201.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_201.png"
   },
   {
     "id": 202,
@@ -8923,7 +8923,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_202.png"
+    "image": null
   },
   {
     "id": 203,
@@ -8959,7 +8959,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_203.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_203.png"
   },
   {
     "id": 204,
@@ -8995,7 +8995,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_204.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_204.png"
   },
   {
     "id": 205,
@@ -9031,7 +9031,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_205.png"
+    "image": null
   },
   {
     "id": 206,
@@ -9076,7 +9076,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_206.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_206.png"
   },
   {
     "id": 207,
@@ -9131,7 +9131,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_207.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_207.png"
   },
   {
     "id": 208,
@@ -9181,7 +9181,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_208.png"
+    "image": null
   },
   {
     "id": 209,
@@ -9236,7 +9236,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_209.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_209.png"
   },
   {
     "id": 210,
@@ -9292,7 +9292,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_210.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_210.png"
   },
   {
     "id": 211,
@@ -9347,7 +9347,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_211.png"
+    "image": null
   },
   {
     "id": 212,
@@ -9406,7 +9406,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_212.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_212.png"
   },
   {
     "id": 213,
@@ -9465,7 +9465,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_213.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_213.png"
   },
   {
     "id": 214,
@@ -9524,7 +9524,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_214.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_214.png"
   },
   {
     "id": 215,
@@ -9579,7 +9579,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_215.png"
+    "image": null
   },
   {
     "id": 216,
@@ -9631,7 +9631,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_216.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_216.png"
   },
   {
     "id": 217,
@@ -9684,7 +9684,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_217.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_217.png"
   },
   {
     "id": 218,
@@ -9737,7 +9737,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_218.png"
+    "image": null
   },
   {
     "id": 219,
@@ -9790,7 +9790,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_219.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_219.png"
   },
   {
     "id": 220,
@@ -9842,7 +9842,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_220.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_220.png"
   },
   {
     "id": 221,
@@ -9903,7 +9903,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_221.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_221.png"
   },
   {
     "id": 222,
@@ -9955,7 +9955,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_222.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_222.png"
   },
   {
     "id": 223,
@@ -10006,7 +10006,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_223.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_223.png"
   },
   {
     "id": 224,
@@ -10056,7 +10056,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_224.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_224.png"
   },
   {
     "id": 225,
@@ -10105,7 +10105,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_225.png"
+    "image": null
   },
   {
     "id": 226,
@@ -10159,7 +10159,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_226.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_226.png"
   },
   {
     "id": 227,
@@ -10211,7 +10211,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_227.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_227.png"
   },
   {
     "id": 228,
@@ -10262,7 +10262,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_228.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_228.png"
   },
   {
     "id": 229,
@@ -10314,7 +10314,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_229.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_229.png"
   },
   {
     "id": 230,
@@ -10359,7 +10359,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_230.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_230.png"
   },
   {
     "id": 231,
@@ -10395,7 +10395,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_231.png"
+    "image": null
   },
   {
     "id": 232,
@@ -10444,7 +10444,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_232.webp"
+    "image": null
   },
   {
     "id": 233,
@@ -10498,7 +10498,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_233.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_233.png"
   },
   {
     "id": 234,
@@ -10550,7 +10550,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_234.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_234.png"
   },
   {
     "id": 235,
@@ -10600,7 +10600,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_235.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_235.png"
   },
   {
     "id": 236,
@@ -10649,7 +10649,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_236.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_236.png"
   },
   {
     "id": 237,
@@ -10697,7 +10697,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_237.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_237.png"
   },
   {
     "id": 238,
@@ -10755,7 +10755,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_238.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_238.png"
   },
   {
     "id": 239,
@@ -10810,7 +10810,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_239.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_239.png"
   },
   {
     "id": 240,
@@ -10861,7 +10861,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_240.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_240.png"
   },
   {
     "id": 241,
@@ -10913,7 +10913,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_241.png"
+    "image": null
   },
   {
     "id": 242,
@@ -10965,7 +10965,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_242.png"
+    "image": null
   },
   {
     "id": 243,
@@ -11016,7 +11016,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_243.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_243.png"
   },
   {
     "id": 244,
@@ -11066,7 +11066,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_244.png"
+    "image": null
   },
   {
     "id": 245,
@@ -11102,7 +11102,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_245.png"
+    "image": null
   },
   {
     "id": 246,
@@ -11147,7 +11147,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_246.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_246.png"
   },
   {
     "id": 247,
@@ -11192,7 +11192,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_247.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_247.png"
   },
   {
     "id": 248,
@@ -11237,7 +11237,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_248.png"
+    "image": null
   },
   {
     "id": 249,
@@ -11282,7 +11282,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_249.png"
+    "image": null
   },
   {
     "id": 250,
@@ -11318,7 +11318,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_250.png"
+    "image": null
   },
   {
     "id": 251,
@@ -11363,7 +11363,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_251.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_251.png"
   },
   {
     "id": 252,
@@ -11408,7 +11408,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_252.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_252.png"
   },
   {
     "id": 253,
@@ -11453,7 +11453,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_253.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_253.png"
   },
   {
     "id": 254,
@@ -11489,7 +11489,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_254.png"
+    "image": null
   },
   {
     "id": 255,
@@ -11525,7 +11525,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_255.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_255.png"
   },
   {
     "id": 257,
@@ -11561,7 +11561,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_257.png"
+    "image": null
   },
   {
     "id": 260,
@@ -11597,7 +11597,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_260.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_260.png"
   },
   {
     "id": 261,
@@ -11633,7 +11633,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_261.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_261.png"
   },
   {
     "id": 262,
@@ -11678,7 +11678,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_262.png"
+    "image": null
   },
   {
     "id": 263,
@@ -11714,7 +11714,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_263.png"
+    "image": null
   },
   {
     "id": 264,
@@ -11752,7 +11752,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_264.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_264.png"
   },
   {
     "id": 265,
@@ -11797,7 +11797,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_265.png"
+    "image": null
   },
   {
     "id": 266,
@@ -11848,7 +11848,7 @@
     "type_of_law": "Regulation",
     "record_number": null,
     "implementing_mea": null,
-    "first_publication_date": "2009-04-14",
+    "first_publication_date": "2009-07-01",
     "latest_amendment_date": null,
     "status": "In force",
     "tags": null,
@@ -11878,7 +11878,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_269.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_269.png"
   },
   {
     "id": 270,
@@ -11914,7 +11914,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_270.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_270.png"
   },
   {
     "id": 271,
@@ -11950,7 +11950,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_271.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_271.png"
   },
   {
     "id": 272,
@@ -12004,7 +12004,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_272.png"
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policies_272.png"
   },
   {
     "id": 273,
@@ -12040,7 +12040,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_273.png"
+    "image": null
   },
   {
     "id": 274,
@@ -12085,7 +12085,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_274.png"
+    "image": null
   },
   {
     "id": 275,
@@ -12121,7 +12121,7 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_275.png"
+    "image": null
   },
   {
     "id": 276,
@@ -12159,6 +12159,6 @@
     "implemented _by": null,
     "repeals": null,
     "repealed_by": null,
-    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/policy_276.png"
+    "image": null
   }
 ]
