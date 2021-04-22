@@ -1,12 +1,13 @@
 (ns gpml.auth0-util
-  (:require [clj-http.client :as client]))
+  (:require [clj-http.client :as client]
+            [clojure.walk :as w]
+            [jsonista.core :as j]))
 
 (def auth0-token (atom ""))
 
 (defn fetch-auth0-users [domain]
   (client/get (format "%sapi/v2/users" domain)
               {:content-type :json
-               :as :json
                :throw-exceptions false
                :headers {:authorization (format "Bearer %s" @auth0-token)}}))
 
@@ -17,7 +18,6 @@
                                              :client_id client-id
                                              :client_secret secret
                                              :audience (format "%sapi/v2/" domain)}
-                               :as :json
                                :throw-exceptions false})]
     ;; FIXME: There's no error handling for the case when this
     ;; fails... We could add a log message, but not sure if we also
@@ -28,7 +28,8 @@
     ;; gives us new tokens!!
     (-> response
         :body
-        :access_token)))
+        j/read-value
+        (get "access_token"))))
 
 (defn maybe-refresh-token-fetch-auth0-users [auth0-config]
   (let [domain (:domain auth0-config)
@@ -41,8 +42,10 @@
 
 (defn list-auth0-verified-emails [auth0-config]
   (let [response (maybe-refresh-token-fetch-auth0-users auth0-config)
-        body (:body response)
-        verified-emails (->> body
+        verified-emails (->> response
+                             :body
+                             j/read-value
+                             w/keywordize-keys
                              (filter :email_verified)
                              (map :email))]
     verified-emails))
