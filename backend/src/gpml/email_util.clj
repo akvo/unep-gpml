@@ -11,13 +11,10 @@
     (format "%s %s" first_name last_name)
     (format "%s. %s %s" title first_name last_name)))
 
-
-
 (defn send-email [{:keys [api-key secret-key]} sender subject receivers texts htmls]
   (let [messages (map make-message (repeat sender) receivers (repeat subject) texts htmls)]
     (client/post "https://api.mailjet.com/v3.1/send"
                  {:basic-auth [api-key secret-key]
-                  :as :json
                   :content-type :json
                   :throw-exceptions false
                   :body (j/write-value-as-string {:Messages messages})})))
