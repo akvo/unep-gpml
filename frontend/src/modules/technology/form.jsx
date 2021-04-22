@@ -66,15 +66,10 @@ const AddTechnologyForm = ({
     if (formSchema.loading && tags?.technology) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [tags?.technology, formSchema]);
+  }, [tags, formSchema]);
 
   useEffect(() => {
-    if (!formSchema.loading) {
-      setFormSchema({ schema: schema, loading: true });
-    }
-    if (formSchema.loading && tags?.technology) {
-      setFormSchema(getSchema(UIStore.currentState, false));
-    }
+    setFormSchema({ schema: schema, loading: true });
   }, [highlight]);
 
   const handleOnSubmit = ({ formData }) => {

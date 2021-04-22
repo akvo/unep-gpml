@@ -11,7 +11,7 @@ const AddTechnology = ({ ...props }) => {
 
   useEffect(() => {
     props.updateDisclaimer(null);
-  }, []);
+  });
 
   useEffect(() => {
     UIStore.update((e) => {
