@@ -11,7 +11,7 @@ const AddActionPlan = ({ ...props }) => {
 
   useEffect(() => {
     props.updateDisclaimer(null);
-  }, []);
+  });
 
   useEffect(() => {
     UIStore.update((e) => {
