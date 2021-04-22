@@ -5,7 +5,7 @@
             [reitit.coercion.malli]
             [reitit.ring :as ring]
             [reitit.ring.coercion :as coercion]
-;;            [reitit.ring.middleware.exception :as exception]
+            [reitit.ring.middleware.exception :as exception]
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.ring.middleware.parameters :as parameters]
             [reitit.swagger :as swagger]
@@ -39,7 +39,7 @@
                         ;; encoding response body
                         muuntaja/format-response-middleware
                         ;; exception handling
-                        ;; exception/exception-middleware
+                        exception/exception-middleware
                         ;; decoding request body
                         muuntaja/format-request-middleware
                         ;; coercing response bodys
