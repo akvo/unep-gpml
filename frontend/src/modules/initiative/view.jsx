@@ -4,6 +4,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Card, Menu, Steps, Tabs, Switch, Button } from "antd";
 import "./styles.scss";
 import AddInitiativeForm from "./form";
+import schema from "./schema.json";
+import specificAreasOptions from "../financing-resource/specific-areas.json";
+import cloneDeep from "lodash/cloneDeep";
 
 const { Step } = Steps;
 const { TabPane } = Tabs;
@@ -102,21 +105,130 @@ export const initiativeData = new Store({
   },
 });
 
+const getSchema = (
+  { countries, organisations, tags, currencies, regionOptions },
+  loading
+) => {
+  const prop = cloneDeep(schema.properties);
+  const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
+  // TODO:: Load options below
+  // [Pop up a full list of SDGs] ? where can get this data? Question S2_G2 number 7.1
+  // [Pop up a full list of MEAs that’s provided with the Policy Resource type] Question S2_G2 number 7.2
+  prop.S2.properties.S2_G2.properties["S2_G2_7.2"].items.enum = tags?.mea?.map(
+    (it) => it.id
+  );
+  prop.S2.properties.S2_G2.properties[
+    "S2_G2_7.2"
+  ].items.enumNames = tags?.mea?.map((it) => it.tag);
+  // [in the UI show a list of tags they can choose to add] Question S3_G3 number 32
+  // END OF TODO
+
+  // organisation options
+  prop.S3.properties.S3_G1.properties["S3_G1_16"].enum = orgs?.map(
+    (it) => it.id
+  );
+  prop.S3.properties.S3_G1.properties["S3_G1_16"].enumNames = orgs?.map(
+    (it) => it.name
+  );
+  prop.S3.properties.S3_G1.properties["S3_G1_18"].enum = orgs?.map(
+    (it) => it.id
+  );
+  prop.S3.properties.S3_G1.properties["S3_G1_18"].enumNames = orgs?.map(
+    (it) => it.name
+  );
+  prop.S3.properties.S3_G1.properties["S3_G1_20"].enum = orgs?.map(
+    (it) => it.id
+  );
+  prop.S3.properties.S3_G1.properties["S3_G1_20"].enumNames = orgs?.map(
+    (it) => it.name
+  );
+  // currency options
+  prop.S3.properties.S3_G5.properties["S3_G5_36.1"].enum = currencies?.map(
+    (x, i) => x.value
+  );
+  prop.S3.properties.S3_G5.properties["S3_G5_36.1"].enumNames = currencies?.map(
+    (x, i) => x.label
+  );
+  prop.S3.properties.S3_G5.properties["S3_G5_37.1"].enum = currencies?.map(
+    (x, i) => x.value
+  );
+  prop.S3.properties.S3_G5.properties["S3_G5_37.1"].enumNames = currencies?.map(
+    (x, i) => x.label
+  );
+  // country options
+  prop.S3.properties.S3_G2.properties["S3_G2_23"].enum = countries?.map(
+    (x, i) => x.id
+  );
+  prop.S3.properties.S3_G2.properties["S3_G2_23"].enumNames = countries?.map(
+    (x, i) => x.name
+  );
+  // geocoverage regional options
+  prop.S3.properties.S3_G2.properties["S3_G2_24.1"].enum = regionOptions;
+  // geocoverage national options
+  prop.S3.properties.S3_G2.properties["S3_G2_24.2"].enum = countries?.map(
+    (x, i) => x.id
+  );
+  prop.S3.properties.S3_G2.properties["S3_G2_24.2"].enumNames = countries?.map(
+    (x, i) => x.name
+  );
+  // geocoverage transnational options
+  prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enum = countries?.map(
+    (x, i) => x.id
+  );
+  prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enumNames = countries?.map(
+    (x, i) => x.name
+  );
+  // geocoverage transnational options
+  prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enum = countries?.map(
+    (x, i) => x.id
+  );
+  prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enumNames = countries?.map(
+    (x, i) => x.name
+  );
+  // geocoverage global with spesific area options
+  prop.S3.properties.S3_G2.properties["S3_G2_24.5"].enum = specificAreasOptions;
+  return {
+    schema: {
+      ...schema,
+      properties: prop,
+    },
+    loading: loading,
+  };
+};
+
 const AddInitiative = ({ ...props }) => {
   const { data } = initiativeData.useState();
+  const { countries, organisations, tags } = UIStore.currentState;
+  const [formSchema, setFormSchema] = useState({
+    schema: schema,
+    loading: true,
+  });
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
 
   useEffect(() => {
     props.updateDisclaimer(null);
-  }, []);
+  });
 
   useEffect(() => {
     UIStore.update((e) => {
       e.highlight = highlight;
     });
+    setFormSchema({ schema: schema, loading: true });
   }, [highlight]);
+
+  useEffect(() => {
+    if (
+      formSchema.loading &&
+      countries.length > 0 &&
+      organisations.length > 0 &&
+      tags?.mea
+    ) {
+      console.log(Math.random());
+      setFormSchema(getSchema(UIStore.currentState, false));
+    }
+  }, [countries, organisations, tags, formSchema]);
 
   const renderSteps = (steps) => {
     if (steps.length === 0) return;
@@ -200,16 +312,19 @@ const AddInitiative = ({ ...props }) => {
         </div>
       </div>
       <div className="ui container">
-        <div className="form-container">
+        <div
+          className="form-container"
+          style={{ minHeight: `${innerHeight * 0.85}px` }}
+        >
           <Tabs
             type="card"
             activeKey={data.tabs[0]}
             onChange={(e) => handleOnTabChange(e)}
           >
             {tabs.map(({ key, title, desc, steps }) => (
-              <TabPane tab={title} key={key}>
+              <TabPane tab={title} key={key} forceRender={false}>
                 <Row>
-                  <Col xs={4} lg={8}>
+                  <Col xs={24} lg={8}>
                     <Steps
                       direction="vertical"
                       size="small"
@@ -219,14 +334,20 @@ const AddInitiative = ({ ...props }) => {
                       {renderSteps(steps)}
                     </Steps>
                   </Col>
-                  <Col xs={20} lg={16}>
-                    <Card>
+                  <Col xs={24} lg={16}>
+                    <Card
+                      style={{
+                        maxHeight: `${innerHeight * 0.75}px`,
+                        overflow: "auto",
+                      }}
+                    >
                       <AddInitiativeForm
                         btnSubmit={btnSubmit}
                         sending={sending}
                         setSending={setSending}
                         highlight={highlight}
                         setHighlight={setHighlight}
+                        formSchema={formSchema}
                       />
                     </Card>
                   </Col>

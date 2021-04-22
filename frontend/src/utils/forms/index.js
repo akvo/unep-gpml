@@ -1,12 +1,16 @@
 import Auth0Widget from "./form-auth0";
 import FileWidget from "./form-file";
 import SelectWidget from "./form-select";
+import CheckboxesWidget from "./form-checkboxes";
+import RadioWidget from "./form-radio";
 import difference from "lodash/difference";
 
 const widgets = {
   Auth0Widget: Auth0Widget,
   FileWidget: FileWidget,
   SelectWidget: SelectWidget,
+  CheckboxesWidget: CheckboxesWidget,
+  RadioWidget: RadioWidget,
 };
 
 export const CustomFieldTemplate = (props) => {

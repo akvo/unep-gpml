@@ -99,14 +99,14 @@
     input,
     textarea {
       background-color: #edf2f6;
-      border-color: #edf2f6;
+      // border-color: #edf2f6;
       border-radius: 4px;
     }
     .ant-picker,
     .ant-select,
     .ant-select-selector {
       background-color: #edf2f6;
-      border-color: #edf2f6;
+      // border-color: #edf2f6;
     }
     .ant-select-selector {
       background-color: #edf2f6;
@@ -131,6 +131,18 @@
     .ant-checkbox-wrapper {
       display: flex;
       align-items: center;
+    }
+    .checkbox-required {
+      span.ant-checkbox {
+        border: 1px solid red;
+        border-radius: 2px;
+      }
+    }
+    .radio-required {
+      span.ant-radio {
+        border: 1px solid red;
+        border-radius: 50%;
+      }
     }
     .ant-form-item {
       margin-bottom: 0;

@@ -37,6 +37,7 @@ const FieldTemplate = ({
     wrapperStyle,
   } = formContext;
 
+  // custom
   const { highlight } = UIStore.currentState;
 
   if (hidden) {
@@ -48,6 +49,7 @@ const FieldTemplate = ({
       <div key={`field-${id}-error-${error}`}>{error}</div>
     ));
 
+  // custom
   const handleCustomLabel = () => {
     if (displayLabel) {
       if (!required) {
@@ -103,7 +105,11 @@ const FieldTemplate = ({
           // required={required}
           style={wrapperStyle}
           validateStatus={
-            (rawErrors && required && highlight) || (highlight && required)
+            (rawErrors && required && highlight) ||
+            (highlight &&
+              required &&
+              schema.type !== "array" &&
+              schema.type !== "object")
               ? "error"
               : undefined
           }

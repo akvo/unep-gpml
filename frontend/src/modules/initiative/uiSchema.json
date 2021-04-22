@@ -308,6 +308,11 @@
         "ui:options": {
           "showToolbar": true,
           "orderable": false
+        },
+        "items": {
+          "ui:options": {
+            "label": false
+          }
         }
       },
       "S3_G7_41": {
