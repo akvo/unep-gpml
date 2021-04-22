@@ -73,15 +73,10 @@ const AddPolicyForm = ({
     if (formSchema.loading && tags?.policy && tags?.mea) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [tags?.policy, tags?.mea, formSchema]);
+  }, [tags, formSchema]);
 
   useEffect(() => {
-    if (!formSchema.loading) {
-      setFormSchema({ schema: schema, loading: true });
-    }
-    if (formSchema.loading && tags?.policy && tags?.mea) {
-      setFormSchema(getSchema(UIStore.currentState, false));
-    }
+    setFormSchema({ schema: schema, loading: true });
   }, [highlight]);
 
   const handleOnSubmit = ({ formData }) => {
