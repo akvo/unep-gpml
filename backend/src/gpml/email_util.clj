@@ -32,7 +32,7 @@ A new %s (%s) is awaiting your approval. Please visit %s/profile to approve or d
         item-type (:type new-item)
         item-title (if (= item-type "stakeholder")
                      (get-user-full-name new-item)
-                     (:name new-item))
+                     (or (:title new-item) (:name new-item)))
         subject (format "[%s] New %s needs approval" (:app-name mailjet-config) item-type)
         sender {:Name "UNEP GPML Digital Platform" :Email "no-reply@gpmarinelitter.org"}
         names (map get-user-full-name admins)
