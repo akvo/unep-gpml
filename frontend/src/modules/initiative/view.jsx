@@ -1,7 +1,7 @@
 import { Store } from "pullstate";
 import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState } from "react";
-import { Row, Col, Card, Menu, Steps, Tabs, Switch, Button } from "antd";
+import { Row, Col, Card, Steps, Tabs, Switch, Button } from "antd";
 import "./styles.scss";
 import AddInitiativeForm from "./form";
 import schema from "./schema.json";
@@ -10,6 +10,21 @@ import cloneDeep from "lodash/cloneDeep";
 
 const { Step } = Steps;
 const { TabPane } = Tabs;
+
+export const initiativeData = new Store({
+  data: {
+    tabs: ["S1"],
+    S1: {
+      steps: 0,
+    },
+    S2: {
+      steps: 0,
+    },
+    S3: {
+      steps: 0,
+    },
+  },
+});
 
 const tabs = [
   {
@@ -89,21 +104,6 @@ const tabs = [
     ],
   },
 ];
-
-export const initiativeData = new Store({
-  data: {
-    tabs: ["S1"],
-    S1: {
-      steps: 0,
-    },
-    S2: {
-      steps: 0,
-    },
-    S3: {
-      steps: 0,
-    },
-  },
-});
 
 const getSchema = (
   { countries, organisations, tags, currencies, regionOptions },
@@ -225,7 +225,6 @@ const AddInitiative = ({ ...props }) => {
       organisations.length > 0 &&
       tags?.mea
     ) {
-      console.log(Math.random());
       setFormSchema(getSchema(UIStore.currentState, false));
     }
   }, [countries, organisations, tags, formSchema]);
@@ -233,7 +232,7 @@ const AddInitiative = ({ ...props }) => {
   const renderSteps = (steps) => {
     if (steps.length === 0) return;
     return steps.map(({ key, title, desc }) => (
-      <Step title={title} description={desc} />
+      <Step key={key} title={title} description={desc} />
     ));
   };
 
@@ -312,19 +311,30 @@ const AddInitiative = ({ ...props }) => {
         </div>
       </div>
       <div className="ui container">
-        <div
-          className="form-container"
-          style={{ minHeight: `${innerHeight * 0.85}px` }}
-        >
+        <div className="form-container">
           <Tabs
             type="card"
             activeKey={data.tabs[0]}
             onChange={(e) => handleOnTabChange(e)}
           >
             {tabs.map(({ key, title, desc, steps }) => (
-              <TabPane tab={title} key={key} forceRender={false}>
-                <Row>
-                  <Col xs={24} lg={8}>
+              <TabPane tab={title} key={key} forceRender={false} size="large">
+                <Row
+                  style={{
+                    minHeight: `${innerHeight * 0.8}px`,
+                    padding: "20px 10px 20px 16px",
+                    backgroundColor: "#fff",
+                    borderRadius: "0 0 6px 6px",
+                  }}
+                >
+                  <Col
+                    xs={24}
+                    lg={6}
+                    style={{
+                      borderRight: "1px solid #D3DBDF",
+                      minHeight: "100%",
+                    }}
+                  >
                     <Steps
                       direction="vertical"
                       size="small"
@@ -334,7 +344,7 @@ const AddInitiative = ({ ...props }) => {
                       {renderSteps(steps)}
                     </Steps>
                   </Col>
-                  <Col xs={24} lg={16}>
+                  <Col xs={24} lg={18}>
                     <Card
                       style={{
                         maxHeight: `${innerHeight * 0.75}px`,

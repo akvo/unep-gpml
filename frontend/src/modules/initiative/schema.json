@@ -772,7 +772,7 @@
           ],
           "properties": {
             "S3_G3_26": {
-              "title": "26. Lifecycle. Which specific part of the lifecycle/plastic supply chain is your initiative targeting? (Please tick ALLthat apply).",
+              "title": "26. Lifecycle. Which specific part of the lifecycle/plastic supply chain is your initiative targeting? (Please tick ALL that apply).",
               "type": "array",
               "items": {
                 "enum": [
@@ -807,7 +807,7 @@
               }
             },
             "S3_G3_28": {
-              "title": "28. Impact. What impacts or harms does the initiative relate to? (Please tick ALLthat apply).",
+              "title": "28. Impact. What impacts or harms does the initiative relate to? (Please tick ALL that apply).",
               "type": "array",
               "items": {
                 "enum": [
@@ -844,7 +844,7 @@
               }
             },
             "S3_G3_30": {
-              "title": "30. Sector. Does your initiative target a specific sector? (Please tick ALLthat apply).",
+              "title": "30. Sector. Does your initiative target a specific sector? (Please tick ALL that apply).",
               "type": "array",
               "items": {
                 "enum": [
