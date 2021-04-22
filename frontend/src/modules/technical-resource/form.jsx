@@ -66,15 +66,10 @@ const AddResourceForm = ({
     if (formSchema.loading && tags?.technicalResourceType) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [tags?.technicalResourceType, formSchema]);
+  }, [tags, formSchema]);
 
   useEffect(() => {
-    if (!formSchema.loading) {
-      setFormSchema({ schema: schema, loading: true });
-    }
-    if (formSchema.loading && tags?.financingMechanism) {
-      setFormSchema(getSchema(UIStore.currentState, false));
-    }
+    setFormSchema({ schema: schema, loading: true });
   }, [highlight]);
 
   const handleOnSubmit = ({ formData }) => {

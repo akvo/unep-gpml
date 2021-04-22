@@ -11,7 +11,7 @@ const AddTechnicalResource = ({ ...props }) => {
 
   useEffect(() => {
     props.updateDisclaimer(null);
-  }, []);
+  });
 
   useEffect(() => {
     UIStore.update((e) => {

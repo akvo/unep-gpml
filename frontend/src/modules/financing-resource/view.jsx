@@ -11,7 +11,7 @@ const AddFinancingResource = ({ ...props }) => {
 
   useEffect(() => {
     props.updateDisclaimer(null);
-  }, []);
+  });
 
   useEffect(() => {
     UIStore.update((e) => {
