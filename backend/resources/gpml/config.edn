@@ -223,12 +223,7 @@
                                :app-name #duct/env "APP_NAME"
                                :app-domain #duct/env "APP_DOMAIN"}}
   :gpml.handler.profile/post-params {}
-  :gpml.handler.profile/put {:db #ig/ref :duct.database/sql
-                             :mailjet-config
-                             {:api-key #duct/env "MAILJET_API_KEY"
-                              :secret-key #duct/env "MAILJET_SECRET_KEY"
-                              :app-name #duct/env "APP_NAME"
-                              :app-domain #duct/env "APP_DOMAIN"}}
+  :gpml.handler.profile/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/review {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/pending {:db #ig/ref :duct.database/sql
                                  :auth0 {:domain #duct/env "OIDC_ISSUER"

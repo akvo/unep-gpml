@@ -24,17 +24,12 @@
          (db.country/country-by-codes db)
          (map #(vector id nil (:id %))))))
 
-(defn new-organisation [conn mailjet-config org]
+(defn new-organisation [conn org]
   (let [country (get-country conn (:country org))
         org-id (:id (db.organisation/new-organisation conn (assoc (dissoc org :id) :country country)))
         org-geo (get-geo-data conn org-id (:geo_coverage_type org) (:geo_coverage_value org))]
     (when (seq org-geo)
       (db.organisation/add-geo-coverage conn {:geo org-geo}))
-    (when org-id
-      (email/notify-admins-pending-approval
-       conn
-       mailjet-config
-       (merge org {:type "organisation"})))
     org-id))
 
 (defn assoc-picture [conn photo]
@@ -66,7 +61,7 @@
                  upload-cv
                  (if cv cv nil))
         affiliation (if (= -1 (:id org))
-                      (new-organisation conn mailjet-config org)
+                      (new-organisation conn org)
                       (:id org))
         profile {:picture pic-url
                  :cv cv-url
@@ -178,7 +173,7 @@
                       ))
       (assoc (resp/status 500) :body "Internal Server Error"))))
 
-(defmethod ig/init-key :gpml.handler.profile/put [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.profile/put [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
     (jdbc/with-db-transaction [tx (:spec db)]
       (let [id (:id body-params)
@@ -208,7 +203,7 @@
                       (not= -1 (:id org))
                       (assoc :affiliation (:id org))
                       (= -1 (:id org))
-                      (assoc :affiliation (new-organisation tx mailjet-config org))
+                      (assoc :affiliation (new-organisation tx org))
                       (:country body-params)
                       (assoc :country (get-country tx (:country body-params))))]
         (db.stakeholder/update-stakeholder tx profile)
