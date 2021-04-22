@@ -25,7 +25,7 @@
 (def notify-admins-pending-approval-text
   "Dear %s,
 
-A new %s (%s) is awaiting your approval. Please visit %s/profile/admin to approve or decline the request.
+A new %s (%s) is awaiting your approval. Please visit %s/profile to approve or decline the request.
 
 - UNEP GPML Digital Platform
 ")
