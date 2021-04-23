@@ -10,8 +10,10 @@ const AddFinancingResource = ({ ...props }) => {
   const [highlight, setHighlight] = useState(false);
 
   useEffect(() => {
-    props.updateDisclaimer(null);
-  });
+    UIStore.update((e) => {
+      e.disclaimer = null;
+    });
+  }, [props]);
 
   useEffect(() => {
     UIStore.update((e) => {
