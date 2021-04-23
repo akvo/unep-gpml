@@ -68,7 +68,7 @@ const findCountries = (countries, item, isCountry = false) => {
 };
 
 export const GeneralPreview = ({ item }) => {
-  const { countries } = UIStore.currentState;
+  const { countries, tags } = UIStore.currentState;
   const country = countries.find((x) => x.id === item.country)?.name || "-";
   return (
     <div className="general-info">
@@ -88,28 +88,54 @@ export const GeneralPreview = ({ item }) => {
             <b>{item.title}</b>
           </div>
         </li>
+        {item.type === "policy" && (
+          <>
+            <li>
+              <div className="detail-title">Original Title</div>:
+              <div className="detail-content">{item.originalTitle || "-"}</div>
+            </li>
+            <li>
+              <div className="detail-title">Status</div>:
+              <div className="detail-content">{item.status || "-"}</div>
+            </li>
+            <li>
+              <div className="detail-title">First Publication</div>:
+              <div className="detail-content">
+                {moment(item.firstPublicationDate).format("DD MMM YYYY") || "-"}
+              </div>
+            </li>
+            <li>
+              <div className="detail-title">Lastest Amandment</div>:
+              <div className="detail-content">
+                {moment(item.latestAmendmentDate).format("DD MMM YYYY") || "-"}
+              </div>
+            </li>
+            <li>
+              <div className="detail-title">Implementing MEA</div>:
+              <div className="detail-content">
+                {tags?.mea.find((x) => x.id === item.implementingMea)?.tag ||
+                  "-"}
+              </div>
+            </li>
+          </>
+        )}
         <li>
-          <div className="detail-title">Submitted at</div>:
-          <div className="detail-content">
-            {moment(item.createdAt).format("DD MMM YYYY")}
-          </div>
-        </li>
-        <li>
-          <div className="detail-title">Submitted by</div>:
-          <div className="detail-content">
-            <b>{item?.createdBy && item.createdBy}</b>
-          </div>
+          <div className="detail-title">Country</div>:
+          <div className="detail-content">{country}</div>
         </li>
         <li>
           {item.type === "event" && (
             <div className="detail-title">Description</div>
+          )}
+          {item.type === "policy" && (
+            <div className="detail-title">Abstract</div>
           )}
           {["Financing Resource", "Technical Resource", "Action Plan"].includes(
             item.type
           ) && <div className="detail-title">Summary</div>}
           :
           <div className="detail-content">
-            {item.description || item.summary || "-"}
+            {item.description || item.summary || item.abstract || "-"}
           </div>
         </li>
         {item?.publishYear && (
@@ -167,10 +193,6 @@ export const GeneralPreview = ({ item }) => {
             </div>
           </li>
         )}
-        <li>
-          <div className="detail-title">Country</div>:
-          <div className="detail-content">{country}</div>
-        </li>
         {item.type === "event" && (
           <li>
             <div className="detail-title">City</div>:
@@ -180,6 +202,18 @@ export const GeneralPreview = ({ item }) => {
         <li>
           <div className="detail-title">Remarks</div>:
           <div className="detail-content">{item.remarks || "-"}</div>
+        </li>
+        <li>
+          <div className="detail-title">Submitted at</div>:
+          <div className="detail-content">
+            {moment(item.createdAt).format("DD MMM YYYY")}
+          </div>
+        </li>
+        <li>
+          <div className="detail-title">Submitted by</div>:
+          <div className="detail-content">
+            <b>{item?.createdBy && item.createdBy}</b>
+          </div>
         </li>
         <li className="has-border">
           <p className="section-title">Geo Coverage</p>

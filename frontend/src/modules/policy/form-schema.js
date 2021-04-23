@@ -114,6 +114,10 @@ export const schema = {
       title: "DATA SOURCE",
       type: "string",
     },
+    url: {
+      title: "POLICY URL",
+      type: "string",
+    },
     typeOfLaw: {
       title: "TYPE OF LAW",
       enum: ["Miscellaneous", "Legislation", "Regulation", "Constitution"],
@@ -257,9 +261,6 @@ export const uiSchema = {
   //     "ui:widget": "select",
   //     "ui:placeholder": "Choose the resource country",
   //   },
-  //   url: {
-  //     "ui:placeholder": "URL Address",
-  //   },
   //   geoCoverageType: {
   //     "ui:placeholder": "Choose the entity coverage type",
   //     "ui:widget": "select",
@@ -293,6 +294,9 @@ export const uiSchema = {
   // },
   dataSource: {
     "ui:placeholder": "Type in data source",
+  },
+  url: {
+    "ui:placeholder": "URL Address",
   },
   typeOfLaw: {
     "ui:placeholder": "Choose the organisation type",
