@@ -12,8 +12,7 @@ export const schema = {
   title: "",
   type: "object",
   required: [
-    "title",
-    // "org",
+    "name",
     "country",
     "geoCoverageType",
     "geoCoverageValueRegional",
@@ -23,7 +22,7 @@ export const schema = {
     "tags",
   ],
   properties: {
-    title: {
+    name: {
       title: "TITLE",
       type: "string",
     },
@@ -132,6 +131,14 @@ export const schema = {
         "Research",
       ],
     },
+    specificationProvided: {
+      title: "SPECIFICATION PROVIDED",
+      type: "boolean",
+    },
+    url: {
+      title: "TECHNOLOGY URL",
+      type: "string",
+    },
     logo: {
       title: "LOGO",
       type: "string",
@@ -234,7 +241,7 @@ export const schema = {
 };
 
 export const uiSchema = {
-  title: {
+  name: {
     "ui:placeholder": "Type in resource title",
   },
   // org: {
@@ -301,6 +308,9 @@ export const uiSchema = {
     "ui:placeholder": "Choose the development stage",
     "ui:widget": "select",
     "ui:showSearch": true,
+  },
+  url: {
+    "ui:placeholder": "URL of Technology",
   },
   logo: {
     "ui:options": { accept: [".jpg", ".png", ".webp"] },

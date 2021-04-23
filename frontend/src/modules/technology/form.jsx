@@ -96,11 +96,11 @@ const AddTechnologyForm = ({
     data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
     console.log(data);
-    // setSending(true);
-    // api.post("/resource", data).then(() => {
-    //   setSending(false);
-    //   setStep(2);
-    // });
+    setSending(true);
+    api.post("/technology", data).then(() => {
+      setSending(false);
+      setStep(2);
+    });
   };
 
   const handleFormOnChange = ({ formData }) => {

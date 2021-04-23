@@ -124,7 +124,7 @@ export const GeneralPreview = ({ item }) => {
           <div className="detail-content">{country}</div>
         </li>
         <li>
-          {item.type === "event" && (
+          {["event", "technology"].includes(item.type) && (
             <div className="detail-title">Description</div>
           )}
           {item.type === "policy" && (
@@ -143,6 +143,22 @@ export const GeneralPreview = ({ item }) => {
             <div className="detail-title">Publish year</div>:
             <div className="detail-content">{item.publishYear}</div>
           </li>
+        )}
+        {item.type === "technology" && (
+          <>
+            <li>
+              <div className="detail-title">Development Stage</div>:
+              <div className="detail-content">
+                {item?.developmentStage || "-"}
+              </div>
+            </li>
+            <li>
+              <div className="detail-title">Specification Provided</div>:
+              <div className="detail-content">
+                {item?.specificationProvided ? "Yes" : "No"}
+              </div>
+            </li>
+          </>
         )}
         {item.type === "Financing Resource" && (
           <>
