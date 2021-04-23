@@ -250,7 +250,7 @@
           _ (seed-important-database db)
           ;; John created account with country value Indonesia and organisation Akvo
           _ (db.stakeholder/new-stakeholder-cv db {:cv picture})
-          _ (db.stakeholder/new-stakeholder-picture db {:picture picture})
+          _ (db.stakeholder/new-stakeholder-image db {:picture picture})
           _ (db.stakeholder/new-stakeholder db  (assoc (new-profile (:id 1) (:id 1))
                                                        :picture "/image/profile/1"
                                                        :cv "/cv/profile/1"))
@@ -271,7 +271,7 @@
                                              :picture nil
                                              :public_email true))))
           profile (db.stakeholder/stakeholder-by-id db {:id 10001})
-          old-images (db.stakeholder/stakeholder-picture-by-id db {:id 10001})
+          old-images (db.stakeholder/stakeholder-image-by-id db {:id 10001})
           old-cv (db.stakeholder/stakeholder-cv-by-id db {:id 10001})]
       ;; Old images should be deleted
       (is (= nil old-images))
@@ -325,7 +325,7 @@
                                              :cv nil
                                              :picture nil))))
           profile (db.stakeholder/stakeholder-by-id db {:id 10001})
-          old-images (db.stakeholder/stakeholder-picture-by-id db {:id 1})]
+          old-images (db.stakeholder/stakeholder-image-by-id db {:id 1})]
       (is (= nil old-images))
       (is (= 204 (:status resp)))
       (is (= {:id 10001,

@@ -80,5 +80,14 @@ select e.id, e.title, e.start_date, e.end_date, e.description, e.image, e.geo_co
            from v_event_data e left join country c on e.country = c.id
 where e.id = :id
 
+-- :name event-image-by-id :? :1
+-- :doc Get event image by id
+select * from event_image where id = :id
+
+-- :name new-event-image :<! :1
+-- :doc Insert new event image
+insert into event_image (image)
+values(:image) returning id;
+
 -- :name dummy
 select count(*) from event where title like 'Dummy%';

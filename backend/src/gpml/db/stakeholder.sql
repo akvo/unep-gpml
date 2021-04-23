@@ -184,17 +184,17 @@ update stakeholder set
     , modified = now()
 where id = :id;
 
--- :name stakeholder-picture-by-id :? :1
--- :doc Get Stakeholder picture by id
+-- :name stakeholder-image-by-id :? :1
+-- :doc Get Stakeholder image by id
 select * from stakeholder_picture where id = :id
 
--- :name new-stakeholder-picture :<! :1
--- :doc Insert new Stakeholder picture
+-- :name new-stakeholder-image :<! :1
+-- :doc Insert new Stakeholder image
 insert into stakeholder_picture (picture)
 values(:picture) returning id;
 
--- :name delete-stakeholder-picture-by-id :! :n
--- :doc remove stakeholder picture
+-- :name delete-stakeholder-image-by-id :! :n
+-- :doc remove Stakeholder image
 delete from stakeholder_picture where id = :id
 
 -- :name stakeholder-cv-by-id :? :1

@@ -1,43 +1,13 @@
 (ns gpml.handler.resource
   (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [gpml.db.country :as db.country]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.organisation :as db.organisation]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.organisation :as handler.org]
+            [gpml.handler.image :as handler.image]
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
-
-(defn get-country [conn country]
-  (:id (db.country/country-by-code conn {:name country})))
-
-(defn get-geo-data [db id geo-type geo-value]
-  (cond
-    (#{"regional" "global with elements in specific areas"} geo-type)
-    (->> {:names geo-value}
-         (db.country-group/country-group-by-names db)
-         (map #(vector id (:id %) nil)))
-    (#{"transnational" "national"} geo-type)
-    (->> {:codes geo-value}
-         (db.country/country-by-codes db)
-         (map #(vector id nil (:id %))))))
-
-(defn assoc-image [conn image]
-  (cond
-    (nil? image) nil
-    (re-find #"^\/image\/" image) image
-    :else (str/join ["/image/resource/"
-                    (:id (db.resource/new-resource-image conn {:image image}))])))
-
-(defn new-organisation [conn org]
-  (let [country (get-country conn (:country org))
-        org-id (:id (db.organisation/new-organisation conn (assoc (dissoc org :id) :country country)))
-        org-geo (get-geo-data conn org-id (:geo_coverage_type org) (:geo_coverage_value org))]
-    (when (seq org-geo)
-      (db.organisation/add-geo-coverage conn {:geo org-geo}))
-    org-id))
 
 (defn create-resource [conn {:keys [resource_type title org publish_year
                                     summary value value_currency
@@ -46,7 +16,7 @@
                                     attachments country urls tags remarks
                                     created_by]}]
   (let [organisation (if (= -1 (:id org))
-                      [(new-organisation conn org)]
+                      [(handler.org/find-or-create conn org)]
                       [(:id org)])
         data {:type resource_type
               :title title
@@ -57,8 +27,9 @@
               :value_remarks value_remarks
               :valid_from valid_from
               :valid_to valid_to
-              :image (assoc-image conn image)
+              :image (handler.image/assoc-image conn image "resource")
               :geo_coverage_type geo_coverage_type
+              :geo_coverage_value geo_coverage_value
               :country country
               :attachments attachments
               :remarks remarks
@@ -79,21 +50,8 @@
                                     (:url %)) urls)]
         (db.resource/add-resource-language-urls conn {:urls lang-urls})))
     (when (not-empty geo_coverage_value)
-      (let [geo-data
-            (cond
-              (contains?
-               #{"regional" "global with elements in specific areas"}
-               geo_coverage_type)
-              (->> {:names geo_coverage_value}
-                   (db.country-group/country-group-by-names conn)
-                   (map #(vector resource-id (:id %) nil)))
-              (contains?
-               #{"national" "transnational"}
-               geo_coverage_type)
-              (->> {:codes geo_coverage_value}
-                   (db.country/country-by-codes conn)
-                   (map #(vector resource-id nil (:id %)))))]
-        (when (some? geo-data)
+      (let [geo-data (handler.geo/id-vec-geo conn resource-id data)]
+        (when (not-empty geo-data)
           (db.resource/add-resource-geo conn {:geo geo-data}))))
     resource-id))
 

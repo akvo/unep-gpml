@@ -1,7 +1,7 @@
 (ns gpml.db.landing-test
   (:require [clojure.test :refer [deftest testing use-fixtures are is]]
             [clojure.java.jdbc :as jdbc]
-            [gpml.handler.profile :as handler.profile]
+            [gpml.handler.organisation :as handler.organisation]
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.landing :as db.landing]
@@ -136,7 +136,7 @@
           _ (add-country-data conn)
           summary (fn [& orgs]
                     (doseq [org orgs]
-                      (handler.profile/new-organisation conn org))
+                      (handler.organisation/find-or-create conn org))
                     (let [summary (db.landing/summary conn)
                           orgs-data (->> summary
                                          (filter #(= "organisation" (:resource_type %)))

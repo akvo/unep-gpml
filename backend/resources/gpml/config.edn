@@ -3,17 +3,13 @@
   :gpml.handler.main/handler {:routes [["/"
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.main/root}}]
-                                       ["/image/profile/{id}"
+                                       ["/image/{image-type}/{id}"
                                         {:get {:no-doc true
-                                               :handler #ig/ref :gpml.handler.image/profile
-                                               :parameters {:path [:map [:id int?]]}}}]
+                                               :handler #ig/ref :gpml.handler.image/get
+                                               :parameters {:path [:map [:image_type string?] [:id int?]]}}}]
                                        ["/cv/profile/{id}"
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.file/profile-cv
-                                               :parameters {:path [:map [:id int?]]}}}]
-                                       ["/image/event/{id}"
-                                        {:get {:no-doc true
-                                               :handler #ig/ref :gpml.handler.image/event
                                                :parameters {:path [:map [:id int?]]}}}]
                                        ["/env.js"
                                         {:get {:no-doc true
@@ -243,8 +239,7 @@
   :gpml.handler.organisation/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation/get-id {:db #ig/ref :duct.database/sql}
 
-  :gpml.handler.image/profile {:db #ig/ref :duct.database/sql}
-  :gpml.handler.image/event {:db #ig/ref :duct.database/sql}
+  :gpml.handler.image/get {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.file/profile-cv {:db #ig/ref :duct.database/sql}
 

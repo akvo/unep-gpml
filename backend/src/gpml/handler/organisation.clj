@@ -1,8 +1,17 @@
 (ns gpml.handler.organisation
   (:require [gpml.db.organisation :as db.organisation]
             [integrant.core :as ig]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.country :as handler.country]
             [ring.util.response :as resp]))
 
+(defn find-or-create [conn org]
+  (let [country (handler.country/id-by-code conn (:country org))
+        org-id (:id (db.organisation/new-organisation conn (assoc (dissoc org :id) :country country)))
+        org-geo (handler.geo/id-vec-geo conn org-id org)]
+    (when (seq org-geo)
+      (db.organisation/add-geo-coverage conn {:geo org-geo}))
+    org-id))
 
 (defmethod ig/init-key :gpml.handler.organisation/get [_ {:keys [db]}]
   (fn [_]

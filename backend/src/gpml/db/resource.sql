@@ -100,7 +100,7 @@ where id = :id
 
 
 -- :name pending-resource :? :*
--- :doc Returns the list of pending events
+-- :doc Returns the list of pending resources
 
 select
     id,
@@ -158,3 +158,12 @@ left join resource r on r.id = rd.id
 left join country c on c.id = r.country
 left join stakeholder s on r.created_by = r.created_by
 where r.review_status = 'SUBMITTED'
+
+-- :name resource-image-by-id :? :1
+-- :doc Get resource image by id
+select * from resource_image where id = :id
+
+-- :name new-resource-image :<! :1
+-- :doc Insert new resource image
+insert into resource_image (image)
+values(:image) returning id;

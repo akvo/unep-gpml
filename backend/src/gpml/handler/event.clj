@@ -1,22 +1,14 @@
 (ns gpml.handler.event
   (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [gpml.db.country :as db.country]
-            [gpml.db.country-group :as db.country-group]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.country :as handler.country]
+            [gpml.handler.image :as handler.image]
             [gpml.db.event :as db.event]
-            [gpml.db.event-image :as db.event-image]
             [gpml.db.language :as db.language]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
-
-(defn assoc-image [conn photo]
-  (cond
-    (nil? photo) nil
-    (re-find #"^\/image\/" photo) photo
-    :else (str/join ["/image/event/"
-                    (:id (db.event-image/new-event-image conn {:image photo}))])))
 
 (defn create-event [conn {:keys [tags urls title start_date end_date
                                  description remarks geo_coverage_type
@@ -27,10 +19,11 @@
               :end_date end_date
               :description (or description "")
               :remarks remarks
-              :image (assoc-image conn photo)
+              :image (handler.image/assoc-image conn photo "image")
               :geo_coverage_type geo_coverage_type
+              :geo_coverage_value geo_coverage_value
               :city city
-              :country (->> {:name country} (db.country/country-by-code conn) :id)
+              :country (handler.country/id-by-code conn country)
               :created_by created_by}
         event-id (->> data (db.event/new-event conn) :id)]
     (when (not-empty tags)
@@ -44,20 +37,7 @@
                                     (:url %)) urls)]
         (db.event/add-event-language-urls conn {:urls lang-urls})))
     (when (not-empty geo_coverage_value)
-      (let [geo-data
-            (cond
-              (contains?
-               #{"regional" "global with elements in specific areas"}
-               geo_coverage_type)
-              (->> {:names geo_coverage_value}
-                   (db.country-group/country-group-by-names conn)
-                   (map #(vector event-id (:id %) nil)))
-              (contains?
-               #{"national" "transnational"}
-               geo_coverage_type)
-              (->> {:codes geo_coverage_value}
-                   (db.country/country-by-codes conn)
-                   (map #(vector event-id nil (:id %)))))]
+      (let [geo-data (handler.geo/id-vec-geo conn event-id data)]
         (when (some? geo-data)
           (db.event/add-event-geo-coverage conn {:geo geo-data}))))
     (email/notify-admins-pending-approval

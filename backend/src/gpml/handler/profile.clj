@@ -3,41 +3,14 @@
             [clojure.string :as str]
             [gpml.auth0-util :as auth0]
             [gpml.email-util :as email]
-            [gpml.db.country :as db.country]
-            [gpml.db.country-group :as db.country-group]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.country :as handler.country]
+            [gpml.handler.organisation :as handler.org]
+            [gpml.handler.image :as handler.image]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
-
-(defn get-country [conn country]
-  (:id (db.country/country-by-code conn {:name country})))
-
-(defn get-geo-data [db id geo-type geo-value]
-  (cond
-    (#{"regional" "global with elements in specific areas"} geo-type)
-    (->> {:names geo-value}
-         (db.country-group/country-group-by-names db)
-         (map #(vector id (:id %) nil)))
-    (#{"transnational" "national"} geo-type)
-    (->> {:codes geo-value}
-         (db.country/country-by-codes db)
-         (map #(vector id nil (:id %))))))
-
-(defn new-organisation [conn org]
-  (let [country (get-country conn (:country org))
-        org-id (:id (db.organisation/new-organisation conn (assoc (dissoc org :id) :country country)))
-        org-geo (get-geo-data conn org-id (:geo_coverage_type org) (:geo_coverage_value org))]
-    (when (seq org-geo)
-      (db.organisation/add-geo-coverage conn {:geo org-geo}))
-    org-id))
-
-(defn assoc-picture [conn photo]
-  (cond
-    (nil? photo) nil
-    (re-find #"^\/image\/" photo) photo
-    :else (str/join ["/image/profile/"
-                     (:id (db.stakeholder/new-stakeholder-picture conn {:picture photo}))])))
 
 (defn assoc-cv [conn cv]
   (cond
@@ -54,14 +27,15 @@
                             representation country
                             org about geo_coverage_type]}
                     mailjet-config]
-  (let [pic-url (if-let [upload-picture (assoc-picture conn photo)]
+  (let [pic-url (if-let [upload-picture
+                         (handler.image/assoc-image conn photo "profile")]
                   upload-picture
                   (if picture picture nil))
         cv-url (if-let [upload-cv (assoc-cv conn cv)]
                  upload-cv
                  (if cv cv nil))
         affiliation (if (= -1 (:id org))
-                      (new-organisation conn org)
+                      (handler.org/find-or-create conn org)
                       (:id org))
         profile {:picture pic-url
                  :cv cv-url
@@ -75,7 +49,7 @@
                  :organisation_role organisation_role
                  :about about
                  :geo_coverage_type geo_coverage_type
-                 :country (get-country conn country)
+                 :country (handler.country/id-by-code conn country)
                  :affiliation affiliation}
         stakeholder
         (db.stakeholder/new-stakeholder conn profile)]
@@ -154,14 +128,12 @@
   (fn [{:keys [jwt-claims body-params headers]}]
     (if-let [id (:id (make-profile (:spec db) jwt-claims body-params mailjet-config))]
       (let [tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
-            geo-type (:geo_coverage_type body-params)
-            geo-value (:geo_coverage_value body-params)
             db (:spec db)
             profile (db.stakeholder/stakeholder-by-id db {:id id})]
         (when (not-empty tags)
           (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
-        (when (not-empty geo-value)
-          (let [geo-data (get-geo-data db id geo-type geo-value)]
+        (when (some? (:geo_coverage_value body-params))
+          (let [geo-data (handler.geo/id-vec-geo db id body-params)]
             (when (some? geo-data)
               (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))
         (resp/created (:referer headers)
@@ -179,8 +151,6 @@
       (let [id (:id body-params)
             tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
             org (:org body-params)
-            geo-type (:geo_coverage_type body-params)
-            geo-value (:geo_coverage_value body-params)
             old-profile (db.stakeholder/stakeholder-by-email tx jwt-claims)
             new-profile (merge old-profile body-params)
             profile (cond-> new-profile
@@ -190,7 +160,7 @@
                                (re-find #"^\/image|^http" (:photo body-params))
                                (:photo body-params)
                                (re-find #"^data:" (:photo body-params))
-                               (assoc-picture tx (:photo body-params))))
+                               (handler.image/assoc-image tx (:photo body-params) "profile")))
                       (= (:photo body-params) nil)
                       (assoc :picture nil)
                       (:cv body-params)
@@ -203,9 +173,9 @@
                       (not= -1 (:id org))
                       (assoc :affiliation (:id org))
                       (= -1 (:id org))
-                      (assoc :affiliation (new-organisation tx org))
+                      (assoc :affiliation (handler.org/find-or-create tx org))
                       (:country body-params)
-                      (assoc :country (get-country tx (:country body-params))))]
+                      (assoc :country (handler.country/id-by-code tx (:country body-params))))]
         (db.stakeholder/update-stakeholder tx profile)
         (db.stakeholder/delete-stakeholder-geo tx body-params)
         (db.stakeholder/delete-stakeholder-tags tx body-params)
@@ -215,15 +185,15 @@
           (let [photo-url (str/split (:photo old-profile) #"\/image\/profile\/")]
             (when (= 2 (count photo-url))
               (let [old-pic (-> photo-url second Integer/parseInt)]
-                (db.stakeholder/delete-stakeholder-picture-by-id tx {:id old-pic})))))
+                (db.stakeholder/delete-stakeholder-image-by-id tx {:id old-pic})))))
         (when (and (some? (:cv old-profile))
                    (not= (:cv old-profile) (:cv profile)))
           (let [old-cv (-> (str/split (:cv old-profile) #"/cv/profile/") second Integer/parseInt)]
             (db.stakeholder/delete-stakeholder-cv-by-id tx {:id old-cv})))
         (when (not-empty tags)
           (db.stakeholder/add-stakeholder-tags tx {:tags (map #(vector id %) tags)}))
-        (when (not-empty geo-value)
-          (let [geo-data (get-geo-data tx id geo-type geo-value)]
+        (when (some? (:geo_coverage_value body-params))
+          (let [geo-data (handler.geo/id-vec-geo tx id body-params)]
             (when (some? geo-data)
               (db.stakeholder/add-stakeholder-geo tx {:geo geo-data}))))
         (resp/status 204)))))
