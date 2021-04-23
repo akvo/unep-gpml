@@ -112,6 +112,15 @@
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.policy/post-params}
                                                   :handler #ig/ref :gpml.handler.policy/post}}]]
+                                        ["/technology" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                     #ig/ref :gpml.auth/auth-required
+                                                                     #ig/ref :gpml.auth/approved-user]}
+                                         [""
+                                           {:post {:summary "Create new technology"
+                                                  :swagger {:tags ["technology"]
+                                                            :security [{:id_token []}]}
+                                                  :parameters {:body #ig/ref :gpml.handler.technology/post-params}
+                                                  :handler #ig/ref :gpml.handler.technology/post}}]]
                                         ["/landing"
                                          [""
                                           {:get {:summary "End-point for the landing page"
@@ -226,6 +235,9 @@
 
   :gpml.handler.policy/post {:db #ig/ref :duct.database/sql}
   :gpml.handler.policy/post-params {}
+
+  :gpml.handler.technology/post {:db #ig/ref :duct.database/sql}
+  :gpml.handler.technology/post-params {}
 
   :gpml.handler.profile/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/post {:db #ig/ref :duct.database/sql
