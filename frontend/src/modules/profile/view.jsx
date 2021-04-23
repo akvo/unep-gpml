@@ -52,7 +52,7 @@ const menuItems = [
   },
 ];
 
-const ProfileView = ({ updateDisclaimer }) => {
+const ProfileView = ({ ...props }) => {
   const { countries, tags, profile } = UIStore.currentState;
   const handleSubmitRef = useRef();
   const [saving, setSaving] = useState(false);
@@ -73,6 +73,9 @@ const ProfileView = ({ updateDisclaimer }) => {
   });
 
   useEffect(() => {
+    UIStore.update((e) => {
+      e.disclaimer = null;
+    });
     if (profile?.role === "ADMIN") {
       (async function fetchData() {
         const resp = await api.get("submission");
@@ -149,10 +152,6 @@ const ProfileView = ({ updateDisclaimer }) => {
       );
     });
   };
-
-  useEffect(() => {
-    updateDisclaimer(null);
-  }, [updateDisclaimer]);
 
   return (
     <div id="profile">

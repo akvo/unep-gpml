@@ -15,7 +15,6 @@ const Landing = ({
   setWarningModalVisible,
   isAuthenticated,
   loginWithPopup,
-  updateDisclaimer,
   setFilters,
 }) => {
   const { innerWidth, innerHeight } = window;
@@ -70,8 +69,10 @@ const Landing = ({
 
   useEffect(() => {
     setFilters(null);
-    updateDisclaimer(window.location.pathname);
-  }, [updateDisclaimer, setFilters]);
+    UIStore.update((e) => {
+      e.disclaimer = "home";
+    });
+  }, [setFilters]);
 
   return (
     <div id="landing">

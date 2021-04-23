@@ -4,8 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Card, Steps, Tabs, Switch, Button } from "antd";
 import "./styles.scss";
 import AddInitiativeForm from "./form";
-import schema from "./schema.json";
-import specificAreasOptions from "../financing-resource/specific-areas.json";
+import { schema } from "./schema";
 import cloneDeep from "lodash/cloneDeep";
 
 const { Step } = Steps;
@@ -105,21 +104,11 @@ const tabs = [
   },
 ];
 
-const getSchema = (
-  { countries, organisations, tags, currencies, regionOptions },
-  loading
-) => {
+const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
   const prop = cloneDeep(schema.properties);
   const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
   // TODO:: Load options below
   // [Pop up a full list of SDGs] ? where can get this data? Question S2_G2 number 7.1
-  // [Pop up a full list of MEAs that’s provided with the Policy Resource type] Question S2_G2 number 7.2
-  prop.S2.properties.S2_G2.properties["S2_G2_7.2"].items.enum = tags?.mea?.map(
-    (it) => it.id
-  );
-  prop.S2.properties.S2_G2.properties[
-    "S2_G2_7.2"
-  ].items.enumNames = tags?.mea?.map((it) => it.tag);
   // [in the UI show a list of tags they can choose to add] Question S3_G3 number 32
   // END OF TODO
 
@@ -144,49 +133,38 @@ const getSchema = (
   );
   // currency options
   prop.S3.properties.S3_G5.properties["S3_G5_36.1"].enum = currencies?.map(
-    (x, i) => x.value
+    (x) => x.value
   );
   prop.S3.properties.S3_G5.properties["S3_G5_36.1"].enumNames = currencies?.map(
-    (x, i) => x.label
+    (x) => x.label
   );
   prop.S3.properties.S3_G5.properties["S3_G5_37.1"].enum = currencies?.map(
-    (x, i) => x.value
+    (x) => x.value
   );
   prop.S3.properties.S3_G5.properties["S3_G5_37.1"].enumNames = currencies?.map(
-    (x, i) => x.label
+    (x) => x.label
   );
   // country options
   prop.S3.properties.S3_G2.properties["S3_G2_23"].enum = countries?.map(
-    (x, i) => x.id
+    (x) => x.id
   );
   prop.S3.properties.S3_G2.properties["S3_G2_23"].enumNames = countries?.map(
-    (x, i) => x.name
+    (x) => x.name
   );
-  // geocoverage regional options
-  prop.S3.properties.S3_G2.properties["S3_G2_24.1"].enum = regionOptions;
   // geocoverage national options
   prop.S3.properties.S3_G2.properties["S3_G2_24.2"].enum = countries?.map(
-    (x, i) => x.id
+    (x) => x.id
   );
   prop.S3.properties.S3_G2.properties["S3_G2_24.2"].enumNames = countries?.map(
-    (x, i) => x.name
+    (x) => x.name
   );
   // geocoverage transnational options
-  prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enum = countries?.map(
-    (x, i) => x.id
+  prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enum = countries?.map((x) =>
+    String(x.id)
   );
   prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enumNames = countries?.map(
-    (x, i) => x.name
+    (x) => x.name
   );
-  // geocoverage transnational options
-  prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enum = countries?.map(
-    (x, i) => x.id
-  );
-  prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enumNames = countries?.map(
-    (x, i) => x.name
-  );
-  // geocoverage global with spesific area options
-  prop.S3.properties.S3_G2.properties["S3_G2_24.5"].enum = specificAreasOptions;
   return {
     schema: {
       ...schema,
@@ -208,8 +186,10 @@ const AddInitiative = ({ ...props }) => {
   const [highlight, setHighlight] = useState(false);
 
   useEffect(() => {
-    props.updateDisclaimer(null);
-  });
+    UIStore.update((e) => {
+      e.disclaimer = null;
+    });
+  }, [props]);
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -222,8 +202,7 @@ const AddInitiative = ({ ...props }) => {
     if (
       formSchema.loading &&
       countries.length > 0 &&
-      organisations.length > 0 &&
-      tags?.mea
+      organisations.length > 0
     ) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }

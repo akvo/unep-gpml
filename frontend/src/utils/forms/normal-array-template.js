@@ -47,12 +47,10 @@ const NormalArrayFieldTemplate = ({
   const group = uiSchema["ui:group"];
   const formGroup = group && items.length !== 0 && `group-${group}`;
 
-  useEffect(() => {
-    // add one items by default
-    if (group && items.length === 0) {
-      onAddClick();
-    }
-  }, [group]);
+  // add one items by default
+  if (group && items.length === 0) {
+    onAddClick();
+  }
 
   return (
     <>

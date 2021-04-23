@@ -42,7 +42,6 @@ const Browse = ({
   history,
   countData,
   setSignupModalVisible,
-  updateDisclaimer,
   filters,
   setFilters,
 }) => {
@@ -100,6 +99,9 @@ const Browse = ({
     // requests to the backend.
   }, [isLoading]); // eslint-disable-line
   useEffect(() => {
+    UIStore.update((e) => {
+      e.disclaimer = "browse";
+    });
     if (profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
         api.get("/favorite").then((resp) => {
@@ -187,10 +189,6 @@ const Browse = ({
     (acc, topic) => acc + topicCounts[topic],
     0
   );
-
-  useEffect(() => {
-    updateDisclaimer("/browse");
-  }, [updateDisclaimer]);
 
   return (
     <div id="browse">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -55,29 +55,30 @@ api.get("/organisation").then((resp) => {
   });
 });
 
-const disclaimerHome = (
-  <>
-    The GPML Digital Platform Phase 1 is now live and currently a Beta Version.
-    Help us test the platform and let us know what you think at{" "}
-    <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
-      unep-gpmarinelitter@un.org
-    </a>
-    . Take part in shaping the platform’s next releases, until its final launch
-    scheduled for 2023. Stay tuned!
-  </>
-);
-
-const disclaimerBrowse = (
-  <>
-    UNEP shall not be liable for third party content hosted on the platform.
-    Contact us if you have any concerns with the content at:{" "}
-    <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
-      unep-gpmarinelitter@un.org
-    </a>
-    . Please note that during Beta Testing, content and functionality issues may
-    persist.
-  </>
-);
+const disclaimerContent = {
+  home: (
+    <>
+      The GPML Digital Platform Phase 1 is now live and currently a Beta
+      Version. Help us test the platform and let us know what you think at{" "}
+      <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
+        unep-gpmarinelitter@un.org
+      </a>
+      . Take part in shaping the platform’s next releases, until its final
+      launch scheduled for 2023. Stay tuned!
+    </>
+  ),
+  browse: (
+    <>
+      UNEP shall not be liable for third party content hosted on the platform.
+      Contact us if you have any concerns with the content at:{" "}
+      <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
+        unep-gpmarinelitter@un.org
+      </a>
+      . Please note that during Beta Testing, content and functionality issues
+      may persist.
+    </>
+  ),
+};
 
 const Root = () => {
   const {
@@ -87,11 +88,10 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
-  const { countries, tags, profile, organisations } = UIStore.currentState;
+  const { profile, disclaimer } = UIStore.useState();
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
-  const [disclaimer, setDisclaimer] = useState(null);
   const [filters, setFilters] = useState(null);
 
   useEffect(() => {
@@ -136,27 +136,12 @@ const Root = () => {
     })();
   }, [getIdTokenClaims, isAuthenticated]);
 
-  useEffect(() => {
-    if (window.location.pathname === "/") setDisclaimer(disclaimerHome);
-    else if (window.location.pathname === "/browse")
-      setDisclaimer(disclaimerBrowse);
-    else if (window.location.pathname === "/browse/")
-      setDisclaimer(disclaimerBrowse);
-    else setDisclaimer(null);
-  }, [disclaimer]);
-
-  const updateDisclaimer = (page) => {
-    if (page === "/") setDisclaimer(disclaimerHome);
-    if (page === "/browse") setDisclaimer(disclaimerBrowse);
-    if (page === null) setDisclaimer(null);
-  };
-
   return (
     <Router>
       <div id="root">
-        {disclaimer && (
+        {disclaimerContent?.[disclaimer] && (
           <div className="panel-disclaimer">
-            <p className="ui container">{disclaimer}</p>
+            <p className="ui container">{disclaimerContent?.[disclaimer]}</p>
           </div>
         )}
         <div className="topbar">
@@ -234,7 +219,6 @@ const Root = () => {
                 setFilters,
                 ...props,
               }}
-              updateDisclaimer={updateDisclaimer}
             />
           )}
         />
@@ -245,82 +229,47 @@ const Root = () => {
               {...props}
               countData={data}
               setSignupModalVisible={setSignupModalVisible}
-              updateDisclaimer={updateDisclaimer}
               filters={filters}
               setFilters={setFilters}
             />
           )}
         />
-        <Route
-          path="/add-event"
-          render={(props) => (
-            <AddEvent {...props} updateDisclaimer={updateDisclaimer} />
-          )}
-        />
+        <Route path="/add-event" render={(props) => <AddEvent {...props} />} />
         <Route
           path="/add-technology"
-          render={(props) => (
-            <AddTechnology {...props} updateDisclaimer={updateDisclaimer} />
-          )}
+          render={(props) => <AddTechnology {...props} />}
         />
         <Route
           path="/add-policy"
-          render={(props) => (
-            <AddPolicy {...props} updateDisclaimer={updateDisclaimer} />
-          )}
+          render={(props) => <AddPolicy {...props} />}
         />
         <Route
           path="/add-action-plan"
-          render={(props) => (
-            <AddActionPlan {...props} updateDisclaimer={updateDisclaimer} />
-          )}
+          render={(props) => <AddActionPlan {...props} />}
         />
         <Route
           path="/add-financing-resource"
-          render={(props) => (
-            <AddFinancingResource
-              {...props}
-              updateDisclaimer={updateDisclaimer}
-            />
-          )}
+          render={(props) => <AddFinancingResource {...props} />}
         />
         <Route
           path="/add-technical-resource"
-          render={(props) => (
-            <AddTechnicalResource
-              {...props}
-              updateDisclaimer={updateDisclaimer}
-            />
-          )}
+          render={(props) => <AddTechnicalResource {...props} />}
         />
         <Route
           path="/add-initiative"
-          render={(props) => (
-            <AddInitiative {...props} updateDisclaimer={updateDisclaimer} />
-          )}
+          render={(props) => <AddInitiative {...props} />}
         />
         <Route
           path="/profile"
-          render={(props) => (
-            <ProfileView
-              {...{ ...props }}
-              updateDisclaimer={updateDisclaimer}
-            />
-          )}
+          render={(props) => <ProfileView {...{ ...props }} />}
         />
-        <Route
-          path="/signup"
-          render={(props) => (
-            <SignupView {...props} updateDisclaimer={updateDisclaimer} />
-          )}
-        />
+        <Route path="/signup" render={(props) => <SignupView {...props} />} />
         <Route
           path="/:type/:id"
           render={(props) => (
             <DetailsView
               {...props}
               setSignupModalVisible={setSignupModalVisible}
-              updateDisclaimer={updateDisclaimer}
             />
           )}
         />

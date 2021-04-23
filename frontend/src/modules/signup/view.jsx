@@ -1,3 +1,4 @@
+import { UIStore } from "../../store";
 import React, { useEffect } from "react";
 import { Row, Col, Card } from "antd";
 import "./view-style.scss";
@@ -7,7 +8,9 @@ const SignupView = ({ ...props }) => {
   const { loginWithPopup } = useAuth0();
 
   useEffect(() => {
-    props.updateDisclaimer(null);
+    UIStore.update((e) => {
+      e.disclaimer = null;
+    });
   }, [props]);
 
   return (

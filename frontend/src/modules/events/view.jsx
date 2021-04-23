@@ -1,3 +1,4 @@
+import { UIStore } from "../../store";
 import React, { useEffect } from "react";
 import { Row, Col, Card } from "antd";
 import "./styles.scss";
@@ -5,7 +6,9 @@ import AddEventForm from "./form";
 
 const AddEvent = ({ ...props }) => {
   useEffect(() => {
-    props.updateDisclaimer(null);
+    UIStore.update((e) => {
+      e.disclaimer = null;
+    });
   }, [props]);
 
   return (

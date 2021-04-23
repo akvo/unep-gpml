@@ -51,6 +51,7 @@ const UIStore = new Store({
   organisationType: sectorOptions,
   sectorOptions: sectorOptions,
   highlight: false,
+  disclaimer: null,
 });
 
 export { UIStore };

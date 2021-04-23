@@ -411,6 +411,9 @@ const DetailsView = ({ match: { params }, ...props }) => {
   }, [params]);
 
   useEffect(() => {
+    UIStore.update((e) => {
+      e.disclaimer = null;
+    });
     if (profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
         api.get("/favorite").then((resp) => {
@@ -447,10 +450,6 @@ const DetailsView = ({ match: { params }, ...props }) => {
       });
     }
   };
-
-  useEffect(() => {
-    props.updateDisclaimer(null);
-  }, [props]);
 
   if (!data)
     return (
