@@ -100,7 +100,7 @@ where id = :id
 
 
 -- :name pending-resource :? :*
--- :doc Returns the list of pending resources
+-- :doc Returns the pending resources data
 
 select
     id,
@@ -133,31 +133,6 @@ select
         from resource where id = :id) as created_by
 from v_resource_data
 where id = :id
-
--- :name pending-resources :? :*
--- :doc Returns the list of pending resources
-select
-    rd.id,
-    rd.type as resource_type,
-    rd.title,
-    rd.summary,
-    rd.image,
-    rd.geo_coverage_type as geo_coverage,
-    rd.geo_coverage_values as geo_coverage_value,
-    rd.valid_from,
-    rd.valid_to,
-    rd.value,
-    rd.value_currency,
-    rd.value_remarks,
-    rd.remarks,
-    s.email as submitter,
-    c.name as country,
-    rd.languages as urls
-from v_resource_data rd
-left join resource r on r.id = rd.id
-left join country c on c.id = r.country
-left join stakeholder s on r.created_by = r.created_by
-where r.review_status = 'SUBMITTED'
 
 -- :name resource-image-by-id :? :1
 -- :doc Get resource image by id

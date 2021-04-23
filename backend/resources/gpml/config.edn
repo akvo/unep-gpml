@@ -96,14 +96,22 @@
                                                   :handler #ig/ref :gpml.handler.event/review}}]]]
                                         ["/resource" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                    #ig/ref :gpml.auth/auth-required
-                                                                   #ig/ref :gpml.auth/approved-user
-                                                                   #ig/ref :gpml.auth/admin-required-middleware]}
+                                                                   #ig/ref :gpml.auth/approved-user]}
                                          [""
                                            {:post {:summary "Create new resource"
                                                   :swagger {:tags ["resource"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.resource/post-params}
                                                   :handler #ig/ref :gpml.handler.resource/post}}]]
+                                        ["/policy" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required
+                                                                 #ig/ref :gpml.auth/approved-user]}
+                                         [""
+                                           {:post {:summary "Create new policy"
+                                                  :swagger {:tags ["policy"]
+                                                            :security [{:id_token []}]}
+                                                  :parameters {:body #ig/ref :gpml.handler.policy/post-params}
+                                                  :handler #ig/ref :gpml.handler.policy/post}}]]
                                         ["/landing"
                                          [""
                                           {:get {:summary "End-point for the landing page"
@@ -215,6 +223,9 @@
 
   :gpml.handler.resource/post {:db #ig/ref :duct.database/sql}
   :gpml.handler.resource/post-params {}
+
+  :gpml.handler.policy/post {:db #ig/ref :duct.database/sql}
+  :gpml.handler.policy/post-params {}
 
   :gpml.handler.profile/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/post {:db #ig/ref :duct.database/sql
