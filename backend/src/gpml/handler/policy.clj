@@ -1,7 +1,6 @@
 (ns gpml.handler.policy
   (:require [clojure.java.jdbc :as jdbc]
             [gpml.handler.geo :as handler.geo]
-            [gpml.handler.organisation :as handler.org]
             [gpml.handler.image :as handler.image]
             [gpml.db.language :as db.language]
             [gpml.db.policy :as db.policy]
