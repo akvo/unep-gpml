@@ -112,6 +112,15 @@
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.policy/post-params}
                                                   :handler #ig/ref :gpml.handler.policy/post}}]]
+                                        ["/initiative" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                     #ig/ref :gpml.auth/auth-required
+                                                                     #ig/ref :gpml.auth/approved-user]}
+                                         [""
+                                           {:post {:summary "Create new initiative"
+                                                  :swagger {:tags ["initiative"]
+                                                            :security [{:id_token []}]}
+                                                  :parameters {:body #ig/ref :gpml.handler.initiative/post-params}
+                                                  :handler #ig/ref :gpml.handler.initiative/post}}]]
                                         ["/technology" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                      #ig/ref :gpml.auth/auth-required
                                                                      #ig/ref :gpml.auth/approved-user]}
@@ -238,6 +247,9 @@
 
   :gpml.handler.technology/post {:db #ig/ref :duct.database/sql}
   :gpml.handler.technology/post-params {}
+
+  :gpml.handler.initiative/post {:db #ig/ref :duct.database/sql}
+  :gpml.handler.initiative/post-params {}
 
   :gpml.handler.profile/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.profile/post {:db #ig/ref :duct.database/sql

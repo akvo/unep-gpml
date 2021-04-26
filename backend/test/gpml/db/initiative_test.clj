@@ -8,7 +8,7 @@
 (use-fixtures :each fixtures/with-test-system)
 
 (def initiative-data
-  {:q1 15
+  {:q1 1.5
    :q2 "test"
    :q3 1000
    :q4 ["vector-1", "vector-2"]
@@ -74,16 +74,19 @@
    :q41_1 "test"
   })
 
+(assoc initiative-data :created_by 1 :version 1)
+
 (deftest insert-data
   (let [db (test-util/db-test-conn)
         admin (dummy/get-or-create-profile db "test@akvo.org" "John Doe" "ADMIN" "APPROVED")]
     (testing "Insert complete data"
       (let [data (db.initiative/new-initiative
                    db (assoc initiative-data :created_by (:id admin) :version 1))
-            result (db.initiative/get-initiative-by-id db data)]
+            result (db.initiative/initiative-by-id db data)]
         (is (= 1 (-> data :id)))
         (is (= "SUBMITTED" (-> result :review_status)))
         (is (= 10001 (-> result :created_by)))
         ;; remove dissoc after we adjust pg_util
         (doseq [keyval (dissoc initiative-data :q4 :q4_1_1 :q4_1_2)]
-          (is (= (second keyval) ((first keyval) result))))))))
+          (is (= (second keyval) ((first keyval) result))))))
+    ))
