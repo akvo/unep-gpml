@@ -4,6 +4,7 @@ import SelectWidget from "./form-select";
 import CheckboxesWidget from "./form-checkboxes";
 import RadioWidget from "./form-radio";
 import difference from "lodash/difference";
+import { ConsoleSqlOutlined } from "@ant-design/icons";
 
 const widgets = {
   Auth0Widget: Auth0Widget,
@@ -50,9 +51,19 @@ export const CustomFieldTemplate = (props) => {
   );
 };
 
-export const collectDependSchema = (tmp, formData, schema, index = null) => {
+export const collectDependSchema = (
+  tmp,
+  formData,
+  schema,
+  required,
+  index = null
+) => {
   if (!schema?.properties) {
     return;
+  }
+  if (schema?.required) {
+    required.push({ key: index, required: schema.required });
+    // schema.required.forEach((x) => required.push(x));
   }
   const { properties } = schema;
   Object.keys(properties).forEach((key) => {
@@ -77,7 +88,7 @@ export const collectDependSchema = (tmp, formData, schema, index = null) => {
       tmp.push(`.${index}.${key}`);
     }
     if (properties[key]?.properties) {
-      collectDependSchema(tmp, formData, properties[key], key);
+      collectDependSchema(tmp, formData, properties[key], required, key);
     }
   });
   return;
@@ -111,6 +122,30 @@ export const overideValidation = (errors, dependValue) => {
   });
   overide = difference(overide, tmp);
   return overide;
+};
+
+export const checkRequiredFieldFilledIn = (
+  formData,
+  dependFields,
+  requiredFields
+) => {
+  // check if all required field filled in
+  dependFields = dependFields.map((x) => x.replace(".", ""));
+  let res = [];
+  requiredFields.forEach((item) => {
+    item.required = difference(item.required, dependFields);
+    if (!item.key) {
+      item.required.forEach((x) => {
+        !(x in formData) && res.push(x);
+      });
+    }
+    if (item.key) {
+      item.required.forEach((x) => {
+        !(x in formData[item.key]) && res.push(x);
+      });
+    }
+  });
+  return res;
 };
 
 export const findCountryIsoCode = (value, countries) => {

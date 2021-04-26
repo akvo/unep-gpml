@@ -13,6 +13,7 @@ import widgets from "../../utils/forms";
 import {
   collectDependSchema,
   overideValidation,
+  checkRequiredFieldFilledIn,
   findCountryIsoCode,
   handleGeoCoverageValue,
 } from "../../utils/forms";
@@ -53,6 +54,7 @@ const AddPolicyForm = ({
   setSending,
   highlight,
   setHighlight,
+  setDisabledBtn,
 }) => {
   const { countries, organisations, tags, currencies } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
@@ -111,9 +113,22 @@ const AddPolicyForm = ({
       e.data = formData;
     });
     // to overide validation
-    let tmp = [];
-    collectDependSchema(tmp, formData, formSchema.schema);
-    setDependValue(tmp);
+    let dependFields = [];
+    let requiredFields = [];
+    collectDependSchema(
+      dependFields,
+      formData,
+      formSchema.schema,
+      requiredFields
+    );
+    setDependValue(dependFields);
+    // enable btn submit
+    if (
+      checkRequiredFieldFilledIn(formData, dependFields, requiredFields)
+        .length === 0
+    ) {
+      setDisabledBtn({ disabled: false, type: "primary" });
+    }
   };
 
   const handleTransformErrors = (errors, dependValue) => {
