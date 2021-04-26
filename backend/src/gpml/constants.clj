@@ -4,4 +4,6 @@
 (def topics
   (vec
    (sort
-       (apply conj resource-types ["people" "event" "technology" "policy" "project" "stakeholder" "organisation"]))))
+    (apply conj resource-types ["people" "event" "technology" "policy" "project" "stakeholder" "organisation"]))))
+
+(def gcs-bucket-name "akvo-unep-gpml")

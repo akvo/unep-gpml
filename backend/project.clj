@@ -33,7 +33,8 @@
                  [org.eclipse.jetty/jetty-server "9.4.31.v20200723"]
                  [org.eclipse.jetty/jetty-servlet "9.4.31.v20200723"]
                  [com.zaxxer/HikariCP "3.4.5" :exclusions [org.slf4j/slf4j-api]]
-                 [raven-clj "1.5.2"]]
+                 [raven-clj "1.5.2"]
+                 [ovotech/clj-gcp "0.6.15"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]
