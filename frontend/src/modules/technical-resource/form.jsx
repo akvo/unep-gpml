@@ -1,6 +1,7 @@
 import { UIStore } from "../../store";
 import { Store } from "pullstate";
-import React, { useEffect, useState, useRef } from "react";
+import { notification } from "antd";
+import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
 import { withTheme } from "@rjsf/core";
 import { Theme as AntDTheme } from "@rjsf/antd";
@@ -63,10 +64,15 @@ const AddResourceForm = ({
   });
 
   useEffect(() => {
-    if (formSchema.loading && tags?.technicalResourceType) {
+    if (
+      formSchema.loading &&
+      organisations.length > 0 &&
+      countries.length > 0 &&
+      tags?.technicalResourceType
+    ) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [tags, formSchema]);
+  }, [organisations, countries, tags, formSchema]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
@@ -95,10 +101,17 @@ const AddResourceForm = ({
     data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
     setSending(true);
-    api.post("/resource", data).then(() => {
-      setSending(false);
-      setStep(2);
-    });
+    api
+      .post("/resource", data)
+      .then(() => {
+        setStep(2);
+      })
+      .catch(() => {
+        notification.error({ message: "An error occured" });
+      })
+      .finally(() => {
+        setSending(false);
+      });
   };
 
   const handleFormOnChange = ({ formData }) => {

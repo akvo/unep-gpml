@@ -1,6 +1,6 @@
 import { UIStore } from "../../store";
 import React, { useEffect, useState, useContext } from "react";
-import { Form, Input, Select, Button } from "antd";
+import { Form, Input, Select, Button, notification } from "antd";
 import { Form as FinalForm, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { createForm } from "final-form";
@@ -175,10 +175,17 @@ const AddEventForm = () => {
       data.geoCoverageValue = [data.geoCoverageValue];
     }
     setSending(true);
-    api.post("/event", data).then(() => {
-      setSending(false);
-      setStep(2);
-    });
+    api
+      .post("/event", data)
+      .then(() => {
+        setStep(2);
+      })
+      .catch(() => {
+        notification.error({ message: "An error occured" });
+      })
+      .finally(() => {
+        setSending(false);
+      });
   };
   useEffect(() => {
     (async function fetchData() {
