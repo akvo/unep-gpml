@@ -13,13 +13,16 @@ export const schema = {
   type: "object",
   required: [
     "title",
-    // "org",
+    "originalTitle",
+    "recordNumber",
+    "status",
     "country",
     "geoCoverageType",
     "geoCoverageValueRegional",
     "geoCoverageValueNational",
     "geoCoverageValueGlobalSpesific",
     "geoCoverageValueSubNational",
+    "implementingMea",
     "tags",
   ],
   properties: {
@@ -31,85 +34,6 @@ export const schema = {
       title: "ORIGINAL TITLE",
       type: "string",
     },
-    // org: {
-    //   title: "ENTITY",
-    //   enum: [],
-    // },
-    // newOrg: {
-    //   title: "ENTITY DETAILS",
-    //   type: "object",
-    //   depend: {
-    //     id: "org",
-    //     value: [-1],
-    //   },
-    //   required: [
-    //     "name",
-    //     "type",
-    //     "country",
-    //     "url",
-    //     "geoCoverageType",
-    //     "geoCoverageValueNational",
-    //     "geoCoverageValueRegional",
-    //     "geoCoverageValueGlobalSpesific",
-    //     "geoCoverageValueSubNational",
-    //   ],
-    //   properties: {
-    //     name: {
-    //       title: "NAME",
-    //       type: "string",
-    //     },
-    //     type: {
-    //       title: "TYPE OF THE ENTITY",
-    //       enum: organisationType,
-    //       enumNames: organisationType,
-    //     },
-    //     country: {
-    //       $ref: "#/properties/country",
-    //     },
-    //     url: {
-    //       title: "ENTITY URL",
-    //       type: "string",
-    //     },
-    //     geoCoverageType: {
-    //       $ref: "#/properties/geoCoverageType",
-    //     },
-    //     geoCoverageValueRegional: {
-    //       $ref: "#/properties/geoCoverageValueRegional",
-    //       depend: {
-    //         id: "geoCoverageType",
-    //         value: ["regional"],
-    //       },
-    //     },
-    //     geoCoverageValueNational: {
-    //       $ref: "#/properties/geoCoverageValueNational",
-    //       depend: {
-    //         id: "geoCoverageType",
-    //         value: ["national"],
-    //       },
-    //     },
-    //     geoCoverageValueTransnational: {
-    //       $ref: "#/properties/geoCoverageValueTransnational",
-    //       depend: {
-    //         id: "geoCoverageType",
-    //         value: ["transnational"],
-    //       },
-    //     },
-    //     geoCoverageValueSubNational: {
-    //       $ref: "#/properties/geoCoverageValueSubNational",
-    //       depend: {
-    //         id: "geoCoverageType",
-    //         value: ["sub-national"],
-    //       },
-    //     },
-    //     geoCoverageValueGlobalSpesific: {
-    //       $ref: "#/properties/geoCoverageValueGlobalSpesific",
-    //       depend: {
-    //         id: "geoCoverageType",
-    //         value: ["global with elements in specific areas"],
-    //       },
-    //     },
-    //   },
-    // },
     dataSource: {
       title: "DATA SOURCE",
       type: "string",
@@ -129,6 +53,7 @@ export const schema = {
     date: {
       type: "object",
       title: "",
+      required: ["firstPublicationDate", "latestAmendmentDate"],
       properties: {
         firstPublicationDate: {
           title: "FIRST PUBLICATION DATE",
@@ -243,55 +168,6 @@ export const uiSchema = {
   originalTitle: {
     "ui:placeholder": "Type in resource original title",
   },
-  // org: {
-  //   "ui:showSearch": true,
-  //   "ui:placeholder": "Choose organisation",
-  // },
-  // newOrg: {
-  //   "ui:group": "border",
-  //   name: {
-  //     "ui:placeholder": "Type in entity name",
-  //   },
-  //   type: {
-  //     "ui:placeholder": "Choose entity type",
-  //     "ui:widget": "select",
-  //   },
-  //   country: {
-  //     "ui:showSearch": true,
-  //     "ui:widget": "select",
-  //     "ui:placeholder": "Choose the resource country",
-  //   },
-  //   geoCoverageType: {
-  //     "ui:placeholder": "Choose the entity coverage type",
-  //     "ui:widget": "select",
-  //   },
-  //   geoCoverageValueRegional: {
-  //     "ui:placeholder": "Choose the entity coverage",
-  //     "ui:widget": "select",
-  //     "ui:showSearch": true,
-  //     "ui:mode": "multiple",
-  //   },
-  //   geoCoverageValueNational: {
-  //     "ui:placeholder": "Choose the entity coverage",
-  //     "ui:widget": "select",
-  //     "ui:showSearch": true,
-  //   },
-  //   geoCoverageValueTransnational: {
-  //     "ui:placeholder": "Choose the resource coverage",
-  //     "ui:widget": "select",
-  //     "ui:showSearch": true,
-  //     "ui:mode": "multiple",
-  //   },
-  //   geoCoverageValueSubNational: {
-  //     "ui:placeholder": "Type regions here...",
-  //   },
-  //   geoCoverageValueGlobalSpesific: {
-  //     "ui:placeholder": "Choose the entity coverage",
-  //     "ui:widget": "select",
-  //     "ui:showSearch": true,
-  //     "ui:mode": "multiple",
-  //   },
-  // },
   dataSource: {
     "ui:placeholder": "Type in data source",
   },

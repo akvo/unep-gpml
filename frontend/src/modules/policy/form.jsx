@@ -1,6 +1,7 @@
 import { UIStore } from "../../store";
 import { Store } from "pullstate";
-import React, { useEffect, useState, useRef } from "react";
+import { notification } from "antd";
+import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
 import { withTheme } from "@rjsf/core";
 import { Theme as AntDTheme } from "@rjsf/antd";
@@ -19,16 +20,8 @@ import cloneDeep from "lodash/cloneDeep";
 
 const Form = withTheme(AntDTheme);
 
-const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
+const getSchema = ({ countries, tags }, loading) => {
   const prop = cloneDeep(schema.properties);
-  // const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
-  // prop.org.enum = orgs?.map((it) => it.id);
-  // prop.org.enumNames = orgs?.map((it) => it.name);
-  // prop.value.properties.valueCurrency = {
-  //   ...prop.value.properties.valueCurrency,
-  //   enum: currencies?.map((x, i) => x.value),
-  //   enumNames: currencies?.map((x, i) => x.label),
-  // };
   prop.country.enum = countries?.map((x, i) => x.id);
   prop.country.enumNames = countries?.map((x, i) => x.name);
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
@@ -70,10 +63,15 @@ const AddPolicyForm = ({
   });
 
   useEffect(() => {
-    if (formSchema.loading && tags?.policy && tags?.mea) {
+    if (
+      formSchema.loading &&
+      countries.length > 0 &&
+      tags?.policy &&
+      tags?.mea
+    ) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [tags, formSchema]);
+  }, [countries, tags, formSchema]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
@@ -82,20 +80,9 @@ const AddPolicyForm = ({
   const handleOnSubmit = ({ formData }) => {
     let data = { ...formData };
 
-    // data?.newOrg && delete data.newOrg;
-    // data.org = { id: formData.org };
-    // if (formData.org === -1) {
-    //   data.org = {
-    //     ...formData.newOrg,
-    //     id: formData.org,
-    //   };
-    //   data.org.country = findCountryIsoCode(formData.newOrg.country, countries);
-    //   data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
-    // }
-
     delete data.date;
     data.firstPublicationDate = formData.date.firstPublicationDate;
-    data.latestAmendmentDate = formData?.date?.latestAmendmentDate || null;
+    data.latestAmendmentDate = formData?.date?.latestAmendmentDate || "Ongoing";
 
     if (data?.urls[0]?.url)
       data.urls = formData.urls.filter((it) => it.url.length > 0);
@@ -105,12 +92,18 @@ const AddPolicyForm = ({
     data?.image === "" && delete data.image;
     data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
-    console.log(data);
     setSending(true);
-    api.post("/policy", data).then(() => {
-      setSending(false);
-      setStep(2);
-    });
+    api
+      .post("/policy", data)
+      .then(() => {
+        setStep(2);
+      })
+      .catch(() => {
+        notification.error({ message: "An error occured" });
+      })
+      .finally(() => {
+        setSending(false);
+      });
   };
 
   const handleFormOnChange = ({ formData }) => {
@@ -157,7 +150,7 @@ const AddPolicyForm = ({
       )}
       {step === 2 && (
         <div>
-          <h3>Thank you for adding the resource</h3>
+          <h3>Thank you for adding the Policy</h3>
           <p>we'll let you know once an admin has approved it</p>
         </div>
       )}
