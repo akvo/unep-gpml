@@ -545,7 +545,12 @@ const DetailsView = ({ match: { params }, ...props }) => {
               key="desc-image"
               style={{ marginBottom: "20px" }}
               width="100%"
-              src={data.image || data.picture || imageNotFound}
+              src={
+                data.image ||
+                data.picture ||
+                (params.type === "organisation" && data.logo) ||
+                imageNotFound
+              }
             />
             {renderDescription(params, data)}
             {renderTypeOfActions(params, data)}
