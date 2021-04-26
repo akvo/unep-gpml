@@ -1,6 +1,7 @@
 import { UIStore } from "../../store";
 import { Store } from "pullstate";
-import React, { useEffect, useState, useRef } from "react";
+import { notification } from "antd";
+import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
 import { withTheme } from "@rjsf/core";
 import { Theme as AntDTheme } from "@rjsf/antd";
@@ -19,11 +20,8 @@ import cloneDeep from "lodash/cloneDeep";
 
 const Form = withTheme(AntDTheme);
 
-const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
+const getSchema = ({ countries, tags }, loading) => {
   const prop = cloneDeep(schema.properties);
-  // const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
-  // prop.org.enum = orgs?.map((it) => it.id);
-  // prop.org.enumNames = orgs?.map((it) => it.name);
   prop.country.enum = countries?.map((x, i) => x.id);
   prop.country.enumNames = countries?.map((x, i) => x.name);
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
@@ -63,10 +61,10 @@ const AddTechnologyForm = ({
   });
 
   useEffect(() => {
-    if (formSchema.loading && tags?.technology) {
+    if (formSchema.loading && countries.length > 0 && tags?.technology) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [tags, formSchema]);
+  }, [countries, tags, formSchema]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
@@ -74,17 +72,6 @@ const AddTechnologyForm = ({
 
   const handleOnSubmit = ({ formData }) => {
     let data = { ...formData };
-
-    // data?.newOrg && delete data.newOrg;
-    // data.org = { id: formData.org };
-    // if (formData.org === -1) {
-    //   data.org = {
-    //     ...formData.newOrg,
-    //     id: formData.org,
-    //   };
-    //   data.org.country = findCountryIsoCode(formData.newOrg.country, countries);
-    //   data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
-    // }
 
     if (data?.relatedInfo?.email) data.email = formData.relatedInfo.email;
     if (data?.relatedInfo?.urls[0]?.url)
@@ -97,10 +84,17 @@ const AddTechnologyForm = ({
 
     console.log(data);
     setSending(true);
-    api.post("/technology", data).then(() => {
-      setSending(false);
-      setStep(2);
-    });
+    api
+      .post("/technology", data)
+      .then(() => {
+        setStep(2);
+      })
+      .catch(() => {
+        notification.error({ message: "An error occured" });
+      })
+      .finally(() => {
+        setSending(false);
+      });
   };
 
   const handleFormOnChange = ({ formData }) => {
