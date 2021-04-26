@@ -184,6 +184,10 @@ const AddInitiative = ({ ...props }) => {
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
+  const [disabledBtn, setDisabledBtn] = useState({
+    disabled: false,
+    type: "primary",
+  });
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -272,12 +276,13 @@ const AddInitiative = ({ ...props }) => {
                     : "Highlight required"}
                 </div>
                 <Button
+                  disabled={disabledBtn.disabled}
                   loading={sending}
-                  type="primary"
+                  type={disabledBtn.type}
                   size="large"
                   onClick={(e) => handleOnClickBtnSubmit(e)}
                 >
-                  Submit
+                  SUBMIT
                 </Button>
               </div>
             </Col>
@@ -332,6 +337,7 @@ const AddInitiative = ({ ...props }) => {
                         highlight={highlight}
                         setHighlight={setHighlight}
                         formSchema={formSchema}
+                        setDisabledBtn={setDisabledBtn}
                       />
                     </Card>
                   </Col>

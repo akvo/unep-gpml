@@ -8,7 +8,11 @@ import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
 import widgets from "../../utils/forms";
 import { overideValidation } from "../../utils/forms";
-import { findCountryIsoCode, handleGeoCoverageValue } from "../../utils/forms";
+import {
+  findCountryIsoCode,
+  handleGeoCoverageValue,
+  checkRequiredFieldFilledIn,
+} from "../../utils/forms";
 import intersection from "lodash/intersection";
 import uiSchema from "./uiSchema.json";
 
@@ -31,11 +35,15 @@ const collectDependSchemaRefactor = (
   tmp,
   formData,
   schema,
+  required,
   index = null,
   oldIndex = null
 ) => {
   if (!schema?.properties) {
     return;
+  }
+  if (schema?.required) {
+    required.push({ key: index, required: schema.required });
   }
   const { properties } = schema;
   Object.keys(properties).forEach((key) => {
@@ -76,7 +84,14 @@ const collectDependSchemaRefactor = (
       }
     }
     if (properties?.[key]?.properties) {
-      collectDependSchemaRefactor(tmp, formData, properties?.[key], key, index);
+      collectDependSchemaRefactor(
+        tmp,
+        formData,
+        properties?.[key],
+        required,
+        key,
+        index
+      );
     }
   });
   return;
@@ -90,13 +105,40 @@ const AddInitiativeForm = ({
   highlight,
   setHighlight,
   formSchema,
+  setDisabledBtn,
 }) => {
   const initiativeFormData = initiativeData.useState();
   const [dependValue, setDependValue] = useState([]);
   const [step, setStep] = useState(1);
 
+  const transformFormData = (data, formData) => {
+    delete formData.tabs;
+    Object.keys(formData).forEach((key) => {
+      if (formData?.[key]) {
+        delete formData[key].steps;
+        if (
+          formData[key] === Object(formData[key]) &&
+          !Array.isArray(formData[key])
+        ) {
+          // loop
+          transformFormData(data, formData[key]);
+        } else {
+          // collect the value
+          let qKey = key.split("_");
+          qKey = qKey[qKey.length - 1];
+          qKey = qKey.split(".").join("_");
+          data[`q${qKey}`] = formData[key];
+        }
+      }
+    });
+    return;
+  };
+
   const handleOnSubmit = ({ formData }) => {
-    console.log(formData);
+    // # Transform data before sending to endpoint
+    let data = {};
+    transformFormData(data, formData);
+    console.log(data);
     // setSending(true);
     // api.post("/resource", data).then(() => {
     //   setStep(2);
@@ -115,10 +157,23 @@ const AddInitiativeForm = ({
       };
     });
     // to overide validation
-    let tmp = [];
+    let dependFields = [];
+    let requiredFields = [];
     // this function eliminate required key from list when that required form appear (show)
-    collectDependSchemaRefactor(tmp, formData, formSchema.schema);
-    setDependValue(tmp);
+    collectDependSchemaRefactor(
+      dependFields,
+      formData,
+      formSchema.schema,
+      requiredFields
+    );
+    setDependValue(dependFields);
+    // enable btn submit
+    // if (
+    //   checkRequiredFieldFilledIn(formData, dependFields, requiredFields)
+    //     .length === 0
+    // ) {
+    //   setDisabledBtn({ disabled: false, type: "primary" });
+    // }
   };
 
   const handleTransformErrors = (errors, dependValue) => {
@@ -147,7 +202,7 @@ const AddInitiativeForm = ({
   };
 
   return (
-    <div className="add-resource-form">
+    <div className="add-initiative-form">
       {step === 1 && (
         <>
           <Form

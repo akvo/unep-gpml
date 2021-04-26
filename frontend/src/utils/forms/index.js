@@ -63,7 +63,6 @@ export const collectDependSchema = (
   }
   if (schema?.required) {
     required.push({ key: index, required: schema.required });
-    // schema.required.forEach((x) => required.push(x));
   }
   const { properties } = schema;
   Object.keys(properties).forEach((key) => {
