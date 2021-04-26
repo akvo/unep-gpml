@@ -1,6 +1,7 @@
 import { UIStore } from "../../store";
 import { Store } from "pullstate";
-import React, { useEffect, useState, useRef } from "react";
+import { notification } from "antd";
+import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
 import { withTheme } from "@rjsf/core";
 import { Theme as AntDTheme } from "@rjsf/antd";
@@ -24,11 +25,6 @@ const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
   const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
   prop.org.enum = orgs?.map((it) => it.id);
   prop.org.enumNames = orgs?.map((it) => it.name);
-  // prop.value.properties.valueCurrency = {
-  //   ...prop.value.properties.valueCurrency,
-  //   enum: currencies?.map((x, i) => x.value),
-  //   enumNames: currencies?.map((x, i) => x.label),
-  // };
   prop.country.enum = countries?.map((x, i) => x.id);
   prop.country.enumNames = countries?.map((x, i) => x.name);
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
@@ -68,10 +64,15 @@ const AddActionPlanForm = ({
   });
 
   useEffect(() => {
-    if (formSchema.loading && tags?.technicalResourceType) {
+    if (
+      formSchema.loading &&
+      organisations.length > 0 &&
+      countries.length > 0 &&
+      tags?.technicalResourceType
+    ) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [tags, formSchema]);
+  }, [organisations, countries, tags, formSchema]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
@@ -91,12 +92,6 @@ const AddActionPlanForm = ({
       data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
     }
 
-    // delete data.value;
-    // data.value = formData.value.valueAmount;
-    // data.valueCurrency = formData.value.valueCurrency;
-    // if (formData?.value?.valueRemark)
-    //   data.valueRemarks = formData.value.valueRemark;
-
     delete data.date;
     data.validFrom = formData.date.validFrom;
     data.validTo = formData?.date?.validTo || "Ongoing";
@@ -110,10 +105,17 @@ const AddActionPlanForm = ({
     data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
     setSending(true);
-    api.post("/resource", data).then(() => {
-      setSending(false);
-      setStep(2);
-    });
+    api
+      .post("/resource", data)
+      .then(() => {
+        setStep(2);
+      })
+      .catch(() => {
+        notification.error({ message: "An error occured" });
+      })
+      .finally(() => {
+        setSending(false);
+      });
   };
 
   const handleFormOnChange = ({ formData }) => {

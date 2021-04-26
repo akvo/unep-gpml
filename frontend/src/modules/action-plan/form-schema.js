@@ -110,25 +110,6 @@ export const schema = {
       title: "PUBLICATION YEAR",
       type: "number",
     },
-    // value: {
-    //   type: "object",
-    //   title: "",
-    //   required: ["valueAmount", "valueCurrency"],
-    //   properties: {
-    //     valueAmount: {
-    //       title: "VALUE AMOUNT",
-    //       type: "number",
-    //     },
-    //     valueCurrency: {
-    //       title: "VALUE CURRENCY",
-    //       enum: [],
-    //     },
-    //     valueRemark: {
-    //       title: "VALUE REMARK",
-    //       type: "string",
-    //     },
-    //   },
-    // },
     date: {
       type: "object",
       title: "",
@@ -291,21 +272,6 @@ export const uiSchema = {
   publishYear: {
     "ui:placeholder": "YYYY",
   },
-  // value: {
-  //   "ui:group": "border",
-  //   valueAmount: {
-  //     "ui:placeholder": "Type in the value amount",
-  //     "ui:span": 14,
-  //   },
-  //   valueCurrency: {
-  //     "ui:span": 10,
-  //     "ui:widget": "select",
-  //     "ui:showSearch": true,
-  //   },
-  //   valueRemark: {
-  //     "ui:placeholder": "Value remark",
-  //   },
-  // },
   date: {
     validFrom: {
       "ui:placeholder": "YYYY-MM-DD",
