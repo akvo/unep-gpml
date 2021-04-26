@@ -14,6 +14,7 @@ export const schema = {
   required: [
     "title",
     "org",
+    "publishYear",
     "country",
     "geoCoverageType",
     "geoCoverageValueRegional",
