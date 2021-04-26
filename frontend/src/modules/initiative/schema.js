@@ -5,6 +5,7 @@ const { regionOptions, geoCoverageTypeOptions } = UIStore.currentState;
 
 export const schema = {
   type: "object",
+  version: "1",
   properties: {
     S1: {
       title: "SUBMITTER",
@@ -341,9 +342,9 @@ export const schema = {
             "S2_G2_5",
             "S2_G2_6",
             "S2_G2_7",
-            "S2_G2_7.1",
-            "S2_G2_7.1_1",
-            "S2_G2_7.1_2",
+            "S2_G2_7.1.0",
+            "S2_G2_7.1.1",
+            "S2_G2_7.1.2",
             "S2_G2_7.2",
             "S2_G2_7.3",
             "S2_G2_8",
@@ -393,7 +394,7 @@ export const schema = {
               },
               uniqueItems: true,
             },
-            "S2_G2_7.1": {
+            "S2_G2_7.1.0": {
               title:
                 "7.1. Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):",
               type: "array",
@@ -407,15 +408,15 @@ export const schema = {
               },
               uniqueItems: true,
             },
-            "S2_G2_7.1_1": {
-              $ref: "#/properties/S2/properties/S2_G2/properties/S2_G2_7.1",
+            "S2_G2_7.1.1": {
+              $ref: "#/properties/S2/properties/S2_G2/properties/S2_G2_7.1.0",
               depend: {
                 id: "S2_G2_7",
                 value: ["7-1"],
               },
             },
-            "S2_G2_7.1_2": {
-              $ref: "#/properties/S2/properties/S2_G2/properties/S2_G2_7.1",
+            "S2_G2_7.1.2": {
+              $ref: "#/properties/S2/properties/S2_G2/properties/S2_G2_7.1.0",
               depend: {
                 id: "S2_G2_7",
                 value: ["7-2"],

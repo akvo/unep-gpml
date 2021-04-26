@@ -225,11 +225,6 @@ const AddInitiative = ({ ...props }) => {
   };
 
   const handleOnStepClick = (current, section) => {
-    // move to form location when step clicked
-    const id = `initiative_${section}_${section}_G${current + 1}`;
-    let element = document.getElementById(id);
-    element.scrollIntoView({ behavior: "smooth", block: "start" });
-
     initiativeData.update((e) => {
       e.data = {
         ...e.data,

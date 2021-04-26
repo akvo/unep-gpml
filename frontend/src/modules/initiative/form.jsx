@@ -1,5 +1,6 @@
 import { initiativeData } from "./view";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
+import { notification } from "antd";
 import { withTheme } from "@rjsf/core";
 import { Theme as AntDTheme } from "@rjsf/antd";
 import ObjectFieldTemplate from "../../utils/forms/object-template";
@@ -98,8 +99,11 @@ const AddInitiativeForm = ({
     console.log(formData);
     // setSending(true);
     // api.post("/resource", data).then(() => {
-    //   setSending(false);
     //   setStep(2);
+    // }).catch(() => {
+    //   notification.error({ message: "An error occured" });
+    // }).finally(() => {
+    //   setSending(false);
     // });
   };
 
