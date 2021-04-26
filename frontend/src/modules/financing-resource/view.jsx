@@ -8,6 +8,10 @@ const AddFinancingResource = ({ ...props }) => {
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
+  const [disabledBtn, setDisabledBtn] = useState({
+    disabled: true,
+    type: "default",
+  });
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -50,12 +54,13 @@ const AddFinancingResource = ({ ...props }) => {
                     : "Highlight required"}
                 </div>
                 <Button
+                  disabled={disabledBtn.disabled}
                   loading={sending}
-                  type="primary"
+                  type={disabledBtn.type}
                   size="large"
                   onClick={(e) => handleOnClickBtnSubmit(e)}
                 >
-                  Submit
+                  SUBMIT
                 </Button>
               </div>
             </Col>
@@ -75,6 +80,7 @@ const AddFinancingResource = ({ ...props }) => {
                 setSending={setSending}
                 highlight={highlight}
                 setHighlight={setHighlight}
+                setDisabledBtn={setDisabledBtn}
               />
             </Card>
           </Col>

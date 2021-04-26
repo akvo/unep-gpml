@@ -139,7 +139,7 @@ export const checkRequiredFieldFilledIn = (
         !(x in formData) && res.push(x);
       });
     }
-    if (item.key) {
+    if (item.key && !dependFields.includes(item.key)) {
       item.required.forEach((x) => {
         !(x in formData[item.key]) && res.push(x);
       });
