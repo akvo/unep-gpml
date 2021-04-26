@@ -2,4 +2,12 @@
  :duct.database.sql/hikaricp {:idle-timeout 10000
                               :minimum-idle 0
                               :maximum-pool-size 1}
-}
+
+ :duct.logger/timbre
+ {:min-level :debug
+  :set-root-config? true
+  :appenders {:out #ig/ref :duct.logger.timbre/println}}
+
+ :duct.logger.timbre/println {}
+
+ }
