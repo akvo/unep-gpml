@@ -98,6 +98,60 @@ const collectDependSchemaRefactor = (
 };
 // End of refactor
 
+const transformFormData = (data, formData, schema) => {
+  delete formData.tabs;
+  Object.keys(formData).forEach((key) => {
+    if (formData?.[key]) {
+      delete formData[key].steps;
+      if (
+        formData[key] === Object(formData[key]) &&
+        !Array.isArray(formData[key])
+      ) {
+        // loop
+        transformFormData(data, formData[key], schema[key]?.properties);
+      } else {
+        // collect the value
+        let qKey = key.split("_");
+        qKey = qKey[qKey.length - 1];
+        qKey = qKey.split(".").join("_");
+        data[`q${qKey}`] = formData[key];
+        if (Array.isArray(formData[key])) {
+          data[`q${qKey}`] = formData[key].map((d) => {
+            if (schema?.[key].type === "array") {
+              return {
+                [d]:
+                  schema?.[key].items.enumNames?.[
+                    schema?.[key].items.enum.indexOf(d)
+                  ],
+              };
+            }
+            if (schema?.[key].type === "string") {
+              return {
+                [d]: schema?.[key].enumNames?.[schema?.[key].enum.indexOf(d)],
+              };
+            }
+          });
+        } else {
+          if (
+            schema?.[key]?.enum &&
+            schema?.[key]?.enumNames &&
+            schema?.[key]?.enum.length > 0 &&
+            schema[key].enumNames.length > 0
+          ) {
+            data[`q${qKey}`] = {
+              [formData[key]]:
+                schema?.[key].enumNames?.[
+                  schema[key].enum.indexOf(formData[key])
+                ],
+            };
+          }
+        }
+      }
+    }
+  });
+  return;
+};
+
 const AddInitiativeForm = ({
   btnSubmit,
   sending,
@@ -111,33 +165,10 @@ const AddInitiativeForm = ({
   const [dependValue, setDependValue] = useState([]);
   const [step, setStep] = useState(1);
 
-  const transformFormData = (data, formData) => {
-    delete formData.tabs;
-    Object.keys(formData).forEach((key) => {
-      if (formData?.[key]) {
-        delete formData[key].steps;
-        if (
-          formData[key] === Object(formData[key]) &&
-          !Array.isArray(formData[key])
-        ) {
-          // loop
-          transformFormData(data, formData[key]);
-        } else {
-          // collect the value
-          let qKey = key.split("_");
-          qKey = qKey[qKey.length - 1];
-          qKey = qKey.split(".").join("_");
-          data[`q${qKey}`] = formData[key];
-        }
-      }
-    });
-    return;
-  };
-
   const handleOnSubmit = ({ formData }) => {
     // # Transform data before sending to endpoint
     let data = {};
-    transformFormData(data, formData);
+    transformFormData(data, formData, formSchema.schema.properties);
     console.log(data);
     // setSending(true);
     // api.post("/resource", data).then(() => {

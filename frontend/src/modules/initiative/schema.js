@@ -718,6 +718,7 @@ export const schema = {
               title: "24. Geo coverage type",
               type: "string",
               enum: geoCoverageTypeOptions,
+              enumNames: geoCoverageTypeOptions,
             },
             "S3_G2_24.1": {
               title: "24.1. Geo Coverage",
@@ -727,6 +728,7 @@ export const schema = {
                 value: ["regional"],
               },
               enum: regionOptions,
+              enumNames: regionOptions,
             },
             "S3_G2_24.2": {
               title: "24.1. Geo Coverage",
@@ -764,6 +766,7 @@ export const schema = {
                 value: ["global with elements in specific areas"],
               },
               enum: specificAreasOptions,
+              enumNames: specificAreasOptions,
             },
           },
         },
