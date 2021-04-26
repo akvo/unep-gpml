@@ -34,7 +34,7 @@ values(
     :v:latest_amendment_date::timestamptz,
     :status,
     :v:geo_coverage_type::geo_coverage_type,
-    :v:attachments::text[],
+    :v:attachments::jsonb,
     :remarks,
     :v:review_status::review_status,
     :url,

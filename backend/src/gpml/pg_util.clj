@@ -1,24 +1,17 @@
 (ns gpml.pg-util
   (:require [clojure.java.jdbc :as jdbc]
-            [jsonista.core :as j]
-            [clojure.string :as str])
-  (:import org.postgresql.jdbc.PgArray
-           org.postgresql.util.PGobject))
-
-(defn pgarray->val
-  [^PgArray pgarray]
-  (into [] (.getArray pgarray)))
-
-(defn val->pgarray
-  [value]
-  (format "{%s}"
-          (str/join ","
-                    (map #(str "\"" % "\"")
-                         value))))
+            [jsonista.core :as j])
+  (:import org.postgresql.util.PGobject))
 
 (defn- parse-json
   [s]
   (j/read-value s j/keyword-keys-object-mapper))
+
+(defn val->jsonb
+  [value]
+  (doto (PGobject.)
+    (.setType "jsonb")
+    (.setValue (j/write-value-as-string value))))
 
 (defn pgobject->val
   [^PGobject obj]
@@ -32,12 +25,12 @@
 (extend-protocol jdbc/IResultSetReadColumn
   PGobject
   (result-set-read-column [value _ _]
-    (pgobject->val value))
-  PgArray
-  (result-set-read-column [value _ _]
-    (pgarray->val value)))
+    (pgobject->val value)))
 
 (extend-protocol jdbc/ISQLValue
+  clojure.lang.IPersistentMap
+  (sql-value [value]
+    (val->jsonb value))
   clojure.lang.PersistentVector
   (sql-value [value]
-    (val->pgarray value)))
+    (val->jsonb value)))

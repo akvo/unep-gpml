@@ -32,7 +32,7 @@ values(
 --~ (when (contains? params :value_currency) ", :value_currency")
 --~ (when (contains? params :value_remarks) ", :value_remarks")
 --~ (when (contains? params :image) ", :image")
---~ (when (contains? params :attachments) ", :v:attachments::text[]")
+--~ (when (contains? params :attachments) ", :v:attachments::jsonb")
 --~ (when (contains? params :remarks) ", :remarks")
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
