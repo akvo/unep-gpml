@@ -8,10 +8,11 @@
             [reitit.ring.middleware.exception :as exception]
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.ring.middleware.parameters :as parameters]
+            [iapetos.collector.ring :as prometheus-ring]
+            [taoensso.timbre :as timbre]
             [reitit.swagger :as swagger]
             [reitit.swagger-ui :as swagger-ui]
             [ring.util.response :as resp]))
-
 
 (defn root
   [_]
@@ -19,43 +20,55 @@
 
 
 (defn router
-  [routes]
+  [routes collector]
   (ring/router
    routes
-   {:data {:muuntaja m/instance
+    {:data {:muuntaja m/instance
 
-           :coercion (reitit.coercion.malli/create
-                      {:error-keys #{:humanized}
-                       :compile mu/open-schema
-                       :skip-extra-values true
-                       :default-values true})
+            :coercion (reitit.coercion.malli/create
+                        {:error-keys #{:humanized}
+                         :compile mu/open-schema
+                         :skip-extra-values true
+                         :default-values true})
 
-           :middleware [;; swagger feature
-                        swagger/swagger-feature
-                        ;; query-params & form-params
-                        parameters/parameters-middleware
-                        ;; content-negotiation
-                        muuntaja/format-negotiate-middleware
-                        ;; encoding response body
-                        muuntaja/format-response-middleware
-                        ;; exception handling
-                        exception/exception-middleware
-                        ;; decoding request body
-                        muuntaja/format-request-middleware
-                        ;; coercing response bodys
-                        coercion/coerce-response-middleware
-                        ;; coercing request parameters
-                        coercion/coerce-request-middleware]}}))
+            :middleware [;; swagger feature
+                         swagger/swagger-feature
+                         ;; query-params & form-params
+                         parameters/parameters-middleware
+                         ;; content-negotiation
+                         muuntaja/format-negotiate-middleware
+                         ;; encoding response body
+                         muuntaja/format-response-middleware
+                         ;; exception handling
+                         (exception/create-exception-middleware
+                           (merge
+                             exception/default-handlers
+                             {;; print stack-traces for all exceptions
+                              ::exception/wrap (fn [handler e request]
+                                                 (timbre/error e)
+                                                 (handler e request))}))
+                         ;; decoding request body
+                         muuntaja/format-request-middleware
+                         ;; coercing response bodys
+                         coercion/coerce-response-middleware
+                         ;; coercing request parameters
+                         coercion/coerce-request-middleware
 
-(defmethod ig/init-key :gpml.handler.main/handler [_ {:keys [routes]}]
-  (ring/ring-handler (router routes)
+                         (fn [handler]
+                           (prometheus-ring/wrap-instrumentation handler collector
+                             {:path-fn (fn [req] (:template (ring/get-match req)))}))]}}))
+
+(defmethod ig/init-key :gpml.handler.main/handler [_ {:keys [routes collector]}]
+  (ring/ring-handler (router routes collector)
                      (ring/routes
                       (swagger-ui/create-swagger-ui-handler {:path "/api/docs"
                                                              :url "/api/swagger.json"
                                                              :validatorUrl nil
                                                              :apisSorter "alpha"
                                                              :operationsSorter "alpha"})
-                      (ring/create-default-handler))))
+                      (ring/create-default-handler))
+                     {:middleware [(fn [handler]
+                      (prometheus-ring/wrap-metrics-expose handler collector {:path "/metrics"}))]}))
 
 (defmethod ig/init-key :gpml.handler.main/root [_ _]
   root)

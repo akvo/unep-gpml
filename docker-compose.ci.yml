@@ -6,6 +6,11 @@ services:
   backend:
     network_mode: service:mainnetwork
     image: eu.gcr.io/akvo-lumen/unep-gpml/backend:latest
+    environment:
+      - SENTRY_DSN=http://a-sentry-key:a-sentry-secret@wiremock-proxy:8080/sentry/213123
+      - APP_VERSION=ci
+      - POD_NAME=ci
+      - ENV_NAME=ci
   frontend:
     network_mode: service:mainnetwork
     image: eu.gcr.io/akvo-lumen/unep-gpml/frontend:latest
