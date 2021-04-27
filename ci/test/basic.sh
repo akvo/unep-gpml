@@ -3,6 +3,11 @@
 
 set -euo pipefail
 
+echo "soft limit"
+ulimit –nS
+echo "hard limit"
+ulimit -nH
+
 wait4ports -q -t 60 tcp://localhost:80 tcp://localhost:3000 tcp://db:5432
 
 http_get() {
