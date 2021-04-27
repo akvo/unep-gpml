@@ -43,7 +43,7 @@ const collectDependSchemaRefactor = (
     return;
   }
   if (schema?.required) {
-    required.push({ key: index, required: schema.required });
+    required.push({ group: oldIndex, key: index, required: schema.required });
   }
   const { properties } = schema;
   Object.keys(properties).forEach((key) => {
@@ -99,10 +99,10 @@ const collectDependSchemaRefactor = (
 // End of refactor
 
 const transformFormData = (data, formData, schema) => {
-  delete formData.tabs;
+  delete formData?.tabs;
   Object.keys(formData).forEach((key) => {
     if (formData?.[key]) {
-      delete formData[key].steps;
+      delete formData[key]?.steps;
       if (
         formData[key] === Object(formData[key]) &&
         !Array.isArray(formData[key])
@@ -199,12 +199,12 @@ const AddInitiativeForm = ({
     );
     setDependValue(dependFields);
     // enable btn submit
-    // if (
-    //   checkRequiredFieldFilledIn(formData, dependFields, requiredFields)
-    //     .length === 0
-    // ) {
-    //   setDisabledBtn({ disabled: false, type: "primary" });
-    // }
+    if (
+      checkRequiredFieldFilledIn(formData, dependFields, requiredFields)
+        .length === 0
+    ) {
+      setDisabledBtn({ disabled: false, type: "primary" });
+    }
   };
 
   const handleTransformErrors = (errors, dependValue) => {

@@ -185,8 +185,8 @@ const AddInitiative = ({ ...props }) => {
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
   const [disabledBtn, setDisabledBtn] = useState({
-    disabled: false,
-    type: "primary",
+    disabled: true,
+    type: "default",
   });
 
   useEffect(() => {

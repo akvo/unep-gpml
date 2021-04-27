@@ -133,14 +133,21 @@ export const checkRequiredFieldFilledIn = (
   let res = [];
   requiredFields.forEach((item) => {
     item.required = difference(item.required, dependFields);
-    if (!item.key) {
+    if (!item?.group && !item.key) {
       item.required.forEach((x) => {
         !(x in formData) && res.push(x);
       });
     }
-    if (item.key && !dependFields.includes(item.key)) {
+    if (!item?.group && item.key && !dependFields.includes(item.key)) {
       item.required.forEach((x) => {
-        !(x in formData[item.key]) && res.push(x);
+        !(x in formData?.[item.key]) && res.push(x);
+      });
+    }
+    if (item?.group && item.key) {
+      item.required.forEach((x) => {
+        !(x in formData?.[item.group]?.[item.key]) &&
+          dependFields.filter((d) => d.includes(x)).length === 0 &&
+          res.push(x);
       });
     }
   });
