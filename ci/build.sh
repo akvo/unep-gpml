@@ -62,4 +62,8 @@ frontend_build () {
 backend_build
 frontend_build
 
-dci run -T ci ./basic.sh
+if ! dci run -T ci ./basic.sh; then
+  dci logs
+  echo "Build failed when running basic.sh"
+  exit 1
+fi
