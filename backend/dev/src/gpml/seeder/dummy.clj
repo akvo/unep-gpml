@@ -3,6 +3,7 @@
             [clojure.string :as str]
             [clojure.java.jdbc :as jdbc]
             [gpml.db.event :as db.event]
+            [gpml.db.initiative :as db.initiative]
             [gpml.db.tag :as db.tag]
             [gpml.db.country :as db.country]
             [gpml.db.language :as db.language]
@@ -10,7 +11,9 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.organisation :as db.organisation]
             [gpml.seeder.main :as seeder]
-            [integrant.core :as ig]))
+            [integrant.core :as ig]
+            [clojure.java.io :as io]
+            [jsonista.core :as j]))
 
 ;; Dummy Content for UI eg. Pagination, Browse, etc
 ;; Also to Create test admin profile
@@ -24,6 +27,11 @@
       (duct/prep-config [:duct.profile/dev])))
 
 (def lorem "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas luctus eros at consequat accumsan. Integer massa ligula, blandit at commodo vitae, vestibulum et erat.")
+
+(defn parse-data [s {:keys [keywords?]}]
+  (if keywords?
+    (j/read-value s j/keyword-keys-object-mapper)
+    (j/read-value s)))
 
 (defn get-country-id [db code]
   (:id (db.country/country-by-code db {:name code})))
@@ -117,6 +125,15 @@
           (jdbc/insert-multi! db :event_language_url (associate-url db event))))
       (print "You have already seed dummy event"))))
 
+(defn submit-dummy-initiative [db my-email my-name]
+  (let [admin (get-or-create-profile db my-email my-name "ADMIN" "APPROVED")
+        submission (parse-data
+                     (slurp (io/resource "examples/submission-initiative.json"))
+                     {:keywords? true})
+        data (db.initiative/new-initiative
+               db (assoc submission :created_by (:id admin) :version 1))]
+    (db.initiative/initiative-by-id db data)))
+
 (comment
 
   (def db (-> (dev-system)
@@ -133,4 +150,6 @@
   ;; Then create unapproved dummy events with the account
   (submit-dummy-event db "test@akvo.org" "Testing Profile")
 
-  )
+  ;; Create New Account or Get Account
+  ;; Then create unapproved dummy initiative with the account
+  (submit-dummy-initiative db "test@akvo.org" "Testing Profile"))

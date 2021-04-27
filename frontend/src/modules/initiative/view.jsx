@@ -331,7 +331,7 @@ const AddInitiative = ({ ...props }) => {
             <Col xs={24} lg={18}>
               <Card
                 style={{
-                  maxHeight: `${innerHeight * 0.75}px`,
+                  minHeight: `${innerHeight * 0.75}px`,
                   overflow: "auto",
                 }}
               >

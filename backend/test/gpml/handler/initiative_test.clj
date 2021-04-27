@@ -41,6 +41,7 @@
       (is (= 201 (:status resp)))
       (is (= 1 (-> data :version)))
       (is (= 10001 (-> data :created_by)))
+      (is (= 10001 (-> data :id)))
       (is (= "SUBMITTED" (-> data :review_status)))
       (doseq [[k v] submission]
         (testing (str "testing-" k)
