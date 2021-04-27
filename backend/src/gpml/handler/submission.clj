@@ -40,12 +40,14 @@
                 (contains? #{"Financing Resource" "Technical Resource" "Action Plan"} tbl)
                 "v_resource_data"
                 (= tbl "profile")
-                "v_stakeholder_data")
+                "v_stakeholder_data"
+                (= tbl "initiative")
+                "initiative")
           detail (db.submission/detail (:spec db) (conj path {:table-name tbl}))]
       (resp/response detail))))
 
 (defmethod ig/init-key :gpml.handler.submission/put-params [_ _]
   [:map
    [:id int?]
-   [:item_type [:enum "stakeholder", "event", "policy", "technology", "resource", "organisation"]]
+   [:item_type [:enum "stakeholder", "event", "policy", "technology", "resource", "organisation", "initiative"]]
    [:review_status [:enum "APPROVED", "REJECTED"]]])

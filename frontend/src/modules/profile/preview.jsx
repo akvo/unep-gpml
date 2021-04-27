@@ -387,3 +387,93 @@ export const ProfilePreview = ({ item }) => {
     </div>
   );
 };
+
+const getValues = (d) => {
+  if (d) {
+    return Object.values(d).length ? Object.values(d).join(",") : false;
+  }
+  return false;
+};
+
+export const InitiativePreview = ({ item }) => {
+  const country = getValues(item?.q23);
+  const geoCoverageType = getValues(item?.q24);
+  const duration = getValues(item?.q38);
+  const links = getValues(item?.q40);
+  return (
+    <div className="stakeholder-info">
+      <div className="left">
+        <div className="info-img">
+          <img
+            src={item.image || imageNotFound}
+            alt={item.image || imageNotFound}
+          />
+        </div>
+        <ul>
+          <li className="has-border">
+            <p className="section-title">Initiative Details</p>
+          </li>
+          <li>
+            <div className="detail-title">Title</div>:
+            <div className="detail-content">{item.title}</div>
+          </li>
+          <li>
+            <div className="detail-title">Duration</div>:
+            <div className="detail-content">{duration}</div>
+          </li>
+          <li>
+            <div className="detail-title">Country</div>:
+            <div className="detail-content">{country || "-"}</div>
+          </li>
+          <li>
+            <div className="detail-title">Submitted at</div>:
+            <div className="detail-content">
+              {moment(item.createdAt).format("DD MMM YYYY")}
+            </div>
+          </li>
+          <li>
+            <div className="detail-title">Submitted by</div>:
+            <div className="detail-content">
+              <b>{item?.createdBy && item.createdBy}</b>
+            </div>
+          </li>
+          <li className="has-border">
+            <p className="section-title">Geo Coverage</p>
+          </li>
+          <li>
+            <div className="detail-title">Geo coverage type</div>:
+            <div className="detail-content">{geoCoverageType || "-"}</div>
+          </li>
+          {geoCoverageType && geoCoverageType !== "global" && (
+            <li>
+              <div className="detail-title">Geo coverage</div>:
+              <div className="detail-content"></div>
+            </li>
+          )}
+          <li className="has-border">
+            <p className="section-title">Links</p>
+          </li>
+          <li>
+            <div className="detail-title">URL</div>:
+            <div className="detail-content">{getValues(item?.q40) || "-"}</div>
+          </li>
+          <li className="has-border">
+            <p className="section-title">Entities Involved</p>
+          </li>
+          <li>
+            <div className="detail-title">Entities</div>:
+            <div className="detail-content">{getValues(item?.q16) || "-"}</div>
+          </li>
+          <li>
+            <div className="detail-title">Partner</div>:
+            <div className="detail-content">{getValues(item?.q18) || "-"}</div>
+          </li>
+          <li>
+            <div className="detail-title">Donor</div>:
+            <div className="detail-content">{getValues(item?.q20) || "-"}</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+};

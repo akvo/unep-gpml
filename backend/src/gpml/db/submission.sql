@@ -17,6 +17,9 @@ submission AS (
     UNION
     SELECT id, type, title, created_by, created
     FROM resource where review_status = 'SUBMITTED'
+    UNION
+    SELECT id, 'initiative' as type, replace(q2::text,'"','') as title, created_by, created
+    FROM initiative where review_status = 'SUBMITTED'
     ORDER BY created
 ),
 data AS (

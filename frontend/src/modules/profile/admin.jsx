@@ -16,7 +16,7 @@ import api from "../../utils/api";
 import moment from "moment";
 import capitalize from "lodash/capitalize";
 import find from "lodash/find";
-import { ProfilePreview, GeneralPreview } from "./preview";
+import { ProfilePreview, GeneralPreview, InitiativePreview } from "./preview";
 
 const ModalReject = ({ visible, close, reject, item }) => {
   return (
@@ -121,6 +121,8 @@ const AdminSection = ({
     switch (item.type) {
       case "profile":
         return <ProfilePreview item={{ ...data, ...item }} />;
+      case "initiative":
+        return <InitiativePreview item={{ ...data, ...item }} />;
       default:
         return <GeneralPreview item={{ ...data, ...item }} />;
     }
