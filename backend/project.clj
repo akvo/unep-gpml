@@ -34,7 +34,12 @@
                  [org.eclipse.jetty/jetty-servlet "9.4.31.v20200723"]
                  [com.zaxxer/HikariCP "3.4.5" :exclusions [org.slf4j/slf4j-api]]
                  [raven-clj "1.5.2"]
-                 [ovotech/clj-gcp "0.6.15"]]
+                 [ovotech/clj-gcp "0.6.15" :exclusions [com.google.errorprone/error_prone_annotations
+                                                        com.google.auth/google-auth-library-oauth2-http
+                                                        com.google.guava/guava
+                                                        cheshire
+                                                        medley
+                                                        clj-time]]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]
