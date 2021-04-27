@@ -99,6 +99,10 @@ const AddPolicyForm = ({
       .post("/policy", data)
       .then(() => {
         setStep(2);
+        policyData.update((e) => {
+          e.data = {};
+        });
+        setDisabledBtn({ disabled: true, type: "default" });
       })
       .catch(() => {
         notification.error({ message: "An error occured" });
