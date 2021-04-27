@@ -15,7 +15,7 @@
            (io.prometheus.client.jetty JettyStatisticsCollector QueuedThreadPoolStatisticsCollector)))
 
 
-(defmethod ig/init-key ::collector [_ config]
+(defmethod ig/init-key ::collector [_ _]
   (->
     (prometheus/collector-registry)
     (jvm/initialize)
