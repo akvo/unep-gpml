@@ -8,11 +8,17 @@
   (:import java.util.Base64
            java.io.ByteArrayInputStream))
 
-(defn get-content [data]
+(defn b64-image-to-byte-stream [data]
   (let [[_ content-type b64image] (re-find #"^data:(\S+);base64,(.*)$" data)
-        decoder (Base64/getDecoder)]
-    (-> (.decode decoder b64image)
-        (ByteArrayInputStream.)
+        decoder (Base64/getDecoder)
+        stream (and b64image
+                    (-> (.decode decoder b64image)
+                        (ByteArrayInputStream.)))]
+    {:byte-stream stream :content-type content-type}))
+
+(defn get-content [data]
+  (let [{:keys [byte-stream content-type]} (b64-image-to-byte-stream data)]
+    (-> byte-stream
         (resp/response)
         (resp/content-type content-type)
         (resp/header "Cache-Control" "public,max-age:60"))))
