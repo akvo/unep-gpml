@@ -1,6 +1,7 @@
 (ns gpml.handler.resource-test
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [gpml.fixtures :as fixtures]
+            [gpml.handler.image :as image]
             [gpml.handler.resource :as resource]
             [gpml.handler.profile-test :as profile-test]
             [gpml.db.tag :as db.tag]
@@ -8,7 +9,8 @@
             [gpml.db.resource :as db.resource]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
-            [ring.mock.request :as mock]))
+            [ring.mock.request :as mock]
+            [clojure.string :as s]))
 
 (use-fixtures :each fixtures/with-test-system)
 
@@ -33,6 +35,10 @@
    :country 1
    :tags [4 5]})
 
+
+(defn fake-upload-blob [_ _ _ content-type]
+  (is (= content-type "image/png")))
+
 (deftest handler-post-test
   (testing "New resource is created"
     (let [system (ig/init fixtures/*system* [::resource/post])
@@ -55,30 +61,38 @@
           user (db.stakeholder/new-stakeholder db (profile-test/new-profile 1 1))
           _ (db.stakeholder/update-stakeholder-status db (assoc user :review_status "APPROVED"))
           ;; create John create new resource with available organisation
-          resp-one (handler (-> (mock/request :post "/")
-                                (assoc :jwt-claims {:email "john@org"})
-                                (assoc :body-params new-resource)))
+          resp-one (with-redefs [image/upload-blob fake-upload-blob]
+                     (handler (-> (mock/request :post "/")
+                                  (assoc :jwt-claims {:email "john@org"})
+                                  (assoc :body-params new-resource))))
           ;; create John create new resource with new organisation
-          resp-two (handler (-> (mock/request :post "/")
-                                (assoc :jwt-claims {:email "john@org"})
-                                (assoc :body-params (assoc new-resource :org
-                                                           {:id -1
-                                                            :name "New Era"
-                                                            :geo_coverage_type "regional"
-                                                            :geo_coverage_value ["Asia"]
-                                                            :country "IDN"}))))
+          resp-two (with-redefs [image/upload-blob fake-upload-blob]
+                     (handler (-> (mock/request :post "/")
+                                  (assoc :jwt-claims {:email "john@org"})
+                                  (assoc :body-params (assoc new-resource :org
+                                                             {:id -1
+                                                              :name "New Era"
+                                                              :geo_coverage_type "regional"
+                                                              :geo_coverage_value ["Asia"]
+                                                              :country "IDN"})))))
           resource-one (db.resource/resource-by-id db (:body resp-one))
           resource-two (db.resource/resource-by-id db (:body resp-two))]
       (is (= 201 (:status resp-one)))
-      (is (= (assoc new-resource
-                    :id 10001
-                    :image "/image/resource/1"
-                    :org {:id 1 :name "Akvo"}
-                    :value "2000"
-                    :created_by 10001) resource-one))
-      (is (= (assoc new-resource
-                    :id 10002
-                    :org {:id 10001 :name "New Era"}
-                    :image "/image/resource/2"
-                    :value "2000"
-                    :created_by 10001) resource-two)))))
+      (let [image-one (:image resource-one)]
+        (is (s/includes? image-one "images/resource-"))
+        (is (s/ends-with? image-one "uploaded.png"))
+        (is (s/starts-with? image-one "https://storage.googleapis.com/")))
+      (is (s/ends-with? (:image resource-one) "uploaded.png"))
+      (is (= (dissoc (assoc new-resource
+                            :id 10001
+                            :org {:id 1 :name "Akvo"}
+                            :value "2000"
+                            :created_by 10001) :image)
+             (dissoc resource-one :image)))
+      (is (= (dissoc (assoc new-resource
+                            :id 10002
+                            :org {:id 10001 :name "New Era"}
+                            :image "/image/resource/2"
+                            :value "2000"
+                            :created_by 10001) :image)
+             (dissoc resource-two :image))))))

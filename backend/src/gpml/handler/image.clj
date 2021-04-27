@@ -50,8 +50,8 @@
     (nil? image) nil
     (re-find #"^\/image\/" image) image
 
-    ;; For all topics other than profile, event and resource upload to GCS
-    (not (contains? #{"profile" "event" "resource"} image-type))
+    ;; For all topics other than profile and event upload to GCS
+    (not (contains? #{"profile" "event"} image-type))
     (upload-b64image constants/gcs-bucket-name image image-type)
 
     ;; Use _data DB table
@@ -59,8 +59,6 @@
                                   (db.stakeholder/new-stakeholder-image conn {:picture image})
                                   (= image-type "event")
                                   (db.event/new-event-image conn {:image image})
-                                  (= image-type "resource")
-                                  (db.resource/new-resource-image conn {:image image})
                                   :else nil)]
             (str/join ["/image/" image-type "/" (:id topic-image)]))))
 
@@ -71,8 +69,6 @@
                     (:picture (db.stakeholder/stakeholder-image-by-id (:spec db) {:id id}))
                     (= image_type "event")
                     (:image (db.event/event-image-by-id (:spec db) {:id id}))
-                    (= image_type "resource")
-                    (:image (db.resource/resource-image-by-id (:spec db) {:id id}))
                     :else nil)]
         (get-content data)
         (resp/not-found {:message "Image not found"}))))
