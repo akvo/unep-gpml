@@ -132,7 +132,10 @@ export const checkRequiredFieldFilledIn = (
   dependFields = dependFields.map((x) => x.replace(".", ""));
   let res = [];
   requiredFields.forEach((item) => {
-    item.required = difference(item.required, dependFields);
+    item.required =
+      typeof item?.group === "undefined"
+        ? difference(item.required, dependFields)
+        : item.required;
     if (typeof item?.group === "undefined" && !item.key) {
       item.required.forEach((x) => {
         !(x in formData) && res.push(x);

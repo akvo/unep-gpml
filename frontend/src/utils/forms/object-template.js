@@ -95,8 +95,19 @@ const ObjectFieldTemplate = ({
     ) {
       const { dependencies } = schema.properties?.[element.name];
       let results = dependencies.filter((item) => {
-        if (!intersection(formData?.[element.name], item.value).length > 0)
+        // array answer
+        if (
+          Array.isArray(formData?.[element.name]) &&
+          !intersection(formData?.[element.name], item.value).length > 0
+        )
           return item;
+        // string answer
+        if (
+          typeof formData?.[element.name] === "string" &&
+          !item.value.includes(formData?.[element.name])
+        ) {
+          return item;
+        }
       });
       results = results.map((item) => item.questions);
       results = results.flat(1);
