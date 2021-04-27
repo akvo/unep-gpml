@@ -104,7 +104,7 @@ const detailFinancingResource = [
     key: "value",
     name: "Amount",
     value: "custom",
-    customValue: ["valueCurrency", "value", "valueRemarks"],
+    arrayCustomValue: ["valueCurrency", "value", "valueRemarks"],
     type: "currency",
   },
   {
@@ -156,8 +156,8 @@ const detailEvent = [
     key: "startDate",
     name: "Start Date/End",
     value: "custom",
-    customValue: ["startDate", "endDate"],
-    type: "date",
+    arrayCustomValue: ["startDate", "endDate"],
+    type: "startEndDate",
   },
   {
     key: "geoCoverageValues",

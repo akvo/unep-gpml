@@ -59,7 +59,7 @@ const renderItemValues = (params, mapping, data) => {
   return (
     mapping &&
     mapping.map((item, index) => {
-      const { key, name, value, type, customValue } = item;
+      const { key, name, value, type, customValue, arrayCustomValue } = item;
       // Set to true to display all country list for global
       const showAllCountryList = false;
       const displayEntry =
@@ -88,7 +88,7 @@ const renderItemValues = (params, mapping, data) => {
 
       // Calculate custom currency value to display
       const [currency, amount, remarks] =
-        customValue?.map((it) => data[it]) || [];
+        arrayCustomValue?.map((it) => data[it]) || [];
       const customCurrency =
         value === "custom" &&
         type === "currency" &&
@@ -142,10 +142,10 @@ const renderItemValues = (params, mapping, data) => {
                   type === "object" &&
                   data[key][customValue]}
                 {value === "custom" &&
-                  type === "date" &&
-                  moment(data[customValue[0]]).format("DD MMM YYYY") +
-                    " / " +
-                    moment(data[customValue[1]]).format("DD MMM YYYY")}
+                  type === "startEndDate" &&
+                  moment(data[arrayCustomValue[0]]).format("DD MMM YYYY") +
+                    " - " +
+                    moment(data[arrayCustomValue[1]]).format("DD MMM YYYY")}
                 {data[key] &&
                   value === "isoCode" &&
                   type === "array" &&
