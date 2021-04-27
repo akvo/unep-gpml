@@ -62,6 +62,6 @@ frontend_build () {
 backend_build
 frontend_build
 
-if dci run -T ci ./basic.sh; then
+if ! dci run -T ci ./basic.sh; then
   dci logs
 fi
