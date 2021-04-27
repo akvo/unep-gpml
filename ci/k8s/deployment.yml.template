@@ -17,6 +17,9 @@ spec:
       labels:
         run: unep-gpml
         unep-gpml-version: "${CI_COMMIT}"
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '3000'
     spec:
       containers:
       - name: frontend
