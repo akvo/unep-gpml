@@ -4,7 +4,7 @@
                               :routes [["/"
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.main/root}}]
-                                       ["/image/{image-type}/{id}"
+                                       ["/image/{image_type}/{id}"
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.image/get
                                                :parameters {:path [:map [:image_type string?] [:id int?]]}}}]
