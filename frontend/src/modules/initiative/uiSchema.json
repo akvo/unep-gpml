@@ -83,19 +83,19 @@
           "inline": true
         }
       },
-      "S2_G2_7.1": {
+      "S2_G2_7.1.0": {
         "ui:widget": "checkboxes",
         "ui:options": {
           "inline": true
         }
       },
-      "S2_G2_7.1_1": {
+      "S2_G2_7.1.1": {
         "ui:widget": "checkboxes",
         "ui:options": {
           "inline": true
         }
       },
-      "S2_G2_7.1_2": {
+      "S2_G2_7.1.2": {
         "ui:widget": "checkboxes",
         "ui:options": {
           "inline": true

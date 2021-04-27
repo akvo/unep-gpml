@@ -1,6 +1,76 @@
 import { UIStore } from "../../store";
 import specificAreasOptions from "../events/specific-areas.json";
 
+const sdgsOptions = [
+  {
+    goal: 1,
+    name: "No Poverty",
+  },
+  {
+    goal: 2,
+    name: "Zero Hunger",
+  },
+  {
+    goal: 3,
+    name: "Good Health and Well-being",
+  },
+  {
+    goal: 4,
+    name: "Quality Education",
+  },
+  {
+    goal: 5,
+    name: "Gender Equality",
+  },
+  {
+    goal: 6,
+    name: "Clean Water and Sanitation",
+  },
+  {
+    goal: 7,
+    name: "Affordable and Clean Energy",
+  },
+  {
+    goal: 8,
+    name: "Decent Jobs and Economic Growth",
+  },
+  {
+    goal: 9,
+    name: "Industry, Innovation and Infrastructure",
+  },
+  {
+    goal: 10,
+    name: "Reduced Inequalities",
+  },
+  {
+    goal: 11,
+    name: "Sustainable Cities and Communities",
+  },
+  {
+    goal: 12,
+    name: "Responsible Consumption and Production",
+  },
+  {
+    goal: 13,
+    name: "Climate Action",
+  },
+  {
+    goal: 14,
+    name: "Life Below Water",
+  },
+  {
+    goal: 15,
+    name: "Life on Land",
+  },
+  {
+    goal: 16,
+    name: "Peace and Justice - Strong Institutions",
+  },
+  {
+    goal: 17,
+    name: "Partnerships for the Goals",
+  },
+];
 const { regionOptions, geoCoverageTypeOptions } = UIStore.currentState;
 
 export const schema = {
@@ -479,8 +549,8 @@ export const schema = {
                 value: ["7-0"],
               },
               items: {
-                enum: ["7.1-0"],
-                enumNames: ["[Pop up a full list of SDGs]"],
+                enum: sdgsOptions.map((x) => x.goal),
+                enumNames: sdgsOptions.map((x) => x.name),
               },
               uniqueItems: true,
             },

@@ -109,11 +109,6 @@ export const initiativeData = new Store({
       S2: [],
       S3: [],
     },
-    filledIn: {
-      S1: [],
-      S2: [],
-      S3: [],
-    },
     S1: {
       steps: 0,
       required: {},
