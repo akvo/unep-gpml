@@ -148,61 +148,69 @@ const AdminSection = ({
           <div className="col">Action</div>
         </div>
         <Collapse onChange={getPreviewContent}>
-          {pendingItems.data.map((item, index) => (
-            <Collapse.Panel
-              key={item.preview}
-              header={
-                <div className="row">
-                  <div className="col">{capitalize(item.type)}</div>
-                  <div className="col">{item.title}</div>
-                  <div
-                    className="col"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <Space size="middle">
-                      {item.type === "profile" ? (
-                        item.emailVerified ? (
+          {pendingItems?.data && pendingItems?.data?.length > 0 ? (
+            pendingItems.data.map((item, index) => (
+              <Collapse.Panel
+                key={item.preview}
+                header={
+                  <div className="row">
+                    <div className="col">{capitalize(item.type)}</div>
+                    <div className="col">{item.title}</div>
+                    <div
+                      className="col"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      <Space size="middle">
+                        {item.type === "profile" ? (
+                          item.emailVerified ? (
+                            <Button
+                              type="primary"
+                              onClick={review(item, "APPROVED")}
+                            >
+                              Approve
+                            </Button>
+                          ) : (
+                            <Tooltip title="Profile cannot be approved since email is not verified">
+                              <Button
+                                type="secondary"
+                                disabled={true}
+                                onClick={review(item, "APPROVED")}
+                              >
+                                Approve
+                              </Button>
+                            </Tooltip>
+                          )
+                        ) : (
                           <Button
                             type="primary"
                             onClick={review(item, "APPROVED")}
                           >
                             Approve
                           </Button>
-                        ) : (
-                          <Tooltip title="Profile cannot be approved since email is not verified">
-                            <Button
-                              type="secondary"
-                              disabled={true}
-                              onClick={review(item, "APPROVED")}
-                            >
-                              Approve
-                            </Button>
-                          </Tooltip>
-                        )
-                      ) : (
-                        <Button
-                          type="primary"
-                          onClick={review(item, "APPROVED")}
-                        >
-                          Approve
+                        )}
+                        <Button type="link" onClick={reject(item, "REJECTED")}>
+                          Decline
                         </Button>
-                      )}
-                      <Button type="link" onClick={reject(item, "REJECTED")}>
-                        Decline
-                      </Button>
-                    </Space>
+                      </Space>
+                    </div>
                   </div>
-                </div>
-              }
-            >
-              <DetailCollapse
-                data={previewContent?.[item.preview] || {}}
-                item={item}
-              />
-            </Collapse.Panel>
-          ))}
+                }
+              >
+                <DetailCollapse
+                  data={previewContent?.[item.preview] || {}}
+                  item={item}
+                />
+              </Collapse.Panel>
+            ))
+          ) : (
+            <Collapse.Panel
+              showArrow={false}
+              key="collapse-pending-no-data"
+              header={<div className="row">No data to display</div>}
+            ></Collapse.Panel>
+          )}
         </Collapse>
         <div style={{ padding: "10px 0px" }}>
           <Pagination
