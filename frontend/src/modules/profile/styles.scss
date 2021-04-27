@@ -22,8 +22,8 @@
 
   ul.ul-children li {
     list-style: circle;
-    margin-left: 40px;
-    display: inline-block;
+    display: list-item;
+    margin-left: 20px;
 
     .lang {
       &:after {
@@ -162,6 +162,10 @@
           display: inline-block;
           vertical-align: top;
           margin-left: -10px;
+
+          li {
+            margin-left: 0px;
+          }
         }
       }
     }
@@ -219,7 +223,10 @@
         ul.ul-children {
           display: inline-block;
           vertical-align: top;
-          margin-left: -40px;
+
+          li {
+            margin-left: 0px;
+          }
         }
       }
     }

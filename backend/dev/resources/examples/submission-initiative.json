@@ -2,139 +2,197 @@
   "q1": {
     "1-0": "As an individual"
   },
+  "q2": "Lorem Ipsum Initiative Form",
+  "q3": "This is an initiative test, don't worry about this",
   "q4": [
     {
-      "4-1": "WORKING WITH PEOPLE (encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes)."
-    }
-  ],
-  "q4_2_1": [
-    {
-      "4.2.1-0": "Awareness raising and behaviour change"
+      "4-0": "LEGISLATION, STANDARDS, RULES (e.g., agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments)."
     },
     {
-      "4.2.1-1": "Education/Training"
-    },
-    {
-      "4.2.1-2": "Workshops"
+      "4-2": "TECHNOLOGY and PROCESSES (new technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning)."
     }
   ],
-  "q2": "Testing",
-  "q3": "Desc",
+  "q41_1": "https://sdgs.un.org/goals",
+  "q4_1_1": [
+    {
+      "4.1.1-0": "Official agreements"
+    }
+  ],
+  "q4_1_2": null,
+  "q4_2_1": null,
+  "q4_2_2": null,
+  "q4_3_1": [
+    {
+      "4.3.1-0": "New product design"
+    },
+    {
+      "4.3.1-18": "Waste management"
+    },
+    {
+      "4.3.1-14": "Developing a new material"
+    }
+  ],
+  "q4_3_2": null,
+  "q4_4_1": null,
+  "q4_4_2": null,
+  "q4_4_3": null,
+  "q4_4_4": null,
+  "q4_4_5": null,
+  "q5": {
+    "5-0": "Yes, reporting is voluntary"
+  },
+  "q6": null,
   "q7": [
     {
       "7-3": "Multilateral Environmental Agreements (MEAs)"
     }
   ],
+  "q7_1_0": null,
+  "q7_1_1": null,
+  "q7_1_2": null,
   "q7_2": [
+    {},
+    {},
     {},
     {}
   ],
+  "q7_3": null,
+  "q8": {
+    "8-0": "Yes"
+  },
+  "q9": null,
+  "q10": {
+    "10-0": "Immediately (less than 1 year)"
+  },
   "q11": [
     {
-      "11-2": "Outcomes will be compared to a baseline measurement"
-    },
-    {
-      "11-1": "Outcomes are being assessed at regular intervals"
+      "11-0": "Outcomes will be assessed once, when the initiative is completed"
     }
   ],
-  "q5": {
-    "5-0": "Yes, reporting is voluntary"
-  },
-  "q8": {
-    "8-1": "No"
-  },
-  "q10": {
-    "10-2": "In 4 to 10 years"
-  },
+  "q12": "Global Innovation Index, Research Development Expenditure, CO2 Emissions, Employment, Manufacturing Value Added ",
+  "q13": null,
   "q14": [
     {
-      "14-2": "Economic drivers (e.g., fines, subsidies, taxes)"
+      "14-0": "Cost considerations (e.g., reducing costs of existing processes or of disposal)"
     },
     {
-      "14-1": "Protecting economy / livelihoods or shareholder value"
+      "14-5": "Media coverage, wide exposure of marine litter and plastic pollution"
+    },
+    {
+      "14-15": "Concern about potential human health impacts"
     }
   ],
   "q15": [
     {
-      "15-1": "Not enough regulation/control mechanisms"
+      "15-11": "Gaps in expertise in member state/organisation "
     },
     {
-      "15-2": "Existing regulation is not enforced"
+      "15-7": "Not enough support from within the member state/organisation"
     }
   ],
   "q16": {
-    "169": "Adult commercial secondary School"
+    "10001": "Akvo"
   },
+  "q17": null,
   "q18": {
-    "1000": "3M"
+    "1003": "Airtable"
   },
+  "q19": null,
   "q20": {
-    "116": "Alfred wegener Institute Helmholtz Centre for Polar and Marine Research"
+    "97": "Open University of The Netherlands"
   },
-  "q22": "Bali",
+  "q21": null,
+  "q22": "Yogyakarta",
   "q23": {
     "106": "Indonesia"
   },
   "q24": {
-    "Global": "Global"
+    "regional": "Regional"
   },
-  "q26": [
+  "q24_1": [
     {
-      "26-1": "Design"
-    }
-  ],
-  "q28": [
-    {
-      "28-2": "Marine organisms"
+      "africa": "Africa"
     },
     {
-      "28-1": "Biodiversity"
+      "europe": "Europe"
+    },
+    {
+      "north _america": "North America"
+    },
+    {
+      "west _asia": "West Asia"
+    },
+    {
+      "east _asia": "East Asia"
     }
   ],
+  "q24_2": null,
+  "q24_3": null,
+  "q24_4": null,
+  "q24_5": null,
+  "q26": [
+    {
+      "26-0": "Raw materials"
+    },
+    {
+      "26-3": "Use / consumption"
+    }
+  ],
+  "q27": null,
+  "q28": [
+    {
+      "28-1": "Biodiversity"
+    },
+    {
+      "28-4": "Food chain"
+    }
+  ],
+  "q29": null,
   "q30": [
     {
-      "30-5": "Electrical and electronics"
+      "30-10": "Personal Healthcare"
     },
     {
       "30-4": "Automotive"
-    },
-    {
-      "30-3": "Building, construction, demolition,industrial machinery"
     }
   ],
+  "q31": null,
   "q32": [
     {
       "32-7": "Coastal zone"
     },
     {
-      "32-6": "Waste disposal sites"
+      "32-3": "Forests or Mangroves"
     },
     {
-      "32-5": "Urban environment"
+      "32-1": "Agricultural land/soils"
+    },
+    {
+      "32-0": "Mountains and upland area"
     }
   ],
-  "q33": 12,
-  "q34": 21,
+  "q33": 20,
+  "q34": 50,
   "q35": {
     "35-0": "Crowdfunded"
   },
-  "q36": 1000,
+  "q36": 500000000,
   "q36_1": {
-    "USD": "USD United States dollar"
+    "i_d_r": "IDR Indonesian rupiah"
   },
-  "q37": 300,
+  "q37": 5000000,
   "q37_1": {
-    "USD": "USD United States dollar"
+    "i_d_r": "IDR Indonesian rupiah"
   },
   "q38": {
-    "38-0": "Single event"
+    "38-2": "Ongoing activity 1-3 years"
   },
+  "q39": null,
   "q40": [
-    "link1",
-    "link2"
+    "https://sdgs.un.org/goals/goal1",
+    "https://sdgs.un.org/goals/goal3"
   ],
   "q41": {
     "41-5": "Other"
-  },
-  "q41_1": "url"
+  }
 }
