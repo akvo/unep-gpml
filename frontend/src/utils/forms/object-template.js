@@ -102,6 +102,30 @@ const ObjectFieldTemplate = ({
           : dependValue === answer;
       }
       if (dependValue) {
+        // ## TODO:: Need to check if depend id also depend to other question, then delete it from formData
+        let parentDepend = schema?.properties?.[deppend.id]?.depend;
+        if (parentDepend) {
+          let parentAnswer = formData[parentDepend.id];
+          parentAnswer =
+            typeof parentAnswer === "string"
+              ? parentAnswer.toLowerCase()
+              : parentAnswer;
+          let parentDependValue = parentDepend.value;
+          if (Array.isArray(parentAnswer)) {
+            parentDependValue =
+              intersection(parentDependValue, parentAnswer).length !== 0;
+          }
+          if (!Array.isArray(parentAnswer)) {
+            parentDependValue = Array.isArray(parentDependValue)
+              ? parentDependValue.includes(parentAnswer)
+              : parentDependValue === parentAnswer;
+          }
+          if (!parentDependValue) {
+            delete formData?.[deppend.id];
+            return { display: "none" };
+          }
+        }
+        // END OF parent depend check
         return { display: "block" };
       }
       return { display: "none" };

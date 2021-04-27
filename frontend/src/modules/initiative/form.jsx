@@ -118,7 +118,7 @@ const transformFormData = (data, formData, schema) => {
         data[`q${qKey}`] = formData[key];
         if (Array.isArray(formData[key])) {
           data[`q${qKey}`] = formData[key].map((d) => {
-            if (schema?.[key].type === "array") {
+            if (schema?.[key].type === "array" && schema?.[key].items?.enum) {
               return {
                 [d]:
                   schema?.[key].items.enumNames?.[
@@ -131,6 +131,7 @@ const transformFormData = (data, formData, schema) => {
                 [d]: schema?.[key].enumNames?.[schema?.[key].enum.indexOf(d)],
               };
             }
+            return d;
           });
         } else {
           if (
@@ -170,7 +171,7 @@ const AddInitiativeForm = ({
     // # Transform data before sending to endpoint
     let data = {};
     transformFormData(data, formData, formSchema.schema.properties);
-    console.log(data);
+    console.log(data, formData);
     // setSending(true);
     // api.post("/resource", data).then(() => {
     //   setStep(2);
@@ -181,7 +182,7 @@ const AddInitiativeForm = ({
     // });
   };
 
-  const handleFormOnChange = ({ formData }) => {
+  const handleFormOnChange = ({ formData, schema }) => {
     initiativeData.update((e) => {
       e.data = {
         ...e.data,
