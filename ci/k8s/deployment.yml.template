@@ -64,6 +64,22 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: auth0-backend-secret
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: sentry-dsn
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: APP_VERSION
+          value: ${CI_COMMIT}
+        - name: ENV_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: akvo
+              key: environment
         - name: MAILJET_API_KEY
           valueFrom:
             secretKeyRef:

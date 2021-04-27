@@ -297,12 +297,6 @@
   {:hikari-cp #ig/ref :duct.database.sql/hikaricp
    :metrics-collector #ig/ref :gpml.handler.monitoring/collector}
 
-  :gpml.handler.monitoring/sentry-logger
-  {:dsn "http://a-sentry-key:a-sentry-secret@wiremock-proxy:8080/sentry/213123"
-           :env "dev"
-           :host "localhost"
-           :version "SNAPSHOT"}
-
   }
 
  :duct.profile/dev   #duct/include "dev"
@@ -317,6 +311,13 @@
                :sentry #ig/ref :gpml.handler.monitoring/sentry-logger}}
 
   :duct.logger.timbre/println {}
+
+  :gpml.handler.monitoring/sentry-logger
+  {:dsn #duct/env "SENTRY_DSN"
+   :env #duct/env "ENV_NAME"
+   :host #duct/env "POD_NAME"
+   :version #duct/env "APP_VERSION"}
+
   }
 
  :duct.module/logging {}
