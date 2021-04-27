@@ -14,7 +14,7 @@
    :q4 ["vector-1", "vector-2"]
    :q4_1_1 [nil],
    :q4_1_2 [{:map_1 "data"} {:map_2 "data"}]
-   :q4_2_1 1
+   :q4_2_1 {:map_1 "val2"}
    :q4_2_2 1
    :q4_3_1 1
    :q4_3_2 1
@@ -72,21 +72,17 @@
    :q40 1
    :q41 2
    :q41_1 "test"
-  })
-
-(assoc initiative-data :created_by 1 :version 1)
+   })
 
 (deftest insert-data
   (let [db (test-util/db-test-conn)
         admin (dummy/get-or-create-profile db "test@akvo.org" "John Doe" "ADMIN" "APPROVED")]
     (testing "Insert complete data"
       (let [data (db.initiative/new-initiative
-                   db (assoc initiative-data :created_by (:id admin) :version 1))
+                  db (assoc initiative-data :created_by (:id admin) :version 1))
             result (db.initiative/initiative-by-id db data)]
         (is (= 1 (-> data :id)))
         (is (= "SUBMITTED" (-> result :review_status)))
         (is (= 10001 (-> result :created_by)))
-        ;; remove dissoc after we adjust pg_util
-        (doseq [keyval (dissoc initiative-data :q4 :q4_1_1 :q4_1_2)]
-          (is (= (second keyval) ((first keyval) result))))))
-    ))
+        (doseq [[k v] initiative-data]
+          (is (= v (get result k))))))))
