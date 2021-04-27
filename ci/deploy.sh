@@ -53,3 +53,5 @@ fi
 
 prepare_deployment
 apply_deployment
+
+ci/k8s/wait-for-k8s-deployment-to-be-ready.sh
