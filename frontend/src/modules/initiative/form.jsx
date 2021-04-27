@@ -100,6 +100,7 @@ const collectDependSchemaRefactor = (
 
 const transformFormData = (data, formData, schema) => {
   delete formData?.tabs;
+  delete formData?.steps;
   Object.keys(formData).forEach((key) => {
     if (formData?.[key]) {
       delete formData[key]?.steps;

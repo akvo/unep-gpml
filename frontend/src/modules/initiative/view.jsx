@@ -10,22 +10,7 @@ import cloneDeep from "lodash/cloneDeep";
 const { Step } = Steps;
 const { TabPane } = Tabs;
 
-export const initiativeData = new Store({
-  data: {
-    tabs: ["S1"],
-    S1: {
-      steps: 0,
-    },
-    S2: {
-      steps: 0,
-    },
-    S3: {
-      steps: 0,
-    },
-  },
-});
-
-const tabs = [
+const tabsData = [
   {
     key: "S1",
     title: "Submitter",
@@ -103,6 +88,22 @@ const tabs = [
     ],
   },
 ];
+
+export const initiativeData = new Store({
+  data: {
+    tabs: ["S1"],
+    steps: tabsData[0].steps,
+    S1: {
+      steps: 0,
+    },
+    S2: {
+      steps: 0,
+    },
+    S3: {
+      steps: 0,
+    },
+  },
+});
 
 const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
   const prop = cloneDeep(schema.properties);
@@ -220,10 +221,12 @@ const AddInitiative = ({ ...props }) => {
   };
 
   const handleOnTabChange = (key) => {
+    const tabActive = tabsData.filter((x) => x.key === key);
     initiativeData.update((e) => {
       e.data = {
         ...e.data,
         tabs: [key],
+        steps: tabActive[0].steps,
       };
     });
   };
@@ -296,55 +299,54 @@ const AddInitiative = ({ ...props }) => {
             activeKey={data.tabs[0]}
             onChange={(e) => handleOnTabChange(e)}
           >
-            {tabs.map(({ key, title, desc, steps }) => (
-              <TabPane tab={title} key={key} forceRender={false} size="large">
-                <Row
-                  style={{
-                    minHeight: `${innerHeight * 0.8}px`,
-                    padding: "20px 10px 20px 16px",
-                    backgroundColor: "#fff",
-                    borderRadius: "0 0 6px 6px",
-                  }}
-                >
-                  <Col
-                    xs={24}
-                    lg={6}
-                    style={{
-                      borderRight: "1px solid #D3DBDF",
-                      minHeight: "100%",
-                    }}
-                  >
-                    <Steps
-                      direction="vertical"
-                      size="small"
-                      current={data[key]?.steps}
-                      onChange={(e) => handleOnStepClick(e, key)}
-                    >
-                      {renderSteps(steps)}
-                    </Steps>
-                  </Col>
-                  <Col xs={24} lg={18}>
-                    <Card
-                      style={{
-                        maxHeight: `${innerHeight * 0.75}px`,
-                        overflow: "auto",
-                      }}
-                    >
-                      <AddInitiativeForm
-                        btnSubmit={btnSubmit}
-                        sending={sending}
-                        setSending={setSending}
-                        highlight={highlight}
-                        setHighlight={setHighlight}
-                        formSchema={formSchema}
-                        setDisabledBtn={setDisabledBtn}
-                      />
-                    </Card>
-                  </Col>
-                </Row>
-              </TabPane>
+            {tabsData.map(({ key, title, desc, steps }) => (
+              <TabPane tab={title} key={key} size="large"></TabPane>
             ))}
           </Tabs>
+          <Row
+            style={{
+              minHeight: `${innerHeight * 0.8}px`,
+              padding: "20px 10px 20px 16px",
+              backgroundColor: "#fff",
+              borderRadius: "0 0 6px 6px",
+            }}
+          >
+            <Col
+              xs={24}
+              lg={6}
+              style={{
+                borderRight: "1px solid #D3DBDF",
+                minHeight: "100%",
+              }}
+            >
+              <Steps
+                direction="vertical"
+                size="small"
+                current={data[data.tabs[0]]?.steps}
+                onChange={(e) => handleOnStepClick(e, data.tabs[0])}
+              >
+                {data?.steps && renderSteps(data.steps)}
+              </Steps>
+            </Col>
+            <Col xs={24} lg={18}>
+              <Card
+                style={{
+                  maxHeight: `${innerHeight * 0.75}px`,
+                  overflow: "auto",
+                }}
+              >
+                <AddInitiativeForm
+                  btnSubmit={btnSubmit}
+                  sending={sending}
+                  setSending={setSending}
+                  highlight={highlight}
+                  setHighlight={setHighlight}
+                  formSchema={formSchema}
+                  setDisabledBtn={setDisabledBtn}
+                />
+              </Card>
+            </Col>
+          </Row>
         </div>
       </div>
     </div>
