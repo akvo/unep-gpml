@@ -62,9 +62,4 @@ frontend_build () {
 backend_build
 frontend_build
 
-echo "soft limit"
-ulimit –nS
-echo "hard limit"
-ulimit -nH
-
 dci run -T ci ./basic.sh
