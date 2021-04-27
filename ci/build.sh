@@ -61,4 +61,5 @@ frontend_build () {
 
 backend_build
 frontend_build
+
 dci run -T ci ./basic.sh

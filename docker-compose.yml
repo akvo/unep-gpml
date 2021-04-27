@@ -27,5 +27,6 @@ services:
     volumes:
       - ./frontend:/app:delegated
     working_dir: /app
+
 volumes:
   pg-data:
