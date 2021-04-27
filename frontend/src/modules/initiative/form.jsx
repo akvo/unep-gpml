@@ -1,4 +1,4 @@
-import { initiativeData } from "./view";
+import { initiativeData, initialFormData } from "./view";
 import React, { useEffect, useState } from "react";
 import { notification } from "antd";
 import { withTheme } from "@rjsf/core";
@@ -183,6 +183,10 @@ const AddInitiativeForm = ({
       .post("/initiative", data)
       .then(() => {
         setStep(2);
+        initiativeData.update((e) => {
+          e.data = initialFormData;
+        });
+        setDisabledBtn({ disabled: true, type: "default" });
       })
       .catch(() => {
         notification.error({ message: "An error occured" });

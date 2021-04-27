@@ -100,38 +100,35 @@ const tabsData = [
   },
 ];
 
-export const initiativeData = new Store({
-  data: {
-    tabs: ["S1"],
-    steps: tabsData[0].steps,
-    required: {
-      S1: [],
-      S2: [],
-      S3: [],
-    },
-    S1: {
-      steps: 0,
-      required: {},
-    },
-    S2: {
-      steps: 0,
-      required: {},
-    },
-    S3: {
-      steps: 0,
-      required: {},
-    },
+export const initialFormData = {
+  tabs: ["S1"],
+  steps: tabsData[0].steps,
+  required: {
+    S1: [],
+    S2: [],
+    S3: [],
   },
+  S1: {
+    steps: 0,
+    required: {},
+  },
+  S2: {
+    steps: 0,
+    required: {},
+  },
+  S3: {
+    steps: 0,
+    required: {},
+  },
+};
+
+export const initiativeData = new Store({
+  data: initialFormData,
 });
 
 const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
   const prop = cloneDeep(schema.properties);
   const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
-  // TODO:: Load options below
-  // [Pop up a full list of SDGs] ? where can get this data? Question S2_G2 number 7.1
-  // [in the UI show a list of tags they can choose to add] Question S3_G3 number 32
-  // END OF TODO
-
   // organisation options
   prop.S3.properties.S3_G1.properties["S3_G1_16"].enum = orgs?.map(
     (it) => it.id
