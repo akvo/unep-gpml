@@ -26,6 +26,7 @@ const checkAnswer = (dependValue, answer) => {
     dependValue = intersection(dependValue, answer).length !== 0;
   }
   if (!Array.isArray(answer)) {
+    answer = typeof answer === "string" ? answer.toLowerCase() : answer;
     dependValue = Array.isArray(dependValue)
       ? dependValue.includes(answer)
       : dependValue === answer;
