@@ -77,7 +77,7 @@ spec:
             fieldRef:
               fieldPath: metadata.name
         - name: APP_VERSION
-          value: ${CI_COMMIT}
+          value: "${CI_COMMIT}"
         - name: ENV_NAME
           valueFrom:
             configMapKeyRef:
