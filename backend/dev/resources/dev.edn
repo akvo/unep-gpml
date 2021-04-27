@@ -4,7 +4,7 @@
                               :maximum-pool-size 1}
 
  :duct.logger/timbre
- {:min-level :debug
+ {:min-level :warn
   :set-root-config? true
   :appenders {:out #ig/ref :duct.logger.timbre/println}}
 
