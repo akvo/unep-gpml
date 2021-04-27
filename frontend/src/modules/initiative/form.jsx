@@ -2,6 +2,7 @@ import { initiativeData } from "./view";
 import React, { useEffect, useState } from "react";
 import { notification } from "antd";
 import { withTheme } from "@rjsf/core";
+import api from "../../utils/api";
 import { Theme as AntDTheme } from "@rjsf/antd";
 import ObjectFieldTemplate from "../../utils/forms/object-template";
 import ArrayFieldTemplate from "../../utils/forms/array-template";
@@ -171,15 +172,20 @@ const AddInitiativeForm = ({
     // # Transform data before sending to endpoint
     let data = {};
     transformFormData(data, formData, formSchema.schema.properties);
-    console.log(data, formData);
+    data.version = formSchema.schema.version;
+    console.log(data);
     // setSending(true);
-    // api.post("/resource", data).then(() => {
-    //   setStep(2);
-    // }).catch(() => {
-    //   notification.error({ message: "An error occured" });
-    // }).finally(() => {
-    //   setSending(false);
-    // });
+    // api
+    //   .post("/initiative", data)
+    //   .then(() => {
+    //     setStep(2);
+    //   })
+    //   .catch(() => {
+    //     notification.error({ message: "An error occured" });
+    //   })
+    //   .finally(() => {
+    //     setSending(false);
+    //   });
   };
 
   const handleFormOnChange = ({ formData, schema }) => {

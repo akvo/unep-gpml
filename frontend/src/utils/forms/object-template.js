@@ -88,6 +88,23 @@ const ObjectFieldTemplate = ({
 
   // hide and show form when dependent
   const dependHidden = (element) => {
+    // ## Remove value from formData
+    if (
+      formData?.[element.name] &&
+      schema.properties?.[element.name]?.dependencies
+    ) {
+      const { dependencies } = schema.properties?.[element.name];
+      let results = dependencies.filter((item) => {
+        if (!intersection(formData?.[element.name], item.value).length > 0)
+          return item;
+      });
+      results = results.map((item) => item.questions);
+      results = results.flat(1);
+      results.forEach((key) => {
+        formData?.[key] && delete formData?.[key];
+      });
+    }
+
     const deppend = findSchemaDepend(element);
     if (deppend) {
       let answer = formData[deppend.id];
@@ -121,7 +138,20 @@ const ObjectFieldTemplate = ({
               : parentDependValue === parentAnswer;
           }
           if (!parentDependValue) {
-            delete formData?.[deppend.id];
+            // ## Remove value from formData
+            let childKey =
+              schema?.properties &&
+              Object.keys(schema.properties).filter((key) => {
+                // let value =
+                //   schema.properties?.[key] &&
+                //   schema.properties?.[key]?.depend?.value;
+                // if (intersection(value, deppend.value).length > 0) return key;
+                return schema.properties?.[key]?.depend?.id === deppend.id;
+              });
+            childKey.forEach((key) => {
+              formData?.[key] && delete formData?.[key];
+            });
+            formData?.[deppend.id] && delete formData?.[deppend.id];
             return { display: "none" };
           }
         }
