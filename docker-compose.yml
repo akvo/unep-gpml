@@ -27,11 +27,6 @@ services:
     volumes:
       - ./frontend:/app:delegated
     working_dir: /app
-  wiremock-proxy:
-    image: rodolpheche/wiremock:2.16.0-alpine
-    volumes:
-      - ./wiremock:/etc/wiremock/files
-    command: --root-dir /etc/wiremock/files --no-request-journal --verbose
 
 volumes:
   pg-data:
