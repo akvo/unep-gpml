@@ -122,6 +122,10 @@ const AddResourceForm = ({
       .post("/resource", data)
       .then(() => {
         setStep(2);
+        resourceData.update((e) => {
+          e.data = {};
+        });
+        setDisabledBtn({ disabled: true, type: "default" });
       })
       .catch(() => {
         notification.error({ message: "An error occured" });
