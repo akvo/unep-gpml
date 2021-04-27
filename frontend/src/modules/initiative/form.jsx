@@ -15,6 +15,7 @@ import {
   checkRequiredFieldFilledIn,
 } from "../../utils/forms";
 import intersection from "lodash/intersection";
+import difference from "lodash/difference";
 import uiSchema from "./uiSchema.json";
 
 const Form = withTheme(AntDTheme);
@@ -102,6 +103,7 @@ const collectDependSchemaRefactor = (
 const transformFormData = (data, formData, schema) => {
   delete formData?.tabs;
   delete formData?.steps;
+  delete formData?.required;
   Object.keys(formData).forEach((key) => {
     if (formData?.[key]) {
       delete formData[key]?.steps;
@@ -172,20 +174,19 @@ const AddInitiativeForm = ({
     // # Transform data before sending to endpoint
     let data = {};
     transformFormData(data, formData, formSchema.schema.properties);
-    data.version = formSchema.schema.version;
-    console.log(data);
-    // setSending(true);
-    // api
-    //   .post("/initiative", data)
-    //   .then(() => {
-    //     setStep(2);
-    //   })
-    //   .catch(() => {
-    //     notification.error({ message: "An error occured" });
-    //   })
-    //   .finally(() => {
-    //     setSending(false);
-    //   });
+    data.version = parseInt(formSchema.schema.version);
+    setSending(true);
+    api
+      .post("/initiative", data)
+      .then(() => {
+        setStep(2);
+      })
+      .catch(() => {
+        notification.error({ message: "An error occured" });
+      })
+      .finally(() => {
+        setSending(false);
+      });
   };
 
   const handleFormOnChange = ({ formData, schema }) => {
@@ -206,11 +207,30 @@ const AddInitiativeForm = ({
       requiredFields
     );
     setDependValue(dependFields);
+    const requiredFilledIn = checkRequiredFieldFilledIn(
+      formData,
+      dependFields,
+      requiredFields
+    );
+    let groupRequiredFields = {};
+    requiredFields.forEach(({ group, key, required }) => {
+      let index = group ? group : key;
+      required = required.filter((r) => requiredFilledIn.includes(r));
+      groupRequiredFields = {
+        ...groupRequiredFields,
+        [index]: groupRequiredFields?.[index]
+          ? groupRequiredFields?.[index].concat(required)
+          : required,
+      };
+    });
+    initiativeData.update((e) => {
+      e.data = {
+        ...e.data,
+        required: groupRequiredFields,
+      };
+    });
     // enable btn submit
-    if (
-      checkRequiredFieldFilledIn(formData, dependFields, requiredFields)
-        .length === 0
-    ) {
+    if (requiredFilledIn.length === 0) {
       setDisabledBtn({ disabled: false, type: "primary" });
     }
   };

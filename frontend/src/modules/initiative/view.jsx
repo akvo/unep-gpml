@@ -93,6 +93,11 @@ export const initiativeData = new Store({
   data: {
     tabs: ["S1"],
     steps: tabsData[0].steps,
+    required: {
+      S1: [],
+      S2: [],
+      S3: [],
+    },
     S1: {
       steps: 0,
     },
@@ -299,9 +304,16 @@ const AddInitiative = ({ ...props }) => {
             activeKey={data.tabs[0]}
             onChange={(e) => handleOnTabChange(e)}
           >
-            {tabsData.map(({ key, title, desc, steps }) => (
-              <TabPane tab={title} key={key} size="large"></TabPane>
-            ))}
+            {tabsData.map(({ key, title, desc, steps }) => {
+              let required = data?.required?.[key];
+              return (
+                <TabPane
+                  tab={`${title} (${required.length})`}
+                  key={key}
+                  size="large"
+                ></TabPane>
+              );
+            })}
           </Tabs>
           <Row
             style={{

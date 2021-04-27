@@ -1235,12 +1235,6 @@ export const schema = {
             S3_G7_41: {
               title: "41. Where can users best contact you to learn more?",
               type: "string",
-              // dependencies: [
-              //   {
-              //     value: ["41-0", "41-1", "41-2", "41-3", "41-4", "41-5"],
-              //     questions: ["S3_G7_41.1"],
-              //   },
-              // ],
               enum: ["41-0", "41-1", "41-2", "41-3", "41-4", "41-5"],
               enumNames: [
                 "Email",
