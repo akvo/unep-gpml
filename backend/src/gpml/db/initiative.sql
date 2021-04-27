@@ -1,10 +1,10 @@
 -- :name new-initiative :<! :1
 -- :doc Insert a new initiative
--- :require [gpml.sql-util :as sqlutil]
+-- :require [gpml.sql-util]
 insert into initiative(
---~ (sqlutil/generate-insert params)
+--~ (gpml.sql-util/generate-insert params)
 ) values (
---~ (sqlutil/generate-jsonb params)
+--~ (gpml.sql-util/generate-jsonb params)
 ) returning id;
 
 -- :name initiative-by-id :? :1
