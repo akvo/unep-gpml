@@ -9,7 +9,7 @@
       (let [user (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)
             data (assoc body-params :created_by (:id user))
             initiative-id (db.initiative/new-initiative (:spec db) data)]
-    (resp/created (:referrer req) {:message "New initiative created" :id initiative-id}))))
+    (resp/created (:referrer req) (merge initiative-id {:message "New initiative created"})))))
 
 (defmethod ig/init-key :gpml.handler.initiative/post-params [_ _]
   [:map [:version integer?]])

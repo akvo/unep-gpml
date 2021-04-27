@@ -1,0 +1,140 @@
+{
+  "q1": {
+    "1-0": "As an individual"
+  },
+  "q4": [
+    {
+      "4-1": "WORKING WITH PEOPLE (encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes)."
+    }
+  ],
+  "q4_2_1": [
+    {
+      "4.2.1-0": "Awareness raising and behaviour change"
+    },
+    {
+      "4.2.1-1": "Education/Training"
+    },
+    {
+      "4.2.1-2": "Workshops"
+    }
+  ],
+  "q2": "Testing",
+  "q3": "Desc",
+  "q7": [
+    {
+      "7-3": "Multilateral Environmental Agreements (MEAs)"
+    }
+  ],
+  "q7_2": [
+    {},
+    {}
+  ],
+  "q11": [
+    {
+      "11-2": "Outcomes will be compared to a baseline measurement"
+    },
+    {
+      "11-1": "Outcomes are being assessed at regular intervals"
+    }
+  ],
+  "q5": {
+    "5-0": "Yes, reporting is voluntary"
+  },
+  "q8": {
+    "8-1": "No"
+  },
+  "q10": {
+    "10-2": "In 4 to 10 years"
+  },
+  "q14": [
+    {
+      "14-2": "Economic drivers (e.g., fines, subsidies, taxes)"
+    },
+    {
+      "14-1": "Protecting economy / livelihoods or shareholder value"
+    }
+  ],
+  "q15": [
+    {
+      "15-1": "Not enough regulation/control mechanisms"
+    },
+    {
+      "15-2": "Existing regulation is not enforced"
+    }
+  ],
+  "q16": {
+    "169": "Adult commercial secondary School"
+  },
+  "q18": {
+    "1000": "3M"
+  },
+  "q20": {
+    "116": "Alfred wegener Institute Helmholtz Centre for Polar and Marine Research"
+  },
+  "q22": "Bali",
+  "q23": {
+    "106": "Indonesia"
+  },
+  "q24": {
+    "Global": "Global"
+  },
+  "q26": [
+    {
+      "26-1": "Design"
+    }
+  ],
+  "q28": [
+    {
+      "28-2": "Marine organisms"
+    },
+    {
+      "28-1": "Biodiversity"
+    }
+  ],
+  "q30": [
+    {
+      "30-5": "Electrical and electronics"
+    },
+    {
+      "30-4": "Automotive"
+    },
+    {
+      "30-3": "Building, construction, demolition,industrial machinery"
+    }
+  ],
+  "q32": [
+    {
+      "32-7": "Coastal zone"
+    },
+    {
+      "32-6": "Waste disposal sites"
+    },
+    {
+      "32-5": "Urban environment"
+    }
+  ],
+  "q33": 12,
+  "q34": 21,
+  "q35": {
+    "35-0": "Crowdfunded"
+  },
+  "q36": 1000,
+  "q36_1": {
+    "USD": "USD United States dollar"
+  },
+  "q37": 300,
+  "q37_1": {
+    "USD": "USD United States dollar"
+  },
+  "q38": {
+    "38-0": "Single event"
+  },
+  "q40": [
+    "link1",
+    "link2"
+  ],
+  "q41": {
+    "41-5": "Other"
+  },
+  "q41_1": "url"
+}
