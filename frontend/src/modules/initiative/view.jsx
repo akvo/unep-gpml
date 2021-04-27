@@ -17,6 +17,7 @@ const tabsData = [
     desc: "",
     steps: [
       {
+        group: "S1",
         key: "S1-p1-personal-information",
         title: "Personal Information",
         desc: "",
@@ -29,16 +30,19 @@ const tabsData = [
     desc: "",
     steps: [
       {
+        group: "S2_G1",
         key: "S2-p1-general",
         title: "Part 1: General",
         desc: "",
       },
       {
+        group: "S2_G2",
         key: "S2-p2-reporting-and-measuring",
         title: "Part 2: Reporting and Measuring",
         desc: "",
       },
       {
+        group: "S2_G3",
         key: "S2-p3-drivers-and-barriers",
         title: "Part 3: Drivers and Barriers",
         desc: "",
@@ -51,36 +55,43 @@ const tabsData = [
     desc: "",
     steps: [
       {
+        group: "S3_G1",
         key: "S3-p1-entities-involved",
         title: "Part 1: Entities Involved",
         desc: "",
       },
       {
+        group: "S3_G2",
         key: "S3-p2-location-and-coverage",
         title: "Part 2: Location & Coverage",
         desc: "",
       },
       {
+        group: "S3_G3",
         key: "S3-p3-initiative-scope-and-target",
         title: "Part 3: Initiative Scope & Target",
         desc: "",
       },
       {
+        group: "S3_G4",
         key: "S3-p4-total-stakeholders-engaged",
         title: "Part 4: Total Stakeholders Engaged",
         desc: "",
       },
       {
+        group: "S3_G5",
         key: "S3-p5-funding",
         title: "Part 5: Funding",
         desc: "",
       },
       {
+        group: "S3_G6",
         key: "S3-p6-duration",
         title: "Part 6: Duration",
         desc: "",
       },
       {
+        group: "S3_G7",
         key: "S3-p7-related-resource-and-contact",
         title: "Part 7: Related Resource and Contact",
         desc: "",
@@ -98,14 +109,22 @@ export const initiativeData = new Store({
       S2: [],
       S3: [],
     },
+    filledIn: {
+      S1: [],
+      S2: [],
+      S3: [],
+    },
     S1: {
       steps: 0,
+      required: {},
     },
     S2: {
       steps: 0,
+      required: {},
     },
     S3: {
       steps: 0,
+      required: {},
     },
   },
 });
@@ -218,11 +237,18 @@ const AddInitiative = ({ ...props }) => {
     }
   }, [countries, organisations, tags, formSchema]);
 
-  const renderSteps = (steps) => {
+  const renderSteps = (section, steps) => {
     if (steps.length === 0) return;
-    return steps.map(({ key, title, desc }) => (
-      <Step key={key} title={title} description={desc} />
-    ));
+    return steps.map(({ group, key, title, desc }) => {
+      let required = data?.[section]?.required?.[group];
+      return (
+        <Step
+          key={key}
+          title={`${title} (${required?.length || 0})`}
+          description={desc}
+        />
+      );
+    });
   };
 
   const handleOnTabChange = (key) => {
@@ -337,7 +363,7 @@ const AddInitiative = ({ ...props }) => {
                 current={data[data.tabs[0]]?.steps}
                 onChange={(e) => handleOnStepClick(e, data.tabs[0])}
               >
-                {data?.steps && renderSteps(data.steps)}
+                {data?.steps && renderSteps(data.tabs[0], data.steps)}
               </Steps>
             </Col>
             <Col xs={24} lg={18}>

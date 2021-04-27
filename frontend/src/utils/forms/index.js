@@ -133,20 +133,36 @@ export const checkRequiredFieldFilledIn = (
   let res = [];
   requiredFields.forEach((item) => {
     item.required = difference(item.required, dependFields);
-    if (!item?.group && !item.key) {
+    if (typeof item?.group === "undefined" && !item.key) {
       item.required.forEach((x) => {
         !(x in formData) && res.push(x);
       });
     }
-    if (!item?.group && item.key && !dependFields.includes(item.key)) {
+    if (
+      typeof item?.group === "undefined" &&
+      item.key &&
+      !dependFields.includes(item.key)
+    ) {
       item.required.forEach((x) => {
         !(x in formData?.[item.key]) && res.push(x);
       });
     }
+    // for initiative form
+    if (item?.group === null && item.key) {
+      item.required.forEach((x) => {
+        !(x in formData?.[item.key]) &&
+          dependFields.filter((d) => d.includes(x)).length === 0 &&
+          res.push(x);
+      });
+    }
+    // for initiative form
     if (item?.group && item.key) {
       item.required.forEach((x) => {
+        let search = x.includes(".")
+          ? `${item.group}.${item.key}['${x}']`
+          : `${item.group}.${item.key}.${x}`;
         !(x in formData?.[item.group]?.[item.key]) &&
-          dependFields.filter((d) => d.includes(x)).length === 0 &&
+          dependFields.filter((d) => d.includes(search)).length === 0 &&
           res.push(x);
       });
     }

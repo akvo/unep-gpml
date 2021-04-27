@@ -104,9 +104,11 @@ const transformFormData = (data, formData, schema) => {
   delete formData?.tabs;
   delete formData?.steps;
   delete formData?.required;
+  delete formData?.filledIn;
   Object.keys(formData).forEach((key) => {
     if (formData?.[key]) {
       delete formData[key]?.steps;
+      delete formData[key]?.required;
       if (
         formData[key] === Object(formData[key]) &&
         !Array.isArray(formData[key])
@@ -212,21 +214,57 @@ const AddInitiativeForm = ({
       dependFields,
       requiredFields
     );
+    let sectionRequiredFields = {};
     let groupRequiredFields = {};
     requiredFields.forEach(({ group, key, required }) => {
       let index = group ? group : key;
-      required = required.filter((r) => requiredFilledIn.includes(r));
-      groupRequiredFields = {
-        ...groupRequiredFields,
-        [index]: groupRequiredFields?.[index]
-          ? groupRequiredFields?.[index].concat(required)
-          : required,
+      let filterRequired = required.filter((r) => requiredFilledIn.includes(r));
+      sectionRequiredFields = {
+        ...sectionRequiredFields,
+        [index]: sectionRequiredFields?.[index]
+          ? sectionRequiredFields?.[index].concat(filterRequired)
+          : filterRequired,
       };
+      if (!group) {
+        groupRequiredFields = {
+          ...groupRequiredFields,
+          [key]: {
+            ...groupRequiredFields[key],
+            required: {
+              [key]: filterRequired,
+            },
+          },
+        };
+      }
+      if (group) {
+        groupRequiredFields = {
+          ...groupRequiredFields,
+          [group]: {
+            ...groupRequiredFields[group],
+            required: {
+              ...groupRequiredFields?.[group]?.required,
+              [key]: filterRequired,
+            },
+          },
+        };
+      }
     });
     initiativeData.update((e) => {
       e.data = {
         ...e.data,
-        required: groupRequiredFields,
+        required: sectionRequiredFields,
+        S1: {
+          ...e.data.S1,
+          required: groupRequiredFields["S1"].required,
+        },
+        S2: {
+          ...e.data.S2,
+          required: groupRequiredFields["S2"].required,
+        },
+        S3: {
+          ...e.data.S3,
+          required: groupRequiredFields["S3"].required,
+        },
       };
     });
     // enable btn submit
