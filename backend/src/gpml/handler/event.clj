@@ -19,7 +19,7 @@
               :end_date end_date
               :description (or description "")
               :remarks remarks
-              :image (handler.image/assoc-image conn photo "image")
+              :image (handler.image/assoc-image conn photo "event")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
               :city city
