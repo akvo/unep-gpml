@@ -81,7 +81,7 @@
       (let [data (db.initiative/new-initiative
                   db (assoc initiative-data :created_by (:id admin) :version 1))
             result (db.initiative/initiative-by-id db data)]
-        (is (= 1 (-> data :id)))
+        (is (= 10001 (-> data :id)))
         (is (= "SUBMITTED" (-> result :review_status)))
         (is (= 10001 (-> result :created_by)))
         (doseq [[k v] initiative-data]
