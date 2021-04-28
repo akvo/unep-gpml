@@ -101,7 +101,12 @@ country_counts AS (
     SELECT COUNT(*) as country, 'stakeholder' as data FROM stakeholder_countries
 ),
 totals AS (
-    SELECT COUNT(*) as total, 'project' as data, 1 as o FROM project
+    SELECT COUNT(*) as total, 'project' as data, 1 as o
+    FROM (
+      SELECT id FROM project
+      UNION ALL
+      SELECT id FROM initiative
+    ) all_initiatives
     UNION
     SELECT COUNT(*) as total, replace(lower(type),' ','_') as data, 2 as o
     FROM resource WHERE type IS NOT NULL GROUP BY data
