@@ -105,7 +105,6 @@ const transformFormData = (data, formData, schema) => {
   delete formData?.tabs;
   delete formData?.steps;
   delete formData?.required;
-  delete formData?.filledIn;
   Object.keys(formData).forEach((key) => {
     if (formData?.[key]) {
       delete formData[key]?.steps;
@@ -124,7 +123,7 @@ const transformFormData = (data, formData, schema) => {
         data[`q${qKey}`] = formData[key];
         if (Array.isArray(formData[key])) {
           data[`q${qKey}`] = formData[key].map((d) => {
-            if (schema?.[key].type === "array" && schema?.[key].items?.enum) {
+            if (schema?.[key]?.type === "array" && schema?.[key].items?.enum) {
               return {
                 [d]:
                   schema?.[key].items.enumNames?.[
@@ -132,7 +131,7 @@ const transformFormData = (data, formData, schema) => {
                   ],
               };
             }
-            if (schema?.[key].type === "string") {
+            if (schema?.[key]?.type === "string") {
               return {
                 [d]: schema?.[key].enumNames?.[schema?.[key].enum.indexOf(d)],
               };
