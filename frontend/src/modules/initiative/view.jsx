@@ -232,13 +232,19 @@ const AddInitiative = ({ ...props }) => {
   }, [countries, organisations, tags, formSchema]);
 
   const renderSteps = (parentTitle, section, steps) => {
+    const totalRequiredFields = data?.required?.[section]?.length || 0;
     if (section !== data.tabs[0]) {
       return (
         <Step
           key={section}
           title={`${parentTitle}`}
-          className="step-section"
-          status="wait"
+          subTitle={`Total Required fields: ${totalRequiredFields}`}
+          className={
+            totalRequiredFields === 0
+              ? "step-section step-section-finish"
+              : "step-section"
+          }
+          status={totalRequiredFields === 0 ? "finish" : "wait"}
         />
       );
     }
@@ -256,8 +262,13 @@ const AddInitiative = ({ ...props }) => {
       <Step
         key={section}
         title={`${parentTitle}`}
-        className="step-section"
-        status="finish"
+        subTitle={`Total Required fields: ${totalRequiredFields}`}
+        className={
+          totalRequiredFields === 0
+            ? "step-section step-section-finish"
+            : "step-section"
+        }
+        status={totalRequiredFields === 0 ? "finish" : "process"}
       />,
       ...childs,
     ];
