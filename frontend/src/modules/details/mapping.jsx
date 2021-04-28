@@ -396,7 +396,7 @@ const detailStakeholder = [
   {
     key: "geoCoverageValues",
     name: "Geo-Coverage",
-    name: "Geo-Coverage",
+    value: "geoCoverage",
     type: "array",
   },
   {
@@ -406,22 +406,28 @@ const detailStakeholder = [
     type: "name",
   },
   {
+    key: "role",
+    name: "Role",
+    value: "role",
+    type: "name",
+  },
+  {
     key: "affiliation",
-    name: "Organisation",
+    name: "Entity",
     value: "custom",
     customValue: "name",
     type: "object",
   },
   {
     key: "affiliation",
-    name: "Organisation Type",
+    name: "Entity Type",
     value: "custom",
     customValue: "type",
     type: "object",
   },
   {
     key: "affiliation",
-    name: "Organisation Link",
+    name: "Entity Link",
     value: "custom",
     customValue: "url",
     type: "object",
