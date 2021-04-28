@@ -272,9 +272,10 @@ const AddInitiativeForm = ({
       };
     });
     // enable btn submit
-    if (requiredFilledIn.length === 0) {
+    requiredFilledIn.length === 0 &&
       setDisabledBtn({ disabled: false, type: "primary" });
-    }
+    requiredFilledIn.length !== 0 &&
+      setDisabledBtn({ disabled: true, type: "default" });
   };
 
   const handleTransformErrors = (errors, dependValue) => {
