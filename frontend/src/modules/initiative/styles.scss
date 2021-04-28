@@ -6,6 +6,7 @@
   min-height: calc(100vh - 145px);
   background: url(../../images/Resource-gpml.jpg) no-repeat center;
   background-size: cover;
+  background-position-y: top;
 
   // & > .ui.container > .ant-row {
   //   & > .ant-col:first-child {
@@ -100,6 +101,7 @@
           text-transform: uppercase;
           font-weight: bold;
           color: #226799;
+
           .ant-steps-item-subtitle {
             text-transform: none;
           }
@@ -113,6 +115,7 @@
       .ant-steps-item-icon {
         background-color: #22ba9a;
         border-color: #b4e1f4;
+
         .ant-steps-icon {
           color: white;
         }
@@ -133,9 +136,11 @@
           color: #29b696;
         }
       }
+
       .ant-steps-item-icon {
         background-color: #fff;
         border-color: #398fff;
+
         .ant-steps-icon {
           color: #398fff;
         }
@@ -151,10 +156,12 @@
           color: #398fff;
         }
       }
+
       .ant-steps-item-icon {
         background-color: #fff;
         border-color: #398fff;
         border-width: 2px;
+
         .ant-steps-icon {
           color: #398fff;
         }
@@ -181,10 +188,12 @@
           color: #398fff;
         }
       }
+
       .ant-steps-item-icon {
         background-color: #fff;
         border-color: #398fff;
         border-width: 2px;
+
         .ant-steps-icon {
           color: #398fff;
         }
@@ -206,13 +215,16 @@
           text-transform: uppercase;
           font-weight: bold;
           color: #226799;
+
           .ant-steps-item-subtitle {
             text-transform: none;
           }
         }
       }
+
       .ant-steps-item-icon {
         background-color: #398fff;
+
         .ant-steps-icon {
           display: none;
         }

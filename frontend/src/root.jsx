@@ -354,8 +354,9 @@ const AddButton = withRouter(
               </Menu>
             }
             trigger={["click"]}
+            placement="bottomRight"
           >
-            <Button type="primary" size="large">
+            <Button type="primary" size="large" placement="bottomRight">
               + Add
             </Button>
           </Dropdown>
