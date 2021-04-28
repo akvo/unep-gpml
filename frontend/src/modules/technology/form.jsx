@@ -117,12 +117,15 @@ const AddTechnologyForm = ({
     );
     setDependValue(dependFields);
     // enable btn submit
-    if (
-      checkRequiredFieldFilledIn(formData, dependFields, requiredFields)
-        .length === 0
-    ) {
+    const requiredFilledIn = checkRequiredFieldFilledIn(
+      formData,
+      dependFields,
+      requiredFields
+    );
+    requiredFilledIn.length === 0 &&
       setDisabledBtn({ disabled: false, type: "primary" });
-    }
+    requiredFilledIn.length !== 0 &&
+      setDisabledBtn({ disabled: true, type: "default" });
   };
 
   const handleTransformErrors = (errors, dependValue) => {
@@ -159,7 +162,7 @@ const AddTechnologyForm = ({
       )}
       {step === 2 && (
         <div>
-          <h3>Thank you for adding the resource</h3>
+          <h3>Thank you for adding the Technology</h3>
           <p>we'll let you know once an admin has approved it</p>
         </div>
       )}
