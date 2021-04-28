@@ -255,6 +255,7 @@ const AddInitiative = ({ ...props }) => {
           key={section + key}
           title={`${title}`}
           subTitle={`Required fields: ${requiredFields}`}
+          status={requiredFields === 0 ? "finish" : "process"}
         />
       );
     });
