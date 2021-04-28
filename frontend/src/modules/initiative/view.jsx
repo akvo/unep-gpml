@@ -203,6 +203,8 @@ const AddInitiative = ({ ...props }) => {
     disabled: true,
     type: "default",
   });
+  // step after submit form
+  const [step, setStep] = useState(1);
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -345,59 +347,82 @@ const AddInitiative = ({ ...props }) => {
       </div>
       <div className="ui container">
         <div className="form-container">
-          <Row
-            style={{
-              minHeight: `${innerHeight * 0.8}px`,
-              padding: "20px 10px 20px 16px",
-              backgroundColor: "#fff",
-              borderRadius: "0 0 6px 6px",
-            }}
-          >
-            <Col
-              xs={24}
-              lg={6}
+          {step === 1 && (
+            <Row
               style={{
-                borderRight: "1px solid #D3DBDF",
-                minHeight: "100%",
+                minHeight: `${innerHeight * 0.8}px`,
+                padding: "20px 10px 20px 16px",
+                backgroundColor: "#fff",
+                borderRadius: "6px",
               }}
             >
-              {tabsData.map(({ key, title, desc, steps }) => (
-                <Steps
-                  key={`steps-section-${key}`}
-                  direction="vertical"
-                  size="small"
-                  current={data[key]?.steps}
-                  initial={-1}
-                  onChange={(e) => {
-                    e === -1
-                      ? handleOnTabChange(key)
-                      : handleOnStepClick(e, data.tabs[0]);
-                  }}
-                  className={key === data.tabs[0] ? "current-tabs" : ""}
-                >
-                  {renderSteps(title, key, steps)}
-                </Steps>
-              ))}
-            </Col>
-            <Col xs={24} lg={18}>
-              <Card
+              <Col
+                xs={24}
+                lg={6}
                 style={{
-                  minHeight: `${innerHeight * 0.75}px`,
-                  overflow: "auto",
+                  borderRight: "1px solid #D3DBDF",
+                  minHeight: "100%",
                 }}
               >
-                <AddInitiativeForm
-                  btnSubmit={btnSubmit}
-                  sending={sending}
-                  setSending={setSending}
-                  highlight={highlight}
-                  setHighlight={setHighlight}
-                  formSchema={formSchema}
-                  setDisabledBtn={setDisabledBtn}
-                />
-              </Card>
-            </Col>
-          </Row>
+                {tabsData.map(({ key, title, desc, steps }) => (
+                  <Steps
+                    key={`steps-section-${key}`}
+                    direction="vertical"
+                    size="small"
+                    current={data[key]?.steps}
+                    initial={-1}
+                    onChange={(e) => {
+                      e === -1
+                        ? handleOnTabChange(key)
+                        : handleOnStepClick(e, data.tabs[0]);
+                    }}
+                    className={key === data.tabs[0] ? "current-tabs" : ""}
+                  >
+                    {renderSteps(title, key, steps)}
+                  </Steps>
+                ))}
+              </Col>
+              <Col xs={24} lg={18}>
+                <Card
+                  style={{
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    paddingRight: "24px",
+                    paddingLeft: "30px",
+                    minHeight: `${innerHeight * 0.75}px`,
+                    overflow: "auto",
+                  }}
+                >
+                  <AddInitiativeForm
+                    btnSubmit={btnSubmit}
+                    sending={sending}
+                    setSending={setSending}
+                    highlight={highlight}
+                    setHighlight={setHighlight}
+                    formSchema={formSchema}
+                    setDisabledBtn={setDisabledBtn}
+                    setStep={setStep}
+                  />
+                </Card>
+              </Col>
+            </Row>
+          )}
+          {step === 2 && (
+            <Row>
+              <Col span={24}>
+                <Card
+                  style={{
+                    padding: "30px",
+                  }}
+                >
+                  <div>
+                    <h3>Thank you for adding the Initiative</h3>
+                    <p>we'll let you know once an admin has approved it</p>
+                  </div>
+                </Card>
+              </Col>
+            </Row>
+          )}
         </div>
       </div>
     </div>

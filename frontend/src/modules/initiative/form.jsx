@@ -168,10 +168,10 @@ const AddInitiativeForm = ({
   setHighlight,
   formSchema,
   setDisabledBtn,
+  setStep,
 }) => {
   const initiativeFormData = initiativeData.useState();
   const [dependValue, setDependValue] = useState([]);
-  const [step, setStep] = useState(1);
 
   const handleOnSubmit = ({ formData }) => {
     // # Transform data before sending to endpoint
@@ -305,36 +305,28 @@ const AddInitiativeForm = ({
 
   return (
     <div className="add-initiative-form">
-      {step === 1 && (
-        <>
-          <Form
-            idPrefix="initiative"
-            schema={formSchema.schema}
-            uiSchema={uiSchema}
-            formData={initiativeFormData.data}
-            onChange={(e) => handleFormOnChange(e)}
-            onSubmit={(e) => handleOnSubmit(e)}
-            ArrayFieldTemplate={ArrayFieldTemplate}
-            ObjectFieldTemplate={ObjectFieldTemplate}
-            FieldTemplate={FieldTemplate}
-            widgets={widgets}
-            transformErrors={(errors) =>
-              handleTransformErrors(errors, dependValue)
-            }
-            showErrorList={false}
-          >
-            <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
-              Fire
-            </button>
-          </Form>
-        </>
-      )}
-      {step === 2 && (
-        <div>
-          <h3>Thank you for adding the resource</h3>
-          <p>we'll let you know once an admin has approved it</p>
-        </div>
-      )}
+      <>
+        <Form
+          idPrefix="initiative"
+          schema={formSchema.schema}
+          uiSchema={uiSchema}
+          formData={initiativeFormData.data}
+          onChange={(e) => handleFormOnChange(e)}
+          onSubmit={(e) => handleOnSubmit(e)}
+          ArrayFieldTemplate={ArrayFieldTemplate}
+          ObjectFieldTemplate={ObjectFieldTemplate}
+          FieldTemplate={FieldTemplate}
+          widgets={widgets}
+          transformErrors={(errors) =>
+            handleTransformErrors(errors, dependValue)
+          }
+          showErrorList={false}
+        >
+          <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
+            Fire
+          </button>
+        </Form>
+      </>
     </div>
   );
 };
