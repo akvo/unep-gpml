@@ -1,14 +1,13 @@
 import { Store } from "pullstate";
 import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState } from "react";
-import { Row, Col, Card, Steps, Tabs, Switch, Button } from "antd";
+import { Row, Col, Card, Steps, Switch, Button } from "antd";
 import "./styles.scss";
 import AddInitiativeForm from "./form";
 import { schema } from "./schema";
 import cloneDeep from "lodash/cloneDeep";
 
 const { Step } = Steps;
-const { TabPane } = Tabs;
 
 const tabsData = [
   {
@@ -102,7 +101,6 @@ const tabsData = [
 
 export const initialFormData = {
   tabs: ["S1"],
-  steps: tabsData[0].steps,
   required: {
     S1: [],
     S2: [],
@@ -229,18 +227,48 @@ const AddInitiative = ({ ...props }) => {
     }
   }, [countries, organisations, tags, formSchema]);
 
-  const renderSteps = (section, steps) => {
-    if (steps.length === 0) return;
-    return steps.map(({ group, key, title, desc }) => {
-      let required = data?.[section]?.required?.[group];
+  const renderSteps = (parentTitle, section, steps) => {
+    const totalRequiredFields = data?.required?.[section]?.length || 0;
+    if (section !== data.tabs[0]) {
       return (
         <Step
-          key={key}
-          title={`${title} (${required?.length || 0})`}
-          description={desc}
+          key={section}
+          title={`${parentTitle}`}
+          subTitle={`Total Required fields: ${totalRequiredFields}`}
+          className={
+            totalRequiredFields === 0
+              ? "step-section step-section-finish"
+              : "step-section"
+          }
+          status={totalRequiredFields === 0 ? "finish" : "wait"}
+        />
+      );
+    }
+    const childs = steps.map(({ group, key, title, desc }) => {
+      const requiredFields = data?.[section]?.required?.[group]?.length || 0;
+      return (
+        <Step
+          key={section + key}
+          title={`${title}`}
+          subTitle={`Required fields: ${requiredFields}`}
+          status={requiredFields === 0 ? "finish" : "process"}
         />
       );
     });
+    return [
+      <Step
+        key={section}
+        title={`${parentTitle}`}
+        subTitle={`Total Required fields: ${totalRequiredFields}`}
+        className={
+          totalRequiredFields === 0
+            ? "step-section step-section-finish"
+            : "step-section"
+        }
+        status={totalRequiredFields === 0 ? "finish" : "process"}
+      />,
+      ...childs,
+    ];
   };
 
   const handleOnTabChange = (key) => {
@@ -317,22 +345,6 @@ const AddInitiative = ({ ...props }) => {
       </div>
       <div className="ui container">
         <div className="form-container">
-          <Tabs
-            type="card"
-            activeKey={data.tabs[0]}
-            onChange={(e) => handleOnTabChange(e)}
-          >
-            {tabsData.map(({ key, title, desc, steps }) => {
-              let required = data?.required?.[key];
-              return (
-                <TabPane
-                  tab={`${title} (${required.length})`}
-                  key={key}
-                  size="large"
-                ></TabPane>
-              );
-            })}
-          </Tabs>
           <Row
             style={{
               minHeight: `${innerHeight * 0.8}px`,
@@ -349,14 +361,23 @@ const AddInitiative = ({ ...props }) => {
                 minHeight: "100%",
               }}
             >
-              <Steps
-                direction="vertical"
-                size="small"
-                current={data[data.tabs[0]]?.steps}
-                onChange={(e) => handleOnStepClick(e, data.tabs[0])}
-              >
-                {data?.steps && renderSteps(data.tabs[0], data.steps)}
-              </Steps>
+              {tabsData.map(({ key, title, desc, steps }) => (
+                <Steps
+                  key={`steps-section-${key}`}
+                  direction="vertical"
+                  size="small"
+                  current={data[key]?.steps}
+                  initial={-1}
+                  onChange={(e) => {
+                    e === -1
+                      ? handleOnTabChange(key)
+                      : handleOnStepClick(e, data.tabs[0]);
+                  }}
+                  className={key === data.tabs[0] ? "current-tabs" : ""}
+                >
+                  {renderSteps(title, key, steps)}
+                </Steps>
+              ))}
             </Col>
             <Col xs={24} lg={18}>
               <Card

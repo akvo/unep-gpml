@@ -116,6 +116,13 @@ const ObjectFieldTemplate = ({
       });
     }
 
+    if (formData?.[element.name]) {
+      // remove value when no answer for array type question
+      Array.isArray(formData?.[element.name]) &&
+        formData?.[element.name]?.length === 0 &&
+        delete formData?.[element.name];
+    }
+
     const deppend = findSchemaDepend(element);
     if (deppend) {
       let answer = formData[deppend.id];
