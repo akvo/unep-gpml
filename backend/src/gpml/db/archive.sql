@@ -3,8 +3,7 @@
 WITH
 archived AS (
     SELECT 'profile' AS type, CONCAT(title, '. ', last_name,' ', first_name) as title, review_status, reviewed_at, reviewed_by, null as created_by
-    FROM stakeholder
-    WHERE review_status <> 'SUBMITTED'
+    FROM stakeholder where review_status <> 'SUBMITTED'
     UNION
     SELECT 'event' AS type, title, review_status, reviewed_at, reviewed_by, created_by
     FROM event where review_status <> 'SUBMITTED'
@@ -17,6 +16,9 @@ archived AS (
     UNION
     SELECT type, title, review_status, reviewed_at, reviewed_by, created_by
     FROM resource where review_status <> 'SUBMITTED'
+    UNION
+    SELECT 'initiative' as type, replace(q2::text,'"','') as title, review_status, reviewed_at, reviewed_by, created_by
+    FROM initiative where review_status <> 'SUBMITTED'
     ORDER BY reviewed_at DESC NULLS LAST
 ),
 data AS (

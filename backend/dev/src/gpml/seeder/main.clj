@@ -538,8 +538,8 @@
        (resync-event tx))
      (when project?
        (println "Seeding project...")
-       #_(seed-actions tx)
-       #_(seed-action-details tx)
+       (seed-actions tx)
+       (seed-action-details tx)
        (resync-project tx))
      (println "-- Done Seeding")))
   ([]
@@ -584,6 +584,10 @@
   (resync-resource db)
   (resync-technology db)
   (resync-event db)
+
+  ;; resync project
+  (seed-actions db)
+  (seed-action-details db)
   (resync-project db)
 
   ;; get view table of topic

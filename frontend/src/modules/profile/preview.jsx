@@ -436,6 +436,14 @@ export const InitiativePreview = ({ item }) => {
             <b>{item?.createdBy && item.createdBy}</b>
           </div>
         </li>
+        <li>
+          <div className="detail-title">Submitted</div>:
+          <div className="detail-content">{getValues(item.q1) || "-"}</div>
+        </li>
+        <li>
+          <div className="detail-title">Organisation</div>:
+          <div className="detail-content">{getValues(item.q11) || "-"}</div>
+        </li>
         <li className="has-border">
           <p className="section-title">Geo Coverage</p>
         </li>

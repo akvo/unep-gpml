@@ -5,26 +5,69 @@
     "S1": {
       "title": "SUBMITTER",
       "type": "object",
-      "depend": { "id": "tabs", "value": ["S1"] },
-      "required": ["S1_1"],
+      "depend": {
+        "id": "tabs",
+        "value": [
+          "S1"
+        ]
+      },
+      "required": [
+        "S1_1"
+      ],
       "properties": {
         "S1_1": {
           "title": "1. Are you submitting as an individual or on behalf of an Entity?",
           "type": "string",
-          "enum": ["1-0", "1-1"],
-          "enumNames": ["As an individual", "On behalf of an entity"]
+          "dependencies": [
+            {
+              "value": [
+                "1-1"
+              ],
+              "questions": [
+                "S1_G1_1.1"
+              ]
+            }
+          ],
+          "enum": [
+            "1-0",
+            "1-1"
+          ],
+          "enumNames": [
+            "As an individual",
+            "On behalf of an entity"
+          ]
+        },
+        "S1_G1_1.1": {
+          "title": "1.1. Please select the Entity",
+          "type": "string",
+          "depend": {
+            "id": "S1_1",
+            "value": [
+              "1-1"
+            ]
+          },
+          "enum": [],
+          "enumNames": []
         }
       }
     },
     "S2": {
       "title": "TYPE OF INITIATIVE",
       "type": "object",
-      "depend": { "id": "tabs", "value": ["S2"] },
+      "depend": {
+        "id": "tabs",
+        "value": [
+          "S2"
+        ]
+      },
       "properties": {
         "S2_G1": {
           "title": "G1. General",
           "type": "object",
-          "depend": { "id": "steps", "value": 0 },
+          "depend": {
+            "id": "steps",
+            "value": 0
+          },
           "required": [
             "S2_G1_2",
             "S2_G1_3",
@@ -54,7 +97,12 @@
               "title": "4. Type of initiative. What is the MAIN focus of the initiative? (Please tick ALL that apply).",
               "type": "array",
               "items": {
-                "enum": ["4-0", "4-1", "4-2", "4-3"],
+                "enum": [
+                  "4-0",
+                  "4-1",
+                  "4-2",
+                  "4-3"
+                ],
                 "enumNames": [
                   "LEGISLATION, STANDARDS, RULES (e.g., agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments).",
                   "WORKING WITH PEOPLE (encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes).",
@@ -67,7 +115,12 @@
             "S2_G1_4.1.1": {
               "title": "4.1.1. Legislation, Standards and Rules. You have selected legislation, standards and rules as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",
               "type": "array",
-              "depend": { "id": "S2_G1_4", "value": ["4-0"] },
+              "depend": {
+                "id": "S2_G1_4",
+                "value": [
+                  "4-0"
+                ]
+              },
               "items": {
                 "enum": [
                   "4.1.1-0",
@@ -101,12 +154,22 @@
             "S2_G1_4.1.2": {
               "title": "4.1.2. If you selected \"Other\", please specify",
               "type": "string",
-              "depend": { "id": "S2_G1_4.1.1", "value": ["4.1.1-10"] }
+              "depend": {
+                "id": "S2_G1_4.1.1",
+                "value": [
+                  "4.1.1-10"
+                ]
+              }
             },
             "S2_G1_4.2.1": {
               "title": "4.2.1. Working with People. You have chosen working with people as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",
               "type": "array",
-              "depend": { "id": "S2_G1_4", "value": ["4-1"] },
+              "depend": {
+                "id": "S2_G1_4",
+                "value": [
+                  "4-1"
+                ]
+              },
               "items": {
                 "enum": [
                   "4.2.1-0",
@@ -156,12 +219,22 @@
             "S2_G1_4.2.2": {
               "title": "4.2.2. If you selected \"Other\", please specify:",
               "type": "string",
-              "depend": { "id": "S2_G1_4.2.1", "value": ["4.2.1-18"] }
+              "depend": {
+                "id": "S2_G1_4.2.1",
+                "value": [
+                  "4.2.1-18"
+                ]
+              }
             },
             "S2_G1_4.3.1": {
               "title": "4.3.1. Technology and Processes. You have chosen technology and processes as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",
               "type": "array",
-              "depend": { "id": "S2_G1_4", "value": ["4-2"] },
+              "depend": {
+                "id": "S2_G1_4",
+                "value": [
+                  "4-2"
+                ]
+              },
               "items": {
                 "enum": [
                   "4.3.1-0",
@@ -217,12 +290,22 @@
             "S2_G1_4.3.2": {
               "title": "4.3.2. If you selected \"Other\", please specify:",
               "type": "string",
-              "depend": { "id": "S2_G1_4.3.1", "value": ["4.3.1-21"] }
+              "depend": {
+                "id": "S2_G1_4.3.1",
+                "value": [
+                  "4.3.1-21"
+                ]
+              }
             },
             "S2_G1_4.4.1": {
               "title": "4.4.1. Monitoring and Analysis. You have chosen monitoring and analysis as the type of initiatives. What did the initiative specifically involve? (Please tick ALL that apply):",
               "type": "array",
-              "depend": { "id": "S2_G1_4", "value": ["4-3"] },
+              "depend": {
+                "id": "S2_G1_4",
+                "value": [
+                  "4-3"
+                ]
+              },
               "items": {
                 "enum": [
                   "4.4.1-0",
@@ -254,29 +337,52 @@
             "S2_G1_4.4.2": {
               "title": "4.4.2. If you selected \"Other\", please specify:",
               "type": "string",
-              "depend": { "id": "S2_G1_4.4.1", "value": ["4.4.1-9"] }
+              "depend": {
+                "id": "S2_G1_4.4.1",
+                "value": [
+                  "4.4.1-9"
+                ]
+              }
             },
             "S2_G1_4.4.3": {
               "title": "4.4.3. For monitoring, which programme/protocol did you use? Please, indicate the name of the programme/protocol (e.g. OSPAR, CSIRO, NOAA, Beach watch, EU-MSFD, Ocean Conservancy...etc.) and if different programmes/protocols were used to monitor near ocean surfaces, water column, seafloor, shoreline, Biota, air monitoring.",
               "type": "string",
-              "depend": { "id": "S2_G1_4", "value": ["4-3"] }
+              "depend": {
+                "id": "S2_G1_4",
+                "value": [
+                  "4-3"
+                ]
+              }
             },
             "S2_G1_4.4.4": {
               "title": "4.4.4. How can the data and information from your monitoring programme be accessed? (If the monitoring data is available on request, please provide information on how to access the data)",
               "type": "string",
-              "depend": { "id": "S2_G1_4", "value": ["4-3"] }
+              "depend": {
+                "id": "S2_G1_4",
+                "value": [
+                  "4-3"
+                ]
+              }
             },
             "S2_G1_4.4.5": {
               "title": "4.4.5. Please provide the URL's for any links to the monitoring data and information.",
               "type": "string",
-              "depend": { "id": "S2_G1_4", "value": ["4-3"] }
+              "depend": {
+                "id": "S2_G1_4",
+                "value": [
+                  "4-3"
+                ]
+              }
             }
           }
         },
         "S2_G2": {
           "title": "G2. Reporting and Measuring Progress",
           "type": "object",
-          "depend": { "id": "steps", "value": 1 },
+          "depend": {
+            "id": "steps",
+            "value": 1
+          },
           "required": [
             "S2_G2_5",
             "S2_G2_6",
@@ -294,7 +400,15 @@
             "S2_G2_5": {
               "title": "5. Do you report and measure the initiative progress?",
               "type": "string",
-              "enum": ["5-0", "5-1", "5-2", "5-3", "5-4", "5-5", "5-6"],
+              "enum": [
+                "5-0",
+                "5-1",
+                "5-2",
+                "5-3",
+                "5-4",
+                "5-5",
+                "5-6"
+              ],
               "enumNames": [
                 "Yes, reporting is voluntary",
                 "Yes, it is a requirement",
@@ -308,14 +422,31 @@
             "S2_G2_6": {
               "title": "6. If you selected \"Other\", please specify.",
               "type": "string",
-              "depend": { "id": "S2_G2_5", "value": ["5-6"] }
+              "depend": {
+                "id": "S2_G2_5",
+                "value": [
+                  "5-6"
+                ]
+              }
             },
             "S2_G2_7": {
               "title": "7. If yes, who do you report to? (Please tick ALL that apply):",
               "type": "array",
-              "depend": { "id": "S2_G2_5", "value": ["5-0", "5-1"] },
+              "depend": {
+                "id": "S2_G2_5",
+                "value": [
+                  "5-0",
+                  "5-1"
+                ]
+              },
               "items": {
-                "enum": ["7-0", "7-1", "7-2", "7-3", "7-4"],
+                "enum": [
+                  "7-0",
+                  "7-1",
+                  "7-2",
+                  "7-3",
+                  "7-4"
+                ],
                 "enumNames": [
                   "Global Sustainable Development Goals (SDGs)",
                   "Regional Sustainable Development Goals (SDGs)",
@@ -329,25 +460,49 @@
             "S2_G2_7.1.0": {
               "title": "7.1. Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):",
               "type": "array",
-              "depend": { "id": "S2_G2_7", "value": ["7-0"] },
+              "depend": {
+                "id": "S2_G2_7",
+                "value": [
+                  "7-0"
+                ]
+              },
               "items": {
-                "enum": ["7.1-0"],
-                "enumNames": ["[Pop up a full list of SDGs]"]
+                "enum": [
+                  "7.1-0"
+                ],
+                "enumNames": [
+                  "[Pop up a full list of SDGs]"
+                ]
               },
               "uniqueItems": true
             },
             "S2_G2_7.1.1": {
               "$ref": "#/properties/S2/properties/S2_G2/properties/S2_G2_7.1.0",
-              "depend": { "id": "S2_G2_7", "value": ["7-1"] }
+              "depend": {
+                "id": "S2_G2_7",
+                "value": [
+                  "7-1"
+                ]
+              }
             },
             "S2_G2_7.1.2": {
               "$ref": "#/properties/S2/properties/S2_G2/properties/S2_G2_7.1.0",
-              "depend": { "id": "S2_G2_7", "value": ["7-2"] }
+              "depend": {
+                "id": "S2_G2_7",
+                "value": [
+                  "7-2"
+                ]
+              }
             },
             "S2_G2_7.2": {
               "title": "7.2. Which Multilateral Environmental Agreements (MEAs) does your initiative apply to? (Please tick ALL that apply):",
               "type": "array",
-              "depend": { "id": "S2_G2_7", "value": ["7-3"] },
+              "depend": {
+                "id": "S2_G2_7",
+                "value": [
+                  "7-3"
+                ]
+              },
               "items": {
                 "enum": [
                   "Aarhus Convention",
@@ -451,23 +606,46 @@
             "S2_G2_7.3": {
               "title": "7.3. If you selected \"Other\", please specify.",
               "type": "string",
-              "depend": { "id": "S2_G2_7", "value": ["7-4"] }
+              "depend": {
+                "id": "S2_G2_7",
+                "value": [
+                  "7-4"
+                ]
+              }
             },
             "S2_G2_8": {
               "title": "8. Are the actual outcomes and impacts of the initiative evaluated?",
               "type": "string",
-              "enum": ["8-0", "8-1", "8-2"],
-              "enumNames": ["Yes", "No", "Other"]
+              "enum": [
+                "8-0",
+                "8-1",
+                "8-2"
+              ],
+              "enumNames": [
+                "Yes",
+                "No",
+                "Other"
+              ]
             },
             "S2_G2_9": {
               "title": "9. If you selected \"Other\", please specify.",
               "type": "string",
-              "depend": { "id": "S2_G2_8", "value": ["8-2"] }
+              "depend": {
+                "id": "S2_G2_8",
+                "value": [
+                  "8-2"
+                ]
+              }
             },
             "S2_G2_10": {
               "title": "10. When do you expect the impact of the initiative to be evident?",
               "type": "string",
-              "enum": ["10-0", "10-1", "10-2", "10-3"],
+              "enum": [
+                "10-0",
+                "10-1",
+                "10-2",
+                "10-3"
+              ],
               "enumNames": [
                 "Immediately (less than 1 year)",
                 "In 1 to 3 years",
@@ -513,8 +691,14 @@
         "S2_G3": {
           "title": "G3. Drivers and Barriers",
           "type": "object",
-          "depend": { "id": "steps", "value": 2 },
-          "required": ["S2_G3_14", "S2_G3_15"],
+          "depend": {
+            "id": "steps",
+            "value": 2
+          },
+          "required": [
+            "S2_G3_14",
+            "S2_G3_15"
+          ],
           "properties": {
             "S2_G3_14": {
               "title": "14. Please, indicate which DRIVERS apply to this initiative? (Please tick ALL that apply).",
@@ -623,12 +807,20 @@
     "S3": {
       "title": "SECTION 3: INITIATIVE DETAILS",
       "type": "object",
-      "depend": { "id": "tabs", "value": ["S3"] },
+      "depend": {
+        "id": "tabs",
+        "value": [
+          "S3"
+        ]
+      },
       "properties": {
         "S3_G1": {
           "title": "G1. Part 1: Entities Involved",
           "type": "object",
-          "depend": { "id": "steps", "value": 0 },
+          "depend": {
+            "id": "steps",
+            "value": 0
+          },
           "required": [
             "S3_G1_16",
             "S3_G1_17",
@@ -647,7 +839,12 @@
             "S3_G1_17": {
               "title": "17. If you selected \"Other\", please specify.",
               "type": "string",
-              "depend": { "id": "S3_G1_16", "value": [-1] }
+              "depend": {
+                "id": "S3_G1_16",
+                "value": [
+                  -1
+                ]
+              }
             },
             "S3_G1_18": {
               "title": "18. Are you working with Partners to implement the initiative? (Please indicate the name of the Partner Entities involved).",
@@ -658,7 +855,12 @@
             "S3_G1_19": {
               "title": "19. If you selected \"Other\", please specify.",
               "type": "string",
-              "depend": { "id": "S3_G1_18", "value": [-1] }
+              "depend": {
+                "id": "S3_G1_18",
+                "value": [
+                  -1
+                ]
+              }
             },
             "S3_G1_20": {
               "title": "20. Do you have Donors funding the Initiative? (Please indicate the name of the Donor Entities).",
@@ -669,14 +871,22 @@
             "S3_G1_21": {
               "title": "21. If you selected \"Other\", please specify.",
               "type": "string",
-              "depend": { "id": "S3_G1_20", "value": [-1] }
+              "depend": {
+                "id": "S3_G1_20",
+                "value": [
+                  -1
+                ]
+              }
             }
           }
         },
         "S3_G2": {
           "title": "G2. Part 2: Location & Coverage",
           "type": "object",
-          "depend": { "id": "steps", "value": 1 },
+          "depend": {
+            "id": "steps",
+            "value": 1
+          },
           "required": [
             "S3_G2_22",
             "S3_G2_23",
@@ -688,12 +898,19 @@
             "S3_G2_24.5"
           ],
           "properties": {
-            "S3_G2_22": { "title": "22. City", "type": "string" },
+            "S3_G2_22": {
+              "title": "22. City",
+              "type": "string"
+            },
             "S3_G2_23": {
               "title": "23. Country",
               "type": "string",
-              "enum": ["23-0"],
-              "enumNames": ["List of country"]
+              "enum": [
+                "23-0"
+              ],
+              "enumNames": [
+                "List of country"
+              ]
             },
             "S3_G2_24": {
               "title": "24. Geo coverage type",
@@ -710,7 +927,12 @@
             "S3_G2_24.1": {
               "title": "24.1. Geo Coverage",
               "type": "string",
-              "depend": { "id": "S3_G2_24", "value": ["regional"] },
+              "depend": {
+                "id": "S3_G2_24",
+                "value": [
+                  "regional"
+                ]
+              },
               "enum": [
                 "Africa",
                 "Asia and the Pacific",
@@ -724,19 +946,34 @@
             "S3_G2_24.2": {
               "title": "24.1. Geo Coverage",
               "type": "string",
-              "depend": { "id": "S3_G2_24", "value": ["national"] },
+              "depend": {
+                "id": "S3_G2_24",
+                "value": [
+                  "national"
+                ]
+              },
               "enum": [],
               "enumNames": []
             },
             "S3_G2_24.3": {
               "title": "24.1. Geo Coverage",
               "type": "string",
-              "depend": { "id": "S3_G2_24", "value": ["sub-national"] }
+              "depend": {
+                "id": "S3_G2_24",
+                "value": [
+                  "sub-national"
+                ]
+              }
             },
             "S3_G2_24.4": {
               "title": "24.1. Geo Coverage",
               "type": "string",
-              "depend": { "id": "S3_G2_24", "value": ["transnational"] },
+              "depend": {
+                "id": "S3_G2_24",
+                "value": [
+                  "transnational"
+                ]
+              },
               "enum": [],
               "enumNames": []
             },
@@ -745,7 +982,9 @@
               "type": "string",
               "depend": {
                 "id": "S3_G2_24",
-                "value": ["global with elements in specific areas"]
+                "value": [
+                  "global with elements in specific areas"
+                ]
               },
               "enum": [
                 "Aarhus Convention",
@@ -849,7 +1088,10 @@
         "S3_G3": {
           "title": "G3. Part 3: Initiative Scope & Target",
           "type": "object",
-          "depend": { "id": "steps", "value": 2 },
+          "depend": {
+            "id": "steps",
+            "value": 2
+          },
           "required": [
             "S3_G3_26",
             "S3_G3_27",
@@ -890,7 +1132,12 @@
             "S3_G3_27": {
               "title": "27. If you selected \"Other\", please specify.",
               "type": "string",
-              "depend": { "id": "S3_G3_26", "value": ["26-7"] }
+              "depend": {
+                "id": "S3_G3_26",
+                "value": [
+                  "26-7"
+                ]
+              }
             },
             "S3_G3_28": {
               "title": "28. Impact. What impacts or harms does the initiative relate to? (Please tick ALL that apply).",
@@ -924,7 +1171,12 @@
             "S3_G3_29": {
               "title": "29. If you selected \"Other\", please specify.",
               "type": "string",
-              "depend": { "id": "S3_G3_28", "value": ["28-8"] }
+              "depend": {
+                "id": "S3_G3_28",
+                "value": [
+                  "28-8"
+                ]
+              }
             },
             "S3_G3_30": {
               "title": "30. Sector. Does your initiative target a specific sector? (Please tick ALL that apply).",
@@ -976,7 +1228,12 @@
             "S3_G3_31": {
               "title": "31. If you selected \"Other\", please specify.",
               "type": "string",
-              "depend": { "id": "S3_G3_30", "value": ["30-17"] }
+              "depend": {
+                "id": "S3_G3_30",
+                "value": [
+                  "30-17"
+                ]
+              }
             },
             "S3_G3_32": {
               "title": "32. Tags. Choose the Tags applicable to your initiative targeting. (Please select ALL that apply).",
@@ -1054,8 +1311,14 @@
         "S3_G4": {
           "title": "G4. Part 4: Total Stakeholders Engaged",
           "type": "object",
-          "depend": { "id": "steps", "value": 3 },
-          "required": ["S3_G4_33", "S3_G4_34"],
+          "depend": {
+            "id": "steps",
+            "value": 3
+          },
+          "required": [
+            "S3_G4_33",
+            "S3_G4_34"
+          ],
           "properties": {
             "S3_G4_33": {
               "title": "33. How many different groups and organisations (e.g.20 retailers, 150 schools) have you engaged with in total? (Please estimate)",
@@ -1070,7 +1333,10 @@
         "S3_G5": {
           "title": "G5. Part 5: Funding",
           "type": "object",
-          "depend": { "id": "steps", "value": 4 },
+          "depend": {
+            "id": "steps",
+            "value": 4
+          },
           "required": [
             "S3_G5_35",
             "S3_G5_36",
@@ -1128,13 +1394,26 @@
         "S3_G6": {
           "title": "G6. Part 6: Duration",
           "type": "object",
-          "depend": { "id": "steps", "value": 5 },
-          "required": ["S3_G6_38", "S3_G6_39"],
+          "depend": {
+            "id": "steps",
+            "value": 5
+          },
+          "required": [
+            "S3_G6_38",
+            "S3_G6_39"
+          ],
           "properties": {
             "S3_G6_38": {
               "title": "38. Is your initiative a one-off activity or ongoing?",
               "type": "string",
-              "enum": ["38-0", "38-1", "38-2", "38-3", "38-4", "38-5"],
+              "enum": [
+                "38-0",
+                "38-1",
+                "38-2",
+                "38-3",
+                "38-4",
+                "38-5"
+              ],
               "enumNames": [
                 "Single event",
                 "Ongoing activity less than one year",
@@ -1147,26 +1426,46 @@
             "S3_G6_39": {
               "title": "39. If you selected \"Other\", please specify.",
               "type": "string",
-              "depend": { "id": "S3_G6_38", "value": ["38-5"] }
+              "depend": {
+                "id": "S3_G6_38",
+                "value": [
+                  "38-5"
+                ]
+              }
             }
           }
         },
         "S3_G7": {
           "title": "G7. Part 5: Related Resources and Contact",
           "type": "object",
-          "depend": { "id": "steps", "value": 6 },
-          "required": ["S3_G7_41.1"],
+          "depend": {
+            "id": "steps",
+            "value": 6
+          },
+          "required": [
+            "S3_G7_41.1"
+          ],
           "properties": {
             "S3_G7_40": {
               "title": "40. Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc. Please copy and paste one link per box provided.",
               "type": "array",
-              "items": { "type": "string", "string": true },
+              "items": {
+                "type": "string",
+                "string": true
+              },
               "add": "Add Link"
             },
             "S3_G7_41": {
               "title": "41. Where can users best contact you to learn more?",
               "type": "string",
-              "enum": ["41-0", "41-1", "41-2", "41-3", "41-4", "41-5"],
+              "enum": [
+                "41-0",
+                "41-1",
+                "41-2",
+                "41-3",
+                "41-4",
+                "41-5"
+              ],
               "enumNames": [
                 "Email",
                 "LinkedIn",
@@ -1182,7 +1481,14 @@
               "string": true,
               "depend": {
                 "id": "S3_G7_41",
-                "value": ["41-0", "41-1", "41-2", "41-3", "41-4", "41-5"]
+                "value": [
+                  "41-0",
+                  "41-1",
+                  "41-2",
+                  "41-3",
+                  "41-4",
+                  "41-5"
+                ]
               }
             }
           }
