@@ -84,7 +84,7 @@ export const schema = {
         id: "tabs",
         value: ["S1"],
       },
-      required: ["S1_1", "S1_1.1"],
+      required: ["S1_1", "S1_G1_1.1"],
       properties: {
         S1_1: {
           title:
@@ -93,13 +93,13 @@ export const schema = {
           dependencies: [
             {
               value: ["1-1"],
-              questions: ["S1_1.1"],
+              questions: ["S1_G1_1.1"],
             },
           ],
           enum: ["1-0", "1-1"],
           enumNames: ["As an individual", "On behalf of an entity"],
         },
-        "S1_1.1": {
+        "S1_G1_1.1": {
           title: "1.1. Please select the Entity",
           type: "string",
           depend: {
