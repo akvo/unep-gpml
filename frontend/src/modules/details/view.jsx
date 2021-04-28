@@ -386,19 +386,22 @@ const renderDescription = (params, data) => {
   );
 };
 
-const DetailsView = ({ match: { params }, ...props }) => {
-  const { profile, countries } = UIStore.currentState;
-  const { setSignupModalVisible } = props;
+UIStore.update((e) => {
+  e.disclaimer = null;
+});
+
+const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
+  const { profile, countries, loading } = UIStore.currentState;
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
   const relation = relations.find(
     (it) =>
       it.topicId === parseInt(params.id) &&
       it.topic === resourceTypeToTopicType(params.type)
   );
+
   const allowBookmark =
     params.type !== "stakeholder" || profile.id !== params.id;
 
@@ -411,18 +414,12 @@ const DetailsView = ({ match: { params }, ...props }) => {
         };
 
   useEffect(() => {
-    Object.keys(profile).length > 0 &&
-      loading &&
+    !loading &&
+      params?.type &&
+      params?.id &&
       api.get(`/detail/${params.type}/${params.id}`).then((d) => {
         setData(d.data);
-        setLoading(false);
       });
-  }, [params, profile, loading]);
-
-  useEffect(() => {
-    UIStore.update((e) => {
-      e.disclaimer = null;
-    });
     if (profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
         api.get("/favorite").then((resp) => {
@@ -430,7 +427,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
         });
       }, 100);
     }
-  }, [profile]);
+  }, [params, loading, profile]);
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {

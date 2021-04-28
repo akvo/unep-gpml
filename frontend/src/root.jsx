@@ -97,6 +97,9 @@ const Root = () => {
   useEffect(() => {
     api.get("/landing").then((resp) => {
       setData(resp.data);
+      UIStore.update((e) => {
+        e.loading = false;
+      });
     });
     (async function fetchData() {
       const response = await getIdTokenClaims();
