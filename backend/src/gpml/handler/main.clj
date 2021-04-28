@@ -45,8 +45,10 @@
                              exception/default-handlers
                              {;; print stack-traces for all exceptions
                               ::exception/wrap (fn [handler e request]
-                                                 (timbre/error e)
-                                                 (handler e request))}))
+                                                 (let [response (handler e request)]
+                                                   (when (>= (:status response 500) 500)
+                                                     (timbre/error e))
+                                                   response))}))
                          ;; decoding request body
                          muuntaja/format-request-middleware
                          ;; coercing response bodys
