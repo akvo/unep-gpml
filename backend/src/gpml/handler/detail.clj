@@ -2,6 +2,7 @@
   (:require [gpml.constants :as constants]
             [gpml.db.detail :as db.detail]
             [gpml.db.project :as db.project]
+            [gpml.db.initiative :as db.initiative]
             [integrant.core :as ig]
             [medley.core :as medley]
             [ring.util.response :as resp]
@@ -243,7 +244,9 @@
 (defmulti extra-details (fn [topic-type _ _] topic-type) :default :nothing)
 
 (defmethod extra-details "project" [_ db project]
-  (details-for-project db project))
+  (if (> (:id project) 10000)
+    (db.initiative/initiative-detail-by-id db project)
+    (details-for-project db project)))
 
 (defmethod extra-details "policy" [_ db policy]
   (when-let [implementing-mea (:implementing_mea policy)]
