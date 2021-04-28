@@ -143,6 +143,30 @@
     }
   }
 
+  .ant-steps-item-finish {
+    .ant-steps-item-container {
+      .ant-steps-item-content {
+        .ant-steps-item-title {
+          font-weight: bold;
+          color: #29b696;
+        }
+      }
+      .ant-steps-item-icon {
+        background-color: #fff;
+        border-color: #398fff;
+        .ant-steps-icon {
+          color: #398fff;
+        }
+      }
+    }
+  }
+
+  .ant-steps-item-process
+    > .ant-steps-item-container
+    > .ant-steps-item-tail::after {
+    background-color: #398fff;
+  }
+
   .ant-steps-item.ant-steps-item-process.step-section {
     .ant-steps-item-container {
       .ant-steps-item-content {

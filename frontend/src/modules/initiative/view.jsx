@@ -102,7 +102,6 @@ const tabsData = [
 export const initiativeData = new Store({
   data: {
     tabs: ["S1"],
-    steps: tabsData[0].steps,
     required: {
       S1: [],
       S2: [],
