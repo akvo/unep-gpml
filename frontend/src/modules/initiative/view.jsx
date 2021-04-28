@@ -366,6 +366,7 @@ const AddInitiative = ({ ...props }) => {
             >
               {tabsData.map(({ key, title, desc, steps }) => (
                 <Steps
+                  key={`steps-section-${key}`}
                   direction="vertical"
                   size="small"
                   current={data[key]?.steps}
