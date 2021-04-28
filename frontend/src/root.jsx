@@ -326,31 +326,31 @@ const AddButton = withRouter(
           <Dropdown
             overlay={
               <Menu className="add-dropdown">
-                <Menu.Item onClick={() => history.push("/add-event")}>
-                  Event
+                <Menu.Item onClick={() => history.push("/add-initiative")}>
+                  Initiative
                 </Menu.Item>
-                {/* <Menu.Item onClick={() => history.push("/add-action-plan")}>
+                <Menu.Item onClick={() => history.push("/add-action-plan")}>
                   Action Plan
                 </Menu.Item>
-                <Menu.Item
-                  onClick={() => history.push("/add-financing-resource")}
-                >
-                  Financing Resource
+                <Menu.Item onClick={() => history.push("/add-policy")}>
+                  Policy
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => history.push("/add-technical-resource")}
                 >
                   Technical Resource
                 </Menu.Item>
-                <Menu.Item onClick={() => history.push("/add-initiative")}>
-                  Initiative
+                <Menu.Item
+                  onClick={() => history.push("/add-financing-resource")}
+                >
+                  Financing Resource
+                </Menu.Item>
+                <Menu.Item onClick={() => history.push("/add-event")}>
+                  Event
                 </Menu.Item>
                 <Menu.Item onClick={() => history.push("/add-technology")}>
                   Technology
                 </Menu.Item>
-                <Menu.Item onClick={() => history.push("/add-policy")}>
-                  Policy
-                </Menu.Item> */}
               </Menu>
             }
             trigger={["click"]}
