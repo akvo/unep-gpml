@@ -266,7 +266,7 @@ const renderTypeOfActions = (params, data) => {
   const keys = typeOfActionKeys.map((x) => x.key);
   const keyAvailable = keys.map((x) => some(data, x)).includes(true);
 
-  if (!keyAvailable || params.type !== "project") {
+  if (params.type !== "project") {
     return;
   }
 
