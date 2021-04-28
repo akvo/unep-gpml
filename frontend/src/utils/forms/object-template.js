@@ -112,7 +112,14 @@ const ObjectFieldTemplate = ({
       results = results.map((item) => item.questions);
       results = results.flat(1);
       results.forEach((key) => {
-        formData?.[key] && delete formData?.[key];
+        const type = schema.properties?.[element.name]?.type;
+        // for options value
+        type === "string" &&
+          Array.isArray(formData?.[key]) &&
+          formData?.[key].length === 0 &&
+          delete formData?.[key];
+        // for checkbox
+        type === "array" && formData?.[key] && delete formData?.[key];
       });
     }
 
