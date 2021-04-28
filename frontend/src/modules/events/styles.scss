@@ -6,6 +6,8 @@
   min-height: calc(100vh - 145px);
   background: url(../../images/Event-gpml.jpg) no-repeat center;
   background-size: cover;
+  background-position-y: top;
+
   & > .ui.container > .ant-row {
     & > .ant-col:first-child {
       * {
@@ -13,50 +15,65 @@
       }
     }
   }
+
   .ant-card {
     border-radius: 6px;
+
     input,
     textarea {
       background-color: #edf2f6;
+
       // border-color: #edf2f6;
       border-radius: 4px;
     }
+
     .ant-picker,
     .ant-select,
     .ant-select-selector {
       background-color: #edf2f6;
+
       // border-color: #edf2f6;
     }
+
     .ant-select-selector {
       background-color: #edf2f6;
     }
+
     .ant-input-group-addon {
       background-color: $primaryColor;
       border-color: $primaryColor;
       color: #fff;
     }
+
     .ant-picker {
       width: 100%;
+
       input {
         text-align: center;
       }
     }
+
     .array-item {
       border: 1px solid #ccc;
       border-radius: 3px;
       padding: 15px 15px 0;
+
       &:not(:first-child) {
         margin-top: 10px;
       }
+
       display: flex;
+
       & > div:first-child {
         flex: 1;
       }
+
       & > div:last-child {
         width: 200px;
         margin-left: 10px;
       }
     }
+
     .array-btns {
       margin-bottom: 20px;
       margin-top: 10px;

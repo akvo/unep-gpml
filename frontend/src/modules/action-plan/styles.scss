@@ -6,6 +6,8 @@
   min-height: calc(100vh - 145px);
   background: url(../../images/Resource-gpml.jpg) no-repeat center;
   background-size: cover;
+  background-position-y: top;
+
   & > .ui.container > .ant-row {
     & > .ant-col:first-child {
       * {
@@ -13,77 +15,98 @@
       }
     }
   }
+
   .form-info-wrapper {
     margin-bottom: 40px;
     background-color: #046799;
     padding: 15px 0;
+
     .ui.container {
       color: #fff;
     }
+
     .form-title {
       display: grid;
+
       .subtitle {
         color: #22ba9a;
         text-transform: uppercase;
         font-size: 14px;
       }
+
       .title {
         font-size: 20px;
         font-weight: 500;
       }
     }
+
     .form-meta {
       margin-top: 6px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       .highlight {
         font-weight: 500;
       }
     }
   }
+
   .ant-card {
     .ant-card-body {
       padding: 16px 24px 24px;
     }
+
     border-radius: 6px;
+
     input,
     textarea {
       background-color: #edf2f6;
+
       // border-color: #edf2f6;
       border-radius: 4px;
     }
+
     .ant-picker,
     .ant-select,
     .ant-select-selector {
       background-color: #edf2f6;
+
       // border-color: #edf2f6;
     }
+
     .ant-select-selector {
       background-color: #edf2f6;
     }
+
     .ant-input-group-addon {
       background-color: $primaryColor;
       border-color: $primaryColor;
       color: #fff;
     }
+
     .ant-picker {
       width: 100%;
+
       input {
         text-align: center;
       }
     }
+
     .form-group {
       margin-bottom: 0 !important;
     }
+
     .ant-form-item {
       margin-bottom: 0;
     }
+
     .ant-form-item-label {
       padding: 0;
       font-weight: 500;
       margin-top: 10px;
     }
+
     .group-border {
       margin-top: 15px;
       border: 1px solid #ccc;
@@ -92,35 +115,44 @@
       margin-left: 0px !important;
       margin-right: 0px !important;
     }
+
     .array-item {
       border: 1px solid #ccc;
       border-radius: 3px;
       padding: 15px 15px 0;
+
       &:not(:first-child) {
         margin-top: 10px;
       }
+
       display: flex;
+
       & > div:first-child {
         flex: 1;
       }
+
       & > div:last-child {
         width: 200px;
         margin-left: 10px;
       }
+
       .ant-col {
         .ml-2 {
           margin-left: 10px;
         }
       }
     }
+
     .mb-4 {
       margin-bottom: 20px;
     }
+
     .array-btns {
       margin-bottom: 20px;
       margin-top: 10px;
     }
   }
+
   .ant-btn-primary {
     // margin-top: 20px;
     text-transform: uppercase;
