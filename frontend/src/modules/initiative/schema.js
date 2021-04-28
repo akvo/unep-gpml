@@ -885,6 +885,28 @@ export const schema = {
             S3_G2_24: {
               title: "24. Geo coverage type",
               type: "string",
+              dependencies: [
+                {
+                  value: ["regional"],
+                  questions: ["S3_G2_24.1"],
+                },
+                {
+                  value: ["national"],
+                  questions: ["S3_G2_24.2"],
+                },
+                {
+                  value: ["sub-national"],
+                  questions: ["S3_G2_24.3"],
+                },
+                {
+                  value: ["transnational"],
+                  questions: ["S3_G2_24.4"],
+                },
+                {
+                  value: ["global with elements in specific areas"],
+                  questions: ["S3_G2_24.5"],
+                },
+              ],
               enum: geoCoverageTypeOptions,
               enumNames: geoCoverageTypeOptions,
             },
