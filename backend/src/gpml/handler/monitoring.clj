@@ -10,34 +10,33 @@
             [hugsql.adapter :as adapter]
             [taoensso.timbre :as timbre]
             [taoensso.timbre.appenders.3rd-party.sentry :as sentry])
-  (:import (com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory)
-           (org.eclipse.jetty.server.handler StatisticsHandler)
-           (io.prometheus.client.jetty JettyStatisticsCollector QueuedThreadPoolStatisticsCollector)))
+  (:import [com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory]
+           [org.eclipse.jetty.server.handler StatisticsHandler]
+           [io.prometheus.client.jetty JettyStatisticsCollector QueuedThreadPoolStatisticsCollector]))
 
 
 (defmethod ig/init-key ::collector [_ _]
   (->
-    (prometheus/collector-registry)
-    (jvm/initialize)
-    (ring/initialize)
-    (iapetos.core/register
-      (iapetos.core/histogram
-        :sql/run-duration
-        {:description "SQL query duration"
-         :labels [:query]})
-      (iapetos.core/counter
-        :sql/run-total
-        {:description "the total number of finished runs of the observed sql query."
-         :labels [:query :result]})
-      (iapetos.collector.exceptions/exception-counter
-        :sql/exceptions-total
-        {:description "the total number and type of exceptions for the observed sql query."
-         :labels [:query]}))
-    ))
+   (prometheus/collector-registry)
+   (jvm/initialize)
+   (ring/initialize)
+   (iapetos.core/register
+    (iapetos.core/histogram
+     :sql/run-duration
+     {:description "SQL query duration"
+      :labels [:query]})
+    (iapetos.core/counter
+     :sql/run-total
+     {:description "the total number of finished runs of the observed sql query."
+      :labels [:query :result]})
+    (iapetos.collector.exceptions/exception-counter
+     :sql/exceptions-total
+     {:description "the total number and type of exceptions for the observed sql query."
+      :labels [:query]}))))
 
 (defmethod ig/init-key ::middleware [_ {:keys [collector]}]
   #(-> %
-     (ring/wrap-metrics collector)))
+       (ring/wrap-metrics collector)))
 
 (defmacro metrics
   [metrics-collector options & body]
@@ -56,11 +55,11 @@
   adapter/HugsqlAdapter
   (execute [_ db sqlvec options]
     (metrics metrics-collector options
-      (adapter/execute jdbc-adapter db sqlvec options)))
+             (adapter/execute jdbc-adapter db sqlvec options)))
 
   (query [_ db sqlvec options]
     (metrics metrics-collector options
-      (adapter/query jdbc-adapter db sqlvec options)))
+             (adapter/query jdbc-adapter db sqlvec options)))
 
   (result-one [_ result options]
     (adapter/result-one jdbc-adapter result options))
@@ -80,23 +79,21 @@
 (defmethod ig/init-key ::hikaricp
   [_ {:keys [hikari-cp metrics-collector]}]
   (-> hikari-cp
-    :spec
-    :datasource
-    (.unwrap javax.sql.DataSource)
-    (.setMetricsTrackerFactory
-      (PrometheusMetricsTrackerFactory. (registry/raw metrics-collector))))
-
+      :spec
+      :datasource
+      (.unwrap javax.sql.DataSource)
+      (.setMetricsTrackerFactory
+       (PrometheusMetricsTrackerFactory. (registry/raw metrics-collector))))
   (hugsql/set-adapter!
-    (MetricsAdapter.
-      metrics-collector
-      (adp/hugsql-adapter-clojure-java-jdbc)))
-
+   (MetricsAdapter.
+    metrics-collector
+    (adp/hugsql-adapter-clojure-java-jdbc)))
   hikari-cp)
 
 (defn configure-stats [jetty-server collector]
   (let [raw-collector (registry/raw collector)
         stats-handler (doto
-                        (StatisticsHandler.)
+                          (StatisticsHandler.)
                         (.setHandler (.getHandler jetty-server)))]
     (.setHandler jetty-server stats-handler)
     (.register (JettyStatisticsCollector. stats-handler) raw-collector)
@@ -110,14 +107,13 @@
   (assert dsn)
   (timbre/handle-uncaught-jvm-exceptions!)
   (-> (sentry/sentry-appender dsn
-        {:environment env
-         :release version
-         :event-fn (fn [event]
-                     (assoc event :server_name host))})
-    (assoc :min-level :error)
-    ))
+                              {:environment env
+                               :release version
+                               :event-fn (fn [event]
+                                           (assoc event :server_name host))})
+      (assoc :min-level :error)))
 
 (comment
 
   (println
-    (slurp "http://localhost:3000/metrics")))
+   (slurp "http://localhost:3000/metrics")))
