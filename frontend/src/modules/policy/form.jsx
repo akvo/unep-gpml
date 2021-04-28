@@ -127,12 +127,15 @@ const AddPolicyForm = ({
     );
     setDependValue(dependFields);
     // enable btn submit
-    if (
-      checkRequiredFieldFilledIn(formData, dependFields, requiredFields)
-        .length === 0
-    ) {
+    const requiredFilledIn = checkRequiredFieldFilledIn(
+      formData,
+      dependFields,
+      requiredFields
+    );
+    requiredFilledIn.length === 0 &&
       setDisabledBtn({ disabled: false, type: "primary" });
-    }
+    requiredFilledIn.length !== 0 &&
+      setDisabledBtn({ disabled: true, type: "default" });
   };
 
   const handleTransformErrors = (errors, dependValue) => {
