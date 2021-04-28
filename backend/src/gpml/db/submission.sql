@@ -12,7 +12,7 @@ submission AS (
     SELECT id, 'technology' as type, name as title, created_by, created
     FROM technology where review_status = 'SUBMITTED'
     UNION
-    SELECT id, 'policy' as type, original_title as title, created_by, created
+    SELECT id, 'policy' as type, title as title, created_by, created
     FROM policy where review_status = 'SUBMITTED'
     UNION
     SELECT id, type, title, created_by, created
