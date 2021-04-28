@@ -388,6 +388,7 @@ const DetailsView = ({ match: { params }, ...props }) => {
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
   const relation = relations.find(
     (it) =>
       it.topicId === parseInt(params.id) &&
@@ -405,10 +406,13 @@ const DetailsView = ({ match: { params }, ...props }) => {
         };
 
   useEffect(() => {
-    api.get(`/detail/${params.type}/${params.id}`).then((d) => {
-      setData(d.data);
-    });
-  }, [params]);
+    Object.keys(profile).length > 0 &&
+      loading &&
+      api.get(`/detail/${params.type}/${params.id}`).then((d) => {
+        setData(d.data);
+        setLoading(false);
+      });
+  }, [params, profile, loading]);
 
   useEffect(() => {
     UIStore.update((e) => {
