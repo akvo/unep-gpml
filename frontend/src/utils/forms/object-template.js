@@ -104,22 +104,15 @@ const ObjectFieldTemplate = ({
         // string answer
         if (
           typeof formData?.[element.name] === "string" &&
-          !item.value.includes(formData?.[element.name])
+          !item.value.includes(formData?.[element.name].toLowerCase())
         ) {
           return item;
         }
       });
-      results = results.map((item) => item.questions);
-      results = results.flat(1);
-      results.forEach((key) => {
-        const type = schema.properties?.[element.name]?.type;
-        // for options value
-        type === "string" &&
-          Array.isArray(formData?.[key]) &&
-          formData?.[key].length === 0 &&
-          delete formData?.[key];
-        // for checkbox
-        type === "array" && formData?.[key] && delete formData?.[key];
+      let questions = results.map((item) => item.questions);
+      questions = questions.flat(1);
+      questions.forEach((key) => {
+        formData?.[key] && delete formData?.[key];
       });
     }
 
