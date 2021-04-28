@@ -30,6 +30,9 @@ import imageNotFound from "../../images/image-not-found.png";
 import logoNotFound from "../../images/logo-not-found.png";
 import uniqBy from "lodash/uniqBy";
 
+const currencyFormat = () =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "usd" });
+
 const renderItemValues = (params, mapping, data) => {
   const { profile, countries, languages } = UIStore.currentState;
   // check if no data
@@ -118,7 +121,9 @@ const renderItemValues = (params, mapping, data) => {
                   type === "email" &&
                   data?.publicEmail &&
                   data[key]}
-                {value === key && type === "currency" && "USD " + data[value]}
+                {value === key &&
+                  type === "currency" &&
+                  currencyFormat().format(data[value])}
                 {value === key && type === "link" && (
                   <a
                     target="_blank"
