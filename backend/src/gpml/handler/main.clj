@@ -61,8 +61,10 @@
                          coercion/coerce-request-middleware
 
                          (fn [handler]
-                           (prometheus-ring/wrap-instrumentation handler collector
-                             {:path-fn (fn [req] (:template (ring/get-match req)))}))]}}))
+                           (if collector
+                             (prometheus-ring/wrap-instrumentation handler collector
+                                                                   {:path-fn (fn [req] (:template (ring/get-match req)))})
+                             handler))]}}))
 
 (defmethod ig/init-key :gpml.handler.main/handler [_ {:keys [routes collector]}]
   (ring/ring-handler (router routes collector)
