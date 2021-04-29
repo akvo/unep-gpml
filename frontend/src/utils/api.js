@@ -28,6 +28,8 @@ const API = () => {
   return {
     get: (url, params, config = {}) =>
       axios({ url, ...getConfig(), ...config }),
+    getRaw: (url, params, config = {}) =>
+      axios({ url, ...getConfig(), ...config, transformResponse: [] }),
     post: (url, data, config = {}) =>
       axios({ url, method: "POST", data, ...getConfig(), ...config }),
     put: (url, data, config) =>
