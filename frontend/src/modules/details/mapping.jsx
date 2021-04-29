@@ -445,6 +445,18 @@ const detailStakeholder = [
     type: "name",
   },
   {
+    key: "seeking",
+    name: "Seeking",
+    value: "join",
+    type: "array",
+  },
+  {
+    key: "offering",
+    name: "Offering",
+    value: "join",
+    type: "array",
+  },
+  {
     key: "tags",
     name: "Tags",
     value: "join",

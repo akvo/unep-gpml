@@ -24,7 +24,6 @@ import {
   infoMaps,
   descriptionMaps,
 } from "./mapping";
-import values from "lodash/values";
 import moment from "moment";
 import imageNotFound from "../../images/image-not-found.png";
 import logoNotFound from "../../images/logo-not-found.png";
