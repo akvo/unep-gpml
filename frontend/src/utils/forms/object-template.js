@@ -8,6 +8,8 @@ import Col from "antd/lib/col";
 import Row from "antd/lib/row";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
 
+import { checkDependencyAnswer } from "../../utils/forms/index";
+
 const { canExpand } = utils;
 
 const DESCRIPTION_COL_STYLE = {
@@ -89,11 +91,9 @@ const ObjectFieldTemplate = ({
   // hide and show form when dependent
   const dependHidden = (element) => {
     // ## Remove value from formData
-    if (
-      formData?.[element.name] &&
-      schema.properties?.[element.name]?.dependencies
-    ) {
-      const { dependencies } = schema.properties?.[element.name];
+    const props = schema?.properties;
+    if (formData?.[element.name] && props?.[element.name]?.dependencies) {
+      const { dependencies } = props?.[element.name];
       let results = dependencies.filter((item) => {
         // array answer
         if (
@@ -109,8 +109,7 @@ const ObjectFieldTemplate = ({
           return item;
         }
       });
-      let questions = results.map((item) => item.questions);
-      questions = questions.flat(1);
+      let questions = results.map((item) => item.questions).flat(1);
       questions.forEach((key) => {
         formData?.[key] && delete formData?.[key];
       });
@@ -123,53 +122,32 @@ const ObjectFieldTemplate = ({
         delete formData?.[element.name];
     }
 
-    const deppend = findSchemaDepend(element);
-    if (deppend) {
-      let answer = formData[deppend.id];
-      answer = typeof answer === "string" ? answer.toLowerCase() : answer;
-      let dependValue = deppend.value;
-      if (Array.isArray(answer)) {
-        dependValue = intersection(dependValue, answer).length !== 0;
-      }
-      if (!Array.isArray(answer)) {
-        dependValue = Array.isArray(dependValue)
-          ? dependValue.includes(answer)
-          : dependValue === answer;
-      }
+    const dependentSchema = findSchemaDepend(element);
+    if (dependentSchema) {
+      let dependValue = checkDependencyAnswer(
+        formData[dependentSchema.id],
+        dependentSchema
+      );
       if (dependValue) {
         // ## TODO:: Need to check if depend id also depend to other question, then delete it from formData
-        let parentDepend = schema?.properties?.[deppend.id]?.depend;
-        if (parentDepend) {
-          let parentAnswer = formData[parentDepend.id];
-          parentAnswer =
-            typeof parentAnswer === "string"
-              ? parentAnswer.toLowerCase()
-              : parentAnswer;
-          let parentDependValue = parentDepend.value;
-          if (Array.isArray(parentAnswer)) {
-            parentDependValue =
-              intersection(parentDependValue, parentAnswer).length !== 0;
-          }
-          if (!Array.isArray(parentAnswer)) {
-            parentDependValue = Array.isArray(parentDependValue)
-              ? parentDependValue.includes(parentAnswer)
-              : parentDependValue === parentAnswer;
-          }
+        let parentDependentSchema = props?.[dependentSchema.id]?.depend;
+        if (parentDependentSchema) {
+          let parentDependValue = checkDependencyAnswer(
+            formData[parentDependentSchema.id],
+            parentDependentSchema
+          );
           if (!parentDependValue) {
             // ## Remove value from formData
             let childKey =
-              schema?.properties &&
-              Object.keys(schema.properties).filter((key) => {
-                // let value =
-                //   schema.properties?.[key] &&
-                //   schema.properties?.[key]?.depend?.value;
-                // if (intersection(value, deppend.value).length > 0) return key;
-                return schema.properties?.[key]?.depend?.id === deppend.id;
-              });
+              props &&
+              Object.keys(props).filter(
+                (key) => props?.[key]?.depend?.id === dependentSchema.id
+              );
             childKey.forEach((key) => {
               formData?.[key] && delete formData?.[key];
             });
-            formData?.[deppend.id] && delete formData?.[deppend.id];
+            formData?.[dependentSchema.id] &&
+              delete formData?.[dependentSchema.id];
             return { display: "none" };
           }
         }

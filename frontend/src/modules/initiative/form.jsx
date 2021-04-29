@@ -13,6 +13,7 @@ import {
   findCountryIsoCode,
   handleGeoCoverageValue,
   checkRequiredFieldFilledIn,
+  checkDependencyAnswer,
 } from "../../utils/forms";
 import intersection from "lodash/intersection";
 import difference from "lodash/difference";
@@ -21,19 +22,6 @@ import uiSchema from "./uiSchema.json";
 const Form = withTheme(AntDTheme);
 
 // # Refactor, still need to figure out how to make this as global function
-const checkAnswer = (dependValue, answer) => {
-  if (Array.isArray(answer)) {
-    dependValue = intersection(dependValue, answer).length !== 0;
-  }
-  if (!Array.isArray(answer)) {
-    answer = typeof answer === "string" ? answer.toLowerCase() : answer;
-    dependValue = Array.isArray(dependValue)
-      ? dependValue.includes(answer)
-      : dependValue === answer;
-  }
-  return !dependValue;
-};
-
 const collectDependSchemaRefactor = (
   tmp,
   formData,
@@ -53,9 +41,9 @@ const collectDependSchemaRefactor = (
     if (
       !index &&
       properties?.[key]?.depend &&
-      checkAnswer(
-        properties?.[key]?.depend.value,
-        formData?.[properties?.[key]?.depend.id]
+      !checkDependencyAnswer(
+        formData?.[properties?.[key]?.depend.id],
+        properties?.[key]?.depend
       )
     ) {
       tmp.push(`.${key}`);
@@ -64,9 +52,9 @@ const collectDependSchemaRefactor = (
       index &&
       !oldIndex &&
       properties?.[key]?.depend &&
-      checkAnswer(
-        properties?.[key]?.depend.value,
-        formData?.[index]?.[properties?.[key]?.depend.id]
+      !checkDependencyAnswer(
+        formData?.[index]?.[properties?.[key]?.depend.id],
+        properties?.[key]?.depend
       )
     ) {
       tmp.push(`.${index}.${key}`);
@@ -75,9 +63,9 @@ const collectDependSchemaRefactor = (
       index &&
       oldIndex &&
       properties?.[key]?.depend &&
-      checkAnswer(
-        properties?.[key]?.depend.value,
-        formData?.[oldIndex][index]?.[properties?.[key]?.depend.id]
+      !checkDependencyAnswer(
+        formData?.[oldIndex][index]?.[properties?.[key]?.depend.id],
+        properties?.[key]?.depend
       )
     ) {
       if (key.includes(".")) {
@@ -87,7 +75,7 @@ const collectDependSchemaRefactor = (
       }
     }
     if (properties?.[key]?.properties) {
-      collectDependSchemaRefactor(
+      !collectDependSchemaRefactor(
         tmp,
         formData,
         properties?.[key],
@@ -205,7 +193,7 @@ const AddInitiativeForm = ({
     // to overide validation
     let dependFields = [];
     let requiredFields = [];
-    // this function eliminate required key from list when that required form appear (show)
+    // this function eliminate required key from required list when that required form appear (show)
     collectDependSchemaRefactor(
       dependFields,
       formData,

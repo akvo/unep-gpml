@@ -4,7 +4,7 @@ import SelectWidget from "./form-select";
 import CheckboxesWidget from "./form-checkboxes";
 import RadioWidget from "./form-radio";
 import difference from "lodash/difference";
-import { ConsoleSqlOutlined } from "@ant-design/icons";
+import intersection from "lodash/intersection";
 
 const widgets = {
   Auth0Widget: Auth0Widget,
@@ -202,6 +202,20 @@ export const handleGeoCoverageValue = (data, currentValue, countries) => {
     data.geoCoverageValue = currentValue.geoCoverageValueSubNational;
 
   return data;
+};
+
+export const checkDependencyAnswer = (answer, dependentSchema) => {
+  answer = typeof answer === "string" ? answer.toLowerCase() : answer;
+  let dependValue = dependentSchema.value;
+  if (Array.isArray(answer)) {
+    dependValue = intersection(dependValue, answer).length !== 0;
+  }
+  if (!Array.isArray(answer)) {
+    dependValue = Array.isArray(dependValue)
+      ? dependValue.includes(answer)
+      : dependValue === answer;
+  }
+  return dependValue;
 };
 
 export default widgets;
