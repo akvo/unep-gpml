@@ -7,7 +7,7 @@ SELECT json
 
 -- :name get-stakeholder-tags :? :1
 -- :doc Get Stakehodler tags
-SELECT json_object_agg(category,INITCAP(tag)) AS data FROM (
+SELECT json_object_agg(category,tag) AS data FROM (
     SELECT string_agg(t.tag,', ') AS tag, tc.category FROM stakeholder_tag st
     LEFT JOIN tag t ON st.tag = t.id
     LEFT JOIN tag_category tc ON t.tag_category = tc.id
