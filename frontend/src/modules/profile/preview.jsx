@@ -400,6 +400,38 @@ export const InitiativePreview = ({ item }) => {
   const geoCoverageType = getValues(item?.q24);
   const duration = getValues(item?.q38);
   const links = getValues(item?.q40);
+
+  const renderGeoCoverageValue = () => {
+    let q = null;
+    switch (geoCoverageType.toLowerCase()) {
+      case "regional":
+        q = "q241";
+        break;
+      case "national":
+        q = "q242";
+        break;
+      case "sub-national":
+        q = "q243";
+        break;
+      case "transnational":
+        q = "q244";
+        break;
+      case "global with elements in specific areas":
+        q = "q245";
+        break;
+      default:
+        q = null;
+        break;
+    }
+    if (!item?.[q]) {
+      return "-";
+    }
+    if (Array.isArray(item?.[q]))
+      return item[q].map((x) => getValues(x)).join(", ");
+    if (typeof item?.[q] === "string") return item[q];
+    if (!Array.isArray(item?.[q])) return getValues(item[q]);
+  };
+
   return (
     <div className="general-info">
       <div className="info-img">
@@ -454,9 +486,7 @@ export const InitiativePreview = ({ item }) => {
         {geoCoverageType && geoCoverageType !== "global" && (
           <li>
             <div className="detail-title">Geo coverage</div>:
-            <div className="detail-content">
-              {item?.q241 ? item.q241.map((x) => getValues(x)).join(", ") : "-"}
-            </div>
+            <div className="detail-content">{renderGeoCoverageValue()}</div>
           </li>
         )}
         <li className="has-border">
@@ -466,18 +496,19 @@ export const InitiativePreview = ({ item }) => {
           <div className="detail-title">URL</div>:
           <div className="detail-content">
             <ul className={"ul-children"}>
-              {item?.q40 &&
-                Object.values(item.q40).map((x, i) => (
-                  <li key={`url-${i}`}>
-                    <a
-                      href={`https://${x.replace(/^.*:\/\//i, "")}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {`https://${x.replace(/^.*:\/\//i, "")}`}
-                    </a>{" "}
-                  </li>
-                ))}
+              {item?.q40
+                ? Object.values(item.q40).map((x, i) => (
+                    <li key={`url-${i}`}>
+                      <a
+                        href={`https://${x.replace(/^.*:\/\//i, "")}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {`https://${x.replace(/^.*:\/\//i, "")}`}
+                      </a>{" "}
+                    </li>
+                  ))
+                : "-"}
             </ul>
           </div>
         </li>

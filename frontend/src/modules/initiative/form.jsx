@@ -15,8 +15,6 @@ import {
   checkRequiredFieldFilledIn,
   checkDependencyAnswer,
 } from "../../utils/forms";
-import intersection from "lodash/intersection";
-import difference from "lodash/difference";
 import uiSchema from "./uiSchema.json";
 
 const Form = withTheme(AntDTheme);

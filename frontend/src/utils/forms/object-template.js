@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import { isObject, isNumber, intersection } from "lodash";
+import { isObject, isNumber, intersection, flatten } from "lodash";
 
 import { utils } from "@rjsf/core";
 import Button from "antd/lib/button";
@@ -109,7 +109,7 @@ const ObjectFieldTemplate = ({
           return item;
         }
       });
-      let questions = results.map((item) => item.questions).flat(1);
+      let questions = flatten(results.map((item) => item.questions));
       questions.forEach((key) => {
         formData?.[key] && delete formData?.[key];
       });

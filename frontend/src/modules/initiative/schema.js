@@ -1322,7 +1322,7 @@ export const schema = {
           },
         },
         S3_G7: {
-          title: "G7. Part 5: Related Resources and Contact",
+          title: "G7. Part 7: Related Resources and Contact",
           type: "object",
           depend: {
             id: "steps",
