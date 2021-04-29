@@ -126,6 +126,10 @@
    ;Activity Term: CH_CI
    :activity_term {:action-code 43374943
                    :format-fn #'first-child-replacing-other}
+   :currency_amount_invested {:action-detail-codes [43374846]
+                              :format-fn #'value-list}
+   :currency_in_kind_contribution {:action-detail-codes [43374836]
+                                   :format-fn #'value-list}
 
    :info_access_data {:action-detail-codes [43374788]
                       :format-fn #'value-list}

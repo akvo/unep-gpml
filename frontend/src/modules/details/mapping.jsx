@@ -313,12 +313,14 @@ const detailProject = [
     name: "Amount Invested",
     value: "funds",
     type: "currency",
+    currencyObject: { name: "currencyAmountInvested" },
   },
   {
     key: "contribution",
     name: "In Kind Contributions",
     value: "contribution",
     type: "currency",
+    currencyObject: { name: "currencyInKindContribution" },
   },
   {
     key: "funding",

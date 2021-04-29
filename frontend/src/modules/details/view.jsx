@@ -29,8 +29,7 @@ import imageNotFound from "../../images/image-not-found.png";
 import logoNotFound from "../../images/logo-not-found.png";
 import uniqBy from "lodash/uniqBy";
 
-const currencyFormat = () =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "usd" });
+const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
 const renderItemValues = (params, mapping, data) => {
   const { profile, countries, languages } = UIStore.currentState;
@@ -61,7 +60,15 @@ const renderItemValues = (params, mapping, data) => {
   return (
     mapping &&
     mapping.map((item, index) => {
-      const { key, name, value, type, customValue, arrayCustomValue } = item;
+      const {
+        key,
+        name,
+        value,
+        type,
+        customValue,
+        arrayCustomValue,
+        currencyObject,
+      } = item;
       // Set to true to display all country list for global
       const showAllCountryList = false;
       const displayEntry =
@@ -120,9 +127,12 @@ const renderItemValues = (params, mapping, data) => {
                   type === "email" &&
                   data?.publicEmail &&
                   data[key]}
+                {currencyObject && data[currencyObject.name]
+                  ? `${data[currencyObject.name][0].name} `
+                  : ""}
                 {value === key &&
                   type === "currency" &&
-                  currencyFormat().format(data[value])}
+                  currencyFormat(data[value])}
                 {value === key && type === "link" && (
                   <a
                     target="_blank"
