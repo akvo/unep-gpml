@@ -256,6 +256,9 @@
   (when-let [headquarters-country (:country technology)]
     {:headquarters (gpml.db.country/country-by-id db {:id headquarters-country})}))
 
+(defmethod extra-details "stakeholder" [_ db stakeholder]
+    (:data (db.detail/get-stakeholder-tags db stakeholder)))
+
 (defmethod extra-details :nothing [_ _ _]
   nil)
 

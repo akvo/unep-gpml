@@ -447,20 +447,20 @@ const detailStakeholder = [
   {
     key: "seeking",
     name: "Seeking",
-    value: "join",
-    type: "array",
+    value: "seeking",
+    type: "name",
   },
   {
     key: "offering",
     name: "Offering",
-    value: "join",
-    type: "array",
+    value: "offering",
+    type: "name",
   },
   {
-    key: "tags",
+    key: "general",
     name: "Tags",
-    value: "join",
-    type: "array",
+    value: "general",
+    type: "name",
   },
 ];
 
