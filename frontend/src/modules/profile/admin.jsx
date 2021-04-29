@@ -52,8 +52,10 @@ const AdminSection = ({
   const [modalRejectVisible, setModalRejectVisible] = useState(false);
   const [modalRejectFunction, setModalRejectFunction] = useState(false);
   const [previewContent, storePreviewContent] = useState({});
+  const [approveLoading, setApproveLoading] = useState({});
 
   const review = (item, review_status) => () => {
+    setApproveLoading(item);
     const itemType =
       item.type === "profile"
         ? "stakeholder"
@@ -95,6 +97,7 @@ const AdminSection = ({
           )
           .then((res) => {
             setPendingItems(res.data);
+            setApproveLoading({});
           });
         setModalRejectVisible(false);
       });
@@ -188,6 +191,7 @@ const AdminSection = ({
                           <Button
                             type="primary"
                             onClick={review(item, "APPROVED")}
+                            loading={approveLoading === item}
                           >
                             Approve
                           </Button>
