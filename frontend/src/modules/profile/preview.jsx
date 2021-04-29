@@ -388,50 +388,7 @@ export const ProfilePreview = ({ item }) => {
   );
 };
 
-const getValues = (d) => {
-  if (d) {
-    return Object.values(d).length ? Object.values(d).join(",") : false;
-  }
-  return false;
-};
-
 export const InitiativePreview = ({ item }) => {
-  const country = getValues(item?.q23);
-  const geoCoverageType = getValues(item?.q24);
-  const duration = getValues(item?.q38);
-  const links = getValues(item?.q40);
-
-  const renderGeoCoverageValue = () => {
-    let q = null;
-    switch (geoCoverageType.toLowerCase()) {
-      case "regional":
-        q = "q241";
-        break;
-      case "national":
-        q = "q242";
-        break;
-      case "sub-national":
-        q = "q243";
-        break;
-      case "transnational":
-        q = "q244";
-        break;
-      case "global with elements in specific areas":
-        q = "q245";
-        break;
-      default:
-        q = null;
-        break;
-    }
-    if (!item?.[q]) {
-      return "-";
-    }
-    if (Array.isArray(item?.[q]))
-      return item[q].map((x) => getValues(x)).join(", ");
-    if (typeof item?.[q] === "string") return item[q];
-    if (!Array.isArray(item?.[q])) return getValues(item[q]);
-  };
-
   return (
     <div className="general-info">
       <div className="info-img">
@@ -450,11 +407,11 @@ export const InitiativePreview = ({ item }) => {
         </li>
         <li>
           <div className="detail-title">Duration</div>:
-          <div className="detail-content">{duration}</div>
+          <div className="detail-content">{item?.duration}</div>
         </li>
         <li>
           <div className="detail-title">Country</div>:
-          <div className="detail-content">{country || "-"}</div>
+          <div className="detail-content">{item?.country || "-"}</div>
         </li>
         <li>
           <div className="detail-title">Submitted at</div>:
@@ -470,23 +427,25 @@ export const InitiativePreview = ({ item }) => {
         </li>
         <li>
           <div className="detail-title">Submitted</div>:
-          <div className="detail-content">{getValues(item.q1) || "-"}</div>
+          <div className="detail-content">{item?.submitted || "-"}</div>
         </li>
         <li>
           <div className="detail-title">Organisation</div>:
-          <div className="detail-content">{getValues(item.q11) || "-"}</div>
+          <div className="detail-content">{item?.organisation || "-"}</div>
         </li>
         <li className="has-border">
           <p className="section-title">Geo Coverage</p>
         </li>
         <li>
           <div className="detail-title">Geo coverage type</div>:
-          <div className="detail-content">{geoCoverageType || "-"}</div>
+          <div className="detail-content">{item?.geoCoverageType || "-"}</div>
         </li>
-        {geoCoverageType && geoCoverageType !== "global" && (
+        {item?.geoCoverageType && item?.geoCoverageType !== "Global" && (
           <li>
             <div className="detail-title">Geo coverage</div>:
-            <div className="detail-content">{renderGeoCoverageValue()}</div>
+            <div className="detail-content">
+              {item?.geoCoverageValues?.join(", ") || "-"}
+            </div>
           </li>
         )}
         <li className="has-border">
@@ -496,19 +455,17 @@ export const InitiativePreview = ({ item }) => {
           <div className="detail-title">URL</div>:
           <div className="detail-content">
             <ul className={"ul-children"}>
-              {item?.q40
-                ? Object.values(item.q40).map((x, i) => (
-                    <li key={`url-${i}`}>
-                      <a
-                        href={`https://${x.replace(/^.*:\/\//i, "")}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {`https://${x.replace(/^.*:\/\//i, "")}`}
-                      </a>{" "}
-                    </li>
-                  ))
-                : "-"}
+              {item?.links?.map((x, i) => (
+                <li key={`url-${i}`}>
+                  <a
+                    href={`https://${x.replace(/^.*:\/\//i, "")}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {`https://${x.replace(/^.*:\/\//i, "")}`}
+                  </a>{" "}
+                </li>
+              )) || "-"}
             </ul>
           </div>
         </li>
@@ -517,15 +474,15 @@ export const InitiativePreview = ({ item }) => {
         </li>
         <li>
           <div className="detail-title">Entities</div>:
-          <div className="detail-content">{getValues(item?.q16) || "-"}</div>
+          <div className="detail-content">{item?.entities || "-"}</div>
         </li>
         <li>
           <div className="detail-title">Partner</div>:
-          <div className="detail-content">{getValues(item?.q18) || "-"}</div>
+          <div className="detail-content">{item?.partners || "-"}</div>
         </li>
         <li>
           <div className="detail-title">Donor</div>:
-          <div className="detail-content">{getValues(item?.q20) || "-"}</div>
+          <div className="detail-content">{item?.donors || "-"}</div>
         </li>
       </ul>
     </div>
