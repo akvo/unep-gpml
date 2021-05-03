@@ -218,28 +218,28 @@ export const schema = {
 
 export const uiSchema = {
   title: {
-    "ui:placeholder": "Type in resource title",
+    "ui:placeholder": "Type in the resource title",
   },
   org: {
     "ui:showSearch": true,
-    "ui:placeholder": "Choose organisation",
+    "ui:placeholder": "Choose the entity",
   },
   newOrg: {
     "ui:group": "border",
     name: {
-      "ui:placeholder": "Type in entity name",
+      "ui:placeholder": "Type in the entity name",
     },
     type: {
-      "ui:placeholder": "Choose entity type",
+      "ui:placeholder": "Choose the entity type",
       "ui:widget": "select",
     },
     country: {
       "ui:showSearch": true,
       "ui:widget": "select",
-      "ui:placeholder": "Choose the resource country",
+      "ui:placeholder": "Choose the entity country",
     },
     url: {
-      "ui:placeholder": "URL Address",
+      "ui:placeholder": "URL Address (e.g. https://example.com)",
     },
     geoCoverageType: {
       "ui:placeholder": "Choose the entity coverage type",
@@ -257,7 +257,7 @@ export const uiSchema = {
       "ui:showSearch": true,
     },
     geoCoverageValueTransnational: {
-      "ui:placeholder": "Choose the resource coverage",
+      "ui:placeholder": "Choose the entity coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple",
@@ -343,7 +343,7 @@ export const uiSchema = {
     "ui:group": "border",
     items: {
       url: {
-        "ui:placeholder": "URL Address",
+        "ui:placeholder": "URL Address (e.g. https://example.com)",
         "ui:span": 16,
       },
       lang: {
