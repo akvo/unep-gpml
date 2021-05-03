@@ -145,11 +145,11 @@ const AddPolicyForm = ({
   };
 
   return (
-    <div className="add-action-plan-form">
+    <div className="add-policy-form">
       {step === 1 && (
         <>
           <Form
-            idPrefix="action-plan"
+            idPrefix="policy"
             schema={formSchema.schema}
             uiSchema={uiSchema}
             formData={policyData.currentState.data}

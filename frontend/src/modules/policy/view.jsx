@@ -31,7 +31,7 @@ const AddPolicy = ({ ...props }) => {
   };
 
   return (
-    <div id="add-technology">
+    <div id="add-policy">
       <div className="form-info-wrapper">
         <div className="ui container">
           <Row>

@@ -165,24 +165,24 @@ export const schema = {
 
 export const uiSchema = {
   title: {
-    "ui:placeholder": "Type in resource title",
+    "ui:placeholder": "Type in the policy title",
   },
   originalTitle: {
-    "ui:placeholder": "Type in resource original title",
+    "ui:placeholder": "Type in the policy original title",
   },
   dataSource: {
-    "ui:placeholder": "Type in data source",
+    "ui:placeholder": "Type in the data source",
   },
   url: {
-    "ui:placeholder": "URL Address",
+    "ui:placeholder": "URL Address (e.g. https://example.com)",
   },
   typeOfLaw: {
-    "ui:placeholder": "Choose the organisation type",
+    "ui:placeholder": "Choose the type of law",
     "ui:widget": "select",
     "ui:showSearch": true,
   },
   recordNumber: {
-    "ui:placeholder": "Type in record number",
+    "ui:placeholder": "Type in the record number",
   },
   date: {
     firstPublicationDate: {
@@ -201,27 +201,27 @@ export const uiSchema = {
     "ui:widget": "select",
   },
   country: {
-    "ui:placeholder": "Choose the resource country",
+    "ui:placeholder": "Choose the policy country",
     "ui:widget": "select",
     "ui:showSearch": true,
   },
   geoCoverageType: {
-    "ui:placeholder": "Choose the resource coverage type",
+    "ui:placeholder": "Choose the policy coverage type",
     "ui:widget": "select",
   },
   geoCoverageValueRegional: {
-    "ui:placeholder": "Choose the resource coverage",
+    "ui:placeholder": "Choose the policy coverage",
     "ui:widget": "select",
     "ui:showSearch": true,
     "ui:mode": "multiple",
   },
   geoCoverageValueNational: {
-    "ui:placeholder": "Choose the resource coverage",
+    "ui:placeholder": "Choose the policy coverage",
     "ui:widget": "select",
     "ui:showSearch": true,
   },
   geoCoverageValueTransnational: {
-    "ui:placeholder": "Choose the resource coverage",
+    "ui:placeholder": "Choose the policy coverage",
     "ui:widget": "select",
     "ui:showSearch": true,
     "ui:mode": "multiple",
@@ -230,7 +230,7 @@ export const uiSchema = {
     "ui:placeholder": "Type regions here...",
   },
   geoCoverageValueGlobalSpesific: {
-    "ui:placeholder": "Choose the resource coverage",
+    "ui:placeholder": "Choose the policy coverage",
     "ui:widget": "select",
     "ui:showSearch": true,
     "ui:mode": "multiple",
@@ -244,7 +244,7 @@ export const uiSchema = {
     "ui:widget": "file",
   },
   implementingMea: {
-    "ui:placeholder": "Choose implementing MEA",
+    "ui:placeholder": "Choose the implementing MEA",
     "ui:widget": "select",
     "ui:showSearch": true,
   },
@@ -261,7 +261,7 @@ export const uiSchema = {
     "ui:group": "border",
     items: {
       url: {
-        "ui:placeholder": "URL Address",
+        "ui:placeholder": "URL Address (e.g. https://example.com)",
         "ui:span": 16,
       },
       lang: {
