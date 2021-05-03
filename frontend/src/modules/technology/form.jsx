@@ -135,11 +135,11 @@ const AddTechnologyForm = ({
   };
 
   return (
-    <div className="add-action-plan-form">
+    <div className="add-technology-form">
       {step === 1 && (
         <>
           <Form
-            idPrefix="action-plan"
+            idPrefix="technology"
             schema={formSchema.schema}
             uiSchema={uiSchema}
             formData={technologyData.currentState.data}

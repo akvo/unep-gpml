@@ -167,7 +167,7 @@ export const schema = {
 
 export const uiSchema = {
   name: {
-    "ui:placeholder": "Type in resource title",
+    "ui:placeholder": "Type in the technology title",
   },
   yearFounded: {
     "ui:placeholder": "YYYY",
@@ -183,34 +183,34 @@ export const uiSchema = {
     "ui:showSearch": true,
   },
   url: {
-    "ui:placeholder": "URL of Technology",
+    "ui:placeholder": "URL Address (e.g. https://example.com)",
   },
   logo: {
     "ui:options": { accept: [".jpg", ".png", ".webp"] },
     "ui:widget": "file",
   },
   country: {
-    "ui:placeholder": "Choose the resource country",
+    "ui:placeholder": "Choose the technology country",
     "ui:widget": "select",
     "ui:showSearch": true,
   },
   geoCoverageType: {
-    "ui:placeholder": "Choose the resource coverage type",
+    "ui:placeholder": "Choose the technology coverage type",
     "ui:widget": "select",
   },
   geoCoverageValueRegional: {
-    "ui:placeholder": "Choose the resource coverage",
+    "ui:placeholder": "Choose the technology coverage",
     "ui:widget": "select",
     "ui:showSearch": true,
     "ui:mode": "multiple",
   },
   geoCoverageValueNational: {
-    "ui:placeholder": "Choose the resource coverage",
+    "ui:placeholder": "Choose the technology coverage",
     "ui:widget": "select",
     "ui:showSearch": true,
   },
   geoCoverageValueTransnational: {
-    "ui:placeholder": "Choose the resource coverage",
+    "ui:placeholder": "Choose the technology coverage",
     "ui:widget": "select",
     "ui:showSearch": true,
     "ui:mode": "multiple",
@@ -219,7 +219,7 @@ export const uiSchema = {
     "ui:placeholder": "Type regions here...",
   },
   geoCoverageValueGlobalSpesific: {
-    "ui:placeholder": "Choose the resource coverage",
+    "ui:placeholder": "Choose the technology coverage",
     "ui:widget": "select",
     "ui:showSearch": true,
     "ui:mode": "multiple",
@@ -241,7 +241,7 @@ export const uiSchema = {
   relatedInfo: {
     "ui:group": "border",
     email: {
-      "ui:placeholder": "Put email here",
+      "ui:placeholder": "Type in the contact email",
     },
     urls: {
       "ui:options": {
@@ -250,7 +250,7 @@ export const uiSchema = {
       "ui:group": "border",
       items: {
         url: {
-          "ui:placeholder": "URL Address",
+          "ui:placeholder": "URL Address (e.g. https://example.com)",
           "ui:span": 16,
         },
         lang: {
