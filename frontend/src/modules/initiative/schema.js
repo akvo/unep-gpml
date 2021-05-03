@@ -78,7 +78,7 @@ export const schema = {
   version: "1",
   properties: {
     S1: {
-      title: "SUBMITTER",
+      title: "SECTION 1: SUBMITTER",
       type: "object",
       depend: {
         id: "tabs",
@@ -112,7 +112,7 @@ export const schema = {
       },
     },
     S2: {
-      title: "TYPE OF INITIATIVE",
+      title: "SECTION 2: TYPE OF INITIATIVE",
       type: "object",
       depend: {
         id: "tabs",
@@ -120,7 +120,7 @@ export const schema = {
       },
       properties: {
         S2_G1: {
-          title: "G1. General",
+          title: "Part 1: General",
           type: "object",
           depend: {
             id: "steps",
@@ -466,7 +466,7 @@ export const schema = {
           },
         },
         S2_G2: {
-          title: "G2. Reporting and Measuring Progress",
+          title: "Part 2: Reporting and Measuring Progress",
           type: "object",
           depend: {
             id: "steps",
@@ -669,7 +669,7 @@ export const schema = {
           },
         },
         S2_G3: {
-          title: "G3. Drivers and Barriers",
+          title: "Part 3: Drivers and Barriers",
           type: "object",
           depend: {
             id: "steps",
@@ -792,7 +792,7 @@ export const schema = {
       },
       properties: {
         S3_G1: {
-          title: "G1. Part 1: Entities Involved",
+          title: "Part 1: Entities Involved",
           type: "object",
           depend: {
             id: "steps",
@@ -855,7 +855,7 @@ export const schema = {
           },
         },
         S3_G2: {
-          title: "G2. Part 2: Location & Coverage",
+          title: "Part 2: Location & Coverage",
           type: "object",
           depend: {
             id: "steps",
@@ -961,7 +961,7 @@ export const schema = {
           },
         },
         S3_G3: {
-          title: "G3. Part 3: Initiative Scope & Target",
+          title: "Part 3: Initiative Scope & Target",
           type: "object",
           depend: {
             id: "steps",
@@ -1200,7 +1200,7 @@ export const schema = {
           },
         },
         S3_G4: {
-          title: "G4. Part 4: Total Stakeholders Engaged",
+          title: "Part 4: Total Stakeholders Engaged",
           type: "object",
           depend: {
             id: "steps",
@@ -1221,7 +1221,7 @@ export const schema = {
           },
         },
         S3_G5: {
-          title: "G5. Part 5: Funding",
+          title: "Part 5: Funding",
           type: "object",
           depend: {
             id: "steps",
@@ -1284,7 +1284,7 @@ export const schema = {
           },
         },
         S3_G6: {
-          title: "G6. Part 6: Duration",
+          title: "Part 6: Duration",
           type: "object",
           depend: {
             id: "steps",
@@ -1322,7 +1322,7 @@ export const schema = {
           },
         },
         S3_G7: {
-          title: "G7. Part 7: Related Resources and Contact",
+          title: "Part 7: Related Resources and Contact",
           type: "object",
           depend: {
             id: "steps",
