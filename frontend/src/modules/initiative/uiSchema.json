@@ -125,8 +125,12 @@
           "inline": true
         }
       },
-      "S2_G2_12": {},
-      "S2_G2_13": {},
+      "S2_G2_12": {
+        "ui:widget": "textarea"
+      },
+      "S2_G2_13": {
+        "ui:widget": "textarea"
+      },
       "ui:order": [
         "S2_G2_5",
         "S2_G2_6",
@@ -167,16 +171,19 @@
     "S3_G1": {
       "classNames": "list-group-item",
       "S3_G1_16": {
+        "ui:placeholder": "Please select the name of the Implementing Entities.",
         "ui:widget": "select",
         "ui:showSearch": true
       },
       "S3_G1_17": {},
       "S3_G1_18": {
+        "ui:placeholder": "Please select the name of the Partner Entities involved.",
         "ui:widget": "select",
         "ui:showSearch": true
       },
       "S3_G1_19": {},
       "S3_G1_20": {
+        "ui:placeholder": "Please select the name of the Donor Entities.",
         "ui:widget": "select",
         "ui:showSearch": true
       },
@@ -255,6 +262,7 @@
       },
       "S3_G3_31": {},
       "S3_G3_32": {
+        "ui:placeholder": "Please select ALL that apply.",
         "ui:widget": "select",
         "ui:showSearch": true,
         "ui:mode": "multiple"
@@ -271,8 +279,12 @@
     },
     "S3_G4": {
       "classNames": "list-group-item",
-      "S3_G4_33": {},
-      "S3_G4_34": {},
+      "S3_G4_33": {
+        "ui:placeholder": "Please estimate."
+      },
+      "S3_G4_34": {
+        "ui:placeholder": "Please estimate."
+      },
       "ui:order": ["S3_G4_33", "S3_G4_34"]
     },
     "S3_G5": {
@@ -280,12 +292,16 @@
       "S3_G5_35": {
         "ui:widget": "radio"
       },
-      "S3_G5_36": {},
+      "S3_G5_36": {
+        "ui:placeholder": "Please give us an estimate if you are unsure and only submit numbers, e.g., 5,000 should be entered as 5000."
+      },
       "S3_G5_36.1": {
         "ui:widget": "select",
         "ui:showSearch": true
       },
-      "S3_G5_37": {},
+      "S3_G5_37": {
+        "ui:placeholder": "Please tell us the equivalent amount and only submit numbers, e.g., 5,000 should be entered as 5000."
+      },
       "S3_G5_37.1": {
         "ui:widget": "select",
         "ui:showSearch": true
@@ -314,6 +330,7 @@
           "orderable": false
         },
         "items": {
+          "ui:placeholder": "Please copy and paste one link per box provided.",
           "ui:options": {
             "label": false
           }

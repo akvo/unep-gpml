@@ -285,14 +285,15 @@
     border: none;
     border-radius: 6px;
 
-    input,
-    textarea {
-      background-color: #edf2f6;
+    // input,
+    // textarea {
+    //   background-color: #edf2f6;
+    //   border-color: #edf2f6;
+    //   border-radius: 4px;
+    // }
 
-      // border-color: #edf2f6;
-      border-radius: 4px;
-    }
-
+    .ant-input,
+    .ant-input-number-input,
     .ant-picker,
     .ant-select,
     .ant-select-selector {

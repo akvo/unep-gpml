@@ -729,7 +729,7 @@ export const schema = {
             },
             S2_G3_15: {
               title:
-                "15. Please,indicate which BARRIERS apply to this initiative? (Please tick ALLthat apply).",
+                "15. Please,indicate which BARRIERS apply to this initiative? (Please tick ALL that apply).",
               type: "array",
               items: {
                 enum: [
@@ -806,8 +806,7 @@ export const schema = {
           ],
           properties: {
             S3_G1_16: {
-              title:
-                "16. Which Entity is implementing the initiative? (Please indicate the name of the Implementing Entities).",
+              title: "16. Which Entity is implementing the initiative?",
               type: "string",
               enum: [],
               enumNames: [],
@@ -822,7 +821,7 @@ export const schema = {
             },
             S3_G1_18: {
               title:
-                "18. Are you working with Partners to implement the initiative? (Please indicate the name of the Partner Entities involved).",
+                "18. Are you working with Partners to implement the initiative?",
               type: "string",
               enum: [],
               enumNames: [],
@@ -836,8 +835,7 @@ export const schema = {
               },
             },
             S3_G1_20: {
-              title:
-                "20. Do you have Donors funding the Initiative? (Please indicate the name of the Donor Entities).",
+              title: "20. Do you have Donors funding the Initiative?",
               type: "string",
               enum: [],
               enumNames: [],
@@ -1125,7 +1123,7 @@ export const schema = {
             },
             S3_G3_32: {
               title:
-                "32. Tags. Choose the Tags applicable to your initiative targeting. (Please select ALL that apply).",
+                "32. Tags. Choose the Tags applicable to your initiative targeting.",
               type: "string",
               enum: [
                 "32-0",
@@ -1208,12 +1206,12 @@ export const schema = {
           properties: {
             S3_G4_33: {
               title:
-                "33. How many different groups and organisations (e.g.20 retailers, 150 schools) have you engaged with in total? (Please estimate)",
+                "33. How many different groups and organisations (e.g.20 retailers, 150 schools) have you engaged with in total?",
               type: "number",
             },
             S3_G4_34: {
               title:
-                "34. How many stakeholders (number of individuals) have you engaged in total? (Please estimate).",
+                "34. How many stakeholders (number of individuals) have you engaged in total?",
               type: "number",
             },
           },
@@ -1259,7 +1257,7 @@ export const schema = {
             },
             S3_G5_36: {
               title:
-                "36. How much money (amount) has been invested in the initiative so far? (please give us an estimate if you are unsure and only submit numbers, e.g., 5,000 should be entered as 5000)",
+                "36. How much money (amount) has been invested in the initiative so far?",
               type: "number",
             },
             "S3_G5_36.1": {
@@ -1269,8 +1267,7 @@ export const schema = {
               enumNames: [],
             },
             S3_G5_37: {
-              title:
-                "37. Are there in-kind contributions as well? (Please tell us the equivalent amount and only submit numbers, e.g., 5,000 should be entered as 5000).",
+              title: "37. Are there in-kind contributions as well?",
               type: "number",
             },
             "S3_G5_37.1": {
@@ -1330,12 +1327,12 @@ export const schema = {
           properties: {
             S3_G7_40: {
               title:
-                "40. Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc. Please copy and paste one link per box provided.",
+                "40. Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
               type: "array",
               items: {
                 type: "string",
                 format: "url",
-                // string: true,
+                string: true,
               },
               add: "Add Link",
             },
