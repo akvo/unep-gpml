@@ -144,18 +144,16 @@ export const schema = {
           ],
           properties: {
             S2_G1_2: {
-              title:
-                "2. Initiative Title. Please enter a name/title for this Initiative.",
+              title: "2. Initiative Title.",
               type: "string",
             },
             S2_G1_3: {
-              title:
-                "3. Short Summary. Please provide a very short summary of the Initiative (approx. 200 words).",
+              title: "3. Short Summary.",
               type: "string",
             },
             S2_G1_4: {
               title:
-                "4. Type of initiative. What is the MAIN focus of the initiative? (Please tick ALL that apply).",
+                "4. What is the MAIN focus of the initiative? (Please tick ALL that apply).",
               type: "array",
               dependency: [
                 {

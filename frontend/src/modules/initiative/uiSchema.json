@@ -18,7 +18,7 @@
         "ui:placeholder": "Please enter a name/title for this Initiative."
       },
       "S2_G1_3": {
-        "ui:placeholder": "Please provide a very short summary of the Initiative.",
+        "ui:placeholder": "Please provide a very short summary of the Initiative (approx. 200 words).",
         "ui:widget": "textarea"
       },
       "S2_G1_4": {
