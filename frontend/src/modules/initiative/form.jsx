@@ -55,7 +55,11 @@ const collectDependSchemaRefactor = (
         properties?.[key]?.depend
       )
     ) {
-      tmp.push(`.${index}.${key}`);
+      if (key.includes(".")) {
+        tmp.push(`.${index}['${key}']`);
+      } else {
+        tmp.push(`.${index}.${key}`);
+      }
     }
     if (
       index &&

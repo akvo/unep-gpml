@@ -92,9 +92,9 @@ const ObjectFieldTemplate = ({
   const dependHidden = (element) => {
     // ## Remove value from formData
     const props = schema?.properties;
-    if (formData?.[element.name] && props?.[element.name]?.dependencies) {
-      const { dependencies } = props?.[element.name];
-      let results = dependencies.filter((item) => {
+    if (formData?.[element.name] && props?.[element.name]?.dependency) {
+      const { dependency } = props?.[element.name];
+      let results = dependency.filter((item) => {
         // array answer
         if (
           Array.isArray(formData?.[element.name]) &&

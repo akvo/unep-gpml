@@ -106,6 +106,7 @@ const FieldTemplate = ({
           style={wrapperStyle}
           validateStatus={
             (rawErrors && required && highlight) ||
+            (rawErrors && !required && highlight) ||
             (highlight &&
               required &&
               schema.type !== "array" &&

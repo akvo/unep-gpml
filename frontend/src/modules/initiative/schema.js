@@ -90,7 +90,7 @@ export const schema = {
           title:
             "1. Are you submitting as an individual or on behalf of an Entity?",
           type: "string",
-          dependencies: [
+          dependency: [
             {
               value: ["1-1"],
               questions: ["S1_G1_1.1"],
@@ -157,7 +157,7 @@ export const schema = {
               title:
                 "4. Type of initiative. What is the MAIN focus of the initiative? (Please tick ALL that apply).",
               type: "array",
-              dependencies: [
+              dependency: [
                 {
                   value: ["4-0"],
                   questions: ["S2_G1_4.1.1", "S2_G1_4.1.2"],
@@ -196,7 +196,7 @@ export const schema = {
               title:
                 "4.1.1. Legislation, Standards and Rules. You have selected legislation, standards and rules as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",
               type: "array",
-              dependencies: [
+              dependency: [
                 {
                   value: ["4.1.1-10"],
                   questions: ["S2_G1_4.1.2"],
@@ -248,7 +248,7 @@ export const schema = {
               title:
                 "4.2.1. Working with People. You have chosen working with people as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",
               type: "array",
-              dependencies: [
+              dependency: [
                 {
                   value: ["4.2.1-18"],
                   questions: ["S2_G1_4.2.2"],
@@ -316,7 +316,7 @@ export const schema = {
               title:
                 "4.3.1. Technology and Processes. You have chosen technology and processes as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",
               type: "array",
-              dependencies: [
+              dependency: [
                 {
                   value: ["4.3.1-21"],
                   questions: ["S2_G1_4.3.2"],
@@ -390,7 +390,7 @@ export const schema = {
               title:
                 "4.4.1. Monitoring and Analysis. You have chosen monitoring and analysis as the type of initiatives. What did the initiative specifically involve? (Please tick ALL that apply):",
               type: "array",
-              dependencies: [
+              dependency: [
                 {
                   value: ["4.4.1-9"],
                   questions: ["S2_G1_4.4.2"],
@@ -489,7 +489,7 @@ export const schema = {
             S2_G2_5: {
               title: "5. Do you report and measure the initiative progress?",
               type: "string",
-              dependencies: [
+              dependency: [
                 {
                   value: ["5-6"],
                   questions: ["S2_G2_6"],
@@ -518,7 +518,7 @@ export const schema = {
               title:
                 "7. If yes, who do you report to? (Please tick ALL that apply):",
               type: "array",
-              dependencies: [
+              dependency: [
                 {
                   value: ["7-0"],
                   questions: ["S2_G2_7.1.0"],
@@ -609,7 +609,7 @@ export const schema = {
               title:
                 "8. Are the actual outcomes and impacts of the initiative evaluated?",
               type: "string",
-              dependencies: [
+              dependency: [
                 {
                   value: ["8-2"],
                   questions: ["S2_G2_9"],
@@ -885,7 +885,7 @@ export const schema = {
             S3_G2_24: {
               title: "24. Geo coverage type",
               type: "string",
-              dependencies: [
+              dependency: [
                 {
                   value: ["regional"],
                   questions: ["S3_G2_24.1"],
@@ -981,7 +981,7 @@ export const schema = {
               title:
                 "26. Lifecycle. Which specific part of the lifecycle/plastic supply chain is your initiative targeting? (Please tick ALL that apply).",
               type: "array",
-              dependencies: [
+              dependency: [
                 {
                   value: ["26-7"],
                   questions: ["S3_G3_27"],
@@ -1023,7 +1023,7 @@ export const schema = {
               title:
                 "28. Impact. What impacts or harms does the initiative relate to? (Please tick ALL that apply).",
               type: "array",
-              dependencies: [
+              dependency: [
                 {
                   value: ["28-8"],
                   questions: ["S3_G3_29"],
@@ -1067,7 +1067,7 @@ export const schema = {
               title:
                 "30. Sector. Does your initiative target a specific sector? (Please tick ALL that apply).",
               type: "array",
-              dependencies: [
+              dependency: [
                 {
                   value: ["30-17"],
                   questions: ["S3_G3_31"],
@@ -1295,7 +1295,7 @@ export const schema = {
             S3_G6_38: {
               title: "38. Is your initiative a one-off activity or ongoing?",
               type: "string",
-              dependencies: [
+              dependency: [
                 {
                   value: ["38-5"],
                   questions: ["S3_G6_39"],
@@ -1336,7 +1336,8 @@ export const schema = {
               type: "array",
               items: {
                 type: "string",
-                string: true,
+                format: "url",
+                // string: true,
               },
               add: "Add Link",
             },
