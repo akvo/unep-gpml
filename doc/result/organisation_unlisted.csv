@@ -1,260 +1,261 @@
 ,id,name,country,country_group,type,url,address,program,contribution,expertise,review_status,index
-0,1000,3M,,,,,,,,,SUBMITTED,351.0
-1,1001,APEC Ocean and Fisheries Working Group (OFWG),,,,,,,,,SUBMITTED,352.0
-2,1002,Agence Française de Developpement (AFD),,,,,,,,,SUBMITTED,353.0
-3,1003,Airtable,,,,,,,,,SUBMITTED,354.0
-4,1004,Algalita Marine Research and Education,,,,,,,,,SUBMITTED,355.0
-5,1005,Amazon,,,,,,,,,SUBMITTED,356.0
-6,1006,Amcor Limited,,,,,,,,,SUBMITTED,357.0
-7,1007,American Beverage Association,,,,,,,,,SUBMITTED,358.0
-8,1008,Asia Pacific Economic Cooperation (APEC),,,,,,,,,SUBMITTED,359.0
-9,1009,Association of Southeast Asian Nations (ASEAN),,,,,,,,,SUBMITTED,360.0
-10,1010,Australian Government,,,,,,,,,SUBMITTED,361.0
-11,1011,Australian Government Department of Foreign Affairs and Trade (DFAT),,,,,,,,,SUBMITTED,362.0
-12,1012,Australian Government Department of the Environment and Energy (DoEE),,,,,,,,,SUBMITTED,363.0
-13,1013,Australian Government's Department of Foreign Affairs and Trade,,,,,,,,,SUBMITTED,364.0
-14,1014,Autodesk.Foundation,,,,,,,,,SUBMITTED,365.0
-15,1015,Aws,,,,,,,,,SUBMITTED,366.0
-16,1016,BNP Paribas,,,,,,,,,SUBMITTED,367.0
-17,1017,Baltic Marine Environment Protection Commission (HELCOM),,,,,,,,,SUBMITTED,368.0
-18,1018,Baltic Sea Challenge,,,,,,,,,SUBMITTED,369.0
-19,1019,Bank Gospodarstwa Krajowego,,,,,,,,,SUBMITTED,370.0
-20,1020,Bank of America,,,,,,,,,SUBMITTED,371.0
-21,1021,Basel Convention,,,,,,,,,SUBMITTED,372.0
-22,1022,Belize Department of the Environment,,,,,,,,,SUBMITTED,373.0
-23,1023,Benioff Ocean Initiative,,,,,,,,,SUBMITTED,374.0
-24,1024,Berry Global,,,,,,,,,SUBMITTED,375.0
-25,1025,Black Sea Commission,,,,,,,,,SUBMITTED,376.0
-26,1026,Blue Marine Foundation,,,,,,,,,SUBMITTED,377.0
-27,1027,Brazil Ministry of the Environment,,,,,,,,,SUBMITTED,378.0
-28,1028,Brazilian Fund for Biodiversity (FUNBIO),,,,,,,,,SUBMITTED,379.0
-29,1029,British Plastics Federation,,,,,,,,,SUBMITTED,380.0
-30,1030,CVS Health,,,,,,,,,SUBMITTED,381.0
-31,1031,Caisse Des Dépôts,,,,,,,,,SUBMITTED,382.0
-32,1032,California Ocean Protection Council,,,,,,,,,SUBMITTED,383.0
-33,1033,Canada's Environment and Climate Change (ECCC),,,,,,,,,SUBMITTED,384.0
-34,1034,Canadian Council of Ministers of the Environment,,,,,,,,,SUBMITTED,385.0
-35,1035,Canadian Federal Government,,,,,,,,,SUBMITTED,386.0
-36,1036,Carrefour,,,,,,,,,SUBMITTED,387.0
-37,1037,Cartagena   Convention,,,,,,,,,SUBMITTED,388.0
-38,1038,Cassa Depositi e Prestiti,,,,,,,,,SUBMITTED,389.0
-39,1039,Centre for Environment Fisheries and Aquaculture Science (Cefas),,,,,,,,,SUBMITTED,390.0
-40,1040,Chanel,,,,,,,,,SUBMITTED,391.0
-41,1041,Chevron Phillips Chemical,,,,,,,,,SUBMITTED,392.0
-42,1042,Circulate Capital,,,,,,,,,SUBMITTED,393.0
-43,1043,Clean Currents Coalition,,,,,,,,,SUBMITTED,394.0
-44,1044,Closed Loop Partners,,,,,,,,,SUBMITTED,395.0
-45,1045,Coca Cola,,,,,,,,,SUBMITTED,396.0
-46,1046,Coca-Cola,,,,,,,,,SUBMITTED,397.0
-47,1047,Colgate Palmolive,,,,,,,,,SUBMITTED,398.0
-48,1048,Comisión Permanente Del Pacífico Sur (CPPS),,,,,,,,,SUBMITTED,399.0
-49,1049,Common Seas,,,,,,,,,SUBMITTED,400.0
-50,1050,Conservation International,,,,,,,,,SUBMITTED,401.0
-51,1051,Convention for the Protection of the Marine Environment of the North-East Atlantic (OSPAR),,,,,,,,,SUBMITTED,402.0
-52,1052,Coordinating Ministry for Maritime & Investment Affairs,,,,,,,,,SUBMITTED,403.0
-53,1053,Covanta,,,,,,,,,SUBMITTED,404.0
-54,1054,Cox Enterprises,,,,,,,,,SUBMITTED,405.0
-55,1055,Cruise Line Holdings LTD.,,,,,,,,,SUBMITTED,406.0
-56,1056,Cyprus Sustainable Tourism Initiative(CSTI),,,,,,,,,SUBMITTED,407.0
-57,1057,Danone,,,,,,,,,SUBMITTED,408.0
-58,1058,Dart Container Corporation,,,,,,,,,SUBMITTED,409.0
-59,1059,Department for Business,,,,,,,,,SUBMITTED,410.0
-60,1060,Department for Environment,,,,,,,,,SUBMITTED,411.0
-61,1061,Department of Agriculture,,,,,,,,,SUBMITTED,412.0
-62,1062,Didier and Martine Primat Foundation,,,,,,,,,SUBMITTED,413.0
-63,1063,Dow,,,,,,,,,SUBMITTED,414.0
-64,1064,Dow Chemicals,,,,,,,,,SUBMITTED,415.0
-65,1065,EA,,,,,,,,,SUBMITTED,416.0
-66,1066,EAWAG-SANDEC (Switzerland),,,,,,,,,SUBMITTED,417.0
-67,1067,Ellen MacArthur Foundation,,,,,,,,,SUBMITTED,418.0
-68,1068,Ellen McArthur foundation (EMF),,,,,,,,,SUBMITTED,419.0
-69,1069,Energy & Industrial Strategy,,,,,,,,,SUBMITTED,420.0
-70,1070,Environment & Climate Change (MESTEC),,,,,,,,,SUBMITTED,421.0
-71,1071,European Commission,,,,,,,,,SUBMITTED,422.0
-72,1072,European Environment Agency (EEA),,,,,,,,,SUBMITTED,423.0
-73,1073,European Investment Bank (EIB),,,,,,,,,SUBMITTED,424.0
-74,1074,European Topic Centre,,,,,,,,,SUBMITTED,425.0
-75,1075,European Union (EU),,,,,,,,,SUBMITTED,426.0
-76,1076,Finland Ministry of the Environment,,,,,,,,,SUBMITTED,427.0
-77,1077,Finnish Environment Institute (SKYE),,,,,,,,,SUBMITTED,428.0
-78,1078,Fondation Didier et Martine Primat,,,,,,,,,SUBMITTED,429.0
-79,1079,Fonds Aether,,,,,,,,,SUBMITTED,430.0
-80,1080,Food & Rural Affairs (Defra),,,,,,,,,SUBMITTED,431.0
-81,1081,Food and Agriculture Organization (FAO),,,,,,,,,SUBMITTED,432.0
-82,1082,Food and Agriculture Organization of the United Nations (FAO),,,,,,,,,SUBMITTED,433.0
-83,1083,Foreign Commonwealth and Development Office (FCDO),,,,,,,,,SUBMITTED,434.0
-84,1084,Foundation Veolia,,,,,,,,,SUBMITTED,435.0
-85,1085,France Ministry for the Ecological Transition (Ministère de la Transition écologique),,,,,,,,,SUBMITTED,436.0
-86,1086,Fraunhofer Institute (Ruhr University Bochum),,,,,,,,,SUBMITTED,437.0
-87,1087,G20,,,,,,,,,SUBMITTED,438.0
-88,1088,G7,,,,,,,,,SUBMITTED,439.0
-89,1089,GA Circular/Companies,,,,,,,,,SUBMITTED,440.0
-90,1090,GIZ - Gesellschaft für international Zusammenarbeit (German Development Agency),,,,,,,,,SUBMITTED,441.0
-91,1091,GIZ - Gesellschaft für international Zusammenarbeit (German development agency),,,,,,,,,SUBMITTED,442.0
-92,1092,GRID Arendal,,,,,,,,,SUBMITTED,443.0
-93,1093,Georgia Aquarium,,,,,,,,,SUBMITTED,444.0
-94,1094,German Federal Government,,,,,,,,,SUBMITTED,445.0
-95,1095,German Federal Ministry for Economic Cooperation and Development (BMZ),,,,,,,,,SUBMITTED,446.0
-96,1096,Global Environment Facility (GEF),,,,,,,,,SUBMITTED,447.0
-97,1097,Global Environment Facility(GEF),,,,,,,,,SUBMITTED,448.0
-98,1098,Global Methane Initiative,,,,,,,,,SUBMITTED,449.0
-99,1099,Global Pastics Alliance,,,,,,,,,SUBMITTED,450.0
-100,1100,Google Cloud,,,,,,,,,SUBMITTED,451.0
-101,1101,Government of Canada,,,,,,,,,SUBMITTED,452.0
-102,1102,Government of Denmark,,,,,,,,,SUBMITTED,453.0
-103,1103,Government of France,,,,,,,,,SUBMITTED,454.0
-104,1104,Government of Germany,,,,,,,,,SUBMITTED,455.0
-105,1105,Government of Iceland,,,,,,,,,SUBMITTED,456.0
-106,1106,Government of Norway,,,,,,,,,SUBMITTED,457.0
-107,1107,Government of Sweden,,,,,,,,,SUBMITTED,458.0
-108,1108,Government of Trinidad and Tobago,,,,,,,,,SUBMITTED,459.0
-109,1109,Government of th United States,,,,,,,,,SUBMITTED,460.0
-110,1110,Granta Design,,,,,,,,,SUBMITTED,461.0
-111,1111,HELCOM - Baltic Marine Environment Protection Commission,,,,,,,,,SUBMITTED,462.0
-112,1112,Haribo,,,,,,,,,SUBMITTED,463.0
-113,1113,Hubspot,,,,,,,,,SUBMITTED,464.0
-114,1114,IBM,,,,,,,,,SUBMITTED,465.0
-115,1115,ICCCAD,,,,,,,,,SUBMITTED,466.0
-116,1116,ITW Hi-Cone,,,,,,,,,SUBMITTED,467.0
-117,1117,Indonesia ((Kementerian Koordinator Bidang Kemaritiman dan Investasi Republik Indonesia),,,,,,,,,SUBMITTED,468.0
-118,1118,Institute European Environmental Policy (IEEP),,,,,,,,,SUBMITTED,469.0
-119,1119,Institute for Advanced Studies,,,,,,,,,SUBMITTED,470.0
-120,1120,Instituto De Crédito Oficial,,,,,,,,,SUBMITTED,471.0
-121,1121,Inter-American Development Bank (IADB),,,,,,,,,SUBMITTED,472.0
-122,1122,Inter-American Development Bank (IDB),,,,,,,,,SUBMITTED,473.0
-123,1123,Inter-organization programme for the sound management of chemicals (IOMC),,,,,,,,,SUBMITTED,474.0
-124,1124,International Finance Corporation (IFC),,,,,,,,,SUBMITTED,475.0
-125,1125,International Union for the Conservation of Nature (IUCN ),,,,,,,,,SUBMITTED,476.0
-126,1126,International Union for the Conservation of Nature (IUCN),,,,,,,,,SUBMITTED,477.0
-127,1127,Interreg Baltic Sea Region Programme,,,,,,,,,SUBMITTED,478.0
-128,1128,JDI,,,,,,,,,SUBMITTED,479.0
-129,1129,Japan Clean Ocean Material Alliance,,,,,,,,,SUBMITTED,480.0
-130,1130,Johnson & Johnson,,,,,,,,,SUBMITTED,481.0
-131,1131,Keep America Beautiful,,,,,,,,,SUBMITTED,482.0
-132,1132,Keurig Dr Pepper,,,,,,,,,SUBMITTED,483.0
-133,1133,KfW Group,,,,,,,,,SUBMITTED,484.0
-134,1134,Kfw (Kreditanstalt Für Wiederaufbau),,,,,,,,,SUBMITTED,485.0
-135,1135,Klaxoon,,,,,,,,,SUBMITTED,486.0
-136,1136,Korea Green Growth Trust Fund,,,,,,,,,SUBMITTED,487.0
-137,1137,Lifecycle Initiative,,,,,,,,,SUBMITTED,488.0
-138,1138,Lottery Foundation,,,,,,,,,SUBMITTED,489.0
-139,1139,MAVA Foundation,,,,,,,,,SUBMITTED,490.0
-140,1140,Maj and Tor Nessling Foundation,,,,,,,,,SUBMITTED,491.0
-141,1141,Malaysia,,,,,,,,,SUBMITTED,492.0
-142,1142,Microsoft,,,,,,,,,SUBMITTED,493.0
-143,1143,Ministry of Energy,,,,,,,,,SUBMITTED,494.0
-144,1144,Ministry of Foreign Affairs (MOFA),,,,,,,,,SUBMITTED,495.0
-145,1145,Ministry of Foreign Trade and Economic Relations of Bosnia and Herzegovina (at Bosnia and Herzegovina state level) and Federal Ministry of Environment and Tourism (for the Federation of Bosnia and Herzegovina),,,,,,,,,SUBMITTED,496.0
-146,1146,Ministry of Sustainable Development and Tourism (Montenegro),,,,,,,,,SUBMITTED,497.0
-147,1147,Ministry of Tourism and Environment (Albania),,,,,,,,,SUBMITTED,498.0
-148,1148,Ministry of the Environment Japan,,,,,,,,,SUBMITTED,499.0
-149,1149,Monaco Foundation,,,,,,,,,SUBMITTED,500.0
-150,1150,Monaco Private Label,,,,,,,,,SUBMITTED,501.0
-151,1151,Monte Carlo Société des Bains de Mer,,,,,,,,,SUBMITTED,502.0
-152,1152,Mott MacDonald,,,,,,,,,SUBMITTED,503.0
-153,1153,Nairobi Convention,,,,,,,,,SUBMITTED,504.0
-154,1154,National Geographic,,,,,,,,,SUBMITTED,505.0
-155,1155,National Ocean Service,,,,,,,,,SUBMITTED,506.0
-156,1156,National Oceanic and Atmospheric Administration,,,,,,,,,SUBMITTED,507.0
-157,1157,National Research Council of Canada,,,,,,,,,SUBMITTED,508.0
-158,1158,Nestle,,,,,,,,,SUBMITTED,509.0
-159,1159,Nestle Waters,,,,,,,,,SUBMITTED,510.0
-160,1160,Nestlé Waters North America Norwegian,,,,,,,,,SUBMITTED,511.0
-161,1161,New Zealand Ministry of Environment,,,,,,,,,SUBMITTED,512.0
-162,1162,Northwest Pacific Action Plan (NOWPAP ),,,,,,,,,SUBMITTED,513.0
-163,1163,Norwegian Agency for Development Cooperation(NORAD),,,,,,,,,SUBMITTED,514.0
-164,1164,Norwegian Embassy,,,,,,,,,SUBMITTED,515.0
-165,1165,Norwegian Retailers' Environment Fund,,,,,,,,,SUBMITTED,516.0
-166,1166,Observatory of Menorca(OBSAM),,,,,,,,,SUBMITTED,517.0
-167,1167,Oceanographic Institute of University of Sao Paulo,,,,,,,,,SUBMITTED,518.0
-168,1168,Oceanographic Institute of the University of São Paulo,,,,,,,,,SUBMITTED,519.0
-169,1169,Odyssey Impact Investments,,,,,,,,,SUBMITTED,520.0
-170,1170,Official Development Assistance (ODA),,,,,,,,,SUBMITTED,521.0
-171,1171,Open Litter Map,,,,,,,,,SUBMITTED,522.0
-172,1172,PEGASYS,,,,,,,,,SUBMITTED,523.0
-173,1173,Pacific Regional Environment Programme (SPREP ),,,,,,,,,SUBMITTED,524.0
-174,1174,Pepsico,,,,,,,,,SUBMITTED,525.0
-175,1175,Plastic Soup Foundation,,,,,,,,,SUBMITTED,526.0
-176,1176,Plastics Europe,,,,,,,,,SUBMITTED,527.0
-177,1177,Procter & Gamble,,,,,,,,,SUBMITTED,528.0
-178,1178,Programme of the Sustainable Ocean Alliance (SOA),,,,,,,,,SUBMITTED,529.0
-179,1179,Project AWARE,,,,,,,,,SUBMITTED,530.0
-180,1180,Protection of the Arctic Marine Environemt (PAME ),,,,,,,,,SUBMITTED,531.0
-181,1181,Quantis,,,,,,,,,SUBMITTED,532.0
-182,1182,RPC Group Plc,,,,,,,,,SUBMITTED,533.0
-183,1183,Rotterdam and Stockholm Conventions,,,,,,,,,SUBMITTED,534.0
-184,1184,Rozalia Project for a Clean Ocean,,,,,,,,,SUBMITTED,535.0
-185,1185,SYSTEMIQ,,,,,,,,,SUBMITTED,536.0
-186,1186,Saint Lucia National Conservation Fund (SLUNCF),,,,,,,,,SUBMITTED,537.0
-187,1187,Science,,,,,,,,,SUBMITTED,538.0
-188,1188,Searious Business,,,,,,,,,SUBMITTED,539.0
-189,1189,Second Muse,,,,,,,,,SUBMITTED,540.0
-190,1190,Secretariat of Infrastructure and Environment of the State of São Paulo,,,,,,,,,SUBMITTED,541.0
-191,1191,Secretariat of the Basel,,,,,,,,,SUBMITTED,542.0
-192,1192,Sheavly Consultants,,,,,,,,,SUBMITTED,543.0
-193,1193,South South North,,,,,,,,,SUBMITTED,544.0
-194,1194,Starbucks,,,,,,,,,SUBMITTED,545.0
-195,1195,Stockholm Environment Institute (SEI),,,,,,,,,SUBMITTED,546.0
-196,1196,Stripe,,,,,,,,,SUBMITTED,547.0
-197,1197,Surfrider Europe Foundation,,,,,,,,,SUBMITTED,548.0
-198,1198,Sustainable Coastlines Charitable Trust,,,,,,,,,SUBMITTED,549.0
-199,1199,Swedish International Development Cooperation Agency (SIDA),,,,,,,,,SUBMITTED,550.0
-200,1200,Swedish Postcode Foundation,,,,,,,,,SUBMITTED,551.0
-201,1201,Tara Expeditions Foundation,,,,,,,,,SUBMITTED,552.0
-202,1202,Tearfund,,,,,,,,,SUBMITTED,553.0
-203,1203,Technology,,,,,,,,,SUBMITTED,554.0
-204,1204,The Coca-Cola Company,,,,,,,,,SUBMITTED,555.0
-205,1205,The Coca-Cola Foundation,,,,,,,,,SUBMITTED,556.0
-206,1206,The Consumer Goods Forum,,,,,,,,,SUBMITTED,557.0
-207,1207,The David and Lucile Packard Foundation,,,,,,,,,SUBMITTED,558.0
-208,1208,The Dow Chemical Company,,,,,,,,,SUBMITTED,559.0
-209,1209,The European Investment Bank,,,,,,,,,SUBMITTED,560.0
-210,1210,The Global Partnership of Marine Litter (GPML),,,,,,,,,SUBMITTED,561.0
-211,1211,The Government of the Republic of Panama,,,,,,,,,SUBMITTED,562.0
-212,1212,The Government of the United Kingdom,,,,,,,,,SUBMITTED,563.0
-213,1213,The Incubation Network,,,,,,,,,SUBMITTED,564.0
-214,1214,The International Environmental Technology Centre (IETC),,,,,,,,,SUBMITTED,565.0
-215,1215,The Marine Mammal Center,,,,,,,,,SUBMITTED,566.0
-216,1216,The Mediterranean Action Plan (MAP),,,,,,,,,SUBMITTED,567.0
-217,1217,The Pew Charitable Trust,,,,,,,,,SUBMITTED,568.0
-218,1218,The Procter & Gamble Company,,,,,,,,,SUBMITTED,569.0
-219,1219,The Recycling Partnership,,,,,,,,,SUBMITTED,570.0
-220,1220,The Regional Organization for the Conservation of the Environment of the Red Sea & Gulf of Aden (PERSGA),,,,,,,,,SUBMITTED,571.0
-221,1221,The S Group,,,,,,,,,SUBMITTED,572.0
-222,1222,Together Cyprus,,,,,,,,,SUBMITTED,573.0
-223,1223,Trinet,,,,,,,,,SUBMITTED,574.0
-224,1224,U.S. Department of Commerce,,,,,,,,,SUBMITTED,575.0
-225,1225,U.S. State Department,,,,,,,,,SUBMITTED,576.0
-226,1226,UK Department for International Development (DFID),,,,,,,,,SUBMITTED,577.0
-227,1227,UN Environment Programme (UNEP),,,,,,,,,SUBMITTED,578.0
-228,1228,UN Habitat,,,,,,,,,SUBMITTED,579.0
-229,1229,UNEA 3,,,,,,,,,SUBMITTED,580.0
-230,1230,UNEA 4,,,,,,,,,SUBMITTED,581.0
-231,1231,UNESCO Chair for Sustainability of the Ocean,,,,,,,,,SUBMITTED,582.0
-232,1232,Unilever,,,,,,,,,SUBMITTED,583.0
-233,1233,Unilver,,,,,,,,,SUBMITTED,584.0
-234,1234,United Nations Conference on Trade and Development (UNCTAD),,,,,,,,,SUBMITTED,585.0
-235,1235,United Nations Development Program (UNDP),,,,,,,,,SUBMITTED,586.0
-236,1236,United Nations Economic and Social Commission for Asia and the Pacific (UNESCAP),,,,,,,,,SUBMITTED,587.0
-237,1237,United Nations Industrial Development Organization (UNIDO),,,,,,,,,SUBMITTED,588.0
-238,1238,United States Agency for International Developement  (USAID),,,,,,,,,SUBMITTED,589.0
-239,1239,United States Agency for International Development (USAID),,,,,,,,,SUBMITTED,590.0
-240,1240,Universidade Federal do Pará (Federal University of Pará),,,,,,,,,SUBMITTED,591.0
-241,1241,University of Leeds,,,,,,,,,SUBMITTED,592.0
-242,1242,Veolia,,,,,,,,,SUBMITTED,593.0
-243,1243,WWF,,,,,,,,,SUBMITTED,594.0
-244,1244,Waitrose,,,,,,,,,SUBMITTED,595.0
-245,1245,Walmart,,,,,,,,,SUBMITTED,596.0
-246,1246,Walmart Inc.,,,,,,,,,SUBMITTED,597.0
-247,1247,Waste and Resources Action Programme (WRiAP),,,,,,,,,SUBMITTED,598.0
-248,1248,Wasteware (UK),,,,,,,,,SUBMITTED,599.0
-249,1249,Water and the Environment,,,,,,,,,SUBMITTED,600.0
-250,1250,Wilson Sonsini,,,,,,,,,SUBMITTED,601.0
-251,1251,World Animal Protection US,,,,,,,,,SUBMITTED,602.0
-252,1252,World Bank,,,,,,,,,SUBMITTED,603.0
-253,1253,World Economic Forum (Wef),,,,,,,,,SUBMITTED,604.0
-254,1254,World Plastics Council,,,,,,,,,SUBMITTED,605.0
-255,1255,World Wildlife Fund (WWF),,,,,,,,,SUBMITTED,606.0
-256,1256,World Wildlife Fund US,,,,,,,,,SUBMITTED,607.0
-257,1257,the Government of Japan,,,,,,,,,SUBMITTED,608.0
-258,1258,the Food and Agriculture Organization of the United Nations (FAO),,,,,,,,,SUBMITTED,609.0
+0,1000,3M,,,,,,,,,SUBMITTED,344.0
+1,1001,APEC Ocean and Fisheries Working Group (OFWG),,,,,,,,,SUBMITTED,345.0
+2,1002,Agence Française de Developpement (AFD),,,,,,,,,SUBMITTED,346.0
+3,1003,Airtable,,,,,,,,,SUBMITTED,347.0
+4,1004,Algalita Marine Research and Education,,,,,,,,,SUBMITTED,348.0
+5,1005,Amazon,,,,,,,,,SUBMITTED,349.0
+6,1006,Amcor Limited,,,,,,,,,SUBMITTED,350.0
+7,1007,American Beverage Association,,,,,,,,,SUBMITTED,351.0
+8,1008,Asia Pacific Economic Cooperation (APEC),,,,,,,,,SUBMITTED,352.0
+9,1009,Association of Southeast Asian Nations (ASEAN),,,,,,,,,SUBMITTED,353.0
+10,1010,Australian Government,,,,,,,,,SUBMITTED,354.0
+11,1011,Australian Government Department of Foreign Affairs and Trade (DFAT),,,,,,,,,SUBMITTED,355.0
+12,1012,Australian Government Department of the Environment and Energy (DoEE),,,,,,,,,SUBMITTED,356.0
+13,1013,Australian Government's Department of Foreign Affairs and Trade,,,,,,,,,SUBMITTED,357.0
+14,1014,Autodesk.Foundation,,,,,,,,,SUBMITTED,358.0
+15,1015,Aws,,,,,,,,,SUBMITTED,359.0
+16,1016,BNP Paribas,,,,,,,,,SUBMITTED,360.0
+17,1017,Baltic Marine Environment Protection Commission (HELCOM),,,,,,,,,SUBMITTED,361.0
+18,1018,Baltic Sea Challenge,,,,,,,,,SUBMITTED,362.0
+19,1019,Bank Gospodarstwa Krajowego,,,,,,,,,SUBMITTED,363.0
+20,1020,Bank of America,,,,,,,,,SUBMITTED,364.0
+21,1021,Basel Convention,,,,,,,,,SUBMITTED,365.0
+22,1022,Belize Department of the Environment,,,,,,,,,SUBMITTED,366.0
+23,1023,Benioff Ocean Initiative,,,,,,,,,SUBMITTED,367.0
+24,1024,Berry Global,,,,,,,,,SUBMITTED,368.0
+25,1025,Black Sea Commission,,,,,,,,,SUBMITTED,369.0
+26,1026,Blue Marine Foundation,,,,,,,,,SUBMITTED,370.0
+27,1027,Brazil Ministry of the Environment,,,,,,,,,SUBMITTED,371.0
+28,1028,Brazilian Fund for Biodiversity (FUNBIO),,,,,,,,,SUBMITTED,372.0
+29,1029,British Plastics Federation,,,,,,,,,SUBMITTED,373.0
+30,1030,CVS Health,,,,,,,,,SUBMITTED,374.0
+31,1031,Caisse Des Dépôts,,,,,,,,,SUBMITTED,375.0
+32,1032,California Ocean Protection Council,,,,,,,,,SUBMITTED,376.0
+33,1033,Canada's Environment and Climate Change (ECCC),,,,,,,,,SUBMITTED,377.0
+34,1034,Canadian Council of Ministers of the Environment,,,,,,,,,SUBMITTED,378.0
+35,1035,Canadian Federal Government,,,,,,,,,SUBMITTED,379.0
+36,1036,Carrefour,,,,,,,,,SUBMITTED,380.0
+37,1037,Cartagena   Convention,,,,,,,,,SUBMITTED,381.0
+38,1038,Cassa Depositi e Prestiti,,,,,,,,,SUBMITTED,382.0
+39,1039,Centre for Environment Fisheries and Aquaculture Science (Cefas),,,,,,,,,SUBMITTED,383.0
+40,1040,Chanel,,,,,,,,,SUBMITTED,384.0
+41,1041,Chevron Phillips Chemical,,,,,,,,,SUBMITTED,385.0
+42,1042,Circulate Capital,,,,,,,,,SUBMITTED,386.0
+43,1043,Clean Currents Coalition,,,,,,,,,SUBMITTED,387.0
+44,1044,Closed Loop Partners,,,,,,,,,SUBMITTED,388.0
+45,1045,Coca Cola,,,,,,,,,SUBMITTED,389.0
+46,1046,Coca-Cola,,,,,,,,,SUBMITTED,390.0
+47,1047,Colgate Palmolive,,,,,,,,,SUBMITTED,391.0
+48,1048,Comisión Permanente Del Pacífico Sur (CPPS),,,,,,,,,SUBMITTED,392.0
+49,1049,Common Seas,,,,,,,,,SUBMITTED,393.0
+50,1050,Conservation International,,,,,,,,,SUBMITTED,394.0
+51,1051,Convention for the Protection of the Marine Environment of the North-East Atlantic (OSPAR),,,,,,,,,SUBMITTED,395.0
+52,1052,Coordinating Ministry for Maritime & Investment Affairs,,,,,,,,,SUBMITTED,396.0
+53,1053,Covanta,,,,,,,,,SUBMITTED,397.0
+54,1054,Cox Enterprises,,,,,,,,,SUBMITTED,398.0
+55,1055,Cruise Line Holdings LTD.,,,,,,,,,SUBMITTED,399.0
+56,1056,Cyprus Sustainable Tourism Initiative(CSTI),,,,,,,,,SUBMITTED,400.0
+57,1057,Danone,,,,,,,,,SUBMITTED,401.0
+58,1058,Dart Container Corporation,,,,,,,,,SUBMITTED,402.0
+59,1059,Department for Business,,,,,,,,,SUBMITTED,403.0
+60,1060,Department for Environment,,,,,,,,,SUBMITTED,404.0
+61,1061,Department of Agriculture,,,,,,,,,SUBMITTED,405.0
+62,1062,Didier and Martine Primat Foundation,,,,,,,,,SUBMITTED,406.0
+63,1063,Dow,,,,,,,,,SUBMITTED,407.0
+64,1064,Dow Chemicals,,,,,,,,,SUBMITTED,408.0
+65,1065,EA,,,,,,,,,SUBMITTED,409.0
+66,1066,EAWAG-SANDEC (Switzerland),,,,,,,,,SUBMITTED,410.0
+67,1067,Ellen MacArthur Foundation,,,,,,,,,SUBMITTED,411.0
+68,1068,Ellen McArthur foundation (EMF),,,,,,,,,SUBMITTED,412.0
+69,1069,Energy & Industrial Strategy,,,,,,,,,SUBMITTED,413.0
+70,1070,Environment & Climate Change (MESTEC),,,,,,,,,SUBMITTED,414.0
+71,1071,European Commission,,,,,,,,,SUBMITTED,415.0
+72,1072,European Environment Agency (EEA),,,,,,,,,SUBMITTED,416.0
+73,1073,European Investment Bank (EIB),,,,,,,,,SUBMITTED,417.0
+74,1074,European Topic Centre,,,,,,,,,SUBMITTED,418.0
+75,1075,European Union (EU),,,,,,,,,SUBMITTED,419.0
+76,1076,Finland Ministry of the Environment,,,,,,,,,SUBMITTED,420.0
+77,1077,Finnish Environment Institute (SKYE),,,,,,,,,SUBMITTED,421.0
+78,1078,Fondation Didier et Martine Primat,,,,,,,,,SUBMITTED,422.0
+79,1079,Fonds Aether,,,,,,,,,SUBMITTED,423.0
+80,1080,Food & Rural Affairs (Defra),,,,,,,,,SUBMITTED,424.0
+81,1081,Food and Agriculture Organization (FAO),,,,,,,,,SUBMITTED,425.0
+82,1082,Food and Agriculture Organization of the United Nations (FAO),,,,,,,,,SUBMITTED,426.0
+83,1083,Foreign Commonwealth and Development Office (FCDO),,,,,,,,,SUBMITTED,427.0
+84,1084,Foundation Veolia,,,,,,,,,SUBMITTED,428.0
+85,1085,France Ministry for the Ecological Transition (Ministère de la Transition écologique),,,,,,,,,SUBMITTED,429.0
+86,1086,Fraunhofer Institute (Ruhr University Bochum),,,,,,,,,SUBMITTED,430.0
+87,1087,G20,,,,,,,,,SUBMITTED,431.0
+88,1088,G7,,,,,,,,,SUBMITTED,432.0
+89,1089,GA Circular/Companies,,,,,,,,,SUBMITTED,433.0
+90,1090,GIZ - Gesellschaft für international Zusammenarbeit (German Development Agency),,,,,,,,,SUBMITTED,434.0
+91,1091,GIZ - Gesellschaft für international Zusammenarbeit (German development agency),,,,,,,,,SUBMITTED,435.0
+92,1092,GRID Arendal,,,,,,,,,SUBMITTED,436.0
+93,1093,Georgia Aquarium,,,,,,,,,SUBMITTED,437.0
+94,1094,German Federal Government,,,,,,,,,SUBMITTED,438.0
+95,1095,German Federal Ministry for Economic Cooperation and Development (BMZ),,,,,,,,,SUBMITTED,439.0
+96,1096,Global Environment Facility (GEF),,,,,,,,,SUBMITTED,440.0
+97,1097,Global Environment Facility(GEF),,,,,,,,,SUBMITTED,441.0
+98,1098,Global Methane Initiative,,,,,,,,,SUBMITTED,442.0
+99,1099,Global Pastics Alliance,,,,,,,,,SUBMITTED,443.0
+100,1100,Google Cloud,,,,,,,,,SUBMITTED,444.0
+101,1101,Government of Canada,,,,,,,,,SUBMITTED,445.0
+102,1102,Government of Denmark,,,,,,,,,SUBMITTED,446.0
+103,1103,Government of France,,,,,,,,,SUBMITTED,447.0
+104,1104,Government of Germany,,,,,,,,,SUBMITTED,448.0
+105,1105,Government of Iceland,,,,,,,,,SUBMITTED,449.0
+106,1106,Government of Norway,,,,,,,,,SUBMITTED,450.0
+107,1107,Government of Sweden,,,,,,,,,SUBMITTED,451.0
+108,1108,Government of Trinidad and Tobago,,,,,,,,,SUBMITTED,452.0
+109,1109,Government of th United States,,,,,,,,,SUBMITTED,453.0
+110,1110,Granta Design,,,,,,,,,SUBMITTED,454.0
+111,1111,Group of Experts on the Scientific Aspects of Marine Environmental Protection (GESAMP),,,,,,,,,SUBMITTED,455.0
+112,1112,HELCOM - Baltic Marine Environment Protection Commission,,,,,,,,,SUBMITTED,456.0
+113,1113,Haribo,,,,,,,,,SUBMITTED,457.0
+114,1114,Hubspot,,,,,,,,,SUBMITTED,458.0
+115,1115,IBM,,,,,,,,,SUBMITTED,459.0
+116,1116,ICCCAD,,,,,,,,,SUBMITTED,460.0
+117,1117,ITW Hi-Cone,,,,,,,,,SUBMITTED,461.0
+118,1118,Indonesia ((Kementerian Koordinator Bidang Kemaritiman dan Investasi Republik Indonesia),,,,,,,,,SUBMITTED,462.0
+119,1119,Institute European Environmental Policy (IEEP),,,,,,,,,SUBMITTED,463.0
+120,1120,Institute for Advanced Studies,,,,,,,,,SUBMITTED,464.0
+121,1121,Instituto De Crédito Oficial,,,,,,,,,SUBMITTED,465.0
+122,1122,Inter-American Development Bank (IADB),,,,,,,,,SUBMITTED,466.0
+123,1123,Inter-American Development Bank (IDB),,,,,,,,,SUBMITTED,467.0
+124,1124,Inter-organization programme for the sound management of chemicals (IOMC),,,,,,,,,SUBMITTED,468.0
+125,1125,International Finance Corporation (IFC),,,,,,,,,SUBMITTED,469.0
+126,1126,International Union for the Conservation of Nature (IUCN ),,,,,,,,,SUBMITTED,470.0
+127,1127,International Union for the Conservation of Nature (IUCN),,,,,,,,,SUBMITTED,471.0
+128,1128,Interreg Baltic Sea Region Programme,,,,,,,,,SUBMITTED,472.0
+129,1129,JDI,,,,,,,,,SUBMITTED,473.0
+130,1130,Japan Clean Ocean Material Alliance,,,,,,,,,SUBMITTED,474.0
+131,1131,Johnson & Johnson,,,,,,,,,SUBMITTED,475.0
+132,1132,Keep America Beautiful,,,,,,,,,SUBMITTED,476.0
+133,1133,Keurig Dr Pepper,,,,,,,,,SUBMITTED,477.0
+134,1134,KfW Group,,,,,,,,,SUBMITTED,478.0
+135,1135,Kfw (Kreditanstalt Für Wiederaufbau),,,,,,,,,SUBMITTED,479.0
+136,1136,Klaxoon,,,,,,,,,SUBMITTED,480.0
+137,1137,Korea Green Growth Trust Fund,,,,,,,,,SUBMITTED,481.0
+138,1138,Lifecycle Initiative,,,,,,,,,SUBMITTED,482.0
+139,1139,Lottery Foundation,,,,,,,,,SUBMITTED,483.0
+140,1140,MAVA Foundation,,,,,,,,,SUBMITTED,484.0
+141,1141,Maj and Tor Nessling Foundation,,,,,,,,,SUBMITTED,485.0
+142,1142,Malaysia,,,,,,,,,SUBMITTED,486.0
+143,1143,Microsoft,,,,,,,,,SUBMITTED,487.0
+144,1144,Ministry of Energy,,,,,,,,,SUBMITTED,488.0
+145,1145,Ministry of Foreign Affairs (MOFA),,,,,,,,,SUBMITTED,489.0
+146,1146,Ministry of Foreign Trade and Economic Relations of Bosnia and Herzegovina (at Bosnia and Herzegovina state level) and Federal Ministry of Environment and Tourism (for the Federation of Bosnia and Herzegovina),,,,,,,,,SUBMITTED,490.0
+147,1147,Ministry of Sustainable Development and Tourism (Montenegro),,,,,,,,,SUBMITTED,491.0
+148,1148,Ministry of Tourism and Environment (Albania),,,,,,,,,SUBMITTED,492.0
+149,1149,Ministry of the Environment Japan,,,,,,,,,SUBMITTED,493.0
+150,1150,Monaco Foundation,,,,,,,,,SUBMITTED,494.0
+151,1151,Monaco Private Label,,,,,,,,,SUBMITTED,495.0
+152,1152,Monte Carlo Société des Bains de Mer,,,,,,,,,SUBMITTED,496.0
+153,1153,Mott MacDonald,,,,,,,,,SUBMITTED,497.0
+154,1154,Nairobi Convention,,,,,,,,,SUBMITTED,498.0
+155,1155,National Geographic,,,,,,,,,SUBMITTED,499.0
+156,1156,National Ocean Service,,,,,,,,,SUBMITTED,500.0
+157,1157,National Oceanic and Atmospheric Administration,,,,,,,,,SUBMITTED,501.0
+158,1158,National Research Council of Canada,,,,,,,,,SUBMITTED,502.0
+159,1159,Nestle,,,,,,,,,SUBMITTED,503.0
+160,1160,Nestle Waters,,,,,,,,,SUBMITTED,504.0
+161,1161,Nestlé Waters North America Norwegian,,,,,,,,,SUBMITTED,505.0
+162,1162,New Zealand Ministry of Environment,,,,,,,,,SUBMITTED,506.0
+163,1163,Northwest Pacific Action Plan (NOWPAP ),,,,,,,,,SUBMITTED,507.0
+164,1164,Norwegian Agency for Development Cooperation(NORAD),,,,,,,,,SUBMITTED,508.0
+165,1165,Norwegian Embassy,,,,,,,,,SUBMITTED,509.0
+166,1166,Norwegian Retailers' Environment Fund,,,,,,,,,SUBMITTED,510.0
+167,1167,Observatory of Menorca(OBSAM),,,,,,,,,SUBMITTED,511.0
+168,1168,Oceanographic Institute of University of Sao Paulo,,,,,,,,,SUBMITTED,512.0
+169,1169,Oceanographic Institute of the University of São Paulo,,,,,,,,,SUBMITTED,513.0
+170,1170,Odyssey Impact Investments,,,,,,,,,SUBMITTED,514.0
+171,1171,Official Development Assistance (ODA),,,,,,,,,SUBMITTED,515.0
+172,1172,Open Litter Map,,,,,,,,,SUBMITTED,516.0
+173,1173,PEGASYS,,,,,,,,,SUBMITTED,517.0
+174,1174,Pacific Regional Environment Programme (SPREP ),,,,,,,,,SUBMITTED,518.0
+175,1175,Pepsico,,,,,,,,,SUBMITTED,519.0
+176,1176,Plastic Soup Foundation,,,,,,,,,SUBMITTED,520.0
+177,1177,Plastics Europe,,,,,,,,,SUBMITTED,521.0
+178,1178,Procter & Gamble,,,,,,,,,SUBMITTED,522.0
+179,1179,Programme of the Sustainable Ocean Alliance (SOA),,,,,,,,,SUBMITTED,523.0
+180,1180,Project AWARE,,,,,,,,,SUBMITTED,524.0
+181,1181,Protection of the Arctic Marine Environemt (PAME ),,,,,,,,,SUBMITTED,525.0
+182,1182,Quantis,,,,,,,,,SUBMITTED,526.0
+183,1183,RPC Group Plc,,,,,,,,,SUBMITTED,527.0
+184,1184,Rotterdam and Stockholm Conventions,,,,,,,,,SUBMITTED,528.0
+185,1185,Rozalia Project for a Clean Ocean,,,,,,,,,SUBMITTED,529.0
+186,1186,SYSTEMIQ,,,,,,,,,SUBMITTED,530.0
+187,1187,Saint Lucia National Conservation Fund (SLUNCF),,,,,,,,,SUBMITTED,531.0
+188,1188,Science,,,,,,,,,SUBMITTED,532.0
+189,1189,Searious Business,,,,,,,,,SUBMITTED,533.0
+190,1190,Second Muse,,,,,,,,,SUBMITTED,534.0
+191,1191,Secretariat of Infrastructure and Environment of the State of São Paulo,,,,,,,,,SUBMITTED,535.0
+192,1192,Secretariat of the Basel,,,,,,,,,SUBMITTED,536.0
+193,1193,Sheavly Consultants,,,,,,,,,SUBMITTED,537.0
+194,1194,South South North,,,,,,,,,SUBMITTED,538.0
+195,1195,Starbucks,,,,,,,,,SUBMITTED,539.0
+196,1196,Stockholm Environment Institute (SEI),,,,,,,,,SUBMITTED,540.0
+197,1197,Stripe,,,,,,,,,SUBMITTED,541.0
+198,1198,Surfrider Europe Foundation,,,,,,,,,SUBMITTED,542.0
+199,1199,Sustainable Coastlines Charitable Trust,,,,,,,,,SUBMITTED,543.0
+200,1200,Swedish International Development Cooperation Agency (SIDA),,,,,,,,,SUBMITTED,544.0
+201,1201,Swedish Postcode Foundation,,,,,,,,,SUBMITTED,545.0
+202,1202,Tara Expeditions Foundation,,,,,,,,,SUBMITTED,546.0
+203,1203,Tearfund,,,,,,,,,SUBMITTED,547.0
+204,1204,Technology,,,,,,,,,SUBMITTED,548.0
+205,1205,The Coca-Cola Company,,,,,,,,,SUBMITTED,549.0
+206,1206,The Coca-Cola Foundation,,,,,,,,,SUBMITTED,550.0
+207,1207,The Consumer Goods Forum,,,,,,,,,SUBMITTED,551.0
+208,1208,The David and Lucile Packard Foundation,,,,,,,,,SUBMITTED,552.0
+209,1209,The Dow Chemical Company,,,,,,,,,SUBMITTED,553.0
+210,1210,The European Investment Bank,,,,,,,,,SUBMITTED,554.0
+211,1211,The Global Partnership of Marine Litter (GPML),,,,,,,,,SUBMITTED,555.0
+212,1212,The Government of the Republic of Panama,,,,,,,,,SUBMITTED,556.0
+213,1213,The Government of the United Kingdom,,,,,,,,,SUBMITTED,557.0
+214,1214,The Incubation Network,,,,,,,,,SUBMITTED,558.0
+215,1215,The International Environmental Technology Centre (IETC),,,,,,,,,SUBMITTED,559.0
+216,1216,The Marine Mammal Center,,,,,,,,,SUBMITTED,560.0
+217,1217,The Mediterranean Action Plan (MAP),,,,,,,,,SUBMITTED,561.0
+218,1218,The Pew Charitable Trust,,,,,,,,,SUBMITTED,562.0
+219,1219,The Procter & Gamble Company,,,,,,,,,SUBMITTED,563.0
+220,1220,The Recycling Partnership,,,,,,,,,SUBMITTED,564.0
+221,1221,The Regional Organization for the Conservation of the Environment of the Red Sea & Gulf of Aden (PERSGA),,,,,,,,,SUBMITTED,565.0
+222,1222,The S Group,,,,,,,,,SUBMITTED,566.0
+223,1223,Together Cyprus,,,,,,,,,SUBMITTED,567.0
+224,1224,Trinet,,,,,,,,,SUBMITTED,568.0
+225,1225,U.S. Department of Commerce,,,,,,,,,SUBMITTED,569.0
+226,1226,U.S. State Department,,,,,,,,,SUBMITTED,570.0
+227,1227,UK Department for International Development (DFID),,,,,,,,,SUBMITTED,571.0
+228,1228,UN Environment Programme (UNEP),,,,,,,,,SUBMITTED,572.0
+229,1229,UN Habitat,,,,,,,,,SUBMITTED,573.0
+230,1230,UNEA 3,,,,,,,,,SUBMITTED,574.0
+231,1231,UNEA 4,,,,,,,,,SUBMITTED,575.0
+232,1232,UNESCO Chair for Sustainability of the Ocean,,,,,,,,,SUBMITTED,576.0
+233,1233,Unilever,,,,,,,,,SUBMITTED,577.0
+234,1234,Unilver,,,,,,,,,SUBMITTED,578.0
+235,1235,United Nations Conference on Trade and Development (UNCTAD),,,,,,,,,SUBMITTED,579.0
+236,1236,United Nations Development Program (UNDP),,,,,,,,,SUBMITTED,580.0
+237,1237,United Nations Economic and Social Commission for Asia and the Pacific (UNESCAP),,,,,,,,,SUBMITTED,581.0
+238,1238,United Nations Industrial Development Organization (UNIDO),,,,,,,,,SUBMITTED,582.0
+239,1239,United States Agency for International Developement  (USAID),,,,,,,,,SUBMITTED,583.0
+240,1240,United States Agency for International Development (USAID),,,,,,,,,SUBMITTED,584.0
+241,1241,Universidade Federal do Pará (Federal University of Pará),,,,,,,,,SUBMITTED,585.0
+242,1242,University of Leeds,,,,,,,,,SUBMITTED,586.0
+243,1243,Veolia,,,,,,,,,SUBMITTED,587.0
+244,1244,WWF,,,,,,,,,SUBMITTED,588.0
+245,1245,Waitrose,,,,,,,,,SUBMITTED,589.0
+246,1246,Walmart,,,,,,,,,SUBMITTED,590.0
+247,1247,Walmart Inc.,,,,,,,,,SUBMITTED,591.0
+248,1248,Waste and Resources Action Programme (WRiAP),,,,,,,,,SUBMITTED,592.0
+249,1249,Wasteware (UK),,,,,,,,,SUBMITTED,593.0
+250,1250,Water and the Environment,,,,,,,,,SUBMITTED,594.0
+251,1251,Wilson Sonsini,,,,,,,,,SUBMITTED,595.0
+252,1252,World Animal Protection US,,,,,,,,,SUBMITTED,596.0
+253,1253,World Bank,,,,,,,,,SUBMITTED,597.0
+254,1254,World Economic Forum (Wef),,,,,,,,,SUBMITTED,598.0
+255,1255,World Plastics Council,,,,,,,,,SUBMITTED,599.0
+256,1256,World Wildlife Fund (WWF),,,,,,,,,SUBMITTED,600.0
+257,1257,World Wildlife Fund US,,,,,,,,,SUBMITTED,601.0
+258,1258,the Government of Japan,,,,,,,,,SUBMITTED,602.0
+259,1259,the Food and Agriculture Organization of the United Nations (FAO),,,,,,,,,SUBMITTED,603.0
