@@ -12,7 +12,7 @@ FROM (
     SELECT st.geo, st.topic, count(st.geo) FROM (
         SELECT c.iso_code AS geo, topic
         FROM v_topic vt
-        LEFT JOIN country c ON c.iso_code = CAST(vt.json->>'country' AS text)
+        LEFT JOIN country c ON c.id = CAST(vt.json->>'country' AS int)
         WHERE vt.geo_coverage_iso_code is NOT NULL
         AND topic = 'stakeholder'
         GROUP BY geo, topic, vt.json->>'id'

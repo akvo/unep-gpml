@@ -25,7 +25,7 @@
       (are [expected value] (= expected (valid? value))
         true "technology,project"
         true "financing_resource,event"
-        true "people,event,policy"
+        true "stakeholder,event,policy"
         true (str/join "," topics)
         false "resource"
         false "technology,"
@@ -76,7 +76,7 @@
            {:approved false
             :search-text "eco"
             :geo-coverage #{"USA"}
-            :topic #{"project" "event" "technology" "financing_resource" "people"
+            :topic #{"project" "event" "technology" "financing_resource"
                      "technical_resource" "action_plan" "policy"}})))
 
   (testing "Topics for approved users unchanged"
