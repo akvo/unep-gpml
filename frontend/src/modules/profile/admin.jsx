@@ -189,7 +189,12 @@ const AdminSection = ({
                           )
                         ) : (
                           <Button
-                            type="primary"
+                            disabled={item.type.toLowerCase() === "policy"}
+                            type={
+                              item.type.toLowerCase() === "policy"
+                                ? "default"
+                                : "primary"
+                            }
                             onClick={review(item, "APPROVED")}
                             loading={approveLoading === item}
                           >
