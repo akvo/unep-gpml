@@ -5,6 +5,8 @@
             [gpml.db.country :as db.country]
             [gpml.pg-util]))
 
+(declare map-counts)
+
 (hugsql/def-db-fns "gpml/db/landing.sql")
 
 (def topic-counts
@@ -13,7 +15,7 @@
        (apply merge)))
 
 (defn map-counts-explicit [conn]
-  (let [counts (gpml.db.landing/map-counts conn)]
+  (let [counts (map-counts conn)]
     (map #(merge-with + {:iso_code (:iso_code %)} topic-counts (:counts %)) counts)))
 
 (defn map-counts-include-all-countries [conn]
