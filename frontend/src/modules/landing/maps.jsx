@@ -188,7 +188,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
             {({ geographies }) =>
               geographies.map((geo) => {
                 const curr = data.find(
-                  (i) => i.isoCode === geo.properties.MAPCLR
+                  (i) => i.isoCode === geo.properties.MAP_COLOR
                 );
 
                 return (
@@ -200,17 +200,17 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                     strokeOpacity="0.5"
                     cursor="pointer"
                     fill={
-                      country?.isoCode === geo.properties.MAPCLR
+                      country?.isoCode === geo.properties.MAP_COLOR
                         ? "#84b4cc"
                         : selected
-                        ? geo.properties.MAPCLR === selected
+                        ? geo.properties.MAP_COLOR === selected
                           ? "#84b4cc"
                           : fillColor(curr ? curr[topic] : 0)
                         : fillColor(curr ? curr[topic] : 0)
                     }
                     onMouseEnter={() => {
-                      const { MAPLAB, MAPCLR } = geo.properties;
-                      setSelected(MAPCLR);
+                      const { MAP_LABEL, MAP_COLOR } = geo.properties;
+                      setSelected(MAP_COLOR);
                       setContent(
                         <ToolTipContent data={curr} geo={geo.properties} />
                       );
@@ -220,7 +220,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                       setSelected(null);
                     }}
                     onClick={() => {
-                      clickEvents(geo.properties.MAPCLR);
+                      clickEvents(geo.properties.MAP_COLOR);
                     }}
                   />
                 );
