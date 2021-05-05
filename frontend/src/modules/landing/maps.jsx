@@ -15,7 +15,6 @@ import {
 } from "@ant-design/icons";
 import { topicNames, tTypes } from "../../utils/misc";
 
-const lakes = "/unep-gpml-lakes.topo.json";
 const geoUrl = "/unep-gpml.topo.json";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
 const { innerWidth, innerHeight } = window;
@@ -33,7 +32,7 @@ const unsettledTerritoryIsoCode = [
 const ToolTipContent = ({ data, geo }) => {
   return (
     <div className="map-tooltip">
-      <h3>{geo.MAPLAB}</h3>
+      <h3>{geo.MAP_LABEL}</h3>
       <ul>
         {tTypes.map((topic) => (
           <li key={topic}>
@@ -210,11 +209,13 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                     stroke="#79B0CC"
                     strokeWidth="0.2"
                     strokeOpacity="0.5"
-                    cursor="pointer"
+                    cursor={geo.properties.ISO3CD !== null ? "pointer" : ""}
                     fill={
-                      unsettledTerritoryIsoCode.includes(
-                        geo.properties.MAP_COLOR
-                      )
+                      geo.properties.ISO3CD === null
+                        ? "#3f8ec6"
+                        : unsettledTerritoryIsoCode.includes(
+                            geo.properties.MAP_COLOR
+                          )
                         ? "#cecece"
                         : country?.isoCode === geo.properties.MAP_COLOR
                         ? "#84b4cc"
@@ -226,34 +227,24 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                     }
                     onMouseEnter={() => {
                       const { MAP_LABEL, MAP_COLOR } = geo.properties;
-                      setSelected(MAP_COLOR);
-                      setContent(
-                        <ToolTipContent data={curr} geo={geo.properties} />
-                      );
+                      if (geo.properties.ISO3CD !== null) {
+                        setSelected(MAP_COLOR);
+                        setContent(
+                          <ToolTipContent data={curr} geo={geo.properties} />
+                        );
+                      }
                     }}
                     onMouseLeave={() => {
                       setContent("");
                       setSelected(null);
                     }}
                     onClick={() => {
-                      clickEvents(geo.properties.MAP_COLOR);
+                      geo.properties.ISO3CD !== null &&
+                        unsettledTerritoryIsoCode.includes(
+                          geo.properties.MAP_COLOR
+                        ) &&
+                        clickEvents(geo.properties.MAP_COLOR);
                     }}
-                  />
-                );
-              })
-            }
-          </Geographies>
-          <Geographies geography={lakes}>
-            {({ geographies }) =>
-              geographies.map((geo) => {
-                return (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    stroke="#226799"
-                    strokeWidth="0.2"
-                    strokeOpacity="0.5"
-                    fill="#3f8ec6"
                   />
                 );
               })
