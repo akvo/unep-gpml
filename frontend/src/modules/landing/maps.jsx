@@ -16,10 +16,19 @@ import {
 import { topicNames, tTypes } from "../../utils/misc";
 
 const lakes = "/unep-gpml-lakes.topo.json";
-const unsettledTerritory = "/unep-gpml-unsettled-territory.topo.json";
 const geoUrl = "/unep-gpml.topo.json";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
 const { innerWidth, innerHeight } = window;
+const unsettledTerritoryIsoCode = [
+  "xJL",
+  "xAB",
+  "xAC",
+  "xJK",
+  "xPI",
+  "xSI",
+  "xSR",
+  "xxx",
+];
 
 const ToolTipContent = ({ data, geo }) => {
   return (
@@ -72,6 +81,7 @@ const Legend = ({ data }) => {
 };
 
 const Maps = ({ data, topic, clickEvents, country }) => {
+  const mapMaxZoom = 4;
   const [selected, setSelected] = useState(null);
   const [content, setContent] = useState("");
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
@@ -152,6 +162,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
         </Tooltip>
         <Tooltip title="zoom in">
           <Button
+            disabled={position.zoom >= mapMaxZoom}
             type="secondary"
             icon={<ZoomInOutlined />}
             onClick={() => {
@@ -178,6 +189,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
         style={{ position: "absolute" }}
       >
         <ZoomableGroup
+          maxZoom={mapMaxZoom}
           zoom={position.zoom}
           center={position.coordinates}
           onMoveEnd={(x) => {
@@ -200,7 +212,11 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                     strokeOpacity="0.5"
                     cursor="pointer"
                     fill={
-                      country?.isoCode === geo.properties.MAP_COLOR
+                      unsettledTerritoryIsoCode.includes(
+                        geo.properties.MAP_COLOR
+                      )
+                        ? "#cecece"
+                        : country?.isoCode === geo.properties.MAP_COLOR
                         ? "#84b4cc"
                         : selected
                         ? geo.properties.MAP_COLOR === selected
@@ -238,22 +254,6 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                     strokeWidth="0.2"
                     strokeOpacity="0.5"
                     fill="#3f8ec6"
-                  />
-                );
-              })
-            }
-          </Geographies>
-          <Geographies geography={unsettledTerritory}>
-            {({ geographies }) =>
-              geographies.map((geo) => {
-                return (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    stroke="#898989"
-                    strokeWidth="0.2"
-                    strokeOpacity="0.5"
-                    fill="#cecece"
                   />
                 );
               })
