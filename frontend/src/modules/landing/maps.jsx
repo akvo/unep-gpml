@@ -201,6 +201,10 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                 const curr = data.find(
                   (i) => i.isoCode === geo.properties.MAP_COLOR
                 );
+                const isLake = geo.properties.ISO3CD === null;
+                const isUnsettled = unsettledTerritoryIsoCode.includes(
+                  geo.properties.MAP_COLOR
+                );
 
                 return (
                   <Geography
@@ -209,13 +213,11 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                     stroke="#79B0CC"
                     strokeWidth="0.2"
                     strokeOpacity="0.5"
-                    cursor={geo.properties.ISO3CD !== null ? "pointer" : ""}
+                    cursor={!isLake ? "pointer" : ""}
                     fill={
-                      geo.properties.ISO3CD === null
+                      isLake
                         ? "#3f8ec6"
-                        : unsettledTerritoryIsoCode.includes(
-                            geo.properties.MAP_COLOR
-                          )
+                        : isUnsettled
                         ? "#cecece"
                         : country?.isoCode === geo.properties.MAP_COLOR
                         ? "#84b4cc"
@@ -227,7 +229,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                     }
                     onMouseEnter={() => {
                       const { MAP_LABEL, MAP_COLOR } = geo.properties;
-                      if (geo.properties.ISO3CD !== null) {
+                      if (!isLake) {
                         setSelected(MAP_COLOR);
                         setContent(
                           <ToolTipContent data={curr} geo={geo.properties} />
@@ -239,10 +241,8 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                       setSelected(null);
                     }}
                     onClick={() => {
-                      geo.properties.ISO3CD !== null &&
-                        unsettledTerritoryIsoCode.includes(
-                          geo.properties.MAP_COLOR
-                        ) &&
+                      !isLake &&
+                        !isUnsettled &&
                         clickEvents(geo.properties.MAP_COLOR);
                     }}
                   />
