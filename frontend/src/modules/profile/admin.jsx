@@ -187,16 +187,20 @@ const AdminSection = ({
                               </Button>
                             </Tooltip>
                           )
+                        ) : item.type === "policy" ? (
+                          <Tooltip title="Policies are imported from Law division system">
+                            <Button
+                              type="secondary"
+                              disabled={true}
+                              onClick={review(item, "APPROVED")}
+                            >
+                              Approve
+                            </Button>
+                          </Tooltip>
                         ) : (
                           <Button
-                            disabled={item.type.toLowerCase() === "policy"}
-                            type={
-                              item.type.toLowerCase() === "policy"
-                                ? "default"
-                                : "primary"
-                            }
+                            type="primary"
                             onClick={review(item, "APPROVED")}
-                            loading={approveLoading === item}
                           >
                             Approve
                           </Button>
