@@ -216,7 +216,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                     cursor={!isLake ? "pointer" : ""}
                     fill={
                       isLake
-                        ? "#3f8ec6"
+                        ? "#eaf6fd"
                         : isUnsettled
                         ? "#cecece"
                         : country?.isoCode === geo.properties.MAP_COLOR
