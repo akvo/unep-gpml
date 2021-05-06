@@ -105,3 +105,26 @@ Dummy data is used for UI test with live data and to simplify the process of acc
   (submit-dummy-event db "test@akvo.org" "Testing Profile")
 ```
 For further detail, please check: [dummy.clj](https://github.com/akvo/unep-gpml/blob/6698da2c9fbac2679ec54a5998860d67f064f578/backend/dev/src/gpml/seeder/dummy.clj) file
+
+
+## Generate Countries List & Id Mapping 
+
+To generate countries list & id mapping, we need to have this two files:
+* `./frontend/public/unep-gpml.topo.json`
+* `./backend/dev/resources/files/countries.json` (the old countries list)
+
+Then from the root folder `./unep-gpml/` execute:
+
+```bash
+docker run \
+    --rm \
+    --volume "$(pwd):/data" \
+    --workdir /data \
+    amancevice/pandas:1.2.4-alpine \
+    python ./doc/countries.py
+```
+
+That command will generate two files:
+* `./backend/dev/resources/files/new_countries.json`
+* `./backend/dev/resources/files/new_countries_mapping.json`
+

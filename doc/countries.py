@@ -3,7 +3,7 @@ import json
 pd.options.display.max_rows = 999
 
 #Create new_countries.json
-countries = open('../frontend/public/unep-gpml.topo.json')
+countries = open('./frontend/public/unep-gpml.topo.json')
 countries = json.loads(countries.read())
 
 countries = [x['properties'] for x in countries['objects']['Country_Polygon']['geometries']]
@@ -30,12 +30,12 @@ countries = countries[countries['name'].notnull()]
 countries['id'] = countries['id'].astype(int)
 countries = countries.sort_values('id').reset_index(drop=True)
 
-countries.drop(columns=['label']).to_json('../backend/dev/resources/files/new_countries.json', orient='records', indent=2)
+countries.drop(columns=['label']).to_json('./backend/dev/resources/files/new_countries.json', orient='records', indent=2)
 print("File new_countries.json created!")
 
 
 #Map countries old id into new id {old : new}
-old = open('../backend/dev/resources/files/countries.json')
+old = open('./backend/dev/resources/files/countries.json')
 old = json.loads(old.read())
 old = pd.DataFrame(old)
 
@@ -59,7 +59,7 @@ def mappingId(df):
 
 countries['mapping'] = countries.apply(mappingId, axis=1)
 
-with open('../backend/dev/resources/files/new_countries_mapping.json', 'w') as outfile:
+with open('./backend/dev/resources/files/new_countries_mapping.json', 'w') as outfile:
     json.dump(mapping, outfile)
 print("File new_countries_mapping.json created!")
 
