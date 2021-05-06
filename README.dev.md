@@ -27,6 +27,33 @@ This will make the necessary changes in `./db/docker-entrypoint-initdb.d/001-ini
 and push those changes.
 
 
+## Merge GeoJSON file
+
+Before Simplifying GeoJSON to TopoJSON file, we need to merge 3 GEOJSON files into single file. For processing that
+merged file, we use [GDAL](https://gdal.org/).
+
+Assuming you have access to that 3 files:
+* `Countries_Separated_with_associated_territories.geojson`
+* `Major Lakes.geojson`
+* `Unsettled Territory.geojson`
+then move to the folder where you have the files and execute:
+
+```bash
+docker run \
+    --rm \
+    --volume "$(pwd):/data" \
+    --workdir /data \
+    osgeo/gdal:alpine-small-3.3.0 \
+    ogr2ogr merged.geojson Countries_Separated_with_associated_territories.geojson && \
+    sudo chown -R "$(whoami)":"$(whoami)" merged.geojson && \
+    ogr2ogr -update -append merged.geojson Major\ Lakes.geojson -nln Countries_Separated_with_associated_territories && \
+    ogr2ogr -update -append merged.geojson Unsettled\ Territory.geojson -nln Countries_Separated_with_associated_territories && \
+    mv merged.geojson Country_Polygon.json
+```
+
+We run the `ogr2ogr` command with the proper arguments. This will generate a single merged file (`Country_Polygon.json`).
+
+
 ## Simplifying GeoJSON to TopoJSON
 
 We use a *simplified* version of the UNEP approved map. For processing that simplification we use

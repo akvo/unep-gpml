@@ -201,7 +201,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                 const curr = data.find(
                   (i) => i.isoCode === geo.properties.MAP_COLOR
                 );
-                const isLake = geo.properties.ISO3CD === null;
+                const isLake = typeof geo.properties?.ISO3CD === "undefined";
                 const isUnsettled = unsettledTerritoryIsoCode.includes(
                   geo.properties.MAP_COLOR
                 );
