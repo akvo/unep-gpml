@@ -193,8 +193,8 @@ const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
 };
 
 const AddInitiative = ({ ...props }) => {
-  const minHeightContainer = innerHeight * 0.8 < 650 ? 650 : innerHeight * 0.8;
-  const minHeightCard = innerHeight * 0.75 < 650 ? 645 : innerHeight * 0.75;
+  const minHeightContainer = innerHeight * 0.8;
+  const minHeightCard = innerHeight * 0.75;
   const { data } = initiativeData.useState();
   const { countries, organisations, tags } = UIStore.currentState;
   const [formSchema, setFormSchema] = useState({
@@ -391,7 +391,7 @@ const AddInitiative = ({ ...props }) => {
                 <Card
                   style={{
                     paddingTop: 0,
-                    paddingBottom: 0,
+                    paddingBottom: "275px",
                     paddingRight: "24px",
                     paddingLeft: "30px",
                     minHeight: `${minHeightCard}px`,
