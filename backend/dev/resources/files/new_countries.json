@@ -1,0 +1,1983 @@
+[
+  {
+    "id":4,
+    "iso_code":"AFG",
+    "name":"Afghanistan",
+    "territory":"AFG",
+    "description":"Member State"
+  },
+  {
+    "id":8,
+    "iso_code":"ALB",
+    "name":"Albania",
+    "territory":"ALB",
+    "description":"Member State"
+  },
+  {
+    "id":12,
+    "iso_code":"DZA",
+    "name":"Algeria",
+    "territory":"DZA",
+    "description":"Member State"
+  },
+  {
+    "id":16,
+    "iso_code":"ASM",
+    "name":"American Samoa",
+    "territory":"USA",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":20,
+    "iso_code":"AND",
+    "name":"Andorra",
+    "territory":"AND",
+    "description":"Member State"
+  },
+  {
+    "id":24,
+    "iso_code":"AGO",
+    "name":"Angola",
+    "territory":"AGO",
+    "description":"Member State"
+  },
+  {
+    "id":28,
+    "iso_code":"ATG",
+    "name":"Antigua and Barbuda",
+    "territory":"ATG",
+    "description":"Member State"
+  },
+  {
+    "id":31,
+    "iso_code":"AZE",
+    "name":"Azerbaijan",
+    "territory":"AZE",
+    "description":"Member State"
+  },
+  {
+    "id":32,
+    "iso_code":"ARG",
+    "name":"Argentina",
+    "territory":"ARG",
+    "description":"Member State"
+  },
+  {
+    "id":36,
+    "iso_code":"AUS",
+    "name":"Australia",
+    "territory":"AUS",
+    "description":"Member State"
+  },
+  {
+    "id":40,
+    "iso_code":"AUT",
+    "name":"Austria",
+    "territory":"AUT",
+    "description":"Member State"
+  },
+  {
+    "id":44,
+    "iso_code":"BHS",
+    "name":"Bahamas",
+    "territory":"BHS",
+    "description":"Member State"
+  },
+  {
+    "id":48,
+    "iso_code":"BHR",
+    "name":"Bahrain",
+    "territory":"BHR",
+    "description":"Member State"
+  },
+  {
+    "id":50,
+    "iso_code":"BGD",
+    "name":"Bangladesh",
+    "territory":"BGD",
+    "description":"Member State"
+  },
+  {
+    "id":51,
+    "iso_code":"ARM",
+    "name":"Armenia",
+    "territory":"ARM",
+    "description":"Member State"
+  },
+  {
+    "id":52,
+    "iso_code":"BRB",
+    "name":"Barbados",
+    "territory":"BRB",
+    "description":"Member State"
+  },
+  {
+    "id":56,
+    "iso_code":"BEL",
+    "name":"Belgium",
+    "territory":"BEL",
+    "description":"Member State"
+  },
+  {
+    "id":60,
+    "iso_code":"BMU",
+    "name":"Bermuda",
+    "territory":"GBR",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":64,
+    "iso_code":"BTN",
+    "name":"Bhutan",
+    "territory":"BTN",
+    "description":"Member State"
+  },
+  {
+    "id":68,
+    "iso_code":"BOL",
+    "name":"Bolivia (Plurinational State of)",
+    "territory":"BOL",
+    "description":"Member State"
+  },
+  {
+    "id":70,
+    "iso_code":"BIH",
+    "name":"Bosnia and Herzegovina",
+    "territory":"BIH",
+    "description":"Member State"
+  },
+  {
+    "id":72,
+    "iso_code":"BWA",
+    "name":"Botswana",
+    "territory":"BWA",
+    "description":"Member State"
+  },
+  {
+    "id":76,
+    "iso_code":"BRA",
+    "name":"Brazil",
+    "territory":"BRA",
+    "description":"Member State"
+  },
+  {
+    "id":84,
+    "iso_code":"BLZ",
+    "name":"Belize",
+    "territory":"BLZ",
+    "description":"Member State"
+  },
+  {
+    "id":90,
+    "iso_code":"SLB",
+    "name":"Solomon Islands",
+    "territory":"SLB",
+    "description":"Member State"
+  },
+  {
+    "id":92,
+    "iso_code":"VGB",
+    "name":"British Virgin Islands",
+    "territory":"GBR",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":96,
+    "iso_code":"BRN",
+    "name":"Brunei Darussalam",
+    "territory":"BRN",
+    "description":"Member State"
+  },
+  {
+    "id":100,
+    "iso_code":"BGR",
+    "name":"Bulgaria",
+    "territory":"BGR",
+    "description":"Member State"
+  },
+  {
+    "id":104,
+    "iso_code":"MMR",
+    "name":"Myanmar",
+    "territory":"MMR",
+    "description":"Member State"
+  },
+  {
+    "id":108,
+    "iso_code":"BDI",
+    "name":"Burundi",
+    "territory":"BDI",
+    "description":"Member State"
+  },
+  {
+    "id":112,
+    "iso_code":"BLR",
+    "name":"Belarus",
+    "territory":"BLR",
+    "description":"Member State"
+  },
+  {
+    "id":116,
+    "iso_code":"KHM",
+    "name":"Cambodia",
+    "territory":"KHM",
+    "description":"Member State"
+  },
+  {
+    "id":120,
+    "iso_code":"CMR",
+    "name":"Cameroon",
+    "territory":"CMR",
+    "description":"Member State"
+  },
+  {
+    "id":124,
+    "iso_code":"CAN",
+    "name":"Canada",
+    "territory":"CAN",
+    "description":"Member State"
+  },
+  {
+    "id":132,
+    "iso_code":"CPV",
+    "name":"Cabo Verde",
+    "territory":"CPV",
+    "description":"Member State"
+  },
+  {
+    "id":136,
+    "iso_code":"CYM",
+    "name":"Cayman Islands",
+    "territory":"GBR",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":140,
+    "iso_code":"CAF",
+    "name":"Central African Republic",
+    "territory":"CAF",
+    "description":"Member State"
+  },
+  {
+    "id":144,
+    "iso_code":"LKA",
+    "name":"Sri Lanka",
+    "territory":"LKA",
+    "description":"Member State"
+  },
+  {
+    "id":148,
+    "iso_code":"TCD",
+    "name":"Chad",
+    "territory":"TCD",
+    "description":"Member State"
+  },
+  {
+    "id":152,
+    "iso_code":"CHL",
+    "name":"Chile",
+    "territory":"CHL",
+    "description":"Member State"
+  },
+  {
+    "id":156,
+    "iso_code":"CHN",
+    "name":"China",
+    "territory":"CHN",
+    "description":"Member State"
+  },
+  {
+    "id":162,
+    "iso_code":"CXR",
+    "name":"Christmas Island",
+    "territory":"AUS",
+    "description":"Territory"
+  },
+  {
+    "id":166,
+    "iso_code":"CCK",
+    "name":"Cocos (Keeling) Islands",
+    "territory":"AUS",
+    "description":"Territory"
+  },
+  {
+    "id":170,
+    "iso_code":"COL",
+    "name":"Colombia",
+    "territory":"COL",
+    "description":"Member State"
+  },
+  {
+    "id":174,
+    "iso_code":"COM",
+    "name":"Comoros",
+    "territory":"COM",
+    "description":"Member State"
+  },
+  {
+    "id":175,
+    "iso_code":"MYT",
+    "name":"Mayotte",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":178,
+    "iso_code":"COG",
+    "name":"Congo",
+    "territory":"COG",
+    "description":"Member State"
+  },
+  {
+    "id":180,
+    "iso_code":"COD",
+    "name":"Democratic Republic of the Congo",
+    "territory":"COD",
+    "description":"Member State"
+  },
+  {
+    "id":184,
+    "iso_code":"COK",
+    "name":"Cook Islands",
+    "territory":"NZL",
+    "description":"Territory"
+  },
+  {
+    "id":188,
+    "iso_code":"CRI",
+    "name":"Costa Rica",
+    "territory":"CRI",
+    "description":"Member State"
+  },
+  {
+    "id":191,
+    "iso_code":"HRV",
+    "name":"Croatia",
+    "territory":"HRV",
+    "description":"Member State"
+  },
+  {
+    "id":192,
+    "iso_code":"CUB",
+    "name":"Cuba",
+    "territory":"CUB",
+    "description":"Member State"
+  },
+  {
+    "id":196,
+    "iso_code":"CYP",
+    "name":"Cyprus",
+    "territory":"CYP",
+    "description":"Member State"
+  },
+  {
+    "id":203,
+    "iso_code":"CZE",
+    "name":"Czechia",
+    "territory":"CZE",
+    "description":"Member State"
+  },
+  {
+    "id":204,
+    "iso_code":"BEN",
+    "name":"Benin",
+    "territory":"BEN",
+    "description":"Member State"
+  },
+  {
+    "id":208,
+    "iso_code":"DNK",
+    "name":"Denmark",
+    "territory":"DNK",
+    "description":"Member State"
+  },
+  {
+    "id":212,
+    "iso_code":"DMA",
+    "name":"Dominica",
+    "territory":"DMA",
+    "description":"Member State"
+  },
+  {
+    "id":214,
+    "iso_code":"DOM",
+    "name":"Dominican Republic",
+    "territory":"DOM",
+    "description":"Member State"
+  },
+  {
+    "id":218,
+    "iso_code":"ECU",
+    "name":"Ecuador",
+    "territory":"ECU",
+    "description":"Member State"
+  },
+  {
+    "id":222,
+    "iso_code":"SLV",
+    "name":"El Salvador",
+    "territory":"SLV",
+    "description":"Member State"
+  },
+  {
+    "id":226,
+    "iso_code":"GNQ",
+    "name":"Equatorial Guinea",
+    "territory":"GNQ",
+    "description":"Member State"
+  },
+  {
+    "id":231,
+    "iso_code":"ETH",
+    "name":"Ethiopia",
+    "territory":"ETH",
+    "description":"Member State"
+  },
+  {
+    "id":232,
+    "iso_code":"ERI",
+    "name":"Eritrea",
+    "territory":"ERI",
+    "description":"Member State"
+  },
+  {
+    "id":233,
+    "iso_code":"EST",
+    "name":"Estonia",
+    "territory":"EST",
+    "description":"Member State"
+  },
+  {
+    "id":234,
+    "iso_code":"FRO",
+    "name":"Faroe Islands",
+    "territory":"DNK",
+    "description":"Territory"
+  },
+  {
+    "id":238,
+    "iso_code":"FLK",
+    "name":"Falkland Islands (Malvinas)",
+    "territory":"GBR",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":239,
+    "iso_code":"SGS",
+    "name":"South Georgia and the South Sandwich Islands",
+    "territory":"GBR",
+    "description":"Territory"
+  },
+  {
+    "id":242,
+    "iso_code":"FJI",
+    "name":"Fiji",
+    "territory":"FJI",
+    "description":"Member State"
+  },
+  {
+    "id":246,
+    "iso_code":"FIN",
+    "name":"Finland",
+    "territory":"FIN",
+    "description":"Member State"
+  },
+  {
+    "id":248,
+    "iso_code":"ALA",
+    "name":"\u00c5land Islands",
+    "territory":"FIN",
+    "description":"Territory"
+  },
+  {
+    "id":250,
+    "iso_code":"FRA",
+    "name":"France",
+    "territory":"FRA",
+    "description":"Member State"
+  },
+  {
+    "id":254,
+    "iso_code":"GUF",
+    "name":"French Guiana",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":258,
+    "iso_code":"PYF",
+    "name":"French Polynesia",
+    "territory":"FRA",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":262,
+    "iso_code":"DJI",
+    "name":"Djibouti",
+    "territory":"DJI",
+    "description":"Member State"
+  },
+  {
+    "id":266,
+    "iso_code":"GAB",
+    "name":"Gabon",
+    "territory":"GAB",
+    "description":"Member State"
+  },
+  {
+    "id":268,
+    "iso_code":"GEO",
+    "name":"Georgia",
+    "territory":"GEO",
+    "description":"Member State"
+  },
+  {
+    "id":270,
+    "iso_code":"GMB",
+    "name":"Gambia",
+    "territory":"GMB",
+    "description":"Member State"
+  },
+  {
+    "id":276,
+    "iso_code":"DEU",
+    "name":"Germany",
+    "territory":"DEU",
+    "description":"Member State"
+  },
+  {
+    "id":288,
+    "iso_code":"GHA",
+    "name":"Ghana",
+    "territory":"GHA",
+    "description":"Member State"
+  },
+  {
+    "id":292,
+    "iso_code":"GIB",
+    "name":"Gibraltar",
+    "territory":"GBR",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":296,
+    "iso_code":"KIR",
+    "name":"Kiribati",
+    "territory":"KIR",
+    "description":"Member State"
+  },
+  {
+    "id":300,
+    "iso_code":"GRC",
+    "name":"Greece",
+    "territory":"GRC",
+    "description":"Member State"
+  },
+  {
+    "id":304,
+    "iso_code":"GRL",
+    "name":"Greenland",
+    "territory":"DNK",
+    "description":"Territory"
+  },
+  {
+    "id":308,
+    "iso_code":"GRD",
+    "name":"Grenada",
+    "territory":"GRD",
+    "description":"Member State"
+  },
+  {
+    "id":312,
+    "iso_code":"GLP",
+    "name":"Guadeloupe",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":316,
+    "iso_code":"GUM",
+    "name":"Guam",
+    "territory":"USA",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":320,
+    "iso_code":"GTM",
+    "name":"Guatemala",
+    "territory":"GTM",
+    "description":"Member State"
+  },
+  {
+    "id":324,
+    "iso_code":"GIN",
+    "name":"Guinea",
+    "territory":"GIN",
+    "description":"Member State"
+  },
+  {
+    "id":328,
+    "iso_code":"GUY",
+    "name":"Guyana",
+    "territory":"GUY",
+    "description":"Member State"
+  },
+  {
+    "id":332,
+    "iso_code":"HTI",
+    "name":"Haiti",
+    "territory":"HTI",
+    "description":"Member State"
+  },
+  {
+    "id":334,
+    "iso_code":"HMD",
+    "name":"Heard Island and McDonald Islands",
+    "territory":"AUS",
+    "description":"Territory"
+  },
+  {
+    "id":336,
+    "iso_code":"VAT",
+    "name":"Holy See",
+    "territory":"VAT",
+    "description":"The City of Vatican"
+  },
+  {
+    "id":340,
+    "iso_code":"HND",
+    "name":"Honduras",
+    "territory":"HND",
+    "description":"Member State"
+  },
+  {
+    "id":344,
+    "iso_code":"HKG",
+    "name":"Hong Kong",
+    "territory":"CHN",
+    "description":"Special Region or Province"
+  },
+  {
+    "id":348,
+    "iso_code":"HUN",
+    "name":"Hungary",
+    "territory":"HUN",
+    "description":"Member State"
+  },
+  {
+    "id":352,
+    "iso_code":"ISL",
+    "name":"Iceland",
+    "territory":"ISL",
+    "description":"Member State"
+  },
+  {
+    "id":356,
+    "iso_code":"IND",
+    "name":"India",
+    "territory":"IND",
+    "description":"Member State"
+  },
+  {
+    "id":360,
+    "iso_code":"IDN",
+    "name":"Indonesia",
+    "territory":"IDN",
+    "description":"Member State"
+  },
+  {
+    "id":364,
+    "iso_code":"IRN",
+    "name":"Iran (Islamic Republic of)",
+    "territory":"IRN",
+    "description":"Member State"
+  },
+  {
+    "id":368,
+    "iso_code":"IRQ",
+    "name":"Iraq",
+    "territory":"IRQ",
+    "description":"Member State"
+  },
+  {
+    "id":372,
+    "iso_code":"IRL",
+    "name":"Ireland",
+    "territory":"IRL",
+    "description":"Member State"
+  },
+  {
+    "id":376,
+    "iso_code":"ISR",
+    "name":"Israel",
+    "territory":"ISR",
+    "description":"Member State"
+  },
+  {
+    "id":380,
+    "iso_code":"ITA",
+    "name":"Italy",
+    "territory":"ITA",
+    "description":"Member State"
+  },
+  {
+    "id":384,
+    "iso_code":"CIV",
+    "name":"C\u00f4te d'Ivoire",
+    "territory":"CIV",
+    "description":"Member State"
+  },
+  {
+    "id":388,
+    "iso_code":"JAM",
+    "name":"Jamaica",
+    "territory":"JAM",
+    "description":"Member State"
+  },
+  {
+    "id":392,
+    "iso_code":"JPN",
+    "name":"Japan",
+    "territory":"JPN",
+    "description":"Member State"
+  },
+  {
+    "id":398,
+    "iso_code":"KAZ",
+    "name":"Kazakhstan",
+    "territory":"KAZ",
+    "description":"Member State"
+  },
+  {
+    "id":400,
+    "iso_code":"JOR",
+    "name":"Jordan",
+    "territory":"JOR",
+    "description":"Member State"
+  },
+  {
+    "id":404,
+    "iso_code":"KEN",
+    "name":"Kenya",
+    "territory":"KEN",
+    "description":"Member State"
+  },
+  {
+    "id":408,
+    "iso_code":"PRK",
+    "name":"Democratic People's Republic of Korea",
+    "territory":"PRK",
+    "description":"Member State"
+  },
+  {
+    "id":410,
+    "iso_code":"KOR",
+    "name":"Republic of Korea",
+    "territory":"KOR",
+    "description":"Member State"
+  },
+  {
+    "id":414,
+    "iso_code":"KWT",
+    "name":"Kuwait",
+    "territory":"KWT",
+    "description":"Member State"
+  },
+  {
+    "id":417,
+    "iso_code":"KGZ",
+    "name":"Kyrgyzstan",
+    "territory":"KGZ",
+    "description":"Member State"
+  },
+  {
+    "id":418,
+    "iso_code":"LAO",
+    "name":"Lao People's Democratic Republic",
+    "territory":"LAO",
+    "description":"Member State"
+  },
+  {
+    "id":422,
+    "iso_code":"LBN",
+    "name":"Lebanon",
+    "territory":"LBN",
+    "description":"Member State"
+  },
+  {
+    "id":426,
+    "iso_code":"LSO",
+    "name":"Lesotho",
+    "territory":"LSO",
+    "description":"Member State"
+  },
+  {
+    "id":428,
+    "iso_code":"LVA",
+    "name":"Latvia",
+    "territory":"LVA",
+    "description":"Member State"
+  },
+  {
+    "id":430,
+    "iso_code":"LBR",
+    "name":"Liberia",
+    "territory":"LBR",
+    "description":"Member State"
+  },
+  {
+    "id":434,
+    "iso_code":"LBY",
+    "name":"Libya",
+    "territory":"LBY",
+    "description":"Member State"
+  },
+  {
+    "id":438,
+    "iso_code":"LIE",
+    "name":"Liechtenstein",
+    "territory":"LIE",
+    "description":"Member State"
+  },
+  {
+    "id":440,
+    "iso_code":"LTU",
+    "name":"Lithuania",
+    "territory":"LTU",
+    "description":"Member State"
+  },
+  {
+    "id":442,
+    "iso_code":"LUX",
+    "name":"Luxembourg",
+    "territory":"LUX",
+    "description":"Member State"
+  },
+  {
+    "id":446,
+    "iso_code":"MAC",
+    "name":"Macao",
+    "territory":"CHN",
+    "description":"Special Region or Province"
+  },
+  {
+    "id":450,
+    "iso_code":"MDG",
+    "name":"Madagascar",
+    "territory":"MDG",
+    "description":"Member State"
+  },
+  {
+    "id":454,
+    "iso_code":"MWI",
+    "name":"Malawi",
+    "territory":"MWI",
+    "description":"Member State"
+  },
+  {
+    "id":458,
+    "iso_code":"MYS",
+    "name":"Malaysia",
+    "territory":"MYS",
+    "description":"Member State"
+  },
+  {
+    "id":462,
+    "iso_code":"MDV",
+    "name":"Maldives",
+    "territory":"MDV",
+    "description":"Member State"
+  },
+  {
+    "id":466,
+    "iso_code":"MLI",
+    "name":"Mali",
+    "territory":"MLI",
+    "description":"Member State"
+  },
+  {
+    "id":470,
+    "iso_code":"MLT",
+    "name":"Malta",
+    "territory":"MLT",
+    "description":"Member State"
+  },
+  {
+    "id":474,
+    "iso_code":"MTQ",
+    "name":"Martinique",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":478,
+    "iso_code":"MRT",
+    "name":"Mauritania",
+    "territory":"MRT",
+    "description":"Member State"
+  },
+  {
+    "id":480,
+    "iso_code":"MUS",
+    "name":"Mauritius",
+    "territory":"MUS",
+    "description":"Member State"
+  },
+  {
+    "id":484,
+    "iso_code":"MEX",
+    "name":"Mexico",
+    "territory":"MEX",
+    "description":"Member State"
+  },
+  {
+    "id":492,
+    "iso_code":"MCO",
+    "name":"Monaco",
+    "territory":"MCO",
+    "description":"Member State"
+  },
+  {
+    "id":496,
+    "iso_code":"MNG",
+    "name":"Mongolia",
+    "territory":"MNG",
+    "description":"Member State"
+  },
+  {
+    "id":498,
+    "iso_code":"MDA",
+    "name":"Moldova",
+    "territory":"MDA",
+    "description":"Member State"
+  },
+  {
+    "id":499,
+    "iso_code":"MNE",
+    "name":"Montenegro",
+    "territory":"MNE",
+    "description":"Member State"
+  },
+  {
+    "id":500,
+    "iso_code":"MSR",
+    "name":"Montserrat",
+    "territory":"GBR",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":504,
+    "iso_code":"MAR",
+    "name":"Morocco",
+    "territory":"MAR",
+    "description":"Member State"
+  },
+  {
+    "id":508,
+    "iso_code":"MOZ",
+    "name":"Mozambique",
+    "territory":"MOZ",
+    "description":"Member State"
+  },
+  {
+    "id":512,
+    "iso_code":"OMN",
+    "name":"Oman",
+    "territory":"OMN",
+    "description":"Member State"
+  },
+  {
+    "id":516,
+    "iso_code":"NAM",
+    "name":"Namibia",
+    "territory":"NAM",
+    "description":"Member State"
+  },
+  {
+    "id":520,
+    "iso_code":"NRU",
+    "name":"Nauru",
+    "territory":"NRU",
+    "description":"Member State"
+  },
+  {
+    "id":524,
+    "iso_code":"NPL",
+    "name":"Nepal",
+    "territory":"NPL",
+    "description":"Member State"
+  },
+  {
+    "id":528,
+    "iso_code":"NLD",
+    "name":"Netherlands",
+    "territory":"NLD",
+    "description":"Member State"
+  },
+  {
+    "id":531,
+    "iso_code":"CUW",
+    "name":"Cura\u00e7ao",
+    "territory":"NLD",
+    "description":"Territory"
+  },
+  {
+    "id":533,
+    "iso_code":"ABW",
+    "name":"Aruba",
+    "territory":"NLD",
+    "description":"Territory"
+  },
+  {
+    "id":534,
+    "iso_code":"SXM",
+    "name":"Sint Maarten",
+    "territory":"NLD",
+    "description":"Territory"
+  },
+  {
+    "id":535,
+    "iso_code":"BES",
+    "name":"Bonaire",
+    "territory":"NLD",
+    "description":"Territory"
+  },
+  {
+    "id":540,
+    "iso_code":"NCL",
+    "name":"New Caledonia",
+    "territory":"FRA",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":548,
+    "iso_code":"VUT",
+    "name":"Vanuatu",
+    "territory":"VUT",
+    "description":"Member State"
+  },
+  {
+    "id":554,
+    "iso_code":"NZL",
+    "name":"New Zealand",
+    "territory":"NZL",
+    "description":"Member State"
+  },
+  {
+    "id":558,
+    "iso_code":"NIC",
+    "name":"Nicaragua",
+    "territory":"NIC",
+    "description":"Member State"
+  },
+  {
+    "id":562,
+    "iso_code":"NER",
+    "name":"Niger",
+    "territory":"NER",
+    "description":"Member State"
+  },
+  {
+    "id":566,
+    "iso_code":"NGA",
+    "name":"Nigeria",
+    "territory":"NGA",
+    "description":"Member State"
+  },
+  {
+    "id":570,
+    "iso_code":"NIU",
+    "name":"Niue",
+    "territory":"NZL",
+    "description":"Territory"
+  },
+  {
+    "id":574,
+    "iso_code":"NFK",
+    "name":"Norfolk Island",
+    "territory":"AUS",
+    "description":"Territory"
+  },
+  {
+    "id":578,
+    "iso_code":"NOR",
+    "name":"Norway",
+    "territory":"NOR",
+    "description":"Member State"
+  },
+  {
+    "id":580,
+    "iso_code":"MNP",
+    "name":"Northern Mariana Is. (USA)",
+    "territory":"USA",
+    "description":"Territory"
+  },
+  {
+    "id":583,
+    "iso_code":"FSM",
+    "name":"Micronesia (Federated States of)",
+    "territory":"FSM",
+    "description":"Member State"
+  },
+  {
+    "id":584,
+    "iso_code":"MHL",
+    "name":"Marshall Islands",
+    "territory":"MHL",
+    "description":"Member State"
+  },
+  {
+    "id":585,
+    "iso_code":"PLW",
+    "name":"Palau",
+    "territory":"PLW",
+    "description":"Member State"
+  },
+  {
+    "id":586,
+    "iso_code":"PAK",
+    "name":"Pakistan",
+    "territory":"PAK",
+    "description":"Member State"
+  },
+  {
+    "id":591,
+    "iso_code":"PAN",
+    "name":"Panama",
+    "territory":"PAN",
+    "description":"Member State"
+  },
+  {
+    "id":598,
+    "iso_code":"PNG",
+    "name":"Papua New Guinea",
+    "territory":"PNG",
+    "description":"Member State"
+  },
+  {
+    "id":600,
+    "iso_code":"PRY",
+    "name":"Paraguay",
+    "territory":"PRY",
+    "description":"Member State"
+  },
+  {
+    "id":604,
+    "iso_code":"PER",
+    "name":"Peru",
+    "territory":"PER",
+    "description":"Member State"
+  },
+  {
+    "id":608,
+    "iso_code":"PHL",
+    "name":"Philippines",
+    "territory":"PHL",
+    "description":"Member State"
+  },
+  {
+    "id":612,
+    "iso_code":"PCN",
+    "name":"Pitcairn",
+    "territory":"GBR",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":616,
+    "iso_code":"POL",
+    "name":"Poland",
+    "territory":"POL",
+    "description":"Member State"
+  },
+  {
+    "id":620,
+    "iso_code":"PRT",
+    "name":"Portugal",
+    "territory":"PRT",
+    "description":"Member State"
+  },
+  {
+    "id":624,
+    "iso_code":"GNB",
+    "name":"Guinea-Bissau",
+    "territory":"GNB",
+    "description":"Member State"
+  },
+  {
+    "id":626,
+    "iso_code":"TLS",
+    "name":"Timor-Leste",
+    "territory":"TLS",
+    "description":"Member State"
+  },
+  {
+    "id":630,
+    "iso_code":"PRI",
+    "name":"Puerto Rico (USA)",
+    "territory":"USA",
+    "description":"Territory"
+  },
+  {
+    "id":634,
+    "iso_code":"QAT",
+    "name":"Qatar",
+    "territory":"QAT",
+    "description":"Member State"
+  },
+  {
+    "id":638,
+    "iso_code":"REU",
+    "name":"R\u00e9union",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":642,
+    "iso_code":"ROU",
+    "name":"Romania",
+    "territory":"ROU",
+    "description":"Member State"
+  },
+  {
+    "id":643,
+    "iso_code":"RUS",
+    "name":"Russian Federation",
+    "territory":"RUS",
+    "description":"Member State"
+  },
+  {
+    "id":646,
+    "iso_code":"RWA",
+    "name":"Rwanda",
+    "territory":"RWA",
+    "description":"Member State"
+  },
+  {
+    "id":652,
+    "iso_code":"BLM",
+    "name":"Saint Barth\u00e9lemy",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":654,
+    "iso_code":"SHN",
+    "name":"Saint Helena",
+    "territory":"GBR",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":659,
+    "iso_code":"KNA",
+    "name":"Saint Kitts and Nevis",
+    "territory":"KNA",
+    "description":"Member State"
+  },
+  {
+    "id":660,
+    "iso_code":"AIA",
+    "name":"Anguilla",
+    "territory":"GBR",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":662,
+    "iso_code":"LCA",
+    "name":"Saint Lucia",
+    "territory":"LCA",
+    "description":"Member State"
+  },
+  {
+    "id":663,
+    "iso_code":"MAF",
+    "name":"Saint Martin",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":666,
+    "iso_code":"SPM",
+    "name":"Saint Pierre et Miquelon",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":670,
+    "iso_code":"VCT",
+    "name":"Saint Vincent and the Grenadines",
+    "territory":"VCT",
+    "description":"Member State"
+  },
+  {
+    "id":674,
+    "iso_code":"SMR",
+    "name":"San Marino",
+    "territory":"SMR",
+    "description":"Member State"
+  },
+  {
+    "id":678,
+    "iso_code":"STP",
+    "name":"Sao Tome and Principe",
+    "territory":"STP",
+    "description":"Member State"
+  },
+  {
+    "id":682,
+    "iso_code":"SAU",
+    "name":"Saudi Arabia",
+    "territory":"SAU",
+    "description":"Member State"
+  },
+  {
+    "id":686,
+    "iso_code":"SEN",
+    "name":"Senegal",
+    "territory":"SEN",
+    "description":"Member State"
+  },
+  {
+    "id":688,
+    "iso_code":"SRB",
+    "name":"Serbia",
+    "territory":"SRB",
+    "description":"Member State"
+  },
+  {
+    "id":690,
+    "iso_code":"SYC",
+    "name":"Seychelles",
+    "territory":"SYC",
+    "description":"Member State"
+  },
+  {
+    "id":694,
+    "iso_code":"SLE",
+    "name":"Sierra Leone",
+    "territory":"SLE",
+    "description":"Member State"
+  },
+  {
+    "id":702,
+    "iso_code":"SGP",
+    "name":"Singapore",
+    "territory":"SGP",
+    "description":"Member State"
+  },
+  {
+    "id":703,
+    "iso_code":"SVK",
+    "name":"Slovakia",
+    "territory":"SVK",
+    "description":"Member State"
+  },
+  {
+    "id":704,
+    "iso_code":"VNM",
+    "name":"Viet Nam",
+    "territory":"VNM",
+    "description":"Member State"
+  },
+  {
+    "id":705,
+    "iso_code":"SVN",
+    "name":"Slovenia",
+    "territory":"SVN",
+    "description":"Member State"
+  },
+  {
+    "id":706,
+    "iso_code":"SOM",
+    "name":"Somalia",
+    "territory":"SOM",
+    "description":"Member State"
+  },
+  {
+    "id":710,
+    "iso_code":"ZAF",
+    "name":"South Africa",
+    "territory":"ZAF",
+    "description":"Member State"
+  },
+  {
+    "id":716,
+    "iso_code":"ZWE",
+    "name":"Zimbabwe",
+    "territory":"ZWE",
+    "description":"Member State"
+  },
+  {
+    "id":724,
+    "iso_code":"ESP",
+    "name":"Spain",
+    "territory":"ESP",
+    "description":"Member State"
+  },
+  {
+    "id":728,
+    "iso_code":"SSD",
+    "name":"South Sudan",
+    "territory":"SSD",
+    "description":"Member State"
+  },
+  {
+    "id":729,
+    "iso_code":"SDN",
+    "name":"Sudan",
+    "territory":"SDN",
+    "description":"Member State"
+  },
+  {
+    "id":732,
+    "iso_code":"ESH",
+    "name":"Western Sahara",
+    "territory":"ESH",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":740,
+    "iso_code":"SUR",
+    "name":"Suriname",
+    "territory":"SUR",
+    "description":"Member State"
+  },
+  {
+    "id":744,
+    "iso_code":"SJM",
+    "name":"Svalbard and Jan Mayen Islands",
+    "territory":"NOR",
+    "description":"Territory"
+  },
+  {
+    "id":748,
+    "iso_code":"SWZ",
+    "name":"Eswatini",
+    "territory":"SWZ",
+    "description":"Member State"
+  },
+  {
+    "id":752,
+    "iso_code":"SWE",
+    "name":"Sweden",
+    "territory":"SWE",
+    "description":"Member State"
+  },
+  {
+    "id":756,
+    "iso_code":"CHE",
+    "name":"Switzerland",
+    "territory":"CHE",
+    "description":"Member State"
+  },
+  {
+    "id":760,
+    "iso_code":"SYR",
+    "name":"Syrian Arab Republic",
+    "territory":"SYR",
+    "description":"Member State"
+  },
+  {
+    "id":762,
+    "iso_code":"TJK",
+    "name":"Tajikistan",
+    "territory":"TJK",
+    "description":"Member State"
+  },
+  {
+    "id":764,
+    "iso_code":"THA",
+    "name":"Thailand",
+    "territory":"THA",
+    "description":"Member State"
+  },
+  {
+    "id":768,
+    "iso_code":"TGO",
+    "name":"Togo",
+    "territory":"TGO",
+    "description":"Member State"
+  },
+  {
+    "id":772,
+    "iso_code":"TKL",
+    "name":"Tokelau",
+    "territory":"NZL",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":776,
+    "iso_code":"TON",
+    "name":"Tonga",
+    "territory":"TON",
+    "description":"Member State"
+  },
+  {
+    "id":780,
+    "iso_code":"TTO",
+    "name":"Trinidad and Tobago",
+    "territory":"TTO",
+    "description":"Member State"
+  },
+  {
+    "id":784,
+    "iso_code":"ARE",
+    "name":"United Arab Emirates",
+    "territory":"ARE",
+    "description":"Member State"
+  },
+  {
+    "id":788,
+    "iso_code":"TUN",
+    "name":"Tunisia",
+    "territory":"TUN",
+    "description":"Member State"
+  },
+  {
+    "id":792,
+    "iso_code":"TUR",
+    "name":"Turkey",
+    "territory":"TUR",
+    "description":"Member State"
+  },
+  {
+    "id":795,
+    "iso_code":"TKM",
+    "name":"Turkmenistan",
+    "territory":"TKM",
+    "description":"Member State"
+  },
+  {
+    "id":796,
+    "iso_code":"TCA",
+    "name":"Turks and Caicos Islands",
+    "territory":"GBR",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":798,
+    "iso_code":"TUV",
+    "name":"Tuvalu",
+    "territory":"TUV",
+    "description":"Member State"
+  },
+  {
+    "id":800,
+    "iso_code":"UGA",
+    "name":"Uganda",
+    "territory":"UGA",
+    "description":"Member State"
+  },
+  {
+    "id":804,
+    "iso_code":"UKR",
+    "name":"Ukraine",
+    "territory":"UKR",
+    "description":"Member State"
+  },
+  {
+    "id":807,
+    "iso_code":"MKD",
+    "name":"North Macedonia",
+    "territory":"MKD",
+    "description":"Member State"
+  },
+  {
+    "id":818,
+    "iso_code":"EGY",
+    "name":"Egypt",
+    "territory":"EGY",
+    "description":"Member State"
+  },
+  {
+    "id":826,
+    "iso_code":"GBR",
+    "name":"United Kingdom of Great Britain & Northern Ireland",
+    "territory":"GBR",
+    "description":"Member State"
+  },
+  {
+    "id":831,
+    "iso_code":"GGY",
+    "name":"Guernsey",
+    "territory":"GBR",
+    "description":"Territory"
+  },
+  {
+    "id":832,
+    "iso_code":"JEY",
+    "name":"Jersey",
+    "territory":"GBR",
+    "description":"Territory"
+  },
+  {
+    "id":833,
+    "iso_code":"IMN",
+    "name":"Isle of Man",
+    "territory":"GBR",
+    "description":"Territory"
+  },
+  {
+    "id":834,
+    "iso_code":"TZA",
+    "name":"United Republic of Tanzania",
+    "territory":"TZA",
+    "description":"Member State"
+  },
+  {
+    "id":840,
+    "iso_code":"USA",
+    "name":"United States of America",
+    "territory":"USA",
+    "description":"Member State"
+  },
+  {
+    "id":850,
+    "iso_code":"VIR",
+    "name":"United States Virgin Islands",
+    "territory":"USA",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":854,
+    "iso_code":"BFA",
+    "name":"Burkina Faso",
+    "territory":"BFA",
+    "description":"Member State"
+  },
+  {
+    "id":858,
+    "iso_code":"URY",
+    "name":"Uruguay",
+    "territory":"URY",
+    "description":"Member State"
+  },
+  {
+    "id":860,
+    "iso_code":"UZB",
+    "name":"Uzbekistan",
+    "territory":"UZB",
+    "description":"Member State"
+  },
+  {
+    "id":862,
+    "iso_code":"VEN",
+    "name":"Venezuela",
+    "territory":"VEN",
+    "description":"Member State"
+  },
+  {
+    "id":876,
+    "iso_code":"WLF",
+    "name":"Wallis and Futuna",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":882,
+    "iso_code":"WSM",
+    "name":"Samoa",
+    "territory":"WSM",
+    "description":"Member State"
+  },
+  {
+    "id":887,
+    "iso_code":"YEM",
+    "name":"Yemen",
+    "territory":"YEM",
+    "description":"Member State"
+  },
+  {
+    "id":894,
+    "iso_code":"ZMB",
+    "name":"Zambia",
+    "territory":"ZMB",
+    "description":"Member State"
+  },
+  {
+    "id":999,
+    "iso_code":"TWN",
+    "name":"Taiwan",
+    "territory":"CHN",
+    "description":"Special Region or Province"
+  },
+  {
+    "id":1011,
+    "iso_code":"PRT",
+    "name":"Azores Islands",
+    "territory":"PRT",
+    "description":"Territory"
+  },
+  {
+    "id":1012,
+    "iso_code":"ESP",
+    "name":"Canary Islands",
+    "territory":"ESP",
+    "description":"Territory"
+  },
+  {
+    "id":1013,
+    "iso_code":"xAC",
+    "name":"Aksai Chin",
+    "territory":"xAC",
+    "description":"Undetermined"
+  },
+  {
+    "id":1014,
+    "iso_code":"xAP",
+    "name":"Arunachal Pradesh",
+    "territory":"IND",
+    "description":"Undetermined"
+  },
+  {
+    "id":1015,
+    "iso_code":"AUS",
+    "name":"Ashmore and Cartier Islands",
+    "territory":"AUS",
+    "description":"Territory"
+  },
+  {
+    "id":1016,
+    "iso_code":"UMI",
+    "name":"Baker Island",
+    "territory":"USA",
+    "description":"Territory"
+  },
+  {
+    "id":1017,
+    "iso_code":"ATF",
+    "name":"Bassas da India",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":1018,
+    "iso_code":"VEN",
+    "name":"Bird Island",
+    "territory":"VEN",
+    "description":"Territory"
+  },
+  {
+    "id":1019,
+    "iso_code":"BVT",
+    "name":"Bouvet Island",
+    "territory":"NOR",
+    "description":"Territory"
+  },
+  {
+    "id":1021,
+    "iso_code":"xxx",
+    "name":"China\/India",
+    "territory":"xxx",
+    "description":"Undetermined"
+  },
+  {
+    "id":1023,
+    "iso_code":"PYF",
+    "name":"Clipperton Island",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":1025,
+    "iso_code":"ATF",
+    "name":"Europa Island",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":1027,
+    "iso_code":"PSE",
+    "name":"Gaza",
+    "territory":"PSE",
+    "description":"Occupied Palestinian Territory"
+  },
+  {
+    "id":1029,
+    "iso_code":"xAB",
+    "name":"Abyei",
+    "territory":"xAB",
+    "description":"Undetermined"
+  },
+  {
+    "id":1031,
+    "iso_code":"UMI",
+    "name":"Howland Island",
+    "territory":"USA",
+    "description":"Territory"
+  },
+  {
+    "id":1032,
+    "iso_code":"UMI",
+    "name":"Jarvis Island",
+    "territory":"USA",
+    "description":"Territory"
+  },
+  {
+    "id":1033,
+    "iso_code":"UMI",
+    "name":"Johnston Atoll",
+    "territory":"USA",
+    "description":"Territory"
+  },
+  {
+    "id":1034,
+    "iso_code":"ATF",
+    "name":"Juan de Nova Island",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":1035,
+    "iso_code":"UMI",
+    "name":"Kingman Reef",
+    "territory":"USA",
+    "description":"Territory"
+  },
+  {
+    "id":1036,
+    "iso_code":"xRI",
+    "name":"Kuril Islands",
+    "territory":"RUS",
+    "description":"Undetermined"
+  },
+  {
+    "id":1038,
+    "iso_code":"PRT",
+    "name":"Madeira Island",
+    "territory":"PRT",
+    "description":"Territory"
+  },
+  {
+    "id":1039,
+    "iso_code":"UMI",
+    "name":"Midway Islands",
+    "territory":"USA",
+    "description":"Territory"
+  },
+  {
+    "id":1040,
+    "iso_code":"UMI",
+    "name":"Navassa Island",
+    "territory":"USA",
+    "description":"Territory"
+  },
+  {
+    "id":1041,
+    "iso_code":"UMI",
+    "name":"Palmyra Atoll",
+    "territory":"USA",
+    "description":"Territory"
+  },
+  {
+    "id":1042,
+    "iso_code":"xPI",
+    "name":"Paracel Islands",
+    "territory":"xPI",
+    "description":"Undetermined"
+  },
+  {
+    "id":1043,
+    "iso_code":"xSR",
+    "name":"Scarborough Reef",
+    "territory":"xSR",
+    "description":"Undetermined"
+  },
+  {
+    "id":1044,
+    "iso_code":"xSK",
+    "name":"Senkaku Islands",
+    "territory":"JPN",
+    "description":"Undetermined"
+  },
+  {
+    "id":1046,
+    "iso_code":"xSI",
+    "name":"Spratly Islands",
+    "territory":"xSI",
+    "description":"Undetermined"
+  },
+  {
+    "id":1047,
+    "iso_code":"ATF",
+    "name":"Tromelin Island",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":1048,
+    "iso_code":"UMI",
+    "name":"Wake Island",
+    "territory":"USA",
+    "description":"Territory"
+  },
+  {
+    "id":1049,
+    "iso_code":"PSE",
+    "name":"West Bank",
+    "territory":"PSE",
+    "description":"Occupied Palestinian Territory"
+  },
+  {
+    "id":1052,
+    "iso_code":"xJK",
+    "name":"Jammu and Kashmir",
+    "territory":"xJK",
+    "description":"Undetermined"
+  },
+  {
+    "id":1055,
+    "iso_code":"ATA",
+    "name":"Antarctica",
+    "territory":"ATA",
+    "description":"Antarctica"
+  },
+  {
+    "id":1068,
+    "iso_code":"BES",
+    "name":"Saba",
+    "territory":"NLD",
+    "description":"Territory"
+  },
+  {
+    "id":1069,
+    "iso_code":"BES",
+    "name":"Sint Eustatius",
+    "territory":"NLD",
+    "description":"Territory"
+  },
+  {
+    "id":1080,
+    "iso_code":"MUS",
+    "name":"Chagos Archipelago",
+    "territory":"MUS",
+    "description":"Territory"
+  },
+  {
+    "id":1082,
+    "iso_code":"ATF",
+    "name":"Glorioso Islands",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":1097,
+    "iso_code":"ATF",
+    "name":"French Southern Territories",
+    "territory":"FRA",
+    "description":"Territory"
+  },
+  {
+    "id":1098,
+    "iso_code":"xUK",
+    "name":"Akrotiri",
+    "territory":"GBR",
+    "description":"Territory"
+  },
+  {
+    "id":1099,
+    "iso_code":"xUK",
+    "name":"Dekelia",
+    "territory":"GBR",
+    "description":"Territory"
+  }
+]
