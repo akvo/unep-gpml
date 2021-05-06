@@ -48,6 +48,15 @@
   (testing "Search is not empty"
     (is (= (browse/get-db-filter {:q "act"})
            {:search-text "act"})))
+  (testing "Search multiple keywords"
+    (is (= (browse/get-db-filter {:q "some test"})
+           {:search-text "some & test"})))
+  (testing "Trailing/leading/double spaces are trimmed"
+    (is (= (browse/get-db-filter {:q "  This   is a test  "})
+           {:search-text "This & is & a & test"})))
+  (testing "Ampersand is removed"
+    (is (= (browse/get-db-filter {:q "&&test&&"})
+           {:search-text "test"})))
   (testing "None is empty"
     (is (= (browse/get-db-filter {:q "eco"
                                   :country "USA"

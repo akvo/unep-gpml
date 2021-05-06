@@ -58,9 +58,9 @@
          (when (seq topic)
            {:topic (set (str/split topic #","))})
          (when (seq q)
-           {:search-text (-> q
-                             (str/replace #"&" "")
-                             (str/replace #" " " & "))})))
+           {:search-text (->> (str/trim q)
+                              (re-seq #"\w+")
+                              (str/join " & "))})))
 
 (defn maybe-filter-private-topics [topics approved?]
   (or (and approved? topics)
