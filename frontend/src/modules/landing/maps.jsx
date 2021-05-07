@@ -243,7 +243,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                     }
                     onMouseEnter={() => {
                       const { MAP_LABEL, MAP_COLOR } = geo.properties;
-                      if (!isLake) {
+                      if (!isLake && MAP_LABEL !== null) {
                         setSelected(MAP_COLOR);
                         setContent(
                           <ToolTipContent data={curr} geo={geo.properties} />
