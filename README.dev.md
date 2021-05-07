@@ -27,6 +27,33 @@ This will make the necessary changes in `./db/docker-entrypoint-initdb.d/001-ini
 and push those changes.
 
 
+## Merge GeoJSON file
+
+Before Simplifying GeoJSON to TopoJSON file, we need to merge 3 GEOJSON files into single file. For processing that
+merged file, we use [GDAL](https://gdal.org/).
+
+Assuming you have access to that 3 files:
+* `Countries_Separated_with_associated_territories.geojson`
+* `Major Lakes.geojson`
+* `Unsettled Territory.geojson`
+then move to the folder where you have the files and execute:
+
+```bash
+docker run \
+    --rm \
+    --volume "$(pwd):/data" \
+    --workdir /data \
+    osgeo/gdal:alpine-small-3.3.0 \
+    ogr2ogr merged.geojson Countries_Separated_with_associated_territories.geojson && \
+    sudo chown -R "$(whoami)":"$(whoami)" merged.geojson && \
+    ogr2ogr -update -append merged.geojson Major\ Lakes.geojson -nln Countries_Separated_with_associated_territories && \
+    ogr2ogr -update -append merged.geojson Unsettled\ Territory.geojson -nln Countries_Separated_with_associated_territories && \
+    mv merged.geojson Country_Polygon.json
+```
+
+We run the `ogr2ogr` command with the proper arguments. This will generate a single merged file (`Country_Polygon.json`).
+
+
 ## Simplifying GeoJSON to TopoJSON
 
 We use a *simplified* version of the UNEP approved map. For processing that simplification we use
@@ -78,3 +105,41 @@ Dummy data is used for UI test with live data and to simplify the process of acc
   (submit-dummy-event db "test@akvo.org" "Testing Profile")
 ```
 For further detail, please check: [dummy.clj](https://github.com/akvo/unep-gpml/blob/6698da2c9fbac2679ec54a5998860d67f064f578/backend/dev/src/gpml/seeder/dummy.clj) file
+
+
+## Generate Countries List & Id Mapping 
+
+To generate countries list & id mapping, we need to have this two files:
+* `./frontend/public/unep-gpml.topo.json`
+* `./backend/dev/resources/files/countries.json` (the old countries list)
+
+Then from the root folder `./unep-gpml/` execute:
+
+```bash
+docker run \
+    --rm \
+    --volume "$(pwd):/data" \
+    --workdir /data \
+    amancevice/pandas:1.2.4-alpine \
+    python ./doc/countries.py
+```
+
+That command will generate two files:
+* `./backend/dev/resources/files/new_countries.json`
+* `./backend/dev/resources/files/new_countries_mapping.json`
+
+
+## Script to Filter Country Line Boundaries
+
+Assuming you have the `CountryLineBoundaries.geojson` file in `.doc` directory
+Then execute this command from root folder
+
+docker run \
+ --rm \
+ --volume "$(pwd):/data" \
+ --workdir /data \
+ amancevice/pandas:1.2.4-alpine \
+ python ./doc/filter_country_line_boundaries_value.py
+
+That will be generate a GeoJSON file (`./frontend/public/new_country_line_boundaries.geojson`)
+
