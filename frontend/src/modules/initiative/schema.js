@@ -1206,12 +1206,11 @@ export const schema = {
           properties: {
             S3_G4_33: {
               title:
-                "33. How many different groups and organisations (e.g.20 retailers, 150 schools) have you engaged with in total?",
+                "33. How many different groups and organisations have you engaged with in total?",
               type: "number",
             },
             S3_G4_34: {
-              title:
-                "34. How many stakeholders (number of individuals) have you engaged in total?",
+              title: "34. How many stakeholders have you engaged in total?",
               type: "number",
             },
           },

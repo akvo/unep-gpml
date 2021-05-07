@@ -280,10 +280,10 @@
     "S3_G4": {
       "classNames": "list-group-item",
       "S3_G4_33": {
-        "ui:placeholder": "Please estimate."
+        "ui:placeholder": "Please estimate e.g., 20 retailers, 150 schools"
       },
       "S3_G4_34": {
-        "ui:placeholder": "Please estimate."
+        "ui:placeholder": "Please estimate the total number of individuals engaged"
       },
       "ui:order": ["S3_G4_33", "S3_G4_34"]
     },
