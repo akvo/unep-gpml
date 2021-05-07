@@ -173,18 +173,21 @@
       "S3_G1_16": {
         "ui:placeholder": "Please select the name of the Implementing Entities.",
         "ui:widget": "select",
+        "ui:mode": "multiple",
         "ui:showSearch": true
       },
       "S3_G1_17": {},
       "S3_G1_18": {
         "ui:placeholder": "Please select the name of the Partner Entities involved.",
         "ui:widget": "select",
+        "ui:mode": "multiple",
         "ui:showSearch": true
       },
       "S3_G1_19": {},
       "S3_G1_20": {
         "ui:placeholder": "Please select the name of the Donor Entities.",
         "ui:widget": "select",
+        "ui:mode": "multiple",
         "ui:showSearch": true
       },
       "S3_G1_21": {},
