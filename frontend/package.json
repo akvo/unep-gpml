@@ -10,6 +10,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@vx/pattern": "^0.0.199",
     "antd": "^4.10.2",
     "auth0-lock": "^11.28.0",
     "axios": "^0.21.1",

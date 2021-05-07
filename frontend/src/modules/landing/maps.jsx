@@ -13,9 +13,11 @@ import {
   ZoomOutOutlined,
   FullscreenOutlined,
 } from "@ant-design/icons";
+import { PatternLines } from "@vx/pattern";
 import { topicNames, tTypes } from "../../utils/misc";
 
 const geoUrl = "/unep-gpml.topo.json";
+const lines = "/new_country_line_boundaries.geojson";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
 const { innerWidth, innerHeight } = window;
 const unsettledTerritoryIsoCode = [
@@ -187,6 +189,15 @@ const Maps = ({ data, topic, clickEvents, country }) => {
         height={mapPos.height}
         style={{ position: "absolute" }}
       >
+        <PatternLines
+          id="lines"
+          height={2}
+          width={2}
+          stroke="#a5a5a5"
+          strokeWidth={0.5}
+          background="#cecece"
+          orientation={["diagonal"]}
+        />
         <ZoomableGroup
           maxZoom={mapMaxZoom}
           zoom={position.zoom}
@@ -205,6 +216,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                 const isUnsettled = unsettledTerritoryIsoCode.includes(
                   geo.properties.MAP_COLOR
                 );
+                const isPattern = geo.properties.MAP_COLOR === "xAC";
 
                 return (
                   <Geography
@@ -212,13 +224,15 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                     geography={geo}
                     stroke="#79B0CC"
                     strokeWidth="0.2"
-                    strokeOpacity="0.5"
+                    strokeOpacity="0.8"
                     cursor={!isLake ? "pointer" : ""}
                     fill={
                       isLake
                         ? "#eaf6fd"
-                        : isUnsettled
+                        : isUnsettled && !isPattern
                         ? "#cecece"
+                        : isPattern
+                        ? "url(#lines)"
                         : country?.isoCode === geo.properties.MAP_COLOR
                         ? "#84b4cc"
                         : selected
@@ -245,6 +259,32 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                         !isUnsettled &&
                         clickEvents(geo.properties.MAP_COLOR);
                     }}
+                  />
+                );
+              })
+            }
+          </Geographies>
+          <Geographies geography={lines}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const isDashed =
+                  geo.properties?.Type &&
+                  geo.properties?.Type.toLowerCase().includes("dashed");
+                const isDotted =
+                  geo.properties?.Type &&
+                  geo.properties?.Type.toLowerCase().includes("dotted");
+
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    stroke={isDashed || isDotted ? "#3080a8" : "#79B0CC"}
+                    strokeDasharray={
+                      isDashed ? "0.5" : isDotted ? "0.2" : "none"
+                    }
+                    strokeWidth="0.2"
+                    strokeOpacity={isDashed || isDotted ? "1" : "0.2"}
+                    fill="none"
                   />
                 );
               })

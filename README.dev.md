@@ -128,3 +128,18 @@ That command will generate two files:
 * `./backend/dev/resources/files/new_countries.json`
 * `./backend/dev/resources/files/new_countries_mapping.json`
 
+
+## Script to Filter Country Line Boundaries
+
+Assuming you have the `CountryLineBoundaries.geojson` file in `.doc` directory
+Then execute this command from root folder
+
+docker run \
+ --rm \
+ --volume "$(pwd):/data" \
+ --workdir /data \
+ amancevice/pandas:1.2.4-alpine \
+ python ./doc/filter_country_line_boundaries_value.py
+
+That will be generate a GeoJSON file (`./frontend/public/new_country_line_boundaries.geojson`)
+
