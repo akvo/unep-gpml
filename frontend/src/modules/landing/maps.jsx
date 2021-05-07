@@ -191,10 +191,10 @@ const Maps = ({ data, topic, clickEvents, country }) => {
       >
         <PatternLines
           id="lines"
-          height={2}
-          width={2}
-          stroke="#a5a5a5"
-          strokeWidth={0.5}
+          height={3}
+          width={3}
+          stroke="#aaaaaa"
+          strokeWidth={0.8}
           background="#cecece"
           orientation={["diagonal"]}
         />
