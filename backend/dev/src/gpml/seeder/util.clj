@@ -109,3 +109,22 @@
                                    "project_action_detail"
                                    "project_country"
                                    "project_tag"]}))
+
+;; country updater
+(defn country-id-updater [db cache-id mapping-file]
+  (let [table (seeder.db/get-foreign-key db {:table "country"})
+        old-country-ids (get-id-from-json "countries.json")
+        new-map-list (mapv (fn [i] {:new_id (-> i second Integer.)
+                                    :old_id (-> i first name Integer.)})
+                           mapping-file)]
+    (write-cache table cache-id)
+    (doseq [query (:deps table)]
+      (seeder.db/drop-constraint db query)
+      (println (str "Updating " (:col query) " on " (:tbl query)))
+      (doseq [option new-map-list]
+        (seeder.db/update-foreign-value db (merge query option))))
+    (seeder.db/delete-rows db {:tbl "country"
+                               :ids old-country-ids
+                               :col "id"}))
+  (println (str "Ref country removed")))
+

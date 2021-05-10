@@ -85,8 +85,10 @@
   (let [sql (slurp "dev/src/gpml/seeder/truncate.sql")]
     (jdbc/execute! db [sql])))
 
-(defn seed-countries [db]
-  (jdbc/insert-multi! db :country (get-data "countries")))
+(defn seed-countries
+  ([db {:keys [old?]}]
+   (let [file (if old? "countries" "new_countries")]
+   (jdbc/insert-multi! db :country (get-data (str file))))))
 
 (defn seed-country-groups [db]
   (doseq [data (get-data "country_group")]
@@ -432,12 +434,15 @@
 (defn get-cache-id []
   (str (java.util.UUID/randomUUID) "-" (quot (System/currentTimeMillis) 1000)))
 
-(defn resync-country [db]
-  (let [cache-id (get-cache-id)]
-    (db.util/drop-constraint-country db cache-id)
-    (println "Re-seeding country...")
-    (seed-countries db)
-    (db.util/revert-constraint db cache-id)))
+(defn resync-country
+  ([db]
+   (resync-country db {:old? false}))
+  ([db opts]
+   (let [cache-id (get-cache-id)]
+     (db.util/drop-constraint-country db cache-id)
+     (println "Re-seeding country...")
+     (seed-countries db opts)
+     (db.util/revert-constraint db cache-id))))
 
 (defn resync-country-group [db]
   (let [cache-id (get-cache-id)]
@@ -488,6 +493,15 @@
     (println "Re-seeding project...")
     (seed-projects db)
     (db.util/revert-constraint db cache-id)))
+
+
+(defn updater-country [db]
+  (let [cache-id (get-cache-id)
+        mapping-file (get-data "new_countries_mapping")]
+    (db.util/country-id-updater db cache-id mapping-file)
+    (seed-countries db {:old false})
+    (db.util/revert-constraint db cache-id))
+  (resync-country-group db))
 
 (defn seed
   ([db {:keys [country? currency?
@@ -590,6 +604,11 @@
   (seed-action-details db)
   (resync-project db)
 
+  ;; update country id with new id
+  ;; should only run once, how to revert to old id?
+  ;; just run (resync-country db) !
+  (updater-country db)
+
   ;; get view table of topic
   (defn view-table-of [association]
     (->> (assoc association :v_topic_data (str "v_" (:topic association) "_data"))
@@ -638,8 +657,9 @@
                          set)]
       (set/difference r-countries countries)))
 
-
   (println "Technologies Geo Coverage")
   (doseq [item (geo-name-mimatches "technologies")]
     (println item))
+
+
   )

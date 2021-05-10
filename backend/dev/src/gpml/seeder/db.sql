@@ -20,6 +20,11 @@ where u.column_name = 'id'
   and u.table_name = :table
 GROUP BY tbl, tbl_seq
 
+-- :name update-foreign-value :! :1
+update :i:tbl
+set :i:col = :new_id
+where :i:col = :old_id;
+
 -- :name get-count :? :1
 select count(*) from :i:tbl
 
