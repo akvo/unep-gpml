@@ -23,10 +23,10 @@
         old-files (seeder/get-data "countries")
         new-countries (mapv #(:name %) new-files)
         mapping-file (seeder/get-data "new_countries_mapping")
-        old-ids (mapv #(Integer. (name (first %))) mapping-file) ]
+        old-ids (mapv #(-> % first name read-string) mapping-file) ]
     (testing "mapping is correct"
       (doseq [mapping mapping-file]
-        (let [old-id (-> mapping first name Integer.)
+        (let [old-id (-> mapping first name read-string)
               new-id (-> mapping second)
               new-file (filter #(= new-id (:id %)) new-files)
               old-file (filter #(= old-id (:id %)) old-files)]
@@ -91,3 +91,4 @@
         (let [new-me (db.stakeholder/stakeholder-by-email db me)]
           (testing "My new country id is changed"
             (is (= "IDN" (:country new-me)))))))))
+
