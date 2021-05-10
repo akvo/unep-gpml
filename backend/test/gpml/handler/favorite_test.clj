@@ -4,6 +4,7 @@
             [gpml.fixtures :as fixtures]
             [gpml.handler.favorite :as favorite]
             [gpml.seeder.main :as seeder]
+            [gpml.db.country :as db.country]
             [integrant.core :as ig]
             [malli.core :as malli]
             [ring.mock.request :as mock]))
@@ -24,7 +25,8 @@
         false {:topic "random" :topic_id 1 :association ["creator"]}))))
 
 (defn- new-stakeholder [db email]
-  (let [sth (db.stakeholder/new-stakeholder db
+  (let [country-id (-> (db.country/country-by-code db {:name "IDN"}) :id)
+        sth (db.stakeholder/new-stakeholder db
                                             {:picture "https://picsum.photos/200"
                                              :cv nil
                                              :title "Mr."
@@ -35,7 +37,7 @@
                                              :linked_in nil
                                              :twitter nil
                                              :url nil
-                                             :country 58
+                                             :country country-id
                                              :representation "test"
                                              :about "Lorem Ipsum"
                                              :geo_coverage_type nil

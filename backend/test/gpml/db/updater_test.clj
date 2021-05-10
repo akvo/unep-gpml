@@ -24,6 +24,7 @@
         new-countries (mapv #(:name %) new-files)
         mapping-file (seeder/get-data "new_countries_mapping")
         old-ids (mapv #(-> % first name read-string) mapping-file) ]
+    (seeder/seed-languages db)
     (testing "mapping is correct"
       (doseq [mapping mapping-file]
         (let [old-id (-> mapping first name read-string)
@@ -67,11 +68,13 @@
       (let [me (dummy/get-or-create-profile
                  db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
             country (db.country/country-by-code db {:name "IDN"})
+            event (dummy/submit-dummy-event db "test@akvo.org" "Testing Profile")
             _ (db.stakeholder/update-stakeholder db {:country (:id country)
                                                      :id (:id me)})
             me (db.stakeholder/stakeholder-by-email db me)
             ;; for updater
             cache-id (seeder/get-cache-id)]
+        (println event)
         (testing "create stakeholder with old-id"
           (is (= "IDN" (:country me))))
         (db.util/country-id-updater db cache-id mapping-file)
