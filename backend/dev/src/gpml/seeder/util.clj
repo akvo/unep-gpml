@@ -114,7 +114,7 @@
 (defn country-id-updater [db cache-id mapping-file]
   (let [table (seeder.db/get-foreign-key db {:table "country"})
         old-country-ids (get-id-from-json "countries.json")
-        new-map-list (mapv (fn [i] {:new_id (-> i second read-string)
+        new-map-list (mapv (fn [i] {:new_id (-> i second)
                                     :old_id (-> i first name read-string)})
                            mapping-file)]
     (write-cache table cache-id)
