@@ -134,12 +134,53 @@ That command will generate two files:
 Assuming you have the `CountryLineBoundaries.geojson` file in `.doc` directory
 Then execute this command from root folder
 
+```bash
 docker run \
- --rm \
- --volume "$(pwd):/data" \
- --workdir /data \
- amancevice/pandas:1.2.4-alpine \
- python ./doc/filter_country_line_boundaries_value.py
+       --rm \
+       --volume "$(pwd):/data" \
+       --workdir /data \
+       amancevice/pandas:1.2.4-alpine \
+       python ./doc/filter_country_line_boundaries_value.py
+```
 
 That will be generate a GeoJSON file (`./frontend/public/new_country_line_boundaries.geojson`)
 
+## Update ID of Country Table
+
+Based on the [new GeoJSON](https://drive.google.com/file/d/1_UURs6vXnTkNr7Bd-c4q1XoQnvHrTp-b/view?usp=sharing) (See also: [old GeoJson](https://drive.google.com/file/d/1bbF7GP9HGv5uXvYVwXit32xrN3HVz0eR/view?usp=sharing)), UNEP-Dev team create script to replace the ID of all the countries on the database which may affecting other rows in some other tables recorded that linked with country primary key.
+
+#### The scripts
+
+```clojure
+(:require [gpml.seeder.main :as seeder]
+          [duct.core :as duct])
+
+(duct/load-hierarchy)
+
+(defn- dev-system
+  []
+  (-> (duct/resource "gpml/config.edn")
+      (duct/read-config)
+      (duct/prep-config [:duct.profile/dev])))
+
+(def db (-> (dev-system)
+            (ig/init [:duct.database.sql/hikaricp])
+            :duct.database.sql/hikaricp
+            :spec))
+
+;; Example update country id
+(seeder/updater-country db)
+
+;; Example revert country id update
+(seeder/updater-country db {:revert? true})
+```
+
+#### Run as a jobs
+
+```bash
+export ts="$(date +%s)"
+sed "s/\${TIMESTAMP}/${ts}/" ci/k8s/update-country.yaml > "/tmp/update-country-${ts}.yml";
+kubectl apply -f "/tmp/update-country-${ts}.yml"
+```
+
+For further detail, please check: [updater_test.clj](https://github.com/akvo/unep-gpml/blob/main/backend/test/gpml/db/updater_test.clj)
