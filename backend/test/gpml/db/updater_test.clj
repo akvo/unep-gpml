@@ -68,16 +68,14 @@
       (let [me (dummy/get-or-create-profile
                  db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
             country (db.country/country-by-code db {:name "IDN"})
-            event (dummy/submit-dummy-event db "test@akvo.org" "Testing Profile")
             _ (db.stakeholder/update-stakeholder db {:country (:id country)
                                                      :id (:id me)})
             me (db.stakeholder/stakeholder-by-email db me)
             ;; for updater
             cache-id (seeder/get-cache-id)]
-        (println event)
         (testing "create stakeholder with old-id"
           (is (= "IDN" (:country me))))
-        (db.util/country-id-updater db cache-id mapping-file)
+        (db.util/country-id-updater db cache-id mapping-file {:revert? false})
         ;; Reseeding country with new file
         (seeder/seed-countries db {:old false})
         (let [new-id (db.country/country-by-code db {:name "IDN"})
@@ -95,3 +93,23 @@
           (testing "My new country id is changed"
             (is (= "IDN" (:country new-me)))))))))
 
+(deftest revert-update-country-test
+  (let [db (test-util/db-test-conn)
+        new-files (seeder/get-data "new_countries")
+        old-files (filter #(-> % :name str/trim not-empty) (seeder/get-data "countries"))
+        ;; seed countries with old id
+        _ (seeder/seed-countries db {:old true})
+        me (dummy/get-or-create-profile
+             db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
+        country (db.country/country-by-code db {:name "IDN"})
+        _ (db.stakeholder/update-stakeholder db {:country (:id country)
+                                                 :id (:id me)})
+        me (db.stakeholder/stakeholder-by-email db me)]
+    (seeder/updater-country db)
+    (testing "my country id is updated"
+      (is (= "IDN" (:country me)))
+      (is (= (count (db.country/all-countries db)) (count new-files))))
+    (seeder/updater-country db {:revert? true})
+    (testing "my country id is reversed"
+      (is (= "IDN" (:country me)))
+      (is (= (count (db.country/all-countries db)) (count old-files))))))

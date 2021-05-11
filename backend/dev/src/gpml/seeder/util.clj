@@ -1,6 +1,7 @@
 (ns gpml.seeder.util
   (:require [gpml.seeder.db :as seeder.db]
             [jsonista.core :as j]
+            [clojure.java.jdbc :as jdbc]
             [clojure.java.io :as io]))
 
 (def ^:private json-path "dev/resources/files/")
@@ -111,11 +112,10 @@
                                    "project_tag"]}))
 
 ;; country updater
-(defn country-id-updater [db cache-id mapping-file]
+(defn country-id-updater [db cache-id mapping-file {:keys [revert?]}]
   (let [table (seeder.db/get-foreign-key db {:table "country"})
-        old-country-ids (get-id-from-json "countries.json")
-        new-map-list (mapv (fn [i] {:new_id (-> i second)
-                                    :old_id (-> i first name read-string)})
+        new-map-list (mapv (fn [i] {:new_id (if revert? (-> i first name read-string) (-> i second))
+                                    :old_id (if revert? (-> i second) (-> i first name read-string))})
                            mapping-file)]
     (write-cache table cache-id)
     (doseq [query (:deps table)]
@@ -123,8 +123,7 @@
       (println (str "Updating " (:col query) " on " (:tbl query)))
       (doseq [option new-map-list]
         (seeder.db/update-foreign-value db (merge query option))))
-    (seeder.db/delete-rows db {:tbl "country"
-                               :ids old-country-ids
-                               :col "id"}))
-  (println (str "Ref country removed")))
+    (jdbc/execute! db ["TRUNCATE TABLE country_group_country"])
+    (jdbc/execute! db ["TRUNCATE TABLE country"])
+  (println (str "Ref country removed"))))
 

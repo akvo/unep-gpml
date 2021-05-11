@@ -85,10 +85,9 @@
   (let [sql (slurp "dev/src/gpml/seeder/truncate.sql")]
     (jdbc/execute! db [sql])))
 
-(defn seed-countries
-  ([db {:keys [old?]}]
+(defn seed-countries [db {:keys [old?]}]
    (let [file (if old? "countries" "new_countries")]
-   (jdbc/insert-multi! db :country (get-data (str file))))))
+   (jdbc/insert-multi! db :country (get-data (str file)))))
 
 (defn seed-country-groups [db]
   (doseq [data (get-data "country_group")]
@@ -494,14 +493,16 @@
     (seed-projects db)
     (db.util/revert-constraint db cache-id)))
 
-
-(defn updater-country [db]
+(defn updater-country
+  ([db]
+   (updater-country db {:revert? false}))
+  ([db opts]
   (let [cache-id (get-cache-id)
         mapping-file (get-data "new_countries_mapping")]
-    (db.util/country-id-updater db cache-id mapping-file)
-    (seed-countries db {:old false})
+    (db.util/country-id-updater db cache-id mapping-file opts)
+    (seed-countries db {:old? (:revert? opts)})
     (db.util/revert-constraint db cache-id))
-  (resync-country-group db))
+  (resync-country-group db)))
 
 (defn seed
   ([db {:keys [country? currency?
@@ -606,7 +607,8 @@
 
   ;; update country id with new id
   ;; should only run once, how to revert to old id?
-  ;; just run (resync-country db) !
+  ;; just run (updater-country db {:revert? true}) !
+  ;; we might need to resync all topics when we reverting
   (updater-country db)
 
   ;; get view table of topic
