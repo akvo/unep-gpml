@@ -2,7 +2,7 @@
 -- :doc Get paginated archived contents
 WITH
 archived AS (
-    SELECT 'profile' AS type, CONCAT(title, '. ', last_name,' ', first_name) as title, review_status, reviewed_at, reviewed_by, null as created_by
+    SELECT 'stakeholder' AS type, CONCAT(title, '. ', last_name,' ', first_name) as title, review_status, reviewed_at, reviewed_by, null as created_by
     FROM stakeholder where review_status <> 'SUBMITTED'
     UNION
     SELECT 'event' AS type, title, review_status, reviewed_at, reviewed_by, created_by
@@ -14,10 +14,10 @@ archived AS (
     SELECT 'policy' as type, original_title as title, review_status, reviewed_at, reviewed_by, created_by
     FROM policy where review_status <> 'SUBMITTED'
     UNION
-    SELECT type, title, review_status, reviewed_at, reviewed_by, created_by
+    SELECT REPLACE(LOWER(type), ' ', '_'), title, review_status, reviewed_at, reviewed_by, created_by
     FROM resource where review_status <> 'SUBMITTED'
     UNION
-    SELECT 'initiative' as type, replace(q2::text,'"','') as title, review_status, reviewed_at, reviewed_by, created_by
+    SELECT 'project' as type, replace(q2::text,'"','') as title, review_status, reviewed_at, reviewed_by, created_by
     FROM initiative where review_status <> 'SUBMITTED'
     ORDER BY reviewed_at DESC NULLS LAST
 ),

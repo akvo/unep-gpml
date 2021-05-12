@@ -17,6 +17,7 @@ import moment from "moment";
 import capitalize from "lodash/capitalize";
 import find from "lodash/find";
 import { ProfilePreview, GeneralPreview, InitiativePreview } from "./preview";
+import { topicNames } from "../../utils/misc";
 
 const ModalReject = ({ visible, close, reject, item }) => {
   return (
@@ -270,7 +271,7 @@ const AdminSection = ({
                 key={`collapse-archive-${index}`}
                 header={
                   <div className="row">
-                    <div className="col">{capitalize(item.type)}</div>
+                    <div className="col">{topicNames(item.type)}</div>
                     <div className="col">{item.title}</div>
                     <div className="col status">
                       {capitalize(item.reviewStatus)}
