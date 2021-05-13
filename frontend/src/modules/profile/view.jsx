@@ -17,6 +17,7 @@ import React, {
   Fragment,
 } from "react";
 import api from "../../utils/api";
+import { fetchArchiveData } from "./utils";
 import SignupForm from "../signup/signup-form";
 import AdminSection from "./admin";
 import "./styles.scss";
@@ -82,8 +83,8 @@ const ProfileView = ({ ...props }) => {
         setPendingItems(resp.data);
       })();
       (async function fetchData() {
-        const archive = await api.get("/archive");
-        setArchiveItems(archive.data);
+        const archive = await fetchArchiveData(1, 10);
+        setArchiveItems(archive);
       })();
     }
   }, [profile]);
