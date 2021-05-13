@@ -431,7 +431,7 @@ export const InitiativePreview = ({ item }) => {
         </li>
         <li>
           <div className="detail-title">Organisation</div>:
-          <div className="detail-content">{item?.organisation || "-"}</div>
+          <div className="detail-content">{item?.organisation?.[0]?.name || "-"}</div>
         </li>
         <li className="has-border">
           <p className="section-title">Geo Coverage</p>
