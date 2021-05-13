@@ -68,8 +68,8 @@
       ;; John and Bob, Exclude Justin
       (is (= 3 (-> resp :body :count)))
       (is (= 3 (count (-> resp :body :data))))
-      (is (= "profile" (-> resp :body :data first :type)))
-      (is (= "/submission/profile/10002" (-> resp :body :data first :preview)))
+      (is (= "stakeholder" (-> resp :body :data first :type)))
+      (is (= "/submission/stakeholder/10002" (-> resp :body :data first :preview)))
       (is (= "Mr. Doe Bob" (-> resp :body :data second :title)))
       (is (= "event" (-> resp :body :data last :type)))
       (is (= "justin@org" (-> resp :body :data last :created_by))))))

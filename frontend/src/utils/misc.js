@@ -52,7 +52,7 @@ export const topicNames = (topic) => {
   return names[humps.camelize(topic)];
 };
 
-const resourceSubTypes = new Set([
+export const resourceSubTypes = new Set([
   "financing_resource",
   "technical_resource",
   "action_plan",

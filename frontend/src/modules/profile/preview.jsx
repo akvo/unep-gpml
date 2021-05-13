@@ -4,6 +4,7 @@ import values from "lodash/values";
 import { UIStore } from "../../store";
 import imageNotFound from "../../images/image-not-found.png";
 import { languages } from "countries-list";
+import { topicNames, resourceSubTypes } from "../../utils/misc";
 
 const currencyFormat = (cur) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: cur });
@@ -80,7 +81,7 @@ export const GeneralPreview = ({ item }) => {
       </div>
       <ul>
         <li className="has-border">
-          <p className="section-title">{item.type} detail</p>
+          <p className="section-title">{topicNames(item.type)} detail</p>
         </li>
         <li>
           <div className="detail-title">Title</div>:
@@ -130,9 +131,9 @@ export const GeneralPreview = ({ item }) => {
           {item.type === "policy" && (
             <div className="detail-title">Abstract</div>
           )}
-          {["Financing Resource", "Technical Resource", "Action Plan"].includes(
-            item.type
-          ) && <div className="detail-title">Summary</div>}
+          {resourceSubTypes.has(item.type) && (
+            <div className="detail-title">Summary</div>
+          )}
           :
           <div className="detail-content">
             {item.description || item.summary || item.abstract || "-"}
@@ -160,7 +161,7 @@ export const GeneralPreview = ({ item }) => {
             </li>
           </>
         )}
-        {item.type === "Financing Resource" && (
+        {item.type === "financing_resource" && (
           <>
             <li>
               <div className="detail-title">Value</div>:
@@ -176,7 +177,7 @@ export const GeneralPreview = ({ item }) => {
             </li>
           </>
         )}
-        {["Financing Resource", "Action Plan"].includes(item.type) &&
+        {["financing_resource", "action_plan"].includes(item.type) &&
           [item.validFrom, item.validTo].map((x, i) => (
             <li key={"valid" + i}>
               <div className="detail-title">
@@ -190,9 +191,7 @@ export const GeneralPreview = ({ item }) => {
               </div>
             </li>
           ))}
-        {["Financing Resource", "Technical Resource", "Action Plan"].includes(
-          item.type
-        ) && (
+        {resourceSubTypes.has(item.type) && (
           <li>
             <div className="detail-title">Organisation</div>:
             <div className="detail-content">
@@ -431,7 +430,9 @@ export const InitiativePreview = ({ item }) => {
         </li>
         <li>
           <div className="detail-title">Organisation</div>:
-          <div className="detail-content">{item?.organisation?.[0]?.name || "-"}</div>
+          <div className="detail-content">
+            {item?.organisation?.[0]?.name || "-"}
+          </div>
         </li>
         <li className="has-border">
           <p className="section-title">Geo Coverage</p>

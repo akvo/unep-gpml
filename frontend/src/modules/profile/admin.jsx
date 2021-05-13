@@ -18,7 +18,7 @@ import moment from "moment";
 import capitalize from "lodash/capitalize";
 import find from "lodash/find";
 import { ProfilePreview, GeneralPreview, InitiativePreview } from "./preview";
-import { topicNames } from "../../utils/misc";
+import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
 
 const ModalReject = ({ visible, close, reject, item }) => {
   return (
@@ -59,13 +59,9 @@ const AdminSection = ({
   const review = (item, review_status) => () => {
     setApproveLoading(item);
     const itemType =
-      item.type === "profile"
-        ? "stakeholder"
-        : ["Technical Resource", "Financing Resource", "Action Plan"].includes(
-            item.type
-          )
-        ? "resource"
-        : item.type;
+      item.type === "project"
+        ? "initiative"
+        : resourceTypeToTopicType(item.type);
     api
       .put("submission", {
         id: item.id,
@@ -124,12 +120,8 @@ const AdminSection = ({
 
   const DetailCollapse = ({ data, item }) => {
     switch (item.type) {
-      case "profile":
-        return <ProfilePreview item={{ ...data, ...item }} />;
       case "stakeholder":
         return <ProfilePreview item={{ ...data, ...item }} />;
-      case "initiative":
-        return <InitiativePreview item={{ ...data, ...item }} />;
       case "project":
         return <InitiativePreview item={{ ...data, ...item }} />;
       default:
@@ -165,7 +157,7 @@ const AdminSection = ({
                 key={item.preview}
                 header={
                   <div className="row">
-                    <div className="col">{capitalize(item.type)}</div>
+                    <div className="col">{topicNames(item.type)}</div>
                     <div className="col">{item.title}</div>
                     <div
                       className="col"
