@@ -311,7 +311,7 @@ export const ProfilePreview = ({ item }) => {
           </li>
           <li>
             <div className="detail-title">Email</div>:
-            <div className="detail-content">{item.createdBy}</div>
+            <div className="detail-content">{item.email}</div>
           </li>
           <li>
             <div className="detail-title">Linkedin</div>:

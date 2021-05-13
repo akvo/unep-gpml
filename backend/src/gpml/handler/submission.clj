@@ -1,5 +1,6 @@
 (ns gpml.handler.submission
   (:require [gpml.db.submission :as db.submission]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.constants :as constants]
             [integrant.core :as ig]
             [gpml.auth0-util :as auth0]
@@ -58,7 +59,8 @@
 
 (defmethod ig/init-key :gpml.handler.submission/get-detail [_ {:keys [db]}]
   (fn [{{:keys [path]} :parameters}]
-    (let [submission (:submission path)
+    (let [conn (:spec db)
+          submission (:submission path)
           initiative? (and (= submission "project") (> (:id path) 10000))
           table-name(cond
                       (contains? (set constants/resource-types) submission)
@@ -67,7 +69,11 @@
                       "initiative"
                       :else
                       (str "v_" submission "_data"))
-          detail (db.submission/detail (:spec db) (conj path {:table-name table-name}))
+          detail (db.submission/detail conn (conj path {:table-name table-name}))
+          detail (if (= submission "stakeholder")
+                   (merge detail
+                          (select-keys (db.stakeholder/stakeholder-by-id conn path)[:email]))
+                   detail)
           detail (if initiative? (remap-initiative detail)
                      detail)]
       (resp/response detail))))
