@@ -31,6 +31,8 @@ const unsettledTerritoryIsoCode = [
   "xxx",
 ];
 
+const higlightColor = "#84b4cc";
+
 const ToolTipContent = ({ data, geo }) => {
   return (
     <div className="map-tooltip">
@@ -47,14 +49,29 @@ const ToolTipContent = ({ data, geo }) => {
   );
 };
 
-const Legend = ({ data }) => {
+const Legend = ({ data, setFilterColor, selected }) => {
   data = Array.from(new Set(data.map((x) => Math.floor(x))));
   data = data.filter((x) => x !== 0);
   const range = data.map((x, i) => (
     <div
       key={i + 1}
-      className="legend"
-      style={{ backgroundColor: colorRange[i] }}
+      className={
+        "legend" +
+        (selected !== null && selected === colorRange[i]
+          ? " legend-selected"
+          : "")
+      }
+      onClick={(e) => {
+        selected === null
+          ? setFilterColor(colorRange[i])
+          : selected === colorRange[i]
+          ? setFilterColor(null)
+          : setFilterColor(colorRange[i]);
+      }}
+      style={{
+        backgroundColor:
+          colorRange[i] === selected ? higlightColor : colorRange[i],
+      }}
     >
       {i === 0 && x === 1 ? x : i === 0 ? "1 - " + x : data[i - 1] + " - " + x}
     </div>
@@ -69,8 +86,25 @@ const Legend = ({ data }) => {
           ...range,
           <div
             key={"last"}
-            className="legend"
-            style={{ backgroundColor: colorRange[range.length] }}
+            className={
+              "legend" +
+              (selected !== null && selected === colorRange[range.length]
+                ? " legend-selected"
+                : "")
+            }
+            style={{
+              backgroundColor:
+                colorRange[range.length] === selected
+                  ? higlightColor
+                  : colorRange[range.length],
+            }}
+            onClick={(e) => {
+              selected === null
+                ? setFilterColor(colorRange[range.length])
+                : selected === colorRange[range.length]
+                ? setFilterColor(null)
+                : setFilterColor(colorRange[range.length]);
+            }}
           >
             {"> "}
             {data[data.length - 1]}
@@ -84,6 +118,7 @@ const Legend = ({ data }) => {
 const Maps = ({ data, topic, clickEvents, country }) => {
   const mapMaxZoom = 4;
   const [selected, setSelected] = useState(null);
+  const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   const [scale, setScale] = useState(170);
@@ -134,7 +169,11 @@ const Maps = ({ data, topic, clickEvents, country }) => {
   const colorScale = scaleQuantize().domain(domain).range(colorRange);
 
   const fillColor = (v) => {
-    return v === 0 ? "#fff" : colorScale(v);
+    const color = v === 0 ? "#fff" : colorScale(v);
+    if (filterColor !== null) {
+      return filterColor === color ? higlightColor : color;
+    }
+    return color;
   };
 
   return (
@@ -148,7 +187,11 @@ const Maps = ({ data, topic, clickEvents, country }) => {
         height: `${mapPos.height}px`,
       }}
     >
-      <Legend data={colorScale.thresholds()} />
+      <Legend
+        data={colorScale.thresholds()}
+        setFilterColor={setFilterColor}
+        selected={filterColor}
+      />
       <div className="map-buttons">
         <Tooltip title="zoom out">
           <Button
