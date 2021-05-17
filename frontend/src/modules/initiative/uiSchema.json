@@ -55,8 +55,14 @@
         }
       },
       "S2_G1_4.4.2": {},
-      "S2_G1_4.4.3": {},
-      "S2_G1_4.4.4": {},
+      "S2_G1_4.4.3": {
+        "ui:placeholder": "Please, indicate the name of the programme/protocol (e.g. OSPAR, CSIRO, NOAA, Beach watch, EU-MSFD, Ocean Conservancy...etc.) and if different programmes/protocols were used to monitor near ocean surfaces, water column, seafloor, shoreline, Biota, air monitoring.",
+        "ui:widget": "textarea"
+      },
+      "S2_G1_4.4.4": {
+        "ui:placeholder": "If the monitoring data is available on request, please provide information on how to access the data.",
+        "ui:widget": "textarea"
+      },
       "S2_G1_4.4.5": {},
       "ui:order": [
         "S2_G1_2",
