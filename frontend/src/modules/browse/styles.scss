@@ -1,14 +1,17 @@
 @import "../../vars.scss";
 
 #browse {
-  padding-top: 30px;
-
   .ui.container {
     display: flex;
   }
 
   aside {
     width: 330px;
+    padding-top: 1rem;
+    z-index: 9999;
+    background-color: #fff;
+    margin-bottom: 1rem;
+    padding-top: 30px;
 
     .inner {
       border: 1px solid #d7e6ee;
@@ -110,10 +113,36 @@
     flex: 1;
     margin-left: 20px;
 
+    @media (min-width: 640px) {
+      display: flex;
+      align-items: flex-start;
+    }
+
     .page {
-      text-align: right;
+      margin: 0px;
+      padding: 1rem;
+      text-align: center;
       font-style: italic;
       margin-bottom: 5px;
+      background-color: #fff;
+      padding-top: 30px;
+    }
+
+    .sticky-pagination {
+      z-index: 9;
+    }
+
+    .scroll-content {
+      width: -webkit-fill-available;
+      background: #fff;
+
+      .loading {
+        width: 100%;
+      }
+    }
+
+    .result {
+      margin: 1rem;
     }
 
     .ant-card {
