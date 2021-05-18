@@ -48,7 +48,7 @@
                                                                   #ig/ref :gpml.auth/auth-required
                                                                   #ig/ref :gpml.auth/approved-user]}
                                          [""
-                                          {:get {:summary "Get the archived list of approval"
+                                          {:get {:summary "Get the list approved submissions"
                                                  :swagger {:tags ["archive"] :security [{:id_token []}]}
                                                  :parameters {:query [:map [:page {:optional true
                                                                                    :default 1} int?]
