@@ -134,12 +134,12 @@ export const schema = {
       enum: [],
     },
     geoCoverageType: {
-      title: "RESOURCE GEO_COVERAGE TYPE",
+      title: "GEO COVERAGE TYPE",
       enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
       enumNames: geoCoverageTypeOptions,
     },
     geoCoverageValueRegional: {
-      title: "RESOURCE GEO_COVERAGE",
+      title: "GEO COVERAGE",
       enum: regionOptions,
       depend: {
         id: "geoCoverageType",
@@ -147,7 +147,7 @@ export const schema = {
       },
     },
     geoCoverageValueNational: {
-      title: "RESOURCE GEO_COVERAGE",
+      title: "GEO COVERAGE",
       enum: [],
       depend: {
         id: "geoCoverageType",
@@ -155,7 +155,7 @@ export const schema = {
       },
     },
     geoCoverageValueTransnational: {
-      title: "RESOURCE GEO_COVERAGE",
+      title: "GEO COVERAGE",
       enum: [],
       depend: {
         id: "geoCoverageType",
@@ -163,7 +163,7 @@ export const schema = {
       },
     },
     geoCoverageValueSubNational: {
-      title: "RESOURCE GEO_COVERAGE",
+      title: "GEO COVERAGE",
       type: "string",
       depend: {
         id: "geoCoverageType",
@@ -171,7 +171,7 @@ export const schema = {
       },
     },
     geoCoverageValueGlobalSpesific: {
-      title: "RESOURCE GEO_COVERAGE",
+      title: "GEO COVERAGE",
       enum: specificAreasOptions,
       depend: {
         id: "geoCoverageType",
