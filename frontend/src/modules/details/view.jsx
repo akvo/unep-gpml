@@ -137,10 +137,10 @@ const renderItemValues = (params, mapping, data) => {
                   <a
                     target="_blank"
                     rel="noreferrer"
-                    href={data[value]}
+                    href={data[value] || ""}
                     style={{ wordBreak: "break-word" }}
                   >
-                    {data[value]}
+                    {data[value] || ""}
                   </a>
                 )}
                 {value === key &&
@@ -217,18 +217,21 @@ const renderItemValues = (params, mapping, data) => {
                 {value === "link" && type === "array" && (
                   <ul>
                     {" "}
-                    {data[key].map((x, i) => (
-                      <li key={x.name || x}>
-                        <a
-                          target="_blank"
-                          rel="noreferrer"
-                          href={x.name || x}
-                          style={{ wordBreak: "break-word" }}
-                        >
-                          {x.name || x}
-                        </a>
-                      </li>
-                    ))}{" "}
+                    {data[key].map(
+                      (x, i) =>
+                        x.name && (
+                          <li key={x.name || x}>
+                            <a
+                              target="_blank"
+                              rel="noreferrer"
+                              href={x.name || x}
+                              style={{ wordBreak: "break-word" }}
+                            >
+                              {x.name || x}
+                            </a>
+                          </li>
+                        )
+                    )}{" "}
                   </ul>
                 )}
 

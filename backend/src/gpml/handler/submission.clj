@@ -27,9 +27,9 @@
    :links q40
    :geo_coverage_type geo-type
    :geo_coverage_values geo-values
-   :entities (-> q16 first second)
-   :partners (-> q18 first second)
-   :donors (-> q20 first second)}))
+   :entities (mapv #(-> % first second) q16)
+   :partners (mapv #(-> % first second) q18)
+   :donors (mapv #(-> % first second) q20)}))
 
 (defn pending-profiles-response [data auth0-config]
   (let [verified-emails (set (auth0/list-auth0-verified-emails auth0-config))
