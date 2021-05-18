@@ -158,14 +158,15 @@
                                                  :swagger {:tags ["tags"]}
                                                  :handler #ig/ref :gpml.handler.tag/by-topic}}]]
                                         ["/organisation"
-                                         {:get {:summary "List all organisation"
-                                                :swagger {:organisation ["organisations"]}
-                                                :handler #ig/ref :gpml.handler.organisation/get}}]
-                                        ["/organisation/{id}"
-                                         {:get {:summary "Get organisation by id"
-                                                :swagger {:tags ["organisations"]}
-                                                :parameters {:path [:map [:id int?]]}
-                                                :handler #ig/ref :gpml.handler.organisation/get-id}}]
+                                         [""
+                                          {:get {:summary "List all organisations"
+                                                 :swagger {:tags ["organisations"]}
+                                                 :handler #ig/ref :gpml.handler.organisation/get}}]
+                                         ["/{id}"
+                                          {:get {:summary "Get organisation by id"
+                                                 :swagger {:tags ["organisations"]}
+                                                 :parameters {:path [:map [:id int?]]}
+                                                 :handler #ig/ref :gpml.handler.organisation/get-id}}]]
                                         ["/favorite" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                    #ig/ref :gpml.auth/auth-required]}
                                          [""
