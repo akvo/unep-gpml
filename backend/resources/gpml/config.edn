@@ -60,19 +60,19 @@
                                                                      #ig/ref :gpml.auth/approved-user
                                                                      #ig/ref :gpml.auth/admin-required-middleware]}
                                          [""
-                                          {:get {:summary "Get the list of pending submission"
+                                          {:get {:summary "Get the list of pending submissions"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:query [:map [:page {:optional true
                                                                                    :default 1} int?]
                                                                       [:limit {:optional true
                                                                                :default 10} int?]]}
                                                  :handler #ig/ref :gpml.handler.submission/get}
-                                           :put {:summary "Update pending submission"
+                                           :put {:summary "Approve or reject a pending submission"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:body #ig/ref :gpml.handler.submission/put-params}
                                                  :handler #ig/ref :gpml.handler.submission/put}}]
                                          ["/{submission}/{id}"
-                                          {:get {:summary "Get the detail of pending submission"
+                                          {:get {:summary "Get the details of a submission"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:path [:map [:submission string?] [:id int?]]}
                                                  :handler #ig/ref :gpml.handler.submission/get-detail}}]
