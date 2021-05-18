@@ -20,15 +20,20 @@
 (def post-params
   [:and
    [:map
-    [:topic [:enum "event" "technology" "policy" "resource" "project" "organisation" "stakeholder"]]
+    [:topic (apply conj [:enum] (->> associations keys (map name)))]
     [:topic_id int?]
     [:association [:vector string?]]]
    [:fn {:error/fn (fn [{{:keys [topic]} :value} _]
-                      (let [topic-associations ((keyword topic) associations)
-                            associations-text (string/join ", " topic-associations)]
-                        (format "%s only supports '%s' associations" topic associations-text)))}
-     (fn [{:keys [topic association]}]
-       (set/superset? ((keyword topic) associations) association))]])
+                     (let [topic-associations ((keyword topic) associations)
+                           associations-text (string/join ", " topic-associations)]
+                       (format "%s only supports '%s' associations" topic associations-text)))}
+    (fn [{:keys [topic association]}]
+      (or
+       ;; NOTE: We return true when topic is not a valid one, to
+       ;; prevent trying to run the custom error message function. The
+       ;; validation on the topic enum is returned anyway.
+       (not (contains? associations (keyword topic)))
+       (set/superset? ((keyword topic) associations) association)))]])
 
 (defn- get-stakeholder-id
   [db email]

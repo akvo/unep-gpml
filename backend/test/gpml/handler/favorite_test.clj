@@ -22,7 +22,14 @@
         false {:topic "technology"}
         false {:topic "technology" :topic_id 1}
         false {:topic "technology" :topic_id 1 :association ["random"]}
-        false {:topic "random" :topic_id 1 :association ["creator"]}))))
+        false {:topic "random" :topic_id 1 :association ["creator"]})))
+
+  (testing "nil topic does not validate associations"
+    (let [errors (-> (malli/explain favorite/post-params
+                                    {:topic nil :topic_id 1 :association ["creator"]})
+                     :errors)]
+      (is (= 1 (count errors)))
+      (is (= [:topic] (-> errors first :in))))))
 
 (defn- new-stakeholder [db email]
   (let [country-id (-> (db.country/country-by-code db {:name "IDN"}) :id)
