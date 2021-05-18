@@ -151,20 +151,20 @@
                                         ["/tag"
                                          [""
                                           {:get {:summary "List tags grouped by category"
-                                                 :swagger {:tags ["tags"]}
+                                                 :swagger {:tags ["tag"]}
                                                  :handler #ig/ref :gpml.handler.tag/all}}]
                                          ["/:topic-type"
                                           {:get {:summary "List tags by topic type"
-                                                 :swagger {:tags ["tags"]}
+                                                 :swagger {:tags ["tag"]}
                                                  :handler #ig/ref :gpml.handler.tag/by-topic}}]]
                                         ["/organisation"
                                          [""
                                           {:get {:summary "List all organisations"
-                                                 :swagger {:tags ["organisations"]}
+                                                 :swagger {:tags ["organisation"]}
                                                  :handler #ig/ref :gpml.handler.organisation/get}}]
                                          ["/{id}"
                                           {:get {:summary "Get organisation by id"
-                                                 :swagger {:tags ["organisations"]}
+                                                 :swagger {:tags ["organisation"]}
                                                  :parameters {:path [:map [:id int?]]}
                                                  :handler #ig/ref :gpml.handler.organisation/get-id}}]]
                                         ["/favorite" {:middleware [#ig/ref :gpml.auth/auth-middleware
