@@ -38,9 +38,15 @@
                           :type "boolean"
                           :allowEmptyValue true}}
     [:boolean]]
-   [:limit {:optional true}
+   [:limit {:optional true
+            :swagger {:description "Limit the number of entries per page"
+                      :type "int"
+                      :allowEmptyValue true}}
     [:int {:min 0 :max 100}]]
-   [:offset {:optional true}
+   [:offset {:optional true
+             :swagger{:description "Number of items to skip when fetching entries"
+                      :type "int"
+                      :allowEmptyValue true}}
     [:int {:min 0}]]])
 
 (defn get-db-filter

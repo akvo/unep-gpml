@@ -40,7 +40,7 @@
                                                  :handler #ig/ref :gpml.handler.country-group/get}}]]
                                         ["/browse" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
-                                          {:get {:summary "Browse available entities"
+                                          {:get {:summary "Browse available resources"
                                                  :swagger {:tags ["browse"]}
                                                  :parameters {:query #ig/ref :gpml.handler.browse/query-params}
                                                  :handler #ig/ref :gpml.handler.browse/get}}]]
