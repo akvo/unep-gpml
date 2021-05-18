@@ -167,21 +167,21 @@ where id = :id;
 -- :name update-stakeholder :! :n
 -- :doc Update stakeholder column
 update stakeholder set
---~ (when (contains? params :title) "title = :title")
---~ (when (contains? params :first_name) ",first_name= :first_name")
---~ (when (contains? params :last_name) ",last_name= :last_name")
---~ (when (contains? params :affiliation) ",affiliation= :v:affiliation::integer")
---~ (when (contains? params :linked_in) ",linked_in= :linked_in")
---~ (when (contains? params :twitter) ",twitter= :twitter")
---~ (when (contains? params :picture) ",picture= :picture")
---~ (when (contains? params :cv) ",cv= :cv")
---~ (when (contains? params :country) ",country= :v:country::integer")
---~ (when (contains? params :representation) ",representation= :representation")
---~ (when (contains? params :organisation_role) ",organisation_role= :organisation_role")
---~ (when (contains? params :geo_coverage_type) ",geo_coverage_type= :v:geo_coverage_type::geo_coverage_type")
---~ (when (contains? params :about) ",about= :about")
---~ (when (contains? params :about) ",public_email= :public_email::boolean")
-    , modified = now()
+--~ (when (contains? params :title) "title = :title,")
+--~ (when (contains? params :first_name) "first_name= :first_name,")
+--~ (when (contains? params :last_name) "last_name= :last_name,")
+--~ (when (contains? params :affiliation) "affiliation= :v:affiliation::integer, ")
+--~ (when (contains? params :linked_in) "linked_in= :linked_in,")
+--~ (when (contains? params :twitter) "twitter= :twitter,")
+--~ (when (contains? params :picture) "picture= :picture,")
+--~ (when (contains? params :cv) "cv= :cv, ")
+--~ (when (contains? params :country) "country= :v:country::integer,")
+--~ (when (contains? params :representation) "representation= :representation,")
+--~ (when (contains? params :organisation_role) "organisation_role= :organisation_role,")
+--~ (when (contains? params :geo_coverage_type) "geo_coverage_type= :v:geo_coverage_type::geo_coverage_type,")
+--~ (when (contains? params :about) "about= :about,")
+--~ (when (contains? params :about) "public_email= :public_email::boolean,")
+    modified = now()
 where id = :id;
 
 -- :name stakeholder-image-by-id :? :1

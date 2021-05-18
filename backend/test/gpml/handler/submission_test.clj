@@ -37,9 +37,9 @@
 
           ;; create new user name Justin
           user_justin (db.stakeholder/new-stakeholder db  (assoc user
-                                                       :email "justin@org"
-                                                       :first_name "Justin"
-                                                       :last_name "Doe"))
+                                                                 :email "justin@org"
+                                                                 :first_name "Justin"
+                                                                 :last_name "Doe"))
 
           ;; Jane approve justin
           _ (db.stakeholder/update-stakeholder-status db (assoc user_justin
@@ -68,8 +68,38 @@
       ;; John and Bob, Exclude Justin
       (is (= 3 (-> resp :body :count)))
       (is (= 3 (count (-> resp :body :data))))
-      (is (= "profile" (-> resp :body :data first :type)))
-      (is (= "/submission/profile/10002" (-> resp :body :data first :preview)))
+      (is (= "stakeholder" (-> resp :body :data first :type)))
+      (is (= "/submission/stakeholder/10002" (-> resp :body :data first :preview)))
       (is (= "Mr. Doe Bob" (-> resp :body :data second :title)))
       (is (= "event" (-> resp :body :data last :type)))
       (is (= "justin@org" (-> resp :body :data last :created_by))))))
+
+
+(deftest handler-get-detail-test
+  (testing "Get pending submission detail"
+    (let [system (ig/init fixtures/*system* [::submission/get-detail])
+          handler (::submission/get-detail system)
+          db (-> system :duct.database.sql/hikaricp :spec)
+          _ (profile-test/seed-important-database db)
+          ;; create new admin name Jane
+          admin (profile-test/new-profile 1 1)
+          admin (db.stakeholder/new-stakeholder db  (assoc admin
+                                                           :email "jane@org"
+                                                           :first_name "Jane"))
+          _ (db.stakeholder/update-stakeholder-role db (assoc admin
+                                                              :role "ADMIN"
+                                                              :review_status "APPROVED"))
+          ;; create new user name Justin
+          user (profile-test/new-profile 1 1)
+          justin (db.stakeholder/new-stakeholder db (assoc user
+                                                           :email "justin@org"
+                                                           :first_name "Justin"
+                                                           :last_name "Doe"))
+          resp (handler (-> (mock/request :get "/")
+                            (assoc :jwt-claims {:email "jane@org"}
+                                   :admin admin
+                                   :parameters
+                                   {:path (assoc justin :submission "stakeholder")})))
+          body (:body resp)]
+      (is (not (:public_email justin)))
+      (is (= (:email body) "justin@org")))))

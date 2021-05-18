@@ -58,7 +58,7 @@
       ;; Jane, Justin and Bob, Exclude John
       (is (= 3 (-> resp :body :count)))
       (is (= 3 (count (-> resp :body :data))))
-      (is (= "profile" (-> resp :body :data first :type)))
+      (is (= "stakeholder" (-> resp :body :data first :type)))
       (is (= "Jane Doe" (-> resp :body :data first :reviewed_by)))
       (is (= "APPROVED" (-> resp :body :data first :review_status)))
       (is (= "Mr. Doe Justin" (-> resp :body :data first :title)))

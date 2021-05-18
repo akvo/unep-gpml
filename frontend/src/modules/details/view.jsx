@@ -395,6 +395,21 @@ const renderDescription = (params, data) => {
   );
 };
 
+const renderDetailImage = (params, data) => {
+  if (data?.image) return data.image;
+  if (params.type !== "stakeholder" && data?.picture) return data.picture;
+  if (params.type === "organisation" && data?.logo) return data.logo;
+  if (params.type === "stakeholder" && data?.picture) {
+    const isInitialPic = data.picture.includes("lh5.googleusercontent.com");
+    if (!isInitialPic) return data.picture;
+    let splitted = data.picture.split("/");
+    // resize
+    splitted[7] = `s${window.screen.width}-c`;
+    return splitted.join("/");
+  }
+  return imageNotFound;
+};
+
 UIStore.update((e) => {
   e.disclaimer = null;
 });
@@ -555,24 +570,19 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
       <div className="ui container">
         <div className="content-body">
           {/* Left */}
-          <div key="left" className="content-column">
+          <div key="left" className={`content-column ${params.type}-left`}>
             <Image
               key="desc-image"
               style={{ marginBottom: "20px" }}
-              width="100%"
-              src={
-                data.image ||
-                data.picture ||
-                (params.type === "organisation" && data.logo) ||
-                imageNotFound
-              }
+              width={"100%"}
+              src={renderDetailImage(params, data)}
             />
             {renderDescription(params, data)}
             {renderTypeOfActions(params, data)}
           </div>
 
           {/* Right */}
-          <div key="right" className="content-column">
+          <div key="right" className={`content-column ${params.type}-right`}>
             {countries && renderDetails(params, data, profile, countries)}
             {countries && renderInfo(params, data, profile, countries)}
           </div>

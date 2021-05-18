@@ -220,6 +220,7 @@
     line-height: 10px;
 
     .legend {
+      cursor: pointer;
       font-weight: bold;
       text-align: center;
       display: inline-block;
@@ -229,6 +230,12 @@
       font-size: 12px;
       border-right: solid 2px #daeaf1;
       line-height: 10px;
+    }
+
+    .legend.legend-selected {
+      border: solid #036799 2px;
+      padding: 3px 8px;
+      color: #fff;
     }
   }
 
@@ -307,7 +314,6 @@
     font-size: 18px;
     font-weight: 600;
     color: #005c93;
-    text-transform: uppercase;
     max-width: 170px;
     width: 170px;
     white-space: pre-wrap;

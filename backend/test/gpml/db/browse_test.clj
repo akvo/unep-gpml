@@ -3,22 +3,24 @@
             [gpml.db.browse :as db.browse]
             [gpml.db.event :as db.event]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.country :as db.country]
             [gpml.fixtures :as fixtures]
             [gpml.seeder.main :as seeder]
             [gpml.test-util :as test-util]))
 
 (use-fixtures :each fixtures/with-test-system)
 
-(def event-sample {:remarks "Remarks",
-                   :description "Description of the event"
-                   :title "Event 10"
-                   :country 1
-                   :city "Timbuktu"
-                   :image nil
-                   :geo_coverage_type nil
-                   :end_date "2021-01-01T12:00:00Z"
-                   :reviewed_at "2021-01-01T12:00:00Z"
-                   :start_date "2021-01-01T10:00:00Z"})
+(defn event-sample [db]
+  {:remarks "Remarks",
+   :description "Description of the event"
+   :title "Event 10"
+   :country (-> (db.country/country-by-code db {:name "IDN"}) :id)
+   :city "Timbuktu"
+   :image nil
+   :geo_coverage_type nil
+   :end_date "2021-01-01T12:00:00Z"
+   :reviewed_at "2021-01-01T12:00:00Z"
+   :start_date "2021-01-01T10:00:00Z"})
 
 (defn make-profile [first-name last-name email]
   {:picture nil
@@ -42,7 +44,7 @@
         _ (seeder/seed db {:country? true
                            :technology? true})
         stakeholder-id (db.stakeholder/new-stakeholder db (make-profile "John" "Doe" "mail@org.com"))
-        event-id (db.event/new-event db event-sample)]
+        event-id (db.event/new-event db (event-sample db))]
     (testing "Simple text search"
       (is (not-empty (db.browse/filter-topic db {:search-text "plastic"}))))
     (testing "Geo coverage values"

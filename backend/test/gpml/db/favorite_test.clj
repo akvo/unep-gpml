@@ -2,6 +2,7 @@
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.country :as db.country]
             [gpml.fixtures :as fixtures]
             [gpml.seeder.main :as seeder]
             [gpml.test-util :as test-util]))
@@ -9,22 +10,22 @@
 (use-fixtures :each fixtures/with-test-system)
 
 (defn- new-stakeholder [db email]
-  (db.stakeholder/new-stakeholder db
-                                  {:picture "https://picsum.photos/200"
-                                   :cv nil
-                                   :title "Mr."
-                                   :first_name "First name"
-                                   :last_name "Last name"
-                                   :affiliation nil
-                                   :email email
-                                   :linked_in nil
-                                   :twitter nil
-                                   :url nil
-                                   :country 58
-                                   :representation "test"
-                                   :about "Lorem Ipsum"
-                                   :geo_coverage_type nil
-                                   :role "USER"}))
+  (db.stakeholder/new-stakeholder
+    db {:picture "https://picsum.photos/200"
+        :cv nil
+        :title "Mr."
+        :first_name "First name"
+        :last_name "Last name"
+        :affiliation nil
+        :email email
+        :linked_in nil
+        :twitter nil
+        :url nil
+        :country (-> (db.country/country-by-code db {:name "IDN"}) :id)
+        :representation "test"
+        :about "Lorem Ipsum"
+        :geo_coverage_type nil
+        :role "USER"}))
 
 
 (deftest new-relation-test

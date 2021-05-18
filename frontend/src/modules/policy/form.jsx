@@ -87,7 +87,7 @@ const AddPolicyForm = ({
     data.latestAmendmentDate = formData?.date?.latestAmendmentDate || "Ongoing";
 
     if (data?.urls[0]?.url)
-      data.urls = formData.urls.filter((it) => it.url.length > 0);
+      data.urls = formData.urls.filter((it) => it?.url && it.url.length > 0);
     if (!data?.urls[0]?.url) delete data.urls;
 
     data = handleGeoCoverageValue(data, formData, countries);

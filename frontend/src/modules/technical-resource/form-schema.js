@@ -117,12 +117,12 @@ export const schema = {
       enum: [],
     },
     geoCoverageType: {
-      title: "RESOURCE GEO_COVERAGE TYPE",
+      title: "GEO COVERAGE TYPE",
       enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
       enumNames: geoCoverageTypeOptions,
     },
     geoCoverageValueRegional: {
-      title: "RESOURCE GEO_COVERAGE",
+      title: "GEO COVERAGE",
       enum: regionOptions,
       depend: {
         id: "geoCoverageType",
@@ -130,7 +130,7 @@ export const schema = {
       },
     },
     geoCoverageValueNational: {
-      title: "RESOURCE GEO_COVERAGE",
+      title: "GEO COVERAGE",
       enum: [],
       depend: {
         id: "geoCoverageType",
@@ -138,7 +138,7 @@ export const schema = {
       },
     },
     geoCoverageValueTransnational: {
-      title: "RESOURCE GEO_COVERAGE",
+      title: "GEO COVERAGE",
       enum: [],
       depend: {
         id: "geoCoverageType",
@@ -146,7 +146,7 @@ export const schema = {
       },
     },
     geoCoverageValueSubNational: {
-      title: "RESOURCE GEO_COVERAGE",
+      title: "GEO COVERAGE",
       type: "string",
       depend: {
         id: "geoCoverageType",
@@ -154,7 +154,7 @@ export const schema = {
       },
     },
     geoCoverageValueGlobalSpesific: {
-      title: "RESOURCE GEO_COVERAGE",
+      title: "GEO COVERAGE",
       enum: specificAreasOptions,
       depend: {
         id: "geoCoverageType",
@@ -184,7 +184,6 @@ export const schema = {
           url: {
             title: "RESOURCE EXTERNAL LINKS",
             type: "string",
-            format: "url",
           },
           lang: {
             title: "LANGUAGES",
@@ -314,8 +313,10 @@ export const uiSchema = {
     "ui:group": "border",
     items: {
       url: {
-        "ui:placeholder": "URL Address (e.g. https://example.com)",
+        "ui:placeholder": "URL Address (e.g. example.com)",
         "ui:span": 16,
+        "ui:widget": "uri",
+        "ui:addOnBefore": "https://",
       },
       lang: {
         "ui:showSearch": true,

@@ -3,6 +3,7 @@ import FileWidget from "./form-file";
 import SelectWidget from "./form-select";
 import CheckboxesWidget from "./form-checkboxes";
 import RadioWidget from "./form-radio";
+import URLWidget from "./form-url";
 import difference from "lodash/difference";
 import intersection from "lodash/intersection";
 
@@ -12,6 +13,7 @@ const widgets = {
   SelectWidget: SelectWidget,
   CheckboxesWidget: CheckboxesWidget,
   RadioWidget: RadioWidget,
+  URLWidget: URLWidget,
 };
 
 export const CustomFieldTemplate = (props) => {

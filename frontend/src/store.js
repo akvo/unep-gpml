@@ -10,16 +10,6 @@ const geoCoverageTypeOptions = [
   "Global with elements in specific areas",
 ];
 
-const regionOptions = [
-  "Africa",
-  "Asia and the Pacific",
-  "East Asia",
-  "Europe",
-  "Latin America and Carribean",
-  "North America",
-  "West Asia",
-];
-
 const sectorOptions = [
   "Government",
   "Private Sector",
@@ -47,7 +37,8 @@ const UIStore = new Store({
   organisations: [],
   languages: languages,
   geoCoverageTypeOptions: geoCoverageTypeOptions,
-  regionOptions: regionOptions,
+  regionOptions: [],
+  meaOptions: [],
   organisationType: sectorOptions,
   sectorOptions: sectorOptions,
   highlight: false,

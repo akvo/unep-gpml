@@ -13,10 +13,12 @@ import {
 import React, { Fragment } from "react";
 import { useState } from "react";
 import api from "../../utils/api";
+import { fetchArchiveData } from "./utils";
 import moment from "moment";
 import capitalize from "lodash/capitalize";
 import find from "lodash/find";
 import { ProfilePreview, GeneralPreview, InitiativePreview } from "./preview";
+import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
 
 const ModalReject = ({ visible, close, reject, item }) => {
   return (
@@ -57,13 +59,9 @@ const AdminSection = ({
   const review = (item, review_status) => () => {
     setApproveLoading(item);
     const itemType =
-      item.type === "profile"
-        ? "stakeholder"
-        : ["Technical Resource", "Financing Resource", "Action Plan"].includes(
-            item.type
-          )
-        ? "resource"
-        : item.type;
+      item.type === "project"
+        ? "initiative"
+        : resourceTypeToTopicType(item.type);
     api
       .put("submission", {
         id: item.id,
@@ -122,9 +120,9 @@ const AdminSection = ({
 
   const DetailCollapse = ({ data, item }) => {
     switch (item.type) {
-      case "profile":
+      case "stakeholder":
         return <ProfilePreview item={{ ...data, ...item }} />;
-      case "initiative":
+      case "project":
         return <InitiativePreview item={{ ...data, ...item }} />;
       default:
         return <GeneralPreview item={{ ...data, ...item }} />;
@@ -159,7 +157,7 @@ const AdminSection = ({
                 key={item.preview}
                 header={
                   <div className="row">
-                    <div className="col">{capitalize(item.type)}</div>
+                    <div className="col">{topicNames(item.type)}</div>
                     <div className="col">{item.title}</div>
                     <div
                       className="col"
@@ -243,17 +241,13 @@ const AdminSection = ({
   };
 
   const renderArchiveRequests = () => {
-    const onChangePageArchive = (p) => {
-      api
-        .get("/archive?page=" + p + "&limit=" + archiveItems.limit)
-        .then((res) => {
-          setArchiveItems(res.data);
-        });
+    const onChangePageArchive = async (p) => {
+      const archive = await fetchArchiveData(p, archiveItems.limit);
+      setArchiveItems(archive);
     };
-    const onChangePageArchiveSize = (p, l) => {
-      api.get("/archive?page=" + p + "&limit=" + l).then((res) => {
-        setArchiveItems(res.data);
-      });
+    const onChangePageArchiveSize = async (p, l) => {
+      const archive = await fetchArchiveData(p, l);
+      setArchiveItems(archive);
     };
     return (
       <div className="archive">
@@ -263,14 +257,14 @@ const AdminSection = ({
           <div className="col">Name</div>
           <div className="col">Status</div>
         </div>
-        <Collapse>
+        <Collapse onChange={getPreviewContent}>
           {archiveData.length > 0 ? (
             archiveData.map((item, index) => (
               <Collapse.Panel
-                key={`collapse-archive-${index}`}
+                key={item.preview}
                 header={
                   <div className="row">
-                    <div className="col">{capitalize(item.type)}</div>
+                    <div className="col">{topicNames(item.type)}</div>
                     <div className="col">{item.title}</div>
                     <div className="col status">
                       {capitalize(item.reviewStatus)}
@@ -278,30 +272,10 @@ const AdminSection = ({
                   </div>
                 }
               >
-                <div className="general-info">
-                  <ul>
-                    <li>
-                      <div className="detail-title">Submitted by</div>:
-                      {item.createdBy ? (
-                        <div className="detail-content">{item.createdBy}</div>
-                      ) : (
-                        <div className="detail-content">Imported</div>
-                      )}
-                    </li>
-                    <li>
-                      <div className="detail-title">Reviewed by</div>:
-                      {item.reviewedBy.trim() !== "" ? (
-                        <div className="detail-content">{item.reviewedBy}</div>
-                      ) : (
-                        <div className="detail-content">Auto Approved</div>
-                      )}
-                    </li>
-                    <li>
-                      <div className="detail-title">Reviewed At</div>:
-                      <div className="detail-content">{item.reviewedAt}</div>
-                    </li>
-                  </ul>
-                </div>
+                <DetailCollapse
+                  data={previewContent?.[item.preview] || {}}
+                  item={item}
+                />
               </Collapse.Panel>
             ))
           ) : (

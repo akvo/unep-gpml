@@ -6,13 +6,14 @@
             [gpml.db.tag :as db.tag]
             [gpml.db.language :as db.language]
             [gpml.db.policy :as db.policy]
+            [gpml.db.country :as db.country]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 
-(def new-policy
+(defn new-policy [db]
   {:title "Policy Title"
    :original_title "Policy Original Title"
    :abstract "Test Description"
@@ -29,7 +30,7 @@
    :url "https://akvo.org"
    :attachments nil
    :remarks nil
-   :country 1
+   :country (-> (db.country/country-by-code db {:name "IDN"}) :id)
    :tags [4 5]})
 
 (deftest handler-post-test
@@ -56,11 +57,11 @@
           ;; create John create new policy with available organisation
           resp-one (handler (-> (mock/request :post "/")
                                 (assoc :jwt-claims {:email "john@org"})
-                                (assoc :body-params new-policy)))
+                                (assoc :body-params (new-policy db))))
           ;; create John create new policy with new organisation
           resp-two (handler (-> (mock/request :post "/")
                                 (assoc :jwt-claims {:email "john@org"})
-                                (assoc :body-params (assoc new-policy :org
+                                (assoc :body-params (assoc (new-policy db) :org
                                                            {:id -1
                                                             :name "New Era"
                                                             :geo_coverage_type "regional"
@@ -69,11 +70,11 @@
           policy-one (db.policy/policy-by-id db (:body resp-one))
           policy-two (db.policy/policy-by-id db (:body resp-two))]
       (is (= 201 (:status resp-one)))
-      (is (= (assoc new-policy
+      (is (= (assoc (new-policy db)
                     :id 10001
                     :image nil
                     :created_by 10001) policy-one))
-      (is (= (assoc new-policy
+      (is (= (assoc (new-policy db)
                     :id 10002
                     :image nil
                     :created_by 10001) policy-two)))))

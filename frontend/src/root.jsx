@@ -7,7 +7,7 @@ import {
   withRouter,
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Input, Button, Menu, Dropdown } from "antd";
+import { Input, Button, Menu, Dropdown, Avatar, Popover } from "antd";
 import Landing from "./modules/landing/view";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
@@ -45,6 +45,16 @@ api.get("/country").then((resp) => {
     e.countries = uniqBy(resp.data).sort((a, b) =>
       a.name.localeCompare(b.name)
     );
+  });
+});
+api.get("/country-group").then((resp) => {
+  UIStore.update((e) => {
+    e.regionOptions = resp.data
+      .filter((x) => x.type === "region")
+      .map((x) => x.name);
+  });
+  UIStore.update((e) => {
+    e.meaOptions = resp.data.filter((x) => x.type === "mea");
   });
 });
 api.get("/organisation").then((resp) => {
@@ -172,9 +182,21 @@ const Root = () => {
               </div>
             ) : (
               <div className="rightside">
-                <Link to="/profile">
-                  {profile ? profile.firstName : user.nickname}
-                </Link>
+                <Popover
+                  placement="bottom"
+                  content={
+                    <div>
+                      {profile?.photo && (
+                        <Avatar src={profile?.photo} size={25} />
+                      )}{" "}
+                      {profile?.email}
+                    </div>
+                  }
+                >
+                  <Link to="/profile">
+                    {profile ? profile.firstName : user.nickname}
+                  </Link>
+                </Popover>
                 <Button
                   type="link"
                   onClick={() => logout({ returnTo: window.location.origin })}

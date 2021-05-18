@@ -27,6 +27,33 @@ This will make the necessary changes in `./db/docker-entrypoint-initdb.d/001-ini
 and push those changes.
 
 
+## Merge GeoJSON file
+
+Before Simplifying GeoJSON to TopoJSON file, we need to merge 3 GEOJSON files into single file. For processing that
+merged file, we use [GDAL](https://gdal.org/).
+
+Assuming you have access to that 3 files:
+* `Countries_Separated_with_associated_territories.geojson`
+* `Major Lakes.geojson`
+* `Unsettled Territory.geojson`
+then move to the folder where you have the files and execute:
+
+```bash
+docker run \
+    --rm \
+    --volume "$(pwd):/data" \
+    --workdir /data \
+    osgeo/gdal:alpine-small-3.3.0 \
+    ogr2ogr merged.geojson Countries_Separated_with_associated_territories.geojson && \
+    sudo chown -R "$(whoami)":"$(whoami)" merged.geojson && \
+    ogr2ogr -update -append merged.geojson Major\ Lakes.geojson -nln Countries_Separated_with_associated_territories && \
+    ogr2ogr -update -append merged.geojson Unsettled\ Territory.geojson -nln Countries_Separated_with_associated_territories && \
+    mv merged.geojson Country_Polygon.json
+```
+
+We run the `ogr2ogr` command with the proper arguments. This will generate a single merged file (`Country_Polygon.json`).
+
+
 ## Simplifying GeoJSON to TopoJSON
 
 We use a *simplified* version of the UNEP approved map. For processing that simplification we use
@@ -78,3 +105,82 @@ Dummy data is used for UI test with live data and to simplify the process of acc
   (submit-dummy-event db "test@akvo.org" "Testing Profile")
 ```
 For further detail, please check: [dummy.clj](https://github.com/akvo/unep-gpml/blob/6698da2c9fbac2679ec54a5998860d67f064f578/backend/dev/src/gpml/seeder/dummy.clj) file
+
+
+## Generate Countries List & Id Mapping 
+
+To generate countries list & id mapping, we need to have this two files:
+* `./frontend/public/unep-gpml.topo.json`
+* `./backend/dev/resources/files/countries.json` (the old countries list)
+
+Then from the root folder `./unep-gpml/` execute:
+
+```bash
+docker run \
+    --rm \
+    --volume "$(pwd):/data" \
+    --workdir /data \
+    amancevice/pandas:1.2.4-alpine \
+    python ./doc/countries.py
+```
+
+That command will generate two files:
+* `./backend/dev/resources/files/new_countries.json`
+* `./backend/dev/resources/files/new_countries_mapping.json`
+
+
+## Script to Filter Country Line Boundaries
+
+Assuming you have the `CountryLineBoundaries.geojson` file in `.doc` directory
+Then execute this command from root folder
+
+```bash
+docker run \
+       --rm \
+       --volume "$(pwd):/data" \
+       --workdir /data \
+       amancevice/pandas:1.2.4-alpine \
+       python ./doc/filter_country_line_boundaries_value.py
+```
+
+That will be generate a GeoJSON file (`./frontend/public/new_country_line_boundaries.geojson`)
+
+## Update ID of Country Table
+
+Based on the [new GeoJSON](https://drive.google.com/file/d/1_UURs6vXnTkNr7Bd-c4q1XoQnvHrTp-b/view?usp=sharing) (See also: [old GeoJson](https://drive.google.com/file/d/1bbF7GP9HGv5uXvYVwXit32xrN3HVz0eR/view?usp=sharing)), UNEP-Dev team create script to replace the ID of all the countries on the database which may affecting other rows in some other tables recorded that linked with country primary key.
+
+#### The scripts
+
+```clojure
+(:require [gpml.seeder.main :as seeder]
+          [duct.core :as duct])
+
+(duct/load-hierarchy)
+
+(defn- dev-system
+  []
+  (-> (duct/resource "gpml/config.edn")
+      (duct/read-config)
+      (duct/prep-config [:duct.profile/dev])))
+
+(def db (-> (dev-system)
+            (ig/init [:duct.database.sql/hikaricp])
+            :duct.database.sql/hikaricp
+            :spec))
+
+;; Example update country id
+(seeder/updater-country db)
+
+;; Example revert country id update
+(seeder/updater-country db {:revert? true})
+```
+
+#### Run as a jobs
+
+```bash
+export ts="$(date +%s)"
+sed "s/\${TIMESTAMP}/${ts}/" ci/k8s/update-country.yaml > "/tmp/update-country-${ts}.yml";
+kubectl apply -f "/tmp/update-country-${ts}.yml"
+```
+
+For further detail, please check: [updater_test.clj](https://github.com/akvo/unep-gpml/blob/main/backend/test/gpml/db/updater_test.clj)

@@ -16,7 +16,9 @@ import React, {
   useContext,
   Fragment,
 } from "react";
+import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
+import { fetchArchiveData } from "./utils";
 import SignupForm from "../signup/signup-form";
 import AdminSection from "./admin";
 import "./styles.scss";
@@ -82,8 +84,8 @@ const ProfileView = ({ ...props }) => {
         setPendingItems(resp.data);
       })();
       (async function fetchData() {
-        const archive = await api.get("/archive");
-        setArchiveItems(archive.data);
+        const archive = await fetchArchiveData(1, 10);
+        setArchiveItems(archive);
       })();
     }
   }, [profile]);
@@ -163,15 +165,21 @@ const ProfileView = ({ ...props }) => {
         ) : (
           <Row className="menu-container">
             <Col xs={24} md={8} lg={6} className="menu-wrapper">
-              <div className="photo">
-                <Image width="70%" src={profile.photo} />
-              </div>
-              <Menu
-                defaultSelectedKeys={["personal-details"]}
-                style={{ width: "100%", color: "#046799", fontWeight: "bold" }}
-              >
-                {renderMenuItem(profile)}
-              </Menu>
+              <StickyBox style={{ marginBottom: "3rem" }}>
+                <div className="photo">
+                  <Image width="70%" src={profile.photo} />
+                </div>
+                <Menu
+                  defaultSelectedKeys={["personal-details"]}
+                  style={{
+                    width: "100%",
+                    color: "#046799",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {renderMenuItem(profile)}
+                </Menu>
+              </StickyBox>
             </Col>
             <Col xs={24} md={16} lg={18} className="content-wrapper">
               {menu === "personal-details" && (

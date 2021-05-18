@@ -5,6 +5,7 @@
             [gpml.handler.profile-test :as profile-test]
             [gpml.db.tag :as db.tag]
             [gpml.db.language :as db.language]
+            [gpml.db.country :as db.country]
             [gpml.db.technology :as db.technology]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
@@ -12,7 +13,7 @@
 
 (use-fixtures :each fixtures/with-test-system)
 
-(def new-technology
+(defn new-technology [db]
   {:name "technology Title"
    :development_stage "Scale up"
    :organisation_type "Established Company"
@@ -23,7 +24,7 @@
    :url "https://akvo.org"
    :attachments nil
    :remarks nil
-   :country 1
+   :country (-> (db.country/country-by-code db {:name "IDN"}) :id)
    :email "john@akvo.org"
    :year_founded 2021
    :tags [4 5]})
@@ -52,11 +53,11 @@
           ;; create John create new technology with available organisation
           resp-one (handler (-> (mock/request :post "/")
                                 (assoc :jwt-claims {:email "john@org"})
-                                (assoc :body-params new-technology)))
+                                (assoc :body-params (new-technology db))))
           ;; create John create new technology with new organisation
           resp-two (handler (-> (mock/request :post "/")
                                 (assoc :jwt-claims {:email "john@org"})
-                                (assoc :body-params (assoc new-technology :org
+                                (assoc :body-params (assoc (new-technology db) :org
                                                            {:id -1
                                                             :name "New Era"
                                                             :geo_coverage_type "regional"
@@ -65,12 +66,12 @@
           technology-one (db.technology/technology-by-id db (:body resp-one))
           technology-two (db.technology/technology-by-id db (:body resp-two))]
       (is (= 201 (:status resp-one)))
-      (is (= (assoc new-technology
+      (is (= (assoc (new-technology db)
                     :id 10001
                     :image nil
                     :logo nil
                     :created_by 10001) technology-one))
-      (is (= (assoc new-technology
+      (is (= (assoc (new-technology db)
                     :id 10002
                     :image nil
                     :logo nil

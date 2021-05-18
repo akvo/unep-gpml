@@ -436,7 +436,7 @@ export const schema = {
             },
             "S2_G1_4.4.3": {
               title:
-                "4.4.3. For monitoring, which programme/protocol did you use? Please, indicate the name of the programme/protocol (e.g. OSPAR, CSIRO, NOAA, Beach watch, EU-MSFD, Ocean Conservancy...etc.) and if different programmes/protocols were used to monitor near ocean surfaces, water column, seafloor, shoreline, Biota, air monitoring.",
+                "4.4.3. For monitoring, which programme/protocol did you use?",
               type: "string",
               depend: {
                 id: "S2_G1_4",
@@ -445,7 +445,7 @@ export const schema = {
             },
             "S2_G1_4.4.4": {
               title:
-                "4.4.4. How can the data and information from your monitoring programme be accessed? (If the monitoring data is available on request, please provide information on how to access the data)",
+                "4.4.4. How can the data and information from your monitoring programme be accessed?",
               type: "string",
               depend: {
                 id: "S2_G1_4",

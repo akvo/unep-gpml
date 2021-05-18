@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: unep-gpml-update-country-${TIMESTAMP}
+spec:
+  template:
+    spec:
+      containers:
+      - name: unep-gpml-update-country
+        image: akvo/akvo-clojure-lein:20210124.114043.4437caf
+        command: ["/bin/bash", "-c"]
+        args:
+          - echo Installing git;
+            apt-get update && apt-get -qq install -y --no-install-recommends --no-install-suggests git;
+            echo Cloning repo;
+            git clone https://github.com/akvo/unep-gpml.git;
+            cd unep-gpml/backend;
+            echo Updating Country ID;
+            lein with-profile seeder run update-country
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: database-url
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/secrets/cloudsql/credentials.json"
+        volumeMounts:
+          - name: unep-gpml-secrets
+            mountPath: "/secrets/cloudsql/credentials.json"
+            subPath: "cloud-database-service-account.json"
+            readOnly: true
+      volumes:
+        - name: unep-gpml-secrets
+          secret:
+            secretName: unep-gpml
+      restartPolicy: Never
+  backoffLimit: 0

@@ -2,7 +2,7 @@
 -- :doc Get paginated submission contents
 WITH
 submission AS (
-    SELECT id, 'profile' AS type, CONCAT(title, '. ', last_name,' ', first_name) as title, id as created_by, created
+    SELECT id, 'stakeholder' AS type, CONCAT(title, '. ', last_name,' ', first_name) as title, id as created_by, created
     FROM stakeholder
     WHERE review_status = 'SUBMITTED'
     UNION
@@ -15,10 +15,10 @@ submission AS (
     SELECT id, 'policy' as type, title as title, created_by, created
     FROM policy where review_status = 'SUBMITTED'
     UNION
-    SELECT id, type, title, created_by, created
+    SELECT id, REPLACE(LOWER(type), ' ', '_'), title, created_by, created
     FROM resource where review_status = 'SUBMITTED'
     UNION
-    SELECT id, 'initiative' as type, replace(q2::text,'"','') as title, created_by, created
+    SELECT id, 'project' as type, replace(q2::text,'"','') as title, created_by, created
     FROM initiative where review_status = 'SUBMITTED'
     ORDER BY created
 ),

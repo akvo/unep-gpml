@@ -1,5 +1,7 @@
 (ns gpml.handler.submission
   (:require [gpml.db.submission :as db.submission]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.constants :as constants]
             [integrant.core :as ig]
             [gpml.auth0-util :as auth0]
             [clojure.set :as set]
@@ -57,20 +59,23 @@
 
 (defmethod ig/init-key :gpml.handler.submission/get-detail [_ {:keys [db]}]
   (fn [{{:keys [path]} :parameters}]
-    (let [tbl (:submission path)
-          tbl (cond
-                (contains? #{"event" "technology" "policy"} tbl)
-                (str "v_" tbl "_data")
-                (contains? #{"Financing Resource" "Technical Resource" "Action Plan"} tbl)
-                "v_resource_data"
-                (= tbl "profile")
-                "v_stakeholder_data"
-                (= tbl "initiative")
-                "initiative")
-          detail (db.submission/detail (:spec db) (conj path {:table-name tbl}))
-          detail (if (= tbl "initiative")
-                   (remap-initiative detail)
-                   detail) ]
+    (let [conn (:spec db)
+          submission (:submission path)
+          initiative? (and (= submission "project") (> (:id path) 10000))
+          table-name(cond
+                      (contains? (set constants/resource-types) submission)
+                      "v_resource_data"
+                      initiative?
+                      "initiative"
+                      :else
+                      (str "v_" submission "_data"))
+          detail (db.submission/detail conn (conj path {:table-name table-name}))
+          detail (if (= submission "stakeholder")
+                   (merge detail
+                          (select-keys (db.stakeholder/stakeholder-by-id conn path)[:email]))
+                   detail)
+          detail (if initiative? (remap-initiative detail)
+                     detail)]
       (resp/response detail))))
 
 (defmethod ig/init-key :gpml.handler.submission/put-params [_ _]

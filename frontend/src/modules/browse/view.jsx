@@ -2,6 +2,7 @@ import { UIStore } from "../../store";
 import React, { useEffect, useState } from "react";
 import { Card, Input, Select, Checkbox, Tag, Pagination } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import StickyBox from "react-sticky-box";
 import "./styles.scss";
 import {
   topicTypes,
@@ -189,100 +190,110 @@ const Browse = ({
     (acc, topic) => acc + topicCounts[topic],
     0
   );
-
   return (
     <div id="browse">
       <div className="ui container">
-        <aside>
-          <div className="inner">
-            <Input
-              value={query.q}
-              className="src"
-              placeholder="Search for resources and stakeholders"
-              suffix={<SearchOutlined />}
-              onChange={({ target: { value } }) => updateQuery("q", value)}
-            />
-            <div className="field">
-              <div className="label">Country</div>
-              <Select
-                virtual={false}
-                value={
-                  countries && query?.country
-                    ? countries
-                        .filter((x) => query.country.includes(x.isoCode))
-                        .map((x) => x.id)
-                    : []
-                }
-                placeholder="Find country"
-                mode="multiple"
-                options={
-                  countries &&
-                  countries
-                    .map((it) => ({
-                      value: it.id,
-                      label: it.name,
-                    }))
-                    .sort((a, b) => a.label.localeCompare(b.label))
-                }
-                allowClear
-                onChange={(val) => {
-                  const selected = countries?.filter((x) => val.includes(x.id));
-                  updateQuery(
-                    "country",
-                    selected.map((x) => x.isoCode)
-                  );
-                }}
-                filterOption={(input, option) =>
-                  option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-              />
-              {isAuthenticated && (
-                <Checkbox
-                  className="my-favorites"
-                  checked={query?.favorites?.indexOf("true") > -1}
-                  onChange={({ target: { checked } }) =>
-                    updateQuery("favorites", checked)
-                  }
-                >
-                  My Bookmarks
-                </Checkbox>
-              )}
-            </div>
-            <TopicSelect
-              counts={topicCounts}
-              isApprovedUser={isApprovedUser}
-              value={query.topic}
-              onChange={(val) => updateQuery("topic", val)}
-            />
-          </div>
-        </aside>
         <div className="main-content">
-          {!loading && (
-            <div className="page">
-              <Pagination
-                defaultCurrent={1}
-                current={(filters?.offset || 0) / 50 + 1}
-                pageSize={50}
-                total={totalItems}
-                showSizeChanger={false}
-                onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
-              />
-            </div>
-          )}
-          {loading ? (
-            <h2 className="loading">
-              <LoadingOutlined spin /> Loading
-            </h2>
-          ) : isEmpty(results) ? (
-            <h2 className="loading">There is no data to display</h2>
-          ) : (
-            results.map((result) => (
-              <Result
-                key={`${result.type}-${result.id}`}
-                {...{ result, handleRelationChange, relations, profile }}
-              />
-            ))
-          )}
+          <StickyBox offsetBottom={20}>
+            <aside>
+              <div className="inner">
+                <Input
+                  value={query.q}
+                  className="src"
+                  placeholder="Search for resources and stakeholders"
+                  suffix={<SearchOutlined />}
+                  onChange={({ target: { value } }) => updateQuery("q", value)}
+                />
+                <div className="field">
+                  <div className="label">Country</div>
+                  <Select
+                    virtual={false}
+                    value={
+                      countries && query?.country
+                        ? countries
+                            .filter((x) => query.country.includes(x.isoCode))
+                            .map((x) => x.id)
+                        : []
+                    }
+                    placeholder="Find country"
+                    mode="multiple"
+                    options={
+                      countries &&
+                      countries
+                        .map((it) => ({
+                          value: it.id,
+                          label: it.name,
+                        }))
+                        .sort((a, b) => a.label.localeCompare(b.label))
+                    }
+                    allowClear
+                    onChange={(val) => {
+                      const selected = countries?.filter((x) =>
+                        val.includes(x.id)
+                      );
+                      updateQuery(
+                        "country",
+                        selected.map((x) => x.isoCode)
+                      );
+                    }}
+                    filterOption={(input, option) =>
+                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                      0
+                    }
+                  />
+                  {isAuthenticated && (
+                    <Checkbox
+                      className="my-favorites"
+                      checked={query?.favorites?.indexOf("true") > -1}
+                      onChange={({ target: { checked } }) =>
+                        updateQuery("favorites", checked)
+                      }
+                    >
+                      My Bookmarks
+                    </Checkbox>
+                  )}
+                </div>
+                <TopicSelect
+                  counts={topicCounts}
+                  isApprovedUser={isApprovedUser}
+                  value={query.topic}
+                  onChange={(val) => updateQuery("topic", val)}
+                />
+              </div>
+            </aside>
+          </StickyBox>
+          <div className="scroll-content">
+            {!loading && (
+              <StickyBox offsetBottom={600} className="sticky-pagination">
+                <div className="page">
+                  <Pagination
+                    defaultCurrent={1}
+                    current={(filters?.offset || 0) / 50 + 1}
+                    pageSize={50}
+                    total={totalItems}
+                    showSizeChanger={false}
+                    onChange={(n, size) =>
+                      updateQuery("offset", (n - 1) * size)
+                    }
+                  />
+                </div>
+              </StickyBox>
+            )}
+            {loading ? (
+              <h2 className="loading">
+                <LoadingOutlined spin /> Loading
+              </h2>
+            ) : isEmpty(results) ? (
+              <h2 className="loading">There is no data to display</h2>
+            ) : (
+              results.map((result) => (
+                <Result
+                  key={`${result.type}-${result.id}`}
+                  {...{ result, handleRelationChange, relations, profile }}
+                />
+              ))
+            )}
+          </div>
         </div>
       </div>
       <ModalWarningUser
