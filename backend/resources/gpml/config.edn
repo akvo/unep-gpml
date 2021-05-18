@@ -86,20 +86,7 @@
                                                   :swagger {:tags ["event"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.event/post-params}
-                                                  :handler #ig/ref :gpml.handler.event/post}}]
-                                         ["/pending" {:middleware [#ig/ref :gpml.auth/admin-required-middleware]}
-                                          [""
-                                           {:get {:summary "Get the list events pending for approval"
-                                                  :swagger {:tags ["event"]
-                                                            :security [{:id_token []}]}
-                                                  :handler #ig/ref :gpml.handler.event/pending}}]]
-                                         ["/review" {:middleware [#ig/ref :gpml.auth/admin-required-middleware]}
-                                          [""
-                                           {:put {:summary "Review the event submission of an event"
-                                                  :swagger {:tags ["event"]
-                                                            :security [{:id_token []}]}
-                                                  :parameters {:body [:map [:id int? :review_status [:enum "APPROVED" "REJECTED"]]]}
-                                                  :handler #ig/ref :gpml.handler.event/review}}]]]
+                                                  :handler #ig/ref :gpml.handler.event/post}}]]
                                         ["/resource" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                    #ig/ref :gpml.auth/auth-required
                                                                    #ig/ref :gpml.auth/approved-user]}
@@ -243,8 +230,6 @@
                              :app-name #duct/env "APP_NAME"
                              :app-domain #duct/env "APP_DOMAIN"}}
   :gpml.handler.event/post-params {}
-  :gpml.handler.event/pending {:db #ig/ref :duct.database/sql}
-  :gpml.handler.event/review {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.resource/post {:db #ig/ref :duct.database/sql}
   :gpml.handler.resource/post-params {}
