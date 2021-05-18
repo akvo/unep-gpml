@@ -475,15 +475,28 @@ export const InitiativePreview = ({ item }) => {
         </li>
         <li>
           <div className="detail-title">Entities</div>:
-          <div className="detail-content">{item?.entities || "-"}</div>
+          <ul className={"ul-children"}>
+            {item?.entities?.map((x, i) => <li key={`url-${i}`}>{x}</li>) ||
+              "-"}
+          </ul>
         </li>
         <li>
           <div className="detail-title">Partner</div>:
-          <div className="detail-content">{item?.partners || "-"}</div>
+          <div className="detail-content">
+            <ul className={"ul-children"}>
+              {item?.partners?.map((x, i) => <li key={`url-${i}`}>{x}</li>) ||
+                "-"}
+            </ul>
+          </div>
         </li>
         <li>
           <div className="detail-title">Donor</div>:
-          <div className="detail-content">{item?.donors || "-"}</div>
+          <div className="detail-content">
+            <ul className={"ul-children"}>
+              {item?.donors?.map((x, i) => <li key={`url-${i}`}>{x}</li>) ||
+                "-"}
+            </ul>
+          </div>
         </li>
       </ul>
     </div>
