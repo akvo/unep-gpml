@@ -82,7 +82,7 @@
                                                                 #ig/ref :gpml.auth/approved-user
                                                                 #ig/ref :gpml.auth/admin-required-middleware]}
                                          [""
-                                          {:post {:summary "Creates a new event"
+                                          {:post {:summary "Create a new event"
                                                   :swagger {:tags ["event"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.event/post-params}
@@ -104,7 +104,7 @@
                                                                    #ig/ref :gpml.auth/auth-required
                                                                    #ig/ref :gpml.auth/approved-user]}
                                          [""
-                                          {:post {:summary "Create new resource"
+                                          {:post {:summary "Create a new resource"
                                                   :swagger {:tags ["resource"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.resource/post-params}
@@ -113,7 +113,7 @@
                                                                  #ig/ref :gpml.auth/auth-required
                                                                  #ig/ref :gpml.auth/approved-user]}
                                          [""
-                                          {:post {:summary "Create new policy"
+                                          {:post {:summary "Create a new policy"
                                                   :swagger {:tags ["policy"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.policy/post-params}
@@ -122,7 +122,7 @@
                                                                      #ig/ref :gpml.auth/auth-required
                                                                      #ig/ref :gpml.auth/approved-user]}
                                          [""
-                                          {:post {:summary "Create new initiative"
+                                          {:post {:summary "Create a new initiative"
                                                   :swagger {:tags ["initiative"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.initiative/post-params}
@@ -131,7 +131,7 @@
                                                                      #ig/ref :gpml.auth/auth-required
                                                                      #ig/ref :gpml.auth/approved-user]}
                                          [""
-                                          {:post {:summary "Create new technology"
+                                          {:post {:summary "Create a new technology"
                                                   :swagger {:tags ["technology"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.technology/post-params}
