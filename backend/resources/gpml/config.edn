@@ -52,8 +52,8 @@
                                                  :swagger {:tags ["archive"] :security [{:id_token []}]}
                                                  :parameters {:query [:map [:page {:optional true
                                                                                    :default 1} int?]
-                                                                           [:limit {:optional true
-                                                                                    :default 10} int?]]}
+                                                                      [:limit {:optional true
+                                                                               :default 10} int?]]}
                                                  :handler #ig/ref :gpml.handler.archive/get}}]]
                                         ["/submission" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                      #ig/ref :gpml.auth/auth-required
@@ -64,8 +64,8 @@
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:query [:map [:page {:optional true
                                                                                    :default 1} int?]
-                                                                           [:limit {:optional true
-                                                                                    :default 10} int?]]}
+                                                                      [:limit {:optional true
+                                                                               :default 10} int?]]}
                                                  :handler #ig/ref :gpml.handler.submission/get}
                                            :put {:summary "Update pending submission"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
@@ -104,7 +104,7 @@
                                                                    #ig/ref :gpml.auth/auth-required
                                                                    #ig/ref :gpml.auth/approved-user]}
                                          [""
-                                           {:post {:summary "Create new resource"
+                                          {:post {:summary "Create new resource"
                                                   :swagger {:tags ["resource"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.resource/post-params}
@@ -113,7 +113,7 @@
                                                                  #ig/ref :gpml.auth/auth-required
                                                                  #ig/ref :gpml.auth/approved-user]}
                                          [""
-                                           {:post {:summary "Create new policy"
+                                          {:post {:summary "Create new policy"
                                                   :swagger {:tags ["policy"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.policy/post-params}
@@ -122,7 +122,7 @@
                                                                      #ig/ref :gpml.auth/auth-required
                                                                      #ig/ref :gpml.auth/approved-user]}
                                          [""
-                                           {:post {:summary "Create new initiative"
+                                          {:post {:summary "Create new initiative"
                                                   :swagger {:tags ["initiative"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.initiative/post-params}
@@ -131,7 +131,7 @@
                                                                      #ig/ref :gpml.auth/auth-required
                                                                      #ig/ref :gpml.auth/approved-user]}
                                          [""
-                                           {:post {:summary "Create new technology"
+                                          {:post {:summary "Create new technology"
                                                   :swagger {:tags ["technology"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.technology/post-params}
