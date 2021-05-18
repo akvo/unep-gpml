@@ -3,18 +3,9 @@ import React from "react";
 import { Input, Select } from "antd";
 import { Field } from "react-final-form";
 import specificAreasOptions from "../../events/specific-areas.json";
-const regionOptions = [
-  "Africa",
-  "Asia and the Pacific",
-  "East Asia",
-  "Europe",
-  "Latin America and Caribbean",
-  "North America",
-  "West Asia",
-];
 
 const GeoCoverageInput = (props) => {
-  const { countries } = UIStore.currentState;
+  const { countries, regionOptions } = UIStore.currentState;
   const { disabled } = props;
   const national =
     countries && countries.map((it) => ({ value: it.isoCode, label: it.name }));
