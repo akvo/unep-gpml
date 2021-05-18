@@ -16,6 +16,7 @@ import {
   checkDependencyAnswer,
 } from "../../utils/forms";
 import uiSchema from "./uiSchema.json";
+import { CodepenOutlined } from "@ant-design/icons";
 
 const Form = withTheme(AntDTheme);
 
@@ -122,8 +123,14 @@ const transformFormData = (data, formData, schema) => {
               };
             }
             if (schema?.[key]?.type === "string") {
+              const answer = String(d).includes("-")
+                ? d
+                : schema?.[key]?.enum
+                ? d
+                : parseInt(d);
               return {
-                [d]: schema?.[key].enumNames?.[schema?.[key].enum.indexOf(d)],
+                [d]:
+                  schema?.[key].enumNames?.[schema?.[key].enum.indexOf(answer)],
               };
             }
             return d;
@@ -132,7 +139,7 @@ const transformFormData = (data, formData, schema) => {
           if (
             schema?.[key]?.enum &&
             schema?.[key]?.enumNames &&
-            schema?.[key]?.enum.length > 0 &&
+            schema[key]?.enum.length > 0 &&
             schema[key].enumNames.length > 0
           ) {
             data[`q${qKey}`] = {

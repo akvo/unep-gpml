@@ -75,7 +75,7 @@ const { regionOptions, geoCoverageTypeOptions } = UIStore.currentState;
 
 export const schema = {
   type: "object",
-  version: "1",
+  version: "2",
   properties: {
     S1: {
       title: "SECTION 1: SUBMITTER",
