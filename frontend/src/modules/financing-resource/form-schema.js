@@ -220,7 +220,6 @@ export const schema = {
           url: {
             title: "RESOURCE EXTERNAL LINKS",
             type: "string",
-            format: "url",
           },
           lang: {
             title: "LANGUAGES",
@@ -378,8 +377,10 @@ export const uiSchema = {
     "ui:group": "border",
     items: {
       url: {
-        "ui:placeholder": "URL Address (e.g. https://example.com)",
+        "ui:placeholder": "URL Address (e.g. example.com)",
         "ui:span": 16,
+        "ui:widget": "uri",
+        "ui:addOnBefore": "https://",
       },
       lang: {
         "ui:showSearch": true,
