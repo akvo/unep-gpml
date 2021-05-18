@@ -123,7 +123,11 @@ const transformFormData = (data, formData, schema) => {
               };
             }
             if (schema?.[key]?.type === "string") {
-              const answer = String(d).includes("-") ? d : parseInt(d);
+              const answer = String(d).includes("-")
+                ? d
+                : schema?.[key]?.enum
+                ? d
+                : parseInt(d);
               return {
                 [d]:
                   schema?.[key].enumNames?.[schema?.[key].enum.indexOf(answer)],
@@ -135,7 +139,7 @@ const transformFormData = (data, formData, schema) => {
           if (
             schema?.[key]?.enum &&
             schema?.[key]?.enumNames &&
-            schema?.[key]?.enum.length > 0 &&
+            schema[key]?.enum.length > 0 &&
             schema[key].enumNames.length > 0
           ) {
             data[`q${qKey}`] = {
