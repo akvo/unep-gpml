@@ -32,6 +32,12 @@
                                                 :swagger {:tags ["country"]}
                                                 :parameters {:query [:map [:id {:optional true} int?]]}
                                                 :handler #ig/ref :gpml.handler.country/get}}]
+                                        ["/country-group"
+                                         [""
+                                          {:get {:summary "List available country groups"
+                                                 :swagger {:tags ["country"]}
+                                                 :parameters {:query [:map [:id {:optional true} int?]]}
+                                                 :handler #ig/ref :gpml.handler.country-group/get}}]]
                                         ["/browse" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
                                           {:get {:summary "Browse available entities"
@@ -213,6 +219,7 @@
   :gpml.handler.main/root {}
   :gpml.handler.main/swagger-handler {}
   :gpml.handler.country/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.country-group/get {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.browse/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.browse/query-params {}
