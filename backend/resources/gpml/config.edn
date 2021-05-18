@@ -58,7 +58,9 @@
                                         ["/submission" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                      #ig/ref :gpml.auth/auth-required
                                                                      #ig/ref :gpml.auth/approved-user
-                                                                     #ig/ref :gpml.auth/admin-required-middleware]}
+                                                                     #ig/ref :gpml.auth/admin-required-middleware]
+                                                        :responses {401 {:description "Need authentication"}
+                                                                    403 {:description "Insufficient permissions"}}}
                                          [""
                                           {:get {:summary "Get the list of pending submissions"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
