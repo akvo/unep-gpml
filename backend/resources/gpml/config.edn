@@ -143,22 +143,7 @@
                                            :put {:summary "Update authenticated profile information"
                                                  :swagger {:tags ["profile"]
                                                            :security [{:id_token []}]}
-                                                 :handler #ig/ref :gpml.handler.profile/put}}]
-                                         ["/pending" {:middleware [#ig/ref :gpml.auth/admin-required-middleware]}
-                                          [""
-                                           {:get {:summary "Getting Unapproved list of User",
-                                                  :swagger {:tags ["profile"]
-                                                            :security [{:id_token []}]}
-                                                  :handler #ig/ref :gpml.handler.profile/pending}}]]
-                                         ["/review" {:middleware [#ig/ref :gpml.auth/admin-required-middleware]}
-                                          [""
-                                           {:put {:summary "Profile review by admin"
-                                                  :swagger {:tags ["profile"]
-                                                            :security [{:id_token []}]}
-                                                  :parameters {:body [:map
-                                                                      [:id number?]
-                                                                      [:review_status [:enum "APPROVED" "REJECTED"]]]}
-                                                  :handler #ig/ref :gpml.handler.profile/review}}]]]
+                                                 :handler #ig/ref :gpml.handler.profile/put}}]]
                                         ["/currency"
                                          {:get {:summary "List of currency"
                                                 :swagger {:tags ["currency"]}
@@ -252,12 +237,6 @@
                                :app-domain #duct/env "APP_DOMAIN"}}
   :gpml.handler.profile/post-params {}
   :gpml.handler.profile/put {:db #ig/ref :duct.database/sql}
-  :gpml.handler.profile/review {:db #ig/ref :duct.database/sql}
-  :gpml.handler.profile/pending {:db #ig/ref :duct.database/sql
-                                 :auth0 {:domain #duct/env "OIDC_ISSUER"
-                                         :client-id #duct/env "AUTH0_BACKEND_CLIENT_ID"
-                                         :secret #duct/env "AUTH0_BACKEND_SECRET"}}
-
   :gpml.handler.currency/all {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.tag/by-topic {:db #ig/ref :duct.database/sql}

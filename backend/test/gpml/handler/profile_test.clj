@@ -377,53 +377,6 @@
       (is (= 200 (:status resp)))
       (is (empty (:body resp))))))
 
-(deftest handler-approval-list
-  (testing "Get pending list of the profile"
-    (let [system (ig/init fixtures/*system* [::profile/pending])
-          handler (::profile/pending system)
-          db (-> system :duct.database.sql/hikaricp :spec)
-          _ (seed-important-database db)
-          ;; create new user name Jane
-          admin (new-profile 1 1)
-          admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
-          ;; Jane become an admin
-          _ (db.stakeholder/update-stakeholder-role db (assoc admin :role "ADMIN" :review_status "APPROVED"))
-          ;; create new user name John
-          _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
-          ;; create new user name Nick
-          user (new-profile 1 1)
-          _ (db.stakeholder/new-stakeholder db  (assoc user :email "nick@org" :first_name "Nick"))
-          ;; Jane trying to see the list of pending user in this case John and Nick
-          resp (handler (-> (mock/request :get "/")
-                            (assoc :jwt-claims {:email "jane@org"}
-                                   :admin admin)))]
-      (is (= 200 (:status resp)))
-      (is (= 2 (count (into [] (-> resp :body))))))))
-
-(deftest handler-approval-test
-  (testing "Profile is approved by admin"
-    (let [system (ig/init fixtures/*system* [::profile/review])
-          handler (::profile/review system)
-          db (-> system :duct.database.sql/hikaricp :spec)
-          _ (seed-important-database db)
-          ;; create new user name Jane
-          admin (new-profile 1 1)
-          admin (db.stakeholder/new-stakeholder db  (assoc admin :email "jane@org" :first_name "Jane"))
-          ;; Approve Jane
-          _ (db.stakeholder/update-stakeholder-role db (assoc admin :role "ADMIN" :review_status "APPROVED"))
-          ;; create new user name John
-          _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
-          ;; Jane trying to approve this guy John
-          resp (handler (-> (mock/request :put "/")
-                            (assoc :admin {:id 10001}
-                                   :body-params {:id (get-user db "john@org")
-                                                 :review_status "APPROVED"})))]
-      (is (= 204 (:status resp)))
-      (is (= "John" (-> resp :body :data :first_name)))
-      (is (= "APPROVED" (-> resp :body :data :review_status)))
-      (is (= 10001 (-> resp :body :data :reviewed_by)))
-      (is (inst? (-> resp :body :data :reviewed_at))))))
-
 
 (comment
   #_(def dbtest (dev/db-conn))

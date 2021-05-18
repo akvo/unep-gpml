@@ -198,19 +198,6 @@
               (db.stakeholder/add-stakeholder-geo tx {:geo geo-data}))))
         (resp/status 204)))))
 
-(defmethod ig/init-key :gpml.handler.profile/review [_ {:keys [db]}]
-  (fn [{:keys [body-params admin]}]
-    (let [db (:spec db)
-          _ (db.stakeholder/update-stakeholder-status db (assoc body-params :reviewed_by (:id admin)))]
-      (assoc (resp/status 204)
-             :body {:message "Successfuly Updated"
-                    :data (db.stakeholder/stakeholder-by-id db body-params)}))))
-
-(defmethod ig/init-key :gpml.handler.profile/pending [_ {:keys [db auth0]}]
-  (fn [_]
-    (let [conn (:spec db)]
-      (pending-profiles-response conn auth0))))
-
 (defmethod ig/init-key :gpml.handler.profile/post-params [_ _]
   [:map
    [:title {:optional true} string?]
