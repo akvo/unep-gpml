@@ -21,10 +21,11 @@ import cloneDeep from "lodash/cloneDeep";
 
 const Form = withTheme(AntDTheme);
 
-const getSchema = ({ countries, tags }, loading) => {
+const getSchema = ({ countries, tags, regionOptions }, loading) => {
   const prop = cloneDeep(schema.properties);
   prop.country.enum = countries?.map((x, i) => x.id);
   prop.country.enumNames = countries?.map((x, i) => x.name);
+  prop.geoCoverageValueRegional.enum = regionOptions;
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
   prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
   prop.geoCoverageValueTransnational.enum = countries?.map((x, i) =>
@@ -56,7 +57,7 @@ const AddPolicyForm = ({
   setHighlight,
   setDisabledBtn,
 }) => {
-  const { countries, organisations, tags, currencies } = UIStore.currentState;
+  const { countries, organisations, tags, loading } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
   const [step, setStep] = useState(1);
   const [formSchema, setFormSchema] = useState({
@@ -65,15 +66,10 @@ const AddPolicyForm = ({
   });
 
   useEffect(() => {
-    if (
-      formSchema.loading &&
-      countries.length > 0 &&
-      tags?.policy &&
-      tags?.mea
-    ) {
+    if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [countries, tags, formSchema]);
+  }, [loading, formSchema]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
