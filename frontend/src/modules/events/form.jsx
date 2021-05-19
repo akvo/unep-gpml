@@ -9,6 +9,7 @@ import { languages } from "countries-list";
 import specificAreasOptions from "./specific-areas.json";
 import api from "../../utils/api";
 import { cloneDeep } from "lodash";
+import moment from "moment";
 
 const GeoCoverageInput = (props) => {
   const { countries, regionOptions } = UIStore.currentState;
@@ -72,11 +73,21 @@ const GeoCoverageInput = (props) => {
   );
 };
 
+function disablePastDate(current) {
+  // Can not select days before today
+  return current && current < moment().subtract(1, "days").endOf("day");
+}
+
 const { geoCoverageTypeOptions } = UIStore.currentState;
 const defaultFormSchema = [
   {
     title: { label: "Title", required: true },
-    date: { label: "Date", required: true, control: "date-range" },
+    date: {
+      label: "Date",
+      required: true,
+      control: "date-range",
+      disabledDate: disablePastDate,
+    },
     urls: {
       type: "array",
       addLabel: "Add language",
