@@ -2,6 +2,7 @@ import { Store } from "pullstate";
 import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Card, Steps, Switch, Button } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import AddInitiativeForm from "./form";
 import { schema } from "./schema";
@@ -124,7 +125,10 @@ export const initiativeData = new Store({
   data: initialFormData,
 });
 
-const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
+const getSchema = (
+  { countries, organisations, tags, currencies, regionOptions, meaOptions },
+  loading
+) => {
   const prop = cloneDeep(schema.properties);
   const orgs = [...organisations];
   // const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
@@ -149,6 +153,13 @@ const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
   prop.S3.properties.S3_G1.properties["S3_G1_20"].enumNames = orgs?.map(
     (it) => it.name
   );
+  // MEA options
+  prop.S2.properties.S2_G2.properties[
+    "S2_G2_7.2"
+  ].items.enum = meaOptions?.map((x) => String(x.id));
+  prop.S2.properties.S2_G2.properties[
+    "S2_G2_7.2"
+  ].items.enumNames = meaOptions?.map((x) => x.name);
   // currency options
   prop.S3.properties.S3_G5.properties["S3_G5_36.1"].enum = currencies?.map(
     (x) => x.value
@@ -169,6 +180,9 @@ const getSchema = ({ countries, organisations, tags, currencies }, loading) => {
   prop.S3.properties.S3_G2.properties["S3_G2_23"].enumNames = countries?.map(
     (x) => x.name
   );
+  // geocoverage regional options
+  prop.S3.properties.S3_G2.properties["S3_G2_24.1"].enum = regionOptions;
+  prop.S3.properties.S3_G2.properties["S3_G2_24.1"].enumNames = regionOptions;
   // geocoverage national options
   prop.S3.properties.S3_G2.properties["S3_G2_24.2"].enum = countries?.map(
     (x) => x.id
@@ -196,7 +210,7 @@ const AddInitiative = ({ ...props }) => {
   const minHeightContainer = innerHeight * 0.8;
   const minHeightCard = innerHeight * 0.75;
   const { data } = initiativeData.useState();
-  const { countries, organisations, tags } = UIStore.currentState;
+  const { countries, organisations, tags, loading } = UIStore.currentState;
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -225,14 +239,10 @@ const AddInitiative = ({ ...props }) => {
   }, [highlight]);
 
   useEffect(() => {
-    if (
-      formSchema.loading &&
-      countries.length > 0 &&
-      organisations.length > 0
-    ) {
+    if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [countries, organisations, tags, formSchema]);
+  }, [loading, formSchema]);
 
   const renderSteps = (parentTitle, section, steps) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
@@ -350,86 +360,92 @@ const AddInitiative = ({ ...props }) => {
           </Row>
         </div>
       </div>
-      <div className="ui container">
-        <div className="form-container">
-          {step === 1 && (
-            <Row
-              style={{
-                minHeight: `${minHeightContainer}px`,
-                padding: "20px 10px 20px 16px",
-                backgroundColor: "#fff",
-                borderRadius: "6px",
-              }}
-            >
-              <Col
-                xs={24}
-                lg={6}
+      {loading ? (
+        <h2 className="loading">
+          <LoadingOutlined spin /> Loading
+        </h2>
+      ) : (
+        <div className="ui container">
+          <div className="form-container">
+            {step === 1 && (
+              <Row
                 style={{
-                  borderRight: "1px solid #D3DBDF",
-                  minHeight: "100%",
+                  minHeight: `${minHeightContainer}px`,
+                  padding: "20px 10px 20px 16px",
+                  backgroundColor: "#fff",
+                  borderRadius: "6px",
                 }}
               >
-                {tabsData.map(({ key, title, desc, steps }) => (
-                  <Steps
-                    key={`steps-section-${key}`}
-                    direction="vertical"
-                    size="small"
-                    current={data[key]?.steps}
-                    initial={-1}
-                    onChange={(e) => {
-                      e === -1
-                        ? handleOnTabChange(key)
-                        : handleOnStepClick(e, data.tabs[0]);
+                <Col
+                  xs={24}
+                  lg={6}
+                  style={{
+                    borderRight: "1px solid #D3DBDF",
+                    minHeight: "100%",
+                  }}
+                >
+                  {tabsData.map(({ key, title, desc, steps }) => (
+                    <Steps
+                      key={`steps-section-${key}`}
+                      direction="vertical"
+                      size="small"
+                      current={data[key]?.steps}
+                      initial={-1}
+                      onChange={(e) => {
+                        e === -1
+                          ? handleOnTabChange(key)
+                          : handleOnStepClick(e, data.tabs[0]);
+                      }}
+                      className={key === data.tabs[0] ? "current-tabs" : ""}
+                    >
+                      {renderSteps(title, key, steps)}
+                    </Steps>
+                  ))}
+                </Col>
+                <Col xs={24} lg={18}>
+                  <Card
+                    style={{
+                      paddingTop: 0,
+                      paddingBottom: "275px",
+                      paddingRight: "24px",
+                      paddingLeft: "30px",
+                      minHeight: `${minHeightCard}px`,
+                      overflow: "auto",
                     }}
-                    className={key === data.tabs[0] ? "current-tabs" : ""}
                   >
-                    {renderSteps(title, key, steps)}
-                  </Steps>
-                ))}
-              </Col>
-              <Col xs={24} lg={18}>
-                <Card
-                  style={{
-                    paddingTop: 0,
-                    paddingBottom: "275px",
-                    paddingRight: "24px",
-                    paddingLeft: "30px",
-                    minHeight: `${minHeightCard}px`,
-                    overflow: "auto",
-                  }}
-                >
-                  <AddInitiativeForm
-                    btnSubmit={btnSubmit}
-                    sending={sending}
-                    setSending={setSending}
-                    highlight={highlight}
-                    setHighlight={setHighlight}
-                    formSchema={formSchema}
-                    setDisabledBtn={setDisabledBtn}
-                    setStep={setStep}
-                  />
-                </Card>
-              </Col>
-            </Row>
-          )}
-          {step === 2 && (
-            <Row>
-              <Col span={24}>
-                <Card
-                  style={{
-                    padding: "30px",
-                  }}
-                >
-                  <div>
-                    <h3>Thank you for adding the Initiative</h3>
-                    <p>we'll let you know once an admin has approved it</p>
-                  </div>
-                </Card>
-              </Col>
-            </Row>
-          )}
+                    <AddInitiativeForm
+                      btnSubmit={btnSubmit}
+                      sending={sending}
+                      setSending={setSending}
+                      highlight={highlight}
+                      setHighlight={setHighlight}
+                      formSchema={formSchema}
+                      setDisabledBtn={setDisabledBtn}
+                      setStep={setStep}
+                    />
+                  </Card>
+                </Col>
+              </Row>
+            )}
+            {step === 2 && (
+              <Row>
+                <Col span={24}>
+                  <Card
+                    style={{
+                      padding: "30px",
+                    }}
+                  >
+                    <div>
+                      <h3>Thank you for adding the Initiative</h3>
+                      <p>we'll let you know once an admin has approved it</p>
+                    </div>
+                  </Card>
+                </Col>
+              </Row>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

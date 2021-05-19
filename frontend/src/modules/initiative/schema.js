@@ -71,7 +71,7 @@ const sdgsOptions = [
     name: "Partnerships for the Goals",
   },
 ];
-const { regionOptions, geoCoverageTypeOptions } = UIStore.currentState;
+const { geoCoverageTypeOptions } = UIStore.currentState;
 
 export const schema = {
   type: "object",
@@ -591,7 +591,8 @@ export const schema = {
                 value: ["7-3"],
               },
               items: {
-                enum: specificAreasOptions,
+                enum: [],
+                enumNames: [],
               },
               uniqueItems: true,
             },
@@ -913,8 +914,8 @@ export const schema = {
                 id: "S3_G2_24",
                 value: ["regional"],
               },
-              enum: regionOptions,
-              enumNames: regionOptions,
+              enum: [],
+              enumNames: [],
             },
             "S3_G2_24.2": {
               title: "24.1. Geo Coverage",

@@ -4,7 +4,6 @@ import specificAreasOptions from "../financing-resource/specific-areas.json";
 const {
   languages,
   geoCoverageTypeOptions,
-  regionOptions,
   organisationType,
 } = UIStore.currentState;
 
@@ -77,7 +76,7 @@ export const schema = {
     },
     geoCoverageValueRegional: {
       title: "GEO COVERAGE",
-      enum: regionOptions,
+      enum: [],
       depend: {
         id: "geoCoverageType",
         value: ["regional"],

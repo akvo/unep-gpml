@@ -1,10 +1,12 @@
 import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Card, Button, Switch } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import AddTechnologyForm from "./form";
 
 const AddTechnology = ({ ...props }) => {
+  const { loading } = UIStore.currentState;
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -67,25 +69,31 @@ const AddTechnology = ({ ...props }) => {
           </Row>
         </div>
       </div>
-      <div className="ui container">
-        <Row>
-          <Col xs={24} lg={11}>
-            <h1>Add Technology</h1>
-          </Col>
-          <Col xs={24} lg={13}>
-            <Card>
-              <AddTechnologyForm
-                btnSubmit={btnSubmit}
-                sending={sending}
-                setSending={setSending}
-                highlight={highlight}
-                setHighlight={setHighlight}
-                setDisabledBtn={setDisabledBtn}
-              />
-            </Card>
-          </Col>
-        </Row>
-      </div>
+      {loading ? (
+        <h2 className="loading">
+          <LoadingOutlined spin /> Loading
+        </h2>
+      ) : (
+        <div className="ui container">
+          <Row>
+            <Col xs={24} lg={11}>
+              <h1>Add Technology</h1>
+            </Col>
+            <Col xs={24} lg={13}>
+              <Card>
+                <AddTechnologyForm
+                  btnSubmit={btnSubmit}
+                  sending={sending}
+                  setSending={setSending}
+                  highlight={highlight}
+                  setHighlight={setHighlight}
+                  setDisabledBtn={setDisabledBtn}
+                />
+              </Card>
+            </Col>
+          </Row>
+        </div>
+      )}
     </div>
   );
 };

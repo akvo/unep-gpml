@@ -21,7 +21,7 @@ import cloneDeep from "lodash/cloneDeep";
 
 const Form = withTheme(AntDTheme);
 
-const getSchema = ({ countries, tags, regionOptions }, loading) => {
+const getSchema = ({ countries, tags, regionOptions, meaOptions }, loading) => {
   const prop = cloneDeep(schema.properties);
   prop.country.enum = countries?.map((x, i) => x.id);
   prop.country.enumNames = countries?.map((x, i) => x.name);
@@ -34,8 +34,8 @@ const getSchema = ({ countries, tags, regionOptions }, loading) => {
   prop.geoCoverageValueTransnational.enumNames = countries?.map(
     (x, i) => x.name
   );
-  prop.implementingMea.enum = tags.mea?.map((x) => x.id);
-  prop.implementingMea.enumNames = tags.mea?.map((x) => x.tag);
+  prop.implementingMea.enum = meaOptions?.map((x) => x.id);
+  prop.implementingMea.enumNames = meaOptions?.map((x) => x.name);
   prop.tags.enum = tags.policy?.map((x) => String(x.id));
   prop.tags.enumNames = tags.policy?.map((x) => x.tag);
   return {
@@ -143,28 +143,26 @@ const AddPolicyForm = ({
   return (
     <div className="add-policy-form">
       {step === 1 && (
-        <>
-          <Form
-            idPrefix="policy"
-            schema={formSchema.schema}
-            uiSchema={uiSchema}
-            formData={policyData.currentState.data}
-            onChange={(e) => handleFormOnChange(e)}
-            onSubmit={(e) => handleOnSubmit(e)}
-            ArrayFieldTemplate={ArrayFieldTemplate}
-            ObjectFieldTemplate={ObjectFieldTemplate}
-            FieldTemplate={FieldTemplate}
-            widgets={widgets}
-            transformErrors={(errors) =>
-              handleTransformErrors(errors, dependValue)
-            }
-            showErrorList={false}
-          >
-            <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
-              Fire
-            </button>
-          </Form>
-        </>
+        <Form
+          idPrefix="policy"
+          schema={formSchema.schema}
+          uiSchema={uiSchema}
+          formData={policyData.currentState.data}
+          onChange={(e) => handleFormOnChange(e)}
+          onSubmit={(e) => handleOnSubmit(e)}
+          ArrayFieldTemplate={ArrayFieldTemplate}
+          ObjectFieldTemplate={ObjectFieldTemplate}
+          FieldTemplate={FieldTemplate}
+          widgets={widgets}
+          transformErrors={(errors) =>
+            handleTransformErrors(errors, dependValue)
+          }
+          showErrorList={false}
+        >
+          <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
+            Fire
+          </button>
+        </Form>
       )}
       {step === 2 && (
         <div>

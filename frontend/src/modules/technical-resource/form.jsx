@@ -21,13 +21,17 @@ import cloneDeep from "lodash/cloneDeep";
 
 const Form = withTheme(AntDTheme);
 
-const getSchema = ({ countries, organisations, tags }, loading) => {
+const getSchema = (
+  { countries, organisations, tags, regionOptions },
+  loading
+) => {
   const prop = cloneDeep(schema.properties);
   const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
   prop.org.enum = orgs?.map((it) => it.id);
   prop.org.enumNames = orgs?.map((it) => it.name);
   prop.country.enum = countries?.map((x, i) => x.id);
   prop.country.enumNames = countries?.map((x, i) => x.name);
+  prop.geoCoverageValueRegional.enum = regionOptions;
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
   prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
   prop.geoCoverageValueTransnational.enum = countries?.map((x, i) =>
@@ -57,7 +61,7 @@ const AddResourceForm = ({
   setHighlight,
   setDisabledBtn,
 }) => {
-  const { countries, organisations, tags } = UIStore.currentState;
+  const { countries, organisations, tags, loading } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
   const [step, setStep] = useState(1);
   const [formSchema, setFormSchema] = useState({
@@ -66,15 +70,10 @@ const AddResourceForm = ({
   });
 
   useEffect(() => {
-    if (
-      formSchema.loading &&
-      organisations.length > 0 &&
-      countries.length > 0 &&
-      tags?.technicalResourceType
-    ) {
+    if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [organisations, countries, tags, formSchema]);
+  }, [loading, formSchema]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
@@ -160,28 +159,26 @@ const AddResourceForm = ({
   return (
     <div className="add-resource-form">
       {step === 1 && (
-        <>
-          <Form
-            idPrefix="technical-resource_"
-            schema={formSchema.schema}
-            uiSchema={uiSchema}
-            formData={resourceData.currentState.data}
-            onChange={(e) => handleFormOnChange(e)}
-            onSubmit={(e) => handleOnSubmit(e)}
-            ArrayFieldTemplate={ArrayFieldTemplate}
-            ObjectFieldTemplate={ObjectFieldTemplate}
-            FieldTemplate={FieldTemplate}
-            widgets={widgets}
-            transformErrors={(errors) =>
-              handleTransformErrors(errors, dependValue)
-            }
-            showErrorList={false}
-          >
-            <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
-              Fire
-            </button>
-          </Form>
-        </>
+        <Form
+          idPrefix="technical-resource_"
+          schema={formSchema.schema}
+          uiSchema={uiSchema}
+          formData={resourceData.currentState.data}
+          onChange={(e) => handleFormOnChange(e)}
+          onSubmit={(e) => handleOnSubmit(e)}
+          ArrayFieldTemplate={ArrayFieldTemplate}
+          ObjectFieldTemplate={ObjectFieldTemplate}
+          FieldTemplate={FieldTemplate}
+          widgets={widgets}
+          transformErrors={(errors) =>
+            handleTransformErrors(errors, dependValue)
+          }
+          showErrorList={false}
+        >
+          <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
+            Fire
+          </button>
+        </Form>
       )}
       {step === 2 && (
         <div>

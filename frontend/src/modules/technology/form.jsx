@@ -21,10 +21,11 @@ import cloneDeep from "lodash/cloneDeep";
 
 const Form = withTheme(AntDTheme);
 
-const getSchema = ({ countries, tags }, loading) => {
+const getSchema = ({ countries, tags, regionOptions }, loading) => {
   const prop = cloneDeep(schema.properties);
   prop.country.enum = countries?.map((x, i) => x.id);
   prop.country.enumNames = countries?.map((x, i) => x.name);
+  prop.geoCoverageValueRegional.enum = regionOptions;
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
   prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
   prop.geoCoverageValueTransnational.enum = countries?.map((x, i) =>
@@ -54,7 +55,7 @@ const AddTechnologyForm = ({
   setHighlight,
   setDisabledBtn,
 }) => {
-  const { countries, organisations, tags, currencies } = UIStore.currentState;
+  const { countries, organisations, tags, loading } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
   const [step, setStep] = useState(1);
   const [formSchema, setFormSchema] = useState({
@@ -63,10 +64,10 @@ const AddTechnologyForm = ({
   });
 
   useEffect(() => {
-    if (formSchema.loading && countries.length > 0 && tags?.technology) {
+    if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
     }
-  }, [countries, tags, formSchema]);
+  }, [loading, formSchema]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
@@ -144,28 +145,26 @@ const AddTechnologyForm = ({
   return (
     <div className="add-technology-form">
       {step === 1 && (
-        <>
-          <Form
-            idPrefix="technology"
-            schema={formSchema.schema}
-            uiSchema={uiSchema}
-            formData={technologyData.currentState.data}
-            onChange={(e) => handleFormOnChange(e)}
-            onSubmit={(e) => handleOnSubmit(e)}
-            ArrayFieldTemplate={ArrayFieldTemplate}
-            ObjectFieldTemplate={ObjectFieldTemplate}
-            FieldTemplate={FieldTemplate}
-            widgets={widgets}
-            transformErrors={(errors) =>
-              handleTransformErrors(errors, dependValue)
-            }
-            showErrorList={false}
-          >
-            <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
-              Fire
-            </button>
-          </Form>
-        </>
+        <Form
+          idPrefix="technology"
+          schema={formSchema.schema}
+          uiSchema={uiSchema}
+          formData={technologyData.currentState.data}
+          onChange={(e) => handleFormOnChange(e)}
+          onSubmit={(e) => handleOnSubmit(e)}
+          ArrayFieldTemplate={ArrayFieldTemplate}
+          ObjectFieldTemplate={ObjectFieldTemplate}
+          FieldTemplate={FieldTemplate}
+          widgets={widgets}
+          transformErrors={(errors) =>
+            handleTransformErrors(errors, dependValue)
+          }
+          showErrorList={false}
+        >
+          <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
+            Fire
+          </button>
+        </Form>
       )}
       {step === 2 && (
         <div>
