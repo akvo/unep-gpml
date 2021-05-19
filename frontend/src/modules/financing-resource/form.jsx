@@ -146,6 +146,8 @@ const AddResourceForm = ({
   };
 
   const handleFormOnChange = ({ formData }) => {
+    // remove image property when user remove image from form
+    formData?.image === "" && delete formData.image;
     resourceData.update((e) => {
       e.data = formData;
     });

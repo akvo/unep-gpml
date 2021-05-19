@@ -111,6 +111,10 @@ const AddTechnologyForm = ({
   };
 
   const handleFormOnChange = ({ formData }) => {
+    // remove logo property when user remove logo from form
+    formData?.logo === "" && delete formData.logo;
+    // remove image property when user remove image from form
+    formData?.image === "" && delete formData.image;
     technologyData.update((e) => {
       e.data = formData;
     });
