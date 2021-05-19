@@ -4,6 +4,9 @@ import SelectWidget from "./form-select";
 import CheckboxesWidget from "./form-checkboxes";
 import RadioWidget from "./form-radio";
 import URLWidget from "./form-url";
+import AltDateWidget from "./form-alt-date";
+import DateWidget from "./form-date";
+
 import difference from "lodash/difference";
 import intersection from "lodash/intersection";
 
@@ -14,6 +17,8 @@ const widgets = {
   CheckboxesWidget: CheckboxesWidget,
   RadioWidget: RadioWidget,
   URLWidget: URLWidget,
+  AltDateWidget: AltDateWidget,
+  DateWidget: DateWidget,
 };
 
 export const CustomFieldTemplate = (props) => {

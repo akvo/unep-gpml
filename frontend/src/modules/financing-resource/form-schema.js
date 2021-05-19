@@ -110,7 +110,7 @@ export const schema = {
     },
     publishYear: {
       title: "PUBLICATION YEAR",
-      type: "number",
+      type: "string",
     },
     value: {
       type: "object",
@@ -291,7 +291,13 @@ export const uiSchema = {
     },
   },
   publishYear: {
-    "ui:placeholder": "YYYY",
+    "ui:widget": "date",
+    "ui:showSearch": true,
+    "ui:span": 12,
+    "ui:options": {
+      mode: "year",
+      allowFuture: true,
+    },
   },
   value: {
     "ui:group": "border",

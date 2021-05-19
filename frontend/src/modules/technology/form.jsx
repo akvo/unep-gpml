@@ -86,6 +86,11 @@ const AddTechnologyForm = ({
     data?.image === "" && delete data.image;
     data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
+    if (data?.yearFounded) {
+      const yearFounded = new Date(formData.yearFounded);
+      data.yearFounded = yearFounded.getFullYear();
+    }
+
     setSending(true);
     api
       .post("/technology", data)

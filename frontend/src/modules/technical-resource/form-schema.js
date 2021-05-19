@@ -110,7 +110,7 @@ export const schema = {
     },
     publishYear: {
       title: "PUBLICATION YEAR",
-      type: "number",
+      type: "string",
     },
     country: {
       title: "COUNTRY",
@@ -255,7 +255,13 @@ export const uiSchema = {
     },
   },
   publishYear: {
-    "ui:placeholder": "YYYY",
+    "ui:widget": "date",
+    "ui:showSearch": true,
+    "ui:span": 12,
+    "ui:options": {
+      mode: "year",
+      allowFuture: false,
+    },
   },
   country: {
     "ui:placeholder": "Choose the resource country",

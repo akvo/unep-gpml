@@ -29,7 +29,7 @@ export const schema = {
     },
     yearFounded: {
       title: "YEAR FOUNDED",
-      type: "number",
+      type: "string",
     },
     organisationType: {
       title: "ORGANISATION TYPE",
@@ -60,7 +60,6 @@ export const schema = {
     url: {
       title: "TECHNOLOGY URL",
       type: "string",
-      format: "url",
     },
     logo: {
       title: "LOGO",
@@ -169,7 +168,13 @@ export const uiSchema = {
     "ui:placeholder": "Type in the technology title",
   },
   yearFounded: {
-    "ui:placeholder": "YYYY",
+    "ui:widget": "date",
+    "ui:showSearch": true,
+    "ui:span": 12,
+    "ui:options": {
+      mode: "year",
+      allowFuture: true,
+    },
   },
   organisationType: {
     "ui:placeholder": "Choose the organisation type",
@@ -182,7 +187,9 @@ export const uiSchema = {
     "ui:showSearch": true,
   },
   url: {
-    "ui:placeholder": "URL Address (e.g. https://example.com)",
+    "ui:placeholder": "URL Address (e.g. example.com)",
+    "ui:widget": "uri",
+    "ui:addOnBefore": "https://",
   },
   logo: {
     "ui:options": { accept: [".jpg", ".png", ".webp"] },

@@ -106,6 +106,11 @@ const AddActionPlanForm = ({
     data?.image === "" && delete data.image;
     data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
+    if (data?.publishYear) {
+      const publishYear = new Date(formData.publishYear);
+      data.publishYear = publishYear.getFullYear();
+    }
+
     setSending(true);
     api
       .post("/resource", data)

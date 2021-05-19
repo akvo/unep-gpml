@@ -8,6 +8,8 @@ const {
   organisationType,
 } = UIStore.currentState;
 
+const now = new Date();
+
 export const schema = {
   title: "",
   type: "object",
@@ -110,7 +112,7 @@ export const schema = {
     },
     publishYear: {
       title: "PUBLICATION YEAR",
-      type: "number",
+      type: "string",
     },
     date: {
       type: "object",
@@ -272,7 +274,13 @@ export const uiSchema = {
     },
   },
   publishYear: {
-    "ui:placeholder": "YYYY",
+    "ui:widget": "date",
+    "ui:showSearch": true,
+    "ui:span": 12,
+    "ui:options": {
+      mode: "year",
+      allowFuture: false,
+    },
   },
   date: {
     validFrom: {
