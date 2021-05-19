@@ -188,11 +188,17 @@ export const uiSchema = {
       "ui:placeholder": "YYYY-MM-DD",
       "ui:widget": "date",
       "ui:span": 12,
+      "ui:options": {
+        allowFuture: false,
+      },
     },
     latestAmendmentDate: {
       "ui:placeholder": "YYYY-MM-DD",
       "ui:widget": "date",
       "ui:span": 12,
+      "ui:options": {
+        allowFuture: false,
+      },
     },
   },
   status: {

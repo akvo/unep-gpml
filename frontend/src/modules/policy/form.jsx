@@ -137,7 +137,23 @@ const AddPolicyForm = ({
   };
 
   const handleTransformErrors = (errors, dependValue) => {
-    const res = overideValidation(errors, dependValue);
+    const { data } = policyData.currentState;
+    let res = overideValidation(errors, dependValue);
+    // publication and amandment date validation
+    const { firstPublicationDate, latestAmendmentDate } = data?.date;
+    if (firstPublicationDate && latestAmendmentDate) {
+      if (new Date(firstPublicationDate) > new Date(latestAmendmentDate)) {
+        res.push({
+          message:
+            "First publication date must be date before last amandment date",
+          name: "required",
+          params: { missingProperty: "firstPublicationDate" },
+          property: ".date.firstPublicationDate",
+          schemaPath: "#/properties/date/required",
+          stack: ".date.firstPublicationDate is a required property",
+        });
+      }
+    }
     res.length === 0 && setHighlight(false);
     return res;
   };
