@@ -4,6 +4,7 @@ import { Row, Col, Card, Button, Switch } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import AddPolicyForm from "./form";
+import StickyBox from "react-sticky-box";
 
 const AddPolicy = ({ ...props }) => {
   const { loading } = UIStore.currentState;
@@ -34,41 +35,43 @@ const AddPolicy = ({ ...props }) => {
 
   return (
     <div id="add-policy">
-      <div className="form-info-wrapper">
-        <div className="ui container">
-          <Row>
-            <Col xs={24} lg={11}>
-              <div className="form-title">
-                <span className="subtitle">Add New</span>
-                <span className="title">Policy</span>
-              </div>
-            </Col>
-            <Col xs={24} lg={13}>
-              <div className="form-meta">
-                <div className="highlight">
-                  <Switch
-                    checked={highlight}
-                    size="small"
-                    onChange={(status) => setHighlight(status)}
-                  />{" "}
-                  {highlight
-                    ? "Required fields highlighted"
-                    : "Highlight required"}
+      <StickyBox style={{ zIndex: 10 }}>
+        <div className="form-info-wrapper">
+          <div className="ui container">
+            <Row>
+              <Col xs={24} lg={11}>
+                <div className="form-title">
+                  <span className="subtitle">Add New</span>
+                  <span className="title">Policy</span>
                 </div>
-                <Button
-                  disabled={disabledBtn.disabled}
-                  loading={sending}
-                  type={disabledBtn.type}
-                  size="large"
-                  onClick={(e) => handleOnClickBtnSubmit(e)}
-                >
-                  SUBMIT
-                </Button>
-              </div>
-            </Col>
-          </Row>
+              </Col>
+              <Col xs={24} lg={13}>
+                <div className="form-meta">
+                  <div className="highlight">
+                    <Switch
+                      checked={highlight}
+                      size="small"
+                      onChange={(status) => setHighlight(status)}
+                    />{" "}
+                    {highlight
+                      ? "Required fields highlighted"
+                      : "Highlight required"}
+                  </div>
+                  <Button
+                    disabled={disabledBtn.disabled}
+                    loading={sending}
+                    type={disabledBtn.type}
+                    size="large"
+                    onClick={(e) => handleOnClickBtnSubmit(e)}
+                  >
+                    SUBMIT
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          </div>
         </div>
-      </div>
+      </StickyBox>
       {loading ? (
         <h2 className="loading">
           <LoadingOutlined spin /> Loading
