@@ -1331,7 +1331,6 @@ export const schema = {
               type: "array",
               items: {
                 type: "string",
-                format: "url",
                 string: true,
               },
               add: "Add Link",

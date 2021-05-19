@@ -63,7 +63,11 @@
         "ui:placeholder": "If the monitoring data is available on request, please provide information on how to access the data.",
         "ui:widget": "textarea"
       },
-      "S2_G1_4.4.5": {},
+      "S2_G1_4.4.5": {
+        "ui:placeholder": "example.com",
+        "ui:widget": "uri",
+        "ui:addOnBefore": "https://"
+      },
       "ui:order": [
         "S2_G1_2",
         "S2_G1_3",
@@ -340,6 +344,8 @@
         },
         "items": {
           "ui:placeholder": "Please copy and paste one link per box provided.",
+          "ui:widget": "uri",
+          "ui:addOnBefore": "https://",
           "ui:options": {
             "label": false
           }

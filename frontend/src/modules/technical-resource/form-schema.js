@@ -65,7 +65,6 @@ export const schema = {
         url: {
           title: "ENTITY URL",
           type: "string",
-          format: "url",
         },
         geoCoverageType: {
           $ref: "#/properties/geoCoverageType",
@@ -220,7 +219,9 @@ export const uiSchema = {
       "ui:placeholder": "Choose the entity country",
     },
     url: {
-      "ui:placeholder": "URL Address (e.g. https://example.com)",
+      "ui:placeholder": "URL Address (e.g. example.com)",
+      "ui:widget": "uri",
+      "ui:addOnBefore": "https://",
     },
     geoCoverageType: {
       "ui:placeholder": "Choose the entity coverage type",

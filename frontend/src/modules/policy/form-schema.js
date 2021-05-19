@@ -40,7 +40,6 @@ export const schema = {
     url: {
       title: "POLICY URL",
       type: "string",
-      format: "url",
     },
     typeOfLaw: {
       title: "TYPE OF LAW",
@@ -172,7 +171,9 @@ export const uiSchema = {
     "ui:placeholder": "Type in the data source",
   },
   url: {
-    "ui:placeholder": "URL Address (e.g. https://example.com)",
+    "ui:placeholder": "URL Address (e.g. example.com)",
+    "ui:widget": "uri",
+    "ui:addOnBefore": "https://",
   },
   typeOfLaw: {
     "ui:placeholder": "Choose the type of law",
