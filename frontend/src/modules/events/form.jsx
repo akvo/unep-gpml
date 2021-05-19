@@ -10,26 +10,8 @@ import specificAreasOptions from "./specific-areas.json";
 import api from "../../utils/api";
 import { cloneDeep } from "lodash";
 
-const geoCoverageTypeOptions = [
-  "Global",
-  "Regional",
-  "National",
-  "Sub-national",
-  "Transnational",
-  "Global with elements in specific areas",
-];
-const regionOptions = [
-  "Africa",
-  "Asia and the Pacific",
-  "East Asia",
-  "Europe",
-  "Latin America and Carribean",
-  "North America",
-  "West Asia",
-];
-
 const GeoCoverageInput = (props) => {
-  const { countries } = UIStore.currentState;
+  const { countries, regionOptions } = UIStore.currentState;
   return (
     <Field
       name="geoCoverageType"
@@ -90,6 +72,7 @@ const GeoCoverageInput = (props) => {
   );
 };
 
+const { geoCoverageTypeOptions } = UIStore.currentState;
 const defaultFormSchema = [
   {
     title: { label: "Title", required: true },
@@ -161,7 +144,7 @@ const validation = (formSchema) => {
 };
 
 const AddEventForm = () => {
-  const { countries } = UIStore.currentState;
+  const { countries, loading } = UIStore.currentState;
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [sending, setSending] = useState(false);
   const [step, setStep] = useState(1);
