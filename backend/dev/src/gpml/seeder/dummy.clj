@@ -28,11 +28,6 @@
 
 (def lorem "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas luctus eros at consequat accumsan. Integer massa ligula, blandit at commodo vitae, vestibulum et erat.")
 
-(defn parse-data [s {:keys [keywords?]}]
-  (if keywords?
-    (j/read-value s j/keyword-keys-object-mapper)
-    (j/read-value s)))
-
 (defn get-country-id [db code]
   (:id (db.country/country-by-code db {:name code})))
 
@@ -127,11 +122,11 @@
 
 (defn submit-dummy-initiative [db my-email my-name]
   (let [admin (get-or-create-profile db my-email my-name "ADMIN" "APPROVED")
-        submission (parse-data
-                     (slurp (io/resource "examples/submission-initiative.json"))
-                     {:keywords? true})
+        submission (seeder/parse-data
+                    (slurp (io/resource "examples/submission-initiative.json"))
+                    {:keywords? true})
         data (db.initiative/new-initiative
-               db (assoc submission :created_by (:id admin) :version 1))]
+              db (assoc submission :created_by (:id admin) :version 1))]
     (db.initiative/initiative-by-id db data)))
 
 (comment

@@ -5,17 +5,14 @@
             [gpml.handler.profile-test :as profile-test]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.seeder.main :as seeder]
             [integrant.core :as ig]
             [ring.mock.request :as mock]
-            [clojure.java.io :as io]
-            [jsonista.core :as j]))
+            [clojure.java.io :as io]))
 
 (use-fixtures :each fixtures/with-test-system)
 
-(defn parse-data [s {:keys [keywords?]}]
-  (if keywords?
-    (j/read-value s j/keyword-keys-object-mapper)
-    (j/read-value s)))
+
 
 (deftest handler-post-test
   (testing "New initiative is created"
@@ -31,9 +28,9 @@
           user (db.stakeholder/new-stakeholder db (profile-test/new-profile 1 1))
           _ (db.stakeholder/update-stakeholder-status db (assoc user :review_status "APPROVED"))
           ;; John create new initiative with new organisation
-          submission (parse-data
-                       (slurp (io/resource "examples/submission-initiative.json"))
-                       {:keywords? true})
+          submission (seeder/parse-data
+                      (slurp (io/resource "examples/submission-initiative.json"))
+                      {:keywords? true})
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org"})
                             (assoc :body-params (assoc submission :version 1))))
