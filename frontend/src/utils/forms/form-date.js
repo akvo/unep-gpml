@@ -8,11 +8,6 @@ const DATE_PICKER_STYLE = {
   width: "100%",
 };
 
-function disabledDate(current) {
-  // Can not select days after today and today
-  return current && current > moment().endOf("day");
-}
-
 const DateWidget = ({
   // autofocus,
   disabled,
@@ -41,13 +36,20 @@ const DateWidget = ({
 
   const getPopupContainer = (node) => node.parentNode;
 
+  function disableDate(current) {
+    let end = "day";
+    if (options?.mode && options?.mode === "year") end = "year";
+    if (options?.disableDate === "future")
+      return current && current > moment().endOf(end);
+    if (options?.disableDate === "past")
+      return current && current < moment().subtract(1, "days").endOf("day");
+  }
+
   return (
     <DatePicker
       picker={!options?.mode ? undefined : options.mode}
       disabledDate={
-        typeof options?.allowFuture === "undefined" || options.allowFuture
-          ? undefined
-          : disabledDate
+        typeof options?.disableDate === "undefined" ? undefined : disableDate
       }
       disabled={disabled || (readonlyAsDisabled && readonly)}
       getPopupContainer={getPopupContainer}

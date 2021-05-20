@@ -279,7 +279,7 @@ export const uiSchema = {
     "ui:span": 12,
     "ui:options": {
       mode: "year",
-      allowFuture: false,
+      disableDate: "future",
     },
   },
   date: {

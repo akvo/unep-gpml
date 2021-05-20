@@ -189,7 +189,7 @@ export const uiSchema = {
       "ui:widget": "date",
       "ui:span": 12,
       "ui:options": {
-        allowFuture: false,
+        disableDate: "future",
       },
     },
     latestAmendmentDate: {
@@ -197,7 +197,7 @@ export const uiSchema = {
       "ui:widget": "date",
       "ui:span": 12,
       "ui:options": {
-        allowFuture: false,
+        disableDate: "future",
       },
     },
   },
