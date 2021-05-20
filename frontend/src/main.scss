@@ -120,13 +120,27 @@ h4 {
   }
 }
 
-.add-dropdown {
-  text-align: right;
+.add-dropdown-wrapper {
+  border: 1px solid $primaryColor;
+  border-radius: 2px;
+  .add-dropdown {
+    text-align: left;
+    :not(:last-child) {
+      border-bottom: 1px solid $primaryColor;
+    }
 
-  li {
-    font-weight: 600;
-    font-size: 16px;
-    color: #04a9f1;
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 16px;
+      color: #04a9f1;
+      height: 40px;
+      :last-child {
+        margin-left: 20px;
+      }
+    }
   }
 }
 

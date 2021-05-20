@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown, Avatar, Popover } from "antd";
+import { RightOutlined } from "@ant-design/icons";
 import Landing from "./modules/landing/view";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
@@ -349,32 +350,33 @@ const AddButton = withRouter(
       if (profile?.reviewStatus === "APPROVED") {
         return (
           <Dropdown
+            overlayClassName="add-dropdown-wrapper"
             overlay={
               <Menu className="add-dropdown">
                 <Menu.Item onClick={() => history.push("/add-initiative")}>
-                  Initiative
+                  Initiative <RightOutlined />
                 </Menu.Item>
                 <Menu.Item onClick={() => history.push("/add-action-plan")}>
-                  Action Plan
+                  Action Plan <RightOutlined />
                 </Menu.Item>
                 <Menu.Item onClick={() => history.push("/add-policy")}>
-                  Policy
+                  Policy <RightOutlined />
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => history.push("/add-technical-resource")}
                 >
-                  Technical Resource
+                  Technical Resource <RightOutlined />
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => history.push("/add-financing-resource")}
                 >
-                  Financing Resource
+                  Financing Resource <RightOutlined />
                 </Menu.Item>
                 <Menu.Item onClick={() => history.push("/add-event")}>
-                  Event
+                  Event <RightOutlined />
                 </Menu.Item>
                 <Menu.Item onClick={() => history.push("/add-technology")}>
-                  Technology
+                  Technology <RightOutlined />
                 </Menu.Item>
               </Menu>
             }
