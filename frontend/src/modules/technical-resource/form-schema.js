@@ -303,7 +303,7 @@ export const uiSchema = {
     "ui:widget": "textarea",
   },
   image: {
-    "ui:options": { accept: [".jpg", ".png", ".webp"] },
+    "ui:options": { accept: "image/*" },
     "ui:widget": "file",
   },
   tags: {

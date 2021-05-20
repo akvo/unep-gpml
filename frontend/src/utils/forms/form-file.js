@@ -50,6 +50,21 @@ const handleFileChange = (el, props, setFile, setOutput, setError) => {
   if (!input) {
     return;
   }
+  // type validation when drag drop
+  const { type } = input;
+  let accepts = props?.accept || props?.uiSchema?.["ui:options"]?.accept;
+  accepts = accepts.includes(",") ? accepts.split(",") : accepts;
+  if (accepts.includes(".doc") && !accepts.includes(type)) {
+    setError(`File should match format document, text or pdf`);
+    return;
+  }
+  if (accepts.includes("image") && !type.includes("image")) {
+    setError(`File should match format image`);
+    return;
+  }
+  setError("");
+  // end of type validation when drag drop
+
   if (props?.maxFileSize) {
     isValid = props.maxFileSize * 1000000 >= input.size;
   }
@@ -78,9 +93,10 @@ const FileWidget = (props) => {
   const [output, setOutput] = useState("");
   const [error, setError] = useState();
   const inputFile = useRef(null);
+  const accepts = props?.accept || props?.uiSchema?.["ui:options"]?.accept;
+
   return (
     <div className="photo-upload">
-      {/* Drag drop container */}
       <div
         style={{
           position: "relative",
@@ -113,7 +129,7 @@ const FileWidget = (props) => {
             handleFileChange(e, props, setFile, setOutput, setError)
           }
           ref={inputFile}
-          accept={props?.accept || props?.uiSchema?.["ui:options"]?.accept}
+          accept={accepts}
           style={{
             display: "block",
             width: "100%",
@@ -130,16 +146,13 @@ const FileWidget = (props) => {
       </div>
       {/* End Drag drop container */}
 
-      <span style={{ marginLeft: "20px", marginTop: "10px" }}>
-        {file?.name}
-      </span>
+      {file?.name && <div style={{ marginTop: "10px" }}>{file?.name}</div>}
       {!output && props?.value && props?.name === "cv" && (
         <ViewWidget url={props.value} download={false} />
       )}
       {props?.name === "cv" && file?.name && (
         <ViewWidget url={output} download={file.name} />
       )}
-      <br />
       {(output || props?.value) && props?.name !== "cv" && (
         <img src={props?.value || output} alt="upload" />
       )}

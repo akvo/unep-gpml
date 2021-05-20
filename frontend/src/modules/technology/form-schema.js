@@ -191,7 +191,7 @@ export const uiSchema = {
     "ui:addOnBefore": "https://",
   },
   logo: {
-    "ui:options": { accept: [".jpg", ".png", ".webp"] },
+    "ui:options": { accept: "image/*" },
     "ui:widget": "file",
   },
   country: {
@@ -234,7 +234,7 @@ export const uiSchema = {
     "ui:widget": "textarea",
   },
   image: {
-    "ui:options": { accept: [".jpg", ".png", ".webp"] },
+    "ui:options": { accept: "image/*" },
     "ui:widget": "file",
   },
   tags: {
