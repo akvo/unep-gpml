@@ -3,7 +3,6 @@
             [clojure.string :as str]
             [gpml.fixtures :as fixtures]
             [gpml.seeder.db :as db.seeder]
-            [gpml.seeder.util :as db.util]
             [gpml.seeder.main :as seeder]
             [gpml.seeder.dummy :as dummy]
             [gpml.test-util :as test-util]
@@ -60,6 +59,7 @@
                ;; old country is available on the new_countries_mapping.json
                (.contains old-ids (:id country-old)))))))
 
+    ;; Sanity checks for DB foreign keys
     (testing (str "foreign project_countries is available")
       (is (.contains fkey "project_country")))
     (doseq [topic ["event" "organisation"
@@ -69,6 +69,7 @@
         (is (.contains fkey topic)))
       (testing (str "foreign " topic "_geo_coverage is available")
         (is (.contains fkey (str topic "_geo_coverage")))))
+
     (testing "seed using old ids"
       (seeder/resync-country db {:old? true})
       (let [;; get id from database
@@ -78,19 +79,19 @@
                                     (seeder/get-data "countries"))
                             first :id)]
         (is (= old-json-id (old-id :id)))))
+
     (let [me (dummy/get-or-create-profile
               db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
           country (db.country/country-by-code db {:name "IDN"})
           _ (db.stakeholder/update-stakeholder db {:country (:id country)
                                                    :id (:id me)})
-          me (db.stakeholder/stakeholder-by-email db me)
-          ;; for updater
-          cache-id (seeder/get-cache-id)]
+          me (db.stakeholder/stakeholder-by-email db me)]
       (testing "create stakeholder with old-id"
         (is (= "IDN" (:country me))))
-      (db.util/country-id-updater db cache-id mapping-file {:revert? false})
-      ;; Reseeding country with new file
-      (seeder/seed-countries db {:old false})
+
+      ;; Run the country updater!
+      (seeder/updater-country db {:revert? false})
+
       (let [new-id (db.country/country-by-code db {:name "IDN"})
             new-json-id (-> (filter #(= "IDN" (:iso_code %))
                                     (seeder/get-data "new_countries"))
@@ -101,7 +102,7 @@
         (testing "the new id in db is not equal to old id"
           (is (= new-json-id (new-id :id)))
           (is (not= old-json-id (new-id :id))))
-        (db.util/revert-constraint db cache-id)
+
         (let [new-me (db.stakeholder/stakeholder-by-email db me)]
           (testing "My new country id is changed"
             (is (= "IDN" (:country new-me)))))))))
