@@ -95,23 +95,26 @@ const FieldTemplate = ({
           colon={colon}
           // extra={!!rawDescription && description}
           // hasFeedback={schema.type !== "array" && schema.type !== "object"}
-          help={
-            (!!rawHelp && help) ||
-            (!!rawErrors && highlight && renderFieldErrors())
-          }
+          help={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
           htmlFor={id}
           label={handleCustomLabel()}
           labelCol={labelCol}
           // required={required}
           style={wrapperStyle}
           validateStatus={
-            (rawErrors && required && highlight) ||
-            (rawErrors && !required && highlight) ||
-            (highlight &&
+            (!!rawErrors && required) ||
+            (!!rawErrors && !required) ||
+            (!!rawErrors &&
               required &&
               schema.type !== "array" &&
               schema.type !== "object")
               ? "error"
+              : highlight &&
+                required &&
+                schema.type !== "array" &&
+                schema.type !== "object" &&
+                !!rawErrors === false
+              ? "success"
               : undefined
           }
           wrapperCol={wrapperCol}

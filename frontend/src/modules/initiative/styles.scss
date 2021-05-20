@@ -338,17 +338,43 @@
       align-items: center;
     }
 
-    .checkbox-required {
+    // highlight
+    .ant-row.ant-form-item.ant-form-item-has-success {
+      .ant-input,
+      .ant-input-number-input,
+      .ant-picker,
+      .ant-select-selector {
+        border: 2px #22ba9a solid;
+        border-radius: 2px;
+        // box-shadow: 1px 1px #22ba9a;
+      }
+      .radio-highlight {
+        span.ant-radio {
+          border: 2px solid #22ba9a;
+          border-radius: 50%;
+        }
+      }
+    }
+    .checkbox-highlight {
       span.ant-checkbox {
-        border: 1px solid red;
+        border: 2px solid #22ba9a;
         border-radius: 2px;
       }
     }
 
-    .radio-required {
-      span.ant-radio {
+    // required
+    .ant-row.ant-form-item.ant-form-item-has-error {
+      .radio-required {
+        span.ant-radio {
+          border: 1px solid red;
+          border-radius: 50%;
+        }
+      }
+    }
+    .checkbox-required {
+      span.ant-checkbox {
         border: 1px solid red;
-        border-radius: 50%;
+        border-radius: 2px;
       }
     }
 

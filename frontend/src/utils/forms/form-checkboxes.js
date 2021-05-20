@@ -19,6 +19,7 @@ const CheckboxesWidget = ({
   required,
   // schema,
   value,
+  rawErrors,
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
@@ -46,7 +47,13 @@ const CheckboxesWidget = ({
       {enumOptions.map(({ value: optionValue, label: optionLabel }, i) => (
         <span key={optionValue}>
           <Checkbox
-            className={required && highlight ? "checkbox-required" : undefined}
+            className={
+              required && !!rawErrors
+                ? "checkbox-required"
+                : required && highlight && !!rawErrors === false
+                ? "checkbox-highlight"
+                : undefined
+            }
             autoFocus={i === 0 ? autofocus : false}
             disabled={enumDisabled && enumDisabled.indexOf(value) !== -1}
             value={optionValue}

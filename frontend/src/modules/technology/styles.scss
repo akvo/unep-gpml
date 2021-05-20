@@ -156,4 +156,15 @@
     text-transform: uppercase;
     font-weight: 500;
   }
+
+  // highlight
+  .ant-row.ant-form-item.ant-form-item-has-success {
+    .ant-input,
+    .ant-input-number-input,
+    .ant-picker,
+    .ant-select-selector {
+      border: 2px #22ba9a solid;
+      border-radius: 2px;
+    }
+  }
 }

@@ -19,6 +19,7 @@ const RadioWidget = ({
   required,
   schema,
   value,
+  rawErrors,
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
@@ -46,7 +47,13 @@ const RadioWidget = ({
     >
       {enumOptions.map(({ value: optionValue, label: optionLabel }, i) => (
         <Radio
-          className={required && highlight ? "radio-required" : undefined}
+          className={
+            required && !!rawErrors
+              ? "radio-required"
+              : required && highlight && !!rawErrors === false
+              ? "radio-highlight"
+              : undefined
+          }
           autoFocus={i === 0 ? autofocus : false}
           disabled={enumDisabled && enumDisabled.indexOf(value) !== -1}
           key={`${optionValue}`}
