@@ -25,14 +25,30 @@
         mapping-file (seeder/get-data "new_countries_mapping")
         old-ids (mapv #(-> % first name read-string) mapping-file) ]
     (seeder/seed-languages db)
+
     (testing "mapping is correct"
       (doseq [mapping mapping-file]
         (let [old-id (-> mapping first name read-string)
               new-id (-> mapping second)
-              new-file (filter #(= new-id (:id %)) new-files)
-              old-file (filter #(= old-id (:id %)) old-files)]
-          (is (= (:iso_code new-file) (:iso_code old-file)))
-          (is (= (:id new-file) (:id old-file))))))
+              country-new (first (filter #(= new-id (:id %)) new-files))
+              country-old (first (filter #(= old-id (:id %)) old-files))
+              iso-code-new (:iso_code country-new)
+              iso-code-old (:iso_code country-old)]
+          (when-not (or
+                     ;; Missing countries
+                     (nil? iso-code-new)
+                     (nil? iso-code-old)
+                     ;; No "proper" 3 letter ISO codes
+                     (str/starts-with? iso-code-old "x")
+                     (str/starts-with? iso-code-new "x")
+                     ;; Chagos Archipelago
+                     (and (= (:id country-new) 1080) (= (:id country-old) 109))
+                     ;; Sint Eustatius
+                     (and (= (:id country-new) 1069) (= (:id country-old) 8))
+                     ;; Saba
+                     (and (= (:id country-new) 1068) (= (:id country-old) 7)))
+            (is (= iso-code-new iso-code-old))))))
+
     (doseq [old-file old-files]
       (testing (str (:name old-file) " is available in new map")
         (let [is-true
