@@ -12,20 +12,17 @@
 
 (use-fixtures :each fixtures/with-test-system)
 
-;; below countries is not available on the map
-(def tobe-deleted ["Ascencion (UK)" "Gough (UK)" "Tristan da Cunha (UK)"])
-
 (deftest update-country-test
   (let [db (test-util/db-test-conn)
         fkeys (db.seeder/get-foreign-key db {:table "country"})
         fkey (mapv #(:tbl %) (:deps fkeys))
         countries-new (seeder/get-data "new_countries")
         countries-old (seeder/get-data "countries")
-        new-names (mapv #(:name %) countries-new)
         mapping-file (seeder/get-data "new_countries_mapping")
         old-ids (mapv #(-> % first name read-string) mapping-file) ]
     (seeder/seed-languages db)
 
+    ;; Sanity check for the old -> new mapping
     (testing "mapping is correct"
       (doseq [mapping mapping-file]
         (let [old-id (-> mapping first name read-string)
@@ -49,20 +46,19 @@
                      (and (= (:id country-new) 1068) (= (:id country-old) 7)))
             (is (= iso-code-new iso-code-old))))))
 
+    ;; Ensure mapping for all countries, except those deleted, or with
+    ;; empty names in the old map.
     (doseq [country-old countries-old]
       (testing (str (:name country-old) " is available in new map")
-        (let [is-true
-              (or ;; countries which are not available on the new json
-               (.contains tobe-deleted (:name country-old))
-               ;; old country name has exact name with the new one
-               (.contains new-names (:name country-old))
-               ;; old country is available on the new_countries_mapping.json
-               (.contains old-ids (:id country-old))
+        (let [;; countries not available on the new map
+              new-map-deleted ["Ascencion (UK)" "Gough (UK)" "Tristan da Cunha (UK)"]]
+          (is (or
+               ;; countries which are not available on the new json
+               (.contains new-map-deleted (:name country-old))
                ;; old country is an empty string
-               (empty? (str/trim (:name country-old))))]
-          (when-not is-true
-            (println (str "WARNING" (:name country-old) " will be removed")))
-          (is is-true))))
+               (empty? (str/trim (:name country-old)))
+               ;; old country is available on the new_countries_mapping.json
+               (.contains old-ids (:id country-old)))))))
 
     (testing (str "foreign project_countries is available")
       (is (.contains fkey "project_country")))
