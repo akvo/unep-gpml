@@ -20,10 +20,12 @@ where u.column_name = 'id'
   and u.table_name = :table
 GROUP BY tbl, tbl_seq
 
--- :name update-foreign-value :! :1
+-- :name update-foreign-value :? :*
 update :i:tbl
 set :i:col = :new_id
-where :i:col = :old_id;
+where :i:col = :old_id
+--~ (when (:exclude params) "AND id NOT IN (:v*:exclude)")
+returning id;
 
 -- :name get-count :? :1
 select count(*) from :i:tbl

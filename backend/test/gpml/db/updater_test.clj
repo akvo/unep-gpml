@@ -77,30 +77,30 @@
     (testing "seed using old ids"
       (seeder/resync-country db {:old? true})
       (let [ ;; get id from database
-            old-id (db.country/country-by-code db {:name "IDN"})
+            old-id (db.country/country-by-code db {:name "CYP"})
             ;; get the old country.json id
-            old-json-id (-> (filter #(= "IDN" (:iso_code %))
+            old-json-id (-> (filter #(= "CYP" (:iso_code %))
                                     (seeder/get-data "countries"))
                             first :id)]
         (is (= old-json-id (old-id :id)))))
 
     (let [me (dummy/get-or-create-profile
               db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
-          country (db.country/country-by-code db {:name "IDN"})
+          country (db.country/country-by-code db {:name "CYP"})
           _ (db.stakeholder/update-stakeholder db {:country (:id country)
                                                    :id (:id me)})
           me (db.stakeholder/stakeholder-by-email db me)]
       (testing "create stakeholder with old-id"
-        (is (= "IDN" (:country me))))
+        (is (= "CYP" (:country me))))
 
       ;; Run the country updater!
       (seeder/updater-country db {:revert? false})
 
-      (let [new-id (db.country/country-by-code db {:name "IDN"})
-            new-json-id (-> (filter #(= "IDN" (:iso_code %))
+      (let [new-id (db.country/country-by-code db {:name "CYP"})
+            new-json-id (-> (filter #(= "CYP" (:iso_code %))
                                     (seeder/get-data "new_countries"))
                             first :id)
-            old-json-id (-> (filter #(= "IDN" (:iso_code %))
+            old-json-id (-> (filter #(= "CYP" (:iso_code %))
                                     (seeder/get-data "countries"))
                             first :id)]
         (testing "the new id in db is not equal to old id"
@@ -109,7 +109,7 @@
 
         (let [new-me (db.stakeholder/stakeholder-by-email db me)]
           (testing "My new country id is changed"
-            (is (= "IDN" (:country new-me)))))))))
+            (is (= "CYP" (:country new-me)))))))))
 
 (deftest revert-update-country-test
   (let [db (test-util/db-test-conn)

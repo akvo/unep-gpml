@@ -121,9 +121,13 @@
     (doseq [query (:deps table)]
       (seeder.db/drop-constraint db query)
       (println (str "Updating " (:col query) " on " (:tbl query)))
-      (doseq [option new-map-list]
-        (seeder.db/update-foreign-value db (merge query option))))
+      (let [changed (atom nil)]
+        (doseq [option new-map-list]
+          (let [exclude-rows {:exclude @changed}
+                rows (seeder.db/update-foreign-value
+                      db
+                      (merge query option exclude-rows))]
+            (swap! changed #(apply conj % (map :id rows)))))))
     (jdbc/execute! db ["TRUNCATE TABLE country_group_country"])
     (jdbc/execute! db ["TRUNCATE TABLE country"])
-  (println (str "Ref country removed"))))
-
+    (println (str "Ref country removed"))))
