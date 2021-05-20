@@ -19,9 +19,9 @@
   (let [db (test-util/db-test-conn)
         fkeys (db.seeder/get-foreign-key db {:table "country"})
         fkey (mapv #(:tbl %) (:deps fkeys))
-        new-files (seeder/get-data "new_countries")
-        old-files (seeder/get-data "countries")
-        new-countries (mapv #(:name %) new-files)
+        countries-new (seeder/get-data "new_countries")
+        countries-old (seeder/get-data "countries")
+        new-names (mapv #(:name %) countries-new)
         mapping-file (seeder/get-data "new_countries_mapping")
         old-ids (mapv #(-> % first name read-string) mapping-file) ]
     (seeder/seed-languages db)
@@ -30,8 +30,8 @@
       (doseq [mapping mapping-file]
         (let [old-id (-> mapping first name read-string)
               new-id (-> mapping second)
-              country-new (first (filter #(= new-id (:id %)) new-files))
-              country-old (first (filter #(= old-id (:id %)) old-files))
+              country-new (first (filter #(= new-id (:id %)) countries-new))
+              country-old (first (filter #(= old-id (:id %)) countries-old))
               iso-code-new (:iso_code country-new)
               iso-code-old (:iso_code country-old)]
           (when-not (or
@@ -49,20 +49,21 @@
                      (and (= (:id country-new) 1068) (= (:id country-old) 7)))
             (is (= iso-code-new iso-code-old))))))
 
-    (doseq [old-file old-files]
-      (testing (str (:name old-file) " is available in new map")
+    (doseq [country-old countries-old]
+      (testing (str (:name country-old) " is available in new map")
         (let [is-true
               (or ;; countries which are not available on the new json
-               (.contains tobe-deleted (:name old-file))
+               (.contains tobe-deleted (:name country-old))
                ;; old country name has exact name with the new one
-               (.contains new-countries (:name old-file))
+               (.contains new-names (:name country-old))
                ;; old country is available on the new_countries_mapping.json
-               (.contains old-ids (:id old-file))
+               (.contains old-ids (:id country-old))
                ;; old country is an empty string
-               (empty? (str/trim (:name old-file))))]
+               (empty? (str/trim (:name country-old))))]
           (when-not is-true
-            (println (str "WARNING" (:name old-file) " will be removed")))
+            (println (str "WARNING" (:name country-old) " will be removed")))
           (is is-true))))
+
     (testing (str "foreign project_countries is available")
       (is (.contains fkey "project_country")))
     (doseq [topic ["event" "organisation"
@@ -111,12 +112,12 @@
 
 (deftest revert-update-country-test
   (let [db (test-util/db-test-conn)
-        new-files (seeder/get-data "new_countries")
-        old-files (filter #(-> % :name str/trim not-empty) (seeder/get-data "countries"))
+        countries-new (seeder/get-data "new_countries")
+        countries-old (filter #(-> % :name str/trim not-empty) (seeder/get-data "countries"))
         ;; seed countries with old id
         _ (seeder/seed-countries db {:old true})
         me (dummy/get-or-create-profile
-             db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
+            db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
         country (db.country/country-by-code db {:name "IDN"})
         _ (db.stakeholder/update-stakeholder db {:country (:id country)
                                                  :id (:id me)})
@@ -124,8 +125,8 @@
     (seeder/updater-country db)
     (testing "my country id is updated"
       (is (= "IDN" (:country me)))
-      (is (= (count (db.country/all-countries db)) (count new-files))))
+      (is (= (count (db.country/all-countries db)) (count countries-new))))
     (seeder/updater-country db {:revert? true})
     (testing "my country id is reversed"
       (is (= "IDN" (:country me)))
-      (is (= (count (db.country/all-countries db)) (count old-files))))))
+      (is (= (count (db.country/all-countries db)) (count countries-old))))))
