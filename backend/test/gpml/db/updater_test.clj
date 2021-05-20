@@ -11,15 +11,11 @@
 
 (use-fixtures :each fixtures/with-test-system)
 
-(deftest update-country-test
-  (let [db (test-util/db-test-conn)
-        fkeys (db.seeder/get-foreign-key db {:table "country"})
-        fkey (mapv #(:tbl %) (:deps fkeys))
-        countries-new (seeder/get-data "new_countries")
+(deftest update-country-mapping-sanity-checks
+  (let [countries-new (seeder/get-data "new_countries")
         countries-old (seeder/get-data "countries")
         mapping-file (seeder/get-data "new_countries_mapping")
-        old-ids (mapv #(-> % first name read-string) mapping-file) ]
-    (seeder/seed-languages db)
+        old-ids (mapv #(-> % first name read-string) mapping-file)]
 
     ;; Sanity check for the old -> new mapping
     (testing "mapping is correct"
@@ -49,7 +45,7 @@
     ;; empty names in the old map.
     (doseq [country-old countries-old]
       (testing (str (:name country-old) " is available in new map")
-        (let [;; countries not available on the new map
+        (let [ ;; countries not available on the new map
               new-map-deleted ["Ascencion (UK)" "Gough (UK)" "Tristan da Cunha (UK)"]]
           (is (or
                ;; countries which are not available on the new json
@@ -57,7 +53,12 @@
                ;; old country is an empty string
                (empty? (str/trim (:name country-old)))
                ;; old country is available on the new_countries_mapping.json
-               (.contains old-ids (:id country-old)))))))
+               (.contains old-ids (:id country-old)))))))))
+
+(deftest country-table-foreign-key-checks
+  (let [db (test-util/db-test-conn)
+        fkeys (db.seeder/get-foreign-key db {:table "country"})
+        fkey (mapv #(:tbl %) (:deps fkeys))]
 
     ;; Sanity checks for DB foreign keys
     (testing (str "foreign project_countries is available")
@@ -68,11 +69,14 @@
       (testing (str "foreign " topic " is available")
         (is (.contains fkey topic)))
       (testing (str "foreign " topic "_geo_coverage is available")
-        (is (.contains fkey (str topic "_geo_coverage")))))
+        (is (.contains fkey (str topic "_geo_coverage")))))))
 
+(deftest update-country-test
+  (let [db (test-util/db-test-conn)]
+    (seeder/seed-languages db)
     (testing "seed using old ids"
       (seeder/resync-country db {:old? true})
-      (let [;; get id from database
+      (let [ ;; get id from database
             old-id (db.country/country-by-code db {:name "IDN"})
             ;; get the old country.json id
             old-json-id (-> (filter #(= "IDN" (:iso_code %))
