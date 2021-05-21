@@ -232,15 +232,6 @@ const Maps = ({ data, topic, clickEvents, country }) => {
         height={mapPos.height}
         style={{ position: "absolute" }}
       >
-        <PatternLines
-          id="lines"
-          height={3}
-          width={3}
-          stroke="#aaaaaa"
-          strokeWidth={0.8}
-          background="#cecece"
-          orientation={["diagonal"]}
-        />
         <ZoomableGroup
           maxZoom={mapMaxZoom}
           zoom={position.zoom}
@@ -261,48 +252,70 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                 );
                 const isPattern = geo.properties.MAP_COLOR === "xAC";
 
-                return (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    stroke="#79B0CC"
-                    strokeWidth="0.2"
-                    strokeOpacity="0.8"
-                    cursor={!isLake ? "pointer" : ""}
-                    fill={
-                      isLake
-                        ? "#eaf6fd"
-                        : isUnsettled && !isPattern
-                        ? "#cecece"
-                        : isPattern
-                        ? "url(#lines)"
-                        : country?.isoCode === geo.properties.MAP_COLOR
-                        ? "#84b4cc"
-                        : selected
-                        ? geo.properties.MAP_COLOR === selected
+                let pattern = "";
+                if (geo.properties.MAP_COLOR === "CHN") {
+                  pattern = (
+                    <PatternLines
+                      key={geo.rsmKey + "_pattern"}
+                      id="lines"
+                      height={2.5}
+                      width={2.5}
+                      stroke="#cecece"
+                      strokeWidth={0.8}
+                      background={
+                        country?.isoCode === geo.properties.MAP_COLOR
                           ? "#84b4cc"
                           : fillColor(curr ? curr[topic] : 0)
-                        : fillColor(curr ? curr[topic] : 0)
-                    }
-                    onMouseEnter={() => {
-                      const { MAP_LABEL, MAP_COLOR } = geo.properties;
-                      if (!isLake && MAP_LABEL !== null) {
-                        setSelected(MAP_COLOR);
-                        setContent(
-                          <ToolTipContent data={curr} geo={geo.properties} />
-                        );
                       }
-                    }}
-                    onMouseLeave={() => {
-                      setContent("");
-                      setSelected(null);
-                    }}
-                    onClick={() => {
-                      !isLake &&
-                        !isUnsettled &&
-                        clickEvents(geo.properties.MAP_COLOR);
-                    }}
-                  />
+                      orientation={["diagonal"]}
+                    />
+                  );
+                }
+                return (
+                  <>
+                    {pattern}
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      stroke="#79B0CC"
+                      strokeWidth="0.2"
+                      strokeOpacity="0.8"
+                      cursor={!isLake ? "pointer" : ""}
+                      fill={
+                        isLake
+                          ? "#eaf6fd"
+                          : isUnsettled && !isPattern
+                          ? "#cecece"
+                          : isPattern
+                          ? "url(#lines)"
+                          : country?.isoCode === geo.properties.MAP_COLOR
+                          ? "#84b4cc"
+                          : selected
+                          ? geo.properties.MAP_COLOR === selected
+                            ? "#84b4cc"
+                            : fillColor(curr ? curr[topic] : 0)
+                          : fillColor(curr ? curr[topic] : 0)
+                      }
+                      onMouseEnter={() => {
+                        const { MAP_LABEL, MAP_COLOR } = geo.properties;
+                        if (!isLake && MAP_LABEL !== null) {
+                          setSelected(MAP_COLOR);
+                          setContent(
+                            <ToolTipContent data={curr} geo={geo.properties} />
+                          );
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        setContent("");
+                        setSelected(null);
+                      }}
+                      onClick={() => {
+                        !isLake &&
+                          !isUnsettled &&
+                          clickEvents(geo.properties.MAP_COLOR);
+                      }}
+                    />
+                  </>
                 );
               })
             }
