@@ -59,7 +59,6 @@ const Browse = ({
   const getResults = () => {
     // NOTE: This needs to be window.location.search because of how of
     // how `history` and `location` are interacting!
-    setLoading(true);
     api.get(`/browse${window.location.search}`).then((resp) => {
       setResults(resp?.data?.results);
       setLoading(false);
@@ -112,6 +111,10 @@ const Browse = ({
     }
   }, [profile]);
   const updateQuery = (param, value) => {
+    window.scrollTo({
+      top: 200,
+    });
+    setLoading(true);
     const newQuery = { ...query };
     newQuery[param] = value;
     if (param !== "offset") {
@@ -263,9 +266,9 @@ const Browse = ({
             </aside>
           </StickyBox>
           <div className="scroll-content">
-            {!loading && (
-              <StickyBox offsetBottom={600} className="sticky-pagination">
-                <div className="page">
+            <StickyBox offsetBottom={600} className="sticky-pagination">
+              <div className="page">
+                {!isEmpty(results) && (
                   <Pagination
                     defaultCurrent={1}
                     current={(filters?.offset || 0) / 50 + 1}
@@ -276,23 +279,24 @@ const Browse = ({
                       updateQuery("offset", (n - 1) * size)
                     }
                   />
-                </div>
-              </StickyBox>
-            )}
-            {loading ? (
-              <h2 className="loading">
-                <LoadingOutlined spin /> Loading
-              </h2>
-            ) : isEmpty(results) ? (
+                )}
+                {loading && (
+                  <h2 className="loading">
+                    <LoadingOutlined spin /> Loading
+                  </h2>
+                )}
+              </div>
+            </StickyBox>
+            {isEmpty(results) && (
               <h2 className="loading">There is no data to display</h2>
-            ) : (
+            )}
+            {!loading &&
               results.map((result) => (
                 <Result
                   key={`${result.type}-${result.id}`}
                   {...{ result, handleRelationChange, relations, profile }}
                 />
-              ))
-            )}
+              ))}
           </div>
         </div>
       </div>
@@ -423,11 +427,11 @@ const Result = ({ result, relations, handleRelationChange, profile }) => {
           </li>
         )}
         {result.type === "event" && [
-          <li>
+          <li key="1">
             <span>Starts:</span>
             <i>{moment(result.startDate).format("DD MMM YYYY")}</i>
           </li>,
-          <li>
+          <li key="2">
             <span>Ends:</span>
             <i>{moment(result.endDate).format("DD MMM YYYY")}</i>
           </li>,

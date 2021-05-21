@@ -126,6 +126,11 @@
       margin-bottom: 5px;
       background-color: #fff;
       padding-top: 30px;
+
+      h2.loading {
+        width: 100%;
+        padding-bottom: 800px;
+      }
     }
 
     .sticky-pagination {
@@ -135,10 +140,6 @@
     .scroll-content {
       width: -webkit-fill-available;
       background: #fff;
-
-      .loading {
-        width: 100%;
-      }
     }
 
     .result {
