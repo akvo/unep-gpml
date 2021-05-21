@@ -97,10 +97,16 @@ const AddTechnologyForm = ({
       .post("/technology", data)
       .then(() => {
         setStep(2);
+        // scroll top
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
         technologyData.update((e) => {
           e.data = {};
         });
         setDisabledBtn({ disabled: true, type: "default" });
+        setTimeout(() => {
+          setStep(1);
+        }, 3000);
       })
       .catch(() => {
         notification.error({ message: "An error occured" });
