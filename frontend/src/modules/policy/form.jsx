@@ -96,15 +96,11 @@ const AddPolicyForm = ({
       .then(() => {
         setStep(2);
         // scroll top
-        document.body.scrollTop = 0; // For Safari
-        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        window.scrollTo({ top: 0 });
         policyData.update((e) => {
           e.data = {};
         });
         setDisabledBtn({ disabled: true, type: "default" });
-        setTimeout(() => {
-          setStep(1);
-        }, 3000);
       })
       .catch(() => {
         notification.error({ message: "An error occured" });

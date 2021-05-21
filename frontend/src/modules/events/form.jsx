@@ -174,11 +174,7 @@ const AddEventForm = () => {
       .then(() => {
         setStep(2);
         // scroll top
-        document.body.scrollTop = 0; // For Safari
-        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-        setTimeout(() => {
-          setStep(1);
-        }, 3000);
+        window.scrollTo({ top: 0 });
       })
       .catch(() => {
         notification.error({ message: "An error occured" });
