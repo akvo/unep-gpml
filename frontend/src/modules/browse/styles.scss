@@ -138,6 +138,7 @@
     }
 
     .scroll-content {
+      flex-grow: inherit;
       width: -webkit-fill-available;
       background: #fff;
     }
