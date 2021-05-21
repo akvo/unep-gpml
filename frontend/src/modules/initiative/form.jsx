@@ -16,7 +16,7 @@ import {
   checkDependencyAnswer,
 } from "../../utils/forms";
 import uiSchema from "./uiSchema.json";
-import { CodepenOutlined } from "@ant-design/icons";
+import { UIStore } from "../../store";
 
 const Form = withTheme(AntDTheme);
 
@@ -164,7 +164,6 @@ const AddInitiativeForm = ({
   setHighlight,
   formSchema,
   setDisabledBtn,
-  setStep,
 }) => {
   const initiativeFormData = initiativeData.useState();
   const [dependValue, setDependValue] = useState([]);
@@ -178,7 +177,12 @@ const AddInitiativeForm = ({
     api
       .post("/initiative", data)
       .then(() => {
-        setStep(2);
+        UIStore.update((e) => {
+          e.formStep = {
+            ...e.formStep,
+            initiative: 2,
+          };
+        });
         // scroll top
         window.scrollTo({ top: 0 });
         initiativeData.update((e) => {

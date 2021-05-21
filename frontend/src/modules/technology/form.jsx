@@ -55,9 +55,14 @@ const AddTechnologyForm = ({
   setHighlight,
   setDisabledBtn,
 }) => {
-  const { countries, organisations, tags, loading } = UIStore.currentState;
+  const {
+    countries,
+    organisations,
+    tags,
+    loading,
+    formStep,
+  } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
-  const [step, setStep] = useState(1);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -96,7 +101,12 @@ const AddTechnologyForm = ({
     api
       .post("/technology", data)
       .then(() => {
-        setStep(2);
+        UIStore.update((e) => {
+          e.formStep = {
+            ...e.formStep,
+            technology: 2,
+          };
+        });
         // scroll top
         window.scrollTo({ top: 0 });
         technologyData.update((e) => {
@@ -150,7 +160,7 @@ const AddTechnologyForm = ({
 
   return (
     <div className="add-technology-form">
-      {step === 1 && (
+      {formStep.technology === 1 && (
         <Form
           idPrefix="technology"
           schema={formSchema.schema}
@@ -172,7 +182,7 @@ const AddTechnologyForm = ({
           </button>
         </Form>
       )}
-      {step === 2 && (
+      {formStep.technology === 2 && (
         <div>
           <h3>Thank you for adding the Technology</h3>
           <p>we'll let you know once an admin has approved it</p>

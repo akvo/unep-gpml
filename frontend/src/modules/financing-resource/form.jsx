@@ -72,9 +72,9 @@ const AddResourceForm = ({
     tags,
     currencies,
     loading,
+    formStep,
   } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
-  const [step, setStep] = useState(1);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -131,7 +131,12 @@ const AddResourceForm = ({
     api
       .post("/resource", data)
       .then(() => {
-        setStep(2);
+        UIStore.update((e) => {
+          e.formStep = {
+            ...e.formStep,
+            financingResource: 2,
+          };
+        });
         // scroll top
         window.scrollTo({ top: 0 });
         resourceData.update((e) => {
@@ -183,7 +188,7 @@ const AddResourceForm = ({
 
   return (
     <div className="add-resource-form">
-      {step === 1 && (
+      {formStep.financingResource === 1 && (
         <Form
           idPrefix="financing-resource_"
           schema={formSchema.schema}
@@ -205,7 +210,7 @@ const AddResourceForm = ({
           </button>
         </Form>
       )}
-      {step === 2 && (
+      {formStep.financingResource === 2 && (
         <div>
           <h3>Thank you for adding the resource</h3>
           <p>we'll let you know once an admin has approved it</p>

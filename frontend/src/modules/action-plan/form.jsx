@@ -61,9 +61,14 @@ const AddActionPlanForm = ({
   setHighlight,
   setDisabledBtn,
 }) => {
-  const { countries, organisations, tags, loading } = UIStore.currentState;
+  const {
+    countries,
+    organisations,
+    tags,
+    loading,
+    formStep,
+  } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
-  const [step, setStep] = useState(1);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -114,7 +119,12 @@ const AddActionPlanForm = ({
     api
       .post("/resource", data)
       .then(() => {
-        setStep(2);
+        UIStore.update((e) => {
+          e.formStep = {
+            ...e.formStep,
+            actionPlan: 2,
+          };
+        });
         // scroll top
         window.scrollTo({ top: 0 });
         actionPlanData.update((e) => {
@@ -166,7 +176,7 @@ const AddActionPlanForm = ({
 
   return (
     <div className="add-action-plan-form">
-      {step === 1 && (
+      {formStep.actionPlan === 1 && (
         <Form
           idPrefix="action-plan"
           schema={formSchema.schema}
@@ -188,7 +198,7 @@ const AddActionPlanForm = ({
           </button>
         </Form>
       )}
-      {step === 2 && (
+      {formStep.actionPlan === 2 && (
         <div>
           <h3>Thank you for adding the resource</h3>
           <p>we'll let you know once an admin has approved it</p>

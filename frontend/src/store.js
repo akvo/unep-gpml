@@ -44,6 +44,15 @@ const UIStore = new Store({
   highlight: false,
   disclaimer: null,
   loading: true,
+  formStep: {
+    initiative: 1,
+    actionPlan: 1,
+    policy: 1,
+    technicalResource: 1,
+    financingResource: 1,
+    event: 1,
+    technology: 1,
+  },
 });
 
 export { UIStore };

@@ -211,7 +211,13 @@ const AddInitiative = ({ ...props }) => {
   const minHeightContainer = innerHeight * 0.8;
   const minHeightCard = innerHeight * 0.75;
   const { data } = initiativeData.useState();
-  const { countries, organisations, tags, loading } = UIStore.currentState;
+  const {
+    countries,
+    organisations,
+    tags,
+    loading,
+    formStep,
+  } = UIStore.currentState;
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -223,8 +229,6 @@ const AddInitiative = ({ ...props }) => {
     disabled: true,
     type: "default",
   });
-  // step after submit form
-  const [step, setStep] = useState(1);
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -370,7 +374,7 @@ const AddInitiative = ({ ...props }) => {
       ) : (
         <div className="ui container">
           <div className="form-container">
-            {step === 1 && (
+            {formStep.initiative === 1 && (
               <Row
                 style={{
                   minHeight: `${minHeightContainer}px`,
@@ -424,13 +428,12 @@ const AddInitiative = ({ ...props }) => {
                       setHighlight={setHighlight}
                       formSchema={formSchema}
                       setDisabledBtn={setDisabledBtn}
-                      setStep={setStep}
                     />
                   </Card>
                 </Col>
               </Row>
             )}
-            {step === 2 && (
+            {formStep.initiative === 2 && (
               <Row>
                 <Col span={24}>
                   <Card

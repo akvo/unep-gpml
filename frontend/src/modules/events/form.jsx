@@ -155,10 +155,9 @@ const validation = (formSchema) => {
 };
 
 const AddEventForm = () => {
-  const { countries, loading } = UIStore.currentState;
+  const { countries, loading, formStep } = UIStore.currentState;
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [sending, setSending] = useState(false);
-  const [step, setStep] = useState(1);
   const onSubmit = (vals) => {
     const data = { ...vals };
     delete data.date;
@@ -172,7 +171,12 @@ const AddEventForm = () => {
     api
       .post("/event", data)
       .then(() => {
-        setStep(2);
+        UIStore.update((e) => {
+          e.formStep = {
+            ...e.formStep,
+            event: 2,
+          };
+        });
         // scroll top
         window.scrollTo({ top: 0 });
       })
@@ -219,7 +223,7 @@ const AddEventForm = () => {
   });
   return (
     <div className="add-event-form">
-      {step === 1 && (
+      {formStep.event === 1 && (
         <Form layout="vertical">
           <FinalForm
             form={form}
@@ -255,7 +259,7 @@ const AddEventForm = () => {
           />
         </Form>
       )}
-      {step === 2 && (
+      {formStep.event === 2 && (
         <div>
           <h3>Thank you for adding the event</h3>
           <p>we'll let you know once an admin has approved it</p>

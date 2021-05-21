@@ -57,9 +57,14 @@ const AddPolicyForm = ({
   setHighlight,
   setDisabledBtn,
 }) => {
-  const { countries, organisations, tags, loading } = UIStore.currentState;
+  const {
+    countries,
+    organisations,
+    tags,
+    loading,
+    formStep,
+  } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
-  const [step, setStep] = useState(1);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -94,7 +99,12 @@ const AddPolicyForm = ({
     api
       .post("/policy", data)
       .then(() => {
-        setStep(2);
+        UIStore.update((e) => {
+          e.formStep = {
+            ...e.formStep,
+            policy: 2,
+          };
+        });
         // scroll top
         window.scrollTo({ top: 0 });
         policyData.update((e) => {
@@ -162,7 +172,7 @@ const AddPolicyForm = ({
 
   return (
     <div className="add-policy-form">
-      {step === 1 && (
+      {formStep.policy === 1 && (
         <Form
           idPrefix="policy"
           schema={formSchema.schema}
@@ -184,7 +194,7 @@ const AddPolicyForm = ({
           </button>
         </Form>
       )}
-      {step === 2 && (
+      {formStep.policy === 2 && (
         <div>
           <h3>Thank you for adding the Policy</h3>
           <p>we'll let you know once an admin has approved it</p>

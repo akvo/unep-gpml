@@ -353,29 +353,95 @@ const AddButton = withRouter(
             overlayClassName="add-dropdown-wrapper"
             overlay={
               <Menu className="add-dropdown">
-                <Menu.Item onClick={() => history.push("/add-initiative")}>
+                <Menu.Item
+                  onClick={() => {
+                    UIStore.update((e) => {
+                      e.formStep = {
+                        ...e.formStep,
+                        initiative: 1,
+                      };
+                    });
+                    history.push("/add-initiative");
+                  }}
+                >
                   Initiative <RightOutlined />
                 </Menu.Item>
-                <Menu.Item onClick={() => history.push("/add-action-plan")}>
+                <Menu.Item
+                  onClick={() => {
+                    UIStore.update((e) => {
+                      e.formStep = {
+                        ...e.formStep,
+                        actionPlan: 1,
+                      };
+                    });
+                    history.push("/add-action-plan");
+                  }}
+                >
                   Action Plan <RightOutlined />
                 </Menu.Item>
-                <Menu.Item onClick={() => history.push("/add-policy")}>
+                <Menu.Item
+                  onClick={() => {
+                    UIStore.update((e) => {
+                      e.formStep = {
+                        ...e.formStep,
+                        policy: 1,
+                      };
+                    });
+                    history.push("/add-policy");
+                  }}
+                >
                   Policy <RightOutlined />
                 </Menu.Item>
                 <Menu.Item
-                  onClick={() => history.push("/add-technical-resource")}
+                  onClick={() => {
+                    UIStore.update((e) => {
+                      e.formStep = {
+                        ...e.formStep,
+                        technicalResource: 1,
+                      };
+                    });
+                    history.push("/add-technical-resource");
+                  }}
                 >
                   Technical Resource <RightOutlined />
                 </Menu.Item>
                 <Menu.Item
-                  onClick={() => history.push("/add-financing-resource")}
+                  onClick={() => {
+                    UIStore.update((e) => {
+                      e.formStep = {
+                        ...e.formStep,
+                        financingResource: 1,
+                      };
+                    });
+                    history.push("/add-financing-resource");
+                  }}
                 >
                   Financing Resource <RightOutlined />
                 </Menu.Item>
-                <Menu.Item onClick={() => history.push("/add-event")}>
+                <Menu.Item
+                  onClick={() => {
+                    UIStore.update((e) => {
+                      e.formStep = {
+                        ...e.formStep,
+                        event: 1,
+                      };
+                    });
+                    history.push("/add-event");
+                  }}
+                >
                   Event <RightOutlined />
                 </Menu.Item>
-                <Menu.Item onClick={() => history.push("/add-technology")}>
+                <Menu.Item
+                  onClick={() => {
+                    UIStore.update((e) => {
+                      e.formStep = {
+                        ...e.formStep,
+                        technology: 1,
+                      };
+                    });
+                    history.push("/add-technology");
+                  }}
+                >
                   Technology <RightOutlined />
                 </Menu.Item>
               </Menu>

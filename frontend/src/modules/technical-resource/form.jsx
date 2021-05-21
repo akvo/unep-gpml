@@ -61,9 +61,14 @@ const AddResourceForm = ({
   setHighlight,
   setDisabledBtn,
 }) => {
-  const { countries, organisations, tags, loading } = UIStore.currentState;
+  const {
+    countries,
+    organisations,
+    tags,
+    loading,
+    formStep,
+  } = UIStore.currentState;
   const [dependValue, setDependValue] = useState([]);
-  const [step, setStep] = useState(1);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -110,7 +115,12 @@ const AddResourceForm = ({
     api
       .post("/resource", data)
       .then(() => {
-        setStep(2);
+        UIStore.update((e) => {
+          e.formStep = {
+            ...e.formStep,
+            technicalResource: 2,
+          };
+        });
         // scroll top
         window.scrollTo({ top: 0 });
         resourceData.update((e) => {
@@ -162,7 +172,7 @@ const AddResourceForm = ({
 
   return (
     <div className="add-resource-form">
-      {step === 1 && (
+      {formStep.technicalResource === 1 && (
         <Form
           idPrefix="technical-resource_"
           schema={formSchema.schema}
@@ -184,7 +194,7 @@ const AddResourceForm = ({
           </button>
         </Form>
       )}
-      {step === 2 && (
+      {formStep.technicalResource === 2 && (
         <div>
           <h3>Thank you for adding the resource</h3>
           <p>we'll let you know once an admin has approved it</p>
