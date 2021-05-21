@@ -1,5 +1,17 @@
+@media (max-width: 640px) {
+  .content-column.stakeholder-left {
+    width: auto !important;
+  }
+
+  .content-column.stakeholder-right {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
 .details-view {
   min-height: calc(100vh - 710px);
+
   // @media only screen and (min-width: 1200px) {
   //   .ui.container {
   //     width: 727px;
@@ -10,6 +22,7 @@
   .details-active {
     font-weight: bold;
   }
+
   .loading {
     height: calc(100vh - 150px);
     display: flex;
@@ -17,22 +30,27 @@
     justify-content: center;
     flex-direction: column;
     color: #036799;
+
     .anticon {
       font-size: 40px;
       margin-bottom: 8px;
     }
   }
+
   padding-bottom: 20px;
+
   .bc {
     background-color: #dbe9f1;
     color: #046799;
     line-height: 34px;
+
     // margin-bottom: 20px;
     span {
       margin-left: 8px;
       margin-right: 25px;
     }
   }
+
   // .content-project {
   //   background-color: #FFF9EA;
   //   border-bottom: 2px solid #FFD579;
@@ -47,77 +65,97 @@
     padding-top: 35px;
     padding-bottom: 25px;
     margin-bottom: 30px;
+
     .header-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       .title {
         width: 90%;
+
         .type-tag {
           font-weight: 600;
           text-transform: uppercase;
           font-size: 13px;
           line-height: 22px;
+
           // padding: 0 5px;
           // border-radius: 3px;
           color: #28457b;
+
           .project-topic,
           .non-project-topic {
             padding: 10px;
+
             // border-radius: 5px;
             border-radius: 0px 23px 23px 0px;
           }
+
           .project-topic {
             background-color: #ffd579;
           }
+
           .non-project-topic {
             background-color: #035b71;
             color: #fff;
           }
+
           .project {
             background-color: #ffd579;
             color: #28457b;
           }
+
           .event {
             background-color: #01abf1;
             color: #ffffff;
           }
+
           .stakeholder {
             background-color: #01abf1;
             color: #ffffff;
           }
+
           .technology {
             background-color: #035b71;
             color: #ffffff;
           }
+
           .policy {
             background-color: #b5c3da;
             color: #28457b;
           }
+
           .financing_resource {
             background-color: #21a07f;
             color: #ffffff;
           }
+
           .technical_resource {
             background-color: #28457b;
             color: #ffffff;
           }
+
           .action_plan {
             background-color: #126e9b;
             color: #ffffff;
           }
         }
       }
+
       .bookmark {
         text-align: center;
+
         button {
           background-color: #01abf1;
+
           span {
             color: white;
           }
         }
       }
     }
+
     // ul.stats{
     //   display: flex;
     //   flex-direction: row;
@@ -149,63 +187,79 @@
       font-size: 38px;
       color: #28457b;
     }
+
     p {
       margin: 20px 0;
     }
+
     .big-btns {
       display: flex;
+
       & > * {
         margin-right: 5px;
       }
     }
   }
+
   .content-container {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
     .links {
       margin-top: 10px;
       display: flex;
       flex-direction: column;
+
       span {
         color: #81b2cc;
         text-transform: uppercase;
         font-size: 12px;
         font-weight: 600;
       }
+
       a {
         color: #01abf1;
       }
     }
+
     .tags {
       color: #81b2cc;
       text-transform: uppercase;
       margin-top: 20px;
       font-size: 12px;
+
       span {
         font-weight: 600;
       }
+
       b {
         color: #046799;
       }
     }
   }
+
   .content-body {
     display: flex;
     justify-content: space-between;
+
     @media (max-width: 400px) {
       .content-body {
         display: block;
+
         .content-column {
           width: 100%;
           margin: 0 0 10px 0;
         }
       }
     }
+
     .content-column {
       width: 48%;
+
       .card {
         margin-bottom: 75px;
+
         // padding: 20px 0;
         // border: 1px solid #B5C3DA;
         // border-radius: 5px;
@@ -216,51 +270,63 @@
           font-weight: normal;
           margin-bottom: 20px;
         }
+
         .table {
           .column {
             display: flex;
             flex-direction: row;
+
             .title {
               flex: 27%;
             }
+
             .value {
               flex: 73%;
               color: #28457b;
               font-weight: 500;
+
               ul {
                 list-style-type: circle;
               }
+
               .indent {
                 margin-left: 20px;
               }
+
               .scrollable {
                 max-height: 200px;
                 overflow: auto;
                 padding-right: 8px;
                 margin: 24px 0px 0px 0px;
               }
+
               ::-webkit-scrollbar {
                 width: 5px;
               }
+
               ::-webkit-scrollbar-track {
                 background: #f1f1f1;
               }
+
               /* Handle */
               ::-webkit-scrollbar-thumb {
                 background: #888;
               }
+
               ::-webkit-scrollbar-thumb:hover {
                 background: #555;
               }
             }
           }
         }
+
         .table-actions {
           .column {
             ul {
               list-style-type: circle;
               margin-left: 20px;
             }
+
             .value {
               color: #28457b;
               font-weight: 500;
@@ -269,11 +335,21 @@
         }
       }
     }
+
     .content-column.stakeholder-left {
-      width: 32%;
+      width: 360px;
     }
+
     .content-column.stakeholder-right {
-      width: 60%;
+      width: -moz-available;
+
+      /* WebKit-based browsers will ignore this. */
+      width: -webkit-fill-available;
+
+      /* Mozilla-based browsers will ignore this. */
+      width: fill-available;
+      margin-left: 2rem;
+      margin-right: 2rem;
     }
   }
 }

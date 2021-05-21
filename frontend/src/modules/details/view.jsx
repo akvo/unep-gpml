@@ -403,12 +403,16 @@ const renderDetailImage = (params, data) => {
   if (params.type !== "stakeholder" && data?.picture) return data.picture;
   if (params.type === "organisation" && data?.logo) return data.logo;
   if (params.type === "stakeholder" && data?.picture) {
-    const isInitialPic = data.picture.includes("lh5.googleusercontent.com");
+    const isInitialPic = data.picture.includes("googleusercontent.com");
     if (!isInitialPic) return data.picture;
-    let splitted = data.picture.split("/");
-    // resize
-    splitted[7] = `s${window.screen.width}-c`;
-    return splitted.join("/");
+    let splitted = data.picture.split("=");
+    splitted[1] =
+      window.screen.width < 640
+        ? `s${
+            document.getElementsByClassName("stakeholder-left")[0].offsetWidth
+          }-c`
+        : `s640-c`;
+    return splitted.join("=");
   }
   return imageNotFound;
 };
