@@ -30,6 +30,16 @@ h4 {
   font-size: 22px;
 }
 
+.rjsf {
+  .ant-input,
+  .ant-input-number-input,
+  .ant-picker,
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border: 2px transparent solid;
+    border-radius: 2px;
+  }
+}
+
 #root {
   // .ant-btn {
   //   // border-radius: 4px;
@@ -123,8 +133,10 @@ h4 {
 .add-dropdown-wrapper {
   border: 1px solid $primaryColor;
   border-radius: 2px;
+
   .add-dropdown {
     text-align: left;
+
     :not(:last-child) {
       border-bottom: 1px solid $primaryColor;
     }
@@ -137,6 +149,7 @@ h4 {
       font-size: 16px;
       color: #04a9f1;
       height: 40px;
+
       :last-child {
         margin-left: 20px;
       }
