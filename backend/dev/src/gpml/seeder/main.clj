@@ -495,6 +495,10 @@
     (seed-projects db)
     (db.util/revert-constraint db cache-id)))
 
+(defn revert-mapping [mapping-file]
+  (map (fn [k] {(keyword (str (second k))) (-> k first name)})
+       mapping-file))
+
 (defn updater-country
   ([db]
    (updater-country db {:revert? false}))
@@ -503,7 +507,9 @@
         mapping-file (get-data "new_countries_mapping")]
     (db.util/country-id-updater db cache-id mapping-file opts)
     (seed-countries db {:old? (:revert? opts)})
-    (db.util/update-initiative-country db mapping-file)
+    (db.util/update-initiative-country
+      db (if (:revert? opts)
+           (revert-mapping mapping-file) mapping-file))
     (db.util/revert-constraint db cache-id))
   (resync-country-group db)))
 
