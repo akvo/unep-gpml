@@ -30,7 +30,16 @@
         (str "to_jsonb(:v" k ")")
         (str k)))))))
 
+(defn generate-update [data]
+  (str/replace-first
+    (str/join ", "
+      (for [k (keys data)]
+        (if-not (= k :id)
+          (str (str/replace (str k) ":" "") (str " = to_jsonb(:v" k "::json) "))
+          ""))) "," ""))
+
 (comment
     (generate-jsonb {:q3 1 :q4 "300" :q5 nil :created_by "John" :version 1})
     (generate-insert {:q3 1 :q4 "300" :q5 nil :created_by "John" :version 1})
+    (generate-update {:q3 1 :q4 "300" :q5 nil})
 )

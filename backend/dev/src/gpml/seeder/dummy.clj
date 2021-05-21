@@ -12,8 +12,7 @@
             [gpml.db.organisation :as db.organisation]
             [gpml.seeder.main :as seeder]
             [integrant.core :as ig]
-            [clojure.java.io :as io]
-            [jsonista.core :as j]))
+            [clojure.java.io :as io]))
 
 ;; Dummy Content for UI eg. Pagination, Browse, etc
 ;; Also to Create test admin profile

@@ -74,6 +74,8 @@
   #_:clj-kondo/ignore
   (test #'gpml.handler.landing-test/handler-test)
 
+  (test #'gpml.db.updater-test/update-country-test)
+
   ,)
 
 
