@@ -454,6 +454,7 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
         });
       }, 100);
     }
+    window.scrollTo({ top: 0 });
   }, [params, loading, profile]);
 
   const handleRelationChange = (relation) => {
