@@ -155,5 +155,4 @@
 (defn update-initiative-country [db mapping]
   (doseq [query (map #(transform-initiative-query % mapping)
                      (seeder.db/get-initiative-country-values db))]
-    (prn query)
     (db.initiative/update-initiative db query)))

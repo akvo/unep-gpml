@@ -126,12 +126,14 @@
         (testing "Initiative country ID changes correctly"
           (let [new-tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)
                 country-new (:q23 new-tn-initiative)
-                country-old (:q23 tn-initiative)]
+                country-old (:q23 tn-initiative)
+                country-tn-new (:q24_4 new-tn-initiative)
+                country-tn-old (:q24_4 tn-initiative)]
             (is (= (vals country-new) (vals country-old)))
             ;; FIXME: Change check to be better using country-id-mapping?
             (is (not (= (keys country-new) (keys country-old))))
             ;; FIXME: Check q24_4
-            (println (:q24_4 new-tn-initiative))))))))
+            (is (not (= (keys country-tn-new) (keys country-tn-old))))))))))
 
 (deftest revert-update-country-test
   (let [db (test-util/db-test-conn)
