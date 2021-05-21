@@ -112,7 +112,7 @@ const Browse = ({
   }, [profile]);
   const updateQuery = (param, value) => {
     window.scrollTo({
-      top: 200,
+      top: window.pageYOffset < 207 ? window.pageYOffset : 207,
     });
     setLoading(true);
     const newQuery = { ...query };
