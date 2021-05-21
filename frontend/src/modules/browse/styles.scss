@@ -1,5 +1,24 @@
 @import "../../vars.scss";
 
+@media (max-width: 640px) {
+  #browse {
+    .scroll-content {
+      .ant-card {
+        margin: 0px !important;
+      }
+    }
+
+    .main-content {
+      .page {
+        margin: 0px !important;
+        padding: 1rem !important;
+        border-bottom: solid #ddd 1px;
+        border-top: solid #ddd 1px;
+      }
+    }
+  }
+}
+
 #browse {
   .ui.container {
     display: flex;
