@@ -80,7 +80,25 @@ const Legend = ({ data, setFilterColor, selected }) => {
     return (
       <div className="legends">
         {[
-          <div key={0} className="legend" style={{ backgroundColor: "#FFF" }}>
+          <div
+            key={0}
+            className={
+              "legend" +
+              (selected !== null && selected === "#fff"
+                ? " legend-selected"
+                : "")
+            }
+            style={{
+              backgroundColor: "#fff" === selected ? higlightColor : "#fff",
+            }}
+            onClick={(e) => {
+              selected === null
+                ? setFilterColor("#fff")
+                : selected === "#fff"
+                ? setFilterColor(null)
+                : setFilterColor("#fff");
+            }}
+          >
             0
           </div>,
           ...range,
