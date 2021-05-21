@@ -107,16 +107,20 @@ const AddResourceForm = ({
     delete data.value;
     data.value = formData.value.valueAmount;
     data.valueCurrency = formData.value.valueCurrency;
-    if (formData?.value?.valueRemark)
+    if (formData?.value?.valueRemark) {
       data.valueRemarks = formData.value.valueRemark;
+    }
 
     delete data.date;
     data.validFrom = formData.date.validFrom;
     data.validTo = formData?.date?.validTo || "Ongoing";
 
-    if (data?.urls[0]?.url)
+    if (data?.urls[0]?.url) {
       data.urls = formData.urls.filter((it) => it?.url && it.url.length > 0);
-    if (!data?.urls[0]?.url) delete data.urls;
+    }
+    if (!data?.urls[0]?.url) {
+      delete data.urls;
+    }
 
     data = handleGeoCoverageValue(data, formData, countries);
     data?.image === "" && delete data.image;

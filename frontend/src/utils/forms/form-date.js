@@ -38,11 +38,15 @@ const DateWidget = ({
 
   function disableDate(current) {
     let end = "day";
-    if (options?.mode && options?.mode === "year") end = "year";
-    if (options?.disableDate === "future")
+    if (options?.mode && options?.mode === "year") {
+      end = "year";
+    }
+    if (options?.disableDate === "future") {
       return current && current > moment().endOf(end);
-    if (options?.disableDate === "past")
+    }
+    if (options?.disableDate === "past") {
       return current && current < moment().subtract(1, "days").endOf("day");
+    }
   }
 
   return (

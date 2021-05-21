@@ -19,8 +19,10 @@ const GeoCoverageInput = (props) => {
             key={name}
             name={props.input.name}
             render={({ input }) => {
-              if (typeInput.value === "global") return <Input disabled />;
-              if (typeInput.value === "sub-national")
+              if (typeInput.value === "global") {
+                return <Input disabled />;
+              }
+              if (typeInput.value === "sub-national") {
                 return (
                   <Input
                     placeholder="Type regions here..."
@@ -28,7 +30,8 @@ const GeoCoverageInput = (props) => {
                     disabled={disabled}
                   />
                 );
-              if (typeInput.value === "Other")
+              }
+              if (typeInput.value === "Other") {
                 return (
                   <Input
                     placeholder="Type here..."
@@ -36,9 +39,12 @@ const GeoCoverageInput = (props) => {
                     disabled={disabled}
                   />
                 );
+              }
               const selectProps = { ...input, disabled };
               if (typeInput.value === "regional") {
-                if (input.value === "" || input?.[0] === "") input.onChange([]);
+                if (input.value === "" || input?.[0] === "") {
+                  input.onChange([]);
+                }
                 selectProps.options = regionOptions.map((it) => ({
                   value: it,
                   label: it,
@@ -65,7 +71,9 @@ const GeoCoverageInput = (props) => {
                   label: it,
                 }));
                 selectProps.mode = "multiple";
-                if (input.value === "" || input?.[0] === "") input.onChange([]);
+                if (input.value === "" || input?.[0] === "") {
+                  input.onChange([]);
+                }
               }
               return <Select {...selectProps} virtual={false} />;
             }}

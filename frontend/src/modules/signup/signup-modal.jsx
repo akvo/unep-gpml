@@ -18,7 +18,9 @@ const SignupModal = ({ visible, onCancel }) => {
 
   const onSubmit = (vals) => {
     setSending(true);
-    if (!vals?.publicEmail) vals = { ...vals, publicEmail: false };
+    if (!vals?.publicEmail) {
+      vals = { ...vals, publicEmail: false };
+    }
     if (vals.geoCoverageType === "national") {
       vals.geoCoverageValue = [vals.geoCoverageValue];
     }

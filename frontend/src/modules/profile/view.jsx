@@ -91,7 +91,9 @@ const ProfileView = ({ ...props }) => {
   }, [profile]);
 
   const onSubmit = (vals) => {
-    if (!vals?.publicEmail) vals = { ...vals, publicEmail: false };
+    if (!vals?.publicEmail) {
+      vals = { ...vals, publicEmail: false };
+    }
     setSaving(true);
     if (
       vals.geoCoverageType === "national" &&

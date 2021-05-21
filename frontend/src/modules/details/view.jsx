@@ -399,12 +399,20 @@ const renderDescription = (params, data) => {
 };
 
 const renderDetailImage = (params, data) => {
-  if (data?.image) return data.image;
-  if (params.type !== "stakeholder" && data?.picture) return data.picture;
-  if (params.type === "organisation" && data?.logo) return data.logo;
+  if (data?.image) {
+    return data.image;
+  }
+  if (params.type !== "stakeholder" && data?.picture) {
+    return data.picture;
+  }
+  if (params.type === "organisation" && data?.logo) {
+    return data.logo;
+  }
   if (params.type === "stakeholder" && data?.picture) {
     const isInitialPic = data.picture.includes("googleusercontent.com");
-    if (!isInitialPic) return data.picture;
+    if (!isInitialPic) {
+      return data.picture;
+    }
     let splitted = data.picture.split("=");
     splitted[1] =
       window.screen.width < 640
@@ -489,7 +497,7 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
     }
   };
 
-  if (!data)
+  if (!data) {
     return (
       <div className="details-view">
         <div className="loading">
@@ -498,6 +506,7 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
         </div>
       </div>
     );
+  }
 
   return (
     <div className="details-view">
@@ -607,8 +616,12 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
 const BookmarkBtn = ({ topic, relation, handleRelationChange }) => {
   const handleChangeRelation = (relationType) => ({ target: { checked } }) => {
     let association = relation ? [...relation.association] : [];
-    if (checked) association = [...association, relationType];
-    else association = association.filter((it) => it !== relationType);
+    if (checked) {
+      association = [...association, relationType];
+    }
+    {
+      association = association.filter((it) => it !== relationType);
+    }
     handleRelationChange({
       topicId: parseInt(topic.id),
       association,

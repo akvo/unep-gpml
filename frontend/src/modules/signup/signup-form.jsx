@@ -138,8 +138,9 @@ const defaultFormSchema = {
 };
 
 const ReviewText = ({ reviewStatus }) => {
-  if (reviewStatus === "SUBMITTED")
+  if (reviewStatus === "SUBMITTED") {
     return <div className="review-status">WAITING FOR APPROVAL</div>;
+  }
   const reviewIcon =
     reviewStatus === "APPROVED" ? (
       <CheckCircleOutlined />
@@ -292,8 +293,12 @@ const SignupForm = ({
         mutators={{ ...arrayMutators }}
         onSubmit={onSubmit}
         render={({ handleSubmit, form, ...props }) => {
-          if (handleSubmitRef) handleSubmitRef(handleSubmit);
-          if (handleFormRef) handleFormRef(form);
+          if (handleSubmitRef) {
+            handleSubmitRef(handleSubmit);
+          }
+          if (handleFormRef) {
+            handleFormRef(form);
+          }
           formRef.current = form;
           return (
             <>
@@ -353,8 +358,11 @@ const SignupForm = ({
                       );
                     }}
                     validate={(value) => {
-                      if (!value) return "Required";
-                      else return undefined;
+                      if (!value) {
+                        return "Required";
+                      } else {
+                        return undefined;
+                      }
                     }}
                   />
                   <FieldsFromSchema
@@ -429,10 +437,11 @@ const SignupForm = ({
                           label: "Geo coverage",
                           render: GeoCoverageInput,
                         };
-                        if (values.org.geoCoverageType === "global")
+                        if (values.org.geoCoverageType === "global") {
                           newSchema["organisation"][
                             "org.geoCoverageValue"
                           ].required = false;
+                        }
                         changedSchema = true;
                       }
                       if (

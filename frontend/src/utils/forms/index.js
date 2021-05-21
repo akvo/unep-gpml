@@ -103,7 +103,9 @@ export const collectDependSchema = (
 export const overideValidation = (errors, dependValue) => {
   // overide "is a required property" message
   errors = errors.map((x) => {
-    if (x.name === "required") x.message = "Required";
+    if (x.name === "required") {
+      x.message = "Required";
+    }
     return x;
   });
   // overide enum "should be equal to one of the allowed values" validation

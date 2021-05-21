@@ -21,14 +21,20 @@ const GeoCoverageInput = (props) => {
           <Field
             name="geoCoverageValue"
             render={({ input }) => {
-              if (typeInput.value === "global") return <Input disabled />;
-              if (typeInput.value === "sub-national")
+              if (typeInput.value === "global") {
+                return <Input disabled />;
+              }
+              if (typeInput.value === "sub-national") {
                 return <Input placeholder="Type regions here..." {...input} />;
-              if (typeInput.value === "Other")
+              }
+              if (typeInput.value === "Other") {
                 return <Input placeholder="Type here..." {...input} />;
+              }
               const selectProps = { ...input };
               if (typeInput.value === "regional") {
-                if (input.value === "" || input?.[0] === "") input.onChange([]);
+                if (input.value === "" || input?.[0] === "") {
+                  input.onChange([]);
+                }
                 selectProps.options = regionOptions.map((it) => ({
                   value: it,
                   label: it,
@@ -50,8 +56,9 @@ const GeoCoverageInput = (props) => {
                 selectProps.filterOption = (input, option) =>
                   option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
                 if (typeInput.value === "transnational") {
-                  if (input.value === "" || input?.[0] === "")
+                  if (input.value === "" || input?.[0] === "") {
                     input.onChange([]);
+                  }
                   selectProps.mode = "multiple";
                 }
               } else if (
@@ -62,7 +69,9 @@ const GeoCoverageInput = (props) => {
                   label: it,
                 }));
                 selectProps.mode = "multiple";
-                if (input.value === "" || input?.[0] === "") input.onChange([]);
+                if (input.value === "" || input?.[0] === "") {
+                  input.onChange([]);
+                }
               }
               return <Select {...selectProps} virtual={false} />;
             }}

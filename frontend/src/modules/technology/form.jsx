@@ -81,11 +81,14 @@ const AddTechnologyForm = ({
   const handleOnSubmit = ({ formData }) => {
     let data = { ...formData };
 
-    if (data?.relatedInfo?.email) data.email = formData.relatedInfo.email;
-    if (data?.relatedInfo?.urls[0]?.url)
+    if (data?.relatedInfo?.email) {
+      data.email = formData.relatedInfo.email;
+    }
+    if (data?.relatedInfo?.urls[0]?.url) {
       data.urls = formData.relatedInfo.urls.filter(
         (it) => it?.url && it.url.length > 0
       );
+    }
     data?.relatedInfo && delete data.relatedInfo;
 
     data = handleGeoCoverageValue(data, formData, countries);

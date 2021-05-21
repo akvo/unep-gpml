@@ -165,7 +165,9 @@ const Maps = ({ data, topic, clickEvents, country }) => {
         height: height,
         width: width,
       });
-      if (innerWidth >= 1600) setScale(210);
+      if (innerWidth >= 1600) {
+        setScale(210);
+      }
     }
   };
 
