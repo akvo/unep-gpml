@@ -185,6 +185,7 @@ export const schema = {
           },
           lang: {
             title: "LANGUAGES",
+            default: "en",
             enum: Object.keys(languages).map((langCode) => langCode),
             enumNames: Object.keys(languages).map(
               (langCode) => languages[langCode].name
