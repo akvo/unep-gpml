@@ -19,6 +19,8 @@
             [gpml.db.project :as db.project]
             [gpml.exporter.main :as db.exporter]
             [gpml.seeder.util :as db.util]
+            [gpml.seeder.db :as seeder.db]
+            [gpml.db.initiative :as db.initiative]
             gpml.handler.detail
             gpml.pg-util
             [integrant.core :as ig]
@@ -493,6 +495,10 @@
     (seed-projects db)
     (db.util/revert-constraint db cache-id)))
 
+(defn revert-mapping [mapping-file]
+  (map (fn [k] {(keyword (str (second k))) (-> k first name)})
+       mapping-file))
+
 (defn updater-country
   ([db]
    (updater-country db {:revert? false}))
@@ -501,6 +507,9 @@
         mapping-file (get-data "new_countries_mapping")]
     (db.util/country-id-updater db cache-id mapping-file opts)
     (seed-countries db {:old? (:revert? opts)})
+    (db.util/update-initiative-country
+      db (if (:revert? opts)
+           (revert-mapping mapping-file) mapping-file))
     (db.util/revert-constraint db cache-id))
   (resync-country-group db)))
 
@@ -664,4 +673,4 @@
     (println item))
 
 
-  )
+ )

@@ -8,7 +8,12 @@ insert into initiative(
 ) returning id;
 
 -- :name initiative-by-id :? :1
-select * from initiative where id = :id;
+SELECT * FROM initiative WHERE id = :id;
+
+-- :name update-initiative :! :n
+UPDATE initiative SET
+--~ (#'gpml.sql-util/generate-update params)
+WHERE id = :id;
 
 -- :name initiative-detail-by-id :? :1
 SELECT id,

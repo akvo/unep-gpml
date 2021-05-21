@@ -1,5 +1,6 @@
 (ns gpml.db.updater-test
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
+            [clojure.java.io :as io]
             [clojure.string :as str]
             [gpml.fixtures :as fixtures]
             [gpml.seeder.db :as db.seeder]
@@ -7,6 +8,7 @@
             [gpml.seeder.dummy :as dummy]
             [gpml.test-util :as test-util]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.initiative :as db.initiative]
             [gpml.db.country :as db.country]))
 
 (use-fixtures :each fixtures/with-test-system)
@@ -89,7 +91,14 @@
           country (db.country/country-by-code db {:name "CYP"})
           _ (db.stakeholder/update-stakeholder db {:country (:id country)
                                                    :id (:id me)})
-          me (db.stakeholder/stakeholder-by-email db me)]
+          me (db.stakeholder/stakeholder-by-email db me)
+          ;; transnational initiative
+          tn-initiative-data (seeder/parse-data
+                              (slurp (io/resource "examples/initiative-transnational.json"))
+                              {:keywords? true})
+          tn-initiative-id (db.initiative/new-initiative db tn-initiative-data)
+          tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)]
+
       (testing "create stakeholder with old-id"
         (is (= "CYP" (:country me))))
 
@@ -102,14 +111,33 @@
                             first :id)
             old-json-id (-> (filter #(= "CYP" (:iso_code %))
                                     (seeder/get-data "countries"))
-                            first :id)]
+                            first :id)
+            country-id-mapping (seeder/get-data "new_countries_mapping")]
+
         (testing "the new id in db is not equal to old id"
           (is (= new-json-id (new-id :id)))
           (is (not= old-json-id (new-id :id))))
 
         (let [new-me (db.stakeholder/stakeholder-by-email db me)]
           (testing "My new country id is changed"
-            (is (= "CYP" (:country new-me)))))))))
+            (is (= "CYP" (:country new-me)))))
+
+        (testing "Initiative country ID changes correctly"
+          (let [new-tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)
+                country-new (:q23 new-tn-initiative)
+                country-old (:q23 tn-initiative)
+                country-tn-new (:q24_4 new-tn-initiative)
+                country-tn-old (:q24_4 tn-initiative)]
+            (is (= (vals country-new) (vals country-old)))
+            ;; FIXME: Change check to be better using country-id-mapping?
+            (is (not (= (keys country-new) (keys country-old))))
+            (is (= (second country-new) (get country-id-mapping (first country-new))))
+            ;; Checking transnational
+            (is (not (= (keys (first country-tn-new)) (keys (first country-tn-old)))))
+            (is (= (count country-tn-new) (count country-tn-old)))
+            (is (= (-> country-tn-new first second)
+                   (-> country-tn-old first second)))
+            (is (not (= country-tn-new country-tn-old)))))))))
 
 (deftest revert-update-country-test
   (let [db (test-util/db-test-conn)

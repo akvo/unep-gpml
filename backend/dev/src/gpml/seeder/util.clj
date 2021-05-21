@@ -1,6 +1,8 @@
 (ns gpml.seeder.util
   (:require [gpml.seeder.db :as seeder.db]
+            [gpml.db.initiative :as db.initiative]
             [jsonista.core :as j]
+            [clojure.java.jdbc :as jdbc]
             [clojure.java.jdbc :as jdbc]
             [clojure.java.io :as io]))
 
@@ -131,3 +133,26 @@
     (jdbc/execute! db ["TRUNCATE TABLE country_group_country"])
     (jdbc/execute! db ["TRUNCATE TABLE country"])
     (println (str "Ref country removed"))))
+
+;; initiative country updater
+
+(defn new-initiative-country-id [[k v] mapping]
+  (assoc {} (keyword (str (get mapping k))) v))
+
+(defn remap-initiative-country-objects [v mapping]
+  (cond
+    (sequential? v)
+    (mapv #(new-initiative-country-id (-> % first) mapping) v)
+    (map? v)
+    (new-initiative-country-id (first v) mapping)
+    :else v))
+
+(defn transform-initiative-query [row mapping]
+  (reduce into row
+          (map #(assoc {} % (remap-initiative-country-objects (-> row %) mapping))
+               [:q23 :q24_2 :q24_4])))
+
+(defn update-initiative-country [db mapping]
+  (doseq [query (map #(transform-initiative-query % mapping)
+                     (seeder.db/get-initiative-country-values db))]
+    (db.initiative/update-initiative db query)))
