@@ -231,9 +231,9 @@ const Browse = ({
                     }
                     allowClear
                     onChange={(val) => {
-                      const selected = countries?.filter((x) =>
-                        val.includes(x.id)
-                      );
+                      const selected = countries?.filter((x) => {
+                        return val.includes(x.id);
+                      });
                       updateQuery(
                         "country",
                         selected.map((x) => x.isoCode)
@@ -243,6 +243,21 @@ const Browse = ({
                       option.label.toLowerCase().indexOf(input.toLowerCase()) >=
                       0
                     }
+                    onDeselect={(val) => {
+                      const diselected = countries?.find((x) => x.id === val);
+                      const selected =
+                        countries && query?.country
+                          ? countries.filter(
+                              (x) =>
+                                query.country.includes(x.isoCode) &&
+                                diselected.territory !== x.territory
+                            )
+                          : [];
+                      updateQuery(
+                        "country",
+                        selected.map((x) => x.isoCode)
+                      );
+                    }}
                   />
                   {isAuthenticated && (
                     <Checkbox
