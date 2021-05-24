@@ -1,0 +1,133 @@
+{
+  "q1": {
+    "1-0": "As an individual"
+  },
+  "q4": [
+    {
+      "4-3": "MONITORING and ANALYSIS (collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis)."
+    }
+  ],
+  "q4_4_1": [
+    {
+      "4.4.1-3": "Monitoring: On the shoreline"
+    }
+  ],
+  "q2": "Initiative Title.",
+  "q3": "Short Summary.",
+  "q4_4_3": "Protocol",
+  "q4_4_4": "Data",
+  "q4_4_5": "example.com",
+  "q11": [
+    {
+      "11-4": "Environmental impacts will be evaluated"
+    }
+  ],
+  "q5": {
+    "5-4": "No, there is not enough resources to support reporting"
+  },
+  "q8": {
+    "8-0": "Yes"
+  },
+  "q10": {
+    "10-2": "In 4 to 10 years"
+  },
+  "q14": [
+    {
+      "14-8": "Leadership by specific individuals in the member state or organisation (who personallydrove change)"
+    },
+    {
+      "14-11": "National or organisational values"
+    },
+    {
+      "14-15": "Concern about potential human health impacts"
+    }
+  ],
+  "q15": [
+    {
+      "15-8": "Not enough support from outside the member state/organisation"
+    },
+    {
+      "15-3": "Conflicting regulation"
+    },
+    {
+      "15-15": "Fragmentation"
+    }
+  ],
+  "q16": [
+    {
+      "10001": "Akvo"
+    }
+  ],
+  "q18": [
+    {
+      "1003": "Airtable"
+    },
+    {
+      "1014": "Autodesk.Foundation"
+    },
+    {
+      "133": "Centre for Supporting green development - GreenHub"
+    }
+  ],
+  "q20": [
+    {
+      "1143": "Microsoft"
+    },
+    {
+      "1015": "Aws"
+    }
+  ],
+  "q22": "Bangalore",
+  "q23": {
+    "108": "India"
+  },
+  "q24": {
+    "national": "National"
+  },
+  "q24_2": {
+    "108": "India"
+  },
+  "q26": [
+    {
+      "26-3": "Use / consumption"
+    }
+  ],
+  "q28": [
+    {
+      "28-4": "Food chain"
+    }
+  ],
+  "q30": [
+    {
+      "30-14": "Wastewater/Sewage management"
+    }
+  ],
+  "q32": [
+    {
+      "32-4": "Freshwater rivers and lakes"
+    },
+    {
+      "32-8": "Maritime area within national jurisdiction"
+    },
+    {
+      "32-11": "Air"
+    }
+  ],
+  "q33": 15,
+  "q34": 34,
+  "q35": {
+    "35-2": "Public Financing"
+  },
+  "q36": 100000,
+  "q36_1": {
+    "u_s_d": "USD United States dollar"
+  },
+  "q37": 10000000,
+  "q37_1": {
+    "i_n_r": "INR Indian rupee"
+  },
+  "q38": {
+    "38-2": "Ongoing activity 1-3 years"
+  },
+  "version": 2
+}

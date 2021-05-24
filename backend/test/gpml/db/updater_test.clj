@@ -97,7 +97,13 @@
                               (slurp (io/resource "examples/initiative-transnational.json"))
                               {:keywords? true})
           tn-initiative-id (db.initiative/new-initiative db tn-initiative-data)
-          tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)]
+          tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)
+          ;; national initiative
+          n-initiative-data (seeder/parse-data
+                              (slurp (io/resource "examples/initiative-national.json"))
+                              {:keywords? true})
+          n-initiative-id (db.initiative/new-initiative db n-initiative-data)
+          n-initiative (db.initiative/initiative-by-id db n-initiative-id)]
 
       (testing "create stakeholder with old-id"
         (is (= "CYP" (:country me))))
@@ -112,7 +118,10 @@
             old-json-id (-> (filter #(= "CYP" (:iso_code %))
                                     (seeder/get-data "countries"))
                             first :id)
-            country-id-mapping (seeder/get-data "new_countries_mapping")]
+            country-id-mapping (seeder/get-data "new_countries_mapping")
+            check-country (fn [new old]
+                            (is (= (vals new) (vals old)))
+                            (is (= (get country-id-mapping (first new)) (second new))))]
 
         (testing "the new id in db is not equal to old id"
           (is (= new-json-id (new-id :id)))
@@ -122,22 +131,23 @@
           (testing "My new country id is changed"
             (is (= "CYP" (:country new-me)))))
 
-        (testing "Initiative country ID changes correctly"
+        (testing "Transnational Initiative country ID changes correctly"
           (let [new-tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)
                 country-new (:q23 new-tn-initiative)
                 country-old (:q23 tn-initiative)
                 country-tn-new (:q24_4 new-tn-initiative)
                 country-tn-old (:q24_4 tn-initiative)]
-            (is (= (vals country-new) (vals country-old)))
-            ;; FIXME: Change check to be better using country-id-mapping?
-            (is (not (= (keys country-new) (keys country-old))))
-            (is (= (second country-new) (get country-id-mapping (first country-new))))
-            ;; Checking transnational
-            (is (not (= (keys (first country-tn-new)) (keys (first country-tn-old)))))
-            (is (= (count country-tn-new) (count country-tn-old)))
-            (is (= (-> country-tn-new first second)
-                   (-> country-tn-old first second)))
-            (is (not (= country-tn-new country-tn-old)))))))))
+            (check-country country-new country-old)
+            (map check-country country-tn-new country-tn-old)))
+
+        (testing "National Initiative country ID changes correctly"
+          (let [new-n-initiative (db.initiative/initiative-by-id db n-initiative-id)
+                country-new (:q23 new-n-initiative)
+                country-old (:q23 n-initiative)
+                country-n-new (:q24_2 new-n-initiative)
+                country-n-old (:q24_2 n-initiative)]
+            (check-country country-new country-old)
+            (check-country country-n-new country-n-old)))))))
 
 (deftest revert-update-country-test
   (let [db (test-util/db-test-conn)
