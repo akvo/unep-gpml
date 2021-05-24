@@ -341,14 +341,12 @@
     }
 
     .content-column.stakeholder-right {
-      width: -moz-available;
-
-      /* WebKit-based browsers will ignore this. */
-      width: -webkit-fill-available;
-
+      width: stretch;
       /* Mozilla-based browsers will ignore this. */
-      width: fill-available;
-      margin-left: 2rem;
+      width: -webkit-fill-available;
+      /* WebKit-based browsers will ignore this. */
+      width: -moz-available;
+      margin-left: 4rem;
       margin-right: 2rem;
     }
   }
