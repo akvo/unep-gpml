@@ -157,6 +157,12 @@ const ProfileView = ({ ...props }) => {
     });
   };
 
+  const profilePic = profile?.photo?.includes("googleusercontent.com")
+    ? profile?.photo.replace(
+        /(s\d+\-c)/g,
+        window.screen.width > 640 ? `s${window.screen.height}-c` : `s640-c`
+      )
+    : profile?.photo;
   return (
     <div id="profile">
       <div className="ui container">
@@ -169,7 +175,7 @@ const ProfileView = ({ ...props }) => {
             <Col xs={24} md={8} lg={6} className="menu-wrapper">
               <StickyBox style={{ marginBottom: "3rem" }}>
                 <div className="photo">
-                  <Image width="70%" src={profile.photo} />
+                  <Image width="70%" src={profilePic} />
                 </div>
                 <Menu
                   defaultSelectedKeys={["personal-details"]}
