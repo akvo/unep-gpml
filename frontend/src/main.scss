@@ -138,6 +138,7 @@ h4 {
 
   .add-dropdown {
     text-align: left;
+    padding: 0px;
 
     :not(:last-child) {
       border-bottom: 1px solid $primaryColor;
@@ -153,7 +154,7 @@ h4 {
       height: 40px;
 
       :last-child {
-        margin-left: 20px;
+        margin-left: 15px;
       }
     }
   }
