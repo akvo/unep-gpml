@@ -413,14 +413,9 @@ const renderDetailImage = (params, data) => {
     if (!isInitialPic) {
       return data.picture;
     }
-    let splitted = data.picture.split("=");
-    splitted[1] =
-      window.screen.width < 640
-        ? `s${
-            document.getElementsByClassName("stakeholder-left")[0].offsetWidth
-          }-c`
-        : `s640-c`;
-    return splitted.join("=");
+    let newSize =
+      window.screen.width > 640 ? `s${window.screen.height}-c` : `s640-c`;
+    return data.picture.replace(/(s\d+\-c)/g, newSize);
   }
   return imageNotFound;
 };
