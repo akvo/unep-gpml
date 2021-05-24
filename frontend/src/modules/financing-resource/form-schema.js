@@ -297,6 +297,7 @@ export const uiSchema = {
     "ui:span": 12,
     "ui:options": {
       mode: "year",
+      disableDate: "future",
     },
   },
   value: {

@@ -185,8 +185,23 @@ const AddResourceForm = ({
   };
 
   const handleTransformErrors = (errors, dependValue) => {
+    const { data } = resourceData.currentState;
     const res = overideValidation(errors, dependValue);
     res.length === 0 && setHighlight(false);
+    // valid from & valid to
+    const { validFrom, validTo } = data?.date;
+    if (validFrom && validTo) {
+      if (new Date(validFrom) > new Date(validTo)) {
+        res.push({
+          message: "Valid from date must be date before valid to date",
+          name: "required",
+          params: { missingProperty: "validFrom" },
+          property: ".date.validFrom",
+          schemaPath: "#/properties/date/required",
+          stack: ".date.validFrom is a required property",
+        });
+      }
+    }
     return res;
   };
 
