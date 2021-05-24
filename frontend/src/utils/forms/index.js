@@ -203,12 +203,15 @@ export const handleGeoCoverageValue = (data, currentValue, countries) => {
       (x) => findCountryIsoCode(parseInt(x), countries)
     );
   }
-  if (data.geoCoverageType === "regional")
+  if (data.geoCoverageType === "regional") {
     data.geoCoverageValue = currentValue.geoCoverageValueRegional;
-  if (data.geoCoverageType === "global with elements in specific areas")
+  }
+  if (data.geoCoverageType === "global with elements in specific areas") {
     data.geoCoverageValue = currentValue.geoCoverageValueGlobalSpesific;
-  if (data.geoCoverageType === "sub-national")
+  }
+  if (data.geoCoverageType === "sub-national") {
     data.geoCoverageValue = currentValue.geoCoverageValueSubNational;
+  }
 
   return data;
 };

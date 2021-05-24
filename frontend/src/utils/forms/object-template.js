@@ -99,8 +99,9 @@ const ObjectFieldTemplate = ({
         if (
           Array.isArray(formData?.[element.name]) &&
           !intersection(formData?.[element.name], item.value).length > 0
-        )
+        ) {
           return item;
+        }
         // string answer
         if (
           typeof formData?.[element.name] === "string" &&
