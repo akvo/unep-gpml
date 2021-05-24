@@ -618,8 +618,7 @@ const BookmarkBtn = ({ topic, relation, handleRelationChange }) => {
     let association = relation ? [...relation.association] : [];
     if (checked) {
       association = [...association, relationType];
-    }
-    {
+    } else {
       association = association.filter((it) => it !== relationType);
     }
     handleRelationChange({
