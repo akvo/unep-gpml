@@ -477,15 +477,21 @@ const SignupForm = ({
                           prevVals.current?.org?.geoCoverageType
                       ) {
                         if (values.org.geoCoverageType === "global") {
-                          if (newSchema["organisation"]["org.geoCoverageValue"])
+                          if (
+                            newSchema["organisation"]["org.geoCoverageValue"]
+                          ) {
                             newSchema["organisation"][
                               "org.geoCoverageValue"
                             ].required = false;
+                          }
                         } else {
-                          if (newSchema["organisation"]["org.geoCoverageValue"])
+                          if (
+                            newSchema["organisation"]["org.geoCoverageValue"]
+                          ) {
                             newSchema["organisation"][
                               "org.geoCoverageValue"
                             ].required = true;
+                          }
                         }
                         changedSchema = true;
                       }

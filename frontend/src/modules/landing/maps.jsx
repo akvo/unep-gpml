@@ -76,7 +76,7 @@ const Legend = ({ data, setFilterColor, selected }) => {
       {i === 0 && x === 1 ? x : i === 0 ? "1 - " + x : data[i - 1] + " - " + x}
     </div>
   ));
-  if (data.length)
+  if (data.length) {
     return (
       <div className="legends">
         {[
@@ -130,6 +130,7 @@ const Legend = ({ data, setFilterColor, selected }) => {
         ]}
       </div>
     );
+  }
   return "";
 };
 

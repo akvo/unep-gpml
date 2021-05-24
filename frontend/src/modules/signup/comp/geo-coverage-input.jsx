@@ -59,8 +59,9 @@ const GeoCoverageInput = (props) => {
                 selectProps.filterOption = (input, option) =>
                   option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
                 if (typeInput.value === "transnational") {
-                  if (input.value === "" || input?.[0] === "")
+                  if (input.value === "" || input?.[0] === "") {
                     input.onChange([]);
+                  }
                   selectProps.mode = "multiple";
                 }
               } else if (
