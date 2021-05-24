@@ -7,7 +7,7 @@ import AddResourceForm from "./form";
 import StickyBox from "react-sticky-box";
 
 const AddFinancingResource = ({ ...props }) => {
-  const { loading } = UIStore.currentState;
+  const { loading, formStep } = UIStore.currentState;
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -46,7 +46,11 @@ const AddFinancingResource = ({ ...props }) => {
                 </div>
               </Col>
               <Col xs={24} lg={13}>
-                <div className="form-meta">
+                <div
+                  className={`form-meta ${
+                    formStep.financingResource === 2 ? "submitted" : ""
+                  }`}
+                >
                   <div className="highlight">
                     <Switch
                       checked={highlight}

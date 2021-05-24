@@ -341,7 +341,11 @@ const AddInitiative = ({ ...props }) => {
                 </div>
               </Col>
               <Col xs={24} lg={10}>
-                <div className="form-meta">
+                <div
+                  className={`form-meta ${
+                    formStep.initiative === 2 ? "submitted" : ""
+                  }`}
+                >
                   <div className="highlight">
                     <Switch
                       checked={highlight}

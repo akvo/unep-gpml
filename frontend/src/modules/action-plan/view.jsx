@@ -7,7 +7,7 @@ import AddActionPlanForm from "./form";
 import StickyBox from "react-sticky-box";
 
 const AddActionPlan = ({ ...props }) => {
-  const { loading } = UIStore.currentState;
+  const { loading, formStep } = UIStore.currentState;
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -46,7 +46,11 @@ const AddActionPlan = ({ ...props }) => {
                 </div>
               </Col>
               <Col xs={24} lg={13}>
-                <div className="form-meta">
+                <div
+                  className={`form-meta ${
+                    formStep.actionPlan === 2 ? "submitted" : ""
+                  }`}
+                >
                   <div className="highlight">
                     <Switch
                       checked={highlight}

@@ -54,6 +54,14 @@
         font-weight: 500;
       }
     }
+
+    .form-meta.submitted {
+      float: right;
+
+      .highlight {
+        display: none;
+      }
+    }
   }
 
   .ant-card {
