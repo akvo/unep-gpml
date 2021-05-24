@@ -9,17 +9,13 @@ import { topicNames, resourceSubTypes } from "../../utils/misc";
 const currencyFormat = (cur) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: cur });
 
-const findCountries = (countries, item, isCountry = false) => {
+const findCountries = (countries, item) => {
   const {
     country,
     geoCoverageType,
     geoCoverageValue,
     geoCoverageValues,
   } = item;
-  if (isCountry) {
-    return country ? find(countries, (x) => x.isoCode === country).name : "-";
-  }
-
   if (
     (geoCoverageType === "regional" ||
       geoCoverageType === "global with elements in specific areas") &&
@@ -59,7 +55,7 @@ const findCountries = (countries, item, isCountry = false) => {
       <div className="scrollable">
         {values
           .map((v) => {
-            return find(countries, (x) => x.isoCode === v).name;
+            return countries.find((x) => x.isoCode === v).name;
           })
           .join(", ")}
       </div>
@@ -69,7 +65,7 @@ const findCountries = (countries, item, isCountry = false) => {
 };
 
 export const GeneralPreview = ({ item }) => {
-  const { countries, tags } = UIStore.currentState;
+  const { countries, tags, meaOptions } = UIStore.currentState;
   const country = countries.find((x) => x.id === item.country)?.name || "-";
   return (
     <div className="general-info">
@@ -114,7 +110,7 @@ export const GeneralPreview = ({ item }) => {
             <li>
               <div className="detail-title">Implementing MEA</div>:
               <div className="detail-content">
-                {tags?.mea.find((x) => x.id === item.implementingMea)?.tag ||
+                {meaOptions.find((x) => x.id === item.implementingMea)?.name ||
                   "-"}
               </div>
             </li>
