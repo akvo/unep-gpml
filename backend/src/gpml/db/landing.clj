@@ -5,7 +5,7 @@
             [gpml.db.country :as db.country]
             [gpml.pg-util]))
 
-(declare map-counts)
+(declare map-counts summary)
 
 (hugsql/def-db-fns "gpml/db/landing.sql")
 

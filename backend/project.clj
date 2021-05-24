@@ -70,7 +70,7 @@
                                    [eftest "0.5.9"]
                                    [kerodon "0.9.1"]
                                    [djblue/portal "0.8.0"]]
-                  :plugins [[jonase/eastwood "0.3.12"]
+                  :plugins [[jonase/eastwood "0.4.3"]
                             [lein-eftest "0.5.9"]]
                   :eastwood {:config-files ["eastwood_cfg.clj"]}
                   :eftest {:thead-count 4
