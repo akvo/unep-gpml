@@ -35,7 +35,11 @@
                                          [""
                                           {:get {:summary "List available country groups"
                                                  :swagger {:tags ["country"]}
-                                                 :parameters {:query [:map [:id {:optional true} int?]]}
+                                                 :handler #ig/ref :gpml.handler.country-group/get}}]
+                                         ["/:id"
+                                          {:get {:summary "List countries within a country group"
+                                                 :swagger {:tags ["country"]}
+                                                 :parameters {:path [:map [:id int?]]}
                                                  :handler #ig/ref :gpml.handler.country-group/get}}]]
                                         ["/browse" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
