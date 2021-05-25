@@ -118,6 +118,12 @@ export const overideValidation = (errors, dependValue) => {
     if (x.name === "required") {
       x.message = "Required";
     }
+    if (x.name === "format" && x.params?.format === "url") {
+      x.message = "Please enter a valid url";
+    }
+    if (x.name === "format" && x.params?.format === "email") {
+      x.message = "Please enter a valid email";
+    }
     return x;
   });
   // overide enum "should be equal to one of the allowed values" validation
