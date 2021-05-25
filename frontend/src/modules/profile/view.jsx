@@ -95,10 +95,7 @@ const ProfileView = ({ ...props }) => {
       vals = { ...vals, publicEmail: false };
     }
     setSaving(true);
-    if (
-      vals.geoCoverageType === "national" &&
-      typeof vals.geoCoverageValue === "string"
-    ) {
+    if (vals.geoCoverageType === "national") {
       vals.geoCoverageValue = [vals.geoCoverageValue];
     }
     if (vals.geoCoverageType === "global") {

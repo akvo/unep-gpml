@@ -65,18 +65,8 @@ const defaultFormSchema = {
       },
     },
     geoCoverage: {
-      // geoCoverageType: {
-      //   label: "Geo coverage type",
-      //   required: true,
-      //   control: "select",
-      //   options: geoCoverageTypeOptions.map((it) => ({
-      //     value: it.toLowerCase(),
-      //     label: it,
-      //   })),
-      // },
       geoCoverageValue: {
         label: "Geo coverage",
-        // required: true,
         render: GeoCoverageInput,
       },
     },
@@ -223,7 +213,7 @@ const SignupForm = ({
   newSchema["personalDetails"][
     "socialLocation"
   ].country.options = countries.map((x) => ({
-    value: x.isoCode,
+    value: x.id,
     label: x.name,
   }));
 
@@ -410,7 +400,7 @@ const SignupForm = ({
                           required: true,
                           showSearch: true,
                           options: countries.map((it) => ({
-                            value: it.isoCode,
+                            value: it.id,
                             label: it.name,
                           })),
                           autoComplete: "off",
