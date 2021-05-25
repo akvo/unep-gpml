@@ -6,6 +6,7 @@ import RadioWidget from "./form-radio";
 import URLWidget from "./form-url";
 import AltDateWidget from "./form-alt-date";
 import DateWidget from "./form-date";
+import EmailWidget from "./form-email";
 
 import difference from "lodash/difference";
 import intersection from "lodash/intersection";
@@ -19,6 +20,12 @@ const widgets = {
   URLWidget: URLWidget,
   AltDateWidget: AltDateWidget,
   DateWidget: DateWidget,
+  EmailWidget: EmailWidget,
+};
+
+export const customFormats = {
+  url: /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/,
+  email: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 };
 
 export const CustomFieldTemplate = (props) => {
