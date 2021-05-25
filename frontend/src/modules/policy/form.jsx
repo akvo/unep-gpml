@@ -16,6 +16,7 @@ import {
   checkRequiredFieldFilledIn,
   findCountryIsoCode,
   handleGeoCoverageValue,
+  customFormats,
 } from "../../utils/forms";
 import cloneDeep from "lodash/cloneDeep";
 
@@ -187,6 +188,7 @@ const AddPolicyForm = ({
           ObjectFieldTemplate={ObjectFieldTemplate}
           FieldTemplate={FieldTemplate}
           widgets={widgets}
+          customFormats={customFormats}
           transformErrors={(errors) =>
             handleTransformErrors(errors, dependValue)
           }

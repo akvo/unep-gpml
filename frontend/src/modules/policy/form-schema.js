@@ -41,6 +41,7 @@ export const schema = {
     url: {
       title: "POLICY URL",
       type: "string",
+      format: "url",
     },
     typeOfLaw: {
       title: "TYPE OF LAW",
@@ -147,6 +148,7 @@ export const schema = {
           url: {
             title: "RESOURCE EXTERNAL LINKS",
             type: "string",
+            format: "url",
           },
           lang: {
             title: "LANGUAGES",
