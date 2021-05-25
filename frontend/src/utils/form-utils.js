@@ -26,7 +26,7 @@ export const validateSchema = (schema) => (values) => {
       value.forEach((x, i) => {
         if (x?.url && typeof x?.url !== "undefined") {
           if (!x.url.match(customFormats.url)) {
-            urlErrors[i] = { url: 'should match format "url"' };
+            urlErrors[i] = { url: "Please enter a valid url" };
           } else {
             delete urlErrors[i];
           }
