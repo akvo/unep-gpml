@@ -14,6 +14,7 @@ import {
   handleGeoCoverageValue,
   checkRequiredFieldFilledIn,
   checkDependencyAnswer,
+  customFormats,
 } from "../../utils/forms";
 import uiSchema from "./uiSchema.json";
 import { UIStore } from "../../store";
@@ -320,6 +321,7 @@ const AddInitiativeForm = ({
           ObjectFieldTemplate={ObjectFieldTemplate}
           FieldTemplate={FieldTemplate}
           widgets={widgets}
+          customFormats={customFormats}
           transformErrors={(errors) =>
             handleTransformErrors(errors, dependValue)
           }

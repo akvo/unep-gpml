@@ -59,6 +59,7 @@ export const schema = {
     url: {
       title: "TECHNOLOGY URL",
       type: "string",
+      format: "url",
     },
     logo: {
       title: "LOGO",
@@ -146,6 +147,7 @@ export const schema = {
               url: {
                 title: "RESOURCE EXTERNAL LINKS",
                 type: "string",
+                format: "url",
               },
               lang: {
                 title: "LANGUAGES",
@@ -248,6 +250,7 @@ export const uiSchema = {
     "ui:group": "border",
     email: {
       "ui:placeholder": "Type in the contact email",
+      "ui:widget": "email",
     },
     urls: {
       "ui:options": {

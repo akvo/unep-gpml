@@ -67,6 +67,7 @@ export const schema = {
         url: {
           title: "ENTITY URL",
           type: "string",
+          format: "url",
         },
         geoCoverageType: {
           $ref: "#/properties/geoCoverageType",
@@ -201,6 +202,7 @@ export const schema = {
           url: {
             title: "RESOURCE EXTERNAL LINKS",
             type: "string",
+            format: "url",
           },
           lang: {
             title: "LANGUAGES",
