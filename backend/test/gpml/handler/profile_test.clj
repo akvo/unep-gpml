@@ -20,7 +20,7 @@
 (defn get-organisation [conn org-name]
   (:id (db.organisation/organisation-by-name conn {:name org-name})))
 
-(defn new-profile [country org]
+(defn new-profile [org]
   {:email "john@org"
    :first_name "John"
    :last_name "Doe"
@@ -31,56 +31,52 @@
    :title "Mr"
    :organisation_role "manager"
    :about "Lorem Ipsum"
-   :country country
    :picture picture
+   :country 1
    :cv picture
-   :geo_coverage_type "regional"
-   :geo_coverage_value ["Africa" "Europe"]
-   :tags [1 2]})
-
-(defn new-admin [country org]
-  (assoc (new-profile country org) :email "jane@org" :first_name "Jane"))
+   :geo_coverage_type "regional"})
 
 (defn get-user [conn email]
   (:id (db.stakeholder/stakeholder-by-email conn {:email email})))
 
 (defn seed-important-database [db]
-    ;; create new country
-    (db.country/new-country db {:name "Indonesia" :iso_code "IND" :description "Member State"})
-    (db.country/new-country db {:name "Spain" :iso_code "SPA" :description "Member State"})
-    ;; create new country group
-    (db.country-group/new-country-group db {:name "Asia" :type "region"})
-    (db.country-group/new-country-group db {:name "Africa" :type "region"})
-    (db.country-group/new-country-group db {:name "Europe" :type "region"})
-    ;; create new organisation
-    (db.organisation/new-organisation db {:id 1
-                                          :name "Akvo"
-                                          :url "https://akvo.org"
-                                          :geo_coverage_type "regional"
-                                          :type "Academia and Research"
-                                          :program "Test Program"
-                                          :contribution "Test Contribution"
-                                          :expertise "Test Expertise"
-                                          :review_status "APPROVED"})
-    ;; create new tag
-    (db.tag/new-tag-category db {:category "general"})
-    (db.tag/new-tag db {:tag "Tag 1" :tag_category 1})
-    (db.tag/new-tag db {:tag "Tag 2" :tag_category 1})
-    (db.tag/new-tag db {:tag "Tag 3" :tag_category 1}))
+    (let [tag-category (db.tag/new-tag-category db {:category "general"})]
+      {:tags (db.tag/new-tags db {:tags (map #(vector % (:id tag-category)) ["Tag 1" "Tag 2" "Tag 3"])})
+       :org (db.organisation/new-organisation
+              db {:id 1
+                  :name "Akvo"
+                  :url "https://akvo.org"
+                  :geo_coverage_type "regional"
+                  :type "Academia and Research"
+                  :program "Test Program"
+                  :contribution "Test Contribution"
+                  :expertise "Test Expertise"
+                  :review_status "APPROVED"})
+       :countries [(db.country/new-country
+                     db {:name "Indonesia" :iso_code "IND" :description "Member State" :territory "IND"})
+                   (db.country/new-country
+                     db {:name "Spain" :iso_code "SPA" :description "Member State" :territory "SPA"})
+                   (db.country/new-country
+                     db {:name "Canary Island" :iso_code "SPA" :description "territory" :territory "SPA"})]
+       :country_groups (mapv (fn [x] (db.country-group/new-country-group
+                                       db {:type "region" :name x})) ["Asia" "Africa" "Europe"])}))
 
 (deftest handler-post-with-existing-organisation-test
   (testing "New profile is created with existing organisation"
     (let [system (ig/init fixtures/*system* [::profile/post])
           handler (::profile/post system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          _ (seed-important-database db)
+          data (seed-important-database db)
           ;; John trying to sign up with new organisation
+          body-params (assoc (new-profile 1)
+                             :org (:org data)
+                             :geo_coverage_value (mapv :id (:country_groups data))
+                             :tags (mapv :id (:tags data))
+                             :country (-> (:countries data) first :id)
+                             :photo picture)
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
-                            (assoc :body-params
-                                   (assoc (new-profile "IND" 1)
-                                          :org {:id 1 :name "Akvo"}
-                                          :photo picture))))]
+                            (assoc :body-params body-params)))]
       (is (= 201 (:status resp)))
       (is (= "John" (->(:body resp) :first_name)))
       (is (= "Doe" (->(:body resp) :last_name)))
@@ -88,7 +84,7 @@
       (is (= {:id 10001
               :email "john@org"
               :about "Lorem Ipsum"
-              :country "IND"
+              :country 1
               :first_name "John"
               :last_name "Doe"
               :linked_in "johndoe"
@@ -99,8 +95,8 @@
               :role "USER"
               :org (db.organisation/organisation-by-id db {:id 1})
               :geo_coverage_type "regional"
-              :geo_coverage_value ["Africa" "Europe"]
-              :tags [1 2]
+              :geo_coverage_value (mapv :id (-> data :country_groups))
+              :tags (mapv :id (-> data :tags))
               :twitter "johndoe"
               :organisation_role "manager"
               :reviewed_at nil
@@ -115,20 +111,23 @@
     (let [system (ig/init fixtures/*system* [::profile/post])
           handler (::profile/post system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          _ (seed-important-database db)
+          data (seed-important-database db)
           ;; John trying to sign up with new organisation
+          body-params (assoc (new-profile 1)
+                             :org {:id -1
+                                   :name "My own company"
+                                   :geo_coverage_type "regional"
+                                   :country (-> (:countries data) second :id)
+                                   :geo_coverage_value (mapv :id (:country_groups data))
+                                   :type "Company"
+                                   :url "mycompany.org"}
+                             :geo_coverage_value (mapv :id (:country_groups data))
+                             :tags (mapv :id (:tags data))
+                             :country (-> (:countries data) first :id)
+                             :photo picture)
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
-                            (assoc :body-params
-                                   (assoc (new-profile "IND" nil)
-                                          :org {:id -1
-                                                :name "My own company"
-                                                :geo_coverage_type "regional"
-                                                :country "IND"
-                                                :geo_coverage_value ["Asia"]
-                                                :type "Company"
-                                                :url "mycompany.org"}
-                                          :photo picture))))]
+                            (assoc :body-params body-params)))]
       (is (= 201 (:status resp)))
       (is (= "John" (->(:body resp) :first_name)))
       (is (= "Doe" (->(:body resp) :last_name)))
@@ -136,7 +135,7 @@
       (is (= {:id 10001
               :email "john@org"
               :about "Lorem Ipsum"
-              :country "IND"
+              :country 1
               :first_name "John"
               :last_name "Doe"
               :linked_in "johndoe"
@@ -147,8 +146,8 @@
               :role "USER"
               :org (db.organisation/organisation-by-id db {:id 10001})
               :geo_coverage_type "regional"
-              :geo_coverage_value ["Africa" "Europe"]
-              :tags [1 2]
+              :geo_coverage_value (mapv :id (-> data :country_groups))
+              :tags (mapv :id (-> data :tags))
               :twitter "johndoe"
               :organisation_role "manager"
               :reviewed_at nil
@@ -159,112 +158,56 @@
       (is (= "/image/profile/1" (-> resp :body :photo))))))
 
 (deftest handler-post-test-as-citizen
-  (testing "New profile without organisation associated is created"
+  (testing "New profile without organisation and some other non-required detail is created"
     (let [system (ig/init fixtures/*system* [::profile/post])
           handler (::profile/post system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          _ (seed-important-database db)
-          ;; John trying to sign up without any organisation
+          data (seed-important-database db)
+          body-params (assoc (new-profile 1)
+                             :org nil
+                             :organisation_role nil
+                             :geo_coverage_value (mapv :id (:country_groups data))
+                             :tags (mapv :id (:tags data))
+                             :country (-> (:countries data) first :id))
+          ;; John trying to sign up without any organisation and leave photo, twitter, and linkedin blank
           resp (handler (-> (mock/request :post "/")
-                            (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
-                            (assoc :body-params
-                                   (assoc (new-profile "IND" nil)
-                                          :organisation_role nil
-                                          :org nil
-                                          :photo picture))))]
+                            (assoc :jwt-claims {:email "john@org"})
+                            (assoc :body-params (dissoc body-params :twitter :linkedin :photo))))]
       (is (= 201 (:status resp)))
       (is (= "John" (->(:body resp) :first_name)))
       (is (= "Doe" (->(:body resp) :last_name)))
       (is (= "SUBMITTED" (->(:body resp) :review_status)))
-      (is (= nil (->(:body resp) :org)))
-      (is (= {:id 10001
-              :email "john@org"
-              :about "Lorem Ipsum"
-              :country "IND"
-              :first_name "John"
-              :last_name "Doe"
-              :linked_in "johndoe"
-              :photo "/image/profile/1"
-              :cv "/cv/profile/1"
-              :representation "test"
-              :title "Mr"
-              :role "USER"
-              :org nil
-              :geo_coverage_type "regional"
-              :geo_coverage_value ["Africa" "Europe"]
-              :tags [1 2]
-              :twitter "johndoe"
-              :organisation_role nil
-              :reviewed_at nil
-              :reviewed_by nil
-              :review_status "SUBMITTED"
-              :public_email false}
-             (:body resp)))
-      (is (= "/image/profile/1" (-> resp :body :photo))))))
-
-(deftest handler-post-incomplete-test
-  (testing "New incomplete profile is created"
-    (let [system (ig/init fixtures/*system* [::profile/post])
-          handler (::profile/post system)
-          db (-> system :duct.database.sql/hikaricp :spec)
-          _ (seed-important-database db)
-          ;; John trying to sign up with new organisation
-          resp (handler (-> (mock/request :post "/")
-                            (assoc :jwt-claims {:email "john@org"})
-                            (assoc :body-params
-                                   (dissoc (new-profile "IND" nil)
-                                           :photo :affiliation
-                                           :twitter :linked_in))))]
-      (is (= 201 (:status resp)))
-      (is (= "John" (->(:body resp) :first_name)))
-      (is (= "Doe" (->(:body resp) :last_name)))
-      (is (= {:id 10001
-              :email "john@org"
-              :about "Lorem Ipsum"
-              :country "IND"
-              :first_name "John"
-              :last_name "Doe"
-              :linked_in nil
-              :photo nil
-              :cv "/cv/profile/1"
-              :representation "test"
-              :title "Mr"
-              :role "USER"
-              :geo_coverage_type "regional"
-              :geo_coverage_value ["Africa" "Europe"]
-              :org nil
-              :tags [1 2]
-              :twitter nil
-              :organisation_role "manager"
-              :reviewed_at nil
-              :reviewed_by nil
-              :review_status "SUBMITTED"
-              :public_email false}
-             (:body resp))))))
+      (testing "New incomplete profile is created"
+        (is (= nil (->(:body resp) :photo)))
+        (is (= nil (->(:body resp) :linkedin)))
+        (is (= nil (->(:body resp) :photo)))
+        (is (= nil (->(:body resp) :org)))))))
 
 (deftest handler-put-test
   (testing "Update profile once its signed up")
     (let [system (ig/init fixtures/*system* [::profile/put])
           handler (::profile/put system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          _ (seed-important-database db)
-          ;; John created account with country value Indonesia and organisation Akvo
+          data (seed-important-database db)
+          ;; John created account with country value Spain and organisation Akvo
           _ (db.stakeholder/new-stakeholder-cv db {:cv picture})
           _ (db.stakeholder/new-stakeholder-image db {:picture picture})
-          _ (db.stakeholder/new-stakeholder db  (assoc (new-profile (:id 1) (:id 1))
+          _ (db.stakeholder/new-stakeholder db  (assoc (new-profile 1)
                                                        :picture "/image/profile/1"
+                                                       :affiliation (-> data :org :id)
                                                        :cv "/cv/profile/1"))
           ;; John trying to edit their profile with newly organisation
           ;; Also john want to change his cv and profile picture
           resp (handler (-> (mock/request :put "/")
                             (assoc :jwt-claims {:email "john@org"})
                             (assoc :body-params
-                                     (assoc (new-profile "IND" nil)
+                                     (assoc (new-profile nil)
                                              :id 10001
                                              :about "Dolor sit Amet"
-                                             :country "SPA"
+                                             :country (-> (:countries data) second :id)
                                              :first_name "Mark"
                                              :org {:id 1 :name "Akvo" :url "https://akvo.org"}
+                                             :geo_coverage_value (mapv :id (:country_groups data))
                                              :organisation_role "content creator"
                                              :photo picture
                                              :cv picture
@@ -283,7 +226,7 @@
               :title "Mr"
               :first_name "Mark"
               :last_name "Doe"
-              :country "SPA"
+              :country (-> (:countries data) second :id)
               :linked_in "johndoe"
               :twitter "johndoe"
               :photo "/image/profile/2"
@@ -305,19 +248,19 @@
     (let [system (ig/init fixtures/*system* [::profile/put])
           handler (::profile/put system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          _ (seed-important-database db)
+          data (seed-important-database db)
           ;; John created account with country value Indonesia and organisation Akvo
-          _ (db.stakeholder/new-stakeholder db  (assoc (new-profile (:id 1) (:id 1))
+          _ (db.stakeholder/new-stakeholder db  (assoc (new-profile 1)
                                                        :picture "https://lh3.googleusercontent.com"
                                                        :cv nil))
           ;; John trying to edit their profile
           resp (handler (-> (mock/request :put "/")
                             (assoc :jwt-claims {:email "john@org"})
                             (assoc :body-params
-                                     (assoc (new-profile "IND" nil)
+                                     (assoc (new-profile 1)
                                              :id 10001
                                              :about "Dolor sit Amet"
-                                             :country "SPA"
+                                             :country (-> (:countries data) second :id)
                                              :first_name "Mark"
                                              :org {:id 1 :name "Akvo" :url "https://akvo.org"}
                                              :photo "https://lh3.googleusercontent.com"
@@ -333,7 +276,7 @@
               :title "Mr"
               :first_name "Mark"
               :last_name "Doe"
-              :country "SPA"
+              :country (-> (:countries data) second :id)
               :linked_in "johndoe"
               :twitter "johndoe"
               :photo "https://lh3.googleusercontent.com"
@@ -356,16 +299,24 @@
           handler (::profile/get system)
           db (-> system :duct.database.sql/hikaricp :spec)
           _ (seed-important-database db)
-          _ (db.stakeholder/new-stakeholder db  (new-profile 1 1))
+          _ (db.stakeholder/new-stakeholder db (assoc (new-profile 1)
+                                                      :geo_coverage_type "transnational"))
+          _ (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector 10001 %) [1 2])})
+          geo (db.stakeholder/add-stakeholder-geo db {:geo [[10001 nil 1] [10001 nil 2]]})
           ;; dashboard check if this guy has profile
-          resp (handler (-> (mock/request :get "/")
-                            (assoc :jwt-claims {:email "john@org"})))]
-      (is (= 200 (:status resp)))
-      (is (= "John" (-> (:body resp) :first_name)))
-      (is (= "Doe" (-> (:body resp) :last_name)))
-      (is (= "SUBMITTED" (-> (:body resp) :review_status)))
-      (is (= (db.organisation/organisation-by-id db {:id 1}) (-> (:body resp) :org)))
-      (is (= "IND" (-> (:body resp) :country))))))
+          req (handler (-> (mock/request :get "/")
+                            (assoc :jwt-claims {:email "john@org"})))
+          resp (:body req)]
+      (is (= geo [{:id 1 :country 1 :country_group nil :stakeholder 10001}
+                  {:id 2 :country 2 :country_group nil :stakeholder 10001}]))
+      (is (= 200 (:status req)))
+      (is (= "John" (-> resp :first_name)))
+      (is (= "Doe" (-> resp :last_name)))
+      (is (= "SUBMITTED" (-> resp :review_status)))
+      (is (= (db.organisation/organisation-by-id db {:id 1}) (-> resp :org)))
+      (is (= (map :country geo) (-> resp :geo_coverage_value)))
+      (is (= [1 2] (-> resp :tags)))
+      (is (= 1 (-> resp :country))))))
 
 (deftest handler-get-test-no-profile
   (testing "Profile endpoint returns empty response"
@@ -376,9 +327,3 @@
                             (assoc :jwt-claims {:email "john@org"})))]
       (is (= 200 (:status resp)))
       (is (empty (:body resp))))))
-
-
-(comment
-  #_(def dbtest (dev/db-conn))
-  #_(db.stakeholder/update-stakeholder-role dbtest {:id 1 :role "ADMIN"})
-  ,)

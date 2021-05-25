@@ -20,6 +20,11 @@ values (:category) returning id
 insert into tag (tag, tag_category)
 values (:tag, :tag_category) returning id
 
+-- :name new-tags :? :*
+-- :doc Insert new tag
+insert into tag (tag, tag_category)
+values :t*:tags RETURNING *;
+
 -- :name tag-by-category :? :* :1
 -- :doc Get tag by category
 select * from tag WHERE tag_category in
