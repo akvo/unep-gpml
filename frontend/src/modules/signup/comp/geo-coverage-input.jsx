@@ -55,8 +55,6 @@ const GeoCoverageInput = (props) => {
               ) {
                 selectProps.options = national;
                 selectProps.showSearch = true;
-                selectProps.filterOption = (input, option) =>
-                  option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
                 if (typeInput.value === "transnational") {
                   if (input.value === "" || input?.[0] === "") {
                     input.onChange([]);
@@ -74,6 +72,16 @@ const GeoCoverageInput = (props) => {
                 if (input.value === "" || input?.[0] === "") {
                   input.onChange([]);
                 }
+              }
+
+              if (
+                typeInput.value === "regional" ||
+                typeInput.value === "national" ||
+                typeInput.value === "transnational" ||
+                typeInput.value === "global with elements in specific areas"
+              ) {
+                selectProps.filterOption = (input, option) =>
+                  option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
               }
               return <Select {...selectProps} virtual={false} />;
             }}
