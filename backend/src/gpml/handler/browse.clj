@@ -88,13 +88,8 @@
                   (merge {:approved approved?})
                   (modify-db-filter-topics)
                   (db.browse/filter-topic db)
-                  (map (fn [{:keys [json geo_coverage_iso_code topic]}]
-                         (merge
-                          (assoc json
-                                 :type topic)
-                          (when geo_coverage_iso_code
-                            {:geo_coverage_countries [geo_coverage_iso_code]})))))]
-    (tap> data)
+                  (map (fn [{:keys [json topic]}]
+                         (assoc json :type topic))))]
     data))
 
 (defmethod ig/init-key :gpml.handler.browse/get [_ {:keys [db]}]
