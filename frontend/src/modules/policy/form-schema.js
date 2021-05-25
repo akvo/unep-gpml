@@ -19,6 +19,7 @@ export const schema = {
     "geoCoverageType",
     "geoCoverageValueRegional",
     "geoCoverageValueNational",
+    "geoCoverageValueTransnational",
     "geoCoverageValueGlobalSpesific",
     "geoCoverageValueSubNational",
     "implementingMea",

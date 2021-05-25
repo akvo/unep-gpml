@@ -1,5 +1,5 @@
 import { UIStore } from "../../store";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { Form, Input, Select, Button, notification } from "antd";
 import { Form as FinalForm, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
@@ -130,15 +130,17 @@ const defaultFormSchema = [
       showSearch: true,
       options: [],
     },
-    geoCoverageType: {
-      label: "Geo coverage type",
-      required: true,
-      control: "select",
-      options: geoCoverageTypeOptions.map((it) => ({
-        value: it.toLowerCase(),
-        label: it,
-      })),
-    },
+  },
+  {
+    // geoCoverageType: {
+    //   label: "Geo coverage type",
+    //   required: true,
+    //   control: "select",
+    //   options: geoCoverageTypeOptions.map((it) => ({
+    //     value: it.toLowerCase(),
+    //     label: it,
+    //   })),
+    // },
     geoCoverageValue: {
       label: "Geo coverage",
       render: GeoCoverageInput,
@@ -167,6 +169,9 @@ const AddEventForm = () => {
   const { countries, loading, formStep } = UIStore.currentState;
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [sending, setSending] = useState(false);
+  const [geoType, setGeoType] = useState({ value: null, error: false });
+  const formRef = useRef();
+
   const onSubmit = (vals) => {
     const data = { ...vals };
     delete data.date;
@@ -196,15 +201,16 @@ const AddEventForm = () => {
         setSending(false);
       });
   };
+
   useEffect(() => {
     (async function fetchData() {
       const response = await api.get("/tag/event");
       const newSchema = cloneDeep(defaultFormSchema);
-      newSchema[2].tags.options = response.data.map((x) => ({
+      newSchema[3].tags.options = response.data.map((x) => ({
         value: x.id,
         label: x.tag,
       }));
-      newSchema[2].tags.loading = false;
+      newSchema[3].tags.loading = false;
       if (countries) {
         newSchema[1].country.options = countries
           .map((x) => ({
@@ -212,10 +218,6 @@ const AddEventForm = () => {
             label: x.name,
           }))
           .sort((a, b) => a.label.localeCompare(b.label));
-        newSchema[1].geoCoverageValue = {
-          ...newSchema[1].geoCoverageValue,
-          countries: countries,
-        };
       }
       setFormSchema(newSchema);
     })();
@@ -230,29 +232,88 @@ const AddEventForm = () => {
     onSubmit,
     validate: validation(formSchema),
   });
+
+  const handleChangeGeoType = (value, setError = true) => {
+    setGeoType({ value, error: setError ? !value : setError });
+    const newSchema = cloneDeep(formSchema);
+    Object.keys(newSchema[2]).forEach((key) => {
+      newSchema[2][key].required = value !== "global";
+    });
+    setFormSchema(newSchema);
+    setTimeout(() => {
+      formRef.current?.change("ts", new Date().getTime());
+      formRef.current?.change("geoCoverageType", value);
+    });
+  };
+
   return (
     <div className="add-event-form">
       {formStep.event === 1 && (
         <Form layout="vertical">
           <FinalForm
             form={form}
-            render={({ form: { mutators }, handleSubmit }) => {
+            render={({ form, handleSubmit }) => {
+              formRef.current = form;
               return (
                 <div>
                   <div className="section">
                     <h3>Event details</h3>
                     <FieldsFromSchema
                       schema={formSchema[0]}
-                      mutators={mutators}
+                      mutators={form.mutators}
                     />
                   </div>
                   <div className="section">
                     <h3>Location & coverage</h3>
                     <FieldsFromSchema schema={formSchema[1]} />
+                    <Field
+                      name="geoCoverageType"
+                      options={geoCoverageTypeOptions}
+                      component={(props) => {
+                        return (
+                          <Form.Item
+                            label="Geo coverage type"
+                            name={props.input.name}
+                            validateStatus={
+                              props.meta.error && props.meta.touched
+                                ? "error"
+                                : ""
+                            }
+                            help={
+                              props.meta.error &&
+                              props.meta.touched &&
+                              props.meta.error
+                            }
+                          >
+                            <Select
+                              onChange={(val) => handleChangeGeoType(val)}
+                              defaultValue={props.input.value}
+                            >
+                              {props.options.map((it) => (
+                                <Select.Option
+                                  key={it.toLocaleLowerCase()}
+                                  value={it.toLocaleLowerCase()}
+                                >
+                                  {it}
+                                </Select.Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        );
+                      }}
+                      validate={(value) => {
+                        if (!value) {
+                          return "Required";
+                        } else {
+                          return undefined;
+                        }
+                      }}
+                    />
+                    <FieldsFromSchema schema={formSchema[2]} />
                   </div>
                   <div className="section">
                     <h3>Other</h3>
-                    <FieldsFromSchema schema={formSchema[2]} />
+                    <FieldsFromSchema schema={formSchema[3]} />
                   </div>
                   <Button
                     loading={sending}
