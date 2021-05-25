@@ -50,9 +50,7 @@ api.get("/country").then((resp) => {
 });
 api.get("/country-group").then((resp) => {
   UIStore.update((e) => {
-    e.regionOptions = resp.data
-      .filter((x) => x.type === "region")
-      .map((x) => x.name);
+    e.regionOptions = resp.data.filter((x) => x.type === "region");
   });
   UIStore.update((e) => {
     e.meaOptions = resp.data.filter((x) => x.type === "mea");
