@@ -132,15 +132,6 @@ const defaultFormSchema = [
     },
   },
   {
-    // geoCoverageType: {
-    //   label: "Geo coverage type",
-    //   required: true,
-    //   control: "select",
-    //   options: geoCoverageTypeOptions.map((it) => ({
-    //     value: it.toLowerCase(),
-    //     label: it,
-    //   })),
-    // },
     geoCoverageValue: {
       label: "Geo coverage",
       render: GeoCoverageInput,
