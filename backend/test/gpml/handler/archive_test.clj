@@ -16,7 +16,7 @@
           db (-> system :duct.database.sql/hikaricp :spec)
           _ (profile-test/seed-important-database db)
           ;; create new admin name Jane
-          admin (profile-test/new-profile 1 1)
+          admin (profile-test/new-profile 1)
           admin (db.stakeholder/new-stakeholder db  (assoc admin
                                                            :email "jane@org"
                                                            :first_name "Jane"))
@@ -24,9 +24,9 @@
                                                               :role "ADMIN"
                                                               :review_status "APPROVED"))
           ;; User Default
-          user (profile-test/new-profile 1 1)
+          user (profile-test/new-profile 1)
           ;; create new user name John
-          _ (db.stakeholder/new-stakeholder db  (profile-test/new-profile 1 1))
+          _ (db.stakeholder/new-stakeholder db  (profile-test/new-profile 1))
 
           ;; create new user name Bob
           user_bob (db.stakeholder/new-stakeholder db  (assoc user

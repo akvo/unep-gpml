@@ -52,7 +52,7 @@
                                           :english_name "Indonesian"
                                           :native_name "Bahasa Indonesia"})
           ;; create new user name John
-          user (db.stakeholder/new-stakeholder db (profile-test/new-profile 1 1))
+          user (db.stakeholder/new-stakeholder db (profile-test/new-profile 1))
           _ (db.stakeholder/update-stakeholder-status db (assoc user :review_status "APPROVED"))
           ;; create John create new policy with available organisation
           resp-one (handler (-> (mock/request :post "/")
