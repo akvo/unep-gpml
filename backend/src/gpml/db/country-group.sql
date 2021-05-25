@@ -1,4 +1,4 @@
--- :name new-country-group :! :1
+-- :name new-country-group :? :1
 -- :doc Insert new country group
 insert into country_group (
     name,
@@ -9,7 +9,7 @@ values(
     :name,
     :v:type::country_group_type
 --~ (when (contains? params :id) ", :id")
-)
+) RETURNING id;
 
 -- :name all-country-group :? :*
 -- :doc Get all country groups

@@ -109,15 +109,15 @@
         4 "financing_resource"
         0 "event"))))
 
-(def spanish {:country "Spain"
+(def spanish {:country 2
               :geo_coverage_type "national"
-              :geo_coverage_value ["ESP"]})
+              :geo_coverage_value [1]})
 
-(def india {:country "India"
+(def india {:country 2
             :geo_coverage_type "national"
-            :geo_coverage_value ["IND"]})
+            :geo_coverage_value [2]})
 
-(def asia {:geo_coverage_type "regional" :geo_coverage_value ["Asia"]})
+(def asia {:geo_coverage_type "regional" :geo_coverage_value [1]})
 
 (def approved {:review_status "APPROVED"})
 
