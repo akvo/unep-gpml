@@ -30,7 +30,6 @@
                                         ["/country"
                                          {:get {:summary "List available countries"
                                                 :swagger {:tags ["country"]}
-                                                :parameters {:query [:map [:id {:optional true} int?]]}
                                                 :handler #ig/ref :gpml.handler.country/get}}]
                                         ["/country-group"
                                          [""
