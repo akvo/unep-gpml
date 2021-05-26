@@ -10,7 +10,6 @@ import FieldTemplate from "../../utils/forms/field-template";
 import widgets from "../../utils/forms";
 import { overideValidation } from "../../utils/forms";
 import {
-  findCountryIsoCode,
   handleGeoCoverageValue,
   checkRequiredFieldFilledIn,
   checkDependencyAnswer,
