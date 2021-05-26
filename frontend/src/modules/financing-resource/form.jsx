@@ -14,7 +14,6 @@ import {
   collectDependSchema,
   overideValidation,
   checkRequiredFieldFilledIn,
-  findCountryIsoCode,
   handleGeoCoverageValue,
 } from "../../utils/forms";
 import cloneDeep from "lodash/cloneDeep";
@@ -107,7 +106,6 @@ const AddResourceForm = ({
         ...formData.newOrg,
         id: formData.org,
       };
-      data.org.country = findCountryIsoCode(formData.newOrg.country, countries);
       data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
     }
 
