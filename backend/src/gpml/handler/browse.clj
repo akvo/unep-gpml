@@ -1,6 +1,6 @@
 (ns gpml.handler.browse
   (:require [clojure.string :as str]
-            [gpml.constants :refer [topics resource-types]]
+            [gpml.constants :refer [topics resource-types approved-user-topics]]
             [gpml.db.browse :as db.browse]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
@@ -71,7 +71,7 @@
 (defn maybe-filter-private-topics [topics approved?]
   (or (and approved? topics)
       (->> topics
-           (filter #(not (contains? #{"organisation" "stakeholder"} %)))
+           (filter #(not (contains? approved-user-topics %)))
            vec)))
 
 (defn modify-db-filter-topics [db-filter]

@@ -3,6 +3,7 @@
             [gpml.db.detail :as db.detail]
             [gpml.db.project :as db.project]
             [gpml.db.initiative :as db.initiative]
+            [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [medley.core :as medley]
             [ring.util.response :as resp]
@@ -268,12 +269,20 @@
 
 (defmethod ig/init-key ::get [_ {:keys [db]}]
   (cache-hierarchies! (:spec db))
-  (fn [{:keys [path-params]}]
-    (if-let [data (db.detail/get-detail (:spec db) (update path-params :topic-id #(Long/parseLong %)))] ;; TODO: investigate why id value is not coerced
+  (fn [{{:keys [path]} :parameters jwt-claims :jwt-claims}]
+    (let [conn (:spec db)
+          topic (:topic-type path)
+          public-topic? (not (contains? constants/approved-user-topics topic))
+          authorized? (or public-topic?
+                          (and (:email jwt-claims)
+                               (= "APPROVED"
+                                  (:review_status
+                                   (db.stakeholder/stakeholder-by-email conn jwt-claims)))))]
+      (if-let [data (and authorized? (db.detail/get-detail conn path))]
         (resp/response (merge
-                         (:json data)
-                         (extra-details (:topic-type path-params) (:spec db) (:json data))))
-      (resp/not-found {:message "Not Found"}))))
+                        (:json data)
+                        (extra-details topic conn  (:json data))))
+        (resp/not-found {:message "Not Found"})))))
 
 #_:clj-kondo/ignore
 (comment
@@ -287,30 +296,30 @@
   (time (cache-hierarchies! (dev/db-conn)))
 
   (->>
-    (range 1 276)
-    (pmap
-      #(json/parse-string (slurp (str "http://localhost:3000/api/detail/policy/" %)) true))
-    ;(map (juxt :id :funding))
-    ;(filter second)
-    ;(pmap :children)
-    ;(map first)
-    ;(clojure.pprint/print-table )
-    (def all)
-    deref
-    )
+   (range 1 276)
+   (pmap
+    #(json/parse-string (slurp (str "http://localhost:3000/api/detail/policy/" %)) true))
+                                        ;(map (juxt :id :funding))
+                                        ;(filter second)
+                                        ;(pmap :children)
+                                        ;(map first)
+                                        ;(clojure.pprint/print-table )
+   (def all)
+   deref
+   )
 
 
   (do
 
     (->> all
-      (map second)
-      ;(filter (fn [xxx] (medley/find-first (fn [x] (= "All of the above" (:name x))) (:children xxx))))
-      ;(filter (fn [xxxx] (= 1 (count (:children xxxx)))))
-      ;(remove (fn [xxxx] (=  {:id 100, :name "Reporting and Evaluations", :children [{:id 101, :name "Yes"}]} xxxx)))
-      (map (juxt
-             identity
-             (partial nested-all-of-the-above (-> cached-hierarchies deref :working_with_people :format-params))))
-      ))
+         (map second)
+                                        ;(filter (fn [xxx] (medley/find-first (fn [x] (= "All of the above" (:name x))) (:children xxx))))
+                                        ;(filter (fn [xxxx] (= 1 (count (:children xxxx)))))
+                                        ;(remove (fn [xxxx] (=  {:id 100, :name "Reporting and Evaluations", :children [{:id 101, :name "Yes"}]} xxxx)))
+         (map (juxt
+               identity
+               (partial nested-all-of-the-above (-> cached-hierarchies deref :working_with_people :format-params))))
+         ))
 
 
 
@@ -330,41 +339,41 @@
 
     (def columns
       (concat all-letters
-        (map str (repeat "A") all-letters)
-        (map str (repeat "B") all-letters)
-        (map str (repeat "C") all-letters)))
+              (map str (repeat "A") all-letters)
+              (map str (repeat "B") all-letters)
+              (map str (repeat "C") all-letters)))
 
     (defn extract-column-id [question-str]
       (string/replace (first (string/split question-str #" ")) #"\.$" ""))
 
     (def xls-column-to-questions
       (into {}
-        (map
-          vector
-          columns
-          (map extract-column-id (string/split (slurp "dev/resources/questionnarie-columns.csv") #";")))))
+            (map
+             vector
+             columns
+             (map extract-column-id (string/split (slurp "dev/resources/questionnarie-columns.csv") #";")))))
 
     (defn clean-up [node]
       (->
-        node
-        (dissoc :dependencies :layout :show_hints :displayOptionality :data_question_visibility :label :rows :cols :size :mandatory :displayLegend :has_other :is_other)
-        (assoc :xls-column (get (clojure.set/map-invert xls-column-to-questions) (:q_no node)))
-        (medley.core/update-existing :options #(map (fn [option] (dissoc option :class :is_not_applicable :is_other :screen_to_message :value)) %))
-        (medley.core/update-existing :children (fn [nodes] (map clean-up nodes)))))
+       node
+       (dissoc :dependencies :layout :show_hints :displayOptionality :data_question_visibility :label :rows :cols :size :mandatory :displayLegend :has_other :is_other)
+       (assoc :xls-column (get (clojure.set/map-invert xls-column-to-questions) (:q_no node)))
+       (medley.core/update-existing :options #(map (fn [option] (dissoc option :class :is_not_applicable :is_other :screen_to_message :value)) %))
+       (medley.core/update-existing :children (fn [nodes] (map clean-up nodes)))))
 
     (defn find-action [xls-column]
       (->>
-        (tree-seq
-          (fn [node] (or (:children node) (:options node)))
-          (fn [node] (concat (:children node) (:options node)))
-          (:top_container questionnaire))
-        (filter (fn [node] (= (xls-column-to-questions xls-column) (:q_no node))))
-        (map clean-up)
-        (map (fn [node]
-               (->
-                 node
-                 (assoc :action-detail (action-detail (:id node))
-                        :action (action (:id node))))))
-        first)))
+       (tree-seq
+        (fn [node] (or (:children node) (:options node)))
+        (fn [node] (concat (:children node) (:options node)))
+        (:top_container questionnaire))
+       (filter (fn [node] (= (xls-column-to-questions xls-column) (:q_no node))))
+       (map clean-up)
+       (map (fn [node]
+              (->
+               node
+               (assoc :action-detail (action-detail (:id node))
+                      :action (action (:id node))))))
+       first)))
 
   )
