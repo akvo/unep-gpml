@@ -25,7 +25,8 @@ const getSchema = ({ countries, tags, regionOptions, meaOptions }, loading) => {
   const prop = cloneDeep(schema.properties);
   prop.country.enum = countries?.map((x, i) => x.id);
   prop.country.enumNames = countries?.map((x, i) => x.name);
-  prop.geoCoverageValueRegional.enum = regionOptions;
+  prop.geoCoverageValueRegional.enum = regionOptions?.map((x) => String(x.id));
+  prop.geoCoverageValueRegional.enumNames = regionOptions?.map((x) => x.name);
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
   prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
   prop.geoCoverageValueTransnational.enum = countries?.map((x, i) =>
@@ -33,6 +34,12 @@ const getSchema = ({ countries, tags, regionOptions, meaOptions }, loading) => {
   );
   prop.geoCoverageValueTransnational.enumNames = countries?.map(
     (x, i) => x.name
+  );
+  prop.geoCoverageValueGlobalSpesific.enum = meaOptions?.map((x) =>
+    String(x.id)
+  );
+  prop.geoCoverageValueGlobalSpesific.enumNames = meaOptions?.map(
+    (x) => x.name
   );
   prop.implementingMea.enum = meaOptions?.map((x) => x.id);
   prop.implementingMea.enumNames = meaOptions?.map((x) => x.name);

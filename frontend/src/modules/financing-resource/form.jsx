@@ -22,7 +22,7 @@ import cloneDeep from "lodash/cloneDeep";
 const Form = withTheme(AntDTheme);
 
 const getSchema = (
-  { countries, organisations, tags, currencies, regionOptions },
+  { countries, organisations, tags, currencies, regionOptions, meaOptions },
   loading
 ) => {
   const prop = cloneDeep(schema.properties);
@@ -36,7 +36,8 @@ const getSchema = (
   };
   prop.country.enum = countries?.map((x, i) => x.id);
   prop.country.enumNames = countries?.map((x, i) => x.name);
-  prop.geoCoverageValueRegional.enum = regionOptions;
+  prop.geoCoverageValueRegional.enum = regionOptions?.map((x) => String(x.id));
+  prop.geoCoverageValueRegional.enumNames = regionOptions?.map((x) => x.name);
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
   prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
   prop.geoCoverageValueTransnational.enum = countries?.map((x, i) =>
@@ -44,6 +45,12 @@ const getSchema = (
   );
   prop.geoCoverageValueTransnational.enumNames = countries?.map(
     (x, i) => x.name
+  );
+  prop.geoCoverageValueGlobalSpesific.enum = meaOptions?.map((x) =>
+    String(x.id)
+  );
+  prop.geoCoverageValueGlobalSpesific.enumNames = meaOptions?.map(
+    (x) => x.name
   );
   prop.tags.enum = tags.financingMechanism?.map((x) => String(x.id));
   prop.tags.enumNames = tags.financingMechanism?.map((x) => x.tag);
