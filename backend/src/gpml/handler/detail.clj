@@ -268,11 +268,11 @@
 
 (defmethod ig/init-key ::get [_ {:keys [db]}]
   (cache-hierarchies! (:spec db))
-  (fn [{:keys [path-params]}]
-    (if-let [data (db.detail/get-detail (:spec db) (update path-params :topic-id #(Long/parseLong %)))] ;; TODO: investigate why id value is not coerced
+  (fn [{{:keys [path]} :parameters}]
+    (if-let [data (db.detail/get-detail (:spec db) path)]
       (resp/response (merge
                       (:json data)
-                      (extra-details (:topic-type path-params) (:spec db) (:json data))))
+                      (extra-details (:topic-type path) (:spec db) (:json data))))
       (resp/not-found {:message "Not Found"}))))
 
 #_:clj-kondo/ignore
