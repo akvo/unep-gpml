@@ -3,6 +3,7 @@
             [gpml.db.detail :as db.detail]
             [gpml.db.project :as db.project]
             [gpml.db.initiative :as db.initiative]
+            [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [medley.core :as medley]
             [ring.util.response :as resp]
@@ -268,12 +269,20 @@
 
 (defmethod ig/init-key ::get [_ {:keys [db]}]
   (cache-hierarchies! (:spec db))
-  (fn [{{:keys [path]} :parameters}]
-    (if-let [data (db.detail/get-detail (:spec db) path)]
-      (resp/response (merge
-                      (:json data)
-                      (extra-details (:topic-type path) (:spec db) (:json data))))
-      (resp/not-found {:message "Not Found"}))))
+  (fn [{{:keys [path]} :parameters jwt-claims :jwt-claims}]
+    (let [conn (:spec db)
+          topic (:topic-type path)
+          public-topic? (not (contains? constants/approved-user-topics topic))
+          authorized? (or public-topic?
+                          (and (:email jwt-claims)
+                               (= "APPROVED"
+                                  (:review_status
+                                   (db.stakeholder/stakeholder-by-email conn jwt-claims)))))]
+      (if-let [data (and authorized? (db.detail/get-detail conn path))]
+        (resp/response (merge
+                        (:json data)
+                        (extra-details topic conn  (:json data))))
+        (resp/not-found {:message "Not Found"})))))
 
 #_:clj-kondo/ignore
 (comment
