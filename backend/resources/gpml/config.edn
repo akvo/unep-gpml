@@ -271,7 +271,8 @@
   :duct.database/sql {:jdbc-url #duct/env "DATABASE_URL"}
 
   :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
-                              :audience #duct/env "OIDC_AUDIENCE"}
+                              :audience #duct/env "OIDC_AUDIENCE"
+                              :db #ig/ref :duct.database/sql}
   :gpml.auth/auth-required {}
   :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
