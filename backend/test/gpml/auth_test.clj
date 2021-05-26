@@ -26,25 +26,26 @@
                                       :audience ""})))))
 
 (defn- new-stakeholder [db id email role]
-  (let [sth (db.stakeholder/new-stakeholder db
-                                            {:id id
-                                             :picture "https://picsum.photos/200"
-                                             :cv nil
-                                             :title "Mr."
-                                             :first_name "First name"
-                                             :last_name "Last name"
-                                             :affiliation nil
-                                             :email email
-                                             :linked_in nil
-                                             :twitter nil
-                                             :url nil
-                                             :country nil
-                                             :representation "test"
-                                             :about "Lorem Ipsum"
-                                             :geo_coverage_type nil})]
+  (let [info {:id id
+              :picture "https://picsum.photos/200"
+              :cv nil
+              :title "Mr."
+              :first_name "First name"
+              :last_name "Last name"
+              :affiliation nil
+              :email email
+              :linked_in nil
+              :twitter nil
+              :url nil
+              :country nil
+              :representation "test"
+              :about "Lorem Ipsum"
+              :geo_coverage_type nil}
+        sth (db.stakeholder/new-stakeholder db info)]
     (db.stakeholder/update-stakeholder-status db (assoc sth :review_status "APPROVED"))
     (db.stakeholder/update-stakeholder-role db {:id (:id sth)
-                                                :role role})))
+                                                :role role})
+    info))
 
 (defn post-request
   [email]
@@ -57,7 +58,7 @@
                    (ig/init [::auth/admin-required-middleware]))
         db (-> system :duct.database.sql/hikaricp :spec)
         middleware (::auth/admin-required-middleware system)
-        admin (new-stakeholder db 1 "admin@un.org" "ADMIN")]
+        admin (:id (new-stakeholder db 1 "admin@un.org" "ADMIN"))]
     (new-stakeholder db 2 "user@un.org" "USER")
     (prn admin)
     (let [handler (middleware (fn [{{admin-id :id} :admin}]
@@ -85,3 +86,22 @@
       {:authenticated? true} "any-token-that-is-valid" [true {:any-claim true}]
       {:status 403
        :authenticated? false} "not-a-valid-token" [false "IDToken can't be verified"])))
+
+(deftest test-is-approved?
+  (testing "Testing is-approved? logic"
+    (let [system (-> fixtures/*system*
+                     (ig/init [::auth/admin-required-middleware]))
+          db (-> system :duct.database.sql/hikaricp :spec)
+          ;; Create approved user
+          approved (new-stakeholder db 1 "user@un.org" "USER")
+
+          ;; Create unapproved stakeholder
+          unapproved (new-stakeholder db 2 "foo@bar.org" "USER")
+          _ (db.stakeholder/update-stakeholder-status
+             db (assoc unapproved :review_status "SUBMITTED"))]
+
+      (are [expected auth-header]
+          (= expected (auth/check-approved db auth-header))
+        {:approved? false :user-id nil} {:authenticated? false}
+        {:approved? false :user-id (:id unapproved)} {:jwt-claims (select-keys unapproved [:email])}
+        {:approved? true :user-id (:id approved)} {:jwt-claims (select-keys approved [:email])}))))
