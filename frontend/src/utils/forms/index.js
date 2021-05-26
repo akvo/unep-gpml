@@ -74,16 +74,16 @@ export const collectDependSchema = (
   tmp,
   formData,
   schema,
-  required,
+  requiredTmp,
   index = null
 ) => {
-  if (!schema?.properties) {
+  const { properties, required } = schema;
+  if (!properties) {
     return;
   }
-  if (schema?.required) {
-    required.push({ key: index, required: schema.required });
+  if (required) {
+    requiredTmp.push({ key: index, required: required });
   }
-  const { properties } = schema;
   Object.keys(properties).forEach((key) => {
     if (
       !index &&
@@ -106,7 +106,7 @@ export const collectDependSchema = (
       tmp.push(`.${index}.${key}`);
     }
     if (properties[key]?.properties) {
-      collectDependSchema(tmp, formData, properties[key], required, key);
+      collectDependSchema(tmp, formData, properties[key], requiredTmp, key);
     }
   });
   return;
@@ -159,24 +159,34 @@ export const checkRequiredFieldFilledIn = (
   dependFields = dependFields.map((x) => x.replace(".", ""));
   let res = [];
   requiredFields.forEach((item) => {
+    // for non initiative form
+    if (typeof item?.group === "undefined" && item?.key) {
+      item.required = item.required.map((x) => `${item.key}.${x}`);
+    }
     item.required =
       typeof item?.group === "undefined"
         ? difference(item.required, dependFields)
         : item.required;
+    // for non initiative form
     if (typeof item?.group === "undefined" && !item.key) {
       item.required.forEach((x) => {
         !(x in formData) && res.push(x);
       });
     }
+    // for non initiative form
     if (
       typeof item?.group === "undefined" &&
       item.key &&
       !dependFields.includes(item.key)
     ) {
       item.required.forEach((x) => {
-        !(x in formData?.[item.key]) && res.push(x);
+        let prop = x.includes(".")
+          ? x.split(".").find((x) => x !== item.key)
+          : x;
+        !(prop in formData?.[item.key]) && res.push(x);
       });
     }
+
     // for initiative form
     if (item?.group === null && item.key) {
       item.required.forEach((x) => {
@@ -212,25 +222,26 @@ export const handleGeoCoverageValue = (data, currentValue, countries) => {
   delete data.geoCoverageValueGlobalSpesific;
   delete data.geoCoverageValueSubNational;
   if (data.geoCoverageType === "national") {
-    data.geoCoverageValue = [
-      findCountryIsoCode(currentValue.geoCoverageValueNational, countries),
-    ];
+    data.geoCoverageValue = [currentValue.geoCoverageValueNational];
   }
   if (data.geoCoverageType === "transnational") {
     data.geoCoverageValue = currentValue.geoCoverageValueTransnational.map(
-      (x) => findCountryIsoCode(parseInt(x), countries)
+      (x) => parseInt(x)
     );
   }
   if (data.geoCoverageType === "regional") {
-    data.geoCoverageValue = currentValue.geoCoverageValueRegional;
+    data.geoCoverageValue = currentValue.geoCoverageValueRegional.map((x) =>
+      parseInt(x)
+    );
   }
   if (data.geoCoverageType === "global with elements in specific areas") {
-    data.geoCoverageValue = currentValue.geoCoverageValueGlobalSpesific;
+    data.geoCoverageValue = currentValue.geoCoverageValueGlobalSpesific.map(
+      (x) => parseInt(x)
+    );
   }
   if (data.geoCoverageType === "sub-national") {
     data.geoCoverageValue = currentValue.geoCoverageValueSubNational;
   }
-
   return data;
 };
 
