@@ -286,6 +286,8 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                       background={
                         country?.isoCode === geo.properties.MAP_COLOR
                           ? "#84b4cc"
+                          : geo.properties.MAP_COLOR === selected
+                          ? "#84b4cc"
                           : fillColor(curr ? curr[topic] : 0)
                       }
                       orientation={["diagonal"]}
