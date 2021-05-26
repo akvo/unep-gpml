@@ -204,7 +204,7 @@
    [:photo {:optional true} string?]
    [:cv {:optional true} string?]
    [:representation string?]
-   [:country {:optional true} string?]
+   [:country {:optional true} int?]
    [:public_email {:optional true} boolean?]
    [:about {:optional true} string?]
    [:organisation_role {:optional true} string?]
