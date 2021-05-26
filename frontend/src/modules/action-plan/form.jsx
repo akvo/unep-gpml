@@ -23,7 +23,7 @@ import cloneDeep from "lodash/cloneDeep";
 const Form = withTheme(AntDTheme);
 
 const getSchema = (
-  { countries, organisations, tags, regionOptions },
+  { countries, organisations, tags, regionOptions, meaOptions },
   loading
 ) => {
   const prop = cloneDeep(schema.properties);
@@ -32,7 +32,8 @@ const getSchema = (
   prop.org.enumNames = orgs?.map((it) => it.name);
   prop.country.enum = countries?.map((x, i) => x.id);
   prop.country.enumNames = countries?.map((x, i) => x.name);
-  prop.geoCoverageValueRegional.enum = regionOptions;
+  prop.geoCoverageValueRegional.enum = regionOptions?.map((x) => String(x.id));
+  prop.geoCoverageValueRegional.enumNames = regionOptions?.map((x) => x.name);
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
   prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
   prop.geoCoverageValueTransnational.enum = countries?.map((x, i) =>
@@ -40,6 +41,12 @@ const getSchema = (
   );
   prop.geoCoverageValueTransnational.enumNames = countries?.map(
     (x, i) => x.name
+  );
+  prop.geoCoverageValueGlobalSpesific.enum = meaOptions?.map((x) =>
+    String(x.id)
+  );
+  prop.geoCoverageValueGlobalSpesific.enumNames = meaOptions?.map(
+    (x) => x.name
   );
   prop.tags.enum = tags.technicalResourceType?.map((x) => String(x.id));
   prop.tags.enumNames = tags.technicalResourceType?.map((x) => x.tag);
@@ -95,7 +102,6 @@ const AddActionPlanForm = ({
         ...formData.newOrg,
         id: formData.org,
       };
-      data.org.country = findCountryIsoCode(formData.newOrg.country, countries);
       data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
     }
 

@@ -1,5 +1,4 @@
 import { UIStore } from "../../store";
-import specificAreasOptions from "../events/specific-areas.json";
 
 const sdgsOptions = [
   {
@@ -953,8 +952,8 @@ export const schema = {
                 id: "S3_G2_24",
                 value: ["global with elements in specific areas"],
               },
-              enum: specificAreasOptions,
-              enumNames: specificAreasOptions,
+              enum: [],
+              enumNames: [],
             },
           },
         },
