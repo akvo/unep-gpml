@@ -63,6 +63,12 @@
      :auth-error-message "Authentication required"
      :status 401}))
 
+(defn check-approved [conn {:keys [jwt-claims]}]
+  (let [stakeholder (and (:email jwt-claims)
+                         (db.stakeholder/stakeholder-by-email conn jwt-claims))]
+    {:approved? (= "APPROVED" (:review_status stakeholder))
+     :user-id (:id stakeholder)}))
+
 (defn id-token-verifier
   [signature-verifier opts]
   (fn [token]
@@ -77,10 +83,12 @@
   (fn [handler]
     (let [signature-verifier (signature-verifier (:issuer opts))]
       (fn [request]
-        (handler (merge request (check-authentication request
-                                                      (id-token-verifier signature-verifier
-                                                                         opts))))))))
-
+        (let [conn (-> opts :db :spec)
+              auth-info (check-authentication
+                         request
+                         (id-token-verifier signature-verifier opts))
+              user-info (check-approved conn auth-info)]
+          (handler (merge request auth-info user-info)))))))
 
 (defmethod ig/init-key :gpml.auth/auth-required [_ _]
   (fn [handler]
