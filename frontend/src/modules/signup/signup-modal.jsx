@@ -18,9 +18,6 @@ const SignupModal = ({ visible, onCancel }) => {
 
   const onSubmit = (vals) => {
     setSending(true);
-    if (vals?.country) {
-      vals.country = String(vals.country);
-    }
     if (!vals?.publicEmail) {
       vals = { ...vals, publicEmail: false };
     }
