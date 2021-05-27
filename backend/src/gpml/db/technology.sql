@@ -50,20 +50,20 @@ select
     specifications_provided,
     email,
     geo_coverage_type,
-    geo_coverage_values as geo_coverage_value,
     attachments,
     remarks,
     url,
     image,
     logo,
+    created_by,
     (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
         from technology_language_url plu
         left join language l on l.id = plu.language
         where plu.technology = :id) as urls,
     (select json_agg(tag) from technology_tag where technology = :id) as tags,
-    (select created_by
-        from technology where id = :id) as created_by
-from v_technology_data
+    (select json_agg(coalesce(country, country_group))
+        from technology_geo_coverage where technology = :id) as geo_coverage_value
+from technology
 where id = :id
 
 -- :name pending-technology :? :1

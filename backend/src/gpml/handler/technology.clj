@@ -43,9 +43,8 @@
                                     (:url %)) urls)]
         (db.technology/add-technology-language-urls conn {:urls lang-urls})))
     (when (not-empty geo_coverage_value)
-      (let [geo-data (handler.geo/id-vec-geo conn technology-id data)]
-        (when (not-empty geo-data)
-          (db.technology/add-technology-geo conn {:geo geo-data}))))
+      (let [geo-data (handler.geo/get-geo-vector technology-id data)]
+          (db.technology/add-technology-geo conn {:geo geo-data})))
     technology-id))
 
 (defmethod ig/init-key :gpml.handler.technology/post [_ {:keys [db]}]
@@ -70,7 +69,7 @@
     [:enum "global", "regional", "national", "transnational",
      "sub-national", "global with elements in specific areas"]]
    [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one geo coverage value"} string?]]
+    [:vector {:min 1 :error/message "Need at least one geo coverage value"} integer?]]
    [:image {:optional true} string?]
    [:logo {:optional true} string?]
    [:tags {:optional true}
