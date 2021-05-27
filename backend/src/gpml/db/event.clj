@@ -17,7 +17,7 @@
                 :country country-id,
                 :city "Timbuktu",
                 :geo_coverage_type "national"
-                :geo_coverage_countries ["KEN"]
+                :geo_coverage_countries [(:id (db.country/country-by-code {:name "KEN"}))]
                 :remarks "Remarks"
                 :tags ["microplastics" "sea-land interface" "state of knowledge"]
                 :urls [{:url "http://example.com/events/en/event1.html" :language "en"}
