@@ -1,8 +1,7 @@
 (ns gpml.handler.browse
   (:require [clojure.string :as str]
-            [gpml.constants :refer [topics resource-types]]
+            [gpml.constants :refer [topics resource-types approved-user-topics]]
             [gpml.db.browse :as db.browse]
-            [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -71,7 +70,7 @@
 (defn maybe-filter-private-topics [topics approved?]
   (or (and approved? topics)
       (->> topics
-           (filter #(not (contains? #{"organisation" "stakeholder"} %)))
+           (filter #(not (contains? approved-user-topics %)))
            vec)))
 
 (defn modify-db-filter-topics [db-filter]
@@ -93,15 +92,13 @@
     data))
 
 (defmethod ig/init-key :gpml.handler.browse/get [_ {:keys [db]}]
-  (fn [{{:keys [query]} :parameters {:keys [email]} :jwt-claims}]
-    (let [stakeholder (and email (->> {:email email}
-                                      (db.stakeholder/stakeholder-by-email (:spec db))))
-          user-id (:id stakeholder)
-          approved? (= "APPROVED" (:review_status stakeholder))]
-      (resp/response {:results (#'results
-                                (merge query {:user user-id})
-                                (:spec db)
-                                approved?)}))))
+  (fn [{{:keys [query]} :parameters
+        approved? :approved?
+        user-id :user-id}]
+    (resp/response {:results (#'results
+                              (merge query {:user user-id})
+                              (:spec db)
+                              approved?)})))
 
 (defmethod ig/init-key :gpml.handler.browse/query-params [_ _]
   query-params)

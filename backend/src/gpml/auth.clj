@@ -63,6 +63,13 @@
      :auth-error-message "Authentication required"
      :status 401}))
 
+(defn check-approved [conn {:keys [jwt-claims]}]
+  (let [stakeholder (and (:email jwt-claims)
+                         (:email_verified jwt-claims)
+                         (db.stakeholder/stakeholder-by-email conn jwt-claims))]
+    {:approved? (= "APPROVED" (:review_status stakeholder))
+     :user stakeholder}))
+
 (defn id-token-verifier
   [signature-verifier opts]
   (fn [token]
@@ -77,10 +84,12 @@
   (fn [handler]
     (let [signature-verifier (signature-verifier (:issuer opts))]
       (fn [request]
-        (handler (merge request (check-authentication request
-                                                      (id-token-verifier signature-verifier
-                                                                         opts))))))))
-
+        (let [conn (-> opts :db :spec)
+              auth-info (check-authentication
+                         request
+                         (id-token-verifier signature-verifier opts))
+              user-info (check-approved conn auth-info)]
+          (handler (merge request auth-info user-info)))))))
 
 (defmethod ig/init-key :gpml.auth/auth-required [_ _]
   (fn [handler]
@@ -90,21 +99,21 @@
         {:status (:status request)
          :message (:auth-error-message request)}))))
 
-(defmethod ig/init-key :gpml.auth/approved-user [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.auth/approved-user [_ _]
   (fn [handler]
-    (fn [{:keys [jwt-claims] :as request}]
-      (if-let [user (db.stakeholder/approved-stakeholder-by-email (:spec db) jwt-claims)]
+    (fn [{:keys [approved? jwt-claims] :as request}]
+      (if approved?
+        (handler request)
         (if (:email_verified jwt-claims)
-          (handler (assoc request :user user))
           {:status 403
-           :message "User must verify the email address"})
-        {:status 403
-         :message "User does not exist or is not approved yet"}))))
+           :message "User does not exist or is not approved yet"}
+          {:status 403
+           :message "User must verify the email address"})))))
 
-(defmethod ig/init-key :gpml.auth/admin-required-middleware [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.auth/admin-required-middleware [_ _]
   (fn [handler]
-    (fn [{:keys [jwt-claims] :as request}]
-      (if-let [admin (db.stakeholder/admin-by-email (:spec db) jwt-claims)]
-        (handler (assoc request :admin admin))
+    (fn [{:keys [user approved?] :as request}]
+      (if (and approved? (= "ADMIN" (:role user)))
+        (handler (assoc request :admin user))
         {:status 403
          :body {:message "Unauthorized"}}))))
