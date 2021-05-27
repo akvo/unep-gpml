@@ -10,26 +10,26 @@
 (defn remap-initiative [{:keys [q1 q1_1 q16 q18
                                 q20 q23 q24 q24_1 q24_2
                                 q24_3 q24_4 q38 q40]}]
-  (let [geo-type (-> q24 first first q24)
+  (let [geo-type (-> q24 first second)
         geo-values (cond
                      (= geo-type "Regional")
                      (mapv #(-> % first second) q24_1)
                      (= geo-type "National")
-                     (mapv #(-> % first second) q24_2)
+                     (-> q24_2 first second)
                      (= geo-type "Sub-national") [(-> q24_3 first second)]
                      (= geo-type "Transnational")
                      (mapv #(-> % first second) q24_4)
                      :else nil)]
-  {:organisation (-> q1_1 first second)
-   :country (-> q23 first second)
-   :submitted (-> q1 first second)
-   :duration (-> q38 first second)
-   :links q40
-   :geo_coverage_type geo-type
-   :geo_coverage_values geo-values
-   :entities (mapv #(-> % first second) q16)
-   :partners (mapv #(-> % first second) q18)
-   :donors (mapv #(-> % first second) q20)}))
+    {:organisation (-> q1_1 first second)
+     :country (-> q23 first second)
+     :submitted (-> q1 first second)
+     :duration (-> q38 first second)
+     :links q40
+     :geo_coverage_type geo-type
+     :geo_coverage_values geo-values
+     :entities (mapv #(-> % first second) q16)
+     :partners (mapv #(-> % first second) q18)
+     :donors (mapv #(-> % first second) q20)}))
 
 (defn pending-profiles-response [data auth0-config]
   (let [verified-emails (set (auth0/list-auth0-verified-emails auth0-config))
