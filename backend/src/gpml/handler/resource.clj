@@ -95,7 +95,7 @@
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
     [:geo_coverage_value {:optional true}
-     [:vector {:min 1 :error/message "Need at least one geo coverage value"} string?]]
+     [:vector {:min 1 :error/message "Need at least one geo coverage value"} integer?]]
     [:image {:optional true} string?]
    [:remarks {:optional true} string?]
    [:urls {:optional true}
