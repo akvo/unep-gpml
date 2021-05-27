@@ -50,9 +50,8 @@
                                     (:url %)) urls)]
         (db.resource/add-resource-language-urls conn {:urls lang-urls})))
     (when (not-empty geo_coverage_value)
-      (let [geo-data (handler.geo/id-vec-geo conn resource-id data)]
-        (when (not-empty geo-data)
-          (db.resource/add-resource-geo conn {:geo geo-data}))))
+      (let [geo-data (handler.geo/get-geo-vector resource-id data)]
+        (db.resource/add-resource-geo conn {:geo geo-data})))
     resource-id))
 
 (defmethod ig/init-key :gpml.handler.resource/post [_ {:keys [db]}]
@@ -76,15 +75,15 @@
     [:country integer?]
     [:org {:optional true} map?
      [:map
-      [:id {:optional true} int?]
+      [:id {:optional true} integer?]
       [:name {:optional true} string?]
       [:url {:optional true} string?]
-      [:country {:optional true} string?]
+      [:country {:optional true} integer?]
       [:geo_coverage_type {:optional true}
        [:enum "global", "regional", "national", "transnational",
         "sub-national", "global with elements in specific areas"]]
       [:geo_coverage_value {:optional true}
-       [:vector {:min 1 :error/message "Need at least one of geo coverage value"} string?]]]]
+       [:vector {:min 1 :error/message "Need at least one of geo coverage value"} integer?]]]]
     [:publish_year integer?]
     [:summary {:optional true} string?]
     [:value {:optional true} integer?]
@@ -103,7 +102,7 @@
     [:vector {:optional true}
      [:map [:lang string?] [:url [:string {:min 1}]]]]]
    [:tags {:optional true}
-    [:vector {:optional true} int?]]]
+    [:vector {:optional true} integer?]]]
    [:fn {:error/message "value is required" :error/path [:value]}
     (fn [{:keys [resource_type value]}] (or-and resource_type value))]
    [:fn {:error/message "value_currency is required" :error/path [:value_currency]}
