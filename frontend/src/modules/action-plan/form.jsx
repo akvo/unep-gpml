@@ -58,7 +58,171 @@ const getSchema = (
   };
 };
 
-export const actionPlanData = new Store({ data: {} });
+const editDataSample = {
+  urls: [{ lang: "en", url: "www.google.com" }],
+  title: "New Action Plan",
+  org: { id: 10001 },
+  publishYear: 2020,
+  country: 106,
+  geoCoverageType: "national",
+  geoCoverageValueNational: 1,
+  summary: "Description",
+  tags: [301, 302, 303],
+  resourceType: "Action Plan",
+  validFrom: "2021-05-01",
+  validTo: "2021-05-27",
+  geoCoverageValue: [1],
+};
+
+const formDataMapping = [
+  {
+    name: "title",
+    group: null,
+    type: "string",
+  },
+  {
+    name: "org",
+    group: null,
+    type: "integer",
+  },
+  {
+    name: "publishYear",
+    group: null,
+    type: "string",
+  },
+  {
+    name: "validFrom",
+    group: "date",
+    type: "string",
+  },
+  {
+    name: "validTo",
+    group: "date",
+    type: "string",
+  },
+  {
+    name: "country",
+    group: null,
+    type: "integer",
+  },
+  {
+    name: "geoCoverageType",
+    group: null,
+    type: "string",
+  },
+  {
+    name: "geoCoverageValue",
+    group: null,
+    type: "array",
+  },
+  {
+    name: "summary",
+    group: null,
+    type: "string",
+  },
+  {
+    name: "tags",
+    group: null,
+    type: "array",
+  },
+  {
+    name: "urls",
+    group: null,
+    type: "array",
+  },
+];
+
+const revertFormData = () => {
+  const formData = {};
+  formDataMapping.forEach((item) => {
+    const { name, group, type } = item;
+    let key = name;
+    let data = null;
+    if (!group) {
+      data = editDataSample[key];
+    }
+    if (group) {
+      data = editDataSample[key];
+    }
+    if (key === "org") {
+      data = data?.id;
+    }
+    if (type === "string") {
+      data = String(data);
+    }
+    if (type === "integer") {
+      data = parseInt(data);
+    }
+    if (key === "geoCoverageValue") {
+      const geoCoverageType = editDataSample["geoCoverageType"];
+      if (geoCoverageType === "national") {
+        key = "geoCoverageValueNational";
+      }
+      if (geoCoverageType === "regional") {
+        key = "geoCoverageValueRegional";
+      }
+      if (geoCoverageType === "transnational") {
+        key = "geoCoverageValueTransnational";
+      }
+      if (geoCoverageType === "global with elements in specific areas") {
+        key = "geoCoverageValueGlobalSpesific";
+      }
+      if (geoCoverageType === "sub-national") {
+        key = "geoCoverageValueSubNational";
+      }
+    }
+    if (!group) {
+      formData[key] = data;
+    }
+    if (group) {
+      formData[group] = { ...formData[group], [key]: data };
+    }
+  });
+  return formData;
+};
+
+const transformPostData = (formData, countries) => {
+  const postData = {};
+  formDataMapping.forEach((item) => {
+    const { name, group, type } = item;
+    let key = name;
+    let data = null;
+    if (!group) {
+      data = formData[key];
+    }
+    if (group) {
+      data = formData[group][key];
+    }
+    if (type === "string") {
+      data = String(data);
+    }
+    if (type === "integer") {
+      data = parseInt(data);
+    }
+    if (key === "org") {
+      data = { id: formData[key] };
+      if (formData[key] === -1) {
+        data = {
+          ...formData.newOrg,
+          id: formData.org,
+        };
+        const temp = handleGeoCoverageValue(data, formData.newOrg, countries);
+        data["geoCoverageValue"] = temp["geoCoverageValue"];
+      }
+    }
+    if (key === "publishYear") {
+      data = parseInt(data);
+    }
+    if (key === "geoCoverageValue") {
+      const temp = handleGeoCoverageValue(postData, formData, countries);
+      data = temp[key];
+    }
+    postData[key] = data;
+  });
+  return postData;
+};
+
+export const actionPlanData = new Store({ data: revertFormData() });
 
 const AddActionPlanForm = ({
   btnSubmit,
@@ -92,38 +256,39 @@ const AddActionPlanForm = ({
   }, [highlight]);
 
   const handleOnSubmit = ({ formData }) => {
-    let data = { ...formData, resourceType: "Action Plan" };
+    // let data = { ...formData, resourceType: "Action Plan" };
 
-    data?.newOrg && delete data.newOrg;
-    data.org = { id: formData.org };
-    if (formData.org === -1) {
-      data.org = {
-        ...formData.newOrg,
-        id: formData.org,
-      };
-      data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
-    }
+    // data?.newOrg && delete data.newOrg;
+    // data.org = { id: formData.org };
+    // if (formData.org === -1) {
+    //   data.org = {
+    //     ...formData.newOrg,
+    //     id: formData.org,
+    //   };
+    //   data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
+    // }
 
-    delete data.date;
-    data.validFrom = formData.date.validFrom;
-    data.validTo = formData?.date?.validTo || "Ongoing";
+    // delete data.date;
+    // data.validFrom = formData.date.validFrom;
+    // data.validTo = formData?.date?.validTo || "Ongoing";
 
-    if (data?.urls[0]?.url) {
-      data.urls = formData.urls.filter((it) => it?.url && it.url.length > 0);
-    }
-    if (!data?.urls[0]?.url) {
-      delete data.urls;
-    }
+    // if (data?.urls[0]?.url) {
+    //   data.urls = formData.urls.filter((it) => it?.url && it.url.length > 0);
+    // }
+    // if (!data?.urls[0]?.url) {
+    //   delete data.urls;
+    // }
 
-    data = handleGeoCoverageValue(data, formData, countries);
-    data?.image === "" && delete data.image;
-    data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
+    // data = handleGeoCoverageValue(data, formData, countries);
+    // data?.image === "" && delete data.image;
+    // data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
-    if (data?.publishYear) {
-      const publishYear = new Date(formData.publishYear);
-      data.publishYear = publishYear.getFullYear();
-    }
-
+    // if (data?.publishYear) {
+    //   const publishYear = new Date(formData.publishYear);
+    //   data.publishYear = publishYear.getFullYear();
+    // }
+    const data = transformPostData(formData, countries);
+    data["resourceType"] = "Action Plan";
     setSending(true);
     api
       .post("/resource", data)

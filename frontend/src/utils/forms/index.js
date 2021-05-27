@@ -216,12 +216,17 @@ export const findCountryIsoCode = (value, countries) => {
 };
 
 export const handleGeoCoverageValue = (data, currentValue, countries) => {
-  delete data.geoCoverageValueNational;
-  delete data.geoCoverageValueTransnational;
-  delete data.geoCoverageValueRegional;
-  delete data.geoCoverageValueGlobalSpesific;
-  delete data.geoCoverageValueSubNational;
-  if (data.geoCoverageType === "national") {
+  data?.geoCoverageValueNationaldelete && delete data.geoCoverageValueNational;
+  data?.geoCoverageValueTransnational &&
+    delete data.geoCoverageValueTransnational;
+  data?.geoCoverageValueRegional && delete data.geoCoverageValueRegional;
+  data?.geoCoverageValueGlobalSpesific &&
+    delete data.geoCoverageValueGlobalSpesific;
+  data?.geoCoverageValueSubNational && delete data.geoCoverageValueSubNational;
+  if (
+    data.geoCoverageType === "national" &&
+    !Array.isArray(currentValue.geoCoverageValueNational)
+  ) {
     data.geoCoverageValue = [currentValue.geoCoverageValueNational];
   }
   if (data.geoCoverageType === "transnational") {

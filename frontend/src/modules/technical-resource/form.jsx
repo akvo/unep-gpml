@@ -58,7 +58,161 @@ const getSchema = (
   };
 };
 
-export const resourceData = new Store({ data: {} });
+const editDataSample = {
+  urls: [
+    { lang: "en", url: "google.com" },
+    { lang: "cs", url: "google.com" },
+  ],
+  title: "New Technical Resource",
+  org: { id: 10001 },
+  publishYear: 2020,
+  country: 106,
+  geoCoverageType: "transnational",
+  summary: "Description",
+  tags: [301, 302, 303],
+  resourceType: "Technical Resource",
+  geoCoverageValue: [106, 1, 6],
+};
+
+const formDataMapping = [
+  {
+    name: "title",
+    group: null,
+    type: "string",
+  },
+  {
+    name: "org",
+    group: null,
+    type: "integer",
+  },
+  {
+    name: "publishYear",
+    group: null,
+    type: "string",
+  },
+  {
+    name: "country",
+    group: null,
+    type: "integer",
+  },
+  {
+    name: "geoCoverageType",
+    group: null,
+    type: "string",
+  },
+  {
+    name: "geoCoverageValue",
+    group: null,
+    type: "array",
+  },
+  {
+    name: "summary",
+    group: null,
+    type: "string",
+  },
+  {
+    name: "tags",
+    group: null,
+    type: "array",
+  },
+  {
+    name: "urls",
+    group: null,
+    type: "array",
+  },
+];
+
+const revertFormData = () => {
+  const formData = {};
+  formDataMapping.forEach((item) => {
+    const { name, group, type } = item;
+    let key = name;
+    let data = null;
+    if (!group) {
+      data = editDataSample[key];
+    }
+    if (group) {
+      data = editDataSample[key];
+    }
+    if (key === "org") {
+      data = data?.id;
+    }
+    if (type === "string") {
+      data = String(data);
+    }
+    if (type === "integer") {
+      data = parseInt(data);
+    }
+    if (key === "geoCoverageValue") {
+      const geoCoverageType = editDataSample["geoCoverageType"];
+      if (geoCoverageType === "national") {
+        key = "geoCoverageValueNational";
+      }
+      if (geoCoverageType === "regional") {
+        key = "geoCoverageValueRegional";
+      }
+      if (geoCoverageType === "transnational") {
+        key = "geoCoverageValueTransnational";
+      }
+      if (geoCoverageType === "global with elements in specific areas") {
+        key = "geoCoverageValueGlobalSpesific";
+      }
+      if (geoCoverageType === "sub-national") {
+        key = "geoCoverageValueSubNational";
+      }
+    }
+    if (!group) {
+      formData[key] = data;
+    }
+    if (group) {
+      formData[group] = { ...formData[group], [key]: data };
+    }
+  });
+  return formData;
+};
+
+const transformPostData = (formData, countries) => {
+  const postData = {};
+  formDataMapping.forEach((item) => {
+    const { name, group, type } = item;
+    let key = name;
+    let data = null;
+    if (!group) {
+      data = formData[key];
+    }
+    if (group) {
+      data = formData[group][key];
+    }
+    if (type === "string") {
+      data = String(data);
+    }
+    if (type === "integer") {
+      data = parseInt(data);
+    }
+    if (key === "org") {
+      data = { id: formData[key] };
+      if (formData[key] === -1) {
+        data = {
+          ...formData.newOrg,
+          id: formData.org,
+        };
+        const temp = handleGeoCoverageValue(data, formData.newOrg, countries);
+        data["geoCoverageValue"] = temp["geoCoverageValue"];
+      }
+    }
+    if (key === "publishYear") {
+      data = parseInt(data);
+    }
+    if (key === "geoCoverageValue") {
+      const temp = handleGeoCoverageValue(postData, formData, countries);
+      data = temp[key];
+    }
+    postData[key] = data;
+  });
+  return postData;
+};
+
+export const resourceData = new Store({ data: revertFormData() });
 
 const AddResourceForm = ({
   btnSubmit,
@@ -92,34 +246,35 @@ const AddResourceForm = ({
   }, [highlight]);
 
   const handleOnSubmit = ({ formData }) => {
-    let data = { ...formData, resourceType: "Technical Resource" };
+    // let data = { ...formData, resourceType: "Technical Resource" };
 
-    data?.newOrg && delete data.newOrg;
-    data.org = { id: formData.org };
-    if (formData.org === -1) {
-      data.org = {
-        ...formData.newOrg,
-        id: formData.org,
-      };
-      data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
-    }
+    // data?.newOrg && delete data.newOrg;
+    // data.org = { id: formData.org };
+    // if (formData.org === -1) {
+    //   data.org = {
+    //     ...formData.newOrg,
+    //     id: formData.org,
+    //   };
+    //   data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
+    // }
 
-    if (data?.urls[0]?.url) {
-      data.urls = formData.urls.filter((it) => it?.url && it.url.length > 0);
-    }
-    if (!data?.urls[0]?.url) {
-      delete data.urls;
-    }
+    // if (data?.urls[0]?.url) {
+    //   data.urls = formData.urls.filter((it) => it?.url && it.url.length > 0);
+    // }
+    // if (!data?.urls[0]?.url) {
+    //   delete data.urls;
+    // }
 
-    data = handleGeoCoverageValue(data, formData, countries);
-    data?.image === "" && delete data.image;
-    data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
+    // data = handleGeoCoverageValue(data, formData, countries);
+    // data?.image === "" && delete data.image;
+    // data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
-    if (data?.publishYear) {
-      const publishYear = new Date(formData.publishYear);
-      data.publishYear = publishYear.getFullYear();
-    }
-
+    // if (data?.publishYear) {
+    //   const publishYear = new Date(formData.publishYear);
+    //   data.publishYear = publishYear.getFullYear();
+    // }
+    const data = transformPostData(formData, countries);
+    data["resourceType"] = "Technical Resource";
     setSending(true);
     api
       .post("/resource", data)
