@@ -13,7 +13,7 @@
 
 (use-fixtures :each fixtures/with-test-system)
 
-(defn new-policy [db]
+(defn new-policy [data]
   {:title "Policy Title"
    :original_title "Policy Original Title"
    :abstract "Test Description"
@@ -25,12 +25,12 @@
    :first_publication_date "2021-04-01"
    :latest_amendment_date "2021-04-01"
    :geo_coverage_type "regional"
-   :geo_coverage_value ["Asia", "Europe"]
+   :geo_coverage_value (mapv :id (:country_groups data))
    :urls [{:lang "id" :url "https://www.test.org"}]
    :url "https://akvo.org"
    :attachments nil
    :remarks nil
-   :country (-> (db.country/country-by-code db {:name "IDN"}) :id)
+   :country (-> (:countries data) first :id)
    :tags [4 5]})
 
 (deftest handler-post-test
@@ -42,7 +42,7 @@
           ;; create new country group [Africa Asia Europe]
           ;; create new organisation [Akvo]
           ;; create new general 3 tags
-          _ (profile-test/seed-important-database db)
+          data (profile-test/seed-important-database db)
           ;; create new policy category tag
           _ (do (db.tag/new-tag-category db {:category "financing mechanism"})
                 (db.tag/new-tag db {:tag "RT 1" :tag_category 2})
@@ -57,24 +57,24 @@
           ;; create John create new policy with available organisation
           resp-one (handler (-> (mock/request :post "/")
                                 (assoc :jwt-claims {:email "john@org"})
-                                (assoc :body-params (new-policy db))))
+                                (assoc :body-params (new-policy data))))
           ;; create John create new policy with new organisation
           resp-two (handler (-> (mock/request :post "/")
                                 (assoc :jwt-claims {:email "john@org"})
-                                (assoc :body-params (assoc (new-policy db) :org
+                                (assoc :body-params (assoc (new-policy data) :org
                                                            {:id -1
                                                             :name "New Era"
                                                             :geo_coverage_type "regional"
-                                                            :geo_coverage_value ["Asia"]
-                                                            :country "IDN"}))))
+                                                            :geo_coverage_value (mapv :id (:country_groups data))
+                                                            :country (-> (:countries data) second :id)}))))
           policy-one (db.policy/policy-by-id db (:body resp-one))
           policy-two (db.policy/policy-by-id db (:body resp-two))]
       (is (= 201 (:status resp-one)))
-      (is (= (assoc (new-policy db)
+      (is (= (assoc (new-policy data)
                     :id 10001
                     :image nil
                     :created_by 10001) policy-one))
-      (is (= (assoc (new-policy db)
+      (is (= (assoc (new-policy data)
                     :id 10002
                     :image nil
                     :created_by 10001) policy-two)))))

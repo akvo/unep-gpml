@@ -60,19 +60,19 @@ select
     TO_CHAR(latest_amendment_date, 'YYYY-MM-DD') as latest_amendment_date,
     status,
     geo_coverage_type,
-    geo_coverage_values as geo_coverage_value,
     attachments,
     remarks,
     url,
     image,
+    created_by,
     (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
         from policy_language_url plu
         left join language l on l.id = plu.language
         where plu.policy = :id) as urls,
     (select json_agg(tag) from policy_tag where policy = :id) as tags,
-    (select created_by
-        from policy where id = :id) as created_by
-from v_policy_data
+    (select json_agg(coalesce(country, country_group))
+        from policy_geo_coverage where policy = :id) as geo_coverage_value
+from policy
 where id = :id
 
 -- :name pending-policy :? :1
