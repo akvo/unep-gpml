@@ -6,7 +6,6 @@
             [gpml.handler.profile-test :as profile-test]
             [gpml.db.tag :as db.tag]
             [gpml.db.language :as db.language]
-            [gpml.db.country :as db.country]
             [gpml.db.resource :as db.resource]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
