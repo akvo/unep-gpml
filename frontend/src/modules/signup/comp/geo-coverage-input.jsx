@@ -2,13 +2,12 @@ import { UIStore } from "../../../store";
 import React from "react";
 import { Input, Select } from "antd";
 import { Field } from "react-final-form";
-import specificAreasOptions from "../../events/specific-areas.json";
 
 const GeoCoverageInput = (props) => {
-  const { countries, regionOptions } = UIStore.currentState;
+  const { countries, regionOptions, meaOptions } = UIStore.currentState;
   const { disabled } = props;
   const national =
-    countries && countries.map((it) => ({ value: it.isoCode, label: it.name }));
+    countries && countries.map((it) => ({ value: it.id, label: it.name }));
   return (
     <Field
       key={props.name}
@@ -46,8 +45,8 @@ const GeoCoverageInput = (props) => {
                   input.onChange([]);
                 }
                 selectProps.options = regionOptions.map((it) => ({
-                  value: it,
-                  label: it,
+                  value: it.id,
+                  label: it.name,
                 }));
                 selectProps.mode = "multiple";
               } else if (
@@ -56,8 +55,6 @@ const GeoCoverageInput = (props) => {
               ) {
                 selectProps.options = national;
                 selectProps.showSearch = true;
-                selectProps.filterOption = (input, option) =>
-                  option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
                 if (typeInput.value === "transnational") {
                   if (input.value === "" || input?.[0] === "") {
                     input.onChange([]);
@@ -67,14 +64,24 @@ const GeoCoverageInput = (props) => {
               } else if (
                 typeInput.value === "global with elements in specific areas"
               ) {
-                selectProps.options = specificAreasOptions.map((it) => ({
-                  value: it,
-                  label: it,
+                selectProps.options = meaOptions.map((it) => ({
+                  value: it.id,
+                  label: it.name,
                 }));
                 selectProps.mode = "multiple";
                 if (input.value === "" || input?.[0] === "") {
                   input.onChange([]);
                 }
+              }
+
+              if (
+                typeInput.value === "regional" ||
+                typeInput.value === "national" ||
+                typeInput.value === "transnational" ||
+                typeInput.value === "global with elements in specific areas"
+              ) {
+                selectProps.filterOption = (input, option) =>
+                  option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
               }
               return <Select {...selectProps} virtual={false} />;
             }}

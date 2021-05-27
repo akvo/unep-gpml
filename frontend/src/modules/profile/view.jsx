@@ -91,18 +91,33 @@ const ProfileView = ({ ...props }) => {
   }, [profile]);
 
   const onSubmit = (vals) => {
+    setSaving(true);
     if (!vals?.publicEmail) {
       vals = { ...vals, publicEmail: false };
     }
-    setSaving(true);
     if (
       vals.geoCoverageType === "national" &&
-      typeof vals.geoCoverageValue === "string"
+      !Array.isArray(vals.geoCoverageValue)
     ) {
       vals.geoCoverageValue = [vals.geoCoverageValue];
     }
     if (vals.geoCoverageType === "global") {
       vals.geoCoverageValue = null;
+    }
+    if (
+      vals?.org &&
+      vals.org?.id === -1 &&
+      vals.org.geoCoverageType === "national" &&
+      !Array.isArray(vals.org.geoCoverageValue)
+    ) {
+      vals.org.geoCoverageValue = [vals.org.geoCoverageValue];
+    }
+    if (
+      vals?.org &&
+      vals.org?.id === -1 &&
+      vals.org.geoCoverageType === "global"
+    ) {
+      vals.org.geoCoverageValue = null;
     }
     api
       .put("/profile", vals)

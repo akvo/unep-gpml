@@ -4,7 +4,6 @@
             [gpml.auth0-util :as auth0]
             [gpml.email-util :as email]
             [gpml.handler.geo :as handler.geo]
-            [gpml.handler.country :as handler.country]
             [gpml.handler.organisation :as handler.org]
             [gpml.handler.image :as handler.image]
             [gpml.db.organisation :as db.organisation]
@@ -49,7 +48,7 @@
                  :organisation_role organisation_role
                  :about about
                  :geo_coverage_type geo_coverage_type
-                 :country (handler.country/id-by-code conn country)
+                 :country country
                  :affiliation affiliation}
         stakeholder
         (db.stakeholder/new-stakeholder conn profile)]
@@ -111,15 +110,13 @@
             tags (db.stakeholder/stakeholder-tags conn profile)
             org (db.organisation/organisation-by-id conn {:id (:affiliation profile)})
             geo-type (:geo_coverage_type profile)
+            geo-value (db.stakeholder/get-stakeholder-geo conn profile)
+            _ (prn geo-value)
             geo (cond
-                  (contains? #{"regional" "global with elements in specific areas"}
-                             geo-type)
-                  (map #(:name %)
-                       (db.stakeholder/stakeholder-geo-country-group conn profile))
-                  (contains? #{"national" "transnational"}
-                             geo-type)
-                  (map #(:iso_code %)
-                       (db.stakeholder/stakeholder-geo-country conn profile)))
+                  (contains? #{"regional" "global with elements in specific areas"} geo-type)
+                  (mapv :country_group geo-value)
+                  (contains? #{"national" "transnational"} geo-type)
+                  (mapv :country geo-value))
             profile (remap-profile profile tags geo org)]
         (resp/response profile))
       (resp/response {}))))
@@ -133,16 +130,12 @@
         (when (not-empty tags)
           (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
         (when (some? (:geo_coverage_value body-params))
-          (let [geo-data (handler.geo/id-vec-geo db id body-params)]
-            (when (some? geo-data)
-              (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))
+          (let [geo-data (handler.geo/get-geo-vector id body-params)]
+            (db.stakeholder/add-stakeholder-geo db {:geo geo-data})))
         (resp/created (:referer headers)
-                      (dissoc
-                       (assoc
-                        (merge body-params profile)
-                        :org (db.organisation/organisation-by-id db {:id (:affiliation profile)}))
-                       :affiliation :picture)
-                      ))
+                      (dissoc (assoc (merge body-params profile)
+                                     :org (db.organisation/organisation-by-id db {:id (:affiliation profile)}))
+                              :affiliation :picture)))
       (assoc (resp/status 500) :body "Internal Server Error"))))
 
 (defmethod ig/init-key :gpml.handler.profile/put [_ {:keys [db]}]
@@ -173,9 +166,7 @@
                       (not= -1 (:id org))
                       (assoc :affiliation (:id org))
                       (= -1 (:id org))
-                      (assoc :affiliation (handler.org/find-or-create tx org))
-                      (:country body-params)
-                      (assoc :country (handler.country/id-by-code tx (:country body-params))))]
+                      (assoc :affiliation (handler.org/find-or-create tx org)))]
         (db.stakeholder/update-stakeholder tx profile)
         (db.stakeholder/delete-stakeholder-geo tx body-params)
         (db.stakeholder/delete-stakeholder-tags tx body-params)
@@ -193,10 +184,15 @@
         (when (not-empty tags)
           (db.stakeholder/add-stakeholder-tags tx {:tags (map #(vector id %) tags)}))
         (when (some? (:geo_coverage_value body-params))
-          (let [geo-data (handler.geo/id-vec-geo tx id body-params)]
-            (when (some? geo-data)
-              (db.stakeholder/add-stakeholder-geo tx {:geo geo-data}))))
+          (let [geo-data (handler.geo/get-geo-vector id body-params)]
+            (db.stakeholder/add-stakeholder-geo tx {:geo geo-data})))
         (resp/status 204)))))
+
+(def geo_coverage_type
+  [:enum
+   "global","regional",
+   "national", "transnational",
+   "sub-national", "global with elements in specific areas"])
 
 (defmethod ig/init-key :gpml.handler.profile/post-params [_ _]
   [:map
@@ -208,13 +204,11 @@
    [:photo {:optional true} string?]
    [:cv {:optional true} string?]
    [:representation string?]
-   [:country {:optional true} string?]
+   [:country {:optional true} int?]
    [:public_email {:optional true} boolean?]
    [:about {:optional true} string?]
    [:organisation_role {:optional true} string?]
-   [:geo_coverage_type {:optional true}
-    [:enum "global", "regional", "national", "transnational",
-     "sub-national", "global with elements in specific areas"]]
+   [:geo_coverage_type {:optional true} geo_coverage_type]
    [:tags {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for tags"} int?]]
    [:seeking {:optional true}
@@ -222,17 +216,15 @@
    [:offering {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for offering"} int?]]
    [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one geo coverage value"} string?]]
+    [:vector {:min 1 :error/message "Need at least one geo coverage value"} int?]]
    [:org {:optional true} map?
     [:map
      [:id {:optional true} int?]
      [:name {:optional true} string?]
      [:url {:optional true} string?]
-     [:country {:optional true} string?]
-     [:geo_coverage_type {:optional true}
-      [:enum "global", "regional", "national", "transnational",
-       "sub-national", "global with elements in specific areas"]]
+     [:country {:optional true} int?]
+     [:geo_coverage_type {:optional true} geo_coverage_type]
      [:geo_coverage_value {:optional true}
-      [:vector {:min 1 :error/message "Need at least one of geo coverage value"} string?]]]]])
+      [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]]]])
 
 #_(def dbtest (dev/db-conn))

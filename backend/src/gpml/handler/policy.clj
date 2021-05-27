@@ -48,9 +48,8 @@
                                     (:url %)) urls)]
         (db.policy/add-policy-language-urls conn {:urls lang-urls})))
     (when (not-empty geo_coverage_value)
-      (let [geo-data (handler.geo/id-vec-geo conn policy-id data)]
-        (when (not-empty geo-data)
-          (db.policy/add-policy-geo conn {:geo geo-data}))))
+      (let [geo-data (handler.geo/get-geo-vector policy-id data)]
+          (db.policy/add-policy-geo conn {:geo geo-data})))
     policy-id))
 
 (defmethod ig/init-key :gpml.handler.policy/post [_ {:keys [db]}]
@@ -77,7 +76,7 @@
     [:enum "global", "regional", "national", "transnational",
      "sub-national", "global with elements in specific areas"]]
    [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one geo coverage value"} string?]]
+    [:vector {:min 1 :error/message "Need at least one geo coverage value"} integer?]]
    [:image {:optional true} string?]
    [:implementing_mea integer?]
    [:tags {:optional true}

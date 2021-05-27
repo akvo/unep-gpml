@@ -1,5 +1,4 @@
 import { UIStore } from "../../store";
-import specificAreasOptions from "../financing-resource/specific-areas.json";
 
 const {
   languages,
@@ -175,7 +174,7 @@ export const schema = {
     },
     geoCoverageValueGlobalSpesific: {
       title: "GEO COVERAGE",
-      enum: specificAreasOptions,
+      enum: [],
       depend: {
         id: "geoCoverageType",
         value: ["global with elements in specific areas"],

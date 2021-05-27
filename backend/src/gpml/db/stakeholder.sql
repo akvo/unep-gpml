@@ -19,13 +19,12 @@ select
     s.role,
     s.geo_coverage_type,
     s.cv,
-    c.iso_code as country,
+    s.country,
     s.affiliation,
     s.organisation_role,
     s.reviewed_at,
     s.reviewed_by,
     s.review_status from stakeholder s
-left join country c on (s.country = c.id)
 where s.id = :id;
 
 -- :name stakeholder-by-email :? :1
@@ -45,13 +44,12 @@ select
     s.role,
     s.geo_coverage_type,
     s.cv,
-    c.iso_code as country,
+    s.country,
     s.affiliation,
     s.organisation_role,
     s.reviewed_at,
     s.reviewed_by,
     s.review_status from stakeholder s
-left join country c on (s.country = c.id)
 where s.email = :email;
 
 -- :name admin-by-email :? :1
@@ -210,22 +208,15 @@ values(:cv) returning id;
 -- :doc remove stakeholder cv
 delete from stakeholder_cv where id = :id
 
--- :name stakeholder-geo-country :? :*
--- :doc get stakeholder geocoverage country
-select c.iso_code from stakeholder_geo_coverage s
-left join country c on c.id = s.country
-where s.stakeholder = :id
+-- :name get-stakeholder-geo :? :*
+-- :doc get stakeholder geocoverage
+select * from stakeholder_geo_coverage
+where stakeholder = :id;
 
--- :name stakeholder-geo-country-group :? :*
--- :doc get stakeholder geocoverage country group
-select c.name from stakeholder_geo_coverage s
-left join country_group c on c.id = s.country_group
-where s.stakeholder = :id
-
--- :name add-stakeholder-geo :<! :1
+-- :name add-stakeholder-geo :? :*
 -- :doc add stakeholder geo
 insert into stakeholder_geo_coverage(stakeholder, country_group, country)
-values :t*:geo RETURNING id;
+values :t*:geo RETURNING *;
 
 -- :name delete-stakeholder-geo :! :n
 -- :doc remove stakeholder geo

@@ -12,3 +12,10 @@
     (->> {:codes geo_coverage_value}
          (db.country/country-by-codes db)
          (map #(vector id nil (:id %))))))
+
+(defn get-geo-vector [id {:keys [geo_coverage_type geo_coverage_value]}]
+  (cond
+    (#{"regional" "global with elements in specific areas"} geo_coverage_type)
+    (->> geo_coverage_value (map #(vector id % nil)))
+    (#{"transnational" "national"} geo_coverage_type)
+    (->> geo_coverage_value (map #(vector id nil %)))))

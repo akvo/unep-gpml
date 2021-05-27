@@ -106,7 +106,7 @@
           n-initiative (db.initiative/initiative-by-id db n-initiative-id)]
 
       (testing "create stakeholder with old-id"
-        (is (= "CYP" (:country me))))
+        (is (= (:id country) (:country me))))
 
       ;; Run the country updater!
       (seeder/updater-country db {:revert? false})
@@ -129,7 +129,8 @@
 
         (let [new-me (db.stakeholder/stakeholder-by-email db me)]
           (testing "My new country id is changed"
-            (is (= "CYP" (:country new-me)))))
+            (is (= "CYP" (:iso_code
+                           (db.country/country-by-id db {:id (:country new-me)}))))))
 
         (testing "Transnational Initiative country ID changes correctly"
           (let [new-tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)
@@ -163,9 +164,10 @@
         me (db.stakeholder/stakeholder-by-email db me)]
     (seeder/updater-country db)
     (testing "my country id is updated"
-      (is (= "IDN" (:country me)))
+      (is (= (:id country) (:country me)))
       (is (= (count (db.country/all-countries db)) (count countries-new))))
-    (seeder/updater-country db {:revert? true})
-    (testing "my country id is reversed"
-      (is (= "IDN" (:country me)))
-      (is (= (count (db.country/all-countries db)) (count countries-old))))))
+    (let [old-me (db.stakeholder/stakeholder-by-id db me)]
+      (seeder/updater-country db {:revert? true})
+      (testing "my country id is reversed"
+        (is (= me old-me))
+        (is (= (count (db.country/all-countries db)) (count countries-old)))))))

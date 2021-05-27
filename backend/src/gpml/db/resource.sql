@@ -74,7 +74,6 @@ select
     image,
     country,
     geo_coverage_type,
-    geo_coverage_values as geo_coverage_value,
     publish_year,
     valid_from,
     valid_to,
@@ -82,6 +81,7 @@ select
     value_currency,
     value_remarks,
     remarks,
+    created_by,
     (select json_build_object('id',o.id,'name',o.name)
         from resource_organisation ro
         left join organisation o on o.id = ro.organisation
@@ -91,11 +91,11 @@ select
         from resource_language_url rlu
         left join language l on l.id = rlu.language
         where rlu.resource = :id) as urls,
+    (select json_agg(coalesce(country, country_group))
+        from resource_geo_coverage where resource = :id) as geo_coverage_value,
     (select json_agg(tag)
-        from resource_tag where resource = :id) as tags,
-    (select created_by
-        from resource where id = :id) as created_by
-from v_resource_data
+        from resource_tag where resource = :id) as tags
+from resource r
 where id = :id
 
 

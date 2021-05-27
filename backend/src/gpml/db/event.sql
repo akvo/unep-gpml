@@ -75,10 +75,28 @@ update event
 
 -- :name event-by-id :? :1
 -- :doc Returns the data for a given event
-select e.id, e.title, e.start_date, e.end_date, e.description, e.image, e.geo_coverage_type,
-                e.remarks, e.created, e.modified, e.city, c.iso_code as country, e.languages, e.tags, e.review_status
-           from v_event_data e left join country c on e.country = c.id
-where e.id = :id
+select
+    id,
+    title,
+    start_date,
+    end_date,
+    description,
+    image,
+    geo_coverage_type,
+    remarks,
+    created,
+    modified,
+    city,
+    country,
+    languages,
+    tags,
+    review_status,
+    created_by,
+    (select json_agg(tag) from event_tag where technology = :id) as tags,
+    (select json_agg(coalesce(country, country_group))
+        from event_geo_coverage where event = :id) as geo_coverage_value
+from event
+where id = :id
 
 -- :name event-image-by-id :? :1
 -- :doc Get event image by id

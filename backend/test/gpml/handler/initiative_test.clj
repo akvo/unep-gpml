@@ -25,7 +25,7 @@
           ;; create new general 3 tags
           _ (profile-test/seed-important-database db)
           ;; create new user name John
-          user (db.stakeholder/new-stakeholder db (profile-test/new-profile 1 1))
+          user (db.stakeholder/new-stakeholder db (profile-test/new-profile 1))
           _ (db.stakeholder/update-stakeholder-status db (assoc user :review_status "APPROVED"))
           ;; John create new initiative with new organisation
           submission (seeder/parse-data

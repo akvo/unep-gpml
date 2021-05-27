@@ -6,13 +6,12 @@ import arrayMutators from "final-form-arrays";
 import { createForm } from "final-form";
 import { FieldsFromSchema, validateSchema } from "../../utils/form-utils";
 import { languages } from "countries-list";
-import specificAreasOptions from "./specific-areas.json";
 import api from "../../utils/api";
 import { cloneDeep } from "lodash";
 import moment from "moment";
 
 const GeoCoverageInput = (props) => {
-  const { countries, regionOptions } = UIStore.currentState;
+  const { countries, regionOptions, meaOptions } = UIStore.currentState;
   return (
     <Field
       name="geoCoverageType"
@@ -36,8 +35,8 @@ const GeoCoverageInput = (props) => {
                   input.onChange([]);
                 }
                 selectProps.options = regionOptions.map((it) => ({
-                  value: it,
-                  label: it,
+                  value: it.id,
+                  label: it.name,
                 }));
                 selectProps.mode = "multiple";
               } else if (
@@ -48,7 +47,7 @@ const GeoCoverageInput = (props) => {
                   countries &&
                   countries
                     .map((it) => ({
-                      value: it.isoCode,
+                      value: it.id,
                       label: it.name,
                     }))
                     .sort((a, b) => a.label.localeCompare(b.label));
@@ -64,9 +63,9 @@ const GeoCoverageInput = (props) => {
               } else if (
                 typeInput.value === "global with elements in specific areas"
               ) {
-                selectProps.options = specificAreasOptions.map((it) => ({
-                  value: it,
-                  label: it,
+                selectProps.options = meaOptions.map((it) => ({
+                  value: it.id,
+                  label: it.name,
                 }));
                 selectProps.mode = "multiple";
                 if (input.value === "" || input?.[0] === "") {
@@ -205,7 +204,7 @@ const AddEventForm = () => {
       if (countries) {
         newSchema[1].country.options = countries
           .map((x) => ({
-            value: x.isoCode,
+            value: x.id,
             label: x.name,
           }))
           .sort((a, b) => a.label.localeCompare(b.label));
