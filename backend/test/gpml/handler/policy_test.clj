@@ -6,7 +6,6 @@
             [gpml.db.tag :as db.tag]
             [gpml.db.language :as db.language]
             [gpml.db.policy :as db.policy]
-            [gpml.db.country :as db.country]
             [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
