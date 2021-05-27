@@ -1,7 +1,6 @@
 (ns gpml.handler.event
   (:require [clojure.java.jdbc :as jdbc]
             [gpml.handler.geo :as handler.geo]
-            [gpml.handler.country :as handler.country]
             [gpml.handler.image :as handler.image]
             [gpml.db.event :as db.event]
             [gpml.db.language :as db.language]
@@ -23,7 +22,7 @@
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
               :city city
-              :country (handler.country/id-by-code conn country)
+              :country country
               :created_by created_by}
         event-id (->> data (db.event/new-event conn) :id)]
     (when (not-empty tags)
@@ -37,9 +36,8 @@
                                     (:url %)) urls)]
         (db.event/add-event-language-urls conn {:urls lang-urls})))
     (when (not-empty geo_coverage_value)
-      (let [geo-data (handler.geo/id-vec-geo conn event-id data)]
-        (when (some? geo-data)
-          (db.event/add-event-geo-coverage conn {:geo geo-data}))))
+      (let [geo-data (handler.geo/get-geo-vector event-id data)]
+          (db.event/add-event-geo-coverage conn {:geo geo-data})))
     (email/notify-admins-pending-approval
      conn
      mailjet-config
@@ -56,7 +54,7 @@
    [:geo_coverage_type
     [:enum "global", "regional", "national", "transnational",
      "sub-national", "global with elements in specific areas"]]
-   [:country {:optional true} string?]
+   [:country {:optional true} integer?]
    [:city {:optional true} string?]
    [:urls {:optional true}
     [:vector {:optional true}
@@ -64,9 +62,9 @@
       [:lang string?]
       [:url [:string {:min 1}]]]]]
    [:tags {:optional true}
-    [:vector {:optional true} int?]]
+    [:vector {:optional true} integer?]]
    [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one geo coverage value"} string?]]])
+    [:vector {:min 1 :error/message "Need at least one geo coverage value"} integer?]]])
 
 (defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
