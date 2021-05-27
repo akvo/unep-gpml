@@ -23,7 +23,7 @@
   {
     "id":16,
     "iso_code":"ASM",
-    "name":"American Samoa",
+    "name":"American Samoa *",
     "territory":"USA",
     "description":"Non-Self Governing Territory"
   },
@@ -121,7 +121,7 @@
   {
     "id":60,
     "iso_code":"BMU",
-    "name":"Bermuda",
+    "name":"Bermuda *",
     "territory":"GBR",
     "description":"Non-Self Governing Territory"
   },
@@ -177,7 +177,7 @@
   {
     "id":92,
     "iso_code":"VGB",
-    "name":"British Virgin Islands",
+    "name":"British Virgin Islands *",
     "territory":"GBR",
     "description":"Non-Self Governing Territory"
   },
@@ -240,14 +240,14 @@
   {
     "id":132,
     "iso_code":"CPV",
-    "name":"Cabo Verde",
+    "name":"Cape Verde",
     "territory":"CPV",
     "description":"Member State"
   },
   {
     "id":136,
     "iso_code":"CYM",
-    "name":"Cayman Islands",
+    "name":"Cayman Islands *",
     "territory":"GBR",
     "description":"Non-Self Governing Territory"
   },
@@ -289,14 +289,14 @@
   {
     "id":162,
     "iso_code":"CXR",
-    "name":"Christmas Island",
+    "name":"Christmas Is. (Aust.)",
     "territory":"AUS",
     "description":"Territory"
   },
   {
     "id":166,
     "iso_code":"CCK",
-    "name":"Cocos (Keeling) Islands",
+    "name":"Cocos (Keeling) Is. (Aust.)",
     "territory":"AUS",
     "description":"Territory"
   },
@@ -450,21 +450,21 @@
   {
     "id":234,
     "iso_code":"FRO",
-    "name":"Faroe Islands",
+    "name":"Faroe Islands (Denmark)",
     "territory":"DNK",
     "description":"Territory"
   },
   {
     "id":238,
     "iso_code":"FLK",
-    "name":"Falkland Islands (Malvinas)",
+    "name":"Falkland Islands (Malvinas) ***",
     "territory":"GBR",
     "description":"Non-Self Governing Territory"
   },
   {
     "id":239,
     "iso_code":"SGS",
-    "name":"South Georgia and the South Sandwich Islands",
+    "name":"South Georgia and the South Sandwich Is.",
     "territory":"GBR",
     "description":"Territory"
   },
@@ -499,14 +499,14 @@
   {
     "id":254,
     "iso_code":"GUF",
-    "name":"French Guiana",
+    "name":"French Guiana (Fr.)",
     "territory":"FRA",
     "description":"Territory"
   },
   {
     "id":258,
     "iso_code":"PYF",
-    "name":"French Polynesia",
+    "name":"French Polynesia *",
     "territory":"FRA",
     "description":"Non-Self Governing Territory"
   },
@@ -555,7 +555,7 @@
   {
     "id":292,
     "iso_code":"GIB",
-    "name":"Gibraltar",
+    "name":"Gibraltar *",
     "territory":"GBR",
     "description":"Non-Self Governing Territory"
   },
@@ -576,7 +576,7 @@
   {
     "id":304,
     "iso_code":"GRL",
-    "name":"Greenland",
+    "name":"Greenland (Denmark)",
     "territory":"DNK",
     "description":"Territory"
   },
@@ -590,14 +590,14 @@
   {
     "id":312,
     "iso_code":"GLP",
-    "name":"Guadeloupe",
+    "name":"Guadeloupe (Fr.)",
     "territory":"FRA",
     "description":"Territory"
   },
   {
     "id":316,
     "iso_code":"GUM",
-    "name":"Guam",
+    "name":"Guam *",
     "territory":"USA",
     "description":"Non-Self Governing Territory"
   },
@@ -632,7 +632,7 @@
   {
     "id":334,
     "iso_code":"HMD",
-    "name":"Heard Island and McDonald Islands",
+    "name":"Heard Is. & McDonald Is. (Aust.)",
     "territory":"AUS",
     "description":"Territory"
   },
@@ -653,7 +653,7 @@
   {
     "id":344,
     "iso_code":"HKG",
-    "name":"Hong Kong",
+    "name":"Hong Kong, China",
     "territory":"CHN",
     "description":"Special Region or Province"
   },
@@ -856,7 +856,7 @@
   {
     "id":446,
     "iso_code":"MAC",
-    "name":"Macao",
+    "name":"Macao, China",
     "territory":"CHN",
     "description":"Special Region or Province"
   },
@@ -905,7 +905,7 @@
   {
     "id":474,
     "iso_code":"MTQ",
-    "name":"Martinique",
+    "name":"Martinique (Fr.)",
     "territory":"FRA",
     "description":"Territory"
   },
@@ -961,7 +961,7 @@
   {
     "id":500,
     "iso_code":"MSR",
-    "name":"Montserrat",
+    "name":"Montserrat *",
     "territory":"GBR",
     "description":"Non-Self Governing Territory"
   },
@@ -1017,35 +1017,35 @@
   {
     "id":531,
     "iso_code":"CUW",
-    "name":"Cura\u00e7ao",
+    "name":"Cura\u00e7ao (Neth.)",
     "territory":"NLD",
     "description":"Territory"
   },
   {
     "id":533,
     "iso_code":"ABW",
-    "name":"Aruba",
+    "name":"Aruba (Neth.)",
     "territory":"NLD",
     "description":"Territory"
   },
   {
     "id":534,
     "iso_code":"SXM",
-    "name":"Sint Maarten",
+    "name":"Sint Maarten (Neth.)",
     "territory":"NLD",
     "description":"Territory"
   },
   {
     "id":535,
     "iso_code":"BES",
-    "name":"Bonaire",
+    "name":"Bonaire (Neth.)",
     "territory":"NLD",
     "description":"Territory"
   },
   {
     "id":540,
     "iso_code":"NCL",
-    "name":"New Caledonia",
+    "name":"New Caledonia *",
     "territory":"FRA",
     "description":"Non-Self Governing Territory"
   },
@@ -1094,7 +1094,7 @@
   {
     "id":574,
     "iso_code":"NFK",
-    "name":"Norfolk Island",
+    "name":"Norfolk Island (Aust.)",
     "territory":"AUS",
     "description":"Territory"
   },
@@ -1178,7 +1178,7 @@
   {
     "id":612,
     "iso_code":"PCN",
-    "name":"Pitcairn",
+    "name":"Pitcairn *",
     "territory":"GBR",
     "description":"Non-Self Governing Territory"
   },
@@ -1227,7 +1227,7 @@
   {
     "id":638,
     "iso_code":"REU",
-    "name":"R\u00e9union",
+    "name":"R\u00e9union (Fr.)",
     "territory":"FRA",
     "description":"Territory"
   },
@@ -1255,14 +1255,14 @@
   {
     "id":652,
     "iso_code":"BLM",
-    "name":"Saint Barth\u00e9lemy",
+    "name":"Saint Barth\u00e9lemy (Fr.)",
     "territory":"FRA",
     "description":"Territory"
   },
   {
     "id":654,
     "iso_code":"SHN",
-    "name":"Saint Helena",
+    "name":"Saint Helena *",
     "territory":"GBR",
     "description":"Non-Self Governing Territory"
   },
@@ -1276,7 +1276,7 @@
   {
     "id":660,
     "iso_code":"AIA",
-    "name":"Anguilla",
+    "name":"Anguilla *",
     "territory":"GBR",
     "description":"Non-Self Governing Territory"
   },
@@ -1290,14 +1290,14 @@
   {
     "id":663,
     "iso_code":"MAF",
-    "name":"Saint Martin",
+    "name":"Saint Martin (Fr.)",
     "territory":"FRA",
     "description":"Territory"
   },
   {
     "id":666,
     "iso_code":"SPM",
-    "name":"Saint Pierre et Miquelon",
+    "name":"Saint Pierre et Miquelon (Fr.)",
     "territory":"FRA",
     "description":"Territory"
   },
@@ -1430,7 +1430,7 @@
   {
     "id":732,
     "iso_code":"ESH",
-    "name":"Western Sahara",
+    "name":"Western Sahara *",
     "territory":"ESH",
     "description":"Non-Self Governing Territory"
   },
@@ -1444,7 +1444,7 @@
   {
     "id":744,
     "iso_code":"SJM",
-    "name":"Svalbard and Jan Mayen Islands",
+    "name":"Svalbard & Jan Mayen Is. (Norw.)",
     "territory":"NOR",
     "description":"Territory"
   },
@@ -1500,7 +1500,7 @@
   {
     "id":772,
     "iso_code":"TKL",
-    "name":"Tokelau",
+    "name":"Tokelau *",
     "territory":"NZL",
     "description":"Non-Self Governing Territory"
   },
@@ -1549,7 +1549,7 @@
   {
     "id":796,
     "iso_code":"TCA",
-    "name":"Turks and Caicos Islands",
+    "name":"Turks and Caicos Islands *",
     "territory":"GBR",
     "description":"Non-Self Governing Territory"
   },
@@ -1598,21 +1598,21 @@
   {
     "id":831,
     "iso_code":"GGY",
-    "name":"Guernsey",
+    "name":"Guernsey (UK)",
     "territory":"GBR",
     "description":"Territory"
   },
   {
     "id":832,
     "iso_code":"JEY",
-    "name":"Jersey",
+    "name":"Jersey (UK)",
     "territory":"GBR",
     "description":"Territory"
   },
   {
     "id":833,
     "iso_code":"IMN",
-    "name":"Isle of Man",
+    "name":"Isle of Man (UK)",
     "territory":"GBR",
     "description":"Territory"
   },
@@ -1633,7 +1633,7 @@
   {
     "id":850,
     "iso_code":"VIR",
-    "name":"United States Virgin Islands",
+    "name":"United States Virgin Islands *",
     "territory":"USA",
     "description":"Non-Self Governing Territory"
   },
@@ -1696,21 +1696,21 @@
   {
     "id":999,
     "iso_code":"TWN",
-    "name":"Taiwan",
+    "name":"Taiwan, Province of China",
     "territory":"CHN",
     "description":"Special Region or Province"
   },
   {
     "id":1011,
     "iso_code":"PRT",
-    "name":"Azores Islands",
+    "name":"Azores Islands (Port.)",
     "territory":"PRT",
     "description":"Territory"
   },
   {
     "id":1012,
     "iso_code":"ESP",
-    "name":"Canary Islands",
+    "name":"Canary Islands (Sp.)",
     "territory":"ESP",
     "description":"Territory"
   },
@@ -1731,21 +1731,21 @@
   {
     "id":1015,
     "iso_code":"AUS",
-    "name":"Ashmore and Cartier Islands",
+    "name":"Ashmore & Cartier Is. (Aust.)",
     "territory":"AUS",
     "description":"Territory"
   },
   {
     "id":1016,
     "iso_code":"UMI",
-    "name":"Baker Island",
+    "name":"Baker Island (USA)",
     "territory":"USA",
     "description":"Territory"
   },
   {
     "id":1017,
     "iso_code":"ATF",
-    "name":"Bassas da India",
+    "name":"Bassas da India (Fr.)",
     "territory":"FRA",
     "description":"Territory"
   },
@@ -1780,7 +1780,7 @@
   {
     "id":1025,
     "iso_code":"ATF",
-    "name":"Europa Island",
+    "name":"Europa Island (Fr.)",
     "territory":"FRA",
     "description":"Territory"
   },
@@ -1801,35 +1801,35 @@
   {
     "id":1031,
     "iso_code":"UMI",
-    "name":"Howland Island",
+    "name":"Howland Island (USA)",
     "territory":"USA",
     "description":"Territory"
   },
   {
     "id":1032,
     "iso_code":"UMI",
-    "name":"Jarvis Island",
+    "name":"Jarvis Island (USA)",
     "territory":"USA",
     "description":"Territory"
   },
   {
     "id":1033,
     "iso_code":"UMI",
-    "name":"Johnston Atoll",
+    "name":"Johnston Atoll (USA)",
     "territory":"USA",
     "description":"Territory"
   },
   {
     "id":1034,
     "iso_code":"ATF",
-    "name":"Juan de Nova Island",
+    "name":"Juan de Nova Island (Fr.)",
     "territory":"FRA",
     "description":"Territory"
   },
   {
     "id":1035,
     "iso_code":"UMI",
-    "name":"Kingman Reef",
+    "name":"Kingman Reef (USA)",
     "territory":"USA",
     "description":"Territory"
   },
@@ -1843,28 +1843,28 @@
   {
     "id":1038,
     "iso_code":"PRT",
-    "name":"Madeira Island",
+    "name":"Madeira Islands (Port.)",
     "territory":"PRT",
     "description":"Territory"
   },
   {
     "id":1039,
     "iso_code":"UMI",
-    "name":"Midway Islands",
+    "name":"Midway Islands (USA)",
     "territory":"USA",
     "description":"Territory"
   },
   {
     "id":1040,
     "iso_code":"UMI",
-    "name":"Navassa Island",
+    "name":"Navassa Island (USA)",
     "territory":"USA",
     "description":"Territory"
   },
   {
     "id":1041,
     "iso_code":"UMI",
-    "name":"Palmyra Atoll",
+    "name":"Palmyra Atoll (USA)",
     "territory":"USA",
     "description":"Territory"
   },
@@ -1899,14 +1899,14 @@
   {
     "id":1047,
     "iso_code":"ATF",
-    "name":"Tromelin Island",
+    "name":"Tromelin Island (Fr.)",
     "territory":"FRA",
     "description":"Territory"
   },
   {
     "id":1048,
     "iso_code":"UMI",
-    "name":"Wake Island",
+    "name":"Wake Island (USA)",
     "territory":"USA",
     "description":"Territory"
   },
@@ -1920,7 +1920,7 @@
   {
     "id":1052,
     "iso_code":"xJK",
-    "name":"Jammu and Kashmir",
+    "name":"Jammu and Kashmir **",
     "territory":"xJK",
     "description":"Undetermined"
   },
@@ -1932,52 +1932,73 @@
     "description":"Antarctica"
   },
   {
+    "id":1059,
+    "iso_code":"SHN",
+    "name":"Ascencion *",
+    "territory":"GBR",
+    "description":"Non-Self Governing Territory"
+  },
+  {
+    "id":1060,
+    "iso_code":"SHN",
+    "name":"Tristan da Cunha *",
+    "territory":"GBR",
+    "description":"Non-Self Governing Territory"
+  },
+  {
     "id":1068,
     "iso_code":"BES",
-    "name":"Saba",
+    "name":"Saba (Neth.)",
     "territory":"NLD",
     "description":"Territory"
   },
   {
     "id":1069,
     "iso_code":"BES",
-    "name":"Sint Eustatius",
+    "name":"Sint Eustatius (Neth.)",
     "territory":"NLD",
     "description":"Territory"
   },
   {
     "id":1080,
     "iso_code":"MUS",
-    "name":"Chagos Archipelago",
+    "name":"Chagos Archipelago (Mauritius)",
     "territory":"MUS",
     "description":"Territory"
   },
   {
     "id":1082,
     "iso_code":"ATF",
-    "name":"Glorioso Islands",
+    "name":"Glorioso Islands (Fr.)",
     "territory":"FRA",
     "description":"Territory"
   },
   {
     "id":1097,
     "iso_code":"ATF",
-    "name":"French Southern Territories",
+    "name":"French Southern Territories (Fr.)",
     "territory":"FRA",
     "description":"Territory"
   },
   {
     "id":1098,
     "iso_code":"xUK",
-    "name":"Akrotiri",
+    "name":"Akrotiri (S.B.A.)",
     "territory":"GBR",
     "description":"Territory"
   },
   {
     "id":1099,
     "iso_code":"xUK",
-    "name":"Dekelia",
+    "name":"Dekelia (S.B.A.)",
     "territory":"GBR",
     "description":"Territory"
+  },
+  {
+    "id":1101,
+    "iso_code":"SHN",
+    "name":"Gough *",
+    "territory":"GBR",
+    "description":"Non-Self Governing Territory"
   }
 ]
