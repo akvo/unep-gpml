@@ -103,3 +103,12 @@
           body (:body resp)]
       (is (not (:public_email justin)))
       (is (= (:email body) "justin@org")))))
+
+(deftest remap-initative-test
+  (testing "Get remap initiative code"
+    ;; This is a regression test, and doesn't necessarily test
+    ;; everything that the remap function is doing.
+    (let [initiative {:q24 {:national "National"} :q24_2 {:73 "Spain"}}
+          data (submission/remap-initiative initiative)]
+      (is (= "National" (:geo_coverage_type data)))
+      (is (= "Spain" (:geo_coverage_values data))))))
