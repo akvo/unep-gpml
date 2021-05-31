@@ -1,6 +1,7 @@
 (ns gpml.handler.submission
   (:require [gpml.db.submission :as db.submission]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.detail :as db.detail]
             [gpml.constants :as constants]
             [integrant.core :as ig]
             [gpml.auth0-util :as auth0]
@@ -72,7 +73,8 @@
           detail (db.submission/detail conn (conj path {:table-name table-name}))
           detail (if (= submission "stakeholder")
                    (merge detail
-                          (select-keys (db.stakeholder/stakeholder-by-id conn path)[:email]))
+                          (select-keys (db.stakeholder/stakeholder-by-id conn path) [:email])
+                          (:data (db.detail/get-stakeholder-tags conn path)))
                    detail)
           detail (if initiative? (remap-initiative detail)
                      detail)]
