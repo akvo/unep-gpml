@@ -357,15 +357,11 @@ export const ProfilePreview = ({ item }) => {
           </li>
           <li>
             <div className="detail-title">Seeking</div>:
-            <div className="detail-content">
-              {(item.seeking && item.seeking.join(", ")) || "-"}
-            </div>
+            <div className="detail-content">{item.seeking || "-"}</div>
           </li>
           <li>
             <div className="detail-title">Offering</div>:
-            <div className="detail-content">
-              {(item.offering && item.offering.join(", ")) || "-"}
-            </div>
+            <div className="detail-content">{item.offering || "-"}</div>
           </li>
           <li>
             <div className="detail-title">About yourself</div>:
@@ -373,9 +369,7 @@ export const ProfilePreview = ({ item }) => {
           </li>
           <li>
             <div className="detail-title">Tags</div>:
-            <div className="detail-content">
-              {(item.tags && item.tags.join(", ")) || "-"}
-            </div>
+            <div className="detail-content">{item.general || "-"}</div>
           </li>
         </ul>
       </div>
