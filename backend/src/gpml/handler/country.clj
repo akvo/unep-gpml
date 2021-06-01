@@ -10,9 +10,7 @@
   (->> {:name country} (db.country/country-by-name conn) :id))
 
 (defmethod ig/init-key :gpml.handler.country/get [_ {:keys [db]}]
-  (fn [{{{:keys [id]} :query} :parameters}]
+  (fn [_]
     (let [conn (:spec db)
-          data (if id
-                 (db.country/country-by-id conn {:id id})
-                 (db.country/all-countries conn))]
+          data (db.country/all-countries conn)]
       (resp/response (or data [])))))

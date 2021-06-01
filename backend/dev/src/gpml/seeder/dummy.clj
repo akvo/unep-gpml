@@ -82,7 +82,10 @@
                                     :last_name (last me)
                                     :country (get-country-id db "NLD")
                                     :geo_coverage_type "regional"
-                                    :geo_coverage_value ["Africa" "Europe"]}))]
+                                    :geo_coverage_value
+                                    (map :id
+                                         (db.country-group/country-group-by-names
+                                           db {:names ["Africa" "Europe"]}))}))]
         (db.stakeholder/update-stakeholder-role
           db (assoc new-profile :role role :review_status review-status))
         (doseq [tag ["general" "seeking" "offering"]]
