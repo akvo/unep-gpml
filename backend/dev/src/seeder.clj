@@ -25,6 +25,6 @@
                      (seeder/seed
                        {:datasource ds}
                        (edn/read-string (second args))))
-      "update-country" (time
-                         (seeder/updater-country
-                           {:datasource ds})))))
+      "update-country" (time (seeder/updater-country
+                               {:datasource ds}
+                               (edn/read-string (second args)))))))
