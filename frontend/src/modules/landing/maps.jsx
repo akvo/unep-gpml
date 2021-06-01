@@ -362,7 +362,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                     strokeDasharray={
                       isDashed ? "0.5" : isDotted ? "0.2" : "none"
                     }
-                    strokeWidth="0.2"
+                    strokeWidth={isDashed ? "0.3" : "0.2"}
                     strokeOpacity={
                       isDashed || isDotted || isContinuous ? "1" : "0.2"
                     }
