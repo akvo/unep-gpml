@@ -39,6 +39,11 @@
    :geo_coverage_type "global"
    :role "USER"})
 
+(defn get-country-id [db codes]
+  (->> {:codes codes}
+       (db.country/country-by-codes db)
+       (map :id)))
+
 (deftest topic-filtering
   (let [db (test-util/db-test-conn)
         _ (seeder/seed db {:country? true
@@ -50,7 +55,8 @@
     (testing "Geo coverage values"
       (let [results (db.browse/filter-topic db {:search-text "seabin"})]
         (is (= 1 (count results)))
-        (is (= ["AUS" "ESP"] (-> results first :json :geo_coverage_values)))))
+        (is (= (get-country-id db ["AUS" "ESP"])
+               (-> results first :json :geo_coverage_values)))))
     (testing "Search with pagination"
       (let [results (db.browse/filter-topic db {:search-text "" :limit 20})
             results1 (db.browse/filter-topic db {:search-text "" :limit 20 :offset 10})]
@@ -58,7 +64,7 @@
         (is (= 20 (count results1)))
         (is (= (nth results1 0) (nth results 10)))))
     (testing "Filtering by geo coverage"
-      (is (not-empty (db.browse/filter-topic db {:geo-coverage #{"IND"}}))))
+      (is (not-empty (db.browse/filter-topic db {:geo-coverage (get-country-id db ["IND"])}))))
     (testing "Filtering by topic"
       (is (empty? (db.browse/filter-topic db {:topic #{"policy"}}))))
     (testing "Filtering of unapproved events"
@@ -80,5 +86,5 @@
                        (db.browse/filter-topic db {:topic #{"event"}})))))
     (testing "Combination of 3 filters"
       (is (not-empty (db.browse/filter-topic db {:search-text "barrier"
-                                                 :geo-coverage #{"IND"}
+                                                 :geo-coverage (get-country-id db ["IND"])
                                                  :topic #{"policy" "technology"}}))))))
