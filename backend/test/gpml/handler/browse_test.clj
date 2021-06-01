@@ -45,7 +45,7 @@
     (is (= (browse/get-db-filter {:q "" :topic "" :country ""}) {})))
   (testing "Country is not empty"
     (is (= (browse/get-db-filter {:country "73,106,107"})
-           {:geo-coverage #{"73" "106" "107"}})))
+           {:geo-coverage [107 73 106]})))
   (testing "Topic is not empty"
     (is (= (browse/get-db-filter {:topic "technology"})
            {:topic #{"technology"}})))
@@ -66,7 +66,7 @@
                                   :country "253"
                                   :topic "project,event"})
            {:search-text "eco"
-            :geo-coverage #{"253"}
+            :geo-coverage [253]
             :topic #{"project" "event"}}))))
 
 (deftest db-filter-based-on-approved-status
