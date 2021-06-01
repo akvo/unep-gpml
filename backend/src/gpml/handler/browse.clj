@@ -59,7 +59,8 @@
                                      :favorites true
                                      :resource-types resource-types})
          (when (seq country)
-           {:geo-coverage (set (str/split country #","))})
+           {:geo-coverage (->> (set (str/split country #","))
+                               (map read-string))})
          (when (seq topic)
            {:topic (set (str/split topic #","))})
          (when (seq q)
