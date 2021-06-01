@@ -17,7 +17,7 @@ import { PatternLines } from "@vx/pattern";
 import { topicNames, tTypes } from "../../utils/misc";
 
 const geoUrl = "/unep-gpml.topo.json";
-const lines = "/new_country_line_boundaries.geojson";
+const lineBoundaries = "/new_country_line_boundaries.geojson";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
 const { innerWidth, innerHeight } = window;
 const unsettledTerritoryIsoCode = [
@@ -341,7 +341,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
               })
             }
           </Geographies>
-          <Geographies geography={lines}>
+          <Geographies geography={lineBoundaries}>
             {({ geographies }) =>
               geographies.map((geo) => {
                 const isDashed =
@@ -350,6 +350,9 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                 const isDotted =
                   geo.properties?.Type &&
                   geo.properties?.Type.toLowerCase().includes("dotted");
+                const isContinuous =
+                  geo.properties?.ISO3CD &&
+                  geo.properties?.ISO3CD === "EGY_SDN";
 
                 return (
                   <Geography
@@ -359,8 +362,10 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                     strokeDasharray={
                       isDashed ? "0.5" : isDotted ? "0.2" : "none"
                     }
-                    strokeWidth="0.2"
-                    strokeOpacity={isDashed || isDotted ? "1" : "0.2"}
+                    strokeWidth={isDashed ? "0.3" : "0.2"}
+                    strokeOpacity={
+                      isDashed || isDotted || isContinuous ? "1" : "0.2"
+                    }
                     fill="none"
                   />
                 );
