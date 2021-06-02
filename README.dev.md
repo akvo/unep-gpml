@@ -179,7 +179,7 @@ Based on the [new GeoJSON](https://drive.google.com/file/d/1_UURs6vXnTkNr7Bd-c4q
 
 ```bash
 export ts="$(date +%s)"
-sed "s/\${TIMESTAMP}/${ts}/" ci/k8s/update-country.yaml > "/tmp/update-country-${ts}.yml";
+sed "s/\${TIMESTAMP}/${ts}/" ci/k8s/update-country.yml > "/tmp/update-country-${ts}.yml";
 kubectl apply -f "/tmp/update-country-${ts}.yml"
 ```
 
