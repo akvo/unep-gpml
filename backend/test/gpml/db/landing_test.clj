@@ -68,16 +68,16 @@
           conn (-> system db-key :spec)
           _ (add-resource-data conn)
           landing (db.landing/map-counts-include-all-countries conn)
-          valid? (fn [iso-code] (->> landing
-                                     (filter #(= iso-code (:iso_code %)))
+          valid? (fn [country-id] (->> landing
+                                     (filter #(= country-id (:country_id %)))
                                      first
                                      :financing_resource))]
-      (are [expected iso-code] (= expected (valid? iso-code))
-        1 "ESP"
-        1 "IND"
-        2 "IDN"
-        1 "KEN"
-        0 "NLD"))))
+      (are [expected country-id] (= expected (valid? country-id))
+        1 (-> (db.country/country-by-code conn {:name "ESP"}) :id)
+        1 (-> (db.country/country-by-code conn {:name "IND"}) :id)
+        2 (-> (db.country/country-by-code conn {:name "IDN"}) :id)
+        1 (-> (db.country/country-by-code conn {:name "KEN"}) :id)
+        0 (-> (db.country/country-by-code conn {:name "NLD"}) :id)))))
 
 (deftest test-summary
   (testing "Test summary data for landing page"

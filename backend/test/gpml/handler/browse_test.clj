@@ -5,18 +5,22 @@
             [gpml.handler.browse :as browse]
             [malli.core :as malli]))
 
+(#(malli/validate [:re browse/country-re] %) "0,39")
+
 (deftest query-params
   (testing "Country query parameter validation"
     (let [valid? #(malli/validate [:re browse/country-re] %)]
       (are [expected value] (= expected (valid? value))
-        true "NLD"
-        true "NLD,HND"
-        true "NLD,HND,ESP,IDN,IND"
+        true "0,107"
+        true "170,102"
+        true "170,102,73,106,107"
         false ""
         false " "
         false ","
         false ",,"
-        false "ESP,IDN,"
+        false "107,106,"
+        false "IDN"
+        false "IDN, IND"
         false "esp"
         false "esp,usa")))
   (testing "Topic query parameter validation"
@@ -40,8 +44,8 @@
     (is (= (browse/get-db-filter {}) {}))
     (is (= (browse/get-db-filter {:q "" :topic "" :country ""}) {})))
   (testing "Country is not empty"
-    (is (= (browse/get-db-filter {:country "ESP,IND,IDN"})
-           {:geo-coverage #{"ESP" "IND" "IDN"}})))
+    (is (= (browse/get-db-filter {:country "73,106,107"})
+           {:geo-coverage [107 73 106]})))
   (testing "Topic is not empty"
     (is (= (browse/get-db-filter {:topic "technology"})
            {:topic #{"technology"}})))
@@ -59,10 +63,10 @@
            {:search-text "test"})))
   (testing "None is empty"
     (is (= (browse/get-db-filter {:q "eco"
-                                  :country "USA"
+                                  :country "253"
                                   :topic "project,event"})
            {:search-text "eco"
-            :geo-coverage #{"USA"}
+            :geo-coverage [253]
             :topic #{"project" "event"}}))))
 
 (deftest db-filter-based-on-approved-status
@@ -70,21 +74,21 @@
     (is (= (browse/modify-db-filter-topics
             {:approved false
              :search-text "eco"
-             :geo-coverage #{"USA"}
+             :geo-coverage #{"253"}
              :topic #{"project" "event" "stakeholder"}})
 
            {:approved false
             :search-text "eco"
-            :geo-coverage #{"USA"}
+            :geo-coverage #{"253"}
             :topic #{"project" "event"}}))
 
     (is (= (browse/modify-db-filter-topics
             {:approved false
              :search-text "eco"
-             :geo-coverage #{"USA"}})
+             :geo-coverage #{"253"}})
            {:approved false
             :search-text "eco"
-            :geo-coverage #{"USA"}
+            :geo-coverage #{"253"}
             :topic #{"project" "event" "technology" "financing_resource"
                      "technical_resource" "action_plan" "policy"}})))
 
@@ -92,10 +96,10 @@
     (is (= (browse/modify-db-filter-topics
             {:approved true
              :search-text "eco"
-             :geo-coverage #{"USA"}
+             :geo-coverage #{"253"}
              :topic #{"project" "event" "stakeholder"}})
 
            {:approved true
             :search-text "eco"
-            :geo-coverage #{"USA"}
+            :geo-coverage #{"253"}
             :topic #{"project" "event" "stakeholder"}}))))

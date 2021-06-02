@@ -32,7 +32,13 @@ import uniqBy from "lodash/uniqBy";
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
 const renderItemValues = (params, mapping, data) => {
-  const { profile, countries, languages } = UIStore.currentState;
+  const {
+    profile,
+    countries,
+    languages,
+    regionOptions,
+    meaOptions,
+  } = UIStore.currentState;
   // check if no data
   let noData = false;
   mapping &&
@@ -85,11 +91,23 @@ const renderItemValues = (params, mapping, data) => {
             ? countries.map((it) => it.name).join(", ")
             : null;
         } else if (data.geoCoverageType === "regional") {
-          dataCountries = data[key]?.join(", ");
+          dataCountries = data[key]
+            ?.map((x) => {
+              return regionOptions.find((it) => it.id === x).name;
+            })
+            .join(", ");
+        } else if (
+          data.geoCoverageType === "global with elements in specific areas"
+        ) {
+          dataCountries = dataCountries = data[key]
+            ?.map((x) => {
+              return meaOptions.find((it) => it.id === x).name;
+            })
+            .join(", ");
         } else {
           dataCountries = data[key]
             ?.map((x) => {
-              return countries.find((it) => it.isoCode === x).name;
+              return countries.find((it) => it.id === x).name;
             })
             .join(", ");
         }

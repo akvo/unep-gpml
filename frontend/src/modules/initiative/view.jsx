@@ -195,6 +195,13 @@ const getSchema = (
   prop.S3.properties.S3_G2.properties["S3_G2_24.2"].enumNames = countries?.map(
     (x) => x.name
   );
+  // geocoverage sub-national options
+  prop.S3.properties.S3_G2.properties["S3_G2_24.3"].enum = countries?.map(
+    (x) => x.id
+  );
+  prop.S3.properties.S3_G2.properties["S3_G2_24.3"].enumNames = countries?.map(
+    (x) => x.name
+  );
   // geocoverage transnational options
   prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enum = countries?.map((x) =>
     String(x.id)

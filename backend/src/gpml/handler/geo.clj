@@ -8,7 +8,7 @@
     (->> {:names geo_coverage_value}
          (db.country-group/country-group-by-names db)
          (map #(vector id (:id %) nil)))
-    (#{"transnational" "national"} geo_coverage_type)
+    (#{"transnational" "national" "sub-national"} geo_coverage_type)
     (->> {:codes geo_coverage_value}
          (db.country/country-by-codes db)
          (map #(vector id nil (:id %))))))
@@ -17,5 +17,5 @@
   (cond
     (#{"regional" "global with elements in specific areas"} geo_coverage_type)
     (->> geo_coverage_value (map #(vector id % nil)))
-    (#{"transnational" "national"} geo_coverage_type)
+    (#{"transnational" "national" "sub-national"} geo_coverage_type)
     (->> geo_coverage_value (map #(vector id nil %)))))

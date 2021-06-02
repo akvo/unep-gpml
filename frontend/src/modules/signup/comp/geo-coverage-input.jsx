@@ -21,15 +21,6 @@ const GeoCoverageInput = (props) => {
               if (typeInput.value === "global") {
                 return <Input disabled />;
               }
-              if (typeInput.value === "sub-national") {
-                return (
-                  <Input
-                    placeholder="Type regions here..."
-                    {...input}
-                    disabled={disabled}
-                  />
-                );
-              }
               if (typeInput.value === "Other") {
                 return (
                   <Input
@@ -40,6 +31,10 @@ const GeoCoverageInput = (props) => {
                 );
               }
               const selectProps = { ...input, disabled };
+              if (typeInput.value === "sub-national") {
+                selectProps.options = national;
+                selectProps.showSearch = true;
+              }
               if (typeInput.value === "regional") {
                 if (input.value === "" || input?.[0] === "") {
                   input.onChange([]);
@@ -77,6 +72,7 @@ const GeoCoverageInput = (props) => {
               if (
                 typeInput.value === "regional" ||
                 typeInput.value === "national" ||
+                typeInput.value === "sub-national" ||
                 typeInput.value === "transnational" ||
                 typeInput.value === "global with elements in specific areas"
               ) {

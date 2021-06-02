@@ -16,12 +16,24 @@
 
 (defn map-counts-explicit [conn]
   (let [counts (map-counts conn)]
-    (map #(merge-with + {:iso_code (:iso_code %)} topic-counts (:counts %)) counts)))
+    (map #(merge-with + {:id (:id %)} topic-counts (:counts %)) counts)))
+
+(defn remap-counts [x]
+  (assoc (dissoc x :id) :country_id (:id x)))
 
 (defn map-counts-include-all-countries [conn]
   (let [counts (map-counts-explicit conn)
-        included-countries (->> counts (map :iso_code) set)
-        all-countries (->> (db.country/all-countries conn) (map :iso_code) set)
+        included-countries (->> counts (map :id) set)
+        all-countries (->> (db.country/all-countries conn) (map :id) set)
         missing-countries (set/difference all-countries included-countries)
-        missing-counts (map #(merge {:iso_code %} topic-counts) missing-countries)]
-    (concat counts missing-counts)))
+        missing-counts (map #(merge {:id %} topic-counts) missing-countries)]
+    (map remap-counts (concat counts missing-counts))))
+
+(comment
+
+  (require 'dev)
+  (def db (dev/db-conn))
+
+  (map-counts-include-all-countries db)
+
+  )

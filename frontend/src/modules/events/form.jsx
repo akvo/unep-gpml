@@ -12,6 +12,15 @@ import moment from "moment";
 
 const GeoCoverageInput = (props) => {
   const { countries, regionOptions, meaOptions } = UIStore.currentState;
+  const national =
+    countries &&
+    countries
+      .map((it) => ({
+        value: it.id,
+        label: it.name,
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+
   return (
     <Field
       name="geoCoverageType"
@@ -23,13 +32,16 @@ const GeoCoverageInput = (props) => {
               if (typeInput.value === "global") {
                 return <Input disabled />;
               }
-              if (typeInput.value === "sub-national") {
-                return <Input placeholder="Type regions here..." {...input} />;
-              }
               if (typeInput.value === "Other") {
                 return <Input placeholder="Type here..." {...input} />;
               }
               const selectProps = { ...input };
+              if (typeInput.value === "sub-national") {
+                selectProps.options = national;
+                selectProps.showSearch = true;
+                selectProps.filterOption = (input, option) =>
+                  option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+              }
               if (typeInput.value === "regional") {
                 if (input.value === "" || input?.[0] === "") {
                   input.onChange([]);
@@ -43,14 +55,7 @@ const GeoCoverageInput = (props) => {
                 typeInput.value === "national" ||
                 typeInput.value === "transnational"
               ) {
-                selectProps.options =
-                  countries &&
-                  countries
-                    .map((it) => ({
-                      value: it.id,
-                      label: it.name,
-                    }))
-                    .sort((a, b) => a.label.localeCompare(b.label));
+                selectProps.options = national;
                 selectProps.showSearch = true;
                 selectProps.filterOption = (input, option) =>
                   option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
@@ -168,7 +173,10 @@ const AddEventForm = () => {
     data.urls = vals.urls.filter((it) => it.url.length > 0);
     data.startDate = vals.date[0].toISOString();
     data.endDate = vals.date[1].toISOString();
-    if (data.geoCoverageType === "national") {
+    if (
+      data.geoCoverageType === "national" ||
+      data.geoCoverageType === "sub-national"
+    ) {
       data.geoCoverageValue = [data.geoCoverageValue];
     }
     setSending(true);

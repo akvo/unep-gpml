@@ -265,7 +265,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
             {({ geographies }) =>
               geographies.map((geo) => {
                 const curr = data.find(
-                  (i) => i.isoCode === geo.properties.MAP_COLOR
+                  (i) => i.countryId === Number(geo.properties.M49Code)
                 );
                 const isLake = typeof geo.properties?.ISO3CD === "undefined";
                 const isUnsettled = unsettledTerritoryIsoCode.includes(
@@ -335,7 +335,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                       onClick={() => {
                         !isLake &&
                           !isUnsettled &&
-                          clickEvents(geo.properties.MAP_COLOR);
+                          clickEvents(geo.properties.M49Code);
                       }}
                     />
                   </>

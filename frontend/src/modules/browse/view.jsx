@@ -172,8 +172,8 @@ const Browse = ({
       // FIXME: The counts would be incorrect if the countries have common resources which are transnational - those would be double counted!
       // FIXME: Also, we display global and regional resources, but those are not included in the counts.
       const count = filterCountries.reduce(
-        (acc, isoCode) =>
-          acc + countData?.map?.find((it) => it.isoCode === isoCode)?.[topic],
+        (acc, id) =>
+          acc + countData?.map?.find((it) => it.countryId === id)?.[topic],
         0
       );
       data[topic] = count;
@@ -215,7 +215,7 @@ const Browse = ({
                     value={
                       countries && query?.country
                         ? countries
-                            .filter((x) => query.country.includes(x.isoCode))
+                            .filter((x) => query.country.includes(String(x.id)))
                             .map((x) => x.id)
                         : []
                     }
@@ -237,7 +237,7 @@ const Browse = ({
                       });
                       updateQuery(
                         "country",
-                        selected.map((x) => x.isoCode)
+                        selected.map((x) => x.id)
                       );
                     }}
                     filterOption={(input, option) =>
@@ -250,13 +250,13 @@ const Browse = ({
                         countries && query?.country
                           ? countries.filter(
                               (x) =>
-                                query.country.includes(x.isoCode) &&
-                                diselected.territory !== x.territory
+                                query.country.includes(String(x.id)) &&
+                                diselected.id !== x.id
                             )
                           : [];
                       updateQuery(
                         "country",
-                        selected.map((x) => x.isoCode)
+                        selected.map((x) => x.id)
                       );
                     }}
                   />

@@ -5,13 +5,13 @@
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
-(def country-re #"^(\p{Upper}{3})((,\p{Upper}{3})+)?$")
+(def country-re #"^\d+(,\d+)*$")
 (def topic-re (re-pattern (format "^(%1$s)((,(%1$s))+)?$" (str/join "|" topics))))
 
 (def query-params
   [:map
    [:country {:optional true
-              :swagger {:description "Comma separated list of country codes (ISO 3166-1 Alpha-3 code)"
+              :swagger {:description "Comma separated list of country id"
                         :type "string"
                         :collectionFormat "csv"
                         :allowEmptyValue true}}
@@ -59,7 +59,8 @@
                                      :favorites true
                                      :resource-types resource-types})
          (when (seq country)
-           {:geo-coverage (set (str/split country #","))})
+           {:geo-coverage (->> (set (str/split country #","))
+                               (map read-string))})
          (when (seq topic)
            {:topic (set (str/split topic #","))})
          (when (seq q)

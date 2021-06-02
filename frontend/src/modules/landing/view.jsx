@@ -55,12 +55,7 @@ const Landing = ({
   };
 
   const selected =
-    countries && country
-      ? data?.map?.find(
-          (x) =>
-            x.isoCode === countries.find((it) => it.id === country).territory
-        )
-      : {};
+    countries && country ? data?.map?.find((x) => x.countryId === country) : {};
 
   const summaryData = data?.summary?.filter((it, index) => {
     const current = Object.keys(it)[0];

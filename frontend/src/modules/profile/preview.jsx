@@ -16,16 +16,28 @@ const findCountries = (countries, item) => {
     geoCoverageValue,
     geoCoverageValues,
   } = item;
+  const { regionOptions, meaOptions } = UIStore.currentState;
+
   if (
     (geoCoverageType === "regional" ||
       geoCoverageType === "global with elements in specific areas") &&
     (geoCoverageValue !== null || geoCoverageValues !== null)
   ) {
     const values = geoCoverageValues || geoCoverageValue;
-    if (values === null) {
+    const data =
+      geoCoverageType === "regional"
+        ? regionOptions
+        : geoCoverageType === "global with elements in specific areas"
+        ? meaOptions
+        : null;
+    if (values === null || data === null) {
       return "-";
     }
-    return values.join(", ");
+    return values
+      .map((v) => {
+        return data.find((x) => x.id === v).name;
+      })
+      .join(", ");
   }
 
   if (
@@ -55,7 +67,7 @@ const findCountries = (countries, item) => {
       <div className="scrollable">
         {values
           .map((v) => {
-            return countries.find((x) => x.isoCode === v).name;
+            return countries.find((x) => x.id === v).name;
           })
           .join(", ")}
       </div>
