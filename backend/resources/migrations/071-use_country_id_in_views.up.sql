@@ -56,8 +56,6 @@ WHERE e.geo_coverage_type <> 'global'
 UNION ALL
 SELECT e.id as id, 0 AS geo_coverage
     FROM event e
-    LEFT JOIN event_geo_coverage egc on e.id = egc.event
-    LEFT JOIN country_group_country cgc ON cgc.country_group = egc.country_group
 WHERE e.geo_coverage_type = 'global';
 -- ;;
 
@@ -135,8 +133,6 @@ WHERE p.geo_coverage_type <> 'global'
 UNION ALL
 SELECT p.id as id, 0 AS geo_coverage
     FROM policy p
-    LEFT JOIN policy_geo_coverage pgc on p.id = pgc.policy
-    LEFT JOIN country_group_country cgc ON cgc.country_group = pgc.country_group
 WHERE p.geo_coverage_type = 'global';
 -- ;;
 
@@ -285,10 +281,9 @@ SELECT 'project'::text AS topic, geo_coverage, search_text, json
             vst.search_text,
             to_json(i.*) AS json
         FROM v_initiative_data i
-        JOIN LATERAL json_array_elements(i.geo_coverage_values) gid(value) ON (true)
-        LEFT JOIN country_group cg ON cg.id = to_jsonb(gid.value)::int
         LEFT JOIN v_initiative_search_text vst ON vst.id = i.id
-        JOIN country_group_country cgc ON cg.id = cgc.country_group
+        JOIN LATERAL json_array_elements(i.geo_coverage_values) gid(value) ON (true)
+        LEFT JOIN country_group_country cgc ON to_jsonb(gid.value)::int = cgc.country_group
         WHERE ((i.geo_coverage_type = 'regional'::text)
             OR (i.geo_coverage_type = 'global with elements in specific areas'::text))
         ) UNION ALL (
