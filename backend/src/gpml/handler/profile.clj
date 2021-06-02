@@ -115,7 +115,7 @@
             geo (cond
                   (contains? #{"regional" "global with elements in specific areas"} geo-type)
                   (mapv :country_group geo-value)
-                  (contains? #{"national" "transnational"} geo-type)
+                  (contains? #{"national" "transnational" "sub-national"} geo-type)
                   (mapv :country geo-value))
             profile (remap-profile profile tags geo org)]
         (resp/response profile))
