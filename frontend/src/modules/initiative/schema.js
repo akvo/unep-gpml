@@ -934,6 +934,8 @@ export const schema = {
                 id: "S3_G2_24",
                 value: ["sub-national"],
               },
+              enum: [],
+              enumNames: [],
             },
             "S3_G2_24.4": {
               title: "24.1. Geo Coverage",

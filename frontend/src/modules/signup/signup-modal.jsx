@@ -22,7 +22,8 @@ const SignupModal = ({ visible, onCancel }) => {
       vals = { ...vals, publicEmail: false };
     }
     if (
-      vals.geoCoverageType === "national" &&
+      (vals.geoCoverageType === "national" ||
+        vals.geoCoverageType === "sub-national") &&
       !Array.isArray(vals.geoCoverageValue)
     ) {
       vals.geoCoverageValue = [vals.geoCoverageValue];
@@ -30,7 +31,8 @@ const SignupModal = ({ visible, onCancel }) => {
     if (
       vals?.org &&
       vals.org?.id === -1 &&
-      vals.org.geoCoverageType === "national" &&
+      (vals.org.geoCoverageType === "national" ||
+        vals.geoCoverageType === "sub-national") &&
       !Array.isArray(vals.org.geoCoverageValue)
     ) {
       vals.org.geoCoverageValue = [vals.org.geoCoverageValue];
