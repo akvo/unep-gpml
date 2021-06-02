@@ -182,8 +182,7 @@ export const schema = {
       },
     },
     geoCoverageValueSubNational: {
-      title: "GEO COVERAGE",
-      type: "string",
+      $ref: "#/properties/geoCoverageValueNational",
       depend: {
         id: "geoCoverageType",
         value: ["sub-national"],
@@ -285,7 +284,9 @@ export const uiSchema = {
       "ui:mode": "multiple",
     },
     geoCoverageValueSubNational: {
-      "ui:placeholder": "Type regions here...",
+      "ui:placeholder": "Choose the entity coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true,
     },
     geoCoverageValueGlobalSpesific: {
       "ui:placeholder": "Choose the entity coverage",
@@ -358,7 +359,9 @@ export const uiSchema = {
     "ui:mode": "multiple",
   },
   geoCoverageValueSubNational: {
-    "ui:placeholder": "Type regions here...",
+    "ui:placeholder": "Choose the resource coverage",
+    "ui:widget": "select",
+    "ui:showSearch": true,
   },
   geoCoverageValueGlobalSpesific: {
     "ui:placeholder": "Choose the resource coverage",

@@ -240,7 +240,7 @@ export const handleGeoCoverageValue = (data, currentValue, countries) => {
     );
   }
   if (data.geoCoverageType === "sub-national") {
-    data.geoCoverageValue = currentValue.geoCoverageValueSubNational;
+    data.geoCoverageValue = [currentValue.geoCoverageValueSubNational];
   }
   return data;
 };
