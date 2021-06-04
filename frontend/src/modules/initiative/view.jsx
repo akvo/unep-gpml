@@ -348,7 +348,6 @@ const AddInitiative = ({ ...props }) => {
               <Col xs={24} lg={14}>
                 <div className="form-title-wrapper">
                   <div className="form-title">
-                    <span className="subtitle">Add New</span>
                     <span className="title">Initiative</span>
                   </div>
                   <div className="initiative-title">
