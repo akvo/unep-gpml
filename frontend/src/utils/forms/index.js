@@ -244,7 +244,10 @@ export const handleGeoCoverageValue = (data, currentValue, countries) => {
       (x) => parseInt(x)
     );
   }
-  if (data.geoCoverageType === "sub-national") {
+  if (
+    data.geoCoverageType === "sub-national" &&
+    !Array.isArray(currentValue.geoCoverageValueSubNational)
+  ) {
     data.geoCoverageValue = [currentValue.geoCoverageValueSubNational];
   }
   return data;
@@ -262,6 +265,96 @@ export const checkDependencyAnswer = (answer, dependentSchema) => {
       : dependValue === answer;
   }
   return dependValue;
+};
+
+export const revertFormData = (formDataMapping, editData) => {
+  const formData = {};
+  formDataMapping.forEach((item) => {
+    const { name, group, type } = item;
+    let key = name;
+    let data = null;
+    if (!group) {
+      data = editData[key];
+    }
+    if (group) {
+      data = editData[key];
+    }
+    if (key === "org") {
+      data = data?.id;
+    }
+    if (type === "string") {
+      data = String(data);
+    }
+    if (type === "integer") {
+      data = parseInt(data);
+    }
+    if (key === "geoCoverageValue") {
+      const geoCoverageType = editData["geoCoverageType"];
+      if (geoCoverageType === "national") {
+        key = "geoCoverageValueNational";
+      }
+      if (geoCoverageType === "regional") {
+        key = "geoCoverageValueRegional";
+      }
+      if (geoCoverageType === "transnational") {
+        key = "geoCoverageValueTransnational";
+      }
+      if (geoCoverageType === "global with elements in specific areas") {
+        key = "geoCoverageValueGlobalSpesific";
+      }
+      if (geoCoverageType === "sub-national") {
+        key = "geoCoverageValueSubNational";
+      }
+    }
+    if (!group) {
+      formData[key] = data;
+    }
+    if (group) {
+      formData[group] = { ...formData[group], [key]: data };
+    }
+  });
+  return formData;
+};
+
+export const transformPostData = (formDataMapping, formData, countries) => {
+  const postData = {};
+  formDataMapping.forEach((item) => {
+    const { name, group, type } = item;
+    let key = name;
+    let data = null;
+    if (!group) {
+      data = formData[key];
+    }
+    if (group) {
+      data = formData[group][key];
+    }
+    if (type === "string") {
+      data = String(data);
+    }
+    if (type === "integer") {
+      data = parseInt(data);
+    }
+    if (key === "org") {
+      data = { id: formData[key] };
+      if (formData[key] === -1) {
+        data = {
+          ...formData.newOrg,
+          id: formData.org,
+        };
+        const temp = handleGeoCoverageValue(data, formData.newOrg, countries);
+        data["geoCoverageValue"] = temp["geoCoverageValue"];
+      }
+    }
+    if (key === "publishYear") {
+      data = parseInt(data);
+    }
+    if (key === "geoCoverageValue") {
+      const temp = handleGeoCoverageValue(postData, formData, countries);
+      data = temp[key];
+    }
+    postData[key] = data;
+  });
+  return postData;
 };
 
 export default widgets;

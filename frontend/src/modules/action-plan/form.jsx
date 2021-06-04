@@ -16,6 +16,8 @@ import {
   checkRequiredFieldFilledIn,
   handleGeoCoverageValue,
   customFormats,
+  revertFormData,
+  transformPostData,
 } from "../../utils/forms";
 import cloneDeep from "lodash/cloneDeep";
 
@@ -64,7 +66,7 @@ const editDataSample = {
   org: { id: 10001 },
   publishYear: 2020,
   country: 106,
-  geoCoverageType: "national",
+  geoCoverageType: "sub-national",
   geoCoverageValueNational: 1,
   summary: "Description",
   tags: [301, 302, 303],
@@ -132,97 +134,9 @@ const formDataMapping = [
   },
 ];
 
-const revertFormData = () => {
-  const formData = {};
-  formDataMapping.forEach((item) => {
-    const { name, group, type } = item;
-    let key = name;
-    let data = null;
-    if (!group) {
-      data = editDataSample[key];
-    }
-    if (group) {
-      data = editDataSample[key];
-    }
-    if (key === "org") {
-      data = data?.id;
-    }
-    if (type === "string") {
-      data = String(data);
-    }
-    if (type === "integer") {
-      data = parseInt(data);
-    }
-    if (key === "geoCoverageValue") {
-      const geoCoverageType = editDataSample["geoCoverageType"];
-      if (geoCoverageType === "national") {
-        key = "geoCoverageValueNational";
-      }
-      if (geoCoverageType === "regional") {
-        key = "geoCoverageValueRegional";
-      }
-      if (geoCoverageType === "transnational") {
-        key = "geoCoverageValueTransnational";
-      }
-      if (geoCoverageType === "global with elements in specific areas") {
-        key = "geoCoverageValueGlobalSpesific";
-      }
-      if (geoCoverageType === "sub-national") {
-        key = "geoCoverageValueSubNational";
-      }
-    }
-    if (!group) {
-      formData[key] = data;
-    }
-    if (group) {
-      formData[group] = { ...formData[group], [key]: data };
-    }
-  });
-  return formData;
-};
-
-const transformPostData = (formData, countries) => {
-  const postData = {};
-  formDataMapping.forEach((item) => {
-    const { name, group, type } = item;
-    let key = name;
-    let data = null;
-    if (!group) {
-      data = formData[key];
-    }
-    if (group) {
-      data = formData[group][key];
-    }
-    if (type === "string") {
-      data = String(data);
-    }
-    if (type === "integer") {
-      data = parseInt(data);
-    }
-    if (key === "org") {
-      data = { id: formData[key] };
-      if (formData[key] === -1) {
-        data = {
-          ...formData.newOrg,
-          id: formData.org,
-        };
-        const temp = handleGeoCoverageValue(data, formData.newOrg, countries);
-        data["geoCoverageValue"] = temp["geoCoverageValue"];
-      }
-    }
-    if (key === "publishYear") {
-      data = parseInt(data);
-    }
-    if (key === "geoCoverageValue") {
-      const temp = handleGeoCoverageValue(postData, formData, countries);
-      data = temp[key];
-    }
-    postData[key] = data;
-  });
-  return postData;
-};
-
-export const actionPlanData = new Store({ data: revertFormData() });
+export const actionPlanData = new Store({
+  data: revertFormData(formDataMapping, editDataSample),
+});
 
 const AddActionPlanForm = ({
   btnSubmit,
@@ -287,7 +201,7 @@ const AddActionPlanForm = ({
     //   const publishYear = new Date(formData.publishYear);
     //   data.publishYear = publishYear.getFullYear();
     // }
-    const data = transformPostData(formData, countries);
+    const data = transformPostData(formDataMapping, formData, countries);
     data["resourceType"] = "Action Plan";
     setSending(true);
     api
