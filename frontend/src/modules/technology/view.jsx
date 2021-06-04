@@ -41,7 +41,6 @@ const AddTechnology = ({ ...props }) => {
             <Row>
               <Col xs={24} lg={11}>
                 <div className="form-title">
-                  <span className="subtitle">Add New</span>
                   <span className="title">Technology</span>
                 </div>
               </Col>

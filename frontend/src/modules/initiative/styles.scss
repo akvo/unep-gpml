@@ -31,6 +31,7 @@
     .form-title-wrapper {
       display: flex;
       align-items: center;
+      height: 35px;
 
       .form-title {
         display: grid;
@@ -55,7 +56,7 @@
     }
 
     .form-meta {
-      margin-top: 6px;
+      height: 35px;
       display: flex;
       align-items: center;
       justify-content: space-between;
