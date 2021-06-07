@@ -426,14 +426,12 @@ const renderDetailImage = (params, data) => {
   if (params.type === "organisation" && data?.logo) {
     return data.logo;
   }
-  if (params.type === "stakeholder" && data?.picture) {
-    const isInitialPic = data.picture.includes("googleusercontent.com");
-    if (!isInitialPic) {
+  if (params.type === "stakeholder") {
+    if (data?.picture && data.picture.includes("storage.googleapis.com")) {
       return data.picture;
     }
-    let newSize =
-      window.screen.width > 640 ? `s${window.screen.height}-c` : `s640-c`;
-    return data.picture.replace(/(s\d+\-c)/g, newSize);
+    // return user not found image
+    return imageNotFound;
   }
   return imageNotFound;
 };
