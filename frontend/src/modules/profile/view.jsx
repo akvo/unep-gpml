@@ -29,6 +29,7 @@ import {
   StarOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
+import userPlaceholder from "../../images/user-placeholder.png";
 const { TabPane } = Tabs;
 
 const menuItems = [
@@ -174,12 +175,10 @@ const ProfileView = ({ ...props }) => {
     });
   };
 
-  const profilePic = profile?.photo?.includes("googleusercontent.com")
-    ? profile?.photo.replace(
-        /(s\d+\-c)/g,
-        window.screen.width > 640 ? `s${window.screen.height}-c` : `s640-c`
-      )
-    : profile?.photo;
+  const profilePic =
+    profile?.photo && profile?.photo?.includes("storage.googleapis.com")
+      ? profile?.photo
+      : userPlaceholder;
   return (
     <div id="profile">
       <div className="ui container">

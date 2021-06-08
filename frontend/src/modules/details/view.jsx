@@ -27,6 +27,7 @@ import {
 import moment from "moment";
 import imageNotFound from "../../images/image-not-found.png";
 import logoNotFound from "../../images/logo-not-found.png";
+import userPlaceholder from "../../images/user-placeholder.png";
 import uniqBy from "lodash/uniqBy";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
@@ -426,14 +427,11 @@ const renderDetailImage = (params, data) => {
   if (params.type === "organisation" && data?.logo) {
     return data.logo;
   }
-  if (params.type === "stakeholder" && data?.picture) {
-    const isInitialPic = data.picture.includes("googleusercontent.com");
-    if (!isInitialPic) {
+  if (params.type === "stakeholder") {
+    if (data?.picture && data.picture.includes("storage.googleapis.com")) {
       return data.picture;
     }
-    let newSize =
-      window.screen.width > 640 ? `s${window.screen.height}-c` : `s640-c`;
-    return data.picture.replace(/(s\d+\-c)/g, newSize);
+    return userPlaceholder;
   }
   return imageNotFound;
 };
