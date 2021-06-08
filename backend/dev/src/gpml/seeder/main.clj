@@ -510,8 +510,7 @@
     (db.util/update-initiative-country
       db (if (:revert? opts)
            (revert-mapping mapping-file) mapping-file))
-    (db.util/revert-constraint db cache-id))
-  (resync-country-group db)))
+     (db.util/revert-constraint db cache-id))))
 
 (defn seed
   ([db {:keys [country? currency?

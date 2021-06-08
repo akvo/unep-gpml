@@ -130,7 +130,6 @@
                       db
                       (merge query option exclude-rows))]
             (swap! changed #(apply conj % (map :id rows)))))))
-    (jdbc/execute! db ["TRUNCATE TABLE country_group_country"])
     (jdbc/execute! db ["TRUNCATE TABLE country"])
     (println (str "Ref country removed"))))
 
