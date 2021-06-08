@@ -292,8 +292,7 @@ export const GeneralPreview = ({ item }) => {
 
 export const ProfilePreview = ({ item }) => {
   const { countries } = UIStore.currentState;
-  const country =
-    countries.find((x) => x.isoCode === item.country)?.name || "-";
+  const country = countries.find((x) => x.id === item.country)?.name || "-";
   return (
     <div className="stakeholder-info">
       <div className="left">
