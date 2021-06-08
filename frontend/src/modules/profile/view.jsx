@@ -29,7 +29,7 @@ import {
   StarOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import imageNotFound from "../../images/image-not-found.png";
+import userPlaceholder from "../../images/user-placeholder.png";
 const { TabPane } = Tabs;
 
 const menuItems = [
@@ -178,7 +178,7 @@ const ProfileView = ({ ...props }) => {
   const profilePic =
     profile?.photo && profile?.photo?.includes("storage.googleapis.com")
       ? profile?.photo
-      : imageNotFound;
+      : userPlaceholder;
   return (
     <div id="profile">
       <div className="ui container">

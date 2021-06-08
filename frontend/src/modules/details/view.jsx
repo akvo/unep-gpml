@@ -27,6 +27,7 @@ import {
 import moment from "moment";
 import imageNotFound from "../../images/image-not-found.png";
 import logoNotFound from "../../images/logo-not-found.png";
+import userPlaceholder from "../../images/user-placeholder.png";
 import uniqBy from "lodash/uniqBy";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
@@ -430,8 +431,7 @@ const renderDetailImage = (params, data) => {
     if (data?.picture && data.picture.includes("storage.googleapis.com")) {
       return data.picture;
     }
-    // return user not found image
-    return imageNotFound;
+    return userPlaceholder;
   }
   return imageNotFound;
 };
