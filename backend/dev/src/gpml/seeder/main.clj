@@ -89,7 +89,7 @@
 
 (defn seed-countries [db {:keys [old?]}]
    (let [file (if old? "countries" "new_countries")]
-   (jdbc/insert-multi! db :country (get-data (str file)))))
+   (jdbc/insert-multi! db :country (get-data file))))
 
 (defn seed-country-groups [db]
   (doseq [data (get-data "country_group")]
@@ -496,21 +496,39 @@
     (db.util/revert-constraint db cache-id)))
 
 (defn revert-mapping [mapping-file]
-  (map (fn [k] {(keyword (str (second k))) (-> k first name)})
-       mapping-file))
+  (reduce-kv (fn [m k v]
+               (assoc m (keyword (str v)) (-> k name Integer/parseInt))) {} mapping-file))
 
-(defn updater-country
-  ([db]
-   (updater-country db {:revert? false}))
-  ([db opts]
-  (let [cache-id (get-cache-id)
-        mapping-file (get-data "new_countries_mapping")]
-    (db.util/country-id-updater db cache-id mapping-file opts)
-    (seed-countries db {:old? (:revert? opts)})
-    (db.util/update-initiative-country
-      db (if (:revert? opts)
-           (revert-mapping mapping-file) mapping-file))
-     (db.util/revert-constraint db cache-id))))
+(defn is-old [check mapping-file db]
+  (let [example-map (first (filter #(not= (first %) (second %)) mapping-file))
+        old-json (get-data (if (= check "country")
+                             "countries"
+                             "country_group"))
+        old-example (->> old-json
+                         (filter #(= (-> example-map first name Integer/parseInt) (:id %)))
+                         first)
+        current-record (if (= check "country")
+                        (db.country/country-by-id db old-example)
+                        (db.country-group/country-group-by-id db old-example))]
+    (if (not current-record)
+      false
+      (= (:name old-example) (:name current-record)))))
+
+(defn updater-country [db]
+   (let [cache-id (get-cache-id)
+         mapping-file (get-data "new_countries_mapping")
+         old-data? (is-old "country" mapping-file db)
+         mapping-file (if old-data?
+                        mapping-file
+                        (revert-mapping mapping-file))
+         json-file (get-data (if old-data? "new_countries" "countries"))]
+     (println (str "Migrating Country from " (if old-data? "old to new" "new to old")))
+     (db.util/country-id-updater db cache-id mapping-file)
+     (jdbc/execute! db ["TRUNCATE TABLE country"])
+     (seed-countries db {:old? (not old-data?)})
+     (println "Update countries in Initiative Data")
+     (db.util/update-initiative-country db mapping-file json-file)
+     (db.util/revert-constraint db cache-id)))
 
 (defn seed
   ([db {:keys [country? currency?
@@ -615,9 +633,12 @@
 
   ;; update country id with new id
   ;; should only run once, how to revert to old id?
-  ;; just run (updater-country db {:revert? true}) !
+  ;; just re-run (updater-country) db!
   ;; we might need to resync all topics when we reverting
   (updater-country db)
+
+  (jdbc/query db ["SELECT id, q24_2 FROM initiative WHERE q24_2 is not null"])
+  (jdbc/query db ["SELECT id, name FROM country limit 5"])
 
   ;; get view table of topic
   (defn view-table-of [association]

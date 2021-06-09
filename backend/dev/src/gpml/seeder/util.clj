@@ -114,10 +114,10 @@
                                    "project_tag"]}))
 
 ;; country updater
-(defn country-id-updater [db cache-id mapping-file {:keys [revert?]}]
+(defn country-id-updater [db cache-id mapping-file]
   (let [table (seeder.db/get-foreign-key db {:table "country"})
-        new-map-list (mapv (fn [i] {:new_id (if revert? (-> i first name read-string) (-> i second))
-                                    :old_id (if revert? (-> i second) (-> i first name read-string))})
+        new-map-list (mapv (fn [i] {:new_id (-> i second)
+                                    :old_id (-> i first name read-string)})
                            mapping-file)]
     (write-cache table cache-id)
     (doseq [query (:deps table)]
@@ -130,28 +130,29 @@
                       db
                       (merge query option exclude-rows))]
             (swap! changed #(apply conj % (map :id rows)))))))
-    (jdbc/execute! db ["TRUNCATE TABLE country"])
     (println (str "Ref country removed"))))
 
-;; initiative country updater
+;; initiative updater
+(defn new-initiative-object-id [[k _] mapping json-file]
+    (let [new-id (keyword (str (get mapping k)))
+          new-data (filter #(= (:id %) (Integer/parseInt (name new-id))) json-file)]
+      (assoc {} new-id (-> new-data first :name))))
 
-(defn new-initiative-country-id [[k v] mapping]
-  (assoc {} (keyword (str (get mapping k))) v))
-
-(defn remap-initiative-country-objects [v mapping]
+(defn remap-initiative-object [v mapping json-file]
   (cond
     (sequential? v)
-    (mapv #(new-initiative-country-id (-> % first) mapping) v)
+    (mapv #(new-initiative-object-id (-> % first) mapping json-file) v)
     (map? v)
-    (new-initiative-country-id (first v) mapping)
+    (new-initiative-object-id (first v) mapping json-file)
     :else v))
 
-(defn transform-initiative-query [row mapping]
+(defn transform-initiative-query [row mapping json-file keywords]
   (reduce into row
-          (map #(assoc {} % (remap-initiative-country-objects (-> row %) mapping))
-               [:q23 :q24_2 :q24_4])))
+          (map #(assoc {} % (remap-initiative-object (-> row %) mapping json-file))
+               keywords)))
 
-(defn update-initiative-country [db mapping]
-  (doseq [query (map #(transform-initiative-query % mapping)
+;; initiative country updater
+(defn update-initiative-country [db mapping json-file]
+  (doseq [query (map #(transform-initiative-query % mapping json-file [:q23 :q24_2 :q24_4])
                      (seeder.db/get-initiative-country-values db))]
     (db.initiative/update-initiative db query)))
