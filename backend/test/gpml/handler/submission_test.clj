@@ -111,4 +111,4 @@
     (let [initiative {:q24 {:national "National"} :q24_2 {:73 "Spain"}}
           data (submission/remap-initiative initiative)]
       (is (= "National" (:geo_coverage_type data)))
-      (is (= "Spain" (:geo_coverage_values data))))))
+      (is (= ["Spain"] (:geo_coverage_values data))))))
