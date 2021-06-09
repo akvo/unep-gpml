@@ -241,6 +241,8 @@ const AddEventForm = () => {
     setTimeout(() => {
       formRef.current?.change("ts", new Date().getTime());
       formRef.current?.change("geoCoverageType", value);
+      // set geoCoverageValue to null when geoCoverageType change
+      formRef.current?.change("geoCoverageValue", null);
     });
   };
 

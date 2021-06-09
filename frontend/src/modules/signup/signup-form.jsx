@@ -262,6 +262,10 @@ const SignupForm = ({
     setTimeout(() => {
       formRef.current?.change("ts", new Date().getTime());
       formRef.current?.change("geoCoverageType", value);
+      // set geoCoverageValue to null when geoCoverageType change
+      initialValues?.geoCoverageType !== value &&
+        initialValues?.geoCoverageValue &&
+        formRef.current?.change("geoCoverageValue", null);
     });
   };
 
@@ -372,6 +376,17 @@ const SignupForm = ({
                   <FormSpy
                     subscription={{ values: true }}
                     onChange={({ values }) => {
+                      // set geoCoverageValue to null when geoCoverageType change
+                      if (
+                        prevVals.current?.org?.geoCoverageType !==
+                        values?.org?.geoCoverageType
+                      ) {
+                        setTimeout(() => {
+                          formRef.current?.change("ts", new Date().getTime());
+                          // set geoCoverageValue to null when geoCoverageType change
+                          formRef.current?.change("org.geoCoverageValue", null);
+                        });
+                      }
                       const newSchema = cloneDeep(formSchema);
                       let changedSchema = false;
                       if (
