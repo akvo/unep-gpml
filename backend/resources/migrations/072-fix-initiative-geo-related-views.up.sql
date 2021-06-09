@@ -15,7 +15,7 @@ CREATE OR REPLACE VIEW public.v_initiative_geo_coverage
     NULL::json AS geo_coverage_values
    FROM (initiative i
      JOIN LATERAL jsonb_each_text(i.q24) geo_cov_type(key, value) ON (true))
-  WHERE (geo_cov_type.key = 'Global'::text)
+  WHERE (geo_cov_type.key = 'global'::text)
   GROUP BY i.id, geo_cov_type.value, geo_cov_type.key
 UNION ALL
  SELECT i.id,
