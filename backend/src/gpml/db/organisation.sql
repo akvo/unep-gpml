@@ -4,10 +4,9 @@ select id, name from organisation order by id
 
 -- :name organisation-by-id :? :1
 -- :doc Get organisation by id
-select o.id, o.name, o.url, o.type, o.geo_coverage_type, c.iso_code as country
-from organisation o
-left join country c on o.country = c.id
-where o.id = :id;
+select id, name, url, type, geo_coverage_type, country
+from organisation
+where id = :id;
 
 -- :name organisation-by-name :? :1
 -- :doc Get organisation by name
@@ -56,9 +55,7 @@ where id = :id
 
 -- :name geo-coverage :? :*
 -- :doc Get geo coverage by organisation id
-select cg.id, c.iso_code, cg.name from organisation_geo_coverage o
-left join country c on c.id = o.country
-left join country_group cg on cg.id = o.country_group
+select id, coalesce(country, country_group) as geo_coverage_values from organisation_geo_coverage
 where o.organisation = :id
 
 -- :name add-geo-coverage :<! :1
