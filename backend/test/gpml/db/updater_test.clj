@@ -109,7 +109,7 @@
         (is (= (:id country) (:country me))))
 
       ;; Run the country updater!
-      (seeder/updater-country db {:revert? false})
+      (seeder/updater-country db)
 
       (let [new-id (db.country/country-by-code db {:name "CYP"})
             new-json-id (-> (filter #(= "CYP" (:iso_code %))
@@ -155,7 +155,7 @@
         countries-new (seeder/get-data "new_countries")
         countries-old (filter #(-> % :name str/trim not-empty) (seeder/get-data "countries"))
         ;; seed countries with old id
-        _ (seeder/seed-countries db {:old true})
+        _ (seeder/seed-countries db {:old? true})
         me (dummy/get-or-create-profile
             db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
         country (db.country/country-by-code db {:name "IDN"})
@@ -166,8 +166,8 @@
     (testing "my country id is updated"
       (is (= (:id country) (:country me)))
       (is (= (count (db.country/all-countries db)) (count countries-new))))
+    (seeder/updater-country db)
     (let [old-me (db.stakeholder/stakeholder-by-id db me)]
-      (seeder/updater-country db {:revert? true})
       (testing "my country id is reversed"
         (is (= me old-me))
         (is (= (count (db.country/all-countries db)) (count countries-old)))))))
