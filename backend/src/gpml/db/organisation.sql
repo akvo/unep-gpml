@@ -56,7 +56,7 @@ where id = :id
 -- :name geo-coverage :? :*
 -- :doc Get geo coverage by organisation id
 select id, coalesce(country, country_group) as geo_coverage_values from organisation_geo_coverage
-where o.organisation = :id
+where organisation = :id
 
 -- :name add-geo-coverage :<! :1
 -- :doc add organisation geo coverage
