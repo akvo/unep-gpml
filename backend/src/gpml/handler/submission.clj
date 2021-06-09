@@ -16,8 +16,9 @@
                      (= geo-type "Regional")
                      (mapv #(-> % first second) q24_1)
                      (= geo-type "National")
-                     (-> q24_2 first second)
-                     (= geo-type "Sub-national") [(-> q24_3 first second)]
+                     [(-> q24_2 first second)]
+                     (= geo-type "Sub-national")
+                     [(-> q24_3 first second)]
                      (= geo-type "Transnational")
                      (mapv #(-> % first second) q24_4)
                      :else nil)]
