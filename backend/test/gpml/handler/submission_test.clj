@@ -108,7 +108,9 @@
   (testing "Get remap initiative code"
     ;; This is a regression test, and doesn't necessarily test
     ;; everything that the remap function is doing.
-    (let [initiative {:q24 {:national "National"} :q24_2 {:73 "Spain"}}
-          data (submission/remap-initiative initiative)]
+    (let [system (ig/init fixtures/*system* [::submission/get-detail])
+          db (-> system :duct.database.sql/hikaricp :spec)
+          initiative {:q24 {:national "National"} :q24_2 {:73 "Spain"}}
+          data (submission/remap-initiative initiative db)]
       (is (= "National" (:geo_coverage_type data)))
       (is (= ["Spain"] (:geo_coverage_values data))))))
