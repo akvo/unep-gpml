@@ -2,6 +2,7 @@
   (:require [gpml.db.submission :as db.submission]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.detail :as db.detail]
+            [gpml.db.organisation :as db.organisation]
             [gpml.constants :as constants]
             [integrant.core :as ig]
             [gpml.auth0-util :as auth0]
@@ -10,7 +11,7 @@
 
 (defn remap-initiative [{:keys [q1 q1_1 q16 q18
                                 q20 q23 q24 q24_1 q24_2
-                                q24_3 q24_4 q38 q40]}]
+                                q24_3 q24_4 q24_5 q38 q40]} conn]
   (let [geo-type (-> q24 first second)
         geo-values (cond
                      (= geo-type "Regional")
@@ -21,8 +22,12 @@
                      [(-> q24_3 first second)]
                      (= geo-type "Transnational")
                      (mapv #(-> % first second) q24_4)
-                     :else nil)]
-    {:organisation (-> q1_1 first second)
+                     (= geo-type "Global with elements in specific areas")
+                     (mapv #(-> % first second) q24_5)
+                     :else nil)
+        org (if q1_1 (db.organisation/organisation-by-id
+                       conn {:id (-> q1_1 first first name Integer/parseInt)}) nil)]
+    {:organisation org
      :country (-> q23 first second)
      :submitted (-> q1 first second)
      :duration (-> q38 first second)
@@ -77,7 +82,7 @@
                           (select-keys (db.stakeholder/stakeholder-by-id conn path) [:email])
                           (:data (db.detail/get-stakeholder-tags conn path)))
                    detail)
-          detail (if initiative? (remap-initiative detail)
+          detail (if initiative? (remap-initiative detail conn)
                      detail)]
       (resp/response detail))))
 

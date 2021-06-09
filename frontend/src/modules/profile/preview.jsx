@@ -429,12 +429,18 @@ export const InitiativePreview = ({ item }) => {
           <div className="detail-title">Submitted</div>:
           <div className="detail-content">{item?.submitted || "-"}</div>
         </li>
-        <li>
-          <div className="detail-title">Organisation</div>:
-          <div className="detail-content">
-            {item?.organisation?.[0]?.name || "-"}
-          </div>
-        </li>
+        {item?.submitted === "On behalf of an entity" && (
+          <li>
+            <div className="detail-title">Organisation</div>:
+            <div className="detail-content">
+              {item?.organisation ? (
+                <a href={item?.organisation?.url}>{item?.organisation?.name}</a>
+              ) : (
+                "-"
+              )}
+            </div>
+          </li>
+        )}
         <li className="has-border">
           <p className="section-title">Geo Coverage</p>
         </li>
