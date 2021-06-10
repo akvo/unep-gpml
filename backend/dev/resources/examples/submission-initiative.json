@@ -103,29 +103,11 @@
   },
   "q21": null,
   "q22": "Yogyakarta",
-  "q23": {
-    "106": "Indonesia"
-  },
+  "q23": null,
   "q24": {
-    "regional": "Regional"
+    "global": "Global"
   },
-  "q24_1": [
-    {
-      "africa": "Africa"
-    },
-    {
-      "europe": "Europe"
-    },
-    {
-      "north _america": "North America"
-    },
-    {
-      "west _asia": "West Asia"
-    },
-    {
-      "east _asia": "East Asia"
-    }
-  ],
+  "q24_1": null,
   "q24_2": null,
   "q24_3": null,
   "q24_4": null,

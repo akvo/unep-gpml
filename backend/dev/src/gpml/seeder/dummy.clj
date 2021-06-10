@@ -128,7 +128,10 @@
                     (slurp (io/resource "examples/submission-initiative.json"))
                     {:keywords? true})
         data (db.initiative/new-initiative
-              db (assoc submission :created_by (:id admin) :version 1))]
+              db (assoc submission
+                        :created_by (:id admin)
+                        :version 1
+                        :q23 {(keyword (str (get-country-id db "NLD"))) "Netherlands"}))]
     (db.initiative/initiative-by-id db data)))
 
 (comment
@@ -137,6 +140,8 @@
               (ig/init [:duct.database.sql/hikaricp])
               :duct.database.sql/hikaricp
               :spec))
+
+
 
   ;; Create New Account as Admin
   (get-or-create-profile db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
