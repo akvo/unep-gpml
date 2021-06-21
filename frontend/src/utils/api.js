@@ -1,5 +1,6 @@
 import axios from "axios";
 import humps from "humps";
+import * as Sentry from "@sentry/react";
 
 export const config = {
   baseURL: "/api",
@@ -15,6 +16,20 @@ export const config = {
     ...axios.defaults.transformRequest,
   ],
 };
+
+// Add a response interceptor to post Sentry messages for request failures
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Any status codes that falls outside the range of 2xx cause this
+    // function to trigger. We capture the exception to Sentry.
+    // NOTE: The request data is visible in Sentry as `config`.
+    Sentry.captureException(new Error(error.message), { extra: error });
+
+    // Do something with response error
+    return Promise.reject(error);
+  }
+);
 
 const API = () => {
   const getConfig = () => {
