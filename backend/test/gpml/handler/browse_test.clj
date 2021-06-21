@@ -5,8 +5,6 @@
             [gpml.handler.browse :as browse]
             [malli.core :as malli]))
 
-(#(malli/validate [:re browse/country-re] %) "0,39")
-
 (deftest query-params
   (testing "Country query parameter validation"
     (let [valid? #(malli/validate [:re browse/country-re] %)]

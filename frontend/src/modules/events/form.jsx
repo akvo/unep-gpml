@@ -178,6 +178,8 @@ const AddEventForm = () => {
       data.geoCoverageType === "sub-national"
     ) {
       data.geoCoverageValue = [data.geoCoverageValue];
+    } else if (data.geoCoverageType === "global") {
+      delete data.geoCoverageValue;
     }
     setSending(true);
     api
