@@ -261,7 +261,9 @@
   :gpml.handler.favorite/post-params {}
 
   :gpml.handler.env/get {:auth0 {:domain #duct/env "OIDC_ISSUER"
-                                 :clientId #duct/env "OIDC_AUDIENCE"}}
+                                 :clientId #duct/env "OIDC_AUDIENCE"}
+                         :sentry {:dsn #duct/env "SENTRY_DSN"
+                                  :environment #duct/env "ENV_NAME"}}
 
   :gpml.handler.detail/topics {}
   :gpml.handler.detail/get {:db #ig/ref :duct.database/sql}
