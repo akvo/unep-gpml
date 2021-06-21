@@ -1,3 +1,12 @@
+## Get current version deployed to production
+
+```bash
+kubectl get deployment unep-gpml -o json | jq -r '.spec.template.metadata.labels["unep-gpml-version"]'
+```
+
+We get the value defined [here](https://github.com/akvo/unep-gpml/blob/bdc460edc15325e55f338da92fc82d87f3e2e6c9/ci/k8s/deployment.yml.template#L19) 
+in the deployment template.
+
 ## Running seeder code as Kubernetes Job
 
 Check the code in [ci/k8s/seeder.yaml] and modify the option you want to execute:
