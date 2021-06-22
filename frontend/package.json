@@ -7,6 +7,8 @@
     "@auth0/auth0-react": "^1.2.0",
     "@rjsf/antd": "^2.4.1",
     "@rjsf/core": "^2.4.1",
+    "@sentry/react": "^6.7.1",
+    "@sentry/tracing": "^6.7.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
