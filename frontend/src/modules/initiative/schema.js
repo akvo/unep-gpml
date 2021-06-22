@@ -77,7 +77,7 @@ export const schema = {
   version: "2",
   properties: {
     S1: {
-      title: "SECTION 1: SUBMITTER",
+      title: "SUBMITTER",
       type: "object",
       depend: {
         id: "tabs",
@@ -111,7 +111,7 @@ export const schema = {
       },
     },
     S2: {
-      title: "SECTION 2: TYPE OF INITIATIVE",
+      title: "TYPE OF INITIATIVE",
       type: "object",
       depend: {
         id: "tabs",
@@ -782,7 +782,7 @@ export const schema = {
       },
     },
     S3: {
-      title: "SECTION 3: INITIATIVE DETAILS",
+      title: "INITIATIVE DETAILS",
       type: "object",
       depend: {
         id: "tabs",
