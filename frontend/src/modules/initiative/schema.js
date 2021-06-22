@@ -87,7 +87,7 @@ export const schema = {
       properties: {
         S1_1: {
           title:
-            "1. Are you submitting as an individual or on behalf of an Entity?",
+            "Are you submitting as an individual or on behalf of an Entity?",
           type: "string",
           dependency: [
             {
@@ -99,7 +99,7 @@ export const schema = {
           enumNames: ["As an individual", "On behalf of an entity"],
         },
         "S1_G1_1.1": {
-          title: "1.1. Please select the Entity",
+          title: "Please select the Entity",
           type: "string",
           depend: {
             id: "S1_1",
@@ -143,16 +143,16 @@ export const schema = {
           ],
           properties: {
             S2_G1_2: {
-              title: "2. Initiative Title.",
+              title: "Initiative Title.",
               type: "string",
             },
             S2_G1_3: {
-              title: "3. Short Summary.",
+              title: "Short Summary.",
               type: "string",
             },
             S2_G1_4: {
               title:
-                "4. What is the MAIN focus of the initiative? (Please tick ALL that apply).",
+                "What is the MAIN focus of the initiative? (Please tick ALL that apply).",
               type: "array",
               dependency: [
                 {
@@ -191,7 +191,7 @@ export const schema = {
             },
             "S2_G1_4.1.1": {
               title:
-                "4.1.1. Legislation, Standards and Rules. You have selected legislation, standards and rules as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",
+                "Legislation, Standards and Rules. You have selected legislation, standards and rules as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",
               type: "array",
               dependency: [
                 {
@@ -234,7 +234,7 @@ export const schema = {
               uniqueItems: true,
             },
             "S2_G1_4.1.2": {
-              title: '4.1.2. If you selected "Other", please specify',
+              title: 'If you selected "Other", please specify',
               type: "string",
               depend: {
                 id: "S2_G1_4.1.1",
@@ -243,7 +243,7 @@ export const schema = {
             },
             "S2_G1_4.2.1": {
               title:
-                "4.2.1. Working with People. You have chosen working with people as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",
+                "Working with People. You have chosen working with people as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",
               type: "array",
               dependency: [
                 {
@@ -302,7 +302,7 @@ export const schema = {
               uniqueItems: true,
             },
             "S2_G1_4.2.2": {
-              title: '4.2.2. If you selected "Other", please specify:',
+              title: 'If you selected "Other", please specify:',
               type: "string",
               depend: {
                 id: "S2_G1_4.2.1",
@@ -311,7 +311,7 @@ export const schema = {
             },
             "S2_G1_4.3.1": {
               title:
-                "4.3.1. Technology and Processes. You have chosen technology and processes as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",
+                "Technology and Processes. You have chosen technology and processes as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",
               type: "array",
               dependency: [
                 {
@@ -376,7 +376,7 @@ export const schema = {
               uniqueItems: true,
             },
             "S2_G1_4.3.2": {
-              title: '4.3.2. If you selected "Other", please specify:',
+              title: 'If you selected "Other", please specify:',
               type: "string",
               depend: {
                 id: "S2_G1_4.3.1",
@@ -385,7 +385,7 @@ export const schema = {
             },
             "S2_G1_4.4.1": {
               title:
-                "4.4.1. Monitoring and Analysis. You have chosen monitoring and analysis as the type of initiatives. What did the initiative specifically involve? (Please tick ALL that apply):",
+                "Monitoring and Analysis. You have chosen monitoring and analysis as the type of initiatives. What did the initiative specifically involve? (Please tick ALL that apply):",
               type: "array",
               dependency: [
                 {
@@ -426,7 +426,7 @@ export const schema = {
               uniqueItems: true,
             },
             "S2_G1_4.4.2": {
-              title: '4.4.2. If you selected "Other", please specify:',
+              title: 'If you selected "Other", please specify:',
               type: "string",
               depend: {
                 id: "S2_G1_4.4.1",
@@ -435,7 +435,7 @@ export const schema = {
             },
             "S2_G1_4.4.3": {
               title:
-                "4.4.3. For monitoring, which programme/protocol did you use?",
+                "For monitoring, which programme/protocol did you use?",
               type: "string",
               depend: {
                 id: "S2_G1_4",
@@ -444,7 +444,7 @@ export const schema = {
             },
             "S2_G1_4.4.4": {
               title:
-                "4.4.4. How can the data and information from your monitoring programme be accessed?",
+                "How can the data and information from your monitoring programme be accessed?",
               type: "string",
               depend: {
                 id: "S2_G1_4",
@@ -453,7 +453,7 @@ export const schema = {
             },
             "S2_G1_4.4.5": {
               title:
-                "4.4.5. Please provide the URL's for any links to the monitoring data and information.",
+                "Please provide the URL's for any links to the monitoring data and information.",
               type: "string",
               format: "url",
               depend: {
@@ -485,7 +485,7 @@ export const schema = {
           ],
           properties: {
             S2_G2_5: {
-              title: "5. Do you report and measure the initiative progress?",
+              title: "Do you report and measure the initiative progress?",
               type: "string",
               dependency: [
                 {
@@ -505,7 +505,7 @@ export const schema = {
               ],
             },
             S2_G2_6: {
-              title: '6. If you selected "Other", please specify.',
+              title: 'If you selected "Other", please specify.',
               type: "string",
               depend: {
                 id: "S2_G2_5",
@@ -514,7 +514,7 @@ export const schema = {
             },
             S2_G2_7: {
               title:
-                "7. If yes, who do you report to? (Please tick ALL that apply):",
+                "If yes, who do you report to? (Please tick ALL that apply):",
               type: "array",
               dependency: [
                 {
@@ -556,7 +556,7 @@ export const schema = {
             },
             "S2_G2_7.1.0": {
               title:
-                "7.1. Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):",
+                "Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):",
               type: "array",
               depend: {
                 id: "S2_G2_7",
@@ -584,7 +584,7 @@ export const schema = {
             },
             "S2_G2_7.2": {
               title:
-                "7.2. Which Multilateral Environmental Agreements (MEAs) does your initiative apply to? (Please tick ALL that apply):",
+                "Which Multilateral Environmental Agreements (MEAs) does your initiative apply to? (Please tick ALL that apply):",
               type: "array",
               depend: {
                 id: "S2_G2_7",
@@ -597,7 +597,7 @@ export const schema = {
               uniqueItems: true,
             },
             "S2_G2_7.3": {
-              title: '7.3. If you selected "Other", please specify.',
+              title: 'If you selected "Other", please specify.',
               type: "string",
               depend: {
                 id: "S2_G2_7",
@@ -606,7 +606,7 @@ export const schema = {
             },
             S2_G2_8: {
               title:
-                "8. Are the actual outcomes and impacts of the initiative evaluated?",
+                "Are the actual outcomes and impacts of the initiative evaluated?",
               type: "string",
               dependency: [
                 {
@@ -618,7 +618,7 @@ export const schema = {
               enumNames: ["Yes", "No", "Other"],
             },
             S2_G2_9: {
-              title: '9. If you selected "Other", please specify.',
+              title: 'If you selected "Other", please specify.',
               type: "string",
               depend: {
                 id: "S2_G2_8",
@@ -627,7 +627,7 @@ export const schema = {
             },
             S2_G2_10: {
               title:
-                "10. When do you expect the impact of the initiative to be evident?",
+                "When do you expect the impact of the initiative to be evident?",
               type: "string",
               enum: ["10-0", "10-1", "10-2", "10-3"],
               enumNames: [
@@ -639,7 +639,7 @@ export const schema = {
             },
             S2_G2_11: {
               title:
-                "11. If applicable, please specify when and how the outcomes will be evaluated (tick ALL that apply).",
+                "If applicable, please specify when and how the outcomes will be evaluated (tick ALL that apply).",
               type: "array",
               items: {
                 enum: ["11-0", "11-1", "11-2", "11-3", "11-4", "11-5", "11-6"],
@@ -657,12 +657,12 @@ export const schema = {
             },
             S2_G2_12: {
               title:
-                "12. Do you have specific key performance indicators (KPIs) for your initiative? If yes, please list up to 5.",
+                "Do you have specific key performance indicators (KPIs) for your initiative? If yes, please list up to 5.",
               type: "string",
             },
             S2_G2_13: {
               title:
-                "13. Please, describe if any co-benefits and/or side-effects of the initiative are captured in the evaluation.",
+                "Please, describe if any co-benefits and/or side-effects of the initiative are captured in the evaluation.",
               type: "string",
             },
           },
@@ -678,7 +678,7 @@ export const schema = {
           properties: {
             S2_G3_14: {
               title:
-                "14. Please, indicate which DRIVERS apply to this initiative? (Please tick ALL that apply).",
+                "Please, indicate which DRIVERS apply to this initiative? (Please tick ALL that apply).",
               type: "array",
               items: {
                 enum: [
@@ -730,7 +730,7 @@ export const schema = {
             },
             S2_G3_15: {
               title:
-                "15. Please,indicate which BARRIERS apply to this initiative? (Please tick ALL that apply).",
+                "Please,indicate which BARRIERS apply to this initiative? (Please tick ALL that apply).",
               type: "array",
               items: {
                 enum: [
@@ -807,13 +807,13 @@ export const schema = {
           ],
           properties: {
             S3_G1_16: {
-              title: "16. Which Entity is implementing the initiative?",
+              title: "Which Entity is implementing the initiative?",
               type: "string",
               enum: [],
               enumNames: [],
             },
             S3_G1_17: {
-              title: '17. If you selected "Other", please specify.',
+              title: 'If you selected "Other", please specify.',
               type: "string",
               depend: {
                 id: "S3_G1_16",
@@ -822,13 +822,13 @@ export const schema = {
             },
             S3_G1_18: {
               title:
-                "18. Are you working with Partners to implement the initiative?",
+                "Are you working with Partners to implement the initiative?",
               type: "string",
               enum: [],
               enumNames: [],
             },
             S3_G1_19: {
-              title: '19. If you selected "Other", please specify.',
+              title: 'If you selected "Other", please specify.',
               type: "string",
               depend: {
                 id: "S3_G1_18",
@@ -836,13 +836,13 @@ export const schema = {
               },
             },
             S3_G1_20: {
-              title: "20. Do you have Donors funding the Initiative?",
+              title: "Do you have Donors funding the Initiative?",
               type: "string",
               enum: [],
               enumNames: [],
             },
             S3_G1_21: {
-              title: '21. If you selected "Other", please specify.',
+              title: 'If you selected "Other", please specify.',
               type: "string",
               depend: {
                 id: "S3_G1_20",
@@ -870,17 +870,17 @@ export const schema = {
           ],
           properties: {
             S3_G2_22: {
-              title: "22. City",
+              title: "City",
               type: "string",
             },
             S3_G2_23: {
-              title: "23. Country",
+              title: "Country",
               type: "string",
               enum: ["23-0"],
               enumNames: ["List of country"],
             },
             S3_G2_24: {
-              title: "24. Geo coverage type",
+              title: "Geo coverage type",
               type: "string",
               dependency: [
                 {
@@ -908,7 +908,7 @@ export const schema = {
               enumNames: geoCoverageTypeOptions,
             },
             "S3_G2_24.1": {
-              title: "24.1. Geo Coverage",
+              title: "Geo Coverage",
               type: "string",
               depend: {
                 id: "S3_G2_24",
@@ -918,7 +918,7 @@ export const schema = {
               enumNames: [],
             },
             "S3_G2_24.2": {
-              title: "24.1. Geo Coverage",
+              title: "Geo Coverage",
               type: "string",
               depend: {
                 id: "S3_G2_24",
@@ -928,7 +928,7 @@ export const schema = {
               enumNames: [],
             },
             "S3_G2_24.3": {
-              title: "24.1. Geo Coverage",
+              title: "Geo Coverage",
               type: "string",
               depend: {
                 id: "S3_G2_24",
@@ -938,7 +938,7 @@ export const schema = {
               enumNames: [],
             },
             "S3_G2_24.4": {
-              title: "24.1. Geo Coverage",
+              title: "Geo Coverage",
               type: "string",
               depend: {
                 id: "S3_G2_24",
@@ -948,7 +948,7 @@ export const schema = {
               enumNames: [],
             },
             "S3_G2_24.5": {
-              title: "24.1. Geo Coverage",
+              title: "Geo Coverage",
               type: "string",
               depend: {
                 id: "S3_G2_24",
@@ -978,7 +978,7 @@ export const schema = {
           properties: {
             S3_G3_26: {
               title:
-                "26. Lifecycle. Which specific part of the lifecycle/plastic supply chain is your initiative targeting? (Please tick ALL that apply).",
+                "Lifecycle. Which specific part of the lifecycle/plastic supply chain is your initiative targeting? (Please tick ALL that apply).",
               type: "array",
               dependency: [
                 {
@@ -1011,7 +1011,7 @@ export const schema = {
               uniqueItems: true,
             },
             S3_G3_27: {
-              title: '27. If you selected "Other", please specify.',
+              title: 'If you selected "Other", please specify.',
               type: "string",
               depend: {
                 id: "S3_G3_26",
@@ -1020,7 +1020,7 @@ export const schema = {
             },
             S3_G3_28: {
               title:
-                "28. Impact. What impacts or harms does the initiative relate to? (Please tick ALL that apply).",
+                "Impact. What impacts or harms does the initiative relate to? (Please tick ALL that apply).",
               type: "array",
               dependency: [
                 {
@@ -1055,7 +1055,7 @@ export const schema = {
               uniqueItems: true,
             },
             S3_G3_29: {
-              title: '29. If you selected "Other", please specify.',
+              title: 'If you selected "Other", please specify.',
               type: "string",
               depend: {
                 id: "S3_G3_28",
@@ -1064,7 +1064,7 @@ export const schema = {
             },
             S3_G3_30: {
               title:
-                "30. Sector. Does your initiative target a specific sector? (Please tick ALL that apply).",
+                "Sector. Does your initiative target a specific sector? (Please tick ALL that apply).",
               type: "array",
               dependency: [
                 {
@@ -1117,7 +1117,7 @@ export const schema = {
               uniqueItems: true,
             },
             S3_G3_31: {
-              title: '31. If you selected "Other", please specify.',
+              title: 'If you selected "Other", please specify.',
               type: "string",
               depend: {
                 id: "S3_G3_30",
@@ -1126,7 +1126,7 @@ export const schema = {
             },
             S3_G3_32: {
               title:
-                "32. Tags. Choose the Tags applicable to your initiative targeting.",
+                "Tags. Choose the Tags applicable to your initiative targeting.",
               type: "string",
               enum: [
                 "32-0",
@@ -1209,11 +1209,11 @@ export const schema = {
           properties: {
             S3_G4_33: {
               title:
-                "33. How many different groups and organisations have you engaged with in total?",
+                "How many different groups and organisations have you engaged with in total?",
               type: "number",
             },
             S3_G4_34: {
-              title: "34. How many stakeholders have you engaged in total?",
+              title: "How many stakeholders have you engaged in total?",
               type: "number",
             },
           },
@@ -1234,7 +1234,7 @@ export const schema = {
           ],
           properties: {
             S3_G5_35: {
-              title: "35. What funding sources did you use?",
+              title: "What funding sources did you use?",
               type: "string",
               enum: [
                 "35-0",
@@ -1259,21 +1259,21 @@ export const schema = {
             },
             S3_G5_36: {
               title:
-                "36. How much money (amount) has been invested in the initiative so far?",
+                "How much money (amount) has been invested in the initiative so far?",
               type: "number",
             },
             "S3_G5_36.1": {
-              title: "36.1. Currency",
+              title: "Currency",
               type: "string",
               enum: [],
               enumNames: [],
             },
             S3_G5_37: {
-              title: "37. Are there in-kind contributions as well?",
+              title: "Are there in-kind contributions as well?",
               type: "number",
             },
             "S3_G5_37.1": {
-              title: "37.1. Currency",
+              title: "Currency",
               type: "string",
               enum: [],
               enumNames: [],
@@ -1290,7 +1290,7 @@ export const schema = {
           required: ["S3_G6_38", "S3_G6_39"],
           properties: {
             S3_G6_38: {
-              title: "38. Is your initiative a one-off activity or ongoing?",
+              title: "Is your initiative a one-off activity or ongoing?",
               type: "string",
               dependency: [
                 {
@@ -1309,7 +1309,7 @@ export const schema = {
               ],
             },
             S3_G6_39: {
-              title: '39. If you selected "Other", please specify.',
+              title: 'If you selected "Other", please specify.',
               type: "string",
               depend: {
                 id: "S3_G6_38",
@@ -1329,7 +1329,7 @@ export const schema = {
           properties: {
             S3_G7_40: {
               title:
-                "40. Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
+                "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
               type: "array",
               items: {
                 type: "string",
@@ -1339,7 +1339,7 @@ export const schema = {
               add: "Add Link",
             },
             S3_G7_41: {
-              title: "41. Where can users best contact you to learn more?",
+              title: "Where can users best contact you to learn more?",
               type: "string",
               enum: ["41-0", "41-1", "41-2", "41-3", "41-4", "41-5"],
               enumNames: [
@@ -1352,7 +1352,7 @@ export const schema = {
               ],
             },
             "S3_G7_41.1": {
-              title: "41.1. Please provide the details",
+              title: "Please provide the details",
               type: "string",
               string: true,
               depend: {
