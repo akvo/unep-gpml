@@ -6,6 +6,21 @@ import reportWebVitals from "./reportWebVitals";
 import Root from "./root";
 import { StateProvider } from "./store.js";
 import api from "./utils/api";
+import * as Sentry from "@sentry/react";
+import { Integrations } from "@sentry/tracing";
+
+// HACK to reuse the same Sentry DSN & environment values as the backend
+const { environment, dsn } = window.__ENV__.sentry;
+
+Sentry.init({
+  dsn,
+  environment,
+  integrations: [new Integrations.BrowserTracing()],
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 0.1,
+});
 
 // hack to reuse the same `issuer` value
 // auth0-react wants the `domain` value only
