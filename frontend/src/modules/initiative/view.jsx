@@ -334,6 +334,33 @@ const AddInitiative = ({ ...props }) => {
     });
   };
 
+  const getTabStepIndex = () => {
+    const section = data.tabs[0];
+    const stepIndex = data[section].steps;
+    const tabIndex = tabsData.findIndex((tab) => tab.key === section);
+    const steps = tabsData[tabIndex].steps;
+    return { tabIndex, stepIndex, steps };
+  };
+
+  const isLastStep = () => {
+    const { tabIndex, stepIndex, steps } = getTabStepIndex();
+    return tabsData.length === tabIndex + 1 && steps.length === stepIndex + 1;
+  };
+
+  const handleOnClickBtnNext = (e) => {
+    const { tabIndex, stepIndex, steps } = getTabStepIndex();
+    if (stepIndex < steps.length - 1) {
+      // Next step, same section
+      handleOnStepClick(stepIndex + 1, tabsData[tabIndex].key);
+    } else if (tabIndex < tabsData.length - 1) {
+      // Next section, first step
+      handleOnTabChange(tabsData[tabIndex + 1].key);
+    } else {
+      // We shouldn't get here, since the button should be hidden
+      console.error("Last step:", tabIndex, stepIndex);
+    }
+  };
+
   const handleOnClickBtnSubmit = (e) => {
     setHighlight(true);
     btnSubmit.current.click();
@@ -450,6 +477,16 @@ const AddInitiative = ({ ...props }) => {
                       formSchema={formSchema}
                       setDisabledBtn={setDisabledBtn}
                     />
+                    {!isLastStep() && (
+                      <Button
+                        className="next-button"
+                        type="primary"
+                        size="large"
+                        onClick={(e) => handleOnClickBtnNext(e)}
+                      >
+                        Next
+                      </Button>
+                    )}
                   </Card>
                 </Col>
               </Row>
