@@ -52,10 +52,6 @@ export const schema = {
         "Research",
       ],
     },
-    specificationProvided: {
-      title: "SPECIFICATION PROVIDED",
-      type: "boolean",
-    },
     url: {
       title: "TECHNOLOGY URL",
       type: "string",
@@ -119,7 +115,7 @@ export const schema = {
       type: "string",
     },
     image: {
-      title: "RESOURCE IMAGE",
+      title: "IMAGE",
       type: "string",
       format: "data-url",
     },
