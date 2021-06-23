@@ -109,7 +109,7 @@ export const schema = {
       },
     },
     publishYear: {
-      title: "PUBLICATION YEAR",
+      title: "YEAR FOUNDED / YEAR OF COMMENCEMENT",
       type: "string",
     },
     value: {
@@ -201,7 +201,7 @@ export const schema = {
       type: "string",
     },
     image: {
-      title: "RESOURCE IMAGE",
+      title: "IMAGE",
       type: "string",
       format: "data-url",
     },
