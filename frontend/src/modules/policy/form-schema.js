@@ -170,7 +170,7 @@ export const uiSchema = {
     "ui:placeholder": "Type in the policy original title",
   },
   dataSource: {
-    "ui:placeholder": "Type in the data source",
+    "ui:placeholder": "Type in the data source. Eg FAOLEX; InforMEA, Other (please specify).",
   },
   url: {
     "ui:placeholder": "URL Address (e.g. example.com)",
