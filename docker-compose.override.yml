@@ -4,7 +4,7 @@ services:
     ports:
       - 5432:5432
   pgadmin:
-    image: dpage/pgadmin4:4.29
+    image: dpage/pgadmin4:5.4
     environment:
       - PGADMIN_LISTEN_PORT=5050
       - PGADMIN_DEFAULT_EMAIL=dev@akvo.org
