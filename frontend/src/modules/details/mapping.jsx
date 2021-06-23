@@ -408,9 +408,9 @@ const detailStakeholder = [
     type: "name",
   },
   {
-    key: "role",
+    key: "organisationRole",
     name: "Role",
-    value: "role",
+    value: "organisationRole",
     type: "name",
   },
   {
