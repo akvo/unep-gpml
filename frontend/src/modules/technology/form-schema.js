@@ -115,7 +115,7 @@ export const schema = {
       type: "string",
     },
     image: {
-      title: "RESOURCE IMAGE",
+      title: "IMAGE",
       type: "string",
       format: "data-url",
     },
