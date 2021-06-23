@@ -161,12 +161,6 @@ export const GeneralPreview = ({ item }) => {
                 {item?.developmentStage || "-"}
               </div>
             </li>
-            <li>
-              <div className="detail-title">Specification Provided</div>:
-              <div className="detail-content">
-                {item?.specificationProvided ? "Yes" : "No"}
-              </div>
-            </li>
           </>
         )}
         {item.type === "financing_resource" && (
