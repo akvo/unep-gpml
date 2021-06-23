@@ -1,5 +1,8 @@
 version: "3"
 services:
+  mainnetwork:
+    ports:
+      - 3001:3001
   db:
     ports:
       - 5432:5432
@@ -34,8 +37,6 @@ services:
 
   frontend:
     image: akvo/akvo-node-14-alpine:20210106.152005.1864760
-    ports:
-      - 3001:3001
     command: ["./start.sh"]
     restart: unless-stopped
 volumes:

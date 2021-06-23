@@ -1,5 +1,8 @@
 version: "3"
 services:
+  mainnetwork:
+    image: alpine:3.14.0
+    command: ["tail", "-f", "/dev/null"]
   db:
     image: postgres:12-alpine
     environment:
@@ -22,11 +25,22 @@ services:
       - MAILJET_API_KEY
       - MAILJET_SECRET_KEY
   frontend:
+    network_mode: service:mainnetwork
     environment:
       - PORT=3001
     volumes:
       - ./frontend:/app:delegated
     working_dir: /app
+  e2e-test:
+    network_mode: service:mainnetwork
+    image: akvo/akvo-lumen-e2e-test:20200110.115310.06b75bc
+    shm_size: '256m'
+    volumes:
+      - ./e2e-test:/app/e2e-test:delegated
+    working_dir: /app/e2e-test
+    environment:
+      - CYPRESS_LUMEN_URL=http://localhost:3031/
+    command: ["tail", "-f", "/dev/null"]
 
 volumes:
   pg-data:
