@@ -237,7 +237,7 @@ const renderItemValues = (params, mapping, data) => {
                     {" "}
                     {data[key].map(
                       (x, i) =>
-                        x.name && (
+                        (x.name || x) && (
                           <li key={x.name || x}>
                             <a
                               target="_blank"
