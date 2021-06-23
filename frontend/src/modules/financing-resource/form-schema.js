@@ -109,7 +109,7 @@ export const schema = {
       },
     },
     publishYear: {
-      title: "PUBLICATION YEAR",
+      title: "YEAR FOUNDED / YEAR OF COMMENCEMENT",
       type: "string",
     },
     value: {
