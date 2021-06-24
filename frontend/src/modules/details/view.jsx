@@ -234,22 +234,23 @@ const renderItemValues = (params, mapping, data) => {
 
                 {value === "link" && type === "array" && (
                   <ul>
-                    {" "}
-                    {data[key].map(
-                      (x, i) =>
-                        (x.name || x) && (
-                          <li key={x.name || x}>
+                    {data[key].map((x, i) => {
+                      const link = typeof x === "string" ? x : x?.name;
+                      return (
+                        link && (
+                          <li key={link}>
                             <a
                               target="_blank"
                               rel="noreferrer"
-                              href={x.name || x}
+                              href={link}
                               style={{ wordBreak: "break-word" }}
                             >
-                              {x.name || x}
+                              {link}
                             </a>
                           </li>
                         )
-                    )}{" "}
+                      );
+                    })}{" "}
                   </ul>
                 )}
 
