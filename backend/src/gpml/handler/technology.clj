@@ -5,6 +5,7 @@
             [gpml.db.language :as db.language]
             [gpml.db.technology :as db.technology]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.email-util :as email]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -13,7 +14,7 @@
                                       year_founded email country
                                       geo_coverage_type geo_coverage_value
                                       tags url urls created_by image
-                                      logo attachments remarks]}]
+                                      logo attachments remarks mailjet-config]}]
   (let [data {:name name
               :year_founded year_founded
               :organisation_type organisation_type
@@ -44,15 +45,21 @@
         (db.technology/add-technology-language-urls conn {:urls lang-urls})))
     (when (not-empty geo_coverage_value)
       (let [geo-data (handler.geo/get-geo-vector technology-id data)]
-          (db.technology/add-technology-geo conn {:geo geo-data})))
+        (db.technology/add-technology-geo conn {:geo geo-data})))
+    (email/notify-admins-pending-approval
+     conn
+     mailjet-config
+     (merge data {:type "technology"}))
     technology-id))
 
-(defmethod ig/init-key :gpml.handler.technology/post [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.technology/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
     (jdbc/with-db-transaction [conn (:spec db)]
       (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-            technology-id (create-technology conn (assoc body-params :created_by (:id user)))]
-    (resp/created (:referrer req) {:message "New technology created" :id technology-id})))))
+            technology-id (create-technology conn (assoc body-params
+                                                         :created_by (:id user)
+                                                         :mailjet-config mailjet-config))]
+        (resp/created (:referrer req) {:message "New technology created" :id technology-id})))))
 
 (def post-params
   [:map
