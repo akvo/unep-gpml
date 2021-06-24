@@ -111,7 +111,6 @@
             org (db.organisation/organisation-by-id conn {:id (:affiliation profile)})
             geo-type (:geo_coverage_type profile)
             geo-value (db.stakeholder/get-stakeholder-geo conn profile)
-            _ (prn geo-value)
             geo (cond
                   (contains? #{"regional" "global with elements in specific areas"} geo-type)
                   (mapv :country_group geo-value)
