@@ -226,7 +226,12 @@
   :gpml.handler.resource/post {:db #ig/ref :duct.database/sql}
   :gpml.handler.resource/post-params {}
 
-  :gpml.handler.policy/post {:db #ig/ref :duct.database/sql}
+  :gpml.handler.policy/post {:db #ig/ref :duct.database/sql
+                             :mailjet-config
+                             {:api-key #duct/env "MAILJET_API_KEY"
+                              :secret-key #duct/env "MAILJET_SECRET_KEY"
+                              :app-name #duct/env "APP_NAME"
+                              :app-domain #duct/env "APP_DOMAIN"}}
   :gpml.handler.policy/post-params {}
 
   :gpml.handler.technology/post {:db #ig/ref :duct.database/sql}
