@@ -6,6 +6,7 @@
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.email-util :as email]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -14,10 +15,10 @@
                                     value_remarks valid_from valid_to image
                                     geo_coverage_type geo_coverage_value
                                     attachments country urls tags remarks
-                                    created_by]}]
+                                    created_by mailjet-config]}]
   (let [organisation (if (= -1 (:id org))
-                      [(handler.org/find-or-create conn org)]
-                      [(:id org)])
+                       [(handler.org/find-or-create conn org)]
+                       [(:id org)])
         data {:type resource_type
               :title title
               :publish_year publish_year
@@ -52,14 +53,20 @@
     (when (not-empty geo_coverage_value)
       (let [geo-data (handler.geo/get-geo-vector resource-id data)]
         (db.resource/add-resource-geo conn {:geo geo-data})))
+    (email/notify-admins-pending-approval
+     conn
+     mailjet-config
+     (merge data {:type resource_type}))
     resource-id))
 
-(defmethod ig/init-key :gpml.handler.resource/post [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.resource/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
     (jdbc/with-db-transaction [conn (:spec db)]
       (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-            resource-id (create-resource conn (assoc body-params :created_by (:id user)))]
-    (resp/created (:referrer req) {:message "New resource created" :id resource-id})))))
+            resource-id (create-resource conn (assoc body-params
+                                                     :created_by (:id user)
+                                                     :mailjet-config mailjet-config))]
+        (resp/created (:referrer req) {:message "New resource created" :id resource-id})))))
 
 (defn or-and [resource_type validator]
   (or (= "Action Plan" resource_type)

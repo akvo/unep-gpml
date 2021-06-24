@@ -5,6 +5,7 @@
             [gpml.db.language :as db.language]
             [gpml.db.policy :as db.policy]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.email-util :as email]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -15,7 +16,7 @@
                                   status country geo_coverage_type
                                   geo_coverage_value implementing_mea
                                   tags urls created_by image
-                                  attachments remarks]}]
+                                  attachments remarks mailjet-config]}]
   (let [data {:title title
               :original_title original_title
               :abstract abstract
@@ -49,15 +50,21 @@
         (db.policy/add-policy-language-urls conn {:urls lang-urls})))
     (when (not-empty geo_coverage_value)
       (let [geo-data (handler.geo/get-geo-vector policy-id data)]
-          (db.policy/add-policy-geo conn {:geo geo-data})))
+        (db.policy/add-policy-geo conn {:geo geo-data})))
+    (email/notify-admins-pending-approval
+     conn
+     mailjet-config
+     (merge data {:type "policy"}))
     policy-id))
 
-(defmethod ig/init-key :gpml.handler.policy/post [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.policy/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
     (jdbc/with-db-transaction [conn (:spec db)]
       (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-            policy-id (create-policy conn (assoc body-params :created_by (:id user)))]
-    (resp/created (:referrer req) {:message "New policy created" :id policy-id})))))
+            policy-id (create-policy conn (assoc body-params
+                                                 :created_by (:id user)
+                                                 :mailjet-config mailjet-config))]
+        (resp/created (:referrer req) {:message "New policy created" :id policy-id})))))
 
 (def post-params
   [:map
