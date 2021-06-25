@@ -51,10 +51,10 @@ const Browse = ({ history, setSignupModalVisible, filters, setFilters }) => {
   const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
-  const getResults = () => {
-    // NOTE: This needs to be window.location.search because of how of
-    // how `history` and `location` are interacting!
-    api.get(`/browse${window.location.search}`).then((resp) => {
+  const getResults = (url = `/browse${window.location.search}`) => {
+    // NOTE: The url needs to be window.location.search because of how
+    // of how `history` and `location` are interacting!
+    api.get(url).then((resp) => {
       setResults(resp?.data?.results);
       setCountData(resp?.data?.counts);
       setLoading(false);
@@ -75,12 +75,8 @@ const Browse = ({ history, setSignupModalVisible, filters, setFilters }) => {
 
     setLoading(true);
     if (isLoading === false && !filters) {
-      setTimeout(() => {
-        api.get(`/browse${location.search}`).then((resp) => {
-          setResults(resp?.data?.results);
-          setLoading(false);
-        });
-      });
+      // NOTE: We use `location.search` here instead of `window.location.search`
+      setTimeout(getResults, 0, `/browse${location.search}`);
     }
 
     if (isLoading === false && filters) {
