@@ -8,6 +8,7 @@
   (require 'dev)
 
   (declare filter-topic) ;; to make clj-kondo happy
+  (declare topic-counts) ;; to make clj-kondo happy
   (def params {:favorites 1 :user 1 :resource-types 1 :limit nil}) ;; to make clj-kondo happy
   (when (seq (:search-text params)) "AND search_text @@ to_tsquery(:search-text)")
   (when (seq (:geo-coverage params)) "AND geo_coverage IN (:v*:geo-coverage)")

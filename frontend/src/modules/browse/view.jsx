@@ -39,16 +39,11 @@ function useQuery() {
 
 let tmid;
 
-const Browse = ({
-  history,
-  countData,
-  setSignupModalVisible,
-  filters,
-  setFilters,
-}) => {
+const Browse = ({ history, setSignupModalVisible, filters, setFilters }) => {
   const query = useQuery();
   const { profile, countries } = UIStore.currentState;
   const [results, setResults] = useState([]);
+  const [countData, setCountData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
   const location = useLocation();
@@ -56,11 +51,12 @@ const Browse = ({
   const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
-  const getResults = () => {
-    // NOTE: This needs to be window.location.search because of how of
-    // how `history` and `location` are interacting!
-    api.get(`/browse${window.location.search}`).then((resp) => {
+  const getResults = (url = `/browse${window.location.search}`) => {
+    // NOTE: The url needs to be window.location.search because of how
+    // of how `history` and `location` are interacting!
+    api.get(url).then((resp) => {
       setResults(resp?.data?.results);
+      setCountData(resp?.data?.counts);
       setLoading(false);
     });
   };
@@ -79,12 +75,7 @@ const Browse = ({
 
     setLoading(true);
     if (isLoading === false && !filters) {
-      setTimeout(() => {
-        api.get(`/browse${location.search}`).then((resp) => {
-          setResults(resp?.data?.results);
-          setLoading(false);
-        });
-      });
+      setTimeout(getResults, 0);
     }
 
     if (isLoading === false && filters) {
@@ -159,39 +150,20 @@ const Browse = ({
         }
       });
   };
-  const tTypes = isApprovedUser
-    ? topicTypesApprovedUser
-    : topicTypesIncludingOrg;
-  const topicCounts = tTypes.reduce((acc, topic) => {
-    const data = Object();
-    if (filterCountries.length === 0) {
-      data[topic] = countData?.summary?.find((it) =>
-        it.hasOwnProperty(topic)
-      )?.[topic];
-    } else {
-      // FIXME: The counts would be incorrect if the countries have common resources which are transnational - those would be double counted!
-      // FIXME: Also, we display global and regional resources, but those are not included in the counts.
-      const count = filterCountries.reduce(
-        (acc, id) =>
-          acc + countData?.map?.find((it) => it.countryId === id)?.[topic],
-        0
-      );
-      data[topic] = count;
-    }
-    return { ...acc, ...data };
-  }, {});
 
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.
-  const topicsForTotal = isApprovedUser ? topicTypesIncludingOrg : topicTypes;
+  const topicsForTotal = (isApprovedUser
+    ? topicTypesApprovedUser
+    : topicTypes
+  ).map((t) => humps.decamelize(t));
   const filteredTopics =
     filters?.topic?.length > 0
-      ? topicsForTotal.filter(
-          (t) => filters?.topic?.indexOf(humps.decamelize(t)) > -1
-        )
+      ? filters?.topic?.filter((t) => topicsForTotal.indexOf(t) > -1)
       : topicsForTotal;
   const totalItems = filteredTopics.reduce(
-    (acc, topic) => acc + topicCounts[topic],
+    (acc, topic) =>
+      acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
   );
   return (
@@ -273,7 +245,7 @@ const Browse = ({
                   )}
                 </div>
                 <TopicSelect
-                  counts={topicCounts}
+                  countData={countData}
                   isApprovedUser={isApprovedUser}
                   value={query.topic}
                   onChange={(val) => updateQuery("topic", val)}
@@ -324,7 +296,7 @@ const Browse = ({
   );
 };
 
-const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
+const TopicSelect = ({ value, onChange, countData, isApprovedUser }) => {
   const handleChange = (type) => ({ target: { checked } }) => {
     if (checked && value.indexOf(type) === -1) {
       onChange([...value, type]);
@@ -336,16 +308,20 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
     <div className="field" key={"topic-select"}>
       <div className="label">Resources</div>
       <ul className="topic-list">
-        {topicTypes.map((type) => (
-          <li key={type}>
-            <Checkbox
-              checked={value.indexOf(humps.decamelize(type)) !== -1}
-              onChange={handleChange(humps.decamelize(type))}
-            >
-              {topicNames(type)} ({(counts && counts[type]) || 0})
-            </Checkbox>
-          </li>
-        ))}
+        {topicTypes.map((type) => {
+          const topic = humps.decamelize(type);
+          const count = countData?.find((it) => it.topic === topic)?.count || 0;
+          return (
+            <li key={type}>
+              <Checkbox
+                checked={value.indexOf(topic) !== -1}
+                onChange={handleChange(topic)}
+              >
+                {topicNames(type)} ({count})
+              </Checkbox>
+            </li>
+          );
+        })}
       </ul>
     </div>,
     isApprovedUser ? (
@@ -358,7 +334,8 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
               onChange={handleChange("organisation")}
             >
               {topicNames("organisation")} (
-              {(counts && counts["organisation"]) || 0})
+              {countData?.find((it) => it.topic === "organisation")?.count || 0}
+              )
             </Checkbox>
           </li>
           <li>
@@ -366,7 +343,9 @@ const TopicSelect = ({ value, onChange, counts, isApprovedUser }) => {
               checked={value.indexOf("stakeholder") !== -1}
               onChange={handleChange("stakeholder")}
             >
-              Individual ({(counts && counts["stakeholder"]) || 0})
+              Individual (
+              {countData?.find((it) => it.topic === "organisation")?.count || 0}
+              )
             </Checkbox>
           </li>
         </ul>

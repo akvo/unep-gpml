@@ -22,18 +22,10 @@ export const topicTypes = [
   "technology",
 ];
 
-export const topicTypesIncludingOrg = [
-  "project",
-  "actionPlan",
-  "policy",
-  "technicalResource",
-  "financingResource",
-  "event",
-  "technology",
-  "organisation",
-];
+export const topicTypesIncludingOrg = topicTypes.concat(["organisation"]);
 
-export const topicTypesApprovedUser = topicTypesIncludingOrg.concat([
+export const topicTypesApprovedUser = topicTypes.concat([
+  "organisation",
   "stakeholder",
 ]);
 
