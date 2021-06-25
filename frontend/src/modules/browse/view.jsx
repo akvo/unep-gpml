@@ -282,7 +282,7 @@ const Browse = ({
             </aside>
           </StickyBox>
           <div className="scroll-content">
-            <StickyBox offsetBottom={600} className="sticky-pagination">
+            <StickyBox offsetBottom={500} className="sticky-pagination">
               <div className="page">
                 {!isEmpty(results) && (
                   <Pagination
