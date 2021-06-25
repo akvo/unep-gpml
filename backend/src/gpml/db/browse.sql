@@ -6,7 +6,7 @@ SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'
  WHERE 1=1
 --~ (when (seq (:search-text params)) "AND t.search_text @@ to_tsquery(:search-text)")
 --~ (when (seq (:geo-coverage params)) "AND t.geo_coverage IN (:v*:geo-coverage)")
---~ (when (seq (:topic params)) "AND t.topic IN (:v*:topic)")
+--~ (when (not (nil? (:topic params))) "AND t.topic = ANY(ARRAY[:v*:topic]::varchar[])")
 ORDER BY (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz DESC, (t.json->>'id')::int DESC
 --~ (format "LIMIT %s" (or (and (contains? params :limit) (:limit params)) 50))
 --~ (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))

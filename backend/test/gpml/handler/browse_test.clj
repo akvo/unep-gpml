@@ -132,12 +132,31 @@
                                            :association "user"
                                            :remarks nil})]
 
-    (testing "Simple query without login"
+    (testing "Simple query WITHOUT LOGIN"
       (let [resp (handler (mock/request :get "/"))
             results (-> resp :body :results)]
         (is (= limit (count results)))))
 
-    (testing "Query for favorites without login"
+    (testing "Query stakeholders WITHOUT LOGIN"
+      (let [request (-> (mock/request :get "/")
+                        (assoc
+                         :parameters {:query {:topic "stakeholder"}}))
+            resp (handler request)
+            results (-> resp :body :results)]
+        (is (= 0 (count results)))))
+
+    (testing "Query stakeholders as approved and logged-in user"
+      (let [request (-> (mock/request :get "/")
+                        (assoc
+                         :approved? true
+                         :user sth
+                         :parameters {:query {:topic "stakeholder"}}))
+            resp (handler request)
+            results (-> resp :body :results)]
+        (is (= 1 (count results)))
+        (is (= (:id sth) (-> results first :id)))))
+
+    (testing "Query for favorites WITHOUT LOGIN"
       (let [request (-> (mock/request :get "/")
                         (assoc
                          :parameters {:query {:favorites true}}))
