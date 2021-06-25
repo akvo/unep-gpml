@@ -1,9 +1,19 @@
 (ns gpml.handler.browse-test
   (:require [clojure.string :as str]
-            [clojure.test :refer [deftest testing is are]]
+            [clojure.test :refer [deftest testing is are use-fixtures]]
             [gpml.constants :refer [topics]]
             [gpml.handler.browse :as browse]
-            [malli.core :as malli]))
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.favorite :as db.favorite]
+            [gpml.fixtures :as fixtures]
+            [gpml.test-util :as test-util]
+            [gpml.db.browse-test :as db.browse-test]
+            [gpml.seeder.main :as seeder]
+            [integrant.core :as ig]
+            [malli.core :as malli]
+            [ring.mock.request :as mock]))
+
+(use-fixtures :each fixtures/with-test-system)
 
 (deftest query-params
   (testing "Country query parameter validation"
@@ -101,3 +111,48 @@
             :search-text "eco"
             :geo-coverage #{"253"}
             :topic #{"project" "event" "stakeholder"}}))))
+
+(deftest browse-view-results
+  (let [db (test-util/db-test-conn)
+        system (-> fixtures/*system*
+                   (ig/init [::browse/get]))
+        handler (::browse/get system)
+        limit 50 ;; set in browse.sql
+        email "mail@org.com"
+        profile-data (db.browse-test/make-profile "John" "Doe" email)
+        _ (seeder/seed db {:country? true :technology? true})
+        ;; Create a stakeholder
+        sth (db.stakeholder/new-stakeholder db profile-data)
+        ;; Mark stakeholder as APPROVED
+        _ (db.stakeholder/update-stakeholder-status db (assoc sth :review_status "APPROVED"))
+        ;; Mark a technology as favorite
+        _ (db.favorite/new-association db {:stakeholder (:id sth)
+                                           :topic "technology"
+                                           :topic_id 1
+                                           :association "user"
+                                           :remarks nil})]
+
+    (testing "Simple query without login"
+      (let [resp (handler (mock/request :get "/"))
+            results (-> resp :body :results)]
+        (is (= limit (count results)))))
+
+    (testing "Query for favorites without login"
+      (let [request (-> (mock/request :get "/")
+                        (assoc
+                         :parameters {:query {:favorites true}}))
+            resp (handler request)
+            results (-> resp :body :results)]
+        ;; results are not filtered, because no logged in user
+        (is (= limit (count results)))))
+
+    (testing "Query for favorites as approved and logged-in user"
+      (let [request (-> (mock/request :get "/")
+                        (assoc
+                         :approved? true
+                         :user sth
+                         :parameters {:query {:favorites true}}))
+            resp (handler request)
+            results (-> resp :body :results)]
+        ;; Only favorites are shown
+        (is (= 1 (count results)))))))

@@ -49,15 +49,15 @@
     [:int {:min 0}]]])
 
 (defn get-db-filter
-  [{:keys [q country topic favorites user limit offset]}]
+  [{:keys [q country topic favorites user-id limit offset]}]
   (merge {}
          (when offset
            {:offset offset})
          (when limit
            {:limit limit})
-         (when (and user favorites) {:user user
-                                     :favorites true
-                                     :resource-types resource-types})
+         (when (and user-id favorites) {:user-id user-id
+                                        :favorites true
+                                        :resource-types resource-types})
          (when (seq country)
            {:geo-coverage (->> (set (str/split country #","))
                                (map read-string))})
@@ -95,9 +95,9 @@
 (defmethod ig/init-key :gpml.handler.browse/get [_ {:keys [db]}]
   (fn [{{:keys [query]} :parameters
         approved? :approved?
-        user-id :user-id}]
+        user :user}]
     (resp/response {:results (#'results
-                              (merge query {:user user-id})
+                              (merge query {:user-id (:id user)})
                               (:spec db)
                               approved?)})))
 
