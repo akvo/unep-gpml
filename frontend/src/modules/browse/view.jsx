@@ -75,8 +75,7 @@ const Browse = ({ history, setSignupModalVisible, filters, setFilters }) => {
 
     setLoading(true);
     if (isLoading === false && !filters) {
-      // NOTE: We use `location.search` here instead of `window.location.search`
-      setTimeout(getResults, 0, `/browse${location.search}`);
+      setTimeout(getResults, 0);
     }
 
     if (isLoading === false && filters) {
