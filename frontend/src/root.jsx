@@ -251,7 +251,6 @@ const Root = () => {
           render={(props) => (
             <Browse
               {...props}
-              countData={data}
               setSignupModalVisible={setSignupModalVisible}
               filters={filters}
               setFilters={setFilters}
