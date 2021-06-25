@@ -82,24 +82,29 @@
             filtered-topics (set (maybe-filter-private-topics t approved?))]
         (merge db-filter {:topic filtered-topics})))))
 
-(defn results [query db approved?]
-  (let [data (->> query
-                  (get-db-filter)
-                  (merge {:approved approved?})
-                  (modify-db-filter-topics)
-                  (db.browse/filter-topic db)
-                  (map (fn [{:keys [json topic]}]
-                         (assoc json :type topic))))]
-    data))
+(defn browse-response [query db approved?]
+  (let [modified-query (->> query
+                            (get-db-filter)
+                            (merge {:approved approved?})
+                            (modify-db-filter-topics))
+        results (->> modified-query
+                     (db.browse/filter-topic db)
+                     (map (fn [{:keys [json topic]}]
+                            (assoc json :type topic))))
+        counts (->> modified-query
+                    (db.browse/topic-counts db)
+                    (filter #(or approved?
+                                 (not (contains? approved-user-topics (:topic %))))))]
+    {:results results :counts counts}))
 
 (defmethod ig/init-key :gpml.handler.browse/get [_ {:keys [db]}]
   (fn [{{:keys [query]} :parameters
         approved? :approved?
         user :user}]
-    (resp/response {:results (#'results
-                              (merge query {:user-id (:id user)})
-                              (:spec db)
-                              approved?)})))
+    (resp/response (#'browse-response
+                    (merge query {:user-id (:id user)})
+                    (:spec db)
+                    approved?))))
 
 (defmethod ig/init-key :gpml.handler.browse/query-params [_ _]
   query-params)

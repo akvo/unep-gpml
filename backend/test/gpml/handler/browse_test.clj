@@ -134,16 +134,39 @@
 
     (testing "Simple query WITHOUT LOGIN"
       (let [resp (handler (mock/request :get "/"))
-            results (-> resp :body :results)]
-        (is (= limit (count results)))))
+            body (-> resp :body)
+            results (:results body)
+            counts (:counts body)
+            tech-count (first counts)]
+        (is (= limit (count results)))
+        (is (= 1 (count counts)))
+        (is (= (:topic tech-count) "technology"))
+        (is (> (:count tech-count) limit))))
+
+    (testing "Simple query WITH login"
+      (let [request (-> (mock/request :get "/")
+                        (assoc
+                         :approved? true
+                         :user sth))
+            resp (handler request)
+            body(-> resp :body)
+            results (:results body)
+            counts (:counts body)]
+        (is (= limit (count results)))
+        (is (= 2 (count counts)))
+        (is (= #{"technology" "stakeholder"} (set (map :topic counts))))))
 
     (testing "Query stakeholders WITHOUT LOGIN"
       (let [request (-> (mock/request :get "/")
                         (assoc
                          :parameters {:query {:topic "stakeholder"}}))
             resp (handler request)
-            results (-> resp :body :results)]
-        (is (= 0 (count results)))))
+            body (-> resp :body)
+            results (:results body)
+            counts (:counts body)]
+        (is (= 0 (count results)))
+        (is (= 1 (count counts)))
+        (is (= (-> counts first :topic) "technology"))))
 
     (testing "Query stakeholders as approved and logged-in user"
       (let [request (-> (mock/request :get "/")
@@ -152,18 +175,28 @@
                          :user sth
                          :parameters {:query {:topic "stakeholder"}}))
             resp (handler request)
-            results (-> resp :body :results)]
+            body (-> resp :body)
+            results (:results body)
+            counts (:counts body)]
         (is (= 1 (count results)))
-        (is (= (:id sth) (-> results first :id)))))
+        (is (= (:id sth) (-> results first :id)))
+        (is (= 2 (count counts)))
+        (is (= #{"technology" "stakeholder"} (set (map :topic counts))))))
 
     (testing "Query for favorites WITHOUT LOGIN"
       (let [request (-> (mock/request :get "/")
                         (assoc
                          :parameters {:query {:favorites true}}))
             resp (handler request)
-            results (-> resp :body :results)]
-        ;; results are not filtered, because no logged in user
-        (is (= limit (count results)))))
+            body (-> resp :body)
+            results (:results body)
+            counts (:counts body)
+            tech-count (first counts)]
+        ;; results are not filtered, because not logged in user
+        (is (= limit (count results)))
+        (is (= 1 (count counts)))
+        (is (= (:topic tech-count) "technology"))
+        (is (> (:count tech-count) limit))))
 
     (testing "Query for favorites as approved and logged-in user"
       (let [request (-> (mock/request :get "/")
@@ -172,6 +205,13 @@
                          :user sth
                          :parameters {:query {:favorites true}}))
             resp (handler request)
-            results (-> resp :body :results)]
+            body(-> resp :body)
+            results (:results body)
+            counts (:counts body)
+            tech-count (first counts)]
         ;; Only favorites are shown
-        (is (= 1 (count results)))))))
+        (is (= 1 (count results)))
+        ;; only tech returned
+        (is (= 1 (count counts)))
+        (is (= (:topic tech-count) "technology"))
+        (is (= (:count tech-count) 1))))))
