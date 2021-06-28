@@ -313,6 +313,9 @@ export const revertFormData = (formDataMapping, editData) => {
         pKey = "geoCoverageValueSubNational";
       }
     }
+    if (pKey === "tags") {
+      data = data ? data.map((x) => Object.keys(x)[0]) : "";
+    }
     if (data && !group) {
       formData[pKey] = data;
     }
@@ -330,16 +333,16 @@ export const transformPostData = (formDataMapping, formData, countries) => {
     let key = name;
     let data = null;
     if (!group) {
-      data = formData[key];
+      data = formData?.[key];
     }
     if (group) {
-      data = formData[group][key];
+      data = formData?.[group]?.[key];
     }
-    if (type === "string") {
-      data = String(data);
+    if (type === "string" || type === "image") {
+      data = data ? String(data) : "";
     }
     if (type === "integer") {
-      data = parseInt(data);
+      data = data ? parseInt(data) : null;
     }
     if (type === "date") {
       if (key === "validTo") {

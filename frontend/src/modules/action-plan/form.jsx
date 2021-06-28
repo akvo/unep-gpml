@@ -60,22 +60,6 @@ const getSchema = (
   };
 };
 
-const editDataSample = {
-  urls: [{ lang: "en", url: "www.google.com" }],
-  title: "New Action Plan",
-  org: { id: 10001 },
-  publishYear: 2020,
-  country: 106,
-  geoCoverageType: "sub-national",
-  geoCoverageValueNational: 1,
-  summary: "Description",
-  tags: [301, 302, 303],
-  resourceType: "Action Plan",
-  validFrom: "2021-05-01",
-  validTo: "2021-05-27",
-  geoCoverageValue: [1],
-};
-
 const formDataMapping = [
   {
     key: "title",

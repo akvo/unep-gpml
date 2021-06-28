@@ -16,6 +16,8 @@ import {
   checkRequiredFieldFilledIn,
   handleGeoCoverageValue,
   customFormats,
+  revertFormData,
+  transformPostData,
 } from "../../utils/forms";
 import cloneDeep from "lodash/cloneDeep";
 
@@ -63,6 +65,104 @@ const getSchema = (
   };
 };
 
+const formDataMapping = [
+  {
+    key: "title",
+    name: "title",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "organisations",
+    name: "org",
+    group: null,
+    type: "integer",
+  },
+  {
+    key: "publishYear",
+    name: "publishYear",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "value",
+    name: "valueAmount",
+    group: "value",
+    type: "integer",
+  },
+  {
+    key: "valueCurrency",
+    name: "valueCurrency",
+    group: "value",
+    type: "string",
+  },
+  {
+    key: "valueRemarks",
+    name: "valueRemarks",
+    group: "value",
+    type: "string",
+  },
+  {
+    key: "validFrom",
+    name: "validFrom",
+    group: "date",
+    type: "date",
+  },
+  {
+    key: "validTo",
+    name: "validTo",
+    group: "date",
+    type: "date",
+  },
+  {
+    key: "country",
+    name: "country",
+    group: null,
+    type: "integer",
+  },
+  {
+    key: "geoCoverageType",
+    name: "geoCoverageType",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "geoCoverageValues",
+    name: "geoCoverageValue",
+    group: null,
+    type: "array",
+  },
+  {
+    key: "summary",
+    name: "summary",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "image",
+    name: "image",
+    group: null,
+    type: "image",
+  },
+  {
+    key: "tags",
+    name: "tags",
+    group: null,
+    type: "array",
+  },
+  {
+    name: "urls",
+    group: null,
+    type: "array",
+  },
+  {
+    key: "languages",
+    name: "urls",
+    group: null,
+    type: "array",
+  },
+];
+
 export const resourceData = new Store({ data: {} });
 
 const AddResourceForm = ({
@@ -80,7 +180,12 @@ const AddResourceForm = ({
     currencies,
     loading,
     formStep,
+    formEdit,
   } = UIStore.currentState;
+
+  const formData = resourceData.useState();
+  const { data } = formData;
+  const { status, id } = formEdit.financingResource;
   const [dependValue, setDependValue] = useState([]);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
@@ -90,8 +195,22 @@ const AddResourceForm = ({
   useEffect(() => {
     if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
+      // Manage form status, add/edit
+      if (status === "edit") {
+        api.get(`/detail/financing_resource/${id}`).then((d) => {
+          resourceData.update((e) => {
+            e.data = revertFormData(formDataMapping, d.data);
+          });
+        });
+      }
     }
-  }, [loading, formSchema]);
+    // Manage form status, add/edit
+    if (status === "add") {
+      resourceData.update((e) => {
+        e.data = {};
+      });
+    }
+  }, [loading, formSchema, status, id]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
@@ -136,7 +255,11 @@ const AddResourceForm = ({
       const publishYear = new Date(formData.publishYear);
       data.publishYear = publishYear.getFullYear();
     }
-
+    data["resourceType"] = "Technical Resource";
+    if (status === "edit") {
+      // ## TODO: need to submit to update endpoint
+      return;
+    }
     setSending(true);
     api
       .post("/resource", data)

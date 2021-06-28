@@ -60,59 +60,57 @@ const getSchema = (
   };
 };
 
-const editDataSample = {
-  urls: [
-    { lang: "en", url: "google.com" },
-    { lang: "cs", url: "google.com" },
-  ],
-  title: "New Technical Resource",
-  org: { id: 10001 },
-  publishYear: 2020,
-  country: 106,
-  geoCoverageType: "sub-national",
-  summary: "Description",
-  tags: [301, 302, 303],
-  resourceType: "Technical Resource",
-  geoCoverageValue: [106],
-};
-
 const formDataMapping = [
   {
+    key: "title",
     name: "title",
     group: null,
     type: "string",
   },
   {
+    key: "organisations",
     name: "org",
     group: null,
     type: "integer",
   },
   {
+    key: "publishYear",
     name: "publishYear",
     group: null,
     type: "string",
   },
   {
+    key: "country",
     name: "country",
     group: null,
     type: "integer",
   },
   {
+    key: "geoCoverageType",
     name: "geoCoverageType",
     group: null,
     type: "string",
   },
   {
+    key: "geoCoverageValues",
     name: "geoCoverageValue",
     group: null,
     type: "array",
   },
   {
+    key: "summary",
     name: "summary",
     group: null,
     type: "string",
   },
   {
+    key: "image",
+    name: "image",
+    group: null,
+    type: "image",
+  },
+  {
+    key: "tags",
     name: "tags",
     group: null,
     type: "array",
@@ -122,10 +120,15 @@ const formDataMapping = [
     group: null,
     type: "array",
   },
+  {
+    key: "languages",
+    name: "urls",
+    group: null,
+    type: "array",
+  },
 ];
 
 export const resourceData = new Store({
-  // data: revertFormData(formDataMapping, editDataSample),
   data: {},
 });
 
@@ -143,7 +146,12 @@ const AddResourceForm = ({
     tags,
     loading,
     formStep,
+    formEdit,
   } = UIStore.currentState;
+
+  const formData = resourceData.useState();
+  const { data } = formData;
+  const { status, id } = formEdit.technicalResource;
   const [dependValue, setDependValue] = useState([]);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
@@ -153,43 +161,61 @@ const AddResourceForm = ({
   useEffect(() => {
     if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
+      // Manage form status, add/edit
+      if (status === "edit") {
+        api.get(`/detail/technical_resource/${id}`).then((d) => {
+          resourceData.update((e) => {
+            e.data = revertFormData(formDataMapping, d.data);
+          });
+        });
+      }
     }
-  }, [loading, formSchema]);
+    // Manage form status, add/edit
+    if (status === "add") {
+      resourceData.update((e) => {
+        e.data = {};
+      });
+    }
+  }, [loading, formSchema, status, id]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
   }, [highlight]);
 
   const handleOnSubmit = ({ formData }) => {
-    // let data = { ...formData, resourceType: "Technical Resource" };
+    let data = { ...formData, resourceType: "Technical Resource" };
 
-    // data?.newOrg && delete data.newOrg;
-    // data.org = { id: formData.org };
-    // if (formData.org === -1) {
-    //   data.org = {
-    //     ...formData.newOrg,
-    //     id: formData.org,
-    //   };
-    //   data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
-    // }
+    data?.newOrg && delete data.newOrg;
+    data.org = { id: formData.org };
+    if (formData.org === -1) {
+      data.org = {
+        ...formData.newOrg,
+        id: formData.org,
+      };
+      data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
+    }
 
-    // if (data?.urls[0]?.url) {
-    //   data.urls = formData.urls.filter((it) => it?.url && it.url.length > 0);
-    // }
-    // if (!data?.urls[0]?.url) {
-    //   delete data.urls;
-    // }
+    if (data?.urls[0]?.url) {
+      data.urls = formData.urls.filter((it) => it?.url && it.url.length > 0);
+    }
+    if (!data?.urls[0]?.url) {
+      delete data.urls;
+    }
 
-    // data = handleGeoCoverageValue(data, formData, countries);
-    // data?.image === "" && delete data.image;
-    // data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
+    data = handleGeoCoverageValue(data, formData, countries);
+    data?.image === "" && delete data.image;
+    data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
-    // if (data?.publishYear) {
-    //   const publishYear = new Date(formData.publishYear);
-    //   data.publishYear = publishYear.getFullYear();
-    // }
-    const data = transformPostData(formDataMapping, formData, countries);
+    if (data?.publishYear) {
+      const publishYear = new Date(formData.publishYear);
+      data.publishYear = publishYear.getFullYear();
+    }
+    // const data = transformPostData(formDataMapping, formData, countries);
     data["resourceType"] = "Technical Resource";
+    if (status === "edit") {
+      // ## TODO: need to submit to update endpoint
+      return;
+    }
     setSending(true);
     api
       .post("/resource", data)

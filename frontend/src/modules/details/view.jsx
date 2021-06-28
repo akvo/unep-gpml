@@ -732,17 +732,20 @@ const BookmarkBtn = withRouter(
           </Dropdown>
           <div className="label">Bookmarks</div>
         </div>
-        {profile.role === "ADMIN" && topic.type === "action_plan" && (
-          <div className="edit-btn" onClick={(e) => e.stopPropagation()}>
-            <Button
-              onClick={() => handleEditBtn()}
-              size="large"
-              icon={<EditOutlined />}
-              shape="circle"
-            />
-            <div className="label">Edit</div>
-          </div>
-        )}
+        {profile.role === "ADMIN" &&
+          (topic.type === "action_plan" ||
+            topic.type === "technical_resource" ||
+            topic.type === "financing_resource") && (
+            <div className="edit-btn" onClick={(e) => e.stopPropagation()}>
+              <Button
+                onClick={() => handleEditBtn()}
+                size="large"
+                icon={<EditOutlined />}
+                shape="circle"
+              />
+              <div className="label">Edit</div>
+            </div>
+          )}
       </div>
     );
   }
