@@ -270,17 +270,17 @@ export const checkDependencyAnswer = (answer, dependentSchema) => {
 export const revertFormData = (formDataMapping, editData) => {
   const formData = {};
   formDataMapping.forEach((item) => {
-    const { name, group, type } = item;
-    let key = name;
+    const { key, name, group, type } = item;
+    let pKey = name;
     let data = null;
     if (!group) {
-      data = editData[key];
+      data = editData?.[key] ? editData[key] : "";
     }
     if (group) {
-      data = editData[key];
+      data = editData?.[key] ? editData[key] : "";
     }
-    if (key === "org") {
-      data = data?.id;
+    if (pKey === "org") {
+      data = data && data.map((x) => x.id);
     }
     if (type === "string") {
       data = String(data);
@@ -288,29 +288,36 @@ export const revertFormData = (formDataMapping, editData) => {
     if (type === "integer") {
       data = parseInt(data);
     }
-    if (key === "geoCoverageValue") {
+    if (type === "date") {
+      if (pKey === "validTo") {
+        data = data === "Ongoing" ? "" : data;
+      }
+      data = String(data);
+    }
+    if (pKey === "geoCoverageValue") {
       const geoCoverageType = editData["geoCoverageType"];
       if (geoCoverageType === "national") {
-        key = "geoCoverageValueNational";
+        pKey = "geoCoverageValueNational";
+        data = data[0];
       }
       if (geoCoverageType === "regional") {
-        key = "geoCoverageValueRegional";
+        pKey = "geoCoverageValueRegional";
       }
       if (geoCoverageType === "transnational") {
-        key = "geoCoverageValueTransnational";
+        pKey = "geoCoverageValueTransnational";
       }
       if (geoCoverageType === "global with elements in specific areas") {
-        key = "geoCoverageValueGlobalSpesific";
+        pKey = "geoCoverageValueGlobalSpesific";
       }
       if (geoCoverageType === "sub-national") {
-        key = "geoCoverageValueSubNational";
+        pKey = "geoCoverageValueSubNational";
       }
     }
-    if (!group) {
-      formData[key] = data;
+    if (data && !group) {
+      formData[pKey] = data;
     }
-    if (group) {
-      formData[group] = { ...formData[group], [key]: data };
+    if (data && group) {
+      formData[group] = { ...formData[group], [pKey]: data };
     }
   });
   return formData;
@@ -334,6 +341,12 @@ export const transformPostData = (formDataMapping, formData, countries) => {
     if (type === "integer") {
       data = parseInt(data);
     }
+    if (type === "date") {
+      if (key === "validTo") {
+        data = data ? data : "Ongoing";
+      }
+      data = String(data);
+    }
     if (key === "org") {
       data = { id: formData[key] };
       if (formData[key] === -1) {
@@ -351,6 +364,9 @@ export const transformPostData = (formDataMapping, formData, countries) => {
     if (key === "geoCoverageValue") {
       const temp = handleGeoCoverageValue(postData, formData, countries);
       data = temp[key];
+    }
+    if (key === "tags" && type === "array") {
+      data = data.map((x) => Number(x));
     }
     postData[key] = data;
   });

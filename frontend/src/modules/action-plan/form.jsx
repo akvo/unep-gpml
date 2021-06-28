@@ -78,56 +78,73 @@ const editDataSample = {
 
 const formDataMapping = [
   {
+    key: "title",
     name: "title",
     group: null,
     type: "string",
   },
   {
+    key: "organisations",
     name: "org",
     group: null,
     type: "integer",
   },
   {
+    key: "publishYear",
     name: "publishYear",
     group: null,
-    type: "string",
+    type: "date",
   },
   {
+    key: "validFrom",
     name: "validFrom",
     group: "date",
-    type: "string",
+    type: "date",
   },
   {
+    key: "validTo",
     name: "validTo",
     group: "date",
-    type: "string",
+    type: "date",
   },
   {
+    key: "country",
     name: "country",
     group: null,
     type: "integer",
   },
   {
+    key: "geoCoverageType",
     name: "geoCoverageType",
     group: null,
     type: "string",
   },
   {
+    key: "geoCoverageValues",
     name: "geoCoverageValue",
     group: null,
     type: "array",
   },
   {
+    key: "summary",
     name: "summary",
     group: null,
     type: "string",
   },
   {
+    key: "image",
+    name: "image",
+    group: null,
+    type: "image",
+  },
+  {
+    key: "tags",
     name: "tags",
     group: null,
     type: "array",
   },
   {
+    key: "languages",
     name: "urls",
     group: null,
     type: "array",
@@ -135,7 +152,7 @@ const formDataMapping = [
 ];
 
 export const actionPlanData = new Store({
-  data: revertFormData(formDataMapping, editDataSample),
+  data: {},
 });
 
 const AddActionPlanForm = ({
@@ -152,7 +169,12 @@ const AddActionPlanForm = ({
     tags,
     loading,
     formStep,
+    formEdit,
   } = UIStore.currentState;
+
+  const formData = actionPlanData.useState();
+  const { data } = formData;
+  const { status, id } = formEdit.actionPlan;
   const [dependValue, setDependValue] = useState([]);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
@@ -162,8 +184,22 @@ const AddActionPlanForm = ({
   useEffect(() => {
     if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
+      // Manage form status, add/edit
+      if (status === "edit") {
+        api.get(`/detail/action_plan/${id}`).then((d) => {
+          actionPlanData.update((e) => {
+            e.data = revertFormData(formDataMapping, d.data);
+          });
+        });
+      }
     }
-  }, [loading, formSchema]);
+    // Manage form status, add/edit
+    if (status === "add") {
+      actionPlanData.update((e) => {
+        e.data = {};
+      });
+    }
+  }, [loading, formSchema, status, id]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
@@ -203,6 +239,10 @@ const AddActionPlanForm = ({
     // }
     const data = transformPostData(formDataMapping, formData, countries);
     data["resourceType"] = "Action Plan";
+    if (status === "edit") {
+      // ## TODO: need to submit to update endpoint
+      return;
+    }
     setSending(true);
     api
       .post("/resource", data)
@@ -284,7 +324,7 @@ const AddActionPlanForm = ({
           idPrefix="action-plan"
           schema={formSchema.schema}
           uiSchema={uiSchema}
-          formData={actionPlanData.currentState.data}
+          formData={data}
           onChange={(e) => handleFormOnChange(e)}
           onSubmit={(e) => handleOnSubmit(e)}
           ArrayFieldTemplate={ArrayFieldTemplate}

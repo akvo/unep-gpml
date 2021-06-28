@@ -125,7 +125,8 @@ const formDataMapping = [
 ];
 
 export const resourceData = new Store({
-  data: revertFormData(formDataMapping, editDataSample),
+  // data: revertFormData(formDataMapping, editDataSample),
+  data: {},
 });
 
 const AddResourceForm = ({

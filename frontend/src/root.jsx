@@ -357,6 +357,13 @@ const AddButton = withRouter(
                         ...e.formStep,
                         initiative: 1,
                       };
+                      e.formEdit = {
+                        ...e.formEdit,
+                        initiative: {
+                          status: "add",
+                          id: null,
+                        },
+                      };
                     });
                     history.push("/add-initiative");
                   }}
@@ -369,6 +376,13 @@ const AddButton = withRouter(
                       e.formStep = {
                         ...e.formStep,
                         actionPlan: 1,
+                      };
+                      e.formEdit = {
+                        ...e.formEdit,
+                        actionPlan: {
+                          status: "add",
+                          id: null,
+                        },
                       };
                     });
                     history.push("/add-action-plan");
@@ -383,6 +397,13 @@ const AddButton = withRouter(
                         ...e.formStep,
                         policy: 1,
                       };
+                      e.formEdit = {
+                        ...e.formEdit,
+                        policy: {
+                          status: "add",
+                          id: null,
+                        },
+                      };
                     });
                     history.push("/add-policy");
                   }}
@@ -396,6 +417,13 @@ const AddButton = withRouter(
                         ...e.formStep,
                         technicalResource: 1,
                       };
+                      e.formEdit = {
+                        ...e.formEdit,
+                        technicalResource: {
+                          status: "add",
+                          id: null,
+                        },
+                      };
                     });
                     history.push("/add-technical-resource");
                   }}
@@ -408,6 +436,13 @@ const AddButton = withRouter(
                       e.formStep = {
                         ...e.formStep,
                         financingResource: 1,
+                      };
+                      e.formEdit = {
+                        ...e.formEdit,
+                        financingResource: {
+                          status: "add",
+                          id: null,
+                        },
                       };
                     });
                     history.push("/add-financing-resource");
@@ -434,6 +469,13 @@ const AddButton = withRouter(
                       e.formStep = {
                         ...e.formStep,
                         technology: 1,
+                      };
+                      e.formEdit = {
+                        ...e.formEdit,
+                        technology: {
+                          status: "add",
+                          id: null,
+                        },
                       };
                     });
                     history.push("/add-technology");
