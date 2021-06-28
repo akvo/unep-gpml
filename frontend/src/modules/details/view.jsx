@@ -332,11 +332,13 @@ const renderTypeOfActions = (params, data) => {
                         {child &&
                           child.map((child, index) => {
                             const { key, name, value } = child;
-                            return (
-                              <li className="value" key={name + index}>
-                                {name} : {data[key][value]}
-                              </li>
-                            );
+                            if (data?.[key]?.[value]) {
+                              return (
+                                <li className="value" key={name + index}>
+                                  {name} : {data[key][value]}
+                                </li>
+                              );
+                            }
                           })}
                       </ul>
                     )}
