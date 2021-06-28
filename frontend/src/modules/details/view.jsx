@@ -186,12 +186,19 @@ const renderItemValues = (params, mapping, data) => {
                   uniqBy(data[key], "isoCode")
                     .map((x, i) => languages[x.isoCode].name)
                     .join(", ")}
-                {params.type === "project" &&
+                {key === "tags" &&
+                  data[key] &&
+                  value === "join" &&
+                  type === "array" &&
+                  data[key].map((tag) => Object.values(tag)[0]).join(", ")}
+                {key !== "tags" &&
+                  params.type === "project" &&
                   data[key] &&
                   value === "join" &&
                   type === "array" &&
                   data[key].map((x) => x.name).join(", ")}
-                {params.type !== "project" &&
+                {key !== "tags" &&
+                  params.type !== "project" &&
                   data[key] &&
                   value === "join" &&
                   type === "array" &&
