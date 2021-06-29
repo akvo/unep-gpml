@@ -311,9 +311,10 @@ export const revertFormData = (formDataMapping, editData, store = {}) => {
       data = data ? data.map((x) => ({ url: x.url, lang: x.isoCode })) : "";
     }
     if (pKey === "implementingMea") {
-      data = store.meaOptions.find(
+      const mea = store.meaOptions.find(
         (x) => x.name.toLowerCase() === data.toLowerCase()
-      ).id;
+      );
+      data = mea ? mea.id : null;
     }
 
     if (type === "string") {
