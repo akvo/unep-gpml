@@ -288,7 +288,12 @@
   (let [table (cond
                 (contains? (set constants/resource-types) topic-type) "resource"
                 :else topic-type)
-        params {:table table :id id :updates updates}]
+        table-columns (dissoc updates
+                              :tags :urls :geo_coverage_value
+                              ;; FIXME: Remove once removed in the front-end
+                              :geo_coverage_value_national)
+        ;; FIXME: Handle tags, urls, geo_coverage_values
+        params {:table table :id id :updates table-columns}]
     (db.detail/update-resource conn params)))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]

@@ -42,10 +42,20 @@
 (defn generate-update-resource [params]
   ;; Code adapted from the HugSql example for generic update (https://www.hugsql.org/)
   (str/join
-   ","
+   ",\n"
    (for [[field _] (:updates params)]
-     (str (identifier-param-quote (name field) {})
-          " = :v:updates." (name field)))))
+     (let [key (name field)
+           value (str ":v:updates." key)]
+       (str (identifier-param-quote key {})
+            " = "
+            (cond
+              (= key "geo_coverage_type")
+              (str value "::geo_coverage_type")
+
+              (contains? #{"first_publication_date" "latest_amendment_date"} key)
+              (str value "::timestamptz")
+
+              :else value))))))
 
 (comment
   (generate-jsonb {:q3 1 :q4 "300" :q5 nil :created_by "John" :version 1})
