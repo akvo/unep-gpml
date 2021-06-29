@@ -279,6 +279,25 @@
                         (extra-details topic conn  (:json data))))
         (resp/not-found {:message "Not Found"})))))
 
+(def put-params
+  ;; FIXME: Add validation
+  ;; -- Cannot be empty, for one.
+  [:map])
+
+(defn update-resource [conn table id updates]
+  (let [params {:table table :id id :updates updates}]
+    (db.detail/update-resource conn params)))
+
+(defmethod ig/init-key ::put [_ {:keys [db]}]
+  (fn [{{{:keys [topic-type topic-id]} :path body :body} :parameters}]
+    (let [conn (:spec db)]
+      (update-resource conn topic-type topic-id body)
+      (resp/response {:status "success"}))))
+
+(defmethod ig/init-key ::put-params [_ _]
+  put-params)
+
+
 #_:clj-kondo/ignore
 (comment
 
