@@ -293,9 +293,9 @@
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]
   (fn [{{{:keys [topic-type topic-id]} :path body :body} :parameters}]
-    (let [conn (:spec db)]
-      (update-resource conn topic-type topic-id body)
-      (resp/response {:status "success"}))))
+    (let [conn (:spec db)
+          status (update-resource conn topic-type topic-id body)]
+      (resp/response {:status (if (= status 1) "success" "failure")}))))
 
 (defmethod ig/init-key ::put-params [_ _]
   put-params)
