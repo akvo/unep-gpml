@@ -3,6 +3,7 @@
             [gpml.db.detail :as db.detail]
             [gpml.db.project :as db.project]
             [gpml.db.initiative :as db.initiative]
+            [gpml.db.language :as db.language]
             [integrant.core :as ig]
             [medley.core :as medley]
             [ring.util.response :as resp]
@@ -284,17 +285,51 @@
   ;; -- Cannot be empty, for one.
   [:map])
 
+(defn update-resource-tags [conn table id tags]
+  ;; Delete any existing tags
+  (db.detail/delete-resource-related-data
+   conn
+   {:table (str table "_tag") :resource_type table :id id})
+
+  ;; Create tags for the resource
+  (when (seq tags)
+    (db.detail/add-resource-related-tags
+     conn
+     {:table (str table "_tag")
+      :resource_type table
+      :tags (map #(list id %) tags)})))
+
+(defn update-resource-language-urls [conn table id urls]
+  ;; Delete any existing lanugage URLs
+  (db.detail/delete-resource-related-data
+   conn
+   {:table (str table "_language_url") :resource_type table :id id})
+
+  ;; Create language URLs for the resource
+  (when (seq urls)
+    (db.detail/add-resource-related-language-urls
+     conn
+     {:table (str table "_language_url")
+      :resource_type table
+      :urls (map #(list id
+                        (:id (db.language/language-by-iso-code conn {:iso_code (:lang %)}))
+                        (:url %))
+                 urls)})))
+
 (defn update-resource [conn topic-type id updates]
   (let [table (cond
                 (contains? (set constants/resource-types) topic-type) "resource"
                 :else topic-type)
-        table-columns (dissoc updates
-                              :tags :urls :geo_coverage_value :implementing_mea
-                              ;; FIXME: Remove once removed in the front-end
-                              :geo_coverage_value_national)
-        ;; FIXME: Handle tags, urls, geo_coverage_values
-        params {:table table :id id :updates table-columns}]
-    (db.detail/update-resource conn params)))
+        table-columns (dissoc updates :tags :urls :geo_coverage_value)
+        tags (:tags updates)
+        urls (:urls updates)
+        ;; FIXME: Handle geo_coverage_value
+        geo_coverage_value (:geo_coverage_value updates)
+        params {:table table :id id :updates table-columns}
+        status (db.detail/update-resource-table conn params)]
+    (update-resource-tags conn table id tags)
+    (update-resource-language-urls conn table id urls)
+    status))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]
   (fn [{{{:keys [topic-type topic-id]} :path body :body} :parameters}]
