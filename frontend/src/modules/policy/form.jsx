@@ -145,7 +145,7 @@ const formDataMapping = [
     key: "implementingMea",
     name: "implementingMea",
     group: null,
-    type: "array",
+    type: "integer",
   },
   {
     key: "tags",
@@ -199,7 +199,11 @@ const AddPolicyForm = ({
       ) {
         api.get(`/detail/policy/${id}`).then((d) => {
           policyData.update((e) => {
-            e.data = revertFormData(formDataMapping, d.data);
+            e.data = revertFormData(
+              formDataMapping,
+              d.data,
+              UIStore.currentState
+            );
             e.editId = id;
           });
         });

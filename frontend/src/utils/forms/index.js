@@ -268,37 +268,22 @@ export const checkDependencyAnswer = (answer, dependentSchema) => {
   return dependValue;
 };
 
-export const revertFormData = (formDataMapping, editData) => {
+export const revertFormData = (formDataMapping, editData, store = {}) => {
   const formData = {};
   formDataMapping.forEach((item) => {
     const { key, name, group, type } = item;
     let pKey = name;
     let data = null;
+
     if (!group) {
       data = editData?.[key] ? editData[key] : "";
     }
     if (group) {
       data = editData?.[key] ? editData[key] : "";
     }
+
     if (pKey === "org") {
       data = data && data.map((x) => x.id);
-    }
-    if (type === "string") {
-      data = String(data);
-    }
-    if (type === "integer") {
-      data = parseInt(data);
-    }
-    if (type === "year") {
-      data = String(data);
-    }
-    if (type === "date") {
-      if (pKey === "validTo") {
-        data =
-          !data || data === "Ongoing" ? "" : moment(data).format("YYYY-MM-DD");
-      } else {
-        data = data ? moment(data).format("YYYY-MM-DD") : "";
-      }
     }
     if (pKey === "geoCoverageValue") {
       const geoCoverageType = editData["geoCoverageType"];
@@ -323,8 +308,32 @@ export const revertFormData = (formDataMapping, editData) => {
       data = data ? data.map((x) => Object.keys(x)[0]) : "";
     }
     if (pKey === "urls") {
-      data = data ? data.map((x) => ({url: x.url, lang: x.isoCode})) : "";
+      data = data ? data.map((x) => ({ url: x.url, lang: x.isoCode })) : "";
     }
+    if (pKey === "implementingMea") {
+      data = store.meaOptions.find(
+        (x) => x.name.toLowerCase() === data.toLowerCase()
+      ).id;
+    }
+
+    if (type === "string") {
+      data = String(data);
+    }
+    if (type === "integer") {
+      data = parseInt(data);
+    }
+    if (type === "year") {
+      data = String(data);
+    }
+    if (type === "date") {
+      if (pKey === "validTo") {
+        data =
+          !data || data === "Ongoing" ? "" : moment(data).format("YYYY-MM-DD");
+      } else {
+        data = data ? moment(data).format("YYYY-MM-DD") : "";
+      }
+    }
+
     if (data && !group) {
       formData[pKey] = data;
     }
