@@ -289,7 +289,7 @@
                 (contains? (set constants/resource-types) topic-type) "resource"
                 :else topic-type)
         table-columns (dissoc updates
-                              :tags :urls :geo_coverage_value
+                              :tags :urls :geo_coverage_value :implementing_mea
                               ;; FIXME: Remove once removed in the front-end
                               :geo_coverage_value_national)
         ;; FIXME: Handle tags, urls, geo_coverage_values
