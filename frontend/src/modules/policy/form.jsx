@@ -161,7 +161,7 @@ const formDataMapping = [
   },
 ];
 
-export const policyData = new Store({ data: {} });
+export const policyData = new Store({ data: {}, editId: null });
 
 const AddPolicyForm = ({
   btnSubmit,
@@ -181,7 +181,7 @@ const AddPolicyForm = ({
   } = UIStore.currentState;
 
   const formData = policyData.useState();
-  const { data } = formData;
+  const { editId, data } = formData;
   const { status, id } = formEdit.policy;
   const [dependValue, setDependValue] = useState([]);
   const [formSchema, setFormSchema] = useState({
@@ -193,21 +193,26 @@ const AddPolicyForm = ({
     if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
       // Manage form status, add/edit
-      if (status === "edit") {
+      if (
+        status === "edit" &&
+        (Object.values(data).length === 0 || editId !== id)
+      ) {
         api.get(`/detail/policy/${id}`).then((d) => {
           policyData.update((e) => {
             e.data = revertFormData(formDataMapping, d.data);
+            e.editId = id;
           });
         });
       }
     }
     // Manage form status, add/edit
-    if (status === "add") {
+    if (status === "add" && editId !== null) {
       policyData.update((e) => {
         e.data = {};
+        e.editId = null;
       });
     }
-  }, [loading, formSchema, status, id]);
+  }, [loading, formSchema, status, id, data, editId]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
@@ -228,35 +233,61 @@ const AddPolicyForm = ({
     }
 
     data = handleGeoCoverageValue(data, formData, countries);
-    data?.image === "" && delete data.image;
-    data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
+    data?.image && data?.image === "" && delete data.image;
     if (status === "edit") {
-      // ## TODO: need to submit to update endpoint
-      return;
+      data?.image && data?.image.match(customFormats.url) && delete data.image;
     }
+    data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
+
     setSending(true);
-    api
-      .post("/policy", data)
-      .then(() => {
-        UIStore.update((e) => {
-          e.formStep = {
-            ...e.formStep,
-            policy: 2,
-          };
+    if (status === "add") {
+      api
+        .post("/policy", data)
+        .then(() => {
+          UIStore.update((e) => {
+            e.formStep = {
+              ...e.formStep,
+              policy: 2,
+            };
+          });
+          // scroll top
+          window.scrollTo({ top: 0 });
+          policyData.update((e) => {
+            e.data = {};
+          });
+          setDisabledBtn({ disabled: true, type: "default" });
+        })
+        .catch(() => {
+          notification.error({ message: "An error occured" });
+        })
+        .finally(() => {
+          setSending(false);
         });
-        // scroll top
-        window.scrollTo({ top: 0 });
-        policyData.update((e) => {
-          e.data = {};
+    }
+    if (status === "edit") {
+      api
+        .put(`/edit/policy/${id}`, data)
+        .then(() => {
+          UIStore.update((e) => {
+            e.formStep = {
+              ...e.formStep,
+              policy: 2,
+            };
+          });
+          // scroll top
+          window.scrollTo({ top: 0 });
+          policyData.update((e) => {
+            e.data = {};
+          });
+          setDisabledBtn({ disabled: true, type: "default" });
+        })
+        .catch(() => {
+          notification.error({ message: "An error occured" });
+        })
+        .finally(() => {
+          setSending(false);
         });
-        setDisabledBtn({ disabled: true, type: "default" });
-      })
-      .catch(() => {
-        notification.error({ message: "An error occured" });
-      })
-      .finally(() => {
-        setSending(false);
-      });
+    }
   };
 
   const handleFormOnChange = ({ formData }) => {
@@ -304,6 +335,15 @@ const AddPolicyForm = ({
           stack: ".date.firstPublicationDate is a required property",
         });
       }
+    }
+    // overiding image validation when edit
+    if (
+      res.length > 0 &&
+      status === "edit" &&
+      data?.image &&
+      data?.image.match(customFormats.url)
+    ) {
+      res = res.filter((x) => x.property !== ".image" && x.name !== "format");
     }
     res.length === 0 && setHighlight(false);
     return res;

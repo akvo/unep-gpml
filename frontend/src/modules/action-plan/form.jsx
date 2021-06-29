@@ -77,7 +77,7 @@ const formDataMapping = [
     key: "publishYear",
     name: "publishYear",
     group: null,
-    type: "date",
+    type: "year",
   },
   {
     key: "validFrom",
@@ -137,6 +137,7 @@ const formDataMapping = [
 
 export const actionPlanData = new Store({
   data: {},
+  editId: null,
 });
 
 const AddActionPlanForm = ({
@@ -157,7 +158,7 @@ const AddActionPlanForm = ({
   } = UIStore.currentState;
 
   const formData = actionPlanData.useState();
-  const { data } = formData;
+  const { editId, data } = formData;
   const { status, id } = formEdit.actionPlan;
   const [dependValue, setDependValue] = useState([]);
   const [formSchema, setFormSchema] = useState({
@@ -169,87 +170,117 @@ const AddActionPlanForm = ({
     if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
       // Manage form status, add/edit
-      if (status === "edit") {
+      if (
+        status === "edit" &&
+        (Object.values(data).length === 0 || editId !== id)
+      ) {
         api.get(`/detail/action_plan/${id}`).then((d) => {
           actionPlanData.update((e) => {
             e.data = revertFormData(formDataMapping, d.data);
+            e.editId = id;
           });
         });
       }
     }
     // Manage form status, add/edit
-    if (status === "add") {
+    if (status === "add" && editId !== null) {
       actionPlanData.update((e) => {
         e.data = {};
+        e.editId = null;
       });
     }
-  }, [loading, formSchema, status, id]);
+  }, [loading, formSchema, status, id, data, editId]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
   }, [highlight]);
 
   const handleOnSubmit = ({ formData }) => {
-    // let data = { ...formData, resourceType: "Action Plan" };
+    let data = { ...formData, resourceType: "Action Plan" };
 
-    // data?.newOrg && delete data.newOrg;
-    // data.org = { id: formData.org };
-    // if (formData.org === -1) {
-    //   data.org = {
-    //     ...formData.newOrg,
-    //     id: formData.org,
-    //   };
-    //   data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
-    // }
-
-    // delete data.date;
-    // data.validFrom = formData.date.validFrom;
-    // data.validTo = formData?.date?.validTo || "Ongoing";
-
-    // if (data?.urls[0]?.url) {
-    //   data.urls = formData.urls.filter((it) => it?.url && it.url.length > 0);
-    // }
-    // if (!data?.urls[0]?.url) {
-    //   delete data.urls;
-    // }
-
-    // data = handleGeoCoverageValue(data, formData, countries);
-    // data?.image === "" && delete data.image;
-    // data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
-
-    // if (data?.publishYear) {
-    //   const publishYear = new Date(formData.publishYear);
-    //   data.publishYear = publishYear.getFullYear();
-    // }
-    const data = transformPostData(formDataMapping, formData, countries);
-    data["resourceType"] = "Action Plan";
-    if (status === "edit") {
-      // ## TODO: need to submit to update endpoint
-      return;
+    data?.newOrg && delete data.newOrg;
+    data.org = { id: formData.org };
+    if (formData.org === -1) {
+      data.org = {
+        ...formData.newOrg,
+        id: formData.org,
+      };
+      data.org = handleGeoCoverageValue(data.org, formData.newOrg, countries);
     }
+
+    delete data.date;
+    data.validFrom = formData.date.validFrom;
+    data.validTo = formData?.date?.validTo || "Ongoing";
+
+    if (data?.urls[0]?.url) {
+      data.urls = formData.urls.filter((it) => it?.url && it.url.length > 0);
+    }
+    if (!data?.urls[0]?.url) {
+      delete data.urls;
+    }
+
+    data = handleGeoCoverageValue(data, formData, countries);
+    data?.image && data?.image === "" && delete data.image;
+    if (status === "edit") {
+      data?.image && data?.image.match(customFormats.url) && delete data.image;
+    }
+    data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
+
+    if (data?.publishYear) {
+      const publishYear = new Date(formData.publishYear);
+      data.publishYear = publishYear.getFullYear();
+    }
+    data["resourceType"] = "Action Plan";
+
     setSending(true);
-    api
-      .post("/resource", data)
-      .then(() => {
-        UIStore.update((e) => {
-          e.formStep = {
-            ...e.formStep,
-            actionPlan: 2,
-          };
+    if (status === "add") {
+      api
+        .post("/resource", data)
+        .then(() => {
+          UIStore.update((e) => {
+            e.formStep = {
+              ...e.formStep,
+              actionPlan: 2,
+            };
+          });
+          // scroll top
+          window.scrollTo({ top: 0 });
+          actionPlanData.update((e) => {
+            e.data = {};
+          });
+          setDisabledBtn({ disabled: true, type: "default" });
+        })
+        .catch(() => {
+          notification.error({ message: "An error occured" });
+        })
+        .finally(() => {
+          setSending(false);
         });
-        // scroll top
-        window.scrollTo({ top: 0 });
-        actionPlanData.update((e) => {
-          e.data = {};
+    }
+    if (status === "edit") {
+      api
+        .put(`/edit/action_plan/${id}`, data)
+        .then(() => {
+          UIStore.update((e) => {
+            e.formStep = {
+              ...e.formStep,
+              actionPlan: 2,
+            };
+          });
+          // scroll top
+          window.scrollTo({ top: 0 });
+          actionPlanData.update((e) => {
+            e.data = {};
+          });
+          setDisabledBtn({ disabled: true, type: "default" });
+        })
+        .catch(() => {
+          notification.error({ message: "An error occured" });
+        })
+        .finally(() => {
+          setSending(false);
         });
-        setDisabledBtn({ disabled: true, type: "default" });
-      })
-      .catch(() => {
-        notification.error({ message: "An error occured" });
-      })
-      .finally(() => {
-        setSending(false);
-      });
+    }
   };
 
   const handleFormOnChange = ({ formData }) => {
@@ -282,8 +313,7 @@ const AddActionPlanForm = ({
 
   const handleTransformErrors = (errors, dependValue) => {
     const { data } = actionPlanData.currentState;
-    const res = overideValidation(errors, dependValue);
-    res.length === 0 && setHighlight(false);
+    let res = overideValidation(errors, dependValue);
     // valid from & valid to
     const { validFrom, validTo } = data?.date;
     if (validFrom && validTo) {
@@ -298,6 +328,16 @@ const AddActionPlanForm = ({
         });
       }
     }
+    // overiding image validation when edit
+    if (
+      res.length > 0 &&
+      status === "edit" &&
+      data?.image &&
+      data?.image.match(customFormats.url)
+    ) {
+      res = res.filter((x) => x.property !== ".image" && x.name !== "format");
+    }
+    res.length === 0 && setHighlight(false);
     return res;
   };
 

@@ -82,7 +82,7 @@ const formDataMapping = [
     key: "publishYear",
     name: "publishYear",
     group: null,
-    type: "string",
+    type: "year",
   },
   {
     key: "value",

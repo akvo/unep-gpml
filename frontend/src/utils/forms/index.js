@@ -10,6 +10,7 @@ import EmailWidget from "./form-email";
 
 import difference from "lodash/difference";
 import intersection from "lodash/intersection";
+import moment from "moment";
 
 const widgets = {
   Auth0Widget: Auth0Widget,
@@ -216,7 +217,7 @@ export const findCountryIsoCode = (value, countries) => {
 };
 
 export const handleGeoCoverageValue = (data, currentValue, countries) => {
-  data?.geoCoverageValueNationaldelete && delete data.geoCoverageValueNational;
+  data?.geoCoverageValueNational && delete data.geoCoverageValueNational;
   data?.geoCoverageValueTransnational &&
     delete data.geoCoverageValueTransnational;
   data?.geoCoverageValueRegional && delete data.geoCoverageValueRegional;
@@ -288,11 +289,16 @@ export const revertFormData = (formDataMapping, editData) => {
     if (type === "integer") {
       data = parseInt(data);
     }
+    if (type === "year") {
+      data = String(data);
+    }
     if (type === "date") {
       if (pKey === "validTo") {
-        data = data === "Ongoing" ? "" : data;
+        data =
+          !data || data === "Ongoing" ? "" : moment(data).format("YYYY-MM-DD");
+      } else {
+        data = data ? moment(data).format("YYYY-MM-DD") : "";
       }
-      data = String(data);
     }
     if (pKey === "geoCoverageValue") {
       const geoCoverageType = editData["geoCoverageType"];
@@ -315,6 +321,9 @@ export const revertFormData = (formDataMapping, editData) => {
     }
     if (pKey === "tags") {
       data = data ? data.map((x) => Object.keys(x)[0]) : "";
+    }
+    if (pKey === "urls") {
+      data = data ? data.map((x) => ({url: x.url, lang: x.isoCode})) : "";
     }
     if (data && !group) {
       formData[pKey] = data;
