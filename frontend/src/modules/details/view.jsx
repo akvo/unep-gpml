@@ -681,9 +681,13 @@ const BookmarkBtn = withRouter(
           form = "financingResource";
           link = "add-financing-resource";
           break;
-        default:
+        case "technology":
           form = "technology";
           link = "add-technology";
+          break;
+        default:
+          form = "event";
+          link = "add-event";
           break;
       }
       UIStore.update((e) => {
@@ -737,7 +741,8 @@ const BookmarkBtn = withRouter(
             topic.type === "technical_resource" ||
             topic.type === "financing_resource" ||
             topic.type === "policy" ||
-            topic.type === "technology") && (
+            topic.type === "technology" ||
+            topic.type === "event") && (
             <div className="edit-btn" onClick={(e) => e.stopPropagation()}>
               <Button
                 onClick={() => handleEditBtn()}

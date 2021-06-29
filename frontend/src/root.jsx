@@ -457,6 +457,13 @@ const AddButton = withRouter(
                         ...e.formStep,
                         event: 1,
                       };
+                      e.formEdit = {
+                        ...e.formEdit,
+                        event: {
+                          status: "add",
+                          id: null,
+                        },
+                      };
                     });
                     history.push("/add-event");
                   }}

@@ -6,7 +6,7 @@ import "./styles.scss";
 import AddEventForm from "./form";
 
 const AddEvent = ({ ...props }) => {
-  const { loading } = UIStore.currentState;
+  const { loading, formEdit } = UIStore.currentState;
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -24,7 +24,7 @@ const AddEvent = ({ ...props }) => {
         <div className="ui container">
           <Row>
             <Col xs={24} lg={12}>
-              <h1>Add event</h1>
+              <h1>{formEdit.event.status === "add" ? "Add" : "Edit"} event</h1>
             </Col>
             <Col xs={24} lg={12}>
               <Card>

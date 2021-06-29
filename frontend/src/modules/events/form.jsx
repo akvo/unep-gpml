@@ -161,7 +161,8 @@ const validation = (formSchema) => {
 };
 
 const AddEventForm = () => {
-  const { countries, loading, formStep } = UIStore.currentState;
+  const { countries, loading, formStep, formEdit } = UIStore.currentState;
+  const { status, id } = formEdit.event;
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [sending, setSending] = useState(false);
   const [geoType, setGeoType] = useState({ value: null, error: false });
@@ -221,7 +222,56 @@ const AddEventForm = () => {
       }
       setFormSchema(newSchema);
     })();
-  }, [countries]);
+
+    // Manage form status, add/edit
+    if (status === "edit") {
+      api.get(`/detail/event/${id}`).then((d) => {
+        setFormData(d.data);
+      });
+    }
+    if (status === "add") {
+      setTimeout(() => {
+        formRef.current?.change("ts", new Date().getTime());
+        formRef.current?.restart({ urls: [{ url: "", lang: "en" }] });
+      });
+    }
+  }, [countries, status, id]);
+
+  const setFormData = (data) => {
+    const dateFormat = "YYYY/MM/DD";
+    setTimeout(() => {
+      formRef.current?.change("ts", new Date().getTime());
+      data?.title && formRef.current?.change("title", data?.title);
+      if (data?.startDate && data?.endDate) {
+        formRef.current?.change("date", [
+          moment(data?.startDate, dateFormat),
+          moment(data?.endDate, dateFormat),
+        ]);
+      } else {
+        formRef.current?.change("date", "");
+      }
+      data?.languages &&
+        formRef.current?.change(
+          "urls",
+          data?.languages.map((x) => ({ url: x.url, lang: x.isoCode }))
+        );
+      data?.description &&
+        formRef.current?.change("description", data?.description);
+      data?.image && formRef.current?.change("photo", data?.image);
+      data?.city && formRef.current?.change("city", data?.city);
+      data?.country && formRef.current?.change("country", data?.country);
+      data?.geoCoverageType &&
+        formRef.current?.change("geoCoverageType", data?.geoCoverageType);
+      data?.geoCoverageValue &&
+        formRef.current?.change("geoCoverageValue", data?.geoCoverageValue);
+      data?.remarks && formRef.current?.change("remarks", data?.remarks);
+      data?.tags &&
+        formRef.current?.change(
+          "tags",
+          data.tags.map((x) => Number(Object.keys(x)[0]))
+        );
+    });
+  };
 
   const form = createForm({
     subscription: {},
