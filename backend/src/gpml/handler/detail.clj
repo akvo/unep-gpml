@@ -284,8 +284,11 @@
   ;; -- Cannot be empty, for one.
   [:map])
 
-(defn update-resource [conn table id updates]
-  (let [params {:table table :id id :updates updates}]
+(defn update-resource [conn topic-type id updates]
+  (let [table (cond
+                (contains? (set constants/resource-types) topic-type) "resource"
+                :else topic-type)
+        params {:table table :id id :updates updates}]
     (db.detail/update-resource conn params)))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]
