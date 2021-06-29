@@ -3,6 +3,8 @@
 
 set -eu
 
+[[ ! -f "./docker-compose.yml" ]] && { echo "Execute ${0##*/} from project top folder"; exit 1; }
+
 docker-compose exec db \
 	       psql \
 	       --dbname=gpml \
