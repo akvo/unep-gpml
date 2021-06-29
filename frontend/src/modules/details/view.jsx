@@ -733,9 +733,11 @@ const BookmarkBtn = withRouter(
           <div className="label">Bookmarks</div>
         </div>
         {profile.role === "ADMIN" &&
-          (topic.type === "action_plan" ||
+          (topic.type == "action_plan" ||
             topic.type === "technical_resource" ||
-            topic.type === "financing_resource") && (
+            topic.type === "financing_resource" ||
+            topic.type === "policy" ||
+            topic.type === "technology") && (
             <div className="edit-btn" onClick={(e) => e.stopPropagation()}>
               <Button
                 onClick={() => handleEditBtn()}

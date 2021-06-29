@@ -16,6 +16,8 @@ import {
   checkRequiredFieldFilledIn,
   handleGeoCoverageValue,
   customFormats,
+  revertFormData,
+  transformPostData,
 } from "../../utils/forms";
 import cloneDeep from "lodash/cloneDeep";
 
@@ -52,6 +54,93 @@ const getSchema = ({ countries, tags, regionOptions, meaOptions }, loading) => {
   };
 };
 
+const formDataMapping = [
+  {
+    key: "name",
+    name: "name",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "yearFounded",
+    name: "yearFounded",
+    group: null,
+    type: "date",
+  },
+  {
+    key: "organisationType",
+    name: "organisationType",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "developmentStage",
+    name: "developmentStage",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "url",
+    name: "url",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "logo",
+    name: "logo",
+    group: null,
+    type: "image",
+  },
+  {
+    key: "country",
+    name: "country",
+    group: null,
+    type: "integer",
+  },
+  {
+    key: "geoCoverageType",
+    name: "geoCoverageType",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "geoCoverageValues",
+    name: "geoCoverageValue",
+    group: null,
+    type: "array",
+  },
+  {
+    key: "remarks",
+    name: "remarks",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "image",
+    name: "image",
+    group: null,
+    type: "image",
+  },
+  {
+    key: "tags",
+    name: "tags",
+    group: null,
+    type: "array",
+  },
+  {
+    key: "email",
+    name: "email",
+    group: "relatedInfo",
+    type: "string",
+  },
+  {
+    key: "languages",
+    name: "urls",
+    group: "relatedInfo",
+    type: "array",
+  },
+];
+
 export const technologyData = new Store({ data: {} });
 
 const AddTechnologyForm = ({
@@ -68,7 +157,12 @@ const AddTechnologyForm = ({
     tags,
     loading,
     formStep,
+    formEdit,
   } = UIStore.currentState;
+
+  const formData = technologyData.useState();
+  const { data } = formData;
+  const { status, id } = formEdit.technology;
   const [dependValue, setDependValue] = useState([]);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
@@ -78,8 +172,22 @@ const AddTechnologyForm = ({
   useEffect(() => {
     if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
+      // Manage form status, add/edit
+      if (status === "edit") {
+        api.get(`/detail/technology/${id}`).then((d) => {
+          technologyData.update((e) => {
+            e.data = revertFormData(formDataMapping, d.data);
+          });
+        });
+      }
     }
-  }, [loading, formSchema]);
+    // Manage form status, add/edit
+    if (status === "add") {
+      technologyData.update((e) => {
+        e.data = {};
+      });
+    }
+  }, [loading, formSchema, status, id]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
@@ -106,7 +214,10 @@ const AddTechnologyForm = ({
       const yearFounded = new Date(formData.yearFounded);
       data.yearFounded = yearFounded.getFullYear();
     }
-
+    if (status === "edit") {
+      // ## TODO: need to submit to update endpoint
+      return;
+    }
     setSending(true);
     api
       .post("/technology", data)

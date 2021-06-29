@@ -116,11 +116,6 @@ const formDataMapping = [
     type: "array",
   },
   {
-    name: "urls",
-    group: null,
-    type: "array",
-  },
-  {
     key: "languages",
     name: "urls",
     group: null,

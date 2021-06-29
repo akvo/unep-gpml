@@ -16,6 +16,8 @@ import {
   checkRequiredFieldFilledIn,
   handleGeoCoverageValue,
   customFormats,
+  revertFormData,
+  transformPostData,
 } from "../../utils/forms";
 import cloneDeep from "lodash/cloneDeep";
 
@@ -54,6 +56,111 @@ const getSchema = ({ countries, tags, regionOptions, meaOptions }, loading) => {
   };
 };
 
+const formDataMapping = [
+  {
+    key: "title",
+    name: "title",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "originalTitle",
+    name: "originalTitle",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "dataSource",
+    name: "dataSource",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "url",
+    name: "url",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "typeOfLaw",
+    name: "typeOfLaw",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "recordNumber",
+    name: "recordNumber",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "firstPublicationDate",
+    name: "firstPublicationDate",
+    group: "date",
+    type: "date",
+  },
+  {
+    key: "latestAmendmentDate",
+    name: "latestAmendmentDate",
+    group: "date",
+    type: "date",
+  },
+  {
+    key: "status",
+    name: "status",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "country",
+    name: "country",
+    group: null,
+    type: "integer",
+  },
+  {
+    key: "geoCoverageType",
+    name: "geoCoverageType",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "geoCoverageValues",
+    name: "geoCoverageValue",
+    group: null,
+    type: "array",
+  },
+  {
+    key: "abstract",
+    name: "abstract",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "image",
+    name: "image",
+    group: null,
+    type: "image",
+  },
+  {
+    key: "implementingMea",
+    name: "implementingMea",
+    group: null,
+    type: "array",
+  },
+  {
+    key: "tags",
+    name: "tags",
+    group: null,
+    type: "array",
+  },
+  {
+    key: "languages",
+    name: "urls",
+    group: null,
+    type: "array",
+  },
+];
+
 export const policyData = new Store({ data: {} });
 
 const AddPolicyForm = ({
@@ -70,7 +177,12 @@ const AddPolicyForm = ({
     tags,
     loading,
     formStep,
+    formEdit,
   } = UIStore.currentState;
+
+  const formData = policyData.useState();
+  const { data } = formData;
+  const { status, id } = formEdit.policy;
   const [dependValue, setDependValue] = useState([]);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
@@ -80,8 +192,22 @@ const AddPolicyForm = ({
   useEffect(() => {
     if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
+      // Manage form status, add/edit
+      if (status === "edit") {
+        api.get(`/detail/policy/${id}`).then((d) => {
+          policyData.update((e) => {
+            e.data = revertFormData(formDataMapping, d.data);
+          });
+        });
+      }
     }
-  }, [loading, formSchema]);
+    // Manage form status, add/edit
+    if (status === "add") {
+      policyData.update((e) => {
+        e.data = {};
+      });
+    }
+  }, [loading, formSchema, status, id]);
 
   useEffect(() => {
     setFormSchema({ schema: schema, loading: true });
@@ -104,7 +230,10 @@ const AddPolicyForm = ({
     data = handleGeoCoverageValue(data, formData, countries);
     data?.image === "" && delete data.image;
     data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
-
+    if (status === "edit") {
+      // ## TODO: need to submit to update endpoint
+      return;
+    }
     setSending(true);
     api
       .post("/policy", data)
