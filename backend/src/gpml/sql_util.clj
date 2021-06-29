@@ -1,5 +1,6 @@
 (ns gpml.sql-util
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [hugsql.parameters :refer [identifier-param-quote]]))
 
 (defn is-jsonb [n]
   (contains? #{:q1 :q2 :q3 :q4
@@ -37,6 +38,14 @@
                (if-not (= k :id)
                  (str (str/replace (str k) ":" "") (str " = to_jsonb(:v" k "::json) "))
                  ""))) "," ""))
+
+(defn generate-update-resource [params]
+  ;; Code adapted from the HugSql example for generic update (https://www.hugsql.org/)
+  (str/join
+   ","
+   (for [[field _] (:updates params)]
+     (str (identifier-param-quote (name field) {})
+          " = :v:updates." (name field)))))
 
 (comment
   (generate-jsonb {:q3 1 :q4 "300" :q5 nil :created_by "John" :version 1})
