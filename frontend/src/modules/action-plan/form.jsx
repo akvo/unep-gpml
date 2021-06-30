@@ -235,7 +235,6 @@ const AddActionPlanForm = withRouter(
         const publishYear = new Date(formData.publishYear);
         data.publishYear = publishYear.getFullYear();
       }
-      data["resourceType"] = "Action Plan";
 
       setSending(true);
       if (status === "add") {

@@ -219,8 +219,6 @@ const AddResourceForm = withRouter(
         const publishYear = new Date(formData.publishYear);
         data.publishYear = publishYear.getFullYear();
       }
-      // const data = transformPostData(formDataMapping, formData, countries);
-      data["resourceType"] = "Technical Resource";
 
       setSending(true);
       if (status === "add") {

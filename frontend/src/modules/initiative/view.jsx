@@ -8,6 +8,7 @@ import AddInitiativeForm from "./form";
 import StickyBox from "react-sticky-box";
 import { schema } from "./schema";
 import cloneDeep from "lodash/cloneDeep";
+import api from "../../utils/api";
 
 const { Step } = Steps;
 
@@ -735,7 +736,8 @@ const revertFormData = (data) => {
 };
 
 export const initiativeData = new Store({
-  data: revertFormData(editInitiative),
+  data: initialFormData,
+  editId: null,
 });
 
 const getSchema = (
@@ -840,14 +842,18 @@ const getSchema = (
 const AddInitiative = ({ ...props }) => {
   const minHeightContainer = innerHeight * 0.8;
   const minHeightCard = innerHeight * 0.75;
-  const { data } = initiativeData.useState();
   const {
     countries,
     organisations,
     tags,
     loading,
     formStep,
+    formEdit,
   } = UIStore.currentState;
+
+  const formData = initiativeData.useState();
+  const { editId, data } = formData;
+  const { status, id } = formEdit.initiative;
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -876,8 +882,27 @@ const AddInitiative = ({ ...props }) => {
   useEffect(() => {
     if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
+      // Manage form status, add/edit
+      if (
+        status === "edit" &&
+        (Object.values(data).length === 0 || editId !== id)
+      ) {
+        // api.get(`/detail/action_plan/${id}`).then((d) => {
+        initiativeData.update((e) => {
+          e.data = revertFormData(editInitiative);
+          e.editId = id;
+        });
+        // });
+      }
     }
-  }, [loading, formSchema]);
+    // Manage form status, add/edit
+    if (status === "add" && editId !== null) {
+      initiativeData.update((e) => {
+        e.data = initialFormData;
+        e.editId = null;
+      });
+    }
+  }, [loading, formSchema, status, id, data, editId]);
 
   const renderSteps = (parentTitle, section, steps) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
