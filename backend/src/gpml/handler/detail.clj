@@ -368,7 +368,8 @@
     (update-resource-tags conn table id tags)
     (update-resource-language-urls conn table id urls)
     (update-resource-geo-coverage-values conn table id updates)
-    (update-resource-organisation conn table id org-id)
+    (when (contains? #{"resource"} table)
+      (update-resource-organisation conn table id org-id))
     status))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]
