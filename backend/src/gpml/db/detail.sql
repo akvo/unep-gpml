@@ -39,3 +39,8 @@ values :t*:urls RETURNING id;
 -- :doc Add geo coverage values to a resource
 insert into :i:table (:i:resource_type, country_group, country)
 values :t*:geo RETURNING id;
+
+-- :name add-resource-related-org :<! :1
+-- :doc Add an organisation related to a resource
+insert into :i:table (:i:resource_type, organisation)
+values (:id, :organisation) RETURNING id;

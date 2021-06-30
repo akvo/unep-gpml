@@ -5,6 +5,7 @@
             [gpml.db.initiative :as db.initiative]
             [gpml.db.language :as db.language]
             [gpml.handler.geo :as handler.geo]
+            [gpml.handler.organisation :as handler.org]
             [integrant.core :as ig]
             [medley.core :as medley]
             [ring.util.response :as resp]
@@ -331,18 +332,43 @@
       :resource_type table
       :geo (handler.geo/get-geo-vector id geo_data)})))
 
+(defn update-resource-organisation [conn table id org-id]
+  ;; Delete any existing org
+  (db.detail/delete-resource-related-data
+   conn
+   {:table (str table "_organisation") :resource_type table :id id})
+
+  ;; Create organisation mapping for the resource
+  (when org-id
+    (db.detail/add-resource-related-org
+     conn
+     {:table (str table "_organisation")
+      :resource_type table
+      :id id
+      :organisation org-id})))
+
 (defn update-resource [conn topic-type id updates]
   (let [table (cond
                 (contains? (set constants/resource-types) topic-type) "resource"
                 :else topic-type)
-        table-columns (dissoc updates :tags :urls :geo_coverage_value)
+        table-columns (dissoc updates
+                              :tags :urls :geo_coverage_value :org
+                              ;; NOTE: we ignore resource_type since
+                              ;; we don't expect it to change!
+                              :resource_type)
         tags (:tags updates)
         urls (:urls updates)
         params {:table table :id id :updates table-columns}
-        status (db.detail/update-resource-table conn params)]
+        status (db.detail/update-resource-table conn params)
+        org (:org updates)
+        org-id (and org
+                    (or (and (= -1 (:id org))
+                             (handler.org/find-or-create conn org))
+                        (:id org)))]
     (update-resource-tags conn table id tags)
     (update-resource-language-urls conn table id urls)
     (update-resource-geo-coverage-values conn table id updates)
+    (update-resource-organisation conn table id org-id)
     status))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]
