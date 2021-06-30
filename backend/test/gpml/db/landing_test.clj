@@ -7,7 +7,9 @@
             [gpml.db.landing :as db.landing]
             [gpml.db.resource :as db.resource]
             [gpml.db.event :as db.event]
+            [gpml.db.browse :as db.browse]
             [gpml.fixtures :as fixtures]
+            [gpml.seeder.main :as seeder]
             [integrant.core :as ig]))
 
 (use-fixtures :each fixtures/with-test-system)
@@ -73,9 +75,9 @@
                                      first
                                      :financing_resource))]
       (are [expected country-id] (= expected (valid? country-id))
-        1 (-> (db.country/country-by-code conn {:name "ESP"}) :id)
-        1 (-> (db.country/country-by-code conn {:name "IND"}) :id)
-        2 (-> (db.country/country-by-code conn {:name "IDN"}) :id)
+        2 (-> (db.country/country-by-code conn {:name "ESP"}) :id)
+        2 (-> (db.country/country-by-code conn {:name "IND"}) :id)
+        3 (-> (db.country/country-by-code conn {:name "IDN"}) :id)
         1 (-> (db.country/country-by-code conn {:name "KEN"}) :id)
         0 (-> (db.country/country-by-code conn {:name "NLD"}) :id)))))
 
@@ -162,3 +164,20 @@
         (is (= [0 0] (summary (org spanish) (org asia) (org {:geo_coverage_type "global"})))))
 
       )))
+
+(deftest landing-counts
+  (let [db-key :duct.database.sql/hikaricp
+        system (ig/init fixtures/*system* [db-key])
+        db (-> system db-key :spec)]
+    (seeder/seed db {:country? true :resource? true})
+    (testing "Landing counts match browse results"
+      (let [counts (db.landing/map-counts db)
+            afg 4 ;; country_id
+            browse (db.browse/filter-topic db {:topic #{"financing_resource"}
+                                               :geo-coverage [afg]})]
+        (is (= (->> counts
+                    (filter #(= afg (:id %)))
+                    first
+                    :counts
+                    :financing_resource)
+               (count browse)))))))
