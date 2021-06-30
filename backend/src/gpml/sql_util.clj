@@ -52,7 +52,7 @@
               (= key "geo_coverage_type")
               (str value "::geo_coverage_type")
 
-              (contains? #{"first_publication_date" "latest_amendment_date"} key)
+              (contains? #{"first_publication_date" "latest_amendment_date" "end_date" "start_date"} key)
               (str value "::timestamptz")
 
               :else value))))))
