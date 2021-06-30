@@ -10,6 +10,7 @@ import api from "../../utils/api";
 import { cloneDeep } from "lodash";
 import moment from "moment";
 import { withRouter } from "react-router-dom";
+import { customFormats } from "../../utils/forms";
 
 const GeoCoverageInput = (props) => {
   const { countries, regionOptions, meaOptions } = UIStore.currentState;
@@ -183,7 +184,9 @@ const AddEventForm = withRouter(({ history }) => {
     } else if (data.geoCoverageType === "global") {
       delete data.geoCoverageValue;
     }
-    data?.ts && delete data.ts;
+    if (status === "edit") {
+      data?.photo && data?.photo.match(customFormats.url) && delete data.photo;
+    }
 
     setSending(true);
     if (status === "add") {
