@@ -302,6 +302,7 @@ export const revertFormData = (formDataMapping, editData, store = {}) => {
       }
       if (geoCoverageType === "sub-national") {
         pKey = "geoCoverageValueSubNational";
+        data = data[0];
       }
     }
     if (pKey === "tags") {
