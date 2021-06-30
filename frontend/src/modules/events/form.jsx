@@ -296,8 +296,17 @@ const AddEventForm = withRouter(({ history }) => {
       data?.country && formRef.current?.change("country", data?.country);
       data?.geoCoverageType &&
         formRef.current?.change("geoCoverageType", data?.geoCoverageType);
-      data?.geoCoverageValue &&
-        formRef.current?.change("geoCoverageValue", data?.geoCoverageValue);
+      let geoCoverageValue = null;
+      if (
+        data.geoCoverageType === "national" ||
+        data.geoCoverageType === "sub-national"
+      ) {
+        geoCoverageValue = data?.geoCoverageValues[0];
+      } else {
+        geoCoverageValue = data?.geoCoverageValues;
+      }
+      data?.geoCoverageValues &&
+        formRef.current?.change("geoCoverageValue", geoCoverageValue);
       data?.remarks && formRef.current?.change("remarks", data?.remarks);
       data?.tags &&
         formRef.current?.change(
