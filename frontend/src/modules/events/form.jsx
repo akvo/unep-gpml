@@ -187,6 +187,7 @@ const AddEventForm = withRouter(({ history }) => {
     if (status === "edit") {
       data?.photo && data?.photo.match(customFormats.url) && delete data.photo;
     }
+    data?.ts && delete data.ts;
 
     setSending(true);
     if (status === "add") {
@@ -225,7 +226,7 @@ const AddEventForm = withRouter(({ history }) => {
           });
           // scroll top
           window.scrollTo({ top: 0 });
-          history.push(`/technology/${id}`);
+          history.push(`/event/${id}`);
         })
         .catch(() => {
           notification.error({ message: "An error occured" });
@@ -406,7 +407,7 @@ const AddEventForm = withRouter(({ history }) => {
                     size="large"
                     onClick={() => handleSubmit()}
                   >
-                    Add event
+                    {status === "add" ? "Add" : "Update"} event
                   </Button>
                 </div>
               );
