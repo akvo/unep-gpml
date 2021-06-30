@@ -20,6 +20,7 @@ import {
   transformPostData,
 } from "../../utils/forms";
 import cloneDeep from "lodash/cloneDeep";
+import { withRouter } from "react-router-dom";
 
 const Form = withTheme(AntDTheme);
 
@@ -65,7 +66,7 @@ const formDataMapping = [
     key: "yearFounded",
     name: "yearFounded",
     group: null,
-    type: "date",
+    type: "year",
   },
   {
     key: "organisationType",
@@ -141,177 +142,230 @@ const formDataMapping = [
   },
 ];
 
-export const technologyData = new Store({ data: {} });
+export const technologyData = new Store({ data: {}, editId: null });
 
-const AddTechnologyForm = ({
-  btnSubmit,
-  sending,
-  setSending,
-  highlight,
-  setHighlight,
-  setDisabledBtn,
-}) => {
-  const {
-    countries,
-    organisations,
-    tags,
-    loading,
-    formStep,
-    formEdit,
-  } = UIStore.currentState;
+const AddTechnologyForm = withRouter(
+  ({
+    btnSubmit,
+    sending,
+    setSending,
+    highlight,
+    setHighlight,
+    setDisabledBtn,
+    history,
+  }) => {
+    const {
+      countries,
+      organisations,
+      tags,
+      loading,
+      formStep,
+      formEdit,
+    } = UIStore.currentState;
 
-  const formData = technologyData.useState();
-  const { data } = formData;
-  const { status, id } = formEdit.technology;
-  const [dependValue, setDependValue] = useState([]);
-  const [formSchema, setFormSchema] = useState({
-    schema: schema,
-    loading: true,
-  });
+    const formData = technologyData.useState();
+    const { data, editId } = formData;
+    const { status, id } = formEdit.technology;
+    const [dependValue, setDependValue] = useState([]);
+    const [formSchema, setFormSchema] = useState({
+      schema: schema,
+      loading: true,
+    });
 
-  useEffect(() => {
-    if (formSchema.loading && !loading) {
-      setFormSchema(getSchema(UIStore.currentState, false));
-      // Manage form status, add/edit
-      if (status === "edit") {
-        api.get(`/detail/technology/${id}`).then((d) => {
-          technologyData.update((e) => {
-            e.data = revertFormData(formDataMapping, d.data);
+    useEffect(() => {
+      if (formSchema.loading && !loading) {
+        setFormSchema(getSchema(UIStore.currentState, false));
+        // Manage form status, add/edit
+        if (
+          status === "edit" &&
+          (Object.values(data).length === 0 || editId !== id)
+        ) {
+          api;
+          api.get(`/detail/technology/${id}`).then((d) => {
+            technologyData.update((e) => {
+              e.data = revertFormData(formDataMapping, d.data);
+              e.editId = id;
+            });
           });
-        });
+        }
       }
-    }
-    // Manage form status, add/edit
-    if (status === "add") {
-      technologyData.update((e) => {
-        e.data = {};
-      });
-    }
-  }, [loading, formSchema, status, id]);
-
-  useEffect(() => {
-    setFormSchema({ schema: schema, loading: true });
-  }, [highlight]);
-
-  const handleOnSubmit = ({ formData }) => {
-    let data = { ...formData };
-
-    if (data?.relatedInfo?.email) {
-      data.email = formData.relatedInfo.email;
-    }
-    if (data?.relatedInfo?.urls[0]?.url) {
-      data.urls = formData.relatedInfo.urls.filter(
-        (it) => it?.url && it.url.length > 0
-      );
-    }
-    data?.relatedInfo && delete data.relatedInfo;
-
-    data = handleGeoCoverageValue(data, formData, countries);
-    data?.image === "" && delete data.image;
-    data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
-
-    if (data?.yearFounded) {
-      const yearFounded = new Date(formData.yearFounded);
-      data.yearFounded = yearFounded.getFullYear();
-    }
-    if (status === "edit") {
-      // ## TODO: need to submit to update endpoint
-      return;
-    }
-    setSending(true);
-    api
-      .post("/technology", data)
-      .then(() => {
-        UIStore.update((e) => {
-          e.formStep = {
-            ...e.formStep,
-            technology: 2,
-          };
-        });
-        // scroll top
-        window.scrollTo({ top: 0 });
+      // Manage form status, add/edit
+      if (status === "add" && editId !== null) {
         technologyData.update((e) => {
           e.data = {};
         });
-        setDisabledBtn({ disabled: true, type: "default" });
-      })
-      .catch(() => {
-        notification.error({ message: "An error occured" });
-      })
-      .finally(() => {
-        setSending(false);
+      }
+    }, [loading, formSchema, status, id, data, editId]);
+
+    useEffect(() => {
+      setFormSchema({ schema: schema, loading: true });
+    }, [highlight]);
+
+    const handleOnSubmit = ({ formData }) => {
+      let data = { ...formData };
+
+      if (data?.relatedInfo?.email) {
+        data.email = formData.relatedInfo.email;
+      }
+      if (data?.relatedInfo?.urls[0]?.url) {
+        data.urls = formData.relatedInfo.urls.filter(
+          (it) => it?.url && it.url.length > 0
+        );
+      }
+      data?.relatedInfo && delete data.relatedInfo;
+
+      data = handleGeoCoverageValue(data, formData, countries);
+      data?.image && data?.image === "" && delete data.image;
+      if (status === "edit") {
+        data?.image &&
+          data?.image.match(customFormats.url) &&
+          delete data.image;
+      }
+      data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
+
+      if (data?.yearFounded) {
+        const yearFounded = new Date(formData.yearFounded);
+        data.yearFounded = yearFounded.getFullYear();
+      }
+
+      setSending(true);
+      if (status === "add") {
+        api
+          .post("/technology", data)
+          .then(() => {
+            UIStore.update((e) => {
+              e.formStep = {
+                ...e.formStep,
+                technology: 2,
+              };
+            });
+            // scroll top
+            window.scrollTo({ top: 0 });
+            technologyData.update((e) => {
+              e.data = {};
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+          })
+          .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+      if (status === "edit") {
+        api
+          .put(`/edit/technology/${id}`, data)
+          .then(() => {
+            notification.success({ message: "Update success" });
+            UIStore.update((e) => {
+              e.formEdit = {
+                ...e.formEdit,
+                technology: {
+                  status: "add",
+                  id: null,
+                },
+              };
+            });
+            // scroll top
+            window.scrollTo({ top: 0 });
+            technologyData.update((e) => {
+              e.data = {};
+              e.editId = null;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            history.push(`/technology/${id}`);
+          })
+          .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+    };
+
+    const handleFormOnChange = ({ formData }) => {
+      // remove logo property when user remove logo from form
+      formData?.logo === "" && delete formData.logo;
+      // remove image property when user remove image from form
+      formData?.image === "" && delete formData.image;
+      technologyData.update((e) => {
+        e.data = formData;
       });
-  };
+      // to overide validation
+      let dependFields = [];
+      let requiredFields = [];
+      collectDependSchema(
+        dependFields,
+        formData,
+        formSchema.schema,
+        requiredFields
+      );
+      setDependValue(dependFields);
+      // enable btn submit
+      const requiredFilledIn = checkRequiredFieldFilledIn(
+        formData,
+        dependFields,
+        requiredFields
+      );
+      requiredFilledIn.length === 0 &&
+        setDisabledBtn({ disabled: false, type: "primary" });
+      requiredFilledIn.length !== 0 &&
+        setDisabledBtn({ disabled: true, type: "default" });
+    };
 
-  const handleFormOnChange = ({ formData }) => {
-    // remove logo property when user remove logo from form
-    formData?.logo === "" && delete formData.logo;
-    // remove image property when user remove image from form
-    formData?.image === "" && delete formData.image;
-    technologyData.update((e) => {
-      e.data = formData;
-    });
-    // to overide validation
-    let dependFields = [];
-    let requiredFields = [];
-    collectDependSchema(
-      dependFields,
-      formData,
-      formSchema.schema,
-      requiredFields
+    const handleTransformErrors = (errors, dependValue) => {
+      let res = overideValidation(errors, dependValue);
+      // overiding image validation when edit
+      if (
+        res.length > 0 &&
+        status === "edit" &&
+        data?.image &&
+        data?.image.match(customFormats.url)
+      ) {
+        res = res.filter(
+          (x) => x?.params && x.params?.format && x.params.format !== "data-url"
+        );
+      }
+      res.length === 0 && setHighlight(false);
+      return res;
+    };
+
+    return (
+      <div className="add-technology-form">
+        {formStep.technology === 1 && (
+          <Form
+            idPrefix="technology"
+            schema={formSchema.schema}
+            uiSchema={uiSchema}
+            formData={data}
+            onChange={(e) => handleFormOnChange(e)}
+            onSubmit={(e) => handleOnSubmit(e)}
+            ArrayFieldTemplate={ArrayFieldTemplate}
+            ObjectFieldTemplate={ObjectFieldTemplate}
+            FieldTemplate={FieldTemplate}
+            widgets={widgets}
+            customFormats={customFormats}
+            transformErrors={(errors) =>
+              handleTransformErrors(errors, dependValue)
+            }
+            showErrorList={false}
+          >
+            <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
+              Fire
+            </button>
+          </Form>
+        )}
+        {formStep.technology === 2 && (
+          <div>
+            <h3>Thank you for adding the Technology</h3>
+            <p>we'll let you know once an admin has approved it</p>
+          </div>
+        )}
+      </div>
     );
-    setDependValue(dependFields);
-    // enable btn submit
-    const requiredFilledIn = checkRequiredFieldFilledIn(
-      formData,
-      dependFields,
-      requiredFields
-    );
-    requiredFilledIn.length === 0 &&
-      setDisabledBtn({ disabled: false, type: "primary" });
-    requiredFilledIn.length !== 0 &&
-      setDisabledBtn({ disabled: true, type: "default" });
-  };
-
-  const handleTransformErrors = (errors, dependValue) => {
-    const res = overideValidation(errors, dependValue);
-    res.length === 0 && setHighlight(false);
-    return res;
-  };
-
-  return (
-    <div className="add-technology-form">
-      {formStep.technology === 1 && (
-        <Form
-          idPrefix="technology"
-          schema={formSchema.schema}
-          uiSchema={uiSchema}
-          formData={technologyData.currentState.data}
-          onChange={(e) => handleFormOnChange(e)}
-          onSubmit={(e) => handleOnSubmit(e)}
-          ArrayFieldTemplate={ArrayFieldTemplate}
-          ObjectFieldTemplate={ObjectFieldTemplate}
-          FieldTemplate={FieldTemplate}
-          widgets={widgets}
-          customFormats={customFormats}
-          transformErrors={(errors) =>
-            handleTransformErrors(errors, dependValue)
-          }
-          showErrorList={false}
-        >
-          <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
-            Fire
-          </button>
-        </Form>
-      )}
-      {formStep.technology === 2 && (
-        <div>
-          <h3>Thank you for adding the Technology</h3>
-          <p>we'll let you know once an admin has approved it</p>
-        </div>
-      )}
-    </div>
-  );
-};
+  }
+);
 
 export default AddTechnologyForm;

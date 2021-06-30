@@ -335,7 +335,6 @@ const AddPolicyForm = withRouter(
     };
 
     const handleTransformErrors = (errors, dependValue) => {
-      const { data } = policyData.currentState;
       let res = overideValidation(errors, dependValue);
       // publication and amandment date validation
       const { firstPublicationDate, latestAmendmentDate } = data?.date;
@@ -359,7 +358,9 @@ const AddPolicyForm = withRouter(
         data?.image &&
         data?.image.match(customFormats.url)
       ) {
-        res = res.filter((x) => x.property !== ".image" && x.name !== "format");
+        res = res.filter(
+          (x) => x?.params && x.params?.format && x.params.format !== "data-url"
+        );
       }
       res.length === 0 && setHighlight(false);
       return res;
@@ -372,7 +373,7 @@ const AddPolicyForm = withRouter(
             idPrefix="policy"
             schema={formSchema.schema}
             uiSchema={uiSchema}
-            formData={policyData.currentState.data}
+            formData={data}
             onChange={(e) => handleFormOnChange(e)}
             onSubmit={(e) => handleOnSubmit(e)}
             ArrayFieldTemplate={ArrayFieldTemplate}

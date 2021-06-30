@@ -9,6 +9,7 @@ import { languages } from "countries-list";
 import api from "../../utils/api";
 import { cloneDeep } from "lodash";
 import moment from "moment";
+import { withRouter } from "react-router-dom";
 
 const GeoCoverageInput = (props) => {
   const { countries, regionOptions, meaOptions } = UIStore.currentState;
@@ -160,7 +161,7 @@ const validation = (formSchema) => {
   );
 };
 
-const AddEventForm = () => {
+const AddEventForm = withRouter(({ history }) => {
   const { countries, loading, formStep, formEdit } = UIStore.currentState;
   const { status, id } = formEdit.event;
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
@@ -182,25 +183,54 @@ const AddEventForm = () => {
     } else if (data.geoCoverageType === "global") {
       delete data.geoCoverageValue;
     }
+    data?.ts && delete data.ts;
+
     setSending(true);
-    api
-      .post("/event", data)
-      .then(() => {
-        UIStore.update((e) => {
-          e.formStep = {
-            ...e.formStep,
-            event: 2,
-          };
+    if (status === "add") {
+      api
+        .post("/event", data)
+        .then(() => {
+          UIStore.update((e) => {
+            e.formStep = {
+              ...e.formStep,
+              event: 2,
+            };
+          });
+          // scroll top
+          window.scrollTo({ top: 0 });
+        })
+        .catch(() => {
+          notification.error({ message: "An error occured" });
+        })
+        .finally(() => {
+          setSending(false);
         });
-        // scroll top
-        window.scrollTo({ top: 0 });
-      })
-      .catch(() => {
-        notification.error({ message: "An error occured" });
-      })
-      .finally(() => {
-        setSending(false);
-      });
+    }
+    if (status === "edit") {
+      api
+        .put(`/edit/event/${id}`, data)
+        .then(() => {
+          notification.success({ message: "Update success" });
+          UIStore.update((e) => {
+            e.formEdit = {
+              ...e.formEdit,
+              event: {
+                status: "add",
+                id: null,
+              },
+            };
+          });
+          // scroll top
+          window.scrollTo({ top: 0 });
+          history.push(`/technology/${id}`);
+        })
+        .catch(() => {
+          notification.error({ message: "An error occured" });
+        })
+        .finally(() => {
+          setSending(false);
+        });
+    }
   };
 
   useEffect(() => {
@@ -389,6 +419,6 @@ const AddEventForm = () => {
       )}
     </div>
   );
-};
+});
 
 export default AddEventForm;
