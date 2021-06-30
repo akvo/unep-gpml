@@ -4,6 +4,7 @@
             [gpml.db.project :as db.project]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.language :as db.language]
+            [gpml.handler.geo :as handler.geo]
             [integrant.core :as ig]
             [medley.core :as medley]
             [ring.util.response :as resp]
@@ -316,6 +317,20 @@
                         (:url %))
                  urls)})))
 
+(defn update-resource-geo-coverage-values [conn table id geo_data]
+  ;; Delete any existing geo coverage values
+  (db.detail/delete-resource-related-data
+   conn
+   {:table (str table "_geo_coverage") :resource_type table :id id})
+
+  ;; Create geo coverage values for the resource
+  (when (seq (:geo_coverage_value geo_data))
+    (db.detail/add-resource-related-geo
+     conn
+     {:table (str table "_geo_coverage")
+      :resource_type table
+      :geo (handler.geo/get-geo-vector id geo_data)})))
+
 (defn update-resource [conn topic-type id updates]
   (let [table (cond
                 (contains? (set constants/resource-types) topic-type) "resource"
@@ -323,12 +338,11 @@
         table-columns (dissoc updates :tags :urls :geo_coverage_value)
         tags (:tags updates)
         urls (:urls updates)
-        ;; FIXME: Handle geo_coverage_value
-        geo_coverage_value (:geo_coverage_value updates)
         params {:table table :id id :updates table-columns}
         status (db.detail/update-resource-table conn params)]
     (update-resource-tags conn table id tags)
     (update-resource-language-urls conn table id urls)
+    (update-resource-geo-coverage-values conn table id updates)
     status))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]

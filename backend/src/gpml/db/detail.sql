@@ -34,3 +34,8 @@ values :t*:tags RETURNING id;
 -- :doc Add language URLs to a resource
 insert into :i:table (:i:resource_type, language, url)
 values :t*:urls RETURNING id;
+
+-- :name add-resource-related-geo :<! :*
+-- :doc Add geo coverage values to a resource
+insert into :i:table (:i:resource_type, country_group, country)
+values :t*:geo RETURNING id;
