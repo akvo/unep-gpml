@@ -355,7 +355,9 @@
                               :tags :urls :geo_coverage_value :org
                               ;; NOTE: we ignore resource_type since
                               ;; we don't expect it to change!
-                              :resource_type)
+                              :resource_type
+                              ;; FIXME: Handle the following
+                              :photo)
         tags (:tags updates)
         urls (:urls updates)
         params {:table table :id id :updates table-columns}
