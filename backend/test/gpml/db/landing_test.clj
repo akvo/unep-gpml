@@ -75,9 +75,9 @@
                                      first
                                      :financing_resource))]
       (are [expected country-id] (= expected (valid? country-id))
-        1 (-> (db.country/country-by-code conn {:name "ESP"}) :id)
-        1 (-> (db.country/country-by-code conn {:name "IND"}) :id)
-        2 (-> (db.country/country-by-code conn {:name "IDN"}) :id)
+        2 (-> (db.country/country-by-code conn {:name "ESP"}) :id)
+        2 (-> (db.country/country-by-code conn {:name "IND"}) :id)
+        3 (-> (db.country/country-by-code conn {:name "IDN"}) :id)
         1 (-> (db.country/country-by-code conn {:name "KEN"}) :id)
         0 (-> (db.country/country-by-code conn {:name "NLD"}) :id)))))
 
