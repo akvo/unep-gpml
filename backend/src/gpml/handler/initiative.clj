@@ -19,5 +19,11 @@
        (:referrer req)
        (merge initiative-id {:message "New initiative created"})))))
 
+(defmethod ig/init-key :gpml.handler.initiative/get [_ {:keys [db]}]
+  (fn [{{{:keys [id]} :path} :parameters}]
+    (let [conn (:spec db)
+          data (db.initiative/initiative-by-id conn {:id id})]
+      (resp/response data))))
+
 (defmethod ig/init-key :gpml.handler.initiative/post-params [_ _]
   [:map [:version integer?]])
