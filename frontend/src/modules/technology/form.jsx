@@ -216,10 +216,12 @@ const AddTechnologyForm = withRouter(
 
       data = handleGeoCoverageValue(data, formData, countries);
       data?.image && data?.image === "" && delete data.image;
+      data?.logo && data?.logo === "" && delete data.logo;
       if (status === "edit") {
         data?.image &&
           data?.image.match(customFormats.url) &&
           delete data.image;
+        data?.logo && data?.logo.match(customFormats.url) && delete data.logo;
       }
       data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
