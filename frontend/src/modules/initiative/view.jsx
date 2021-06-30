@@ -682,7 +682,7 @@ const formDataMapping = [
   },
 ];
 
-const getRevertValue = (type, value) => {
+const getRevertValue = (type, value, name) => {
   let res = value;
   const isObject = typeof value === "object";
   const isArray = Array.isArray(value);
@@ -691,7 +691,16 @@ const getRevertValue = (type, value) => {
   }
   if (type === "option" && isObject && !isArray) {
     res = Object.keys(value)[0];
+    // case for geocoveragetype
+    if (name === "q24") {
+      res = Object.values(value)[0];
+    }
     res = isNaN(Number(res)) ? res : Number(res);
+    // case for currency code
+    if (name === "q36_1" || name === "q37_1") {
+      res = res.split("_").join("");
+      res = String(res).toUpperCase();
+    }
   }
   if (type === "multiple-option" && isObject && isArray) {
     res = value.map((item) => {
@@ -715,7 +724,7 @@ const revertFormData = (data) => {
         ...formData,
         [section]: {
           ...formData[section],
-          [question]: getRevertValue(type, value),
+          [question]: getRevertValue(type, value, name),
         },
       };
     }
@@ -726,7 +735,7 @@ const revertFormData = (data) => {
           ...formData[section],
           [group]: {
             ...formData[section][group],
-            [question]: getRevertValue(type, value),
+            [question]: getRevertValue(type, value, name),
           },
         },
       };
@@ -887,12 +896,12 @@ const AddInitiative = ({ ...props }) => {
         status === "edit" &&
         (Object.values(data).length === 0 || editId !== id)
       ) {
-        // api.get(`/detail/action_plan/${id}`).then((d) => {
-        initiativeData.update((e) => {
-          e.data = revertFormData(editInitiative);
-          e.editId = id;
+        api.getRaw(`/initiative/${id}`).then((d) => {
+          initiativeData.update((e) => {
+            e.data = revertFormData(JSON.parse(d.data));
+            e.editId = id;
+          });
         });
-        // });
       }
     }
     // Manage form status, add/edit
