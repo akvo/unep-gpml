@@ -34,7 +34,7 @@ backend_build () {
 	   --rm \
 	   --volume "$(pwd)/backend:/app" \
 	   --workdir /app \
-	   cljkondo/clj-kondo:2021.04.23-alpine \
+	   cljkondo/clj-kondo:2021.06.18-alpine \
 	   clj-kondo --lint src --lint test
 
     dc run \
