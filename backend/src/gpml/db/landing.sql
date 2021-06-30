@@ -5,7 +5,8 @@ FROM (
     SELECT vt.geo_coverage AS geo, topic, count(topic)
     FROM v_topic vt
     WHERE vt.geo_coverage is NOT NULL
-    AND ((vt.json->>'geo_coverage_type' = 'transnational') OR (vt.json->>'geo_coverage_type' = 'national') OR (vt.json->>'geo_coverage_type' = 'sub-national'))
+    AND ((vt.json->>'geo_coverage_type' = 'transnational') OR (vt.json->>'geo_coverage_type' = 'national') OR (vt.json->>'geo_coverage_type' = 'sub-national')
+         OR (vt.json->>'geo_coverage_type' = 'regional'))
     AND topic <> 'stakeholder'
     GROUP BY geo, topic
     UNION

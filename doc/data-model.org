@@ -857,3 +857,14 @@ values ('hello', now(), now(), 'foo bar');
 #+RESULTS:
 | INSERT 0 1 |
 |------------|
+
+#+begin_src sql
+select topic, geo_coverage, json->>'id' as resource_id, json->>'title' as resource_title, json->>'geo_coverage_type' as coverage_type from v_topic where topic = 'financing_resource' and geo_coverage=4
+#+end_src
+
+#+RESULTS:
+| topic              | geo_coverage | resource_id | resource_title                                                  | coverage_type |
+|--------------------+--------------+-------------+-----------------------------------------------------------------+---------------|
+| financing_resource |            4 |           9 | Pacific Ocean Litter Project (POLP)                             | regional      |
+| financing_resource |            4 |          18 | The GEF Small Grants Programme: International Waters Focus Area | transnational |
+| financing_resource |            4 |          20 | GloLitter Partnerships Project                                  | transnational |
