@@ -223,11 +223,8 @@ const AddActionPlanForm = withRouter(
       }
 
       data = handleGeoCoverageValue(data, formData, countries);
-      data?.image && data?.image === "" && delete data.image;
-      if (status === "edit") {
-        data?.image &&
-          data?.image.match(customFormats.url) &&
-          delete data.image;
+      if (status === "add") {
+        data?.image && data?.image === "" && delete data.image;
       }
       data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
@@ -294,7 +291,12 @@ const AddActionPlanForm = withRouter(
 
     const handleFormOnChange = ({ formData }) => {
       // remove image property when user remove image from form
-      formData?.image === "" && delete formData.image;
+      if (status === "add") {
+        formData?.image === "" && delete formData.image;
+      }
+      if (status === "edit") {
+        formData.image = formData?.image !== "" ? formData?.image : null;
+      }
       actionPlanData.update((e) => {
         e.data = formData;
       });
@@ -338,10 +340,11 @@ const AddActionPlanForm = withRouter(
       }
       // overiding image validation when edit
       if (
-        res.length > 0 &&
-        status === "edit" &&
-        data?.image &&
-        data?.image.match(customFormats.url)
+        (res.length > 0 &&
+          status === "edit" &&
+          data?.image &&
+          data?.image.match(customFormats.url)) ||
+        !data.image
       ) {
         res = res.filter(
           (x) => x?.params && x.params?.format && x.params.format !== "data-url"
