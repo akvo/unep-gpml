@@ -4,6 +4,7 @@
             [gpml.db.project :as db.project]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.language :as db.language]
+            [gpml.handler.image :as handler.image]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.organisation :as handler.org]
             [integrant.core :as ig]
@@ -347,17 +348,22 @@
       :id id
       :organisation org-id})))
 
+(defn update-resource-image [conn image image-type resource-id]
+  (let [url (handler.image/assoc-image conn image image-type)]
+    (when-not (= image url)
+      (db.detail/update-resource-table
+       conn
+       {:table image-type :id resource-id :image image}))))
+
 (defn update-resource [conn topic-type id updates]
   (let [table (cond
                 (contains? (set constants/resource-types) topic-type) "resource"
                 :else topic-type)
         table-columns (dissoc updates
-                              :tags :urls :geo_coverage_value :org
+                              :tags :urls :geo_coverage_value :org :image
                               ;; NOTE: we ignore resource_type since
                               ;; we don't expect it to change!
-                              :resource_type
-                              ;; FIXME: Handle the following
-                              :photo)
+                              :resource_type)
         tags (:tags updates)
         urls (:urls updates)
         params {:table table :id id :updates table-columns}
@@ -367,6 +373,7 @@
                     (or (and (= -1 (:id org))
                              (handler.org/find-or-create conn org))
                         (:id org)))]
+    (update-resource-image conn (:image updates) table id)
     (update-resource-tags conn table id tags)
     (update-resource-language-urls conn table id urls)
     (update-resource-geo-coverage-values conn table id updates)
