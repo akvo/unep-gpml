@@ -191,7 +191,8 @@ export const checkRequiredFieldFilledIn = (
     // for initiative form
     if (item?.group === null && item.key) {
       item.required.forEach((x) => {
-        !(x in formData?.[item.key]) &&
+        formData?.[item.key] &&
+          !(x in formData?.[item.key]) &&
           dependFields.filter((d) => d.includes(x)).length === 0 &&
           res.push(x);
       });
@@ -202,7 +203,8 @@ export const checkRequiredFieldFilledIn = (
         let search = x.includes(".")
           ? `${item.group}.${item.key}['${x}']`
           : `${item.group}.${item.key}.${x}`;
-        !(x in formData?.[item.group]?.[item.key]) &&
+        formData?.[item.group]?.[item.key] &&
+          !(x in formData?.[item.group]?.[item.key]) &&
           dependFields.filter((d) => d.includes(search)).length === 0 &&
           res.push(x);
       });
