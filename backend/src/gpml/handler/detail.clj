@@ -374,10 +374,17 @@
       (update-resource-organisation conn table id org-id))
     status))
 
+(defn update-initiative [conn id data]
+  (let [params (merge {:id id} data)
+        status (db.initiative/update-initiative conn params)]
+    status))
+
 (defmethod ig/init-key ::put [_ {:keys [db]}]
   (fn [{{{:keys [topic-type topic-id]} :path body :body} :parameters}]
     (let [conn (:spec db)
-          status (update-resource conn topic-type topic-id body)]
+          status (if (= topic-type "project")
+                   (update-initiative conn topic-id body)
+                   (update-resource conn topic-type topic-id body))]
       (resp/response {:status (if (= status 1) "success" "failure")}))))
 
 (defmethod ig/init-key ::put-params [_ _]
