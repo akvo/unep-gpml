@@ -32,12 +32,13 @@
                                (str k)))))))
 
 (defn generate-update [data]
-  (str/replace-first
-   (str/join ", "
-             (for [k (keys data)]
-               (if-not (= k :id)
-                 (str (str/replace (str k) ":" "") (str " = to_jsonb(:v" k "::json) "))
-                 ""))) "," ""))
+  (str/join
+   ",\n"
+   (for [k (keys (dissoc data :id))]
+     (str (str/replace (str k) ":" "")
+          (if (is-jsonb k)
+            (format "= to_jsonb(:v%s)" k)
+            (format "= %s" k))))))
 
 (defn generate-update-resource [params]
   ;; Code adapted from the HugSql example for generic update (https://www.hugsql.org/)
