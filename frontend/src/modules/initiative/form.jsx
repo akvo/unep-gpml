@@ -206,9 +206,33 @@ const AddInitiativeForm = withRouter(
           });
       }
       if (status === "edit") {
-        notification.success({ message: "Update success" });
-        history.push(`/project/${id}`);
-        return;
+        api
+          .put(`/edit/project/${id}`, data)
+          .then(() => {
+            notification.success({ message: "Update success" });
+            UIStore.update((e) => {
+              e.formEdit = {
+                ...e.formEdit,
+                initiative: {
+                  status: "add",
+                  id: null,
+                },
+              };
+            });
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initiativeData.update((e) => {
+              e.data = initialFormData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            history.push(`/project/${id}`);
+          })
+          .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
       }
     };
 
