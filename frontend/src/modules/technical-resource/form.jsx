@@ -249,7 +249,7 @@ const AddResourceForm = withRouter(
       }
       if (status === "edit") {
         api
-          .put(`/edit/technical_resource/${id}`, data)
+          .put(`/detail/technical_resource/${id}`, data)
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {

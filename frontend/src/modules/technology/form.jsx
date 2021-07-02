@@ -259,7 +259,7 @@ const AddTechnologyForm = withRouter(
       }
       if (status === "edit") {
         api
-          .put(`/edit/technology/${id}`, data)
+          .put(`/detail/technology/${id}`, data)
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {

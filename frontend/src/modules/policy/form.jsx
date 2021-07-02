@@ -278,7 +278,7 @@ const AddPolicyForm = withRouter(
       }
       if (status === "edit") {
         api
-          .put(`/edit/policy/${id}`, data)
+          .put(`/detail/policy/${id}`, data)
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {

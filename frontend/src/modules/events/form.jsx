@@ -214,7 +214,7 @@ const AddEventForm = withRouter(({ history }) => {
     }
     if (status === "edit") {
       api
-        .put(`/edit/event/${id}`, data)
+        .put(`/detail/event/${id}`, data)
         .then(() => {
           notification.success({ message: "Update success" });
           UIStore.update((e) => {

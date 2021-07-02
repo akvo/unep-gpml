@@ -293,7 +293,7 @@ const AddResourceForm = withRouter(
       }
       if (status === "edit") {
         api
-          .put(`/edit/financing_resource/${id}`, data)
+          .put(`/detail/financing_resource/${id}`, data)
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {

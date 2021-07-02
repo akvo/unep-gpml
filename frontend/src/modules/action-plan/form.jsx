@@ -265,7 +265,7 @@ const AddActionPlanForm = withRouter(
       }
       if (status === "edit") {
         api
-          .put(`/edit/action_plan/${id}`, data)
+          .put(`/detail/action_plan/${id}`, data)
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {

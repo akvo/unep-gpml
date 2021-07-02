@@ -207,7 +207,7 @@ const AddInitiativeForm = withRouter(
       }
       if (status === "edit") {
         api
-          .put(`/edit/project/${id}`, data)
+          .put(`/detail/project/${id}`, data)
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {
