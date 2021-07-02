@@ -283,11 +283,6 @@
                         (extra-details topic conn  (:json data))))
         (resp/not-found {:message "Not Found"})))))
 
-(def put-params
-  ;; FIXME: Add validation
-  ;; -- Cannot be empty, for one.
-  [:map])
-
 (defn update-resource-tags [conn table id tags]
   ;; Delete any existing tags
   (db.detail/delete-resource-related-data
@@ -393,9 +388,6 @@
                    (update-initiative conn topic-id body)
                    (update-resource conn topic-type topic-id body))]
       (resp/response {:status (if (= status 1) "success" "failure")}))))
-
-(defmethod ig/init-key ::put-params [_ _]
-  put-params)
 
 
 #_:clj-kondo/ignore
