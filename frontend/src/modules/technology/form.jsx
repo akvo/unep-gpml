@@ -215,8 +215,10 @@ const AddTechnologyForm = withRouter(
       data?.relatedInfo && delete data.relatedInfo;
 
       data = handleGeoCoverageValue(data, formData, countries);
-      data?.image && data?.image === "" && delete data.image;
-      data?.logo && data?.logo === "" && delete data.logo;
+      if (status === "add") {
+        data?.image && data?.image === "" && delete data.image;
+        data?.logo && data?.logo === "" && delete data.logo;
+      }
       if (status === "edit") {
         data?.image &&
           data?.image.match(customFormats.url) &&
@@ -288,10 +290,17 @@ const AddTechnologyForm = withRouter(
     };
 
     const handleFormOnChange = ({ formData }) => {
-      // remove logo property when user remove logo from form
-      formData?.logo === "" && delete formData.logo;
-      // remove image property when user remove image from form
-      formData?.image === "" && delete formData.image;
+      // remove logo & image property when user remove logo from form
+      if (status === "add") {
+        formData?.image === "" && delete formData.image;
+        formData?.logo === "" && delete formData.logo;
+      }
+      if (status === "edit" && (formData?.image || formData?.image === "")) {
+        formData.image = formData?.image !== "" ? formData?.image : null;
+      }
+      if (status === "edit" && (formData?.logo || formData?.logo === "")) {
+        formData.logo = formData?.logo !== "" ? formData?.logo : null;
+      }
       technologyData.update((e) => {
         e.data = formData;
       });
@@ -323,8 +332,10 @@ const AddTechnologyForm = withRouter(
       if (
         res.length > 0 &&
         status === "edit" &&
-        data?.image &&
-        data?.image.match(customFormats.url)
+        ((data?.image && data?.image.match(customFormats.url)) ||
+          !data.image ||
+          (data?.logo && data?.logo.match(customFormats.url)) ||
+          !data.logo)
       ) {
         res = res.filter(
           (x) => x?.params && x.params?.format && x.params.format !== "data-url"

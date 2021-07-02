@@ -226,6 +226,11 @@ const AddActionPlanForm = withRouter(
       if (status === "add") {
         data?.image && data?.image === "" && delete data.image;
       }
+      if (status === "edit") {
+        data?.image &&
+          data?.image.match(customFormats.url) &&
+          delete data.image;
+      }
       data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
 
       if (data?.publishYear) {
@@ -294,7 +299,7 @@ const AddActionPlanForm = withRouter(
       if (status === "add") {
         formData?.image === "" && delete formData.image;
       }
-      if (status === "edit") {
+      if (status === "edit" && (formData?.image || formData?.image === "")) {
         formData.image = formData?.image !== "" ? formData?.image : null;
       }
       actionPlanData.update((e) => {
