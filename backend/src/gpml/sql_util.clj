@@ -32,6 +32,14 @@
                                (str k)))))))
 
 (defn generate-update [data]
+  (str/replace-first
+   (str/join ", "
+             (for [k (keys data)]
+               (if-not (= k :id)
+                 (str (str/replace (str k) ":" "") (str " = to_jsonb(:v" k "::json) "))
+                 ""))) "," ""))
+
+(defn generate-update-initiative [data]
   (str/join
    ",\n"
    (for [k (keys (dissoc data :id))]

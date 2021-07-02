@@ -14,6 +14,11 @@ SELECT json_object_agg(category,tag) AS data FROM (
 WHERE st.stakeholder = :id
 GROUP BY tc.category) AS data;
 
+-- :name update-initiative :! :n
+UPDATE initiative SET
+--~ (#'gpml.sql-util/generate-update-initiative params)
+WHERE id = :id;
+
 -- :name update-resource-table :! :n
 -- :doc Update the resource specified by table and id
 -- :require [gpml.sql-util]

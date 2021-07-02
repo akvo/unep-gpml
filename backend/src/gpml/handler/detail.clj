@@ -378,7 +378,7 @@
 
 (defn update-initiative [conn id data]
   (let [params (merge {:id id} data)
-        status (db.initiative/update-initiative conn params)]
+        status (db.detail/update-initiative conn params)]
     status))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]
