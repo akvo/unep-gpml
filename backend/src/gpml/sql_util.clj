@@ -62,4 +62,5 @@
   (generate-jsonb {:q3 1 :q4 "300" :q5 nil :created_by "John" :version 1})
   (generate-insert {:q3 1 :q4 "300" :q5 nil :created_by "John" :version 1})
   (generate-update {:q3 1 :q4 "300" :q5 nil})
+  (generate-update-resource {:updates {:image nil}})
   )

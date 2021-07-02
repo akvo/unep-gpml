@@ -350,10 +350,10 @@
 
 (defn update-resource-image [conn image image-type resource-id]
   (let [url (handler.image/assoc-image conn image image-type)]
-    (when-not (= image url)
+    (when-not (and image (= image url))
       (db.detail/update-resource-table
        conn
-       {:table image-type :id resource-id :image image}))))
+       {:table image-type :id resource-id :updates {:image image}}))))
 
 (defn update-resource [conn topic-type id updates]
   (let [table (cond
