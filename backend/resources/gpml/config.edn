@@ -110,15 +110,21 @@
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.policy/post-params}
                                                   :handler #ig/ref :gpml.handler.policy/post}}]]
-                                        ["/initiative" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                     #ig/ref :gpml.auth/auth-required
-                                                                     #ig/ref :gpml.auth/approved-user]}
+                                        ["/initiative"
                                          [""
-                                          {:post {:summary "Create a new initiative"
+                                          {:post {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required
+                                                               #ig/ref :gpml.auth/approved-user]
+                                                  :summary "Create a new initiative"
                                                   :swagger {:tags ["initiative"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.initiative/post-params}
-                                                  :handler #ig/ref :gpml.handler.initiative/post}}]]
+                                                  :handler #ig/ref :gpml.handler.initiative/post}}]
+                                         ["/:id"
+                                          {:get {:summary "Get data for a specific initiative"
+                                                 :swagger {:tags ["initiative"]}
+                                                 :parameters {:path [:map [:id int?]]}
+                                                 :handler #ig/ref :gpml.handler.initiative/get}}]]
                                         ["/technology" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                      #ig/ref :gpml.auth/auth-required
                                                                      #ig/ref :gpml.auth/approved-user]}
@@ -184,14 +190,27 @@
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.favorite/post-params}
                                                   :handler #ig/ref :gpml.handler.favorite/post}}]]
-                                        ["/detail" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
+                                        ["/detail"
                                          ["/{topic-type}/{topic-id}"
-                                          {:get {:summary "Get the details for a specific resource"
+                                          {:get {:middleware [#ig/ref :gpml.auth/auth-middleware]
+                                                 :summary "Get the details for a specific resource"
                                                  :swagger {:tags ["resource detail"]}
                                                  :parameters {:path [:map
                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                      [:topic-id int?]]}
-                                                 :handler #ig/ref :gpml.handler.detail/get}}]]]]}
+                                                 :handler #ig/ref :gpml.handler.detail/get}
+                                           :put {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required
+                                                              #ig/ref :gpml.auth/approved-user
+                                                              #ig/ref :gpml.auth/admin-required-middleware]
+                                                 :summary "Edit the details for a specific resource"
+                                                 :swagger {:tags ["resource detail"]
+                                                           :security[{:id_token []}]}
+                                                 :parameters {:path [:map
+                                                                     [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                     [:topic-id int?]]
+                                                              :body #ig/ref :gpml.handler.detail/put-params}
+                                                 :handler #ig/ref :gpml.handler.detail/put}}]]]]}
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
 
@@ -238,6 +257,7 @@
                                  :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.technology/post-params {}
 
+  :gpml.handler.initiative/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.initiative/post {:db #ig/ref :duct.database/sql
                                  :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.initiative/post-params {}
@@ -270,6 +290,8 @@
 
   :gpml.handler.detail/topics {}
   :gpml.handler.detail/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.detail/put {:db #ig/ref :duct.database/sql}
+  :gpml.handler.detail/put-params {}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}

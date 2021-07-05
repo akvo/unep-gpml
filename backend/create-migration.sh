@@ -1,5 +1,7 @@
 MIGRATION_PATH="./resources/migrations/"
 
+pushd $(dirname $0)
+
 if [ -z "$1" ]
   then
     echo "No argument supplied"

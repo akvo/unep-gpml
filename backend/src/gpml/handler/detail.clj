@@ -3,6 +3,10 @@
             [gpml.db.detail :as db.detail]
             [gpml.db.project :as db.project]
             [gpml.db.initiative :as db.initiative]
+            [gpml.db.language :as db.language]
+            [gpml.handler.image :as handler.image]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.organisation :as handler.org]
             [integrant.core :as ig]
             [medley.core :as medley]
             [ring.util.response :as resp]
@@ -278,6 +282,121 @@
                         (:json data)
                         (extra-details topic conn  (:json data))))
         (resp/not-found {:message "Not Found"})))))
+
+(def put-params
+  ;; FIXME: Add validation
+  ;; -- Cannot be empty, for one.
+  [:map])
+
+(defn update-resource-tags [conn table id tags]
+  ;; Delete any existing tags
+  (db.detail/delete-resource-related-data
+   conn
+   {:table (str table "_tag") :resource_type table :id id})
+
+  ;; Create tags for the resource
+  (when (seq tags)
+    (db.detail/add-resource-related-tags
+     conn
+     {:table (str table "_tag")
+      :resource_type table
+      :tags (map #(list id %) tags)})))
+
+(defn update-resource-language-urls [conn table id urls]
+  ;; Delete any existing lanugage URLs
+  (db.detail/delete-resource-related-data
+   conn
+   {:table (str table "_language_url") :resource_type table :id id})
+
+  ;; Create language URLs for the resource
+  (when (seq urls)
+    (db.detail/add-resource-related-language-urls
+     conn
+     {:table (str table "_language_url")
+      :resource_type table
+      :urls (map #(list id
+                        (:id (db.language/language-by-iso-code conn {:iso_code (:lang %)}))
+                        (:url %))
+                 urls)})))
+
+(defn update-resource-geo-coverage-values [conn table id geo_data]
+  ;; Delete any existing geo coverage values
+  (db.detail/delete-resource-related-data
+   conn
+   {:table (str table "_geo_coverage") :resource_type table :id id})
+
+  ;; Create geo coverage values for the resource
+  (when (seq (:geo_coverage_value geo_data))
+    (db.detail/add-resource-related-geo
+     conn
+     {:table (str table "_geo_coverage")
+      :resource_type table
+      :geo (handler.geo/get-geo-vector id geo_data)})))
+
+(defn update-resource-organisation [conn table id org-id]
+  ;; Delete any existing org
+  (db.detail/delete-resource-related-data
+   conn
+   {:table (str table "_organisation") :resource_type table :id id})
+
+  ;; Create organisation mapping for the resource
+  (when org-id
+    (db.detail/add-resource-related-org
+     conn
+     {:table (str table "_organisation")
+      :resource_type table
+      :id id
+      :organisation org-id})))
+
+(defn update-resource-image [conn image image-type resource-id]
+  (let [url (handler.image/assoc-image conn image image-type)]
+    (when-not (and image (= image url))
+      (db.detail/update-resource-table
+       conn
+       {:table image-type :id resource-id :updates {:image image}}))))
+
+(defn update-resource [conn topic-type id updates]
+  (let [table (cond
+                (contains? (set constants/resource-types) topic-type) "resource"
+                :else topic-type)
+        table-columns (dissoc updates
+                              :tags :urls :geo_coverage_value :org :image
+                              ;; NOTE: we ignore resource_type since
+                              ;; we don't expect it to change!
+                              :resource_type)
+        tags (:tags updates)
+        urls (:urls updates)
+        params {:table table :id id :updates table-columns}
+        status (db.detail/update-resource-table conn params)
+        org (:org updates)
+        org-id (and org
+                    (or (and (= -1 (:id org))
+                             (handler.org/find-or-create conn org))
+                        (:id org)))]
+    (update-resource-image conn (:image updates) table id)
+    (update-resource-tags conn table id tags)
+    (update-resource-language-urls conn table id urls)
+    (update-resource-geo-coverage-values conn table id updates)
+    (when (contains? #{"resource"} table)
+      (update-resource-organisation conn table id org-id))
+    status))
+
+(defn update-initiative [conn id data]
+  (let [params (merge {:id id} data)
+        status (db.detail/update-initiative conn params)]
+    status))
+
+(defmethod ig/init-key ::put [_ {:keys [db]}]
+  (fn [{{{:keys [topic-type topic-id]} :path body :body} :parameters}]
+    (let [conn (:spec db)
+          status (if (= topic-type "project")
+                   (update-initiative conn topic-id body)
+                   (update-resource conn topic-type topic-id body))]
+      (resp/response {:status (if (= status 1) "success" "failure")}))))
+
+(defmethod ig/init-key ::put-params [_ _]
+  put-params)
+
 
 #_:clj-kondo/ignore
 (comment

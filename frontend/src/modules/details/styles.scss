@@ -143,6 +143,20 @@
         }
       }
 
+      .button-wrapper {
+        display: flex;
+        justify-content: space-between;
+
+        .label {
+          color: #01abf1;
+          font-weight: 500;
+        }
+
+        .edit-btn {
+          margin-left: 20px;
+        }
+      }
+
       .bookmark {
         text-align: center;
 

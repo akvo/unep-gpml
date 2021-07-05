@@ -10,6 +10,7 @@ import EmailWidget from "./form-email";
 
 import difference from "lodash/difference";
 import intersection from "lodash/intersection";
+import moment from "moment";
 
 const widgets = {
   Auth0Widget: Auth0Widget,
@@ -190,7 +191,8 @@ export const checkRequiredFieldFilledIn = (
     // for initiative form
     if (item?.group === null && item.key) {
       item.required.forEach((x) => {
-        !(x in formData?.[item.key]) &&
+        formData?.[item.key] &&
+          !(x in formData?.[item.key]) &&
           dependFields.filter((d) => d.includes(x)).length === 0 &&
           res.push(x);
       });
@@ -201,7 +203,8 @@ export const checkRequiredFieldFilledIn = (
         let search = x.includes(".")
           ? `${item.group}.${item.key}['${x}']`
           : `${item.group}.${item.key}.${x}`;
-        !(x in formData?.[item.group]?.[item.key]) &&
+        formData?.[item.group]?.[item.key] &&
+          !(x in formData?.[item.group]?.[item.key]) &&
           dependFields.filter((d) => d.includes(search)).length === 0 &&
           res.push(x);
       });
@@ -216,12 +219,17 @@ export const findCountryIsoCode = (value, countries) => {
 };
 
 export const handleGeoCoverageValue = (data, currentValue, countries) => {
-  delete data.geoCoverageValueNational;
-  delete data.geoCoverageValueTransnational;
-  delete data.geoCoverageValueRegional;
-  delete data.geoCoverageValueGlobalSpesific;
-  delete data.geoCoverageValueSubNational;
-  if (data.geoCoverageType === "national") {
+  data?.geoCoverageValueNational && delete data.geoCoverageValueNational;
+  data?.geoCoverageValueTransnational &&
+    delete data.geoCoverageValueTransnational;
+  data?.geoCoverageValueRegional && delete data.geoCoverageValueRegional;
+  data?.geoCoverageValueGlobalSpesific &&
+    delete data.geoCoverageValueGlobalSpesific;
+  data?.geoCoverageValueSubNational && delete data.geoCoverageValueSubNational;
+  if (
+    data.geoCoverageType === "national" &&
+    !Array.isArray(currentValue.geoCoverageValueNational)
+  ) {
     data.geoCoverageValue = [currentValue.geoCoverageValueNational];
   }
   if (data.geoCoverageType === "transnational") {
@@ -239,7 +247,10 @@ export const handleGeoCoverageValue = (data, currentValue, countries) => {
       (x) => parseInt(x)
     );
   }
-  if (data.geoCoverageType === "sub-national") {
+  if (
+    data.geoCoverageType === "sub-national" &&
+    !Array.isArray(currentValue.geoCoverageValueSubNational)
+  ) {
     data.geoCoverageValue = [currentValue.geoCoverageValueSubNational];
   }
   return data;
@@ -257,6 +268,134 @@ export const checkDependencyAnswer = (answer, dependentSchema) => {
       : dependValue === answer;
   }
   return dependValue;
+};
+
+export const revertFormData = (formDataMapping, editData, store = {}) => {
+  const formData = {};
+  formDataMapping.forEach((item) => {
+    const { key, name, group, type } = item;
+    let pKey = name;
+    let data = null;
+
+    if (!group) {
+      data = editData?.[key] ? editData[key] : "";
+    }
+    if (group) {
+      data = editData?.[key] ? editData[key] : "";
+    }
+
+    if (pKey === "org") {
+      data = data && data.map((x) => x.id);
+    }
+    if (pKey === "geoCoverageValue") {
+      const geoCoverageType = editData["geoCoverageType"];
+      if (geoCoverageType === "national") {
+        pKey = "geoCoverageValueNational";
+        data = data[0];
+      }
+      if (geoCoverageType === "regional") {
+        pKey = "geoCoverageValueRegional";
+      }
+      if (geoCoverageType === "transnational") {
+        pKey = "geoCoverageValueTransnational";
+      }
+      if (geoCoverageType === "global with elements in specific areas") {
+        pKey = "geoCoverageValueGlobalSpesific";
+      }
+      if (geoCoverageType === "sub-national") {
+        pKey = "geoCoverageValueSubNational";
+        data = data[0];
+      }
+    }
+    if (pKey === "tags") {
+      data = data ? data.map((x) => Object.keys(x)[0]) : "";
+    }
+    if (pKey === "urls") {
+      data = data ? data.map((x) => ({ url: x.url, lang: x.isoCode })) : "";
+    }
+    if (pKey === "implementingMea") {
+      const mea = store.meaOptions.find(
+        (x) => x.name.toLowerCase() === data.toLowerCase()
+      );
+      data = mea ? mea.id : null;
+    }
+
+    if (type === "string") {
+      data = String(data);
+    }
+    if (type === "integer") {
+      data = parseInt(data);
+    }
+    if (type === "year") {
+      data = String(data);
+    }
+    if (type === "date") {
+      if (pKey === "validTo") {
+        data =
+          !data || data === "Ongoing" ? "" : moment(data).format("YYYY-MM-DD");
+      } else {
+        data = data ? moment(data).format("YYYY-MM-DD") : "";
+      }
+    }
+
+    if (data && !group) {
+      formData[pKey] = data;
+    }
+    if (data && group) {
+      formData[group] = { ...formData[group], [pKey]: data };
+    }
+  });
+  return formData;
+};
+
+export const transformPostData = (formDataMapping, formData, countries) => {
+  const postData = {};
+  formDataMapping.forEach((item) => {
+    const { name, group, type } = item;
+    let key = name;
+    let data = null;
+    if (!group) {
+      data = formData?.[key];
+    }
+    if (group) {
+      data = formData?.[group]?.[key];
+    }
+    if (type === "string" || type === "image") {
+      data = data ? String(data) : "";
+    }
+    if (type === "integer") {
+      data = data ? parseInt(data) : null;
+    }
+    if (type === "date") {
+      if (key === "validTo") {
+        data = data ? data : "Ongoing";
+      }
+      data = String(data);
+    }
+    if (key === "org") {
+      data = { id: formData[key] };
+      if (formData[key] === -1) {
+        data = {
+          ...formData.newOrg,
+          id: formData.org,
+        };
+        const temp = handleGeoCoverageValue(data, formData.newOrg, countries);
+        data["geoCoverageValue"] = temp["geoCoverageValue"];
+      }
+    }
+    if (key === "publishYear") {
+      data = parseInt(data);
+    }
+    if (key === "geoCoverageValue") {
+      const temp = handleGeoCoverageValue(postData, formData, countries);
+      data = temp[key];
+    }
+    if (key === "tags" && type === "array") {
+      data = data.map((x) => Number(x));
+    }
+    postData[key] = data;
+  });
+  return postData;
 };
 
 export default widgets;
