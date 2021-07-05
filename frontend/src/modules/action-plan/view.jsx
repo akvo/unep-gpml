@@ -6,8 +6,8 @@ import "./styles.scss";
 import AddActionPlanForm from "./form";
 import StickyBox from "react-sticky-box";
 
-const AddActionPlan = ({ ...props }) => {
-  const { loading, formStep } = UIStore.currentState;
+const AddActionPlan = ({ match: { params }, ...props }) => {
+  const { loading, formStep, formEdit } = UIStore.currentState;
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -83,7 +83,12 @@ const AddActionPlan = ({ ...props }) => {
         <div className="ui container">
           <Row>
             <Col xs={24} lg={11}>
-              <h1>Add Action Plan</h1>
+              <h1>
+                {formEdit.actionPlan.status === "add" && !params.id
+                  ? "Add"
+                  : "Edit"}{" "}
+                Action Plan
+              </h1>
             </Col>
             <Col xs={24} lg={13}>
               <Card>

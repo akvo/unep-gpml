@@ -6,8 +6,8 @@ import "./styles.scss";
 import AddPolicyForm from "./form";
 import StickyBox from "react-sticky-box";
 
-const AddPolicy = ({ ...props }) => {
-  const { loading, formStep } = UIStore.currentState;
+const AddPolicy = ({ match: { params }, ...props }) => {
+  const { loading, formStep, formEdit } = UIStore.currentState;
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -83,7 +83,12 @@ const AddPolicy = ({ ...props }) => {
         <div className="ui container">
           <Row>
             <Col xs={24} lg={11}>
-              <h1>Add Policy</h1>
+              <h1>
+                {formEdit.policy.status === "add" && !params?.id
+                  ? "Add"
+                  : "Edit"}{" "}
+                Policy
+              </h1>
             </Col>
             <Col xs={24} lg={13}>
               <Card>

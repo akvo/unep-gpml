@@ -298,7 +298,7 @@ export const uiSchema = {
   publishYear: {
     "ui:widget": "date",
     "ui:showSearch": true,
-    "ui:span": 12,
+    "ui:span": 17,
     "ui:options": {
       mode: "year",
       disableDate: "future",

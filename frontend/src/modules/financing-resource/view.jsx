@@ -6,8 +6,8 @@ import "./styles.scss";
 import AddResourceForm from "./form";
 import StickyBox from "react-sticky-box";
 
-const AddFinancingResource = ({ ...props }) => {
-  const { loading, formStep } = UIStore.currentState;
+const AddFinancingResource = ({ match: { params }, ...props }) => {
+  const { loading, formStep, formEdit } = UIStore.currentState;
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -83,7 +83,12 @@ const AddFinancingResource = ({ ...props }) => {
         <div className="ui container">
           <Row>
             <Col xs={24} lg={11}>
-              <h1>Add Financing Resource</h1>
+              <h1>
+                {formEdit.financingResource.status === "add" && !params.id
+                  ? "Add"
+                  : "Edit"}{" "}
+                Financing Resource
+              </h1>
             </Col>
             <Col xs={24} lg={13}>
               <Card>
