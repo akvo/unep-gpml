@@ -11,7 +11,7 @@ const TrimText = ({ text, max = 400 }) => {
   let escaped = [];
   escaped = [...escaped, ...text.matchAll(escapeRegex)];
   escaped.forEach((x, i) => {
-    const replacer = x[0].replaceAll(/\s/g, "###");
+    const replacer = x[0].replace(/\s/g, "###");
     text = text.replace(x[0], replacer);
   });
 
