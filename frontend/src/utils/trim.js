@@ -1,5 +1,7 @@
 const lastCharEscape = [".", ",", ";"];
 const escapeRegex = /\(([^)]+)\)\s\w+/g;
+const replace1 = /###/g;
+const replace2 = /·/g;
 
 const TrimText = ({ text, max = 400 }) => {
   if (text.length < max) {
@@ -20,7 +22,7 @@ const TrimText = ({ text, max = 400 }) => {
 
   while (text.length < max - 1 && arrayText[startIndex]) {
     text +=
-      arrayText[startIndex].replaceAll("###", " ").replaceAll("·", "") + " ";
+      arrayText[startIndex].replace(replace1, " ").replace(replace2, "") + " ";
     startIndex++;
   }
   text = text.slice(0, -1);
