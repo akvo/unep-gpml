@@ -1,8 +1,10 @@
 import { UIStore } from "../../store";
+import { withRouter } from "react-router-dom";
 import {
   LoadingOutlined,
   RightOutlined,
   PlusOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import { Button, Tag, Image, Divider, Dropdown, Checkbox } from "antd";
 import React, { Fragment, useState, useEffect } from "react";
@@ -184,12 +186,19 @@ const renderItemValues = (params, mapping, data) => {
                   uniqBy(data[key], "isoCode")
                     .map((x, i) => languages[x.isoCode].name)
                     .join(", ")}
-                {params.type === "project" &&
+                {key === "tags" &&
+                  data[key] &&
+                  value === "join" &&
+                  type === "array" &&
+                  data[key].map((tag) => Object.values(tag)[0]).join(", ")}
+                {key !== "tags" &&
+                  params.type === "project" &&
                   data[key] &&
                   value === "join" &&
                   type === "array" &&
                   data[key].map((x) => x.name).join(", ")}
-                {params.type !== "project" &&
+                {key !== "tags" &&
+                  params.type !== "project" &&
                   data[key] &&
                   value === "join" &&
                   type === "array" &&
@@ -591,6 +600,7 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
               {allowBookmark && (
                 <BookmarkBtn
                   topic={params}
+                  profile={profile}
                   {...{ handleRelationChange, relation }}
                 />
               )}
@@ -629,52 +639,117 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
   );
 };
 
-const BookmarkBtn = ({ topic, relation, handleRelationChange }) => {
-  const handleChangeRelation = (relationType) => ({ target: { checked } }) => {
-    let association = relation ? [...relation.association] : [];
-    if (checked) {
-      association = [...association, relationType];
-    } else {
-      association = association.filter((it) => it !== relationType);
-    }
-    handleRelationChange({
-      topicId: parseInt(topic.id),
-      association,
-      topic: resourceTypeToTopicType(topic.type),
-    });
-  };
-  return (
-    <div className="portfolio-bar" onClick={(e) => e.stopPropagation()}>
-      <Dropdown
-        overlay={
-          <ul className="relations-dropdown">
-            {relationsByTopicType[resourceTypeToTopicType(topic.type)].map(
-              (relationType) => (
-                <li key={`${relationType}`}>
-                  <Checkbox
-                    checked={
-                      relation &&
-                      relation.association &&
-                      relation.association.indexOf(relationType) !== -1
-                    }
-                    onChange={handleChangeRelation(relationType)}
-                  >
-                    {relationType}
-                  </Checkbox>
-                </li>
-              )
-            )}
-          </ul>
-        }
-        trigger={["click"]}
-      >
-        <Button size="large" icon={<PlusOutlined />} shape="circle" />
-      </Dropdown>
-      <div className="label" style={{ color: "#01ABF1", fontWeight: 500 }}>
-        Bookmarks
+const BookmarkBtn = withRouter(
+  ({ topic, relation, handleRelationChange, profile, history }) => {
+    const handleChangeRelation = (relationType) => ({
+      target: { checked },
+    }) => {
+      let association = relation ? [...relation.association] : [];
+      if (checked) {
+        association = [...association, relationType];
+      } else {
+        association = association.filter((it) => it !== relationType);
+      }
+      handleRelationChange({
+        topicId: parseInt(topic.id),
+        association,
+        topic: resourceTypeToTopicType(topic.type),
+      });
+    };
+
+    const handleEditBtn = () => {
+      let form = null;
+      let link = null;
+      switch (topic.type) {
+        case "project":
+          form = "initiative";
+          link = "edit-initiative";
+          break;
+        case "action_plan":
+          form = "actionPlan";
+          link = "edit-action-plan";
+          break;
+        case "policy":
+          form = "policy";
+          link = "edit-policy";
+          break;
+        case "technical_resource":
+          form = "technicalResource";
+          link = "edit-technical-resource";
+          break;
+        case "financing_resource":
+          form = "financingResource";
+          link = "edit-financing-resource";
+          break;
+        case "technology":
+          form = "technology";
+          link = "edit-technology";
+          break;
+        default:
+          form = "event";
+          link = "edit-event";
+          break;
+      }
+      UIStore.update((e) => {
+        e.formEdit = {
+          ...e.formEdit,
+          [form]: {
+            status: "edit",
+            id: topic.id,
+          },
+        };
+        e.formStep = {
+          ...e.formStep,
+          [form]: 1,
+        };
+      });
+      history.push(`/${link}/${topic.id}`);
+    };
+
+    return (
+      <div className="button-wrapper">
+        <div className="portfolio-bar" onClick={(e) => e.stopPropagation()}>
+          <Dropdown
+            overlay={
+              <ul className="relations-dropdown">
+                {relationsByTopicType[resourceTypeToTopicType(topic.type)].map(
+                  (relationType) => (
+                    <li key={`${relationType}`}>
+                      <Checkbox
+                        checked={
+                          relation &&
+                          relation.association &&
+                          relation.association.indexOf(relationType) !== -1
+                        }
+                        onChange={handleChangeRelation(relationType)}
+                      >
+                        {relationType}
+                      </Checkbox>
+                    </li>
+                  )
+                )}
+              </ul>
+            }
+            trigger={["click"]}
+          >
+            <Button size="large" icon={<PlusOutlined />} shape="circle" />
+          </Dropdown>
+          <div className="label">Bookmarks</div>
+        </div>
+        {profile.role === "ADMIN" && topic.id > 10000 && (
+          <div className="edit-btn" onClick={(e) => e.stopPropagation()}>
+            <Button
+              onClick={() => handleEditBtn()}
+              size="large"
+              icon={<EditOutlined />}
+              shape="circle"
+            />
+            <div className="label">Edit</div>
+          </div>
+        )}
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
 
 export default DetailsView;
