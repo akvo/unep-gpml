@@ -48,7 +48,12 @@
 (defn assoc-image [conn image image-type]
   (cond
     (nil? image) nil
+
+    ;; Ignore if image is already uploaded (profile, event)
     (re-find #"^\/image\/" image) image
+
+    ;; Ignore if image is uploaded to GCS (resources other than profile, event)
+    (re-find #"^\/images\/" image) image
 
     ;; For all topics other than profile and event upload to GCS
     (not (contains? #{"profile" "event"} image-type))

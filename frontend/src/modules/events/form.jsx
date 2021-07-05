@@ -9,6 +9,8 @@ import { languages } from "countries-list";
 import api from "../../utils/api";
 import { cloneDeep } from "lodash";
 import moment from "moment";
+import { withRouter } from "react-router-dom";
+import { customFormats } from "../../utils/forms";
 
 const GeoCoverageInput = (props) => {
   const { countries, regionOptions, meaOptions } = UIStore.currentState;
@@ -160,8 +162,9 @@ const validation = (formSchema) => {
   );
 };
 
-const AddEventForm = () => {
-  const { countries, loading, formStep } = UIStore.currentState;
+const AddEventForm = withRouter(({ match: { params }, history }) => {
+  const { countries, loading, formStep, formEdit } = UIStore.currentState;
+  const { status, id } = formEdit.event;
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [sending, setSending] = useState(false);
   const [geoType, setGeoType] = useState({ value: null, error: false });
@@ -181,25 +184,59 @@ const AddEventForm = () => {
     } else if (data.geoCoverageType === "global") {
       delete data.geoCoverageValue;
     }
+    if ((status === "edit" || params?.id) && data?.photo) {
+      data?.photo.match(customFormats.url) && delete data.photo;
+    } else {
+      data.photo = null;
+    }
+    data?.ts && delete data.ts;
+
     setSending(true);
-    api
-      .post("/event", data)
-      .then(() => {
-        UIStore.update((e) => {
-          e.formStep = {
-            ...e.formStep,
-            event: 2,
-          };
+    if (status === "add" && !params?.id) {
+      api
+        .post("/event", data)
+        .then(() => {
+          UIStore.update((e) => {
+            e.formStep = {
+              ...e.formStep,
+              event: 2,
+            };
+          });
+          // scroll top
+          window.scrollTo({ top: 0 });
+        })
+        .catch(() => {
+          notification.error({ message: "An error occured" });
+        })
+        .finally(() => {
+          setSending(false);
         });
-        // scroll top
-        window.scrollTo({ top: 0 });
-      })
-      .catch(() => {
-        notification.error({ message: "An error occured" });
-      })
-      .finally(() => {
-        setSending(false);
-      });
+    }
+    if (status === "edit" || params?.id) {
+      api
+        .put(`/detail/event/${id || params?.id}`, data)
+        .then(() => {
+          notification.success({ message: "Update success" });
+          UIStore.update((e) => {
+            e.formEdit = {
+              ...e.formEdit,
+              event: {
+                status: "add",
+                id: null,
+              },
+            };
+          });
+          // scroll top
+          window.scrollTo({ top: 0 });
+          history.push(`/event/${id || params?.id}`);
+        })
+        .catch(() => {
+          notification.error({ message: "An error occured" });
+        })
+        .finally(() => {
+          setSending(false);
+        });
+    }
   };
 
   useEffect(() => {
@@ -221,7 +258,65 @@ const AddEventForm = () => {
       }
       setFormSchema(newSchema);
     })();
-  }, [countries]);
+
+    // Manage form status, add/edit
+    if (status === "edit" || params?.id) {
+      api.get(`/detail/event/${id || params?.id}`).then((d) => {
+        setFormData(d.data);
+      });
+    }
+    if (status === "add" && !params?.id) {
+      setTimeout(() => {
+        formRef.current?.change("ts", new Date().getTime());
+        formRef.current?.restart({ urls: [{ url: "", lang: "en" }] });
+      });
+    }
+  }, [countries, status, id, params]);
+
+  const setFormData = (data) => {
+    const dateFormat = "YYYY/MM/DD";
+    setTimeout(() => {
+      formRef.current?.change("ts", new Date().getTime());
+      data?.title && formRef.current?.change("title", data?.title);
+      if (data?.startDate && data?.endDate) {
+        formRef.current?.change("date", [
+          moment(data?.startDate, dateFormat),
+          moment(data?.endDate, dateFormat),
+        ]);
+      } else {
+        formRef.current?.change("date", "");
+      }
+      data?.languages &&
+        formRef.current?.change(
+          "urls",
+          data?.languages.map((x) => ({ url: x.url, lang: x.isoCode }))
+        );
+      data?.description &&
+        formRef.current?.change("description", data?.description);
+      data?.image && formRef.current?.change("photo", data?.image);
+      data?.city && formRef.current?.change("city", data?.city);
+      data?.country && formRef.current?.change("country", data?.country);
+      data?.geoCoverageType &&
+        formRef.current?.change("geoCoverageType", data?.geoCoverageType);
+      let geoCoverageValue = null;
+      if (
+        data.geoCoverageType === "national" ||
+        data.geoCoverageType === "sub-national"
+      ) {
+        geoCoverageValue = data?.geoCoverageValues[0];
+      } else {
+        geoCoverageValue = data?.geoCoverageValues;
+      }
+      data?.geoCoverageValues &&
+        formRef.current?.change("geoCoverageValue", geoCoverageValue);
+      data?.remarks && formRef.current?.change("remarks", data?.remarks);
+      data?.tags &&
+        formRef.current?.change(
+          "tags",
+          data.tags.map((x) => Number(Object.keys(x)[0]))
+        );
+    });
+  };
 
   const form = createForm({
     subscription: {},
@@ -323,7 +418,7 @@ const AddEventForm = () => {
                     size="large"
                     onClick={() => handleSubmit()}
                   >
-                    Add event
+                    {status === "add" && !params?.id ? "Add" : "Update"} event
                   </Button>
                 </div>
               );
@@ -339,6 +434,6 @@ const AddEventForm = () => {
       )}
     </div>
   );
-};
+});
 
 export default AddEventForm;

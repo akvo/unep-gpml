@@ -8,6 +8,7 @@ import AddInitiativeForm from "./form";
 import StickyBox from "react-sticky-box";
 import { schema } from "./schema";
 import cloneDeep from "lodash/cloneDeep";
+import api from "../../utils/api";
 
 const { Step } = Steps;
 
@@ -122,8 +123,630 @@ export const initialFormData = {
   },
 };
 
+/**
+ * This edit testing not include issue #280,
+ * we need to aware, all geo_coverage_value will saved as [{"id":"name"}]
+ */
+const editInitiative = {
+  q1: { "1-1": "On behalf of an entity" },
+  q1_1: { 10001: "Akvo" },
+  q4: [
+    {
+      "4-2":
+        "TECHNOLOGY and PROCESSES (new technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning).",
+    },
+  ],
+  q4_3_1: [
+    { "4.3.1-0": "New product design" },
+    { "4.3.1-19": "Compostable plastic" },
+    { "4.3.1-20": "Bio-based plastic or bio-degradable plastic" },
+  ],
+  q2: "Initiative Title",
+  q3: "Summary",
+  q7: [{ "7-3": "Multilateral Environmental Agreements (MEAs)" }],
+  q7_2: [
+    { 17: "ASEAN Agreement on Transboundary Haze Pollution" },
+    { 9: "Abidjan Convention" },
+  ],
+  q11: [{ "11-1": "Outcomes are being assessed at regular intervals" }],
+  q5: { "5-0": "Yes, reporting is voluntary" },
+  q8: { "8-1": "No" },
+  q10: { "10-1": "In 1 to 3 years" },
+  q14: [
+    { "14-3": "A change in public opinion" },
+    {
+      "14-4":
+        "Members of the public have actively complained / asked for change",
+    },
+  ],
+  q15: [
+    { "15-7": "Not enough support from within the member state/organisation" },
+    { "15-5": "Lobbying by business/industry" },
+  ],
+  q16: [
+    { 10001: "Akvo" },
+    { 1003: "Airtable" },
+    { 159: "Agenda del Mar Comunicaciones" },
+    { 169: "Adult commercial secondary School" },
+    { 1002: "Agence Française de Developpement (AFD)" },
+  ],
+  q18: [{ 1000: "3M" }, { 2: "5 Gyres Institute" }],
+  q20: [{ 1000: "3M" }],
+  q22: "City",
+  q23: { 106: "Indonesia" },
+  q24: { National: "National" },
+  q24_2: { 106: "Indonesia" },
+  q26: [
+    { "26-2": "Production / manufacture" },
+    { "26-3": "Use / consumption" },
+  ],
+  q28: [{ "28-1": "Biodiversity" }, { "28-3": "Ecosystem Services" }],
+  q30: [
+    { "30-2": "Transportation" },
+    { "30-4": "Automotive" },
+    { "30-14": "Wastewater/Sewage management" },
+  ],
+  q32: [
+    { "32-0": "Mountains and upland area" },
+    { "32-1": "Agricultural land/soils" },
+  ],
+  q33: 1111,
+  q34: 1111,
+  q35: { "35-2": "Public Financing" },
+  q36: 1111,
+  q36_1: { AED: "AED UAE dirham" },
+  q37: 1111,
+  q37_1: { AED: "AED UAE dirham" },
+  q38: { "38-0": "Single event" },
+  q40: ["google.com", "akvo.org"],
+  q41: { "41-5": "Other" },
+  q41_1: "contact.com",
+  version: 2,
+};
+
+const formDataMapping = [
+  /**
+   * Type Notes:
+   * radio, single option -> option
+   * checkbox, multiple option -> multiple-option
+   * text, textarea, url -> string
+   * number -> number
+   * dynamic field -> item-array
+   */
+
+  // S1
+  {
+    name: "q1",
+    section: "S1",
+    group: null,
+    question: "S1_1",
+    type: "option",
+  },
+  {
+    name: "q1_1",
+    section: "S1",
+    group: null,
+    question: "S1_G1_1.1",
+    type: "option",
+  },
+  // S2 - S2_G1
+  {
+    name: "q2",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_2",
+    type: "string",
+  },
+  {
+    name: "q3",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_3",
+    type: "string",
+  },
+  {
+    name: "q4",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_4",
+    type: "multiple-option",
+  },
+  {
+    name: "q4_1_1",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_4.1.1",
+    type: "multiple-option",
+  },
+  {
+    name: "q4_1_2",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_4.1.2",
+    type: "string",
+  },
+  {
+    name: "q4_2_1",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_4.2.1",
+    type: "multiple-option",
+  },
+  {
+    name: "q4_2_2",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_4.2.2",
+    type: "string",
+  },
+  {
+    name: "q4_3_1",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_4.3.1",
+    type: "multiple-option",
+  },
+  {
+    name: "q4_3_2",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_4.3.2",
+    type: "string",
+  },
+  {
+    name: "q4_4_1",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_4.4.1",
+    type: "multiple-option",
+  },
+  {
+    name: "q4_4_2",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_4.4.2",
+    type: "string",
+  },
+  {
+    name: "q4_4_3",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_4.4.3",
+    type: "string",
+  },
+  {
+    name: "q4_4_4",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_4.4.4",
+    type: "string",
+  },
+  {
+    name: "q4_4_5",
+    section: "S2",
+    group: "S2_G1",
+    question: "S2_G1_4.4.5",
+    type: "string",
+  },
+  // S2 - S2_G2
+  {
+    name: "q5",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_5",
+    type: "option",
+  },
+  {
+    name: "q6",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_6",
+    type: "string",
+  },
+  {
+    name: "q7",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_7",
+    type: "multiple-option",
+  },
+  {
+    name: "q7_1_0",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_7.1.0",
+    type: "multiple-option",
+  },
+  {
+    name: "q7_1_1",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_7.1.1",
+    type: "multiple-option",
+  },
+  {
+    name: "q7_1_2",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_7.1.2",
+    type: "multiple-option",
+  },
+  {
+    name: "q7_2",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_7.2",
+    type: "multiple-option",
+  },
+  {
+    name: "q7_3",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_7.3",
+    type: "string",
+  },
+  {
+    name: "q8",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_8",
+    type: "option",
+  },
+  {
+    name: "q9",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_9",
+    type: "string",
+  },
+  {
+    name: "q10",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_10",
+    type: "option",
+  },
+  {
+    name: "q11",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_11",
+    type: "multiple-option",
+  },
+  {
+    name: "q12",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_12",
+    type: "string",
+  },
+  {
+    name: "q13",
+    section: "S2",
+    group: "S2_G2",
+    question: "S2_G2_13",
+    type: "string",
+  },
+  // S2 - S2_G3
+  {
+    name: "q14",
+    section: "S2",
+    group: "S2_G3",
+    question: "S2_G3_14",
+    type: "multiple-option",
+  },
+  {
+    name: "q15",
+    section: "S2",
+    group: "S2_G3",
+    question: "S2_G3_15",
+    type: "multiple-option",
+  },
+  // S3 - S3_G1
+  {
+    name: "q16",
+    section: "S3",
+    group: "S3_G1",
+    question: "S3_G1_16",
+    type: "multiple-option",
+  },
+  {
+    name: "q17",
+    section: "S3",
+    group: "S3_G1",
+    question: "S3_G1_17",
+    type: "string",
+  },
+  {
+    name: "q18",
+    section: "S3",
+    group: "S3_G1",
+    question: "S3_G1_18",
+    type: "multiple-option",
+  },
+  {
+    name: "q19",
+    section: "S3",
+    group: "S3_G1",
+    question: "S3_G1_19",
+    type: "string",
+  },
+  {
+    name: "q20",
+    section: "S3",
+    group: "S3_G1",
+    question: "S3_G1_20",
+    type: "multiple-option",
+  },
+  {
+    name: "q21",
+    section: "S3",
+    group: "S3_G1",
+    question: "S3_G1_21",
+    type: "string",
+  },
+  // S3 - S3_G2
+  {
+    name: "q22",
+    section: "S3",
+    group: "S3_G2",
+    question: "S3_G2_22",
+    type: "string",
+  },
+  {
+    name: "q23",
+    section: "S3",
+    group: "S3_G2",
+    question: "S3_G2_23",
+    type: "option",
+  },
+  {
+    name: "q24",
+    section: "S3",
+    group: "S3_G2",
+    question: "S3_G2_24",
+    type: "option",
+  },
+  {
+    name: "q24_1",
+    section: "S3",
+    group: "S3_G2",
+    question: "S3_G2_24.1",
+    type: "multiple-option",
+  },
+  {
+    name: "q24_2",
+    section: "S3",
+    group: "S3_G2",
+    question: "S3_G2_24.2",
+    type: "option",
+  },
+  {
+    name: "q24_3",
+    section: "S3",
+    group: "S3_G2",
+    question: "S3_G2_24.3",
+    type: "option",
+  },
+  {
+    name: "q24_4",
+    section: "S3",
+    group: "S3_G2",
+    question: "S3_G2_24.4",
+    type: "multiple-option",
+  },
+  {
+    name: "q24_5",
+    section: "S3",
+    group: "S3_G2",
+    question: "S3_G2_24.5",
+    type: "multiple-option",
+  },
+  // S3 - S3_G3
+  {
+    name: "q26",
+    section: "S3",
+    group: "S3_G3",
+    question: "S3_G3_26",
+    type: "multiple-option",
+  },
+  {
+    name: "q27",
+    section: "S3",
+    group: "S3_G3",
+    question: "S3_G3_27",
+    type: "string",
+  },
+  {
+    name: "q28",
+    section: "S3",
+    group: "S3_G3",
+    question: "S3_G3_28",
+    type: "multiple-option",
+  },
+  {
+    name: "q29",
+    section: "S3",
+    group: "S3_G3",
+    question: "S3_G3_29",
+    type: "string",
+  },
+  {
+    name: "q30",
+    section: "S3",
+    group: "S3_G3",
+    question: "S3_G3_30",
+    type: "multiple-option",
+  },
+  {
+    name: "q31",
+    section: "S3",
+    group: "S3_G3",
+    question: "S3_G3_31",
+    type: "string",
+  },
+  {
+    name: "q32",
+    section: "S3",
+    group: "S3_G3",
+    question: "S3_G3_32",
+    type: "multiple-option",
+  },
+  // S3 - S3_G4
+  {
+    name: "q33",
+    section: "S3",
+    group: "S3_G4",
+    question: "S3_G4_33",
+    type: "number",
+  },
+  {
+    name: "q34",
+    section: "S3",
+    group: "S3_G4",
+    question: "S3_G4_34",
+    type: "number",
+  },
+  // S3 - S3_G5
+  {
+    name: "q35",
+    section: "S3",
+    group: "S3_G5",
+    question: "S3_G5_35",
+    type: "option",
+  },
+  {
+    name: "q36",
+    section: "S3",
+    group: "S3_G5",
+    question: "S3_G5_36",
+    type: "number",
+  },
+  {
+    name: "q36_1",
+    section: "S3",
+    group: "S3_G5",
+    question: "S3_G5_36.1",
+    type: "option",
+  },
+  {
+    name: "q37",
+    section: "S3",
+    group: "S3_G5",
+    question: "S3_G5_37",
+    type: "number",
+  },
+  {
+    name: "q37_1",
+    section: "S3",
+    group: "S3_G5",
+    question: "S3_G5_37.1",
+    type: "option",
+  },
+  // S3 - S3_G6
+  {
+    name: "q38",
+    section: "S3",
+    group: "S3_G6",
+    question: "S3_G6_38",
+    type: "option",
+  },
+  {
+    name: "q39",
+    section: "S3",
+    group: "S3_G6",
+    question: "S3_G6_39",
+    type: "string",
+  },
+  // S3 - S3_G7
+  {
+    name: "q40",
+    section: "S3",
+    group: "S3_G7",
+    question: "S3_G7_40",
+    type: "item-array",
+  },
+  {
+    name: "q41",
+    section: "S3",
+    group: "S3_G7",
+    question: "S3_G7_41",
+    type: "option",
+  },
+  {
+    name: "q41_1",
+    section: "S3",
+    group: "S3_G7",
+    question: "S3_G7_41.1",
+    type: "string",
+  },
+];
+
+const getRevertValue = (type, value, name) => {
+  let res = value;
+  const isObject = typeof value === "object";
+  const isArray = Array.isArray(value);
+  if (type === "number") {
+    res = Number(value);
+  }
+  if (type === "option" && isObject && !isArray) {
+    res = Object.keys(value)[0];
+    // case for geocoveragetype
+    if (name === "q24") {
+      res = Object.values(value)[0];
+    }
+    res = isNaN(Number(res)) ? res : Number(res);
+    // case for currency code
+    if (name === "q36_1" || name === "q37_1") {
+      res = res.split("_").join("");
+      res = String(res).toUpperCase();
+    }
+  }
+  if (type === "multiple-option" && isObject && isArray) {
+    res = value.map((item) => {
+      const enumKey = Object.keys(item)[0];
+      return enumKey;
+    });
+  }
+  if (type === "item-array" && isObject && isArray) {
+    res = value;
+  }
+  return res;
+};
+
+const revertFormData = (data) => {
+  let formData = initialFormData;
+  formDataMapping.forEach((item) => {
+    const { name, section, group, question, type } = item;
+    const value = data?.[name];
+    if (!group && value) {
+      formData = {
+        ...formData,
+        [section]: {
+          ...formData[section],
+          [question]: getRevertValue(type, value, name),
+        },
+      };
+    }
+    if (group && value) {
+      formData = {
+        ...formData,
+        [section]: {
+          ...formData[section],
+          [group]: {
+            ...formData[section][group],
+            [question]: getRevertValue(type, value, name),
+          },
+        },
+      };
+    }
+  });
+  return formData;
+};
+
 export const initiativeData = new Store({
   data: initialFormData,
+  editId: null,
 });
 
 const getSchema = (
@@ -225,17 +848,21 @@ const getSchema = (
   };
 };
 
-const AddInitiative = ({ ...props }) => {
+const AddInitiative = ({ match: { params }, ...props }) => {
   const minHeightContainer = innerHeight * 0.8;
   const minHeightCard = innerHeight * 0.75;
-  const { data } = initiativeData.useState();
   const {
     countries,
     organisations,
     tags,
     loading,
     formStep,
+    formEdit,
   } = UIStore.currentState;
+
+  const formData = initiativeData.useState();
+  const { editId, data } = formData;
+  const { status, id } = formEdit.initiative;
   const [formSchema, setFormSchema] = useState({
     schema: schema,
     loading: true,
@@ -262,10 +889,30 @@ const AddInitiative = ({ ...props }) => {
   }, [highlight]);
 
   useEffect(() => {
+    const dataId = Number(params?.id || id);
     if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
+      // Manage form status, add/edit
+      if (
+        (status === "edit" || dataId) &&
+        (Object.values(data).length === 0 || editId !== dataId)
+      ) {
+        api.getRaw(`/initiative/${dataId}`).then((d) => {
+          initiativeData.update((e) => {
+            e.data = revertFormData(JSON.parse(d.data));
+            e.editId = dataId;
+          });
+        });
+      }
     }
-  }, [loading, formSchema]);
+    // Manage form status, add/edit
+    if (status === "add" && !dataId && editId !== null) {
+      initiativeData.update((e) => {
+        e.data = initialFormData;
+        e.editId = null;
+      });
+    }
+  }, [loading, formSchema, status, id, data, editId, params]);
 
   const renderSteps = (parentTitle, section, steps) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;

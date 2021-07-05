@@ -53,6 +53,36 @@ const UIStore = new Store({
     event: 1,
     technology: 1,
   },
+  formEdit: {
+    initiative: {
+      status: "add",
+      id: null,
+    },
+    actionPlan: {
+      status: "add",
+      id: null,
+    },
+    policy: {
+      status: "add",
+      id: null,
+    },
+    technicalResource: {
+      status: "add",
+      id: null,
+    },
+    financingResource: {
+      status: "add",
+      id: null,
+    },
+    event: {
+      status: "add",
+      id: null,
+    },
+    technology: {
+      status: "add",
+      id: null,
+    },
+  },
 });
 
 export { UIStore };
