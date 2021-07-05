@@ -259,36 +259,78 @@ const Root = () => {
         />
         <Route path="/add-event" render={(props) => <AddEvent {...props} />} />
         <Route
+          exact
+          path="/edit-event/:id"
+          render={(props) => <AddEvent {...props} />}
+        />
+
+        <Route
           path="/add-technology"
           render={(props) => <AddTechnology {...props} />}
         />
+        <Route
+          exact
+          path="/edit-technology/:id"
+          render={(props) => <AddTechnology {...props} />}
+        />
+
         <Route
           path="/add-policy"
           render={(props) => <AddPolicy {...props} />}
         />
         <Route
+          exact
+          path="/edit-policy/:id"
+          render={(props) => <AddPolicy {...props} />}
+        />
+
+        <Route
           path="/add-action-plan"
           render={(props) => <AddActionPlan {...props} />}
         />
+        <Route
+          exact
+          path="/edit-action-plan/:id"
+          render={(props) => <AddActionPlan {...props} />}
+        />
+
         <Route
           path="/add-financing-resource"
           render={(props) => <AddFinancingResource {...props} />}
         />
         <Route
+          exact
+          path="/edit-financing-resource/:id"
+          render={(props) => <AddFinancingResource {...props} />}
+        />
+
+        <Route
           path="/add-technical-resource"
           render={(props) => <AddTechnicalResource {...props} />}
         />
         <Route
+          exact
+          path="/edit-technical-resource/:id"
+          render={(props) => <AddTechnicalResource {...props} />}
+        />
+
+        <Route
           path="/add-initiative"
           render={(props) => <AddInitiative {...props} />}
         />
+        <Route
+          exact
+          path="/edit-initiative/:id"
+          render={(props) => <AddInitiative {...props} />}
+        />
+
         <Route
           path="/profile"
           render={(props) => <ProfileView {...{ ...props }} />}
         />
         <Route path="/signup" render={(props) => <SignupView {...props} />} />
         <Route
-          path="/:type/:id"
+          path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event)/:id"
           render={(props) => (
             <DetailsView
               {...props}

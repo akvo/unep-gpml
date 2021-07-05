@@ -162,7 +162,7 @@ const validation = (formSchema) => {
   );
 };
 
-const AddEventForm = withRouter(({ history }) => {
+const AddEventForm = withRouter(({ match: { params }, history }) => {
   const { countries, loading, formStep, formEdit } = UIStore.currentState;
   const { status, id } = formEdit.event;
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
@@ -184,7 +184,7 @@ const AddEventForm = withRouter(({ history }) => {
     } else if (data.geoCoverageType === "global") {
       delete data.geoCoverageValue;
     }
-    if (status === "edit" && data?.photo) {
+    if ((status === "edit" || params?.id) && data?.photo) {
       data?.photo.match(customFormats.url) && delete data.photo;
     } else {
       data.photo = null;
@@ -192,7 +192,7 @@ const AddEventForm = withRouter(({ history }) => {
     data?.ts && delete data.ts;
 
     setSending(true);
-    if (status === "add") {
+    if (status === "add" && !params?.id) {
       api
         .post("/event", data)
         .then(() => {
@@ -212,9 +212,9 @@ const AddEventForm = withRouter(({ history }) => {
           setSending(false);
         });
     }
-    if (status === "edit") {
+    if (status === "edit" || params?.id) {
       api
-        .put(`/detail/event/${id}`, data)
+        .put(`/detail/event/${id || params?.id}`, data)
         .then(() => {
           notification.success({ message: "Update success" });
           UIStore.update((e) => {
@@ -228,7 +228,7 @@ const AddEventForm = withRouter(({ history }) => {
           });
           // scroll top
           window.scrollTo({ top: 0 });
-          history.push(`/event/${id}`);
+          history.push(`/event/${id || params?.id}`);
         })
         .catch(() => {
           notification.error({ message: "An error occured" });
@@ -260,18 +260,18 @@ const AddEventForm = withRouter(({ history }) => {
     })();
 
     // Manage form status, add/edit
-    if (status === "edit") {
-      api.get(`/detail/event/${id}`).then((d) => {
+    if (status === "edit" || params?.id) {
+      api.get(`/detail/event/${id || params?.id}`).then((d) => {
         setFormData(d.data);
       });
     }
-    if (status === "add") {
+    if (status === "add" && !params?.id) {
       setTimeout(() => {
         formRef.current?.change("ts", new Date().getTime());
         formRef.current?.restart({ urls: [{ url: "", lang: "en" }] });
       });
     }
-  }, [countries, status, id]);
+  }, [countries, status, id, params]);
 
   const setFormData = (data) => {
     const dateFormat = "YYYY/MM/DD";
@@ -418,7 +418,7 @@ const AddEventForm = withRouter(({ history }) => {
                     size="large"
                     onClick={() => handleSubmit()}
                   >
-                    {status === "add" ? "Add" : "Update"} event
+                    {status === "add" && !params?.id ? "Add" : "Update"} event
                   </Button>
                 </div>
               );

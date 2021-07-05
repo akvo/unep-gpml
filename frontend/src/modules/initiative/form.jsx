@@ -167,6 +167,7 @@ const AddInitiativeForm = withRouter(
     formSchema,
     setDisabledBtn,
     history,
+    match: { params },
   }) => {
     const { formEdit } = UIStore.currentState;
     const { status, id } = formEdit.initiative;
@@ -181,7 +182,7 @@ const AddInitiativeForm = withRouter(
       data.version = parseInt(formSchema.schema.version);
 
       setSending(true);
-      if (status === "add") {
+      if (status === "add" && !params?.id) {
         api
           .post("/initiative", data)
           .then(() => {
@@ -205,9 +206,9 @@ const AddInitiativeForm = withRouter(
             setSending(false);
           });
       }
-      if (status === "edit") {
+      if (status === "edit" || params?.id) {
         api
-          .put(`/detail/project/${id}`, data)
+          .put(`/detail/project/${id || params?.id}`, data)
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {
@@ -225,7 +226,7 @@ const AddInitiativeForm = withRouter(
               e.data = initialFormData;
             });
             setDisabledBtn({ disabled: true, type: "default" });
-            history.push(`/project/${id}`);
+            history.push(`/project/${id || params?.id}`);
           })
           .catch(() => {
             notification.error({ message: "An error occured" });
@@ -351,7 +352,7 @@ const AddInitiativeForm = withRouter(
 
     useEffect(() => {
       if (
-        status === "edit" &&
+        (status === "edit" || params?.id) &&
         editCheck &&
         initiativeFormData.data?.["S1"]?.["S1_1"]
       ) {
@@ -361,7 +362,14 @@ const AddInitiativeForm = withRouter(
         });
         setEditCheck(false);
       }
-    }, [handleFormOnChange, editCheck, status, initiativeFormData, formSchema]);
+    }, [
+      handleFormOnChange,
+      editCheck,
+      status,
+      initiativeFormData,
+      formSchema,
+      params,
+    ]);
 
     return (
       <div className="add-initiative-form">

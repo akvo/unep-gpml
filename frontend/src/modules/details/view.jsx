@@ -663,31 +663,31 @@ const BookmarkBtn = withRouter(
       switch (topic.type) {
         case "project":
           form = "initiative";
-          link = "add-initiative";
+          link = "edit-initiative";
           break;
         case "action_plan":
           form = "actionPlan";
-          link = "add-action-plan";
+          link = "edit-action-plan";
           break;
         case "policy":
           form = "policy";
-          link = "add-policy";
+          link = "edit-policy";
           break;
         case "technical_resource":
           form = "technicalResource";
-          link = "add-technical-resource";
+          link = "edit-technical-resource";
           break;
         case "financing_resource":
           form = "financingResource";
-          link = "add-financing-resource";
+          link = "edit-financing-resource";
           break;
         case "technology":
           form = "technology";
-          link = "add-technology";
+          link = "edit-technology";
           break;
         default:
           form = "event";
-          link = "add-event";
+          link = "edit-event";
           break;
       }
       UIStore.update((e) => {
@@ -703,7 +703,7 @@ const BookmarkBtn = withRouter(
           [form]: 1,
         };
       });
-      history.push(`/${link}`);
+      history.push(`/${link}/${topic.id}`);
     };
 
     return (

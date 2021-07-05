@@ -138,6 +138,7 @@ const AddResourceForm = withRouter(
     setHighlight,
     setDisabledBtn,
     history,
+    match: { params },
   }) => {
     const {
       countries,
@@ -158,29 +159,30 @@ const AddResourceForm = withRouter(
     });
 
     useEffect(() => {
+      const dataId = Number(params?.id || id);
       if (formSchema.loading && !loading) {
         setFormSchema(getSchema(UIStore.currentState, false));
         // Manage form status, add/edit
         if (
-          status === "edit" &&
-          (Object.values(data).length === 0 || editId !== id)
+          (status === "edit" || dataId) &&
+          (Object.values(data).length === 0 || editId !== dataId)
         ) {
-          api.get(`/detail/technical_resource/${id}`).then((d) => {
+          api.get(`/detail/technical_resource/${dataId}`).then((d) => {
             resourceData.update((e) => {
               e.data = revertFormData(formDataMapping, d.data);
-              e.editId = id;
+              e.editId = dataId;
             });
           });
         }
       }
       // Manage form status, add/edit
-      if (status === "add" && editId !== null) {
+      if (status === "add" && !dataId && editId !== null) {
         resourceData.update((e) => {
           e.data = {};
           e.editId = null;
         });
       }
-    }, [loading, formSchema, status, id, data, editId]);
+    }, [loading, formSchema, status, id, data, editId, params]);
 
     useEffect(() => {
       setFormSchema({ schema: schema, loading: true });
@@ -207,10 +209,10 @@ const AddResourceForm = withRouter(
       }
 
       data = handleGeoCoverageValue(data, formData, countries);
-      if (status === "add") {
+      if (status === "add" && !params?.id) {
         data?.image && data?.image === "" && delete data.image;
       }
-      if (status === "edit") {
+      if (status === "edit" || params?.id) {
         data?.image &&
           data?.image.match(customFormats.url) &&
           delete data.image;
@@ -223,7 +225,7 @@ const AddResourceForm = withRouter(
       }
 
       setSending(true);
-      if (status === "add") {
+      if (status === "add" && !params?.id) {
         api
           .post("/resource", data)
           .then(() => {
@@ -247,9 +249,9 @@ const AddResourceForm = withRouter(
             setSending(false);
           });
       }
-      if (status === "edit") {
+      if (status === "edit" || params?.id) {
         api
-          .put(`/detail/technical_resource/${id}`, data)
+          .put(`/detail/technical_resource/${id || params?.id}`, data)
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {
@@ -268,7 +270,7 @@ const AddResourceForm = withRouter(
               e.editId = null;
             });
             setDisabledBtn({ disabled: true, type: "default" });
-            history.push(`/technical_resource/${id}`);
+            history.push(`/technical_resource/${id || params?.id}`);
           })
           .catch(() => {
             notification.error({ message: "An error occured" });
@@ -281,10 +283,13 @@ const AddResourceForm = withRouter(
 
     const handleFormOnChange = ({ formData }) => {
       // remove image property when user remove image from form
-      if (status === "add") {
+      if (status === "add" && !params?.id) {
         formData?.image === "" && delete formData.image;
       }
-      if (status === "edit" && (formData?.image || formData?.image === "")) {
+      if (
+        (status === "edit" || params?.id) &&
+        (formData?.image || formData?.image === "")
+      ) {
         formData.image = formData?.image !== "" ? formData?.image : null;
       }
       resourceData.update((e) => {
@@ -317,7 +322,7 @@ const AddResourceForm = withRouter(
       // overiding image validation when edit
       if (
         (res.length > 0 &&
-          status === "edit" &&
+          (status === "edit" || params?.id) &&
           data?.image &&
           data?.image.match(customFormats.url)) ||
         !data.image

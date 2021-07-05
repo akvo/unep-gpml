@@ -848,7 +848,7 @@ const getSchema = (
   };
 };
 
-const AddInitiative = ({ ...props }) => {
+const AddInitiative = ({ match: { params }, ...props }) => {
   const minHeightContainer = innerHeight * 0.8;
   const minHeightCard = innerHeight * 0.75;
   const {
@@ -889,29 +889,30 @@ const AddInitiative = ({ ...props }) => {
   }, [highlight]);
 
   useEffect(() => {
+    const dataId = Number(params?.id || id);
     if (formSchema.loading && !loading) {
       setFormSchema(getSchema(UIStore.currentState, false));
       // Manage form status, add/edit
       if (
-        status === "edit" &&
-        (Object.values(data).length === 0 || editId !== id)
+        (status === "edit" || dataId) &&
+        (Object.values(data).length === 0 || editId !== dataId)
       ) {
-        api.getRaw(`/initiative/${id}`).then((d) => {
+        api.getRaw(`/initiative/${dataId}`).then((d) => {
           initiativeData.update((e) => {
             e.data = revertFormData(JSON.parse(d.data));
-            e.editId = id;
+            e.editId = dataId;
           });
         });
       }
     }
     // Manage form status, add/edit
-    if (status === "add" && editId !== null) {
+    if (status === "add" && !dataId && editId !== null) {
       initiativeData.update((e) => {
         e.data = initialFormData;
         e.editId = null;
       });
     }
-  }, [loading, formSchema, status, id, data, editId]);
+  }, [loading, formSchema, status, id, data, editId, params]);
 
   const renderSteps = (parentTitle, section, steps) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;

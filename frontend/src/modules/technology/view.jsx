@@ -6,7 +6,7 @@ import "./styles.scss";
 import AddTechnologyForm from "./form";
 import StickyBox from "react-sticky-box";
 
-const AddTechnology = ({ ...props }) => {
+const AddTechnology = ({ match: { params }, ...props }) => {
   const { loading, formStep, formEdit } = UIStore.currentState;
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
@@ -84,7 +84,9 @@ const AddTechnology = ({ ...props }) => {
           <Row>
             <Col xs={24} lg={11}>
               <h1>
-                {formEdit.technology.status === "add" ? "Add" : "Edit"}{" "}
+                {formEdit.technology.status === "add" && !params?.id
+                  ? "Add"
+                  : "Edit"}{" "}
                 Technology
               </h1>
             </Col>
