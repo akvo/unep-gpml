@@ -736,10 +736,7 @@ const BookmarkBtn = withRouter(
           </Dropdown>
           <div className="label">Bookmarks</div>
         </div>
-        {((profile.role === "ADMIN" && topic.type !== "project") ||
-          (profile.role === "ADMIN" &&
-            topic.type === "project" &&
-            topic.id > 10000)) && (
+        {profile.role === "ADMIN" && topic.id > 10000 && (
           <div className="edit-btn" onClick={(e) => e.stopPropagation()}>
             <Button
               onClick={() => handleEditBtn()}
