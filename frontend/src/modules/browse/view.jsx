@@ -52,9 +52,12 @@ const Browse = ({ history, setSignupModalVisible, filters, setFilters }) => {
   const [warningVisible, setWarningVisible] = useState(false);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const pageSize = 50;
-  const getResults = (url = `/browse${window.location.search}`) => {
+  const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
     // of how `history` and `location` are interacting!
+    const searchParms = new URLSearchParams(window.location.search);
+    searchParms.set("limit", pageSize);
+    const url = `/browse?${String(searchParms)}`;
     api.get(url).then((resp) => {
       setResults(resp?.data?.results);
       setCountData(resp?.data?.counts);
