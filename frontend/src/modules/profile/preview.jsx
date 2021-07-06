@@ -276,7 +276,9 @@ export const GeneralPreview = ({ item }) => {
         <li>
           <div className="detail-title">Tags</div>:
           <div className="detail-content">
-            {(item.tags && item.tags.join(", ")) || "-"}
+            {(item.tags &&
+              item.tags.map((x) => Object.values(x)[0]).join(", ")) ||
+              "-"}
           </div>
         </li>
       </ul>

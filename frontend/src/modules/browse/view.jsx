@@ -348,8 +348,7 @@ const TopicSelect = ({ value, onChange, countData, isApprovedUser }) => {
               onChange={handleChange("stakeholder")}
             >
               Individual (
-              {countData?.find((it) => it.topic === "organisation")?.count || 0}
-              )
+              {countData?.find((it) => it.topic === "stakeholder")?.count || 0})
             </Checkbox>
           </li>
         </ul>
