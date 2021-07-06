@@ -51,7 +51,7 @@ const Browse = ({ history, setSignupModalVisible, filters, setFilters }) => {
   const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
-  const pageSize = 50;
+  const pageSize = 10;
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
     // of how `history` and `location` are interacting!
