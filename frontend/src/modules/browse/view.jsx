@@ -51,9 +51,13 @@ const Browse = ({ history, setSignupModalVisible, filters, setFilters }) => {
   const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
-  const getResults = (url = `/browse${window.location.search}`) => {
+  const pageSize = 10;
+  const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
     // of how `history` and `location` are interacting!
+    const searchParms = new URLSearchParams(window.location.search);
+    searchParms.set("limit", pageSize);
+    const url = `/browse?${String(searchParms)}`;
     api.get(url).then((resp) => {
       setResults(resp?.data?.results);
       setCountData(resp?.data?.counts);
@@ -259,8 +263,8 @@ const Browse = ({ history, setSignupModalVisible, filters, setFilters }) => {
                 {!isEmpty(results) && (
                   <Pagination
                     defaultCurrent={1}
-                    current={(filters?.offset || 0) / 50 + 1}
-                    pageSize={50}
+                    current={(filters?.offset || 0) / pageSize + 1}
+                    pageSize={pageSize}
                     total={totalItems}
                     showSizeChanger={false}
                     onChange={(n, size) =>
