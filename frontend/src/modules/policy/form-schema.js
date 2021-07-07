@@ -23,6 +23,11 @@ export const schema = {
     "geoCoverageValueSubNational",
     "implementingMea",
     "tags",
+    "url",
+    "abstract",
+    "typeOfLaw",
+    "dataSource",
+    "image",
   ],
   properties: {
     title: {
