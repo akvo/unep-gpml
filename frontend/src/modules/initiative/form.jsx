@@ -1,5 +1,5 @@
 import { initiativeData, initialFormData } from "./view";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { notification } from "antd";
 import { withTheme } from "@rjsf/core";
 import api from "../../utils/api";
@@ -17,6 +17,7 @@ import {
 } from "../../utils/forms";
 import uiSchema from "./uiSchema.json";
 import { UIStore } from "../../store";
+import { withRouter } from "react-router-dom";
 
 const Form = withTheme(AntDTheme);
 
@@ -156,183 +157,248 @@ const transformFormData = (data, formData, schema) => {
   return;
 };
 
-const AddInitiativeForm = ({
-  btnSubmit,
-  sending,
-  setSending,
-  highlight,
-  setHighlight,
-  formSchema,
-  setDisabledBtn,
-}) => {
-  const initiativeFormData = initiativeData.useState();
-  const [dependValue, setDependValue] = useState([]);
+const AddInitiativeForm = withRouter(
+  ({
+    btnSubmit,
+    sending,
+    setSending,
+    highlight,
+    setHighlight,
+    formSchema,
+    setDisabledBtn,
+    history,
+    match: { params },
+  }) => {
+    const { formEdit } = UIStore.currentState;
+    const { status, id } = formEdit.initiative;
+    const initiativeFormData = initiativeData.useState();
+    const [dependValue, setDependValue] = useState([]);
+    const [editCheck, setEditCheck] = useState(true);
 
-  const handleOnSubmit = ({ formData }) => {
-    // # Transform data before sending to endpoint
-    let data = {};
-    transformFormData(data, formData, formSchema.schema.properties);
-    data.version = parseInt(formSchema.schema.version);
-    setSending(true);
-    api
-      .post("/initiative", data)
-      .then(() => {
-        UIStore.update((e) => {
-          e.formStep = {
-            ...e.formStep,
-            initiative: 2,
+    const handleOnSubmit = ({ formData }) => {
+      // # Transform data before sending to endpoint
+      let data = {};
+      transformFormData(data, formData, formSchema.schema.properties);
+      data.version = parseInt(formSchema.schema.version);
+
+      setSending(true);
+      if (status === "add" && !params?.id) {
+        api
+          .post("/initiative", data)
+          .then(() => {
+            UIStore.update((e) => {
+              e.formStep = {
+                ...e.formStep,
+                initiative: 2,
+              };
+            });
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initiativeData.update((e) => {
+              e.data = initialFormData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+          })
+          .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+      if (status === "edit" || params?.id) {
+        api
+          .put(`/detail/project/${id || params?.id}`, data)
+          .then(() => {
+            notification.success({ message: "Update success" });
+            UIStore.update((e) => {
+              e.formEdit = {
+                ...e.formEdit,
+                initiative: {
+                  status: "add",
+                  id: null,
+                },
+              };
+            });
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initiativeData.update((e) => {
+              e.data = initialFormData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            history.push(`/project/${id || params?.id}`);
+          })
+          .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+    };
+
+    const handleFormOnChange = useCallback(
+      ({ formData, schema }) => {
+        initiativeData.update((e) => {
+          e.data = {
+            ...e.data,
+            ...formData,
           };
         });
-        // scroll top
-        window.scrollTo({ top: 0 });
-        initiativeData.update((e) => {
-          e.data = initialFormData;
-        });
-        setDisabledBtn({ disabled: true, type: "default" });
-      })
-      .catch(() => {
-        notification.error({ message: "An error occured" });
-      })
-      .finally(() => {
-        setSending(false);
-      });
-  };
-
-  const handleFormOnChange = ({ formData, schema }) => {
-    initiativeData.update((e) => {
-      e.data = {
-        ...e.data,
-        ...formData,
-      };
-    });
-    // to overide validation
-    let dependFields = [];
-    let requiredFields = [];
-    // this function eliminate required key from required list when that required form appear (show)
-    collectDependSchemaRefactor(
-      dependFields,
-      formData,
-      formSchema.schema,
-      requiredFields
-    );
-    setDependValue(dependFields);
-    const requiredFilledIn = checkRequiredFieldFilledIn(
-      formData,
-      dependFields,
-      requiredFields
-    );
-    let sectionRequiredFields = {};
-    let groupRequiredFields = {};
-    requiredFields.forEach(({ group, key, required }) => {
-      let index = group ? group : key;
-      let filterRequired = required.filter((r) => requiredFilledIn.includes(r));
-      sectionRequiredFields = {
-        ...sectionRequiredFields,
-        [index]: sectionRequiredFields?.[index]
-          ? sectionRequiredFields?.[index].concat(filterRequired)
-          : filterRequired,
-      };
-      if (!group) {
-        groupRequiredFields = {
-          ...groupRequiredFields,
-          [key]: {
-            ...groupRequiredFields[key],
-            required: {
-              [key]: filterRequired,
-            },
-          },
-        };
-      }
-      if (group) {
-        groupRequiredFields = {
-          ...groupRequiredFields,
-          [group]: {
-            ...groupRequiredFields[group],
-            required: {
-              ...groupRequiredFields?.[group]?.required,
-              [key]: filterRequired,
-            },
-          },
-        };
-      }
-    });
-    initiativeData.update((e) => {
-      e.data = {
-        ...e.data,
-        required: sectionRequiredFields,
-        S1: {
-          ...e.data.S1,
-          required: groupRequiredFields["S1"].required,
-        },
-        S2: {
-          ...e.data.S2,
-          required: groupRequiredFields["S2"].required,
-        },
-        S3: {
-          ...e.data.S3,
-          required: groupRequiredFields["S3"].required,
-        },
-      };
-    });
-    // enable btn submit
-    requiredFilledIn.length === 0 &&
-      setDisabledBtn({ disabled: false, type: "primary" });
-    requiredFilledIn.length !== 0 &&
-      setDisabledBtn({ disabled: true, type: "default" });
-  };
-
-  const handleTransformErrors = (errors, dependValue) => {
-    // custom errors handle
-    [
-      ".S1",
-      ".S2",
-      ".S3",
-      ".S2.S2_G1",
-      ".S2.S2_G2",
-      ".S2.S2_G3",
-      ".S3.S3_G1",
-      ".S3.S3_G2",
-      ".S3.S3_G3",
-      ".S3.S3_G4",
-      ".S3.S3_G5",
-      ".S3.S3_G6",
-      ".S3.S3_G7",
-    ].forEach((x) => {
-      let index = dependValue.indexOf(x);
-      index !== -1 && dependValue.splice(index, 1);
-    });
-    const res = overideValidation(errors, dependValue);
-    res.length === 0 && setHighlight(false);
-    return res;
-  };
-
-  return (
-    <div className="add-initiative-form">
-      <>
-        <Form
-          idPrefix="initiative"
-          schema={formSchema.schema}
-          uiSchema={uiSchema}
-          formData={initiativeFormData.data}
-          onChange={(e) => handleFormOnChange(e)}
-          onSubmit={(e) => handleOnSubmit(e)}
-          ArrayFieldTemplate={ArrayFieldTemplate}
-          ObjectFieldTemplate={ObjectFieldTemplate}
-          FieldTemplate={FieldTemplate}
-          widgets={widgets}
-          customFormats={customFormats}
-          transformErrors={(errors) =>
-            handleTransformErrors(errors, dependValue)
+        // to overide validation
+        let dependFields = [];
+        let requiredFields = [];
+        // this function eliminate required key from required list when that required form appear (show)
+        collectDependSchemaRefactor(
+          dependFields,
+          formData,
+          formSchema.schema,
+          requiredFields
+        );
+        setDependValue(dependFields);
+        const requiredFilledIn = checkRequiredFieldFilledIn(
+          formData,
+          dependFields,
+          requiredFields
+        );
+        let sectionRequiredFields = {};
+        let groupRequiredFields = {};
+        requiredFields.forEach(({ group, key, required }) => {
+          let index = group ? group : key;
+          let filterRequired = required.filter((r) =>
+            requiredFilledIn.includes(r)
+          );
+          sectionRequiredFields = {
+            ...sectionRequiredFields,
+            [index]: sectionRequiredFields?.[index]
+              ? sectionRequiredFields?.[index].concat(filterRequired)
+              : filterRequired,
+          };
+          if (!group) {
+            groupRequiredFields = {
+              ...groupRequiredFields,
+              [key]: {
+                ...groupRequiredFields[key],
+                required: {
+                  [key]: filterRequired,
+                },
+              },
+            };
           }
-          showErrorList={false}
-        >
-          <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
-            Fire
-          </button>
-        </Form>
-      </>
-    </div>
-  );
-};
+          if (group) {
+            groupRequiredFields = {
+              ...groupRequiredFields,
+              [group]: {
+                ...groupRequiredFields[group],
+                required: {
+                  ...groupRequiredFields?.[group]?.required,
+                  [key]: filterRequired,
+                },
+              },
+            };
+          }
+        });
+        initiativeData.update((e) => {
+          e.data = {
+            ...e.data,
+            required: sectionRequiredFields,
+            S1: {
+              ...e.data.S1,
+              required: groupRequiredFields["S1"].required,
+            },
+            S2: {
+              ...e.data.S2,
+              required: groupRequiredFields["S2"].required,
+            },
+            S3: {
+              ...e.data.S3,
+              required: groupRequiredFields["S3"].required,
+            },
+          };
+        });
+        // enable btn submit
+        requiredFilledIn.length === 0 &&
+          setDisabledBtn({ disabled: false, type: "primary" });
+        requiredFilledIn.length !== 0 &&
+          setDisabledBtn({ disabled: true, type: "default" });
+      },
+      [formSchema, setDisabledBtn]
+    );
+
+    const handleTransformErrors = (errors, dependValue) => {
+      // custom errors handle
+      [
+        ".S1",
+        ".S2",
+        ".S3",
+        ".S2.S2_G1",
+        ".S2.S2_G2",
+        ".S2.S2_G3",
+        ".S3.S3_G1",
+        ".S3.S3_G2",
+        ".S3.S3_G3",
+        ".S3.S3_G4",
+        ".S3.S3_G5",
+        ".S3.S3_G6",
+        ".S3.S3_G7",
+      ].forEach((x) => {
+        let index = dependValue.indexOf(x);
+        index !== -1 && dependValue.splice(index, 1);
+      });
+      const res = overideValidation(errors, dependValue);
+      res.length === 0 && setHighlight(false);
+      return res;
+    };
+
+    useEffect(() => {
+      if (
+        (status === "edit" || params?.id) &&
+        editCheck &&
+        initiativeFormData.data?.["S1"]?.["S1_1"]
+      ) {
+        handleFormOnChange({
+          formData: initiativeFormData.data,
+          schema: formSchema.schema,
+        });
+        setEditCheck(false);
+      }
+    }, [
+      handleFormOnChange,
+      editCheck,
+      status,
+      initiativeFormData,
+      formSchema,
+      params,
+    ]);
+
+    return (
+      <div className="add-initiative-form">
+        <>
+          <Form
+            idPrefix="initiative"
+            schema={formSchema.schema}
+            uiSchema={uiSchema}
+            formData={initiativeFormData.data}
+            onChange={(e) => handleFormOnChange(e)}
+            onSubmit={(e) => handleOnSubmit(e)}
+            ArrayFieldTemplate={ArrayFieldTemplate}
+            ObjectFieldTemplate={ObjectFieldTemplate}
+            FieldTemplate={FieldTemplate}
+            widgets={widgets}
+            customFormats={customFormats}
+            transformErrors={(errors) =>
+              handleTransformErrors(errors, dependValue)
+            }
+            showErrorList={false}
+          >
+            <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
+              Fire
+            </button>
+          </Form>
+        </>
+      </div>
+    );
+  }
+);
 
 export default AddInitiativeForm;
