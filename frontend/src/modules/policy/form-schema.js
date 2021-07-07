@@ -23,6 +23,11 @@ export const schema = {
     "geoCoverageValueSubNational",
     "implementingMea",
     "tags",
+    "url",
+    "abstract",
+    "typeOfLaw",
+    "dataSource",
+    "image",
   ],
   properties: {
     title: {
@@ -37,39 +42,18 @@ export const schema = {
       title: "DATA SOURCE",
       type: "string",
     },
-    url: {
-      title: "POLICY URL",
-      type: "string",
-      format: "url",
-    },
     typeOfLaw: {
       title: "TYPE OF LAW",
       enum: ["Miscellaneous", "Legislation", "Regulation", "Constitution"],
     },
-    recordNumber: {
-      title: "RECORD NUMBER",
+    abstract: {
+      title: "DESCRIPTION",
       type: "string",
     },
-    date: {
-      type: "object",
-      title: "",
-      required: ["firstPublicationDate", "latestAmendmentDate"],
-      properties: {
-        firstPublicationDate: {
-          title: "FIRST PUBLICATION DATE",
-          type: "string",
-          format: "date",
-        },
-        latestAmendmentDate: {
-          title: "LAST AMENDMENT DATE",
-          type: "string",
-          format: "date",
-        },
-      },
-    },
-    status: {
-      title: "STATUS",
-      enum: ["Repealed", "In force", "Not yet in force"],
+    image: {
+      title: "IMAGE",
+      type: "string",
+      format: "data-url",
     },
     country: {
       title: "COUNTRY",
@@ -119,21 +103,38 @@ export const schema = {
         value: ["global with elements in specific areas"],
       },
     },
-    abstract: {
-      title: "DESCRIPTION",
+    recordNumber: {
+      title: "RECORD NUMBER",
       type: "string",
     },
-    image: {
-      title: "IMAGE",
+    date: {
+      type: "object",
+      title: "",
+      required: ["firstPublicationDate", "latestAmendmentDate"],
+      properties: {
+        firstPublicationDate: {
+          title: "FIRST PUBLICATION DATE",
+          type: "string",
+          format: "date",
+        },
+        latestAmendmentDate: {
+          title: "LAST AMENDMENT DATE",
+          type: "string",
+          format: "date",
+        },
+      },
+    },
+    status: {
+      title: "STATUS",
+      enum: ["Repealed", "In force", "Not yet in force"],
+    },
+    url: {
+      title: "POLICY URL",
       type: "string",
-      format: "data-url",
+      format: "url",
     },
     implementingMea: {
       title: "IMPLEMENTING MEA",
-      enum: [],
-    },
-    tags: {
-      title: "TAGS",
       enum: [],
     },
     urls: {
@@ -158,6 +159,10 @@ export const schema = {
           },
         },
       },
+    },
+    tags: {
+      title: "TAGS",
+      enum: [],
     },
   },
 };
