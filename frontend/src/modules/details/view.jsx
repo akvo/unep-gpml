@@ -32,6 +32,7 @@ import logoNotFound from "../../images/logo-not-found.png";
 import uniqBy from "lodash/uniqBy";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
+const urlLink = (url) => (url.indexOf("http") !== 0 ? `https://${url}` : url);
 
 const renderItemValues = (params, mapping, data) => {
   const {
@@ -231,7 +232,7 @@ const renderItemValues = (params, mapping, data) => {
                         <a
                           target="_blank"
                           rel="noreferrer"
-                          href={x.url}
+                          href={urlLink(x.url)}
                           style={{ wordBreak: "break-word" }}
                         >
                           {x.url}
@@ -251,7 +252,7 @@ const renderItemValues = (params, mapping, data) => {
                             <a
                               target="_blank"
                               rel="noreferrer"
-                              href={link}
+                              href={urlLink(link)}
                               style={{ wordBreak: "break-word" }}
                             >
                               {link}
