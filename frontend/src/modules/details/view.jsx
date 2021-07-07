@@ -251,7 +251,11 @@ const renderItemValues = (params, mapping, data) => {
                             <a
                               target="_blank"
                               rel="noreferrer"
-                              href={link}
+                              href={
+                                link.indexOf("http") !== 0
+                                  ? `https://${link}`
+                                  : link
+                              }
                               style={{ wordBreak: "break-word" }}
                             >
                               {link}
