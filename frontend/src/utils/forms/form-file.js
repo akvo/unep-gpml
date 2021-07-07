@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { UIStore } from "../../store";
 import { UploadOutlined, FileOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 
@@ -95,12 +96,17 @@ const FileWidget = (props) => {
   const inputFile = useRef(null);
   const accepts = props?.accept || props?.uiSchema?.["ui:options"]?.accept;
 
+  const { required } = props;
+  const { highlight } = UIStore.currentState;
+  const border =
+    required && highlight ? "2px #22ba9a solid" : "2px dotted lightgray";
+
   return (
     <div className="photo-upload">
       <div
         style={{
           position: "relative",
-          border: "2px dotted lightgray",
+          border,
           padding: "25px",
           borderRadius: "5px",
           display: "flex",
