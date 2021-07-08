@@ -191,20 +191,22 @@ const SignupForm = ({
     );
   };
 
-  newSchema["expertiesActivities"].tags.options = tags?.general.map((x) => ({
+  newSchema["expertiesActivities"].tags.options = tags?.general?.map((x) => ({
     value: x.id,
     label: x.tag,
   }));
-  newSchema["expertiesActivities"].offering.options = tags?.offering.map(
+  newSchema["expertiesActivities"].offering.options = tags?.offering?.map(
     (x) => ({
       value: x.id,
       label: x.tag,
     })
   );
-  newSchema["expertiesActivities"].seeking.options = tags?.seeking.map((x) => ({
-    value: x.id,
-    label: x.tag,
-  }));
+  newSchema["expertiesActivities"].seeking.options = tags?.seeking?.map(
+    (x) => ({
+      value: x.id,
+      label: x.tag,
+    })
+  );
 
   newSchema["personalDetails"]["geoCoverage"].geoCoverageValue = {
     ...newSchema["personalDetails"]["geoCoverage"].geoCoverageValue,
