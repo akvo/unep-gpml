@@ -360,20 +360,22 @@
                 (contains? (set constants/resource-types) topic-type) "resource"
                 :else topic-type)
         table-columns (dissoc updates
-                              :tags :urls :geo_coverage_value :org :image
+                              :tags :urls :geo_coverage_value :org
+                              :image :photo
                               ;; NOTE: we ignore resource_type since
                               ;; we don't expect it to change!
                               :resource_type)
         tags (:tags updates)
         urls (:urls updates)
         params {:table table :id id :updates table-columns}
+        image (or (:image updates) (:photo updates))
         status (db.detail/update-resource-table conn params)
         org (:org updates)
         org-id (and org
                     (or (and (= -1 (:id org))
                              (handler.org/find-or-create conn org))
                         (:id org)))]
-    (update-resource-image conn (:image updates) table id)
+    (update-resource-image conn image table id)
     (update-resource-tags conn table id tags)
     (update-resource-language-urls conn table id urls)
     (update-resource-geo-coverage-values conn table id updates)
