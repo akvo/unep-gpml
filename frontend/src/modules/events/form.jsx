@@ -184,10 +184,10 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
     } else if (data.geoCoverageType === "global") {
       delete data.geoCoverageValue;
     }
-    if ((status === "edit" || params?.id) && data?.photo) {
-      data?.photo.match(customFormats.url) && delete data.photo;
-    } else {
-      data.photo = null;
+    if (status === "add") {
+      data?.photo && data?.photo === "" && delete data.photo;
+    } else if (status === "edit" || params?.id) {
+      data?.photo && data?.photo.match(customFormats.url) && delete data.photo;
     }
     data?.ts && delete data.ts;
 
