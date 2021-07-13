@@ -348,12 +348,19 @@
       :id id
       :organisation org-id})))
 
-(defn update-resource-image [conn image image-type resource-id]
-  (let [url (handler.image/assoc-image conn image image-type)]
+(defn -update-resource-picture [conn image image-type resource-id logo?]
+  (let [url (handler.image/assoc-image conn image image-type)
+        image-key (if logo? :logo :image)]
     (when-not (and image (= image url))
       (db.detail/update-resource-table
        conn
-       {:table image-type :id resource-id :updates {:image url}}))))
+       {:table image-type :id resource-id :updates {image-key url}}))))
+
+(defn update-resource-image [conn image image-type resource-id]
+  (-update-resource-picture conn image image-type resource-id false))
+
+(defn update-resource-logo [conn image image-type resource-id]
+  (-update-resource-picture conn image image-type resource-id true))
 
 (defn update-resource [conn topic-type id updates]
   (let [table (cond
@@ -361,7 +368,7 @@
                 :else topic-type)
         table-columns (dissoc updates
                               :tags :urls :geo_coverage_value :org
-                              :image :photo
+                              :image :photo :logo
                               ;; NOTE: we ignore resource_type since
                               ;; we don't expect it to change!
                               :resource_type)
@@ -378,6 +385,8 @@
       (update-resource-image conn (:image updates) table id))
     (when (contains? updates :photo)
       (update-resource-image conn (:photo updates) table id))
+    (when (contains? updates :logo)
+      (update-resource-logo conn (:logo updates) table id))
     (update-resource-tags conn table id tags)
     (update-resource-language-urls conn table id urls)
     (update-resource-geo-coverage-values conn table id updates)
