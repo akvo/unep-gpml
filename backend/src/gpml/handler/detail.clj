@@ -368,14 +368,16 @@
         tags (:tags updates)
         urls (:urls updates)
         params {:table table :id id :updates table-columns}
-        image (or (:image updates) (:photo updates))
         status (db.detail/update-resource-table conn params)
         org (:org updates)
         org-id (and org
                     (or (and (= -1 (:id org))
                              (handler.org/find-or-create conn org))
                         (:id org)))]
-    (update-resource-image conn image table id)
+    (when (contains? updates :image)
+      (update-resource-image conn (:image updates) table id))
+    (when (contains? updates :photo)
+      (update-resource-image conn (:photo updates) table id))
     (update-resource-tags conn table id tags)
     (update-resource-language-urls conn table id urls)
     (update-resource-geo-coverage-values conn table id updates)

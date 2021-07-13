@@ -187,7 +187,11 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
     if (status === "add") {
       data?.photo && data?.photo === "" && delete data.photo;
     } else if (status === "edit" || params?.id) {
-      data?.photo && data?.photo.match(customFormats.url) && delete data.photo;
+      if (!data?.photo) {
+        data.photo = null;
+      } else {
+        data?.photo.match(customFormats.url) && delete data.photo;
+      }
     }
     data?.ts && delete data.ts;
 
