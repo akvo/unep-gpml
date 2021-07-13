@@ -353,7 +353,7 @@
     (when-not (and image (= image url))
       (db.detail/update-resource-table
        conn
-       {:table image-type :id resource-id :updates {:image image}}))))
+       {:table image-type :id resource-id :updates {:image url}}))))
 
 (defn update-resource [conn topic-type id updates]
   (let [table (cond
