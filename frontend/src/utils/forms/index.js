@@ -192,7 +192,7 @@ export const checkRequiredFieldFilledIn = (
     if (item?.group === null && item.key) {
       item.required.forEach((x) => {
         formData?.[item.key] &&
-          !(x in formData?.[item.key]) &&
+          !formData?.[item.key]?.[x] &&
           dependFields.filter((d) => d.includes(x)).length === 0 &&
           res.push(x);
       });
@@ -204,7 +204,7 @@ export const checkRequiredFieldFilledIn = (
           ? `${item.group}.${item.key}['${x}']`
           : `${item.group}.${item.key}.${x}`;
         formData?.[item.group]?.[item.key] &&
-          !(x in formData?.[item.group]?.[item.key]) &&
+          !formData?.[item.group]?.[item.key]?.[x] &&
           dependFields.filter((d) => d.includes(search)).length === 0 &&
           res.push(x);
       });
