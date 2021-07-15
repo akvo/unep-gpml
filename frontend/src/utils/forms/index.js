@@ -171,7 +171,7 @@ export const checkRequiredFieldFilledIn = (
     // for non initiative form
     if (typeof item?.group === "undefined" && !item.key) {
       item.required.forEach((x) => {
-        !(x in formData) && res.push(x);
+        !formData?.[x] && res.push(x);
       });
     }
     // for non initiative form
@@ -184,7 +184,7 @@ export const checkRequiredFieldFilledIn = (
         let prop = x.includes(".")
           ? x.split(".").find((x) => x !== item.key)
           : x;
-        !(prop in formData?.[item.key]) && res.push(x);
+        !formData?.[item.key]?.[prop] && res.push(x);
       });
     }
 
