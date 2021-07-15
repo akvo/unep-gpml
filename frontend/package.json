@@ -64,7 +64,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.14.7",
     "eslint-config-prettier": "8.1.0",
     "http-proxy-middleware": "^1.0.6",
     "node-sass": "^4.0.0",
