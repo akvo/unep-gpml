@@ -8,6 +8,7 @@ import AddInitiativeForm from "./form";
 import StickyBox from "react-sticky-box";
 import { schema } from "./schema";
 import cloneDeep from "lodash/cloneDeep";
+import xor from "lodash/xor";
 import api from "../../utils/api";
 
 const { Step } = Steps;
@@ -895,7 +896,10 @@ const AddInitiative = ({ match: { params }, ...props }) => {
       // Manage form status, add/edit
       if (
         (status === "edit" || dataId) &&
-        (Object.values(data).length === 0 || editId !== dataId)
+        // data.S1 has the same keys as initialFormData.S1?
+        (xor(Object.keys(data?.S1), Object.keys(initialFormData?.S1)).length ===
+          0 ||
+          editId !== dataId)
       ) {
         api.getRaw(`/initiative/${dataId}`).then((d) => {
           initiativeData.update((e) => {
