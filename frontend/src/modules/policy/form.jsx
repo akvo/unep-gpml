@@ -200,7 +200,7 @@ const AddPolicyForm = withRouter(
         // Manage form status, add/edit
         if (
           (status === "edit" || dataId) &&
-          (Object.values(data).length === 0 || editId !== dataId)
+          (editId !== dataId || Object.keys(data).includes("title") === 0)
         ) {
           api.get(`/detail/policy/${dataId}`).then((d) => {
             policyData.update((e) => {

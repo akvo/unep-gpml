@@ -171,7 +171,7 @@ export const checkRequiredFieldFilledIn = (
     // for non initiative form
     if (typeof item?.group === "undefined" && !item.key) {
       item.required.forEach((x) => {
-        !(x in formData) && res.push(x);
+        !formData?.[x] && res.push(x);
       });
     }
     // for non initiative form
@@ -184,7 +184,7 @@ export const checkRequiredFieldFilledIn = (
         let prop = x.includes(".")
           ? x.split(".").find((x) => x !== item.key)
           : x;
-        !(prop in formData?.[item.key]) && res.push(x);
+        !formData?.[item.key]?.[prop] && res.push(x);
       });
     }
 
@@ -192,7 +192,7 @@ export const checkRequiredFieldFilledIn = (
     if (item?.group === null && item.key) {
       item.required.forEach((x) => {
         formData?.[item.key] &&
-          !(x in formData?.[item.key]) &&
+          !formData?.[item.key]?.[x] &&
           dependFields.filter((d) => d.includes(x)).length === 0 &&
           res.push(x);
       });
@@ -204,7 +204,7 @@ export const checkRequiredFieldFilledIn = (
           ? `${item.group}.${item.key}['${x}']`
           : `${item.group}.${item.key}.${x}`;
         formData?.[item.group]?.[item.key] &&
-          !(x in formData?.[item.group]?.[item.key]) &&
+          !formData?.[item.group]?.[item.key]?.[x] &&
           dependFields.filter((d) => d.includes(search)).length === 0 &&
           res.push(x);
       });

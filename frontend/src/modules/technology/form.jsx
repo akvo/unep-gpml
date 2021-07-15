@@ -180,7 +180,7 @@ const AddTechnologyForm = withRouter(
         // Manage form status, add/edit
         if (
           (status === "edit" || dataId) &&
-          (Object.values(data).length === 0 || editId !== dataId)
+          (editId !== dataId || !Object.keys(data).includes("name"))
         ) {
           api;
           api.get(`/detail/technology/${dataId}`).then((d) => {

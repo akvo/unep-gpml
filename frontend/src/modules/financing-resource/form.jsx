@@ -198,7 +198,7 @@ const AddResourceForm = withRouter(
         // Manage form status, add/edit
         if (
           (status === "edit" || dataId) &&
-          (Object.values(data).length === 0 || editId !== dataId)
+          (editId !== dataId || !Object.values(data).includes("title"))
         ) {
           api.get(`/detail/financing_resource/${dataId}`).then((d) => {
             resourceData.update((e) => {
