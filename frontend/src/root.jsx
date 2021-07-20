@@ -330,7 +330,7 @@ const Root = () => {
         />
         <Route path="/signup" render={(props) => <SignupView {...props} />} />
         <Route
-          path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event)/:id"
+          path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
           render={(props) => (
             <DetailsView
               {...props}
