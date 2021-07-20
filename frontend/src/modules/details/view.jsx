@@ -686,9 +686,11 @@ const BookmarkBtn = withRouter(
           form = "technology";
           link = "edit-technology";
           break;
-        default:
+        case "event":
           form = "event";
           link = "edit-event";
+          break;
+        default:
           break;
       }
       UIStore.update((e) => {
@@ -706,6 +708,11 @@ const BookmarkBtn = withRouter(
       });
       history.push(`/${link}/${topic.id}`);
     };
+
+    // Organisations are not yet editable, since they don't have a
+    // form to edit them in. Stakeholder information should be
+    // editable by the users themselves, and not by the admins.
+    const noEditTopics = new Set(["organisation", "stakeholder"]);
 
     return (
       <div className="button-wrapper">
@@ -737,7 +744,9 @@ const BookmarkBtn = withRouter(
           </Dropdown>
           <div className="label">Bookmarks</div>
         </div>
-        {((profile.role === "ADMIN" && topic.type !== "project") ||
+        {((profile.role === "ADMIN" &&
+          topic.type !== "project" &&
+          !noEditTopics.has(topic.type)) ||
           (profile.role === "ADMIN" &&
             topic.type === "project" &&
             topic.id > 10000)) && (
