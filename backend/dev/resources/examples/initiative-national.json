@@ -116,8 +116,9 @@
   "q33": 15,
   "q34": 34,
   "q35": {
-    "35-2": "Public Financing"
+    "35-7": "Other"
   },
+  "q35_1": "Self",
   "q36": 100000,
   "q36_1": {
     "u_s_d": "USD United States dollar"
