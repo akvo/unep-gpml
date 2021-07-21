@@ -308,6 +308,7 @@
       "S3_G5_35": {
         "ui:widget": "radio"
       },
+      "S3_G6_35.1": {},
       "S3_G5_36": {
         "ui:placeholder": "Please give us an estimate if you are unsure and only submit numbers, e.g., 5,000 should be entered as 5000."
       },
@@ -324,6 +325,7 @@
       },
       "ui:order": [
         "S3_G5_35",
+        "S3_G5_35.1",
         "S3_G5_36",
         "S3_G5_36.1",
         "S3_G5_37",

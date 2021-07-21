@@ -1226,6 +1226,7 @@ export const schema = {
           },
           required: [
             "S3_G5_35",
+            "S3_G5_35.1",
             "S3_G5_36",
             "S3_G5_36.1",
             "S3_G5_37",
@@ -1235,6 +1236,12 @@ export const schema = {
             S3_G5_35: {
               title: "What funding sources did you use?",
               type: "string",
+              dependency: [
+                {
+                  value: ["35-7"],
+                  questions: ["S3_G5_35.1"],
+                },
+              ],
               enum: [
                 "35-0",
                 "35-1",
@@ -1255,6 +1262,14 @@ export const schema = {
                 "Not applicable",
                 "Other",
               ],
+            },
+            "S3_G5_35.1": {
+              title: 'If you selected "Other", please specify.',
+              type: "string",
+              depend: {
+                id: "S3_G5_35",
+                value: ["35-7"],
+              },
             },
             S3_G5_36: {
               title:
