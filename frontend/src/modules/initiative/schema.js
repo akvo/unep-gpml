@@ -453,8 +453,13 @@ export const schema = {
             "S2_G1_4.4.5": {
               title:
                 "Please provide the URL's for any links to the monitoring data and information.",
-              type: "string",
-              format: "url",
+              type: "array",
+              items: {
+                type: "string",
+                string: true,
+                format: "url",
+              },
+              add: "Add Link",
               depend: {
                 id: "S2_G1_4",
                 value: ["4-3"],

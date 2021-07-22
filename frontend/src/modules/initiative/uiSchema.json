@@ -64,9 +64,18 @@
         "ui:widget": "textarea"
       },
       "S2_G1_4.4.5": {
-        "ui:placeholder": "example.com",
-        "ui:widget": "uri",
-        "ui:addOnBefore": "https://"
+        "ui:options": {
+          "showToolbar": true,
+          "orderable": false
+        },
+        "items": {
+          "ui:placeholder": "Please copy and paste one link per box provided.",
+          "ui:widget": "uri",
+          "ui:addOnBefore": "https://",
+          "ui:options": {
+            "label": false
+          }
+        }
       },
       "ui:order": [
         "S2_G1_2",
