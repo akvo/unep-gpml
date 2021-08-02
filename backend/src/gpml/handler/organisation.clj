@@ -1,6 +1,7 @@
 (ns gpml.handler.organisation
   (:require [gpml.db.organisation :as db.organisation]
             [integrant.core :as ig]
+            [gpml.geo-util :as geo]
             [gpml.handler.geo :as handler.geo]
             [ring.util.response :as resp]))
 
@@ -26,3 +27,13 @@
                 (= (:geo_coverage_type organisation) "global")
                 (mapv #(:iso_code %) geo))]
       (resp/response (assoc organisation :geo_coverage_value geo-coverage)))))
+
+(defmethod ig/init-key :gpml.handler.organisation/post-params [_ _]
+  [:map
+   [:id {:optional true} int?]
+   [:name {:optional true} string?]
+   [:url {:optional true} string?]
+   [:country {:optional true} int?]
+   [:geo_coverage_type {:optional true} geo/coverage_type]
+   [:geo_coverage_value {:optional true}
+    [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])
