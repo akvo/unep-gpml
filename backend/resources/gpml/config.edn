@@ -172,7 +172,12 @@
                                          [""
                                           {:get {:summary "List all organisations"
                                                  :swagger {:tags ["organisation"]}
-                                                 :handler #ig/ref :gpml.handler.organisation/get}}]
+                                                 :handler #ig/ref :gpml.handler.organisation/get}
+                                           :post {:summary "Create new organisation"
+                                                  :swagger {:tags ["organisation"]
+                                                            :security [{:id_token []}]}
+                                                  :parameters {:body #ig/ref :gpml.handler.organisation/post-params}
+                                                  :handler #ig/ref :gpml.handler.organisation/post}}]
                                          ["/{id}"
                                           {:get {:summary "Get organisation by id"
                                                  :swagger {:tags ["organisation"]}
@@ -274,6 +279,7 @@
   :gpml.handler.tag/all {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.organisation/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.organisation/post {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation/post-params {}
   :gpml.handler.organisation/get-id {:db #ig/ref :duct.database/sql}
 
