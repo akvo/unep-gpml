@@ -28,6 +28,12 @@
                 (mapv #(:iso_code %) geo))]
       (resp/response (assoc organisation :geo_coverage_value geo-coverage)))))
 
+(defmethod ig/init-key :gpml.handler.organisation/post [_ {:keys [db]}]
+  (fn [{:keys [body-params referrer]}]
+    (if-let [org-id (find-or-create (:spec db) body-params)]
+      (resp/created referrer (assoc body-params :id org-id))
+      (assoc (resp/status 500) :body "Internal Server Error"))))
+
 (defmethod ig/init-key :gpml.handler.organisation/post-params [_ _]
   [:map
    [:id {:optional true} int?]
