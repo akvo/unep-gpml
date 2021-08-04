@@ -339,7 +339,10 @@ const Root = () => {
           path="/profile"
           render={(props) => <ProfileView {...{ ...props }} />}
         />
-        <Route path="/stakeholder-signup" render={(props) => <StakeholderSignupView {...props} />} />
+        <Route
+          path="/stakeholder-signup"
+          render={(props) => <StakeholderSignupView {...props} />}
+        />
         <Route
           path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
           render={(props) => (
