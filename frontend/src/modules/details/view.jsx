@@ -455,7 +455,10 @@ UIStore.update((e) => {
   e.disclaimer = null;
 });
 
-const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
+const DetailsView = ({
+  match: { params },
+  setStakeholderSignupModalVisible,
+}) => {
   const { profile, countries, loading } = UIStore.currentState;
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
@@ -503,7 +506,7 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
       setWarningVisible(true);
     }
     if (isAuthenticated && profile.reviewStatus === undefined) {
-      setSignupModalVisible(true);
+      setStakeholderSignupModalVisible(true);
     }
     if (profile.reviewStatus === "APPROVED") {
       api.post("/favorite", relation).then((res) => {

@@ -11,7 +11,7 @@ import { topicNames, tTypes } from "../../utils/misc";
 const Landing = ({
   history,
   data,
-  setSignupModalVisible,
+  setStakeholderSignupModalVisible,
   setWarningModalVisible,
   isAuthenticated,
   loginWithPopup,
@@ -49,7 +49,7 @@ const Landing = ({
       return loginWithPopup();
     }
     if (isAuthenticated && !hasProfile) {
-      return setSignupModalVisible(true);
+      return setStakeholderSignupModalVisible(true);
     }
     return setWarningModalVisible(true);
   };

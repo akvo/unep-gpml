@@ -13,7 +13,7 @@ import Landing from "./modules/landing/view";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
 import logo from "./images/GPML-temporary-logo-horiz.jpg";
-import SignupModal from "./modules/signup/signup-modal";
+import StakeholderSignupModal from "./modules/signup/signup-modal";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
 import { storage } from "./utils/storage";
@@ -98,7 +98,10 @@ const Root = () => {
     user,
   } = useAuth0();
   const { profile, disclaimer } = UIStore.useState();
-  const [signupModalVisible, setSignupModalVisible] = useState(false);
+  const [
+    stakeholderSignupModalVisible,
+    setStakeholderSignupModalVisible,
+  ] = useState(false);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -124,7 +127,9 @@ const Root = () => {
             e.profile = { email: response.email };
           });
           setTimeout(() => {
-            setSignupModalVisible(Object.keys(resp.data).length === 0);
+            setStakeholderSignupModalVisible(
+              Object.keys(resp.data).length === 0
+            );
           }, 100);
         } else {
           UIStore.update((e) => {
@@ -220,7 +225,7 @@ const Root = () => {
             <nav>
               <AddButton
                 {...{
-                  setSignupModalVisible,
+                  setStakeholderSignupModalVisible,
                   isAuthenticated,
                   loginWithPopup,
                   setWarningModalVisible,
@@ -237,7 +242,7 @@ const Root = () => {
               {...{
                 data,
                 setWarningModalVisible,
-                setSignupModalVisible,
+                setStakeholderSignupModalVisible,
                 loginWithPopup,
                 isAuthenticated,
                 setFilters,
@@ -251,7 +256,9 @@ const Root = () => {
           render={(props) => (
             <Browse
               {...props}
-              setSignupModalVisible={setSignupModalVisible}
+              setStakeholderSignupModalVisible={
+                setStakeholderSignupModalVisible
+              }
               filters={filters}
               setFilters={setFilters}
             />
@@ -334,20 +341,22 @@ const Root = () => {
           render={(props) => (
             <DetailsView
               {...props}
-              setSignupModalVisible={setSignupModalVisible}
+              setStakeholderSignupModalVisible={
+                setStakeholderSignupModalVisible
+              }
             />
           )}
         />
         <Footer
-          setSignupModalVisible={setSignupModalVisible}
+          setStakeholderSignupModalVisible={setStakeholderSignupModalVisible}
           setWarningModalVisible={setWarningModalVisible}
           isAuthenticated={isAuthenticated}
           loginWithPopup={loginWithPopup}
         />
       </div>
-      <SignupModal
-        visible={signupModalVisible}
-        onCancel={() => setSignupModalVisible(false)}
+      <StakeholderSignupModal
+        visible={stakeholderSignupModalVisible}
+        onCancel={() => setStakeholderSignupModalVisible(false)}
       />
       <ModalWarningUser
         visible={warningModalVisible}
@@ -379,7 +388,7 @@ const Search = withRouter(({ history }) => {
 const AddButton = withRouter(
   ({
     isAuthenticated,
-    setSignupModalVisible,
+    setStakeholderSignupModalVisible,
     setWarningModalVisible,
     loginWithPopup,
     history,
@@ -550,7 +559,7 @@ const AddButton = withRouter(
           onClick={() => {
             Object.keys(profile).length > 1
               ? setWarningModalVisible(true)
-              : setSignupModalVisible(true);
+              : setStakeholderSignupModalVisible(true);
           }}
         >
           + Add
