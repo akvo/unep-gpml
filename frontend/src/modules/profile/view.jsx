@@ -19,7 +19,7 @@ import React, {
 import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
 import { fetchArchiveData } from "./utils";
-import SignupForm from "../signup/signup-form";
+import SignupForm from "../stakeholder-signup/signup-form";
 import AdminSection from "./admin";
 import "./styles.scss";
 import isEmpty from "lodash/isEmpty";
