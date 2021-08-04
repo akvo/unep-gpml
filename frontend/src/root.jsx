@@ -18,13 +18,13 @@ import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
 import logo from "./images/GPML-logo-white.png";
-import StakeholderSignupModal from "./modules/signup/signup-modal";
+import StakeholderSignupModal from "./modules/stakeholder-signup/signup-modal";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
 import { storage } from "./utils/storage";
 import { UIStore } from "./store.js";
 import ProfileView from "./modules/profile/view";
-import SignupView from "./modules/signup/view";
+import StakeholderSignupView from "./modules/stakeholder-signup/view";
 import DetailsView from "./modules/details/view";
 import Footer from "./footer";
 import uniqBy from "lodash/uniqBy";
@@ -339,7 +339,7 @@ const Root = () => {
           path="/profile"
           render={(props) => <ProfileView {...{ ...props }} />}
         />
-        <Route path="/signup" render={(props) => <SignupView {...props} />} />
+        <Route path="/stakeholder-signup" render={(props) => <StakeholderSignupView {...props} />} />
         <Route
           path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
           render={(props) => (
