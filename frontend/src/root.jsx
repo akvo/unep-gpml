@@ -18,13 +18,15 @@ import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
 import logo from "./images/GPML-logo-white.png";
-import SignupModal from "./modules/signup/signup-modal";
+import StakeholderSignupModal from "./modules/stakeholder-signup/signup-modal";
+import EntitySignupModal from "./modules/entity-signup/signup-modal";
+import SignupView from "./modules/signup-bis/view";
+import NewSignupView from "./modules/signup/view";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
 import { storage } from "./utils/storage";
 import { UIStore } from "./store.js";
 import ProfileView from "./modules/profile/view";
-import SignupView from "./modules/signup/view";
 import DetailsView from "./modules/details/view";
 import Footer from "./footer";
 import uniqBy from "lodash/uniqBy";
@@ -88,6 +90,12 @@ api
       });
   });
 
+api.get("/stakeholder").then((resp) => {
+  UIStore.update((e) => {
+    e.stakeholders = resp.data;
+  });
+});
+
 const disclaimerContent = {
   home: (
     <>
@@ -124,7 +132,13 @@ const Root = () => {
     user,
   } = useAuth0();
   const { profile, disclaimer, loading } = UIStore.useState((s) => s);
-  const [signupModalVisible, setSignupModalVisible] = useState(false);
+  const [
+    stakeholderSignupModalVisible,
+    setStakeholderSignupModalVisible,
+  ] = useState(false);
+  const [entitySignupModalVisible, setEntitySignupModalVisible] = useState(
+    false
+  );
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -152,7 +166,9 @@ const Root = () => {
             e.profile = { email: response.email };
           });
           setTimeout(() => {
-            setSignupModalVisible(Object.keys(resp.data).length === 0);
+            setStakeholderSignupModalVisible(
+              Object.keys(resp.data).length === 0
+            );
           }, 100);
         } else {
           UIStore.update((e) => {
@@ -211,6 +227,12 @@ const Root = () => {
                     Sign in
                   </Link>
                 </Button>
+                <Button
+                  type="link"
+                  onClick={() => setEntitySignupModalVisible(true)}
+                >
+                  New Entity
+                </Button>
               </div>
             ) : (
               <div className="rightside">
@@ -235,7 +257,7 @@ const Root = () => {
               {...{
                 data,
                 setWarningModalVisible,
-                setSignupModalVisible,
+                setStakeholderSignupModalVisible,
                 loginWithPopup,
                 isAuthenticated,
                 setFilters,
@@ -249,7 +271,9 @@ const Root = () => {
           render={(props) => (
             <Browse
               {...props}
-              setSignupModalVisible={setSignupModalVisible}
+              setStakeholderSignupModalVisible={
+                setStakeholderSignupModalVisible
+              }
               filters={filters}
               setFilters={setFilters}
             />
@@ -326,26 +350,39 @@ const Root = () => {
           path="/profile"
           render={(props) => <ProfileView {...{ ...props }} />}
         />
-        <Route path="/signup" render={(props) => <SignupView {...props} />} />
+        <Route
+          path="/stakeholder-old-signup"
+          render={(props) => <SignupView {...props} />}
+        />
+        <Route
+          path="/stakeholder-signup"
+          render={(props) => <NewSignupView {...props} />}
+        />
         <Route
           path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
           render={(props) => (
             <DetailsView
               {...props}
-              setSignupModalVisible={setSignupModalVisible}
+              setStakeholderSignupModalVisible={
+                setStakeholderSignupModalVisible
+              }
             />
           )}
         />
         <Footer
-          setSignupModalVisible={setSignupModalVisible}
+          setStakeholderSignupModalVisible={setStakeholderSignupModalVisible}
           setWarningModalVisible={setWarningModalVisible}
           isAuthenticated={isAuthenticated}
           loginWithPopup={loginWithPopup}
         />
       </div>
-      <SignupModal
-        visible={signupModalVisible}
-        onCancel={() => setSignupModalVisible(false)}
+      <StakeholderSignupModal
+        visible={stakeholderSignupModalVisible}
+        onCancel={() => setStakeholderSignupModalVisible(false)}
+      />
+      <EntitySignupModal
+        visible={entitySignupModalVisible}
+        onCancel={() => setEntitySignupModalVisible(false)}
       />
       <ModalWarningUser
         visible={warningModalVisible}
@@ -596,7 +633,7 @@ const UserButton = withRouter(({ history, logout }) => {
 const AddButton = withRouter(
   ({
     isAuthenticated,
-    setSignupModalVisible,
+    setStakeholderSignupModalVisible,
     setWarningModalVisible,
     loginWithPopup,
     history,
@@ -766,7 +803,7 @@ const AddButton = withRouter(
           onClick={() => {
             Object.keys(profile).length > 1
               ? setWarningModalVisible(true)
-              : setSignupModalVisible(true);
+              : setStakeholderSignupModalVisible(true);
           }}
         >
           Add Content

@@ -1,0 +1,101 @@
+@import "../../vars.scss";
+
+#signup-view {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  min-height: calc(100vh - 145px);
+  background: url(../../images/sea-dark.jpg) no-repeat center;
+  background-size: cover;
+
+  & > .ui.container > .ant-row {
+    & > .ant-col:first-child {
+      * {
+        color: #fff;
+      }
+
+      h1 {
+        font-size: 42px;
+        font-weight: 700;
+      }
+
+      h2 {
+        font-style: italic;
+        font-weight: 500;
+        margin-bottom: 25px;
+        margin-top: 30px;
+      }
+
+      h2,
+      h3 {
+        color: #01abf1;
+      }
+
+      ul {
+        list-style: disc;
+        font-size: 18px;
+        line-height: 30px;
+        margin-left: 20px;
+        margin-top: -10px;
+        margin-bottom: 30px;
+      }
+    }
+  }
+
+  .ant-card {
+    border-radius: 6px;
+    color: #046799;
+
+    h2,
+    h4 {
+      color: #046799;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .choices {
+      display: flex;
+
+      & > * {
+        height: 340px;
+        display: flex;
+        flex-direction: column;
+        margin: 0 5px;
+        border: 1px solid #dbe9f1;
+        border-top: 1px solid #01abf1;
+        text-align: center;
+        flex: 1;
+        padding: 20px;
+        cursor: pointer;
+
+        .caption {
+          color: #01abf1;
+          margin-top: auto;
+          font-weight: bold;
+          font-size: 20px;
+        }
+
+        small {
+          color: #7f7f7f;
+          margin-bottom: 20px;
+        }
+      }
+    }
+
+    .login {
+      color: #000000;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 30px;
+      margin-bottom: 20px;
+
+      div {
+        color: #01abf1;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+    }
+  }
+}

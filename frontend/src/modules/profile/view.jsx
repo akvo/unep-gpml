@@ -25,7 +25,7 @@ import {
   fetchStakeholders,
 } from "./utils";
 import { userRoles as roles } from "../../utils/misc";
-import SignupForm from "../signup/signup-form";
+import SignupForm from "../stakeholder-signup/signup-form";
 import AdminSection from "./admin";
 import ReviewSection from "./review";
 import ManageRoles from "./stakeholders";
