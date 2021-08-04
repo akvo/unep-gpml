@@ -45,7 +45,7 @@ const SignupView = ({ ...props }) => {
                   <div className="caption">Go to the Partnership</div>
                   <small>You will be taken to the GPML website</small>
                 </a>
-                <div onClick={loginWithPopup}>
+                <div onClick={()=>loginWithPopup({screen_hint: 'signup'})}>
                   <h4>
                     I am an <b>Individual</b> and I wish to sign up to the{" "}
                     <b>GPML Digital Platform​</b>
