@@ -14,6 +14,7 @@ import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
 import logo from "./images/GPML-temporary-logo-horiz.jpg";
 import StakeholderSignupModal from "./modules/stakeholder-signup/signup-modal";
+import EntitySignupModal from "./modules/entity-signup/signup-modal";
 import SignupView from "./modules/signup/view";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
@@ -102,6 +103,9 @@ const Root = () => {
     stakeholderSignupModalVisible,
     setStakeholderSignupModalVisible,
   ] = useState(false);
+  const [entitySignupModalVisible, setEntitySignupModalVisible] = useState(
+    false
+  );
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -206,6 +210,12 @@ const Root = () => {
                   onClick={() => logout({ returnTo: window.location.origin })}
                 >
                   Logout
+                </Button>
+                <Button
+                  type="link"
+                  onClick={() => setEntitySignupModalVisible(true)}
+                >
+                  New Entity
                 </Button>
               </div>
             )}
@@ -360,6 +370,10 @@ const Root = () => {
       <StakeholderSignupModal
         visible={stakeholderSignupModalVisible}
         onCancel={() => setStakeholderSignupModalVisible(false)}
+      />
+      <EntitySignupModal
+        visible={entitySignupModalVisible}
+        onCancel={() => setEntitySignupModalVisible(false)}
       />
       <ModalWarningUser
         visible={warningModalVisible}
