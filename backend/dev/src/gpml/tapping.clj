@@ -1,4 +1,4 @@
-(ns dev.tapping
+(ns gpml.tapping
   (:require clojure.pprint))
 
 (def tap-pprint-fn (bound-fn* clojure.pprint/pprint))
