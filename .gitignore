@@ -7,3 +7,4 @@ notify.team.sh
 /doc/*.xlsx
 /doc/*.geojson
 /doc/images/*
+*/roam/
