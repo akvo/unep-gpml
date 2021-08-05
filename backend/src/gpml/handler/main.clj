@@ -1,5 +1,6 @@
 (ns gpml.handler.main
-  (:require [integrant.core :as ig]
+  (:require [duct.logger :as log]
+            [integrant.core :as ig]
             [malli.util :as mu]
             [muuntaja.core :as m]
             [reitit.coercion.malli]
@@ -66,7 +67,8 @@
                                                                    {:path-fn (fn [req] (:template (ring/get-match req)))})
                              handler))]}}))
 
-(defmethod ig/init-key :gpml.handler.main/handler [_ {:keys [routes collector]}]
+(defmethod ig/init-key :gpml.handler.main/handler [_ {:keys [routes collector logger]}]
+  (log/info logger "initialising handlers ...")
   (ring/ring-handler (router routes collector)
                      (ring/routes
                       (swagger-ui/create-swagger-ui-handler {:path "/api/docs"
