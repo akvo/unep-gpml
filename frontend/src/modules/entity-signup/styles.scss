@@ -50,22 +50,14 @@
   }
 }
 
-.signup-form {
+.entity-signup-form {
   h2 {
     color: $primaryColor;
     font-size: 22px;
   }
-
-  .section:first-child {
-    .ant-form-item:nth-child(2) {
-      width: 100px;
-      float: left;
-      margin-right: 15px;
-    }
-  }
 }
 
-.signup-form-grid {
+.entity-signup-form-grid {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
