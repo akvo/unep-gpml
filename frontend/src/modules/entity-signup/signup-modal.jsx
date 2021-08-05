@@ -45,15 +45,15 @@ const SignupModal = ({ visible, onCancel }) => {
       vals.org.geoCoverageValue = null;
     }
     api
-      .post("/profile", vals)
+      .post("/organisation", vals)
       .then((d) => {
         UIStore.update((e) => {
-          e.profile = d.data;
+          console.log("res", e, d);
+          //          e.profile = d.data;
         });
         setSending(false);
-        document.cookie = `profile=SUBMITTED`;
-        document.cookie = `profileMessage=1`;
-        setStep(2);
+        // document.cookie = `profile=SUBMITTED`;
+        // document.cookie = `profileMessage=1`;
       })
       .catch(() => {
         setSending(false);
@@ -104,7 +104,7 @@ const SignupModal = ({ visible, onCancel }) => {
             handleSubmitRef={(ref) => {
               handleSubmitRef.current = ref;
             }}
-            initialValues={profile}
+            initialValues={{}}
             isModal={true}
             dropdownOpen
             setDropdownOpen
@@ -120,22 +120,6 @@ const SignupModal = ({ visible, onCancel }) => {
             smart-matchmaking functionalities with other stakeholders and
             resources.
           </Checkbox>
-        </div>
-      )}
-      {step === 2 && (
-        <div className="submitted">
-          <p>
-            {user?.email_verified === false && (
-              <b>
-                Click on the link we sent in your email to verify your email
-                address.
-              </b>
-            )}
-            We will review your sign-up request
-            {user?.email_verified === false &&
-              " as soon as you verify your email address"}
-            . Please, allow for 1 business day.
-          </p>
         </div>
       )}
     </Modal>

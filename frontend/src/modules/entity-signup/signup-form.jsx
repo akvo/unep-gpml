@@ -15,16 +15,22 @@ import { FieldsFromSchema } from "../../utils/form-utils";
 import cloneDeep from "lodash/cloneDeep";
 import isEmpty from "lodash/isEmpty";
 import { storage } from "../../utils/storage";
-import GeoCoverageInput from "./comp/geo-coverage-input";
+import GeoCoverageInput from "../stakeholder-signup/comp/geo-coverage-input";
 import { useRef } from "react";
 
 const { sectorOptions } = UIStore.currentState;
 const defaultFormSchema = {
   personalDetails: {
     account: {
-      entityName: { label: "Name", required: true },
+      name: {
+        label: "Name",
+        required: true,
+      },
+    },
+    accountBis: {
       url: {
-        label: "url",
+        label: "Url",
+        order: 2,
         required: true,
       },
     },
@@ -90,7 +96,9 @@ const SignupForm = ({
   const prevVals = useRef();
   const formRef = useRef();
   const formSchemaRef = useRef(defaultFormSchema);
-  const formContainer = !isModal ? "signup-form-grid" : "signup-form";
+  const formContainer = !isModal
+    ? "entity-signup-form-grid"
+    : "entity-signup-form";
   const sectionGrid = !isModal ? "section-grid" : "section";
 
   const newSchema = cloneDeep(defaultFormSchema);
@@ -159,6 +167,9 @@ const SignupForm = ({
                   <h2>Entity details</h2>
                   <FieldsFromSchema
                     schema={formSchema["personalDetails"]["account"]}
+                  />
+                  <FieldsFromSchema
+                    schema={formSchema["personalDetails"]["accountBis"]}
                   />
                   <FieldsFromSchema
                     schema={formSchema["personalDetails"]["socialLocation"]}
