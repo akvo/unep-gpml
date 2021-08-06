@@ -279,7 +279,8 @@
   :gpml.handler.tag/all {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.organisation/get {:db #ig/ref :duct.database/sql}
-  :gpml.handler.organisation/post {:db #ig/ref :duct.database/sql}
+  :gpml.handler.organisation/post {:db #ig/ref :duct.database/sql
+                                   :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.organisation/post-params {}
   :gpml.handler.organisation/get-id {:db #ig/ref :duct.database/sql}
 
