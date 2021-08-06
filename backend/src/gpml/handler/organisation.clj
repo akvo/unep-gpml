@@ -1,8 +1,9 @@
 (ns gpml.handler.organisation
   (:require [gpml.db.organisation :as db.organisation]
-            [integrant.core :as ig]
+            [gpml.email-util :as email]
             [gpml.geo-util :as geo]
             [gpml.handler.geo :as handler.geo]
+            [integrant.core :as ig]
             [ring.util.response :as resp]))
 
 (defn find-or-create [conn org]
@@ -28,7 +29,7 @@
                 (mapv #(:iso_code %) geo))]
       (resp/response (assoc organisation :geo_coverage_value geo-coverage)))))
 
-(defmethod ig/init-key :gpml.handler.organisation/post [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.organisation/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [body-params referrer]}]
     (if-let [org-id (find-or-create (:spec db) body-params)]
       (resp/created referrer (assoc body-params :id org-id))
