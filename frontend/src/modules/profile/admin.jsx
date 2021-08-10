@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from "antd";
 import React, { Fragment } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../utils/api";
 import { fetchArchiveData, fetchSubmissionData } from "./utils";
 import moment from "moment";
@@ -55,6 +55,13 @@ const AdminSection = ({
   const [modalRejectFunction, setModalRejectFunction] = useState(false);
   const [previewContent, storePreviewContent] = useState({});
   const [approveLoading, setApproveLoading] = useState({});
+  const [reviewers, setReviewers] = useState([]);
+
+  useEffect(() => {
+    api.get("/reviewer").then((res) => {
+      setReviewers(res.data);
+    });
+  }, []);
 
   const review = (item, review_status) => () => {
     setApproveLoading(item);
@@ -113,6 +120,41 @@ const AdminSection = ({
     }
   };
 
+  const assignReviewer = (item, reviewer) => {
+    const { profile } = UIStore.currentState;
+    const data = { reviewer };
+    const apiCall = item?.reviewer?.id ? api.patch : api.post;
+    apiCall(`/review/${item.type}/${item.id}`, data).then((res) => {
+      (async () => {
+        const { page, limit } = pendingItems;
+        setPendingItems(await fetchSubmissionData(page, limit));
+      })();
+    });
+  };
+
+  const ReviewStatus = ({ item }) => {
+    const { reviewer } = item;
+    return (
+      <>
+        <span>
+          <Select
+            showSearch={true}
+            style={{ width: 150 }}
+            placeholder="Assign reviewer"
+            onChange={(reviewerId) => assignReviewer(item, reviewerId)}
+            defaultValue={item?.reviewer?.id}
+          >
+            {reviewers.map((r) => (
+              <Select.Option key={r.email} value={r.id}>
+                {r.email}
+              </Select.Option>
+            ))}
+          </Select>
+        </span>
+      </>
+    );
+  };
+
   const renderNewApprovalRequests = () => {
     const onChangePagePending = (page) => {
       (async () => {
@@ -131,6 +173,8 @@ const AdminSection = ({
         <div className="row head">
           <div className="col">Type</div>
           <div className="col">Name</div>
+          <div className="col">Review Status</div>
+          <div className="col">Reviewer</div>
           <div className="col">Action</div>
         </div>
         <Collapse onChange={getPreviewContent}>
@@ -142,6 +186,17 @@ const AdminSection = ({
                   <div className="row">
                     <div className="col">{topicNames(item.type)}</div>
                     <div className="col">{item.title}</div>
+                    <div className="col">
+                      {item?.reviewer?.id && item.reviewStatus}
+                    </div>
+                    <div
+                      className="col"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      <ReviewStatus item={item} />
+                    </div>
                     <div
                       className="col"
                       onClick={(e) => {
