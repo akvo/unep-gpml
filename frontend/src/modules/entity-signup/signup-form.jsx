@@ -17,17 +17,22 @@ import isEmpty from "lodash/isEmpty";
 import { storage } from "../../utils/storage";
 import GeoCoverageInput from "../stakeholder-signup/comp/geo-coverage-input";
 import { useRef } from "react";
+import api from "../../utils/api";
+
+api.get("/stakeholder").then((resp) => {
+  UIStore.update((e) => {
+    e.stakeholders = resp.data;
+  });
+});
 
 const { sectorOptions } = UIStore.currentState;
 const defaultFormSchema = {
-  personalDetails: {
+  entityDetails: {
     account: {
       name: {
         label: "Name",
         required: true,
       },
-    },
-    accountBis: {
       url: {
         label: "Url",
         order: 2,
@@ -43,6 +48,18 @@ const defaultFormSchema = {
         showSearch: true,
         options: [],
         autoComplete: "on",
+      },
+    },
+    contactDetails: {
+      stakeholder: {
+        label: "stakeholder email",
+        required: true,
+        control: "autocomplete",
+        showSearch: true,
+        onSearch: null,
+        onChange: null,
+        onSelect: null,
+        options: [],
       },
     },
     geoCoverage: {
@@ -86,6 +103,7 @@ const SignupForm = ({
 }) => {
   const {
     countries,
+    stakeholders,
     tags,
     profile,
     organisations,
@@ -93,6 +111,7 @@ const SignupForm = ({
     geoCoverageTypeOptions,
   } = UIStore.currentState;
   const [geoType, setGeoType] = useState({ value: null, error: false });
+  const [stakeholder, setStakeholder] = useState({ value: "", error: false });
   const prevVals = useRef();
   const formRef = useRef();
   const formSchemaRef = useRef(defaultFormSchema);
@@ -103,16 +122,53 @@ const SignupForm = ({
 
   const newSchema = cloneDeep(defaultFormSchema);
 
-  newSchema["personalDetails"]["geoCoverage"].geoCoverageValue = {
-    ...newSchema["personalDetails"]["geoCoverage"].geoCoverageValue,
+  newSchema["entityDetails"]["geoCoverage"].geoCoverageValue = {
+    ...newSchema["entityDetails"]["geoCoverage"].geoCoverageValue,
     countries: countries,
   };
-  newSchema["personalDetails"][
-    "socialLocation"
-  ].country.options = countries.map((x) => ({
-    value: x.id,
-    label: x.name,
+  newSchema["entityDetails"]["socialLocation"].country.options = countries.map(
+    (x) => ({
+      value: x.id,
+      label: x.name,
+    })
+  );
+  newSchema["entityDetails"][
+    "contactDetails"
+  ].stakeholder.options = stakeholders.map((x) => ({
+    value: x.email,
+    label: x.email,
   }));
+
+  const handleSearchStakeholder = (searchText) => {
+    console.log("searching....", searchText);
+    const newSchema = cloneDeep(formSchema);
+    newSchema["entityDetails"][
+      "contactDetails"
+    ].stakeholder.options = stakeholders
+      .map((x) => ({
+        value: x.email,
+        label: x.email,
+      }))
+      .filter((x) => String(x.label).includes(searchText));
+    setFormSchema(newSchema);
+  };
+
+  const handleSelectStakeholder = (selectedText, setError = true) => {
+    console.log("selecting....", selectedText);
+    // todo: double check is an email
+    setStakeholder({
+      selectedText,
+      error: setError ? !selectedText : setError,
+    });
+    return selectedText;
+  };
+
+  newSchema["entityDetails"][
+    "contactDetails"
+  ].stakeholder.onSearch = handleSearchStakeholder;
+  newSchema["entityDetails"][
+    "contactDetails"
+  ].stakeholder.onChange = handleSelectStakeholder;
 
   const [formSchema, setFormSchema] = useState(newSchema);
 
@@ -123,8 +179,8 @@ const SignupForm = ({
   const handleChangeGeoType = (value, setError = true) => {
     setGeoType({ value, error: setError ? !value : setError });
     const newSchema = cloneDeep(formSchema);
-    Object.keys(newSchema["personalDetails"]["geoCoverage"]).forEach((key) => {
-      newSchema["personalDetails"]["geoCoverage"][key].required =
+    Object.keys(newSchema["entityDetails"]["geoCoverage"]).forEach((key) => {
+      newSchema["entityDetails"]["geoCoverage"][key].required =
         value !== "global";
     });
     setFormSchema(newSchema);
@@ -166,13 +222,10 @@ const SignupForm = ({
                 <div className={sectionGrid}>
                   <h2>Entity details</h2>
                   <FieldsFromSchema
-                    schema={formSchema["personalDetails"]["account"]}
+                    schema={formSchema["entityDetails"]["account"]}
                   />
                   <FieldsFromSchema
-                    schema={formSchema["personalDetails"]["accountBis"]}
-                  />
-                  <FieldsFromSchema
-                    schema={formSchema["personalDetails"]["socialLocation"]}
+                    schema={formSchema["entityDetails"]["socialLocation"]}
                   />
                   <Field
                     name="geoCoverageType"
@@ -218,7 +271,22 @@ const SignupForm = ({
                     }}
                   />
                   <FieldsFromSchema
-                    schema={formSchema["personalDetails"]["geoCoverage"]}
+                    schema={formSchema["entityDetails"]["geoCoverage"]}
+                  />
+                </div>
+                <div className={sectionGrid}>
+                  <h2>First Contact details</h2>
+                  <div>
+                    <h5>
+                      {profile.title} {profile.firstName} {profile.lastName}
+                    </h5>
+                    <h5>{profile.email}</h5>
+                  </div>
+                </div>
+                <div className={sectionGrid}>
+                  <h2>Second Contact details</h2>
+                  <FieldsFromSchema
+                    schema={formSchema["entityDetails"]["contactDetails"]}
                   />
                 </div>
               </div>
