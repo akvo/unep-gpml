@@ -1,5 +1,6 @@
 (ns gpml.handler.organisation
   (:require [gpml.db.organisation :as db.organisation]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
             [gpml.geo-util :as geo]
             [gpml.handler.geo :as handler.geo]
@@ -30,17 +31,30 @@
       (resp/response (assoc organisation :geo_coverage_value geo-coverage)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post [_ {:keys [db mailjet-config]}]
-  (fn [{:keys [body-params referrer]}]
-    (if-let [org-id (find-or-create (:spec db) body-params)]
-      (resp/created referrer (assoc body-params :id org-id))
-      (assoc (resp/status 500) :body "Internal Server Error"))))
+  (fn [{:keys [body-params referrer jwt-claims]}]
+    (let [first-contact-id (:id (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims))
+          body-params (let [params (assoc body-params :created_by first-contact-id)
+                            second-contact-email (:stakeholder body-params)]
+                          (if-let [second-contact (db.stakeholder/stakeholder-by-email (:spec db) {:email second-contact-email})]
+                            (assoc params :second-contact (:id second-contact))
+                            (do
+                              (email/send-email mailjet-config
+                                                {:Name "UNEP GPML Digital Platform" :Email "no-reply@gpmarinelitter.org"}
+                                                "Inviting not existent stakeholder to join unep-gpml platform"
+                                                '({:Name "juan" :Email second-contact-email})
+                                                '("Please join the platform at .....")
+                                                (repeat nil))
+                              params)))]
+      (if-let [org-id (find-or-create (:spec db) body-params)]
+        (resp/created referrer (assoc body-params :id org-id))
+        (assoc (resp/status 500) :body "Internal Server Error")))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post-params [_ _]
   [:map
-   [:id {:optional true} int?]
-   [:name {:optional true} string?]
-   [:url {:optional true} string?]
-   [:country {:optional true} int?]
-   [:geo_coverage_type {:optional true} geo/coverage_type]
-   [:geo_coverage_value {:optional true}
+   [:name string?]
+   [:url string?]
+   [:stakeholder string?]
+   [:country int?]
+   [:geo_coverage_type geo/coverage_type]
+   [:geo_coverage_value
     [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])

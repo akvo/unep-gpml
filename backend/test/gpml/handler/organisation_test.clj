@@ -23,4 +23,4 @@
                             (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
                             (assoc :body-params body-params)))]
       (is (= 201 (:status resp)))
-      (is (= (assoc body-params :id 10001) (:body resp))))))
+      (is (= (assoc body-params :id 10001 :created_by nil) (:body resp))))))
