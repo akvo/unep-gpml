@@ -244,3 +244,9 @@ delete from stakeholder_tag where stakeholder = :id
 select id, first_name, last_name, email from stakeholder
  where role = 'ADMIN'
    and review_status = 'APPROVED';
+
+-- :name get-reviewers :?
+-- :doc Get information of all reviewers & admins
+select id, first_name, last_name, email, role from stakeholder
+ where (role = 'ADMIN' OR role = 'REVIEWER')
+   and review_status = 'APPROVED';
