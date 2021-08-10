@@ -2,6 +2,10 @@
 -- :doc Get all stakeholder
 select * from stakeholder order by id;
 
+-- :name all-public-stakeholder :? :*
+-- :doc Get all stakeholder
+select * from stakeholder where public_email=true order by id;
+
 -- :name stakeholder-by-id :? :1
 -- :doc Get stakeholder by id
 select
