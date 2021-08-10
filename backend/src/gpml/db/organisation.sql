@@ -28,6 +28,8 @@ insert into organisation (
 --~ (when (contains? params :program) ", program")
 --~ (when (contains? params :contribution) ", contribution")
 --~ (when (contains? params :expertise) ", expertise")
+--~ (when (contains? params :created_by) ", created_by")
+--~ (when (contains? params :second_contact) ", second_contact")
 --~ (when (contains? params :review_status) ", review_status")
 )
 values (
@@ -41,6 +43,8 @@ values (
 --~ (when (contains? params :program) ", :program")
 --~ (when (contains? params :contribution) ", :contribution")
 --~ (when (contains? params :expertise) ", :expertise")
+--~ (when (contains? params :created_by) ", :created_by")
+--~ (when (contains? params :second_contact) ", :second_contact")
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
 ) returning id;
 

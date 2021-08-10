@@ -1,5 +1,6 @@
 (ns gpml.handler.organisation
-  (:require [gpml.db.organisation :as db.organisation]
+  (:require [gpml.db.invitation :as db.invitation]
+            [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
             [gpml.geo-util :as geo]
@@ -33,21 +34,24 @@
 (defmethod ig/init-key :gpml.handler.organisation/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [body-params referrer jwt-claims]}]
     (let [first-contact-id (:id (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims))
-          body-params (let [params (assoc body-params :created_by first-contact-id)
-                            second-contact-email (:stakeholder body-params)]
-                          (if-let [second-contact (db.stakeholder/stakeholder-by-email (:spec db) {:email second-contact-email})]
-                            (assoc params :second-contact (:id second-contact))
-                            (do
-                              (email/send-email mailjet-config
-                                                {:Name "UNEP GPML Digital Platform" :Email "no-reply@gpmarinelitter.org"}
-                                                "Inviting not existent stakeholder to join unep-gpml platform"
-                                                '({:Name "juan" :Email second-contact-email})
-                                                '("Please join the platform at .....")
-                                                (repeat nil))
-                              params)))]
-      (if-let [org-id (find-or-create (:spec db) body-params)]
-        (resp/created referrer (assoc body-params :id org-id))
-        (assoc (resp/status 500) :body "Internal Server Error")))))
+          org-id (let [params (assoc body-params :created_by first-contact-id)
+                       second-contact-email (:stakeholder body-params)]
+                   (if-let [second-contact (db.stakeholder/stakeholder-by-email (:spec db) {:email second-contact-email})]
+                     (->> (assoc params :second_contact (:id second-contact))
+                          (find-or-create (:spec db)))
+                     (let [org-id (find-or-create (:spec db) params)]
+                       (db.invitation/new-invitation (:spec db) {:stakeholder-id first-contact-id
+                                                                 :organisation-id org-id
+                                                                 :email second-contact-email
+                                                                 :accepted nil})
+                       (email/send-email mailjet-config
+                                         {:Name "UNEP GPML Digital Platform" :Email "no-reply@gpmarinelitter.org"}
+                                         "Inviting not existent stakeholder to join unep-gpml platform"
+                                         (list {:Name second-contact-email :Email second-contact-email})
+                                         (list "Please join the platform at .....")
+                                         (repeat nil))
+                       org-id)))]
+      (resp/created referrer (assoc body-params :id org-id)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post-params [_ _]
   [:map
