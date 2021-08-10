@@ -212,4 +212,11 @@
    [:geo_coverage_value {:optional true}
     [:vector {:min 1 :error/message "Need at least one geo coverage value"} int?]]
    [:org {:optional true} map?
-    (ig/init-key :gpml.handler.organisation/post-params nil)]])
+    [:map
+     [:id {:optional true} int?]
+     [:name {:optional true} string?]
+     [:url {:optional true} string?]
+     [:country {:optional true} int?]
+     [:geo_coverage_type {:optional true} geo/coverage_type]
+     [:geo_coverage_value {:optional true}
+      [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]]]])
