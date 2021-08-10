@@ -4,6 +4,6 @@
             [ring.util.response :as resp]))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/public [_ {:keys [db]}]
-  (fn [req]
+  (fn [_]
     (resp/response (->> (db.stakeholder/all-public-stakeholder (:spec db))
                         (map #(select-keys % [:id :title :first_name :last_name :email]))))))
