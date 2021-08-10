@@ -82,6 +82,15 @@
                                                  :parameters {:path [:map [:submission string?] [:id int?]]}
                                                  :handler #ig/ref :gpml.handler.submission/get-detail}}]
                                          ]
+                                        ["/review" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required
+                                                                 #ig/ref :gpml.auth/approved-user
+                                                                 #ig/ref :gpml.auth/admin-required-middleware]}
+                                         ["/get-reviewers"
+                                          {:get {:summary "Get list of reviewers"
+                                                 :swagger {:tags ["review"]
+                                                           :security [{:id_token []}]}
+                                                 :handler #ig/ref :gpml.handler.review/get-reviewers}}]]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required
                                                                 #ig/ref :gpml.auth/approved-user
@@ -232,6 +241,8 @@
   :gpml.handler.submission/get-detail {:db #ig/ref :duct.database/sql}
   :gpml.handler.submission/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.submission/put-params {}
+
+  :gpml.handler.review/get-reviewers {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
 
