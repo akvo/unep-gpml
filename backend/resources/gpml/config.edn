@@ -181,6 +181,9 @@
                                            :post {:summary "Create new organisation"
                                                   :swagger {:tags ["organisation"]
                                                             :security [{:id_token []}]}
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required
+                                                               #ig/ref :gpml.auth/approved-user]
                                                   :parameters {:body #ig/ref :gpml.handler.organisation/post-params}
                                                   :handler #ig/ref :gpml.handler.organisation/post}}]
                                          ["/{id}"
