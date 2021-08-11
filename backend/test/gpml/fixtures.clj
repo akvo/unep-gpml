@@ -3,6 +3,7 @@
             [clojure.string :as str]
             [duct.core :as duct]
             [duct.database.sql :as sql]
+            [gpml.email-util :as email]
             [integrant.core :as ig])
   (:import [java.util UUID]))
 
@@ -47,11 +48,12 @@
   (str/replace url "gpml_test" db-name))
 
 (defn uuid [] (str/replace (str (UUID/randomUUID)) "-" "_"))
-
+(def mails-sent (atom []))
 (defn with-test-system
   [f]
   (when-not template-test-db-migrated?
     (migrate-template-test-db))
+  (reset! mails-sent [])
   (let [tmp (test-system)
         new-db-name (format "test_db_%s" (uuid))
         jdbc-url (-> tmp :gpml.test/db :connection-uri)
@@ -60,8 +62,14 @@
         system (update tmp :duct.database.sql/hikaricp (fn [cfg]
                                                          (assoc cfg :jdbc-url test-db-url)))]
     (create-test-db dev-db-jdbc-url new-db-name)
-    (binding [*system* system]
-      (f))))
+    (with-redefs [email/send-email (fn [_ sender subject receivers texts htmls]
+                                     (swap! mails-sent conj {:sender    sender
+                                                             :subject   subject
+                                                             :receivers receivers
+                                                             :texts     texts
+                                                             :htmls     htmls}))]
+      (binding [*system* system]
+        (f)))))
 
 (comment
 
