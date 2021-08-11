@@ -27,6 +27,17 @@ A new %s (%s) is awaiting your approval. Please visit %s/profile to approve or d
 - UNEP GPML Digital Platform
 ")
 
+(defn notify-user-invitation-text [inviter-name app-domain entity-name]
+  (format "Dear user,
+
+%s has invited you to join %s as part of entity %s. Please visit %s/stakeholder-signup and follow instructions to signup.
+
+- UNEP GPML Digital Platform
+" inviter-name app-domain entity-name app-domain))
+
+(defn notify-user-invitation-subject [inviter-name]
+  (format "%s has invited you to join UNEP GPML Digital Platform" inviter-name))
+
 (defn notify-admins-pending-approval [db mailjet-config new-item]
   (let [admins (db.stakeholder/get-admins db)
         item-type (:type new-item)
