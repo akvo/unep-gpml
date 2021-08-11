@@ -8,6 +8,6 @@
   (let [conn (:spec db)]
     (resp/response (db.stakeholder/get-reviewers conn))))
 
-(defmethod ig/init-key :gpml.handler.review/get-reviewers [_ {:keys [db]}]
+(defmethod ig/init-key ::get-reviewers [_ {:keys [db]}]
   (fn [_]
     (get-reviewers db)))
