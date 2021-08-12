@@ -116,7 +116,7 @@
         db (-> system :duct.database.sql/hikaricp :spec)
         admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
         reviewer (new-stakeholder db "reviewer@org.com" "R" "A" "REVIEWER" "APPROVED")
-        _ (new-stakeholder db "reviewer2@org.com" "R" "A" "REVIEWER" "APPROVED")
+        reviewer2 (new-stakeholder db "reviewer2@org.com" "R" "A" "REVIEWER" "APPROVED")
         user (new-stakeholder db "user@org.com" "U" "S" "USER" "SUBMITTED")]
 
     (testing "Updating unassigned review"
@@ -137,7 +137,7 @@
             resp (handler (-> (mock/request :get "/")
                               (assoc
                                ;; Logging in as REVIEWER2 instead of REVEIWER
-                               :jwt-claims {:email "reviewer2@org.com"}
+                               :reviewer reviewer2
                                :parameters {:path {:topic-type "stakeholder"
                                                    :topic-id (:id user)}
                                             :body {:review-comment ""
@@ -148,7 +148,7 @@
       (let [comment "Missing lot of data"
             resp (handler (-> (mock/request :get "/")
                               (assoc
-                               :jwt-claims {:email "reviewer@org.com"}
+                               :reviewer reviewer
                                :parameters {:path {:topic-type "stakeholder"
                                                    :topic-id (:id user)}
                                             :body {:review-comment comment
@@ -166,7 +166,7 @@
       (let [comment "Best user!!!"
             resp (handler (-> (mock/request :get "/")
                               (assoc
-                               :jwt-claims {:email "reviewer@org.com"}
+                               :reviewer reviewer
                                :parameters {:path {:topic-type "stakeholder"
                                                    :topic-id (:id user)}
                                             :body {:review-comment comment
