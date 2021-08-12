@@ -15,3 +15,9 @@ SELECT * FROM review WHERE
 -- :name new-review :<! :1
 INSERT INTO review (topic_type, topic_id, assigned_by, reviewer)
 VALUES (:topic-type::topic_type, :topic-id, :assigned-by, :reviewer) returning id;
+
+-- :name update-review-status :<! :1
+UPDATE review SET
+  review_status = :review-status::reviewer_review_status,
+  review_comment = :review-comment
+  WHERE id = :id RETURNING id;

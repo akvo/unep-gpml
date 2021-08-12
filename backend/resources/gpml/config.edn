@@ -107,7 +107,17 @@
                                                                       [:topic-id int?]]
                                                                :body [:map
                                                                       [:reviewer int?]]}
-                                                  :handler #ig/ref :gpml.handler.review/new-review}}]]
+                                                  :handler #ig/ref :gpml.handler.review/new-review}
+                                           :patch {:summary "Update review for a submission"
+                                                   :swagger {:tags ["review"]
+                                                             :security [{:id_token []}]}
+                                                   :parameters {:path [:map
+                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                       [:topic-id int?]]
+                                                                :body [:map
+                                                                       [:review-comment string?]
+                                                                       [:review-status #ig/ref :gpml.handler.review/review-status]]}
+                                                   :handler #ig/ref :gpml.handler.review/update-review}}]]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required
                                                                 #ig/ref :gpml.auth/approved-user
@@ -275,6 +285,8 @@
   :gpml.handler.review/get-reviewers {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/get-review {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/new-review {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/update-review {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/review-status {}
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
 
