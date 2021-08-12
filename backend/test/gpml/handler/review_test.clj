@@ -116,3 +116,73 @@
         (is (= (:reviewer review) (:id reviewer2)))
         (is (= (:assigned_by review) (:id admin)))
         (is (= (:topic_id review) (:id user)))))))
+
+(deftest update-review
+  (let [system (ig/init fixtures/*system* [::review/update-review])
+        handler (::review/update-review system)
+        db (-> system :duct.database.sql/hikaricp :spec)
+        admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
+        reviewer (new-stakeholder db "reviewer@org.com" "R" "A" "REVIEWER" "APPROVED")
+        _ (new-stakeholder db "reviewer2@org.com" "R" "A" "REVIEWER" "APPROVED")
+        user (new-stakeholder db "user@org.com" "U" "S" "USER" "SUBMITTED")]
+
+    (testing "Updating unassigned review"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:review-comment ""
+                                                   :review-status "REJECTED"}})))]
+        (is (= 403 (:status resp)))))
+
+    (testing "Updating review assigned to another user"
+      (let [_ (db.review/new-review db {:topic-type "stakeholder"
+                                        :topic-id (:id user)
+                                        :assigned-by (:id admin)
+                                        :reviewer (:id reviewer)})
+
+            resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               ;; Logging in as REVIEWER2 instead of REVEIWER
+                               :jwt-claims {:email "reviewer2@org.com"}
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:review-comment ""
+                                                   :review-status "REJECTED"}})))]
+        (is (= 403 (:status resp)))))
+
+    (testing "Rejecting a submission in a review"
+      (let [comment "Missing lot of data"
+            resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :jwt-claims {:email "reviewer@org.com"}
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:review-comment comment
+                                                   :review-status "REJECTED"}})))
+            body (:body resp)
+            review (db.review/review-by-id db body)]
+        (is (= 200 (:status resp)))
+        (is (= (:reviewer review) (:id reviewer)))
+        (is (= (:assigned_by review) (:id admin)))
+        (is (= (:topic_id review) (:id user)))
+        (is (= (:review_status review) "REJECTED"))
+        (is (= (:review_comment review) comment))))
+
+    (testing "Accepting a submission in a review"
+      (let [comment "Best user!!!"
+            resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :jwt-claims {:email "reviewer@org.com"}
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:review-comment comment
+                                                   :review-status "ACCEPTED"}})))
+            body (:body resp)
+            review (db.review/review-by-id db body)]
+        (is (= 200 (:status resp)))
+        (is (= (:reviewer review) (:id reviewer)))
+        (is (= (:assigned_by review) (:id admin)))
+        (is (= (:topic_id review) (:id user)))
+        (is (= (:review_status review) "ACCEPTED"))
+        (is (= (:review_comment review) comment))))))

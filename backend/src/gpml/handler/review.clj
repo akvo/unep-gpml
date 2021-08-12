@@ -40,6 +40,24 @@
                                      :assigned-by assigned-by
                                      :reviewer reviewer}))))))
 
+(defn update-review [db topic-type topic-id review-status review-comment email]
+  (let [topic-type (get-internal-topic-type topic-type)
+        current-user (db.stakeholder/stakeholder-by-email (:spec db) {:email email})
+        resp403 {:status 403 :body {:message "Cannot update review for this topic"}}]
+    (jdbc/with-db-transaction [conn (:spec db)]
+      (if-let [review (db.review/review-by-topic-item
+                      conn
+                      {:topic-type topic-type :topic-id topic-id})]
+        ;; If assigned to the current-user
+        (if (= (:reviewer review) (:id current-user))
+          (resp/response (db.review/update-review
+                          conn
+                          {:id (:id review)
+                           :review-status review-status
+                           :review-comment review-comment}))
+          resp403)
+        resp403))))
+
 (defmethod ig/init-key ::get-reviewers [_ {:keys [db]}]
   (fn [_]
     (get-reviewers db)))
@@ -49,5 +67,15 @@
     (get-review db topic-type topic-id)))
 
 (defmethod ig/init-key ::assign-reviewer [_ {:keys [db]}]
-  (fn [{{{:keys [topic-type topic-id]} :path {:keys [assigned-by reviewer]} :body} :parameters}]
+  (fn [{{{:keys [topic-type topic-id]} :path
+         {:keys [assigned-by reviewer]} :body} :parameters}]
     (assign-reviewer db topic-type topic-id reviewer assigned-by)))
+
+(defmethod ig/init-key ::update-review [_ {:keys [db]}]
+  (fn [{{{:keys [topic-type topic-id]} :path
+         {:keys [review-status review-comment]} :body} :parameters
+        {:keys [email]} :jwt-claims}]
+    (update-review db topic-type topic-id review-status review-comment email)))
+
+(defmethod ig/init-key ::review-status [_ _]
+  (apply conj [:enum] constants/reviewer-review-status))
