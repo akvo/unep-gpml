@@ -15,3 +15,10 @@ SELECT * FROM review WHERE
 -- :name new-review :<! :1
 INSERT INTO review (topic_type, topic_id, assigned_by, reviewer)
 VALUES (:topic-type::topic_type, :topic-id, :assigned-by, :reviewer) returning id;
+
+-- :name change-reviewer :<! :1
+UPDATE review SET
+  assigned_by = :assigned-by,
+  reviewer = :reviewer
+    WHERE id = :id
+    RETURNING id;

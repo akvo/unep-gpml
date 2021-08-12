@@ -77,3 +77,42 @@
         (is (= (:id admin) (:assigned_by body)))
         (is (= "stakeholder" (:topic_type body)))
         (is (= (:id user) (:topic_id body)))))))
+
+
+(deftest assign-reviewer
+  (let [system (ig/init fixtures/*system* [::review/assign-reviewer])
+        handler (::review/assign-reviewer system)
+        db (-> system :duct.database.sql/hikaricp :spec)
+        admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
+        reviewer (new-stakeholder db "reviewer@org.com" "R" "A" "REVIEWER" "APPROVED")
+        reviewer2 (new-stakeholder db "reviewer2@org.com" "R" "A" "REVIEWER" "APPROVED")
+        user (new-stakeholder db "user-submitted@org.com" "U" "S" "USER" "SUBMITTED")]
+
+    (testing "Assign new reviewer"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:assigned-by (:id admin)
+                                                   :reviewer (:id reviewer)}})))
+            body (:body resp)
+            review (db.review/review-by-id db body)]
+        (is (= 200 (:status resp)))
+        (is (= (:reviewer review) (:id reviewer)))
+        (is (= (:assigned_by review) (:id admin)))
+        (is (= (:topic_id review) (:id user)))))
+
+
+    (testing "Change reviewer"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:assigned-by (:id admin)
+                                                   :reviewer (:id reviewer2)}})))
+            body (:body resp)
+            review (db.review/review-by-id db body)]
+        (is (= 200 (:status resp)))
+        (is (= (:reviewer review) (:id reviewer2)))
+        (is (= (:assigned_by review) (:id admin)))
+        (is (= (:topic_id review) (:id user)))))))
