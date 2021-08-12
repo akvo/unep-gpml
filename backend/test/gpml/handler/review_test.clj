@@ -77,3 +77,35 @@
         (is (= (:id admin) (:assigned_by body)))
         (is (= "stakeholder" (:topic_type body)))
         (is (= (:id user) (:topic_id body)))))))
+
+
+(deftest new-review
+  (let [system (ig/init fixtures/*system* [::review/new-review])
+        handler (::review/new-review system)
+        db (-> system :duct.database.sql/hikaricp :spec)
+        admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
+        reviewer (new-stakeholder db "reviewer@org.com" "R" "A" "REVIEWER" "APPROVED")
+        user (new-stakeholder db "user-submitted@org.com" "U" "S" "USER" "SUBMITTED")]
+
+    (testing "Assign new reviewer"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :admin admin
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:reviewer (:id reviewer)}})))
+            body (:body resp)
+            review (db.review/review-by-id db body)]
+        (is (= 200 (:status resp)))
+        (is (= (:reviewer review) (:id reviewer)))
+        (is (= (:assigned_by review) (:id admin)))
+        (is (= (:topic_id review) (:id user)))))
+
+    (testing "Try assigning new reviewer to already assigned resource"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :admin admin
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:reviewer (:id reviewer)}})))]
+        (is (= 409 (:status resp)))))))
