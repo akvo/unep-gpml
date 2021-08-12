@@ -98,7 +98,18 @@
                                                  :parameters {:path [:map
                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                      [:topic-id int?]]}
-                                                 :handler #ig/ref :gpml.handler.review/get-review}}]]
+                                                 :handler #ig/ref :gpml.handler.review/get-review}}]
+                                         ["/assign-reviewer/{topic-type}/{topic-id}"
+                                          {:post {:summary "Assign reviewer for a submission"
+                                                  :swagger {:tags ["review"]
+                                                            :security [{:id_token []}]}
+                                                  :parameters {:path [:map
+                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                      [:topic-id int?]]
+                                                               :body [:map
+                                                                      [:reviewer int?]
+                                                                      [:assigned-by int?]]}
+                                                  :handler #ig/ref :gpml.handler.review/assign-reviewer}}]]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required
                                                                 #ig/ref :gpml.auth/approved-user
@@ -252,6 +263,7 @@
 
   :gpml.handler.review/get-reviewers {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/get-review {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/assign-reviewer{:db #ig/ref :duct.database/sql}
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
 
