@@ -42,6 +42,27 @@
                                                        :reviewer reviewer}))]
         (resp/response updated)))))
 
+(defn update-review [db topic-type topic-id review-status review-comment email]
+  (let [topic-name (cond
+                     (contains? (set constants/resource-types) topic-type) "resource"
+                     (= topic-type "project") "initiative"
+                     :else topic-type)
+        current-user (db.stakeholder/stakeholder-by-email (:spec db) {:email email})]
+    (jdbc/with-db-transaction [conn (:spec db)]
+      (let [existing (db.review/review-by-topic-item
+                      conn
+                      {:topic-name topic-name :topic-id topic-id})
+            review-id (:id existing)]
+        (if (or (nil? review-id)
+                ;; Assigned to another reviewer
+                (not (= (:reviewer existing) (:id current-user))))
+          {:status 403 :body {:message "Cannot update review for this topic"}}
+          (resp/response (db.review/update-review
+                          conn
+                          {:id review-id
+                           :review-status review-status
+                           :review-comment review-comment})))))))
+
 (defmethod ig/init-key ::get-reviewers [_ {:keys [db]}]
   (fn [_]
     (get-reviewers db)))
@@ -51,5 +72,15 @@
     (get-review db topic-type topic-id)))
 
 (defmethod ig/init-key ::assign-reviewer [_ {:keys [db]}]
-  (fn [{{{:keys [topic-type topic-id]} :path {:keys [assigned-by reviewer]} :body} :parameters}]
+  (fn [{{{:keys [topic-type topic-id]} :path
+         {:keys [assigned-by reviewer]} :body} :parameters}]
     (assign-reviewer db topic-type topic-id reviewer assigned-by)))
+
+(defmethod ig/init-key ::update-review [_ {:keys [db]}]
+  (fn [{{{:keys [topic-type topic-id]} :path
+         {:keys [review-status review-comment]} :body} :parameters
+        {:keys [email]} :jwt-claims}]
+    (update-review db topic-type topic-id review-status review-comment email)))
+
+(defmethod ig/init-key ::review-status [_ _]
+  (apply conj [:enum] constants/reviewer-review-status))
