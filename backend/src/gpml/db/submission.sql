@@ -2,30 +2,32 @@
 -- :doc Get paginated submission contents
 WITH
 submission AS (
-    SELECT id, 'stakeholder' AS type, CONCAT(title, '. ', last_name,' ', first_name) as title, id as created_by, created
+    SELECT id, 'stakeholder' AS type, 'stakeholder' AS topic, CONCAT(title, '. ', last_name,' ', first_name) as title, id as created_by, created
     FROM stakeholder
     WHERE review_status = 'SUBMITTED'
     UNION
-    SELECT id, 'event' AS type, title, created_by, created
+    SELECT id, 'event' AS type, 'event' AS topic, title, created_by, created
     FROM event where review_status = 'SUBMITTED'
     UNION
-    SELECT id, 'technology' as type, name as title, created_by, created
+    SELECT id, 'technology' AS type, 'technology' AS topic, name as title, created_by, created
     FROM technology where review_status = 'SUBMITTED'
     UNION
-    SELECT id, 'policy' as type, title as title, created_by, created
+    SELECT id, 'policy' AS type, 'policy' AS topic, title, created_by, created
     FROM policy where review_status = 'SUBMITTED'
     UNION
-    SELECT id, REPLACE(LOWER(type), ' ', '_'), title, created_by, created
+    SELECT id, REPLACE(LOWER(type), ' ', '_') AS type, 'resource' AS topic, title, created_by, created
     FROM resource where review_status = 'SUBMITTED'
     UNION
-    SELECT id, 'project' as type, replace(q2::text,'"','') as title, created_by, created
+    SELECT id, 'project' AS type, 'initiative' AS topic, replace(q2::text,'"','') as title, created_by, created
     FROM initiative where review_status = 'SUBMITTED'
-    ORDER BY created
 ),
 data AS (
-    SELECT s.id, s.type, s.title, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || type || '/' || s.id as preview
+    SELECT s.id, s.type, s.topic, s.title, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || type || '/' || s.id as preview, COALESCE(r.review_status, 'PENDING') AS review_status, row_to_json(reviewer.*) AS reviewer
     FROM submission s
     LEFT JOIN stakeholder c ON c.id = s.created_by
+    LEFT JOIN review r ON r.topic_type = s.topic::topic_type AND r.topic_id = s.id
+    LEFT JOIN stakeholder reviewer ON reviewer.id = r.reviewer
+    ORDER BY s.created
     LIMIT :limit
     OFFSET :limit * (:page - 1)
 )
