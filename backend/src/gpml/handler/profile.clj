@@ -3,6 +3,7 @@
             [clojure.string :as str]
             [gpml.auth0-util :as auth0]
             [gpml.email-util :as email]
+            [gpml.geo-util :as geo]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.organisation :as handler.org]
             [gpml.handler.image :as handler.image]
@@ -187,12 +188,6 @@
             (db.stakeholder/add-stakeholder-geo tx {:geo geo-data})))
         (resp/status 204)))))
 
-(def geo_coverage_type
-  [:enum
-   "global","regional",
-   "national", "transnational",
-   "sub-national", "global with elements in specific areas"])
-
 (defmethod ig/init-key :gpml.handler.profile/post-params [_ _]
   [:map
    [:title {:optional true} string?]
@@ -207,7 +202,7 @@
    [:public_email {:optional true} boolean?]
    [:about {:optional true} string?]
    [:organisation_role {:optional true} string?]
-   [:geo_coverage_type {:optional true} geo_coverage_type]
+   [:geo_coverage_type {:optional true} geo/coverage_type]
    [:tags {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for tags"} int?]]
    [:seeking {:optional true}
@@ -222,8 +217,6 @@
      [:name {:optional true} string?]
      [:url {:optional true} string?]
      [:country {:optional true} int?]
-     [:geo_coverage_type {:optional true} geo_coverage_type]
+     [:geo_coverage_type {:optional true} geo/coverage_type]
      [:geo_coverage_value {:optional true}
       [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]]]])
-
-#_(def dbtest (dev/db-conn))
