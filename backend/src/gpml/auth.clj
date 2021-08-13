@@ -117,3 +117,11 @@
         (handler (assoc request :admin user))
         {:status 403
          :body {:message "Unauthorized"}}))))
+
+(defmethod ig/init-key :gpml.auth/reviewer-required-middleware [_ _]
+  (fn [handler]
+    (fn [{:keys [user approved?] :as request}]
+      (if (and approved? (contains? #{"ADMIN" "REVIEWER"} (:role user)))
+        (handler (assoc request :admin user))
+        {:status 403
+         :body {:message "Unauthorized"}}))))
