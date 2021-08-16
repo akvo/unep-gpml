@@ -43,14 +43,46 @@ h4 {
 }
 
 #root {
-  // .ant-btn {
-  //   // border-radius: 4px;
-  // }
+  // antd part
+  .ant-layout-header {
+    padding: 0;
+    line-height: 75px;
+  }
+
+  .ant-menu.ant-menu-dark,
+  .ant-menu-dark .ant-menu-sub,
+  .ant-menu.ant-menu-dark .ant-menu-sub {
+    background: none;
+  }
+
+  .ant-menu-dark .ant-menu-item,
+  .ant-menu-dark .ant-menu-item-group-title,
+  .ant-menu-dark .ant-menu-item > a,
+  .ant-menu-dark .ant-menu-item > span > a {
+    color: rgba(255, 255, 255, 1);
+  }
+
+  .ant-menu-item-active {
+    background: none;
+  }
 
   .ant-btn-primary {
-    background-color: $primaryColor;
-    border-color: $primaryColor;
+    color: #2d6796;
+    background-color: $btnGreen;
+    border-color: $btnGreen;
+    border-radius: 50px;
   }
+
+  .ant-btn-ghost {
+    color: $btnGreen;
+    background: transparent;
+    border-color: $btnGreen;
+    border-radius: 50px;
+    &.left {
+      margin-left: 8px;
+    }
+  }
+  // end of antd part
 
   & > .topbar {
     background-color: #036799;
@@ -67,22 +99,25 @@ h4 {
 
       .rightside {
         margin-left: auto;
-
         .ant-btn-link {
-          color: #fff;
+          color: #fff !important;
         }
       }
     }
   }
 
   & > header {
-    height: 110px;
-    padding-top: 8px;
+    display: flex;
+    align-items: center;
+    height: 89px;
+    // padding-top: 8px;
     box-sizing: border-box;
-    border-bottom: 1px solid #81b2cc;
+    background: #2d6796;
+    // border-bottom: 1px solid #81b2cc;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
 
     .logo {
-      width: 310px;
+      width: 200px;
     }
 
     .ui.container {
@@ -90,11 +125,14 @@ h4 {
     }
 
     .src {
-      width: 33%;
-      height: 40px;
-      border-radius: 3px;
-      margin-top: 26px;
+      width: 15%;
+      border-radius: 50px;
+      margin-top: 20px;
       margin-left: 40px;
+      margin-right: 40px;
+      .ant-btn.ant-btn-primary.ant-input-search-button {
+        border-radius: 0;
+      }
     }
 
     nav {

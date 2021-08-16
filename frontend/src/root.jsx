@@ -7,12 +7,12 @@ import {
   withRouter,
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Input, Button, Menu, Dropdown, Avatar, Popover } from "antd";
+import { Input, Button, Menu, Dropdown, Avatar, Popover, Layout } from "antd";
 import { RightOutlined } from "@ant-design/icons";
 import Landing from "./modules/landing/view";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
-import logo from "./images/GPML-temporary-logo-horiz.jpg";
+import logo from "./images/GPML-logo-white.png";
 import SignupModal from "./modules/signup/signup-modal";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
@@ -89,6 +89,8 @@ const disclaimerContent = {
   ),
 };
 
+const { Header } = Layout;
+
 const Root = () => {
   const {
     isAuthenticated,
@@ -156,7 +158,7 @@ const Root = () => {
             <p className="ui container">{disclaimerContent?.[disclaimer]}</p>
           </div>
         )}
-        <div className="topbar">
+        {/* <div className="topbar">
           <div className="ui container">
             <div className="leftside">
               <a href="https://www.unep.org/" target="_blank" rel="noreferrer">
@@ -171,13 +173,40 @@ const Root = () => {
                 GPML
               </a>
             </div>
+          </div>
+        </div> */}
+        <Header>
+          <div className="ui container">
+            <div>
+              <Link to="/">
+                <img src={logo} className="logo" alt="GPML" />
+              </Link>
+            </div>
+            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[]}>
+              <Menu.Item key="about">About</Menu.Item>
+              <Menu.Item key="explore">Explore</Menu.Item>
+              <Menu.Item key="data-hub">Data Hub</Menu.Item>
+              <Menu.Item key="knowledge-exchange">Knowledge Exchange</Menu.Item>
+              <Menu.Item key="connect-stakeholders">
+                Connect Stakeholders
+              </Menu.Item>
+            </Menu>
+            <Switch>
+              <Route path="/browse" />
+              <Route>
+                <Search />
+              </Route>
+            </Switch>
             {!isAuthenticated ? (
               <div className="rightside">
-                <Link to="/signup">Join the GPML</Link>
-                &nbsp;&nbsp;|&nbsp;&nbsp;
-                <Link to="/" onClick={loginWithPopup}>
-                  Sign in
-                </Link>
+                <Button type="primary">
+                  <Link to="/signup">Join the GPML</Link>
+                </Button>
+                <Button type="ghost" className="left">
+                  <Link to="/" onClick={loginWithPopup}>
+                    Sign in
+                  </Link>
+                </Button>
               </div>
             ) : (
               <div className="rightside">
@@ -192,32 +221,22 @@ const Root = () => {
                     </div>
                   }
                 >
-                  <Link to="/profile">
-                    {profile ? profile.firstName : user.nickname}
-                  </Link>
+                  <Button type="primary">
+                    <Link to="/profile">
+                      {profile ? profile.firstName : user.nickname}
+                    </Link>
+                  </Button>
                 </Popover>
                 <Button
-                  type="link"
+                  type="ghost"
+                  className="left"
                   onClick={() => logout({ returnTo: window.location.origin })}
                 >
                   Logout
                 </Button>
               </div>
             )}
-          </div>
-        </div>
-        <header>
-          <div className="ui container">
-            <Link to="/">
-              <img src={logo} className="logo" alt="GPML" />
-            </Link>
-            <Switch>
-              <Route path="/browse" />
-              <Route>
-                <Search />
-              </Route>
-            </Switch>
-            <nav>
+            {/* <nav>
               <AddButton
                 {...{
                   setSignupModalVisible,
@@ -226,9 +245,9 @@ const Root = () => {
                   setWarningModalVisible,
                 }}
               />
-            </nav>
+            </nav> */}
           </div>
-        </header>
+        </Header>
         <Route
           path="/"
           exact
@@ -370,8 +389,8 @@ const Search = withRouter(({ history }) => {
       onSearch={handleSearch}
       enterButton
       className="src"
-      placeholder="Search for resources and stakeholders"
-      size="large"
+      placeholder="Search"
+      // size="large"
     />
   );
 });

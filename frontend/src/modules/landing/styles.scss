@@ -8,16 +8,24 @@
     color: #ffffff;
 
     .landing-banner {
-      padding: 0.5rem 0px;
+      padding: 2rem 0px;
+      background: linear-gradient(
+          0deg,
+          rgba(45, 103, 150, 0.75),
+          rgba(45, 103, 150, 0.75)
+        ),
+        url("../../images/landing-banner.png");
 
       h2 {
-        font-size: 1.2rem;
+        font-size: 2rem;
         color: white;
+        max-width: 70%;
       }
 
       p {
-        font-size: 0.95rem;
+        font-size: 1rem;
         text-align: justify;
+        max-width: 70%;
       }
 
       a {
@@ -236,6 +244,85 @@
       border: solid #036799 2px;
       padding: 3px 8px;
       color: #fff;
+    }
+  }
+
+  .popular-topics {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    .title {
+      h2 {
+        font-size: 1.5rem;
+        color: #2d6796;
+        span {
+          margin-left: 20px;
+          font-size: 0.8rem;
+          color: #34a6ff;
+        }
+      }
+    }
+    .body {
+      display: flex;
+      justify-content: space-between;
+      .chart-wrapper {
+        width: 49%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        .item {
+          width: 48%;
+          height: 100px;
+          margin-bottom: 2%;
+        }
+      }
+      .content {
+        width: 49%;
+        .content-header {
+          padding: 10px 0;
+          border-top: 1px solid #ffb800;
+          border-bottom: 1px solid #ffb800;
+          display: flex;
+          justify-content: space-between;
+          h4 {
+            color: #ffb800;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0;
+          }
+          span {
+            color: #ffb800;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+          }
+          .item {
+            margin-left: 2%;
+          }
+        }
+        .content-body {
+          padding: 20px;
+          .item {
+            margin-bottom: 4%;
+            span.type {
+              font-weight: 500;
+              color: #4da687;
+              text-transform: uppercase;
+              font-size: 0.75rem;
+            }
+            h4 {
+              font-size: 1.2rem;
+              font-weight: 500;
+              margin-bottom: 0;
+            }
+            p {
+              margin-bottom: 5px;
+            }
+            span.read-more {
+              color: #34a6ff;
+              font-size: 0.7rem;
+            }
+          }
+        }
+      }
     }
   }
 

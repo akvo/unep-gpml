@@ -1,12 +1,362 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
-import { Button, Select, Switch } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Button, Select, Switch, Card } from "antd";
+import {
+  LoadingOutlined,
+  RightOutlined,
+  ArrowRightOutlined,
+} from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import Maps from "./maps";
 import "./styles.scss";
 import humps from "humps";
 import { topicNames, tTypes } from "../../utils/misc";
+
+const newLanding = true;
+const popularTopics = [
+  {
+    id: 1,
+    topic: "Product by design",
+    count: 65,
+    summary: [
+      {
+        count: 12,
+        type: "policy",
+      },
+      {
+        count: 13,
+        type: "events",
+      },
+      {
+        count: 14,
+        type: "technical resources",
+      },
+      {
+        count: 14,
+        type: "technology",
+      },
+      {
+        count: 12,
+        type: "action plan",
+      },
+      {
+        count: 14,
+        type: "initiatives",
+      },
+      {
+        count: 14,
+        type: "financial resources",
+      },
+    ],
+    items: [
+      {
+        id: 1,
+        type: "policy",
+        title: "Paullum deliquit, ponderibus modulisque suis ratio utitur.",
+        description:
+          "Integer legentibus erat a ante historiarum dapibus. Idque Caesaris facere voluntate liceret: sese habere. Ambitioni dedisse scripsisse iudicaretur.",
+      },
+      {
+        id: 2,
+        type: "technology",
+        title: "Cum sociis natoque penatibus et magnis dis parturient.",
+        description: "At nos hinc posthac, sitientis piros Afros.",
+      },
+      {
+        id: 3,
+        type: "event",
+        title: "Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae.",
+        description:
+          "Ambitioni dedisse scripsisse iudicaretur. Quis aute iure reprehenderit in voluptate velit esse. Magna pars studiorum, prodita quaerimus. ",
+      },
+    ],
+  },
+  {
+    id: 2,
+    topic: "Waste management",
+    count: 61,
+    summary: [
+      {
+        count: 12,
+        type: "policy",
+      },
+      {
+        count: 13,
+        type: "events",
+      },
+      {
+        count: 12,
+        type: "technical resources",
+      },
+      {
+        count: 12,
+        type: "technology",
+      },
+      {
+        count: 12,
+        type: "action plan",
+      },
+      {
+        count: 12,
+        type: "initiatives",
+      },
+      {
+        count: 12,
+        type: "financial resources",
+      },
+    ],
+    items: [
+      {
+        id: 1,
+        type: "policy",
+        title: "Paullum deliquit, ponderibus modulisque suis ratio utitur.",
+        description:
+          "Integer legentibus erat a ante historiarum dapibus. Idque Caesaris facere voluntate liceret: sese habere. Ambitioni dedisse scripsisse iudicaretur.",
+      },
+      {
+        id: 2,
+        type: "technology",
+        title: "Cum sociis natoque penatibus et magnis dis parturient.",
+        description: "At nos hinc posthac, sitientis piros Afros.",
+      },
+      {
+        id: 3,
+        type: "event",
+        title: "Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae.",
+        description:
+          "Ambitioni dedisse scripsisse iudicaretur. Quis aute iure reprehenderit in voluptate velit esse. Magna pars studiorum, prodita quaerimus. ",
+      },
+    ],
+  },
+  {
+    id: 3,
+    topic: "Plastics",
+    count: 57,
+    summary: [
+      {
+        count: 12,
+        type: "policy",
+      },
+      {
+        count: 13,
+        type: "events",
+      },
+      {
+        count: 14,
+        type: "technical resources",
+      },
+      {
+        count: 14,
+        type: "technology",
+      },
+      {
+        count: 12,
+        type: "action plan",
+      },
+      {
+        count: 14,
+        type: "initiatives",
+      },
+      {
+        count: 14,
+        type: "financial resources",
+      },
+    ],
+    items: [
+      {
+        id: 1,
+        type: "policy",
+        title: "Paullum deliquit, ponderibus modulisque suis ratio utitur.",
+        description:
+          "Integer legentibus erat a ante historiarum dapibus. Idque Caesaris facere voluntate liceret: sese habere. Ambitioni dedisse scripsisse iudicaretur.",
+      },
+      {
+        id: 2,
+        type: "technology",
+        title: "Cum sociis natoque penatibus et magnis dis parturient.",
+        description: "At nos hinc posthac, sitientis piros Afros.",
+      },
+      {
+        id: 3,
+        type: "event",
+        title: "Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae.",
+        description:
+          "Ambitioni dedisse scripsisse iudicaretur. Quis aute iure reprehenderit in voluptate velit esse. Magna pars studiorum, prodita quaerimus. ",
+      },
+    ],
+  },
+  {
+    id: 4,
+    topic: "Marine litter",
+    count: 56,
+    summary: [
+      {
+        count: 12,
+        type: "policy",
+      },
+      {
+        count: 13,
+        type: "events",
+      },
+      {
+        count: 14,
+        type: "technical resources",
+      },
+      {
+        count: 14,
+        type: "technology",
+      },
+      {
+        count: 12,
+        type: "action plan",
+      },
+      {
+        count: 14,
+        type: "initiatives",
+      },
+      {
+        count: 14,
+        type: "financial resources",
+      },
+    ],
+    items: [
+      {
+        id: 1,
+        type: "policy",
+        title: "Paullum deliquit, ponderibus modulisque suis ratio utitur.",
+        description:
+          "Integer legentibus erat a ante historiarum dapibus. Idque Caesaris facere voluntate liceret: sese habere. Ambitioni dedisse scripsisse iudicaretur.",
+      },
+      {
+        id: 2,
+        type: "technology",
+        title: "Cum sociis natoque penatibus et magnis dis parturient.",
+        description: "At nos hinc posthac, sitientis piros Afros.",
+      },
+      {
+        id: 3,
+        type: "event",
+        title: "Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae.",
+        description:
+          "Ambitioni dedisse scripsisse iudicaretur. Quis aute iure reprehenderit in voluptate velit esse. Magna pars studiorum, prodita quaerimus. ",
+      },
+    ],
+  },
+  {
+    id: 5,
+    topic: "Capacity building",
+    count: 50,
+    summary: [
+      {
+        count: 12,
+        type: "policy",
+      },
+      {
+        count: 13,
+        type: "events",
+      },
+      {
+        count: 14,
+        type: "technical resources",
+      },
+      {
+        count: 14,
+        type: "technology",
+      },
+      {
+        count: 12,
+        type: "action plan",
+      },
+      {
+        count: 14,
+        type: "initiatives",
+      },
+      {
+        count: 14,
+        type: "financial resources",
+      },
+    ],
+    items: [
+      {
+        id: 1,
+        type: "policy",
+        title: "Paullum deliquit, ponderibus modulisque suis ratio utitur.",
+        description:
+          "Integer legentibus erat a ante historiarum dapibus. Idque Caesaris facere voluntate liceret: sese habere. Ambitioni dedisse scripsisse iudicaretur.",
+      },
+      {
+        id: 2,
+        type: "technology",
+        title: "Cum sociis natoque penatibus et magnis dis parturient.",
+        description: "At nos hinc posthac, sitientis piros Afros.",
+      },
+      {
+        id: 3,
+        type: "event",
+        title: "Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae.",
+        description:
+          "Ambitioni dedisse scripsisse iudicaretur. Quis aute iure reprehenderit in voluptate velit esse. Magna pars studiorum, prodita quaerimus. ",
+      },
+    ],
+  },
+  {
+    id: 6,
+    topic: "Source to sea",
+    count: 48,
+    summary: [
+      {
+        count: 12,
+        type: "policy",
+      },
+      {
+        count: 13,
+        type: "events",
+      },
+      {
+        count: 14,
+        type: "technical resources",
+      },
+      {
+        count: 14,
+        type: "technology",
+      },
+      {
+        count: 12,
+        type: "action plan",
+      },
+      {
+        count: 14,
+        type: "initiatives",
+      },
+      {
+        count: 14,
+        type: "financial resources",
+      },
+    ],
+    items: [
+      {
+        id: 1,
+        type: "policy",
+        title: "Paullum deliquit, ponderibus modulisque suis ratio utitur.",
+        description:
+          "Integer legentibus erat a ante historiarum dapibus. Idque Caesaris facere voluntate liceret: sese habere. Ambitioni dedisse scripsisse iudicaretur.",
+      },
+      {
+        id: 2,
+        type: "technology",
+        title: "Cum sociis natoque penatibus et magnis dis parturient.",
+        description: "At nos hinc posthac, sitientis piros Afros.",
+      },
+      {
+        id: 3,
+        type: "event",
+        title: "Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae.",
+        description:
+          "Ambitioni dedisse scripsisse iudicaretur. Quis aute iure reprehenderit in voluptate velit esse. Magna pars studiorum, prodita quaerimus. ",
+      },
+    ],
+  },
+];
 
 const Landing = ({
   history,
@@ -22,6 +372,7 @@ const Landing = ({
   const [country, setCountry] = useState(null);
   const [counts, setCounts] = useState("project");
   const [mapData, setMapData] = useState([]);
+  const [selectedTopic, setSelectedTopic] = useState("product by design");
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
@@ -77,16 +428,10 @@ const Landing = ({
             Welcome to the Global Partnership on Marine Litter Digital Platform!
           </h2>
           <p>
-            The Digital Platform is an open-source, multi-stakeholder platform
-            that compiles different resources, connects stakeholders and
-            integrates data to guide action. The resources have been collected
-            through research based on publicly available information, interviews
-            with experts, and inputs received through submissions. They cover
-            all stages in the plastics life cycle, with respect to prevention of
-            litter and waste, design and production, use and consumption, waste
-            management and marine litter monitoring and capturing. Explore the
-            map below by clicking on a country, or filter by resource. You can
-            learn more about each resource's source{" "}
+            A partly open-source, multi-stakeholder platform that compiles
+            different resources, connects stakeholders, and integrates data to
+            guide action towards the long term elimination of marine litter and
+            plastic pollution.{" "}
             <a
               href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
               target="_blank"
@@ -96,61 +441,130 @@ const Landing = ({
             </a>
             .
           </p>
-        </div>
-      </div>
-      <div className="landing-container map-container">
-        {!data && (
-          <h2 className="loading">
-            <LoadingOutlined spin /> Loading Data
-          </h2>
-        )}
-        {data && (
-          <div className="map-overlay">
-            <Select
-              showSearch
-              allowClear
-              placeholder="Countries"
-              options={countryOpts}
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-              value={country}
-              onChange={handleChangeCountry}
-              virtual={false}
-            />
-            <Summary
-              clickEvents={handleSummaryClick}
-              seeAllEvents={handleSeeAllStakeholderClick}
-              isApprovedUser={isApprovedUser}
-              summary={summaryData}
-              country={countryObj}
-              counts={counts}
-              selected={selected}
-              init={counts}
-            />
+          <div>
+            <Button type="primary">Join GPML</Button>
+            <Button type="ghost" className="left">
+              Learn More
+            </Button>
           </div>
-        )}
-        {/* Dont render maps on mobile */}
-        {innerWidth >= 768 && (
-          <Maps
-            data={data?.map || []}
-            clickEvents={clickCountry}
-            topic={counts}
-            country={countries.find((x) => x.id === country)}
-          />
-        )}
-      </div>
-      <div className="topics">
-        <div className="ui container">
-          {data?.topics.map(
-            (topic, index) =>
-              (topic.topicType !== "stakeholder" || isApprovedUser) && (
-                <TopicItem key={`topic-${index}`} {...{ topic }} />
-              )
-          )}
         </div>
       </div>
+
+      <div className="popular-topics ui container">
+        <div className="title">
+          <h2>
+            Popular Content{" "}
+            <span>
+              See all topics <RightOutlined />
+            </span>
+          </h2>
+        </div>
+        <div className="body">
+          <div className="chart-wrapper">
+            {popularTopics.map((x, i) => {
+              return (
+                <Card
+                  key={`topic-${i}`}
+                  className="item"
+                  onClick={(e) => setSelectedTopic(x.topic.toLowerCase())}
+                >
+                  <p>{x.topic}</p>
+                  <span>{x?.count}</span>
+                </Card>
+              );
+            })}
+          </div>
+          <div className="content">
+            <div className="content-header">
+              {popularTopics
+                .find((x) => x.topic.toLowerCase() === selectedTopic)
+                .summary.map((x, i) => {
+                  return (
+                    <div key={`summary-${i}`} className="item">
+                      <h4>{x.count}</h4>
+                      <span>{x.type}</span>
+                    </div>
+                  );
+                })}
+            </div>
+            <div className="content-body">
+              {popularTopics
+                .find((x) => x.topic.toLowerCase() === selectedTopic)
+                .items.map((x, i) => {
+                  return (
+                    <div key={`summary-${i}`} className="item">
+                      <span className="type">{x.type}</span>
+                      <h4>{x.title}</h4>
+                      <p>{x.description}</p>
+                      <span className="read-more">
+                        Read more <ArrowRightOutlined />
+                      </span>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {!newLanding && (
+        <>
+          <div className="landing-container map-container">
+            {!data && (
+              <h2 className="loading">
+                <LoadingOutlined spin /> Loading Data
+              </h2>
+            )}
+            {data && (
+              <div className="map-overlay">
+                <Select
+                  showSearch
+                  allowClear
+                  placeholder="Countries"
+                  options={countryOpts}
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    option?.label?.toLowerCase().indexOf(input.toLowerCase()) >=
+                    0
+                  }
+                  value={country}
+                  onChange={handleChangeCountry}
+                  virtual={false}
+                />
+                <Summary
+                  clickEvents={handleSummaryClick}
+                  seeAllEvents={handleSeeAllStakeholderClick}
+                  isApprovedUser={isApprovedUser}
+                  summary={summaryData}
+                  country={countryObj}
+                  counts={counts}
+                  selected={selected}
+                  init={counts}
+                />
+              </div>
+            )}
+            {/* Dont render maps on mobile */}
+            {innerWidth >= 768 && (
+              <Maps
+                data={data?.map || []}
+                clickEvents={clickCountry}
+                topic={counts}
+                country={countries.find((x) => x.id === country)}
+              />
+            )}
+          </div>
+          <div className="topics">
+            <div className="ui container">
+              {data?.topics.map(
+                (topic, index) =>
+                  (topic.topicType !== "stakeholder" || isApprovedUser) && (
+                    <TopicItem key={`topic-${index}`} {...{ topic }} />
+                  )
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
