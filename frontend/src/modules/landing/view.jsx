@@ -1,10 +1,12 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
-import { Button, Select, Switch, Card } from "antd";
+import { Button, Select, Switch, Card, Avatar, Tooltip } from "antd";
 import {
   LoadingOutlined,
   RightOutlined,
   ArrowRightOutlined,
+  RiseOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import Maps from "./maps";
@@ -357,6 +359,137 @@ const popularTopics = [
     ],
   },
 ];
+const featuredContents = [
+  {
+    image: null,
+    type: "data hub",
+    title: "Morbi odio eros, volutpat ut pharetra vitae, lobortis sed nibh.",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempor ante ac leo cursus, quis fringilla elit sagittis. Maecenas ac maximus massa...",
+    bookmark: [
+      {
+        image: "",
+        name: "Name 1",
+      },
+      {
+        image: "",
+        name: "Name 2",
+      },
+      {
+        image: "",
+        name: "Name 3",
+      },
+      {
+        image: "",
+        name: "Name 4",
+      },
+    ],
+  },
+  {
+    image: null,
+    type: "policy",
+    title: "Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae.",
+    description:
+      "Integer legentibus erat a ante historiarum dapibus. Idque Caesaris facere voluntate liceret: sese habere. Ambitioni dedisse scripsisse iudicaretur. Fabio vel iudice vincam,",
+    bookmark: [
+      {
+        image: "",
+        name: "Name 1",
+      },
+      {
+        image: "",
+        name: "Name 2",
+      },
+      {
+        image: "",
+        name: "Name 3",
+      },
+      {
+        image: "",
+        name: "Name 4",
+      },
+    ],
+  },
+  {
+    image: "fc-initiative.png",
+    type: "initiative",
+    title: "Morbi odio eros, volutpat ut pharetra vitae, lobortis sed nibh.",
+    description:
+      "Inmensae subtilitatis, obscuris et malesuada fames. Ut enim ad minim veniam, quis nostrud exercitation. Quisque ut dolor gravida, placerat libero vel, euismod. Salutantibus vitae elit libero, a pharetra augue. Vivamus sagittis lacus vel augue laoreet rutrum faucibus. Quam temere in vitiis, legem sancimus haerentia. Fabio vel iudice vincam, sunt in culpa qui officia. Quis aute iure reprehenderit in voluptate velit esse. Non equidem invideo, miror magis posuere velit aliquet. Quisque placerat facilisis egestas cillum dolore. Praeterea iter est quasdam res quas ex communi.",
+    bookmark: [
+      {
+        image: "",
+        name: "Name 1",
+      },
+      {
+        image: "",
+        name: "Name 2",
+      },
+      {
+        image: "",
+        name: "Name 3",
+      },
+      {
+        image: "",
+        name: "Name 4",
+      },
+      {
+        image: "",
+        name: "Name 4",
+      },
+    ],
+  },
+  {
+    image: null,
+    type: "technical resource",
+    title: "Contra legem facit qui id facit quod lex prohibet.",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempor ante ac leo cursus, quis fringilla elit sagittis. Maecenas ac maximus massa...",
+    bookmark: [
+      {
+        image: "",
+        name: "Name 1",
+      },
+      {
+        image: "",
+        name: "Name 2",
+      },
+      {
+        image: "",
+        name: "Name 3",
+      },
+      {
+        image: "",
+        name: "Name 4",
+      },
+    ],
+  },
+  {
+    image: null,
+    type: "story map",
+    title: "At nos hinc posthac, sitientis piros Afros.",
+    description:
+      "Tu quoque, Brute, fili mi, nihil timor populi, nihil! Quisque placerat facilisis egestas cillum dolore. Hi omnes lingua, institutis, legibus inter se differunt. Paullum deliquit, ponderibus",
+    bookmark: [
+      {
+        image: "",
+        name: "Name 1",
+      },
+      {
+        image: "",
+        name: "Name 2",
+      },
+      {
+        image: "",
+        name: "Name 3",
+      },
+      {
+        image: "",
+        name: "Name 4",
+      },
+    ],
+  },
+];
 
 const Landing = ({
   history,
@@ -432,14 +565,14 @@ const Landing = ({
             different resources, connects stakeholders, and integrates data to
             guide action towards the long term elimination of marine litter and
             plastic pollution.{" "}
-            <a
+            {/* <a
               href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
               target="_blank"
               rel="noreferrer"
             >
               here
             </a>
-            .
+            . */}
           </p>
           <div>
             <Button type="primary">Join GPML</Button>
@@ -449,7 +582,7 @@ const Landing = ({
           </div>
         </div>
       </div>
-
+      {/* Popular Topics */}
       <div className="popular-topics ui container">
         <div className="title">
           <h2>
@@ -506,7 +639,119 @@ const Landing = ({
           </div>
         </div>
       </div>
-
+      <hr />
+      {/* Popular Topics */}
+      <div className="featured-content ui container">
+        <div className="title">
+          <h2>
+            Featured Content{" "}
+            <span>
+              See all <RightOutlined />
+            </span>
+          </h2>
+        </div>
+        <div className="body">
+          <div className="content-left">
+            {featuredContents
+              .filter((x) => x.image === null)
+              .map((x, i) => {
+                return (
+                  <Card key={`fc-${i}`} className="item">
+                    <div className="item-header">
+                      <span className="type">{x.type}</span>
+                      <span className="mark">
+                        <RiseOutlined />
+                        Trending
+                      </span>
+                    </div>
+                    <div className="item-body">
+                      <h4>{x.title}</h4>
+                      <p>{x.description}</p>
+                    </div>
+                    <div className="item-footer">
+                      <Avatar.Group
+                        maxCount={3}
+                        maxStyle={{
+                          color: "#f56a00",
+                          backgroundColor: "#fde3cf",
+                        }}
+                      >
+                        {x.bookmark.map((b, i) => (
+                          <Tooltip
+                            key={`avatar-${i}`}
+                            title={b.name}
+                            placement="top"
+                          >
+                            <Avatar
+                              style={{ backgroundColor: "#FFB800" }}
+                              icon={<UserOutlined />}
+                            />
+                          </Tooltip>
+                        ))}
+                      </Avatar.Group>
+                      <span className="read-more">
+                        Read more <ArrowRightOutlined />
+                      </span>
+                    </div>
+                  </Card>
+                );
+              })}
+          </div>
+          <div className="content-right">
+            {featuredContents
+              .filter((x) => x.image !== null)
+              .map((x, i) => {
+                return (
+                  <Card key={`fc-${i}`} className="item">
+                    <img
+                      className="item-img"
+                      width="100%"
+                      src="./fc-initiative.png"
+                      alt={x.title}
+                    />
+                    <div className="item-header">
+                      <span className="type">{x.type}</span>
+                      <span className="mark">
+                        <RiseOutlined />
+                        Trending
+                      </span>
+                    </div>
+                    <div className="item-body">
+                      <h4>{x.title}</h4>
+                      <p>{x.description}</p>
+                    </div>
+                    <div className="item-footer">
+                      <Avatar.Group
+                        maxCount={3}
+                        maxStyle={{
+                          color: "#f56a00",
+                          backgroundColor: "#fde3cf",
+                        }}
+                      >
+                        {x.bookmark.map((b, i) => (
+                          <Tooltip
+                            key={`avatar-${i}`}
+                            title={b.name}
+                            placement="top"
+                          >
+                            <Avatar
+                              style={{ backgroundColor: "#FFB800" }}
+                              icon={<UserOutlined />}
+                            />
+                          </Tooltip>
+                        ))}
+                      </Avatar.Group>
+                      <span className="read-more">
+                        Read more <ArrowRightOutlined />
+                      </span>
+                    </div>
+                  </Card>
+                );
+              })}
+          </div>
+        </div>
+      </div>
+      {/* // Old landing page content */}
       {!newLanding && (
         <>
           <div className="landing-container map-container">
