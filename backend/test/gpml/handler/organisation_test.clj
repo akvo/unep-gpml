@@ -10,7 +10,7 @@
 
 (use-fixtures :each fixtures/with-test-system)
 
-(deftest handler-post-with-new-organisation-with-non-existent-second-contact-test
+(deftest ^:eftest/synchronized handler-post-with-new-organisation-with-non-existent-second-contact-test
   (testing "New profile is created with new organisation"
     (let [system          (ig/init fixtures/*system* [::organisation/post ::profile/post])
           profile-handler (::profile/post system)
