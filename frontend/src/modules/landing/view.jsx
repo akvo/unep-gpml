@@ -10,7 +10,9 @@ import {
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import Maps from "./maps";
+import Carousel from "react-multi-carousel";
 import "./styles.scss";
+import "react-multi-carousel/lib/styles.css";
 import humps from "humps";
 import { topicNames, tTypes } from "../../utils/misc";
 
@@ -490,6 +492,126 @@ const featuredContents = [
     ],
   },
 ];
+const ourCommunity = [
+  {
+    type: "stakeholder",
+    about:
+      "Sed haec quis possit intrepidus aestimare tellus. Cum sociis natoque penatibus et magnis dis parturient.",
+    name: "John Malkovich",
+    role: "Entity Role -  Entity",
+  },
+  {
+    type: "stakeholder",
+    about: "Salutantibus vitae elit libero, a pharetra augue.",
+    name: "Bertrand Lacaze",
+    role: "Entity Role -  Entity",
+  },
+  {
+    type: "stakeholder",
+    about:
+      "Contra legem facit qui id facit quod lex prohibet. Quid securi etiam tamquam eu fugiat nulla pariatur.",
+    name: "Xavier Mendoza",
+    role: "Entity Role -  Entity",
+  },
+  {
+    type: "entity",
+    about:
+      "Contra legem facit qui id facit quod lex prohibet. Quid securi etiam tamquam eu fugiat nulla pariatur.",
+    name: "Black Forest Solutions",
+    role: null,
+  },
+  {
+    type: "stakeholder",
+    about:
+      "Contra legem facit qui id facit quod lex prohibet. Quid securi etiam tamquam eu fugiat nulla pariatur.",
+    name: "Xavier",
+    role: "Entity Role -  Entity",
+  },
+];
+const cardSvg = [
+  {
+    color: "#4DA687",
+    svg: (
+      <svg
+        className="wave"
+        viewBox="0 0 328 192"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M0 28.474C36.4971 -3.27254 127.977 -14.0546 190.069 25.4789C252.162 65.0125 304.775 68.6063 328 65.0126V182C328 187.523 323.523 192 318 192H9.99999C4.47714 192 0 187.523 0 182V28.474Z"
+          fill="#4DA687"
+        />
+      </svg>
+    ),
+  },
+  {
+    color: "#2D6796",
+    svg: (
+      <svg
+        className="wave"
+        viewBox="0 0 329 194"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M0 59.4558C43.2645 44.5054 76.5448 -3.93028 159.27 0.255409C241.996 4.4411 297.621 30.1535 329 44.5055V184C329 189.523 324.523 194 319 194H10C4.47716 194 0 189.523 0 184L0 59.4558Z"
+          fill="#2D6796"
+        />
+      </svg>
+    ),
+  },
+  {
+    color: "#384E85",
+    svg: (
+      <svg
+        className="wave"
+        viewBox="0 0 329 192"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M0 50.5541C149.762 107 147.86 0 218.699 0C269.571 0 280.983 17.1299 329 50.5541V182C329 187.523 324.523 192 319 192H10C4.47716 192 0 187.523 0 182V50.5541Z"
+          fill="#384E85"
+        />
+      </svg>
+    ),
+  },
+  {
+    color: "#FFB800",
+    svg: (
+      <svg
+        className="wave"
+        viewBox="0 0 328 158"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M77.2601 6.52324C53.5604 31.4368 27.4913 50.3722 0 30.9385V147.536C0 154.711 6.63584 157.502 9.95376 158H318.52C325.725 158 327.842 151.356 328 148.034V57.8455C318.362 43.8937 281.075 1.04132 237.468 22.9659C186.582 48.5504 103.33 -20.8814 77.2601 6.52324Z"
+          fill="#FFB800"
+        />
+      </svg>
+    ),
+  },
+];
+const responsive = {
+  superLargeDesktop: {
+    breakpoint: { max: 4000, min: 3000 },
+    items: 4,
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 4,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 3,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+  },
+};
 
 const Landing = ({
   history,
@@ -555,6 +677,7 @@ const Landing = ({
 
   return (
     <div id="landing">
+      {/* Banner */}
       <div className="landing-container">
         <div className="landing-banner ui container">
           <h2>
@@ -640,7 +763,7 @@ const Landing = ({
         </div>
       </div>
       <hr />
-      {/* Popular Topics */}
+      {/* Featured Content */}
       <div className="featured-content ui container">
         <div className="title">
           <h2>
@@ -748,6 +871,68 @@ const Landing = ({
                   </Card>
                 );
               })}
+          </div>
+        </div>
+      </div>
+      {/* Our Community */}
+      <div className="our-community">
+        <div className="ui container">
+          <div className="title">
+            <h2>
+              Our Community{" "}
+              <span>
+                See all <RightOutlined />
+              </span>
+            </h2>
+            <p>
+              Be part of an expanding active community and start sharing
+              knowledges
+            </p>
+          </div>
+          <div className="body">
+            <Carousel
+              responsive={responsive}
+              showDots={true}
+              containerClass="carousel-container"
+              itemClass="carousel-item"
+              renderDotsOutside={true}
+              dotListClass="carousel-dot-list"
+              centerMode={true}
+            >
+              {ourCommunity.map((x, i) => {
+                const index = i > 3 ? i - 4 : i;
+                return (
+                  <div key={`oc-card-${i}`}>
+                    <div className="type">
+                      <span>{x.type}</span>
+                    </div>
+                    <div
+                      className="about"
+                      style={{ color: cardSvg[index]?.color }}
+                    >
+                      <q>{x.about}</q>
+                    </div>
+                    {cardSvg[index]?.svg}
+                    <div className="detail">
+                      <Avatar
+                        className="photo"
+                        size={{
+                          xs: 49,
+                          sm: 57,
+                          md: 65,
+                          lg: 79,
+                          xl: 105,
+                          xxl: 125,
+                        }}
+                        icon={<UserOutlined />}
+                      />
+                      <h4>{x.name}</h4>
+                      <p className="role">{x?.role || ""}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </Carousel>
           </div>
         </div>
       </div>
