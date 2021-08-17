@@ -2,12 +2,12 @@
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [gpml.fixtures :as fixtures]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.review :as db.review]
             [gpml.handler.review :as review]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
-
 
 (defn- new-stakeholder [db email first_name last_name role review_status]
   (let [info {:picture "https://picsum.photos/200"
@@ -21,10 +21,11 @@
               :email email}
         sth (db.stakeholder/new-stakeholder db info)]
     (db.stakeholder/update-stakeholder-status db (assoc sth :review_status review_status))
-    (db.stakeholder/update-stakeholder-role db (assoc sth :role role))))
+    (db.stakeholder/update-stakeholder-role db (assoc sth :role role))
+    sth))
 
-(deftest handler-test
-  (testing "Landing endpoint returns non empty response"
+(deftest get-reviewers-test
+  (testing "Get reviewers endpoint returns non empty response"
     (let [system (ig/init fixtures/*system* [::review/get-reviewers])
           handler (::review/get-reviewers system)
           db (-> system :duct.database.sql/hikaricp :spec)
@@ -42,3 +43,146 @@
       (is (= 200 (:status resp)))
       (is (= 2 (count body)))
       (is (= #{"ADMIN" "REVIEWER"} (set (map :role body)))))))
+
+(deftest get-topic-review
+  (let [system (ig/init fixtures/*system* [::review/get-review])
+        handler (::review/get-review system)
+        db (-> system :duct.database.sql/hikaricp :spec)
+        admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
+        reviewer (new-stakeholder db "reviewer-approved@org.com" "R" "A" "REVIEWER" "APPROVED")
+        user (new-stakeholder db "user-submitted@org.com" "U" "S" "USER" "SUBMITTED")]
+
+    (testing "Fetching topic review when NO REVIEWER ASSIGNED"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}})))
+            body (:body resp)]
+        (is (= 200 (:status resp)))
+        (is (empty? body))))
+
+    (testing "Fetching topic review when REVIEWER ASSIGNED"
+      (let [stakeholder-id (:id user)
+            _ (db.review/new-review db {:topic-type "stakeholder"
+                                        :topic-id stakeholder-id
+                                        :assigned-by (:id admin)
+                                        :reviewer (:id reviewer)})
+            resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}})))
+            body (:body resp)]
+        (is (= 200 (:status resp)))
+        (is (= (:id reviewer) (:reviewer body)))
+        (is (= (:id admin) (:assigned_by body)))
+        (is (= "stakeholder" (:topic_type body)))
+        (is (= (:id user) (:topic_id body)))))))
+
+
+(deftest assign-reviewer
+  (let [system (ig/init fixtures/*system* [::review/assign-reviewer])
+        handler (::review/assign-reviewer system)
+        db (-> system :duct.database.sql/hikaricp :spec)
+        admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
+        reviewer (new-stakeholder db "reviewer@org.com" "R" "A" "REVIEWER" "APPROVED")
+        reviewer2 (new-stakeholder db "reviewer2@org.com" "R" "A" "REVIEWER" "APPROVED")
+        user (new-stakeholder db "user-submitted@org.com" "U" "S" "USER" "SUBMITTED")]
+
+    (testing "Assign new reviewer"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:assigned-by (:id admin)
+                                                   :reviewer (:id reviewer)}})))
+            body (:body resp)
+            review (db.review/review-by-id db body)]
+        (is (= 200 (:status resp)))
+        (is (= (:reviewer review) (:id reviewer)))
+        (is (= (:assigned_by review) (:id admin)))
+        (is (= (:topic_id review) (:id user)))))
+
+
+    (testing "Change reviewer"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:assigned-by (:id admin)
+                                                   :reviewer (:id reviewer2)}})))
+            body (:body resp)
+            review (db.review/review-by-id db body)]
+        (is (= 200 (:status resp)))
+        (is (= (:reviewer review) (:id reviewer2)))
+        (is (= (:assigned_by review) (:id admin)))
+        (is (= (:topic_id review) (:id user)))))))
+
+(deftest update-review
+  (let [system (ig/init fixtures/*system* [::review/update-review])
+        handler (::review/update-review system)
+        db (-> system :duct.database.sql/hikaricp :spec)
+        admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
+        reviewer (new-stakeholder db "reviewer@org.com" "R" "A" "REVIEWER" "APPROVED")
+        _ (new-stakeholder db "reviewer2@org.com" "R" "A" "REVIEWER" "APPROVED")
+        user (new-stakeholder db "user@org.com" "U" "S" "USER" "SUBMITTED")]
+
+    (testing "Updating unassigned review"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:review-comment ""
+                                                   :review-status "REJECTED"}})))]
+        (is (= 403 (:status resp)))))
+
+    (testing "Updating review assigned to another user"
+      (let [_ (db.review/new-review db {:topic-type "stakeholder"
+                                        :topic-id (:id user)
+                                        :assigned-by (:id admin)
+                                        :reviewer (:id reviewer)})
+
+            resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               ;; Logging in as REVIEWER2 instead of REVEIWER
+                               :jwt-claims {:email "reviewer2@org.com"}
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:review-comment ""
+                                                   :review-status "REJECTED"}})))]
+        (is (= 403 (:status resp)))))
+
+    (testing "Rejecting a submission in a review"
+      (let [comment "Missing lot of data"
+            resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :jwt-claims {:email "reviewer@org.com"}
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:review-comment comment
+                                                   :review-status "REJECTED"}})))
+            body (:body resp)
+            review (db.review/review-by-id db body)]
+        (is (= 200 (:status resp)))
+        (is (= (:reviewer review) (:id reviewer)))
+        (is (= (:assigned_by review) (:id admin)))
+        (is (= (:topic_id review) (:id user)))
+        (is (= (:review_status review) "REJECTED"))
+        (is (= (:review_comment review) comment))))
+
+    (testing "Accepting a submission in a review"
+      (let [comment "Best user!!!"
+            resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :jwt-claims {:email "reviewer@org.com"}
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:review-comment comment
+                                                   :review-status "ACCEPTED"}})))
+            body (:body resp)
+            review (db.review/review-by-id db body)]
+        (is (= 200 (:status resp)))
+        (is (= (:reviewer review) (:id reviewer)))
+        (is (= (:assigned_by review) (:id admin)))
+        (is (= (:topic_id review) (:id user)))
+        (is (= (:review_status review) "ACCEPTED"))
+        (is (= (:review_comment review) comment))))))
