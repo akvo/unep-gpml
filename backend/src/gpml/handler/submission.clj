@@ -70,7 +70,7 @@
           submission (:submission path)
           initiative? (and (= submission "project") (> (:id path) 10000))
           table-name(cond
-                      (contains? (set constants/resource-types) submission)
+                      (contains? constants/resource-types submission)
                       "v_resource_data"
                       initiative?
                       "initiative"

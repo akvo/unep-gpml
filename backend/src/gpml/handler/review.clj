@@ -9,7 +9,7 @@
 
 (defn- get-internal-topic-type [topic-type]
   (cond
-    (contains? (set constants/resource-types) topic-type) "resource"
+    (contains? constants/resource-types topic-type) "resource"
     (= topic-type "project") "initiative"
     :else topic-type))
 
