@@ -1,6 +1,15 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
-import { Button, Select, Switch, Card, Avatar, Tooltip } from "antd";
+import {
+  Button,
+  Select,
+  Switch,
+  Card,
+  Avatar,
+  Tooltip,
+  Calendar,
+  Image,
+} from "antd";
 import {
   LoadingOutlined,
   RightOutlined,
@@ -687,6 +696,10 @@ const Landing = ({
     return tTypes.indexOf(current) > -1;
   });
 
+  function onPanelChange(value, mode) {
+    console.log(value, mode);
+  }
+
   useEffect(() => {
     setFilters(null);
     UIStore.update((e) => {
@@ -698,29 +711,32 @@ const Landing = ({
     <div id="landing">
       {/* Banner */}
       <div className="landing-container">
-        <div className="landing-banner ui container">
-          <h2>
-            Welcome to the Global Partnership on Marine Litter Digital Platform!
-          </h2>
-          <p>
-            A partly open-source, multi-stakeholder platform that compiles
-            different resources, connects stakeholders, and integrates data to
-            guide action towards the long term elimination of marine litter and
-            plastic pollution.{" "}
-            {/* <a
-              href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
-              target="_blank"
-              rel="noreferrer"
-            >
-              here
-            </a>
-            . */}
-          </p>
-          <div>
-            <Button type="primary">Join GPML</Button>
-            <Button type="ghost" className="left">
-              Learn More
-            </Button>
+        <div className="landing-banner">
+          <div className="ui container">
+            <h2>
+              Welcome to the Global Partnership on Marine Litter Digital
+              Platform!
+            </h2>
+            <p>
+              A partly open-source, multi-stakeholder platform that compiles
+              different resources, connects stakeholders, and integrates data to
+              guide action towards the long term elimination of marine litter
+              and plastic pollution.{" "}
+              {/* <a
+                href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
+                target="_blank"
+                rel="noreferrer"
+              >
+                here
+              </a>
+              . */}
+            </p>
+            <div>
+              <Button type="primary">Join GPML</Button>
+              <Button type="ghost" className="left">
+                Learn More
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -754,18 +770,6 @@ const Landing = ({
               }}
               selected={selectedTopic}
             />
-            {/* {popularTopics.map((x, i) => {
-              return (
-                <Card
-                  key={`topic-${i}`}
-                  className="item"
-                  onClick={(e) => setSelectedTopic(x.topic.toLowerCase())}
-                >
-                  <p>{x.topic}</p>
-                  <span>{x?.count}</span>
-                </Card>
-              );
-            })} */}
           </div>
           <div className="content">
             <div className="content-header">
@@ -1010,6 +1014,60 @@ const Landing = ({
                 See all <RightOutlined />
               </span>
             </h2>
+          </div>
+          <div className="body">
+            <div className="content">
+              <Card className="item">
+                <div className="item-meta">
+                  <div className="date">17 August 2021</div>
+                  <div className="status">Online</div>
+                  <div className="mark">Featured</div>
+                </div>
+                <div className="item-type">Event</div>
+                <div className="item-body">
+                  <div className="img">
+                    <Image src="./event-item.png" />
+                  </div>
+                  <h2 className="title">
+                    United Nations World Oceans Day 2021
+                  </h2>
+                  <p className="description">
+                    Join us for this year’s UN World Oceans Day annual event as
+                    we hear from thought-leaders, celebrities, institutional
+                    partners, community voices, entrepreneurs, and
+                    cross-industry experts about the biodiversity and economic
+                    opportunity that the ocean sustains. Learn more about the
+                    event here.
+                  </p>
+                </div>
+                <div className="item-footer">
+                  <Avatar.Group
+                    maxCount={2}
+                    maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+                  >
+                    <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
+                    <Tooltip title="Ant User" placement="top">
+                      <Avatar
+                        style={{ backgroundColor: "#87d068" }}
+                        icon={<UserOutlined />}
+                      />
+                    </Tooltip>
+                    <Tooltip title="Ant User" placement="top">
+                      <Avatar
+                        style={{ backgroundColor: "#87d068" }}
+                        icon={<UserOutlined />}
+                      />
+                    </Tooltip>
+                  </Avatar.Group>
+                  <span className="read-more">
+                    Read more <ArrowRightOutlined />
+                  </span>
+                </div>
+              </Card>
+            </div>
+            <div className="calendar">
+              <Calendar fullscreen={false} onPanelChange={onPanelChange} />
+            </div>
           </div>
         </div>
       </div>

@@ -14,14 +14,14 @@ const TreeMap = (data, extra, selected) => {
   ];
   let rich = {
     name: {
-      fontSize: 15,
+      fontSize: 13,
       fontWeight: "bold",
     },
     value: {
-      fontSize: 13,
+      fontSize: 11,
       fontWeight: "bold",
       backgroundColor: "#fff",
-      opacity: 0.9,
+      opacity: 0.95,
       padding: 8,
       borderRadius: 50,
     },
@@ -82,9 +82,9 @@ const TreeMap = (data, extra, selected) => {
           formatter: ["{name|{b}}", "{value|{c}}"].join("\n\n"),
           show: true,
           fontFamily: "Roboto",
-          position: "inside",
+          // position: "inside",
           align: "center",
-          verticalAlign: "center",
+          verticalAlign: "middle",
           padding: [50, 0],
         },
       },

@@ -10,33 +10,37 @@
   .landing-container {
     background-color: #036799;
     color: #ffffff;
+  }
+  .landing-banner {
+    padding: 2rem 0px;
+    background: linear-gradient(
+        0deg,
+        rgba(45, 103, 150, 0.75),
+        rgba(45, 103, 150, 0.75)
+      ),
+      url("../../images/landing-banner.png");
+    background-repeat: no-repeat;
+    transform: matrix(-1, 0, 0, 1, 0, 0);
 
-    .landing-banner {
-      padding: 2rem 0px;
-      background: linear-gradient(
-          0deg,
-          rgba(45, 103, 150, 0.75),
-          rgba(45, 103, 150, 0.75)
-        ),
-        url("../../images/landing-banner.png");
+    .ui.container {
+      transform: matrix(-1, 0, 0, 1, 0, 0);
+    }
+    h2 {
+      font-size: 2rem;
+      color: white;
+      max-width: 70%;
+    }
 
-      h2 {
-        font-size: 2rem;
-        color: white;
-        max-width: 70%;
-      }
+    p {
+      font-size: 1rem;
+      text-align: justify;
+      max-width: 70%;
+    }
 
-      p {
-        font-size: 1rem;
-        text-align: justify;
-        max-width: 70%;
-      }
-
-      a {
-        color: white;
-        font-weight: 700;
-        text-decoration: underline;
-      }
+    a {
+      color: white;
+      font-weight: 700;
+      text-decoration: underline;
     }
   }
 
@@ -268,7 +272,7 @@
           .detail {
             padding: 20px;
             position: absolute;
-            bottom: 5%;
+            bottom: 2.5%;
             left: 1%;
             color: #fff;
             .photo {
@@ -370,8 +374,89 @@
     .body {
       display: flex;
       justify-content: space-between;
-      .item {
+      .content,
+      .calendar {
         width: 49%;
+        .ant-picker-calendar-mini {
+          height: 100%;
+          font-size: 1.2rem;
+          background: transparent;
+        }
+        .ant-picker-calendar .ant-picker-panel {
+          margin-top: 20px;
+          background: transparent;
+          border-top: 0;
+        }
+        .ant-picker-calendar .ant-picker-panel .ant-picker-body {
+          padding: 10px 0;
+        }
+        .ant-picker-calendar .ant-picker-panel .ant-picker-content {
+          thead > tr > th {
+            text-transform: uppercase;
+            padding: 10px 0;
+            color: #fff;
+          }
+          tbody > tr > td {
+            padding: 5px;
+          }
+          .ant-picker-cell .ant-picker-cell-inner {
+            position: relative;
+            display: inline-block;
+            min-width: 50px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 10px;
+            background: rgba(46, 66, 119, 0.3);
+          }
+          .ant-picker-cell-in-view {
+            color: rgba(255, 255, 255, 0.85);
+          }
+        }
+      }
+      .content {
+        .item {
+          .item-meta {
+            display: flex;
+            justify-content: space-between;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: #2d6796;
+            font-weight: 500;
+            margin-bottom: 10px;
+            .mark {
+              border: 1px solid #2d6796;
+              border-radius: 10px;
+              padding: 2px 5px;
+              font-size: 0.7rem;
+              font-weight: bold;
+            }
+          }
+          .item-type {
+            color: #4da687;
+            font-weight: bold;
+            text-transform: uppercase;
+          }
+          .item-body {
+            .img {
+              width: 100%;
+              margin: 10px 0;
+            }
+            h2 {
+              font-size: 1.2rem;
+              margin-bottom: 10px;
+            }
+          }
+          .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            span.read-more {
+              color: #34a6ff;
+              font-size: 0.7rem;
+            }
+          }
+        }
       }
     }
   }
