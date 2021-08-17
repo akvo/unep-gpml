@@ -215,8 +215,8 @@ h4 {
 }
 
 footer {
-  border-top: 1px solid #fff;
-  background-color: $primaryColor;
+  // border-top: 1px solid #fff;
+  background-color: #2d6796;
   color: #fff;
   padding: 50px 0 0 0;
 
@@ -234,31 +234,7 @@ footer {
   }
 
   .ui.container {
-    &.unep {
-      padding: 0.5rem 0;
-      display: flex;
-
-      .unepInfo {
-        width: calc(100% - 110px);
-        text-align: left;
-        padding: 0 0 0 5rem;
-      }
-
-      h2 {
-        color: white;
-        font-size: 0.9rem;
-        margin: 1.6rem 0 0 0;
-        font-weight: 400;
-      }
-    }
-
-    .unepLogo {
-      img {
-        width: 100px;
-        margin-left: 0.5rem;
-      }
-    }
-
+    padding-bottom: 1rem;
     &:first-child {
       display: flex;
 
@@ -279,6 +255,32 @@ footer {
         }
       }
     }
+    &.unep {
+      padding: 1rem 0;
+      display: flex;
+      .unepLogo {
+        img {
+          width: 30%;
+          margin-left: 0;
+        }
+      }
+      .unepInfo {
+        width: calc(100% - 110px);
+        text-align: left;
+        padding: 0 0 0 5rem;
+      }
+
+      h2 {
+        color: white;
+        font-size: 0.9rem;
+        margin: 1.6rem 0 0 0;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .second-footer {
+    background-color: $primaryColor;
   }
 
   .footBottom {

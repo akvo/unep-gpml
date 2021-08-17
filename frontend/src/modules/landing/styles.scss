@@ -240,11 +240,11 @@
       .carousel-container {
         .carousel-item {
           background-color: #fff;
-          margin-right: 20px;
+          margin-right: 25px;
           border-radius: 10px;
           min-height: 300px;
           .type {
-            padding: 20px;
+            padding: 20px 20px 0px 20px;
             display: flex;
             justify-content: flex-end;
             span {
@@ -303,6 +303,75 @@
       }
       .react-multiple-carousel__arrow--left {
         left: calc(1% + 1px);
+      }
+    }
+  }
+
+  .benefit {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background: #2d6796;
+    .title {
+      margin-bottom: 35px;
+      h2 {
+        font-size: 1.5rem;
+        color: #4dffa5;
+      }
+    }
+    .body {
+      display: flex;
+      justify-content: space-between;
+      .item {
+        width: 49%;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 20px;
+        color: #fff;
+        h4 {
+          color: #fff;
+          font-size: 1.2rem;
+        }
+        ul {
+          list-style-type: circle;
+          list-style-position: inside;
+        }
+      }
+    }
+    .btn-wrapper {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .event {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background: linear-gradient(
+        0deg,
+        rgba(28, 165, 133, 0.8),
+        rgba(28, 165, 133, 0.8)
+      ),
+      url("../../images/event.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    .title {
+      margin-bottom: 35px;
+      h2 {
+        font-size: 1.5rem;
+        color: #4dffa5;
+        span {
+          margin-left: 20px;
+          font-size: 0.8rem;
+          color: #fff;
+        }
+      }
+    }
+    .body {
+      display: flex;
+      justify-content: space-between;
+      .item {
+        width: 49%;
       }
     }
   }

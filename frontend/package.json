@@ -21,6 +21,8 @@
     "d3-geo": "^2.0.1",
     "d3-scale": "^3.2.4",
     "dayjs": "^1.10.3",
+    "echarts": "^5.1.2",
+    "echarts-for-react": "^3.0.1",
     "final-form": "^4.20.1",
     "final-form-arrays": "^3.0.2",
     "humps": "^2.0.1",

@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import Maps from "./maps";
+import Chart from "../../utils/chart";
 import Carousel from "react-multi-carousel";
 import "./styles.scss";
 import "react-multi-carousel/lib/styles.css";
@@ -528,6 +529,24 @@ const ourCommunity = [
     role: "Entity Role -  Entity",
   },
 ];
+const benefit = [
+  {
+    title: "GPML Partnership",
+    childs: [
+      "Tap into a global network of like-minded members​",
+      "Discover opportunities to showcase your work​",
+      "Avoid duplication of effort and optimise impact​",
+    ],
+  },
+  {
+    title: "GPML Digital Platform​",
+    childs: [
+      "Access a data hub to guide efforts towards SDGs and more",
+      "Utilise an array of resources at your fingertips​",
+      "Network with other stakeholders​",
+    ],
+  },
+];
 const cardSvg = [
   {
     color: "#4DA687",
@@ -717,7 +736,25 @@ const Landing = ({
         </div>
         <div className="body">
           <div className="chart-wrapper">
-            {popularTopics.map((x, i) => {
+            <Chart
+              key="popular-topic"
+              title=""
+              type="TREEMAP"
+              height={600}
+              data={popularTopics.map((x) => {
+                return {
+                  id: x.id,
+                  name: x.topic,
+                  value: x.count,
+                };
+              })}
+              wrapper={false}
+              onEvents={{
+                click: (e) => setSelectedTopic(e.data.name.toLowerCase()),
+              }}
+              selected={selectedTopic}
+            />
+            {/* {popularTopics.map((x, i) => {
               return (
                 <Card
                   key={`topic-${i}`}
@@ -728,7 +765,7 @@ const Landing = ({
                   <span>{x?.count}</span>
                 </Card>
               );
-            })}
+            })} */}
           </div>
           <div className="content">
             <div className="content-header">
@@ -933,6 +970,46 @@ const Landing = ({
                 );
               })}
             </Carousel>
+          </div>
+        </div>
+      </div>
+      {/* Benefits of joining The GPML */}
+      <div className="benefit">
+        <div className="ui container">
+          <div className="title">
+            <h2>Benefits of joining The GPML:​</h2>
+          </div>
+          <div className="body">
+            {benefit.map((x, i) => {
+              return (
+                <div key={`benefit-${i}`} className="item">
+                  <h4>{x.title}</h4>
+                  <ul>
+                    {x.childs.map((c, i) => (
+                      <li key={`${c}-${i}`}>{c}</li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+          <div className="btn-wrapper">
+            <Button className="btn" type="primary">
+              Join GPML
+            </Button>
+          </div>
+        </div>
+      </div>
+      {/* Event */}
+      <div className="event">
+        <div className="ui container">
+          <div className="title">
+            <h2>
+              Upcoming Events{" "}
+              <span>
+                See all <RightOutlined />
+              </span>
+            </h2>
           </div>
         </div>
       </div>
