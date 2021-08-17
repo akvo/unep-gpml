@@ -42,11 +42,14 @@
           resp            (org-handler (-> (mock/request :post "/")
                                            (assoc :jwt-claims jwt-claims)
                                            (assoc :body-params body-params)))
-          mails           @fixtures/mails-sent]
+;;          mails           @fixtures/mails-sent
+          ]
       (is (= 201 (:status resp)))
       (is (some? (db.invitation/invitation-by-email db {:email stakeholder})))
       (is (= (assoc body-params :id 10001) (:body resp)))
-      (is (= 1 (count mails)))
-      (is (= (-> mails first :receivers) (list {:Name stakeholder, :Email stakeholder})))
-      (is (= (-> mails first :subject) "Mr. John Doe has invited you to join UNEP GPML Digital Platform"))
-      (is (= (-> mails first :texts first) "Dear user,\n\nMr. John Doe has invited you to join http://localhost as part of entity test10001. Please visit http://localhost/stakeholder-signup and follow instructions to signup.\n\n- UNEP GPML Digital Platform\n")))))
+      ;; (is (= 1 (count mails)))
+      ;; (is (= (-> mails first :receivers) (list {:Name stakeholder, :Email stakeholder})))
+      ;; (is (= (-> mails first :subject) "Mr. John Doe has invited you to join UNEP GPML Digital Platform"))
+      ;; (is (= (-> mails first :texts first) "Dear user,\n\nMr. John Doe has invited you to join http://localhost as part of entity test10001. Please visit http://localhost/stakeholder-signup and follow instructions to signup.\n\n- UNEP GPML Digital Platform\n"))
+      ))
+  )
