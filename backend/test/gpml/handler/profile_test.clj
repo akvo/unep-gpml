@@ -299,13 +299,16 @@
           handler (::profile/get system)
           db (-> system :duct.database.sql/hikaricp :spec)
           _ (seed-important-database db)
+          tags (->> (db.tag/all-tags db)
+                    (take 2)
+                    (map :id))
           _ (db.stakeholder/new-stakeholder db (assoc (new-profile 1)
                                                       :geo_coverage_type "transnational"))
-          _ (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector 10001 %) [1 2])})
+          _ (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector 10001 %) tags)})
           geo (db.stakeholder/add-stakeholder-geo db {:geo [[10001 nil 1] [10001 nil 2]]})
           ;; dashboard check if this guy has profile
           req (handler (-> (mock/request :get "/")
-                            (assoc :jwt-claims {:email "john@org"})))
+                           (assoc :jwt-claims {:email "john@org"})))
           resp (:body req)]
       (is (= geo [{:id 1 :country 1 :country_group nil :stakeholder 10001}
                   {:id 2 :country 2 :country_group nil :stakeholder 10001}]))
@@ -315,7 +318,7 @@
       (is (= "SUBMITTED" (-> resp :review_status)))
       (is (= (db.organisation/organisation-by-id db {:id 1}) (-> resp :org)))
       (is (= (map :country geo) (-> resp :geo_coverage_value)))
-      (is (= [1 2] (-> resp :tags)))
+      (is (= tags (-> resp :tags)))
       (is (= 1 (-> resp :country))))))
 
 (deftest handler-get-test-no-profile

@@ -1163,6 +1163,15 @@ export const schema = {
                 "32-27",
                 "32-28",
                 "32-29",
+
+                // Topics
+                "32-101",
+                "32-102",
+                "32-103",
+                "32-104",
+                "32-105",
+                "32-106",
+
                 "32-30",
               ],
               enumNames: [
@@ -1196,6 +1205,15 @@ export const schema = {
                 "Sewage-related items",
                 "Natural disaster/hazard related debris",
                 "Polystyrene items",
+
+                // Topics
+                "Product By Design",
+                "Waste Management",
+                "Plastics",
+                "Marine Litter",
+                "Capacity Building",
+                "Source-to-Sea",
+
                 "Not applicable",
               ],
               uniqueItems: true,

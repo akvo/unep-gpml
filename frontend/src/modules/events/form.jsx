@@ -244,24 +244,23 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
   };
 
   useEffect(() => {
-    (async function fetchData() {
-      const response = await api.get("/tag/event");
-      const newSchema = cloneDeep(defaultFormSchema);
-      newSchema[3].tags.options = response.data.map((x) => ({
-        value: x.id,
-        label: x.tag,
-      }));
-      newSchema[3].tags.loading = false;
-      if (countries) {
-        newSchema[1].country.options = countries
-          .map((x) => ({
-            value: x.id,
-            label: x.name,
-          }))
-          .sort((a, b) => a.label.localeCompare(b.label));
-      }
-      setFormSchema(newSchema);
-    })();
+    const newSchema = cloneDeep(defaultFormSchema);
+    const { tags } = UIStore.currentState;
+    const tagsPlusTopics = tags.events?.concat(tags.topics);
+    newSchema[3].tags.options = tagsPlusTopics?.map((x) => ({
+      value: x.id,
+      label: x.tag,
+    }));
+    newSchema[3].tags.loading = false;
+    if (countries) {
+      newSchema[1].country.options = countries
+        .map((x) => ({
+          value: x.id,
+          label: x.name,
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label));
+    }
+    setFormSchema(newSchema);
 
     // Manage form status, add/edit
     if (status === "edit" || params?.id) {
