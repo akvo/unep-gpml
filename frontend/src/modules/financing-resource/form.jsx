@@ -55,8 +55,9 @@ const getSchema = (
   prop.geoCoverageValueGlobalSpesific.enumNames = meaOptions?.map(
     (x) => x.name
   );
-  prop.tags.enum = tags.financingMechanism?.map((x) => String(x.id));
-  prop.tags.enumNames = tags.financingMechanism?.map((x) => x.tag);
+  const tagsPlusTopics = tags.financingMechanism?.concat(tags.topics);
+  prop.tags.enum = tagsPlusTopics?.map((x) => String(x.id));
+  prop.tags.enumNames = tagsPlusTopics?.map((x) => x.tag);
   return {
     schema: {
       ...schema,

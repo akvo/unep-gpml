@@ -246,7 +246,8 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
   useEffect(() => {
     const newSchema = cloneDeep(defaultFormSchema);
     const { tags } = UIStore.currentState;
-    newSchema[3].tags.options = tags.events?.map((x) => ({
+    const tagsPlusTopics = tags.events?.concat(tags.topics);
+    newSchema[3].tags.options = tagsPlusTopics?.map((x) => ({
       value: x.id,
       label: x.tag,
     }));
