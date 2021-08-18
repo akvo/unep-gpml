@@ -143,16 +143,16 @@
       .carousel-container {
         .carousel-item {
           background-color: #fff;
-          margin-right: 25px;
+          margin-right: 0.85rem;
           border-radius: 10px;
-          min-height: 300px;
+          min-height: 23rem;
           .type-wrapper {
             padding: 20px 20px 0px 20px;
             display: flex;
             justify-content: flex-end;
           }
           .about {
-            min-height: 320px;
+            min-height: 20rem;
             padding: 20px;
           }
           .wave {
@@ -374,6 +374,7 @@
           font-size: 1.2rem;
         }
         .item {
+          border-radius: 10px;
           min-height: 38rem;
           .item-meta {
             display: flex;

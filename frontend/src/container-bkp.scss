@@ -10,6 +10,7 @@
 }
 
 /* Mobile */
+
 @media only screen and (max-width: 767px) {
   .ui.container {
     width: auto !important;
@@ -70,36 +71,19 @@
       }
     }
 
-    .ant-menu.ant-menu-dark,
-    .ant-menu-dark .ant-menu-sub,
-    .ant-menu.ant-menu-dark .ant-menu-sub {
-      background: none;
-      min-width: 0;
-    }
-
     // enable mobile view -- header
     & > header {
       height: auto !important;
       padding-top: 15px;
       padding-bottom: 15px;
-      .logo-wrapper {
-        clear: both !important;
-        text-align: center;
-        margin-right: 0;
-        margin-bottom: -10px;
-      }
       .logo {
-        width: 40%;
+        width: 95%;
       }
       .ui.container {
         align-items: center;
-        .rightside {
-          margin: 1.2rem 0;
-          justify-content: center;
-        }
       }
       .src {
-        width: 80%;
+        width: 100%;
         margin-left: 0;
       }
       nav {
@@ -110,73 +94,6 @@
           margin-left: 0;
           font-weight: bold;
           width: 100%;
-        }
-      }
-    }
-  }
-
-  // enable mobile view - maps
-  #landing {
-    .popular-topics {
-      .body {
-        flex-direction: column;
-        .chart-wrapper {
-          width: 100% !important;
-        }
-        .content {
-          margin-top: 0.85rem;
-          width: 100% !important;
-        }
-      }
-    }
-
-    .featured-content {
-      .body {
-        flex-direction: column;
-        .content-left {
-          width: 100% !important;
-        }
-        .content-right {
-          width: 100% !important;
-        }
-      }
-    }
-
-    .our-community {
-      .body {
-        .carousel-container {
-          .carousel-item {
-            .detail {
-              bottom: 2.5% !important;
-              p {
-                height: 12px !important;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .benefit {
-      .body {
-        flex-direction: column;
-        .item {
-          width: 100% !important;
-          margin-bottom: 1rem;
-        }
-      }
-      .btn-wrapper {
-        margin-top: 0 !important;
-      }
-    }
-
-    .event {
-      .body {
-        flex-direction: column;
-        .content,
-        .calendar {
-          width: 100% !important;
-          margin-bottom: 1rem;
         }
       }
     }
@@ -405,6 +322,7 @@
 }
 
 /* Tablet */
+
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .ui.container {
     width: auto !important;
@@ -424,15 +342,6 @@
     width: calc(723px + 5rem) !important;
   }
 
-  #root {
-    .ant-menu.ant-menu-dark,
-    .ant-menu-dark .ant-menu-sub,
-    .ant-menu.ant-menu-dark .ant-menu-sub {
-      background: none;
-      min-width: 0;
-    }
-  }
-
   // enable mobile view - maps
   #landing {
     .landing-container.map-container {
@@ -445,46 +354,6 @@
             li {
               .disclaimer {
                 max-width: 100% !important;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .popular-topics {
-      .body {
-        flex-direction: column;
-        .chart-wrapper {
-          width: 100% !important;
-        }
-        .content {
-          margin-top: 0.85rem;
-          width: 100% !important;
-        }
-      }
-    }
-
-    .featured-content {
-      .body {
-        flex-direction: column;
-        .content-left {
-          width: 100% !important;
-        }
-        .content-right {
-          width: 100% !important;
-        }
-      }
-    }
-
-    .our-community {
-      .body {
-        .carousel-container {
-          .carousel-item {
-            .detail {
-              bottom: 6% !important;
-              p {
-                height: 12px !important;
               }
             }
           }
@@ -601,6 +470,7 @@
 }
 
 /* Small Monitor */
+
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .ui.container {
     width: auto !important;
@@ -620,15 +490,6 @@
     width: calc(933px + 5rem) !important;
   }
 
-  #root {
-    .ant-menu.ant-menu-dark,
-    .ant-menu-dark .ant-menu-sub,
-    .ant-menu.ant-menu-dark .ant-menu-sub {
-      background: none;
-      min-width: 0;
-    }
-  }
-
   // enable mobile view - maps
   #landing {
     .landing-container.map-container {
@@ -636,46 +497,11 @@
         left: 35px !important;
       }
     }
-
-    .popular-topics {
-      .body {
-        .chart-wrapper {
-          width: 40% !important;
-        }
-        .content {
-          width: 59% !important;
-        }
-      }
-    }
-
-    .featured-content {
-      .body {
-        .content-left {
-          width: 53% !important;
-        }
-        .content-right {
-          width: 46% !important;
-        }
-      }
-    }
-
-    .our-community {
-      .body {
-        .carousel-container {
-          .carousel-item {
-            .detail {
-              p {
-                height: 12px !important;
-              }
-            }
-          }
-        }
-      }
-    }
   }
 }
 
 /* Large Monitor */
+
 @media only screen and (min-width: 1200px) {
   .ui.container {
     width: 1127px;

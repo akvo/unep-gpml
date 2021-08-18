@@ -85,7 +85,7 @@ const TreeMap = (data, extra, selected) => {
           // position: "inside",
           align: "center",
           verticalAlign: "middle",
-          padding: [50, 0],
+          padding: [25, 0],
         },
       },
     ],

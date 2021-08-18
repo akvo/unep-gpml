@@ -625,19 +625,19 @@ const cardSvg = [
 ];
 const responsive = {
   superLargeDesktop: {
-    breakpoint: { max: 4000, min: 3000 },
+    breakpoint: { max: 4000, min: 1200 },
     items: 4,
   },
   desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 4,
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
+    breakpoint: { max: 1199, min: 992 },
     items: 3,
   },
+  tablet: {
+    breakpoint: { max: 991, min: 768 },
+    items: 2,
+  },
   mobile: {
-    breakpoint: { max: 464, min: 0 },
+    breakpoint: { max: 767, min: 0 },
     items: 1,
   },
 };
@@ -854,7 +854,7 @@ const Landing = ({
                         </div>
                         <div className="item-body">
                           <h4>{x.title}</h4>
-                          <p>{x.description}</p>
+                          <p>{TrimText({ text: x.description, max: 150 })}</p>
                         </div>
                         <div className="item-footer">
                           <Avatar.Group
@@ -906,7 +906,7 @@ const Landing = ({
                         </div>
                         <div className="item-body">
                           <h4>{x.title}</h4>
-                          <p>{x.description}</p>
+                          <p>{TrimText({ text: x.description, max: 425 })}</p>
                         </div>
                         <div className="item-footer">
                           <Avatar.Group
@@ -982,11 +982,11 @@ const Landing = ({
                           <Avatar
                             className="photo"
                             size={{
-                              xs: 49,
-                              sm: 57,
-                              md: 65,
-                              lg: 79,
-                              xl: 105,
+                              xs: 85,
+                              sm: 95,
+                              md: 105,
+                              lg: 110,
+                              xl: 115,
                               xxl: 125,
                             }}
                             icon={<UserOutlined />}
