@@ -9,7 +9,7 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown, Avatar, Popover, Layout } from "antd";
 import { RightOutlined } from "@ant-design/icons";
-import Landing from "./modules/landing/view";
+import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
 import logo from "./images/GPML-logo-white.png";
@@ -106,7 +106,7 @@ const Root = () => {
   const [filters, setFilters] = useState(null);
 
   useEffect(() => {
-    api.get("/landing").then((resp) => {
+    api.get("browse?topic=event").then((resp) => {
       setData(resp.data);
       UIStore.update((e) => {
         e.loading = false;
