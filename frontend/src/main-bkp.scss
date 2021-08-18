@@ -43,57 +43,14 @@ h4 {
 }
 
 #root {
-  // antd part
-  .ant-layout-header {
-    padding: 0;
-    line-height: 75px;
-  }
-
-  .ant-menu.ant-menu-dark,
-  .ant-menu-dark .ant-menu-sub,
-  .ant-menu.ant-menu-dark .ant-menu-sub {
-    background: none;
-    min-width: 595px;
-  }
-
-  .ant-menu-dark .ant-menu-item,
-  .ant-menu-dark .ant-menu-item-group-title,
-  .ant-menu-dark .ant-menu-item > a,
-  .ant-menu-dark .ant-menu-item > span > a {
-    color: rgba(255, 255, 255, 1);
-    font-weight: 500;
-  }
-
-  .ant-menu-dark.ant-menu-horizontal > .ant-menu-item,
-  .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu {
-    top: 0;
-    margin-top: 0;
-    padding: 0 15px;
-    border-color: #001529;
-    border-bottom: 0;
-  }
-
-  .ant-menu-item-active {
-    background: none;
-  }
+  // .ant-btn {
+  //   // border-radius: 4px;
+  // }
 
   .ant-btn-primary {
-    color: #2d6796;
-    background-color: $btnGreen;
-    border-color: $btnGreen;
-    border-radius: 50px;
+    background-color: $primaryColor;
+    border-color: $primaryColor;
   }
-
-  .ant-btn-ghost {
-    color: $btnGreen;
-    background: transparent;
-    border-color: $btnGreen;
-    border-radius: 50px;
-    &.left {
-      margin-left: 8px;
-    }
-  }
-  // end of antd part
 
   & > .topbar {
     background-color: #036799;
@@ -110,56 +67,34 @@ h4 {
 
       .rightside {
         margin-left: auto;
+
         .ant-btn-link {
-          color: #fff !important;
+          color: #fff;
         }
       }
     }
   }
 
   & > header {
-    display: flex;
-    align-items: center;
-    height: 89px;
-    // padding-top: 8px;
+    height: 110px;
+    padding-top: 8px;
     box-sizing: border-box;
-    background: #2d6796;
-    // border-bottom: 1px solid #81b2cc;
-    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #81b2cc;
+
+    .logo {
+      width: 310px;
+    }
 
     .ui.container {
       display: flex;
-      justify-content: space-between;
-      align-content: center;
-      .rightside {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-    }
-
-    .logo-wrapper {
-      float: left;
-      margin-right: 20px;
-    }
-
-    .ant-row-rtl .logo {
-      float: right;
-    }
-
-    .logo {
-      width: 200px;
     }
 
     .src {
-      display: flex;
-      align-items: center;
-      width: 16%;
-      margin-left: 20px;
-      margin-right: 20px;
-      .ant-btn.ant-btn-primary.ant-input-search-button {
-        border-radius: 0;
-      }
+      width: 33%;
+      height: 40px;
+      border-radius: 3px;
+      margin-top: 26px;
+      margin-left: 40px;
     }
 
     nav {
@@ -242,8 +177,8 @@ h4 {
 }
 
 footer {
-  // border-top: 1px solid #fff;
-  background-color: #2d6796;
+  border-top: 1px solid #fff;
+  background-color: $primaryColor;
   color: #fff;
   padding: 50px 0 0 0;
 
@@ -261,7 +196,31 @@ footer {
   }
 
   .ui.container {
-    padding-bottom: 1rem;
+    &.unep {
+      padding: 0.5rem 0;
+      display: flex;
+
+      .unepInfo {
+        width: calc(100% - 110px);
+        text-align: left;
+        padding: 0 0 0 5rem;
+      }
+
+      h2 {
+        color: white;
+        font-size: 0.9rem;
+        margin: 1.6rem 0 0 0;
+        font-weight: 400;
+      }
+    }
+
+    .unepLogo {
+      img {
+        width: 100px;
+        margin-left: 0.5rem;
+      }
+    }
+
     &:first-child {
       display: flex;
 
@@ -282,32 +241,6 @@ footer {
         }
       }
     }
-    &.unep {
-      padding: 1rem 0;
-      display: flex;
-      .unepLogo {
-        img {
-          width: 30%;
-          margin-left: 0;
-        }
-      }
-      .unepInfo {
-        width: calc(100% - 110px);
-        text-align: left;
-        padding: 0 0 0 5rem;
-      }
-
-      h2 {
-        color: white;
-        font-size: 0.9rem;
-        margin: 1.6rem 0 0 0;
-        font-weight: 400;
-      }
-    }
-  }
-
-  .second-footer {
-    background-color: $primaryColor;
   }
 
   .footBottom {
