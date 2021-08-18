@@ -21,3 +21,10 @@ UPDATE review SET
   review_status = :review-status::reviewer_review_status,
   review_comment = :review-comment
   WHERE id = :id RETURNING id;
+
+-- :name change-reviewer :<! :1
+UPDATE review SET
+  assigned_by = :assigned-by,
+  reviewer = :reviewer
+    WHERE id = :id
+    RETURNING id;

@@ -39,13 +39,29 @@
                                       :assigned-by assigned-by
                                       :reviewer reviewer}))))))
 
+(defn change-reviewer [db topic-type topic-id reviewer admin]
+  (let [topic-type (get-internal-topic-type topic-type)
+        assigned-by (:id admin)
+        is-admin (= "ADMIN" (:role admin))
+        resp403 {:status 403 :body {:message "Cannot update reviewer for this topic"}}]
+    (jdbc/with-db-transaction [conn (:spec db)]
+      (if-let [review (and is-admin
+                            (db.review/review-by-topic-item
+                             conn
+                             {:topic-type topic-type :topic-id topic-id}))]
+         (resp/response
+          (db.review/change-reviewer conn {:id (:id review)
+                                           :assigned-by assigned-by
+                                           :reviewer reviewer}))
+         resp403))))
+
 (defn update-review-status [db topic-type topic-id review-status review-comment reviewer]
   (let [topic-type (get-internal-topic-type topic-type)
         resp403 {:status 403 :body {:message "Cannot update review for this topic"}}]
     (jdbc/with-db-transaction [conn (:spec db)]
       (if-let [review (db.review/review-by-topic-item
-                      conn
-                      {:topic-type topic-type :topic-id topic-id})]
+                       conn
+                       {:topic-type topic-type :topic-id topic-id})]
         ;; If assigned to the current-user
         (if (= (:reviewer review) (:id reviewer))
           (resp/response (db.review/update-review-status
@@ -72,9 +88,11 @@
 
 (defmethod ig/init-key ::update-review [_ {:keys [db]}]
   (fn [{{{:keys [topic-type topic-id]} :path
-         {:keys [review-status review-comment]} :body} :parameters
-        reviewer :reviewer}]
-    (update-review-status db topic-type topic-id review-status review-comment reviewer)))
+         {:keys [review-status review-comment reviewer]} :body} :parameters
+        current-user :reviewer}]
+    (if reviewer
+      (change-reviewer db topic-type topic-id reviewer current-user)
+      (update-review-status db topic-type topic-id review-status review-comment current-user))))
 
 (defmethod ig/init-key ::review-status [_ _]
   (apply conj [:enum] constants/reviewer-review-status))

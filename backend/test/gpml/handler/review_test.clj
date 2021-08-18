@@ -178,4 +178,25 @@
         (is (= (:assigned_by review) (:id admin)))
         (is (= (:topic_id review) (:id user)))
         (is (= (:review_status review) "ACCEPTED"))
-        (is (= (:review_comment review) comment))))))
+        (is (= (:review_comment review) comment))))
+
+    (testing "Changing reviewer as a REVIEWER"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :reviewer reviewer2
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:reviewer (:id reviewer)}})))]
+        (is (= 403 (:status resp)))))
+
+    (testing "Changing reviewer as ADMIN"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :reviewer (assoc admin :role "ADMIN")
+                               :parameters {:path {:topic-type "stakeholder"
+                                                   :topic-id (:id user)}
+                                            :body {:reviewer (:id reviewer2)}})))
+            body (:body resp)
+            review (db.review/review-by-id db body)]
+        (is (= 200 (:status resp)))
+        (is (= (:reviewer review) (:id reviewer2)))))))

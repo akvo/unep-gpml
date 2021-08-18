@@ -120,9 +120,12 @@
                                                    :parameters {:path [:map
                                                                        [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                        [:topic-id int?]]
-                                                                :body [:map
-                                                                       [:review-comment string?]
-                                                                       [:review-status #ig/ref :gpml.handler.review/review-status]]}
+                                                                :body [:or
+                                                                       [:map
+                                                                        [:review-comment string?]
+                                                                        [:review-status #ig/ref :gpml.handler.review/review-status]]
+                                                                       [:map
+                                                                        [:reviewer int?]]]}
                                                    :handler #ig/ref :gpml.handler.review/update-review}}]]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required
