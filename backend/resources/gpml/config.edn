@@ -82,15 +82,51 @@
                                                  :parameters {:path [:map [:submission string?] [:id int?]]}
                                                  :handler #ig/ref :gpml.handler.submission/get-detail}}]
                                          ]
-                                        ["/review" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                 #ig/ref :gpml.auth/auth-required
-                                                                 #ig/ref :gpml.auth/approved-user
-                                                                 #ig/ref :gpml.auth/admin-required-middleware]}
-                                         ["/get-reviewers"
+                                        ["/reviewer" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                   #ig/ref :gpml.auth/auth-required
+                                                                   #ig/ref :gpml.auth/approved-user
+                                                                   #ig/ref :gpml.auth/admin-required-middleware]}
+                                         [""
                                           {:get {:summary "Get list of reviewers"
-                                                 :swagger {:tags ["review"]
+                                                 :swagger {:tags ["reviewer"]
                                                            :security [{:id_token []}]}
                                                  :handler #ig/ref :gpml.handler.review/get-reviewers}}]]
+                                        ["/review" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required
+                                                                 #ig/ref :gpml.auth/approved-user]}
+                                         ["/{topic-type}/{topic-id}"
+                                          {:get {:summary "Get review for a submission"
+                                                 :middleware [#ig/ref :gpml.auth/admin-required-middleware]
+                                                 :swagger {:tags ["review"]
+                                                           :security [{:id_token []}]}
+                                                 :parameters {:path [:map
+                                                                     [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                     [:topic-id int?]]}
+                                                 :handler #ig/ref :gpml.handler.review/get-review}
+                                           :post {:summary "Assign reviewer for a submission"
+                                                  :middleware [#ig/ref :gpml.auth/admin-required-middleware]
+                                                  :swagger {:tags ["review"]
+                                                            :security [{:id_token []}]}
+                                                  :parameters {:path [:map
+                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                      [:topic-id int?]]
+                                                               :body [:map
+                                                                      [:reviewer int?]]}
+                                                  :handler #ig/ref :gpml.handler.review/new-review}
+                                           :patch {:summary "Update review for a submission"
+                                                   :middleware [#ig/ref :gpml.auth/reviewer-required-middleware]
+                                                   :swagger {:tags ["review"]
+                                                             :security [{:id_token []}]}
+                                                   :parameters {:path [:map
+                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                       [:topic-id int?]]
+                                                                :body [:or
+                                                                       [:map
+                                                                        [:review-comment string?]
+                                                                        [:review-status #ig/ref :gpml.handler.review/review-status]]
+                                                                       [:map
+                                                                        [:reviewer int?]]]}
+                                                   :handler #ig/ref :gpml.handler.review/update-review}}]]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required
                                                                 #ig/ref :gpml.auth/approved-user
@@ -256,6 +292,10 @@
   :gpml.handler.submission/put-params {}
 
   :gpml.handler.review/get-reviewers {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/get-review {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/new-review {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/update-review {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/review-status {}
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
 
@@ -332,6 +372,7 @@
   :gpml.auth/auth-required {}
   :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
+  :gpml.auth/reviewer-required-middleware {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.monitoring/collector {}
 
