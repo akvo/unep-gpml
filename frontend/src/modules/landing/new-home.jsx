@@ -733,21 +733,26 @@ const Landing = ({
               different resources, connects stakeholders, and integrates data to
               guide action towards the long term elimination of marine litter
               and plastic pollution.{" "}
-              {/* <a
-                href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
-                target="_blank"
-                rel="noreferrer"
-              >
-                here
-              </a>
-              . */}
             </p>
-            <div>
-              <Button type="primary">Join GPML</Button>
-              <Button type="ghost" className="left">
-                Learn More
-              </Button>
-            </div>
+            {!isAuthenticated && (
+              <div>
+                <Button
+                  type="primary"
+                  onClick={() => loginWithPopup({ screen_hint: "signup" })}
+                >
+                  Join GPML
+                </Button>
+                <a
+                  href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Button type="ghost" className="left">
+                    Learn More
+                  </Button>
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -760,8 +765,8 @@ const Landing = ({
       {data && (
         <>
           {/* Popular Topics */}
-          <div className="popular-topics ui container">
-            <div className="title">
+          <div className="popular-topics ui container section-container">
+            <div className="section-title">
               <h2>
                 Popular Content{" "}
                 <span>
@@ -808,7 +813,7 @@ const Landing = ({
                     .find((x) => x.topic.toLowerCase() === selectedTopic)
                     .items.map((x, i) => {
                       return (
-                        <div key={`summary-${i}`} className="item">
+                        <div key={`summary-${i}`} className="item-body">
                           <span className="type">{x.type}</span>
                           <h4>{x.title}</h4>
                           <p>{x.description}</p>
@@ -824,8 +829,8 @@ const Landing = ({
           </div>
           <hr />
           {/* Featured Content */}
-          <div className="featured-content ui container">
-            <div className="title">
+          <div className="featured-content ui container section-container">
+            <div className="section-title">
               <h2>
                 Featured Content{" "}
                 <span>
@@ -935,9 +940,9 @@ const Landing = ({
             </div>
           </div>
           {/* Our Community */}
-          <div className="our-community">
+          <div className="our-community section-container">
             <div className="ui container">
-              <div className="title">
+              <div className="section-title green">
                 <h2>
                   Our Community{" "}
                   <span>
@@ -963,8 +968,8 @@ const Landing = ({
                     const index = i > 3 ? i - 4 : i;
                     return (
                       <div key={`oc-card-${i}`}>
-                        <div className="type">
-                          <span>{x.type}</span>
+                        <div className="type-wrapper">
+                          <span className="mark">{x.type}</span>
                         </div>
                         <div
                           className="about"
@@ -997,9 +1002,9 @@ const Landing = ({
             </div>
           </div>
           {/* Benefits of joining The GPML */}
-          <div className="benefit">
+          <div className="benefit section-container">
             <div className="ui container">
-              <div className="title">
+              <div className="section-title green">
                 <h2>Benefits of joining The GPML:​</h2>
               </div>
               <div className="body">
@@ -1017,16 +1022,20 @@ const Landing = ({
                 })}
               </div>
               <div className="btn-wrapper">
-                <Button className="btn" type="primary">
+                <Button
+                  className="btn"
+                  type="primary"
+                  onClick={() => loginWithPopup({ screen_hint: "signup" })}
+                >
                   Join GPML
                 </Button>
               </div>
             </div>
           </div>
           {/* Event */}
-          <div className="event">
+          <div className="event section-container">
             <div className="ui container">
-              <div className="title">
+              <div className="section-title green">
                 <h2>
                   Upcoming Events{" "}
                   <span>
@@ -1074,12 +1083,15 @@ const renderEventContent = (event) => {
           <div className="status">Online</div>
           <div className="mark">Featured</div>
         </div>
-        <div className="item-type">{type}</div>
+        <div className="type margin">{type}</div>
+        <img
+          className="item-img"
+          width="100%"
+          src={image ? image : imageNotFound}
+          alt={title}
+        />
         <div className="item-body">
-          <div className="img">
-            <Image src={image ? image : imageNotFound} />
-          </div>
-          <h2 className="title">{title}</h2>
+          <h4>{title}</h4>
           <p className="description">
             {TrimText({ text: description, max: 300 })}
           </p>

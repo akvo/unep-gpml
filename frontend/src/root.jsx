@@ -201,8 +201,11 @@ const Root = () => {
             </Switch>
             {!isAuthenticated ? (
               <div className="rightside">
-                <Button type="primary">
-                  <Link to="/signup">Join GPML</Link>
+                <Button
+                  type="primary"
+                  onClick={() => loginWithPopup({ screen_hint: "signup" })}
+                >
+                  Join GPML
                 </Button>
                 <Button type="ghost" className="left">
                   <Link to="/" onClick={loginWithPopup}>

@@ -50,33 +50,11 @@
   }
 
   .popular-topics {
-    padding-top: 40px;
-    padding-bottom: 40px;
-    .title {
-      margin-bottom: 35px;
-      h2 {
-        font-size: 1.5rem;
-        color: #2d6796;
-        span {
-          margin-left: 20px;
-          font-size: 0.8rem;
-          color: #34a6ff;
-        }
-      }
-    }
     .body {
       display: flex;
       justify-content: space-between;
       .chart-wrapper {
         width: 49%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        .item {
-          width: 48%;
-          height: 100px;
-          margin-bottom: 2%;
-        }
       }
       .content {
         width: 49%;
@@ -89,7 +67,7 @@
           h4 {
             color: #ffb800;
             font-size: 1.5rem;
-            font-weight: bold;
+            font-weight: 800;
             margin-bottom: 0;
           }
           span {
@@ -103,26 +81,8 @@
         }
         .content-body {
           padding: 20px;
-          .item {
-            margin-bottom: 3%;
-            span.type {
-              font-weight: 500;
-              color: #4da687;
-              text-transform: uppercase;
-              font-size: 0.75rem;
-            }
-            h4 {
-              font-size: 1.2rem;
-              font-weight: 500;
-              margin-bottom: 0;
-            }
-            p {
-              margin-bottom: 5px;
-            }
-            span.read-more {
-              color: #34a6ff;
-              font-size: 0.7rem;
-            }
+          .item-body {
+            margin-bottom: 25px;
           }
         }
       }
@@ -130,73 +90,25 @@
   }
 
   .featured-content {
-    padding-top: 40px;
-    padding-bottom: 40px;
-    .title {
-      margin-bottom: 35px;
-      h2 {
-        font-size: 1.5rem;
-        color: #2d6796;
-        span {
-          margin-left: 20px;
-          font-size: 0.8rem;
-          color: #34a6ff;
-        }
-      }
-    }
     .body {
       display: flex;
       justify-content: space-between;
       .item {
         border-radius: 10px;
-        img.item-img {
-          margin-bottom: 25px;
-          border-radius: 10px;
-        }
         .item-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
           margin-bottom: 20px;
-          span.mark {
-            padding: 2px 5px;
-            color: #2d6796;
-            text-transform: uppercase;
-            font-size: 0.7rem;
-            border: 1px solid #2d6796;
-            box-sizing: border-box;
-            border-radius: 50px;
-            .anticon {
-              margin-right: 5px;
-            }
-          }
-          span.type {
-            font-weight: 500;
-            color: #4da687;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-          }
         }
         .item-body {
-          min-height: 230px;
-          h4 {
-            font-size: 1.2rem;
-            font-weight: 500;
-            margin-bottom: 0;
-          }
-          p {
-            margin-bottom: 5px;
-          }
+          min-height: 12rem;
         }
         .item-footer {
           display: flex;
           justify-content: space-between;
           align-items: center;
           margin-top: 20px;
-          span.read-more {
-            color: #34a6ff;
-            font-size: 0.7rem;
-          }
         }
       }
       .content-left {
@@ -219,8 +131,6 @@
   }
 
   .our-community {
-    padding-top: 40px;
-    padding-bottom: 40px;
     background: linear-gradient(
         0deg,
         rgba(9, 104, 154, 0.8),
@@ -229,22 +139,6 @@
       url("../../images/our-community.png"), #ffffff;
     background-repeat: no-repeat;
     background-size: cover;
-    .title {
-      margin-bottom: 35px;
-      h2 {
-        font-size: 1.5rem;
-        color: #4dffa5;
-        span {
-          margin-left: 20px;
-          font-size: 0.8rem;
-          color: #fff;
-        }
-      }
-      p {
-        color: #fff;
-        font-size: 1rem;
-      }
-    }
     .body {
       .carousel-container {
         .carousel-item {
@@ -252,19 +146,10 @@
           margin-right: 25px;
           border-radius: 10px;
           min-height: 300px;
-          .type {
+          .type-wrapper {
             padding: 20px 20px 0px 20px;
             display: flex;
             justify-content: flex-end;
-            span {
-              padding: 2px 5px;
-              color: #2d6796;
-              text-transform: uppercase;
-              font-size: 0.7rem;
-              border: 1px solid #2d6796;
-              box-sizing: border-box;
-              border-radius: 50px;
-            }
           }
           .about {
             min-height: 320px;
@@ -317,16 +202,7 @@
   }
 
   .benefit {
-    padding-top: 40px;
-    padding-bottom: 40px;
     background: #2d6796;
-    .title {
-      margin-bottom: 35px;
-      h2 {
-        font-size: 1.5rem;
-        color: #4dffa5;
-      }
-    }
     .body {
       display: flex;
       justify-content: space-between;
@@ -354,8 +230,6 @@
   }
 
   .event {
-    padding-top: 40px;
-    padding-bottom: 40px;
     background: linear-gradient(
         0deg,
         rgba(28, 165, 133, 0.8),
@@ -364,24 +238,14 @@
       url("../../images/event.png");
     background-repeat: no-repeat;
     background-size: cover;
-    .title {
-      margin-bottom: 35px;
-      h2 {
-        font-size: 1.5rem;
-        color: #4dffa5;
-        span {
-          margin-left: 20px;
-          font-size: 0.8rem;
-          color: #fff;
-        }
-      }
-    }
     .body {
       display: flex;
       justify-content: space-between;
       .content,
       .calendar {
         width: 49%;
+      }
+      .calendar {
         .ant-picker-calendar {
           height: 100%;
           font-size: 1.2rem;
@@ -519,38 +383,12 @@
             color: #2d6796;
             font-weight: 500;
             margin-bottom: 10px;
-            .mark {
-              border: 1px solid #2d6796;
-              border-radius: 10px;
-              padding: 2px 5px;
-              font-size: 0.7rem;
-              font-weight: bold;
-            }
-          }
-          .item-type {
-            color: #4da687;
-            font-weight: bold;
-            text-transform: uppercase;
-          }
-          .item-body {
-            .img {
-              width: 100%;
-              margin: 10px 0;
-            }
-            h2 {
-              font-size: 1.2rem;
-              margin-bottom: 10px;
-            }
           }
           .item-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-top: 20px;
-            span.read-more {
-              color: #34a6ff;
-              font-size: 0.7rem;
-            }
           }
         }
         .event-more {
@@ -561,4 +399,89 @@
       }
     }
   }
+
+  // global style
+  .section-container {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  // section title style
+  .section-title {
+    margin-bottom: 35px;
+    h2 {
+      font-size: 1.5rem;
+      color: #2d6796;
+      span {
+        margin-left: 20px;
+        font-size: 0.8rem;
+        color: #34a6ff;
+      }
+    }
+    &.green {
+      h2 {
+        color: #4dffa5;
+        span {
+          color: #fff;
+        }
+      }
+    }
+    p {
+      color: #fff;
+      font-size: 1rem;
+    }
+  }
+
+  // style for card body
+  img.item-img {
+    margin-bottom: 25px;
+    border-radius: 10px;
+  }
+
+  .item-body {
+    h4 {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    p {
+      margin-bottom: 5px;
+    }
+  }
+  // eol style for card body
+
+  // event, data hub text style
+  span.type,
+  div.type {
+    font-weight: 600;
+    color: #4da687;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    &.margin {
+      margin: 20px 0;
+    }
+  }
+
+  // mark style, text with rounded outline
+  span.mark,
+  div.mark {
+    padding: 2px 7px;
+    color: #2d6796;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border: 1px solid #2d6796;
+    box-sizing: border-box;
+    border-radius: 50px;
+    .anticon {
+      margin-right: 5px;
+    }
+  }
+
+  // read more text
+  span.read-more {
+    color: #34a6ff;
+    font-size: 0.75rem;
+  }
+  // eol global style
 }
