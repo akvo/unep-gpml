@@ -1133,7 +1133,7 @@ const calendarHeader = ({ value, onChange }) => {
   const months = [];
   for (let i = 0; i < 12; i++) {
     current.month(i);
-    months.push(localeData.monthsShort(current));
+    months.push(localeData.months(current));
   }
 
   for (let index = start; index < end; index++) {
@@ -1156,12 +1156,12 @@ const calendarHeader = ({ value, onChange }) => {
   }
   return (
     <div style={{ padding: 8 }}>
-      <Row gutter={8} justify="center">
+      <Row gutter={8} justify="end">
         <Col>
           <Select
-            size="small"
+            showSearch={true}
             dropdownMatchSelectWidth={false}
-            className="my-year-select"
+            className="year-select"
             onChange={(newYear) => {
               const now = value.clone().year(newYear);
               onChange(now);
@@ -1173,14 +1173,14 @@ const calendarHeader = ({ value, onChange }) => {
         </Col>
         <Col>
           <Select
-            size="small"
             dropdownMatchSelectWidth={false}
-            value={String(month)}
+            className="month-select"
             onChange={(selectedMonth) => {
               const newValue = value.clone();
               newValue.month(parseInt(selectedMonth, 10));
               onChange(newValue);
             }}
+            value={String(month)}
           >
             {monthOptions}
           </Select>

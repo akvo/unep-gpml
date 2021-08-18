@@ -202,7 +202,7 @@ const Root = () => {
             {!isAuthenticated ? (
               <div className="rightside">
                 <Button type="primary">
-                  <Link to="/signup">Join the GPML</Link>
+                  <Link to="/signup">Join GPML</Link>
                 </Button>
                 <Button type="ghost" className="left">
                   <Link to="/" onClick={loginWithPopup}>
