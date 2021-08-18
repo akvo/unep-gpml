@@ -1,5 +1,5 @@
 import { UIStore } from "../../store";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Button,
   Select,
@@ -10,6 +10,7 @@ import {
   Image,
   Row,
   Col,
+  Badge,
 } from "antd";
 import {
   LoadingOutlined,
@@ -19,13 +20,13 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
-import Maps from "./maps";
 import Chart from "../../utils/chart";
 import Carousel from "react-multi-carousel";
 import "./new-styles.scss";
 import "react-multi-carousel/lib/styles.css";
-import humps from "humps";
-import { topicNames, tTypes } from "../../utils/misc";
+import moment from "moment";
+import imageNotFound from "../../images/image-not-found.png";
+import TrimText from "../../utils/trim";
 
 const popularTopics = [
   {
@@ -650,10 +651,11 @@ const Landing = ({
   loginWithPopup,
   setFilters,
 }) => {
+  const dateNow = moment().format("DD-MM-YYYY");
   const { innerWidth, innerHeight } = window;
   const { profile } = UIStore.currentState;
   const [selectedTopic, setSelectedTopic] = useState("product by design");
-  console.log(data);
+  const [event, setEvent] = useState([]);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
@@ -668,9 +670,46 @@ const Landing = ({
     return setWarningModalVisible(true);
   };
 
-  function onPanelChange(value, mode) {
-    console.log(value, mode);
-  }
+  const dateCellRender = (value) => {
+    const calendarDate = moment(value).format("DD-MM-YYYY");
+    if (data && data?.results) {
+      const eventByDate = data.results.filter((x) => {
+        const date = moment(x.startDate).format("DD-MM-YYYY");
+        return date === calendarDate;
+      });
+      return eventByDate.length > 0 ? <Badge status="warning" /> : "";
+    }
+    return;
+  };
+
+  const generateEvent = useCallback(
+    (filterDate) => {
+      let eventNow = [];
+      data.results.forEach((x) => {
+        const date = moment(x.startDate).format("DD-MM-YYYY");
+        if (date === filterDate) {
+          eventNow.push(x);
+        }
+      });
+      setEvent(eventNow);
+    },
+    [data]
+  );
+
+  const handleOnDateSelected = (value) => {
+    const selectedDate = moment(value).format("DD-MM-YYYY");
+    generateEvent(selectedDate);
+  };
+
+  const handleOnPanelChange = (value) => {
+    generateEvent(dateNow);
+  };
+
+  useEffect(() => {
+    if (data && data?.results) {
+      generateEvent(dateNow);
+    }
+  }, [data, dateNow, generateEvent]);
 
   useEffect(() => {
     setFilters(null);
@@ -991,70 +1030,26 @@ const Landing = ({
                 <h2>
                   Upcoming Events{" "}
                   <span>
-                    See all <RightOutlined />
+                    <Link to="/browse?topic=event">
+                      See all <RightOutlined />
+                    </Link>
                   </span>
                 </h2>
               </div>
               <div className="body">
                 <div className="content">
-                  <Card className="item">
-                    <div className="item-meta">
-                      <div className="date">17 August 2021</div>
-                      <div className="status">Online</div>
-                      <div className="mark">Featured</div>
-                    </div>
-                    <div className="item-type">Event</div>
-                    <div className="item-body">
-                      <div className="img">
-                        <Image src="./event-item.png" />
-                      </div>
-                      <h2 className="title">
-                        United Nations World Oceans Day 2021
-                      </h2>
-                      <p className="description">
-                        Join us for this year’s UN World Oceans Day annual event
-                        as we hear from thought-leaders, celebrities,
-                        institutional partners, community voices, entrepreneurs,
-                        and cross-industry experts about the biodiversity and
-                        economic opportunity that the ocean sustains. Learn more
-                        about the event here.
-                      </p>
-                    </div>
-                    <div className="item-footer">
-                      <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                      >
-                        <Avatar style={{ backgroundColor: "#f56a00" }}>
-                          K
-                        </Avatar>
-                        <Tooltip title="Ant User" placement="top">
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                        <Tooltip title="Ant User" placement="top">
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon={<UserOutlined />}
-                          />
-                        </Tooltip>
-                      </Avatar.Group>
-                      <span className="read-more">
-                        Read more <ArrowRightOutlined />
-                      </span>
-                    </div>
-                  </Card>
+                  {event.length === 0 && (
+                    <div className="no-event">No Event Today</div>
+                  )}
+                  {event.length > 0 && renderEventContent(event)}
                 </div>
                 <div className="calendar">
                   <Calendar
-                    fullscreen={false}
-                    onPanelChange={onPanelChange}
+                    fullscreen={true}
+                    onPanelChange={handleOnPanelChange}
+                    onSelect={handleOnDateSelected}
                     headerRender={(e) => calendarHeader(e)}
+                    dateCellRender={dateCellRender}
                   />
                 </div>
               </div>
@@ -1063,6 +1058,68 @@ const Landing = ({
         </>
       )}
     </div>
+  );
+};
+
+const renderEventContent = (event) => {
+  const eventShow = event[0];
+  const { id, title, description, type, startDate, image } = eventShow;
+  const eventMore = event.length - 1;
+
+  return (
+    <>
+      <Card key="event-content" className="item">
+        <div className="item-meta">
+          <div className="date">{moment(startDate).format("DD MMMM YYYY")}</div>
+          <div className="status">Online</div>
+          <div className="mark">Featured</div>
+        </div>
+        <div className="item-type">{type}</div>
+        <div className="item-body">
+          <div className="img">
+            <Image src={image ? image : imageNotFound} />
+          </div>
+          <h2 className="title">{title}</h2>
+          <p className="description">
+            {TrimText({ text: description, max: 300 })}
+          </p>
+        </div>
+        <div className="item-footer">
+          <Avatar.Group
+            maxCount={2}
+            maxStyle={{
+              color: "#f56a00",
+              backgroundColor: "#fde3cf",
+            }}
+          >
+            <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
+            <Tooltip title="Ant User" placement="top">
+              <Avatar
+                style={{ backgroundColor: "#87d068" }}
+                icon={<UserOutlined />}
+              />
+            </Tooltip>
+            <Tooltip title="Ant User" placement="top">
+              <Avatar
+                style={{ backgroundColor: "#87d068" }}
+                icon={<UserOutlined />}
+              />
+            </Tooltip>
+          </Avatar.Group>
+          <span className="read-more">
+            <Link to={`/event/${id}`}>
+              Read more <ArrowRightOutlined />
+            </Link>
+          </span>
+        </div>
+      </Card>
+      {eventMore > 0 && (
+        <div className="event-more">
+          {eventMore} more event{eventMore > 1 ? "s" : ""} on this day{" "}
+          <RightOutlined />
+        </div>
+      )}
+    </>
   );
 };
 
