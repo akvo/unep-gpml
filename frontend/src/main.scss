@@ -53,7 +53,7 @@ h4 {
   .ant-menu-dark .ant-menu-sub,
   .ant-menu.ant-menu-dark .ant-menu-sub {
     background: none;
-    min-width: 595px;
+    min-width: 620px;
   }
 
   .ant-menu-dark .ant-menu-item,
@@ -64,16 +64,29 @@ h4 {
     font-weight: 500;
   }
 
+  .ant-menu-item .ant-menu-item-icon,
+  .ant-menu-submenu-title .ant-menu-item-icon,
+  .ant-menu-item .anticon,
+  .ant-menu-submenu-title .anticon {
+    margin-right: 0;
+  }
+
   .ant-menu-dark.ant-menu-horizontal > .ant-menu-item,
   .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu {
     top: 0;
     margin-top: 0;
-    padding: 0 15px;
+    padding: 0 12px;
     border-color: #001529;
     border-bottom: 0;
   }
 
   .ant-menu-item-active {
+    background: rgba(77, 255, 165, 0.1);
+    border-radius: 5px 5px 0px 0px;
+    color: #4dffa5 !important;
+  }
+
+  .ant-menu-item-selected {
     background: none;
   }
 
@@ -114,6 +127,25 @@ h4 {
           color: #fff !important;
         }
       }
+    }
+  }
+
+  .menu-dropdown-wrapper {
+    min-width: 600px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .menu-btn {
+    cursor: pointer;
+    color: #fff;
+    font-weight: 500;
+    border-right: 1px solid #3176ae;
+    &:hover {
+      color: #4dffa5;
+      background: rgba(77, 255, 165, 0.1);
+      border-radius: 5px 5px 0px 0px;
     }
   }
 
@@ -198,14 +230,28 @@ h4 {
 }
 
 .add-dropdown-wrapper,
-.user-btn-dropdown-wrapper {
-  border: 1px solid $primaryColor;
-  border-radius: 2px;
-
+.user-btn-dropdown-wrapper,
+.menu-dropdown-wrapper {
+  // border: 1px solid $primaryColor;
+  // border-radius: 2px;
   .add-dropdown,
-  .user-btn-dropdown {
+  .user-btn-dropdown,
+  .menu-dropdown {
+    min-width: 175px;
     text-align: left;
     padding: 0px;
+
+    .indent-right {
+      padding-left: 25px;
+    }
+
+    .badge-count {
+      border: 1px solid #255b87;
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      border-radius: 50px;
+    }
 
     :not(:last-child) {
       border-bottom: 1px solid $primaryColor;

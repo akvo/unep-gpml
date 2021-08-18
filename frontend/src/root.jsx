@@ -184,15 +184,8 @@ const Root = () => {
                 <img src={logo} className="logo" alt="GPML" />
               </Link>
             </div>
-            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[]}>
-              <Menu.Item key="about">About</Menu.Item>
-              <Menu.Item key="explore">Explore</Menu.Item>
-              <Menu.Item key="data-hub">Data Hub</Menu.Item>
-              <Menu.Item key="knowledge-exchange">Knowledge Exchange</Menu.Item>
-              <Menu.Item key="connect-stakeholders">
-                Connect Stakeholders
-              </Menu.Item>
-            </Menu>
+            {renderDropdownMenu()}
+            {/* {renderMenu()} */}
             <Switch>
               <Route path="/browse" />
               <Route>
@@ -380,6 +373,181 @@ const Root = () => {
   );
 };
 
+const renderDropdownMenu = () => {
+  return (
+    <div className="menu-dropdown-wrapper">
+      <AboutDropdownMenu />
+      <ExploreDropdownMenu />
+      <DataHubDropdownMenu />
+      <KnowledgeExchangeDropdownMenu />
+      <ConnectStakeholdersDropdownMenu />
+    </div>
+  );
+};
+
+const AboutDropdownMenu = withRouter(({ history }) => {
+  return (
+    <Dropdown
+      overlayClassName="menu-dropdown-wrapper"
+      overlay={
+        <Menu className="menu-dropdown">
+          <Menu.Item>Partnership</Menu.Item>
+          <Menu.Item>Digital Platform</Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button type="link" className="menu-btn">
+        About <DownOutlined />
+      </Button>
+    </Dropdown>
+  );
+});
+
+const ExploreDropdownMenu = withRouter(({ history }) => {
+  return (
+    <Dropdown
+      overlayClassName="menu-dropdown-wrapper"
+      overlay={
+        <Menu className="menu-dropdown">
+          <Menu.Item>
+            Topics <span className="badge-count">6</span>
+          </Menu.Item>
+          <Menu.Item>
+            Goals <span className="badge-count">11</span>
+          </Menu.Item>
+          <Menu.Item>
+            Stories <span className="badge-count">8</span>
+          </Menu.Item>
+          <Menu.Item>
+            Glossary <span className="badge-count">54</span>
+          </Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button type="link" className="menu-btn">
+        Explore <DownOutlined />
+      </Button>
+    </Dropdown>
+  );
+});
+
+const DataHubDropdownMenu = withRouter(({ history }) => {
+  return (
+    <Dropdown
+      overlayClassName="menu-dropdown-wrapper"
+      overlay={
+        <Menu className="menu-dropdown">
+          <Menu.Item>Data Map & Layers</Menu.Item>
+          <Menu.Item>Dashboards</Menu.Item>
+          <Menu.Item>Data Catalogue</Menu.Item>
+          <Menu.Item>Data Content</Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button type="link" className="menu-btn">
+        Data Hub <DownOutlined />
+      </Button>
+    </Dropdown>
+  );
+});
+
+const KnowledgeExchangeDropdownMenu = withRouter(({ history }) => {
+  return (
+    <Dropdown
+      overlayClassName="menu-dropdown-wrapper"
+      overlay={
+        <Menu className="menu-dropdown">
+          <Menu.Item>
+            All Resources <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item className="indent-right">
+            Inititative <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item className="indent-right">
+            Action Plan <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item className="indent-right">
+            Policy <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item className="indent-right">
+            Technical resource <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item className="indent-right">
+            Financing resource <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item className="indent-right">
+            Technology <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item>
+            Capacity building <span className="badge-count">54</span>
+          </Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button type="link" className="menu-btn">
+        Knowledge Exchange <DownOutlined />
+      </Button>
+    </Dropdown>
+  );
+});
+
+const ConnectStakeholdersDropdownMenu = withRouter(({ history }) => {
+  return (
+    <Dropdown
+      overlayClassName="menu-dropdown-wrapper"
+      overlay={
+        <Menu className="menu-dropdown">
+          <Menu.Item>Events</Menu.Item>
+          <Menu.Item>Stakeholders Directory</Menu.Item>
+          <Menu.Item>Forums</Menu.Item>
+          <Menu.Item>Partners</Menu.Item>
+          <Menu.Item>Sponsors</Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button type="link" className="menu-btn">
+        Connect Stakeholders <DownOutlined />
+      </Button>
+    </Dropdown>
+  );
+});
+
+const renderMenu = () => {
+  return (
+    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[]}>
+      <Menu.Item key="about">
+        About <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
+      </Menu.Item>
+      <Menu.Item key="explore">
+        Explore{" "}
+        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
+      </Menu.Item>
+      <Menu.Item key="data-hub">
+        Data Hub{" "}
+        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
+      </Menu.Item>
+      <Menu.Item key="knowledge-exchange">
+        Knowledge Exchange{" "}
+        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
+      </Menu.Item>
+      <Menu.Item key="connect-stakeholders">
+        Connect Stakeholders{" "}
+        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
+      </Menu.Item>
+    </Menu>
+  );
+};
+
 const Search = withRouter(({ history }) => {
   const handleSearch = (src) => {
     if (src?.trim().length > 0) {
@@ -426,7 +594,7 @@ const UserButton = withRouter(({ history, logout }) => {
         type="ghost"
         placement="bottomRight"
         className="left"
-        shpe="circle"
+        shape="circle"
         icon={<UserOutlined />}
       />
     </Dropdown>
