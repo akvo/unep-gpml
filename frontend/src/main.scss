@@ -197,11 +197,13 @@ h4 {
   }
 }
 
-.add-dropdown-wrapper {
+.add-dropdown-wrapper,
+.user-btn-dropdown-wrapper {
   border: 1px solid $primaryColor;
   border-radius: 2px;
 
-  .add-dropdown {
+  .add-dropdown,
+  .user-btn-dropdown {
     text-align: left;
     padding: 0px;
 
@@ -213,9 +215,9 @@ h4 {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-weight: 600;
-      font-size: 16px;
-      color: #04a9f1;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #2d6796;
       height: 40px;
 
       :last-child {

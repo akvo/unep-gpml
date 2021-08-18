@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown, Avatar, Popover, Layout } from "antd";
-import { RightOutlined, DownOutlined } from "@ant-design/icons";
+import { RightOutlined, DownOutlined, UserOutlined } from "@ant-design/icons";
 import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
@@ -176,7 +176,7 @@ const Root = () => {
           </div>
         </div> */}
         <Header
-          style={{ width: "100%", position: "sticky", top: 0, zIndex: 99999 }}
+          style={{ width: "100%", position: "sticky", top: 0, zIndex: 2 }}
         >
           <div className="ui container">
             <div className="logo-wrapper">
@@ -215,7 +215,15 @@ const Root = () => {
               </div>
             ) : (
               <div className="rightside">
-                <Popover
+                <AddButton
+                  {...{
+                    setSignupModalVisible,
+                    isAuthenticated,
+                    loginWithPopup,
+                    setWarningModalVisible,
+                  }}
+                />
+                {/* <Popover
                   placement="bottom"
                   content={
                     <div>
@@ -231,26 +239,17 @@ const Root = () => {
                       {profile ? profile.firstName : user.nickname}
                     </Link>
                   </Button>
-                </Popover>
-                <Button
+                </Popover> */}
+                {/* <Button
                   type="ghost"
                   className="left"
                   onClick={() => logout({ returnTo: window.location.origin })}
                 >
                   Logout
-                </Button>
+                </Button> */}
+                <UserButton {...{ logout }} />
               </div>
             )}
-            {/* <nav>
-              <AddButton
-                {...{
-                  setSignupModalVisible,
-                  isAuthenticated,
-                  loginWithPopup,
-                  setWarningModalVisible,
-                }}
-              />
-            </nav> */}
           </div>
         </Header>
         <Route
@@ -397,6 +396,40 @@ const Search = withRouter(({ history }) => {
       placeholder="Search"
       // size="large"
     />
+  );
+});
+
+const UserButton = withRouter(({ history, logout }) => {
+  return (
+    <Dropdown
+      overlayClassName="user-btn-dropdown-wrapper"
+      overlay={
+        <Menu className="user-btn-dropdown">
+          <Menu.Item
+            onClick={() => {
+              history.push("/profile");
+            }}
+          >
+            Profile <RightOutlined />
+          </Menu.Item>
+          <Menu.Item
+            onClick={() => logout({ returnTo: window.location.origin })}
+          >
+            Logout <RightOutlined />
+          </Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button
+        type="ghost"
+        placement="bottomRight"
+        className="left"
+        shpe="circle"
+        icon={<UserOutlined />}
+      />
+    </Dropdown>
   );
 });
 
@@ -561,8 +594,8 @@ const AddButton = withRouter(
             trigger={["click"]}
             placement="bottomRight"
           >
-            <Button type="primary" size="large" placement="bottomRight">
-              + Add
+            <Button type="primary" placement="bottomRight">
+              Add Content
             </Button>
           </Dropdown>
         );
@@ -570,20 +603,19 @@ const AddButton = withRouter(
       return (
         <Button
           type="primary"
-          size="large"
           onClick={() => {
             Object.keys(profile).length > 1
               ? setWarningModalVisible(true)
               : setSignupModalVisible(true);
           }}
         >
-          + Add
+          Add Content
         </Button>
       );
     }
     return (
-      <Button type="primary" size="large" onClick={loginWithPopup}>
-        + Add
+      <Button type="primary" onClick={loginWithPopup}>
+        Add Content
       </Button>
     );
   }

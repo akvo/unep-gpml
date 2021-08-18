@@ -194,9 +194,11 @@
       }
       .react-multiple-carousel__arrow--right {
         right: calc(1% + 1px);
+        z-index: 1;
       }
       .react-multiple-carousel__arrow--left {
         left: calc(1% + 1px);
+        z-index: 1;
       }
     }
   }
