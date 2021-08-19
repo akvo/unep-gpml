@@ -77,6 +77,17 @@
       min-width: 0;
     }
 
+    header.ant-layout-header.nav-header-container {
+      width: 100%;
+      position: static !important;
+    }
+
+    .menu-dropdown-wrapper {
+      flex-wrap: wrap;
+      justify-content: space-evenly !important;
+      margin: 15px 0;
+    }
+
     // enable mobile view -- header
     & > header {
       height: auto !important;
@@ -431,6 +442,30 @@
       background: none;
       min-width: 0;
     }
+
+    .ui.container {
+      flex-wrap: wrap;
+      justify-content: space-evenly !important;
+    }
+
+    header.ant-layout-header.nav-header-container {
+      width: 100%;
+      position: static !important;
+      padding-bottom: 20px;
+    }
+
+    .menu-dropdown-wrapper {
+      flex-wrap: wrap;
+      justify-content: space-evenly !important;
+      margin: 15px 0;
+    }
+
+    & > header {
+      min-height: 200px;
+      .src {
+        width: 50%;
+      }
+    }
   }
 
   // enable mobile view - maps
@@ -627,6 +662,30 @@
       background: none;
       min-width: 0;
     }
+
+    .ui.container {
+      flex-wrap: wrap;
+      justify-content: space-evenly !important;
+    }
+
+    header.ant-layout-header.nav-header-container {
+      width: 100%;
+      // position: static !important;
+      padding-bottom: 20px;
+    }
+
+    .menu-dropdown-wrapper {
+      flex-wrap: wrap;
+      justify-content: space-evenly !important;
+      margin: 15px 0;
+    }
+
+    & > header {
+      min-height: 140px;
+      .src {
+        width: 50%;
+      }
+    }
   }
 
   // enable mobile view - maps
@@ -676,7 +735,43 @@
 }
 
 /* Large Monitor */
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1200px) and (max-width: 1365px) {
+  .ui.container {
+    width: 1127px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .ui.grid.container {
+    width: calc(1127px + 2rem) !important;
+  }
+
+  .ui.relaxed.grid.container {
+    width: calc(1127px + 3rem) !important;
+  }
+
+  .ui.very.relaxed.grid.container {
+    width: calc(1127px + 5rem) !important;
+  }
+
+  #root {
+    .ant-menu.ant-menu-dark,
+    .ant-menu-dark .ant-menu-sub,
+    .ant-menu.ant-menu-dark .ant-menu-sub {
+      background: none;
+      min-width: 0;
+    }
+
+    & > header {
+      .logo {
+        width: 165px;
+      }
+    }
+  }
+}
+
+/* Large Large Monitor */
+@media only screen and (min-width: 1366px) {
   .ui.container {
     width: 1127px;
     margin-left: auto !important;

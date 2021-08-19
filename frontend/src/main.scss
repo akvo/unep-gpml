@@ -44,11 +44,6 @@ h4 {
 
 #root {
   // antd part
-  .ant-layout-header {
-    padding: 0;
-    line-height: 75px;
-  }
-
   .ant-menu.ant-menu-dark,
   .ant-menu-dark .ant-menu-sub,
   .ant-menu.ant-menu-dark .ant-menu-sub {
@@ -130,8 +125,17 @@ h4 {
     }
   }
 
+  header.ant-layout-header.nav-header-container {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    padding: 0;
+    // line-height: 75px;
+  }
+
   .menu-dropdown-wrapper {
-    min-width: 600px;
+    // min-width: 600px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -152,7 +156,7 @@ h4 {
   & > header {
     display: flex;
     align-items: center;
-    height: 89px;
+    min-height: 89px;
     // padding-top: 8px;
     box-sizing: border-box;
     background: #2d6796;
@@ -163,6 +167,7 @@ h4 {
       display: flex;
       justify-content: space-between;
       align-content: center;
+      // flex-wrap: wrap;
       .rightside {
         display: flex;
         justify-content: space-between;
@@ -172,7 +177,7 @@ h4 {
 
     .logo-wrapper {
       float: left;
-      margin-right: 20px;
+      margin-right: 10px;
     }
 
     .ant-row-rtl .logo {
@@ -187,8 +192,8 @@ h4 {
       display: flex;
       align-items: center;
       width: 16%;
-      margin-left: 20px;
-      margin-right: 20px;
+      margin-left: 10px;
+      margin-right: 10px;
       .ant-btn.ant-btn-primary.ant-input-search-button {
         border-radius: 0;
       }

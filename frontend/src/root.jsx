@@ -176,7 +176,8 @@ const Root = () => {
           </div>
         </div> */}
         <Header
-          style={{ width: "100%", position: "sticky", top: 0, zIndex: 2 }}
+          className="nav-header-container"
+          // style={{ width: "100%", position: "sticky", top: 0, zIndex: 3 }}
         >
           <div className="ui container">
             <div className="logo-wrapper">
