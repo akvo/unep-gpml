@@ -237,31 +237,6 @@ const ProfileView = ({ ...props }) => {
                 />
               )}
             </Col>
-            {/* <Tabs tabPosition="left" className="fade-in">
-              <TabPane tab="Personal details" key="1">
-                <SignupForm
-                  {...{ onSubmit, tags }}
-                  handleSubmitRef={(ref) => {
-                    handleSubmitRef.current = ref;
-                  }}
-                  initialValues={profile}
-                />
-                <Button
-                  loading={saving}
-                  type="primary"
-                  onClick={(ev) => {
-                    handleSubmitRef.current(ev);
-                  }}
-                >
-                  Update
-                </Button>
-              </TabPane>
-              {profile?.role === "ADMIN" && (
-                <TabPane tab="Admin section" key="2">
-                  <AdminSection />
-                </TabPane>
-              )}
-            </Tabs> */}
           </Row>
         )}
       </div>
