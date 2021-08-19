@@ -218,7 +218,8 @@
         }
         ul {
           list-style-type: circle;
-          list-style-position: inside;
+          list-style-position: outside;
+          margin-left: 1.5rem;
         }
       }
     }
@@ -476,7 +477,7 @@
   span.read-more {
     cursor: pointer;
     color: #34a6ff;
-    font-size: 0.81rem;
+    font-size: 0.88rem;
   }
   // eol global style
 }
