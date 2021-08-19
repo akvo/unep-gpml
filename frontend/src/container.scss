@@ -804,16 +804,22 @@
   }
 }
 
+/* Replace all ui container style for media screen */
 .ui.container {
   @media (max-width: 768px) {
-    margin-left: 20px;
-    margin-right: 20px;
-    width: auto;
+    margin-left: 2% !important;
+    margin-right: 2% !important;
+    width: 96%;
   }
   @media (min-width: 1200px) {
-    margin-left: 70px !important;
-    margin-right: 70px !important;
-    width: auto;
+    margin-left: 3% !important;
+    margin-right: 3% !important;
+    width: 94%;
+  }
+  @media (min-width: 1366px) {
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+    width: 90%;
   }
   @media (min-width: 1600px) {
     width: 1560px;
