@@ -228,7 +228,7 @@ const Footer = ({
               <nav>
                 <ul className="horizonList">
                   <li>
-                    <p>© UNEP</p>
+                    <p className="copy-right">© UNEP</p>
                   </li>
                   <li>
                     <a

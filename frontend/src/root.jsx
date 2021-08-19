@@ -357,7 +357,7 @@ const Root = () => {
 
 const renderDropdownMenu = () => {
   return (
-    <div className="menu-dropdown-wrapper">
+    <div className="menu-dropdown-container">
       <AboutDropdownMenu />
       <ExploreDropdownMenu />
       <DataHubDropdownMenu />
@@ -373,14 +373,14 @@ const AboutDropdownMenu = withRouter(({ history }) => {
       overlayClassName="menu-dropdown-wrapper"
       overlay={
         <Menu className="menu-dropdown">
-          <Menu.Item>Partnership</Menu.Item>
-          <Menu.Item>Digital Platform</Menu.Item>
+          <Menu.Item className="nav-link">Partnership</Menu.Item>
+          <Menu.Item className="nav-link">Digital Platform</Menu.Item>
         </Menu>
       }
       trigger={["click"]}
       placement="bottomRight"
     >
-      <Button type="link" className="menu-btn">
+      <Button type="link" className="menu-btn nav-link">
         About <DownOutlined />
       </Button>
     </Dropdown>
@@ -393,16 +393,16 @@ const ExploreDropdownMenu = withRouter(({ history }) => {
       overlayClassName="menu-dropdown-wrapper"
       overlay={
         <Menu className="menu-dropdown">
-          <Menu.Item>
+          <Menu.Item className="nav-link">
             Topics <span className="badge-count">6</span>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item className="nav-link">
             Goals <span className="badge-count">11</span>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item className="nav-link">
             Stories <span className="badge-count">8</span>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item className="nav-link">
             Glossary <span className="badge-count">54</span>
           </Menu.Item>
         </Menu>
@@ -410,7 +410,7 @@ const ExploreDropdownMenu = withRouter(({ history }) => {
       trigger={["click"]}
       placement="bottomRight"
     >
-      <Button type="link" className="menu-btn">
+      <Button type="link" className="menu-btn nav-link">
         Explore <DownOutlined />
       </Button>
     </Dropdown>
@@ -423,16 +423,16 @@ const DataHubDropdownMenu = withRouter(({ history }) => {
       overlayClassName="menu-dropdown-wrapper"
       overlay={
         <Menu className="menu-dropdown">
-          <Menu.Item>Data Map & Layers</Menu.Item>
-          <Menu.Item>Dashboards</Menu.Item>
-          <Menu.Item>Data Catalogue</Menu.Item>
-          <Menu.Item>Data Content</Menu.Item>
+          <Menu.Item className="nav-link">Data Map & Layers</Menu.Item>
+          <Menu.Item className="nav-link">Dashboards</Menu.Item>
+          <Menu.Item className="nav-link">Data Catalogue</Menu.Item>
+          <Menu.Item className="nav-link">Data Content</Menu.Item>
         </Menu>
       }
       trigger={["click"]}
       placement="bottomRight"
     >
-      <Button type="link" className="menu-btn">
+      <Button type="link" className="menu-btn nav-link">
         Data Hub <DownOutlined />
       </Button>
     </Dropdown>
@@ -445,28 +445,28 @@ const KnowledgeExchangeDropdownMenu = withRouter(({ history }) => {
       overlayClassName="menu-dropdown-wrapper"
       overlay={
         <Menu className="menu-dropdown">
-          <Menu.Item>
+          <Menu.Item className="nav-link">
             All Resources <span className="badge-count">54</span>
           </Menu.Item>
-          <Menu.Item className="indent-right">
+          <Menu.Item className="indent-right nav-link">
             Inititative <span className="badge-count">54</span>
           </Menu.Item>
-          <Menu.Item className="indent-right">
+          <Menu.Item className="indent-right nav-link">
             Action Plan <span className="badge-count">54</span>
           </Menu.Item>
-          <Menu.Item className="indent-right">
+          <Menu.Item className="indent-right nav-link">
             Policy <span className="badge-count">54</span>
           </Menu.Item>
-          <Menu.Item className="indent-right">
+          <Menu.Item className="indent-right nav-link">
             Technical resource <span className="badge-count">54</span>
           </Menu.Item>
-          <Menu.Item className="indent-right">
+          <Menu.Item className="indent-right nav-link">
             Financing resource <span className="badge-count">54</span>
           </Menu.Item>
-          <Menu.Item className="indent-right">
+          <Menu.Item className="indent-right nav-link">
             Technology <span className="badge-count">54</span>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item className="nav-link">
             Capacity building <span className="badge-count">54</span>
           </Menu.Item>
         </Menu>
@@ -474,7 +474,7 @@ const KnowledgeExchangeDropdownMenu = withRouter(({ history }) => {
       trigger={["click"]}
       placement="bottomRight"
     >
-      <Button type="link" className="menu-btn">
+      <Button type="link" className="menu-btn nav-link">
         Knowledge Exchange <DownOutlined />
       </Button>
     </Dropdown>
@@ -487,17 +487,17 @@ const ConnectStakeholdersDropdownMenu = withRouter(({ history }) => {
       overlayClassName="menu-dropdown-wrapper"
       overlay={
         <Menu className="menu-dropdown">
-          <Menu.Item>Events</Menu.Item>
-          <Menu.Item>Stakeholders Directory</Menu.Item>
-          <Menu.Item>Forums</Menu.Item>
-          <Menu.Item>Partners</Menu.Item>
-          <Menu.Item>Sponsors</Menu.Item>
+          <Menu.Item className="nav-link">Events</Menu.Item>
+          <Menu.Item className="nav-link">Stakeholders Directory</Menu.Item>
+          <Menu.Item className="nav-link">Forums</Menu.Item>
+          <Menu.Item className="nav-link">Partners</Menu.Item>
+          <Menu.Item className="nav-link">Sponsors</Menu.Item>
         </Menu>
       }
       trigger={["click"]}
       placement="bottomRight"
     >
-      <Button type="link" className="menu-btn">
+      <Button type="link" className="menu-btn nav-link">
         Connect Stakeholders <DownOutlined />
       </Button>
     </Dropdown>
@@ -534,7 +534,7 @@ const Search = withRouter(({ history }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
     if (src) {
-      history.push(`/browse/?q=${src}`);
+      history.push(`/browse/?q=${src.trim()}`);
     }
   };
 

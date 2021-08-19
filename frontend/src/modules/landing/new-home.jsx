@@ -31,7 +31,7 @@ import TrimText from "../../utils/trim";
 const popularTopics = [
   {
     id: 1,
-    topic: "Product by design",
+    topic: "Product by Design",
     count: 65,
     summary: [
       {
@@ -88,7 +88,7 @@ const popularTopics = [
   },
   {
     id: 2,
-    topic: "Waste management",
+    topic: "Waste Management",
     count: 61,
     summary: [
       {
@@ -202,7 +202,7 @@ const popularTopics = [
   },
   {
     id: 4,
-    topic: "Marine litter",
+    topic: "Marine Litter",
     count: 56,
     summary: [
       {
@@ -259,7 +259,7 @@ const popularTopics = [
   },
   {
     id: 5,
-    topic: "Capacity building",
+    topic: "Capacity Building",
     count: 50,
     summary: [
       {
@@ -316,7 +316,7 @@ const popularTopics = [
   },
   {
     id: 6,
-    topic: "Source to sea",
+    topic: "Source to Sea",
     count: 48,
     summary: [
       {
@@ -724,16 +724,16 @@ const Landing = ({
       <div className="landing-container">
         <div className="landing-banner">
           <div className="ui container">
-            <h2>
+            <h1>
               Welcome to the Global Partnership on Marine Litter Digital
               Platform!
-            </h2>
-            <p>
+            </h1>
+            <div className="body-text">
               A partly open-source, multi-stakeholder platform that compiles
               different resources, connects stakeholders, and integrates data to
               guide action towards the long term elimination of marine litter
               and plastic pollution.{" "}
-            </p>
+            </div>
             {!isAuthenticated && (
               <div>
                 <Button
@@ -769,7 +769,7 @@ const Landing = ({
             <div className="section-title">
               <h2>
                 Popular Content{" "}
-                <span>
+                <span className="see-more-link">
                   See all topics <RightOutlined />
                 </span>
               </h2>
@@ -814,9 +814,11 @@ const Landing = ({
                     .items.map((x, i) => {
                       return (
                         <div key={`summary-${i}`} className="item-body">
-                          <span className="type">{x.type}</span>
-                          <h4>{x.title}</h4>
-                          <p>{x.description}</p>
+                          <div className="resource-label upper">{x.type}</div>
+                          <div className="asset-title">{x.title}</div>
+                          <div className="body-text">
+                            {TrimText({ text: x.description, wrap: 123 })}
+                          </div>
                           <span className="read-more">
                             Read more <ArrowRightOutlined />
                           </span>
@@ -833,7 +835,7 @@ const Landing = ({
             <div className="section-title">
               <h2>
                 Featured Content{" "}
-                <span>
+                <span className="see-more-link">
                   See all <RightOutlined />
                 </span>
               </h2>
@@ -846,15 +848,15 @@ const Landing = ({
                     return (
                       <Card key={`fc-${i}`} className="item">
                         <div className="item-header">
-                          <span className="type">{x.type}</span>
+                          <span className="resource-label upper">{x.type}</span>
                           <span className="mark">
                             <RiseOutlined />
                             Trending
                           </span>
                         </div>
                         <div className="item-body">
-                          <h4>{x.title}</h4>
-                          <div>
+                          <div className="asset-title">{x.title}</div>
+                          <div className="body-text">
                             {TrimText({ text: x.description, max: 150 })}
                           </div>
                         </div>
@@ -900,15 +902,15 @@ const Landing = ({
                           alt={x.title}
                         />
                         <div className="item-header">
-                          <span className="type">{x.type}</span>
+                          <span className="resource-label upper">{x.type}</span>
                           <span className="mark">
                             <RiseOutlined />
                             Trending
                           </span>
                         </div>
                         <div className="item-body">
-                          <h4>{x.title}</h4>
-                          <div>
+                          <div className="asset-title">{x.title}</div>
+                          <div className="body-text">
                             {TrimText({ text: x.description, max: 425 })}
                           </div>
                         </div>
@@ -949,14 +951,14 @@ const Landing = ({
               <div className="section-title green">
                 <h2>
                   Our Community{" "}
-                  <span>
+                  <span className="see-more-link">
                     See all <RightOutlined />
                   </span>
                 </h2>
-                <p>
+                <div className="body-text">
                   Be part of an expanding active community and start sharing
                   knowledges
-                </p>
+                </div>
               </div>
               <div className="body">
                 <Carousel
@@ -1015,10 +1017,12 @@ const Landing = ({
                 {benefit.map((x, i) => {
                   return (
                     <div key={`benefit-${i}`} className="item">
-                      <h4>{x.title}</h4>
+                      <div className="asset-title">{x.title}</div>
                       <ul>
                         {x.childs.map((c, i) => (
-                          <li key={`${c}-${i}`}>{c}</li>
+                          <li key={`${c}-${i}`} className="body-text">
+                            {c}
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -1042,7 +1046,7 @@ const Landing = ({
               <div className="section-title green">
                 <h2>
                   Upcoming Events{" "}
-                  <span>
+                  <span className="see-more-link">
                     <Link to="/browse?topic=event">
                       See all <RightOutlined />
                     </Link>
@@ -1087,7 +1091,7 @@ const renderEventContent = (event) => {
           <div className="status">Online</div>
           <div className="mark">Featured</div>
         </div>
-        <div className="type margin">{type}</div>
+        <div className="resource-label upper margin">{type}</div>
         <img
           className="item-img"
           width="100%"
@@ -1095,8 +1099,8 @@ const renderEventContent = (event) => {
           alt={title}
         />
         <div className="item-body">
-          <h4>{title}</h4>
-          <div className="description">
+          <div className="asset-title">{title}</div>
+          <div className="body-text">
             {TrimText({ text: description, max: 300 })}
           </div>
         </div>

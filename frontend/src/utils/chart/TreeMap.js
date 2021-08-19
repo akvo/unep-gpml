@@ -14,11 +14,14 @@ const TreeMap = (data, extra, selected) => {
   ];
   let rich = {
     name: {
-      fontSize: 13,
+      fontFamily: "Open Sans",
+      lineHeight: 20,
+      fontSize: 16,
       fontWeight: "bold",
     },
     value: {
-      fontSize: 11,
+      fontFamily: "Open Sans",
+      fontSize: 15,
       fontWeight: "bold",
       backgroundColor: "#fff",
       opacity: 0.95,
@@ -79,9 +82,23 @@ const TreeMap = (data, extra, selected) => {
         colorMappingBy: "index",
         breadcrumb: false,
         label: {
-          formatter: ["{name|{b}}", "{value|{c}}"].join("\n\n"),
+          formatter: function (params) {
+            const value = params.data.value;
+            const name = params.data.name.split(" ");
+            let nameTmp = [];
+            if (name.length > 2) {
+              nameTmp.push(name[0]);
+              nameTmp.push(name[1]);
+              nameTmp = [nameTmp.join(" ")];
+              nameTmp.push(name[2]);
+              nameTmp = nameTmp.join("\n");
+            } else {
+              nameTmp = name.join("\n");
+            }
+            return `{name|${nameTmp}}\n\n{value|${value}}`;
+          },
           show: true,
-          fontFamily: "Roboto",
+          fontFamily: "Open Sans",
           // position: "inside",
           align: "center",
           verticalAlign: "middle",
