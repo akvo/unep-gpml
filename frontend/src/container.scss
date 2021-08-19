@@ -468,6 +468,19 @@
     }
   }
 
+  footer {
+    .ui.container {
+      &.unep {
+        .unepLogo {
+          width: 30%;
+        }
+        .unepInfo {
+          width: 70%;
+        }
+      }
+    }
+  }
+
   // enable mobile view - maps
   #landing {
     .landing-container.map-container {

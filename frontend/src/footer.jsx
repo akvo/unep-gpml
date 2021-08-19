@@ -212,10 +212,10 @@ const Footer = ({
       </div>
       <div className="second-footer">
         <div className="ui container unep">
-          <div className="col unepLogo">
+          <div className="unepLogo">
             <img src={unepLogo} className="uneplogo" alt="unep" />
           </div>
-          <div className="col unepInfo">
+          <div className="unepInfo">
             <h2>
               The Digital Platform is a UNEP contribution to the Global
               Partnership on Marine Litter (GPML)

@@ -319,7 +319,6 @@ h4 {
 }
 
 footer {
-  // border-top: 1px solid #fff;
   background-color: #2d6796;
   color: #fff;
   padding: 50px 0 0 0;
@@ -362,23 +361,19 @@ footer {
     &.unep {
       padding: 1rem 0;
       display: flex;
+      align-items: center;
       .unepLogo {
         img {
-          width: 30%;
+          width: 85%;
           margin-left: 0;
         }
       }
       .unepInfo {
-        width: calc(100% - 110px);
-        text-align: left;
-        padding: 0 0 0 5rem;
-      }
-
-      h2 {
-        color: white;
-        font-size: 0.9rem;
-        margin: 1.6rem 0 0 0;
-        font-weight: 400;
+        h2 {
+          color: white;
+          font-size: 0.9rem;
+          font-weight: 400;
+        }
       }
     }
   }
