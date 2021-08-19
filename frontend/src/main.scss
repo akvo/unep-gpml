@@ -13,41 +13,41 @@ body {
 
 // Typography
 h1 {
-  font-size: 50px;
+  font-size: 3.1rem;
   font-weight: 900;
-  letter-spacing: -1px;
-  line-height: 70px;
+  letter-spacing: -0.06rem;
+  line-height: 4.4rem;
 }
 
 h2 {
-  font-size: 30px;
+  font-size: 1.9rem;
   font-weight: 600;
-  line-height: 20px;
+  line-height: 1.25rem;
 }
 
 h3 {
-  font-size: 20px;
+  font-size: 1.3rem;
   font-weight: 600;
-  line-height: 20px;
+  line-height: 1.25rem;
 }
 
 h4 {
-  font-size: 22px;
+  font-size: 1.4rem;
 }
 
 .nav-link {
-  font-size: 16px;
-  line-height: 30px;
+  font-size: 1rem;
+  line-height: 1.9rem;
 }
 
 .see-more-link {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
-  line-height: 20px;
+  line-height: 1.25rem;
 }
 
 .resource-label {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
   &.upper {
     text-transform: uppercase;
@@ -55,19 +55,19 @@ h4 {
 }
 
 .body-text {
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 .asset-title {
-  font-size: 20px;
+  font-size: 1.3rem;
   font-weight: 500;
-  line-height: 25px;
+  line-height: 1.56rem;
 }
 
 .copy-right {
-  font-size: 12px;
-  line-height: 11px;
+  font-size: 0.75rem;
+  line-height: 0.69rem;
 }
 
 // EOL Typography
@@ -275,7 +275,7 @@ h4 {
       a {
         color: #666;
         font-weight: 500;
-        font-size: 18px;
+        font-size: 1.13rem;
         text-decoration: none;
         margin: 0 13px;
       }
@@ -292,7 +292,7 @@ h4 {
     display: flex;
     justify-content: center;
     color: white;
-    font-size: 12px;
+    font-size: 0.75rem;
     padding-top: 12px;
   }
 
@@ -342,7 +342,7 @@ button.ant-btn.ant-btn-link.ant-dropdown-trigger.menu-btn.nav-link {
       justify-content: space-between;
       align-items: center;
       font-weight: 500;
-      font-size: 14px;
+      font-size: 0.88rem;
       color: #2d6796;
       height: 40px;
 
@@ -364,7 +364,7 @@ button.ant-btn.ant-btn-link.ant-dropdown-trigger.menu-btn.nav-link {
 .photo-upload {
   img {
     width: 100px;
-    border-radius: 20px;
+    border-radius: 1.3rem;
     margin-top: 10px;
   }
 }
@@ -479,8 +479,8 @@ footer {
 .warning-modal-user {
   b {
     display: block;
-    font-size: 16px;
-    margin-bottom: 16px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
   }
 }
 
@@ -491,7 +491,7 @@ footer {
 h2.loading {
   font-weight: normal;
   text-shadow: 0 0 0.25px #096dd9;
-  font-size: 14px;
+  font-size: 0.88rem;
   padding-top: 40px;
   text-align: center;
   padding-bottom: 1500px;

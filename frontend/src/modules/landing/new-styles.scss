@@ -36,8 +36,8 @@
     }
 
     div.body-text {
-      text-align: justify;
       max-width: 70%;
+      margin-bottom: 20px;
     }
 
     a {
@@ -358,7 +358,7 @@
           border: 2px solid #4dffa5;
           color: #fff;
           font-weight: 600;
-          font-size: 15px;
+          font-size: 0.94rem;
         }
         .ant-select-arrow {
           color: rgba(255, 255, 255, 0.5);
@@ -403,7 +403,7 @@
 
   // global style
   .section-container {
-    padding-top: 40px;
+    padding-top: 50px;
     padding-bottom: 40px;
   }
 
@@ -476,7 +476,7 @@
   span.read-more {
     cursor: pointer;
     color: #34a6ff;
-    font-size: 13px;
+    font-size: 0.81rem;
   }
   // eol global style
 }
