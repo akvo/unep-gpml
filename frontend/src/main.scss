@@ -85,13 +85,20 @@ h4 {
     background: none;
   }
 
+  // btn
   .ant-btn-primary {
     color: #2d6796;
     background-color: $btnGreen;
     border-color: $btnGreen;
     border-radius: 50px;
+    &:hover {
+      border-color: #079e90;
+      color: #00ff7f;
+      background: #079e90;
+    }
   }
 
+  // btn
   .ant-btn-ghost {
     color: $btnGreen;
     background: transparent;
@@ -99,6 +106,15 @@ h4 {
     border-radius: 50px;
     &.left {
       margin-left: 8px;
+    }
+    &.white {
+      color: #fff;
+      border-color: #fff;
+    }
+    &:hover {
+      border-color: #079e90;
+      color: #00ff7f;
+      background: #079e90;
     }
   }
   // end of antd part
@@ -127,7 +143,7 @@ h4 {
 
   header.ant-layout-header.nav-header-container {
     width: 100%;
-    position: sticky;
+    position: static;
     top: 0;
     z-index: 3;
     padding: 0;
@@ -167,7 +183,6 @@ h4 {
       display: flex;
       justify-content: space-between;
       align-content: center;
-      // flex-wrap: wrap;
       .rightside {
         display: flex;
         justify-content: space-between;
@@ -194,6 +209,15 @@ h4 {
       width: 16%;
       margin-left: 10px;
       margin-right: 10px;
+      .input-src {
+        border-radius: 25px;
+        input.ant-input {
+          color: #1ca585;
+          &::placeholder {
+            color: #1ca585;
+          }
+        }
+      }
       .ant-btn.ant-btn-primary.ant-input-search-button {
         border-radius: 0;
       }
@@ -267,7 +291,7 @@ h4 {
       justify-content: space-between;
       align-items: center;
       font-weight: 500;
-      font-size: 0.85rem;
+      font-size: 14px;
       color: #2d6796;
       height: 40px;
 

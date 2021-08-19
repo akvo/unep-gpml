@@ -416,6 +416,7 @@
       font-size: 1.5rem;
       color: #2d6796;
       span {
+        cursor: pointer;
         margin-left: 20px;
         font-size: 0.8rem;
         color: #34a6ff;
@@ -483,6 +484,7 @@
 
   // read more text
   span.read-more {
+    cursor: pointer;
     color: #34a6ff;
     font-size: 0.75rem;
   }

@@ -8,7 +8,12 @@ import {
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown, Avatar, Popover, Layout } from "antd";
-import { RightOutlined, DownOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  RightOutlined,
+  DownOutlined,
+  UserOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
@@ -179,27 +184,7 @@ const Root = () => {
             <p className="ui container">{disclaimerContent?.[disclaimer]}</p>
           </div>
         )}
-        {/* <div className="topbar">
-          <div className="ui container">
-            <div className="leftside">
-              <a href="https://www.unep.org/" target="_blank" rel="noreferrer">
-                UN Environment Programme
-              </a>
-              &nbsp;&nbsp;|&nbsp;&nbsp;
-              <a
-                href="https://www.gpmarinelitter.org"
-                target="_blank"
-                rel="noreferrer"
-              >
-                GPML
-              </a>
-            </div>
-          </div>
-        </div> */}
-        <Header
-          className="nav-header-container"
-          // style={{ width: "100%", position: "sticky", top: 0, zIndex: 3 }}
-        >
+        <Header className="nav-header-container">
           <div className="ui container">
             <div className="logo-wrapper">
               <Link to="/">
@@ -207,7 +192,6 @@ const Root = () => {
               </Link>
             </div>
             {renderDropdownMenu()}
-            {/* {renderMenu()} */}
             <Switch>
               <Route path="/browse" />
               <Route>
@@ -238,30 +222,6 @@ const Root = () => {
                     setWarningModalVisible,
                   }}
                 />
-                {/* <Popover
-                  placement="bottom"
-                  content={
-                    <div>
-                      {profile?.photo && (
-                        <Avatar src={profile?.photo} size={25} />
-                      )}{" "}
-                      {profile?.email}
-                    </div>
-                  }
-                >
-                  <Button type="primary">
-                    <Link to="/profile">
-                      {profile ? profile.firstName : user.nickname}
-                    </Link>
-                  </Button>
-                </Popover> */}
-                {/* <Button
-                  type="ghost"
-                  className="left"
-                  onClick={() => logout({ returnTo: window.location.origin })}
-                >
-                  Logout
-                </Button> */}
                 <UserButton {...{ logout }} />
               </div>
             )}
@@ -571,21 +531,31 @@ const renderMenu = () => {
 };
 
 const Search = withRouter(({ history }) => {
+  const [search, setSearch] = useState("");
   const handleSearch = (src) => {
-    if (src?.trim().length > 0) {
+    if (src) {
       history.push(`/browse/?q=${src}`);
     }
   };
 
   return (
-    <Input.Search
-      onPressEnter={(e) => handleSearch(e.target.value)}
-      onSearch={handleSearch}
-      enterButton
-      className="src"
-      placeholder="Search"
-      // size="large"
-    />
+    <div className="src">
+      <Input
+        className="input-src"
+        placeholder="Search"
+        suffix={
+          <Button
+            onClick={() => handleSearch(search)}
+            type="primary"
+            shape="circle"
+            size="small"
+            icon={<SearchOutlined />}
+          />
+        }
+        onPressEnter={(e) => handleSearch(e.target.value)}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+    </div>
   );
 });
 
@@ -615,7 +585,7 @@ const UserButton = withRouter(({ history, logout }) => {
       <Button
         type="ghost"
         placement="bottomRight"
-        className="left"
+        className="left white"
         shape="circle"
         icon={<UserOutlined />}
       />
