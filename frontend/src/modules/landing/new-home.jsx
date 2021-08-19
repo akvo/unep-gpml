@@ -854,7 +854,9 @@ const Landing = ({
                         </div>
                         <div className="item-body">
                           <h4>{x.title}</h4>
-                          <p>{TrimText({ text: x.description, max: 150 })}</p>
+                          <div>
+                            {TrimText({ text: x.description, max: 150 })}
+                          </div>
                         </div>
                         <div className="item-footer">
                           <Avatar.Group
@@ -906,7 +908,9 @@ const Landing = ({
                         </div>
                         <div className="item-body">
                           <h4>{x.title}</h4>
-                          <p>{TrimText({ text: x.description, max: 425 })}</p>
+                          <div>
+                            {TrimText({ text: x.description, max: 425 })}
+                          </div>
                         </div>
                         <div className="item-footer">
                           <Avatar.Group
@@ -1092,9 +1096,9 @@ const renderEventContent = (event) => {
         />
         <div className="item-body">
           <h4>{title}</h4>
-          <p className="description">
+          <div className="description">
             {TrimText({ text: description, max: 300 })}
-          </p>
+          </div>
         </div>
         <div className="item-footer">
           <Avatar.Group

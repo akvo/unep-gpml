@@ -31,38 +31,57 @@ import AddActionPlan from "./modules/action-plan/view";
 import AddTechnology from "./modules/technology/view";
 import AddPolicy from "./modules/policy/view";
 
-api.get("/tag").then((resp) => {
-  UIStore.update((e) => {
-    e.tags = resp.data;
+api
+  .get("/tag")
+  .then((resp) => {
+    return resp.data;
+  })
+  .then((tags) => {
+    api
+      .get("/currency")
+      .then((resp) => {
+        return resp.data;
+      })
+      .then((currencies) => {
+        api
+          .get("/country")
+          .then((resp) => {
+            return uniqBy(resp.data).sort((a, b) =>
+              a.name.localeCompare(b.name)
+            );
+          })
+          .then((countries) => {
+            api
+              .get("/country-group")
+              .then((resp) => {
+                return resp.data;
+              })
+              .then((countryGroups) => {
+                api
+                  .get("/organisation")
+                  .then((resp) => {
+                    return uniqBy(sortBy(resp.data, ["name"])).sort((a, b) =>
+                      a.name.localeCompare(b.name)
+                    );
+                  })
+                  .then((organisations) => {
+                    UIStore.update((e) => {
+                      e.tags = tags;
+                      e.currencies = currencies;
+                      e.countries = countries;
+                      e.regionOptions = countryGroups.filter(
+                        (x) => x.type === "region"
+                      );
+                      e.meaOptions = countryGroups.filter(
+                        (x) => x.type === "mea"
+                      );
+                      e.organisations = organisations;
+                    });
+                  });
+              });
+          });
+      });
   });
-});
-api.get("/currency").then((resp) => {
-  UIStore.update((e) => {
-    e.currencies = resp.data;
-  });
-});
-api.get("/country").then((resp) => {
-  UIStore.update((e) => {
-    e.countries = uniqBy(resp.data).sort((a, b) =>
-      a.name.localeCompare(b.name)
-    );
-  });
-});
-api.get("/country-group").then((resp) => {
-  UIStore.update((e) => {
-    e.regionOptions = resp.data.filter((x) => x.type === "region");
-  });
-  UIStore.update((e) => {
-    e.meaOptions = resp.data.filter((x) => x.type === "mea");
-  });
-});
-api.get("/organisation").then((resp) => {
-  UIStore.update((e) => {
-    e.organisations = uniqBy(sortBy(resp.data, ["name"])).sort((a, b) =>
-      a.name.localeCompare(b.name)
-    );
-  });
-});
 
 const disclaimerContent = {
   home: (
@@ -99,19 +118,21 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
-  const { profile, disclaimer } = UIStore.useState();
+  const { profile, disclaimer, loading } = UIStore.useState((s) => s);
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
   const [filters, setFilters] = useState(null);
 
   useEffect(() => {
-    api.get("browse?topic=event").then((resp) => {
-      setData(resp.data);
-      UIStore.update((e) => {
-        e.loading = false;
+    if (loading) {
+      api.get("browse?topic=event").then((resp) => {
+        setData(resp.data);
+        UIStore.update((e) => {
+          e.loading = false;
+        });
       });
-    });
+    }
     (async function fetchData() {
       const response = await getIdTokenClaims();
       if (isAuthenticated) {
@@ -148,7 +169,7 @@ const Root = () => {
         }
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated]);
+  }, [getIdTokenClaims, isAuthenticated, loading]);
 
   return (
     <Router>
