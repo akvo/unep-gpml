@@ -51,6 +51,11 @@ const menuItems = [
     role: userRoles,
   },
   {
+    key: "review-section",
+    name: "Review Section",
+    role: reviewerRoles,
+  },
+  {
     key: "admin-section",
     name: "Admin Section",
     role: adminRoles,
@@ -190,6 +195,7 @@ const ProfileView = ({ ...props }) => {
             <div>
               {it.key === "my-favourites" && `(${0})`}
               {it.key === "my-network" && `(${0})`}
+              {it.key === "review-section" && `(${reviewItems.count})`}
               {it.key === "admin-section" && `(${pendingItems.count})`}
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <RightOutlined />
