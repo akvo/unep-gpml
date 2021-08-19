@@ -31,26 +31,29 @@ import {
 } from "@ant-design/icons";
 const { TabPane } = Tabs;
 
+const userRoles = new Set(["USER", "REVIEWER", "ADMIN"]);
+const reviewerRoles = new Set(["REVIEWER", "ADMIN"]);
+const adminRoles = new Set(["ADMIN"]);
 const menuItems = [
   {
     key: "personal-details",
     name: "Personal Details",
-    role: "user",
+    role: userRoles,
   },
   {
     key: "my-favourites",
     name: "My Favourites",
-    role: "user",
+    role: userRoles,
   },
   {
     key: "my-network",
     name: "My Network",
-    role: "user",
+    role: userRoles,
   },
   {
     key: "admin-section",
     name: "Admin Section",
-    role: "admin",
+    role: adminRoles,
   },
 ];
 
@@ -78,7 +81,7 @@ const ProfileView = ({ ...props }) => {
     UIStore.update((e) => {
       e.disclaimer = null;
     });
-    if (profile?.role === "ADMIN") {
+    if (adminRoles.has(profile?.role)) {
       (async () => {
         const { page, limit } = pendingItems;
         setPendingItems(await fetchSubmissionData(page, limit));
@@ -141,10 +144,7 @@ const ProfileView = ({ ...props }) => {
   };
 
   const renderMenuItem = (profile) => {
-    let menus = menuItems;
-    if (profile?.role !== "ADMIN") {
-      menus = menuItems.filter((it) => it.role === "user");
-    }
+    const menus = menuItems.filter((it) => it.role.has(profile?.role));
     return menus.map((it) => {
       return (
         <Menu.Item key={it.key} onClick={() => handleOnClickMenu(it.key)}>
@@ -228,7 +228,7 @@ const ProfileView = ({ ...props }) => {
                   </Button>
                 </div>
               )}
-              {menu === "admin-section" && profile?.role === "ADMIN" && (
+              {menu === "admin-section" && adminRoles.has(profile?.role) && (
                 <AdminSection
                   pendingItems={pendingItems}
                   setPendingItems={setPendingItems}
