@@ -1,6 +1,21 @@
 -- :name all-reviews :? :*
 -- :doc Get all reviews
-SELECT * FROM review ORDER BY id
+SELECT * FROM review ORDER BY id;
+
+-- :name reviews-by-reviewer-id :? :*
+-- :doc Get reviews for reviewer
+SELECT * FROM review
+WHERE reviewer = :reviewer
+--~ (when (seq (:review-status params)) "AND review_status = ANY(ARRAY[:v*:review-status]::reviewer_review_status[])")
+ORDER BY id
+LIMIT :limit
+OFFSET :limit * (:page - 1);
+
+-- :name count-by-reviewer-id :? :1
+-- :doc Get reviews for reviewer
+SELECT COUNT(*) FROM review
+WHERE reviewer = :reviewer
+--~ (when (seq (:review-status params)) "AND review_status = ANY(ARRAY[:v*:review-status]::reviewer_review_status[])")
 
 -- :name review-by-id :? :1
 -- :doc Get review by id

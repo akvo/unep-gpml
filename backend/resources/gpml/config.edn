@@ -94,6 +94,13 @@
                                         ["/review" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                  #ig/ref :gpml.auth/auth-required
                                                                  #ig/ref :gpml.auth/approved-user]}
+                                         [""
+                                          {:get {:summary "Get list of reviews assigned to current user"
+                                                 :middleware [#ig/ref :gpml.auth/reviewer-required-middleware]
+                                                 :swagger {:tags ["review"]
+                                                           :security [{:id_token []}]}
+                                                 :parameters #ig/ref :gpml.handler.review/list-reviews-params
+                                                 :handler #ig/ref :gpml.handler.review/list-reviews}}]
                                          ["/{topic-type}/{topic-id}"
                                           {:get {:summary "Get review for a submission"
                                                  :middleware [#ig/ref :gpml.auth/admin-required-middleware]
@@ -295,6 +302,8 @@
   :gpml.handler.review/get-review {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/new-review {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/update-review {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/list-reviews {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/list-reviews-params {}
   :gpml.handler.review/review-status {}
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}

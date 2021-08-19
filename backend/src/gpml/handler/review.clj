@@ -1,11 +1,18 @@
 (ns gpml.handler.review
   (:require
+   [clojure.string :as str]
    [clojure.java.jdbc :as jdbc]
    [gpml.constants :as constants]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.db.review :as db.review]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
+
+(def review-status-re (->> constants/reviewer-review-status
+                           (map symbol)
+                           (str/join "|")
+                           (format "^(%1$s)((,(%1$s))+)?$")
+                           re-pattern))
 
 (defn- get-internal-topic-type [topic-type]
   (cond
@@ -72,6 +79,15 @@
           resp403)
         resp403))))
 
+(defn list-reviews [db reviewer page limit status]
+  (let [conn (:spec db)
+        review-status (and status (str/split status #","))
+        params {:reviewer (:id reviewer) :page page :limit limit :review-status review-status}
+        reviews (db.review/reviews-by-reviewer-id conn params)
+        count (:count (db.review/count-by-reviewer-id conn params))
+        pages (int (Math/ceil (float (/ count (or (and (> limit 0) limit) 1)))))]
+    (resp/response {:reviews reviews :page page :limit limit :pages pages :count count})))
+
 (defmethod ig/init-key ::get-reviewers [_ {:keys [db]}]
   (fn [_]
     (get-reviewers db)))
@@ -94,5 +110,21 @@
       (change-reviewer db topic-type topic-id reviewer current-user)
       (update-review-status db topic-type topic-id review-status review-comment current-user))))
 
+(defmethod ig/init-key ::list-reviews [_ {:keys [db]}]
+  (fn [{{{:keys [page limit review-status]} :query} :parameters
+        reviewer :reviewer}]
+    (list-reviews db reviewer page limit review-status)))
+
 (defmethod ig/init-key ::review-status [_ _]
   (apply conj [:enum] constants/reviewer-review-status))
+
+(defmethod ig/init-key ::list-reviews-params [_ _]
+  {:query [:map
+           [:page {:optional true
+                   :default 1}
+            int?]
+           [:limit {:optional true
+                    :default 10}
+            int?]
+           [:review-status {:optional true}
+            [:re review-status-re]]]})
