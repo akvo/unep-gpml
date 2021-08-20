@@ -65,6 +65,13 @@ api.get("/organisation").then((resp) => {
   });
 });
 
+api.get("/stakeholder").then((resp) => {
+  UIStore.update((e) => {
+    e.stakeholders = resp.data;
+  });
+});
+
+
 const disclaimerContent = {
   home: (
     <>

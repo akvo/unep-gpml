@@ -47,13 +47,14 @@ export const initialSignUpData = {
   },
 };
 
+
 export const signUpData = new Store({
   data: initialSignUpData,
   editId: null,
 });
 
 const getSchema = (
-  { countries, organisations, tags, currencies, regionOptions, meaOptions, sectorOptions },
+  { stakeholders, countries, organisations, tags, currencies, regionOptions, meaOptions, sectorOptions },
   loading
 ) => {
 //  console.log(UIStore.currentState);
@@ -118,6 +119,8 @@ const getSchema = (
   );
 
   prop.S4.properties["S4_1"].enumNames = countries?.map((x) => x.name);
+  prop.S5.properties["S5_1"].enum = stakeholders?.map((it) => String(it.id));
+  prop.S5.properties["S5_1"].enumNames = stakeholders?.map((it) => `${it.first_name} ${it.last_name} ${it.email}`);
 
   return {
     schema: {
@@ -349,25 +352,7 @@ const SignUp = ({ match: { params }, ...props }) => {
         <div className="form-info-wrapper">
           <div className="ui container">
             <Row>
-              <Col xs={24} lg={14}>
-                <div className="form-title-wrapper">
-                  <div className="form-title">
-                    <span className="title">Sign up</span>
-                  </div>
-                  <div className="initiative-title">
-                    {data?.S1?.S1_LN?.S1_1
-                     ? data?.S1?.S1_LN?.S1_1
-                     : ""}
-                    {data?.S1?.S1_2
-                     ? ` ${data?.S1?.S1_2}`
-                     : ""}
-                    {data?.S1?.S1_LN?.S1_3
-                     ? ` ${data?.S1?.S1_LN?.S1_3}`
-                     : " "}
-                  </div>
-                </div>
-              </Col>
-              <Col xs={24} lg={10}>
+              <Col xs={24} lg={24}>
                 <div
                   className={`form-meta ${
                     formStep.initiative === 2 ? "submitted" : ""

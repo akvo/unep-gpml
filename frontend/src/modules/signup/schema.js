@@ -235,17 +235,5 @@ export const schema = {
         },
       },
     },
-    S6: {
-      title: "",
-      type: "object",
-      depend: {
-        id: "tabs",
-        value: ["S6"],
-      },
-      required: [],
-      properties: {
-
-      },
-    },
   }
 };
