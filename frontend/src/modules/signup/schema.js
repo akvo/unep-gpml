@@ -1,77 +1,6 @@
 import { UIStore } from "../../store";
 import { geoCoverage } from "../../utils/geo";
 
-const sdgsOptions = [
-  {
-    goal: 1,
-    name: "No Poverty",
-  },
-  {
-    goal: 2,
-    name: "Zero Hunger",
-  },
-  {
-    goal: 3,
-    name: "Good Health and Well-being",
-  },
-  {
-    goal: 4,
-    name: "Quality Education",
-  },
-  {
-    goal: 5,
-    name: "Gender Equality",
-  },
-  {
-    goal: 6,
-    name: "Clean Water and Sanitation",
-  },
-  {
-    goal: 7,
-    name: "Affordable and Clean Energy",
-  },
-  {
-    goal: 8,
-    name: "Decent Jobs and Economic Growth",
-  },
-  {
-    goal: 9,
-    name: "Industry, Innovation and Infrastructure",
-  },
-  {
-    goal: 10,
-    name: "Reduced Inequalities",
-  },
-  {
-    goal: 11,
-    name: "Sustainable Cities and Communities",
-  },
-  {
-    goal: 12,
-    name: "Responsible Consumption and Production",
-  },
-  {
-    goal: 13,
-    name: "Climate Action",
-  },
-  {
-    goal: 14,
-    name: "Life Below Water",
-  },
-  {
-    goal: 15,
-    name: "Life on Land",
-  },
-  {
-    goal: 16,
-    name: "Peace and Justice - Strong Institutions",
-  },
-  {
-    goal: 17,
-    name: "Partnerships for the Goals",
-  },
-];
-const { geoCoverageTypeOptions } = UIStore.currentState;
 const titleField = {
   title:
   "Title",
@@ -81,6 +10,7 @@ const titleField = {
   enum: ["Mr", "Mrs", "Ms", "Dr", "Prof"], //["1-0", "1-1"],
   enumNames: ["Mr", "Mrs", "Ms", "Dr", "Prof"],
 };
+
 export const schema = {
   type: "object",
   version: "2",
@@ -198,7 +128,6 @@ export const schema = {
           title: "Which representative groups fits your organisation?",
           type: "string",
           enum: ["Governments", "IGOs and MEAs", "Scientific and technological community and academia", "Private sector and Foundations", "NGOs, MGS, Foundations and private citizens"],
-//          enumNames: geoCoverageTypeOptions,
         },
         "S2_3": {
           title: "Briefly describe your organisation",
@@ -260,7 +189,6 @@ export const schema = {
           title: "What is the geographical coverage of your organisation?*",
           type: "string",
           enum: ["Global", "Transnational"]
-          //          enumNames: geoCoverageTypeOptions,
         },
       },
     },

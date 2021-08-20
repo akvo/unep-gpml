@@ -195,7 +195,7 @@ const SignUp = ({ match: { params }, ...props }) => {
   });
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
-  const [representEntity, setRepresentEntity] = useState(false);
+  const [representEntity, setRepresentEntity] = useState(true);
   const [highlight, setHighlight] = useState(false);
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
@@ -423,12 +423,12 @@ const SignUp = ({ match: { params }, ...props }) => {
                   }}
                 >
                   <div>
-                    <Checkbox
+                    <Checkbox checked={representEntity}
                       onChange={(e)=> { setRepresentEntity(e.target.checked);
                                         if (e.target.checked) {
-                                          setTabsData(([t1,t2]) => { return [t1, t2];});
-                                        } else {
                                           setTabsData(tabsDataRaw);
+                                        } else {
+                                          setTabsData(([t1]) => { return [t1];});
                                         }
 
                                       }}>
@@ -466,6 +466,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                   >
                     <SignUpForm
                       btnSubmit={btnSubmit}
+                      representEntity={representEntity}
                       sending={sending}
                       setSending={setSending}
                       highlight={highlight}

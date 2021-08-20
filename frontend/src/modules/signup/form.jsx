@@ -164,6 +164,7 @@ const SignUpForm = withRouter(
     btnSubmit,
     sending,
     setSending,
+    representEntity,
     highlight,
     setHighlight,
     formSchema,
@@ -243,6 +244,7 @@ const SignUpForm = withRouter(
 
     const handleFormOnChange = useCallback(
       ({ formData, schema }) => {
+        console.log('handleFormOnChange representEntity', representEntity);
         signUpData.update((e) => {
           e.data = {
             ...e.data,
@@ -263,7 +265,7 @@ const SignUpForm = withRouter(
         const requiredFilledIn = checkRequiredFieldFilledIn(
           formData,
           dependFields,
-          requiredFields
+          representEntity? requiredFields : requiredFields.filter(x => x.key.indexOf("S1") >= 0)
         );
         let sectionRequiredFields = {};
         let groupRequiredFields = {};
@@ -303,13 +305,7 @@ const SignUpForm = withRouter(
           }
         });
         signUpData.update((e) => {
-          e.data = {
-            ...e.data,
-            required: sectionRequiredFields,
-            S1: {
-              ...e.data.S1,
-              required: groupRequiredFields["S1"].required,
-            },
+          let entitySections = {
             S2: {
               ...e.data.S2,
               required: groupRequiredFields["S2"].required,
@@ -327,6 +323,26 @@ const SignUpForm = withRouter(
               required: groupRequiredFields["S5"].required,
             },
           };
+          const stakeholderSections = {
+            S1: {
+              ...e.data.S1,
+              required: groupRequiredFields["S1"].required,
+            },
+          };
+          if(representEntity) {
+            e.data = {
+              ...e.data,
+              required: sectionRequiredFields,
+              ...stakeholderSections,
+              ...entitySections
+            };
+          } else {
+            e.data = {
+              ...e.data,
+              required: sectionRequiredFields,
+              ...stakeholderSections,
+            };
+          }
         });
         // enable btn submit
         requiredFilledIn.length === 0 &&
@@ -334,7 +350,7 @@ const SignUpForm = withRouter(
         requiredFilledIn.length !== 0 &&
           setDisabledBtn({ disabled: true, type: "default" });
       },
-      [formSchema, setDisabledBtn]
+      [formSchema, setDisabledBtn, representEntity]
     );
 
     const handleTransformErrors = (errors, dependValue) => {
@@ -361,6 +377,14 @@ const SignUpForm = withRouter(
       res.length === 0 && setHighlight(false);
       return res;
     };
+
+    useEffect(() => {
+      handleFormOnChange({
+        formData: signUpFormData.data,
+        schema: formSchema.schema,
+      });
+
+    },[formSchema, signUpFormData, handleFormOnChange, representEntity]);
 
     useEffect(() => {
       if (
