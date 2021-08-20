@@ -33,6 +33,7 @@ const NormalArrayFieldTemplate = ({
   TitleField,
   uiSchema,
 }) => {
+
   const { labelAlign = "right", rowGutter = 24 } = formContext;
 
   const labelClsBasic = `${prefixCls}-item-label`;
@@ -44,6 +45,10 @@ const NormalArrayFieldTemplate = ({
 
   // custom options
   const showToolbar = uiSchema["ui:options"]?.["showToolbar"];
+  // https://github.com/rjsf-team/react-jsonschema-form/issues/2082
+
+  const addItemText = uiSchema["ui:options"]?.["addItemText"] || "Add Item";
+  const removeItemText = uiSchema["ui:options"]?.["removeItemText"] || "Remove Item";
   const group = uiSchema["ui:group"];
   const formGroup = group && items.length !== 0 && `group-${group}`;
 
@@ -105,7 +110,7 @@ const NormalArrayFieldTemplate = ({
                     onClick={onAddClick}
                     type="primary"
                   >
-                    <PlusOutlined /> Add Item
+              <PlusOutlined /> {addItemText}
                   </Button>
                 </Col>
               </Row>
@@ -122,7 +127,7 @@ const NormalArrayFieldTemplate = ({
               disabled={disabled || readonly}
               onClick={onAddClick}
             >
-              <PlusOutlined /> Add Item
+              <PlusOutlined /> {addItemText}
             </Button>
             <Button
               danger
@@ -133,7 +138,7 @@ const NormalArrayFieldTemplate = ({
               }
               type="link"
             >
-              <MinusOutlined /> Remove Item
+              <MinusOutlined /> {removeItemText}
             </Button>
           </Col>
         </Row>

@@ -181,12 +181,19 @@
       "ui:showSearch": true
     },
     "S5_G1" : {
+      "ui:options":{
+        "addItemText": "Add another stakeholder",
+        "removeItemText": "Remove stakeholder",
+        "orderable": false
+      },
       "classNames": "list-group-item",
       "ui:group": "border",
-      "S5_G1_5": {
-        "ui:widget": "select",
-        "ui:showSearch": true,
-        "ui:placeholder": "Select a role"
+      "items":{
+        "S5_G1_5": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:placeholder": "Select a role"
+        }
       },
       "ui:order": [
         "S5_G1_1", "S5_G1_2", "S5_G1_3", "S5_G1_4", "S5_G1_5"
