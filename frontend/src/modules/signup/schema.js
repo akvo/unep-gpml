@@ -206,32 +206,34 @@ export const schema = {
           type: "string",
         },
         "S5_G1": {
-          title: "Add a new stakeholder from your entity",
-          type: "object",
-          depend: {
-          },
-          required: [
+          title:"",
+          type: "array",
+          items: {
+            title: "Add a new stakeholder from your entity",
+            type: "object",
+            depend: {},
+            required: [],
+            properties: {
+              "S5_G1_1": titleField,
+              "S5_G1_2": {
+                title: "Last name",
+                type: "string",
+              },
+              "S5_G1_3": {
+                title: "First name",
+                type: "string",
+              },
+              "S5_G1_4": {
+                title: "Email",
+                type: "string",
+              },
+              "S5_G1_5": {
+                title: "Entity Role",
+                type: "string",
+              },
+            },
 
-          ],
-          properties: {
-            "S5_G1_1": titleField,
-            "S5_G1_2": {
-              title: "Last name",
-              type: "string",
-            },
-            "S5_G1_3": {
-              title: "First name",
-              type: "string",
-            },
-            "S5_G1_4": {
-              title: "Email",
-              type: "string",
-            },
-            "S5_G1_5": {
-              title: "Entity Role",
-              type: "string",
-            },
-          },
+          }
         },
       },
     },
