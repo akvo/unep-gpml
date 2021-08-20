@@ -76,6 +76,20 @@ const ProfileView = ({ ...props }) => {
     count: 0,
     pages: 0,
   });
+  const [reviewItems, setReviewItems] = useState({
+    reviews: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
+  const [reviewedItems, setReviewedItems] = useState({
+    reviews: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -89,6 +103,18 @@ const ProfileView = ({ ...props }) => {
       (async function fetchData() {
         const archive = await fetchArchiveData(1, 10);
         setArchiveItems(archive);
+      })();
+    }
+    if (reviewerRoles.has(profile?.role)) {
+      (async function fetchData() {
+        const params = { "review-status": "PENDING" };
+        const resp = await api.get("review", params);
+        setReviewItems(resp.data);
+      })();
+      (async function fetchData() {
+        const params = { "review-status": "ACCEPTED,REJECTED" };
+        const resp = await api.get("review", params);
+        setReviewedItems(resp.data);
       })();
     }
   }, [profile]);
