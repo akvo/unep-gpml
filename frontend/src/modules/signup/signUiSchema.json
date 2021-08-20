@@ -1,0 +1,197 @@
+{
+  "S1": {
+    "classNames": "list-group",
+    "S1_LN": {
+      "ui:options": {
+        "orderable": false
+      },
+      "S1_1": {
+        "ui:widget": "select",
+        "ui:span": 5,
+        "ui:placeholder": "Title"
+      },
+      "S1_3": {
+        "ui:span": 19,
+        "ui:placeholder": "Last name"
+      }
+    },
+    "S1_2": {
+        "ui:placeholder": "First name"
+    },
+    "S1_4": {
+      "ui:widget": "email",
+      "ui:placeholder": "Email"
+    },
+    "S1_5": {
+      "ui:widget": "checkbox",
+      "ui:label": null
+    },
+    "S1_6": {
+      "ui:placeholder": "Your LinkedIn username",
+      "ui:widget": "TextIconWidget",
+      "ui:icon": "linkedin"
+    },
+    "S1_7": {
+      "ui:placeholder": "Your twitter username",
+      "ui:widget": "TextIconWidget",
+      "ui:icon": "twitter"
+    },
+    "S1_8": {
+      "ui:options": { "accept": "image/*" },
+      "ui:widget": "file"
+    },
+    "S1_9": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search sectors",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
+    },
+    "S1_10": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search country",
+      "ui:showSearch": true
+    },
+    "geoCoverageType": {
+      "ui:placeholder": "Choose the technology coverage type",
+      "ui:widget": "select"
+    },
+    "geoCoverageValueRegional": {
+      "ui:placeholder": "Choose the technology coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
+    },
+    "geoCoverageValueNational": {
+      "ui:placeholder": "Choose the technology coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "geoCoverageValueTransnational": {
+      "ui:placeholder": "Choose the technology coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
+    },
+    "geoCoverageValueSubNational": {
+      "ui:placeholder": "Choose the technology coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "geoCoverageValueGlobalSpecific": {
+      "ui:placeholder": "Choose the technology coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
+    },
+
+    "S1_ExpertisesAndActivities": {
+      "classNames": "list-group-item",
+      "seeking": {
+        "ui:widget": "select",
+        "ui:placeholder": "Search",
+        "ui:mode": "multiple",
+        "ui:showSearch": true
+      },
+      "offering": {
+        "ui:widget": "select",
+        "ui:placeholder": "Search",
+        "ui:mode": "multiple",
+        "ui:showSearch": true
+      },
+      "about": {
+        "ui:placeholder": "",
+        "ui:widget": "textarea"
+      },
+      "tags": {
+        "ui:widget": "select",
+        "ui:placeholder": "Search tags",
+        "ui:showSearch": true,
+        "ui:mode": "multiple"
+      },
+      "portfolio": {
+        "ui:widget": "file"
+      },
+      "public_database": {
+        "ui:widget": "checkbox",
+        "ui:label": null
+      },
+      "ui:order": ["seeking", "offering", "about", "tags", "portfolio", "public_database"]
+    },
+    "ui:order": ["S1_LN", "S1_2", "S1_4", "S1_5", "S1_6", "S1_7", "S1_8", "S1_9", "S1_10", "geoCoverageType", "geoCoverageValueRegional", "geoCoverageValueNational", "geoCoverageValueTransnational", "geoCoverageValueSubNational", "geoCoverageValueGlobalSpecific", "S1_ExpertisesAndActivities"]
+  },
+  "S2": {
+    "classNames": "list-group",
+    "S2_1": {
+      "ui:placeholder": "Organisation name"
+    },
+    "S2_2": {
+      "ui:widget": "radio"
+    },
+    "S2_3": {
+      "ui:placeholder": "Organisartion brief",
+      "ui:widget": "textarea"
+    },
+    "S2_4": {
+      "ui:addOnBefore": "https://",
+      "ui:widget": "URLWidget",
+      "ui:placeholder": "Url"
+    },
+
+    "S2_5": {
+      "ui:options": { "accept": "image/*" },
+      "ui:widget": "file"
+    },
+    "ui:order": ["S2_1", "S2_2", "S2_3", "S2_4", "S2_5"]
+  },
+  "S3": {
+    "classNames": "list-group",
+    "S3_G1": {
+      "ui:placeholder": "Search",
+      "ui:widget": "select",
+      "ui:mode": "multiple",
+      "ui:showSearch": true
+    },
+
+    "S3_2": {
+      "ui:widget": "checkboxes",
+      "ui:label": null
+    },
+    "ui:order": ["S3_1", "S3_2"]
+  },
+  "S4" : {
+    "ui:order": ["S4_1", "S4_2"],
+    "S4_1": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search",
+      "ui:showSearch": true
+    },
+    "S4_2": {
+      "ui:widget": "radio"
+    }
+
+
+  },
+  "S5" : {
+    "ui:order": ["S5_1", "S5_G1"],
+    "S5_1": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search by name or email",
+      "ui:showSearch": true
+    },
+    "S5_G1" : {
+      "classNames": "list-group-item",
+      "ui:group": "border",
+      "S5_G1_5": {
+        "ui:widget": "select",
+        "ui:showSearch": true,
+        "ui:placeholder": "Select a role"
+      },
+      "ui:order": [
+        "S5_G1_1", "S5_G1_2", "S5_G1_3", "S5_G1_4", "S5_G1_5"
+      ]
+    }
+
+
+  }
+
+}
