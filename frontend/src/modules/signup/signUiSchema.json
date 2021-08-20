@@ -176,6 +176,8 @@
     "S5_1": {
       "ui:widget": "select",
       "ui:placeholder": "Search by name or email",
+      "ui:mode": "multiple",
+      "uniqueItems": true,
       "ui:showSearch": true
     },
     "S5_G1" : {
