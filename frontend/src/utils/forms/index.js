@@ -7,6 +7,7 @@ import URLWidget from "./form-url";
 import AltDateWidget from "./form-alt-date";
 import DateWidget from "./form-date";
 import EmailWidget from "./form-email";
+import TextIconWidget from "./form-text-icon";
 
 import difference from "lodash/difference";
 import intersection from "lodash/intersection";
@@ -22,6 +23,7 @@ const widgets = {
   AltDateWidget: AltDateWidget,
   DateWidget: DateWidget,
   EmailWidget: EmailWidget,
+  TextIconWidget: TextIconWidget,
 };
 
 /**
