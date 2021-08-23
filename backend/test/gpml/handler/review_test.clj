@@ -200,3 +200,87 @@
             review (db.review/review-by-id db body)]
         (is (= 200 (:status resp)))
         (is (= (:reviewer review) (:id reviewer2)))))))
+
+(deftest list-reviews
+  (let [system (ig/init fixtures/*system* [::review/list-reviews])
+        handler (::review/list-reviews system)
+        db (-> system :duct.database.sql/hikaricp :spec)
+        admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
+        reviewer (new-stakeholder db "reviewer@org.com" "R" "A" "REVIEWER" "APPROVED")
+        reviewer2 (new-stakeholder db "reviewer2@org.com" "R" "A" "REVIEWER" "APPROVED")
+        ;; Users to review
+        emails (->> (range 10) (map #(str "user" % "@org.com")))
+        users (->> emails
+                   (map #(new-stakeholder db % "U" "S" "USER" "SUBMITTED")))
+        ;; Assign reviews to first reviewer
+        reviews1 (->> users
+                      (take 5)
+                      (mapv #(db.review/new-review
+                              db
+                              {:topic-type "stakeholder"
+                               :topic-id (:id %)
+                               :assigned-by (:id admin)
+                               :reviewer (:id reviewer)})))
+        ;; Assign reviews to second reviewer
+        reviews2 (->> users
+                      (take-last 5)
+                      (mapv #(db.review/new-review
+                              db
+                              {:topic-type "stakeholder"
+                               :topic-id (:id %)
+                               :assigned-by (:id admin)
+                               :reviewer (:id reviewer2)})))]
+
+    (testing "Listing reviews for a user"
+      (let [resp1 (handler (-> (mock/request :get "/")
+                               (assoc
+                                :reviewer reviewer
+                                :parameters {:query {:page 1 :limit 10}})))
+            body1 (:body resp1)
+            resp2 (handler (-> (mock/request :get "/")
+                               (assoc
+                                :reviewer reviewer2
+                                :parameters {:query {:page 1 :limit 10}})))
+            body2 (:body resp2)]
+
+        (is (= 5 (count (:reviews body1))))
+        (is (= 5 (:count body1)))
+        (is (= (map :id reviews1) (->> body1 :reviews (map :id))))
+
+        (is (= 5 (count (:reviews body2))))
+        (is (= 5 (:count body2)))
+        (is (= (map :id reviews2) (->> body2 :reviews (map :id))))))
+
+
+    (testing "Testing pagination when listing reviews for a user"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc
+                               :reviewer reviewer2
+                               :parameters {:query {:page 2 :limit 2}})))
+            body (:body resp)]
+        (is (= 2 (count (:reviews body))))
+        (is (= 5 (:count body)))
+        (is (= 3 (:pages body)))
+        (is (= (->> reviews2 (map :id) (drop 2) (take 2))
+               (->> body :reviews (map :id))))))
+
+    (testing "Testing querying reviews by status"
+      (let [resp1 (handler (-> (mock/request :get "/")
+                               (assoc
+                                :reviewer reviewer2
+                                :parameters {:query {:page 1 :limit 10 :review-status "PENDING,REJECTED"}})))
+            body1 (:body resp1)
+
+            resp2 (handler (-> (mock/request :get "/")
+                               (assoc
+                                :reviewer reviewer2
+                                :parameters {:query {:page 1 :limit 10 :review-status "ACCEPTED"}})))
+            body2 (:body resp2)]
+
+        (is (= 5 (count (:reviews body1))))
+        (is (= 5 (:count body1)))
+        (is (= (map :id reviews2) (->> body1 :reviews (map :id))))
+
+        (is (= 0 (count (:reviews body2))))
+        (is (= 0 (:count body2)))
+        (is (= () (->> body2 :reviews (map :id))))))))
