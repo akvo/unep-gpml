@@ -97,7 +97,6 @@ api.get("/stakeholder").then((resp) => {
   });
 });
 
-
 const disclaimerContent = {
   home: (
     <>

@@ -53,4 +53,4 @@ const geoCoverage = {
   },
 };
 
-export {geoCoverage};
+export { geoCoverage };

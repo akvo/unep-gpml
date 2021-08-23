@@ -16,7 +16,7 @@
       }
     },
     "S1_2": {
-        "ui:placeholder": "First name"
+      "ui:placeholder": "First name"
     },
     "S1_4": {
       "ui:widget": "email",
@@ -115,9 +115,33 @@
         "ui:widget": "checkbox",
         "ui:label": null
       },
-      "ui:order": ["seeking", "offering", "about", "tags", "portfolio", "public_database"]
+      "ui:order": [
+        "seeking",
+        "offering",
+        "about",
+        "tags",
+        "portfolio",
+        "public_database"
+      ]
     },
-    "ui:order": ["S1_LN", "S1_2", "S1_4", "S1_5", "S1_6", "S1_7", "S1_8", "S1_9", "S1_10", "geoCoverageType", "geoCoverageValueRegional", "geoCoverageValueNational", "geoCoverageValueTransnational", "geoCoverageValueSubNational", "geoCoverageValueGlobalSpecific", "S1_ExpertisesAndActivities"]
+    "ui:order": [
+      "S1_LN",
+      "S1_2",
+      "S1_4",
+      "S1_5",
+      "S1_6",
+      "S1_7",
+      "S1_8",
+      "S1_9",
+      "S1_10",
+      "geoCoverageType",
+      "geoCoverageValueRegional",
+      "geoCoverageValueNational",
+      "geoCoverageValueTransnational",
+      "geoCoverageValueSubNational",
+      "geoCoverageValueGlobalSpecific",
+      "S1_ExpertisesAndActivities"
+    ]
   },
   "S2": {
     "classNames": "list-group",
@@ -158,7 +182,7 @@
     },
     "ui:order": ["S3_1", "S3_2"]
   },
-  "S4" : {
+  "S4": {
     "ui:order": ["S4_1", "S4_2"],
     "S4_1": {
       "ui:widget": "select",
@@ -168,10 +192,8 @@
     "S4_2": {
       "ui:widget": "radio"
     }
-
-
   },
-  "S5" : {
+  "S5": {
     "ui:order": ["S5_1", "S5_G1"],
     "S5_1": {
       "ui:widget": "select",
@@ -180,27 +202,22 @@
       "uniqueItems": true,
       "ui:showSearch": true
     },
-    "S5_G1" : {
-      "ui:options":{
+    "S5_G1": {
+      "ui:options": {
         "addItemText": "Add another stakeholder",
         "removeItemText": "Remove stakeholder",
         "orderable": false
       },
       "classNames": "list-group-item",
       "ui:group": "border",
-      "items":{
+      "items": {
         "S5_G1_5": {
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:placeholder": "Select a role"
         }
       },
-      "ui:order": [
-        "S5_G1_1", "S5_G1_2", "S5_G1_3", "S5_G1_4", "S5_G1_5"
-      ]
+      "ui:order": ["S5_G1_1", "S5_G1_2", "S5_G1_3", "S5_G1_4", "S5_G1_5"]
     }
-
-
   }
-
 }

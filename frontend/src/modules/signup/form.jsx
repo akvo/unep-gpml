@@ -244,7 +244,7 @@ const SignUpForm = withRouter(
 
     const handleFormOnChange = useCallback(
       ({ formData, schema }) => {
-        console.log('handleFormOnChange representEntity', representEntity);
+        console.log("handleFormOnChange representEntity", representEntity);
         signUpData.update((e) => {
           e.data = {
             ...e.data,
@@ -265,7 +265,9 @@ const SignUpForm = withRouter(
         const requiredFilledIn = checkRequiredFieldFilledIn(
           formData,
           dependFields,
-          representEntity? requiredFields : requiredFields.filter(x => x.key.indexOf("S1") >= 0)
+          representEntity
+            ? requiredFields
+            : requiredFields.filter((x) => x.key.indexOf("S1") >= 0)
         );
         let sectionRequiredFields = {};
         let groupRequiredFields = {};
@@ -329,12 +331,12 @@ const SignUpForm = withRouter(
               required: groupRequiredFields["S1"].required,
             },
           };
-          if(representEntity) {
+          if (representEntity) {
             e.data = {
               ...e.data,
               required: sectionRequiredFields,
               ...stakeholderSections,
-              ...entitySections
+              ...entitySections,
             };
           } else {
             e.data = {
@@ -383,14 +385,13 @@ const SignUpForm = withRouter(
         formData: signUpFormData.data,
         schema: formSchema.schema,
       });
-
-    },[formSchema, signUpFormData, handleFormOnChange, representEntity]);
+    }, [formSchema, signUpFormData, handleFormOnChange, representEntity]);
 
     useEffect(() => {
       if (
         (status === "edit" || params?.id) &&
         editCheck &&
-          signUpFormData.data?.["S1"]?.["S1_LN"]["S1_1"]
+        signUpFormData.data?.["S1"]?.["S1_LN"]["S1_1"]
         //TODO: review this condition
       ) {
         handleFormOnChange({

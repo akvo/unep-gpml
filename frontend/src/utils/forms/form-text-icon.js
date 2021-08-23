@@ -1,10 +1,7 @@
 import React from "react";
 
 import Input from "antd/lib/input";
-import {
-  LinkedinOutlined,
-  TwitterOutlined,
-} from "@ant-design/icons";
+import { LinkedinOutlined, TwitterOutlined } from "@ant-design/icons";
 
 const INPUT_STYLE = {
   width: "100%",
@@ -37,11 +34,16 @@ const URLWidget = ({
   const handleFocus = ({ target }) => onFocus(id, target.value);
 
   let icon = "";
-    switch(uiSchema?.["ui:icon"]){
-    case 'linkedin': icon = <LinkedinOutlined />; break;
-    case 'twitter': icon = <TwitterOutlined />; break;
-    default: console.log('Only 2 values available: twitter and linkedin');
-  };
+  switch (uiSchema?.["ui:icon"]) {
+    case "linkedin":
+      icon = <LinkedinOutlined />;
+      break;
+    case "twitter":
+      icon = <TwitterOutlined />;
+      break;
+    default:
+      console.log("Only 2 values available: twitter and linkedin");
+  }
 
   return (
     <Input
