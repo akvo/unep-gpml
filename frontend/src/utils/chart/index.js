@@ -8,7 +8,7 @@ import BarGroup from "./BarGroup";
 import LineStack from "./LineStack";
 import Line from "./Line";
 import TreeMap from "./TreeMap";
-import { titleCase } from "../util";
+import { titleCase } from "../string";
 
 export const generateOptions = ({ type, data }, extra, axis, selected) => {
   switch (type) {
