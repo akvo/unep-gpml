@@ -18,9 +18,14 @@ import React, {
 } from "react";
 import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
-import { fetchArchiveData, fetchSubmissionData } from "./utils";
+import {
+  fetchArchiveData,
+  fetchSubmissionData,
+  fetchReviewItems,
+} from "./utils";
 import SignupForm from "../signup/signup-form";
 import AdminSection from "./admin";
+import ReviewSection from "./review";
 import "./styles.scss";
 import isEmpty from "lodash/isEmpty";
 import {
@@ -111,15 +116,13 @@ const ProfileView = ({ ...props }) => {
       })();
     }
     if (reviewerRoles.has(profile?.role)) {
-      (async function fetchData() {
-        const params = { "review-status": "PENDING" };
-        const resp = await api.get("review", params);
-        setReviewItems(resp.data);
+      (async () => {
+        setReviewItems(await fetchReviewItems(reviewItems, "PENDING"));
       })();
-      (async function fetchData() {
-        const params = { "review-status": "ACCEPTED,REJECTED" };
-        const resp = await api.get("review", params);
-        setReviewedItems(resp.data);
+      (async () => {
+        setReviewedItems(
+          await fetchReviewItems(reviewedItems, "ACCEPTED,REJECTED")
+        );
       })();
     }
   }, [profile]);
@@ -259,6 +262,14 @@ const ProfileView = ({ ...props }) => {
                     Update
                   </Button>
                 </div>
+              )}
+              {menu === "review-section" && adminRoles.has(profile?.role) && (
+                <ReviewSection
+                  reviewItems={reviewItems}
+                  setReviewItems={setReviewItems}
+                  reviewedItems={reviewedItems}
+                  setReviewedItems={setReviewedItems}
+                />
               )}
               {menu === "admin-section" && adminRoles.has(profile?.role) && (
                 <AdminSection
