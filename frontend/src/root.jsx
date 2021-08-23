@@ -7,12 +7,17 @@ import {
   withRouter,
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Input, Button, Menu, Dropdown, Avatar, Popover } from "antd";
-import { RightOutlined } from "@ant-design/icons";
-import Landing from "./modules/landing/view";
+import { Input, Button, Menu, Dropdown, Avatar, Popover, Layout } from "antd";
+import {
+  RightOutlined,
+  DownOutlined,
+  UserOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
+import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
-import logo from "./images/GPML-temporary-logo-horiz.jpg";
+import logo from "./images/GPML-logo-white.png";
 import SignupModal from "./modules/signup/signup-modal";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
@@ -31,38 +36,57 @@ import AddActionPlan from "./modules/action-plan/view";
 import AddTechnology from "./modules/technology/view";
 import AddPolicy from "./modules/policy/view";
 
-api.get("/tag").then((resp) => {
-  UIStore.update((e) => {
-    e.tags = resp.data;
+api
+  .get("/tag")
+  .then((resp) => {
+    return resp.data;
+  })
+  .then((tags) => {
+    api
+      .get("/currency")
+      .then((resp) => {
+        return resp.data;
+      })
+      .then((currencies) => {
+        api
+          .get("/country")
+          .then((resp) => {
+            return uniqBy(resp.data).sort((a, b) =>
+              a.name.localeCompare(b.name)
+            );
+          })
+          .then((countries) => {
+            api
+              .get("/country-group")
+              .then((resp) => {
+                return resp.data;
+              })
+              .then((countryGroups) => {
+                api
+                  .get("/organisation")
+                  .then((resp) => {
+                    return uniqBy(sortBy(resp.data, ["name"])).sort((a, b) =>
+                      a.name.localeCompare(b.name)
+                    );
+                  })
+                  .then((organisations) => {
+                    UIStore.update((e) => {
+                      e.tags = tags;
+                      e.currencies = currencies;
+                      e.countries = countries;
+                      e.regionOptions = countryGroups.filter(
+                        (x) => x.type === "region"
+                      );
+                      e.meaOptions = countryGroups.filter(
+                        (x) => x.type === "mea"
+                      );
+                      e.organisations = organisations;
+                    });
+                  });
+              });
+          });
+      });
   });
-});
-api.get("/currency").then((resp) => {
-  UIStore.update((e) => {
-    e.currencies = resp.data;
-  });
-});
-api.get("/country").then((resp) => {
-  UIStore.update((e) => {
-    e.countries = uniqBy(resp.data).sort((a, b) =>
-      a.name.localeCompare(b.name)
-    );
-  });
-});
-api.get("/country-group").then((resp) => {
-  UIStore.update((e) => {
-    e.regionOptions = resp.data.filter((x) => x.type === "region");
-  });
-  UIStore.update((e) => {
-    e.meaOptions = resp.data.filter((x) => x.type === "mea");
-  });
-});
-api.get("/organisation").then((resp) => {
-  UIStore.update((e) => {
-    e.organisations = uniqBy(sortBy(resp.data, ["name"])).sort((a, b) =>
-      a.name.localeCompare(b.name)
-    );
-  });
-});
 
 const disclaimerContent = {
   home: (
@@ -89,6 +113,8 @@ const disclaimerContent = {
   ),
 };
 
+const { Header } = Layout;
+
 const Root = () => {
   const {
     isAuthenticated,
@@ -97,19 +123,21 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
-  const { profile, disclaimer } = UIStore.useState();
+  const { profile, disclaimer, loading } = UIStore.useState((s) => s);
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
   const [filters, setFilters] = useState(null);
 
   useEffect(() => {
-    api.get("/landing").then((resp) => {
-      setData(resp.data);
-      UIStore.update((e) => {
-        e.loading = false;
+    if (loading) {
+      api.get("browse?topic=event").then((resp) => {
+        setData(resp.data);
+        UIStore.update((e) => {
+          e.loading = false;
+        });
       });
-    });
+    }
     (async function fetchData() {
       const response = await getIdTokenClaims();
       if (isAuthenticated) {
@@ -146,7 +174,7 @@ const Root = () => {
         }
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated]);
+  }, [getIdTokenClaims, isAuthenticated, loading]);
 
   return (
     <Router>
@@ -156,79 +184,49 @@ const Root = () => {
             <p className="ui container">{disclaimerContent?.[disclaimer]}</p>
           </div>
         )}
-        <div className="topbar">
+        <Header className="nav-header-container">
           <div className="ui container">
-            <div className="leftside">
-              <a href="https://www.unep.org/" target="_blank" rel="noreferrer">
-                UN Environment Programme
-              </a>
-              &nbsp;&nbsp;|&nbsp;&nbsp;
-              <a
-                href="https://www.gpmarinelitter.org"
-                target="_blank"
-                rel="noreferrer"
-              >
-                GPML
-              </a>
+            <div className="logo-wrapper">
+              <Link to="/">
+                <img src={logo} className="logo" alt="GPML" />
+              </Link>
             </div>
-            {!isAuthenticated ? (
-              <div className="rightside">
-                <Link to="/signup">Join the GPML</Link>
-                &nbsp;&nbsp;|&nbsp;&nbsp;
-                <Link to="/" onClick={loginWithPopup}>
-                  Sign in
-                </Link>
-              </div>
-            ) : (
-              <div className="rightside">
-                <Popover
-                  placement="bottom"
-                  content={
-                    <div>
-                      {profile?.photo && (
-                        <Avatar src={profile?.photo} size={25} />
-                      )}{" "}
-                      {profile?.email}
-                    </div>
-                  }
-                >
-                  <Link to="/profile">
-                    {profile ? profile.firstName : user.nickname}
-                  </Link>
-                </Popover>
-                <Button
-                  type="link"
-                  onClick={() => logout({ returnTo: window.location.origin })}
-                >
-                  Logout
-                </Button>
-              </div>
-            )}
-          </div>
-        </div>
-        <header>
-          <div className="ui container">
-            <Link to="/">
-              <img src={logo} className="logo" alt="GPML" />
-            </Link>
+            {renderDropdownMenu()}
             <Switch>
               <Route path="/browse" />
               <Route>
                 <Search />
               </Route>
             </Switch>
-            <nav>
-              <AddButton
-                {...{
-                  setSignupModalVisible,
-                  isAuthenticated,
-                  loginWithPopup,
-                  setWarningModalVisible,
-                }}
-              />
-            </nav>
+            {!isAuthenticated ? (
+              <div className="rightside">
+                <Button
+                  type="primary"
+                  onClick={() => loginWithPopup({ screen_hint: "signup" })}
+                >
+                  Join GPML
+                </Button>
+                <Button type="ghost" className="left">
+                  <Link to="/" onClick={loginWithPopup}>
+                    Sign in
+                  </Link>
+                </Button>
+              </div>
+            ) : (
+              <div className="rightside">
+                <AddButton
+                  {...{
+                    setSignupModalVisible,
+                    isAuthenticated,
+                    loginWithPopup,
+                    setWarningModalVisible,
+                  }}
+                />
+                <UserButton {...{ logout }} />
+              </div>
+            )}
           </div>
-        </header>
+        </Header>
         <Route
           path="/"
           exact
@@ -357,22 +355,241 @@ const Root = () => {
   );
 };
 
+const renderDropdownMenu = () => {
+  return (
+    <div className="menu-dropdown-container">
+      <AboutDropdownMenu />
+      <ExploreDropdownMenu />
+      <DataHubDropdownMenu />
+      <KnowledgeExchangeDropdownMenu />
+      <ConnectStakeholdersDropdownMenu />
+    </div>
+  );
+};
+
+const AboutDropdownMenu = withRouter(({ history }) => {
+  return (
+    <Dropdown
+      overlayClassName="menu-dropdown-wrapper"
+      overlay={
+        <Menu className="menu-dropdown">
+          <Menu.Item className="nav-link">Partnership</Menu.Item>
+          <Menu.Item className="nav-link">Digital Platform</Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button type="link" className="menu-btn nav-link">
+        About <DownOutlined />
+      </Button>
+    </Dropdown>
+  );
+});
+
+const ExploreDropdownMenu = withRouter(({ history }) => {
+  return (
+    <Dropdown
+      overlayClassName="menu-dropdown-wrapper"
+      overlay={
+        <Menu className="menu-dropdown">
+          <Menu.Item className="nav-link">
+            Topics <span className="badge-count">6</span>
+          </Menu.Item>
+          <Menu.Item className="nav-link">
+            Goals <span className="badge-count">11</span>
+          </Menu.Item>
+          <Menu.Item className="nav-link">
+            Stories <span className="badge-count">8</span>
+          </Menu.Item>
+          <Menu.Item className="nav-link">
+            Glossary <span className="badge-count">54</span>
+          </Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button type="link" className="menu-btn nav-link">
+        Explore <DownOutlined />
+      </Button>
+    </Dropdown>
+  );
+});
+
+const DataHubDropdownMenu = withRouter(({ history }) => {
+  return (
+    <Dropdown
+      overlayClassName="menu-dropdown-wrapper"
+      overlay={
+        <Menu className="menu-dropdown">
+          <Menu.Item className="nav-link">Data Map & Layers</Menu.Item>
+          <Menu.Item className="nav-link">Dashboards</Menu.Item>
+          <Menu.Item className="nav-link">Data Catalogue</Menu.Item>
+          <Menu.Item className="nav-link">Data Content</Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button type="link" className="menu-btn nav-link">
+        Data Hub <DownOutlined />
+      </Button>
+    </Dropdown>
+  );
+});
+
+const KnowledgeExchangeDropdownMenu = withRouter(({ history }) => {
+  return (
+    <Dropdown
+      overlayClassName="menu-dropdown-wrapper"
+      overlay={
+        <Menu className="menu-dropdown">
+          <Menu.Item className="nav-link">
+            All Resources <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item className="indent-right nav-link">
+            Inititative <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item className="indent-right nav-link">
+            Action Plan <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item className="indent-right nav-link">
+            Policy <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item className="indent-right nav-link">
+            Technical resource <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item className="indent-right nav-link">
+            Financing resource <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item className="indent-right nav-link">
+            Technology <span className="badge-count">54</span>
+          </Menu.Item>
+          <Menu.Item className="nav-link">
+            Capacity building <span className="badge-count">54</span>
+          </Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button type="link" className="menu-btn nav-link">
+        Knowledge Exchange <DownOutlined />
+      </Button>
+    </Dropdown>
+  );
+});
+
+const ConnectStakeholdersDropdownMenu = withRouter(({ history }) => {
+  return (
+    <Dropdown
+      overlayClassName="menu-dropdown-wrapper"
+      overlay={
+        <Menu className="menu-dropdown">
+          <Menu.Item className="nav-link">Events</Menu.Item>
+          <Menu.Item className="nav-link">Stakeholders Directory</Menu.Item>
+          <Menu.Item className="nav-link">Forums</Menu.Item>
+          <Menu.Item className="nav-link">Partners</Menu.Item>
+          <Menu.Item className="nav-link">Sponsors</Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button type="link" className="menu-btn nav-link">
+        Connect Stakeholders <DownOutlined />
+      </Button>
+    </Dropdown>
+  );
+});
+
+const renderMenu = () => {
+  return (
+    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[]}>
+      <Menu.Item key="about">
+        About <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
+      </Menu.Item>
+      <Menu.Item key="explore">
+        Explore{" "}
+        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
+      </Menu.Item>
+      <Menu.Item key="data-hub">
+        Data Hub{" "}
+        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
+      </Menu.Item>
+      <Menu.Item key="knowledge-exchange">
+        Knowledge Exchange{" "}
+        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
+      </Menu.Item>
+      <Menu.Item key="connect-stakeholders">
+        Connect Stakeholders{" "}
+        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
+      </Menu.Item>
+    </Menu>
+  );
+};
+
 const Search = withRouter(({ history }) => {
+  const [search, setSearch] = useState("");
   const handleSearch = (src) => {
-    if (src?.trim().length > 0) {
-      history.push(`/browse/?q=${src}`);
+    if (src) {
+      history.push(`/browse/?q=${src.trim()}`);
     }
   };
 
   return (
-    <Input.Search
-      onPressEnter={(e) => handleSearch(e.target.value)}
-      onSearch={handleSearch}
-      enterButton
-      className="src"
-      placeholder="Search for resources and stakeholders"
-      size="large"
-    />
+    <div className="src">
+      <Input
+        className="input-src"
+        placeholder="Search"
+        suffix={
+          <Button
+            onClick={() => handleSearch(search)}
+            type="primary"
+            shape="circle"
+            size="small"
+            icon={<SearchOutlined />}
+          />
+        }
+        onPressEnter={(e) => handleSearch(e.target.value)}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+    </div>
+  );
+});
+
+const UserButton = withRouter(({ history, logout }) => {
+  return (
+    <Dropdown
+      overlayClassName="user-btn-dropdown-wrapper"
+      overlay={
+        <Menu className="user-btn-dropdown">
+          <Menu.Item
+            onClick={() => {
+              history.push("/profile");
+            }}
+          >
+            Profile <RightOutlined />
+          </Menu.Item>
+          <Menu.Item
+            onClick={() => logout({ returnTo: window.location.origin })}
+          >
+            Logout <RightOutlined />
+          </Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button
+        type="ghost"
+        placement="bottomRight"
+        className="left white"
+        shape="circle"
+        icon={<UserOutlined />}
+      />
+    </Dropdown>
   );
 });
 
@@ -537,8 +754,8 @@ const AddButton = withRouter(
             trigger={["click"]}
             placement="bottomRight"
           >
-            <Button type="primary" size="large" placement="bottomRight">
-              + Add
+            <Button type="primary" placement="bottomRight">
+              Add Content
             </Button>
           </Dropdown>
         );
@@ -546,20 +763,19 @@ const AddButton = withRouter(
       return (
         <Button
           type="primary"
-          size="large"
           onClick={() => {
             Object.keys(profile).length > 1
               ? setWarningModalVisible(true)
               : setSignupModalVisible(true);
           }}
         >
-          + Add
+          Add Content
         </Button>
       );
     }
     return (
-      <Button type="primary" size="large" onClick={loginWithPopup}>
-        + Add
+      <Button type="primary" onClick={loginWithPopup}>
+        Add Content
       </Button>
     );
   }
