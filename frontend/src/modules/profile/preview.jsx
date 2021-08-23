@@ -505,3 +505,14 @@ export const InitiativePreview = ({ item }) => {
     </div>
   );
 };
+
+export const DetailCollapse = ({ data, item }) => {
+  switch (item.type) {
+    case "stakeholder":
+      return <ProfilePreview item={{ ...data, ...item }} />;
+    case "project":
+      return <InitiativePreview item={{ ...data, ...item }} />;
+    default:
+      return <GeneralPreview item={{ ...data, ...item }} />;
+  }
+};

@@ -17,7 +17,7 @@ import { fetchArchiveData, fetchSubmissionData } from "./utils";
 import moment from "moment";
 import capitalize from "lodash/capitalize";
 import find from "lodash/find";
-import { ProfilePreview, GeneralPreview, InitiativePreview } from "./preview";
+import { DetailCollapse } from "./preview";
 import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
 
 const ModalReject = ({ visible, close, reject, item }) => {
@@ -110,17 +110,6 @@ const AdminSection = ({
           });
         }
       });
-    }
-  };
-
-  const DetailCollapse = ({ data, item }) => {
-    switch (item.type) {
-      case "stakeholder":
-        return <ProfilePreview item={{ ...data, ...item }} />;
-      case "project":
-        return <InitiativePreview item={{ ...data, ...item }} />;
-      default:
-        return <GeneralPreview item={{ ...data, ...item }} />;
     }
   };
 
