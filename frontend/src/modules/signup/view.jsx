@@ -14,8 +14,6 @@ import api from "../../utils/api";
 
 const { Step } = Steps;
 
-
-
 export const initialSignUpData = {
   tabs: ["S1"],
   required: {
@@ -47,46 +45,65 @@ export const initialSignUpData = {
   },
 };
 
-
 export const signUpData = new Store({
   data: initialSignUpData,
   editId: null,
 });
 
 const getSchema = (
-  { stakeholders, countries, organisations, tags, currencies, regionOptions, meaOptions, sectorOptions },
+  {
+    stakeholders,
+    countries,
+    organisations,
+    tags,
+    currencies,
+    regionOptions,
+    meaOptions,
+    sectorOptions,
+  },
   loading
 ) => {
-//  console.log(UIStore.currentState);
+  //  console.log(UIStore.currentState);
   const prop = cloneDeep(schema.properties);
   const orgs = [...organisations];
   // const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
   // organisation options
 
+  prop.S1.properties.S1_ExpertisesAndActivities.properties[
+    "seeking"
+  ].enum = tags?.seeking?.map((it) => String(it.id));
+  prop.S1.properties.S1_ExpertisesAndActivities.properties[
+    "seeking"
+  ].enumNames = tags?.seeking?.map((it) => it.tag);
+  prop.S1.properties.S1_ExpertisesAndActivities.properties[
+    "offering"
+  ].enum = tags?.offering?.map((it) => String(it.id));
+  prop.S1.properties.S1_ExpertisesAndActivities.properties[
+    "offering"
+  ].enumNames = tags?.offering?.map((it) => it.tag);
 
-  prop.S1.properties.S1_ExpertisesAndActivities.properties["seeking"].enum = tags?.seeking?.map((it) => String(it.id));
-  prop.S1.properties.S1_ExpertisesAndActivities.properties["seeking"].enumNames = tags?.seeking?.map((it) => it.tag);
-  prop.S1.properties.S1_ExpertisesAndActivities.properties["offering"].enum = tags?.offering?.map((it) => String(it.id));
-  prop.S1.properties.S1_ExpertisesAndActivities.properties["offering"].enumNames = tags?.offering?.map((it) => it.tag);
+  prop.S1.properties.S1_ExpertisesAndActivities.properties[
+    "tags"
+  ].enum = tags?.general?.map((it) => it.id);
+  prop.S1.properties.S1_ExpertisesAndActivities.properties[
+    "tags"
+  ].enumNames = tags?.general?.map((it) => it.tag);
 
-  prop.S1.properties.S1_ExpertisesAndActivities.properties["tags"].enum = tags?.general?.map((it) => it.id);
-  prop.S1.properties.S1_ExpertisesAndActivities.properties["tags"].enumNames = tags?.general?.map((it) => it.tag);
-
-  prop.S1.properties["S1_9"].enum = sectorOptions?.map((it, idx) => String(idx));
+  prop.S1.properties["S1_9"].enum = sectorOptions?.map((it, idx) =>
+    String(idx)
+  );
   prop.S1.properties["S1_9"].enumNames = sectorOptions?.map((it) => it);
 
   // // country options
-  prop.S1.properties["S1_10"].enum = countries?.map(
-    (x) => x.id
-  );
+  prop.S1.properties["S1_10"].enum = countries?.map((x) => x.id);
   prop.S1.properties["S1_10"].enumNames = countries?.map((x) => x.name);
   // geocoverage regional options
-  prop.S1.properties[
-    "geoCoverageValueRegional"
-  ].enum = regionOptions.map((x) => String(x.id));
-  prop.S1.properties[
-    "geoCoverageValueRegional"
-  ].enumNames = regionOptions.map((x) => x.name);
+  prop.S1.properties["geoCoverageValueRegional"].enum = regionOptions.map((x) =>
+    String(x.id)
+  );
+  prop.S1.properties["geoCoverageValueRegional"].enumNames = regionOptions.map(
+    (x) => x.name
+  );
   // // geocoverage national options
   prop.S1.properties["geoCoverageValueNational"].enum = countries?.map(
     (x) => x.id
@@ -102,25 +119,29 @@ const getSchema = (
     (x) => x.name
   );
   // // geocoverage transnational options
-  prop.S1.properties["geoCoverageValueTransnational"].enum = countries?.map((x) =>
-    String(x.id)
-  );
-  prop.S1.properties["geoCoverageValueTransnational"].enumNames = countries?.map(
-    (x) => x.name
-  );
+  prop.S1.properties[
+    "geoCoverageValueTransnational"
+  ].enum = countries?.map((x) => String(x.id));
+  prop.S1.properties[
+    "geoCoverageValueTransnational"
+  ].enumNames = countries?.map((x) => x.name);
   // // geocoverage global with elements in specific areas options
-  prop.S1.properties["geoCoverageValueGlobalSpecific"].enum = meaOptions?.map((x) => String(x.id));
-  prop.S1.properties["geoCoverageValueGlobalSpecific"].enumNames = meaOptions?.map((x) => x.name);
+  prop.S1.properties[
+    "geoCoverageValueGlobalSpecific"
+  ].enum = meaOptions?.map((x) => String(x.id));
+  prop.S1.properties[
+    "geoCoverageValueGlobalSpecific"
+  ].enumNames = meaOptions?.map((x) => x.name);
 
   prop.S3.properties["S3_1"].enum = tags?.offering?.map((it) => it.id);
   prop.S3.properties["S3_1"].enumNames = tags?.offering?.map((it) => it.tag);
-  prop.S4.properties["S4_1"].enum = countries?.map(
-    (x) => x.id
-  );
+  prop.S4.properties["S4_1"].enum = countries?.map((x) => x.id);
 
   prop.S4.properties["S4_1"].enumNames = countries?.map((x) => x.name);
   prop.S5.properties["S5_1"].enum = stakeholders?.map((it) => String(it.id));
-  prop.S5.properties["S5_1"].enumNames = stakeholders?.map((it) => `${it.first_name} ${it.last_name} ${it.email}`);
+  prop.S5.properties["S5_1"].enumNames = stakeholders?.map(
+    (it) => `${it.first_name} ${it.last_name} ${it.email}`
+  );
 
   return {
     schema: {
@@ -142,55 +163,50 @@ const SignUp = ({ match: { params }, ...props }) => {
     formStep,
     formEdit,
   } = UIStore.currentState;
-//  console.log(UIStore.currentState);
+  //  console.log(UIStore.currentState);
   const formData = signUpData.useState();
   const { editId, data } = formData;
   const { status, id } = formEdit.initiative;
 
   const tabsDataRaw = [
-  {
-    key: "S1",
-    title: "Personal Details",
-    desc: "",
-    steps: [
-    ],
-  },
-  {
-    key: "S2",
-    title: "Entity Details",
-    desc: "",
-    steps: [
-    ],
-  },
-  {
-    key: "S3",
-    title: "Area of Expertise",
-    desc: "",
-    steps: [
-    ],
-  },
-  {
-    key: "S4",
-    title: "Geo Coverage",
-    desc: "",
-    steps: [
-    ],
-  },
-  {
-    key: "S5",
-    title: "Additional contact person",
-    desc: "",
-    steps: [
-    ],
-  },
-  // {
-  //   key: "S6",
-  //   title: "Resources",
-  //   desc: "",
-  //   steps: [
-  //   ],
-  // },
-];
+    {
+      key: "S1",
+      title: "Personal Details",
+      desc: "",
+      steps: [],
+    },
+    {
+      key: "S2",
+      title: "Entity Details",
+      desc: "",
+      steps: [],
+    },
+    {
+      key: "S3",
+      title: "Area of Expertise",
+      desc: "",
+      steps: [],
+    },
+    {
+      key: "S4",
+      title: "Geo Coverage",
+      desc: "",
+      steps: [],
+    },
+    {
+      key: "S5",
+      title: "Additional contact person",
+      desc: "",
+      steps: [],
+    },
+    // {
+    //   key: "S6",
+    //   title: "Resources",
+    //   desc: "",
+    //   steps: [
+    //   ],
+    // },
+  ];
   const [tabsData, setTabsData] = useState(tabsDataRaw);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
@@ -225,10 +241,10 @@ const SignUp = ({ match: { params }, ...props }) => {
       // Manage form status, add/edit
       if (
         (status === "edit" || dataId) &&
-          // data.S1 has the same keys as initialSignUpData.S1?
-        (xor(Object.keys(data?.S1), Object.keys(initialSignUpData?.S1)).length ===
-         0 ||
-         editId !== dataId)
+        // data.S1 has the same keys as initialSignUpData.S1?
+        (xor(Object.keys(data?.S1), Object.keys(initialSignUpData?.S1))
+          .length === 0 ||
+          editId !== dataId)
       ) {
         api.getRaw(`/initiative/${dataId}`).then((d) => {
           signUpData.update((e) => {
@@ -365,8 +381,8 @@ const SignUp = ({ match: { params }, ...props }) => {
                       onChange={(status) => setHighlight(status)}
                     />{" "}
                     {highlight
-                     ? "Required fields highlighted"
-                     : "Highlight required"}
+                      ? "Required fields highlighted"
+                      : "Highlight required"}
                   </div>
                   <Button
                     disabled={disabledBtn.disabled}
@@ -408,15 +424,19 @@ const SignUp = ({ match: { params }, ...props }) => {
                   }}
                 >
                   <div>
-                    <Checkbox checked={representEntity}
-                      onChange={(e)=> { setRepresentEntity(e.target.checked);
-                                        if (e.target.checked) {
-                                          setTabsData(tabsDataRaw);
-                                        } else {
-                                          setTabsData(([t1]) => { return [t1];});
-                                        }
-
-                                      }}>
+                    <Checkbox
+                      checked={representEntity}
+                      onChange={(e) => {
+                        setRepresentEntity(e.target.checked);
+                        if (e.target.checked) {
+                          setTabsData(tabsDataRaw);
+                        } else {
+                          setTabsData(([t1]) => {
+                            return [t1];
+                          });
+                        }
+                      }}
+                    >
                       I represent an entity
                     </Checkbox>
                   </div>

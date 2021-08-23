@@ -7,12 +7,12 @@ const formDataMapping = [
    * number -> number
    * dynamic field -> item-array
    */
-// {
-//     key: "S1_9",
-//     name: "S1_9",
-//     group: "S1",
-//     type: "array",
-// },
+  // {
+  //     key: "S1_9",
+  //     name: "S1_9",
+  //     group: "S1",
+  //     type: "array",
+  // },
   // S1
   {
     name: "q1",

@@ -2,11 +2,9 @@ import { UIStore } from "../../store";
 import { geoCoverage } from "../../utils/geo";
 
 const titleField = {
-  title:
-  "Title",
+  title: "Title",
   type: "string",
-  dependency: [
-  ],
+  dependency: [],
   enum: ["Mr", "Mrs", "Ms", "Dr", "Prof"], //["1-0", "1-1"],
   enumNames: ["Mr", "Mrs", "Ms", "Dr", "Prof"],
 };
@@ -23,89 +21,88 @@ export const schema = {
         value: ["S1"],
       },
       value: ["S1"],
-      required: ["S1_LN", "S1_2" , "S1_4"],
+      required: ["S1_LN", "S1_2", "S1_4"],
       properties: {
-        "S1_LN": {
+        S1_LN: {
           title: "",
           type: "object",
-          required: [
-            "S1_1", "S1_3"],
+          required: ["S1_1", "S1_3"],
           properties: {
-            "S1_1": titleField,
-            "S1_3": {
+            S1_1: titleField,
+            S1_3: {
               title: "Last name",
               type: "string",
             },
-
           },
         },
 
-        "S1_2": {
+        S1_2: {
           title: "First name",
           type: "string",
         },
-        "S1_4": {
+        S1_4: {
           title: "Email",
           type: "string",
         },
-        "S1_5": {
+        S1_5: {
           title: "Show my email address on public listing",
           type: "boolean",
         },
-        "S1_6": {
+        S1_6: {
           title: "LinkedIn",
           type: "string",
         },
-        "S1_7": {
+        S1_7: {
           title: "Twitter",
           type: "string",
         },
-        "S1_8": {
+        S1_8: {
           title: "Photo",
           type: "string",
           format: "data-url",
         },
-        "S1_9":{
+        S1_9: {
           title: "Representative sector",
           enum: [],
           enumNames: [],
         },
-        "S1_10":{
+        S1_10: {
           title: "Country",
           enum: [],
           enumNames: [],
         },
         ...geoCoverage,
-        "S1_ExpertisesAndActivities": {
+        S1_ExpertisesAndActivities: {
           title: "Expertises and activities",
           type: "object",
           properties: {
-            "seeking": {
+            seeking: {
               title: "Seeking",
               enum: [],
               enumNames: [],
             },
-            "offering": {
+            offering: {
               title: "Offering",
               enum: [],
             },
-            "about": {
+            about: {
               title: "About yourself",
               type: "string",
             },
-            "tags": {
+            tags: {
               title: "Tags",
               enum: [],
             },
-            "portfolio": {
+            portfolio: {
               title: "CV / Portfolio",
               type: "string",
               format: "data-url",
             },
-            "public_database": {
-              title: "By submitting this form, I will be included in the public database of GPML Digital Platform members and acknowledge that the provided information will be made public and used to find and connect via smart-matchmaking functionalities with other stakeholders and resources.",
+            public_database: {
+              title:
+                "By submitting this form, I will be included in the public database of GPML Digital Platform members and acknowledge that the provided information will be made public and used to find and connect via smart-matchmaking functionalities with other stakeholders and resources.",
               type: "boolean",
-        },
+            },
           },
           required: ["seeking", "offering", "about"],
         },
@@ -127,17 +124,23 @@ export const schema = {
         S2_2: {
           title: "Which representative groups fits your organisation?",
           type: "string",
-          enum: ["Governments", "IGOs and MEAs", "Scientific and technological community and academia", "Private sector and Foundations", "NGOs, MGS, Foundations and private citizens"],
+          enum: [
+            "Governments",
+            "IGOs and MEAs",
+            "Scientific and technological community and academia",
+            "Private sector and Foundations",
+            "NGOs, MGS, Foundations and private citizens",
+          ],
         },
-        "S2_3": {
+        S2_3: {
           title: "Briefly describe your organisation",
           type: "string",
         },
-        "S2_4": {
+        S2_4: {
           title: "Your organisation website",
           type: "string",
         },
-        "S2_5": {
+        S2_5: {
           title: "Upload your organisation’s logo",
           type: "string",
           format: "data-url",
@@ -159,17 +162,20 @@ export const schema = {
         },
 
         S3_2: {
-          title: "What focus area would your organization like to contribute towards?*",
+          title:
+            "What focus area would your organization like to contribute towards?*",
           type: "array",
           uniqueItems: true,
           items: {
             type: "string",
             enum: ["A", "B", "C"],
-            enumNames: ["Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment.", "Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment", "Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity."],
-
+            enumNames: [
+              "Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment.",
+              "Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment",
+              "Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.",
+            ],
           },
         },
-
       },
     },
     S4: {
@@ -188,7 +194,7 @@ export const schema = {
         S4_2: {
           title: "What is the geographical coverage of your organisation?*",
           type: "string",
-          enum: ["Global", "Transnational"]
+          enum: ["Global", "Transnational"],
         },
       },
     },
@@ -201,12 +207,12 @@ export const schema = {
       },
       required: ["S5_1"],
       properties: {
-        "S5_1": {
+        S5_1: {
           title: "Link a registered GPML stakeholder",
           type: "string",
         },
-        "S5_G1": {
-          title:"",
+        S5_G1: {
+          title: "",
           type: "array",
           items: {
             title: "Add a new stakeholder from your entity",
@@ -214,28 +220,27 @@ export const schema = {
             depend: {},
             required: [],
             properties: {
-              "S5_G1_1": titleField,
-              "S5_G1_2": {
+              S5_G1_1: titleField,
+              S5_G1_2: {
                 title: "Last name",
                 type: "string",
               },
-              "S5_G1_3": {
+              S5_G1_3: {
                 title: "First name",
                 type: "string",
               },
-              "S5_G1_4": {
+              S5_G1_4: {
                 title: "Email",
                 type: "string",
               },
-              "S5_G1_5": {
+              S5_G1_5: {
                 title: "Entity Role",
                 type: "string",
               },
             },
-
-          }
+          },
         },
       },
     },
-  }
+  },
 };
