@@ -45,7 +45,7 @@ const LineStack = (data, extra) => {
       align: "auto",
       orient: "horizontal",
       textStyle: {
-        fontFamily: "Gotham A,Gotham B",
+        fontFamily: "Open Sans",
         fontWeight: "bold",
         fontSize: 12,
       },
@@ -71,7 +71,7 @@ const LineStack = (data, extra) => {
       show: true,
       label: {
         color: "#222",
-        fontFamily: "Gotham A,Gotham B",
+        fontFamily: "Open Sans",
       },
     },
     tooltip: {
@@ -86,7 +86,7 @@ const LineStack = (data, extra) => {
       nameLocation: "center",
       nameGap: 25,
       nameTextStyle: {
-        fontFamily: "Gotham A,Gotham B",
+        fontFamily: "Open Sans",
         fontSize: 14,
         color: "#222",
       },
@@ -95,7 +95,7 @@ const LineStack = (data, extra) => {
         inside: true,
         backgroundColor: "#f2f2f2",
         padding: 5,
-        fontFamily: "Gotham A,Gotham B",
+        fontFamily: "Open Sans",
         fontSize: 12,
       },
       logBase: 10,
@@ -106,7 +106,7 @@ const LineStack = (data, extra) => {
       nameLocation: "center",
       nameGap: 35,
       nameTextStyle: {
-        fontFamily: "Gotham A,Gotham B",
+        fontFamily: "Open Sans",
         fontSize: 14,
         color: "#222",
       },
@@ -118,7 +118,7 @@ const LineStack = (data, extra) => {
         },
       },
       axisLabel: {
-        fontFamily: "Gotham A,Gotham B",
+        fontFamily: "Open Sans",
         fontSize: 12,
         color: "#222",
       },

@@ -42,7 +42,7 @@ const Line = (data, extra) => {
       containLabel: true,
       label: {
         color: "#222",
-        fontFamily: "Gotham A,Gotham B",
+        fontFamily: "Open Sans",
         ...text_style,
       },
     },
