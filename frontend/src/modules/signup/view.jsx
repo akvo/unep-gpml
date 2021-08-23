@@ -2,7 +2,7 @@ import { Store } from "pullstate";
 import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState } from "react";
 import { Checkbox, Row, Col, Card, Steps, Switch, Button } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, RightOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import SignUpForm from "./form";
 import StickyBox from "react-sticky-box";
@@ -363,7 +363,7 @@ const SignUp = ({ match: { params }, ...props }) => {
   };
 
   return (
-    <div id="add-initiative">
+    <div id="add-sign-up">
       <StickyBox style={{ zIndex: 10 }}>
         <div className="form-info-wrapper">
           <div className="ui container">
@@ -410,9 +410,8 @@ const SignUp = ({ match: { params }, ...props }) => {
               <Row
                 style={{
                   minHeight: `${minHeightContainer}px`,
-                  padding: "20px 10px 20px 16px",
                   backgroundColor: "#fff",
-                  borderRadius: "6px",
+                  borderRadius: "18px",
                 }}
               >
                 <Col
@@ -421,9 +420,11 @@ const SignUp = ({ match: { params }, ...props }) => {
                   style={{
                     borderRight: "1px solid #D3DBDF",
                     minHeight: "100%",
+                    background: "#2D6796",
+                    borderRadius: "15px 0px 0px 15px",
                   }}
                 >
-                  <div>
+                  <div className="represent-checkbox-wrapper">
                     <Checkbox
                       checked={representEntity}
                       onChange={(e) => {
@@ -458,7 +459,13 @@ const SignUp = ({ match: { params }, ...props }) => {
                     </Steps>
                   ))}
                 </Col>
-                <Col xs={24} lg={18}>
+                <Col
+                  xs={24}
+                  lg={18}
+                  style={{
+                    padding: "20px 10px 20px 16px",
+                  }}
+                >
                   <Card
                     style={{
                       paddingTop: 0,
@@ -482,11 +489,10 @@ const SignUp = ({ match: { params }, ...props }) => {
                     {!isLastStep() && (
                       <Button
                         className="next-button"
-                        type="primary"
-                        size="large"
+                        type="ghost"
                         onClick={(e) => handleOnClickBtnNext(e)}
                       >
-                        Next
+                        Next <RightOutlined />
                       </Button>
                     )}
                   </Card>
