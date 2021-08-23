@@ -12,7 +12,12 @@ SELECT r.*, (CASE
   WHEN r.topic_type = 'policy' THEN (SELECT t.title FROM policy t WHERE t.id = r.topic_id)
   WHEN r.topic_type = 'organisation' THEN (SELECT t.name FROM organisation t WHERE t.id = r.topic_id)
   WHEN r.topic_type = 'stakeholder' THEN (SELECT CONCAT(title, '. ', last_name,' ', first_name) FROM stakeholder t WHERE t.id = r.topic_id)
-END) AS title
+END) AS title,
+(CASE
+  WHEN r.topic_type = 'initiative' THEN 'project'
+  WHEN r.topic_type = 'resource' THEN (SELECT REPLACE(LOWER(t.type), ' ', '_') FROM resource t WHERE t.id = r.topic_id)
+  ELSE r.topic_type::text
+END) AS type
 FROM review r
 WHERE reviewer = :reviewer
 --~ (when (seq (:review-status params)) "AND review_status = ANY(ARRAY[:v*:review-status]::reviewer_review_status[])")
