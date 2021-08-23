@@ -7,7 +7,6 @@ import {
   Avatar,
   Tooltip,
   Calendar,
-  Image,
   Row,
   Col,
   Badge,
@@ -266,7 +265,6 @@ const Landing = ({
                       value: x.count,
                     };
                   })}
-                  wrapper={false}
                   onEvents={{
                     click: (e) => setSelectedTopic(e.data.name.toLowerCase()),
                   }}

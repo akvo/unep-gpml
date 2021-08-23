@@ -38,7 +38,6 @@ const Chart = ({
   span = 12,
   data,
   extra = {},
-  wrapper = true,
   axis = null,
   onEvents = false,
   selected = false,
@@ -54,19 +53,6 @@ const Chart = ({
     axis,
     selected
   );
-  if (wrapper) {
-    return (
-      <Col sm={24} md={span * 2} lg={span} style={{ height: height }}>
-        <Card title={titleCase(title)}>
-          <ReactECharts
-            option={option}
-            style={{ height: height - 50, width: "100%" }}
-            onEvents={onEvents}
-          />
-        </Card>
-      </Col>
-    );
-  }
   return (
     <ReactECharts
       option={option}
