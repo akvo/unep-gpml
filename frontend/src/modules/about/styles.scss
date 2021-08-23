@@ -1,0 +1,183 @@
+@import "../../vars.scss";
+
+#about-us {
+  position: relative;
+
+  a {
+    color: inherit; /* blue colors for links too */
+    text-decoration: inherit; /* no underline */
+  }
+
+  hr {
+    border: 1px solid rgba(37, 91, 135, 0.13);
+  }
+
+  .section-container {
+    padding: 4rem 0;
+  }
+
+  // Section Issue
+  .section-issue-container {
+    background: linear-gradient(
+        0deg,
+        rgba(45, 103, 150, 0.8),
+        rgba(45, 103, 150, 0.8)
+      ),
+      url("../../images/section-issue.png");
+    transform: matrix(-1, 0, 0, 1, 0, 0);
+    background-repeat: no-repeat;
+    background-size: cover;
+    .section-issue-wrapper {
+      transform: matrix(-1, 0, 0, 1, 0, 0);
+      display: flex;
+      justify-content: space-between;
+      .section-issue-text,
+      .section-issue-graphic {
+        margin: 0.7rem;
+      }
+      .section-issue-text {
+        flex: 0 0 40%;
+      }
+      .section-issue-graphic {
+        flex: 0 0 50%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        .item {
+          flex: 1 0 35%;
+          margin: 0.7rem;
+          .item-title {
+            font-weight: 600;
+          }
+          .item-box {
+            position: relative;
+            border: 1px solid #fff;
+            background-color: transparent;
+            padding: 1rem;
+            min-height: 24rem;
+            .item-description {
+              position: absolute;
+              bottom: 0.7rem;
+              height: 3.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Section Summary
+  .section-summary-container {
+    .section-summary-wrapper {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      .item {
+        flex: 1 0 20%;
+        margin: 1rem 2rem;
+        background-color: #4da687;
+        border-radius: 0.75rem;
+        padding: 1.5rem 2.5rem;
+        .item-name,
+        .item-increment {
+          font-size: 0.9rem;
+        }
+        .item-name {
+          text-transform: uppercase;
+        }
+        .item-value {
+          font-size: 3.8rem;
+          font-weight: 900;
+        }
+      }
+    }
+  }
+
+  // Section Mission
+  .section-mission-container {
+    background: linear-gradient(
+        0deg,
+        rgba(45, 103, 150, 0.8),
+        rgba(45, 103, 150, 0.8)
+      ),
+      url("../../images/section-mission.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    .section-mission-wrapper {
+      .section-mission-graphic {
+        text-align: center;
+      }
+    }
+  }
+
+  // Section Info
+  .section-info-container {
+    background: #4da687;
+    .section-info-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .section-info-text,
+      .section-info-button-wrapper {
+        flex: 0 0 45%;
+      }
+      .section-info-button-wrapper {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-wrap: wrap;
+        .btn-item {
+          flex: 1 0 40%;
+          margin: 0.5rem 1rem;
+        }
+      }
+    }
+  }
+
+  // Section Timeline & Roadmap
+  .section-timeline-roadmap-container {
+    .section-timeline-roadmap-wrapper {
+      .section-timeline-roadmap-graphic {
+        text-align: center;
+      }
+    }
+  }
+
+  // Section Key Feature & Components
+  .section-feature-component-container {
+    background: linear-gradient(
+        0deg,
+        rgba(9, 104, 154, 0.9),
+        rgba(9, 104, 154, 0.9)
+      ),
+      url("../../images/our-community.png"), #ffffff;
+    background-repeat: no-repeat;
+    background-size: cover;
+    .section-feature-component-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .section-feature-component-text,
+      .section-feature-component-graphic {
+        flex: 0 0 46%;
+      }
+      .section-feature-component-graphic {
+        background: rgba(255, 255, 255, 0.26);
+        padding: 1.5rem;
+        p {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  // Section GPML Community
+  .section-community-container {
+    background: #2b5260;
+    .section-community-wrapper {
+      .section-community-graphic {
+        text-align: center;
+      }
+    }
+  }
+}
