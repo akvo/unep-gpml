@@ -20,7 +20,8 @@ import AddEvent from "./modules/events/view";
 import logo from "./images/GPML-logo-white.png";
 import StakeholderSignupModal from "./modules/stakeholder-signup/signup-modal";
 import EntitySignupModal from "./modules/entity-signup/signup-modal";
-import SignupView from "./modules/signup/view";
+import SignupView from "./modules/signup-bis/view";
+import NewSignupView from "./modules/signup/view";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
 import { storage } from "./utils/storage";
@@ -357,8 +358,12 @@ const Root = () => {
           render={(props) => <ProfileView {...{ ...props }} />}
         />
         <Route
-          path="/stakeholder-signup"
+          path="/stakeholder-old-signup"
           render={(props) => <SignupView {...props} />}
+        />
+        <Route
+          path="/stakeholder-signup"
+          render={(props) => <NewSignupView {...props} />}
         />
         <Route
           path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
