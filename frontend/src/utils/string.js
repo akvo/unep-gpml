@@ -3,7 +3,7 @@ const escapeRegex = /\(([^)]+)\)\s\w+/g;
 const replace1 = /###/g;
 const replace2 = /·/g;
 
-const TrimText = ({ text, max = 400 }) => {
+export const TrimText = ({ text, max = 400 }) => {
   if (text.length < max) {
     return <div>{text}</div>;
   }
@@ -54,4 +54,10 @@ const TrimText = ({ text, max = 400 }) => {
   );
 };
 
-export default TrimText;
+export const titleCase = (str, delimiter = " ") => {
+  str = str.toLowerCase().split(delimiter);
+  for (var i = 0; i < str.length; i++) {
+    str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
+  }
+  return str.join(" ");
+};
