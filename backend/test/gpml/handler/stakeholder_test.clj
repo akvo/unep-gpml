@@ -101,9 +101,7 @@
         (is (= 200 (:status resp)))
         (is (= 3 (:count body)))
         (is (= #{"APPROVED"} (->> stakeholders (map :review_status) set)))
-        (is (= #{"USER", "REVIEWER", "ADMIN"} (->> stakeholders (map :role) set)))))
-    )
-  )
+        (is (= #{"USER", "REVIEWER", "ADMIN"} (->> stakeholders (map :role) set)))))))
 
 (deftest stakeholder-patch-test
   (let [system (ig/init fixtures/*system* [::stakeholder/patch])
@@ -124,6 +122,4 @@
             user (db.stakeholder/stakeholder-by-id db user-id)]
         (is (= 200 (:status resp)))
         (is (= "success" (:status body)))
-        (is (= "REVIEWER" (:role user)))))
-    )
-  )
+        (is (= "REVIEWER" (:role user)))))))
