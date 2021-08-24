@@ -115,7 +115,7 @@ const responsive = {
   },
   mobile: {
     breakpoint: { max: 767, min: 0 },
-    items: 1,
+    items: 2,
   },
 };
 
@@ -438,13 +438,14 @@ const Landing = ({
               </div>
               <div className="body">
                 <Carousel
+                  centerMode={true}
                   responsive={responsive}
-                  showDots={true}
                   containerClass="carousel-container"
                   itemClass="carousel-item"
-                  renderDotsOutside={true}
                   dotListClass="carousel-dot-list"
-                  centerMode={true}
+                  showDots={true}
+                  renderDotsOutside={true}
+                  removeArrowOnDeviceType={["tablet", "mobile"]}
                 >
                   {ourCommunity.map((x, i) => {
                     const index = i > 3 ? i - 4 : i;
@@ -471,7 +472,8 @@ const Landing = ({
                               xl: 115,
                               xxl: 125,
                             }}
-                            icon={<UserOutlined />}
+                            src={x.image}
+                            alt={x.name}
                           />
                           <h4>{x.name}</h4>
                           <p className="role">{x?.role || ""}</p>

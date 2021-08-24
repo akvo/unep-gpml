@@ -1,3 +1,8 @@
+import fao from "../../images/our-community/fao-logo.svg";
+import gesamp from "../../images/our-community/Gesamp.png";
+import imo from "../../images/our-community/imo.svg";
+import oc from "../../images/our-community/ocean-conservancy.svg";
+
 export const popularTopics = [
   {
     id: 1,
@@ -477,38 +482,35 @@ export const featuredContents = [
 
 export const ourCommunity = [
   {
-    type: "stakeholder",
-    about:
-      "Sed haec quis possit intrepidus aestimare tellus. Cum sociis natoque penatibus et magnis dis parturient.",
-    name: "John Malkovich",
-    role: "Entity Role -  Entity",
-  },
-  {
-    type: "stakeholder",
-    about: "Salutantibus vitae elit libero, a pharetra augue.",
-    name: "Bertrand Lacaze",
-    role: "Entity Role -  Entity",
-  },
-  {
-    type: "stakeholder",
-    about:
-      "Contra legem facit qui id facit quod lex prohibet. Quid securi etiam tamquam eu fugiat nulla pariatur.",
-    name: "Xavier Mendoza",
-    role: "Entity Role -  Entity",
+    type: "entity",
+    about: "Science for sustainable oceans.",
+    image: gesamp,
+    name: "GESAMP",
+    role: null,
   },
   {
     type: "entity",
     about:
-      "Contra legem facit qui id facit quod lex prohibet. Quid securi etiam tamquam eu fugiat nulla pariatur.",
-    name: "Black Forest Solutions",
+      "Helping to build a food-secure world for present and future generations",
+    image: fao,
+    name: "FAO",
     role: null,
   },
   {
-    type: "stakeholder",
+    type: "entity",
     about:
-      "Contra legem facit qui id facit quod lex prohibet. Quid securi etiam tamquam eu fugiat nulla pariatur.",
-    name: "Xavier",
-    role: "Entity Role -  Entity",
+      "To promote safe, secure, environmentally sound, efficient and sustainable shipping through cooperation.",
+    image: imo,
+    name: "IMO",
+    role: null,
+  },
+  {
+    type: "entity",
+    about:
+      "Ocean Conservancy is working with you to protect the ocean from today’s greatest global challenges",
+    image: oc,
+    name: "Ocean Conservancy",
+    role: null,
   },
 ];
 
