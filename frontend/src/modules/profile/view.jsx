@@ -18,9 +18,14 @@ import React, {
 } from "react";
 import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
-import { fetchArchiveData } from "./utils";
+import {
+  fetchArchiveData,
+  fetchSubmissionData,
+  fetchReviewItems,
+} from "./utils";
 import SignupForm from "../signup/signup-form";
 import AdminSection from "./admin";
+import ReviewSection from "./review";
 import "./styles.scss";
 import isEmpty from "lodash/isEmpty";
 import {
@@ -31,26 +36,34 @@ import {
 } from "@ant-design/icons";
 const { TabPane } = Tabs;
 
+const userRoles = new Set(["USER", "REVIEWER", "ADMIN"]);
+const reviewerRoles = new Set(["REVIEWER", "ADMIN"]);
+const adminRoles = new Set(["ADMIN"]);
 const menuItems = [
   {
     key: "personal-details",
     name: "Personal Details",
-    role: "user",
+    role: userRoles,
   },
   {
     key: "my-favourites",
     name: "My Favourites",
-    role: "user",
+    role: userRoles,
   },
   {
     key: "my-network",
     name: "My Network",
-    role: "user",
+    role: userRoles,
+  },
+  {
+    key: "review-section",
+    name: "Review Section",
+    role: reviewerRoles,
   },
   {
     key: "admin-section",
     name: "Admin Section",
-    role: "admin",
+    role: adminRoles,
   },
 ];
 
@@ -62,14 +75,28 @@ const ProfileView = ({ ...props }) => {
   const [pendingItems, setPendingItems] = useState({
     data: [],
     limit: 10,
-    page: 0,
+    page: 1,
     count: 0,
     pages: 0,
   });
   const [archiveItems, setArchiveItems] = useState({
     data: [],
     limit: 10,
-    page: 0,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
+  const [reviewItems, setReviewItems] = useState({
+    reviews: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
+  const [reviewedItems, setReviewedItems] = useState({
+    reviews: [],
+    limit: 10,
+    page: 1,
     count: 0,
     pages: 0,
   });
@@ -78,14 +105,24 @@ const ProfileView = ({ ...props }) => {
     UIStore.update((e) => {
       e.disclaimer = null;
     });
-    if (profile?.role === "ADMIN") {
-      (async function fetchData() {
-        const resp = await api.get("submission");
-        setPendingItems(resp.data);
+    if (adminRoles.has(profile?.role)) {
+      (async () => {
+        const { page, limit } = pendingItems;
+        setPendingItems(await fetchSubmissionData(page, limit));
       })();
       (async function fetchData() {
         const archive = await fetchArchiveData(1, 10);
         setArchiveItems(archive);
+      })();
+    }
+    if (reviewerRoles.has(profile?.role)) {
+      (async () => {
+        setReviewItems(await fetchReviewItems(reviewItems, "PENDING"));
+      })();
+      (async () => {
+        setReviewedItems(
+          await fetchReviewItems(reviewedItems, "ACCEPTED,REJECTED")
+        );
       })();
     }
   }, [profile]);
@@ -141,10 +178,7 @@ const ProfileView = ({ ...props }) => {
   };
 
   const renderMenuItem = (profile) => {
-    let menus = menuItems;
-    if (profile?.role !== "ADMIN") {
-      menus = menuItems.filter((it) => it.role === "user");
-    }
+    const menus = menuItems.filter((it) => it.role.has(profile?.role));
     return menus.map((it) => {
       return (
         <Menu.Item key={it.key} onClick={() => handleOnClickMenu(it.key)}>
@@ -164,6 +198,7 @@ const ProfileView = ({ ...props }) => {
             <div>
               {it.key === "my-favourites" && `(${0})`}
               {it.key === "my-network" && `(${0})`}
+              {it.key === "review-section" && `(${reviewItems.count})`}
               {it.key === "admin-section" && `(${pendingItems.count})`}
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <RightOutlined />
@@ -228,7 +263,15 @@ const ProfileView = ({ ...props }) => {
                   </Button>
                 </div>
               )}
-              {menu === "admin-section" && profile?.role === "ADMIN" && (
+              {menu === "review-section" && adminRoles.has(profile?.role) && (
+                <ReviewSection
+                  reviewItems={reviewItems}
+                  setReviewItems={setReviewItems}
+                  reviewedItems={reviewedItems}
+                  setReviewedItems={setReviewedItems}
+                />
+              )}
+              {menu === "admin-section" && adminRoles.has(profile?.role) && (
                 <AdminSection
                   pendingItems={pendingItems}
                   setPendingItems={setPendingItems}
@@ -237,31 +280,6 @@ const ProfileView = ({ ...props }) => {
                 />
               )}
             </Col>
-            {/* <Tabs tabPosition="left" className="fade-in">
-              <TabPane tab="Personal details" key="1">
-                <SignupForm
-                  {...{ onSubmit, tags }}
-                  handleSubmitRef={(ref) => {
-                    handleSubmitRef.current = ref;
-                  }}
-                  initialValues={profile}
-                />
-                <Button
-                  loading={saving}
-                  type="primary"
-                  onClick={(ev) => {
-                    handleSubmitRef.current(ev);
-                  }}
-                >
-                  Update
-                </Button>
-              </TabPane>
-              {profile?.role === "ADMIN" && (
-                <TabPane tab="Admin section" key="2">
-                  <AdminSection />
-                </TabPane>
-              )}
-            </Tabs> */}
           </Row>
         )}
       </div>

@@ -130,7 +130,7 @@
                                                                 :body [:or
                                                                        [:map
                                                                         [:review-comment string?]
-                                                                        [:review-status #ig/ref :gpml.handler.review/review-status]]
+                                                                        [:review-status #ig/ref :gpml.handler.review/review-status-params]]
                                                                        [:map
                                                                         [:reviewer int?]]]}
                                                    :handler #ig/ref :gpml.handler.review/update-review}}]]
@@ -304,7 +304,7 @@
   :gpml.handler.review/update-review {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/list-reviews {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/list-reviews-params {}
-  :gpml.handler.review/review-status {}
+  :gpml.handler.review/review-status-params {}
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
 
