@@ -10,8 +10,15 @@
   // padding-top: 40px;
   padding-bottom: 40px;
   min-height: calc(100vh - 145px);
-  background: url(../../images/Resource-gpml.jpg) repeat center;
+  background: linear-gradient(
+      0deg,
+      rgba(45, 103, 150, 0.85),
+      rgba(45, 103, 150, 0.85)
+    ),
+    url("../../images/landing-gpml-2.jpeg");
   background-position-y: top;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   // & > .ui.container > .ant-row {
   //   & > .ant-col:first-child {
@@ -103,6 +110,10 @@
       line-height: 2rem;
     }
   }
+  hr.step-line {
+    border: 1px solid #255b87;
+    width: 16.5rem;
+  }
   span.ant-checkbox-inner {
     background-color: #edf2f7;
     border-color: #cbd0d4;
@@ -131,14 +142,14 @@
     border-radius: 5px 0 0 5px;
   }
 
-  // Global Active Step
+  // Global Step
   .step-section {
     .ant-steps-item-container {
       .ant-steps-item-content {
         .ant-steps-item-title {
-          font-size: 18px;
-          text-transform: uppercase;
-          font-weight: bold;
+          font-size: 1.125rem;
+          // text-transform: uppercase;
+          // font-weight: bold;
           color: #fff;
 
           .ant-steps-item-subtitle {
@@ -172,7 +183,7 @@
 
   .ant-steps {
     padding: 10px 10px 10px 25px;
-    margin-bottom: 1rem;
+    // margin-bottom: 1rem;
   }
 
   .ant-steps-item-process {
@@ -260,8 +271,8 @@
     .ant-steps-item-container {
       .ant-steps-item-content {
         .ant-steps-item-title {
-          font-size: 18px;
-          text-transform: uppercase;
+          font-size: 1.125rem;
+          // text-transform: uppercase;
           font-weight: bold;
           color: #fff;
 
@@ -361,11 +372,11 @@
     .ant-picker,
     .ant-select,
     .ant-select-selector,
-    .ant-input-affix-wrapper,
+    .ant-input-affix-wrapper {
+      background-color: #edf2f6;
+    }
     .photo-upload-border {
       background-color: #edf2f6;
-      // border-color: #edf2f6;
-      border: none !important;
     }
 
     .ant-select-selector {

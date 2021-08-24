@@ -433,6 +433,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                           setTabsData(tabsDataRaw);
                         } else {
                           setTabsData(([t1]) => {
+                            handleOnTabChange("S1");
                             return [t1];
                           });
                         }
@@ -442,21 +443,24 @@ const SignUp = ({ match: { params }, ...props }) => {
                     </Checkbox>
                   </div>
                   {tabsData.map(({ key, title, desc, steps }) => (
-                    <Steps
-                      key={`steps-section-${key}`}
-                      direction="vertical"
-                      size="small"
-                      current={data[key]?.steps}
-                      initial={-1}
-                      onChange={(e) => {
-                        e === -1
-                          ? handleOnTabChange(key)
-                          : handleOnStepClick(e, data.tabs[0]);
-                      }}
-                      className={key === data.tabs[0] ? "current-tabs" : ""}
-                    >
-                      {renderSteps(title, key, steps)}
-                    </Steps>
+                    <>
+                      <hr className="step-line" />
+                      <Steps
+                        key={`steps-section-${key}`}
+                        direction="vertical"
+                        size="small"
+                        current={data[key]?.steps}
+                        initial={-1}
+                        onChange={(e) => {
+                          e === -1
+                            ? handleOnTabChange(key)
+                            : handleOnStepClick(e, data.tabs[0]);
+                        }}
+                        className={key === data.tabs[0] ? "current-tabs" : ""}
+                      >
+                        {renderSteps(title, key, steps)}
+                      </Steps>
+                    </>
                   ))}
                 </Col>
                 <Col
