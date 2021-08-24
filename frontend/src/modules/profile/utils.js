@@ -22,3 +22,13 @@ export const fetchReviewItems = async (items, reviewStatus) => {
   const resp = await api.get("review", params);
   return resp.data;
 };
+
+export const fetchStakeholders = async (
+  page,
+  limit,
+  reviewStatus = "APPROVED"
+) => {
+  const params = { page, limit, "review-status": reviewStatus };
+  const resp = await api.get("stakeholder", params);
+  return resp.data;
+};

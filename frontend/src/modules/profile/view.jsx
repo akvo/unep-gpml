@@ -22,11 +22,13 @@ import {
   fetchArchiveData,
   fetchSubmissionData,
   fetchReviewItems,
+  fetchStakeholders,
 } from "./utils";
 import { userRoles as roles } from "../../utils/misc";
 import SignupForm from "../signup/signup-form";
 import AdminSection from "./admin";
 import ReviewSection from "./review";
+import ManageRoles from "./stakeholders";
 import "./styles.scss";
 import isEmpty from "lodash/isEmpty";
 import {
@@ -55,6 +57,11 @@ const menuItems = [
     key: "my-network",
     name: "My Network",
     role: userRoles,
+  },
+  {
+    key: "manage-roles",
+    name: "Manage User Roles",
+    role: adminRoles,
   },
   {
     key: "review-section",
@@ -101,7 +108,13 @@ const ProfileView = ({ ...props }) => {
     count: 0,
     pages: 0,
   });
-
+  const [stakeholdersData, setStakeholdersData] = useState({
+    stakeholders: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = null;
@@ -114,6 +127,11 @@ const ProfileView = ({ ...props }) => {
       (async function fetchData() {
         const archive = await fetchArchiveData(1, 10);
         setArchiveItems(archive);
+      })();
+      (async () => {
+        const { page, limit } = stakeholdersData;
+        const data = await fetchStakeholders(page, limit);
+        setStakeholdersData(data);
       })();
     }
     if (reviewerRoles.has(profile?.role)) {
@@ -263,6 +281,12 @@ const ProfileView = ({ ...props }) => {
                     Update
                   </Button>
                 </div>
+              )}
+              {menu === "manage-roles" && adminRoles.has(profile?.role) && (
+                <ManageRoles
+                  stakeholdersData={stakeholdersData}
+                  setStakeholdersData={setStakeholdersData}
+                />
               )}
               {menu === "review-section" && adminRoles.has(profile?.role) && (
                 <ReviewSection
