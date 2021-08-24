@@ -112,7 +112,7 @@
   }
   hr.step-line {
     border: 1px solid #255b87;
-    width: 16.5rem;
+    width: 90%;
   }
   span.ant-checkbox-inner {
     background-color: #edf2f7;
@@ -147,10 +147,11 @@
     .ant-steps-item-container {
       .ant-steps-item-content {
         .ant-steps-item-title {
-          font-size: 1.125rem;
+          font-size: 1rem;
           // text-transform: uppercase;
           // font-weight: bold;
           color: #fff;
+          width: 90%;
 
           .ant-steps-item-subtitle {
             text-transform: none;
@@ -171,8 +172,8 @@
       }
 
       .ant-steps-item-icon {
-        background-color: #22ba9a;
-        border-color: #b4e1f4;
+        // background-color: #22ba9a;
+        // border-color: #b4e1f4;
 
         .ant-steps-icon {
           color: white;
@@ -186,6 +187,7 @@
     // margin-bottom: 1rem;
   }
 
+  // Active Step
   .ant-steps-item-process {
     .ant-steps-item-container {
       .ant-steps-item-content {
@@ -196,7 +198,7 @@
       }
 
       .ant-steps-item-icon {
-        background-color: #fff;
+        // background-color: #fff;
         // border-color: #398fff;
         border: none;
 
@@ -271,7 +273,7 @@
     .ant-steps-item-container {
       .ant-steps-item-content {
         .ant-steps-item-title {
-          font-size: 1.125rem;
+          font-size: 1rem;
           // text-transform: uppercase;
           font-weight: bold;
           color: #fff;
@@ -284,10 +286,10 @@
       }
 
       .ant-steps-item-icon {
-        background-color: #fff;
+        // background-color: #fff;
 
         .ant-steps-icon {
-          display: none;
+          // display: none;
         }
       }
     }
@@ -318,7 +320,7 @@
       .ant-steps-item-icon {
         opacity: 0.5;
         .ant-steps-icon {
-          display: none;
+          // display: none;
         }
       }
     }
