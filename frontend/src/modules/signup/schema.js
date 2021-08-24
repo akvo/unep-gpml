@@ -216,6 +216,8 @@ export const schema = {
           type: "array",
           items: {
             title: "Add a new stakeholder from your entity",
+            description:
+              "This person will get an email with a link to invite him to complete registration",
             type: "object",
             depend: {},
             required: [],
