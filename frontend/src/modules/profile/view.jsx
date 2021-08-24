@@ -18,6 +18,7 @@ import React, {
 } from "react";
 import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
+import SignupForm from "../stakeholder-signup/signup-form";
 import {
   fetchArchiveData,
   fetchSubmissionData,
@@ -25,7 +26,6 @@ import {
   fetchStakeholders,
 } from "./utils";
 import { userRoles as roles } from "../../utils/misc";
-import SignupForm from "../stakeholder-signup/signup-form";
 import AdminSection from "./admin";
 import ReviewSection from "./review";
 import ManageRoles from "./stakeholders";
