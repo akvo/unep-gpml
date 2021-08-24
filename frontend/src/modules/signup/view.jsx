@@ -334,7 +334,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     const section = data.tabs[0];
     const stepIndex = data[section].steps;
     const tabIndex = tabsData.findIndex((tab) => tab.key === section);
-    const steps = tabsData[tabIndex].steps;
+    const steps = tabsData[tabIndex]?.steps || [];
     return { tabIndex, stepIndex, steps };
   };
 
@@ -486,7 +486,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                       formSchema={formSchema}
                       setDisabledBtn={setDisabledBtn}
                     />
-                    {!isLastStep() && (
+                    {!isLastStep() && representEntity && (
                       <Button
                         className="next-button"
                         type="ghost"

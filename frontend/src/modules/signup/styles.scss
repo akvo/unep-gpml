@@ -103,6 +103,13 @@
       line-height: 2rem;
     }
   }
+  span.ant-checkbox-inner {
+    background-color: #edf2f7;
+    border-color: #cbd0d4;
+  }
+  .ant-checkbox-checked .ant-checkbox-inner::after {
+    border-color: #255b87;
+  }
 
   .ant-menu::before {
     display: none;
@@ -179,7 +186,8 @@
 
       .ant-steps-item-icon {
         background-color: #fff;
-        border-color: #398fff;
+        // border-color: #398fff;
+        border: none;
 
         .ant-steps-icon {
           color: #398fff;
@@ -352,10 +360,12 @@
     .ant-input-number-input,
     .ant-picker,
     .ant-select,
-    .ant-select-selector {
+    .ant-select-selector,
+    .ant-input-affix-wrapper,
+    .photo-upload-border {
       background-color: #edf2f6;
-
       // border-color: #edf2f6;
+      border: none !important;
     }
 
     .ant-select-selector {
@@ -363,8 +373,8 @@
     }
 
     .ant-input-group-addon {
-      background-color: $primaryColor;
-      border-color: $primaryColor;
+      background-color: #ccd2e3;
+      border-color: #ccd2e3;
       color: #fff;
     }
 
@@ -496,6 +506,10 @@
       margin-bottom: 20px;
       margin-top: 10px;
     }
+
+    .form-group.field.field-object.list-group-item {
+      margin-top: 3rem;
+    }
   }
 
   .ant-btn-primary {
@@ -503,10 +517,14 @@
     text-transform: uppercase;
     font-weight: 500;
   }
-}
 
-.next-button {
-  margin-top: 2em;
-  position: absolute;
-  right: 24px; // Same as ant-card's right padding value
+  .next-button {
+    margin-top: 6rem;
+    position: absolute;
+    // right: 24px; // Same as ant-card's right padding value
+    right: 45%;
+    border: 2px solid #1ca585;
+    border-radius: 23.5px;
+    color: #1ca585;
+  }
 }

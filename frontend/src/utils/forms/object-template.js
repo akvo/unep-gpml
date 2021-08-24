@@ -166,7 +166,11 @@ const ObjectFieldTemplate = ({
         {uiSchema["ui:title"] !== false && (uiSchema["ui:title"] || title) && (
           <Col className={labelColClassName} span={24}>
             <h1
-              style={{ color: "#00AAF1", fontSize: "18px", marginTop: "10px" }}
+              style={{
+                color: "#09689A",
+                fontSize: "18px",
+                marginTop: "10px",
+              }}
               id={`${idSchema.$id}-title`}
               required={required}
             >
