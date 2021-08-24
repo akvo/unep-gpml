@@ -115,7 +115,7 @@
         reviewer :reviewer}]
     (list-reviews db reviewer page limit review-status)))
 
-(defmethod ig/init-key ::review-status [_ _]
+(defmethod ig/init-key ::review-status-params [_ _]
   (apply conj [:enum] (map name constants/reviewer-review-status)))
 
 (defmethod ig/init-key ::list-reviews-params [_ _]
