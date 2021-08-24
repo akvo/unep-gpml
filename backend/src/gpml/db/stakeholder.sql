@@ -6,6 +6,25 @@ select * from stakeholder order by id;
 -- :doc Get all stakeholder
 select * from stakeholder where public_email=true order by id;
 
+-- :name list-stakeholder-paginated :? :*
+-- :doc Get paginated list of stakeholders
+SELECT * FROM stakeholder
+WHERE 1=1
+--~ (when (:review-status params) "AND review_status = (:v:review-status)::review_status")
+--~ (when (seq (:roles params)) "AND role = ANY(ARRAY[:v*:roles]::stakeholder_role[])")
+--~ (when (:email-like params) "AND email LIKE :v:email-like")
+ORDER BY id
+LIMIT :limit
+OFFSET :limit * (:page - 1);
+
+-- :name count-stakeholder :? :1
+-- :doc Get paginated list of approved stakeholder
+SELECT COUNT(*) FROM stakeholder
+WHERE 1=1
+--~ (when (:review-status params) "AND review_status = (:v:review-status)::review_status")
+--~ (when (seq (:roles params)) "AND role = ANY(ARRAY[:v*:roles]::stakeholder_role[])")
+--~ (when (:email-like params) "AND email LIKE :v:email-like")
+
 -- :name stakeholder-by-id :? :1
 -- :doc Get stakeholder by id
 select

@@ -5,6 +5,7 @@
    [gpml.constants :as constants]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.db.review :as db.review]
+   [gpml.handler.util :as util]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
@@ -85,7 +86,7 @@
         params {:reviewer (:id reviewer) :page page :limit limit :review-status review-status}
         reviews (db.review/reviews-by-reviewer-id conn params)
         count (:count (db.review/count-by-reviewer-id conn params))
-        pages (int (Math/ceil (float (/ count (or (and (> limit 0) limit) 1)))))]
+        pages (util/page-count count limit)]
     (resp/response {:reviews reviews :page page :limit limit :pages pages :count count})))
 
 (defmethod ig/init-key ::get-reviewers [_ {:keys [db]}]

@@ -40,11 +40,9 @@ SELECT json_build_object(
 
 -- :name detail :? :1
 -- :doc get detail of submission
-SELECT s.email AS created_by_email, t.*
-FROM :i:table-name t
-LEFT JOIN stakeholder s ON s.id =
---~ (if (= (:table-name params) "v_stakeholder_data") "t.id" "t.created_by")
-WHERE t.id = :id::integer;
+SELECT *
+from :i:table-name
+where id = :id::integer;
 
 -- :name update-submission :! :n
 -- :doc approve or reject submission

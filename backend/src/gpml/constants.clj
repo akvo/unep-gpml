@@ -9,4 +9,8 @@
 
 (def reviewer-review-status [:PENDING :ACCEPTED :REJECTED])
 
+(def admin-review-status [:SUBMITTED :APPROVED])
+
+(def user-roles [:USER :REVIEWER :ADMIN])
+
 (def gcs-bucket-name "akvo-unep-gpml")
