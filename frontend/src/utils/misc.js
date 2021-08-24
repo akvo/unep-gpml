@@ -76,3 +76,5 @@ export const relationsByTopicType = {
   stakeholder: ["interested in", "other"],
   organisation: ["interested in", "other"],
 };
+
+export const userRoles = ["USER", "REVIEWER", "ADMIN"];

@@ -23,6 +23,7 @@ import {
   fetchSubmissionData,
   fetchReviewItems,
 } from "./utils";
+import { userRoles as roles } from "../../utils/misc";
 import SignupForm from "../signup/signup-form";
 import AdminSection from "./admin";
 import ReviewSection from "./review";
@@ -36,7 +37,7 @@ import {
 } from "@ant-design/icons";
 const { TabPane } = Tabs;
 
-const userRoles = new Set(["USER", "REVIEWER", "ADMIN"]);
+const userRoles = new Set(roles);
 const reviewerRoles = new Set(["REVIEWER", "ADMIN"]);
 const adminRoles = new Set(["ADMIN"]);
 const menuItems = [
