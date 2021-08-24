@@ -176,7 +176,7 @@ const ObjectFieldTemplate = ({
             >
               {title}
             </h1>
-            <hr style={{ border: "none", borderTop: "1px solid #ddd" }} />
+            {/* <hr style={{ border: "none", borderTop: "1px solid #ddd" }} /> */}
           </Col>
         )}
         {uiSchema["ui:description"] !== false &&
