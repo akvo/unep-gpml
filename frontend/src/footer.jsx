@@ -210,60 +210,62 @@ const Footer = ({
           </nav>
         </div>
       </div>
-      <div className="ui container unep">
-        <div className="col unepLogo">
-          <img src={unepLogo} className="uneplogo" alt="unep" />
-        </div>
-        <div className="col unepInfo">
-          <h2>
-            The Digital Platform is a UNEP contribution to the Global
-            Partnership on Marine Litter (GPML)
-          </h2>
-        </div>
-      </div>
-      <div className="ui container">
-        <div className="footBottom">
-          <div className="col">
-            <nav>
-              <ul className="horizonList">
-                <li>
-                  <p>© UNEP</p>
-                </li>
-                <li>
-                  <a
-                    href="/privacy-policy-and-terms-of-use.pdf"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Privacy Policy &amp; Terms of use
-                  </a>
-                </li>
-              </ul>
-            </nav>
+      <div className="second-footer">
+        <div className="ui container unep">
+          <div className="unepLogo">
+            <img src={unepLogo} className="uneplogo" alt="unep" />
           </div>
-          <div className="col">
-            <nav>
-              <ul className="horizonList socialLink">
-                <li>
-                  <a
-                    href="https://www.linkedin.com/company/global-partnership-on-marine-litter/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <LinkedinOutlined />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <YoutubeOutlined />
-                  </a>
-                </li>
-              </ul>
-            </nav>
+          <div className="unepInfo">
+            <h2>
+              The Digital Platform is a UNEP contribution to the Global
+              Partnership on Marine Litter (GPML)
+            </h2>
+          </div>
+        </div>
+        <div className="ui container">
+          <div className="footBottom">
+            <div className="col">
+              <nav>
+                <ul className="horizonList">
+                  <li>
+                    <p className="copy-right">© UNEP</p>
+                  </li>
+                  <li>
+                    <a
+                      href="/privacy-policy-and-terms-of-use.pdf"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Privacy Policy &amp; Terms of use
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div className="col">
+              <nav>
+                <ul className="horizonList socialLink">
+                  <li>
+                    <a
+                      href="https://www.linkedin.com/company/global-partnership-on-marine-litter/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <LinkedinOutlined />
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <YoutubeOutlined />
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
         </div>
       </div>

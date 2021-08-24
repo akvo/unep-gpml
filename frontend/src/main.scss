@@ -4,31 +4,73 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Open Sans", "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+// Typography
 h1 {
-  font-size: 40px;
+  font-size: 3.1rem;
   font-weight: 900;
+  letter-spacing: -0.06rem;
+  line-height: 4.4rem;
 }
 
 h2 {
-  font-size: 32px;
+  font-size: 1.9rem;
   font-weight: 600;
+  line-height: 1.25rem;
 }
 
 h3 {
-  font-size: 27px;
+  font-size: 1.3rem;
   font-weight: 600;
+  line-height: 1.25rem;
 }
 
 h4 {
-  font-size: 22px;
+  font-size: 1.4rem;
 }
+
+.nav-link {
+  font-size: 1rem;
+  line-height: 1.9rem;
+}
+
+.see-more-link {
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.25rem;
+}
+
+.resource-label {
+  font-size: 1rem;
+  font-weight: bold;
+  &.upper {
+    text-transform: uppercase;
+  }
+}
+
+.body-text {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.asset-title {
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.56rem;
+}
+
+.copy-right {
+  font-size: 0.75rem;
+  line-height: 0.69rem;
+}
+
+// EOL Typography
 
 .rjsf {
   .ant-input,
@@ -43,14 +85,81 @@ h4 {
 }
 
 #root {
-  // .ant-btn {
-  //   // border-radius: 4px;
-  // }
-
-  .ant-btn-primary {
-    background-color: $primaryColor;
-    border-color: $primaryColor;
+  // antd part
+  .ant-menu.ant-menu-dark,
+  .ant-menu-dark .ant-menu-sub,
+  .ant-menu.ant-menu-dark .ant-menu-sub {
+    background: none;
+    min-width: 620px;
   }
+
+  .ant-menu-dark .ant-menu-item,
+  .ant-menu-dark .ant-menu-item-group-title,
+  .ant-menu-dark .ant-menu-item > a,
+  .ant-menu-dark .ant-menu-item > span > a {
+    color: rgba(255, 255, 255, 1);
+    font-weight: 500;
+  }
+
+  .ant-menu-item .ant-menu-item-icon,
+  .ant-menu-submenu-title .ant-menu-item-icon,
+  .ant-menu-item .anticon,
+  .ant-menu-submenu-title .anticon {
+    margin-right: 0;
+  }
+
+  .ant-menu-dark.ant-menu-horizontal > .ant-menu-item,
+  .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu {
+    top: 0;
+    margin-top: 0;
+    padding: 0 12px;
+    border-color: #001529;
+    border-bottom: 0;
+  }
+
+  .ant-menu-item-active {
+    background: rgba(77, 255, 165, 0.1);
+    border-radius: 5px 5px 0px 0px;
+    color: #4dffa5 !important;
+  }
+
+  .ant-menu-item-selected {
+    background: none;
+  }
+
+  // btn
+  .ant-btn-primary {
+    color: #2d6796;
+    background-color: $green01;
+    border-color: $green01;
+    border-radius: 50px;
+    &:hover {
+      border-color: #079e90;
+      color: #00ff7f;
+      background: #079e90;
+    }
+  }
+
+  // btn
+  .ant-btn-ghost {
+    color: $green01;
+    background: transparent;
+    border-color: $green01;
+    border-radius: 50px;
+    &.left {
+      margin-left: 8px;
+    }
+    &.white {
+      color: #fff;
+      border-color: #fff;
+    }
+    &:hover {
+      border-color: #079e90;
+      color: #00ff7f;
+      background: #079e90;
+    }
+  }
+  // end of antd part
 
   & > .topbar {
     background-color: #036799;
@@ -67,34 +176,96 @@ h4 {
 
       .rightside {
         margin-left: auto;
-
         .ant-btn-link {
-          color: #fff;
+          color: #fff !important;
         }
       }
     }
   }
 
-  & > header {
-    height: 110px;
-    padding-top: 8px;
-    box-sizing: border-box;
-    border-bottom: 1px solid #81b2cc;
+  header.ant-layout-header.nav-header-container {
+    width: 100%;
+    position: static;
+    top: 0;
+    z-index: 3;
+    padding: 0;
+    // line-height: 75px;
+  }
 
-    .logo {
-      width: 310px;
+  .menu-dropdown-container {
+    // min-width: 600px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .menu-btn {
+    cursor: pointer;
+    color: #fff;
+    font-weight: 500;
+    border-right: 1px solid #3176ae;
+    &:hover {
+      color: #4dffa5;
+      background: rgba(77, 255, 165, 0.1);
+      border-radius: 5px 5px 0px 0px;
     }
+  }
+
+  & > header {
+    display: flex;
+    align-items: center;
+    min-height: 89px;
+    // padding-top: 8px;
+    box-sizing: border-box;
+    background: #2d6796;
+    // border-bottom: 1px solid #81b2cc;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
 
     .ui.container {
       display: flex;
+      justify-content: space-between;
+      align-content: center;
+      .rightside {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .logo-wrapper {
+      float: left;
+      margin-right: 10px;
+    }
+
+    .ant-row-rtl .logo {
+      float: right;
+    }
+
+    .logo {
+      width: 200px;
     }
 
     .src {
-      width: 33%;
-      height: 40px;
-      border-radius: 3px;
-      margin-top: 26px;
-      margin-left: 40px;
+      display: flex;
+      align-items: center;
+      width: 16%;
+      margin-left: 10px;
+      margin-right: 10px;
+      .input-src {
+        border-radius: 30px;
+        input.ant-input {
+          color: #1ca585;
+          &::placeholder {
+            color: #1ca585;
+          }
+          &:focus {
+            box-shadow: 0px 10px 10px rgba(46, 213, 115, 0.15);
+          }
+        }
+      }
+      .ant-btn.ant-btn-primary.ant-input-search-button {
+        border-radius: 0;
+      }
     }
 
     nav {
@@ -104,7 +275,7 @@ h4 {
       a {
         color: #666;
         font-weight: 500;
-        font-size: 18px;
+        font-size: 1.13rem;
         text-decoration: none;
         margin: 0 13px;
       }
@@ -121,7 +292,7 @@ h4 {
     display: flex;
     justify-content: center;
     color: white;
-    font-size: 12px;
+    font-size: 0.75rem;
     padding-top: 12px;
   }
 
@@ -132,13 +303,35 @@ h4 {
   }
 }
 
-.add-dropdown-wrapper {
-  border: 1px solid $primaryColor;
-  border-radius: 2px;
-
-  .add-dropdown {
+// Menu Dropdown
+button.ant-btn.ant-btn-link.ant-dropdown-trigger.menu-btn.nav-link {
+  line-height: 0;
+  height: 50px;
+}
+.add-dropdown-wrapper,
+.user-btn-dropdown-wrapper,
+.menu-dropdown-wrapper {
+  .add-dropdown,
+  .user-btn-dropdown,
+  .menu-dropdown {
+    min-width: 175px;
     text-align: left;
     padding: 0px;
+
+    .indent-right {
+      padding-left: 25px;
+    }
+
+    .badge-count {
+      border: 1px solid #255b87;
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      border-radius: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
     :not(:last-child) {
       border-bottom: 1px solid $primaryColor;
@@ -148,9 +341,9 @@ h4 {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-weight: 600;
-      font-size: 16px;
-      color: #04a9f1;
+      font-weight: 500;
+      font-size: 0.88rem;
+      color: #2d6796;
       height: 40px;
 
       :last-child {
@@ -171,14 +364,13 @@ h4 {
 .photo-upload {
   img {
     width: 100px;
-    border-radius: 20px;
+    border-radius: 1.3rem;
     margin-top: 10px;
   }
 }
 
 footer {
-  border-top: 1px solid #fff;
-  background-color: $primaryColor;
+  background-color: #2d6796;
   color: #fff;
   padding: 50px 0 0 0;
 
@@ -196,31 +388,7 @@ footer {
   }
 
   .ui.container {
-    &.unep {
-      padding: 0.5rem 0;
-      display: flex;
-
-      .unepInfo {
-        width: calc(100% - 110px);
-        text-align: left;
-        padding: 0 0 0 5rem;
-      }
-
-      h2 {
-        color: white;
-        font-size: 0.9rem;
-        margin: 1.6rem 0 0 0;
-        font-weight: 400;
-      }
-    }
-
-    .unepLogo {
-      img {
-        width: 100px;
-        margin-left: 0.5rem;
-      }
-    }
-
+    padding-bottom: 1rem;
     &:first-child {
       display: flex;
 
@@ -241,6 +409,28 @@ footer {
         }
       }
     }
+    &.unep {
+      padding: 1rem 0;
+      display: flex;
+      align-items: center;
+      .unepLogo {
+        img {
+          width: 85%;
+          margin-left: 0;
+        }
+      }
+      .unepInfo {
+        h2 {
+          color: white;
+          font-size: 0.9rem;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+
+  .second-footer {
+    background-color: $primaryColor;
   }
 
   .footBottom {
@@ -289,8 +479,8 @@ footer {
 .warning-modal-user {
   b {
     display: block;
-    font-size: 16px;
-    margin-bottom: 16px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
   }
 }
 
@@ -301,7 +491,7 @@ footer {
 h2.loading {
   font-weight: normal;
   text-shadow: 0 0 0.25px #096dd9;
-  font-size: 14px;
+  font-size: 0.88rem;
   padding-top: 40px;
   text-align: center;
   padding-bottom: 1500px;

@@ -10,8 +10,10 @@
 }
 
 /* Mobile */
-
 @media only screen and (max-width: 767px) {
+  html {
+    font-size: 14px;
+  }
   .ui.container {
     width: auto !important;
     margin-left: 1.2em !important;
@@ -71,19 +73,47 @@
       }
     }
 
+    .ant-menu.ant-menu-dark,
+    .ant-menu-dark .ant-menu-sub,
+    .ant-menu.ant-menu-dark .ant-menu-sub {
+      background: none;
+      min-width: 0;
+    }
+
+    header.ant-layout-header.nav-header-container {
+      width: 100%;
+      position: static !important;
+    }
+
+    .menu-dropdown-wrapper {
+      flex-wrap: wrap;
+      justify-content: space-evenly !important;
+      margin: 15px 0;
+    }
+
     // enable mobile view -- header
     & > header {
       height: auto !important;
       padding-top: 15px;
       padding-bottom: 15px;
+      .logo-wrapper {
+        clear: both !important;
+        text-align: center;
+        margin-right: 0;
+        margin-bottom: -10px;
+      }
       .logo {
-        width: 95%;
+        width: 40%;
       }
       .ui.container {
         align-items: center;
+        .rightside {
+          margin: 1.2rem 0;
+          justify-content: center;
+        }
       }
       .src {
-        width: 100%;
+        width: 80%;
         margin-left: 0;
       }
       nav {
@@ -94,6 +124,73 @@
           margin-left: 0;
           font-weight: bold;
           width: 100%;
+        }
+      }
+    }
+  }
+
+  // enable mobile view - maps
+  #landing {
+    .popular-topics {
+      .body {
+        flex-direction: column;
+        .chart-wrapper {
+          width: 100% !important;
+        }
+        .content {
+          margin-top: 0.85rem;
+          width: 100% !important;
+        }
+      }
+    }
+
+    .featured-content {
+      .body {
+        flex-direction: column;
+        .content-left {
+          width: 100% !important;
+        }
+        .content-right {
+          width: 100% !important;
+        }
+      }
+    }
+
+    .our-community {
+      .body {
+        .carousel-container {
+          .carousel-item {
+            .detail {
+              bottom: 2.5% !important;
+              p {
+                height: 12px !important;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .benefit {
+      .body {
+        flex-direction: column;
+        .item {
+          width: 100% !important;
+          margin-bottom: 1rem;
+        }
+      }
+      .btn-wrapper {
+        margin-top: 0 !important;
+      }
+    }
+
+    .event {
+      .body {
+        flex-direction: column;
+        .content,
+        .calendar {
+          width: 100% !important;
+          margin-bottom: 1rem;
         }
       }
     }
@@ -322,8 +419,10 @@
 }
 
 /* Tablet */
-
 @media only screen and (min-width: 768px) and (max-width: 991px) {
+  html {
+    font-size: 14px;
+  }
   .ui.container {
     width: auto !important;
     margin-left: 30px !important;
@@ -342,6 +441,52 @@
     width: calc(723px + 5rem) !important;
   }
 
+  #root {
+    .ant-menu.ant-menu-dark,
+    .ant-menu-dark .ant-menu-sub,
+    .ant-menu.ant-menu-dark .ant-menu-sub {
+      background: none;
+      min-width: 0;
+    }
+
+    .ui.container {
+      flex-wrap: wrap;
+      justify-content: space-evenly !important;
+    }
+
+    header.ant-layout-header.nav-header-container {
+      width: 100%;
+      position: static !important;
+      padding-bottom: 20px;
+    }
+
+    .menu-dropdown-wrapper {
+      flex-wrap: wrap;
+      justify-content: space-evenly !important;
+      margin: 15px 0;
+    }
+
+    & > header {
+      min-height: 200px;
+      .src {
+        width: 50%;
+      }
+    }
+  }
+
+  footer {
+    .ui.container {
+      &.unep {
+        .unepLogo {
+          width: 30%;
+        }
+        .unepInfo {
+          width: 70%;
+        }
+      }
+    }
+  }
+
   // enable mobile view - maps
   #landing {
     .landing-container.map-container {
@@ -354,6 +499,46 @@
             li {
               .disclaimer {
                 max-width: 100% !important;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .popular-topics {
+      .body {
+        flex-direction: column;
+        .chart-wrapper {
+          width: 100% !important;
+        }
+        .content {
+          margin-top: 0.85rem;
+          width: 100% !important;
+        }
+      }
+    }
+
+    .featured-content {
+      .body {
+        flex-direction: column;
+        .content-left {
+          width: 100% !important;
+        }
+        .content-right {
+          width: 100% !important;
+        }
+      }
+    }
+
+    .our-community {
+      .body {
+        .carousel-container {
+          .carousel-item {
+            .detail {
+              bottom: 6% !important;
+              p {
+                height: 12px !important;
               }
             }
           }
@@ -470,8 +655,10 @@
 }
 
 /* Small Monitor */
-
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
+  html {
+    font-size: 14px;
+  }
   .ui.container {
     width: auto !important;
     margin-left: 30px !important;
@@ -490,6 +677,39 @@
     width: calc(933px + 5rem) !important;
   }
 
+  #root {
+    .ant-menu.ant-menu-dark,
+    .ant-menu-dark .ant-menu-sub,
+    .ant-menu.ant-menu-dark .ant-menu-sub {
+      background: none;
+      min-width: 0;
+    }
+
+    .ui.container {
+      flex-wrap: wrap;
+      justify-content: space-evenly !important;
+    }
+
+    header.ant-layout-header.nav-header-container {
+      width: 100%;
+      // position: static !important;
+      padding-bottom: 20px;
+    }
+
+    .menu-dropdown-wrapper {
+      flex-wrap: wrap;
+      justify-content: space-evenly !important;
+      margin: 15px 0;
+    }
+
+    & > header {
+      min-height: 140px;
+      .src {
+        width: 50%;
+      }
+    }
+  }
+
   // enable mobile view - maps
   #landing {
     .landing-container.map-container {
@@ -497,12 +717,89 @@
         left: 35px !important;
       }
     }
+
+    .popular-topics {
+      .body {
+        .chart-wrapper {
+          width: 40% !important;
+        }
+        .content {
+          width: 59% !important;
+        }
+      }
+    }
+
+    .featured-content {
+      .body {
+        .content-left {
+          width: 53% !important;
+        }
+        .content-right {
+          width: 46% !important;
+        }
+      }
+    }
+
+    .our-community {
+      .body {
+        .carousel-container {
+          .carousel-item {
+            .detail {
+              p {
+                height: 12px !important;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 
 /* Large Monitor */
+@media only screen and (min-width: 1200px) and (max-width: 1365px) {
+  html {
+    font-size: 14px;
+  }
+  .ui.container {
+    width: 1127px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 
-@media only screen and (min-width: 1200px) {
+  .ui.grid.container {
+    width: calc(1127px + 2rem) !important;
+  }
+
+  .ui.relaxed.grid.container {
+    width: calc(1127px + 3rem) !important;
+  }
+
+  .ui.very.relaxed.grid.container {
+    width: calc(1127px + 5rem) !important;
+  }
+
+  #root {
+    .ant-menu.ant-menu-dark,
+    .ant-menu-dark .ant-menu-sub,
+    .ant-menu.ant-menu-dark .ant-menu-sub {
+      background: none;
+      min-width: 0;
+    }
+
+    & > header {
+      .logo {
+        width: 165px;
+      }
+    }
+  }
+}
+
+/* Large Large Monitor */
+@media only screen and (min-width: 1366px) {
+  html {
+    font-size: 15px;
+  }
   .ui.container {
     width: 1127px;
     margin-left: auto !important;
@@ -522,16 +819,22 @@
   }
 }
 
+/* Replace all ui container style for media screen */
 .ui.container {
   @media (max-width: 768px) {
-    margin-left: 20px;
-    margin-right: 20px;
-    width: auto;
+    margin-left: 3% !important;
+    margin-right: 3% !important;
+    width: 94%;
   }
   @media (min-width: 1200px) {
-    margin-left: 70px !important;
-    margin-right: 70px !important;
-    width: auto;
+    margin-left: 3% !important;
+    margin-right: 3% !important;
+    width: 94%;
+  }
+  @media (min-width: 1366px) {
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+    width: 90%;
   }
   @media (min-width: 1600px) {
     width: 1560px;
