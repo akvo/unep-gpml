@@ -186,11 +186,12 @@
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.technology/post-params}
                                                   :handler #ig/ref :gpml.handler.technology/post}}]]
-                                        ["/stakeholder"
+                                        ["/stakeholder" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
-                                          {:get {:summary "Get all public stakeholders"
+                                          {:get {:summary "List Stakeholders"
                                                  :swagger {:tags ["stakeholder"]}
-                                                 :handler #ig/ref :gpml.handler.stakeholder/public}}]]
+                                                 :parameters #ig/ref :gpml.handler.stakeholder/list-params
+                                                 :handler #ig/ref :gpml.handler.stakeholder/list}}]]
                                         ["/landing"
                                          [""
                                           {:get {:summary "End-point for the landing page"
@@ -337,7 +338,8 @@
   :gpml.handler.initiative/post-params {}
 
   :gpml.handler.profile/get {:db #ig/ref :duct.database/sql}
-  :gpml.handler.stakeholder/public {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/list {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/list-params {}
   :gpml.handler.profile/post {:db #ig/ref :duct.database/sql
                               :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.profile/post-params {}
