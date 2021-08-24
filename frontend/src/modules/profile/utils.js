@@ -9,3 +9,9 @@ export const fetchArchiveData = async (page, limit) => {
   }));
   return { ...res.data, data };
 };
+
+export const fetchSubmissionData = async (page, limit) => {
+  const params = { page, limit };
+  const resp = await api.get("/submission", params);
+  return resp.data;
+};

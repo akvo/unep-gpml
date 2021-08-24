@@ -18,7 +18,7 @@ import React, {
 } from "react";
 import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
-import { fetchArchiveData } from "./utils";
+import { fetchArchiveData, fetchSubmissionData } from "./utils";
 import SignupForm from "../signup/signup-form";
 import AdminSection from "./admin";
 import "./styles.scss";
@@ -62,14 +62,14 @@ const ProfileView = ({ ...props }) => {
   const [pendingItems, setPendingItems] = useState({
     data: [],
     limit: 10,
-    page: 0,
+    page: 1,
     count: 0,
     pages: 0,
   });
   const [archiveItems, setArchiveItems] = useState({
     data: [],
     limit: 10,
-    page: 0,
+    page: 1,
     count: 0,
     pages: 0,
   });
@@ -79,9 +79,9 @@ const ProfileView = ({ ...props }) => {
       e.disclaimer = null;
     });
     if (profile?.role === "ADMIN") {
-      (async function fetchData() {
-        const resp = await api.get("submission");
-        setPendingItems(resp.data);
+      (async () => {
+        const { page, limit } = pendingItems;
+        setPendingItems(await fetchSubmissionData(page, limit));
       })();
       (async function fetchData() {
         const archive = await fetchArchiveData(1, 10);

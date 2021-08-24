@@ -13,7 +13,7 @@ import {
 import React, { Fragment } from "react";
 import { useState } from "react";
 import api from "../../utils/api";
-import { fetchArchiveData } from "./utils";
+import { fetchArchiveData, fetchSubmissionData } from "./utils";
 import moment from "moment";
 import capitalize from "lodash/capitalize";
 import find from "lodash/find";
@@ -86,17 +86,12 @@ const AdminSection = ({
           data: [newArchive, ...archiveData],
           count: archiveItems.count + 1,
         });
-        api
-          .get(
-            "/submission?page=" +
-              pendingItems.page +
-              "&limit=" +
-              pendingItems.limit
-          )
-          .then((res) => {
-            setPendingItems(res.data);
-            setApproveLoading({});
-          });
+        (async () => {
+          const { page, limit } = pendingItems;
+          const items = await fetchSubmissionData(page, limit);
+          setPendingItems(items);
+          setApproveLoading({});
+        })();
         setModalRejectVisible(false);
       });
   };
@@ -130,17 +125,16 @@ const AdminSection = ({
   };
 
   const renderNewApprovalRequests = () => {
-    const onChangePagePending = (p) => {
-      api
-        .get("/submission?page=" + p + "&limit=" + pendingItems.limit)
-        .then((res) => {
-          setPendingItems(res.data);
-        });
+    const onChangePagePending = (page) => {
+      (async () => {
+        const { limit } = pendingItems;
+        setPendingItems(await fetchSubmissionData(page, limit));
+      })();
     };
-    const onChangePagePendingSize = (p, l) => {
-      api.get("/submission?page=" + p + "&limit=" + l).then((res) => {
-        setPendingItems(res.data);
-      });
+    const onChangePagePendingSize = (page, limit) => {
+      (async () => {
+        setPendingItems(await fetchSubmissionData(page, limit));
+      })();
     };
     return (
       <Fragment key="new-approval">
