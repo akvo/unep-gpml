@@ -1,6 +1,12 @@
 import { UIStore } from "../../store";
 import { geoCoverage } from "../../utils/geo";
 
+const {
+  languages,
+  geoCoverageTypeOptions,
+  organisationType,
+} = UIStore.currentState;
+
 const titleField = {
   title: "Title",
   type: "string",
@@ -179,13 +185,21 @@ export const schema = {
       },
     },
     S4: {
-      title: "SECTION 4: Geo Coverage",
+      title: "",
       type: "object",
       depend: {
         id: "tabs",
         value: ["S4"],
       },
-      required: ["S4_1", "S4_2"],
+      required: [
+        "S4_1",
+        "S4_2",
+        "geoCoverageValueRegional",
+        "geoCoverageValueNational",
+        "geoCoverageValueTransnational",
+        "geoCoverageValueSubNational",
+        "geoCoverageValueGlobalSpecific",
+      ],
       properties: {
         S4_1: {
           title: "In which country are you headquarters?",
@@ -194,7 +208,48 @@ export const schema = {
         S4_2: {
           title: "What is the geographical coverage of your organisation?*",
           type: "string",
-          enum: ["Global", "Transnational"],
+          enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
+          enumNames: geoCoverageTypeOptions,
+        },
+        geoCoverageValueRegional: {
+          title: "Regional",
+          enum: [],
+          depend: {
+            id: "S4_2",
+            value: ["regional"],
+          },
+        },
+        geoCoverageValueNational: {
+          title: "National",
+          enum: [],
+          depend: {
+            id: "S4_2",
+            value: ["national"],
+          },
+        },
+        geoCoverageValueTransnational: {
+          title: "Transnational",
+          enum: [],
+          depend: {
+            id: "S4_2",
+            value: ["transnational"],
+          },
+        },
+        geoCoverageValueSubNational: {
+          title: "Sub-national",
+          enum: [],
+          depend: {
+            id: "S4_2",
+            value: ["sub-national"],
+          },
+        },
+        geoCoverageValueGlobalSpecific: {
+          title: "Global with elements in specific areas",
+          enum: [],
+          depend: {
+            id: "S4_2",
+            value: ["global with elements in specific areas"],
+          },
         },
       },
     },
