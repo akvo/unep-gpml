@@ -48,3 +48,17 @@
             [:re roles-re]]
            [:email-like {:optional true}
             string?]]})
+
+(defmethod ig/init-key :gpml.handler.stakeholder/patch [_ {:keys [db]}]
+  (fn [{{{:keys [id]} :path
+         {:keys [role]} :body}
+        :parameters
+        admin :admin}]
+    (let [params {:role role :reviewed_by (:id admin) :id id}
+          count (db.stakeholder/update-stakeholder-role (:spec db) params)]
+      (resp/response {:status (if (= count 1) "success" "failed")}))))
+
+(defmethod ig/init-key ::patch-params [_ _]
+  {:path [:map [:id int?]]
+   :body [:map [:role
+                (apply conj [:enum] (->> constants/user-roles (map name)))]]})

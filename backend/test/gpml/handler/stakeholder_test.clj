@@ -104,3 +104,26 @@
         (is (= #{"USER", "REVIEWER", "ADMIN"} (->> stakeholders (map :role) set)))))
     )
   )
+
+(deftest stakeholder-patch-test
+  (let [system (ig/init fixtures/*system* [::stakeholder/patch])
+        handler (::stakeholder/patch system)
+        db (-> system :duct.database.sql/hikaricp :spec)
+        ;; Admins
+        admin-id (new-stakeholder db "admin-approved@org.com" "A" "A" "ADMIN" "APPROVED")
+        ;; User
+        user-id (new-stakeholder db "user-approved@org.com" "U" "A" "USER" "APPROVED")]
+
+    (testing "Change USER to REVIEWER"
+      (let [resp (handler (-> (mock/request :patch "/")
+                              (assoc
+                               :admin admin-id
+                               :parameters {:path user-id
+                                            :body {:role "REVIEWER"}})))
+            body (:body resp)
+            user (db.stakeholder/stakeholder-by-id db user-id)]
+        (is (= 200 (:status resp)))
+        (is (= "success" (:status body)))
+        (is (= "REVIEWER" (:role user)))))
+    )
+  )
