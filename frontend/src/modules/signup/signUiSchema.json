@@ -52,33 +52,33 @@
       "ui:showSearch": true
     },
     "geoCoverageType": {
-      "ui:placeholder": "Choose the technology coverage type",
+      "ui:placeholder": "Choose the coverage type",
       "ui:widget": "select"
     },
     "geoCoverageValueRegional": {
-      "ui:placeholder": "Choose the technology coverage",
+      "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple"
     },
     "geoCoverageValueNational": {
-      "ui:placeholder": "Choose the technology coverage",
+      "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true
     },
     "geoCoverageValueTransnational": {
-      "ui:placeholder": "Choose the technology coverage",
+      "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple"
     },
     "geoCoverageValueSubNational": {
-      "ui:placeholder": "Choose the technology coverage",
+      "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true
     },
     "geoCoverageValueGlobalSpecific": {
-      "ui:placeholder": "Choose the technology coverage",
+      "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple"
@@ -183,7 +183,15 @@
     "ui:order": ["S3_1", "S3_2"]
   },
   "S4": {
-    "ui:order": ["S4_1", "S4_2"],
+    "ui:order": [
+      "S4_1",
+      "S4_2",
+      "geoCoverageValueRegional",
+      "geoCoverageValueNational",
+      "geoCoverageValueTransnational",
+      "geoCoverageValueSubNational",
+      "geoCoverageValueGlobalSpecific"
+    ],
     "S4_1": {
       "ui:widget": "select",
       "ui:placeholder": "Search",
@@ -191,6 +199,38 @@
     },
     "S4_2": {
       "ui:widget": "radio"
+    },
+    "geoCoverageType": {
+      "ui:placeholder": "Choose the coverage type",
+      "ui:widget": "select"
+    },
+    "geoCoverageValueRegional": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
+    },
+    "geoCoverageValueNational": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "geoCoverageValueTransnational": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
+    },
+    "geoCoverageValueSubNational": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "geoCoverageValueGlobalSpecific": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
     }
   },
   "S5": {
