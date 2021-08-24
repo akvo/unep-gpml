@@ -17,11 +17,11 @@ import {
 import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
-import logo from "./images/GPML-logo-white.png";
 import StakeholderSignupModal from "./modules/stakeholder-signup/signup-modal";
 import EntitySignupModal from "./modules/entity-signup/signup-modal";
 import SignupView from "./modules/signup-bis/view";
 import NewSignupView from "./modules/signup/view";
+import logo from "./images/GPML-logo-white.png";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
 import { storage } from "./utils/storage";
@@ -132,7 +132,6 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
-  const { profile, disclaimer, loading } = UIStore.useState((s) => s);
   const [
     stakeholderSignupModalVisible,
     setStakeholderSignupModalVisible,
@@ -140,6 +139,9 @@ const Root = () => {
   const [entitySignupModalVisible, setEntitySignupModalVisible] = useState(
     false
   );
+  const { profile, disclaimer, loading } = UIStore.useState((s) => s);
+  const [signupModalVisible, setSignupModalVisible] = useState(false);
+
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
   const [filters, setFilters] = useState(null);
