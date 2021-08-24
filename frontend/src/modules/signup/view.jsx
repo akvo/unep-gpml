@@ -2,7 +2,12 @@ import { Store } from "pullstate";
 import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState } from "react";
 import { Checkbox, Row, Col, Card, Steps, Switch, Button } from "antd";
-import { LoadingOutlined, RightOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  EditOutlined,
+  LoadingOutlined,
+  RightOutlined,
+} from "@ant-design/icons";
 import "./styles.scss";
 import SignUpForm from "./form";
 import StickyBox from "react-sticky-box";
@@ -263,13 +268,59 @@ const SignUp = ({ match: { params }, ...props }) => {
     }
   }, [loading, formSchema, status, id, data, editId, params]);
 
-  const renderSteps = (parentTitle, section, steps) => {
+  const renderSteps = (parentTitle, section, steps, index) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
+    const customTitle = (status) => {
+      const color = totalRequiredFields === 0 ? "#4DFFA5" : "#fff";
+      const display =
+        status === "active"
+          ? "unset"
+          : totalRequiredFields === 0
+          ? "unset"
+          : "none";
+      return (
+        <div className="custom-step-title">
+          <span>{parentTitle}</span>
+          <Button
+            type="ghost"
+            size="small"
+            shape="circle"
+            icon={
+              totalRequiredFields === 0 ? <CheckOutlined /> : <EditOutlined />
+            }
+            style={{
+              right: "0",
+              position: "absolute",
+              color: color,
+              borderColor: color,
+              display: display,
+            }}
+          />
+        </div>
+      );
+    };
+    const customIcon = (status) => {
+      index += 1;
+      const opacity = status === "active" ? 1 : 0.5;
+      return (
+        <Button
+          className="custom-step-icon"
+          shape="circle"
+          style={{
+            color: "#255B87",
+            fontWeight: "600",
+            opacity: opacity,
+          }}
+        >
+          {index}
+        </Button>
+      );
+    };
     if (section !== data.tabs[0]) {
       return (
         <Step
           key={section}
-          title={`${parentTitle}`}
+          title={customTitle("waiting")}
           subTitle={`Total Required fields: ${totalRequiredFields}`}
           className={
             totalRequiredFields === 0
@@ -277,6 +328,7 @@ const SignUp = ({ match: { params }, ...props }) => {
               : "step-section"
           }
           status={totalRequiredFields === 0 ? "finish" : "wait"}
+          icon={customIcon("waiting")}
         />
       );
     }
@@ -294,7 +346,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     return [
       <Step
         key={section}
-        title={`${parentTitle}`}
+        title={customTitle("active")}
         subTitle={`Total Required fields: ${totalRequiredFields}`}
         className={
           totalRequiredFields === 0
@@ -302,6 +354,7 @@ const SignUp = ({ match: { params }, ...props }) => {
             : "step-section"
         }
         status={totalRequiredFields === 0 ? "finish" : "process"}
+        icon={customIcon("active")}
       />,
       ...childs,
     ];
@@ -442,7 +495,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                       I represent an entity
                     </Checkbox>
                   </div>
-                  {tabsData.map(({ key, title, desc, steps }) => (
+                  {tabsData.map(({ key, title, desc, steps }, i) => (
                     <>
                       <hr className="step-line" />
                       <Steps
@@ -458,7 +511,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                         }}
                         className={key === data.tabs[0] ? "current-tabs" : ""}
                       >
-                        {renderSteps(title, key, steps)}
+                        {renderSteps(title, key, steps, i)}
                       </Steps>
                     </>
                   ))}
