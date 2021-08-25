@@ -139,7 +139,7 @@ const AdminSection = ({
         <span>
           <Select
             showSearch={true}
-            style={{ width: 150 }}
+            style={{ width: "100%" }}
             placeholder="Assign reviewer"
             onChange={(reviewerId) => assignReviewer(item, reviewerId)}
             defaultValue={item?.reviewer?.id}
@@ -168,7 +168,7 @@ const AdminSection = ({
       })();
     };
     return (
-      <div key="new-approval">
+      <div key="new-approval" className="approval">
         <h2>New approval requests</h2>
         <div className="table-wrapper">
           <div className="row head">

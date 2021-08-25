@@ -74,6 +74,7 @@ const ReviewSection = ({
   };
 
   const CollapseItemTable = ({
+    key,
     columns,
     Header,
     items,
@@ -106,7 +107,7 @@ const ReviewSection = ({
         <div className="table-wrapper">
           <div className="row head">
             {columns.map((x, i) => (
-              <div key={i} className="col">
+              <div key={`${key}-${x}-${i}`} className="col">
                 {x}
               </div>
             ))}
@@ -152,7 +153,7 @@ const ReviewSection = ({
   };
   return (
     <div className="admin-view">
-      <div key="new-review">
+      <div key="new-review" className="review">
         <h2>New review requests ({`${reviewItems.count}`})</h2>
         <CollapseItemTable
           key="new-review-table"

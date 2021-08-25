@@ -272,7 +272,7 @@ const ProfileView = ({ ...props }) => {
             </h2>
           ) : (
             <Row className="menu-container profile-wrapper">
-              <Col xs={24} sm={8} md={7} lg={6} className="menu-wrapper">
+              <Col xs={24} sm={24} md={7} lg={6} className="menu-wrapper">
                 <StickyBox
                   offsetTop={20}
                   offsetBottom={40}
@@ -284,8 +284,8 @@ const ProfileView = ({ ...props }) => {
                         src={profilePic}
                         size={{
                           xs: 24,
-                          sm: 32,
-                          md: 40,
+                          sm: 125,
+                          md: 50,
                           lg: 64,
                           xl: 125,
                           xxl: 200,
@@ -301,7 +301,7 @@ const ProfileView = ({ ...props }) => {
                   </Menu>
                 </StickyBox>
               </Col>
-              <Col xs={24} sm={16} md={17} lg={18} className="content-wrapper">
+              <Col xs={24} sm={24} md={17} lg={18} className="content-wrapper">
                 {menu === "personal-details" && (
                   <div>
                     <SignupForm
