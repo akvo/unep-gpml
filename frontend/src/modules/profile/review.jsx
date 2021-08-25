@@ -45,11 +45,11 @@ const ReviewSection = ({
           }}
         >
           <Space size="middle">
-            <Button type="primary" onClick={() => accept(item)}>
-              Accept
+            <Button className="black" type="ghost" onClick={() => accept(item)}>
+              Approve
             </Button>
-            <Button type="secondary" onClick={() => reject(item)}>
-              Reject
+            <Button className="black" type="link" onClick={() => reject(item)}>
+              Decline
             </Button>
           </Space>
         </div>
@@ -67,7 +67,13 @@ const ReviewSection = ({
     );
   };
 
-  const CollapseItemTable = ({ Header, items, setItems, reviewStatus }) => {
+  const CollapseItemTable = ({
+    columns,
+    Header,
+    items,
+    setItems,
+    reviewStatus,
+  }) => {
     const [previewContent, storePreviewContent] = useState({});
 
     const getPreviewContent = (urls) => {
@@ -91,31 +97,40 @@ const ReviewSection = ({
 
     return (
       <>
-        <Collapse onChange={getPreviewContent}>
-          {items?.reviews?.length > 0 ? (
-            items?.reviews?.map((item, index) => {
-              const previewUrl = `/submission/${item.type}/${item.topicId}`;
-              return (
-                <Collapse.Panel
-                  key={previewUrl}
-                  header={<Header item={item} />}
-                >
-                  <DetailCollapse
-                    data={previewContent?.[previewUrl] || {}}
-                    item={item}
-                  />
-                </Collapse.Panel>
-              );
-            })
-          ) : (
-            <Collapse.Panel
-              showArrow={false}
-              collapsible="disabled"
-              key="collapse-pending-no-data"
-              header={<div className="row">No items to display</div>}
-            ></Collapse.Panel>
-          )}
-        </Collapse>
+        <div className="table-wrapper">
+          <div className="row head">
+            {columns.map((x, i) => (
+              <div key={i} className="col">
+                {x}
+              </div>
+            ))}
+          </div>
+          <Collapse onChange={getPreviewContent}>
+            {items?.reviews?.length > 0 ? (
+              items?.reviews?.map((item, index) => {
+                const previewUrl = `/submission/${item.type}/${item.topicId}`;
+                return (
+                  <Collapse.Panel
+                    key={previewUrl}
+                    header={<Header item={item} />}
+                  >
+                    <DetailCollapse
+                      data={previewContent?.[previewUrl] || {}}
+                      item={item}
+                    />
+                  </Collapse.Panel>
+                );
+              })
+            ) : (
+              <Collapse.Panel
+                showArrow={false}
+                collapsible="disabled"
+                key="collapse-pending-no-data"
+                header={<div className="row">No items to display</div>}
+              ></Collapse.Panel>
+            )}
+          </Collapse>
+        </div>
         <div style={{ padding: "10px 0px" }}>
           <Pagination
             defaultCurrent={1}
@@ -131,34 +146,26 @@ const ReviewSection = ({
   };
   return (
     <div className="admin-view">
-      <Fragment key="new-review">
+      <div key="new-review">
         <h2>New review requests ({`${reviewItems.count}`})</h2>
-        <div className="row head">
-          <div className="col">Type</div>
-          <div className="col">Name</div>
-          <div className="col">Action</div>
-        </div>
         <CollapseItemTable
+          columns={["Type", "Name", "Action"]}
           Header={ReviewHeader}
           items={reviewItems}
           setItems={setReviewItems}
           reviewStatus="PENDING"
         />
-      </Fragment>
-      <Fragment key="reviewed">
+      </div>
+      <div key="reviewed" className="archive">
         <h2>Reviewed requests ({`${reviewedItems.count}`})</h2>
-        <div className="row head">
-          <div className="col">Type</div>
-          <div className="col">Name</div>
-          <div className="col">Status</div>
-        </div>
         <CollapseItemTable
+          columns={["Type", "Name", "Status"]}
           Header={ReviewedHeader}
           items={reviewedItems}
           setItems={setReviewedItems}
           reviewStatus="ACCEPTED,REJECTED"
         />
-      </Fragment>
+      </div>
     </div>
   );
 };
