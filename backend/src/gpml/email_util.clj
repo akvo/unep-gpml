@@ -19,6 +19,9 @@
                   :throw-exceptions false
                   :body (j/write-value-as-string {:Messages messages})})))
 
+(def unep-sender
+  {:Name "UNEP GPML Digital Platform" :Email "no-reply@gpmarinelitter.org"})
+
 (def notify-admins-pending-approval-text
   "Dear %s,
 
@@ -45,7 +48,7 @@ A new %s (%s) is awaiting your approval. Please visit %s/profile to approve or d
                      (get-user-full-name new-item)
                      (or (:title new-item) (:name new-item)))
         subject (format "[%s] New %s needs approval" (:app-name mailjet-config) item-type)
-        sender {:Name "UNEP GPML Digital Platform" :Email "no-reply@gpmarinelitter.org"}
+        sender unep-sender
         names (map get-user-full-name admins)
         receivers (map #(assoc {} :Name %1 :Email (:email %2)) names admins)
         texts (->> names (map #(format notify-admins-pending-approval-text
