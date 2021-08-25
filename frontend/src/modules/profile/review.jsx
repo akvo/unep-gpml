@@ -1,9 +1,31 @@
 import React, { Fragment, useState } from "react";
-import { Button, Collapse, Space, Pagination } from "antd";
+import { Button, Collapse, Space, Pagination, Modal, Input } from "antd";
 import { DetailCollapse } from "./preview";
 import { topicNames } from "../../utils/misc";
 import api from "../../utils/api";
 import { fetchReviewItems } from "./utils";
+import { titleCase } from "../../utils/string";
+
+const ReviewCommentModal = ({ action, visible, handleOk, handleCancel }) => {
+  const [reviewComment, setReviewComment] = useState();
+  return (
+    <Modal
+      title={`${action} the reviewed resource`}
+      visible={visible}
+      onOk={() => handleOk(reviewComment)}
+      okText={action}
+      onCancel={handleCancel}
+    >
+      <Input.TextArea
+        rows={4}
+        bordered={true}
+        placeholder="Add a review comment"
+        value={reviewComment}
+        onChange={(e) => setReviewComment(e.target.value)}
+      />
+    </Modal>
+  );
+};
 
 const ReviewSection = ({
   reviewItems,
@@ -12,6 +34,10 @@ const ReviewSection = ({
   setReviewedItems,
 }) => {
   const ReviewHeader = ({ item }) => {
+    const [showNoteInput, setShowNoteInput] = useState(false);
+    const [modalReviewState, setModalReviewState] = useState("");
+    const modalActionName = titleCase(`${modalReviewState.slice(0, -2)}`);
+
     const submitReview = (item, reviewStatus, reviewComment) => {
       const data = {
         "review-status": reviewStatus,
@@ -31,8 +57,6 @@ const ReviewSection = ({
         })();
       });
     };
-    const accept = (item) => submitReview(item, "ACCEPTED");
-    const reject = (item) => submitReview(item, "REJECTED");
 
     return (
       <div className="row">
@@ -45,13 +69,39 @@ const ReviewSection = ({
           }}
         >
           <Space size="middle">
-            <Button type="primary" onClick={() => accept(item)}>
+            <Button
+              type="primary"
+              onClick={() => {
+                setShowNoteInput(true);
+                setModalReviewState("ACCEPTED");
+              }}
+            >
               Accept
             </Button>
-            <Button type="secondary" onClick={() => reject(item)}>
+            <Button
+              type="secondary"
+              onClick={() => {
+                setShowNoteInput(true);
+                setModalReviewState("REJECTED");
+              }}
+            >
               Reject
             </Button>
           </Space>
+        </div>
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <ReviewCommentModal
+            action={modalActionName}
+            visible={showNoteInput}
+            handleCancel={() => setShowNoteInput(false)}
+            handleOk={(reviewComment) =>
+              submitReview(item, modalReviewState, reviewComment)
+            }
+          />
         </div>
       </div>
     );
