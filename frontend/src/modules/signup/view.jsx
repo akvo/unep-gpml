@@ -94,14 +94,16 @@ const getSchema = (
     "tags"
   ].enumNames = tags?.general?.map((it) => it.tag);
 
-  prop.S1.properties["S1_9"].enum = sectorOptions?.map((it, idx) =>
-    String(idx)
+  prop.S1.properties[
+    "representativeSector"
+  ].enum = sectorOptions?.map((it, idx) => String(idx));
+  prop.S1.properties["representativeSector"].enumNames = sectorOptions?.map(
+    (it) => it
   );
-  prop.S1.properties["S1_9"].enumNames = sectorOptions?.map((it) => it);
 
   // // country options
-  prop.S1.properties["S1_10"].enum = countries?.map((x) => x.id);
-  prop.S1.properties["S1_10"].enumNames = countries?.map((x) => x.name);
+  prop.S1.properties["country"].enum = countries?.map((x) => x.id);
+  prop.S1.properties["country"].enumNames = countries?.map((x) => x.name);
   // geocoverage regional options
   prop.S1.properties["geoCoverageValueRegional"].enum = regionOptions.map((x) =>
     String(x.id)
@@ -138,13 +140,19 @@ const getSchema = (
     "geoCoverageValueGlobalSpecific"
   ].enumNames = meaOptions?.map((x) => x.name);
 
-  prop.S3.properties["S3_1"].enum = tags?.offering?.map((it) => it.id);
-  prop.S3.properties["S3_1"].enumNames = tags?.offering?.map((it) => it.tag);
-  prop.S4.properties["S4_1"].enum = countries?.map((x) => x.id);
+  prop.S3.properties["orgExpertise"].enum = tags?.offering?.map((it) => it.id);
+  prop.S3.properties["orgExpertise"].enumNames = tags?.offering?.map(
+    (it) => it.tag
+  );
+  prop.S4.properties["orgHeadquarter"].enum = countries?.map((x) => x.id);
 
-  prop.S4.properties["S4_1"].enumNames = countries?.map((x) => x.name);
-  prop.S5.properties["S5_1"].enum = stakeholders?.map((it) => String(it.id));
-  prop.S5.properties["S5_1"].enumNames = stakeholders?.map(
+  prop.S4.properties["orgHeadquarter"].enumNames = countries?.map(
+    (x) => x.name
+  );
+  prop.S5.properties["registeredStakeholder"].enum = stakeholders?.map((it) =>
+    String(it.id)
+  );
+  prop.S5.properties["registeredStakeholder"].enumNames = stakeholders?.map(
     (it) => `${it.first_name} ${it.last_name} ${it.email}`
   );
 

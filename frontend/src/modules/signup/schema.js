@@ -27,52 +27,51 @@ export const schema = {
         value: ["S1"],
       },
       value: ["S1"],
-      required: ["S1_LN", "S1_2", "S1_4"],
+      required: ["titleAndLastName", "firstName", "email"],
       properties: {
-        S1_LN: {
+        titleAndLastName: {
           title: "",
           type: "object",
-          required: ["S1_1", "S1_3"],
+          required: ["title", "lastName"],
           properties: {
-            S1_1: titleField,
-            S1_3: {
+            title: titleField,
+            lastName: {
               title: "Last name",
               type: "string",
             },
           },
         },
-
-        S1_2: {
+        firstName: {
           title: "First name",
           type: "string",
         },
-        S1_4: {
+        email: {
           title: "Email",
           type: "string",
         },
-        S1_5: {
+        publicEmail: {
           title: "Show my email address on public listing",
           type: "boolean",
         },
-        S1_6: {
+        linkedin: {
           title: "LinkedIn",
           type: "string",
         },
-        S1_7: {
+        twitter: {
           title: "Twitter",
           type: "string",
         },
-        S1_8: {
+        photo: {
           title: "Photo",
           type: "string",
           format: "data-url",
         },
-        S1_9: {
+        representativeSector: {
           title: "Representative sector",
           enum: [],
           enumNames: [],
         },
-        S1_10: {
+        country: {
           title: "Country",
           enum: [],
           enumNames: [],
@@ -85,7 +84,6 @@ export const schema = {
             seeking: {
               title: "Seeking",
               enum: [],
-              enumNames: [],
             },
             offering: {
               title: "Offering",
@@ -121,13 +119,19 @@ export const schema = {
         id: "tabs",
         value: ["S2"],
       },
-      required: ["S2_1", "S2_2", "S2_3", "S2_4", "S2_5"],
+      required: [
+        "orgName",
+        "orgRepresentative",
+        "orgDescription",
+        "orgUrl",
+        "orgLogo",
+      ],
       properties: {
-        S2_1: {
+        orgName: {
           title: "What is the name of your organisation?",
           type: "string",
         },
-        S2_2: {
+        orgRepresentative: {
           title: "Which representative groups fits your organisation?",
           type: "string",
           enum: [
@@ -138,15 +142,15 @@ export const schema = {
             "NGOs, MGS, Foundations and private citizens",
           ],
         },
-        S2_3: {
+        orgDescription: {
           title: "Briefly describe your organisation",
           type: "string",
         },
-        S2_4: {
+        orgUrl: {
           title: "Your organisation website",
           type: "string",
         },
-        S2_5: {
+        orgLogo: {
           title: "Upload your organisation’s logo",
           type: "string",
           format: "data-url",
@@ -160,14 +164,13 @@ export const schema = {
         id: "tabs",
         value: ["S3"],
       },
-      required: ["S3_1", "S3_2"],
+      required: ["orgExpertise", "orgContribution"],
       properties: {
-        S3_1: {
+        orgExpertise: {
           title: "What services/ expertise does your organisation offer*",
           enum: [],
         },
-
-        S3_2: {
+        orgContribution: {
           title:
             "What focus area would your organization like to contribute towards?*",
           type: "array",
@@ -192,62 +195,62 @@ export const schema = {
         value: ["S4"],
       },
       required: [
-        "S4_1",
-        "S4_2",
-        "geoCoverageValueRegional",
-        "geoCoverageValueNational",
-        "geoCoverageValueTransnational",
-        "geoCoverageValueSubNational",
-        "geoCoverageValueGlobalSpecific",
+        "orgHeadquarter",
+        "orgGeocoverageType",
+        "orgGeoCoverageValueRegional",
+        "orgGeoCoverageValueNational",
+        "orgGeoCoverageValueTransnational",
+        "orgGeoCoverageValueSubNational",
+        "orgGeoCoverageValueGlobalSpecific",
       ],
       properties: {
-        S4_1: {
+        orgHeadquarter: {
           title: "In which country are you headquarters?",
           enum: [],
         },
-        S4_2: {
+        orgGeocoverageType: {
           title: "What is the geographical coverage of your organisation?*",
           type: "string",
           enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
           enumNames: geoCoverageTypeOptions,
         },
-        geoCoverageValueRegional: {
+        orgGeoCoverageValueRegional: {
+          $ref: "#/properties/S1/properties/geoCoverageValueRegional",
           title: "Regional",
-          enum: [],
           depend: {
-            id: "S4_2",
+            id: "orgGeocoverageType",
             value: ["regional"],
           },
         },
-        geoCoverageValueNational: {
+        orgGeoCoverageValueNational: {
+          $ref: "#/properties/S1/properties/geoCoverageValueNational",
           title: "National",
-          enum: [],
           depend: {
-            id: "S4_2",
+            id: "orgGeocoverageType",
             value: ["national"],
           },
         },
-        geoCoverageValueTransnational: {
+        orgGeoCoverageValueTransnational: {
+          $ref: "#/properties/S1/properties/geoCoverageValueTransnational",
           title: "Transnational",
-          enum: [],
           depend: {
-            id: "S4_2",
+            id: "orgGeocoverageType",
             value: ["transnational"],
           },
         },
-        geoCoverageValueSubNational: {
+        orgGeoCoverageValueSubNational: {
+          $ref: "#/properties/S1/properties/geoCoverageValueSubNational",
           title: "Sub-national",
-          enum: [],
           depend: {
-            id: "S4_2",
+            id: "orgGeocoverageType",
             value: ["sub-national"],
           },
         },
-        geoCoverageValueGlobalSpecific: {
+        orgGeoCoverageValueGlobalSpecific: {
+          $ref: "#/properties/S1/properties/geoCoverageValueGlobalSpecific",
           title: "Global with elements in specific areas",
-          enum: [],
           depend: {
-            id: "S4_2",
+            id: "orgGeocoverageType",
             value: ["global with elements in specific areas"],
           },
         },
@@ -260,13 +263,13 @@ export const schema = {
         id: "tabs",
         value: ["S5"],
       },
-      required: ["S5_1"],
+      required: ["registeredStakeholder"],
       properties: {
-        S5_1: {
+        registeredStakeholder: {
           title: "Link a registered GPML stakeholder",
           type: "string",
         },
-        S5_G1: {
+        otherStakeholder: {
           title: "",
           type: "array",
           items: {
@@ -277,20 +280,20 @@ export const schema = {
             depend: {},
             required: [],
             properties: {
-              S5_G1_1: titleField,
-              S5_G1_2: {
+              stakeholderTitle: titleField,
+              stakeholderLastName: {
                 title: "Last name",
                 type: "string",
               },
-              S5_G1_3: {
+              stakeholderFirstName: {
                 title: "First name",
                 type: "string",
               },
-              S5_G1_4: {
+              stakeholderEmail: {
                 title: "Email",
                 type: "string",
               },
-              S5_G1_5: {
+              stakeholderOrgRole: {
                 title: "Entity Role",
                 type: "string",
               },

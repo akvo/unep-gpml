@@ -114,7 +114,7 @@ const transformFormData = (data, formData, schema) => {
         let qKey = key.split("_");
         qKey = qKey[qKey.length - 1];
         qKey = qKey.split(".").join("_");
-        data[`q${qKey}`] = formData[key];
+        data[qKey] = formData[key];
         if (Array.isArray(formData[key])) {
           data[`q${qKey}`] = formData[key].map((d) => {
             if (schema?.[key]?.type === "array" && schema?.[key].items?.enum) {
@@ -183,6 +183,8 @@ const SignUpForm = withRouter(
       let data = {};
       transformFormData(data, formData, formSchema.schema.properties);
       data.version = parseInt(formSchema.schema.version);
+
+      console.log(data, formData);
 
       setSending(true);
       window.alert("sending!!! ... not implemented yet");
