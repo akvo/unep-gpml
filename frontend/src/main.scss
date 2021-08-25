@@ -179,6 +179,9 @@ h4 {
     &.black {
       color: $black;
     }
+    &:hover {
+      color: #000000;
+    }
   }
   // end of antd part
 

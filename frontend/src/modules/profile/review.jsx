@@ -36,15 +36,17 @@ const ReviewSection = ({
 
     return (
       <div className="row">
-        <div className="col">{topicNames(item.type)}</div>
-        <div className="col">{item.title}</div>
+        <div className="col">
+          <div className="title">{item.title || "No Title"}</div>
+          <div className="topic">{topicNames(item.type)}</div>
+        </div>
         <div
           className="col"
           onClick={(e) => {
             e.stopPropagation();
           }}
         >
-          <Space size="middle">
+          <Space size="small">
             <Button className="black" type="ghost" onClick={() => accept(item)}>
               Approve
             </Button>
@@ -60,9 +62,13 @@ const ReviewSection = ({
   const ReviewedHeader = ({ item }) => {
     return (
       <div className="row">
-        <div className="col">{topicNames(item.type)}</div>
-        <div className="col">{item.title}</div>
-        <div className="col">{item.reviewStatus}</div>
+        <div className="col">
+          <div className="title">{item.title || "No Title"}</div>
+          <div className="topic">{topicNames(item.type)}</div>
+        </div>
+        <div className="col">
+          <span className="status">{item.reviewStatus}</span>
+        </div>
       </div>
     );
   };
@@ -149,7 +155,8 @@ const ReviewSection = ({
       <div key="new-review">
         <h2>New review requests ({`${reviewItems.count}`})</h2>
         <CollapseItemTable
-          columns={["Type", "Name", "Action"]}
+          key="new-review-table"
+          columns={["Name", "Action"]}
           Header={ReviewHeader}
           items={reviewItems}
           setItems={setReviewItems}
@@ -159,7 +166,8 @@ const ReviewSection = ({
       <div key="reviewed" className="archive">
         <h2>Reviewed requests ({`${reviewedItems.count}`})</h2>
         <CollapseItemTable
-          columns={["Type", "Name", "Status"]}
+          key="review-table"
+          columns={["Name", "Status"]}
           Header={ReviewedHeader}
           items={reviewedItems}
           setItems={setReviewedItems}

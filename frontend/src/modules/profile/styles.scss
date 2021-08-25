@@ -79,6 +79,10 @@
     border-bottom: none;
   }
 
+  span.anticon.anticon-right.ant-collapse-arrow {
+    color: #d3dee7;
+  }
+
   .archive {
     margin-top: 55px;
   }
@@ -91,6 +95,7 @@
   .row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     line-height: 30px;
     color: #046799;
@@ -109,14 +114,13 @@
     }
 
     .col:nth-child(1) {
-      font-style: italic;
-      font-weight: 500;
-      width: 14%;
+      font-style: normal;
+      width: 50%;
     }
 
     .col:nth-child(2) {
       font-weight: bold;
-      width: 34%;
+      width: 16%;
     }
 
     .col:nth-child(3) {
@@ -125,8 +129,27 @@
     .col:nth-child(4) {
       width: 16%;
     }
-    .col:nth-child(5) {
-      width: 16%;
+
+    .col {
+      color: #2d6796;
+      .status {
+        border: 1px solid rgba(45, 103, 150, 0.2);
+        box-sizing: border-box;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        text-align: center;
+        padding: 0.2rem 0.7rem;
+        font-size: 0.75rem;
+      }
+      .title {
+        font-weight: 600;
+        font-size: 1rem;
+      }
+      .topic {
+        font-weight: 500;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+      }
     }
   }
 

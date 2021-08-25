@@ -172,7 +172,6 @@ const AdminSection = ({
         <h2>New approval requests</h2>
         <div className="table-wrapper">
           <div className="row head">
-            <div className="col">Type</div>
             <div className="col">Name</div>
             <div className="col">Review Status</div>
             <div className="col">Reviewer</div>
@@ -185,10 +184,14 @@ const AdminSection = ({
                   key={item.preview}
                   header={
                     <div className="row">
-                      <div className="col">{topicNames(item.type)}</div>
-                      <div className="col">{item.title}</div>
                       <div className="col">
-                        {item?.reviewer?.id && item.reviewStatus}
+                        <div className="title">{item.title || "No Title"}</div>
+                        <div className="topic">{topicNames(item.type)}</div>
+                      </div>
+                      <div className="col">
+                        {item?.reviewer?.id && (
+                          <span className="status">{item.reviewStatus}</span>
+                        )}
                       </div>
                       <div
                         className="col"
@@ -300,7 +303,6 @@ const AdminSection = ({
         <h2>Requests archive ({archiveItems.count})</h2>
         <div className="table-wrapper">
           <div className="row head">
-            <div className="col">Type</div>
             <div className="col">Name</div>
             <div className="col">Status</div>
           </div>
@@ -311,10 +313,12 @@ const AdminSection = ({
                   key={item.preview}
                   header={
                     <div className="row">
-                      <div className="col">{topicNames(item.type)}</div>
-                      <div className="col">{item.title}</div>
+                      <div className="col">
+                        <div className="title">{item.title || "No Title"}</div>
+                        <div className="topic">{topicNames(item.type)}</div>
+                      </div>
                       <div className="col status">
-                        {capitalize(item.reviewStatus)}
+                        <span className="status">{item.reviewStatus}</span>
                       </div>
                     </div>
                   }
