@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Image, Button } from "antd";
+import { Row, Col, Card, Image, Button } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 import "./styles.scss";
@@ -29,26 +29,28 @@ const renderTopics = (topics) => {
   return (
     <div className="section-container">
       <h2>Featured Topics</h2>
-      <div className="topic-item-wrapper">
+      <Row className="topic-item-wrapper" gutter={[16, 16]}>
         {topics.map((x) => {
           const { id, tag } = x;
           return (
-            <Card key={`${tag}-${id}`} className="topic-item-card">
-              <Image size="90%" src={imageNotFound} preview={false} />
-              <div className="topic-item-title-wrapper">
-                <div className="topic-item-title">{tag}</div>
-                <Button
-                  className="topic-item-count"
-                  shape="circle"
-                  type="ghost"
-                >
-                  50
-                </Button>
-              </div>
-            </Card>
+            <Col sm={24} md={12} lg={8}>
+              <Card key={`${tag}-${id}`} className="topic-item-card">
+                <Image size="90%" src={imageNotFound} preview={false} />
+                <div className="topic-item-title-wrapper">
+                  <div className="topic-item-title">{tag}</div>
+                  <Button
+                    className="topic-item-count"
+                    shape="circle"
+                    type="ghost"
+                  >
+                    50
+                  </Button>
+                </div>
+              </Card>
+            </Col>
           );
         })}
-      </div>
+      </Row>
     </div>
   );
 };

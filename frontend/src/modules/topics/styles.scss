@@ -9,16 +9,8 @@
     }
 
     .topic-item-wrapper {
-      margin-top: 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-
+      margin-top: 2rem !important;
       .topic-item-card {
-        flex: 1 1 29%;
-        margin: 0.5rem;
-
         .topic-item-title-wrapper {
           margin-top: 0.8rem;
           display: flex;
