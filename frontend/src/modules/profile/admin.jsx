@@ -18,7 +18,12 @@ import moment from "moment";
 import capitalize from "lodash/capitalize";
 import find from "lodash/find";
 import { DetailCollapse } from "./preview";
-import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
+import {
+  topicNames,
+  resourceTypeToTopicType,
+  reviewStatusUIText,
+  publishStatusUIText,
+} from "../../utils/misc";
 
 const ModalReject = ({ visible, close, reject, item }) => {
   return (
@@ -180,7 +185,7 @@ const AdminSection = ({
         disabled={disabled}
         onClick={review(item, "APPROVED")}
       >
-        Approve
+        {publishStatusUIText["APPROVE"]}
       </Button>
     );
 
@@ -207,7 +212,9 @@ const AdminSection = ({
                       </div>
                       <div className="col status">
                         {item?.reviewer?.id && (
-                          <span className="status">{item.reviewStatus}</span>
+                          <span className="status">
+                            {reviewStatusUIText[item.reviewStatus]}
+                          </span>
                         )}
                       </div>
                       <div
@@ -327,7 +334,9 @@ const AdminSection = ({
                         <div className="topic">{topicNames(item.type)}</div>
                       </div>
                       <div className="col status">
-                        <span className="status">{item.reviewStatus}</span>
+                        <span className="status">
+                          {publishStatusUIText[item.reviewStatus]}
+                        </span>
                       </div>
                     </div>
                   }

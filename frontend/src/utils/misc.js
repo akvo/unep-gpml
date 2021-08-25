@@ -91,3 +91,10 @@ export const reviewCommentModalTitle = {
   ACCEPTED: "Approve the reviewed resource",
   REJECTED: "Revision needed for the reviewed resource",
 };
+
+export const publishStatusUIText = {
+  APPROVED: "Published",
+  APPROVE: "Publish",
+  REJECTED: "Declined",
+  REJECT: "Decline",
+};
