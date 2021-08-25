@@ -168,52 +168,65 @@ const AdminSection = ({
       })();
     };
     return (
-      <Fragment key="new-approval">
+      <div key="new-approval">
         <h2>New approval requests</h2>
-        <div className="row head">
-          <div className="col">Type</div>
-          <div className="col">Name</div>
-          <div className="col">Review Status</div>
-          <div className="col">Reviewer</div>
-          <div className="col">Action</div>
-        </div>
-        <Collapse onChange={getPreviewContent}>
-          {pendingItems?.data && pendingItems?.data?.length > 0 ? (
-            pendingItems.data.map((item, index) => (
-              <Collapse.Panel
-                key={item.preview}
-                header={
-                  <div className="row">
-                    <div className="col">{topicNames(item.type)}</div>
-                    <div className="col">{item.title}</div>
-                    <div className="col">
-                      {item?.reviewer?.id && item.reviewStatus}
-                    </div>
-                    <div
-                      className="col"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
-                    >
-                      <ReviewStatus item={item} />
-                    </div>
-                    <div
-                      className="col"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
-                    >
-                      <Space size="middle">
-                        {item.type === "profile" ? (
-                          item.emailVerified ? (
-                            <Button
-                              type="primary"
-                              onClick={review(item, "APPROVED")}
-                            >
-                              Approve
-                            </Button>
-                          ) : (
-                            <Tooltip title="Profile cannot be approved since email is not verified">
+        <div className="table-wrapper">
+          <div className="row head">
+            <div className="col">Type</div>
+            <div className="col">Name</div>
+            <div className="col">Review Status</div>
+            <div className="col">Reviewer</div>
+            <div className="col">Action</div>
+          </div>
+          <Collapse onChange={getPreviewContent}>
+            {pendingItems?.data && pendingItems?.data?.length > 0 ? (
+              pendingItems.data.map((item, index) => (
+                <Collapse.Panel
+                  key={item.preview}
+                  header={
+                    <div className="row">
+                      <div className="col">{topicNames(item.type)}</div>
+                      <div className="col">{item.title}</div>
+                      <div className="col">
+                        {item?.reviewer?.id && item.reviewStatus}
+                      </div>
+                      <div
+                        className="col"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        <ReviewStatus item={item} />
+                      </div>
+                      <div
+                        className="col"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        <Space size="small">
+                          {item.type === "profile" ? (
+                            item.emailVerified ? (
+                              <Button
+                                type="ghost"
+                                className="black"
+                                onClick={review(item, "APPROVED")}
+                              >
+                                Approve
+                              </Button>
+                            ) : (
+                              <Tooltip title="Profile cannot be approved since email is not verified">
+                                <Button
+                                  type="secondary"
+                                  disabled={true}
+                                  onClick={review(item, "APPROVED")}
+                                >
+                                  Approve
+                                </Button>
+                              </Tooltip>
+                            )
+                          ) : item.type === "policy" ? (
+                            <Tooltip title="Policies are imported from Law division system">
                               <Button
                                 type="secondary"
                                 disabled={true}
@@ -222,47 +235,42 @@ const AdminSection = ({
                                 Approve
                               </Button>
                             </Tooltip>
-                          )
-                        ) : item.type === "policy" ? (
-                          <Tooltip title="Policies are imported from Law division system">
+                          ) : (
                             <Button
-                              type="secondary"
-                              disabled={true}
+                              type="ghost"
+                              className="black"
                               onClick={review(item, "APPROVED")}
                             >
                               Approve
                             </Button>
-                          </Tooltip>
-                        ) : (
+                          )}
                           <Button
-                            type="primary"
-                            onClick={review(item, "APPROVED")}
+                            type="link"
+                            className="black"
+                            onClick={reject(item, "REJECTED")}
                           >
-                            Approve
+                            Decline
                           </Button>
-                        )}
-                        <Button type="link" onClick={reject(item, "REJECTED")}>
-                          Decline
-                        </Button>
-                      </Space>
+                        </Space>
+                      </div>
                     </div>
-                  </div>
-                }
-              >
-                <DetailCollapse
-                  data={previewContent?.[item.preview] || {}}
-                  item={item}
-                />
-              </Collapse.Panel>
-            ))
-          ) : (
-            <Collapse.Panel
-              showArrow={false}
-              key="collapse-pending-no-data"
-              header={<div className="row">No data to display</div>}
-            ></Collapse.Panel>
-          )}
-        </Collapse>
+                  }
+                >
+                  <DetailCollapse
+                    data={previewContent?.[item.preview] || {}}
+                    item={item}
+                  />
+                </Collapse.Panel>
+              ))
+            ) : (
+              <Collapse.Panel
+                showArrow={false}
+                key="collapse-pending-no-data"
+                header={<div className="row">No data to display</div>}
+              ></Collapse.Panel>
+            )}
+          </Collapse>
+        </div>
         <div style={{ padding: "10px 0px" }}>
           <Pagination
             defaultCurrent={1}
@@ -274,7 +282,7 @@ const AdminSection = ({
             onShowSizeChange={onChangePagePendingSize}
           />
         </div>
-      </Fragment>
+      </div>
     );
   };
 
@@ -288,42 +296,44 @@ const AdminSection = ({
       setArchiveItems(archive);
     };
     return (
-      <div className="archive">
+      <div key="archive-requests" className="archive">
         <h2>Requests archive ({archiveItems.count})</h2>
-        <div className="row head">
-          <div className="col">Type</div>
-          <div className="col">Name</div>
-          <div className="col">Status</div>
-        </div>
-        <Collapse onChange={getPreviewContent}>
-          {archiveData.length > 0 ? (
-            archiveData.map((item, index) => (
-              <Collapse.Panel
-                key={item.preview}
-                header={
-                  <div className="row">
-                    <div className="col">{topicNames(item.type)}</div>
-                    <div className="col">{item.title}</div>
-                    <div className="col status">
-                      {capitalize(item.reviewStatus)}
+        <div className="table-wrapper">
+          <div className="row head">
+            <div className="col">Type</div>
+            <div className="col">Name</div>
+            <div className="col">Status</div>
+          </div>
+          <Collapse onChange={getPreviewContent}>
+            {archiveData.length > 0 ? (
+              archiveData.map((item, index) => (
+                <Collapse.Panel
+                  key={item.preview}
+                  header={
+                    <div className="row">
+                      <div className="col">{topicNames(item.type)}</div>
+                      <div className="col">{item.title}</div>
+                      <div className="col status">
+                        {capitalize(item.reviewStatus)}
+                      </div>
                     </div>
-                  </div>
-                }
-              >
-                <DetailCollapse
-                  data={previewContent?.[item.preview] || {}}
-                  item={item}
-                />
-              </Collapse.Panel>
-            ))
-          ) : (
-            <Collapse.Panel
-              showArrow={false}
-              key="collapse-archive-no-data"
-              header={<div className="row">No data to display</div>}
-            ></Collapse.Panel>
-          )}
-        </Collapse>
+                  }
+                >
+                  <DetailCollapse
+                    data={previewContent?.[item.preview] || {}}
+                    item={item}
+                  />
+                </Collapse.Panel>
+              ))
+            ) : (
+              <Collapse.Panel
+                showArrow={false}
+                key="collapse-archive-no-data"
+                header={<div className="row">No data to display</div>}
+              ></Collapse.Panel>
+            )}
+          </Collapse>
+        </div>
         <div style={{ padding: "10px 0px" }}>
           <Pagination
             defaultCurrent={1}
@@ -341,7 +351,7 @@ const AdminSection = ({
 
   return (
     <div className="admin-view">
-      <div className="download-container">
+      {/* <div className="download-container">
         <p>Download the data</p>
         <Select showSearch style={{ width: 350 }} placeholder="Select data">
           <Select.Option value="demo">Demo</Select.Option>
@@ -349,7 +359,7 @@ const AdminSection = ({
         <div className="btn-download">
           <Button type="primary">Download as .csv</Button>
         </div>
-      </div>
+      </div> */}
       {renderNewApprovalRequests()}
       {renderArchiveRequests()}
       <ModalReject

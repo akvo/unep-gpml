@@ -127,7 +127,7 @@ h4 {
     background: none;
   }
 
-  // btn
+  // btn primary
   .ant-btn-primary {
     color: #2d6796;
     background-color: $green01;
@@ -140,11 +140,11 @@ h4 {
     }
   }
 
-  // btn
+  // btn ghost
   .ant-btn-ghost {
     color: $green01;
-    background: transparent;
     border-color: $green01;
+    background: transparent;
     border-radius: 50px;
     &.left {
       margin-left: 8px;
@@ -153,10 +153,22 @@ h4 {
       color: #fff;
       border-color: #fff;
     }
+    &.black {
+      color: $black;
+      border-color: $black;
+    }
     &:hover {
       border-color: #079e90;
       color: #00ff7f;
       background: #079e90;
+    }
+  }
+
+  // btn link
+  .ant-btn-link {
+    color: #1890ff;
+    &.black {
+      color: $black;
     }
   }
   // end of antd part

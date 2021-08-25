@@ -44,6 +44,26 @@
 .admin-view {
   min-height: calc(100vh - 420px);
 
+  .table-wrapper {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 0.2rem;
+    border: 1px solid #cbd8e2;
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+
+  .ant-collapse {
+    background-color: #fff;
+    border: none;
+    border-radius: 0;
+  }
+
+  .ant-collapse > .ant-collapse-item {
+    border-top: 1px solid #cbd8e2;
+    border-bottom: none;
+  }
+
   .archive {
     margin-top: 55px;
   }
@@ -55,39 +75,43 @@
 
   .row {
     display: flex;
+    justify-content: space-between;
     width: 100%;
     line-height: 30px;
     color: #046799;
 
     &.head {
-      padding-left: 30px;
+      padding-left: 35px;
       text-transform: uppercase;
       font-weight: 600;
       margin-bottom: 5px;
       opacity: 0.7;
 
-      .col {
-        padding-left: 10px;
-      }
-
       .col:nth-child(1) {
         font-style: normal;
+        font-weight: bold;
       }
     }
 
     .col:nth-child(1) {
       font-style: italic;
       font-weight: 500;
-      width: 140px;
+      width: 14%;
     }
 
     .col:nth-child(2) {
       font-weight: bold;
-      flex: 1;
+      width: 34%;
     }
 
     .col:nth-child(3) {
-      width: 200px;
+      width: 14%;
+    }
+    .col:nth-child(4) {
+      width: 18%;
+    }
+    .col:nth-child(5) {
+      width: 18%;
     }
   }
 
