@@ -229,7 +229,7 @@ export const GeneralPreview = ({ item }) => {
         <li>
           <div className="detail-title">Submitted by</div>:
           <div className="detail-content">
-            <b>{item?.createdBy && item.createdBy}</b>
+            <b>{item?.createdByEmail && item.createdByEmail}</b>
           </div>
         </li>
         <li className="has-border">
@@ -418,7 +418,7 @@ export const InitiativePreview = ({ item }) => {
         <li>
           <div className="detail-title">Submitted by</div>:
           <div className="detail-content">
-            <b>{item?.createdBy && item.createdBy}</b>
+            <b>{item?.createdByEmail && item.createdByEmail}</b>
           </div>
         </li>
         <li>
@@ -504,4 +504,15 @@ export const InitiativePreview = ({ item }) => {
       </ul>
     </div>
   );
+};
+
+export const DetailCollapse = ({ data, item }) => {
+  switch (item.type) {
+    case "stakeholder":
+      return <ProfilePreview item={{ ...data, ...item }} />;
+    case "project":
+      return <InitiativePreview item={{ ...data, ...item }} />;
+    default:
+      return <GeneralPreview item={{ ...data, ...item }} />;
+  }
 };

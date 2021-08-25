@@ -1,56 +1,70 @@
 import { UIStore } from "../../store";
-import {
-  Button,
-  notification,
-  Tabs,
-  Image,
-  Menu,
-  Dividerm,
-  Row,
-  Col,
-} from "antd";
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  useContext,
-  Fragment,
-} from "react";
+import { Button, notification, Avatar, Menu, Row, Col } from "antd";
+import React, { useRef, useState, useEffect } from "react";
 import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
-import { fetchArchiveData } from "./utils";
+import {
+  fetchArchiveData,
+  fetchSubmissionData,
+  fetchReviewItems,
+  fetchStakeholders,
+} from "./utils";
+import { userRoles as roles } from "../../utils/misc";
 import SignupForm from "../signup/signup-form";
 import AdminSection from "./admin";
+import ReviewSection from "./review";
+import ManageRoles from "./stakeholders";
 import "./styles.scss";
 import isEmpty from "lodash/isEmpty";
 import {
   LoadingOutlined,
-  RightOutlined,
-  StarOutlined,
-  TeamOutlined,
+  UserOutlined,
+  UsergroupAddOutlined,
+  BookOutlined,
+  UserSwitchOutlined,
+  DiffOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
-const { TabPane } = Tabs;
 
+const userRoles = new Set(roles);
+const reviewerRoles = new Set(["REVIEWER", "ADMIN"]);
+const adminRoles = new Set(["ADMIN"]);
 const menuItems = [
   {
     key: "personal-details",
     name: "Personal Details",
-    role: "user",
+    role: userRoles,
+    icon: <UserOutlined />,
   },
   {
     key: "my-favourites",
     name: "My Favourites",
-    role: "user",
+    role: userRoles,
+    icon: <BookOutlined />,
   },
   {
     key: "my-network",
     name: "My Network",
-    role: "user",
+    role: userRoles,
+    icon: <UsergroupAddOutlined />,
+  },
+  {
+    key: "manage-roles",
+    name: "Manage User Roles",
+    role: adminRoles,
+    icon: <UserSwitchOutlined />,
+  },
+  {
+    key: "review-section",
+    name: "Review Section",
+    role: reviewerRoles,
+    icon: <DiffOutlined />,
   },
   {
     key: "admin-section",
     name: "Admin Section",
-    role: "admin",
+    role: adminRoles,
+    icon: <SettingOutlined />,
   },
 ];
 
@@ -62,30 +76,65 @@ const ProfileView = ({ ...props }) => {
   const [pendingItems, setPendingItems] = useState({
     data: [],
     limit: 10,
-    page: 0,
+    page: 1,
     count: 0,
     pages: 0,
   });
   const [archiveItems, setArchiveItems] = useState({
     data: [],
     limit: 10,
-    page: 0,
+    page: 1,
     count: 0,
     pages: 0,
   });
-
+  const [reviewItems, setReviewItems] = useState({
+    reviews: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
+  const [reviewedItems, setReviewedItems] = useState({
+    reviews: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
+  const [stakeholdersData, setStakeholdersData] = useState({
+    stakeholders: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = null;
     });
-    if (profile?.role === "ADMIN") {
-      (async function fetchData() {
-        const resp = await api.get("submission");
-        setPendingItems(resp.data);
+    if (adminRoles.has(profile?.role)) {
+      (async () => {
+        const { page, limit } = pendingItems;
+        setPendingItems(await fetchSubmissionData(page, limit));
       })();
       (async function fetchData() {
         const archive = await fetchArchiveData(1, 10);
         setArchiveItems(archive);
+      })();
+      (async () => {
+        const { page, limit } = stakeholdersData;
+        const data = await fetchStakeholders(page, limit);
+        setStakeholdersData(data);
+      })();
+    }
+    if (reviewerRoles.has(profile?.role)) {
+      (async () => {
+        setReviewItems(await fetchReviewItems(reviewItems, "PENDING"));
+      })();
+      (async () => {
+        setReviewedItems(
+          await fetchReviewItems(reviewedItems, "ACCEPTED,REJECTED")
+        );
       })();
     }
   }, [profile]);
@@ -141,34 +190,67 @@ const ProfileView = ({ ...props }) => {
   };
 
   const renderMenuItem = (profile) => {
-    let menus = menuItems;
-    if (profile?.role !== "ADMIN") {
-      menus = menuItems.filter((it) => it.role === "user");
-    }
-    return menus.map((it) => {
+    const menus = menuItems.filter((it) => it.role.has(profile?.role));
+    const renderMenuText = (name, count = false) => {
       return (
-        <Menu.Item key={it.key} onClick={() => handleOnClickMenu(it.key)}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              {it.name}
-              &nbsp;&nbsp;&nbsp;
-              {it.key === "my-favourites" && <StarOutlined />}
-              {it.key === "my-network" && <TeamOutlined />}
-            </div>
-            <div>
-              {it.key === "my-favourites" && `(${0})`}
-              {it.key === "my-network" && `(${0})`}
-              {it.key === "admin-section" && `(${pendingItems.count})`}
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <RightOutlined />
-            </div>
-          </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <span>{name}</span>
+          {count !== false && (
+            <Button
+              style={{
+                position: "absolute",
+                right: "1rem",
+              }}
+              shape="circle"
+              type="ghost"
+              className="white"
+              size="small"
+            >
+              {count}
+            </Button>
+          )}
+        </div>
+      );
+    };
+    return menus.map((it) => {
+      let menuText = "";
+      switch (it.key) {
+        case "my-favourites":
+          menuText = renderMenuText(it.name, 0);
+          break;
+        case "my-network":
+          menuText = renderMenuText(it.name, 0);
+          break;
+        case "review-section":
+          menuText = renderMenuText(it.name, reviewItems.count);
+          break;
+        case "admin-section":
+          menuText = renderMenuText(it.name, pendingItems.count);
+          break;
+        default:
+          menuText = renderMenuText(it.name);
+          break;
+      }
+      return (
+        <Menu.Item
+          key={it.key}
+          className="menu-item"
+          icon={
+            <Button
+              type="ghost"
+              className="white"
+              shape="circle"
+              icon={it.icon}
+            />
+          }
+          onClick={() => handleOnClickMenu(it.key)}
+        >
+          {menuText}
         </Menu.Item>
       );
     });
@@ -182,88 +264,92 @@ const ProfileView = ({ ...props }) => {
     : profile?.photo;
   return (
     <div id="profile">
-      <div className="ui container">
-        {isEmpty(profile) ? (
-          <h2 className="loading">
-            <LoadingOutlined spin /> Loading Profile
-          </h2>
-        ) : (
-          <Row className="menu-container">
-            <Col xs={24} md={8} lg={6} className="menu-wrapper">
-              <StickyBox style={{ marginBottom: "3rem" }}>
-                <div className="photo">
-                  <Image width="70%" src={profilePic} />
-                </div>
-                <Menu
-                  defaultSelectedKeys={["personal-details"]}
-                  style={{
-                    width: "100%",
-                    color: "#046799",
-                    fontWeight: "bold",
-                  }}
+      <div className="profile-container">
+        <div className="ui container">
+          {isEmpty(profile) ? (
+            <h2 className="loading">
+              <LoadingOutlined spin /> Loading Profile
+            </h2>
+          ) : (
+            <Row className="menu-container profile-wrapper">
+              <Col xs={24} sm={24} md={7} lg={6} className="menu-wrapper">
+                <StickyBox
+                  offsetTop={20}
+                  offsetBottom={40}
+                  style={{ marginBottom: "3rem" }}
                 >
-                  {renderMenuItem(profile)}
-                </Menu>
-              </StickyBox>
-            </Col>
-            <Col xs={24} md={16} lg={18} className="content-wrapper">
-              {menu === "personal-details" && (
-                <div>
-                  <SignupForm
-                    onSubmit={onSubmit}
-                    handleSubmitRef={(ref) => {
-                      handleSubmitRef.current = ref;
-                    }}
-                    initialValues={profile}
-                    isModal={false}
-                  />
-                  <Button
-                    loading={saving}
-                    type="primary"
-                    onClick={(ev) => {
-                      handleSubmitRef.current(ev);
-                    }}
+                  {menu === "personal-details" && (
+                    <div className="photo">
+                      <Avatar
+                        src={profilePic}
+                        size={{
+                          xs: 24,
+                          sm: 125,
+                          md: 50,
+                          lg: 64,
+                          xl: 125,
+                          xxl: 200,
+                        }}
+                      />
+                    </div>
+                  )}
+                  <Menu
+                    className="menu-content-wrapper"
+                    defaultSelectedKeys={["personal-details"]}
                   >
-                    Update
-                  </Button>
-                </div>
-              )}
-              {menu === "admin-section" && profile?.role === "ADMIN" && (
-                <AdminSection
-                  pendingItems={pendingItems}
-                  setPendingItems={setPendingItems}
-                  archiveItems={archiveItems}
-                  setArchiveItems={setArchiveItems}
-                />
-              )}
-            </Col>
-            {/* <Tabs tabPosition="left" className="fade-in">
-              <TabPane tab="Personal details" key="1">
-                <SignupForm
-                  {...{ onSubmit, tags }}
-                  handleSubmitRef={(ref) => {
-                    handleSubmitRef.current = ref;
-                  }}
-                  initialValues={profile}
-                />
-                <Button
-                  loading={saving}
-                  type="primary"
-                  onClick={(ev) => {
-                    handleSubmitRef.current(ev);
-                  }}
-                >
-                  Update
-                </Button>
-              </TabPane>
-              {profile?.role === "ADMIN" && (
-                <TabPane tab="Admin section" key="2">
-                  <AdminSection />
-                </TabPane>
-              )}
-            </Tabs> */}
-          </Row>
-        )}
+                    {renderMenuItem(profile)}
+                  </Menu>
+                </StickyBox>
+              </Col>
+              <Col xs={24} sm={24} md={17} lg={18} className="content-wrapper">
+                {menu === "personal-details" && (
+                  <div>
+                    <SignupForm
+                      onSubmit={onSubmit}
+                      handleSubmitRef={(ref) => {
+                        handleSubmitRef.current = ref;
+                      }}
+                      initialValues={profile}
+                      isModal={false}
+                    />
+                    <Button
+                      loading={saving}
+                      type="ghost"
+                      className="black"
+                      onClick={(ev) => {
+                        handleSubmitRef.current(ev);
+                      }}
+                    >
+                      Update
+                    </Button>
+                  </div>
+                )}
+                {menu === "manage-roles" && adminRoles.has(profile?.role) && (
+                  <ManageRoles
+                    stakeholdersData={stakeholdersData}
+                    setStakeholdersData={setStakeholdersData}
+                  />
+                )}
+                {menu === "review-section" && adminRoles.has(profile?.role) && (
+                  <ReviewSection
+                    reviewItems={reviewItems}
+                    setReviewItems={setReviewItems}
+                    reviewedItems={reviewedItems}
+                    setReviewedItems={setReviewedItems}
+                  />
+                )}
+                {menu === "admin-section" && adminRoles.has(profile?.role) && (
+                  <AdminSection
+                    pendingItems={pendingItems}
+                    setPendingItems={setPendingItems}
+                    archiveItems={archiveItems}
+                    setArchiveItems={setArchiveItems}
+                  />
+                )}
+              </Col>
+            </Row>
+          )}
+        </div>
       </div>
     </div>
   );
