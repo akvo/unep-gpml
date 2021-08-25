@@ -24,7 +24,6 @@ const RoleSelect = ({ stakeholder, onChangeRole }) => {
 };
 
 const Stakeholder = ({ stakeholder, onChangeRole }) => {
-  console.log(stakeholder);
   const { firstName, lastName, title, email, picture } = stakeholder;
   return (
     <div className="row stakeholder-row">
