@@ -43,7 +43,7 @@ const geoCoverage = {
       value: ["sub-national"],
     },
   },
-  geoCoverageValueGlobalSpecific: {
+  geoCoverageValueGlobalSpesific: {
     title: "GEO COVERAGE",
     enum: [],
     depend: {

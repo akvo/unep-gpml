@@ -77,7 +77,7 @@
       "ui:widget": "select",
       "ui:showSearch": true
     },
-    "geoCoverageValueGlobalSpecific": {
+    "geoCoverageValueGlobalSpesific": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
@@ -109,7 +109,10 @@
         "ui:mode": "multiple"
       },
       "portfolio": {
-        "ui:widget": "file"
+        "ui:widget": "file",
+        "ui:options": {
+          "accept": ".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,application/pdf"
+        }
       },
       "public_database": {
         "ui:widget": "checkbox",
@@ -139,7 +142,7 @@
       "geoCoverageValueNational",
       "geoCoverageValueTransnational",
       "geoCoverageValueSubNational",
-      "geoCoverageValueGlobalSpecific",
+      "geoCoverageValueGlobalSpesific",
       "S1_ExpertisesAndActivities"
     ]
   },
