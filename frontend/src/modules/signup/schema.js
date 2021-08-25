@@ -200,7 +200,7 @@ export const schema = {
         "orgGeoCoverageValueNational",
         "orgGeoCoverageValueTransnational",
         "orgGeoCoverageValueSubNational",
-        "orgGeoCoverageValueGlobalSpecific",
+        "orgGeoCoverageValueGlobalSpesific",
       ],
       properties: {
         orgHeadquarter: {
@@ -245,7 +245,7 @@ export const schema = {
             value: ["sub-national"],
           },
         },
-        orgGeoCoverageValueGlobalSpecific: {
+        orgGeoCoverageValueGlobalSpesific: {
           $ref: "#/properties/S1/properties/geoCoverageValueGlobalSpesific",
           title: "Global with elements in specific areas",
           depend: {
