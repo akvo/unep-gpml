@@ -230,18 +230,12 @@ const Root = () => {
                     Sign in
                   </Link>
                 </Button>
-                <Button
-                  type="link"
-                  onClick={() => setEntitySignupModalVisible(true)}
-                >
-                  New Entity
-                </Button>
               </div>
             ) : (
               <div className="rightside">
                 <AddButton
                   {...{
-                    setSignupModalVisible,
+                    setStakeholderSignupModalVisible,
                     isAuthenticated,
                     loginWithPopup,
                     setWarningModalVisible,
