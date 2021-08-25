@@ -3,6 +3,7 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.detail :as db.detail]
             [gpml.db.organisation :as db.organisation]
+            [gpml.email-util :as email]
             [gpml.constants :as constants]
             [integrant.core :as ig]
             [gpml.auth0-util :as auth0]
@@ -54,7 +55,9 @@
                      (:id data)
                      (:created_by data))
         creator (db.stakeholder/stakeholder-by-id conn {:id creator-id})]
-    (assoc data :created_by_email (:email creator))))
+    (assoc data
+           :created_by_email (:email creator)
+           :creator creator)))
 
 (defmethod ig/init-key :gpml.handler.submission/get [_ {:keys [db auth0]}]
   (fn [{{:keys [query]} :parameters}]
@@ -65,14 +68,23 @@
                         submission)]
       (resp/response submission))))
 
-(defmethod ig/init-key :gpml.handler.submission/put [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.submission/put [_ {:keys [db mailjet-config]}]
   (fn [{:keys [body-params admin]}]
     (let [data (assoc (set/rename-keys body-params {:item_type :table-name})
-                      :reviewed_by (:id admin))]
-      (db.submission/update-submission (:spec db) data)
-      (assoc (resp/status 200)
-             :body {:message "Successfuly Updated"
-                    :data (submission-detail (:spec db) data)}))))
+                      :reviewed_by (:id admin))
+          review-status (:review_status body-params)
+          _ (db.submission/update-submission (:spec db) data)
+          detail (submission-detail (:spec db) data)
+          creator (:creator detail)]
+      (email/send-email mailjet-config
+                        email/unep-sender
+                        (email/notify-user-review-subject mailjet-config review-status (:table-name data) detail)
+                        (list {:Name (email/get-user-full-name creator) :Email (:email creator)})
+                        (list (if (= review-status "APPROVED")
+                                (email/notify-user-review-approved-text mailjet-config (:table-name data) detail)
+                                (email/notify-user-review-rejected-text (:table-name data) detail)))
+                        (list nil))
+      (assoc (resp/status 200) :body {:message "Successfuly Updated" :data detail}))))
 
 (defmethod ig/init-key :gpml.handler.submission/get-detail [_ {:keys [db]}]
   (fn [{{:keys [path]} :parameters}]

@@ -1,7 +1,9 @@
 (ns gpml.email-util
   (:require [clj-http.client :as client]
+            [clojure.string :as str]
             [jsonista.core :as j]
-            [gpml.db.stakeholder :as db.stakeholder]))
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.handler.util :as util]))
 
 (defn make-message [sender receiver subject text html]
   {:From sender :To [receiver] :Subject subject :TextPart text :HTMLPart html})
@@ -50,6 +52,32 @@ Please visit %s/profile to publish or reject the resource.
 
 - UNEP GPML Digital Platform
 " admin-name topic-type topic-title review-status review-comment app-domain))
+
+(defn notify-user-review-approved-text [mailjet-config topic-type topic-item]
+  (format "Dear user,
+
+Your submission has been published to %s/%s/%s.
+
+- UNEP GPML Digital Platform
+"
+          (:app-domain mailjet-config)
+          (util/get-api-topic-type topic-type topic-item)
+          (:id topic-item)))
+
+(defn notify-user-review-rejected-text [topic-type topic-item]
+  (format "Dear user,
+
+Your submission (%s) has been rejected.
+
+- UNEP GPML Digital Platform
+"
+          (util/get-title topic-type topic-item)))
+
+(defn notify-user-review-subject [mailjet-config review-status topic-type topic-item]
+  (format "[%s] %s %s"
+          (:app-name mailjet-config)
+          (util/get-display-topic-type topic-type topic-item)
+          (str/lower-case review-status)))
 
 (defn notify-user-invitation-text [inviter-name app-domain entity-name]
   (format "Dear user,
