@@ -1,5 +1,5 @@
 import React from "react";
-import { Select, Space, Pagination } from "antd";
+import { Select, Pagination, Avatar } from "antd";
 import api from "../../utils/api";
 import { userRoles } from "../../utils/misc";
 import { fetchStakeholders } from "./utils";
@@ -8,7 +8,7 @@ const RoleSelect = ({ stakeholder, onChangeRole }) => {
   return (
     <Select
       showSearch={false}
-      style={{ width: 150 }}
+      style={{ width: "100%" }}
       onChange={(role) => onChangeRole(stakeholder, role)}
       defaultValue={stakeholder?.role}
       // FIXME: Disallow changing roles of other admins?
@@ -24,15 +24,26 @@ const RoleSelect = ({ stakeholder, onChangeRole }) => {
 };
 
 const Stakeholder = ({ stakeholder, onChangeRole }) => {
-  const { firstName, lastName, title, email } = stakeholder;
+  const { firstName, lastName, title, email, picture } = stakeholder;
   return (
     <div className="row stakeholder-row">
-      <Space size="large">
-        <div className="col">{`${firstName} ${lastName} (${email})`}</div>
-        <div className="col">
-          <RoleSelect stakeholder={stakeholder} onChangeRole={onChangeRole} />
+      <div className="col content">
+        <div>
+          <Avatar
+            src={picture}
+            size={{ xs: 24, sm: 32, md: 40, lg: 50, xl: 50, xxl: 50 }}
+          />
         </div>
-      </Space>
+        <div>
+          <div className="title">
+            {`${firstName} ${lastName}`} <span className="status">{email}</span>
+          </div>
+          <div className="topic">Stakeholder</div>
+        </div>
+      </div>
+      <div className="col action">
+        <RoleSelect stakeholder={stakeholder} onChangeRole={onChangeRole} />
+      </div>
     </div>
   );
 };
@@ -57,11 +68,15 @@ const ManageRoles = ({ stakeholdersData, setStakeholdersData }) => {
   };
 
   return (
-    <>
-      <h2>Manage Stakeholder Roles</h2>
-      {stakeholders?.map((stakeholder) => (
-        <Stakeholder stakeholder={stakeholder} onChangeRole={changeRole} />
-      ))}
+    <div className="admin-view">
+      <div key="manage-stakeholder" className="manage-stakeholder">
+        <h2>Manage Stakeholder Roles</h2>
+        <div className="table-wrapper stakeholder-wrapper">
+          {stakeholders?.map((stakeholder) => (
+            <Stakeholder stakeholder={stakeholder} onChangeRole={changeRole} />
+          ))}
+        </div>
+      </div>
       <div style={{ padding: "10px 0px" }}>
         <Pagination
           defaultCurrent={1}
@@ -73,7 +88,7 @@ const ManageRoles = ({ stakeholdersData, setStakeholdersData }) => {
         />
       </div>
       <small>* Only approved stakeholders are displayed here</small>
-    </>
+    </div>
   );
 };
 
