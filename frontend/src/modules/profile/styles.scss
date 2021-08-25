@@ -1,5 +1,20 @@
 #profile {
-  // margin-bottom: 30px;
+  .loading {
+    color: #fff;
+  }
+  .profile-container {
+    background: linear-gradient(
+        0deg,
+        rgba(45, 103, 150, 0.85),
+        rgba(45, 103, 150, 0.85)
+      ),
+      url("../../images/landing-gpml.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .profile-wrapper {
+    background-color: #fff;
+  }
   .review-status {
     margin-top: 20px;
   }
@@ -258,15 +273,57 @@
 }
 
 .menu-container {
-  // display: flex;
   .menu-wrapper {
     // width: 250px;
-    background-color: #dbe9f158;
+    background-color: #09689a;
 
     .photo {
       display: flex;
       justify-content: center;
       padding: 35px 10px;
+    }
+
+    .ant-menu-item .ant-menu-item-icon,
+    .ant-menu-submenu-title .ant-menu-item-icon,
+    .ant-menu-item .anticon,
+    .ant-menu-submenu-title .anticon {
+      margin-right: 0;
+    }
+    .ant-menu-inline,
+    .ant-menu-vertical,
+    .ant-menu-vertical-left {
+      border-right: none;
+    }
+
+    ul.ant-menu.ant-menu-light.ant-menu-root.ant-menu-vertical {
+      background: #09689a;
+    }
+
+    .menu-item {
+      color: #fff;
+      font-size: 1.125rem;
+      font-weight: 500;
+      height: 4rem;
+      border-bottom: 1px solid #3176ae;
+      display: flex;
+      align-items: center;
+      opacity: 0.5;
+    }
+
+    button.ant-btn.ant-btn-ghost.ant-btn-circle.ant-btn-icon-only.white.ant-menu-item-icon {
+      margin-right: 1.5rem;
+    }
+
+    .ant-menu-item-active,
+    .ant-menu-item-active.ant-menu-item-selected {
+      background: rgba(255, 255, 255, 0.1);
+      opacity: 1;
+    }
+
+    .ant-menu-item-selected {
+      background: none;
+      opacity: 1;
+      font-weight: 600;
     }
   }
 

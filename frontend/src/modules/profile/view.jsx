@@ -1,21 +1,6 @@
 import { UIStore } from "../../store";
-import {
-  Button,
-  notification,
-  Tabs,
-  Image,
-  Menu,
-  Dividerm,
-  Row,
-  Col,
-} from "antd";
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  useContext,
-  Fragment,
-} from "react";
+import { Button, notification, Image, Menu, Row, Col } from "antd";
+import React, { useRef, useState, useEffect } from "react";
 import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
 import {
@@ -33,11 +18,13 @@ import "./styles.scss";
 import isEmpty from "lodash/isEmpty";
 import {
   LoadingOutlined,
-  RightOutlined,
-  StarOutlined,
-  TeamOutlined,
+  UserOutlined,
+  UsergroupAddOutlined,
+  BookOutlined,
+  UserSwitchOutlined,
+  DiffOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
-const { TabPane } = Tabs;
 
 const userRoles = new Set(roles);
 const reviewerRoles = new Set(["REVIEWER", "ADMIN"]);
@@ -47,31 +34,37 @@ const menuItems = [
     key: "personal-details",
     name: "Personal Details",
     role: userRoles,
+    icon: <UserOutlined />,
   },
   {
     key: "my-favourites",
     name: "My Favourites",
     role: userRoles,
+    icon: <BookOutlined />,
   },
   {
     key: "my-network",
     name: "My Network",
     role: userRoles,
+    icon: <UsergroupAddOutlined />,
   },
   {
     key: "manage-roles",
     name: "Manage User Roles",
     role: adminRoles,
+    icon: <UserSwitchOutlined />,
   },
   {
     key: "review-section",
     name: "Review Section",
     role: reviewerRoles,
+    icon: <DiffOutlined />,
   },
   {
     key: "admin-section",
     name: "Admin Section",
     role: adminRoles,
+    icon: <SettingOutlined />,
   },
 ];
 
@@ -198,31 +191,66 @@ const ProfileView = ({ ...props }) => {
 
   const renderMenuItem = (profile) => {
     const menus = menuItems.filter((it) => it.role.has(profile?.role));
-    return menus.map((it) => {
+    const renderMenuText = (name, count = false) => {
       return (
-        <Menu.Item key={it.key} onClick={() => handleOnClickMenu(it.key)}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              {it.name}
-              &nbsp;&nbsp;&nbsp;
-              {it.key === "my-favourites" && <StarOutlined />}
-              {it.key === "my-network" && <TeamOutlined />}
-            </div>
-            <div>
-              {it.key === "my-favourites" && `(${0})`}
-              {it.key === "my-network" && `(${0})`}
-              {it.key === "review-section" && `(${reviewItems.count})`}
-              {it.key === "admin-section" && `(${pendingItems.count})`}
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <RightOutlined />
-            </div>
-          </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <span>{name}</span>
+          {count !== false && (
+            <Button
+              style={{
+                position: "absolute",
+                right: "1rem",
+              }}
+              shape="circle"
+              type="ghost"
+              className="white"
+              size="small"
+            >
+              {count}
+            </Button>
+          )}
+        </div>
+      );
+    };
+    return menus.map((it) => {
+      let menuText = "";
+      switch (it.key) {
+        case "my-favourites":
+          menuText = renderMenuText(it.name, 0);
+          break;
+        case "my-network":
+          menuText = renderMenuText(it.name, 0);
+          break;
+        case "review-section":
+          menuText = renderMenuText(it.name, reviewItems.count);
+          break;
+        case "admin-section":
+          menuText = renderMenuText(it.name, pendingItems.count);
+          break;
+        default:
+          menuText = renderMenuText(it.name);
+          break;
+      }
+      return (
+        <Menu.Item
+          key={it.key}
+          className="menu-item"
+          icon={
+            <Button
+              type="ghost"
+              className="white"
+              shape="circle"
+              icon={it.icon}
+            />
+          }
+          onClick={() => handleOnClickMenu(it.key)}
+        >
+          {menuText}
         </Menu.Item>
       );
     });
@@ -236,77 +264,79 @@ const ProfileView = ({ ...props }) => {
     : profile?.photo;
   return (
     <div id="profile">
-      <div className="ui container">
-        {isEmpty(profile) ? (
-          <h2 className="loading">
-            <LoadingOutlined spin /> Loading Profile
-          </h2>
-        ) : (
-          <Row className="menu-container">
-            <Col xs={24} md={8} lg={6} className="menu-wrapper">
-              <StickyBox style={{ marginBottom: "3rem" }}>
-                <div className="photo">
-                  <Image width="70%" src={profilePic} />
-                </div>
-                <Menu
-                  defaultSelectedKeys={["personal-details"]}
-                  style={{
-                    width: "100%",
-                    color: "#046799",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {renderMenuItem(profile)}
-                </Menu>
-              </StickyBox>
-            </Col>
-            <Col xs={24} md={16} lg={18} className="content-wrapper">
-              {menu === "personal-details" && (
-                <div>
-                  <SignupForm
-                    onSubmit={onSubmit}
-                    handleSubmitRef={(ref) => {
-                      handleSubmitRef.current = ref;
-                    }}
-                    initialValues={profile}
-                    isModal={false}
-                  />
-                  <Button
-                    loading={saving}
-                    type="primary"
-                    onClick={(ev) => {
-                      handleSubmitRef.current(ev);
+      <div className="profile-container">
+        <div className="ui container">
+          {isEmpty(profile) ? (
+            <h2 className="loading">
+              <LoadingOutlined spin /> Loading Profile
+            </h2>
+          ) : (
+            <Row className="menu-container profile-wrapper">
+              <Col xs={24} sm={8} md={7} lg={6} className="menu-wrapper">
+                <StickyBox style={{ marginBottom: "3rem" }}>
+                  <div className="photo">
+                    <Image width="70%" src={profilePic} />
+                  </div>
+                  <Menu
+                    defaultSelectedKeys={["personal-details"]}
+                    style={{
+                      width: "100%",
+                      color: "#046799",
+                      fontWeight: "bold",
                     }}
                   >
-                    Update
-                  </Button>
-                </div>
-              )}
-              {menu === "manage-roles" && adminRoles.has(profile?.role) && (
-                <ManageRoles
-                  stakeholdersData={stakeholdersData}
-                  setStakeholdersData={setStakeholdersData}
-                />
-              )}
-              {menu === "review-section" && adminRoles.has(profile?.role) && (
-                <ReviewSection
-                  reviewItems={reviewItems}
-                  setReviewItems={setReviewItems}
-                  reviewedItems={reviewedItems}
-                  setReviewedItems={setReviewedItems}
-                />
-              )}
-              {menu === "admin-section" && adminRoles.has(profile?.role) && (
-                <AdminSection
-                  pendingItems={pendingItems}
-                  setPendingItems={setPendingItems}
-                  archiveItems={archiveItems}
-                  setArchiveItems={setArchiveItems}
-                />
-              )}
-            </Col>
-          </Row>
-        )}
+                    {renderMenuItem(profile)}
+                  </Menu>
+                </StickyBox>
+              </Col>
+              <Col xs={24} sm={16} md={17} lg={18} className="content-wrapper">
+                {menu === "personal-details" && (
+                  <div>
+                    <SignupForm
+                      onSubmit={onSubmit}
+                      handleSubmitRef={(ref) => {
+                        handleSubmitRef.current = ref;
+                      }}
+                      initialValues={profile}
+                      isModal={false}
+                    />
+                    <Button
+                      loading={saving}
+                      type="primary"
+                      onClick={(ev) => {
+                        handleSubmitRef.current(ev);
+                      }}
+                    >
+                      Update
+                    </Button>
+                  </div>
+                )}
+                {menu === "manage-roles" && adminRoles.has(profile?.role) && (
+                  <ManageRoles
+                    stakeholdersData={stakeholdersData}
+                    setStakeholdersData={setStakeholdersData}
+                  />
+                )}
+                {menu === "review-section" && adminRoles.has(profile?.role) && (
+                  <ReviewSection
+                    reviewItems={reviewItems}
+                    setReviewItems={setReviewItems}
+                    reviewedItems={reviewedItems}
+                    setReviewedItems={setReviewedItems}
+                  />
+                )}
+                {menu === "admin-section" && adminRoles.has(profile?.role) && (
+                  <AdminSection
+                    pendingItems={pendingItems}
+                    setPendingItems={setPendingItems}
+                    archiveItems={archiveItems}
+                    setArchiveItems={setArchiveItems}
+                  />
+                )}
+              </Col>
+            </Row>
+          )}
+        </div>
       </div>
     </div>
   );

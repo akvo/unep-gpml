@@ -86,6 +86,7 @@ h4 {
 
 #root {
   // antd part
+  /*
   .ant-menu.ant-menu-dark,
   .ant-menu-dark .ant-menu-sub,
   .ant-menu.ant-menu-dark .ant-menu-sub {
@@ -117,7 +118,8 @@ h4 {
     border-bottom: 0;
   }
 
-  .ant-menu-item-active {
+  .ant-menu-item-active,
+  .ant-menu-item-active.ant-menu-item-selected {
     background: rgba(77, 255, 165, 0.1);
     border-radius: 5px 5px 0px 0px;
     color: #4dffa5 !important;
@@ -125,7 +127,9 @@ h4 {
 
   .ant-menu-item-selected {
     background: none;
+    color: #4dffa5 !important;
   }
+  */
 
   // btn primary
   .ant-btn-primary {
