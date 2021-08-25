@@ -81,20 +81,29 @@
           (resp/response review-id))
          resp403))))
 
-(defn update-review-status [db topic-type topic-id review-status review-comment reviewer]
-  (let [topic-type (get-internal-topic-type topic-type)
+(defn update-review-status [db mailjet-config topic-type topic-id review-status review-comment reviewer]
+  (let [topic-type* (get-internal-topic-type topic-type)
         resp403 {:status 403 :body {:message "Cannot update review for this topic"}}]
     (jdbc/with-db-transaction [conn (:spec db)]
       (if-let [review (db.review/review-by-topic-item
                        conn
-                       {:topic-type topic-type :topic-id topic-id})]
+                       {:topic-type topic-type* :topic-id topic-id})]
         ;; If assigned to the current-user
         (if (= (:reviewer review) (:id reviewer))
-          (resp/response (db.review/update-review-status
-                          conn
-                          {:id (:id review)
-                           :review-status review-status
-                           :review-comment review-comment}))
+          (let [review-id (db.review/update-review-status
+                           conn
+                           {:id (:id review)
+                            :review-status review-status
+                            :review-comment review-comment})
+                admin (db.stakeholder/stakeholder-by-id conn {:id (:assigned_by review)})]
+            (email/send-email mailjet-config
+                              email/unep-sender
+                              (format "[%s] Review submitted on %s: %s" (:app-name mailjet-config) topic-type (:title review))
+                              (list {:Name (email/get-user-full-name admin) :Email (:email admin)})
+                              (list (email/notify-review-submitted-text
+                                     (email/get-user-full-name admin) (:app-domain mailjet-config) topic-type (:title review) review-status review-comment))
+                              (list nil))
+            (resp/response review-id))
           resp403)
         resp403))))
 
@@ -127,7 +136,7 @@
         current-user :reviewer}]
     (if reviewer
       (change-reviewer db mailjet-config topic-type topic-id reviewer current-user)
-      (update-review-status db topic-type topic-id review-status review-comment current-user))))
+      (update-review-status db mailjet-config topic-type topic-id review-status review-comment current-user))))
 
 (defmethod ig/init-key ::list-reviews [_ {:keys [db]}]
   (fn [{{{:keys [page limit review-status]} :query} :parameters

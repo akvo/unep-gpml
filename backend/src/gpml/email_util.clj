@@ -38,6 +38,19 @@ A new %s (%s) is awaiting your review. Please visit %s/profile to review the res
 - UNEP GPML Digital Platform
 " reviewer-name topic-type topic-title app-domain))
 
+(defn notify-review-submitted-text [admin-name app-domain topic-type topic-title review-status review-comment]
+  (format "Dear %s,
+
+A review has been submitted for %s (%s).
+
+Status: %s
+Comment: %s
+
+Please visit %s/profile to publish or reject the resource.
+
+- UNEP GPML Digital Platform
+" admin-name topic-type topic-title review-status review-comment app-domain))
+
 (defn notify-user-invitation-text [inviter-name app-domain entity-name]
   (format "Dear user,
 
