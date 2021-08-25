@@ -4,6 +4,7 @@ import { notification } from "antd";
 import { withTheme } from "@rjsf/core";
 import api from "../../utils/api";
 import { Theme as AntDTheme } from "@rjsf/antd";
+import cloneDeep from "lodash/cloneDeep";
 import ObjectFieldTemplate from "../../utils/forms/object-template";
 import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
@@ -40,7 +41,11 @@ const SignUpForm = withRouter(
     history,
     match: { params },
   }) => {
-    const { formEdit } = UIStore.currentState;
+    const {
+      countries,
+      organisations,
+      tags,
+      formEdit } = UIStore.currentState;
     const { status, id } = formEdit.signUp;
     const signUpFormData = signUpData.useState();
     const [dependValue, setDependValue] = useState([]);
@@ -49,16 +54,42 @@ const SignUpForm = withRouter(
     const handleOnSubmit = ({ formData }) => {
       // # Transform data before sending to endpoint
       let data = {};
-      transformFormData(data, formData, formSchema.schema.properties);
+      transformFormData(data, formData, formSchema.schema.properties, true);
       data.version = parseInt(formSchema.schema.version);
 
       setSending(true);
+
+      let data2 = handleGeoCoverageValue(cloneDeep(formData.S1), formData.S1, countries);
+      console.log(data2);
+
+
+
+      if (data.country?.[formData.S1.country]) {
+        data.country = formData.S1.country;
+      }
+      if (data.title?.[formData.S1.titleAndLastName.title]) {
+        data.title = formData.S1.titleAndLastName.title;
+      }
+      if (data2.geoCoverageType) {
+        data.geoCoverageType = data2.geoCoverageType;
+      }
+      if (data2.geoCoverageValue) {
+        data.geoCoverageValue = data2.geoCoverageValue;
+      }
+      if (data.seeking) {
+        data.seeking = data.seeking.map((x) => Number(x));;
+      }
+      if (data.offering) {
+        data.offering = data.offering.map((x) => Number(x));;
+      }
+
+
+      console.log('data.qcountry', data.country);
       console.log(data, formData);
-      window.alert("sending!!! ... not implemented yet");
-      throw Error("not implemented yet");
+
       if (status === "add" && !params?.id) {
         api
-          .post("/initiative", data)
+          .post("/profile", data)
           .then(() => {
             UIStore.update((e) => {
               e.formStep = {
@@ -66,7 +97,7 @@ const SignUpForm = withRouter(
                 initiative: 2,
               };
             });
-            // scroll top
+//            scroll top
             window.scrollTo({ top: 0 });
             signUpData.update((e) => {
               e.data = initialSignUpData;
@@ -80,40 +111,40 @@ const SignUpForm = withRouter(
             setSending(false);
           });
       }
-      if (status === "edit" || params?.id) {
-        api
-          .put(`/detail/project/${id || params?.id}`, data)
-          .then(() => {
-            notification.success({ message: "Update success" });
-            UIStore.update((e) => {
-              e.formEdit = {
-                ...e.formEdit,
-                initiative: {
-                  status: "add",
-                  id: null,
-                },
-              };
-            });
-            // scroll top
-            window.scrollTo({ top: 0 });
-            signUpData.update((e) => {
-              e.data = initialSignUpData;
-            });
-            setDisabledBtn({ disabled: true, type: "default" });
-            history.push(`/project/${id || params?.id}`);
-          })
-          .catch(() => {
-            notification.error({ message: "An error occured" });
-          })
-          .finally(() => {
-            setSending(false);
-          });
-      }
+      // if (status === "edit" || params?.id) {
+      //   api
+      //     .put(`/detail/project/${id || params?.id}`, data)
+      //     .then(() => {
+      //       notification.success({ message: "Update success" });
+      //       UIStore.update((e) => {
+      //         e.formEdit = {
+      //           ...e.formEdit,
+      //           initiative: {
+      //             status: "add",
+      //             id: null,
+      //           },
+      //         };
+      //       });
+      //       // scroll top
+      //       window.scrollTo({ top: 0 });
+      //       signUpData.update((e) => {
+      //         e.data = initialSignUpData;
+      //       });
+      //       setDisabledBtn({ disabled: true, type: "default" });
+      //       history.push(`/project/${id || params?.id}`);
+      //     })
+      //     .catch(() => {
+      //       notification.error({ message: "An error occured" });
+      //     })
+      //     .finally(() => {
+      //       setSending(false);
+      //     });
+      // }
     };
 
     const handleFormOnChange = useCallback(
       ({ formData, schema }) => {
-        console.log("handleFormOnChange representEntity", representEntity);
+//        console.log("handleFormOnChange representEntity", representEntity);
         signUpData.update((e) => {
           e.data = {
             ...e.data,

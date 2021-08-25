@@ -45,7 +45,7 @@
                  :email email
                  :linked_in linked_in
                  :twitter twitter
-                 :representation representation
+                 :representation (or representation "representation")
                  :organisation_role organisation_role
                  :about about
                  :geo_coverage_type geo_coverage_type
@@ -197,7 +197,7 @@
    [:twitter {:optional true} string?]
    [:photo {:optional true} string?]
    [:cv {:optional true} string?]
-   [:representation string?]
+   [:representation {:optional true} string?]
    [:country {:optional true} int?]
    [:public_email {:optional true} boolean?]
    [:about {:optional true} string?]
