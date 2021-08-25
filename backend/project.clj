@@ -73,7 +73,8 @@
                   :plugins [[jonase/eastwood "0.4.3"]
                             [lein-eftest "0.5.9"]]
                   :eastwood {:config-files ["eastwood_cfg.clj"]}
-                  :eftest {:thead-count 4
+                  :eftest {:thread-count 4
+                           :multithread :vars
                            :fail-fast? true
                            :report clojure.test/report}
                   :repl-options {:init-ns dev

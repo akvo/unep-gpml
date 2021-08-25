@@ -25,7 +25,7 @@ export const Easing = {
 export const TextStyle = {
   textStyle: {
     color: "#000",
-    fontFamily: "Gotham A,Gotham B",
+    fontFamily: "Open Sans",
     fontSize: "1rem",
     fontWeight: "bold",
   },
@@ -59,17 +59,13 @@ export const visualMap = {
   calculable: true,
 };
 
-export const rsrColor = {
-  color: ["#355c7d", "#6c5b7b", "#c06c84", "#f67280", "#f8b195", "#ddd"],
-};
-
 export const Legend = {
   orient: "horizontal",
   x: "center",
   y: "bottom",
   bottom: "40px",
   textStyle: {
-    fontFamily: "Gotham A,Gotham B",
+    fontFamily: "Open Sans",
     fontWeight: 200,
     fontSize: 12,
   },

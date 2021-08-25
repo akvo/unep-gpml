@@ -46,6 +46,16 @@
                       d)) data)]
     data))
 
+(defn- submission-detail [conn params]
+  (let [data (db.submission/detail conn params)
+        table (:table-name params)
+        creator-id (if (or (= table "stakeholder")
+                           (= table "v_stakeholder_data"))
+                     (:id data)
+                     (:created_by data))
+        creator (db.stakeholder/stakeholder-by-id conn {:id creator-id})]
+    (assoc data :created_by_email (:email creator))))
+
 (defmethod ig/init-key :gpml.handler.submission/get [_ {:keys [db auth0]}]
   (fn [{{:keys [query]} :parameters}]
     (let [submission (-> (db.submission/pages (:spec db) query) :result)
@@ -62,21 +72,22 @@
       (db.submission/update-submission (:spec db) data)
       (assoc (resp/status 204)
              :body {:message "Successfuly Updated"
-                    :data (db.submission/detail (:spec db) data)}))))
+                    :data (submission-detail (:spec db) data)}))))
 
 (defmethod ig/init-key :gpml.handler.submission/get-detail [_ {:keys [db]}]
   (fn [{{:keys [path]} :parameters}]
     (let [conn (:spec db)
           submission (:submission path)
           initiative? (and (= submission "project") (> (:id path) 10000))
-          table-name(cond
-                      (contains? (set constants/resource-types) submission)
-                      "v_resource_data"
-                      initiative?
-                      "initiative"
-                      :else
-                      (str "v_" submission "_data"))
-          detail (db.submission/detail conn (conj path {:table-name table-name}))
+          table-name (cond
+                       (contains? constants/resource-types submission)
+                       "v_resource_data"
+                       initiative?
+                       "initiative"
+                       :else
+                       (str "v_" submission "_data"))
+          params (conj path {:table-name table-name})
+          detail (submission-detail conn params)
           detail (if (= submission "stakeholder")
                    (merge detail
                           (select-keys (db.stakeholder/stakeholder-by-id conn path) [:email])

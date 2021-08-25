@@ -27,7 +27,7 @@ const Bar = (data, extra) => {
       show: true,
       label: {
         color: "#222",
-        fontFamily: "Gotham A,Gotham B",
+        fontFamily: "Open Sans",
         ...TextStyle,
       },
     },
@@ -59,7 +59,7 @@ const Bar = (data, extra) => {
       data: labels,
       axisLabel: {
         color: "#222",
-        fontFamily: "Gotham A,Gotham B",
+        fontFamily: "Open Sans",
         ...TextStyle,
       },
       axisTick: {
@@ -78,7 +78,7 @@ const Bar = (data, extra) => {
           position: "insideLeft",
           show: true,
           color: "#222",
-          fontFamily: "Gotham A,Gotham B",
+          fontFamily: "Open Sans",
           padding: 5,
           backgroundColor: "rgba(0,0,0,.3)",
           textStyle: {

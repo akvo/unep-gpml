@@ -19,7 +19,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 import { LoadingOutlined } from "@ant-design/icons";
-import TrimText from "../../utils/trim";
+import { TrimText } from "../../utils/string";
 
 function useQuery() {
   const srcParams = new URLSearchParams(useLocation().search);

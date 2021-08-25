@@ -58,7 +58,7 @@ const BarStack = (data, extra) => {
           },
           textStyle: {
             color: "#FFF",
-            fontFamily: "Gotham A,Gotham B",
+            fontFamily: "Open Sans",
             fontSize: "1rem",
             fontWeight: "bold",
           },
@@ -109,7 +109,7 @@ const BarStack = (data, extra) => {
       align: "auto",
       orient: "horizontal",
       textStyle: {
-        fontFamily: "Gotham A,Gotham B",
+        fontFamily: "Open Sans",
         fontWeight: "normal",
         fontSize: 12,
         marginLeft: 20,
@@ -125,7 +125,7 @@ const BarStack = (data, extra) => {
       show: true,
       label: {
         color: "#222",
-        fontFamily: "Gotham A,Gotham B",
+        fontFamily: "Open Sans",
       },
     },
     tooltip: {
@@ -153,7 +153,7 @@ const BarStack = (data, extra) => {
           inside: true,
           backgroundColor: "#f2f2f2",
           padding: 5,
-          fontFamily: "Gotham A,Gotham B",
+          fontFamily: "Open Sans",
           fontSize: 12,
         },
         axisLine: {
@@ -177,7 +177,7 @@ const BarStack = (data, extra) => {
         show: true,
       },
       axisLabel: {
-        fontFamily: "Gotham A,Gotham B",
+        fontFamily: "Open Sans",
         fontSize: 12,
         color: "#222",
       },

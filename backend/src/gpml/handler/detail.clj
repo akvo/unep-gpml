@@ -364,7 +364,7 @@
 
 (defn update-resource [conn topic-type id updates]
   (let [table (cond
-                (contains? (set constants/resource-types) topic-type) "resource"
+                (contains? constants/resource-types topic-type) "resource"
                 :else topic-type)
         table-columns (dissoc updates
                               :tags :urls :geo_coverage_value :org
