@@ -184,17 +184,17 @@ const AdminSection = ({
                   key={item.preview}
                   header={
                     <div className="row">
-                      <div className="col">
+                      <div className="col content">
                         <div className="title">{item.title || "No Title"}</div>
                         <div className="topic">{topicNames(item.type)}</div>
                       </div>
-                      <div className="col">
+                      <div className="col status">
                         {item?.reviewer?.id && (
                           <span className="status">{item.reviewStatus}</span>
                         )}
                       </div>
                       <div
-                        className="col"
+                        className="col reviewer"
                         onClick={(e) => {
                           e.stopPropagation();
                         }}
@@ -202,7 +202,7 @@ const AdminSection = ({
                         <ReviewStatus item={item} />
                       </div>
                       <div
-                        className="col"
+                        className="col action"
                         onClick={(e) => {
                           e.stopPropagation();
                         }}
@@ -313,7 +313,7 @@ const AdminSection = ({
                   key={item.preview}
                   header={
                     <div className="row">
-                      <div className="col">
+                      <div className="col content">
                         <div className="title">{item.title || "No Title"}</div>
                         <div className="topic">{topicNames(item.type)}</div>
                       </div>

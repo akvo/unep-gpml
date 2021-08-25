@@ -95,6 +95,7 @@
   .row {
     display: flex;
     justify-content: space-between;
+    padding-right: 1rem;
     align-items: center;
     width: 100%;
     line-height: 30px;
@@ -106,28 +107,20 @@
       font-weight: 600;
       margin-bottom: 5px;
       opacity: 0.7;
-
-      .col:nth-child(1) {
-        font-style: normal;
-        font-weight: bold;
-      }
     }
 
     .col:nth-child(1) {
       font-style: normal;
-      width: 50%;
+      width: 38%;
     }
-
     .col:nth-child(2) {
-      font-weight: bold;
-      width: 16%;
+      width: 18%;
     }
-
     .col:nth-child(3) {
-      width: 16%;
+      width: 18%;
     }
     .col:nth-child(4) {
-      width: 16%;
+      width: 18%;
     }
 
     .col {

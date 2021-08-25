@@ -36,12 +36,12 @@ const ReviewSection = ({
 
     return (
       <div className="row">
-        <div className="col">
+        <div className="col content">
           <div className="title">{item.title || "No Title"}</div>
           <div className="topic">{topicNames(item.type)}</div>
         </div>
         <div
-          className="col"
+          className="col action"
           onClick={(e) => {
             e.stopPropagation();
           }}
@@ -62,11 +62,11 @@ const ReviewSection = ({
   const ReviewedHeader = ({ item }) => {
     return (
       <div className="row">
-        <div className="col">
+        <div className="col content">
           <div className="title">{item.title || "No Title"}</div>
           <div className="topic">{topicNames(item.type)}</div>
         </div>
-        <div className="col">
+        <div className="col status">
           <span className="status">{item.reviewStatus}</span>
         </div>
       </div>
