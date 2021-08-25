@@ -1,5 +1,5 @@
 import { UIStore } from "../../store";
-import { Button, notification, Image, Menu, Row, Col } from "antd";
+import { Button, notification, Avatar, Menu, Row, Col } from "antd";
 import React, { useRef, useState, useEffect } from "react";
 import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
@@ -273,17 +273,29 @@ const ProfileView = ({ ...props }) => {
           ) : (
             <Row className="menu-container profile-wrapper">
               <Col xs={24} sm={8} md={7} lg={6} className="menu-wrapper">
-                <StickyBox style={{ marginBottom: "3rem" }}>
-                  <div className="photo">
-                    <Image width="70%" src={profilePic} />
-                  </div>
+                <StickyBox
+                  offsetTop={20}
+                  offsetBottom={40}
+                  style={{ marginBottom: "3rem" }}
+                >
+                  {menu === "personal-details" && (
+                    <div className="photo">
+                      <Avatar
+                        src={profilePic}
+                        size={{
+                          xs: 24,
+                          sm: 32,
+                          md: 40,
+                          lg: 64,
+                          xl: 125,
+                          xxl: 200,
+                        }}
+                      />
+                    </div>
+                  )}
                   <Menu
+                    className="menu-content-wrapper"
                     defaultSelectedKeys={["personal-details"]}
-                    style={{
-                      width: "100%",
-                      color: "#046799",
-                      fontWeight: "bold",
-                    }}
                   >
                     {renderMenuItem(profile)}
                   </Menu>
@@ -302,7 +314,8 @@ const ProfileView = ({ ...props }) => {
                     />
                     <Button
                       loading={saving}
-                      type="primary"
+                      type="ghost"
+                      className="black"
                       onClick={(ev) => {
                         handleSubmitRef.current(ev);
                       }}

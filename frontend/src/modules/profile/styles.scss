@@ -274,7 +274,6 @@
 
 .menu-container {
   .menu-wrapper {
-    // width: 250px;
     background-color: #09689a;
 
     .photo {
@@ -283,6 +282,9 @@
       padding: 35px 10px;
     }
 
+    .menu-content-wrapper {
+      padding: 20px 0;
+    }
     .ant-menu-item .ant-menu-item-icon,
     .ant-menu-submenu-title .ant-menu-item-icon,
     .ant-menu-item .anticon,
@@ -301,7 +303,7 @@
 
     .menu-item {
       color: #fff;
-      font-size: 1.125rem;
+      font-size: 1rem;
       font-weight: 500;
       height: 4rem;
       border-bottom: 1px solid #3176ae;
@@ -316,12 +318,14 @@
 
     .ant-menu-item-active,
     .ant-menu-item-active.ant-menu-item-selected {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(77, 255, 165, 0.1);
+      border-radius: 5px 0px 0px 5px;
       opacity: 1;
     }
 
     .ant-menu-item-selected {
-      background: none;
+      background: rgba(77, 255, 165, 0.1);
+      border-radius: 5px 0px 0px 5px;
       opacity: 1;
       font-weight: 600;
     }

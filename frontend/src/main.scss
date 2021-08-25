@@ -157,14 +157,19 @@ h4 {
       color: #fff;
       border-color: #fff;
     }
-    &.black {
-      color: $black;
-      border-color: $black;
-    }
     &:hover {
       border-color: #079e90;
       color: #00ff7f;
       background: #079e90;
+    }
+    &.black {
+      color: $black;
+      border-color: $black;
+      &:hover {
+        border-color: $black;
+        color: #fff;
+        background: $black;
+      }
     }
   }
 
