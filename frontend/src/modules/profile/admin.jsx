@@ -191,7 +191,7 @@ const AdminSection = ({
 
     return (
       <div key="new-approval" className="approval">
-        <h2>New approval requests</h2>
+        <h2>New resources</h2>
         <div className="table-wrapper">
           <div className="row head">
             <div className="col">Name</div>
