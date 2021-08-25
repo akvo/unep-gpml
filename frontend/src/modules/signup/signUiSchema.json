@@ -197,7 +197,7 @@
       "orgGeoCoverageValueNational",
       "orgGeoCoverageValueTransnational",
       "orgGeoCoverageValueSubNational",
-      "orgGeoCoverageValueGlobalSpecific"
+      "orgGeoCoverageValueGlobalSpesific"
     ],
     "orgHeadquarter": {
       "ui:widget": "select",
@@ -233,7 +233,7 @@
       "ui:widget": "select",
       "ui:showSearch": true
     },
-    "orgGeoCoverageValueGlobalSpecific": {
+    "orgGeoCoverageValueGlobalSpesific": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
