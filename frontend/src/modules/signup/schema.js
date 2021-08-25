@@ -73,8 +73,7 @@ export const schema = {
         },
         country: {
           title: "Country",
-          enum: [],
-          enumNames: [],
+          type: "integer",
         },
         ...geoCoverage,
         S1_ExpertisesAndActivities: {
