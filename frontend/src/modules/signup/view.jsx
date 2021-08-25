@@ -134,10 +134,10 @@ const getSchema = (
   ].enumNames = countries?.map((x) => x.name);
   // // geocoverage global with elements in specific areas options
   prop.S1.properties[
-    "geoCoverageValueGlobalSpecific"
+    "geoCoverageValueGlobalSpesific"
   ].enum = meaOptions?.map((x) => String(x.id));
   prop.S1.properties[
-    "geoCoverageValueGlobalSpecific"
+    "geoCoverageValueGlobalSpesific"
   ].enumNames = meaOptions?.map((x) => x.name);
 
   prop.S3.properties["orgExpertise"].enum = tags?.offering?.map((it) => it.id);
@@ -212,13 +212,6 @@ const SignUp = ({ match: { params }, ...props }) => {
       desc: "",
       steps: [],
     },
-    // {
-    //   key: "S6",
-    //   title: "Resources",
-    //   desc: "",
-    //   steps: [
-    //   ],
-    // },
   ];
   const [tabsData, setTabsData] = useState(tabsDataRaw);
   const [formSchema, setFormSchema] = useState({

@@ -246,7 +246,7 @@ export const schema = {
           },
         },
         orgGeoCoverageValueGlobalSpecific: {
-          $ref: "#/properties/S1/properties/geoCoverageValueGlobalSpecific",
+          $ref: "#/properties/S1/properties/geoCoverageValueGlobalSpesific",
           title: "Global with elements in specific areas",
           depend: {
             id: "orgGeocoverageType",
