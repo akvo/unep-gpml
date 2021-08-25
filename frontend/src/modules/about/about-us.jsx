@@ -4,34 +4,12 @@ import { Button, Image } from "antd";
 import "./styles.scss";
 import imageNotFound from "../../images/image-not-found.png";
 
-const issueGraphics = [
-  {
-    title: "Plastic management",
-    image: null,
-    description: "Only 9 percent of plastic is recycled",
-  },
-  {
-    title: "What is marine litter",
-    image: null,
-    description:
-      "By 2025, we could be dealing with up to 250 tonnes of mismanaged waste",
-  },
-  {
-    title: "If you can't reuse it, refuse it",
-    image: null,
-    description: "Every year, the world uses up to 5 trillion plastic bags",
-  },
-  {
-    title: (
-      <>
-        alternative ways to <b>#BeatPlasticPollution</b>
-      </>
-    ),
-    image: null,
-    description:
-      "About 10 million tonnes of plastic enters our ocean each year",
-  },
-];
+import issueGraphics from "./issue-section-content";
+import missionGraphic from "./mission-section-graphic";
+import timelineAndRoadmapGraphic from "../../images/timeline-roadmap-graphic.png";
+import featureComponentGraphic from "./feature-component-graphic";
+import ourCommunity from "../../images/about-our-community.png";
+
 const summary = [
   {
     name: "GPML Members",
@@ -77,7 +55,9 @@ const renderSectionIssue = () => {
         <div className="item" key={`issue-${i}`}>
           <div className="item-title text-white">{title}</div>
           <div className="item-box">
-            <Image preview={false} src={image ? image : imageNotFound} />
+            {image && <div className="item-svg">{image}</div>}
+            {!image && <Image preview={false} src={imageNotFound} />}
+
             <div className="item-description text-white">{description}</div>
           </div>
         </div>
@@ -139,27 +119,26 @@ const renderSectionMission = () => {
             The Global Partnership on Marine Litter: the mission
           </h2>
           <p className="body-text text-white">
-            The Global Partnership on Marine litter (GPML) was launched at the
-            United Nations Conference on Sustainable Development (Rio+ 20) in
-            June 2012, in response to a request set out in the Manila
-            Declaration on Furthering the Implementation of the Global Programme
-            of Action for the Protection of the Marine Environment from
-            Land-based Activities. The partnership is led by a Steering
-            Committee and the United Nations Environment Programme (UNEP)
-            provides secreteriat services.
-            <br />
-            <br />
-            The GPML is a multi-stakeholder partnerhip that brings together all
-            actors working to prevent marine litter and plastic pollution. By
-            providing a unique global platform to share knowledge and
-            experience, partners are able to work together to create and advance
-            solutions to pressing global issues.
+            In 2019, the United Nations Environment Assembly (UNEA) decided in
+            resolution UNEP/EA.4/Res.6 operative paragraph 3: “to strengthen
+            coordination and cooperation by establishing, subject to the
+            availability of resources and building on existing initiatives, a
+            multi-stakeholder platform within the United Nations Environment
+            Programme to take immediate action towards the long-term
+            elimination, through a lifecycle approach, of discharges of litter
+            and microplastics into the oceans”. The GPML Digital Platform was
+            developed in 2021 in response to this and seeks to support
+            transformative, multi-stakeholder actions that target the causes of
+            pollution towards a pollution-free planet, where pollution is
+            prevented and controlled and good environmental quality and improved
+            health and well-being are ensured for all. Overall, the work of the
+            GPML will support UNEP’s Medium Term Strategy by supporting
+            countries to deliver on their environmental commitments under
+            international agreements.
           </p>
         </div>
-        <div className="section-mission-graphic">
-          <Image src={imageNotFound} width="50%" />
-        </div>
       </div>
+      <div className="section-mission-graphic">{missionGraphic}</div>
     </div>
   );
 };
@@ -215,7 +194,7 @@ const renderSectionTimelineAndRoadmap = () => {
           </p>
         </div>
         <div className="section-timeline-roadmap-graphic">
-          <Image src={imageNotFound} width="50%" />
+          <Image src={timelineAndRoadmapGraphic} width="80%" preview={false} />
         </div>
       </div>
     </div>
@@ -243,7 +222,7 @@ const renderSectionKeyFeaturesAndComponents = () => {
           <p className="body-text text-white">
             GPML Digital Platform: Key Components
           </p>
-          <Image src={imageNotFound} />
+          {featureComponentGraphic}
         </div>
       </div>
     </div>
@@ -254,9 +233,22 @@ const renderSectionCommunity = () => {
   return (
     <div className="section-container section-community-container">
       <div className="ui container section-community-wrapper">
-        <h2 className="text-green">GPML Community</h2>
+        <div className="section-community-text">
+          <h2 className="text-green">GPML Community</h2>
+          <p className="body-text text-white">
+            The GPML Digital Platforms seeks to connect, inform and inspire all
+            actors working to address marine litter and plastic pollution. Join
+            our community of stakeholders, which includes: Governments;
+            Scientific and Technological Community and Academia; Business,
+            Industry and Private Sector; Non-Governmental Organizations (NGOs)
+            and Foundations; Intergovernmental Organizations (IGOs); All Actors
+            Participating in Global/Regional Multilateral Processes, including
+            at a global and regional level; Other Major Groups and Stakeholders;
+            and Private Citizens.
+          </p>
+        </div>
         <div className="section-community-graphic">
-          <Image src={imageNotFound} width="50%" />
+          <Image src={ourCommunity} width="90%" preview={false} />
         </div>
       </div>
     </div>

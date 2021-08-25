@@ -12,6 +12,10 @@
     border: 1px solid rgba(37, 91, 135, 0.13);
   }
 
+  .body-text {
+    line-height: 2rem;
+  }
+
   .section-container {
     padding: 4rem 0;
   }
@@ -54,11 +58,18 @@
             border: 1px solid #fff;
             background-color: transparent;
             padding: 1rem;
-            min-height: 24rem;
+            min-height: 23.5rem;
+            .item-svg {
+              position: absolute;
+              bottom: 4rem;
+              left: 5px;
+              right: 5px;
+            }
             .item-description {
               position: absolute;
               bottom: 0.7rem;
               height: 3.5rem;
+              padding: 0 0.2rem;
             }
           }
         }
@@ -103,10 +114,11 @@
       url("../../images/section-mission.png");
     background-repeat: no-repeat;
     background-size: cover;
-    .section-mission-wrapper {
-      .section-mission-graphic {
-        text-align: center;
-      }
+    .section-mission-graphic {
+      margin: 0 1rem;
+      padding: 2rem 10rem;
+      background: rgba(0, 91, 112, 0.5);
+      text-align: center;
     }
   }
 
@@ -159,7 +171,7 @@
       align-items: center;
       .section-feature-component-text,
       .section-feature-component-graphic {
-        flex: 0 0 46%;
+        flex: 0 0 48%;
       }
       .section-feature-component-graphic {
         background: rgba(255, 255, 255, 0.26);
