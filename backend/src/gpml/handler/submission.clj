@@ -70,7 +70,7 @@
     (let [data (assoc (set/rename-keys body-params {:item_type :table-name})
                       :reviewed_by (:id admin))]
       (db.submission/update-submission (:spec db) data)
-      (assoc (resp/status 204)
+      (assoc (resp/status 200)
              :body {:message "Successfuly Updated"
                     :data (submission-detail (:spec db) data)}))))
 
