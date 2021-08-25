@@ -35,6 +35,7 @@ import AddInitiative from "./modules/initiative/view";
 import AddActionPlan from "./modules/action-plan/view";
 import AddTechnology from "./modules/technology/view";
 import AddPolicy from "./modules/policy/view";
+import Topic from "./modules/topics/topic";
 
 api
   .get("/tag")
@@ -255,6 +256,7 @@ const Root = () => {
             />
           )}
         />
+        <Route exact path="/topics" render={(props) => <Topic {...props} />} />
         <Route path="/add-event" render={(props) => <AddEvent {...props} />} />
         <Route
           exact
@@ -393,7 +395,10 @@ const ExploreDropdownMenu = withRouter(({ history }) => {
       overlayClassName="menu-dropdown-wrapper"
       overlay={
         <Menu className="menu-dropdown">
-          <Menu.Item className="nav-link">
+          <Menu.Item
+            className="nav-link"
+            onClick={() => history.push("/topics")}
+          >
             Topics <span className="badge-count">6</span>
           </Menu.Item>
           <Menu.Item className="nav-link">

@@ -1,0 +1,44 @@
+@import "../../vars.scss";
+
+#topics {
+  .section-container {
+    padding: 4rem 0;
+
+    h2 {
+      color: $blue02;
+    }
+
+    .topic-item-wrapper {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+
+      .topic-item-card {
+        flex: 1 1 29%;
+        margin: 0.5rem;
+
+        .topic-item-title-wrapper {
+          margin-top: 0.8rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .topic-item-title {
+            color: $black;
+            text-transform: capitalize;
+            font-weight: 500;
+            font-size: 1.125rem;
+          }
+
+          .topic-item-count {
+            border: 1px solid $blue02;
+            box-sizing: border-box;
+            color: $blue02;
+          }
+        }
+      }
+    }
+  }
+}
