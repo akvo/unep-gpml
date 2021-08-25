@@ -311,7 +311,8 @@
   :gpml.handler.review/get-review {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/new-review {:db #ig/ref :duct.database/sql
                                    :mailjet-config #ig/ref :gpml.config/mailjet}
-  :gpml.handler.review/update-review {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/update-review {:db #ig/ref :duct.database/sql
+                                      :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.review/list-reviews {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/list-reviews-params {}
   :gpml.handler.review/review-status-params {}

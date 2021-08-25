@@ -58,8 +58,8 @@
                             (list nil))
           (resp/response review))))))
 
-(defn change-reviewer [db topic-type topic-id reviewer admin]
-  (let [topic-type (get-internal-topic-type topic-type)
+(defn change-reviewer [db mailjet-config topic-type topic-id reviewer-id admin]
+  (let [topic-type* (get-internal-topic-type topic-type)
         assigned-by (:id admin)
         is-admin (= "ADMIN" (:role admin))
         resp403 {:status 403 :body {:message "Cannot update reviewer for this topic"}}]
@@ -67,11 +67,18 @@
       (if-let [review (and is-admin
                             (db.review/review-by-topic-item
                              conn
-                             {:topic-type topic-type :topic-id topic-id}))]
-         (resp/response
-          (db.review/change-reviewer conn {:id (:id review)
-                                           :assigned-by assigned-by
-                                           :reviewer reviewer}))
+                             {:topic-type topic-type* :topic-id topic-id}))]
+        (let [reviewer (db.stakeholder/stakeholder-by-id conn {:id reviewer-id})
+              review-id (db.review/change-reviewer conn {:id (:id review)
+                                                         :assigned-by assigned-by
+                                                         :reviewer reviewer-id})]
+          (email/send-email mailjet-config
+                            email/unep-sender
+                            (format "[%s] Review requested on new %s" (:app-name mailjet-config) topic-type)
+                            (list {:Name (email/get-user-full-name reviewer) :Email (:email reviewer)})
+                            (list (email/notify-reviewer-pending-review-text (email/get-user-full-name reviewer) (:app-domain mailjet-config) topic-type (:title review)))
+                            (list nil))
+          (resp/response review-id))
          resp403))))
 
 (defn update-review-status [db topic-type topic-id review-status review-comment reviewer]
@@ -114,12 +121,12 @@
         admin :admin}]
     (new-review db mailjet-config topic-type topic-id reviewer (:id admin))))
 
-(defmethod ig/init-key ::update-review [_ {:keys [db]}]
+(defmethod ig/init-key ::update-review [_ {:keys [db mailjet-config]}]
   (fn [{{{:keys [topic-type topic-id]} :path
          {:keys [review-status review-comment reviewer]} :body} :parameters
         current-user :reviewer}]
     (if reviewer
-      (change-reviewer db topic-type topic-id reviewer current-user)
+      (change-reviewer db mailjet-config topic-type topic-id reviewer current-user)
       (update-review-status db topic-type topic-id review-status review-comment current-user))))
 
 (defmethod ig/init-key ::list-reviews [_ {:keys [db]}]
