@@ -30,6 +30,14 @@ A new %s (%s) is awaiting your approval. Please visit %s/profile to approve or d
 - UNEP GPML Digital Platform
 ")
 
+(defn notify-reviewer-pending-review-text [reviewer-name app-domain topic-type topic-title]
+  (format "Dear %s,
+
+A new %s (%s) is awaiting your review. Please visit %s/profile to review the resource.
+
+- UNEP GPML Digital Platform
+" reviewer-name topic-type topic-title app-domain))
+
 (defn notify-user-invitation-text [inviter-name app-domain entity-name]
   (format "Dear user,
 

@@ -4,6 +4,7 @@
    [clojure.java.jdbc :as jdbc]
    [gpml.constants :as constants]
    [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.email-util :as email]
    [gpml.db.review :as db.review]
    [gpml.handler.util :as util]
    [integrant.core :as ig]
@@ -33,19 +34,29 @@
                 {:topic-type topic-type :topic-id topic-id})]
     (resp/response review)))
 
-(defn new-review [db topic-type topic-id reviewer assigned-by]
-  (let [topic-type (get-internal-topic-type topic-type)
+(defn new-review [db mailjet-config topic-type topic-id reviewer-id assigned-by]
+  (let [topic-type* (get-internal-topic-type topic-type)
         resp409 {:status 409 :body {:message "Review already created for this resource"}}]
     (jdbc/with-db-transaction [conn (:spec db)]
       (if-let [_ (db.review/review-by-topic-item
                    conn
-                   {:topic-type topic-type :topic-id topic-id})]
-         resp409
-         (resp/response
-          (db.review/new-review conn {:topic-type topic-type
-                                      :topic-id topic-id
-                                      :assigned-by assigned-by
-                                      :reviewer reviewer}))))))
+                   {:topic-type topic-type* :topic-id topic-id})]
+        resp409
+        (let [params {:topic-type topic-type*
+                      :topic-id topic-id
+                      :assigned-by assigned-by
+                      :reviewer reviewer-id}
+              reviewer (db.stakeholder/stakeholder-by-id conn {:id reviewer-id})
+              reviewer-name (email/get-user-full-name reviewer)
+              _ (db.review/new-review conn params)
+              review (db.review/review-by-topic-item conn params)]
+          (email/send-email mailjet-config
+                            email/unep-sender
+                            (format "[%s] Review requested on new %s" (:app-name mailjet-config) topic-type)
+                            (list {:Name reviewer-name :Email (:email reviewer)})
+                            (list (email/notify-reviewer-pending-review-text reviewer-name (:app-domain mailjet-config) topic-type (:title review)))
+                            (list nil))
+          (resp/response review))))))
 
 (defn change-reviewer [db topic-type topic-id reviewer admin]
   (let [topic-type (get-internal-topic-type topic-type)
@@ -97,11 +108,11 @@
   (fn [{{{:keys [topic-type topic-id]} :path} :parameters}]
     (get-review db topic-type topic-id)))
 
-(defmethod ig/init-key ::new-review [_ {:keys [db]}]
+(defmethod ig/init-key ::new-review [_ {:keys [db mailjet-config]}]
   (fn [{{{:keys [topic-type topic-id]} :path
          {:keys [reviewer]} :body} :parameters
         admin :admin}]
-    (new-review db topic-type topic-id reviewer (:id admin))))
+    (new-review db mailjet-config topic-type topic-id reviewer (:id admin))))
 
 (defmethod ig/init-key ::update-review [_ {:keys [db]}]
   (fn [{{{:keys [topic-type topic-id]} :path
