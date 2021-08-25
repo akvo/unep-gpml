@@ -66,6 +66,9 @@
     border: 1px solid #cbd8e2;
     box-sizing: border-box;
     border-radius: 5px;
+    &.stakeholder-wrapper {
+      padding: 0.5rem 0;
+    }
   }
 
   .ant-collapse {
@@ -113,7 +116,8 @@
     }
   }
 
-  .review {
+  .review,
+  .manage-stakeholder {
     .col:nth-child(1) {
       width: 80%;
     }
@@ -130,6 +134,34 @@
     width: 100%;
     line-height: 30px;
     color: #046799;
+
+    &.stakeholder-row {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid #cbd8e2;
+      &:last-child {
+        border: none;
+      }
+      .status {
+        margin-left: 0.5rem;
+      }
+      .col {
+        &.content {
+          display: flex;
+          align-items: center;
+          div {
+            &:nth-child(1) {
+              flex: 1 1 8%;
+              margin-right: 1rem;
+            }
+            &:nth-child(2) {
+              flex: 1 1 90%;
+            }
+          }
+        }
+      }
+    }
 
     &.head {
       padding-left: 35px;

@@ -112,7 +112,6 @@ const ReviewSection = ({
   };
 
   const ReviewedHeader = ({ item }) => {
-    console.log(item);
     return (
       <div className="row">
         <div className="col content">
