@@ -1,19 +1,24 @@
 import React, { Fragment, useState } from "react";
 import { Button, Collapse, Space, Pagination, Modal, Input } from "antd";
 import { DetailCollapse } from "./preview";
-import { topicNames } from "../../utils/misc";
+import {
+  topicNames,
+  reviewStatusUIText,
+  reviewCommentModalTitle,
+} from "../../utils/misc";
 import api from "../../utils/api";
 import { fetchReviewItems } from "./utils";
 import { titleCase } from "../../utils/string";
 
-const ReviewCommentModal = ({ action, visible, handleOk, handleCancel }) => {
+const ReviewCommentModal = ({ status, visible, handleOk, handleCancel }) => {
   const [reviewComment, setReviewComment] = useState();
+  const action = status.slice(0, -2);
   return (
     <Modal
-      title={`${action} the reviewed resource`}
+      title={reviewCommentModalTitle[status]}
       visible={visible}
       onOk={() => handleOk(reviewComment)}
-      okText={action}
+      okText={reviewStatusUIText[action]}
       onCancel={handleCancel}
     >
       <Input.TextArea
@@ -35,8 +40,7 @@ const ReviewSection = ({
 }) => {
   const ReviewHeader = ({ item }) => {
     const [showNoteInput, setShowNoteInput] = useState(false);
-    const [modalReviewState, setModalReviewState] = useState("");
-    const modalActionName = titleCase(`${modalReviewState.slice(0, -2)}`);
+    const [modalReviewStatus, setModalReviewStatus] = useState("");
 
     const submitReview = (item, reviewStatus, reviewComment) => {
       const data = {
@@ -76,20 +80,20 @@ const ReviewSection = ({
               type="ghost"
               onClick={() => {
                 setShowNoteInput(true);
-                setModalReviewState("ACCEPTED");
+                setModalReviewStatus("ACCEPTED");
               }}
             >
-              Approve
+              {reviewStatusUIText["ACCEPT"]}
             </Button>
             <Button
               className="black"
               type="link"
               onClick={() => {
                 setShowNoteInput(true);
-                setModalReviewState("REJECTED");
+                setModalReviewStatus("REJECTED");
               }}
             >
-              Decline
+              {reviewStatusUIText["REJECT"]}
             </Button>
           </Space>
         </div>
@@ -99,11 +103,11 @@ const ReviewSection = ({
           }}
         >
           <ReviewCommentModal
-            action={modalActionName}
+            status={modalReviewStatus}
             visible={showNoteInput}
             handleCancel={() => setShowNoteInput(false)}
             handleOk={(reviewComment) =>
-              submitReview(item, modalReviewState, reviewComment)
+              submitReview(item, modalReviewStatus, reviewComment)
             }
           />
         </div>
@@ -119,7 +123,9 @@ const ReviewSection = ({
           <div className="topic">{topicNames(item.type)}</div>
         </div>
         <div className="col status">
-          <span className="status">{item.reviewStatus}</span>
+          <span className="status">
+            {reviewStatusUIText[item.reviewStatus]}
+          </span>
         </div>
       </div>
     );
