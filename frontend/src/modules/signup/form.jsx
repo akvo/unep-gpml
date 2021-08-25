@@ -184,8 +184,6 @@ const SignUpForm = withRouter(
       transformFormData(data, formData, formSchema.schema.properties);
       data.version = parseInt(formSchema.schema.version);
 
-      console.log(data, formData);
-
       setSending(true);
       window.alert("sending!!! ... not implemented yet");
       throw Error("not implemented yet");
