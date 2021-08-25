@@ -16,26 +16,20 @@
                            (format "^(%1$s)((,(%1$s))+)?$")
                            re-pattern))
 
-(defn- get-internal-topic-type [topic-type]
-  (cond
-    (contains? constants/resource-types topic-type) "resource"
-    (= topic-type "project") "initiative"
-    :else topic-type))
-
 (defn get-reviewers [db]
   (let [conn (:spec db)]
     (resp/response (db.stakeholder/get-reviewers conn))))
 
 (defn get-review [db topic-type topic-id]
   (let [conn (:spec db)
-        topic-type (get-internal-topic-type topic-type)
+        topic-type (util/get-internal-topic-type topic-type)
         review (db.review/review-by-topic-item
                 conn
                 {:topic-type topic-type :topic-id topic-id})]
     (resp/response review)))
 
 (defn new-review [db mailjet-config topic-type topic-id reviewer-id assigned-by]
-  (let [topic-type* (get-internal-topic-type topic-type)
+  (let [topic-type* (util/get-internal-topic-type topic-type)
         resp409 {:status 409 :body {:message "Review already created for this resource"}}]
     (jdbc/with-db-transaction [conn (:spec db)]
       (if-let [_ (db.review/review-by-topic-item
@@ -59,7 +53,7 @@
           (resp/response review))))))
 
 (defn change-reviewer [db mailjet-config topic-type topic-id reviewer-id admin]
-  (let [topic-type* (get-internal-topic-type topic-type)
+  (let [topic-type* (util/get-internal-topic-type topic-type)
         assigned-by (:id admin)
         is-admin (= "ADMIN" (:role admin))
         resp403 {:status 403 :body {:message "Cannot update reviewer for this topic"}}]
@@ -82,7 +76,7 @@
          resp403))))
 
 (defn update-review-status [db mailjet-config topic-type topic-id review-status review-comment reviewer]
-  (let [topic-type* (get-internal-topic-type topic-type)
+  (let [topic-type* (util/get-internal-topic-type topic-type)
         resp403 {:status 403 :body {:message "Cannot update review for this topic"}}]
     (jdbc/with-db-transaction [conn (:spec db)]
       (if-let [review (db.review/review-by-topic-item

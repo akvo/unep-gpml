@@ -1,4 +1,11 @@
-(ns gpml.handler.util)
+(ns gpml.handler.util
+  (:require [gpml.constants :as constants]))
+
+(defn get-internal-topic-type [topic-type]
+  (cond
+    (contains? constants/resource-types topic-type) "resource"
+    (= topic-type "project") "initiative"
+    :else topic-type))
 
 (defn page-count [count limit]
   (let [limit* (or
