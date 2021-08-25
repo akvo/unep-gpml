@@ -373,7 +373,7 @@ const AboutDropdownMenu = withRouter(({ history }) => {
       overlayClassName="menu-dropdown-wrapper"
       overlay={
         <Menu className="menu-dropdown">
-          <Menu.Item className="nav-link">Partnership</Menu.Item>
+          {/* <Menu.Item className="nav-link">Partnership</Menu.Item> */}
           <Menu.Item className="nav-link">Digital Platform</Menu.Item>
         </Menu>
       }
@@ -396,12 +396,12 @@ const ExploreDropdownMenu = withRouter(({ history }) => {
           <Menu.Item className="nav-link">
             Topics <span className="badge-count">6</span>
           </Menu.Item>
-          <Menu.Item className="nav-link">
+          {/* <Menu.Item className="nav-link">
             Goals <span className="badge-count">11</span>
           </Menu.Item>
           <Menu.Item className="nav-link">
             Stories <span className="badge-count">8</span>
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item className="nav-link">
             Glossary <span className="badge-count">54</span>
           </Menu.Item>
@@ -489,9 +489,9 @@ const ConnectStakeholdersDropdownMenu = withRouter(({ history }) => {
         <Menu className="menu-dropdown">
           <Menu.Item className="nav-link">Events</Menu.Item>
           <Menu.Item className="nav-link">Stakeholders Directory</Menu.Item>
-          <Menu.Item className="nav-link">Forums</Menu.Item>
+          {/* <Menu.Item className="nav-link">Forums</Menu.Item>
           <Menu.Item className="nav-link">Partners</Menu.Item>
-          <Menu.Item className="nav-link">Sponsors</Menu.Item>
+          <Menu.Item className="nav-link">Sponsors</Menu.Item> */}
         </Menu>
       }
       trigger={["click"]}
