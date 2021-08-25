@@ -167,6 +167,23 @@ const AdminSection = ({
         setPendingItems(await fetchSubmissionData(page, limit));
       })();
     };
+
+    const ApproveButton = ({
+      item,
+      type,
+      className = "",
+      disabled = false,
+    }) => (
+      <Button
+        type={type}
+        className={className}
+        disabled={disabled}
+        onClick={review(item, "APPROVED")}
+      >
+        Approve
+      </Button>
+    );
+
     return (
       <div key="new-approval" className="approval">
         <h2>New approval requests</h2>
@@ -210,42 +227,34 @@ const AdminSection = ({
                         <Space size="small">
                           {item.type === "profile" ? (
                             item.emailVerified ? (
-                              <Button
+                              <ApproveButton
+                                item={item}
                                 type="ghost"
                                 className="black"
-                                onClick={review(item, "APPROVED")}
-                              >
-                                Approve
-                              </Button>
+                              />
                             ) : (
                               <Tooltip title="Profile cannot be approved since email is not verified">
-                                <Button
+                                <ApproveButton
+                                  item={item}
                                   type="secondary"
                                   disabled={true}
-                                  onClick={review(item, "APPROVED")}
-                                >
-                                  Approve
-                                </Button>
+                                />
                               </Tooltip>
                             )
                           ) : item.type === "policy" ? (
                             <Tooltip title="Policies are imported from Law division system">
-                              <Button
+                              <ApproveButton
+                                item={item}
                                 type="secondary"
                                 disabled={true}
-                                onClick={review(item, "APPROVED")}
-                              >
-                                Approve
-                              </Button>
+                              />
                             </Tooltip>
                           ) : (
-                            <Button
+                            <ApproveButton
+                              item={item}
                               type="ghost"
                               className="black"
-                              onClick={review(item, "APPROVED")}
-                            >
-                              Approve
-                            </Button>
+                            />
                           )}
                           <Button
                             type="link"
