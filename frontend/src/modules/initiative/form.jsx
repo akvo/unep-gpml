@@ -22,7 +22,7 @@ import { withRouter } from "react-router-dom";
 const Form = withTheme(AntDTheme);
 
 // # Refactor, still need to figure out how to make this as global function
-const collectDependSchemaRefactor = (
+export const collectDependSchemaRefactor = (
   tmp,
   formData,
   schema,
@@ -93,7 +93,7 @@ const collectDependSchemaRefactor = (
 };
 // End of refactor
 
-const transformFormData = (data, formData, schema) => {
+export const transformFormData = (data, formData, schema) => {
   delete formData?.tabs;
   delete formData?.steps;
   delete formData?.required;

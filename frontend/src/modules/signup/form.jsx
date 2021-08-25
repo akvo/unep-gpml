@@ -10,6 +10,10 @@ import FieldTemplate from "../../utils/forms/field-template";
 import widgets from "../../utils/forms";
 import { overideValidation } from "../../utils/forms";
 import {
+  transformFormData,
+  collectDependSchemaRefactor,
+} from "../initiative/form";
+import {
   handleGeoCoverageValue,
   checkRequiredFieldFilledIn,
   checkDependencyAnswer,
@@ -22,142 +26,6 @@ import { UIStore } from "../../store";
 import { withRouter } from "react-router-dom";
 
 const Form = withTheme(AntDTheme);
-
-// # Refactor, still need to figure out how to make this as global function
-const collectDependSchemaRefactor = (
-  tmp,
-  formData,
-  schema,
-  required,
-  index = null,
-  oldIndex = null
-) => {
-  if (!schema?.properties) {
-    return;
-  }
-  if (schema?.required) {
-    required.push({ group: oldIndex, key: index, required: schema.required });
-  }
-  const { properties } = schema;
-  Object.keys(properties).forEach((key) => {
-    if (
-      !index &&
-      properties?.[key]?.depend &&
-      !checkDependencyAnswer(
-        formData?.[properties?.[key]?.depend.id],
-        properties?.[key]?.depend
-      )
-    ) {
-      tmp.push(`.${key}`);
-    }
-    if (
-      index &&
-      !oldIndex &&
-      properties?.[key]?.depend &&
-      !checkDependencyAnswer(
-        formData?.[index]?.[properties?.[key]?.depend.id],
-        properties?.[key]?.depend
-      )
-    ) {
-      if (key.includes(".")) {
-        tmp.push(`.${index}['${key}']`);
-      } else {
-        tmp.push(`.${index}.${key}`);
-      }
-    }
-    if (
-      index &&
-      oldIndex &&
-      properties?.[key]?.depend &&
-      !checkDependencyAnswer(
-        formData?.[oldIndex][index]?.[properties?.[key]?.depend.id],
-        properties?.[key]?.depend
-      )
-    ) {
-      if (key.includes(".")) {
-        tmp.push(`.${oldIndex}.${index}['${key}']`);
-      } else {
-        tmp.push(`.${oldIndex}.${index}.${key}`);
-      }
-    }
-    if (properties?.[key]?.properties) {
-      !collectDependSchemaRefactor(
-        tmp,
-        formData,
-        properties?.[key],
-        required,
-        key,
-        index
-      );
-    }
-  });
-  return;
-};
-// End of refactor
-
-const transformFormData = (data, formData, schema) => {
-  delete formData?.tabs;
-  delete formData?.steps;
-  delete formData?.required;
-  Object.keys(formData).forEach((key) => {
-    if (formData?.[key]) {
-      delete formData[key]?.steps;
-      delete formData[key]?.required;
-      if (
-        formData[key] === Object(formData[key]) &&
-        !Array.isArray(formData[key])
-      ) {
-        // loop
-        transformFormData(data, formData[key], schema[key]?.properties);
-      } else {
-        // collect the value
-        let qKey = key.split("_");
-        qKey = qKey[qKey.length - 1];
-        qKey = qKey.split(".").join("_");
-        data[qKey] = formData[key];
-        if (Array.isArray(formData[key])) {
-          data[`q${qKey}`] = formData[key].map((d) => {
-            if (schema?.[key]?.type === "array" && schema?.[key].items?.enum) {
-              return {
-                [d]:
-                  schema?.[key].items.enumNames?.[
-                    schema?.[key].items.enum.indexOf(d)
-                  ],
-              };
-            }
-            if (schema?.[key]?.type === "string") {
-              const answer = String(d).includes("-")
-                ? d
-                : schema?.[key]?.enum
-                ? d
-                : parseInt(d);
-              return {
-                [d]:
-                  schema?.[key].enumNames?.[schema?.[key].enum.indexOf(answer)],
-              };
-            }
-            return d;
-          });
-        } else {
-          if (
-            schema?.[key]?.enum &&
-            schema?.[key]?.enumNames &&
-            schema[key]?.enum.length > 0 &&
-            schema[key].enumNames.length > 0
-          ) {
-            data[`q${qKey}`] = {
-              [formData[key]]:
-                schema?.[key].enumNames?.[
-                  schema[key].enum.indexOf(formData[key])
-                ],
-            };
-          }
-        }
-      }
-    }
-  });
-  return;
-};
 
 const SignUpForm = withRouter(
   ({
@@ -185,6 +53,7 @@ const SignUpForm = withRouter(
       data.version = parseInt(formSchema.schema.version);
 
       setSending(true);
+      console.log(data, formData);
       window.alert("sending!!! ... not implemented yet");
       throw Error("not implemented yet");
       if (status === "add" && !params?.id) {
