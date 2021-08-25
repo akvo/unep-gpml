@@ -17,10 +17,7 @@ import {
 import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
-import StakeholderSignupModal from "./modules/stakeholder-signup/signup-modal";
-import EntitySignupModal from "./modules/entity-signup/signup-modal";
-import SignupView from "./modules/signup-bis/view";
-import NewSignupView from "./modules/signup/view";
+import SignupView from "./modules/signup/view";
 import logo from "./images/GPML-logo-white.png";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
@@ -136,12 +133,7 @@ const Root = () => {
     stakeholderSignupModalVisible,
     setStakeholderSignupModalVisible,
   ] = useState(false);
-  const [entitySignupModalVisible, setEntitySignupModalVisible] = useState(
-    false
-  );
   const { profile, disclaimer, loading } = UIStore.useState((s) => s);
-  const [signupModalVisible, setSignupModalVisible] = useState(false);
-
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -353,14 +345,7 @@ const Root = () => {
           path="/profile"
           render={(props) => <ProfileView {...{ ...props }} />}
         />
-        <Route
-          path="/stakeholder-old-signup"
-          render={(props) => <SignupView {...props} />}
-        />
-        <Route
-          path="/stakeholder-signup"
-          render={(props) => <NewSignupView {...props} />}
-        />
+        <Route path="/signup" render={(props) => <SignupView {...props} />} />
         <Route
           path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
           render={(props) => (
@@ -379,14 +364,6 @@ const Root = () => {
           loginWithPopup={loginWithPopup}
         />
       </div>
-      <StakeholderSignupModal
-        visible={stakeholderSignupModalVisible}
-        onCancel={() => setStakeholderSignupModalVisible(false)}
-      />
-      <EntitySignupModal
-        visible={entitySignupModalVisible}
-        onCancel={() => setEntitySignupModalVisible(false)}
-      />
       <ModalWarningUser
         visible={warningModalVisible}
         close={() => setWarningModalVisible(false)}

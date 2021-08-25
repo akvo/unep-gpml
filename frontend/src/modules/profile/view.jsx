@@ -18,7 +18,8 @@ import React, {
 } from "react";
 import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
-import SignupForm from "../stakeholder-signup/signup-form";
+
+//import SignupForm from "../stakeholder-signup/signup-form";
 import {
   fetchArchiveData,
   fetchSubmissionData,
@@ -263,14 +264,14 @@ const ProfileView = ({ ...props }) => {
             <Col xs={24} md={16} lg={18} className="content-wrapper">
               {menu === "personal-details" && (
                 <div>
-                  <SignupForm
-                    onSubmit={onSubmit}
-                    handleSubmitRef={(ref) => {
-                      handleSubmitRef.current = ref;
-                    }}
-                    initialValues={profile}
-                    isModal={false}
-                  />
+                  {/* <SignupForm */}
+                  {/*   onSubmit={onSubmit} */}
+                  {/*   handleSubmitRef={(ref) => { */}
+                  {/*     handleSubmitRef.current = ref; */}
+                  {/*   }} */}
+                  {/*   initialValues={profile} */}
+                  {/*   isModal={false} */}
+                  {/* /> */}
                   <Button
                     loading={saving}
                     type="primary"
