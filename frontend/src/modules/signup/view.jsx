@@ -89,7 +89,7 @@ const getSchema = (
 
   prop.S1.properties.S1_ExpertisesAndActivities.properties[
     "tags"
-  ].enum = tags?.general?.map((it) => it.id);
+  ].enum = tags?.general?.map((it) => String(it.id));
   prop.S1.properties.S1_ExpertisesAndActivities.properties[
     "tags"
   ].enumNames = tags?.general?.map((it) => it.tag);
