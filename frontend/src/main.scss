@@ -348,13 +348,10 @@ button.ant-btn.ant-btn-link.ant-dropdown-trigger.menu-btn.nav-link {
 
     .badge-count {
       border: 1px solid #255b87;
-      width: 25px;
-      height: 25px;
-      text-align: center;
-      border-radius: 50px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      color: #2d6796;
+      width: 27px;
+      height: 27px;
+      font-size: 0.7rem;
     }
 
     :not(:last-child) {
@@ -370,9 +367,9 @@ button.ant-btn.ant-btn-link.ant-dropdown-trigger.menu-btn.nav-link {
       color: #2d6796;
       height: 40px;
 
-      :last-child {
-        margin-left: 15px;
-      }
+      // :last-child {
+      //   margin-left: 15px;
+      // }
     }
   }
 }

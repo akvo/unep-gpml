@@ -13,6 +13,7 @@ import {
   DownOutlined,
   UserOutlined,
   SearchOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
@@ -29,12 +30,15 @@ import DetailsView from "./modules/details/view";
 import Footer from "./footer";
 import uniqBy from "lodash/uniqBy";
 import sortBy from "lodash/sortBy";
+import sumBy from "lodash/sumBy";
 import AddFinancingResource from "./modules/financing-resource/view";
 import AddTechnicalResource from "./modules/technical-resource/view";
 import AddInitiative from "./modules/initiative/view";
 import AddActionPlan from "./modules/action-plan/view";
 import AddTechnology from "./modules/technology/view";
 import AddPolicy from "./modules/policy/view";
+import { topicNames } from "./utils/misc";
+import humps from "humps";
 
 api
   .get("/tag")
@@ -70,18 +74,26 @@ api
                     );
                   })
                   .then((organisations) => {
-                    UIStore.update((e) => {
-                      e.tags = tags;
-                      e.currencies = currencies;
-                      e.countries = countries;
-                      e.regionOptions = countryGroups.filter(
-                        (x) => x.type === "region"
-                      );
-                      e.meaOptions = countryGroups.filter(
-                        (x) => x.type === "mea"
-                      );
-                      e.organisations = organisations;
-                    });
+                    api
+                      .get("/landing")
+                      .then((resp) => {
+                        return resp.data;
+                      })
+                      .then((landing) => {
+                        UIStore.update((e) => {
+                          e.tags = tags;
+                          e.currencies = currencies;
+                          e.countries = countries;
+                          e.regionOptions = countryGroups.filter(
+                            (x) => x.type === "region"
+                          );
+                          e.meaOptions = countryGroups.filter(
+                            (x) => x.type === "mea"
+                          );
+                          e.organisations = organisations;
+                          e.summary = landing?.summary ? landing.summary : [];
+                        });
+                      });
                   });
               });
           });
@@ -123,7 +135,9 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
-  const { profile, disclaimer, loading } = UIStore.useState((s) => s);
+  const { profile, disclaimer, loading, summary, tags } = UIStore.useState(
+    (s) => s
+  );
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
@@ -191,7 +205,7 @@ const Root = () => {
                 <img src={logo} className="logo" alt="GPML" />
               </Link>
             </div>
-            {renderDropdownMenu()}
+            {renderDropdownMenu(tags, summary)}
             <Switch>
               <Route path="/browse" />
               <Route>
@@ -355,13 +369,22 @@ const Root = () => {
   );
 };
 
-const renderDropdownMenu = () => {
+const renderDropdownMenu = (tags, summary) => {
+  const excludeSummary = ["event", "organisation", "stakeholder"];
+  summary = summary
+    .filter((x) => !excludeSummary.includes(Object.keys(x)[0]))
+    .map((x) => {
+      return {
+        name: Object.keys(x)[0],
+        count: x[Object.keys(x)[0]],
+      };
+    });
   return (
     <div className="menu-dropdown-container">
       <AboutDropdownMenu />
-      <ExploreDropdownMenu />
+      <ExploreDropdownMenu topics={tags?.topics ? tags.topics.length : 0} />
       <DataHubDropdownMenu />
-      <KnowledgeExchangeDropdownMenu />
+      <KnowledgeExchangeDropdownMenu resources={summary} />
       <ConnectStakeholdersDropdownMenu />
     </div>
   );
@@ -387,14 +410,22 @@ const AboutDropdownMenu = withRouter(({ history }) => {
   );
 });
 
-const ExploreDropdownMenu = withRouter(({ history }) => {
+const ExploreDropdownMenu = withRouter(({ history, topics }) => {
   return (
     <Dropdown
       overlayClassName="menu-dropdown-wrapper"
       overlay={
         <Menu className="menu-dropdown">
-          <Menu.Item className="nav-link">
-            Topics <span className="badge-count">6</span>
+          <Menu.Item className="nav-link" disabled={!topics}>
+            Topics
+            <Button
+              className="badge-count"
+              size="small"
+              type="ghost"
+              shape="circle"
+              icon={topics}
+              loading={!topics}
+            />
           </Menu.Item>
           {/* <Menu.Item className="nav-link">
             Goals <span className="badge-count">11</span>
@@ -403,7 +434,15 @@ const ExploreDropdownMenu = withRouter(({ history }) => {
             Stories <span className="badge-count">8</span>
           </Menu.Item> */}
           <Menu.Item className="nav-link">
-            Glossary <span className="badge-count">54</span>
+            Glossary
+            <Button
+              className="badge-count"
+              size="small"
+              type="ghost"
+              shape="circle"
+              icon={10}
+              loading={false}
+            />
           </Menu.Item>
         </Menu>
       }
@@ -439,36 +478,62 @@ const DataHubDropdownMenu = withRouter(({ history }) => {
   );
 });
 
-const KnowledgeExchangeDropdownMenu = withRouter(({ history }) => {
+const KnowledgeExchangeDropdownMenu = withRouter(({ history, resources }) => {
+  const loading = !resources.length;
+  const allResources = sumBy(resources, "count");
   return (
     <Dropdown
       overlayClassName="menu-dropdown-wrapper"
       overlay={
         <Menu className="menu-dropdown">
-          <Menu.Item className="nav-link">
-            All Resources <span className="badge-count">54</span>
+          <Menu.Item
+            className="nav-link"
+            onClick={() => history.push("/browse")}
+          >
+            All Resources
+            <Button
+              className="badge-count"
+              size="small"
+              type="ghost"
+              shape="circle"
+              icon={allResources}
+              loading={loading}
+            />
           </Menu.Item>
-          <Menu.Item className="indent-right nav-link">
-            Inititative <span className="badge-count">54</span>
-          </Menu.Item>
-          <Menu.Item className="indent-right nav-link">
-            Action Plan <span className="badge-count">54</span>
-          </Menu.Item>
-          <Menu.Item className="indent-right nav-link">
-            Policy <span className="badge-count">54</span>
-          </Menu.Item>
-          <Menu.Item className="indent-right nav-link">
-            Technical resource <span className="badge-count">54</span>
-          </Menu.Item>
-          <Menu.Item className="indent-right nav-link">
-            Financing resource <span className="badge-count">54</span>
-          </Menu.Item>
-          <Menu.Item className="indent-right nav-link">
-            Technology <span className="badge-count">54</span>
-          </Menu.Item>
-          <Menu.Item className="nav-link">
-            Capacity building <span className="badge-count">54</span>
-          </Menu.Item>
+          {resources.map((x, i) => {
+            const { name, count } = x;
+            return (
+              <Menu.Item
+                key={`${name}-${i}`}
+                className="indent-right nav-link"
+                disabled={loading}
+                onClick={() =>
+                  history.push(`/browse?topic=${humps.decamelize(name)}`)
+                }
+              >
+                {topicNames(name)}
+                <Button
+                  className="badge-count"
+                  size="small"
+                  type="ghost"
+                  shape="circle"
+                  icon={count}
+                  loading={loading}
+                />
+              </Menu.Item>
+            );
+          })}
+          {/* <Menu.Item className="nav-link">
+            Capacity building
+            <Button
+              className="badge-count"
+              size="small"
+              type="ghost"
+              shape="circle"
+              icon={10}
+              loading={false}
+            />
+          </Menu.Item> */}
         </Menu>
       }
       trigger={["click"]}
@@ -487,7 +552,12 @@ const ConnectStakeholdersDropdownMenu = withRouter(({ history }) => {
       overlayClassName="menu-dropdown-wrapper"
       overlay={
         <Menu className="menu-dropdown">
-          <Menu.Item className="nav-link">Events</Menu.Item>
+          <Menu.Item
+            className="nav-link"
+            onClick={() => history.push("/browse?topic=event")}
+          >
+            Events
+          </Menu.Item>
           <Menu.Item className="nav-link">Stakeholders Directory</Menu.Item>
           {/* <Menu.Item className="nav-link">Forums</Menu.Item>
           <Menu.Item className="nav-link">Partners</Menu.Item>
