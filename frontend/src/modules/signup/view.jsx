@@ -155,10 +155,10 @@ const getSchema = (
   prop.S4.properties["orgHeadquarter"].enumNames = countries?.map(
     (x) => x.name
   );
-  prop.S5.properties["registeredStakeholder"].enum = stakeholders?.map((it) =>
+  prop.S5.properties["registeredStakeholders"].enum = stakeholders?.map((it) =>
     String(it.id)
   );
-  prop.S5.properties["registeredStakeholder"].enumNames = stakeholders?.map(
+  prop.S5.properties["registeredStakeholders"].enumNames = stakeholders?.map(
     (it) => `${it.firstName} ${it.lastName} ${it.email ? '('+it.email+')' :''}`
   );
 

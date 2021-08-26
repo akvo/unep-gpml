@@ -238,15 +238,15 @@
     }
   },
   "S5": {
-    "ui:order": ["registeredStakeholder", "otherStakeholder"],
-    "registeredStakeholder": {
+    "ui:order": ["registeredStakeholders", "otherStakeholders"],
+    "registeredStakeholders": {
       "ui:widget": "select",
       "ui:placeholder": "Search by name or email",
       "ui:mode": "multiple",
       "uniqueItems": true,
       "ui:showSearch": true
     },
-    "otherStakeholder": {
+    "otherStakeholders": {
       "ui:options": {
         "addItemText": "Add another stakeholder",
         "removeItemText": "Remove stakeholder",
@@ -255,7 +255,7 @@
       "classNames": "list-group-item",
       "ui:group": "border",
       "items": {
-        "S5_G1_5": {
+        "stakeholderOrgRole": {
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:placeholder": "Select a role"

@@ -258,11 +258,11 @@ export const schema = {
       },
       required: ["registeredStakeholder"],
       properties: {
-        registeredStakeholder: {
+        registeredStakeholders: {
           title: "Link a registered GPML stakeholder",
           type: "string",
         },
-        otherStakeholder: {
+        otherStakeholders: {
           title: "",
           type: "array",
           items: {
