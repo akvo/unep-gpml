@@ -27,6 +27,8 @@ const TreeMap = (data, extra, selected) => {
       opacity: 0.95,
       padding: 8,
       borderRadius: 50,
+      width: 25,
+      height: 25,
     },
   };
   data = !data ? [] : data;
@@ -101,7 +103,7 @@ const TreeMap = (data, extra, selected) => {
           },
           show: true,
           fontFamily: "Open Sans",
-          // position: "inside",
+          position: "inside",
           align: "center",
           verticalAlign: "middle",
           padding: [25, 0],
