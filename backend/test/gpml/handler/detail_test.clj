@@ -5,6 +5,7 @@
             [gpml.db.initiative :as db.initiative]
             [gpml.db.policy :as db.policy]
             [gpml.db.technology :as db.technology]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.event :as db.event]
             [gpml.seeder.main :as seeder]
             [integrant.core :as ig]
@@ -13,6 +14,20 @@
 
 (use-fixtures :each fixtures/with-test-system)
 
+(defn- new-stakeholder [db email first_name last_name role review_status]
+  (let [info {:picture "https://picsum.photos/200"
+              :affiliation nil
+              :country nil
+              :representation ""
+              :geo_coverage_type nil
+              :title "Mr."
+              :first_name first_name
+              :last_name last_name
+              :email email}
+        sth (db.stakeholder/new-stakeholder db info)]
+    (db.stakeholder/update-stakeholder-status db (assoc sth :review_status review_status))
+    (db.stakeholder/update-stakeholder-role db (assoc sth :role role))
+    sth))
 
 (def policy-data
   {:title "Policy Title"
@@ -119,3 +134,45 @@
             edited-event (db.event/event-by-id db event)]
         (is (= 200 (:status resp)))
         (is (= (:title edited-data) (:title edited-event)))))))
+
+(deftest handler-get-test
+  (let [system (ig/init fixtures/*system* [::detail/get])
+        handler (::detail/get system)
+        db (-> system :duct.database.sql/hikaricp :spec)
+        creator (new-stakeholder db "user-approved@org.com" "U" "A" "USER" "APPROVED")
+        data (seeder/parse-data
+              (slurp (io/resource "examples/initiative-national.json"))
+              {:keywords? true})
+        initiative (db.initiative/new-initiative db (assoc data :created_by (:id creator)))]
+
+    (testing "Fetching detail of unapproved resource unauthenticated"
+      (let [resp (handler (-> (mock/request :put "/")
+                              (assoc :parameters
+                                     {:path {:topic-type "project" :topic-id (:id initiative)}})))]
+        (is (= 404 (:status resp)))))
+
+    (testing "Fetching detail of unapproved resource as authenticated user"
+      (let [resp (handler (-> (mock/request :put "/")
+                              (assoc
+                               :user {:id 0 :role "USER"}
+                               :parameters
+                               {:path {:topic-type "project" :topic-id (:id initiative)}})))]
+        (is (= 404 (:status resp)))))
+
+    (testing "Fetching detail of unapproved resource as different ADMIN"
+      (let [resp (handler (-> (mock/request :put "/")
+                              (assoc
+                               :user {:id 0 :role "ADMIN"}
+                               :parameters
+                               {:path {:topic-type "project" :topic-id (:id initiative)}})))]
+        (is (= 200 (:status resp)))
+        (is (= "Initiative Title." (-> resp :body :title)))))
+
+    (testing "Fetching detail of unapproved resource as creator"
+      (let [resp (handler (-> (mock/request :put "/")
+                              (assoc
+                               :user creator
+                               :parameters
+                               {:path {:topic-type "project" :topic-id (:id initiative)}})))]
+        (is (= 200 (:status resp)))
+        (is (= "Initiative Title." (-> resp :body :title)))))))

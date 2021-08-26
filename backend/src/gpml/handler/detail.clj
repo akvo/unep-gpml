@@ -4,6 +4,7 @@
             [gpml.db.project :as db.project]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.language :as db.language]
+            [gpml.db.submission :as db.submission]
             [gpml.handler.image :as handler.image]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.organisation :as handler.org]
@@ -14,6 +15,7 @@
             [gpml.db.action-detail :as db.action-detail]
             gpml.db.country
             [gpml.db.country-group :as db.country-group]
+            [gpml.handler.util :as util]
             [clojure.string :as string]))
 
 (defn other-or-name [action]
@@ -270,18 +272,30 @@
 (defmethod extra-details :nothing [_ _ _]
   nil)
 
+(defn- access-allowed? [conn path user]
+  (let [topic (:topic-type path)
+        submission (->> {:table-name (util/get-internal-topic-type topic) :id (:topic-id path)}
+                        (db.submission/detail conn))]
+    (or (= (:review_status submission) "APPROVED")
+        (= (:role user) "ADMIN")
+        (and (not (nil? (:id user)))
+             (= (:created_by submission) (:id user))))))
+
 (defmethod ig/init-key ::get [_ {:keys [db]}]
   (cache-hierarchies! (:spec db))
-  (fn [{{:keys [path]} :parameters approved? :approved?}]
+  (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
     (let [conn (:spec db)
           topic (:topic-type path)
           public-topic? (not (contains? constants/approved-user-topics topic))
-          authorized? (or public-topic? approved?)]
+          authorized? (or public-topic? approved?)
+          not-found (resp/not-found {:message "Not Found"})]
       (if-let [data (and authorized? (db.detail/get-detail conn path))]
-        (resp/response (merge
-                        (:json data)
-                        (extra-details topic conn  (:json data))))
-        (resp/not-found {:message "Not Found"})))))
+        (if (access-allowed? conn path user)
+          (resp/response (merge
+                          (:json data)
+                          (extra-details topic conn  (:json data))))
+          not-found)
+        not-found))))
 
 (def put-params
   ;; FIXME: Add validation
