@@ -133,13 +133,7 @@ export const schema = {
         orgRepresentative: {
           title: "Which representative groups fits your organisation?",
           type: "string",
-          enum: [
-            "Governments",
-            "IGOs and MEAs",
-            "Scientific and technological community and academia",
-            "Private sector and Foundations",
-            "NGOs, MGS, Foundations and private citizens",
-          ],
+          enum: [],
         },
         orgDescription: {
           title: "Briefly describe your organisation",
@@ -195,61 +189,61 @@ export const schema = {
       },
       required: [
         "orgHeadquarter",
-        "orgGeocoverageType",
-        "orgGeoCoverageValueRegional",
-        "orgGeoCoverageValueNational",
-        "orgGeoCoverageValueTransnational",
-        "orgGeoCoverageValueSubNational",
-        "orgGeoCoverageValueGlobalSpesific",
+        "orggeoCoverageType",
+        "orggeoCoverageValueRegional",
+        "orggeoCoverageValueNational",
+        "orggeoCoverageValueTransnational",
+        "orggeoCoverageValueSubNational",
+        "orggeoCoverageValueGlobalSpesific",
       ],
       properties: {
         orgHeadquarter: {
           title: "In which country are you headquarters?",
           enum: [],
         },
-        orgGeocoverageType: {
+        orggeoCoverageType: {
           title: "What is the geographical coverage of your organisation?*",
           type: "string",
           enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
           enumNames: geoCoverageTypeOptions,
         },
-        orgGeoCoverageValueRegional: {
+        orggeoCoverageValueRegional: {
           $ref: "#/properties/S1/properties/geoCoverageValueRegional",
           title: "Regional",
           depend: {
-            id: "orgGeocoverageType",
+            id: "orggeoCoverageType",
             value: ["regional"],
           },
         },
-        orgGeoCoverageValueNational: {
+        orggeoCoverageValueNational: {
           $ref: "#/properties/S1/properties/geoCoverageValueNational",
           title: "National",
           depend: {
-            id: "orgGeocoverageType",
+            id: "orggeoCoverageType",
             value: ["national"],
           },
         },
-        orgGeoCoverageValueTransnational: {
+        orggeoCoverageValueTransnational: {
           $ref: "#/properties/S1/properties/geoCoverageValueTransnational",
           title: "Transnational",
           depend: {
-            id: "orgGeocoverageType",
+            id: "orggeoCoverageType",
             value: ["transnational"],
           },
         },
-        orgGeoCoverageValueSubNational: {
+        orggeoCoverageValueSubNational: {
           $ref: "#/properties/S1/properties/geoCoverageValueSubNational",
           title: "Sub-national",
           depend: {
-            id: "orgGeocoverageType",
+            id: "orggeoCoverageType",
             value: ["sub-national"],
           },
         },
-        orgGeoCoverageValueGlobalSpesific: {
+        orggeoCoverageValueGlobalSpesific: {
           $ref: "#/properties/S1/properties/geoCoverageValueGlobalSpesific",
           title: "Global with elements in specific areas",
           depend: {
-            id: "orgGeocoverageType",
+            id: "orggeoCoverageType",
             value: ["global with elements in specific areas"],
           },
         },

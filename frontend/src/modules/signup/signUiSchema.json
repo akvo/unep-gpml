@@ -192,48 +192,45 @@
   "S4": {
     "ui:order": [
       "orgHeadquarter",
-      "orgGeocoverageType",
-      "orgGeoCoverageValueRegional",
-      "orgGeoCoverageValueNational",
-      "orgGeoCoverageValueTransnational",
-      "orgGeoCoverageValueSubNational",
-      "orgGeoCoverageValueGlobalSpesific"
+      "orggeoCoverageType",
+      "orggeoCoverageValueRegional",
+      "orggeoCoverageValueNational",
+      "orggeoCoverageValueTransnational",
+      "orggeoCoverageValueSubNational",
+      "orggeoCoverageValueGlobalSpesific"
     ],
     "orgHeadquarter": {
       "ui:widget": "select",
       "ui:placeholder": "Search",
       "ui:showSearch": true
     },
-    "orgGeocoverageType": {
-      "ui:widget": "radio"
-    },
-    "geoCoverageType": {
+    "orggeoCoverageType": {
       "ui:placeholder": "Choose the coverage type",
       "ui:widget": "select"
     },
-    "orgGeoCoverageValueRegional": {
+    "orggeoCoverageValueRegional": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple"
     },
-    "orgGeoCoverageValueNational": {
+    "orggeoCoverageValueNational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true
     },
-    "orgGeoCoverageValueTransnational": {
+    "orggeoCoverageValueTransnational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple"
     },
-    "orgGeoCoverageValueSubNational": {
+    "orggeoCoverageValueSubNational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true
     },
-    "orgGeoCoverageValueGlobalSpesific": {
+    "orggeoCoverageValueGlobalSpesific": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
