@@ -272,14 +272,16 @@
 (defmethod extra-details :nothing [_ _ _]
   nil)
 
-(defn- access-allowed? [conn path user]
+(defn- get-resource-if-allowed [conn path user]
   (let [topic (:topic-type path)
         submission (->> {:table-name (util/get-internal-topic-type topic) :id (:topic-id path)}
-                        (db.submission/detail conn))]
-    (or (= (:review_status submission) "APPROVED")
-        (= (:role user) "ADMIN")
-        (and (not (nil? (:id user)))
-             (= (:created_by submission) (:id user))))))
+                        (db.submission/detail conn))
+        access-allowed? (or (= (:review_status submission) "APPROVED")
+                            (= (:role user) "ADMIN")
+                            (and (not (nil? (:id user)))
+                                 (= (:created_by submission) (:id user))))]
+    (when access-allowed?
+      submission)))
 
 (defmethod ig/init-key ::get [_ {:keys [db]}]
   (cache-hierarchies! (:spec db))
@@ -290,7 +292,7 @@
           authorized? (or public-topic? approved?)
           not-found (resp/not-found {:message "Not Found"})]
       (if-let [data (and authorized? (db.detail/get-detail conn path))]
-        (if (access-allowed? conn path user)
+        (if (some? (get-resource-if-allowed conn path user))
           (resp/response (merge
                           (:json data)
                           (extra-details topic conn  (:json data))))
@@ -416,13 +418,21 @@
 (defmethod ig/init-key ::put [_ {:keys [db]}]
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
-    (if (access-allowed? (:spec db) path user)
-      (let [conn (:spec db)
-            status (if (= topic-type "project")
-                     (update-initiative conn topic-id body)
-                     (update-resource conn topic-type topic-id body))]
-        (resp/response {:status (if (= status 1) "success" "failure")}))
-      {:status 403 :body {:message "Unauthorized"}})))
+    (let [submission (get-resource-if-allowed (:spec db) path user)
+          review_status (:review_status submission)]
+      (if (some? submission)
+        (let [conn (:spec db)
+              status (if (= topic-type "project")
+                       (update-initiative conn topic-id body)
+                       (update-resource conn topic-type topic-id body))]
+          (when (and (= status 1) (= review_status "REJECTED"))
+            (db.submission/update-submission
+             conn
+             {:table-name (util/get-internal-topic-type topic-type)
+              :id topic-id
+              :review_status "SUBMITTED"}))
+          (resp/response {:status (if (= status 1) "success" "failure")}))
+        {:status 403 :body {:message "Unauthorized"}}))))
 
 (defmethod ig/init-key ::put-params [_ _]
   put-params)
