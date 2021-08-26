@@ -304,13 +304,16 @@
                                         :client-id #duct/env "AUTH0_BACKEND_CLIENT_ID"
                                         :secret #duct/env "AUTH0_BACKEND_SECRET"}}
   :gpml.handler.submission/get-detail {:db #ig/ref :duct.database/sql}
-  :gpml.handler.submission/put {:db #ig/ref :duct.database/sql}
+  :gpml.handler.submission/put {:db #ig/ref :duct.database/sql
+                                :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.submission/put-params {}
 
   :gpml.handler.review/get-reviewers {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/get-review {:db #ig/ref :duct.database/sql}
-  :gpml.handler.review/new-review {:db #ig/ref :duct.database/sql}
-  :gpml.handler.review/update-review {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/new-review {:db #ig/ref :duct.database/sql
+                                   :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.review/update-review {:db #ig/ref :duct.database/sql
+                                      :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.review/list-reviews {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/list-reviews-params {}
   :gpml.handler.review/review-status-params {}
