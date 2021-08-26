@@ -65,6 +65,7 @@ const getSchema = (
     regionOptions,
     meaOptions,
     sectorOptions,
+    organisationType,
   },
   loading
 ) => {
@@ -139,6 +140,11 @@ const getSchema = (
   prop.S1.properties[
     "geoCoverageValueGlobalSpesific"
   ].enumNames = meaOptions?.map((x) => x.name);
+
+  prop.S2.properties[
+    "orgRepresentative"
+  ].enum = organisationType;
+
 
   prop.S3.properties["orgExpertise"].enum = tags?.offering?.map((it) => it.id);
   prop.S3.properties["orgExpertise"].enumNames = tags?.offering?.map(

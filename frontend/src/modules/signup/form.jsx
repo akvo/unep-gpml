@@ -63,6 +63,8 @@ const SignUpForm = withRouter(
       console.log(data2);
 
 
+      let orgGeo = handleGeoCoverageValue(cloneDeep(formData.S4), formData.S4, countries, 'org');
+
 
       if (data.country?.[formData.S1.country]) {
         data.country = formData.S1.country;
@@ -82,6 +84,31 @@ const SignUpForm = withRouter(
       if (data.offering) {
         data.offering = data.offering.map((x) => Number(x));;
       }
+      data.org = {};
+
+
+      if (data.orgName) {
+        data.org.name = data.orgName;
+        data.org.type = data.orgRepresentative;
+        data.org.program = data.orgDescription;
+        data.org.url = data.orgUrl;
+        data.org.logo = data.orgLogo;
+
+        if (data.orgHeadquarter?.[formData.S4.orgHeadquarter]) {
+          data.org.country = formData.S4.orgHeadquarter;
+        }
+        if(orgGeo.orggeoCoverageType){
+          data.org.geoCoverageType = orgGeo.orggeoCoverageType;
+          data.org.geoCoverageValue = orgGeo.orggeoCoverageValue;
+        }
+        delete data.orgHeadquarter;
+        delete data.orgName;
+        delete data.orgRepresentative;
+        delete data.orgDescription;
+        delete data.orgUrl;
+        delete data.orgLogo;
+      }
+
 
 
       console.log('data.qcountry', data.country);
