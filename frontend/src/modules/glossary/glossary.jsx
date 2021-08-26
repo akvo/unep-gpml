@@ -61,7 +61,25 @@ const staticGlossary = [
 const Glossary = () => {
   return (
     <div id="glossary">
-      <div className="glossary-banner">
+      {/* Will be removed after */}
+      <div className="ui container section-container">
+        <h2 className="text-blue">GPML Glossary</h2>
+        <p className="body-text" style={{ fontSize: "1.125rem" }}>
+          You can view the full glossary of the GPML Digital Platform (v 07 July
+          2021) via{" "}
+          <a
+            href="https://docs.google.com/spreadsheets/d/1-z-UB-S5RQBSwQsxNi535-AxcQTvU19f-LxINmyYXt0/edit#gid=1921541772"
+            target="_blank"
+            rel="noreferrer"
+          >
+            this link
+          </a>
+          .
+        </p>
+      </div>
+
+      {/* Commented for future design */}
+      {/* <div className="glossary-banner">
         <div className="ui container section-container">
           <h2 className="text-green">GPML Glossary</h2>
           <Search />
@@ -77,19 +95,8 @@ const Glossary = () => {
       <div className="glossary-body">
         <div className="ui container section-container">
           {renderGlossary()}
-          <p className="body-text">
-            You can view the full glossary of the GPML Digital Platform (v 07
-            July 2021) via{" "}
-            <a
-              href="https://docs.google.com/spreadsheets/d/1-z-UB-S5RQBSwQsxNi535-AxcQTvU19f-LxINmyYXt0/edit#gid=1921541772"
-              target="_blank"
-              rel="noreferrer"
-            >
-              this link
-            </a>
-          </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
