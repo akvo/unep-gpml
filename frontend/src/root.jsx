@@ -39,6 +39,7 @@ import AddTechnology from "./modules/technology/view";
 import AddPolicy from "./modules/policy/view";
 import { topicNames } from "./utils/misc";
 import humps from "humps";
+import AboutUs from "./modules/about/about-us";
 
 api
   .get("/tag")
@@ -259,6 +260,11 @@ const Root = () => {
           )}
         />
         <Route
+          exact
+          path="/about-us"
+          render={(props) => <AboutUs {...props} />}
+        />
+        <Route
           path="/browse"
           render={(props) => (
             <Browse
@@ -397,7 +403,12 @@ const AboutDropdownMenu = withRouter(({ history }) => {
       overlay={
         <Menu className="menu-dropdown">
           {/* <Menu.Item className="nav-link">Partnership</Menu.Item> */}
-          <Menu.Item className="nav-link">Digital Platform</Menu.Item>
+          <Menu.Item
+            className="nav-link"
+            onClick={() => history.push("/about-us")}
+          >
+            Digital Platform
+          </Menu.Item>
         </Menu>
       }
       trigger={["click"]}
