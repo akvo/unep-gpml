@@ -414,12 +414,15 @@
     status))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]
-  (fn [{{{:keys [topic-type topic-id]} :path body :body} :parameters}]
-    (let [conn (:spec db)
-          status (if (= topic-type "project")
-                   (update-initiative conn topic-id body)
-                   (update-resource conn topic-type topic-id body))]
-      (resp/response {:status (if (= status 1) "success" "failure")}))))
+  (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
+        user :user}]
+    (if (access-allowed? (:spec db) path user)
+      (let [conn (:spec db)
+            status (if (= topic-type "project")
+                     (update-initiative conn topic-id body)
+                     (update-resource conn topic-type topic-id body))]
+        (resp/response {:status (if (= status 1) "success" "failure")}))
+      {:status 403 :body {:message "Unauthorized"}})))
 
 (defmethod ig/init-key ::put-params [_ _]
   put-params)

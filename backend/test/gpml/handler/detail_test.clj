@@ -81,7 +81,22 @@
 (deftest handler-put-test
   (let [system (ig/init fixtures/*system* [::detail/put])
         handler (::detail/put system)
-        db (-> system :duct.database.sql/hikaricp :spec)]
+        db (-> system :duct.database.sql/hikaricp :spec)
+        admin {:id 0 :role "ADMIN"}]
+
+    (testing "Check editing allowed only if user has the rights"
+      (let [data (seeder/parse-data
+                  (slurp (io/resource "examples/initiative-national.json"))
+                  {:keywords? true})
+            initiative (db.initiative/new-initiative db data)
+            edited-data (merge data {:q2 "New Title"})
+            resp (handler (-> (mock/request :put "/")
+                              (assoc :jwt-claims {:email "john@org"}
+                                     :parameters
+                                     {:path {:topic-type "project" :topic-id (:id initiative)}
+                                      :body edited-data})))
+            _ (db.initiative/initiative-by-id db initiative)]
+        (is (= 403 (:status resp)))))
 
     (testing "Initiative editing"
       (let [data (seeder/parse-data
@@ -91,6 +106,7 @@
             edited-data (merge data {:q2 "New Title"})
             resp (handler (-> (mock/request :put "/")
                               (assoc :jwt-claims {:email "john@org"}
+                                     :user admin
                                      :parameters
                                      {:path {:topic-type "project" :topic-id (:id initiative)}
                                       :body edited-data})))
@@ -103,6 +119,7 @@
             edited-data (merge policy-data {:title "New Policy Title"})
             resp (handler (-> (mock/request :put "/")
                               (assoc :jwt-claims {:email "john@org"}
+                                     :user admin
                                      :parameters
                                      {:path {:topic-type "policy" :topic-id (:id policy)}
                                       :body edited-data})))
@@ -115,6 +132,7 @@
             edited-data (merge technology-data {:name "New Technology Name"})
             resp (handler (-> (mock/request :put "/")
                               (assoc :jwt-claims {:email "john@org"}
+                                     :user admin
                                      :parameters
                                      {:path {:topic-type "technology" :topic-id (:id technology)}
                                       :body edited-data})))
@@ -128,6 +146,7 @@
             edited-data (merge event-data {:title "New Event Title"})
             resp (handler (-> (mock/request :put "/")
                               (assoc :jwt-claims {:email "john@org"}
+                                     :user admin
                                      :parameters
                                      {:path {:topic-type "event" :topic-id (:id event)}
                                       :body edited-data})))
