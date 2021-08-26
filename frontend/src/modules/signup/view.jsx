@@ -159,7 +159,7 @@ const getSchema = (
     String(it.id)
   );
   prop.S5.properties["registeredStakeholders"].enumNames = stakeholders?.map(
-    (it) => `${it.firstName} ${it.lastName} ${it.email ? '('+it.email+')' :''}`
+    (it) => `${it.firstName} ${it.lastName} ${it.email ? '<'+it.email+'>' :''}`
   );
 
   return {

@@ -107,9 +107,18 @@ const SignUpForm = withRouter(
         delete data.orgDescription;
         delete data.orgUrl;
         delete data.orgLogo;
+
+        if (data.registeredStakeholders) {
+          data.org.registeredStakeholders = formData.S5.registeredStakeholders.map((x) => Number(x));
+          delete data.registeredStakeholders;
+        }
+        if (data.otherStakeholders) {
+          data.org.otherStakeholders = data.otherStakeholders;
+          delete data.otherStakeholders;
+        }
+
+
       }
-
-
 
       console.log('data.qcountry', data.country);
       console.log(data, formData);

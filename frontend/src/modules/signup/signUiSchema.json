@@ -255,18 +255,13 @@
       "classNames": "list-group-item",
       "ui:group": "border",
       "items": {
-        "stakeholderOrgRole": {
-          "ui:widget": "select",
-          "ui:showSearch": true,
-          "ui:placeholder": "Select a role"
-        }
       },
       "ui:order": [
-        "stakeholderTitle",
-        "stakeholderLastName",
-        "stakeholderFirstName",
-        "stakeholderEmail",
-        "stakeholderOrgRole"
+        "title",
+        "lastName",
+        "firstName",
+        "email",
+        "organisationRole"
       ]
     }
   }

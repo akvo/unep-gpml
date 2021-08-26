@@ -271,22 +271,28 @@ export const schema = {
               "This person will get an email with a link to invite him to complete registration",
             type: "object",
             depend: {},
-            required: [],
+            required: [
+              "title",
+              "lastName",
+              "firstName",
+              "email",
+//              "organisationRole"
+            ],
             properties: {
-              stakeholderTitle: titleField,
-              stakeholderLastName: {
+              title: titleField,
+              lastName: {
                 title: "Last name",
                 type: "string",
               },
-              stakeholderFirstName: {
+              firstName: {
                 title: "First name",
                 type: "string",
               },
-              stakeholderEmail: {
+              email: {
                 title: "Email",
                 type: "string",
               },
-              stakeholderOrgRole: {
+              organisationRole: {
                 title: "Entity Role",
                 type: "string",
               },
