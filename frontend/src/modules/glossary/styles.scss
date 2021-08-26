@@ -12,7 +12,7 @@
     .src {
       display: flex;
       align-items: center;
-      width: 16%;
+      width: 15rem;
       .input-src {
         border-radius: 30px;
         input.ant-input {
@@ -30,8 +30,8 @@
       }
     }
 
-    .row-alphabet {
-      margin-top: 1rem;
+    .alphabet-row {
+      margin-top: 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -44,6 +44,30 @@
         cursor: pointer;
         &:hover {
           color: #fff;
+        }
+      }
+    }
+  }
+
+  .glossary-body {
+    .glossary-row {
+      padding-top: 3rem;
+      border-top: 1px solid #255b87;
+      &:first-child {
+        padding-top: unset;
+        border-top: unset;
+      }
+      h2 {
+        margin-top: 1.5rem;
+        text-transform: uppercase;
+        font-weight: 800;
+        font-size: 5rem;
+      }
+      .glossary-item-body {
+        .glossary-item-wrapper {
+          h4 {
+            font-weight: 500;
+          }
         }
       }
     }

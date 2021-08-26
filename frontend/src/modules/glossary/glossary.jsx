@@ -1,21 +1,71 @@
 import React, { useState } from "react";
-import { Row, Col, Card, Image, Button, Input } from "antd";
+import { Button, Input, Row, Col } from "antd";
 import { withRouter } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
 
 import "./styles.scss";
-import { span } from "prelude-ls";
 
 const alphabet = [..."abcdefghijklmnopqrstuvwxyz"];
+const staticGlossary = [
+  {
+    group: "a",
+    data: [
+      {
+        title: "Action Plans",
+        description: null,
+      },
+    ],
+  },
+  {
+    group: "e",
+    data: [
+      {
+        title: "Event",
+        description: null,
+      },
+    ],
+  },
+  {
+    group: "f",
+    data: [
+      {
+        title: "Financial Resource",
+        description: null,
+      },
+    ],
+  },
+  {
+    group: "i",
+    data: [
+      {
+        title: "Initiative",
+        description: null,
+      },
+    ],
+  },
+  {
+    group: "t",
+    data: [
+      {
+        title: "Technical Resource",
+        description: null,
+      },
+      {
+        title: "Technology",
+        description: null,
+      },
+    ],
+  },
+];
+
 const Glossary = () => {
-  console.log(alphabet);
   return (
     <div id="glossary">
       <div className="glossary-banner">
         <div className="ui container section-container">
           <h2 className="text-green">GPML Glossary</h2>
           <Search />
-          <div className="row-alphabet">
+          <div className="alphabet-row">
             {alphabet.map((x, i) => (
               <span key={`${x}-${i}`} className="item-alphabet">
                 {x}
@@ -26,6 +76,7 @@ const Glossary = () => {
       </div>
       <div className="glossary-body">
         <div className="ui container section-container">
+          {renderGlossary()}
           <p className="body-text">
             You can view the full glossary of the GPML Digital Platform (v 07
             July 2021) via{" "}
@@ -41,6 +92,41 @@ const Glossary = () => {
       </div>
     </div>
   );
+};
+
+const renderGlossary = () => {
+  return staticGlossary.map((x, i) => {
+    const { group, data } = x;
+    return (
+      <Row key={`${group}-${i}`} className="glossary-row">
+        <Col sm={2} md={2} lg={2}>
+          <h2 className="text-blue">{group}</h2>
+        </Col>
+        <Col sm={22} md={22} lg={22}>
+          <Row className className="glossary-item-body" gutter={[20, 20]}>
+            {data.map((d, idx) => {
+              const { title, description } = d;
+              return (
+                <Col
+                  key={`${title}-${idx}`}
+                  className="glossary-item-wrapper"
+                  sm={24}
+                  md={6}
+                  lg={6}
+                >
+                  <h4 className="text-blue">{title}</h4>
+                  <p className="body-text text-blue">
+                    {description ||
+                      "At nos hinc posthac, sitientis piros Afros. Inmensae subtilitatis, obscuris et malesuada fames. Magna pars studiorum, prodita quaerimus. Quid securi etiam tamquam eu fugiat nulla pariatur. Ab illo tempore, ab est sed immemorabili."}
+                  </p>
+                </Col>
+              );
+            })}
+          </Row>
+        </Col>
+      </Row>
+    );
+  });
 };
 
 const Search = withRouter(({ history }) => {
