@@ -319,21 +319,26 @@ const Landing = ({
             <div className="body">
               <div className="content-left">
                 {featuredContents
-                  .filter((x) => x.image === null)
+                  .filter((x) => x.id !== 196)
                   .map((x, i) => {
+                    const { id, image, type, title, description, bookmark } = x;
+                    const link = `/${type
+                      .toLowerCase()
+                      .split(" ")
+                      .join("_")}/${id}`;
                     return (
                       <Card key={`fc-${i}`} className="item">
                         <div className="item-header">
-                          <span className="resource-label upper">{x.type}</span>
+                          <span className="resource-label upper">{type}</span>
                           <span className="mark">
                             <RiseOutlined />
                             Trending
                           </span>
                         </div>
                         <div className="item-body">
-                          <div className="asset-title">{x.title}</div>
+                          <div className="asset-title">{title}</div>
                           <div className="body-text">
-                            {TrimText({ text: x.description, max: 150 })}
+                            {TrimText({ text: description, max: 150 })}
                           </div>
                         </div>
                         <div className="item-footer">
@@ -344,7 +349,7 @@ const Landing = ({
                               backgroundColor: "#fde3cf",
                             }}
                           >
-                            {x.bookmark.map((b, i) => (
+                            {bookmark.map((b, i) => (
                               <Tooltip
                                 key={`avatar-${i}`}
                                 title={b.name}
@@ -358,7 +363,9 @@ const Landing = ({
                             ))}
                           </Avatar.Group>
                           <span className="read-more">
-                            Read more <ArrowRightOutlined />
+                            <Link to={link}>
+                              Read more <ArrowRightOutlined />
+                            </Link>
                           </span>
                         </div>
                       </Card>
@@ -367,27 +374,32 @@ const Landing = ({
               </div>
               <div className="content-right">
                 {featuredContents
-                  .filter((x) => x.image !== null)
+                  .filter((x) => x.id === 196)
                   .map((x, i) => {
+                    const { id, image, type, title, description, bookmark } = x;
+                    const link = `/${type
+                      .toLowerCase()
+                      .split(" ")
+                      .join("_")}/${id}`;
                     return (
                       <Card key={`fc-${i}`} className="item">
                         <img
                           className="item-img"
                           width="100%"
-                          src="./fc-initiative.png"
-                          alt={x.title}
+                          src={image || imageNotFound}
+                          alt={title}
                         />
                         <div className="item-header">
-                          <span className="resource-label upper">{x.type}</span>
+                          <span className="resource-label upper">{type}</span>
                           <span className="mark">
                             <RiseOutlined />
                             Trending
                           </span>
                         </div>
                         <div className="item-body">
-                          <div className="asset-title">{x.title}</div>
+                          <div className="asset-title">{title}</div>
                           <div className="body-text">
-                            {TrimText({ text: x.description, max: 425 })}
+                            {TrimText({ text: description, max: 425 })}
                           </div>
                         </div>
                         <div className="item-footer">
@@ -398,7 +410,7 @@ const Landing = ({
                               backgroundColor: "#fde3cf",
                             }}
                           >
-                            {x.bookmark.map((b, i) => (
+                            {bookmark.map((b, i) => (
                               <Tooltip
                                 key={`avatar-${i}`}
                                 title={b.name}
@@ -412,7 +424,9 @@ const Landing = ({
                             ))}
                           </Avatar.Group>
                           <span className="read-more">
-                            Read more <ArrowRightOutlined />
+                            <Link to={link}>
+                              Read more <ArrowRightOutlined />
+                            </Link>
                           </span>
                         </div>
                       </Card>
