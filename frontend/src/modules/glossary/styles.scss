@@ -1,0 +1,51 @@
+@import "../../vars.scss";
+
+#glossary {
+  .section-container {
+    padding: 4rem 0;
+  }
+
+  .glossary-banner {
+    background: #3176ae;
+    opacity: 0.8;
+
+    .src {
+      display: flex;
+      align-items: center;
+      width: 16%;
+      .input-src {
+        border-radius: 30px;
+        input.ant-input {
+          color: #1ca585;
+          &::placeholder {
+            color: #1ca585;
+          }
+          &:focus {
+            box-shadow: 0px 10px 10px rgba(46, 213, 115, 0.15);
+          }
+        }
+      }
+      .ant-btn.ant-btn-primary.ant-input-search-button {
+        border-radius: 0;
+      }
+    }
+
+    .row-alphabet {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-transform: uppercase;
+      color: #7dc6ff;
+      font-weight: 700;
+      font-size: 1.3rem;
+      width: 90%;
+      .item-alphabet {
+        cursor: pointer;
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+  }
+}
