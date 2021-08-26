@@ -32,7 +32,6 @@ const TreeMap = (data, extra, selected) => {
   data = !data ? [] : data;
   data = data.map((x, i) => {
     if (x.name.toLowerCase() === selected) {
-      color[i] = "#FFB800";
       return {
         ...x,
         label: {
@@ -44,6 +43,9 @@ const TreeMap = (data, extra, selected) => {
               color: "#FFB800",
             },
           },
+        },
+        itemStyle: {
+          color: "#FFB800",
         },
       };
     }

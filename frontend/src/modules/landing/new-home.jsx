@@ -32,6 +32,9 @@ import {
   ourCommunity,
   benefit,
 } from "./new-home-static-content";
+import orderBy from "lodash/orderBy";
+import humps from "humps";
+import { topicNames } from "../../utils/misc";
 
 const cardSvg = [
   {
@@ -119,6 +122,13 @@ const responsive = {
   },
 };
 
+const sortPopularTopic = orderBy(
+  popularTopics,
+  ["count", "topic"],
+  ["desc", "desc"]
+);
+const defTopic = sortPopularTopic[0]?.topic?.toLocaleLowerCase();
+
 const Landing = ({
   history,
   data,
@@ -131,7 +141,7 @@ const Landing = ({
   const dateNow = moment().format("DD-MM-YYYY");
   const { innerWidth, innerHeight } = window;
   const { profile } = UIStore.currentState;
-  const [selectedTopic, setSelectedTopic] = useState("product by design");
+  const [selectedTopic, setSelectedTopic] = useState(defTopic);
   const [event, setEvent] = useState([]);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
@@ -245,7 +255,7 @@ const Landing = ({
           <div className="popular-topics ui container section-container">
             <div className="section-title">
               <h2>
-                Popular Content{" "}
+                Popular Topics
                 <span className="see-more-link">
                   See all topics <RightOutlined />
                 </span>
@@ -258,7 +268,7 @@ const Landing = ({
                   title=""
                   type="TREEMAP"
                   height={600}
-                  data={popularTopics.map((x) => {
+                  data={sortPopularTopic.map((x) => {
                     return {
                       id: x.id,
                       name: x.topic,
@@ -273,30 +283,40 @@ const Landing = ({
               </div>
               <div className="content">
                 <div className="content-header">
-                  {popularTopics
+                  {sortPopularTopic
                     .find((x) => x.topic.toLowerCase() === selectedTopic)
                     .summary.map((x, i) => {
+                      const { count, type } = x;
                       return (
-                        <div key={`summary-${i}`} className="item">
-                          <h4>{x.count}</h4>
-                          <span>{x.type}</span>
+                        <div key={`summary-${type}-${i}`} className="item">
+                          <h4>{count}</h4>
+                          <span>{type}</span>
                         </div>
                       );
                     })}
                 </div>
                 <div className="content-body">
-                  {popularTopics
+                  {sortPopularTopic
                     .find((x) => x.topic.toLowerCase() === selectedTopic)
                     .items.map((x, i) => {
+                      const { id, type, title, description } = x;
+                      const link = `/${type
+                        .toLowerCase()
+                        .split(" ")
+                        .join("_")}/${id}`;
                       return (
                         <div key={`summary-${i}`} className="item-body">
-                          <div className="resource-label upper">{x.type}</div>
-                          <div className="asset-title">{x.title}</div>
+                          <div className="resource-label upper">
+                            {topicNames(humps.camelizeKeys(type))}
+                          </div>
+                          <div className="asset-title">{title}</div>
                           <div className="body-text">
-                            {TrimText({ text: x.description, wrap: 123 })}
+                            {TrimText({ text: description, max: 150 })}
                           </div>
                           <span className="read-more">
-                            Read more <ArrowRightOutlined />
+                            <Link to={link}>
+                              Read more <ArrowRightOutlined />
+                            </Link>
                           </span>
                         </div>
                       );
