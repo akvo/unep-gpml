@@ -173,7 +173,7 @@ const AddActionPlanForm = withRouter(
 
     useEffect(() => {
       const dataId = Number(params?.id || id);
-      if (formSchema.loading && !loading) {
+      if (formSchema.loading && !loading && countries.length) {
         setFormSchema(getSchema(UIStore.currentState, false));
         // Manage form status, add/edit
         if (
@@ -195,7 +195,7 @@ const AddActionPlanForm = withRouter(
           e.editId = null;
         });
       }
-    }, [loading, formSchema, status, id, data, editId, params]);
+    }, [loading, formSchema, status, id, data, editId, params, countries]);
 
     useEffect(() => {
       setFormSchema({ schema: schema, loading: true });
