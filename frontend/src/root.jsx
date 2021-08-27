@@ -14,6 +14,7 @@ import {
   UserOutlined,
   SearchOutlined,
   LoadingOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
@@ -101,27 +102,61 @@ api
       });
   });
 
+const DisclaimerCloseBtn = () => (
+  <Button
+    type="link"
+    icon={<CloseCircleOutlined />}
+    onClick={() => {
+      document.cookie = "showDisclaimer=false";
+      UIStore.update((e) => {
+        e.disclaimer = null;
+      });
+    }}
+  />
+);
+
+const checkDisclaimerCookie = () => {
+  if (
+    document.cookie &&
+    document.cookie
+      .split(";")
+      .some((item) => item.trim().startsWith("showDisclaimer="))
+  ) {
+    return document.cookie
+      .split("; ")
+      .find((item) => item.startsWith("showDisclaimer="))
+      .split("=")[1];
+  }
+  return "true";
+};
+
 const disclaimerContent = {
   home: (
     <>
-      The GPML Digital Platform Phase 1 is now live and currently a Beta
-      Version. Help us test the platform and let us know what you think at{" "}
-      <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
-        unep-gpmarinelitter@un.org
-      </a>
-      . Take part in shaping the platform’s next releases, until its final
-      launch scheduled for 2023. Stay tuned!
+      <span>
+        The GPML Digital Platform Phase 1 is now live and currently a Beta
+        Version. Help us test the platform and let us know what you think at{" "}
+        <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
+          unep-gpmarinelitter@un.org
+        </a>
+        . Take part in shaping the platform’s next releases, until its final
+        launch scheduled for 2023. Stay tuned!
+      </span>
+      <DisclaimerCloseBtn />
     </>
   ),
   browse: (
     <>
-      UNEP shall not be liable for third party content hosted on the platform.
-      Contact us if you have any concerns with the content at:{" "}
-      <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
-        unep-gpmarinelitter@un.org
-      </a>
-      . Please note that during Beta Testing, content and functionality issues
-      may persist.
+      <span>
+        UNEP shall not be liable for third party content hosted on the platform.
+        Contact us if you have any concerns with the content at:{" "}
+        <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
+          unep-gpmarinelitter@un.org
+        </a>
+        . Please note that during Beta Testing, content and functionality issues
+        may persist.
+      </span>
+      <DisclaimerCloseBtn />
     </>
   ),
 };
@@ -194,11 +229,14 @@ const Root = () => {
   return (
     <Router>
       <div id="root">
-        {disclaimerContent?.[disclaimer] && (
-          <div className="panel-disclaimer">
-            <p className="ui container">{disclaimerContent?.[disclaimer]}</p>
-          </div>
-        )}
+        {checkDisclaimerCookie() !== "false" &&
+          disclaimerContent?.[disclaimer] && (
+            <div className="panel-disclaimer">
+              <div className="ui container">
+                {disclaimerContent?.[disclaimer]}
+              </div>
+            </div>
+          )}
         <Header className="nav-header-container">
           <div className="ui container">
             <div className="logo-wrapper">

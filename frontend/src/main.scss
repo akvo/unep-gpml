@@ -322,11 +322,20 @@ h4 {
 
   .panel-disclaimer {
     background-color: #27ae60;
-    display: flex;
-    justify-content: center;
     color: white;
-    font-size: 0.75rem;
-    padding-top: 12px;
+    font-size: 0.8rem;
+    .ui.container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    button {
+      color: #fff;
+      &:hover {
+        color: #fff;
+        opacity: 0.5;
+      }
+    }
   }
 
   #landing {
