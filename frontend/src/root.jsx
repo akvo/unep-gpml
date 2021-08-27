@@ -125,21 +125,16 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
-  const { profile, disclaimer, loading } = UIStore.useState((s) => s);
+  const { profile, disclaimer } = UIStore.useState((s) => s);
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
   const [filters, setFilters] = useState(null);
 
   useEffect(() => {
-    if (loading) {
-      api.get("browse?topic=event").then((resp) => {
-        setData(resp.data);
-        UIStore.update((e) => {
-          e.loading = false;
-        });
-      });
-    }
+    api.get("browse?topic=event").then((resp) => {
+      setData(resp.data);
+    });
     (async function fetchData() {
       const response = await getIdTokenClaims();
       if (isAuthenticated) {
@@ -176,7 +171,7 @@ const Root = () => {
         }
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated, loading]);
+  }, [getIdTokenClaims, isAuthenticated]);
 
   return (
     <Router>
