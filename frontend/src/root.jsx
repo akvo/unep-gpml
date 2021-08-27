@@ -128,13 +128,9 @@ const Root = () => {
   const { profile, disclaimer } = UIStore.useState((s) => s);
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
-  const [data, setData] = useState(null);
   const [filters, setFilters] = useState(null);
 
   useEffect(() => {
-    api.get("browse?topic=event").then((resp) => {
-      setData(resp.data);
-    });
     (async function fetchData() {
       const response = await getIdTokenClaims();
       if (isAuthenticated) {
@@ -230,7 +226,6 @@ const Root = () => {
           render={(props) => (
             <Landing
               {...{
-                data,
                 setWarningModalVisible,
                 setSignupModalVisible,
                 loginWithPopup,
