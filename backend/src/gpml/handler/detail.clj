@@ -16,6 +16,7 @@
             gpml.db.country
             [gpml.db.country-group :as db.country-group]
             [gpml.handler.util :as util]
+            [gpml.model.topic :as model.topic]
             [clojure.string :as string]))
 
 (defn other-or-name [action]
@@ -287,15 +288,11 @@
   (cache-hierarchies! (:spec db))
   (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
     (let [conn (:spec db)
-          topic (:topic-type path)
-          public-topic? (not (contains? constants/approved-user-topics topic))
-          authorized? (or public-topic? approved?)]
-      (if-let [data (and authorized? (db.detail/get-detail conn path))]
-        (if (some? (get-resource-if-allowed conn path user))
-          (resp/response (merge
-                          (:json data)
-                          (extra-details topic conn  (:json data))))
-          util/not-found)
+          topic (:topic-type path)]
+      (if-let [data (when (and (or (model.topic/public? topic) approved?)
+                               (some? (get-resource-if-allowed conn path user)))
+                      (:json (db.detail/get-detail conn path)))]
+        (resp/response (merge data (extra-details topic conn data)))
         util/not-found))))
 
 (def put-params
