@@ -10,6 +10,7 @@ import {
   Row,
   Col,
   Badge,
+  Carousel as AntdCarousel,
 } from "antd";
 import {
   LoadingOutlined,
@@ -598,67 +599,65 @@ const Landing = ({
 };
 
 const renderEventContent = (event) => {
-  const eventShow = event[0];
-  const { id, title, description, type, startDate, image } = eventShow;
-  const eventMore = event.length - 1;
-
   return (
-    <>
-      <Card key="event-content" className="item">
-        <div className="item-meta">
-          <div className="date">{moment(startDate).format("DD MMMM YYYY")}</div>
-          <div className="status">Online</div>
-          <div className="mark">Featured</div>
-        </div>
-        <div className="resource-label upper margin">{type}</div>
-        <img
-          className="item-img"
-          width="100%"
-          src={image ? image : imageNotFound}
-          alt={title}
-        />
-        <div className="item-body">
-          <div className="asset-title">{title}</div>
-          <div className="body-text">
-            {TrimText({ text: description, max: 300 })}
-          </div>
-        </div>
-        <div className="item-footer">
-          <Avatar.Group
-            maxCount={2}
-            maxStyle={{
-              color: "#f56a00",
-              backgroundColor: "#fde3cf",
-            }}
-          >
-            <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
-            <Tooltip title="Ant User" placement="top">
-              <Avatar
-                style={{ backgroundColor: "#87d068" }}
-                icon={<UserOutlined />}
+    <AntdCarousel autoplay dots={{ className: "custom-dots" }}>
+      {event.length &&
+        event.map((x, i) => {
+          const { id, title, description, type, startDate, image } = x;
+          return (
+            <Card key={`event-${id}-${i}`} className="item">
+              <div className="item-meta">
+                <div className="date">
+                  {moment(startDate).format("DD MMMM YYYY")}
+                </div>
+                <div className="status">Online</div>
+                <div className="mark">Featured</div>
+              </div>
+              <div className="resource-label upper margin">{type}</div>
+              <img
+                className="item-img"
+                width="100%"
+                src={image ? image : imageNotFound}
+                alt={title}
               />
-            </Tooltip>
-            <Tooltip title="Ant User" placement="top">
-              <Avatar
-                style={{ backgroundColor: "#87d068" }}
-                icon={<UserOutlined />}
-              />
-            </Tooltip>
-          </Avatar.Group>
-          <span className="read-more">
-            <Link to={`/event/${id}`}>
-              Read more <ArrowRightOutlined />
-            </Link>
-          </span>
-        </div>
-      </Card>
-      {eventMore > 0 && (
-        <div className="event-more">
-          {eventMore} more event{eventMore > 1 ? "s" : ""} on this day{" "}
-          <RightOutlined />
-        </div>
-      )}
-    </>
+              <div className="item-body">
+                <div className="asset-title">{title}</div>
+                <div className="body-text">
+                  {TrimText({ text: description, max: 300 })}
+                </div>
+              </div>
+              <div className="item-footer">
+                <Avatar.Group
+                  maxCount={2}
+                  maxStyle={{
+                    color: "#f56a00",
+                    backgroundColor: "#fde3cf",
+                  }}
+                >
+                  <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
+                  <Tooltip title="Ant User" placement="top">
+                    <Avatar
+                      style={{ backgroundColor: "#87d068" }}
+                      icon={<UserOutlined />}
+                    />
+                  </Tooltip>
+                  <Tooltip title="Ant User" placement="top">
+                    <Avatar
+                      style={{ backgroundColor: "#87d068" }}
+                      icon={<UserOutlined />}
+                    />
+                  </Tooltip>
+                </Avatar.Group>
+                <span className="read-more">
+                  <Link to={`/event/${id}`}>
+                    Read more <ArrowRightOutlined />
+                  </Link>
+                </span>
+              </div>
+            </Card>
+          );
+        })}
+    </AntdCarousel>
   );
 };
 

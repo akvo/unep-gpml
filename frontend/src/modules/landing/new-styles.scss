@@ -490,5 +490,18 @@
     font-size: 0.88rem;
     vertical-align: middle;
   }
+
+  // antd carousel dots
+  .custom-dots {
+    bottom: -30px;
+    li {
+      width: 12px;
+      button {
+        width: 12px;
+        height: 12px;
+        border-radius: 12px;
+      }
+    }
+  }
   // eol global style
 }
