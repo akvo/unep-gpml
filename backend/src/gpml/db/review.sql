@@ -37,7 +37,17 @@ SELECT * FROM review WHERE id = :id;
 
 -- :name review-by-topic-item :? :1
 -- :doc Get review by topic_type, topic_id
-SELECT * FROM review WHERE
+SELECT r.*, (CASE
+  WHEN r.topic_type = 'initiative' THEN (SELECT TRIM('"' FROM t.q2::text) FROM initiative t WHERE t.id = r.topic_id)
+  WHEN r.topic_type = 'technology' THEN (SELECT t.name FROM technology t WHERE t.id = r.topic_id)
+  WHEN r.topic_type = 'resource' THEN (SELECT t.title FROM resource t WHERE t.id = r.topic_id)
+  WHEN r.topic_type = 'event' THEN (SELECT t.title FROM event t WHERE t.id = r.topic_id)
+  WHEN r.topic_type = 'policy' THEN (SELECT t.title FROM policy t WHERE t.id = r.topic_id)
+  WHEN r.topic_type = 'organisation' THEN (SELECT t.name FROM organisation t WHERE t.id = r.topic_id)
+  WHEN r.topic_type = 'stakeholder' THEN (SELECT CONCAT(title, '. ', last_name,' ', first_name) FROM stakeholder t WHERE t.id = r.topic_id)
+END) AS title
+FROM review r
+WHERE
   topic_type = :v:topic-type::topic_type AND
   topic_id = :topic-id;
 

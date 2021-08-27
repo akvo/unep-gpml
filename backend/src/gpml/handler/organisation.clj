@@ -46,11 +46,11 @@
                                                                  :accepted nil})
                        (let [full-contact-details (format "%s. %s %s" (:title first-contact) (:first_name first-contact) (:last_name first-contact))]
                          (email/send-email mailjet-config
-                                                {:Name "UNEP GPML Digital Platform" :Email "no-reply@gpmarinelitter.org"}
-                                                (email/notify-user-invitation-subject full-contact-details)
-                                                (list {:Name second-contact-email :Email second-contact-email})
-                                                (list (email/notify-user-invitation-text full-contact-details (:app-domain mailjet-config) (:name body-params)))
-                                                (list nil)))
+                                           email/unep-sender
+                                           (email/notify-user-invitation-subject full-contact-details)
+                                           (list {:Name second-contact-email :Email second-contact-email})
+                                           (list (email/notify-user-invitation-text full-contact-details (:app-domain mailjet-config) (:name body-params)))
+                                           (list nil)))
                        org-id)))]
       (resp/created referrer (assoc body-params :id org-id)))))
 
