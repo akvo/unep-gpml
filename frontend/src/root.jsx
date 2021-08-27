@@ -82,6 +82,7 @@ api
                         (x) => x.type === "mea"
                       );
                       e.organisations = organisations;
+                      e.isDataFetched = true;
                     });
                   });
               });

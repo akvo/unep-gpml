@@ -7,7 +7,7 @@ import AddResourceForm from "./form";
 import StickyBox from "react-sticky-box";
 
 const AddFinancingResource = ({ match: { params }, ...props }) => {
-  const { loading, formStep, formEdit } = UIStore.currentState;
+  const { isDataFetched, formStep, formEdit } = UIStore.currentState;
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -75,7 +75,7 @@ const AddFinancingResource = ({ match: { params }, ...props }) => {
           </div>
         </div>
       </StickyBox>
-      {loading ? (
+      {!isDataFetched ? (
         <h2 className="loading">
           <LoadingOutlined spin /> Loading
         </h2>

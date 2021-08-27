@@ -44,6 +44,7 @@ const UIStore = new Store({
   highlight: false,
   disclaimer: null,
   loading: true,
+  isDataFetched: false,
   formStep: {
     initiative: 1,
     actionPlan: 1,

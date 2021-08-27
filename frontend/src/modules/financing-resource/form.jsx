@@ -175,10 +175,7 @@ const AddResourceForm = withRouter(
   }) => {
     const {
       countries,
-      organisations,
-      tags,
-      currencies,
-      loading,
+      isDataFetched,
       formStep,
       formEdit,
     } = UIStore.currentState;
@@ -194,7 +191,7 @@ const AddResourceForm = withRouter(
 
     useEffect(() => {
       const dataId = Number(params?.id || id);
-      if (formSchema.loading && !loading && countries.length) {
+      if (formSchema.loading && isDataFetched) {
         setFormSchema(getSchema(UIStore.currentState, false));
         // Manage form status, add/edit
         if (
@@ -216,7 +213,7 @@ const AddResourceForm = withRouter(
           e.editId = null;
         });
       }
-    }, [loading, formSchema, status, id, data, editId, params, countries]);
+    }, [isDataFetched, formSchema, status, id, data, editId, params]);
 
     useEffect(() => {
       setFormSchema({ schema: schema, loading: true });

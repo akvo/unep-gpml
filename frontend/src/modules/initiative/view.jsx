@@ -859,14 +859,7 @@ const getSchema = (
 const AddInitiative = ({ match: { params }, ...props }) => {
   const minHeightContainer = innerHeight * 0.8;
   const minHeightCard = innerHeight * 0.75;
-  const {
-    countries,
-    organisations,
-    tags,
-    loading,
-    formStep,
-    formEdit,
-  } = UIStore.currentState;
+  const { isDataFetched, formStep, formEdit } = UIStore.currentState;
 
   const formData = initiativeData.useState();
   const { editId, data } = formData;
@@ -898,7 +891,7 @@ const AddInitiative = ({ match: { params }, ...props }) => {
 
   useEffect(() => {
     const dataId = Number(params?.id || id);
-    if (formSchema.loading && !loading && countries.length) {
+    if (formSchema.loading && isDataFetched) {
       setFormSchema(getSchema(UIStore.currentState, false));
       // Manage form status, add/edit
       if (
@@ -923,7 +916,7 @@ const AddInitiative = ({ match: { params }, ...props }) => {
         e.editId = null;
       });
     }
-  }, [loading, formSchema, status, id, data, editId, params, countries]);
+  }, [isDataFetched, formSchema, status, id, data, editId, params]);
 
   const renderSteps = (parentTitle, section, steps) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
@@ -1073,7 +1066,7 @@ const AddInitiative = ({ match: { params }, ...props }) => {
           </div>
         </div>
       </StickyBox>
-      {loading ? (
+      {!isDataFetched ? (
         <h2 className="loading">
           <LoadingOutlined spin /> Loading
         </h2>

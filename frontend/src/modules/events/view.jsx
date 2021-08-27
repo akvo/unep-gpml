@@ -6,7 +6,7 @@ import "./styles.scss";
 import AddEventForm from "./form";
 
 const AddEvent = ({ ...props }) => {
-  const { loading, formEdit, countries } = UIStore.currentState;
+  const { isDataFetched, formEdit } = UIStore.currentState;
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -16,7 +16,7 @@ const AddEvent = ({ ...props }) => {
 
   return (
     <div id="add-event">
-      {loading && !countries.length ? (
+      {!isDataFetched ? (
         <h2 className="loading">
           <LoadingOutlined spin /> Loading
         </h2>
