@@ -451,12 +451,8 @@ const renderDetailImage = (params, data) => {
   return imageNotFound;
 };
 
-UIStore.update((e) => {
-  e.disclaimer = null;
-});
-
 const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
-  const { profile, countries, loading } = UIStore.currentState;
+  const { profile, countries, isDataFetched } = UIStore.currentState;
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
@@ -479,7 +475,7 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
         };
 
   useEffect(() => {
-    !loading &&
+    isDataFetched &&
       params?.type &&
       params?.id &&
       api.get(`/detail/${params.type}/${params.id}`).then((d) => {
@@ -492,8 +488,11 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
         });
       }, 100);
     }
+    UIStore.update((e) => {
+      e.disclaimer = null;
+    });
     window.scrollTo({ top: 0 });
-  }, [params, loading, profile]);
+  }, [params, isDataFetched, profile]);
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
