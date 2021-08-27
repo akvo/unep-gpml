@@ -289,15 +289,14 @@
     (let [conn (:spec db)
           topic (:topic-type path)
           public-topic? (not (contains? constants/approved-user-topics topic))
-          authorized? (or public-topic? approved?)
-          not-found (resp/not-found {:message "Not Found"})]
+          authorized? (or public-topic? approved?)]
       (if-let [data (and authorized? (db.detail/get-detail conn path))]
         (if (some? (get-resource-if-allowed conn path user))
           (resp/response (merge
                           (:json data)
                           (extra-details topic conn  (:json data))))
-          not-found)
-        not-found))))
+          util/not-found)
+        util/not-found))))
 
 (def put-params
   ;; FIXME: Add validation
@@ -432,7 +431,7 @@
               :id topic-id
               :review_status "SUBMITTED"}))
           (resp/response {:status (if (= status 1) "success" "failure")}))
-        {:status 403 :body {:message "Unauthorized"}}))))
+        util/unauthorized))))
 
 (defmethod ig/init-key ::put-params [_ _]
   put-params)
