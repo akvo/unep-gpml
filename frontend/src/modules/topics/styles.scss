@@ -11,6 +11,11 @@
     .topic-item-wrapper {
       margin-top: 2rem !important;
       .topic-item-card {
+        cursor: pointer;
+        &:hover {
+          border: 1px solid $blue02;
+          opacity: 0.5;
+        }
         .topic-item-title-wrapper {
           margin-top: 0.8rem;
           display: flex;
@@ -28,6 +33,11 @@
             border: 1px solid $blue02;
             box-sizing: border-box;
             color: $blue02;
+            cursor: default;
+            &:hover {
+              background: unset;
+              border: 1px solid $blue02;
+            }
           }
         }
       }

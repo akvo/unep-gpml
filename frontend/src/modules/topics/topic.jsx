@@ -33,8 +33,11 @@ const renderTopics = (topics) => {
         {topics.map((x) => {
           const { id, tag } = x;
           return (
-            <Col sm={24} md={12} lg={8}>
-              <Card key={`${tag}-${id}`} className="topic-item-card">
+            <Col key={`${tag}-${id}`} sm={24} md={12} lg={8}>
+              <Card
+                className="topic-item-card"
+                onClick={() => console.log(tag)}
+              >
                 <Image size="90%" src={imageNotFound} preview={false} />
                 <div className="topic-item-title-wrapper">
                   <div className="topic-item-title">{tag}</div>
