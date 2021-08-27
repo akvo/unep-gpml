@@ -1,7 +1,7 @@
 import { Easing, backgroundColor } from "./chart-style.js";
 
 const TreeMap = (data, extra, selected) => {
-  let color = [
+  const color = [
     "#3AB99F",
     "#3DC1A9",
     "#4DC9B5",
@@ -12,6 +12,10 @@ const TreeMap = (data, extra, selected) => {
     "#D8F3EF",
     "#CCEFEA",
   ];
+  const itemStyle = {
+    borderColor: "#fff",
+    borderWidth: 2,
+  };
   let rich = {
     name: {
       fontFamily: "Open Sans",
@@ -48,6 +52,7 @@ const TreeMap = (data, extra, selected) => {
         },
         itemStyle: {
           color: "#FFB800",
+          ...itemStyle,
         },
       };
     }
@@ -62,6 +67,9 @@ const TreeMap = (data, extra, selected) => {
             color: "#384E85",
           },
         },
+      },
+      itemStyle: {
+        ...itemStyle,
       },
     };
   });

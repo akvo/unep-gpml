@@ -35,6 +35,7 @@ import {
 import orderBy from "lodash/orderBy";
 import humps from "humps";
 import { topicNames } from "../../utils/misc";
+import capitalize from "lodash/capitalize";
 
 const cardSvg = [
   {
@@ -321,6 +322,12 @@ const Landing = ({
                         </div>
                       );
                     })}
+                  <hr />
+                  <span className="read-more">
+                    <Link to={"#"}>
+                      See all {capitalize(selectedTopic)} <RightOutlined />
+                    </Link>
+                  </span>
                 </div>
               </div>
             </div>

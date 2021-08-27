@@ -420,11 +420,6 @@
     margin-bottom: 35px;
     h2 {
       color: #2d6796;
-      span {
-        cursor: pointer;
-        margin-left: 20px;
-        color: #34a6ff;
-      }
     }
     &.green {
       h2 {
@@ -480,11 +475,20 @@
     }
   }
 
+  // see more text
+  span.see-more-link {
+    cursor: pointer;
+    margin-left: 20px;
+    color: #34a6ff;
+    vertical-align: middle;
+  }
+
   // read more text
   span.read-more {
     cursor: pointer;
     color: #34a6ff;
     font-size: 0.88rem;
+    vertical-align: middle;
   }
   // eol global style
 }
