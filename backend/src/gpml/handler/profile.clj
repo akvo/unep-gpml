@@ -123,11 +123,7 @@
 
 (defmethod ig/init-key :gpml.handler.profile/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params headers]}]
-    (def p body-params)
-    (dissoc (:org p) :logo)
-
-    (resp/status body-params 300)
-    #_(if-let [id (:id (make-profile (:spec db) jwt-claims body-params mailjet-config))]
+    (if-let [id (:id (make-profile (:spec db) jwt-claims body-params mailjet-config))]
       (let [tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
             db (:spec db)
             profile (db.stakeholder/stakeholder-by-id db {:id id})]
@@ -194,27 +190,27 @@
 
 (defmethod ig/init-key :gpml.handler.profile/post-params [_ _]
   [:map
-   ;; [:title {:optional true} string?]
-   ;; [:first_name string?]
-   ;; [:last_name string?]
-   ;; [:linked_in {:optional true} string?]
-   ;; [:twitter {:optional true} string?]
-   ;; [:photo {:optional true} string?]
-   ;; [:cv {:optional true} string?]
-   ;; [:representation {:optional true} string?]
-   ;; [:country {:optional true} int?]
-   ;; [:public_email {:optional true} boolean?]
-   ;; [:about {:optional true} string?]
-   ;; [:organisation_role {:optional true} string?]
-   ;; [:geo_coverage_type {:optional true} geo/coverage_type]
-   ;; [:tags {:optional true}
-   ;;  [:vector {:min 1 :error/message "Need at least one value for tags"} int?]]
-   ;; [:seeking {:optional true}
-   ;;  [:vector {:min 1 :error/message "Need at least one value for seeking"} int?]]
-   ;; [:offering {:optional true}
-   ;;  [:vector {:min 1 :error/message "Need at least one value for offering"} int?]]
-   ;; [:geo_coverage_value {:optional true}
-   ;;  [:vector {:min 1 :error/message "Need at least one geo coverage value"} int?]]
+   [:title {:optional true} string?]
+   [:first_name string?]
+   [:last_name string?]
+   [:linked_in {:optional true} string?]
+   [:twitter {:optional true} string?]
+   [:photo {:optional true} string?]
+   [:cv {:optional true} string?]
+   [:representation {:optional true} string?]
+   [:country {:optional true} int?]
+   [:public_email {:optional true} boolean?]
+   [:about {:optional true} string?]
+   [:organisation_role {:optional true} string?]
+   [:geo_coverage_type {:optional true} geo/coverage_type]
+   [:tags {:optional true}
+    [:vector {:min 1 :error/message "Need at least one value for tags"} int?]]
+   [:seeking {:optional true}
+    [:vector {:min 1 :error/message "Need at least one value for seeking"} int?]]
+   [:offering {:optional true}
+    [:vector {:min 1 :error/message "Need at least one value for offering"} int?]]
+   [:geo_coverage_value {:optional true}
+    [:vector {:min 1 :error/message "Need at least one geo coverage value"} int?]]
    [:org {:optional true}
     [:map
      [:id {:optional true} int?]
@@ -224,4 +220,14 @@
      [:country {:optional true} int?]
      [:geo_coverage_type {:optional true} geo/coverage_type]
      [:geo_coverage_value {:optional true}
-      [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]]]])
+      [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]
+     [:registered_stakeholders {:optional true}
+      [:vector int?]]
+     [:other_stakeholders {:optional true}
+      [:vector
+       [:map
+        [:title {:optional true} string?]
+        [:first_name {:optional true} string?]
+        [:last_name {:optional true} string?]
+        [:email string?]
+        [:organisation_role {:optional true} string?]]]]]]])
