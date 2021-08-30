@@ -22,7 +22,7 @@ h1 {
 h2 {
   font-size: 1.9rem;
   font-weight: 600;
-  line-height: 1.25rem;
+  line-height: 2.5rem;
 }
 
 h3 {
@@ -70,6 +70,15 @@ h4 {
   line-height: 0.69rem;
 }
 
+.text-green {
+  color: #4dffa5;
+}
+.text-blue {
+  color: #2d6796;
+}
+.text-white {
+  color: #fff;
+}
 // EOL Typography
 
 .rjsf {
@@ -86,6 +95,7 @@ h4 {
 
 #root {
   // antd part
+  /*
   .ant-menu.ant-menu-dark,
   .ant-menu-dark .ant-menu-sub,
   .ant-menu.ant-menu-dark .ant-menu-sub {
@@ -117,7 +127,8 @@ h4 {
     border-bottom: 0;
   }
 
-  .ant-menu-item-active {
+  .ant-menu-item-active,
+  .ant-menu-item-active.ant-menu-item-selected {
     background: rgba(77, 255, 165, 0.1);
     border-radius: 5px 5px 0px 0px;
     color: #4dffa5 !important;
@@ -125,9 +136,11 @@ h4 {
 
   .ant-menu-item-selected {
     background: none;
+    color: #4dffa5 !important;
   }
+  */
 
-  // btn
+  // btn primary
   .ant-btn-primary {
     color: #2d6796;
     background-color: $green01;
@@ -140,11 +153,11 @@ h4 {
     }
   }
 
-  // btn
+  // btn ghost
   .ant-btn-ghost {
     color: $green01;
-    background: transparent;
     border-color: $green01;
+    background: transparent;
     border-radius: 50px;
     &.left {
       margin-left: 8px;
@@ -157,6 +170,26 @@ h4 {
       border-color: #079e90;
       color: #00ff7f;
       background: #079e90;
+    }
+    &.black {
+      color: $black;
+      border-color: $black;
+      &:hover {
+        border-color: $black;
+        color: #fff;
+        background: $black;
+      }
+    }
+  }
+
+  // btn link
+  .ant-btn-link {
+    color: #1890ff;
+    &.black {
+      color: $black;
+    }
+    &:hover {
+      color: #000000;
     }
   }
   // end of antd part

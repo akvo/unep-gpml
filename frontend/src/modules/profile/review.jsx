@@ -1,9 +1,36 @@
 import React, { Fragment, useState } from "react";
-import { Button, Collapse, Space, Pagination } from "antd";
+import { Button, Collapse, Space, Pagination, Modal, Input } from "antd";
 import { DetailCollapse } from "./preview";
-import { topicNames } from "../../utils/misc";
+import {
+  topicNames,
+  reviewStatusUIText,
+  reviewCommentModalTitle,
+} from "../../utils/misc";
 import api from "../../utils/api";
 import { fetchReviewItems } from "./utils";
+import { titleCase } from "../../utils/string";
+
+const ReviewCommentModal = ({ status, visible, handleOk, handleCancel }) => {
+  const [reviewComment, setReviewComment] = useState();
+  const action = status.slice(0, -2);
+  return (
+    <Modal
+      title={reviewCommentModalTitle[status]}
+      visible={visible}
+      onOk={() => handleOk(reviewComment)}
+      okText={reviewStatusUIText[action]}
+      onCancel={handleCancel}
+    >
+      <Input.TextArea
+        rows={4}
+        bordered={true}
+        placeholder="Add a review comment"
+        value={reviewComment}
+        onChange={(e) => setReviewComment(e.target.value)}
+      />
+    </Modal>
+  );
+};
 
 const ReviewSection = ({
   reviewItems,
@@ -12,6 +39,9 @@ const ReviewSection = ({
   setReviewedItems,
 }) => {
   const ReviewHeader = ({ item }) => {
+    const [showNoteInput, setShowNoteInput] = useState(false);
+    const [modalReviewStatus, setModalReviewStatus] = useState("");
+
     const submitReview = (item, reviewStatus, reviewComment) => {
       const data = {
         "review-status": reviewStatus,
@@ -31,27 +61,55 @@ const ReviewSection = ({
         })();
       });
     };
-    const accept = (item) => submitReview(item, "ACCEPTED");
-    const reject = (item) => submitReview(item, "REJECTED");
 
     return (
       <div className="row">
-        <div className="col">{topicNames(item.type)}</div>
-        <div className="col">{item.title}</div>
+        <div className="col content">
+          <div className="title">{item.title || "No Title"}</div>
+          <div className="topic">{topicNames(item.type)}</div>
+        </div>
         <div
-          className="col"
+          className="col action"
           onClick={(e) => {
             e.stopPropagation();
           }}
         >
-          <Space size="middle">
-            <Button type="primary" onClick={() => accept(item)}>
-              Accept
+          <Space size="small">
+            <Button
+              className="black"
+              type="ghost"
+              onClick={() => {
+                setShowNoteInput(true);
+                setModalReviewStatus("ACCEPTED");
+              }}
+            >
+              {reviewStatusUIText["ACCEPT"]}
             </Button>
-            <Button type="secondary" onClick={() => reject(item)}>
-              Reject
+            <Button
+              className="black"
+              type="link"
+              onClick={() => {
+                setShowNoteInput(true);
+                setModalReviewStatus("REJECTED");
+              }}
+            >
+              {reviewStatusUIText["REJECT"]}
             </Button>
           </Space>
+        </div>
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <ReviewCommentModal
+            status={modalReviewStatus}
+            visible={showNoteInput}
+            handleCancel={() => setShowNoteInput(false)}
+            handleOk={(reviewComment) =>
+              submitReview(item, modalReviewStatus, reviewComment)
+            }
+          />
         </div>
       </div>
     );
@@ -60,14 +118,27 @@ const ReviewSection = ({
   const ReviewedHeader = ({ item }) => {
     return (
       <div className="row">
-        <div className="col">{topicNames(item.type)}</div>
-        <div className="col">{item.title}</div>
-        <div className="col">{item.reviewStatus}</div>
+        <div className="col content">
+          <div className="title">{item.title || "No Title"}</div>
+          <div className="topic">{topicNames(item.type)}</div>
+        </div>
+        <div className="col status">
+          <span className="status">
+            {reviewStatusUIText[item.reviewStatus]}
+          </span>
+        </div>
       </div>
     );
   };
 
-  const CollapseItemTable = ({ Header, items, setItems, reviewStatus }) => {
+  const CollapseItemTable = ({
+    key,
+    columns,
+    Header,
+    items,
+    setItems,
+    reviewStatus,
+  }) => {
     const [previewContent, storePreviewContent] = useState({});
 
     const getPreviewContent = (urls) => {
@@ -91,31 +162,40 @@ const ReviewSection = ({
 
     return (
       <>
-        <Collapse onChange={getPreviewContent}>
-          {items?.reviews?.length > 0 ? (
-            items?.reviews?.map((item, index) => {
-              const previewUrl = `/submission/${item.type}/${item.topicId}`;
-              return (
-                <Collapse.Panel
-                  key={previewUrl}
-                  header={<Header item={item} />}
-                >
-                  <DetailCollapse
-                    data={previewContent?.[previewUrl] || {}}
-                    item={item}
-                  />
-                </Collapse.Panel>
-              );
-            })
-          ) : (
-            <Collapse.Panel
-              showArrow={false}
-              collapsible="disabled"
-              key="collapse-pending-no-data"
-              header={<div className="row">No items to display</div>}
-            ></Collapse.Panel>
-          )}
-        </Collapse>
+        <div className="table-wrapper">
+          <div className="row head">
+            {columns.map((x, i) => (
+              <div key={`${key}-${x}-${i}`} className="col">
+                {x}
+              </div>
+            ))}
+          </div>
+          <Collapse onChange={getPreviewContent}>
+            {items?.reviews?.length > 0 ? (
+              items?.reviews?.map((item, index) => {
+                const previewUrl = `/submission/${item.type}/${item.topicId}`;
+                return (
+                  <Collapse.Panel
+                    key={previewUrl}
+                    header={<Header item={item} />}
+                  >
+                    <DetailCollapse
+                      data={previewContent?.[previewUrl] || {}}
+                      item={item}
+                    />
+                  </Collapse.Panel>
+                );
+              })
+            ) : (
+              <Collapse.Panel
+                showArrow={false}
+                collapsible="disabled"
+                key="collapse-pending-no-data"
+                header={<div className="row">No items to display</div>}
+              ></Collapse.Panel>
+            )}
+          </Collapse>
+        </div>
         <div style={{ padding: "10px 0px" }}>
           <Pagination
             defaultCurrent={1}
@@ -131,34 +211,28 @@ const ReviewSection = ({
   };
   return (
     <div className="admin-view">
-      <Fragment key="new-review">
+      <div key="new-review" className="review">
         <h2>New review requests ({`${reviewItems.count}`})</h2>
-        <div className="row head">
-          <div className="col">Type</div>
-          <div className="col">Name</div>
-          <div className="col">Action</div>
-        </div>
         <CollapseItemTable
+          key="new-review-table"
+          columns={["Name", "Action"]}
           Header={ReviewHeader}
           items={reviewItems}
           setItems={setReviewItems}
           reviewStatus="PENDING"
         />
-      </Fragment>
-      <Fragment key="reviewed">
+      </div>
+      <div key="reviewed" className="archive">
         <h2>Reviewed requests ({`${reviewedItems.count}`})</h2>
-        <div className="row head">
-          <div className="col">Type</div>
-          <div className="col">Name</div>
-          <div className="col">Status</div>
-        </div>
         <CollapseItemTable
+          key="review-table"
+          columns={["Name", "Status"]}
           Header={ReviewedHeader}
           items={reviewedItems}
           setItems={setReviewedItems}
           reviewStatus="ACCEPTED,REJECTED"
         />
-      </Fragment>
+      </div>
     </div>
   );
 };

@@ -1,7 +1,9 @@
 (ns gpml.email-util
   (:require [clj-http.client :as client]
+            [clojure.string :as str]
             [jsonista.core :as j]
-            [gpml.db.stakeholder :as db.stakeholder]))
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.handler.util :as util]))
 
 (defn make-message [sender receiver subject text html]
   {:From sender :To [receiver] :Subject subject :TextPart text :HTMLPart html})
@@ -19,6 +21,9 @@
                   :throw-exceptions false
                   :body (j/write-value-as-string {:Messages messages})})))
 
+(def unep-sender
+  {:Name "UNEP GPML Digital Platform" :Email "no-reply@gpmarinelitter.org"})
+
 (def notify-admins-pending-approval-text
   "Dear %s,
 
@@ -26,6 +31,63 @@ A new %s (%s) is awaiting your approval. Please visit %s/profile to approve or d
 
 - UNEP GPML Digital Platform
 ")
+
+(defn notify-reviewer-pending-review-text [reviewer-name app-domain topic-type topic-title]
+  (format "Dear %s,
+
+A new %s (%s) is awaiting your review. Please visit %s/profile to review the resource.
+
+- UNEP GPML Digital Platform
+" reviewer-name topic-type topic-title app-domain))
+
+(defn notify-review-submitted-text [admin-name app-domain topic-type topic-title review-status review-comment]
+  (format "Dear %s,
+
+A review has been submitted for %s (%s).
+
+Status: %s
+Comment: %s
+
+Please visit %s/profile to publish or reject the resource.
+
+- UNEP GPML Digital Platform
+" admin-name topic-type topic-title review-status review-comment app-domain))
+
+(defn notify-user-review-approved-text [mailjet-config topic-type topic-item]
+  (format "Dear user,
+
+Your submission has been published to %s/%s/%s.
+
+- UNEP GPML Digital Platform
+"
+          (:app-domain mailjet-config)
+          (util/get-api-topic-type topic-type topic-item)
+          (:id topic-item)))
+
+(defn notify-user-review-rejected-text [mailjet-config topic-type topic-item]
+  (format "Dear user,
+
+Your submission (%s) has been rejected.
+
+If you'd like to edit the submission and get the admins to review it
+again, please visit this URL: %s/edit-%s/%s
+
+- UNEP GPML Digital Platform
+"
+          (util/get-title topic-type topic-item)
+          (:app-domain mailjet-config)
+          (-> (util/get-api-topic-type topic-type topic-item)
+              (str/replace "_" "-")
+              ;; FIXME: This is so messy because of inconsistently
+              ;; using "initiative" instead of project in the URL
+              (str/replace "project" "initiative"))
+          (:id topic-item)))
+
+(defn notify-user-review-subject [mailjet-config review-status topic-type topic-item]
+  (format "[%s] %s %s"
+          (:app-name mailjet-config)
+          (util/get-display-topic-type topic-type topic-item)
+          (str/lower-case review-status)))
 
 (defn notify-user-invitation-text [inviter-name app-domain entity-name]
   (format "Dear user,
@@ -45,7 +107,7 @@ A new %s (%s) is awaiting your approval. Please visit %s/profile to approve or d
                      (get-user-full-name new-item)
                      (or (:title new-item) (:name new-item)))
         subject (format "[%s] New %s needs approval" (:app-name mailjet-config) item-type)
-        sender {:Name "UNEP GPML Digital Platform" :Email "no-reply@gpmarinelitter.org"}
+        sender unep-sender
         names (map get-user-full-name admins)
         receivers (map #(assoc {} :Name %1 :Email (:email %2)) names admins)
         texts (->> names (map #(format notify-admins-pending-approval-text

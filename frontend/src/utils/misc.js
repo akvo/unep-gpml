@@ -78,3 +78,23 @@ export const relationsByTopicType = {
 };
 
 export const userRoles = ["USER", "REVIEWER", "ADMIN"];
+
+export const reviewStatusUIText = {
+  PENDING: "Awaiting Review",
+  ACCEPTED: "Approved",
+  REJECTED: "Revision Needed",
+  ACCEPT: "Approve",
+  REJECT: "Decline",
+};
+
+export const reviewCommentModalTitle = {
+  ACCEPTED: "Approve the reviewed resource",
+  REJECTED: "Revision needed for the reviewed resource",
+};
+
+export const publishStatusUIText = {
+  APPROVED: "Published",
+  APPROVE: "Publish",
+  REJECTED: "Declined",
+  REJECT: "Decline",
+};
