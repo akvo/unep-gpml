@@ -18,15 +18,13 @@
   }
   .landing-banner {
     padding: 3rem 0px;
-    background:
-      url("../../images/landing-banner.png");
+    background: url("../../images/landing-banner.png");
     background-repeat: no-repeat;
 
     .ui.container {
       h2 {
         color: white !important;
       }
-  
     }
     h1 {
       color: white;
@@ -44,18 +42,16 @@
       text-decoration: underline;
     }
   }
-@keyframes grow {
+  @keyframes grow {
     0% {
-        transform: scale(1.0);
-                      color: $blue01;
-
+      transform: scale(1);
+      color: $blue01;
     }
     100% {
-        transform: scale(1.2);
-                      color: $blue02;
-
+      transform: scale(1.2);
+      color: $blue02;
     }
-}
+  }
   .popular-topics {
     .body {
       display: flex;
@@ -69,12 +65,13 @@
         .content-header {
           border-top: 1px solid white;
           border-bottom: 1px solid  white;
+
           display: flex;
           background: rgba($yellow, 0.2);
           h4 {
             font-size: 1.6rem;
             font-weight: 900;
-            margin-bottom: 10px;            
+            margin-bottom: 10px;
             color: $blue03;
           }
           span {
@@ -89,20 +86,20 @@
             color: $blue03;
             h4 {
               &:hover {
-                animation: grow .1s ease-in;
+                animation: grow 0.1s ease-in;
                 animation-fill-mode: forwards;
               }
             }
-            span {             
-              display: inline-block; 
-            }            
+            span {
+              display: inline-block;
+            }
             &:first-child {
               border-left: 1px solid  white;
             }
           }
         }
         .content-body {
-          padding:10px 20px;
+          padding: 10px 20px;
           background-color: rgba($yellow, 0);
           .item-body {
             margin-bottom: 15px;

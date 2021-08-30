@@ -82,7 +82,7 @@
                         (list {:Name (email/get-user-full-name creator) :Email (:email creator)})
                         (list (if (= review-status "APPROVED")
                                 (email/notify-user-review-approved-text mailjet-config (:table-name data) detail)
-                                (email/notify-user-review-rejected-text (:table-name data) detail)))
+                                (email/notify-user-review-rejected-text mailjet-config (:table-name data) detail)))
                         (list nil))
       (assoc (resp/status 200) :body {:message "Successfuly Updated" :data detail}))))
 
