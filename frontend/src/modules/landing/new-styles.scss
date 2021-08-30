@@ -17,18 +17,16 @@
     color: #ffffff;
   }
   .landing-banner {
-    padding: 2rem 0px;
-    background: linear-gradient(
-        0deg,
-        rgba(45, 103, 150, 0.75),
-        rgba(45, 103, 150, 0.75)
-      ),
+    padding: 3rem 0px;
+    background:
       url("../../images/landing-banner.png");
     background-repeat: no-repeat;
-    transform: matrix(-1, 0, 0, 1, 0, 0);
 
     .ui.container {
-      transform: matrix(-1, 0, 0, 1, 0, 0);
+      h2 {
+        color: white !important;
+      }
+  
     }
     h1 {
       color: white;
@@ -46,41 +44,68 @@
       text-decoration: underline;
     }
   }
+@keyframes grow {
+    0% {
+        transform: scale(1.0);
+                      color: $blue01;
 
+    }
+    100% {
+        transform: scale(1.2);
+                      color: $blue02;
+
+    }
+}
   .popular-topics {
     .body {
       display: flex;
       justify-content: space-between;
+      border: 1px solid rgb(255, 255, 255);
       .chart-wrapper {
-        width: 49%;
+        width: 49.7%;
       }
       .content {
         width: 50%;
         .content-header {
-          padding: 10px 0;
-          border-top: 1px solid $yellow;
-          border-bottom: 1px solid $yellow;
+          border-top: 1px solid  $yellow;
+          border-bottom: 1px solid  $yellow;
           display: flex;
-          justify-content: space-between;
+          background: rgba($yellow, 0.2);
           h4 {
-            color: $yellow;
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 0;
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-bottom: 10px;            
+            color: $blue03;
           }
           span {
-            color: $yellow;
             text-transform: uppercase;
             font-size: 0.75rem;
           }
           .item {
-            margin-left: 2%;
+            padding: 8px 10px;
+            border-right: 1px solid $yellow;
+            text-align: center;
+            line-height: 1em;
+            color: $blue03;
+            h4 {
+              &:hover {
+                animation: grow .1s ease-in;
+                animation-fill-mode: forwards;
+              }
+            }
+            span {             
+              display: inline-block; 
+            }            
+            &:first-child {
+              border-left: 1px solid  $yellow;
+            }
           }
         }
         .content-body {
-          padding: 20px;
+          padding:10px 20px;
+          background-color: rgba($yellow, 0);
           .item-body {
-            margin-bottom: 25px;
+            margin-bottom: 15px;
           }
         }
       }
