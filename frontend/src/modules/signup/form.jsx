@@ -41,11 +41,7 @@ const SignUpForm = withRouter(
     history,
     match: { params },
   }) => {
-    const {
-      countries,
-      organisations,
-      tags,
-      formEdit } = UIStore.currentState;
+    const { countries, organisations, tags, formEdit } = UIStore.currentState;
     const { status, id } = formEdit.signUp;
     const signUpFormData = signUpData.useState();
     const [dependValue, setDependValue] = useState([]);
@@ -59,12 +55,19 @@ const SignUpForm = withRouter(
 
       setSending(true);
 
-      let data2 = handleGeoCoverageValue(cloneDeep(formData.S1), formData.S1, countries);
+      let data2 = handleGeoCoverageValue(
+        cloneDeep(formData.S1),
+        formData.S1,
+        countries
+      );
       console.log(data2);
 
-
-      let orgGeo = handleGeoCoverageValue(cloneDeep(formData.S4), formData.S4, countries, 'org');
-
+      let orgGeo = handleGeoCoverageValue(
+        cloneDeep(formData.S4),
+        formData.S4,
+        countries,
+        "org"
+      );
 
       if (data.country?.[formData.S1.country]) {
         data.country = formData.S1.country;
@@ -79,13 +82,12 @@ const SignUpForm = withRouter(
         data.geoCoverageValue = data2.geoCoverageValue;
       }
       if (data.seeking) {
-        data.seeking = data.seeking.map((x) => Number(x));;
+        data.seeking = data.seeking.map((x) => Number(x));
       }
       if (data.offering) {
-        data.offering = data.offering.map((x) => Number(x));;
+        data.offering = data.offering.map((x) => Number(x));
       }
       data.org = {};
-
 
       if (data.orgName) {
         data.org.name = data.orgName;
@@ -97,7 +99,7 @@ const SignUpForm = withRouter(
         if (data.orgHeadquarter?.[formData.S4.orgHeadquarter]) {
           data.org.country = formData.S4.orgHeadquarter;
         }
-        if(orgGeo.orggeoCoverageType){
+        if (orgGeo.orggeoCoverageType) {
           data.org.geoCoverageType = orgGeo.orggeoCoverageType;
           data.org.geoCoverageValue = orgGeo.orggeoCoverageValue;
         }
@@ -109,18 +111,18 @@ const SignUpForm = withRouter(
         delete data.orgLogo;
 
         if (data.registeredStakeholders) {
-          data.org.registeredStakeholders = formData.S5.registeredStakeholders.map((x) => Number(x));
+          data.org.registeredStakeholders = formData.S5.registeredStakeholders.map(
+            (x) => Number(x)
+          );
           delete data.registeredStakeholders;
         }
         if (data.otherStakeholders) {
           data.org.otherStakeholders = data.otherStakeholders;
           delete data.otherStakeholders;
         }
-
-
       }
 
-      console.log('data.qcountry', data.country);
+      console.log("data.qcountry", data.country);
       console.log(data, formData);
 
       if (status === "add" && !params?.id) {
@@ -133,7 +135,7 @@ const SignUpForm = withRouter(
                 initiative: 2,
               };
             });
-//            scroll top
+            //            scroll top
             window.scrollTo({ top: 0 });
             signUpData.update((e) => {
               e.data = initialSignUpData;
@@ -180,7 +182,7 @@ const SignUpForm = withRouter(
 
     const handleFormOnChange = useCallback(
       ({ formData, schema }) => {
-//        console.log("handleFormOnChange representEntity", representEntity);
+        //        console.log("handleFormOnChange representEntity", representEntity);
         signUpData.update((e) => {
           e.data = {
             ...e.data,

@@ -141,10 +141,7 @@ const getSchema = (
     "geoCoverageValueGlobalSpesific"
   ].enumNames = meaOptions?.map((x) => x.name);
 
-  prop.S2.properties[
-    "orgRepresentative"
-  ].enum = organisationType;
-
+  prop.S2.properties["orgRepresentative"].enum = organisationType;
 
   prop.S3.properties["orgExpertise"].enum = tags?.offering?.map((it) => it.id);
   prop.S3.properties["orgExpertise"].enumNames = tags?.offering?.map(
@@ -159,7 +156,8 @@ const getSchema = (
     String(it.id)
   );
   prop.S5.properties["registeredStakeholders"].enumNames = stakeholders?.map(
-    (it) => `${it.firstName} ${it.lastName} ${it.email ? '<'+it.email+'>' :''}`
+    (it) =>
+      `${it.firstName} ${it.lastName} ${it.email ? "<" + it.email + ">" : ""}`
   );
 
   return {

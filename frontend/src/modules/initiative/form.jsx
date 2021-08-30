@@ -93,7 +93,6 @@ export const collectDependSchemaRefactor = (
 };
 // End of refactor
 
-
 export const transformFormData = (data, formData, schema, not_q_prefixed) => {
   const q_prefix = not_q_prefixed ? "" : "q";
   delete formData?.tabs;
@@ -108,7 +107,12 @@ export const transformFormData = (data, formData, schema, not_q_prefixed) => {
         !Array.isArray(formData[key])
       ) {
         // loop
-        transformFormData(data, formData[key], schema[key]?.properties, not_q_prefixed);
+        transformFormData(
+          data,
+          formData[key],
+          schema[key]?.properties,
+          not_q_prefixed
+        );
       } else {
         // collect the value
         let qKey = key.split("_");

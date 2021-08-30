@@ -276,7 +276,7 @@ export const schema = {
               "lastName",
               "firstName",
               "email",
-//              "organisationRole"
+              //              "organisationRole"
             ],
             properties: {
               title: titleField,

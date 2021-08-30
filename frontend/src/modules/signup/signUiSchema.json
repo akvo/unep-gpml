@@ -254,8 +254,7 @@
       },
       "classNames": "list-group-item",
       "ui:group": "border",
-      "items": {
-      },
+      "items": {},
       "ui:order": [
         "title",
         "lastName",

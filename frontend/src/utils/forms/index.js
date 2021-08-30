@@ -220,21 +220,37 @@ export const findCountryIsoCode = (value, countries) => {
   return country?.isoCode;
 };
 
-export const handleGeoCoverageValue = (data, currentValue, countries, prefix) => {
-  const geoCoverageValueNational = `${prefix ? prefix : ''}geoCoverageValueNational`;
-  const geoCoverageValueTransnational = `${prefix ? prefix : ''}geoCoverageValueTransnational`;
-  const geoCoverageValueRegional = `${prefix ? prefix : ''}geoCoverageValueRegional`;
-  const geoCoverageValueGlobalSpesific = `${prefix ? prefix : ''}geoCoverageValueGlobalSpesific`;
-  const geoCoverageValueSubNational = `${prefix ? prefix : ''}geoCoverageValueSubNational`;
-  const geoCoverageType = `${prefix ? prefix : ''}geoCoverageType`;
-  const geoCoverageValue = `${prefix ? prefix : ''}geoCoverageValue`;
+export const handleGeoCoverageValue = (
+  data,
+  currentValue,
+  countries,
+  prefix
+) => {
+  const geoCoverageValueNational = `${
+    prefix ? prefix : ""
+  }geoCoverageValueNational`;
+  const geoCoverageValueTransnational = `${
+    prefix ? prefix : ""
+  }geoCoverageValueTransnational`;
+  const geoCoverageValueRegional = `${
+    prefix ? prefix : ""
+  }geoCoverageValueRegional`;
+  const geoCoverageValueGlobalSpesific = `${
+    prefix ? prefix : ""
+  }geoCoverageValueGlobalSpesific`;
+  const geoCoverageValueSubNational = `${
+    prefix ? prefix : ""
+  }geoCoverageValueSubNational`;
+  const geoCoverageType = `${prefix ? prefix : ""}geoCoverageType`;
+  const geoCoverageValue = `${prefix ? prefix : ""}geoCoverageValue`;
   data?.[geoCoverageValueNational] && delete data[geoCoverageValueNational];
   data?.[geoCoverageValueTransnational] &&
     delete data[geoCoverageValueTransnational];
   data?.[geoCoverageValueRegional] && delete data[geoCoverageValueRegional];
   data?.[geoCoverageValueGlobalSpesific] &&
     delete data[geoCoverageValueGlobalSpesific];
-  data?.[geoCoverageValueSubNational] && delete data[geoCoverageValueSubNational];
+  data?.[geoCoverageValueSubNational] &&
+    delete data[geoCoverageValueSubNational];
   if (
     data[geoCoverageType] === "national" &&
     !Array.isArray(currentValue[geoCoverageValueNational])
@@ -242,9 +258,9 @@ export const handleGeoCoverageValue = (data, currentValue, countries, prefix) =>
     data[geoCoverageValue] = [currentValue[geoCoverageValueNational]];
   }
   if (data[geoCoverageType] === "transnational") {
-    data[geoCoverageValue] = currentValue[geoCoverageValueTransnational].map(
-      (x) => parseInt(x)
-    );
+    data[geoCoverageValue] = currentValue[
+      geoCoverageValueTransnational
+    ].map((x) => parseInt(x));
   }
   if (data[geoCoverageType] === "regional") {
     data[geoCoverageValue] = currentValue[geoCoverageValueRegional].map((x) =>
@@ -252,9 +268,9 @@ export const handleGeoCoverageValue = (data, currentValue, countries, prefix) =>
     );
   }
   if (data[geoCoverageType] === "global with elements in specific areas") {
-    data[geoCoverageValue] = currentValue[geoCoverageValueGlobalSpesific].map(
-      (x) => parseInt(x)
-    );
+    data[geoCoverageValue] = currentValue[
+      geoCoverageValueGlobalSpesific
+    ].map((x) => parseInt(x));
   }
   if (
     data[geoCoverageType] === "sub-national" &&
