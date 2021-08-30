@@ -43,7 +43,7 @@
         flex: 0 0 40%;
       }
       .section-issue-graphic {
-        flex: 0 0 50%;
+        flex: 0 0 58%;
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
@@ -114,12 +114,6 @@
       url("../../images/section-mission.png");
     background-repeat: no-repeat;
     background-size: cover;
-    .section-mission-graphic {
-      margin: 0 1rem;
-      padding: 2rem 10rem;
-      background: rgba(0, 91, 112, 0.5);
-      text-align: center;
-    }
   }
 
   // Section Info
@@ -192,4 +186,19 @@
       }
     }
   }
+
+  // Section History
+  .section-history-container {
+    background: $blue02;
+    .section-history-wrapper { 
+      .section-history-text {
+      }
+      .section-mission-graphic {
+        margin: 0 1rem;
+        padding: 2rem 10rem;
+        background: rgba(0, 91, 112, 0.5);
+        text-align: center;
+      }
+    }
+  }  
 }

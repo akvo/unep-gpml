@@ -43,6 +43,7 @@ const AboutUs = () => {
       {renderSectionTimelineAndRoadmap()}
       {renderSectionKeyFeaturesAndComponents()}
       {renderSectionCommunity()}
+      {renderSectionHistory()}
     </div>
   );
 };
@@ -57,14 +58,12 @@ const renderSectionIssue = () => {
           <div className="item-box">
             {image && <div className="item-svg">{image}</div>}
             {!image && <Image preview={false} src={imageNotFound} />}
-
             <div className="item-description text-white">{description}</div>
           </div>
         </div>
       );
     });
   };
-
   return (
     <div className="section-container section-issue-container">
       <div className="ui container section-issue-wrapper">
@@ -72,10 +71,8 @@ const renderSectionIssue = () => {
           <h2 className="text-green">
             The Issue: Marine Litter & Plastic Pollution
           </h2>
-          <p className="body-text text-white">
-            Marine plastic pollution is one of the biggest environmental
-            problems we face. Managing the problem requires urgent cooperation.
-            Find out more below.
+          <p className="txt-emphasis text-white">
+              Marine plastic pollution is one of the biggest environmental problems we face. Managing the problem requires urgent cooperation. Find out more below.
           </p>
           <div className="btn-wrapper">
             <Button type="ghost">Vital graphics</Button>
@@ -116,29 +113,17 @@ const renderSectionMission = () => {
       <div className="ui container section-mission-wrapper">
         <div className="section-mission-text">
           <h2 className="text-green">
-            The Global Partnership on Marine Litter: the mission
+            The Global Partnership on Marine Litter (GPML)
           </h2>
-          <p className="body-text text-white">
-            In 2019, the United Nations Environment Assembly (UNEA) decided in
-            resolution UNEP/EA.4/Res.6 operative paragraph 3: “to strengthen
-            coordination and cooperation by establishing, subject to the
-            availability of resources and building on existing initiatives, a
-            multi-stakeholder platform within the United Nations Environment
-            Programme to take immediate action towards the long-term
-            elimination, through a lifecycle approach, of discharges of litter
-            and microplastics into the oceans”. The GPML Digital Platform was
-            developed in 2021 in response to this and seeks to support
-            transformative, multi-stakeholder actions that target the causes of
-            pollution towards a pollution-free planet, where pollution is
-            prevented and controlled and good environmental quality and improved
-            health and well-being are ensured for all. Overall, the work of the
-            GPML will support UNEP’s Medium Term Strategy by supporting
-            countries to deliver on their environmental commitments under
-            international agreements.
+          <p className="txt-emphasis text-white">
+            The Global Partnership on Marine Litter (GPML) was launched at the United Nations Conference on Sustainable Development (Rio+20) in June 2012, in response to a request set out in the Manila Declaration on ‘Furthering the Implementation of the Global Programme of Action for the Protection of the Marine Environment from Land-based Activities’. The partnership is led by a Steering Committee and the United Nations Environment Programme (UNEP) provides secretariat services. 
+            </p>
+          <p className="txt-emphasis text-white">
+            The GPML is a multi-stakeholder partnership that brings together all actors working to address marine litter and plastic pollution. By providing a unique global platform to share knowledge and experience, partners can work together to create and advance solutions to this pressing global issue.  
           </p>
+          <a href="https://www.gpmarinelitter.org/" className="text-blue txt-emphasis">Go to the partnership</a>
         </div>
       </div>
-      <div className="section-mission-graphic">{missionGraphic}</div>
     </div>
   );
 };
@@ -149,13 +134,8 @@ const renderSectionInfo = () => {
       <div className="ui container section-info-wrapper">
         <div className="section-info-text">
           <h2 className="text-green">The Digital Platform</h2>
-          <p className="body-text text-white">
-            The GPML Digital Platform drives transformation and supports the
-            work of the GPML Action Tracks. The Digital Platform is
-            multi-stakeholder and partly open source, compiling and
-            crowdsourcing different resources, integrating data and connecting
-            stakeholders to guide action on addressing the global problem of
-            marine litter and plastic pollution.
+          <p className="txt-emphasis text-white">
+            The GPML Digital Platform drives transformation and supports the work of the GPML Action Tracks. The Digital Platform is multi-stakeholder and partly open source, compiling and crowdsourcing different resources, integrating data and connecting stakeholders to guide action on addressing the global problem of marine litter and plastic pollution.
           </p>
         </div>
         <div className="section-info-button-wrapper">
@@ -177,21 +157,13 @@ const renderSectionTimelineAndRoadmap = () => {
       <div className="ui container section-timeline-roadmap-wrapper">
         <div className="section-timeline-roadmap-text">
           <h2 className="text-blue">Timeline & Roadmap</h2>
-          <p className="body-text text-blue">
-            The release of an initial minimum Viable product (MVP) (“Phase 1”)
-            took place in February 2021, where a beta version of Phase 1 of the
-            GPML Digital Platform was made available. Following the Phase 1
-            release, an interative, user-centered design process is using
-            techniques such as interviews, surveys, workshops to collect
-            feedback from users to inform new versions of the Platform.
-            <br />
-            <br />A series of phased releases, informed by user-centered design,
-            will culminate in a final version in June 2023. Interim versions
-            will enhance existing features and develop new ones in preparation
-            for key events, including UNEA-5-b dialogues planned for 2022, the
-            7th International Marine Debris Conference (7IMDC) planned for 2022,
-            and UNEA-6, expected to be held in early 2023.
+          <p className="txt-emphasis text-blue">
+            The release of an initial minimum viable product (MVP), or “Phase 1”, took place in February 2021, where a beta version of the GPML Digital Platform was made available. Following this, an iterative, user-centered design process is using techniques such as interviews, surveys and workshops to collect feedback from users to inform new versions of the Digital Platform.            <br />
           </p>
+          <p className="txt-emphasis text-blue">
+            A series of phased releases, informed by user-centered design, will culminate in a final version in June 2023. Interim versions will enhance existing features and develop new ones in preparation for key events, including UNEA-5.2 dialogues and the 7th International Marine Debris Conference (7IMDC) planned for 2022, as well as UNEA-6, expected to be held in early 2023.
+          </p>
+          <a href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP+GPML+Digital+Platform+Concept+for+User+and+Partner+Consultations+May+2021.pdf" className="text-blue txt-emphasis">Learn More</a>
         </div>
         <div className="section-timeline-roadmap-graphic">
           <Image src={timelineAndRoadmapGraphic} width="80%" preview={false} />
@@ -207,16 +179,13 @@ const renderSectionKeyFeaturesAndComponents = () => {
       <div className="ui container section-feature-component-wrapper">
         <div className="section-feature-component-text">
           <h2 className="text-green">Key Feature & Components</h2>
-          <p className="body-text text-white">
-            Features of the GPML Digital Platform are made available via 3
-            primary components.
-            <br />
-            The Platform supports interlinkages between the different components
-            to ensure a user-friendly experience and access to all
-            functionalities and resources through links to internal and external
-            databases and datasets and key partner platforms, such as World
-            Environment Situation Room (WESR).
-          </p>
+            <p className="txt-emphasis text-white">
+              Features of the GPML Digital Platform are made available via 3 primary components.
+            </p>
+            <p className="txt-emphasis text-white">
+              The Platform supports interlinkages between the different components to ensure a user-friendly experience and access to all functionalities and resources through links to internal and external databases, datasets and key partner platforms, such as the World Environment Situation Room (WESR).
+            </p>
+          <a href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP+GPML+Digital+Platform+Concept+for+User+and+Partner+Consultations+May+2021.pdf" className="text-blue txt-emphasis">Learn More</a>
         </div>
         <div className="section-feature-component-graphic">
           <p className="body-text text-white">
@@ -235,21 +204,31 @@ const renderSectionCommunity = () => {
       <div className="ui container section-community-wrapper">
         <div className="section-community-text">
           <h2 className="text-green">GPML Community</h2>
-          <p className="body-text text-white">
-            The GPML Digital Platforms seeks to connect, inform and inspire all
-            actors working to address marine litter and plastic pollution. Join
-            our community of stakeholders, which includes: Governments;
-            Scientific and Technological Community and Academia; Business,
-            Industry and Private Sector; Non-Governmental Organizations (NGOs)
-            and Foundations; Intergovernmental Organizations (IGOs); All Actors
-            Participating in Global/Regional Multilateral Processes, including
-            at a global and regional level; Other Major Groups and Stakeholders;
-            and Private Citizens.
+          <p className="txt-emphasis text-white">
+            The GPML Digital Platforms seeks to connect, inform and inspire all actors working to address marine litter and plastic pollution. Join our community of stakeholders, which includes: governments; scientific and technological community and academia; business, industry and private sector; non-governmental organizations (NGOs) and foundations; intergovernmental organizations (IGOs); all actors participating in global/regional multilateral processes; other major groups and stakeholders; and private citizens.
           </p>
+          <a href="https://digital.gpmarinelitter.org/browse" className="text-blue txt-emphasis">Sign up to visit the directory</a>
         </div>
         <div className="section-community-graphic">
           <Image src={ourCommunity} width="90%" preview={false} />
         </div>
+      </div>
+    </div>
+  );
+};
+
+const renderSectionHistory = () => {
+
+  return (
+    <div className="section-container section-history-container">
+      <div className="ui container section-history-wrapper">
+        <div className="section-history-text">
+          <h2 className="text-green">The History of the GPML</h2>
+          <p className="txt-emphasis text-white">
+            In 2019, the United Nations Environment Assembly (UNEA) decided in resolution UNEP/EA.4/Res.6 operative paragraph 3: “to strengthen coordination and cooperation by establishing, subject to the availability of resources and building on existing initiatives, a multi-stakeholder platform within the United Nations Environment Programme to take immediate action towards the long-term elimination, through a lifecycle approach, of discharges of litter and microplastics into the oceans”. The GPML Digital Platform was developed in 2021 in response to this and seeks to support transformative, multi-stakeholder actions that target the causes of pollution towards a pollution-free planet, where pollution is prevented and controlled and good environmental quality and improved health and well-being are ensured for all. Overall, the work of the GPML will support UNEP’s Medium-Term Strategy by supporting countries to deliver on their environmental commitments under international agreements.
+          </p>
+        </div>
+        <div className="section-mission-graphic">{missionGraphic}</div>
       </div>
     </div>
   );
