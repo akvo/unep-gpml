@@ -12,7 +12,6 @@ import "./styles.scss";
 import SignUpForm from "./form";
 import StickyBox from "react-sticky-box";
 import { schema } from "../signup/schema";
-import { revertFormData } from "./temp";
 import cloneDeep from "lodash/cloneDeep";
 import xor from "lodash/xor";
 import api from "../../utils/api";
@@ -256,11 +255,11 @@ const SignUp = ({ match: { params }, ...props }) => {
           .length === 0 ||
           editId !== dataId)
       ) {
-        api.getRaw(`/initiative/${dataId}`).then((d) => {
-          signUpData.update((e) => {
-            e.data = revertFormData(initialSignUpData)(JSON.parse(d.data));
-            e.editId = dataId;
-          });
+        api.getRaw(`/signup/${dataId}`).then((d) => {
+          // signUpData.update((e) => {
+          //   e.data = revertFormData(initialSignUpData)(JSON.parse(d.data));
+          //   e.editId = dataId;
+          // });
         });
       }
     }
