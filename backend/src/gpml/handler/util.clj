@@ -2,6 +2,9 @@
   (:require [clojure.string :as str]
             [gpml.constants :as constants]))
 
+(def unauthorized {:status 403 :body {:message "Unauthorized"}})
+(def not-found {:status 404 :body {:message "Not Found"}})
+
 (defn get-internal-topic-type [topic-type]
   (cond
     (contains? constants/resource-types topic-type) "resource"

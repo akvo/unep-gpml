@@ -4,6 +4,7 @@
             [gpml.db.project :as db.project]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.language :as db.language]
+            [gpml.db.submission :as db.submission]
             [gpml.handler.image :as handler.image]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.organisation :as handler.org]
@@ -14,6 +15,8 @@
             [gpml.db.action-detail :as db.action-detail]
             gpml.db.country
             [gpml.db.country-group :as db.country-group]
+            [gpml.handler.util :as util]
+            [gpml.model.topic :as model.topic]
             [clojure.string :as string]))
 
 (defn other-or-name [action]
@@ -270,18 +273,27 @@
 (defmethod extra-details :nothing [_ _ _]
   nil)
 
+(defn- get-resource-if-allowed [conn path user]
+  (let [topic (:topic-type path)
+        submission (->> {:table-name (util/get-internal-topic-type topic) :id (:topic-id path)}
+                        (db.submission/detail conn))
+        access-allowed? (or (= (:review_status submission) "APPROVED")
+                            (= (:role user) "ADMIN")
+                            (and (not (nil? (:id user)))
+                                 (= (:created_by submission) (:id user))))]
+    (when access-allowed?
+      submission)))
+
 (defmethod ig/init-key ::get [_ {:keys [db]}]
   (cache-hierarchies! (:spec db))
-  (fn [{{:keys [path]} :parameters approved? :approved?}]
+  (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
     (let [conn (:spec db)
-          topic (:topic-type path)
-          public-topic? (not (contains? constants/approved-user-topics topic))
-          authorized? (or public-topic? approved?)]
-      (if-let [data (and authorized? (db.detail/get-detail conn path))]
-        (resp/response (merge
-                        (:json data)
-                        (extra-details topic conn  (:json data))))
-        (resp/not-found {:message "Not Found"})))))
+          topic (:topic-type path)]
+      (if-let [data (when (and (or (model.topic/public? topic) approved?)
+                               (some? (get-resource-if-allowed conn path user)))
+                      (:json (db.detail/get-detail conn path)))]
+        (resp/response (merge data (extra-details topic conn data)))
+        util/not-found))))
 
 (def put-params
   ;; FIXME: Add validation
@@ -400,12 +412,23 @@
     status))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]
-  (fn [{{{:keys [topic-type topic-id]} :path body :body} :parameters}]
-    (let [conn (:spec db)
-          status (if (= topic-type "project")
-                   (update-initiative conn topic-id body)
-                   (update-resource conn topic-type topic-id body))]
-      (resp/response {:status (if (= status 1) "success" "failure")}))))
+  (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
+        user :user}]
+    (let [submission (get-resource-if-allowed (:spec db) path user)
+          review_status (:review_status submission)]
+      (if (some? submission)
+        (let [conn (:spec db)
+              status (if (= topic-type "project")
+                       (update-initiative conn topic-id body)
+                       (update-resource conn topic-type topic-id body))]
+          (when (and (= status 1) (= review_status "REJECTED"))
+            (db.submission/update-submission
+             conn
+             {:table-name (util/get-internal-topic-type topic-type)
+              :id topic-id
+              :review_status "SUBMITTED"}))
+          (resp/response {:status (if (= status 1) "success" "failure")}))
+        util/unauthorized))))
 
 (defmethod ig/init-key ::put-params [_ _]
   put-params)
