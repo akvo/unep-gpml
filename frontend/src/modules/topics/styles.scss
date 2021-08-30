@@ -3,41 +3,42 @@
 #topics {
   .section-container {
     padding: 4rem 0;
+  }
+  h2 {
+    color: $blue02;
+  }
+  .loading {
+    margin: auto;
+  }
+  .topic-item-wrapper {
+    margin-top: 2rem !important;
+    .topic-item-card {
+      cursor: pointer;
+      &:hover {
+        border: 1px solid $blue02;
+        opacity: 0.5;
+      }
+      .topic-item-title-wrapper {
+        margin-top: 0.8rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-    h2 {
-      color: $blue02;
-    }
-
-    .topic-item-wrapper {
-      margin-top: 2rem !important;
-      .topic-item-card {
-        cursor: pointer;
-        &:hover {
-          border: 1px solid $blue02;
-          opacity: 0.5;
+        .topic-item-title {
+          color: $black;
+          text-transform: capitalize;
+          font-weight: 500;
+          font-size: 1.125rem;
         }
-        .topic-item-title-wrapper {
-          margin-top: 0.8rem;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
 
-          .topic-item-title {
-            color: $black;
-            text-transform: capitalize;
-            font-weight: 500;
-            font-size: 1.125rem;
-          }
-
-          .topic-item-count {
+        .topic-item-count {
+          border: 1px solid $blue02;
+          box-sizing: border-box;
+          color: $blue02;
+          cursor: default;
+          &:hover {
+            background: unset;
             border: 1px solid $blue02;
-            box-sizing: border-box;
-            color: $blue02;
-            cursor: default;
-            &:hover {
-              background: unset;
-              border: 1px solid $blue02;
-            }
           }
         }
       }

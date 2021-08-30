@@ -13,49 +13,40 @@ const Topic = () => {
   return (
     <div id="topics">
       <div className="ui container">
-        {isEmpty(tags) || !tags?.topics ? (
-          <h2 className="loading">
-            <LoadingOutlined spin /> Loading Topics
-          </h2>
-        ) : (
-          renderTopics(tags.topics)
-        )}
+        <div className="section-container">
+          <h2>Featured Topics</h2>
+          <Row className="topic-item-wrapper" gutter={[16, 16]}>
+            {isEmpty(tags) || !tags?.topics ? (
+              <h2 className="loading">
+                <LoadingOutlined spin /> Loading...
+              </h2>
+            ) : (
+              renderTopics(tags.topics)
+            )}
+          </Row>
+        </div>
       </div>
     </div>
   );
 };
 
 const renderTopics = (topics) => {
-  return (
-    <div className="section-container">
-      <h2>Featured Topics</h2>
-      <Row className="topic-item-wrapper" gutter={[16, 16]}>
-        {topics.map((x) => {
-          const { id, tag } = x;
-          return (
-            <Col key={`${tag}-${id}`} sm={24} md={12} lg={8}>
-              <Card
-                className="topic-item-card"
-                onClick={() => console.log(tag)}
-              >
-                <Image size="90%" src={imageNotFound} preview={false} />
-                <div className="topic-item-title-wrapper">
-                  <div className="topic-item-title">{tag}</div>
-                  <Button
-                    className="topic-item-count"
-                    shape="circle"
-                    type="ghost"
-                  >
-                    50
-                  </Button>
-                </div>
-              </Card>
-            </Col>
-          );
-        })}
-      </Row>
-    </div>
-  );
+  return topics.map((x) => {
+    const { id, tag } = x;
+    return (
+      <Col key={`${tag}-${id}`} sm={24} md={12} lg={8}>
+        <Card className="topic-item-card" onClick={() => console.log(tag)}>
+          <Image size="90%" src={imageNotFound} preview={false} />
+          <div className="topic-item-title-wrapper">
+            <div className="topic-item-title">{tag}</div>
+            <Button className="topic-item-count" shape="circle" type="ghost">
+              50
+            </Button>
+          </div>
+        </Card>
+      </Col>
+    );
+  });
 };
 
 export default Topic;
