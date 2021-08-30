@@ -64,14 +64,24 @@ Your submission has been published to %s/%s/%s.
           (util/get-api-topic-type topic-type topic-item)
           (:id topic-item)))
 
-(defn notify-user-review-rejected-text [topic-type topic-item]
+(defn notify-user-review-rejected-text [mailjet-config topic-type topic-item]
   (format "Dear user,
 
 Your submission (%s) has been rejected.
 
+If you'd like to edit the submission and get the admins to review it
+again, please visit this URL: %s/edit-%s/%s
+
 - UNEP GPML Digital Platform
 "
-          (util/get-title topic-type topic-item)))
+          (util/get-title topic-type topic-item)
+          (:app-domain mailjet-config)
+          (-> (util/get-api-topic-type topic-type topic-item)
+              (str/replace "_" "-")
+              ;; FIXME: This is so messy because of inconsistently
+              ;; using "initiative" instead of project in the URL
+              (str/replace "project" "initiative"))
+          (:id topic-item)))
 
 (defn notify-user-review-subject [mailjet-config review-status topic-type topic-item]
   (format "[%s] %s %s"
