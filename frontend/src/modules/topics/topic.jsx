@@ -12,20 +12,25 @@ const Topic = () => {
   const { tags } = UIStore.useState((s) => s);
   return (
     <div id="topics">
-      <div className="ui container">
-        <div className="section-container">
-          <h2>Featured Topics</h2>
-          <Row className="topic-item-wrapper" gutter={[16, 16]}>
-            {isEmpty(tags) || !tags?.topics ? (
-              <h2 className="loading">
-                <LoadingOutlined spin /> Loading...
-              </h2>
-            ) : (
-              renderTopics(tags.topics)
-            )}
-          </Row>
+      {/* Featured topic */}
+      <div className="section-featured-topic-container">
+        <div className="ui container">
+          <div className="section-container">
+            <h2>Featured Topics</h2>
+            <Row className="topic-item-wrapper" gutter={[16, 16]}>
+              {isEmpty(tags) || !tags?.topics ? (
+                <h2 className="loading">
+                  <LoadingOutlined spin /> Loading...
+                </h2>
+              ) : (
+                renderTopics(tags.topics)
+              )}
+            </Row>
+          </div>
         </div>
       </div>
+      {/* All topic */}
+      <div className="section-all-topic-container"></div>
     </div>
   );
 };
@@ -36,6 +41,7 @@ const renderTopics = (topics) => {
     return (
       <Col key={`${tag}-${id}`} sm={24} md={12} lg={8}>
         <Card className="topic-item-card" onClick={() => console.log(tag)}>
+          <span className="featured-topic-label resource-label">Featured</span>
           <Image size="90%" src={imageNotFound} preview={false} />
           <div className="topic-item-title-wrapper">
             <div className="topic-item-title">{tag}</div>
