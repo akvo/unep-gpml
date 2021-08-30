@@ -115,21 +115,6 @@ const DisclaimerCloseBtn = () => (
   />
 );
 
-const checkDisclaimerCookie = () => {
-  if (
-    document.cookie &&
-    document.cookie
-      .split(";")
-      .some((item) => item.trim().startsWith("showDisclaimer="))
-  ) {
-    return document.cookie
-      .split("; ")
-      .find((item) => item.startsWith("showDisclaimer="))
-      .split("=")[1];
-  }
-  return "true";
-};
-
 const disclaimerContent = {
   home: (
     <>
@@ -229,7 +214,7 @@ const Root = () => {
   return (
     <Router>
       <div id="root">
-        {checkDisclaimerCookie() !== "false" &&
+        {storage.getCookie("showDisclaimer") !== "false" &&
           disclaimerContent?.[disclaimer] && (
             <div className="panel-disclaimer">
               <div className="ui container">
