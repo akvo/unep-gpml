@@ -1,9 +1,9 @@
 -- :name get-detail :? :1
 -- :doc Get details about a particular topic
 SELECT json
-  FROM v_topic
+  FROM v_topic_all
  WHERE topic = :topic-type
-   AND (json->>'id')::int = :topic-id
+   AND (json->>'id')::int = :topic-id;
 
 -- :name get-stakeholder-tags :? :1
 -- :doc Get Stakehodler tags
