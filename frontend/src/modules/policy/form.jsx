@@ -177,8 +177,21 @@ const AddPolicyForm = withRouter(
     history,
     match: { params },
   }) => {
-    const globalState = UIStore.useState();
-    const { countries, formStep, formEdit } = globalState;
+    const {
+      countries,
+      tags,
+      regionOptions,
+      meaOptions,
+      formStep,
+      formEdit,
+    } = UIStore.useState((s) => ({
+      countries: s.countries,
+      tags: s.tags,
+      regionOptions: s.regionOptions,
+      meaOptions: s.meaOptions,
+      formStep: s.formStep,
+      formEdit: s.formEdit,
+    }));
     const formData = policyData.useState();
     const { editId, data } = formData;
     const { status, id } = formEdit.policy;
@@ -191,7 +204,17 @@ const AddPolicyForm = withRouter(
     useEffect(() => {
       const dataId = Number(params?.id || id);
       if (formSchema.loading && isLoaded) {
-        setFormSchema(getSchema(globalState, false));
+        setFormSchema(
+          getSchema(
+            {
+              countries,
+              tags,
+              regionOptions,
+              meaOptions,
+            },
+            false
+          )
+        );
         // Manage form status, add/edit
         if (
           (status === "edit" || dataId) &&
@@ -199,7 +222,12 @@ const AddPolicyForm = withRouter(
         ) {
           api.get(`/detail/policy/${dataId}`).then((d) => {
             policyData.update((e) => {
-              e.data = revertFormData(formDataMapping, d.data, globalState);
+              e.data = revertFormData(formDataMapping, d.data, {
+                countries,
+                tags,
+                regionOptions,
+                meaOptions,
+              });
               e.editId = dataId;
             });
           });
@@ -212,7 +240,19 @@ const AddPolicyForm = withRouter(
           e.editId = null;
         });
       }
-    }, [formSchema, status, id, data, editId, params, globalState, isLoaded]);
+    }, [
+      formSchema,
+      status,
+      id,
+      data,
+      editId,
+      params,
+      isLoaded,
+      countries,
+      tags,
+      regionOptions,
+      meaOptions,
+    ]);
 
     useEffect(() => {
       setFormSchema({ schema: schema, loading: true });

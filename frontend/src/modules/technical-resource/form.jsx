@@ -142,8 +142,23 @@ const AddResourceForm = withRouter(
     history,
     match: { params },
   }) => {
-    const globalState = UIStore.useState();
-    const { countries, formStep, formEdit } = globalState;
+    const {
+      countries,
+      organisations,
+      tags,
+      regionOptions,
+      meaOptions,
+      formStep,
+      formEdit,
+    } = UIStore.useState((s) => ({
+      countries: s.countries,
+      organisations: s.organisations,
+      tags: s.tags,
+      regionOptions: s.regionOptions,
+      meaOptions: s.meaOptions,
+      formStep: s.formStep,
+      formEdit: s.formEdit,
+    }));
 
     const formData = resourceData.useState();
     const { editId, data } = formData;
@@ -157,7 +172,12 @@ const AddResourceForm = withRouter(
     useEffect(() => {
       const dataId = Number(params?.id || id);
       if (formSchema.loading && isLoaded) {
-        setFormSchema(getSchema(globalState, false));
+        setFormSchema(
+          getSchema(
+            { countries, organisations, tags, regionOptions, meaOptions },
+            false
+          )
+        );
         // Manage form status, add/edit
         if (
           (status === "edit" || dataId) &&
@@ -178,7 +198,20 @@ const AddResourceForm = withRouter(
           e.editId = null;
         });
       }
-    }, [formSchema, status, id, data, editId, params, globalState, isLoaded]);
+    }, [
+      formSchema,
+      status,
+      id,
+      data,
+      editId,
+      params,
+      isLoaded,
+      countries,
+      organisations,
+      tags,
+      regionOptions,
+      meaOptions,
+    ]);
 
     useEffect(() => {
       setFormSchema({ schema: schema, loading: true });

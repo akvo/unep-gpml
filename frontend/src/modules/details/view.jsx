@@ -34,8 +34,12 @@ import uniqBy from "lodash/uniqBy";
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 const urlLink = (url) => (url.indexOf("http") !== 0 ? `http://${url}` : url);
 
-const renderItemValues = (globalState, params, mapping, data) => {
-  const { countries, languages, regionOptions, meaOptions } = globalState;
+const renderItemValues = (
+  { countries, languages, regionOptions, meaOptions },
+  params,
+  mapping,
+  data
+) => {
   // check if no data
   let noData = false;
   mapping &&
@@ -360,7 +364,11 @@ const renderTypeOfActions = (params, data) => {
   );
 };
 
-const renderDetails = (globalState, params, data) => {
+const renderDetails = (
+  { countries, languages, regionOptions, meaOptions },
+  params,
+  data
+) => {
   const details = detailMaps[params.type];
   if (!details) {
     return;
@@ -369,13 +377,22 @@ const renderDetails = (globalState, params, data) => {
     <div key={"details"} className="card">
       <h3>{topicNames(params.type)} Detail</h3>
       <div className="table">
-        {renderItemValues(globalState, params, details, data)}
+        {renderItemValues(
+          { countries, languages, regionOptions, meaOptions },
+          params,
+          details,
+          data
+        )}
       </div>
     </div>
   );
 };
 
-const renderInfo = (globalState, params, data) => {
+const renderInfo = (
+  { countries, languages, regionOptions, meaOptions },
+  params,
+  data
+) => {
   const staticText = (
     <p>
       The{" "}
@@ -401,7 +418,12 @@ const renderInfo = (globalState, params, data) => {
     <div key="info" className="card">
       <h3>Related Info And Contacts</h3>
       <div className="table">
-        {renderItemValues(globalState, params, info, data)}
+        {renderItemValues(
+          { countries, languages, regionOptions, meaOptions },
+          params,
+          info,
+          data
+        )}
       </div>
       {params.type === "project" && data.uuid && !isNarrative && (
         <div>
@@ -453,8 +475,19 @@ const DetailsView = ({
   match: { params },
   setStakeholderSignupModalVisible,
 }) => {
-  const globalState = UIStore.useState();
-  const { profile, countries } = globalState;
+  const {
+    profile,
+    countries,
+    languages,
+    regionOptions,
+    meaOptions,
+  } = UIStore.useState((s) => ({
+    profile: s.profile,
+    countries: s.countries,
+    languages: s.languages,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
+  }));
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
@@ -629,9 +662,21 @@ const DetailsView = ({
           {/* Right */}
           <div key="right" className={`content-column ${params.type}-right`}>
             {countries &&
-              renderDetails(globalState, params, data, profile, countries)}
+              renderDetails(
+                { countries, languages, regionOptions, meaOptions },
+                params,
+                data,
+                profile,
+                countries
+              )}
             {countries &&
-              renderInfo(globalState, params, data, profile, countries)}
+              renderInfo(
+                { countries, languages, regionOptions, meaOptions },
+                params,
+                data,
+                profile,
+                countries
+              )}
           </div>
         </div>
       </div>

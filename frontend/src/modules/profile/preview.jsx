@@ -9,14 +9,13 @@ import { topicNames, resourceSubTypes } from "../../utils/misc";
 const currencyFormat = (cur) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: cur });
 
-const findCountries = (globalState, item) => {
+const findCountries = ({ countries, regionOptions, meaOptions }, item) => {
   const {
     country,
     geoCoverageType,
     geoCoverageValue,
     geoCoverageValues,
   } = item;
-  const { countries, regionOptions, meaOptions } = globalState;
 
   if (
     (geoCoverageType === "regional" ||
@@ -77,8 +76,11 @@ const findCountries = (globalState, item) => {
 };
 
 export const GeneralPreview = ({ item }) => {
-  const globalState = UIStore.useState();
-  const { countries, meaOptions } = globalState;
+  const { countries, regionOptions, meaOptions } = UIStore.useState((s) => ({
+    countries: s.countries,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
+  }));
   const country = countries.find((x) => x.id === item.country)?.name || "-";
   return (
     <div className="general-info">
@@ -246,7 +248,7 @@ export const GeneralPreview = ({ item }) => {
           <li>
             <div className="detail-title">Geo coverage</div>:
             <div className="detail-content">
-              {findCountries(globalState, item)}
+              {findCountries({ countries, regionOptions, meaOptions }, item)}
             </div>
           </li>
         )}
@@ -288,8 +290,11 @@ export const GeneralPreview = ({ item }) => {
 };
 
 export const ProfilePreview = ({ item }) => {
-  const globalState = UIStore.useState();
-  const { countries } = globalState;
+  const { countries, regionOptions, meaOptions } = UIStore.useState((s) => ({
+    countries: s.countries,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
+  }));
   const country = countries.find((x) => x.id === item.country)?.name || "-";
   return (
     <div className="stakeholder-info">
@@ -345,7 +350,7 @@ export const ProfilePreview = ({ item }) => {
               <div className="detail-title">Geo coverage</div>:
               <div className="detail-content">
                 {item?.geoCoverageValue}
-                {findCountries(globalState, item)}
+                {findCountries({ countries, regionOptions, meaOptions }, item)}
               </div>
             </li>
           )}

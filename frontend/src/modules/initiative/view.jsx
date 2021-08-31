@@ -860,7 +860,6 @@ const getSchema = (
 const AddInitiative = ({ match: { params }, ...props }) => {
   const minHeightContainer = innerHeight * 0.8;
   const minHeightCard = innerHeight * 0.75;
-  const globalState = UIStore.useState();
   const {
     countries,
     organisations,
@@ -870,7 +869,16 @@ const AddInitiative = ({ match: { params }, ...props }) => {
     currencies,
     formStep,
     formEdit,
-  } = globalState;
+  } = UIStore.useState((s) => ({
+    countries: s.countries,
+    organisations: s.organisations,
+    tags: s.tags,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
+    currencies: s.currencies,
+    formStep: s.formStep,
+    formEdit: s.formEdit,
+  }));
 
   const formData = initiativeData.useState();
   const { editId, data } = formData;
@@ -913,7 +921,19 @@ const AddInitiative = ({ match: { params }, ...props }) => {
   useEffect(() => {
     const dataId = Number(params?.id || id);
     if (formSchema.loading && isLoaded()) {
-      setFormSchema(getSchema(globalState, false));
+      setFormSchema(
+        getSchema(
+          {
+            countries,
+            organisations,
+            tags,
+            currencies,
+            regionOptions,
+            meaOptions,
+          },
+          false
+        )
+      );
       // Manage form status, add/edit
       if (
         (status === "edit" || dataId) &&
@@ -937,7 +957,21 @@ const AddInitiative = ({ match: { params }, ...props }) => {
         e.editId = null;
       });
     }
-  }, [formSchema, status, id, data, editId, params, globalState, isLoaded]);
+  }, [
+    formSchema,
+    status,
+    id,
+    data,
+    editId,
+    params,
+    isLoaded,
+    countries,
+    organisations,
+    tags,
+    currencies,
+    regionOptions,
+    meaOptions,
+  ]);
 
   const renderSteps = (parentTitle, section, steps) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
