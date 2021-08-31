@@ -61,14 +61,15 @@
             min-height: 23.5rem;
             .item-svg {
               position: absolute;
-              bottom: 4rem;
-              left: 5px;
-              right: 5px;
+              bottom: 3.3rem;
+              width: 86%;
+              margin: auto;
+              text-align: center;
             }
             .item-description {
               position: absolute;
               bottom: 0.7rem;
-              height: 3.5rem;
+              height: 2.8rem;
               padding: 0 0.2rem;
             }
           }
