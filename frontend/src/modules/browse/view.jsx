@@ -39,7 +39,12 @@ function useQuery() {
 
 let tmid;
 
-const Browse = ({ history, setSignupModalVisible, filters, setFilters }) => {
+const Browse = ({
+  history,
+  setStakeholderSignupModalVisible,
+  filters,
+  setFilters,
+}) => {
   const query = useQuery();
   const { profile, countries } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -148,7 +153,7 @@ const Browse = ({ history, setSignupModalVisible, filters, setFilters }) => {
       .catch((err) => {
         if (isAuthenticated) {
           if (Object.keys(profile).length === 0) {
-            setSignupModalVisible(true);
+            setStakeholderSignupModalVisible(true);
           } else {
             setWarningVisible(true);
           }

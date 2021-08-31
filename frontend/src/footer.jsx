@@ -6,7 +6,7 @@ import { UIStore } from "./store.js";
 const Footer = ({
   isAuthenticated,
   loginWithPopup,
-  setSignupModalVisible,
+  setStakeholderSignupModalVisible,
   setWarningModalVisible,
 }) => {
   const profile = UIStore.useState((s) => s.profile);
@@ -155,7 +155,7 @@ const Footer = ({
                       Object.keys(profile).length > 1
                         ? setWarningModalVisible(true)
                         : isAuthenticated
-                        ? setSignupModalVisible(true)
+                        ? setStakeholderSignupModalVisible(true)
                         : loginWithPopup();
                     }}
                   >
@@ -180,7 +180,7 @@ const Footer = ({
                       Object.keys(profile).length > 1
                         ? setWarningModalVisible(true)
                         : isAuthenticated
-                        ? setSignupModalVisible(true)
+                        ? setStakeholderSignupModalVisible(true)
                         : loginWithPopup();
                     }}
                   >
@@ -198,7 +198,7 @@ const Footer = ({
                       Object.keys(profile).length > 1
                         ? setWarningModalVisible(true)
                         : isAuthenticated
-                        ? setSignupModalVisible(true)
+                        ? setStakeholderSignupModalVisible(true)
                         : loginWithPopup();
                     }}
                   >

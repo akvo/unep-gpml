@@ -449,7 +449,10 @@ const renderDetailImage = (params, data) => {
   return imageNotFound;
 };
 
-const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
+const DetailsView = ({
+  match: { params },
+  setStakeholderSignupModalVisible,
+}) => {
   const globalState = UIStore.useState();
   const { profile, countries, isDataFetched } = globalState;
   const [data, setData] = useState(null);
@@ -501,7 +504,7 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
       setWarningVisible(true);
     }
     if (isAuthenticated && profile.reviewStatus === undefined) {
-      setSignupModalVisible(true);
+      setStakeholderSignupModalVisible(true);
     }
     if (profile.reviewStatus === "APPROVED") {
       api.post("/favorite", relation).then((res) => {
