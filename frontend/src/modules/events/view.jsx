@@ -4,12 +4,29 @@ import { Row, Col, Card } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import AddEventForm from "./form";
+import isEmpty from "lodash/isEmpty";
 
 const AddEvent = ({ ...props }) => {
-  const { isDataFetched, formEdit } = UIStore.useState((s) => ({
-    isDataFetched: s.isDataFetched,
+  const {
+    countries,
+    tags,
+    regionOptions,
+    meaOptions,
+    formEdit,
+  } = UIStore.useState((s) => ({
+    countries: s.countries,
+    tags: s.tags,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
     formEdit: s.formEdit,
   }));
+  const isLoaded = () =>
+    Boolean(
+      countries.length &&
+        !isEmpty(tags) &&
+        regionOptions.length &&
+        meaOptions.length
+    );
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -19,7 +36,7 @@ const AddEvent = ({ ...props }) => {
 
   return (
     <div id="add-event">
-      {!isDataFetched ? (
+      {!isLoaded() ? (
         <h2 className="loading">
           <LoadingOutlined spin /> Loading
         </h2>

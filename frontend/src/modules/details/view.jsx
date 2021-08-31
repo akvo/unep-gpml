@@ -454,7 +454,7 @@ const DetailsView = ({
   setStakeholderSignupModalVisible,
 }) => {
   const globalState = UIStore.useState();
-  const { profile, countries, isDataFetched } = globalState;
+  const { profile, countries } = globalState;
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
@@ -464,6 +464,7 @@ const DetailsView = ({
       it.topicId === parseInt(params.id) &&
       it.topic === resourceTypeToTopicType(params.type)
   );
+  const isLoaded = () => Boolean(countries.length);
 
   const allowBookmark =
     params.type !== "stakeholder" || profile.id !== params.id;
@@ -477,8 +478,7 @@ const DetailsView = ({
         };
 
   useEffect(() => {
-    isDataFetched &&
-      params?.type &&
+    params?.type &&
       params?.id &&
       api.get(`/detail/${params.type}/${params.id}`).then((d) => {
         setData(d.data);
@@ -494,7 +494,7 @@ const DetailsView = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [params, isDataFetched, profile]);
+  }, [params, profile]);
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
@@ -524,7 +524,7 @@ const DetailsView = ({
     }
   };
 
-  if (!data) {
+  if (!isLoaded() || !data) {
     return (
       <div className="details-view">
         <div className="loading">

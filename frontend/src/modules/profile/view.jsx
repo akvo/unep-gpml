@@ -70,10 +70,31 @@ const menuItems = [
 ];
 
 const ProfileView = ({ ...props }) => {
-  const { isDataFetched, profile } = UIStore.useState((s) => ({
-    isDataFetched: s.isDataFetched,
+  const {
+    countries,
+    tags,
+    regionOptions,
+    meaOptions,
+    organisations,
+    profile,
+  } = UIStore.useState((s) => ({
+    countries: s.countries,
+    tags: s.tags,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
+    organisations: s.organisations,
     profile: s.profile,
   }));
+  const isLoaded = () =>
+    Boolean(
+      countries.length &&
+        !isEmpty(tags) &&
+        regionOptions.length &&
+        meaOptions.length &&
+        organisations.length &&
+        !isEmpty(profile)
+    );
+
   const handleSubmitRef = useRef();
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState("personal-details");
@@ -270,7 +291,7 @@ const ProfileView = ({ ...props }) => {
     <div id="profile">
       <div className="profile-container">
         <div className="ui container">
-          {isEmpty(profile) && !isDataFetched ? (
+          {!isLoaded() ? (
             <h2 className="loading">
               <LoadingOutlined spin /> Loading Profile
             </h2>

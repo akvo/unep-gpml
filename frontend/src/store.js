@@ -43,7 +43,6 @@ const UIStore = new Store({
   sectorOptions: sectorOptions,
   highlight: false,
   disclaimer: null,
-  isDataFetched: false,
   formStep: {
     signUp: 1,
     initiative: 1,

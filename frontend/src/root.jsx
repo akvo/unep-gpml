@@ -56,7 +56,6 @@ Promise.all([
     e.organisations = uniqBy(sortBy(organisation.data, ["name"])).sort((a, b) =>
       a.name.localeCompare(b.name)
     );
-    e.isDataFetched = true;
   });
 });
 

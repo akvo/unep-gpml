@@ -153,6 +153,7 @@ const AddTechnologyForm = withRouter(
     highlight,
     setHighlight,
     setDisabledBtn,
+    isLoaded,
     history,
     match: { params },
   }) => {
@@ -170,7 +171,7 @@ const AddTechnologyForm = withRouter(
 
     useEffect(() => {
       const dataId = Number(params?.id || id);
-      if (formSchema.loading && globalState?.isDataFetched) {
+      if (formSchema.loading && isLoaded) {
         setFormSchema(getSchema(globalState, false));
         // Manage form status, add/edit
         if (
@@ -192,7 +193,7 @@ const AddTechnologyForm = withRouter(
           e.data = {};
         });
       }
-    }, [formSchema, status, id, data, editId, params, globalState]);
+    }, [formSchema, status, id, data, editId, params, globalState, isLoaded]);
 
     useEffect(() => {
       setFormSchema({ schema: schema, loading: true });

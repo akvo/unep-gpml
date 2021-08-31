@@ -5,10 +5,23 @@ import { LoadingOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import AddResourceForm from "./form";
 import StickyBox from "react-sticky-box";
+import isEmpty from "lodash/isEmpty";
 
 const AddTechnicalResource = ({ match: { params }, ...props }) => {
-  const { isDataFetched, formStep, formEdit } = UIStore.useState((s) => ({
-    isDataFetched: s.isDataFetched,
+  const {
+    countries,
+    organisations,
+    tags,
+    regionOptions,
+    meaOptions,
+    formStep,
+    formEdit,
+  } = UIStore.useState((s) => ({
+    countries: s.countries,
+    organisations: s.organisations,
+    tags: s.tags,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
     formStep: s.formStep,
     formEdit: s.formEdit,
   }));
@@ -19,6 +32,14 @@ const AddTechnicalResource = ({ match: { params }, ...props }) => {
     disabled: true,
     type: "default",
   });
+  const isLoaded = () =>
+    Boolean(
+      countries.length &&
+        organisations.length &&
+        !isEmpty(tags) &&
+        regionOptions.length &&
+        meaOptions.length
+    );
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -79,7 +100,7 @@ const AddTechnicalResource = ({ match: { params }, ...props }) => {
           </div>
         </div>
       </StickyBox>
-      {!isDataFetched ? (
+      {!isLoaded() ? (
         <h2 className="loading">
           <LoadingOutlined spin /> Loading
         </h2>
@@ -103,6 +124,7 @@ const AddTechnicalResource = ({ match: { params }, ...props }) => {
                   highlight={highlight}
                   setHighlight={setHighlight}
                   setDisabledBtn={setDisabledBtn}
+                  isLoaded={isLoaded()}
                 />
               </Card>
             </Col>

@@ -170,12 +170,12 @@ const AddResourceForm = withRouter(
     highlight,
     setHighlight,
     setDisabledBtn,
+    isLoaded,
     history,
     match: { params },
   }) => {
     const globalState = UIStore.useState();
     const { countries, formStep, formEdit } = globalState;
-
     const formData = resourceData.useState();
     const { editId, data } = formData;
     const { status, id } = formEdit.financingResource;
@@ -187,7 +187,7 @@ const AddResourceForm = withRouter(
 
     useEffect(() => {
       const dataId = Number(params?.id || id);
-      if (formSchema.loading && globalState?.isDataFetched) {
+      if (formSchema.loading && isLoaded) {
         setFormSchema(getSchema(globalState, false));
         // Manage form status, add/edit
         if (
@@ -209,7 +209,7 @@ const AddResourceForm = withRouter(
           e.editId = null;
         });
       }
-    }, [formSchema, status, id, data, editId, params, globalState]);
+    }, [formSchema, status, id, data, editId, params, globalState, isLoaded]);
 
     useEffect(() => {
       setFormSchema({ schema: schema, loading: true });

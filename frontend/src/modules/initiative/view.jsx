@@ -1,6 +1,6 @@
 import { Store } from "pullstate";
 import { UIStore } from "../../store";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Row, Col, Card, Steps, Switch, Button } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import "./styles.scss";
@@ -9,6 +9,7 @@ import StickyBox from "react-sticky-box";
 import { schema } from "./schema";
 import cloneDeep from "lodash/cloneDeep";
 import xor from "lodash/xor";
+import isEmpty from "lodash/isEmpty";
 import api from "../../utils/api";
 
 const { Step } = Steps;
@@ -860,7 +861,16 @@ const AddInitiative = ({ match: { params }, ...props }) => {
   const minHeightContainer = innerHeight * 0.8;
   const minHeightCard = innerHeight * 0.75;
   const globalState = UIStore.useState();
-  const { isDataFetched, formStep, formEdit } = globalState;
+  const {
+    countries,
+    organisations,
+    tags,
+    regionOptions,
+    meaOptions,
+    currencies,
+    formStep,
+    formEdit,
+  } = globalState;
 
   const formData = initiativeData.useState();
   const { editId, data } = formData;
@@ -876,6 +886,16 @@ const AddInitiative = ({ match: { params }, ...props }) => {
     disabled: true,
     type: "default",
   });
+  const isLoaded = useCallback(() => {
+    return Boolean(
+      countries.length &&
+        organisations.length &&
+        !isEmpty(tags) &&
+        regionOptions.length &&
+        meaOptions.length &&
+        currencies.length
+    );
+  }, [countries, organisations, tags, regionOptions, meaOptions, currencies]);
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -892,7 +912,7 @@ const AddInitiative = ({ match: { params }, ...props }) => {
 
   useEffect(() => {
     const dataId = Number(params?.id || id);
-    if (formSchema.loading && globalState?.isDataFetched) {
+    if (formSchema.loading && isLoaded()) {
       setFormSchema(getSchema(globalState, false));
       // Manage form status, add/edit
       if (
@@ -917,7 +937,7 @@ const AddInitiative = ({ match: { params }, ...props }) => {
         e.editId = null;
       });
     }
-  }, [formSchema, status, id, data, editId, params, globalState]);
+  }, [formSchema, status, id, data, editId, params, globalState, isLoaded]);
 
   const renderSteps = (parentTitle, section, steps) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
@@ -1067,7 +1087,7 @@ const AddInitiative = ({ match: { params }, ...props }) => {
           </div>
         </div>
       </StickyBox>
-      {!isDataFetched ? (
+      {!isLoaded ? (
         <h2 className="loading">
           <LoadingOutlined spin /> Loading
         </h2>

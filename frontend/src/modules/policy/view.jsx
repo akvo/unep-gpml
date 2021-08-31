@@ -5,10 +5,21 @@ import { LoadingOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import AddPolicyForm from "./form";
 import StickyBox from "react-sticky-box";
+import isEmpty from "lodash/isEmpty";
 
 const AddPolicy = ({ match: { params }, ...props }) => {
-  const { isDataFetched, formStep, formEdit } = UIStore.useState((s) => ({
-    isDataFetched: s.isDataFetched,
+  const {
+    countries,
+    tags,
+    regionOptions,
+    meaOptions,
+    formStep,
+    formEdit,
+  } = UIStore.useState((s) => ({
+    countries: s.countries,
+    tags: s.tags,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
     formStep: s.formStep,
     formEdit: s.formEdit,
   }));
@@ -19,6 +30,13 @@ const AddPolicy = ({ match: { params }, ...props }) => {
     disabled: true,
     type: "default",
   });
+  const isLoaded = () =>
+    Boolean(
+      countries.length &&
+        !isEmpty(tags) &&
+        regionOptions.length &&
+        meaOptions.length
+    );
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -79,7 +97,7 @@ const AddPolicy = ({ match: { params }, ...props }) => {
           </div>
         </div>
       </StickyBox>
-      {!isDataFetched ? (
+      {!isLoaded() ? (
         <h2 className="loading">
           <LoadingOutlined spin /> Loading
         </h2>
@@ -103,6 +121,7 @@ const AddPolicy = ({ match: { params }, ...props }) => {
                   highlight={highlight}
                   setHighlight={setHighlight}
                   setDisabledBtn={setDisabledBtn}
+                  isLoaded={isLoaded()}
                 />
               </Card>
             </Col>
