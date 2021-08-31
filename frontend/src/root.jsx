@@ -683,12 +683,12 @@ const UserButton = withRouter(({ history, logout }) => {
               history.push("/profile");
             }}
           >
-            Profile <RightOutlined />
+            Profile
           </Menu.Item>
           <Menu.Item
             onClick={() => logout({ returnTo: window.location.origin })}
           >
-            Logout <RightOutlined />
+            Logout
           </Menu.Item>
         </Menu>
       }
@@ -740,7 +740,7 @@ const AddButton = withRouter(
                     history.push("/add-initiative");
                   }}
                 >
-                  Initiative <RightOutlined />
+                  Initiative
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => {
@@ -760,7 +760,7 @@ const AddButton = withRouter(
                     history.push("/add-action-plan");
                   }}
                 >
-                  Action Plan <RightOutlined />
+                  Action Plan
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => {
@@ -780,7 +780,7 @@ const AddButton = withRouter(
                     history.push("/add-policy");
                   }}
                 >
-                  Policy <RightOutlined />
+                  Policy
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => {
@@ -800,7 +800,7 @@ const AddButton = withRouter(
                     history.push("/add-technical-resource");
                   }}
                 >
-                  Technical Resource <RightOutlined />
+                  Technical Resource
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => {
@@ -820,7 +820,7 @@ const AddButton = withRouter(
                     history.push("/add-financing-resource");
                   }}
                 >
-                  Financing Resource <RightOutlined />
+                  Financing Resource
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => {
@@ -840,7 +840,7 @@ const AddButton = withRouter(
                     history.push("/add-event");
                   }}
                 >
-                  Event <RightOutlined />
+                  Event
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => {
@@ -860,7 +860,7 @@ const AddButton = withRouter(
                     history.push("/add-technology");
                   }}
                 >
-                  Technology <RightOutlined />
+                  Technology
                 </Menu.Item>
               </Menu>
             }
