@@ -37,58 +37,28 @@ import AddTechnology from "./modules/technology/view";
 import AddPolicy from "./modules/policy/view";
 import AboutUs from "./modules/about/about-us";
 
-api
-  .get("/tag")
-  .then((resp) => {
-    return resp.data;
-  })
-  .then((tags) => {
-    api
-      .get("/currency")
-      .then((resp) => {
-        return resp.data;
-      })
-      .then((currencies) => {
-        api
-          .get("/country")
-          .then((resp) => {
-            return uniqBy(resp.data).sort((a, b) =>
-              a.name.localeCompare(b.name)
-            );
-          })
-          .then((countries) => {
-            api
-              .get("/country-group")
-              .then((resp) => {
-                return resp.data;
-              })
-              .then((countryGroups) => {
-                api
-                  .get("/organisation")
-                  .then((resp) => {
-                    return uniqBy(sortBy(resp.data, ["name"])).sort((a, b) =>
-                      a.name.localeCompare(b.name)
-                    );
-                  })
-                  .then((organisations) => {
-                    UIStore.update((e) => {
-                      e.tags = tags;
-                      e.currencies = currencies;
-                      e.countries = countries;
-                      e.regionOptions = countryGroups.filter(
-                        (x) => x.type === "region"
-                      );
-                      e.meaOptions = countryGroups.filter(
-                        (x) => x.type === "mea"
-                      );
-                      e.organisations = organisations;
-                      e.isDataFetched = true;
-                    });
-                  });
-              });
-          });
-      });
+Promise.all([
+  api.get("/tag"),
+  api.get("/currency"),
+  api.get("/country"),
+  api.get("/country-group"),
+  api.get("/organisation"),
+]).then((res) => {
+  const [tag, currency, country, countryGroup, organisation] = res;
+  UIStore.update((e) => {
+    e.tags = tag.data;
+    e.currencies = currency.data;
+    e.countries = uniqBy(country.data).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    e.regionOptions = countryGroup.data.filter((x) => x.type === "region");
+    e.meaOptions = countryGroup.data.filter((x) => x.type === "mea");
+    e.organisations = uniqBy(sortBy(organisation.data, ["name"])).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    e.isDataFetched = true;
   });
+});
 
 const disclaimerContent = {
   home: (
@@ -125,7 +95,10 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
-  const { profile, disclaimer } = UIStore.useState((s) => s);
+  const { profile, disclaimer } = UIStore.useState((s) => ({
+    profile: s.profile,
+    disclaimer: s.disclaimer,
+  }));
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [filters, setFilters] = useState(null);
