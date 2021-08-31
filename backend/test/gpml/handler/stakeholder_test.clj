@@ -44,7 +44,7 @@
       (let [resp (handler (mock/request :get "/"))
             body (:body resp)]
         (is (= 200 (:status resp)))
-        (is (= 6 (count body)))
+        (is (= 3 (count body)))
         (is (nil? (:stakeholders body)))))
 
     (testing "Get all stakeholders WITHOUT admin role"
@@ -54,7 +54,7 @@
                                      :parameters {:query {:page 1 :limit 10}})))
             body (:body resp)]
         (is (= 200 (:status resp)))
-        (is (= 6 (count body)))
+        (is (= 3 (count body)))
         (is (nil? (:stakeholders body)))))
 
     (testing "Get all stakeholders"

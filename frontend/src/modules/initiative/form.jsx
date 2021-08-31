@@ -22,7 +22,7 @@ import { withRouter } from "react-router-dom";
 const Form = withTheme(AntDTheme);
 
 // # Refactor, still need to figure out how to make this as global function
-const collectDependSchemaRefactor = (
+export const collectDependSchemaRefactor = (
   tmp,
   formData,
   schema,
@@ -93,7 +93,8 @@ const collectDependSchemaRefactor = (
 };
 // End of refactor
 
-const transformFormData = (data, formData, schema) => {
+export const transformFormData = (data, formData, schema, not_q_prefixed) => {
+  const q_prefix = not_q_prefixed ? "" : "q";
   delete formData?.tabs;
   delete formData?.steps;
   delete formData?.required;
@@ -106,15 +107,20 @@ const transformFormData = (data, formData, schema) => {
         !Array.isArray(formData[key])
       ) {
         // loop
-        transformFormData(data, formData[key], schema[key]?.properties);
+        transformFormData(
+          data,
+          formData[key],
+          schema[key]?.properties,
+          not_q_prefixed
+        );
       } else {
         // collect the value
         let qKey = key.split("_");
         qKey = qKey[qKey.length - 1];
         qKey = qKey.split(".").join("_");
-        data[`q${qKey}`] = formData[key];
+        data[`${q_prefix}${qKey}`] = formData[key];
         if (Array.isArray(formData[key])) {
-          data[`q${qKey}`] = formData[key].map((d) => {
+          data[`${q_prefix}${qKey}`] = formData[key].map((d) => {
             if (schema?.[key]?.type === "array" && schema?.[key].items?.enum) {
               return {
                 [d]:
@@ -143,7 +149,7 @@ const transformFormData = (data, formData, schema) => {
             schema[key]?.enum.length > 0 &&
             schema[key].enumNames.length > 0
           ) {
-            data[`q${qKey}`] = {
+            data[`${q_prefix}${qKey}`] = {
               [formData[key]]:
                 schema?.[key].enumNames?.[
                   schema[key].enum.indexOf(formData[key])

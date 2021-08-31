@@ -4,7 +4,9 @@ select * from stakeholder order by id;
 
 -- :name all-public-stakeholder :? :*
 -- :doc Get all stakeholder
-select * from stakeholder where public_email=true order by id;
+select * from stakeholder
+WHERE review_status = 'APPROVED'
+order by id;
 
 -- :name list-stakeholder-paginated :? :*
 -- :doc Get paginated list of stakeholders

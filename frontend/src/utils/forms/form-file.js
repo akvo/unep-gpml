@@ -104,6 +104,7 @@ const FileWidget = (props) => {
   return (
     <div className="photo-upload">
       <div
+        className="photo-upload-border"
         style={{
           position: "relative",
           border,

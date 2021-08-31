@@ -17,14 +17,13 @@ import {
 import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
+import SignupView from "./modules/signup/view";
 import logo from "./images/GPML-logo-white.png";
-import SignupModal from "./modules/signup/signup-modal";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
 import { storage } from "./utils/storage";
 import { UIStore } from "./store.js";
 import ProfileView from "./modules/profile/view";
-import SignupView from "./modules/signup/view";
 import DetailsView from "./modules/details/view";
 import Footer from "./footer";
 import uniqBy from "lodash/uniqBy";
@@ -90,6 +89,12 @@ api
       });
   });
 
+api.get("/stakeholder").then((resp) => {
+  UIStore.update((e) => {
+    e.stakeholders = resp.data;
+  });
+});
+
 const disclaimerContent = {
   home: (
     <>
@@ -125,8 +130,11 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
+  const [
+    stakeholderSignupModalVisible,
+    setStakeholderSignupModalVisible,
+  ] = useState(false);
   const { profile, disclaimer, loading } = UIStore.useState((s) => s);
-  const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -154,7 +162,9 @@ const Root = () => {
             e.profile = { email: response.email };
           });
           setTimeout(() => {
-            setSignupModalVisible(Object.keys(resp.data).length === 0);
+            setStakeholderSignupModalVisible(
+              Object.keys(resp.data).length === 0
+            );
           }, 100);
         } else {
           UIStore.update((e) => {
@@ -218,7 +228,7 @@ const Root = () => {
               <div className="rightside">
                 <AddButton
                   {...{
-                    setSignupModalVisible,
+                    setStakeholderSignupModalVisible,
                     isAuthenticated,
                     loginWithPopup,
                     setWarningModalVisible,
@@ -237,7 +247,7 @@ const Root = () => {
               {...{
                 data,
                 setWarningModalVisible,
-                setSignupModalVisible,
+                setStakeholderSignupModalVisible,
                 loginWithPopup,
                 isAuthenticated,
                 setFilters,
@@ -261,7 +271,9 @@ const Root = () => {
           render={(props) => (
             <Browse
               {...props}
-              setSignupModalVisible={setSignupModalVisible}
+              setStakeholderSignupModalVisible={
+                setStakeholderSignupModalVisible
+              }
               filters={filters}
               setFilters={setFilters}
             />
@@ -344,21 +356,19 @@ const Root = () => {
           render={(props) => (
             <DetailsView
               {...props}
-              setSignupModalVisible={setSignupModalVisible}
+              setStakeholderSignupModalVisible={
+                setStakeholderSignupModalVisible
+              }
             />
           )}
         />
         <Footer
-          setSignupModalVisible={setSignupModalVisible}
+          setStakeholderSignupModalVisible={setStakeholderSignupModalVisible}
           setWarningModalVisible={setWarningModalVisible}
           isAuthenticated={isAuthenticated}
           loginWithPopup={loginWithPopup}
         />
       </div>
-      <SignupModal
-        visible={signupModalVisible}
-        onCancel={() => setSignupModalVisible(false)}
-      />
       <ModalWarningUser
         visible={warningModalVisible}
         close={() => setWarningModalVisible(false)}
@@ -616,7 +626,7 @@ const UserButton = withRouter(({ history, logout }) => {
 const AddButton = withRouter(
   ({
     isAuthenticated,
-    setSignupModalVisible,
+    setStakeholderSignupModalVisible,
     setWarningModalVisible,
     loginWithPopup,
     history,
@@ -786,7 +796,7 @@ const AddButton = withRouter(
           onClick={() => {
             Object.keys(profile).length > 1
               ? setWarningModalVisible(true)
-              : setSignupModalVisible(true);
+              : setStakeholderSignupModalVisible(true);
           }}
         >
           Add Content
