@@ -1,5 +1,5 @@
 import { UIStore } from "../../store";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Button,
   Select,
@@ -148,6 +148,7 @@ const Landing = ({
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
+  const eventCarousel = useRef(null);
 
   const handleSeeAllStakeholderClick = () => {
     if (!isAuthenticated) {
@@ -578,7 +579,7 @@ const Landing = ({
                   {event.length === 0 && (
                     <div className="no-event">No Event Today</div>
                   )}
-                  {event.length > 0 && renderEventContent(event)}
+                  {event.length > 0 && renderEventContent(event, eventCarousel)}
                 </div>
                 <div className="calendar">
                   <Calendar
@@ -598,66 +599,88 @@ const Landing = ({
   );
 };
 
-const renderEventContent = (event) => {
+const renderEventContent = (event, eventCarousel) => {
   return (
-    <AntdCarousel autoplay dots={{ className: "custom-dots" }}>
-      {event.length &&
-        event.map((x, i) => {
-          const { id, title, description, type, startDate, image } = x;
-          return (
-            <Card key={`event-${id}-${i}`} className="item">
-              <div className="item-meta">
-                <div className="date">
-                  {moment(startDate).format("DD MMMM YYYY")}
+    <>
+      {event.length > 0 && (
+        <div className="event-more">
+          <span>
+            {event.length} event{event.length > 1 ? "s" : ""} on this day
+          </span>
+          {event.length > 1 && (
+            <Button
+              type="link"
+              icon={<RightOutlined />}
+              onClick={(e) => {
+                eventCarousel.current.next();
+              }}
+            />
+          )}
+        </div>
+      )}
+      <AntdCarousel
+        autoplay
+        dots={{ className: "custom-dots" }}
+        ref={eventCarousel}
+      >
+        {event.length &&
+          event.map((x, i) => {
+            const { id, title, description, type, startDate, image } = x;
+            return (
+              <Card key={`event-${id}-${i}`} className="item">
+                <div className="item-meta">
+                  <div className="date">
+                    {moment(startDate).format("DD MMMM YYYY")}
+                  </div>
+                  <div className="status">Online</div>
+                  <div className="mark">Featured</div>
                 </div>
-                <div className="status">Online</div>
-                <div className="mark">Featured</div>
-              </div>
-              <div className="resource-label upper margin">{type}</div>
-              <img
-                className="item-img"
-                width="100%"
-                src={image ? image : imageNotFound}
-                alt={title}
-              />
-              <div className="item-body">
-                <div className="asset-title">{title}</div>
-                <div className="body-text">
-                  {TrimText({ text: description, max: 300 })}
+                <div className="resource-label upper margin">{type}</div>
+                <img
+                  className="item-img"
+                  width="100%"
+                  src={image ? image : imageNotFound}
+                  alt={title}
+                />
+                <div className="item-body">
+                  <div className="asset-title">{title}</div>
+                  <div className="body-text">
+                    {TrimText({ text: description, max: 300 })}
+                  </div>
                 </div>
-              </div>
-              <div className="item-footer">
-                <Avatar.Group
-                  maxCount={2}
-                  maxStyle={{
-                    color: "#f56a00",
-                    backgroundColor: "#fde3cf",
-                  }}
-                >
-                  <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
-                  <Tooltip title="Ant User" placement="top">
-                    <Avatar
-                      style={{ backgroundColor: "#87d068" }}
-                      icon={<UserOutlined />}
-                    />
-                  </Tooltip>
-                  <Tooltip title="Ant User" placement="top">
-                    <Avatar
-                      style={{ backgroundColor: "#87d068" }}
-                      icon={<UserOutlined />}
-                    />
-                  </Tooltip>
-                </Avatar.Group>
-                <span className="read-more">
-                  <Link to={`/event/${id}`}>
-                    Read more <ArrowRightOutlined />
-                  </Link>
-                </span>
-              </div>
-            </Card>
-          );
-        })}
-    </AntdCarousel>
+                <div className="item-footer">
+                  <Avatar.Group
+                    maxCount={2}
+                    maxStyle={{
+                      color: "#f56a00",
+                      backgroundColor: "#fde3cf",
+                    }}
+                  >
+                    <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
+                    <Tooltip title="Ant User" placement="top">
+                      <Avatar
+                        style={{ backgroundColor: "#87d068" }}
+                        icon={<UserOutlined />}
+                      />
+                    </Tooltip>
+                    <Tooltip title="Ant User" placement="top">
+                      <Avatar
+                        style={{ backgroundColor: "#87d068" }}
+                        icon={<UserOutlined />}
+                      />
+                    </Tooltip>
+                  </Avatar.Group>
+                  <span className="read-more">
+                    <Link to={`/event/${id}`}>
+                      Read more <ArrowRightOutlined />
+                    </Link>
+                  </span>
+                </div>
+              </Card>
+            );
+          })}
+      </AntdCarousel>
+    </>
   );
 };
 
