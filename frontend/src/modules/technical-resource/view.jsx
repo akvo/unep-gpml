@@ -7,7 +7,11 @@ import AddResourceForm from "./form";
 import StickyBox from "react-sticky-box";
 
 const AddTechnicalResource = ({ match: { params }, ...props }) => {
-  const { isDataFetched, formStep, formEdit } = UIStore.currentState;
+  const { isDataFetched, formStep, formEdit } = UIStore.useState((s) => ({
+    isDataFetched: s.isDataFetched,
+    formStep: s.formStep,
+    formEdit: s.formEdit,
+  }));
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);

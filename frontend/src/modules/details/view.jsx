@@ -34,14 +34,8 @@ import uniqBy from "lodash/uniqBy";
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 const urlLink = (url) => (url.indexOf("http") !== 0 ? `http://${url}` : url);
 
-const renderItemValues = (params, mapping, data) => {
-  const {
-    profile,
-    countries,
-    languages,
-    regionOptions,
-    meaOptions,
-  } = UIStore.currentState;
+const renderItemValues = (globalState, params, mapping, data) => {
+  const { countries, languages, regionOptions, meaOptions } = globalState;
   // check if no data
   let noData = false;
   mapping &&
@@ -366,7 +360,7 @@ const renderTypeOfActions = (params, data) => {
   );
 };
 
-const renderDetails = (params, data) => {
+const renderDetails = (globalState, params, data) => {
   const details = detailMaps[params.type];
   if (!details) {
     return;
@@ -374,12 +368,14 @@ const renderDetails = (params, data) => {
   return (
     <div key={"details"} className="card">
       <h3>{topicNames(params.type)} Detail</h3>
-      <div className="table">{renderItemValues(params, details, data)}</div>
+      <div className="table">
+        {renderItemValues(globalState, params, details, data)}
+      </div>
     </div>
   );
 };
 
-const renderInfo = (params, data) => {
+const renderInfo = (globalState, params, data) => {
   const staticText = (
     <p>
       The{" "}
@@ -404,7 +400,9 @@ const renderInfo = (params, data) => {
   return (
     <div key="info" className="card">
       <h3>Related Info And Contacts</h3>
-      <div className="table">{renderItemValues(params, info, data)}</div>
+      <div className="table">
+        {renderItemValues(globalState, params, info, data)}
+      </div>
       {params.type === "project" && data.uuid && !isNarrative && (
         <div>
           <Divider key="statictext" /> {staticText}
@@ -452,7 +450,8 @@ const renderDetailImage = (params, data) => {
 };
 
 const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
-  const { profile, countries, isDataFetched } = UIStore.currentState;
+  const globalState = UIStore.useState();
+  const { profile, countries, isDataFetched } = globalState;
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
@@ -626,8 +625,10 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
 
           {/* Right */}
           <div key="right" className={`content-column ${params.type}-right`}>
-            {countries && renderDetails(params, data, profile, countries)}
-            {countries && renderInfo(params, data, profile, countries)}
+            {countries &&
+              renderDetails(globalState, params, data, profile, countries)}
+            {countries &&
+              renderInfo(globalState, params, data, profile, countries)}
           </div>
         </div>
       </div>

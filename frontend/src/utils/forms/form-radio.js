@@ -33,7 +33,7 @@ const RadioWidget = ({
   const handleFocus = ({ target }) => onFocus(id, target.value);
 
   // custom
-  const { highlight } = UIStore.currentState;
+  const highlight = UIStore.useState((s) => s.highlight);
 
   return (
     <Radio.Group

@@ -9,14 +9,14 @@ import { topicNames, resourceSubTypes } from "../../utils/misc";
 const currencyFormat = (cur) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: cur });
 
-const findCountries = (countries, item) => {
+const findCountries = (globalState, item) => {
   const {
     country,
     geoCoverageType,
     geoCoverageValue,
     geoCoverageValues,
   } = item;
-  const { regionOptions, meaOptions } = UIStore.currentState;
+  const { countries, regionOptions, meaOptions } = globalState;
 
   if (
     (geoCoverageType === "regional" ||
@@ -77,7 +77,8 @@ const findCountries = (countries, item) => {
 };
 
 export const GeneralPreview = ({ item }) => {
-  const { countries, tags, meaOptions } = UIStore.currentState;
+  const globalState = UIStore.useState();
+  const { countries, meaOptions } = globalState;
   const country = countries.find((x) => x.id === item.country)?.name || "-";
   return (
     <div className="general-info">
@@ -245,7 +246,7 @@ export const GeneralPreview = ({ item }) => {
           <li>
             <div className="detail-title">Geo coverage</div>:
             <div className="detail-content">
-              {findCountries(countries, item)}
+              {findCountries(globalState, item)}
             </div>
           </li>
         )}
@@ -287,7 +288,8 @@ export const GeneralPreview = ({ item }) => {
 };
 
 export const ProfilePreview = ({ item }) => {
-  const { countries } = UIStore.currentState;
+  const globalState = UIStore.useState();
+  const { countries } = globalState;
   const country = countries.find((x) => x.id === item.country)?.name || "-";
   return (
     <div className="stakeholder-info">
@@ -343,7 +345,7 @@ export const ProfilePreview = ({ item }) => {
               <div className="detail-title">Geo coverage</div>:
               <div className="detail-content">
                 {item?.geoCoverageValue}
-                {findCountries(countries, item)}
+                {findCountries(globalState, item)}
               </div>
             </li>
           )}

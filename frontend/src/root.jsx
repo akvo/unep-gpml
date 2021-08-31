@@ -576,7 +576,7 @@ const AddButton = withRouter(
     loginWithPopup,
     history,
   }) => {
-    const { profile } = UIStore.currentState;
+    const profile = UIStore.useState((s) => s.profile);
     if (isAuthenticated) {
       if (profile?.reviewStatus === "APPROVED") {
         return (

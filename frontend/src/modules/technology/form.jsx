@@ -156,12 +156,8 @@ const AddTechnologyForm = withRouter(
     history,
     match: { params },
   }) => {
-    const {
-      countries,
-      isDataFetched,
-      formStep,
-      formEdit,
-    } = UIStore.currentState;
+    const globalState = UIStore.useState();
+    const { countries, formStep, formEdit } = globalState;
 
     const formData = technologyData.useState();
     const { data, editId } = formData;
@@ -174,8 +170,8 @@ const AddTechnologyForm = withRouter(
 
     useEffect(() => {
       const dataId = Number(params?.id || id);
-      if (formSchema.loading && isDataFetched) {
-        setFormSchema(getSchema(UIStore.currentState, false));
+      if (formSchema.loading && globalState?.isDataFetched) {
+        setFormSchema(getSchema(globalState, false));
         // Manage form status, add/edit
         if (
           (status === "edit" || dataId) &&
@@ -196,7 +192,7 @@ const AddTechnologyForm = withRouter(
           e.data = {};
         });
       }
-    }, [isDataFetched, formSchema, status, id, data, editId, params]);
+    }, [formSchema, status, id, data, editId, params, globalState]);
 
     useEffect(() => {
       setFormSchema({ schema: schema, loading: true });

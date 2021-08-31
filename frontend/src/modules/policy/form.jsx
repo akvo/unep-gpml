@@ -176,12 +176,8 @@ const AddPolicyForm = withRouter(
     history,
     match: { params },
   }) => {
-    const {
-      countries,
-      isDataFetched,
-      formStep,
-      formEdit,
-    } = UIStore.currentState;
+    const globalState = UIStore.useState();
+    const { countries, isDataFetched, formStep, formEdit } = globalState;
 
     const formData = policyData.useState();
     const { editId, data } = formData;
@@ -194,8 +190,8 @@ const AddPolicyForm = withRouter(
 
     useEffect(() => {
       const dataId = Number(params?.id || id);
-      if (formSchema.loading && isDataFetched) {
-        setFormSchema(getSchema(UIStore.currentState, false));
+      if (formSchema.loading && globalState?.isDataFetched) {
+        setFormSchema(getSchema(globalState, false));
         // Manage form status, add/edit
         if (
           (status === "edit" || dataId) &&
@@ -203,11 +199,7 @@ const AddPolicyForm = withRouter(
         ) {
           api.get(`/detail/policy/${dataId}`).then((d) => {
             policyData.update((e) => {
-              e.data = revertFormData(
-                formDataMapping,
-                d.data,
-                UIStore.currentState
-              );
+              e.data = revertFormData(formDataMapping, d.data, globalState);
               e.editId = dataId;
             });
           });
@@ -220,7 +212,7 @@ const AddPolicyForm = withRouter(
           e.editId = null;
         });
       }
-    }, [isDataFetched, formSchema, status, id, data, editId, params]);
+    }, [formSchema, status, id, data, editId, params, globalState]);
 
     useEffect(() => {
       setFormSchema({ schema: schema, loading: true });

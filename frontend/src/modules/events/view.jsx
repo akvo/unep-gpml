@@ -6,7 +6,10 @@ import "./styles.scss";
 import AddEventForm from "./form";
 
 const AddEvent = ({ ...props }) => {
-  const { isDataFetched, formEdit } = UIStore.currentState;
+  const { isDataFetched, formEdit } = UIStore.useState((s) => ({
+    isDataFetched: s.isDataFetched,
+    formEdit: s.formEdit,
+  }));
 
   useEffect(() => {
     UIStore.update((e) => {

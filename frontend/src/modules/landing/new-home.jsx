@@ -130,7 +130,7 @@ const Landing = ({
 }) => {
   const dateNow = moment().format("DD-MM-YYYY");
   const { innerWidth, innerHeight } = window;
-  const { profile } = UIStore.currentState;
+  const profile = UIStore.useState((s) => s.profile);
   const [selectedTopic, setSelectedTopic] = useState("product by design");
   const [event, setEvent] = useState([]);
   const [data, setData] = useState(null);

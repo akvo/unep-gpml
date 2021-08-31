@@ -69,7 +69,10 @@ const menuItems = [
 ];
 
 const ProfileView = ({ ...props }) => {
-  const { isDataFetched, profile } = UIStore.currentState;
+  const { isDataFetched, profile } = UIStore.useState((s) => ({
+    isDataFetched: s.isDataFetched,
+    profile: s.profile,
+  }));
   const handleSubmitRef = useRef();
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState("personal-details");

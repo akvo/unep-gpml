@@ -41,7 +41,10 @@ let tmid;
 
 const Browse = ({ history, setSignupModalVisible, filters, setFilters }) => {
   const query = useQuery();
-  const { profile, countries } = UIStore.currentState;
+  const { profile, countries } = UIStore.useState((s) => ({
+    profile: s.profile,
+    countries: s.countries,
+  }));
   const [results, setResults] = useState([]);
   const [countData, setCountData] = useState([]);
   const [loading, setLoading] = useState(true);

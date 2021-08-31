@@ -859,7 +859,8 @@ const getSchema = (
 const AddInitiative = ({ match: { params }, ...props }) => {
   const minHeightContainer = innerHeight * 0.8;
   const minHeightCard = innerHeight * 0.75;
-  const { isDataFetched, formStep, formEdit } = UIStore.currentState;
+  const globalState = UIStore.useState();
+  const { isDataFetched, formStep, formEdit } = globalState;
 
   const formData = initiativeData.useState();
   const { editId, data } = formData;
@@ -891,8 +892,8 @@ const AddInitiative = ({ match: { params }, ...props }) => {
 
   useEffect(() => {
     const dataId = Number(params?.id || id);
-    if (formSchema.loading && isDataFetched) {
-      setFormSchema(getSchema(UIStore.currentState, false));
+    if (formSchema.loading && globalState?.isDataFetched) {
+      setFormSchema(getSchema(globalState, false));
       // Manage form status, add/edit
       if (
         (status === "edit" || dataId) &&
@@ -916,7 +917,7 @@ const AddInitiative = ({ match: { params }, ...props }) => {
         e.editId = null;
       });
     }
-  }, [isDataFetched, formSchema, status, id, data, editId, params]);
+  }, [formSchema, status, id, data, editId, params, globalState]);
 
   const renderSteps = (parentTitle, section, steps) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
