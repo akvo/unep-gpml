@@ -1,0 +1,75 @@
+@import "../../vars.scss";
+
+#glossary {
+  .section-container {
+    padding: 4rem 0;
+  }
+
+  .glossary-banner {
+    background: #3176ae;
+    opacity: 0.8;
+
+    .src {
+      display: flex;
+      align-items: center;
+      width: 15rem;
+      .input-src {
+        border-radius: 30px;
+        input.ant-input {
+          color: #1ca585;
+          &::placeholder {
+            color: #1ca585;
+          }
+          &:focus {
+            box-shadow: 0px 10px 10px rgba(46, 213, 115, 0.15);
+          }
+        }
+      }
+      .ant-btn.ant-btn-primary.ant-input-search-button {
+        border-radius: 0;
+      }
+    }
+
+    .alphabet-row {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-transform: uppercase;
+      color: #7dc6ff;
+      font-weight: 700;
+      font-size: 1.3rem;
+      width: 90%;
+      .item-alphabet {
+        cursor: pointer;
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .glossary-body {
+    .glossary-row {
+      padding-top: 3rem;
+      border-top: 1px solid #255b87;
+      &:first-child {
+        padding-top: unset;
+        border-top: unset;
+      }
+      h2 {
+        margin-top: 1.5rem;
+        text-transform: uppercase;
+        font-weight: 800;
+        font-size: 5rem;
+      }
+      .glossary-item-body {
+        .glossary-item-wrapper {
+          h4 {
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+}

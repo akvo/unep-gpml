@@ -36,6 +36,7 @@ import AddActionPlan from "./modules/action-plan/view";
 import AddTechnology from "./modules/technology/view";
 import AddPolicy from "./modules/policy/view";
 import AboutUs from "./modules/about/about-us";
+import Glossary from "./modules/glossary/glossary";
 
 api
   .get("/tag")
@@ -251,6 +252,11 @@ const Root = () => {
           render={(props) => <AboutUs {...props} />}
         />
         <Route
+          exact
+          path="/glossary"
+          render={(props) => <Glossary {...props} />}
+        />
+        <Route
           path="/browse"
           render={(props) => (
             <Browse
@@ -413,7 +419,10 @@ const ExploreDropdownMenu = withRouter(({ history }) => {
           <Menu.Item className="nav-link">
             Stories <span className="badge-count">8</span>
           </Menu.Item>
-          <Menu.Item className="nav-link">
+          <Menu.Item
+            className="nav-link"
+            onClick={() => history.push("/glossary")}
+          >
             Glossary <span className="badge-count">54</span>
           </Menu.Item>
         </Menu>
