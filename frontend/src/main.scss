@@ -58,7 +58,9 @@ h4 {
   font-size: 1rem;
   line-height: 1.5rem;
 }
-
+.txt-emphasis {
+  font-size: 1.5rem;
+}
 .asset-title {
   font-size: 1.3rem;
   font-weight: 500;
@@ -232,11 +234,16 @@ h4 {
     align-items: center;
   }
 
+
+
   .menu-btn {
     cursor: pointer;
     color: #fff;
     font-weight: 500;
     border-right: 1px solid #3176ae;
+    &:last-child {
+      border: none;
+    }
     &:hover {
       color: #4dffa5;
       background: rgba(77, 255, 165, 0.1);
@@ -279,7 +286,7 @@ h4 {
     }
 
     .src {
-      display: flex;
+      display: flex; 
       align-items: center;
       width: 16%;
       margin-left: 10px;
@@ -448,7 +455,7 @@ footer {
       align-items: center;
       .unepLogo {
         img {
-          width: 85%;
+          width: 45%;
           margin-left: 0;
         }
       }
