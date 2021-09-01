@@ -13,7 +13,11 @@ import { withRouter } from "react-router-dom";
 import { customFormats } from "../../utils/forms";
 
 const GeoCoverageInput = (props) => {
-  const { countries, regionOptions, meaOptions } = UIStore.currentState;
+  const { countries, regionOptions, meaOptions } = UIStore.useState((s) => ({
+    countries: s.countries,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
+  }));
   const national =
     countries &&
     countries
@@ -93,7 +97,6 @@ function disablePastDate(current) {
   return current && current < moment().subtract(1, "days").endOf("day");
 }
 
-const { geoCoverageTypeOptions } = UIStore.currentState;
 const defaultFormSchema = [
   {
     title: { label: "Title", required: true },
@@ -163,7 +166,19 @@ const validation = (formSchema) => {
 };
 
 const AddEventForm = withRouter(({ match: { params }, history }) => {
-  const { countries, loading, formStep, formEdit } = UIStore.currentState;
+  const {
+    countries,
+    geoCoverageTypeOptions,
+    tags,
+    formStep,
+    formEdit,
+  } = UIStore.useState((s) => ({
+    countries: s.countries,
+    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
+    tags: s.tags,
+    formStep: s.formStep,
+    formEdit: s.formEdit,
+  }));
   const { status, id } = formEdit.event;
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [sending, setSending] = useState(false);
@@ -245,7 +260,6 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
 
   useEffect(() => {
     const newSchema = cloneDeep(defaultFormSchema);
-    const { tags } = UIStore.currentState;
     const tagsPlusTopics = tags.events?.concat(tags.topics);
     newSchema[3].tags.options = tagsPlusTopics?.map((x) => ({
       value: x.id,
@@ -274,7 +288,7 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
         formRef.current?.restart({ urls: [{ url: "", lang: "en" }] });
       });
     }
-  }, [countries, status, id, params]);
+  }, [countries, tags, status, id, params]);
 
   const setFormData = (data) => {
     const dateFormat = "YYYY/MM/DD";

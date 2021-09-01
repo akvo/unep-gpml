@@ -175,7 +175,7 @@ const AddInitiativeForm = withRouter(
     history,
     match: { params },
   }) => {
-    const { formEdit } = UIStore.currentState;
+    const formEdit = UIStore.useState((s) => s.formEdit);
     const { status, id } = formEdit.initiative;
     const initiativeFormData = initiativeData.useState();
     const [dependValue, setDependValue] = useState([]);
