@@ -264,36 +264,34 @@ const Browse = ({
           </StickyBox>
           <div className="scroll-content">
             <StickyBox offsetBottom={500} className="sticky-pagination">
-              <div className="page">
-                {!isEmpty(results) && (
-                  <Pagination
-                    defaultCurrent={1}
-                    current={(filters?.offset || 0) / pageSize + 1}
-                    pageSize={pageSize}
-                    total={totalItems}
-                    showSizeChanger={false}
-                    onChange={(n, size) =>
-                      updateQuery("offset", (n - 1) * size)
-                    }
-                  />
-                )}
-                {loading && (
-                  <h2 className="loading">
-                    <LoadingOutlined spin /> Loading
-                  </h2>
-                )}
-              </div>
+              <div className="page">{}</div>
             </StickyBox>
-            {isEmpty(results) && (
-              <h2 className="loading">There is no data to display</h2>
-            )}
-            {!loading &&
+            {loading || isEmpty(results) ? (
+              <h2 className="loading">
+                <LoadingOutlined spin /> Loading
+              </h2>
+            ) : !loading && !isEmpty(results) ? (
               results.map((result) => (
                 <Result
                   key={`${result.type}-${result.id}`}
                   {...{ result, handleRelationChange, relations, profile }}
                 />
-              ))}
+              ))
+            ) : (
+              <h2 className="loading">There is no data to display</h2>
+            )}
+            <div className="page">
+              {!isEmpty(results) && (
+                <Pagination
+                  defaultCurrent={1}
+                  current={(filters?.offset || 0) / pageSize + 1}
+                  pageSize={pageSize}
+                  total={totalItems}
+                  showSizeChanger={false}
+                  onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
