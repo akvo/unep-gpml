@@ -84,7 +84,8 @@ const renderSectionIssue = () => {
             <Button type="ghost left">Clean seas</Button>
           </div>
         </div>
-        <div className="section-issue-graphic"><Image src={DPIcons} preview={false} />
+        <div className="section-issue-graphic">
+          <Image src={DPIcons} preview={false} />
         </div>
       </div>
     </div>
@@ -306,7 +307,9 @@ const renderSectionHistory = () => {
             international agreements.
           </p>
         </div>
-        <div className="section-mission-graphic"><Image src={GpmlHistory} preview={false} /></div>
+        <div className="section-mission-graphic">
+          <Image src={GpmlHistory} preview={false} />
+        </div>
       </div>
     </div>
   );
