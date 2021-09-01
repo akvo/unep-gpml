@@ -218,6 +218,7 @@ const Landing = ({
               Welcome to the Global Partnership on Marine Litter Digital
               Platform!
             </h1>
+            <h2>Inform. Connect. Inspire.</h2>
             <div className="body-text">
               A partly open-source, multi-stakeholder platform that compiles
               different resources, connects stakeholders, and integrates data to
@@ -270,7 +271,7 @@ const Landing = ({
                   key="popular-topic"
                   title=""
                   type="TREEMAP"
-                  height={600}
+                  height={500}
                   data={sortPopularTopic.map((x) => {
                     return {
                       id: x.id,

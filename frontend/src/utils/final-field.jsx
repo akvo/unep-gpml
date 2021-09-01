@@ -1,5 +1,13 @@
 import React from "react";
-import { Input, InputNumber, Select, DatePicker, Form, Switch } from "antd";
+import {
+  Input,
+  InputNumber,
+  Select,
+  DatePicker,
+  Form,
+  Switch,
+  AutoComplete,
+} from "antd";
 import { Field } from "react-final-form";
 // import moment from 'moment'
 import FileWidget from "./forms/form-file";
@@ -83,6 +91,21 @@ const CONTROLS = {
         ))}
       </Select>
     );
+  },
+  autocomplete: ({ input, options, ...props }) => {
+    const allProps = {
+      ...input,
+      options,
+      onSearch: props.onSearch,
+      onChange: (v, e) => {
+        props.onChange && props.onChange(v, true);
+        return input.onChange(v, e);
+      },
+      onSelect: (v, e) => {
+        props.onSelect && props.onSelect(v, true);
+      },
+    };
+    return <AutoComplete {...allProps} />;
   },
   file: ({ input, accept, maxFileSize, ...props }) => {
     return <FileWidget {...input} accept={accept} maxFileSize={maxFileSize} />;

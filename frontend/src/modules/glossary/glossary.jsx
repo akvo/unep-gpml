@@ -65,14 +65,43 @@ const Glossary = () => {
       <div className="ui container section-container">
         <h2 className="text-blue">GPML Glossary</h2>
         <p className="body-text" style={{ fontSize: "1.125rem" }}>
-          You can view the full glossary of the GPML Digital Platform (v 07 July
-          2021) via{" "}
+          To facilitate data interoperability UNEP has been working closely with
+          Ontology Experts to develop the first draft of the Marine Litter and
+          Plastic Pollution Ontology and connect it with existing and widely
+          used ontologies. Currently, 70 terms with draft definitions
+          and relations among terms have been identified and peer reviewed.
+          <br />
+          <br />
+          Experts in the Marine Litter and Plastic Pollution domain are invited
+          to review the draft definitions of the Marine Litter and Plastic
+          Pollution Ontology. The peer-review process is ongoing to allow
+          reviewers to request new content to be added. If you are interested in
+          contributing, please contact us at{" "}
+          <a href="mailto:unep-gpmmarinelitter@un.org">
+            unep-gpmmarinelitter@un.org
+          </a>
+          .
+          <br />
+          <br />
+          Additionally, to facilitate discussions and create linkages with terms
+          related to the marine litter and plastic pollution domain, a longer
+          list of terms has been compiled in a Draft Glossary. Terms that are
+          not included in the marine litter and plastic pollution ontology, or
+          related ontologies, have either been sourced from official glossaries
+          or from vocabulary definitions.
+          <br />
+          <br />
+          The agreed terms and their definitions will support the development of
+          GPML Digital Platform functionalities such as knowledge
+          graphs creation as well as data, publication and web pages tagging. 
+          <br />
+          <br />
           <a
             href="https://docs.google.com/spreadsheets/d/1-z-UB-S5RQBSwQsxNi535-AxcQTvU19f-LxINmyYXt0/edit#gid=1921541772"
             target="_blank"
             rel="noreferrer"
           >
-            this link
+            You can access the Draft Glossary here
           </a>
           .
         </p>
