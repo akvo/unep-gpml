@@ -97,7 +97,7 @@ const FileWidget = (props) => {
   const accepts = props?.accept || props?.uiSchema?.["ui:options"]?.accept;
 
   const { required } = props;
-  const { highlight } = UIStore.currentState;
+  const highlight = UIStore.useState((s) => s.highlight);
   const border =
     required && highlight ? "2px #22ba9a solid" : "2px dotted lightgray";
 

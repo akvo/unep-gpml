@@ -38,7 +38,7 @@ const FieldTemplate = ({
   } = formContext;
 
   // custom
-  const { highlight } = UIStore.currentState;
+  const highlight = UIStore.useState((s) => s.highlight);
 
   if (hidden) {
     return <div className="field-hidden">{children}</div>;

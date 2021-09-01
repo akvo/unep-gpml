@@ -42,9 +42,9 @@ const UIStore = new Store({
   organisationType: sectorOptions,
   sectorOptions: sectorOptions,
   summary: [],
+  stakeholders: [],
   highlight: false,
   disclaimer: null,
-  loading: true,
   formStep: {
     signUp: 1,
     initiative: 1,

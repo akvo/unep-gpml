@@ -9,7 +9,7 @@ const Footer = ({
   setStakeholderSignupModalVisible,
   setWarningModalVisible,
 }) => {
-  const { profile } = UIStore.currentState;
+  const profile = UIStore.useState((s) => s.profile);
   return (
     <footer>
       <div className="ui container">

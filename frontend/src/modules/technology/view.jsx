@@ -5,9 +5,24 @@ import { LoadingOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import AddTechnologyForm from "./form";
 import StickyBox from "react-sticky-box";
+import isEmpty from "lodash/isEmpty";
 
 const AddTechnology = ({ match: { params }, ...props }) => {
-  const { loading, formStep, formEdit } = UIStore.currentState;
+  const {
+    countries,
+    tags,
+    regionOptions,
+    meaOptions,
+    formStep,
+    formEdit,
+  } = UIStore.useState((s) => ({
+    countries: s.countries,
+    tags: s.tags,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
+    formStep: s.formStep,
+    formEdit: s.formEdit,
+  }));
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -15,6 +30,13 @@ const AddTechnology = ({ match: { params }, ...props }) => {
     disabled: true,
     type: "default",
   });
+  const isLoaded = () =>
+    Boolean(
+      countries.length &&
+        !isEmpty(tags) &&
+        regionOptions.length &&
+        meaOptions.length
+    );
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -75,7 +97,7 @@ const AddTechnology = ({ match: { params }, ...props }) => {
           </div>
         </div>
       </StickyBox>
-      {loading ? (
+      {!isLoaded() ? (
         <h2 className="loading">
           <LoadingOutlined spin /> Loading
         </h2>
@@ -99,6 +121,7 @@ const AddTechnology = ({ match: { params }, ...props }) => {
                   highlight={highlight}
                   setHighlight={setHighlight}
                   setDisabledBtn={setDisabledBtn}
+                  isLoaded={isLoaded()}
                 />
               </Card>
             </Col>

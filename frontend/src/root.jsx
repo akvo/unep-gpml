@@ -42,69 +42,37 @@ import humps from "humps";
 import AboutUs from "./modules/about/about-us";
 import Glossary from "./modules/glossary/glossary";
 
-api
-  .get("/tag")
-  .then((resp) => {
-    return resp.data;
-  })
-  .then((tags) => {
-    api
-      .get("/currency")
-      .then((resp) => {
-        return resp.data;
-      })
-      .then((currencies) => {
-        api
-          .get("/country")
-          .then((resp) => {
-            return uniqBy(resp.data).sort((a, b) =>
-              a.name.localeCompare(b.name)
-            );
-          })
-          .then((countries) => {
-            api
-              .get("/country-group")
-              .then((resp) => {
-                return resp.data;
-              })
-              .then((countryGroups) => {
-                api
-                  .get("/organisation")
-                  .then((resp) => {
-                    return uniqBy(sortBy(resp.data, ["name"])).sort((a, b) =>
-                      a.name.localeCompare(b.name)
-                    );
-                  })
-                  .then((organisations) => {
-                    api
-                      .get("/landing")
-                      .then((resp) => {
-                        return resp.data;
-                      })
-                      .then((landing) => {
-                        UIStore.update((e) => {
-                          e.tags = tags;
-                          e.currencies = currencies;
-                          e.countries = countries;
-                          e.regionOptions = countryGroups.filter(
-                            (x) => x.type === "region"
-                          );
-                          e.meaOptions = countryGroups.filter(
-                            (x) => x.type === "mea"
-                          );
-                          e.organisations = organisations;
-                          e.summary = landing?.summary ? landing.summary : [];
-                        });
-                      });
-                  });
-              });
-          });
-      });
-  });
-
-api.get("/stakeholder").then((resp) => {
+Promise.all([
+  api.get("/tag"),
+  api.get("/currency"),
+  api.get("/country"),
+  api.get("/country-group"),
+  api.get("/organisation"),
+  api.get("/landing"),
+  api.get("/stakeholder"),
+]).then((res) => {
+  const [
+    tag,
+    currency,
+    country,
+    countryGroup,
+    organisation,
+    landing,
+    stakeholder,
+  ] = res;
   UIStore.update((e) => {
-    e.stakeholders = resp.data;
+    e.tags = tag.data;
+    e.currencies = currency.data;
+    e.countries = uniqBy(country.data).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    e.regionOptions = countryGroup.data.filter((x) => x.type === "region");
+    e.meaOptions = countryGroup.data.filter((x) => x.type === "mea");
+    e.organisations = uniqBy(sortBy(organisation.data, ["name"])).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    e.summary = landing.data?.summary ? landing.data.summary : [];
+    e.stakeholders = stakeholder.data;
   });
 });
 
@@ -162,26 +130,21 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
+  const { profile, disclaimer, summary, tags } = UIStore.useState((s) => ({
+    profile: s.profile,
+    disclaimer: s.disclaimer,
+    summary: s.summary,
+    tags: s.tags,
+  }));
+  const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [
     stakeholderSignupModalVisible,
     setStakeholderSignupModalVisible,
   ] = useState(false);
-  const { profile, disclaimer, loading, summary, tags } = UIStore.useState(
-    (s) => s
-  );
   const [warningModalVisible, setWarningModalVisible] = useState(false);
-  const [data, setData] = useState(null);
   const [filters, setFilters] = useState(null);
 
   useEffect(() => {
-    if (loading) {
-      api.get("browse?topic=event").then((resp) => {
-        setData(resp.data);
-        UIStore.update((e) => {
-          e.loading = false;
-        });
-      });
-    }
     (async function fetchData() {
       const response = await getIdTokenClaims();
       if (isAuthenticated) {
@@ -220,7 +183,7 @@ const Root = () => {
         }
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated, loading]);
+  }, [getIdTokenClaims, isAuthenticated]);
 
   return (
     <Router>
@@ -290,7 +253,6 @@ const Root = () => {
           render={(props) => (
             <Landing
               {...{
-                data,
                 setWarningModalVisible,
                 setStakeholderSignupModalVisible,
                 loginWithPopup,
@@ -767,7 +729,7 @@ const AddButton = withRouter(
     loginWithPopup,
     history,
   }) => {
-    const { profile } = UIStore.currentState;
+    const profile = UIStore.useState((s) => s.profile);
     if (isAuthenticated) {
       if (profile?.reviewStatus === "APPROVED") {
         return (

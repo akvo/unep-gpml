@@ -37,6 +37,7 @@ import orderBy from "lodash/orderBy";
 import humps from "humps";
 import { topicNames } from "../../utils/misc";
 import capitalize from "lodash/capitalize";
+import api from "../../utils/api";
 
 const cardSvg = [
   {
@@ -133,7 +134,6 @@ const defTopic = sortPopularTopic[0]?.topic?.toLocaleLowerCase();
 
 const Landing = ({
   history,
-  data,
   setSignupModalVisible,
   setWarningModalVisible,
   isAuthenticated,
@@ -142,9 +142,10 @@ const Landing = ({
 }) => {
   const dateNow = moment().format("DD-MM-YYYY");
   const { innerWidth, innerHeight } = window;
-  const { profile } = UIStore.currentState;
+  const profile = UIStore.useState((s) => s.profile);
   const [selectedTopic, setSelectedTopic] = useState(defTopic);
   const [event, setEvent] = useState([]);
+  const [data, setData] = useState(null);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
@@ -196,6 +197,11 @@ const Landing = ({
   };
 
   useEffect(() => {
+    if (!data) {
+      api.get("browse?topic=event").then((resp) => {
+        setData(resp.data);
+      });
+    }
     if (data && data?.results) {
       generateEvent(dateNow);
     }
