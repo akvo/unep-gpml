@@ -65,9 +65,9 @@
         .content-header {
           border-top: 1px solid white;
           border-bottom: 1px solid white;
-
           display: flex;
-          background: rgba($yellow, 0.2);
+          justify-content: space-between;
+          align-items: center;
           h4 {
             font-size: 1.6rem;
             font-weight: 900;
@@ -79,6 +79,12 @@
             font-size: 0.8rem;
           }
           .item {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: rgba($yellow, 0.2);
             padding: 8px 10px;
             border-right: 2px solid white;
             text-align: center;
@@ -95,6 +101,11 @@
             }
             &:first-child {
               border-left: 1px solid white;
+            }
+            &:last-child {
+              width: 77px;
+              font-weight: 600;
+              font-size: 0.8rem;
             }
           }
         }
@@ -207,7 +218,8 @@
               font-size: 1rem;
               font-weight: 600;
             }
-            p {
+            p.role {
+              font-size: 0.8rem;
               height: 25px;
               margin-bottom: 0;
             }

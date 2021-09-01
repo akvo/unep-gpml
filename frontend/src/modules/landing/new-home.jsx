@@ -305,6 +305,11 @@ const Landing = ({
                         </div>
                       );
                     })}
+                  <div key="summary-read-more" className="item">
+                    <Link to={"#"}>
+                      See all <RightOutlined />
+                    </Link>
+                  </div>
                 </div>
                 <div className="content-body">
                   {sortPopularTopic
@@ -332,12 +337,6 @@ const Landing = ({
                         </div>
                       );
                     })}
-                  <hr />
-                  <span className="read-more">
-                    <Link to={"#"}>
-                      See all {capitalize(selectedTopic)} <RightOutlined />
-                    </Link>
-                  </span>
                 </div>
               </div>
             </div>
