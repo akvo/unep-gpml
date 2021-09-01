@@ -240,7 +240,15 @@ const Root = () => {
                 <img src={logo} className="logo" alt="GPML" />
               </Link>
             </div>
-            {renderDropdownMenu(tags, summary)}
+            {renderDropdownMenu(
+              tags,
+              summary,
+              profile,
+              setWarningModalVisible,
+              isAuthenticated,
+              setStakeholderSignupModalVisible,
+              loginWithPopup
+            )}
             <Switch>
               <Route path="/browse" />
               <Route>
@@ -414,7 +422,15 @@ const Root = () => {
   );
 };
 
-const renderDropdownMenu = (tags, summary) => {
+const renderDropdownMenu = (
+  tags,
+  summary,
+  profile,
+  setWarningModalVisible,
+  isAuthenticated,
+  setStakeholderSignupModalVisible,
+  loginWithPopup
+) => {
   const excludeSummary = ["event", "organisation", "stakeholder"];
   summary = summary
     .filter((x) => !excludeSummary.includes(Object.keys(x)[0]))
@@ -430,34 +446,56 @@ const renderDropdownMenu = (tags, summary) => {
       <ExploreDropdownMenu topics={tags?.topics ? tags.topics.length : 0} />
       <DataHubDropdownMenu />
       <KnowledgeExchangeDropdownMenu resources={summary} />
-      <ConnectStakeholdersDropdownMenu />
+      <ConnectStakeholdersDropdownMenu
+        {...{
+          profile,
+          setWarningModalVisible,
+          isAuthenticated,
+          setStakeholderSignupModalVisible,
+          loginWithPopup,
+        }}
+      />
     </div>
   );
 };
 
 const AboutDropdownMenu = withRouter(({ history }) => {
   return (
-    <Dropdown
-      overlayClassName="menu-dropdown-wrapper"
-      overlay={
-        <Menu className="menu-dropdown">
-          {/* <Menu.Item className="nav-link">Partnership</Menu.Item> */}
-          <Menu.Item
-            className="nav-link"
-            onClick={() => history.push("/about-us")}
-          >
-            Digital Platform
-          </Menu.Item>
-        </Menu>
-      }
-      trigger={["click"]}
-      placement="bottomRight"
+    <Button
+      type="link"
+      className="menu-btn nav-link menu-dropdown"
+      onClick={() => history.push("/about-us")}
+      style={{ display: "flex", alignItems: "center", height: "50px" }}
     >
-      <Button type="link" className="menu-btn nav-link">
-        About <DownOutlined />
-      </Button>
-    </Dropdown>
+      About
+    </Button>
   );
+  // Unommented, if needed later
+  // return (
+  //   <Dropdown
+  //     overlayClassName="menu-dropdown-wrapper"
+  //     overlay={
+  //       <Menu className="menu-dropdown">
+  //         <Menu.Item className="nav-link">Partnership</Menu.Item>
+  //         <Menu.Item
+  //           className="nav-link"
+  //           onClick={() => history.push("/about-us")}
+  //         >
+  //           Digital Platform
+  //         </Menu.Item>
+  //       </Menu>
+  //     }
+  //     trigger={["click"]}
+  //     placement="bottomRight"
+  //   >
+  //     <Button
+  //       type="link"
+  //       className="menu-btn nav-link"
+  //     >
+  //       About <DownOutlined />
+  //     </Button>
+  //   </Dropdown>
+  // );
 });
 
 const ExploreDropdownMenu = withRouter(({ history, topics }) => {
@@ -516,9 +554,8 @@ const DataHubDropdownMenu = withRouter(({ history }) => {
       overlay={
         <Menu className="menu-dropdown">
           <Menu.Item className="nav-link">Data Map & Layers</Menu.Item>
-          <Menu.Item className="nav-link">Dashboards</Menu.Item>
           <Menu.Item className="nav-link">Data Catalogue</Menu.Item>
-          <Menu.Item className="nav-link">Data Content</Menu.Item>
+          <Menu.Item className="nav-link">Join Data Hub</Menu.Item>
         </Menu>
       }
       trigger={["click"]}
@@ -599,59 +636,65 @@ const KnowledgeExchangeDropdownMenu = withRouter(({ history, resources }) => {
   );
 });
 
-const ConnectStakeholdersDropdownMenu = withRouter(({ history }) => {
-  return (
-    <Dropdown
-      overlayClassName="menu-dropdown-wrapper"
-      overlay={
-        <Menu className="menu-dropdown">
-          <Menu.Item
+const ConnectStakeholdersDropdownMenu = withRouter(
+  ({
+    history,
+    profile,
+    setWarningModalVisible,
+    isAuthenticated,
+    setStakeholderSignupModalVisible,
+    loginWithPopup,
+  }) => {
+    const handleOnClickNeedAuth = (topic) => {
+      {
+        profile?.reviewStatus === "APPROVED"
+          ? history.push(`/browse?topic=${topic}`)
+          : Object.keys(profile).length > 1
+          ? setWarningModalVisible(true)
+          : isAuthenticated
+          ? setStakeholderSignupModalVisible(true)
+          : loginWithPopup();
+      }
+    };
+
+    return (
+      <Dropdown
+        overlayClassName="menu-dropdown-wrapper"
+        overlay={
+          <Menu className="menu-dropdown">
+            {/* <Menu.Item
             className="nav-link"
             onClick={() => history.push("/browse?topic=event")}
           >
             Events
-          </Menu.Item>
-          <Menu.Item className="nav-link">Stakeholders Directory</Menu.Item>
-          {/* <Menu.Item className="nav-link">Forums</Menu.Item>
+          </Menu.Item> */}
+            <Menu.Item
+              className="nav-link"
+              onClick={() => handleOnClickNeedAuth("stakeholder")}
+            >
+              Individuals
+            </Menu.Item>
+            <Menu.Item
+              className="nav-link"
+              onClick={() => handleOnClickNeedAuth("organisation")}
+            >
+              Entities
+            </Menu.Item>
+            {/* <Menu.Item className="nav-link">Forums</Menu.Item>
           <Menu.Item className="nav-link">Partners</Menu.Item>
           <Menu.Item className="nav-link">Sponsors</Menu.Item> */}
-        </Menu>
-      }
-      trigger={["click"]}
-      placement="bottomRight"
-    >
-      <Button type="link" className="menu-btn nav-link">
-        Connect Stakeholders <DownOutlined />
-      </Button>
-    </Dropdown>
-  );
-});
-
-const renderMenu = () => {
-  return (
-    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[]}>
-      <Menu.Item key="about">
-        About <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
-      </Menu.Item>
-      <Menu.Item key="explore">
-        Explore{" "}
-        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
-      </Menu.Item>
-      <Menu.Item key="data-hub">
-        Data Hub{" "}
-        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
-      </Menu.Item>
-      <Menu.Item key="knowledge-exchange">
-        Knowledge Exchange{" "}
-        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
-      </Menu.Item>
-      <Menu.Item key="connect-stakeholders">
-        Connect Stakeholders{" "}
-        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
-      </Menu.Item>
-    </Menu>
-  );
-};
+          </Menu>
+        }
+        trigger={["click"]}
+        placement="bottomRight"
+      >
+        <Button type="link" className="menu-btn nav-link">
+          Connect Stakeholders <DownOutlined />
+        </Button>
+      </Dropdown>
+    );
+  }
+);
 
 const Search = withRouter(({ history }) => {
   const [search, setSearch] = useState("");
