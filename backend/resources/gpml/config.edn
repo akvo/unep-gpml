@@ -190,8 +190,8 @@
                                          [""
                                           {:get {:summary "List Stakeholders"
                                                  :swagger {:tags ["stakeholder"]}
-                                                 :parameters #ig/ref :gpml.handler.stakeholder/list-params
-                                                 :handler #ig/ref :gpml.handler.stakeholder/list}}]
+                                                 :parameters #ig/ref :gpml.handler.stakeholder/get-params
+                                                 :handler #ig/ref :gpml.handler.stakeholder/get}}]
                                          ["/:id"
                                           {:patch {:middleware [#ig/ref :gpml.auth/auth-required
                                                                 #ig/ref :gpml.auth/approved-user
@@ -211,16 +211,16 @@
                                           {:get {:summary "Get profile information for the authenticated Stakeholder"
                                                  :swagger {:tags ["profile"]
                                                            :security [{:id_token []}]}
-                                                 :handler #ig/ref :gpml.handler.profile/get}
+                                                 :handler #ig/ref :gpml.handler.stakeholder/profile}
                                            :post {:summary "Sign up authenticated profile to Stakeholder"
                                                   :swagger {:tags ["profile"]
                                                             :security [{:id_token []}]}
-                                                  :parameters {:body #ig/ref :gpml.handler.profile/post-params}
-                                                  :handler #ig/ref :gpml.handler.profile/post}
+                                                  :parameters {:body #ig/ref :gpml.handler.stakeholder/post-params}
+                                                  :handler #ig/ref :gpml.handler.stakeholder/post}
                                            :put {:summary "Update authenticated profile information"
                                                  :swagger {:tags ["profile"]
                                                            :security [{:id_token []}]}
-                                                 :handler #ig/ref :gpml.handler.profile/put}}]]
+                                                 :handler #ig/ref :gpml.handler.stakeholder/put}}]]
                                         ["/currency"
                                          {:get {:summary "List of currency"
                                                 :swagger {:tags ["currency"]}
@@ -347,15 +347,15 @@
                                  :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.initiative/post-params {}
 
-  :gpml.handler.profile/get {:db #ig/ref :duct.database/sql}
-  :gpml.handler.stakeholder/list {:db #ig/ref :duct.database/sql}
-  :gpml.handler.stakeholder/list-params {}
+  :gpml.handler.stakeholder/get-params {}
   :gpml.handler.stakeholder/patch {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/patch-params {}
-  :gpml.handler.profile/post {:db #ig/ref :duct.database/sql
+  :gpml.handler.stakeholder/profile {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/post {:db #ig/ref :duct.database/sql
                               :mailjet-config #ig/ref :gpml.config/mailjet}
-  :gpml.handler.profile/post-params {}
-  :gpml.handler.profile/put {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/post-params {}
+  :gpml.handler.stakeholder/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.currency/all {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.tag/by-topic {:db #ig/ref :duct.database/sql}
