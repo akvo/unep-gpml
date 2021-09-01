@@ -259,11 +259,11 @@ const SignUp = ({ match: { params }, ...props }) => {
     return Boolean(
       countries.length &&
         !isEmpty(tags) &&
-        regionOptions.length &&
-        sectorOptions.length &&
-        organisationType?.length &&
-        meaOptions?.length &&
-        stakeholders?.length
+        !isEmpty(regionOptions) &&
+        !isEmpty(sectorOptions) &&
+        !isEmpty(organisationType) &&
+        !isEmpty(meaOptions) &&
+        !isEmpty(stakeholders)
     );
   };
 
