@@ -26,6 +26,7 @@ import "./new-styles.scss";
 import "react-multi-carousel/lib/styles.css";
 import moment from "moment";
 import imageNotFound from "../../images/image-not-found.png";
+import logoNotFound from "../../images/logo-not-found.png";
 import { TrimText } from "../../utils/string";
 import {
   popularTopics,
@@ -501,18 +502,30 @@ const Landing = ({
                 >
                   {ourCommunity.map((x, i) => {
                     const index = i > 3 ? i - 4 : i;
+                    const { type, about, image, name, role } = x;
                     return (
                       <div key={`oc-card-${i}`}>
                         <div className="type-wrapper">
                           <span className="mark">
-                            {topicNames(humps.camelizeKeys(x.type))}
+                            {topicNames(humps.camelizeKeys(type))}
                           </span>
                         </div>
                         <div
                           className="about"
                           style={{ color: cardSvg[index]?.color }}
                         >
-                          <q>{x.about}</q>
+                          {about.length > 105 ? (
+                            <Tooltip
+                              title={about}
+                              overlayInnerStyle={{
+                                background: "rgba(0, 88, 95, 0.85)",
+                              }}
+                            >
+                              {TrimText({ text: about, max: 105 })}
+                            </Tooltip>
+                          ) : (
+                            <q>{about}</q>
+                          )}
                         </div>
                         {cardSvg[index]?.svg}
                         <div className="detail">
@@ -526,11 +539,11 @@ const Landing = ({
                               xl: 115,
                               xxl: 125,
                             }}
-                            src={x.image}
-                            alt={x.name}
+                            src={image || logoNotFound}
+                            alt={name}
                           />
-                          <h4>{x.name}</h4>
-                          <p className="role">{x?.role || ""}</p>
+                          <h4>{name}</h4>
+                          <p className="role">{role || ""}</p>
                         </div>
                       </div>
                     );

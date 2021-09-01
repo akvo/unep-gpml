@@ -518,7 +518,7 @@ export const ourCommunity = [
     id: 7,
     type: "organisation",
     about:
-      "Helping to build a food-secure world for present and future generations",
+      "Helping to build a food-secure world for present and future generations.",
     image: fao,
     name: "FAO",
     role: null,
@@ -536,10 +536,29 @@ export const ourCommunity = [
     id: 20,
     type: "organisation",
     about:
-      "Ocean Conservancy is working with you to protect the ocean from today’s greatest global challenges",
+      "Ocean Conservancy is working with you to protect the ocean from today’s greatest global challenges.",
     image: oc,
     name: "Ocean Conservancy",
     role: null,
+  },
+  {
+    id: 10082,
+    type: "stakeholder",
+    about:
+      "The GPML Digital Platform is a fantastic resource for knowledge management, networking and accessing and managing data. What is especially helpful is the wide variety of resources available which will allow those working on marine litter and plastic pollution to learn from the experiences of others regionally and globally. The platform is very user friendly and allows you to refine your search to get the most relevant content.",
+    image: "https://digital.gpmarinelitter.org/image/profile/27",
+    name: "Fadilah Ali",
+    role:
+      "Assistant Executive Director - Gulf and Caribbean Fisheries Institute",
+  },
+  {
+    id: 10078,
+    type: "stakeholder",
+    about:
+      "The GPML platform makes it much easier to discover relevant stakeholders, events, and experts in specific regions and fields related to marine litter. This was something that had been missing for a long time. Moreover, the platform is very intuitive and modern.",
+    image: "https://digital.gpmarinelitter.org/image/profile/30",
+    name: "Marvin Burman",
+    role: "CEO - OceanHero.today",
   },
 ];
 

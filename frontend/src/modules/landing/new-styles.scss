@@ -162,7 +162,7 @@
     .body {
       .carousel-container {
         display: flex;
-        justify-content: center;
+        // justify-content: center; // use this if our-community content less than 5 items
         align-items: center;
         .carousel-item {
           background-color: #fff;
@@ -178,6 +178,12 @@
             min-height: 20rem;
             padding: 20px;
             margin-bottom: 2.5rem;
+            div::before {
+              content: open-quote;
+            }
+            div::after {
+              content: close-quote;
+            }
           }
           .wave {
             position: absolute;
