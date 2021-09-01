@@ -9,6 +9,9 @@ import missionGraphic from "./mission-section-graphic";
 import timelineAndRoadmapGraphic from "../../images/timeline-roadmap-graphic.png";
 import featureComponentGraphic from "./feature-component-graphic";
 import ourCommunity from "../../images/about-our-community.png";
+import DPIcons from "../../images/GPML---DP---icons.png";
+import featureComponent from "../../images/feature-component-graphic.png";
+import GpmlHistory from "../../images/GPML-history.png";
 
 const summary = [
   {
@@ -81,7 +84,8 @@ const renderSectionIssue = () => {
             <Button type="ghost left">Clean seas</Button>
           </div>
         </div>
-        <div className="section-issue-graphic">{renderIssueGraphic()}</div>
+        <div className="section-issue-graphic"><Image src={DPIcons} preview={false} />
+        </div>
       </div>
     </div>
   );
@@ -239,7 +243,7 @@ const renderSectionKeyFeaturesAndComponents = () => {
           <p className="body-text text-white">
             GPML Digital Platform: Key Components
           </p>
-          {featureComponentGraphic}
+          <Image src={featureComponent} width="90%" preview={false} />
         </div>
       </div>
     </div>
@@ -270,7 +274,7 @@ const renderSectionCommunity = () => {
           </a>
         </div>
         <div className="section-community-graphic">
-          <Image src={ourCommunity} width="90%" preview={false} />
+          <Image src={ourCommunity} preview={false} />
         </div>
       </div>
     </div>
@@ -283,7 +287,7 @@ const renderSectionHistory = () => {
       <div className="ui container section-history-wrapper">
         <div className="section-history-text">
           <h2 className="text-green">The History of the GPML</h2>
-          <p className="txt-emphasis text-white">
+          <p className="txt-emphasis text-blue">
             In 2019, the United Nations Environment Assembly (UNEA) decided in
             resolution UNEP/EA.4/Res.6 operative paragraph 3: “to strengthen
             coordination and cooperation by establishing, subject to the
@@ -302,7 +306,7 @@ const renderSectionHistory = () => {
             international agreements.
           </p>
         </div>
-        <div className="section-mission-graphic">{missionGraphic}</div>
+        <div className="section-mission-graphic"><Image src={GpmlHistory} preview={false} /></div>
       </div>
     </div>
   );
