@@ -32,6 +32,7 @@ import {
   ourCommunity,
   benefit,
 } from "./new-home-static-content";
+import api from "../../utils/api";
 
 const cardSvg = [
   {
@@ -121,7 +122,6 @@ const responsive = {
 
 const Landing = ({
   history,
-  data,
   setSignupModalVisible,
   setWarningModalVisible,
   isAuthenticated,
@@ -129,9 +129,10 @@ const Landing = ({
 }) => {
   const dateNow = moment().format("DD-MM-YYYY");
   const { innerWidth, innerHeight } = window;
-  const { profile } = UIStore.currentState;
+  const profile = UIStore.useState((s) => s.profile);
   const [selectedTopic, setSelectedTopic] = useState("product by design");
   const [event, setEvent] = useState([]);
+  const [data, setData] = useState(null);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
@@ -182,6 +183,11 @@ const Landing = ({
   };
 
   useEffect(() => {
+    if (!data) {
+      api.get("browse?topic=event").then((resp) => {
+        setData(resp.data);
+      });
+    }
     if (data && data?.results) {
       generateEvent(dateNow);
     }
@@ -203,6 +209,7 @@ const Landing = ({
               Welcome to the Global Partnership on Marine Litter Digital
               Platform!
             </h1>
+            <h2>Inform. Connect. Inspire.</h2>
             <div className="body-text">
               A partly open-source, multi-stakeholder platform that compiles
               different resources, connects stakeholders, and integrates data to
@@ -255,7 +262,7 @@ const Landing = ({
                   key="popular-topic"
                   title=""
                   type="TREEMAP"
-                  height={600}
+                  height={500}
                   data={popularTopics.map((x) => {
                     return {
                       id: x.id,

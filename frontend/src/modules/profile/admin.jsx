@@ -55,7 +55,7 @@ const AdminSection = ({
   setArchiveItems,
 }) => {
   const archiveData = archiveItems.data;
-  const { profile } = UIStore.currentState;
+  const profile = UIStore.useState((s) => s.profile);
   const [modalRejectVisible, setModalRejectVisible] = useState(false);
   const [modalRejectFunction, setModalRejectFunction] = useState(false);
   const [previewContent, storePreviewContent] = useState({});
@@ -126,7 +126,6 @@ const AdminSection = ({
   };
 
   const assignReviewer = (item, reviewer) => {
-    const { profile } = UIStore.currentState;
     const data = { reviewer };
     const apiCall = item?.reviewer?.id ? api.patch : api.post;
     apiCall(`/review/${item.type}/${item.id}`, data).then((res) => {
