@@ -41,6 +41,27 @@
 }
 
 #browse {
+  .section-header {
+    background-color: #046799;
+    padding: 20px 0;
+    .page-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      h2 {
+        margin: 0;
+      }
+      .ant-switch {
+        border: 1px solid #fff;
+        margin-right: 8px;
+        background: transparent;
+      }
+      .ant-switch-checked {
+        background-color: rgba(255, 255, 255, 0.25);
+      }
+    }
+  }
+
   .ui.container {
     display: flex;
   }
@@ -151,7 +172,7 @@
 
   .main-content {
     flex: 1;
-    margin-left: 20px;
+    // margin-left: 20px;
 
     @media (min-width: 640px) {
       display: flex;

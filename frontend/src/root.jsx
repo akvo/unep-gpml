@@ -137,7 +137,6 @@ const Root = () => {
   const { profile, disclaimer, loading } = UIStore.useState((s) => s);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [data, setData] = useState(null);
-  const [filters, setFilters] = useState(null);
 
   useEffect(() => {
     if (loading) {
@@ -250,7 +249,6 @@ const Root = () => {
                 setStakeholderSignupModalVisible,
                 loginWithPopup,
                 isAuthenticated,
-                setFilters,
                 ...props,
               }}
             />
@@ -270,12 +268,13 @@ const Root = () => {
           path="/browse"
           render={(props) => (
             <Browse
-              {...props}
+              {...{
+                setWarningModalVisible,
+                ...props,
+              }}
               setStakeholderSignupModalVisible={
                 setStakeholderSignupModalVisible
               }
-              filters={filters}
-              setFilters={setFilters}
             />
           )}
         />

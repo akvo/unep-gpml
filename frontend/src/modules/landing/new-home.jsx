@@ -126,7 +126,6 @@ const Landing = ({
   setWarningModalVisible,
   isAuthenticated,
   loginWithPopup,
-  setFilters,
 }) => {
   const dateNow = moment().format("DD-MM-YYYY");
   const { innerWidth, innerHeight } = window;
@@ -189,11 +188,10 @@ const Landing = ({
   }, [data, dateNow, generateEvent]);
 
   useEffect(() => {
-    setFilters(null);
     UIStore.update((e) => {
       e.disclaimer = "home";
     });
-  }, [setFilters]);
+  }, []);
 
   return (
     <div id="landing">
