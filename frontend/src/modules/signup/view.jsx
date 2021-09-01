@@ -15,6 +15,7 @@ import { schema } from "../signup/schema";
 import cloneDeep from "lodash/cloneDeep";
 import xor from "lodash/xor";
 import api from "../../utils/api";
+import isEmpty from "lodash/isEmpty";
 
 const { Step } = Steps;
 
@@ -58,9 +59,7 @@ const getSchema = (
   {
     stakeholders,
     countries,
-    organisations,
     tags,
-    currencies,
     regionOptions,
     meaOptions,
     sectorOptions,
@@ -68,11 +67,7 @@ const getSchema = (
   },
   loading
 ) => {
-  //  console.log(UIStore.currentState);
   const prop = cloneDeep(schema.properties);
-  const orgs = [...organisations];
-  // const orgs = [...organisations, { id: -1, name: "Other" }].map((x) => x);
-  // organisation options
 
   prop.S1.properties.S1_ExpertisesAndActivities.properties[
     "seeking"
@@ -171,15 +166,31 @@ const getSchema = (
 const SignUp = ({ match: { params }, ...props }) => {
   const minHeightContainer = innerHeight * 0.8;
   const minHeightCard = innerHeight * 0.75;
+
+  const storeData = UIStore.useState((s) => ({
+    stakeholders: s.stakeholders,
+    countries: s.countries,
+    tags: s.tags,
+    regionOptions: s.regionOptions,
+    sectorOptions: s.sectorOptions,
+    organisationType: s.organisationType,
+    meaOptions: s.meaOptions,
+    formStep: s.formStep,
+    formEdit: s.formEdit,
+  }));
+
   const {
+    stakeholders,
     countries,
-    organisations,
     tags,
-    loading,
+    regionOptions,
+    sectorOptions,
+    organisationType,
+    meaOptions,
     formStep,
     formEdit,
-  } = UIStore.currentState;
-  //  console.log(UIStore.currentState);
+  } = storeData;
+
   const formData = signUpData.useState();
   const { editId, data } = formData;
   const { status, id } = formEdit.initiative;
@@ -243,10 +254,23 @@ const SignUp = ({ match: { params }, ...props }) => {
     setFormSchema({ schema: schema, loading: true });
   }, [highlight]);
 
+  const isLoaded = () => {
+    console.log(storeData);
+    return Boolean(
+      countries.length &&
+        !isEmpty(tags) &&
+        regionOptions.length &&
+        sectorOptions.length &&
+        organisationType?.length &&
+        meaOptions?.length &&
+        stakeholders?.length
+    );
+  };
+
   useEffect(() => {
     const dataId = Number(params?.id || id);
-    if (formSchema.loading && !loading) {
-      setFormSchema(getSchema(UIStore.currentState, false));
+    if (formSchema.loading && isLoaded()) {
+      setFormSchema(getSchema(storeData, false));
       // Manage form status, add/edit
       if (
         (status === "edit" || dataId) &&
@@ -270,7 +294,16 @@ const SignUp = ({ match: { params }, ...props }) => {
         e.editId = null;
       });
     }
-  }, [loading, formSchema, status, id, data, editId, params]);
+  }, [
+    //loading,
+    storeData,
+    formSchema,
+    status,
+    id,
+    data,
+    editId,
+    params,
+  ]);
 
   const renderSteps = (parentTitle, section, steps, index) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
@@ -456,7 +489,7 @@ const SignUp = ({ match: { params }, ...props }) => {
           </div>
         </div>
       </StickyBox>
-      {loading ? (
+      {!isLoaded() ? (
         <h2 className="loading">
           <LoadingOutlined spin /> Loading
         </h2>
