@@ -359,7 +359,9 @@ const Landing = ({
                     return (
                       <Card key={`fc-${i}`} className="item">
                         <div className="item-header">
-                          <span className="resource-label upper">{type}</span>
+                          <span className="resource-label upper">
+                            {topicNames(humps.camelizeKeys(type))}
+                          </span>
                           <span className="mark">
                             <RiseOutlined />
                             Trending
@@ -496,7 +498,9 @@ const Landing = ({
                     return (
                       <div key={`oc-card-${i}`}>
                         <div className="type-wrapper">
-                          <span className="mark">{x.type}</span>
+                          <span className="mark">
+                            {topicNames(humps.camelizeKeys(x.type))}
+                          </span>
                         </div>
                         <div
                           className="about"
