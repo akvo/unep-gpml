@@ -2,9 +2,11 @@
 
 #about-us {
   position: relative;
-
+  img {
+    max-width: 100%;
+  }
   a {
-    color: inherit; /* blue colors for links too */
+    color: $blue01 !important; /* blue colors for links too */
     text-decoration: inherit; /* no underline */
   }
 
@@ -22,12 +24,7 @@
 
   // Section Issue
   .section-issue-container {
-    background: linear-gradient(
-        0deg,
-        rgba(45, 103, 150, 0.8),
-        rgba(45, 103, 150, 0.8)
-      ),
-      url("../../images/section-issue.png");
+    background: url("../../images/section-issue.png");
     transform: matrix(-1, 0, 0, 1, 0, 0);
     background-repeat: no-repeat;
     background-size: cover;
@@ -43,7 +40,7 @@
         flex: 0 0 40%;
       }
       .section-issue-graphic {
-        flex: 0 0 50%;
+        flex: 0 0 58%;
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
@@ -58,17 +55,18 @@
             border: 1px solid #fff;
             background-color: transparent;
             padding: 1rem;
-            min-height: 23.5rem;
+            min-height: 18rem;
             .item-svg {
               position: absolute;
-              bottom: 4rem;
-              left: 5px;
-              right: 5px;
+              bottom: 3.3rem;
+              width: 78%;
+              margin: 0 auto;
+              text-align: center;
             }
             .item-description {
               position: absolute;
               bottom: 0.7rem;
-              height: 3.5rem;
+              height: 2.8rem;
               padding: 0 0.2rem;
             }
           }
@@ -114,12 +112,6 @@
       url("../../images/section-mission.png");
     background-repeat: no-repeat;
     background-size: cover;
-    .section-mission-graphic {
-      margin: 0 1rem;
-      padding: 2rem 10rem;
-      background: rgba(0, 91, 112, 0.5);
-      text-align: center;
-    }
   }
 
   // Section Info
@@ -169,13 +161,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .section-feature-component-text,
-      .section-feature-component-graphic {
-        flex: 0 0 48%;
+      .section-feature-component-text {
+        flex: 0 0 40%;
       }
       .section-feature-component-graphic {
-        background: rgba(255, 255, 255, 0.26);
-        padding: 1.5rem;
+        flex: 0 0 60%;
+
+        background: rgba(255, 255, 255, 0);
+        padding: 0.1rem;
         p {
           font-weight: 600;
         }
@@ -185,10 +178,31 @@
 
   // Section GPML Community
   .section-community-container {
-    background: #2b5260;
+    background: $green04;
     .section-community-wrapper {
       .section-community-graphic {
         text-align: center;
+      }
+    }
+  }
+
+  // Section History
+  .section-history-container {
+    background: white;
+    .section-history-wrapper {
+      .section-history-text {
+      }
+      .section-history-img-wrapper {
+        background-color: #006666 !important;
+        display: block;
+        .section-mission-graphic {
+          img {
+            margin: 0 auto;
+          }
+          margin: 0 auto;
+          padding: 2rem 10rem;
+          text-align: center;
+        }
       }
     }
   }
