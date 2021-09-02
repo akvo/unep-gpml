@@ -1,33 +1,29 @@
-import { Easing, backgroundColor } from "./chart-style.js";
+import {
+  Easing,
+  backgroundColor,
+  Color,
+  singleColor,
+  fontFamily,
+} from "./chart-style.js";
 
 const TreeMap = (data, extra, selected) => {
-  const color = [
-    "#3AB99F",
-    "#3DC1A9",
-    "#4DC9B5",
-    "#66D0BF",
-    "#8CDCCF",
-    "#94DED2",
-    "#A6E4DA",
-    "#D8F3EF",
-    "#CCEFEA",
-  ];
+  const { blue, yellow, white } = singleColor;
   const itemStyle = {
-    borderColor: "#fff",
+    borderColor: white,
     borderWidth: 2,
   };
   let rich = {
     name: {
-      fontFamily: "Open Sans",
+      ...fontFamily,
       lineHeight: 20,
       fontSize: 16,
       fontWeight: "bold",
     },
     value: {
-      fontFamily: "Open Sans",
+      ...fontFamily,
       fontSize: 15,
       fontWeight: "bold",
-      backgroundColor: "#fff",
+      backgroundColor: white,
       opacity: 0.95,
       padding: 8,
       borderRadius: 50,
@@ -41,17 +37,17 @@ const TreeMap = (data, extra, selected) => {
       return {
         ...x,
         label: {
-          color: "#384E85",
+          color: blue,
           rich: {
             ...rich,
             value: {
               ...rich.value,
-              color: "#FFB800",
+              color: yellow,
             },
           },
         },
         itemStyle: {
-          color: "#FFB800",
+          color: yellow,
           ...itemStyle,
         },
       };
@@ -59,12 +55,12 @@ const TreeMap = (data, extra, selected) => {
     return {
       ...x,
       label: {
-        color: "#fff",
+        color: white,
         rich: {
           ...rich,
           value: {
             ...rich.value,
-            color: "#384E85",
+            color: blue,
           },
         },
       },
@@ -74,13 +70,9 @@ const TreeMap = (data, extra, selected) => {
     };
   });
   let option = {
-    color: color,
+    ...Color,
     tooltip: {
       show: false,
-      trigger: "item",
-      formatter: "{b}",
-      padding: 5,
-      backgroundColor: "#f2f2f2",
     },
     series: [
       {
@@ -110,7 +102,7 @@ const TreeMap = (data, extra, selected) => {
             return `{name|${nameTmp}}\n\n{value|${value}}`;
           },
           show: true,
-          fontFamily: "Open Sans",
+          ...fontFamily,
           position: "inside",
           align: "center",
           verticalAlign: "middle",
