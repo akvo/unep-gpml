@@ -15,11 +15,7 @@ const ConnectStakeholdersDropdownMenu = withRouter(
     const handleOnClickNeedAuth = (topic) => {
       {
         profile?.reviewStatus === "APPROVED"
-          ? history.push(
-              `/${
-                topic === "stakeholder" ? "stakeholders" : "browse"
-              }?topic=${topic}`
-            )
+          ? history.push(`/stakeholders?topic=${topic}`)
           : Object.keys(profile).length > 1
           ? setWarningModalVisible(true)
           : isAuthenticated

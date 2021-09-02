@@ -77,7 +77,7 @@ const Browse = ({
     api.get(url).then((resp) => {
       setResults(resp?.data?.results);
       setCountData(resp?.data?.counts);
-      isLoaded() && setLoading(false);
+      setLoading(false);
     });
   };
 
@@ -317,11 +317,11 @@ const Browse = ({
               <StickyBox offsetBottom={500} className="sticky-pagination">
                 <div className="page">{}</div>
               </StickyBox>
-              {loading || isEmpty(results) ? (
+              {!isLoaded() || loading || isEmpty(results) ? (
                 <h2 className="loading">
                   <LoadingOutlined spin /> Loading
                 </h2>
-              ) : !loading && !isEmpty(results) ? (
+              ) : isLoaded() && !loading && !isEmpty(results) ? (
                 results.map((result) => (
                   <Result
                     key={`${result.type}-${result.id}`}
@@ -385,6 +385,8 @@ const TopicSelect = ({ value, onChange, countData, isApprovedUser }) => {
         })}
       </ul>
     </div>,
+    /* Commented this to remove */
+    /*
     isApprovedUser ? (
       <div className="field" key={"topic-select-unlisted"}>
         <div className="label">Stakeholders</div>
@@ -399,8 +401,6 @@ const TopicSelect = ({ value, onChange, countData, isApprovedUser }) => {
               )
             </Checkbox>
           </li>
-          {/* Commented this to remove */}
-          {/*
           <li>
             <Checkbox
               checked={value.indexOf("stakeholder") !== -1}
@@ -409,10 +409,11 @@ const TopicSelect = ({ value, onChange, countData, isApprovedUser }) => {
               Individual (
               {countData?.find((it) => it.topic === "stakeholder")?.count || 0})
             </Checkbox>
-          </li> */}
+          </li>
         </ul>
       </div>
     ) : null,
+    */
   ];
 };
 
