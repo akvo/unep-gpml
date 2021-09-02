@@ -10,9 +10,9 @@ const ConnectStakeholdersDropdownMenu = withRouter(
     setWarningModalVisible,
     isAuthenticated,
     setStakeholderSignupModalVisible,
-    loginWithPopup
+    loginWithPopup,
   }) => {
-    const handleOnClickNeedAuth = topic => {
+    const handleOnClickNeedAuth = (topic) => {
       {
         profile?.reviewStatus === "APPROVED"
           ? history.push(
@@ -21,10 +21,10 @@ const ConnectStakeholdersDropdownMenu = withRouter(
               }?topic=${topic}`
             )
           : Object.keys(profile).length > 1
-            ? setWarningModalVisible(true)
-            : isAuthenticated
-              ? setStakeholderSignupModalVisible(true)
-              : loginWithPopup();
+          ? setWarningModalVisible(true)
+          : isAuthenticated
+          ? setStakeholderSignupModalVisible(true)
+          : loginWithPopup();
       }
     };
 
