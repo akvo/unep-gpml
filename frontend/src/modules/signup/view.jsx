@@ -168,7 +168,7 @@ const SignUp = ({ match: { params }, ...props }) => {
   const minHeightCard = innerHeight * 0.75;
 
   const storeData = UIStore.useState((s) => ({
-    stakeholders: s.stakeholders.stakeholders,
+    stakeholders: s.stakeholders?.stakeholders,
     countries: s.countries,
     tags: s.tags,
     regionOptions: s.regionOptions,
