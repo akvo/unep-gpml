@@ -9,10 +9,9 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown, Avatar, Popover, Layout } from "antd";
 import {
-  RightOutlined,
-  DownOutlined,
   UserOutlined,
   SearchOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
@@ -38,14 +37,31 @@ import Topic from "./modules/topics/topic";
 import AboutUs from "./modules/about/about-us";
 import Glossary from "./modules/glossary/glossary";
 
+// Menu dropdown
+import AboutDropdownMenu from "./modules/dropdown-menu/about";
+import ExploreDropdownMenu from "./modules/dropdown-menu/explore";
+import DataHubDropdownMenu from "./modules/dropdown-menu/data-hub";
+import KnowledgeExchangeDropdownMenu from "./modules/dropdown-menu/knowledge-exchange";
+import ConnectStakeholdersDropdownMenu from "./modules/dropdown-menu/connect-stakeholders";
+
 Promise.all([
   api.get("/tag"),
   api.get("/currency"),
   api.get("/country"),
   api.get("/country-group"),
   api.get("/organisation"),
+  api.get("/landing"),
+  api.get("/stakeholder"),
 ]).then((res) => {
-  const [tag, currency, country, countryGroup, organisation] = res;
+  const [
+    tag,
+    currency,
+    country,
+    countryGroup,
+    organisation,
+    landing,
+    stakeholder,
+  ] = res;
   UIStore.update((e) => {
     e.tags = tag.data;
     e.currencies = currency.data;
@@ -57,36 +73,51 @@ Promise.all([
     e.organisations = uniqBy(sortBy(organisation.data, ["name"])).sort((a, b) =>
       a.name.localeCompare(b.name)
     );
+    e.summary = landing.data?.summary ? landing.data.summary : [];
+    e.stakeholders = stakeholder.data;
   });
 });
 
-api.get("/stakeholder").then((resp) => {
-  UIStore.update((e) => {
-    e.stakeholders = resp.data;
-  });
-});
+const DisclaimerCloseBtn = () => (
+  <Button
+    type="link"
+    icon={<CloseCircleOutlined />}
+    onClick={() => {
+      document.cookie = "showDisclaimer=false";
+      UIStore.update((e) => {
+        e.disclaimer = null;
+      });
+    }}
+  />
+);
 
 const disclaimerContent = {
   home: (
     <>
-      The GPML Digital Platform Phase 1 is now live and currently a Beta
-      Version. Help us test the platform and let us know what you think at{" "}
-      <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
-        unep-gpmarinelitter@un.org
-      </a>
-      . Take part in shaping the platform’s next releases, until its final
-      launch scheduled for 2023. Stay tuned!
+      <span>
+        The GPML Digital Platform Phase 1 is now live and currently a Beta
+        Version. Help us test the platform and let us know what you think at{" "}
+        <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
+          unep-gpmarinelitter@un.org
+        </a>
+        . Take part in shaping the platform’s next releases, until its final
+        launch scheduled for 2023. Stay tuned!
+      </span>
+      <DisclaimerCloseBtn />
     </>
   ),
   browse: (
     <>
-      UNEP shall not be liable for third party content hosted on the platform.
-      Contact us if you have any concerns with the content at:{" "}
-      <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
-        unep-gpmarinelitter@un.org
-      </a>
-      . Please note that during Beta Testing, content and functionality issues
-      may persist.
+      <span>
+        UNEP shall not be liable for third party content hosted on the platform.
+        Contact us if you have any concerns with the content at:{" "}
+        <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
+          unep-gpmarinelitter@un.org
+        </a>
+        . Please note that during Beta Testing, content and functionality issues
+        may persist.
+      </span>
+      <DisclaimerCloseBtn />
     </>
   ),
 };
@@ -101,9 +132,11 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
-  const { profile, disclaimer } = UIStore.useState((s) => ({
+  const { profile, disclaimer, summary, tags } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
+    summary: s.summary,
+    tags: s.tags,
   }));
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [
@@ -157,11 +190,14 @@ const Root = () => {
   return (
     <Router>
       <div id="root">
-        {disclaimerContent?.[disclaimer] && (
-          <div className="panel-disclaimer">
-            <p className="ui container">{disclaimerContent?.[disclaimer]}</p>
-          </div>
-        )}
+        {storage.getCookie("showDisclaimer") !== "false" &&
+          disclaimerContent?.[disclaimer] && (
+            <div className="panel-disclaimer">
+              <div className="ui container">
+                {disclaimerContent?.[disclaimer]}
+              </div>
+            </div>
+          )}
         <Header className="nav-header-container">
           <div className="ui container">
             <div className="logo-wrapper">
@@ -169,7 +205,15 @@ const Root = () => {
                 <img src={logo} className="logo" alt="GPML" />
               </Link>
             </div>
-            {renderDropdownMenu()}
+            {renderDropdownMenu(
+              tags,
+              summary,
+              profile,
+              setWarningModalVisible,
+              isAuthenticated,
+              setStakeholderSignupModalVisible,
+              loginWithPopup
+            )}
             <Switch>
               <Route path="/browse" />
               <Route>
@@ -343,189 +387,40 @@ const Root = () => {
   );
 };
 
-const renderDropdownMenu = () => {
+const renderDropdownMenu = (
+  tags,
+  summary,
+  profile,
+  setWarningModalVisible,
+  isAuthenticated,
+  setStakeholderSignupModalVisible,
+  loginWithPopup
+) => {
+  const excludeSummary = ["event", "organisation", "stakeholder"];
+  summary = summary
+    .filter((x) => !excludeSummary.includes(Object.keys(x)[0]))
+    .map((x) => {
+      return {
+        name: Object.keys(x)[0],
+        count: x[Object.keys(x)[0]],
+      };
+    });
   return (
     <div className="menu-dropdown-container">
       <AboutDropdownMenu />
-      <ExploreDropdownMenu />
+      <ExploreDropdownMenu topics={tags?.topics ? tags.topics.length : 0} />
       <DataHubDropdownMenu />
-      <KnowledgeExchangeDropdownMenu />
-      <ConnectStakeholdersDropdownMenu />
+      <KnowledgeExchangeDropdownMenu resources={summary} />
+      <ConnectStakeholdersDropdownMenu
+        {...{
+          profile,
+          setWarningModalVisible,
+          isAuthenticated,
+          setStakeholderSignupModalVisible,
+          loginWithPopup,
+        }}
+      />
     </div>
-  );
-};
-
-const AboutDropdownMenu = withRouter(({ history }) => {
-  return (
-    <Dropdown
-      overlayClassName="menu-dropdown-wrapper"
-      overlay={
-        <Menu className="menu-dropdown">
-          <Menu.Item className="nav-link">Partnership</Menu.Item>
-          <Menu.Item
-            className="nav-link"
-            onClick={() => history.push("/about-us")}
-          >
-            Digital Platform
-          </Menu.Item>
-        </Menu>
-      }
-      trigger={["click"]}
-      placement="bottomRight"
-    >
-      <Button type="link" className="menu-btn nav-link">
-        About <DownOutlined />
-      </Button>
-    </Dropdown>
-  );
-});
-
-const ExploreDropdownMenu = withRouter(({ history }) => {
-  return (
-    <Dropdown
-      overlayClassName="menu-dropdown-wrapper"
-      overlay={
-        <Menu className="menu-dropdown">
-          <Menu.Item
-            className="nav-link"
-            onClick={() => history.push("/topics")}
-          >
-            Topics <span className="badge-count">6</span>
-          </Menu.Item>
-          <Menu.Item className="nav-link">
-            Goals <span className="badge-count">11</span>
-          </Menu.Item>
-          <Menu.Item className="nav-link">
-            Stories <span className="badge-count">8</span>
-          </Menu.Item>
-          <Menu.Item
-            className="nav-link"
-            onClick={() => history.push("/glossary")}
-          >
-            Glossary <span className="badge-count">54</span>
-          </Menu.Item>
-        </Menu>
-      }
-      trigger={["click"]}
-      placement="bottomRight"
-    >
-      <Button type="link" className="menu-btn nav-link">
-        Explore <DownOutlined />
-      </Button>
-    </Dropdown>
-  );
-});
-
-const DataHubDropdownMenu = withRouter(({ history }) => {
-  return (
-    <Dropdown
-      overlayClassName="menu-dropdown-wrapper"
-      overlay={
-        <Menu className="menu-dropdown">
-          <Menu.Item className="nav-link">Data Map & Layers</Menu.Item>
-          <Menu.Item className="nav-link">Dashboards</Menu.Item>
-          <Menu.Item className="nav-link">Data Catalogue</Menu.Item>
-          <Menu.Item className="nav-link">Data Content</Menu.Item>
-        </Menu>
-      }
-      trigger={["click"]}
-      placement="bottomRight"
-    >
-      <Button type="link" className="menu-btn nav-link">
-        Data Hub <DownOutlined />
-      </Button>
-    </Dropdown>
-  );
-});
-
-const KnowledgeExchangeDropdownMenu = withRouter(({ history }) => {
-  return (
-    <Dropdown
-      overlayClassName="menu-dropdown-wrapper"
-      overlay={
-        <Menu className="menu-dropdown">
-          <Menu.Item className="nav-link">
-            All Resources <span className="badge-count">54</span>
-          </Menu.Item>
-          <Menu.Item className="indent-right nav-link">
-            Inititative <span className="badge-count">54</span>
-          </Menu.Item>
-          <Menu.Item className="indent-right nav-link">
-            Action Plan <span className="badge-count">54</span>
-          </Menu.Item>
-          <Menu.Item className="indent-right nav-link">
-            Policy <span className="badge-count">54</span>
-          </Menu.Item>
-          <Menu.Item className="indent-right nav-link">
-            Technical resource <span className="badge-count">54</span>
-          </Menu.Item>
-          <Menu.Item className="indent-right nav-link">
-            Financing resource <span className="badge-count">54</span>
-          </Menu.Item>
-          <Menu.Item className="indent-right nav-link">
-            Technology <span className="badge-count">54</span>
-          </Menu.Item>
-          <Menu.Item className="nav-link">
-            Capacity building <span className="badge-count">54</span>
-          </Menu.Item>
-        </Menu>
-      }
-      trigger={["click"]}
-      placement="bottomRight"
-    >
-      <Button type="link" className="menu-btn nav-link">
-        Knowledge Exchange <DownOutlined />
-      </Button>
-    </Dropdown>
-  );
-});
-
-const ConnectStakeholdersDropdownMenu = withRouter(({ history }) => {
-  return (
-    <Dropdown
-      overlayClassName="menu-dropdown-wrapper"
-      overlay={
-        <Menu className="menu-dropdown">
-          <Menu.Item className="nav-link">Events</Menu.Item>
-          <Menu.Item className="nav-link">Stakeholders Directory</Menu.Item>
-          <Menu.Item className="nav-link">Forums</Menu.Item>
-          <Menu.Item className="nav-link">Partners</Menu.Item>
-          <Menu.Item className="nav-link">Sponsors</Menu.Item>
-        </Menu>
-      }
-      trigger={["click"]}
-      placement="bottomRight"
-    >
-      <Button type="link" className="menu-btn nav-link">
-        Connect Stakeholders <DownOutlined />
-      </Button>
-    </Dropdown>
-  );
-});
-
-const renderMenu = () => {
-  return (
-    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[]}>
-      <Menu.Item key="about">
-        About <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
-      </Menu.Item>
-      <Menu.Item key="explore">
-        Explore{" "}
-        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
-      </Menu.Item>
-      <Menu.Item key="data-hub">
-        Data Hub{" "}
-        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
-      </Menu.Item>
-      <Menu.Item key="knowledge-exchange">
-        Knowledge Exchange{" "}
-        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
-      </Menu.Item>
-      <Menu.Item key="connect-stakeholders">
-        Connect Stakeholders{" "}
-        <DownOutlined style={{ fontSize: "0.65rem", fontWeight: 600 }} />
-      </Menu.Item>
-    </Menu>
   );
 };
 
@@ -569,12 +464,12 @@ const UserButton = withRouter(({ history, logout }) => {
               history.push("/profile");
             }}
           >
-            Profile <RightOutlined />
+            Profile
           </Menu.Item>
           <Menu.Item
             onClick={() => logout({ returnTo: window.location.origin })}
           >
-            Logout <RightOutlined />
+            Logout
           </Menu.Item>
         </Menu>
       }
@@ -626,7 +521,7 @@ const AddButton = withRouter(
                     history.push("/add-initiative");
                   }}
                 >
-                  Initiative <RightOutlined />
+                  Initiative
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => {
@@ -646,7 +541,7 @@ const AddButton = withRouter(
                     history.push("/add-action-plan");
                   }}
                 >
-                  Action Plan <RightOutlined />
+                  Action Plan
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => {
@@ -666,7 +561,7 @@ const AddButton = withRouter(
                     history.push("/add-policy");
                   }}
                 >
-                  Policy <RightOutlined />
+                  Policy
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => {
@@ -686,7 +581,7 @@ const AddButton = withRouter(
                     history.push("/add-technical-resource");
                   }}
                 >
-                  Technical Resource <RightOutlined />
+                  Technical Resource
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => {
@@ -706,7 +601,7 @@ const AddButton = withRouter(
                     history.push("/add-financing-resource");
                   }}
                 >
-                  Financing Resource <RightOutlined />
+                  Financing Resource
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => {
@@ -726,7 +621,7 @@ const AddButton = withRouter(
                     history.push("/add-event");
                   }}
                 >
-                  Event <RightOutlined />
+                  Event
                 </Menu.Item>
                 <Menu.Item
                   onClick={() => {
@@ -746,7 +641,7 @@ const AddButton = withRouter(
                     history.push("/add-technology");
                   }}
                 >
-                  Technology <RightOutlined />
+                  Technology
                 </Menu.Item>
               </Menu>
             }

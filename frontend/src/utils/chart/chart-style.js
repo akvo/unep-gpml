@@ -7,6 +7,16 @@ export const popupFormatter = (params) => {
   return params.name + ": " + value;
 };
 
+export const singleColor = {
+  blue: "#384E85",
+  yellow: "#FFB800",
+  white: "#fff",
+};
+
+export const fontFamily = {
+  fontFamily: "Open Sans",
+};
+
 export const backgroundColor = {
   backgroundColor: "transparent",
 };
@@ -24,8 +34,8 @@ export const Easing = {
 
 export const TextStyle = {
   textStyle: {
+    ...fontFamily,
     color: "#000",
-    fontFamily: "Open Sans",
     fontSize: "1rem",
     fontWeight: "bold",
   },
@@ -33,18 +43,15 @@ export const TextStyle = {
 
 export const Color = {
   color: [
-    "#36aa40",
-    "#0081e0",
-    "#2872c6",
-    "#355c7d",
-    "#3D588A",
-    "#5C616A",
-    "#C9CDC0",
-    "#DBC2CF",
-    "#2E4756",
-    "#CC9485",
-    "#CCD3B6",
-    "#FFE800",
+    "#3AB99F",
+    "#3DC1A9",
+    "#4DC9B5",
+    "#66D0BF",
+    "#8CDCCF",
+    "#94DED2",
+    "#A6E4DA",
+    "#D8F3EF",
+    "#CCEFEA",
   ],
 };
 
@@ -65,7 +72,7 @@ export const Legend = {
   y: "bottom",
   bottom: "40px",
   textStyle: {
-    fontFamily: "Open Sans",
+    ...fontFamily,
     fontWeight: 200,
     fontSize: 12,
   },
