@@ -189,11 +189,12 @@ const SignUp = ({ match: { params }, ...props }) => {
     meaOptions,
     formStep,
     formEdit,
+    profile,
   } = storeData;
 
   const formData = signUpData.useState();
   const { editId, data } = formData;
-  const { status, id } = formEdit.initiative;
+  const { status, id } = formEdit.signupStep;
 
   const tabsDataRaw = [
     {
@@ -461,7 +462,7 @@ const SignUp = ({ match: { params }, ...props }) => {
               <Col xs={24} lg={24}>
                 <div
                   className={`form-meta ${
-                    formStep.initiative === 2 ? "submitted" : ""
+                    formStep.signupStep === 2 ? "submitted" : ""
                   }`}
                 >
                   <div className="highlight">
@@ -474,7 +475,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                       ? "Required fields highlighted"
                       : "Highlight required"}
                   </div>
-                  {formStep.initiative === 1 && (
+                  {formStep.signupStep === 1 && (
                     <Button
                       disabled={disabledBtn.disabled}
                       loading={sending}
@@ -498,7 +499,7 @@ const SignUp = ({ match: { params }, ...props }) => {
       ) : (
         <div className="ui container">
           <div className="form-container">
-            {formStep.initiative === 1 && (
+            {formStep.signupStep === 1 && (
               <Row
                 style={{
                   minHeight: `${minHeightContainer}px`,
@@ -595,7 +596,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                 </Col>
               </Row>
             )}
-            {formStep.initiative === 2 && (
+            {formStep.signupStep === 2 && (
               <Row>
                 <Col span={24}>
                   <Card
