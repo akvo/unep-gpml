@@ -66,6 +66,22 @@
 
               :else value))))))
 
+
+(defn generate-filter-topic-snippet [params]
+  (str/join
+   " "
+   (list
+    "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz, (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM v_topic t"
+    (when (and (:favorites params) (:user-id params) (:resource-types params))
+      "JOIN v_stakeholder_association a ON a.stakeholder = :user-id AND a.id = (t.json->>'id')::int AND (a.topic = t.topic OR (a.topic = 'resource' AND t.topic IN (:v*:resource-types)))")
+    (when (seq (:tag params))
+      "JOIN json_array_elements(t.json->'tags') tags ON true JOIN json_each_text(tags) tag ON tag.value = ANY(ARRAY[:v*:tag]::varchar[])")
+    "WHERE 1=1"
+    (when (seq (:search-text params)) "AND t.search_text @@ to_tsquery(:search-text)")
+    (when (seq (:geo-coverage params)) "AND t.geo_coverage IN (:v*:geo-coverage)")
+    ;; NOTE: Empty strings in the tags column cause problems with using json_array_elements
+     (when (seq (:tag params)) "AND t.json->>'tags' <> ''"))))
+
 (comment
   (generate-jsonb {:q3 1 :q4 "300" :q5 nil :created_by "John" :version 1})
   (generate-insert {:q3 1 :q4 "300" :q5 nil :created_by "John" :version 1})

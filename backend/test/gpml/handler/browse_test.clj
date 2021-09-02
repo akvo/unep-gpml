@@ -214,4 +214,19 @@
         ;; only tech returned
         (is (= 1 (count counts)))
         (is (= (:topic tech-count) "technology"))
-        (is (= (:count tech-count) 1))))))
+        (is (= (:count tech-count) 1))))
+
+    (testing "Testing query for BOGUS tags"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc :parameters {:query {:tag "bogus1,bogus2"}})))
+            body (-> resp :body)
+            results (:results body)]
+        (is (= 0 (count results)))))
+
+    (testing "Testing query for existing tags"
+      (let [resp (handler (-> (mock/request :get "/")
+                              (assoc :parameters {:query {:tag "waste management"}})
+                              ))
+            body (-> resp :body)
+            results (:results body)]
+        (is (= 16 (count results)))))))

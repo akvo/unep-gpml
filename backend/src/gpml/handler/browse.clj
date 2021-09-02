@@ -26,6 +26,12 @@
     [:or
      [:string {:max 0}]
      [:re topic-re]]]
+   [:tag {:optional true
+          :swagger {:description "Comma separated list of tags"
+                    :type "string"
+                    :collectionFormat "csv"
+                    :allowEmptyValue true}}
+    string?]
    [:q {:optional true
         :swagger {:description "Text search term to be found on the different topics"
                   :type "string"
@@ -49,7 +55,7 @@
     [:int {:min 0}]]])
 
 (defn get-db-filter
-  [{:keys [q country topic favorites user-id limit offset]}]
+  [{:keys [q country topic tag favorites user-id limit offset]}]
   (merge {}
          (when offset
            {:offset offset})
@@ -63,6 +69,8 @@
                                (map read-string))})
          (when (seq topic)
            {:topic (set (str/split topic #","))})
+         (when (seq tag)
+           {:tag (set (str/split tag #","))})
          (when (seq q)
            {:search-text (->> (str/trim q)
                               (re-seq #"\w+")
