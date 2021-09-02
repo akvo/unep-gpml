@@ -11,6 +11,8 @@ import api from "../../utils/api";
 
 const MapLanding = ({
   history,
+  data,
+  setData,
   setStakeholderSignupModalVisible,
   setWarningModalVisible,
   isAuthenticated,
@@ -27,11 +29,12 @@ const MapLanding = ({
   }));
   const [country, setCountry] = useState(null);
   const [counts, setCounts] = useState("project");
-  const [data, setData] = useState(null);
-  const isLoaded = () => Boolean(countries.length);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
+
+  const isLoaded = () => Boolean(countries.length);
+
   const clickCountry = (name) => {
     setToggleButton("list");
     updateQuery("country", name);
@@ -72,11 +75,12 @@ const MapLanding = ({
   });
 
   useEffect(() => {
-    setFilters(null);
-    api.get("/landing").then((resp) => {
-      setData(resp.data);
-    });
-  }, [setFilters]);
+    filters && setFilters(null);
+    !data &&
+      api.get("/landing").then((resp) => {
+        setData(resp.data);
+      });
+  }, [filters, setFilters, data, setData]);
 
   return (
     <div id="map-landing">

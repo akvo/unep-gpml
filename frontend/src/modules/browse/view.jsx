@@ -62,6 +62,10 @@ const Browse = ({
   const pageSize = 10;
   const [toggleButton, setToggleButton] = useState("list");
   const [filters, setFilters] = useState(null);
+  // state for maps data
+  const [data, setData] = useState(null);
+
+  const isLoaded = () => Boolean(!isEmpty(countries));
 
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
@@ -72,9 +76,10 @@ const Browse = ({
     api.get(url).then((resp) => {
       setResults(resp?.data?.results);
       setCountData(resp?.data?.counts);
-      setLoading(false);
+      isLoaded() && setLoading(false);
     });
   };
+
   useEffect(() => {
     // setFilterCountries if user click from map to browse view
     query?.country &&
@@ -104,6 +109,7 @@ const Browse = ({
     // adding a dependency here on location makes the FE send multiple
     // requests to the backend.
   }, [isLoading]); // eslint-disable-line
+
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = "browse";
@@ -116,6 +122,7 @@ const Browse = ({
       }, 100);
     }
   }, [profile]);
+
   const updateQuery = (param, value) => {
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
@@ -136,6 +143,7 @@ const Browse = ({
       setFilterCountries(value);
     }
   };
+
   const handleRelationChange = (relation) => {
     api
       .post("/favorite", relation)
@@ -181,6 +189,7 @@ const Browse = ({
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
   );
+
   return (
     <div id="browse">
       <div className="section-header">
@@ -200,6 +209,8 @@ const Browse = ({
       {toggleButton === "map" ? (
         <MapLanding
           {...{
+            data,
+            setData,
             setWarningModalVisible,
             setStakeholderSignupModalVisible,
             loginWithPopup,
