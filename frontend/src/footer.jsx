@@ -190,7 +190,7 @@ const Footer = ({
               </li>
               <li>
                 {profile?.reviewStatus === "APPROVED" ? (
-                  <a href="/browse?topic=stakeholder">Individual</a>
+                  <a href="/stakeholders?topic=stakeholder">Individual</a>
                 ) : (
                   <span
                     style={{ cursor: "pointer" }}

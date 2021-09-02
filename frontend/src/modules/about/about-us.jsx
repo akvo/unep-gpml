@@ -100,7 +100,6 @@ const renderSectionSummary = () => {
         <div className="item" key={`summary-${i}`}>
           <div className="item-name text-green">{name}</div>
           <div className="item-value text-white">{value}</div>
-          <div className="item-increment text-green">{`+ ${increment}`}</div>
         </div>
       );
     });
@@ -241,9 +240,6 @@ const renderSectionKeyFeaturesAndComponents = () => {
           </a>
         </div>
         <div className="section-feature-component-graphic">
-          <p className="body-text text-white">
-            GPML Digital Platform: Key Components
-          </p>
           <Image src={featureComponent} width="90%" preview={false} />
         </div>
       </div>

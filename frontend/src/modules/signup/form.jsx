@@ -87,6 +87,9 @@ const SignUpForm = withRouter(
       if (data.offering) {
         data.offering = data.offering.map((x) => Number(x));
       }
+      if (data.tags) {
+        data.tags = data.tags.map((x) => Number(x));
+      }
       data.org = {};
 
       if (data.orgName) {
