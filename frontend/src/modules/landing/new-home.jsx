@@ -268,7 +268,9 @@ const Landing = ({
               <h2>
                 Popular Topics
                 <span className="see-more-link">
-                  See all topics <RightOutlined />
+                  <Link to="/topics">
+                    See all topics <RightOutlined />
+                  </Link>
                 </span>
               </h2>
             </div>
