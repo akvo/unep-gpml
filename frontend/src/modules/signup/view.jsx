@@ -474,15 +474,17 @@ const SignUp = ({ match: { params }, ...props }) => {
                       ? "Required fields highlighted"
                       : "Highlight required"}
                   </div>
-                  <Button
-                    disabled={disabledBtn.disabled}
-                    loading={sending}
-                    type={disabledBtn.type}
-                    size="large"
-                    onClick={(e) => handleOnClickBtnSubmit(e)}
-                  >
-                    SUBMIT
-                  </Button>
+                  {formStep.initiative === 1 && (
+                    <Button
+                      disabled={disabledBtn.disabled}
+                      loading={sending}
+                      type={disabledBtn.type}
+                      size="large"
+                      onClick={(e) => handleOnClickBtnSubmit(e)}
+                    >
+                      SUBMIT
+                    </Button>
+                  )}
                 </div>
               </Col>
             </Row>
