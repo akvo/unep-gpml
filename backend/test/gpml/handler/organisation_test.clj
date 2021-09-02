@@ -4,7 +4,7 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
             [gpml.handler.organisation :as organisation]
-            [gpml.handler.profile :as profile]
+            [gpml.handler.stakeholder :as stakeholder]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
@@ -12,8 +12,8 @@
 
 (deftest handler-post-with-new-organisation-with-non-existent-second-contact-test
   (testing "New profile is created with new organisation"
-    (let [system          (ig/init fixtures/*system* [::organisation/post ::profile/post])
-          profile-handler (::profile/post system)
+    (let [system          (ig/init fixtures/*system* [::organisation/post ::stakeholder/post])
+          profile-handler (::stakeholder/post system)
           org-handler     (::organisation/post system)
           db              (-> system :duct.database.sql/hikaricp :spec)
           created-by      (format "created_by_%s@akvo.org" (fixtures/uuid))

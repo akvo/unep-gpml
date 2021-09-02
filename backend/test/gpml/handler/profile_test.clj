@@ -6,7 +6,7 @@
             [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
-            [gpml.handler.profile :as profile]
+            [gpml.handler.stakeholder :as stakeholder]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
@@ -63,8 +63,8 @@
 
 (deftest handler-post-with-existing-organisation-test
   (testing "New profile is created with existing organisation"
-    (let [system (ig/init fixtures/*system* [::profile/post])
-          handler (::profile/post system)
+    (let [system (ig/init fixtures/*system* [::stakeholder/post])
+          handler (::stakeholder/post system)
           db (-> system :duct.database.sql/hikaricp :spec)
           data (seed-important-database db)
           ;; John trying to sign up with new organisation
@@ -108,8 +108,8 @@
 
 (deftest handler-post-with-new-organisation-test
   (testing "New profile is created with new organisation"
-    (let [system (ig/init fixtures/*system* [::profile/post])
-          handler (::profile/post system)
+    (let [system (ig/init fixtures/*system* [::stakeholder/post])
+          handler (::stakeholder/post system)
           db (-> system :duct.database.sql/hikaricp :spec)
           data (seed-important-database db)
           ;; John trying to sign up with new organisation
@@ -159,8 +159,8 @@
 
 (deftest handler-post-test-as-citizen
   (testing "New profile without organisation and some other non-required detail is created"
-    (let [system (ig/init fixtures/*system* [::profile/post])
-          handler (::profile/post system)
+    (let [system (ig/init fixtures/*system* [::stakeholder/post])
+          handler (::stakeholder/post system)
           db (-> system :duct.database.sql/hikaricp :spec)
           data (seed-important-database db)
           body-params (assoc (new-profile 1)
@@ -185,8 +185,8 @@
 
 (deftest handler-put-test
   (testing "Update profile once its signed up")
-    (let [system (ig/init fixtures/*system* [::profile/put])
-          handler (::profile/put system)
+    (let [system (ig/init fixtures/*system* [::stakeholder/put])
+          handler (::stakeholder/put system)
           db (-> system :duct.database.sql/hikaricp :spec)
           data (seed-important-database db)
           ;; John created account with country value Spain and organisation Akvo
@@ -245,8 +245,8 @@
 
 (deftest handler-put-test-but-the-pic-is-from-outside
   (testing "Update profile once its signed up")
-    (let [system (ig/init fixtures/*system* [::profile/put])
-          handler (::profile/put system)
+    (let [system (ig/init fixtures/*system* [::stakeholder/put])
+          handler (::stakeholder/put system)
           db (-> system :duct.database.sql/hikaricp :spec)
           data (seed-important-database db)
           ;; John created account with country value Indonesia and organisation Akvo
@@ -295,8 +295,8 @@
 
 (deftest handler-get-test-has-profile
   (testing "Profile endpoint returns non empty response"
-    (let [system (ig/init fixtures/*system* [::profile/get])
-          handler (::profile/get system)
+    (let [system (ig/init fixtures/*system* [::stakeholder/profile])
+          handler (::stakeholder/profile system)
           db (-> system :duct.database.sql/hikaricp :spec)
           _ (seed-important-database db)
           tags (->> (db.tag/all-tags db)
@@ -323,8 +323,8 @@
 
 (deftest handler-get-test-no-profile
   (testing "Profile endpoint returns empty response"
-    (let [system (ig/init fixtures/*system* [::profile/get])
-          handler (::profile/get system)
+    (let [system (ig/init fixtures/*system* [::stakeholder/profile])
+          handler (::stakeholder/profile system)
           ;; dashboard check if this guy has profile
           resp (handler (-> (mock/request :get "/")
                             (assoc :jwt-claims {:email "john@org"})))]

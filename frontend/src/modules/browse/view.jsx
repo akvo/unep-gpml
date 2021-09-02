@@ -22,7 +22,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { TrimText } from "../../utils/string";
 import MapLanding from "./map-landing";
 
-function useQuery() {
+export const useQuery = () => {
   const srcParams = new URLSearchParams(useLocation().search);
   const ret = {
     country: [],
@@ -36,7 +36,7 @@ function useQuery() {
       .filter((it) => it !== "");
   }
   return ret;
-}
+};
 
 let tmid;
 
@@ -413,7 +413,12 @@ const TopicSelect = ({ value, onChange, countData, isApprovedUser }) => {
   ];
 };
 
-const Result = ({ result, relations, handleRelationChange, profile }) => {
+export const Result = ({
+  result,
+  relations,
+  handleRelationChange,
+  profile,
+}) => {
   const fullName = (data) =>
     data.title
       ? `${data.title} ${data.firstName} ${data.lastName}`

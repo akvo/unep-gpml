@@ -25,8 +25,8 @@
     sth))
 
 (deftest get-stakeholders-public-test
-  (let [system (ig/init fixtures/*system* [::stakeholder/list])
-        handler (::stakeholder/list system)
+  (let [system (ig/init fixtures/*system* [::stakeholder/get])
+        handler (::stakeholder/get system)
         db (-> system :duct.database.sql/hikaricp :spec)
         ;; Reviewers
         _ (new-stakeholder db "reviewer-approved@org.com" "R" "A" "REVIEWER" "APPROVED")
@@ -42,7 +42,7 @@
 
     (testing "Get stakeholders WITHOUT authenticating"
       (let [resp (handler (mock/request :get "/"))
-            body (:body resp)]
+            body (-> resp :body :stakeholders)]
         (is (= 200 (:status resp)))
         (is (= 3 (count body)))
         (is (nil? (:stakeholders body)))))
@@ -52,7 +52,7 @@
                               (assoc :approved? true
                                      :user user
                                      :parameters {:query {:page 1 :limit 10}})))
-            body (:body resp)]
+            body (-> resp :body :stakeholders)]
         (is (= 200 (:status resp)))
         (is (= 3 (count body)))
         (is (nil? (:stakeholders body)))))
