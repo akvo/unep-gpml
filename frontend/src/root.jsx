@@ -9,11 +9,8 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown, Avatar, Popover, Layout } from "antd";
 import {
-  RightOutlined,
-  DownOutlined,
   UserOutlined,
   SearchOutlined,
-  LoadingOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import Landing from "./modules/landing/new-home";
@@ -30,17 +27,21 @@ import DetailsView from "./modules/details/view";
 import Footer from "./footer";
 import uniqBy from "lodash/uniqBy";
 import sortBy from "lodash/sortBy";
-import sumBy from "lodash/sumBy";
 import AddFinancingResource from "./modules/financing-resource/view";
 import AddTechnicalResource from "./modules/technical-resource/view";
 import AddInitiative from "./modules/initiative/view";
 import AddActionPlan from "./modules/action-plan/view";
 import AddTechnology from "./modules/technology/view";
 import AddPolicy from "./modules/policy/view";
-import { topicNames } from "./utils/misc";
-import humps from "humps";
 import AboutUs from "./modules/about/about-us";
 import Glossary from "./modules/glossary/glossary";
+
+// Menu dropdown
+import AboutDropdownMenu from "./modules/dropdown-menu/about";
+import ExploreDropdownMenu from "./modules/dropdown-menu/explore";
+import DataHubDropdownMenu from "./modules/dropdown-menu/data-hub";
+import KnowledgeExchangeDropdownMenu from "./modules/dropdown-menu/knowledge-exchange";
+import ConnectStakeholdersDropdownMenu from "./modules/dropdown-menu/connect-stakeholders";
 
 Promise.all([
   api.get("/tag"),
@@ -420,243 +421,6 @@ const renderDropdownMenu = (
     </div>
   );
 };
-
-const AboutDropdownMenu = withRouter(({ history }) => {
-  return (
-    <Button
-      type="link"
-      className="menu-btn nav-link menu-dropdown"
-      onClick={() => history.push("/about-us")}
-      style={{ display: "flex", alignItems: "center", height: "50px" }}
-    >
-      About
-    </Button>
-  );
-  // Unommented, if needed later
-  // return (
-  //   <Dropdown
-  //     overlayClassName="menu-dropdown-wrapper"
-  //     overlay={
-  //       <Menu className="menu-dropdown">
-  //         <Menu.Item className="nav-link">Partnership</Menu.Item>
-  //         <Menu.Item
-  //           className="nav-link"
-  //           onClick={() => history.push("/about-us")}
-  //         >
-  //           Digital Platform
-  //         </Menu.Item>
-  //       </Menu>
-  //     }
-  //     trigger={["click"]}
-  //     placement="bottomRight"
-  //   >
-  //     <Button
-  //       type="link"
-  //       className="menu-btn nav-link"
-  //     >
-  //       About <DownOutlined />
-  //     </Button>
-  //   </Dropdown>
-  // );
-});
-
-const ExploreDropdownMenu = withRouter(({ history, topics }) => {
-  return (
-    <Dropdown
-      overlayClassName="menu-dropdown-wrapper"
-      overlay={
-        <Menu className="menu-dropdown">
-          <Menu.Item className="nav-link" disabled={!topics}>
-            Topics
-            <Button
-              className="badge-count"
-              size="small"
-              type="ghost"
-              shape="circle"
-              icon={topics}
-              loading={!topics}
-            />
-          </Menu.Item>
-          {/* <Menu.Item className="nav-link">
-            Goals <span className="badge-count">11</span>
-          </Menu.Item>
-          <Menu.Item className="nav-link">
-            Stories <span className="badge-count">8</span>
-          </Menu.Item> */}
-          <Menu.Item
-            className="nav-link"
-            onClick={() => history.push("/glossary")}
-          >
-            Glossary
-            <Button
-              className="badge-count"
-              size="small"
-              type="ghost"
-              shape="circle"
-              // icon={10}
-              loading={false}
-            />
-          </Menu.Item>
-        </Menu>
-      }
-      trigger={["click"]}
-      placement="bottomRight"
-    >
-      <Button type="link" className="menu-btn nav-link">
-        Explore <DownOutlined />
-      </Button>
-    </Dropdown>
-  );
-});
-
-const DataHubDropdownMenu = withRouter(({ history }) => {
-  return (
-    <Dropdown
-      overlayClassName="menu-dropdown-wrapper"
-      overlay={
-        <Menu className="menu-dropdown">
-          <Menu.Item className="nav-link">Data Map & Layers</Menu.Item>
-          <Menu.Item className="nav-link">Data Catalogue</Menu.Item>
-          <Menu.Item className="nav-link">Join Data Hub</Menu.Item>
-        </Menu>
-      }
-      trigger={["click"]}
-      placement="bottomRight"
-    >
-      <Button type="link" className="menu-btn nav-link">
-        Data Hub <DownOutlined />
-      </Button>
-    </Dropdown>
-  );
-});
-
-const KnowledgeExchangeDropdownMenu = withRouter(({ history, resources }) => {
-  const loading = !resources.length;
-  const allResources = sumBy(resources, "count");
-  return (
-    <Dropdown
-      overlayClassName="menu-dropdown-wrapper"
-      overlay={
-        <Menu className="menu-dropdown">
-          <Menu.Item
-            className="nav-link"
-            onClick={() => history.push("/browse")}
-          >
-            All Resources
-            <Button
-              className="badge-count"
-              size="small"
-              type="ghost"
-              shape="circle"
-              icon={allResources}
-              loading={loading}
-            />
-          </Menu.Item>
-          {resources.map((x, i) => {
-            const { name, count } = x;
-            return (
-              <Menu.Item
-                key={`${name}-${i}`}
-                className="indent-right nav-link"
-                disabled={loading}
-                onClick={() =>
-                  history.push(`/browse?topic=${humps.decamelize(name)}`)
-                }
-              >
-                {topicNames(name)}
-                <Button
-                  className="badge-count"
-                  size="small"
-                  type="ghost"
-                  shape="circle"
-                  icon={count}
-                  loading={loading}
-                />
-              </Menu.Item>
-            );
-          })}
-          {/* <Menu.Item className="nav-link">
-            Capacity building
-            <Button
-              className="badge-count"
-              size="small"
-              type="ghost"
-              shape="circle"
-              icon={10}
-              loading={false}
-            />
-          </Menu.Item> */}
-        </Menu>
-      }
-      trigger={["click"]}
-      placement="bottomRight"
-    >
-      <Button type="link" className="menu-btn nav-link">
-        Knowledge Exchange <DownOutlined />
-      </Button>
-    </Dropdown>
-  );
-});
-
-const ConnectStakeholdersDropdownMenu = withRouter(
-  ({
-    history,
-    profile,
-    setWarningModalVisible,
-    isAuthenticated,
-    setStakeholderSignupModalVisible,
-    loginWithPopup,
-  }) => {
-    const handleOnClickNeedAuth = (topic) => {
-      {
-        profile?.reviewStatus === "APPROVED"
-          ? history.push(`/browse?topic=${topic}`)
-          : Object.keys(profile).length > 1
-          ? setWarningModalVisible(true)
-          : isAuthenticated
-          ? setStakeholderSignupModalVisible(true)
-          : loginWithPopup();
-      }
-    };
-
-    return (
-      <Dropdown
-        overlayClassName="menu-dropdown-wrapper"
-        overlay={
-          <Menu className="menu-dropdown">
-            {/* <Menu.Item
-            className="nav-link"
-            onClick={() => history.push("/browse?topic=event")}
-          >
-            Events
-          </Menu.Item> */}
-            <Menu.Item
-              className="nav-link"
-              onClick={() => handleOnClickNeedAuth("stakeholder")}
-            >
-              Individuals
-            </Menu.Item>
-            <Menu.Item
-              className="nav-link"
-              onClick={() => handleOnClickNeedAuth("organisation")}
-            >
-              Entities
-            </Menu.Item>
-            {/* <Menu.Item className="nav-link">Forums</Menu.Item>
-          <Menu.Item className="nav-link">Partners</Menu.Item>
-          <Menu.Item className="nav-link">Sponsors</Menu.Item> */}
-          </Menu>
-        }
-        trigger={["click"]}
-        placement="bottomRight"
-      >
-        <Button type="link" className="menu-btn nav-link">
-          Connect Stakeholders <DownOutlined />
-        </Button>
-      </Dropdown>
-    );
-  }
-);
 
 const Search = withRouter(({ history }) => {
   const [search, setSearch] = useState("");
