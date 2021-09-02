@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Card, Image, Button } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -13,30 +13,8 @@ import api from "../../utils/api";
 
 const Topic = () => {
   const tags = UIStore.useState((s) => s.tags);
-  const [topics, setTopics] = useState(null);
 
-  const isLoaded = useCallback(() => {
-    return Boolean(!isEmpty(tags));
-  }, [tags]);
-
-  // useEffect(() => {
-  //   if (isLoaded && tags?.topics) {
-  //     const topicData = tags.topics.map(async (t) => {
-  //       const res = await api.get(`/browse?tag=${t.tag}`);
-  //       const { counts } = res.data;
-  //       let countTmp = 0;
-  //       countTmp = counts
-  //         ? counts.length
-  //           ? sumBy(counts, "count")
-  //           : counts.length
-  //         : countTmp;
-  //       return {
-  //         ...t,
-  //         count: countTmp,
-  //       };
-  //     });
-  //   }
-  // }, [tags, isLoaded]);
+  const isLoaded = () => Boolean(!isEmpty(tags));
 
   return (
     <div id="topics">
@@ -46,7 +24,7 @@ const Topic = () => {
           <div className="section-container">
             <h2>Featured Topics</h2>
             <Row className="topic-item-wrapper" gutter={[16, 16]}>
-              {!isLoaded || !tags?.topics ? (
+              {!isLoaded() || !tags?.topics ? (
                 <h2 className="loading">
                   <LoadingOutlined spin /> Loading...
                 </h2>
@@ -84,7 +62,7 @@ const renderTopics = (topics) => {
             <div className="topic-item-title-wrapper">
               <div className="topic-item-title">{tagName}</div>
               <Button className="topic-item-count" shape="circle" type="ghost">
-                50
+                10
               </Button>
             </div>
           </Card>
