@@ -144,6 +144,7 @@ const Root = () => {
     setStakeholderSignupModalVisible,
   ] = useState(false);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
+  const [filters, setFilters] = useState(null);
 
   useEffect(() => {
     (async function fetchData() {
@@ -284,6 +285,8 @@ const Root = () => {
               setStakeholderSignupModalVisible={
                 setStakeholderSignupModalVisible
               }
+              filters={filters}
+              setFilters={setFilters}
             />
           )}
         />

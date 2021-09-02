@@ -44,6 +44,8 @@ const Browse = ({
   setWarningModalVisible,
   history,
   setStakeholderSignupModalVisible,
+  filters,
+  setFilters,
 }) => {
   const query = useQuery();
   const { profile, countries } = UIStore.useState((s) => ({
@@ -61,7 +63,6 @@ const Browse = ({
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const pageSize = 10;
   const [toggleButton, setToggleButton] = useState("list");
-  const [filters, setFilters] = useState(null);
   // state for maps data
   const [data, setData] = useState(null);
 
@@ -398,6 +399,8 @@ const TopicSelect = ({ value, onChange, countData, isApprovedUser }) => {
               )
             </Checkbox>
           </li>
+          {/* Commented this to remove */}
+          {/*
           <li>
             <Checkbox
               checked={value.indexOf("stakeholder") !== -1}
@@ -406,7 +409,7 @@ const TopicSelect = ({ value, onChange, countData, isApprovedUser }) => {
               Individual (
               {countData?.find((it) => it.topic === "stakeholder")?.count || 0})
             </Checkbox>
-          </li>
+          </li> */}
         </ul>
       </div>
     ) : null,
