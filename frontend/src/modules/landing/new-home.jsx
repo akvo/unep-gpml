@@ -311,7 +311,7 @@ const Landing = ({
                     <Link
                       to={{
                         pathname: "/browse",
-                        search: `tag=${
+                        search: `?tag=${
                           sortPopularTopic.find(
                             (x) => x.topic.toLocaleLowerCase() === selectedTopic
                           )?.tag

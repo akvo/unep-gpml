@@ -5,11 +5,10 @@ import { LoadingOutlined } from "@ant-design/icons";
 
 import "./styles.scss";
 import imageNotFound from "../../images/image-not-found.png";
+import TopicImages from "./topic-images";
 
 import { UIStore } from "../../store";
 import isEmpty from "lodash/isEmpty";
-import sumBy from "lodash/sumBy";
-import api from "../../utils/api";
 
 const Topic = () => {
   const tags = UIStore.useState((s) => s.tags);
@@ -44,7 +43,7 @@ const Topic = () => {
 const renderTopics = (topics) => {
   return topics.map((x) => {
     const { id, tag } = x;
-    const tagName = tag.includes("-") ? tag.split("-").join(" ") : tag;
+    const image = TopicImages.find((x) => x.tag === tag).image;
 
     return (
       <Col key={`${tag}-${id}`} sm={24} md={12} lg={8}>
@@ -58,9 +57,14 @@ const renderTopics = (topics) => {
             <span className="featured-topic-label resource-label">
               Featured
             </span>
-            <Image size="90%" src={imageNotFound} preview={false} />
+            <Image
+              className="topic-item-image"
+              width="100%"
+              src={image || imageNotFound}
+              preview={false}
+            />
             <div className="topic-item-title-wrapper">
-              <div className="topic-item-title">{tagName}</div>
+              <div className="topic-item-title">{tag}</div>
               <Button className="topic-item-count" shape="circle" type="ghost">
                 10
               </Button>

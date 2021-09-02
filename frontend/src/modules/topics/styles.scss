@@ -17,10 +17,17 @@
     // background: #2d6796bf;
   }
 
+  img.ant-image-img.topic-item-image {
+    object-fit: cover;
+    height: 28vh;
+    border-radius: 10px;
+  }
+
   .topic-item-wrapper {
     margin-top: 2rem !important;
     .topic-item-card {
       box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
       &:hover {
         border: 1px solid $blue02;
         opacity: 0.5;
