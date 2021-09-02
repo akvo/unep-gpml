@@ -64,11 +64,12 @@ const getSchema = (
     meaOptions,
     sectorOptions,
     organisationType,
+    profile,
   },
   loading
 ) => {
   const prop = cloneDeep(schema.properties);
-
+  prop.S1.properties.email.default = profile.email;
   prop.S1.properties.S1_ExpertisesAndActivities.properties[
     "seeking"
   ].enum = tags?.seeking?.map((it) => String(it.id));
@@ -175,6 +176,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     sectorOptions: s.sectorOptions,
     organisationType: s.organisationType,
     meaOptions: s.meaOptions,
+    profile: s.profile,
     formStep: s.formStep,
     formEdit: s.formEdit,
   }));
@@ -256,10 +258,10 @@ const SignUp = ({ match: { params }, ...props }) => {
   }, [highlight]);
 
   const isLoaded = () => {
-    console.log(storeData);
     return Boolean(
-      countries.length &&
+      !isEmpty(countries) &&
         !isEmpty(tags) &&
+        !isEmpty(profile) &&
         !isEmpty(regionOptions) &&
         !isEmpty(sectorOptions) &&
         !isEmpty(organisationType) &&
