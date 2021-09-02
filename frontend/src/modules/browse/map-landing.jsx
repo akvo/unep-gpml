@@ -195,7 +195,9 @@ const Summary = ({
                       updateQuery("topic", [humps.decamelize(current)]);
                     }}
                     to={{
-                      pathname: "/browse",
+                      pathname: restricted.includes(current)
+                        ? "/stakeholders"
+                        : "/browse",
                       search: `?topic=${humps.decamelize(current)}`,
                     }}
                   >
