@@ -159,7 +159,11 @@
     .our-community {
       .body {
         .carousel-container {
+          justify-content: flex-start !important;
           .carousel-item {
+            .about {
+              margin-bottom: 4rem !important;
+            }
             .detail {
               bottom: 2.5% !important;
               p {
@@ -536,7 +540,11 @@
     .our-community {
       .body {
         .carousel-container {
+          justify-content: flex-start !important;
           .carousel-item {
+            .about {
+              margin-bottom: 3rem !important;
+            }
             .detail {
               bottom: 6% !important;
               p {
@@ -763,7 +771,11 @@
     .our-community {
       .body {
         .carousel-container {
+          justify-content: flex-start !important;
           .carousel-item {
+            .about {
+              margin-bottom: 4rem !important;
+            }
             .detail {
               p {
                 height: 12px !important;
@@ -892,6 +904,27 @@
     & > header {
       .logo {
         width: 165px;
+      }
+    }
+  }
+
+  // enable mobile view - maps
+  #landing {
+    .our-community {
+      .body {
+        .carousel-container {
+          display: inline;
+          .carousel-item {
+            .about {
+              margin-bottom: 4rem !important;
+            }
+            .detail {
+              p {
+                height: 12px !important;
+              }
+            }
+          }
+        }
       }
     }
   }
