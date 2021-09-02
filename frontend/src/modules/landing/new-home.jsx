@@ -516,9 +516,7 @@ const Landing = ({
                           {about.length > 105 ? (
                             <Tooltip
                               title={about}
-                              overlayInnerStyle={{
-                                background: "rgba(0, 88, 95, 0.85)",
-                              }}
+                              overlayClassName="our-community-tooltip"
                             >
                               {TrimText({ text: about, max: 105 })}
                             </Tooltip>

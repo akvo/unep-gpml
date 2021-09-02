@@ -81,6 +81,12 @@ h4 {
 }
 // EOL Typography
 
+.our-community-tooltip {
+  .ant-tooltip-inner {
+    background-color: rgba(0, 88, 95, 0.85);
+  }
+}
+
 .rjsf {
   .ant-input,
   .ant-input-number-input,
