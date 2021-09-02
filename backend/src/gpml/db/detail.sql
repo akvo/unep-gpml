@@ -15,6 +15,8 @@ WHERE st.stakeholder = :id
 GROUP BY tc.category) AS data;
 
 -- :name update-initiative :! :n
+-- :doc Update the specified initiative row
+-- :require [gpml.sql-util]
 UPDATE initiative SET
 --~ (#'gpml.sql-util/generate-update-initiative params)
 WHERE id = :id;
