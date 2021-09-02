@@ -306,7 +306,16 @@ const Landing = ({
                       );
                     })}
                   <div key="summary-read-more" className="item">
-                    <Link to={"#"}>
+                    <Link
+                      to={{
+                        pathname: "/browse",
+                        search: `tag=${
+                          sortPopularTopic.find(
+                            (x) => x.topic.toLocaleLowerCase() === selectedTopic
+                          )?.tag
+                        }`,
+                      }}
+                    >
                       See all <RightOutlined />
                     </Link>
                   </div>
