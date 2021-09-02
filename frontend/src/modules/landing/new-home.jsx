@@ -1,5 +1,5 @@
 import { UIStore } from "../../store";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Button,
   Select,
@@ -10,6 +10,7 @@ import {
   Row,
   Col,
   Badge,
+  Carousel as AntdCarousel,
 } from "antd";
 import {
   LoadingOutlined,
@@ -25,6 +26,7 @@ import "./new-styles.scss";
 import "react-multi-carousel/lib/styles.css";
 import moment from "moment";
 import imageNotFound from "../../images/image-not-found.png";
+import logoNotFound from "../../images/logo-not-found.png";
 import { TrimText } from "../../utils/string";
 import {
   popularTopics,
@@ -32,6 +34,10 @@ import {
   ourCommunity,
   benefit,
 } from "./new-home-static-content";
+import orderBy from "lodash/orderBy";
+import humps from "humps";
+import { topicNames } from "../../utils/misc";
+import capitalize from "lodash/capitalize";
 import api from "../../utils/api";
 
 const cardSvg = [
@@ -116,9 +122,16 @@ const responsive = {
   },
   mobile: {
     breakpoint: { max: 767, min: 0 },
-    items: 1,
+    items: 2,
   },
 };
+
+const sortPopularTopic = orderBy(
+  popularTopics,
+  ["count", "topic"],
+  ["desc", "desc"]
+);
+const defTopic = sortPopularTopic[0]?.topic?.toLocaleLowerCase();
 
 const Landing = ({
   history,
@@ -131,12 +144,13 @@ const Landing = ({
   const dateNow = moment().format("DD-MM-YYYY");
   const { innerWidth, innerHeight } = window;
   const profile = UIStore.useState((s) => s.profile);
-  const [selectedTopic, setSelectedTopic] = useState("product by design");
+  const [selectedTopic, setSelectedTopic] = useState(defTopic);
   const [event, setEvent] = useState([]);
   const [data, setData] = useState(null);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
+  const eventCarousel = useRef(null);
 
   const handleSeeAllStakeholderClick = () => {
     if (!isAuthenticated) {
@@ -252,7 +266,7 @@ const Landing = ({
           <div className="popular-topics ui container section-container">
             <div className="section-title">
               <h2>
-                Popular Content{" "}
+                Popular Topics
                 <span className="see-more-link">
                   See all topics <RightOutlined />
                 </span>
@@ -265,7 +279,7 @@ const Landing = ({
                   title=""
                   type="TREEMAP"
                   height={500}
-                  data={popularTopics.map((x) => {
+                  data={sortPopularTopic.map((x) => {
                     return {
                       id: x.id,
                       name: x.topic,
@@ -280,30 +294,54 @@ const Landing = ({
               </div>
               <div className="content">
                 <div className="content-header">
-                  {popularTopics
+                  {sortPopularTopic
                     .find((x) => x.topic.toLowerCase() === selectedTopic)
                     .summary.map((x, i) => {
+                      const { count, type } = x;
                       return (
-                        <div key={`summary-${i}`} className="item">
-                          <h4>{x.count}</h4>
-                          <span>{x.type}</span>
+                        <div key={`summary-${type}-${i}`} className="item">
+                          <h4>{count}</h4>
+                          <span>{type}</span>
                         </div>
                       );
                     })}
+                  <div key="summary-read-more" className="item">
+                    <Link
+                      to={{
+                        pathname: "/browse",
+                        search: `tag=${
+                          sortPopularTopic.find(
+                            (x) => x.topic.toLocaleLowerCase() === selectedTopic
+                          )?.tag
+                        }`,
+                      }}
+                    >
+                      See all <RightOutlined />
+                    </Link>
+                  </div>
                 </div>
                 <div className="content-body">
-                  {popularTopics
+                  {sortPopularTopic
                     .find((x) => x.topic.toLowerCase() === selectedTopic)
                     .items.map((x, i) => {
+                      const { id, type, title, description } = x;
+                      const link = `/${type
+                        .toLowerCase()
+                        .split(" ")
+                        .join("_")}/${id}`;
                       return (
                         <div key={`summary-${i}`} className="item-body">
-                          <div className="resource-label upper">{x.type}</div>
-                          <div className="asset-title">{x.title}</div>
+                          <div className="resource-label upper">
+                            {topicNames(humps.camelizeKeys(type))}
+                          </div>
+                          <div className="asset-title">{title}</div>
                           <div className="body-text">
-                            {TrimText({ text: x.description, wrap: 123 })}
+                            {TrimText({ text: description, max: 150 })}
                           </div>
                           <span className="read-more">
-                            Read more <ArrowRightOutlined />
+                            <Link to={link}>
+                              Read more <ArrowRightOutlined />
+                            </Link>
                           </span>
                         </div>
                       );
@@ -326,21 +364,28 @@ const Landing = ({
             <div className="body">
               <div className="content-left">
                 {featuredContents
-                  .filter((x) => x.image === null)
+                  .filter((x) => x.id !== 196)
                   .map((x, i) => {
+                    const { id, image, type, title, description, bookmark } = x;
+                    const link = `/${type
+                      .toLowerCase()
+                      .split(" ")
+                      .join("_")}/${id}`;
                     return (
                       <Card key={`fc-${i}`} className="item">
                         <div className="item-header">
-                          <span className="resource-label upper">{x.type}</span>
+                          <span className="resource-label upper">
+                            {topicNames(humps.camelizeKeys(type))}
+                          </span>
                           <span className="mark">
                             <RiseOutlined />
                             Trending
                           </span>
                         </div>
                         <div className="item-body">
-                          <div className="asset-title">{x.title}</div>
+                          <div className="asset-title">{title}</div>
                           <div className="body-text">
-                            {TrimText({ text: x.description, max: 150 })}
+                            {TrimText({ text: description, max: 150 })}
                           </div>
                         </div>
                         <div className="item-footer">
@@ -351,7 +396,7 @@ const Landing = ({
                               backgroundColor: "#fde3cf",
                             }}
                           >
-                            {x.bookmark.map((b, i) => (
+                            {bookmark.map((b, i) => (
                               <Tooltip
                                 key={`avatar-${i}`}
                                 title={b.name}
@@ -365,7 +410,9 @@ const Landing = ({
                             ))}
                           </Avatar.Group>
                           <span className="read-more">
-                            Read more <ArrowRightOutlined />
+                            <Link to={link}>
+                              Read more <ArrowRightOutlined />
+                            </Link>
                           </span>
                         </div>
                       </Card>
@@ -374,27 +421,32 @@ const Landing = ({
               </div>
               <div className="content-right">
                 {featuredContents
-                  .filter((x) => x.image !== null)
+                  .filter((x) => x.id === 196)
                   .map((x, i) => {
+                    const { id, image, type, title, description, bookmark } = x;
+                    const link = `/${type
+                      .toLowerCase()
+                      .split(" ")
+                      .join("_")}/${id}`;
                     return (
                       <Card key={`fc-${i}`} className="item">
                         <img
                           className="item-img"
                           width="100%"
-                          src="./fc-initiative.png"
-                          alt={x.title}
+                          src={image || imageNotFound}
+                          alt={title}
                         />
                         <div className="item-header">
-                          <span className="resource-label upper">{x.type}</span>
+                          <span className="resource-label upper">{type}</span>
                           <span className="mark">
                             <RiseOutlined />
                             Trending
                           </span>
                         </div>
                         <div className="item-body">
-                          <div className="asset-title">{x.title}</div>
+                          <div className="asset-title">{title}</div>
                           <div className="body-text">
-                            {TrimText({ text: x.description, max: 425 })}
+                            {TrimText({ text: description, max: 425 })}
                           </div>
                         </div>
                         <div className="item-footer">
@@ -405,7 +457,7 @@ const Landing = ({
                               backgroundColor: "#fde3cf",
                             }}
                           >
-                            {x.bookmark.map((b, i) => (
+                            {bookmark.map((b, i) => (
                               <Tooltip
                                 key={`avatar-${i}`}
                                 title={b.name}
@@ -419,7 +471,9 @@ const Landing = ({
                             ))}
                           </Avatar.Group>
                           <span className="read-more">
-                            Read more <ArrowRightOutlined />
+                            <Link to={link}>
+                              Read more <ArrowRightOutlined />
+                            </Link>
                           </span>
                         </div>
                       </Card>
@@ -445,26 +499,39 @@ const Landing = ({
               </div>
               <div className="body">
                 <Carousel
+                  centerMode={true}
                   responsive={responsive}
-                  showDots={true}
                   containerClass="carousel-container"
                   itemClass="carousel-item"
-                  renderDotsOutside={true}
                   dotListClass="carousel-dot-list"
-                  centerMode={true}
+                  showDots={true}
+                  renderDotsOutside={true}
+                  removeArrowOnDeviceType={["tablet", "mobile"]}
                 >
                   {ourCommunity.map((x, i) => {
                     const index = i > 3 ? i - 4 : i;
+                    const { type, about, image, name, role } = x;
                     return (
                       <div key={`oc-card-${i}`}>
                         <div className="type-wrapper">
-                          <span className="mark">{x.type}</span>
+                          <span className="mark">
+                            {topicNames(humps.camelizeKeys(type))}
+                          </span>
                         </div>
                         <div
                           className="about"
                           style={{ color: cardSvg[index]?.color }}
                         >
-                          <q>{x.about}</q>
+                          {about.length > 105 ? (
+                            <Tooltip
+                              title={about}
+                              overlayClassName="our-community-tooltip"
+                            >
+                              {TrimText({ text: about, max: 105 })}
+                            </Tooltip>
+                          ) : (
+                            <q>{about}</q>
+                          )}
                         </div>
                         {cardSvg[index]?.svg}
                         <div className="detail">
@@ -478,10 +545,11 @@ const Landing = ({
                               xl: 115,
                               xxl: 125,
                             }}
-                            icon={<UserOutlined />}
+                            src={image || logoNotFound}
+                            alt={name}
                           />
-                          <h4>{x.name}</h4>
-                          <p className="role">{x?.role || ""}</p>
+                          <h4>{name}</h4>
+                          <p className="role">{role || ""}</p>
                         </div>
                       </div>
                     );
@@ -541,7 +609,7 @@ const Landing = ({
                   {event.length === 0 && (
                     <div className="no-event">No Event Today</div>
                   )}
-                  {event.length > 0 && renderEventContent(event)}
+                  {event.length > 0 && renderEventContent(event, eventCarousel)}
                 </div>
                 <div className="calendar">
                   <Calendar
@@ -561,67 +629,87 @@ const Landing = ({
   );
 };
 
-const renderEventContent = (event) => {
-  const eventShow = event[0];
-  const { id, title, description, type, startDate, image } = eventShow;
-  const eventMore = event.length - 1;
-
+const renderEventContent = (event, eventCarousel) => {
   return (
     <>
-      <Card key="event-content" className="item">
-        <div className="item-meta">
-          <div className="date">{moment(startDate).format("DD MMMM YYYY")}</div>
-          <div className="status">Online</div>
-          <div className="mark">Featured</div>
-        </div>
-        <div className="resource-label upper margin">{type}</div>
-        <img
-          className="item-img"
-          width="100%"
-          src={image ? image : imageNotFound}
-          alt={title}
-        />
-        <div className="item-body">
-          <div className="asset-title">{title}</div>
-          <div className="body-text">
-            {TrimText({ text: description, max: 300 })}
-          </div>
-        </div>
-        <div className="item-footer">
-          <Avatar.Group
-            maxCount={2}
-            maxStyle={{
-              color: "#f56a00",
-              backgroundColor: "#fde3cf",
-            }}
-          >
-            <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
-            <Tooltip title="Ant User" placement="top">
-              <Avatar
-                style={{ backgroundColor: "#87d068" }}
-                icon={<UserOutlined />}
-              />
-            </Tooltip>
-            <Tooltip title="Ant User" placement="top">
-              <Avatar
-                style={{ backgroundColor: "#87d068" }}
-                icon={<UserOutlined />}
-              />
-            </Tooltip>
-          </Avatar.Group>
-          <span className="read-more">
-            <Link to={`/event/${id}`}>
-              Read more <ArrowRightOutlined />
-            </Link>
-          </span>
-        </div>
-      </Card>
-      {eventMore > 0 && (
+      {event.length > 0 && (
         <div className="event-more">
-          {eventMore} more event{eventMore > 1 ? "s" : ""} on this day{" "}
-          <RightOutlined />
+          <span>
+            {event.length} event{event.length > 1 ? "s" : ""} on this day
+          </span>
+          {event.length > 1 && (
+            <Button
+              type="link"
+              icon={<RightOutlined />}
+              onClick={(e) => {
+                eventCarousel.current.next();
+              }}
+            />
+          )}
         </div>
       )}
+      <AntdCarousel
+        autoplay
+        dots={{ className: "custom-dots" }}
+        ref={eventCarousel}
+      >
+        {event.length &&
+          event.map((x, i) => {
+            const { id, title, description, type, startDate, image } = x;
+            return (
+              <Card key={`event-${id}-${i}`} className="item">
+                <div className="item-meta">
+                  <div className="date">
+                    {moment(startDate).format("DD MMMM YYYY")}
+                  </div>
+                  <div className="status">Online</div>
+                  <div className="mark">Featured</div>
+                </div>
+                <div className="resource-label upper margin">{type}</div>
+                <img
+                  className="item-img"
+                  width="100%"
+                  src={image ? image : imageNotFound}
+                  alt={title}
+                />
+                <div className="item-body">
+                  <div className="asset-title">{title}</div>
+                  <div className="body-text">
+                    {TrimText({ text: description, max: 300 })}
+                  </div>
+                </div>
+                <div className="item-footer">
+                  <Avatar.Group
+                    maxCount={2}
+                    maxStyle={{
+                      color: "#f56a00",
+                      backgroundColor: "#fde3cf",
+                    }}
+                  >
+                    <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
+                    <Tooltip title="Ant User" placement="top">
+                      <Avatar
+                        style={{ backgroundColor: "#87d068" }}
+                        icon={<UserOutlined />}
+                      />
+                    </Tooltip>
+                    <Tooltip title="Ant User" placement="top">
+                      <Avatar
+                        style={{ backgroundColor: "#87d068" }}
+                        icon={<UserOutlined />}
+                      />
+                    </Tooltip>
+                  </Avatar.Group>
+                  <span className="read-more">
+                    <Link to={`/event/${id}`}>
+                      Read more <ArrowRightOutlined />
+                    </Link>
+                  </span>
+                </div>
+              </Card>
+            );
+          })}
+      </AntdCarousel>
     </>
   );
 };
