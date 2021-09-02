@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Input, Select, Checkbox, Tag, Pagination } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
-import "./styles.scss";
+import "../browse/styles.scss";
 import {
   topicTypes,
   topicTypesIncludingOrg,
@@ -20,26 +20,11 @@ import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 import { LoadingOutlined } from "@ant-design/icons";
 import { TrimText } from "../../utils/string";
-
-export const useQuery = () => {
-  const srcParams = new URLSearchParams(useLocation().search);
-  const ret = {
-    country: [],
-    topic: [],
-    q: "",
-  };
-  for (var key of srcParams.keys()) {
-    ret[key] = srcParams
-      .get(key)
-      .split(",")
-      .filter((it) => it !== "");
-  }
-  return ret;
-};
+import { Result, useQuery } from "../browse/view";
 
 let tmid;
 
-const Browse = ({
+const Stakeholders = ({
   history,
   setStakeholderSignupModalVisible,
   filters,
@@ -92,7 +77,7 @@ const Browse = ({
 
     if (isLoading === false && filters) {
       const newParams = new URLSearchParams({ ...filters, topic: query.topic });
-      history.push(`/browse?${newParams.toString()}`);
+      history.push(`/stakeholders?${newParams.toString()}`);
       clearTimeout(tmid);
       tmid = setTimeout(getResults, 1000);
     }
@@ -103,7 +88,7 @@ const Browse = ({
   }, [isLoading]); // eslint-disable-line
   useEffect(() => {
     UIStore.update((e) => {
-      e.disclaimer = "browse";
+      e.disclaimer = "stakeholders";
     });
     if (profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
@@ -126,7 +111,7 @@ const Browse = ({
     }
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
-    history.push(`/browse?${newParams.toString()}`);
+    history.push(`/stakeholders?${newParams.toString()}`);
     clearTimeout(tmid);
     tmid = setTimeout(getResults, 1000);
     if (param === "country") {
@@ -244,24 +229,7 @@ const Browse = ({
                       );
                     }}
                   />
-                  {isAuthenticated && (
-                    <Checkbox
-                      className="my-favorites"
-                      checked={query?.favorites?.indexOf("true") > -1}
-                      onChange={({ target: { checked } }) =>
-                        updateQuery("favorites", checked)
-                      }
-                    >
-                      My Bookmarks
-                    </Checkbox>
-                  )}
                 </div>
-                <TopicSelect
-                  countData={countData}
-                  isApprovedUser={isApprovedUser}
-                  value={query.topic}
-                  onChange={(val) => updateQuery("topic", val)}
-                />
               </div>
             </aside>
           </StickyBox>
@@ -308,181 +276,4 @@ const Browse = ({
   );
 };
 
-const TopicSelect = ({ value, onChange, countData, isApprovedUser }) => {
-  const handleChange = (type) => ({ target: { checked } }) => {
-    if (checked && value.indexOf(type) === -1) {
-      onChange([...value, type]);
-    } else if (!checked && value.indexOf(type) !== -1) {
-      onChange(value.filter((it) => it !== type));
-    }
-  };
-  return [
-    <div className="field" key={"topic-select"}>
-      <div className="label">Resources</div>
-      <ul className="topic-list">
-        {topicTypes.map((type) => {
-          const topic = humps.decamelize(type);
-          const count = countData?.find((it) => it.topic === topic)?.count || 0;
-          return (
-            <li key={type}>
-              <Checkbox
-                checked={value.indexOf(topic) !== -1}
-                onChange={handleChange(topic)}
-              >
-                {topicNames(type)} ({count})
-              </Checkbox>
-            </li>
-          );
-        })}
-      </ul>
-    </div>,
-    isApprovedUser ? (
-      <div className="field" key={"topic-select-unlisted"}>
-        <div className="label">Stakeholders</div>
-        <ul className="topic-list">
-          <li>
-            <Checkbox
-              checked={value.indexOf("organisation") !== -1}
-              onChange={handleChange("organisation")}
-            >
-              {topicNames("organisation")} (
-              {countData?.find((it) => it.topic === "organisation")?.count || 0}
-              )
-            </Checkbox>
-          </li>
-          <li>
-            <Checkbox
-              checked={value.indexOf("stakeholder") !== -1}
-              onChange={handleChange("stakeholder")}
-            >
-              Individual (
-              {countData?.find((it) => it.topic === "stakeholder")?.count || 0})
-            </Checkbox>
-          </li>
-        </ul>
-      </div>
-    ) : null,
-  ];
-};
-
-export const Result = ({
-  result,
-  relations,
-  handleRelationChange,
-  profile,
-}) => {
-  const fullName = (data) =>
-    data.title
-      ? `${data.title} ${data.firstName} ${data.lastName}`
-      : `${data.firstName} ${data.lastName}`;
-  const title =
-    (result.type === "stakeholder" && fullName(result)) ||
-    result.title ||
-    result.name;
-  const description =
-    result.description ||
-    result.abstract ||
-    result.summary ||
-    result.about ||
-    result.remarks;
-  const relation = relations.find(
-    (it) =>
-      it.topicId === result.id &&
-      it.topic === resourceTypeToTopicType(result.type)
-  );
-  const allowBookmark =
-    result.type !== "stakeholder" || profile.id !== result.id;
-  const tagClassname = "type " + result.type;
-
-  return (
-    <Linkify result={result}>
-      <h4>{title}</h4>
-      <div className={tagClassname}>{topicNames(result.type)}</div>
-      <ul className="stats">
-        {result.geoCoverageType && <li>{result.geoCoverageType}</li>}
-        {/* Global Coverage Value */}
-        {/* {result.geoCoverageType === 'global' && result.geoCoverageValues === null && <li><Excerpt content={values(countries).map(c => c.name).join(', ')} max={500} /></li>} */}
-        {/* {result.geoCoverageType === 'global' && result.geoCoverageValues !== null && <li><Excerpt content={result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')} /></li>} */}
-        {/* {result.geoCoverageType === 'regional' && <li><Excerpt content={result.geoCoverageValues.join(', ')} /></li>} */}
-        {/* {(result.geoCoverageType === 'transnational' || result.geoCoverageType === 'national' || result.geoCoverageType === 'sub-national') && result.geoCoverageValues && <li><Excerpt content={result.geoCoverageValues.map(it => countries[countries3to2[it]]?.name || it).join(', ')} max={500} /></li>} */}
-        {/* End Global Coverage Value */}
-        {result.status && (
-          <li>
-            <span>Status:</span>
-            {result.status}
-          </li>
-        )}
-        {result.organisationType && (
-          <li>
-            <span>Org:</span>
-            {result.organisationType}
-          </li>
-        )}
-        {result.yearFounded && (
-          <li>
-            <span>Founded:</span>
-            {result.yearFounded}
-          </li>
-        )}
-        {result.developmentStage && (
-          <li>
-            <span>Stage:</span>
-            {result.developmentStage}
-          </li>
-        )}
-        {result.value && (
-          <li>
-            <span>Value:</span>
-            {result.valueCurrency}{" "}
-            {String(result.value).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </li>
-        )}
-        {result.type === "event" && [
-          <li key="1">
-            <span>Starts:</span>
-            <i>{moment(result.startDate).format("DD MMM YYYY")}</i>
-          </li>,
-          <li key="2">
-            <span>Ends:</span>
-            <i>{moment(result.endDate).format("DD MMM YYYY")}</i>
-          </li>,
-        ]}
-        {result.type === "stakeholder" && result.publicEmail && (
-          <li>
-            <span>Email:</span>
-            {result.email}
-          </li>
-        )}
-      </ul>
-      {result.type !== "project" && description && (
-        <TrimText text={description} />
-      )}
-      {allowBookmark && (
-        <PortfolioBar topic={result} {...{ handleRelationChange, relation }} />
-      )}
-    </Linkify>
-  );
-};
-
-const Linkify = ({ result, children }) => {
-  return (
-    <Card className="result fade-in" key={result.id}>
-      <Link to={`/${result.type}/${result.id}`} className="browse-card"></Link>
-      {children}
-    </Card>
-  );
-};
-
-export const PortfolioBar = ({ relation }) => {
-  return (
-    <div className="portfolio-bar" onClick={(e) => e.stopPropagation()}>
-      {relation?.association?.map((relationType, index) => (
-        <Tag color="blue" key={`browse-relation-${index}`}>
-          {relationType}
-        </Tag>
-      ))}
-    </div>
-  );
-};
-
-export default withRouter(Browse);
+export default withRouter(Stakeholders);
