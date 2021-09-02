@@ -45,7 +45,7 @@
                  :email email
                  :linked_in linked_in
                  :twitter twitter
-                 :representation representation
+                 :representation (or representation "representation")
                  :organisation_role organisation_role
                  :about about
                  :geo_coverage_type geo_coverage_type
@@ -197,7 +197,7 @@
    [:twitter {:optional true} string?]
    [:photo {:optional true} string?]
    [:cv {:optional true} string?]
-   [:representation string?]
+   [:representation {:optional true} string?]
    [:country {:optional true} int?]
    [:public_email {:optional true} boolean?]
    [:about {:optional true} string?]
@@ -211,12 +211,23 @@
     [:vector {:min 1 :error/message "Need at least one value for offering"} int?]]
    [:geo_coverage_value {:optional true}
     [:vector {:min 1 :error/message "Need at least one geo coverage value"} int?]]
-   [:org {:optional true} map?
+   [:org {:optional true}
     [:map
      [:id {:optional true} int?]
      [:name {:optional true} string?]
      [:url {:optional true} string?]
+     [:type {:optional true} string?]
      [:country {:optional true} int?]
      [:geo_coverage_type {:optional true} geo/coverage_type]
      [:geo_coverage_value {:optional true}
-      [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]]]])
+      [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]
+     [:registered_stakeholders {:optional true}
+      [:vector int?]]
+     [:other_stakeholders {:optional true}
+      [:vector
+       [:map
+        [:title {:optional true} string?]
+        [:first_name {:optional true} string?]
+        [:last_name {:optional true} string?]
+        [:email string?]
+        [:organisation_role {:optional true} string?]]]]]]])

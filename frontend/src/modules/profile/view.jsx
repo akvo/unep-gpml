@@ -3,6 +3,8 @@ import { Button, notification, Avatar, Menu, Row, Col } from "antd";
 import React, { useRef, useState, useEffect } from "react";
 import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
+
+import SignupForm from "../old-signup/signup-form";
 import {
   fetchArchiveData,
   fetchSubmissionData,
@@ -10,7 +12,6 @@ import {
   fetchStakeholders,
 } from "./utils";
 import { userRoles as roles } from "../../utils/misc";
-import SignupForm from "../signup/signup-form";
 import AdminSection from "./admin";
 import ReviewSection from "./review";
 import ManageRoles from "./stakeholders";
@@ -69,7 +70,31 @@ const menuItems = [
 ];
 
 const ProfileView = ({ ...props }) => {
-  const { countries, tags, profile } = UIStore.currentState;
+  const {
+    countries,
+    tags,
+    regionOptions,
+    meaOptions,
+    organisations,
+    profile,
+  } = UIStore.useState((s) => ({
+    countries: s.countries,
+    tags: s.tags,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
+    organisations: s.organisations,
+    profile: s.profile,
+  }));
+  const isLoaded = () =>
+    Boolean(
+      countries.length &&
+        !isEmpty(tags) &&
+        regionOptions.length &&
+        meaOptions.length &&
+        organisations.length &&
+        !isEmpty(profile)
+    );
+
   const handleSubmitRef = useRef();
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState("personal-details");
@@ -266,7 +291,7 @@ const ProfileView = ({ ...props }) => {
     <div id="profile">
       <div className="profile-container">
         <div className="ui container">
-          {isEmpty(profile) ? (
+          {!isLoaded() ? (
             <h2 className="loading">
               <LoadingOutlined spin /> Loading Profile
             </h2>

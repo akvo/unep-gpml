@@ -153,17 +153,25 @@ const AddTechnologyForm = withRouter(
     highlight,
     setHighlight,
     setDisabledBtn,
+    isLoaded,
     history,
     match: { params },
   }) => {
     const {
       countries,
-      organisations,
       tags,
-      loading,
+      regionOptions,
+      meaOptions,
       formStep,
       formEdit,
-    } = UIStore.currentState;
+    } = UIStore.useState((s) => ({
+      countries: s.countries,
+      tags: s.tags,
+      regionOptions: s.regionOptions,
+      meaOptions: s.meaOptions,
+      formStep: s.formStep,
+      formEdit: s.formEdit,
+    }));
 
     const formData = technologyData.useState();
     const { data, editId } = formData;
@@ -176,8 +184,10 @@ const AddTechnologyForm = withRouter(
 
     useEffect(() => {
       const dataId = Number(params?.id || id);
-      if (formSchema.loading && !loading) {
-        setFormSchema(getSchema(UIStore.currentState, false));
+      if (formSchema.loading && isLoaded) {
+        setFormSchema(
+          getSchema({ countries, tags, regionOptions, meaOptions }, false)
+        );
         // Manage form status, add/edit
         if (
           (status === "edit" || dataId) &&
@@ -198,7 +208,19 @@ const AddTechnologyForm = withRouter(
           e.data = {};
         });
       }
-    }, [loading, formSchema, status, id, data, editId, params]);
+    }, [
+      formSchema,
+      status,
+      id,
+      data,
+      editId,
+      params,
+      isLoaded,
+      countries,
+      tags,
+      regionOptions,
+      meaOptions,
+    ]);
 
     useEffect(() => {
       setFormSchema({ schema: schema, loading: true });

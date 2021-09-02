@@ -34,14 +34,12 @@ import uniqBy from "lodash/uniqBy";
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 const urlLink = (url) => (url.indexOf("http") !== 0 ? `http://${url}` : url);
 
-const renderItemValues = (params, mapping, data) => {
-  const {
-    profile,
-    countries,
-    languages,
-    regionOptions,
-    meaOptions,
-  } = UIStore.currentState;
+const renderItemValues = (
+  { countries, languages, regionOptions, meaOptions },
+  params,
+  mapping,
+  data
+) => {
   // check if no data
   let noData = false;
   mapping &&
@@ -366,7 +364,11 @@ const renderTypeOfActions = (params, data) => {
   );
 };
 
-const renderDetails = (params, data) => {
+const renderDetails = (
+  { countries, languages, regionOptions, meaOptions },
+  params,
+  data
+) => {
   const details = detailMaps[params.type];
   if (!details) {
     return;
@@ -374,12 +376,23 @@ const renderDetails = (params, data) => {
   return (
     <div key={"details"} className="card">
       <h3>{topicNames(params.type)} Detail</h3>
-      <div className="table">{renderItemValues(params, details, data)}</div>
+      <div className="table">
+        {renderItemValues(
+          { countries, languages, regionOptions, meaOptions },
+          params,
+          details,
+          data
+        )}
+      </div>
     </div>
   );
 };
 
-const renderInfo = (params, data) => {
+const renderInfo = (
+  { countries, languages, regionOptions, meaOptions },
+  params,
+  data
+) => {
   const staticText = (
     <p>
       The{" "}
@@ -404,7 +417,14 @@ const renderInfo = (params, data) => {
   return (
     <div key="info" className="card">
       <h3>Related Info And Contacts</h3>
-      <div className="table">{renderItemValues(params, info, data)}</div>
+      <div className="table">
+        {renderItemValues(
+          { countries, languages, regionOptions, meaOptions },
+          params,
+          info,
+          data
+        )}
+      </div>
       {params.type === "project" && data.uuid && !isNarrative && (
         <div>
           <Divider key="statictext" /> {staticText}
@@ -451,12 +471,23 @@ const renderDetailImage = (params, data) => {
   return imageNotFound;
 };
 
-UIStore.update((e) => {
-  e.disclaimer = null;
-});
-
-const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
-  const { profile, countries, loading } = UIStore.currentState;
+const DetailsView = ({
+  match: { params },
+  setStakeholderSignupModalVisible,
+}) => {
+  const {
+    profile,
+    countries,
+    languages,
+    regionOptions,
+    meaOptions,
+  } = UIStore.useState((s) => ({
+    profile: s.profile,
+    countries: s.countries,
+    languages: s.languages,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
+  }));
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
@@ -466,6 +497,7 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
       it.topicId === parseInt(params.id) &&
       it.topic === resourceTypeToTopicType(params.type)
   );
+  const isLoaded = () => Boolean(countries.length);
 
   const allowBookmark =
     params.type !== "stakeholder" || profile.id !== params.id;
@@ -479,8 +511,7 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
         };
 
   useEffect(() => {
-    !loading &&
-      params?.type &&
+    params?.type &&
       params?.id &&
       api.get(`/detail/${params.type}/${params.id}`).then((d) => {
         setData(d.data);
@@ -492,8 +523,11 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
         });
       }, 100);
     }
+    UIStore.update((e) => {
+      e.disclaimer = null;
+    });
     window.scrollTo({ top: 0 });
-  }, [params, loading, profile]);
+  }, [params, profile]);
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
@@ -503,7 +537,7 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
       setWarningVisible(true);
     }
     if (isAuthenticated && profile.reviewStatus === undefined) {
-      setSignupModalVisible(true);
+      setStakeholderSignupModalVisible(true);
     }
     if (profile.reviewStatus === "APPROVED") {
       api.post("/favorite", relation).then((res) => {
@@ -523,7 +557,7 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
     }
   };
 
-  if (!data) {
+  if (!isLoaded() || !data) {
     return (
       <div className="details-view">
         <div className="loading">
@@ -627,8 +661,22 @@ const DetailsView = ({ match: { params }, setSignupModalVisible }) => {
 
           {/* Right */}
           <div key="right" className={`content-column ${params.type}-right`}>
-            {countries && renderDetails(params, data, profile, countries)}
-            {countries && renderInfo(params, data, profile, countries)}
+            {countries &&
+              renderDetails(
+                { countries, languages, regionOptions, meaOptions },
+                params,
+                data,
+                profile,
+                countries
+              )}
+            {countries &&
+              renderInfo(
+                { countries, languages, regionOptions, meaOptions },
+                params,
+                data,
+                profile,
+                countries
+              )}
           </div>
         </div>
       </div>

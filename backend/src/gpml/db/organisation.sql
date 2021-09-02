@@ -70,3 +70,21 @@ values :t*:geo RETURNING id;
 -- :name delete-geo-coverage :! :n
 -- :doc remove geo coverage
 delete from organisation_geo_coverage where organisation = :id
+
+
+-- :name organisation-tags :? :*
+-- :doc get organisation tags
+select json_agg(st.tag) as tags, tc.category from organisation_tag st
+left join tag t on t.id = st.tag
+left join tag_category tc on t.tag_category = tc.id
+where st.organisation = :id
+group by tc.category;
+
+-- :name add-organisation-tags :<! :1
+-- :doc add organisation tags
+insert into organisation_tag(organisation, tag)
+values :t*:tags RETURNING id;
+
+-- :name delete-organisation-tags :! :n
+-- :doc remove organisation-tags
+delete from organisation_tag where organisation = :id

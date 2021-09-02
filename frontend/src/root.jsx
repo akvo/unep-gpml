@@ -17,14 +17,13 @@ import {
 import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import AddEvent from "./modules/events/view";
+import SignupView from "./modules/signup/view";
 import logo from "./images/GPML-logo-white.png";
-import SignupModal from "./modules/signup/signup-modal";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
 import { storage } from "./utils/storage";
 import { UIStore } from "./store.js";
 import ProfileView from "./modules/profile/view";
-import SignupView from "./modules/signup/view";
 import DetailsView from "./modules/details/view";
 import Footer from "./footer";
 import uniqBy from "lodash/uniqBy";
@@ -37,58 +36,35 @@ import AddTechnology from "./modules/technology/view";
 import AddPolicy from "./modules/policy/view";
 import Topic from "./modules/topics/topic";
 import AboutUs from "./modules/about/about-us";
+import Glossary from "./modules/glossary/glossary";
 
-api
-  .get("/tag")
-  .then((resp) => {
-    return resp.data;
-  })
-  .then((tags) => {
-    api
-      .get("/currency")
-      .then((resp) => {
-        return resp.data;
-      })
-      .then((currencies) => {
-        api
-          .get("/country")
-          .then((resp) => {
-            return uniqBy(resp.data).sort((a, b) =>
-              a.name.localeCompare(b.name)
-            );
-          })
-          .then((countries) => {
-            api
-              .get("/country-group")
-              .then((resp) => {
-                return resp.data;
-              })
-              .then((countryGroups) => {
-                api
-                  .get("/organisation")
-                  .then((resp) => {
-                    return uniqBy(sortBy(resp.data, ["name"])).sort((a, b) =>
-                      a.name.localeCompare(b.name)
-                    );
-                  })
-                  .then((organisations) => {
-                    UIStore.update((e) => {
-                      e.tags = tags;
-                      e.currencies = currencies;
-                      e.countries = countries;
-                      e.regionOptions = countryGroups.filter(
-                        (x) => x.type === "region"
-                      );
-                      e.meaOptions = countryGroups.filter(
-                        (x) => x.type === "mea"
-                      );
-                      e.organisations = organisations;
-                    });
-                  });
-              });
-          });
-      });
+Promise.all([
+  api.get("/tag"),
+  api.get("/currency"),
+  api.get("/country"),
+  api.get("/country-group"),
+  api.get("/organisation"),
+]).then((res) => {
+  const [tag, currency, country, countryGroup, organisation] = res;
+  UIStore.update((e) => {
+    e.tags = tag.data;
+    e.currencies = currency.data;
+    e.countries = uniqBy(country.data).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    e.regionOptions = countryGroup.data.filter((x) => x.type === "region");
+    e.meaOptions = countryGroup.data.filter((x) => x.type === "mea");
+    e.organisations = uniqBy(sortBy(organisation.data, ["name"])).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
   });
+});
+
+api.get("/stakeholder").then((resp) => {
+  UIStore.update((e) => {
+    e.stakeholders = resp.data;
+  });
+});
 
 const disclaimerContent = {
   home: (
@@ -125,21 +101,19 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
-  const { profile, disclaimer, loading } = UIStore.useState((s) => s);
+  const { profile, disclaimer } = UIStore.useState((s) => ({
+    profile: s.profile,
+    disclaimer: s.disclaimer,
+  }));
   const [signupModalVisible, setSignupModalVisible] = useState(false);
+  const [
+    stakeholderSignupModalVisible,
+    setStakeholderSignupModalVisible,
+  ] = useState(false);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
-  const [data, setData] = useState(null);
   const [filters, setFilters] = useState(null);
 
   useEffect(() => {
-    if (loading) {
-      api.get("browse?topic=event").then((resp) => {
-        setData(resp.data);
-        UIStore.update((e) => {
-          e.loading = false;
-        });
-      });
-    }
     (async function fetchData() {
       const response = await getIdTokenClaims();
       if (isAuthenticated) {
@@ -154,7 +128,9 @@ const Root = () => {
             e.profile = { email: response.email };
           });
           setTimeout(() => {
-            setSignupModalVisible(Object.keys(resp.data).length === 0);
+            setStakeholderSignupModalVisible(
+              Object.keys(resp.data).length === 0
+            );
           }, 100);
         } else {
           UIStore.update((e) => {
@@ -176,7 +152,7 @@ const Root = () => {
         }
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated, loading]);
+  }, [getIdTokenClaims, isAuthenticated]);
 
   return (
     <Router>
@@ -218,7 +194,7 @@ const Root = () => {
               <div className="rightside">
                 <AddButton
                   {...{
-                    setSignupModalVisible,
+                    setStakeholderSignupModalVisible,
                     isAuthenticated,
                     loginWithPopup,
                     setWarningModalVisible,
@@ -235,9 +211,8 @@ const Root = () => {
           render={(props) => (
             <Landing
               {...{
-                data,
                 setWarningModalVisible,
-                setSignupModalVisible,
+                setStakeholderSignupModalVisible,
                 loginWithPopup,
                 isAuthenticated,
                 setFilters,
@@ -252,11 +227,18 @@ const Root = () => {
           render={(props) => <AboutUs {...props} />}
         />
         <Route
+          exact
+          path="/glossary"
+          render={(props) => <Glossary {...props} />}
+        />
+        <Route
           path="/browse"
           render={(props) => (
             <Browse
               {...props}
-              setSignupModalVisible={setSignupModalVisible}
+              setStakeholderSignupModalVisible={
+                setStakeholderSignupModalVisible
+              }
               filters={filters}
               setFilters={setFilters}
             />
@@ -340,21 +322,19 @@ const Root = () => {
           render={(props) => (
             <DetailsView
               {...props}
-              setSignupModalVisible={setSignupModalVisible}
+              setStakeholderSignupModalVisible={
+                setStakeholderSignupModalVisible
+              }
             />
           )}
         />
         <Footer
-          setSignupModalVisible={setSignupModalVisible}
+          setStakeholderSignupModalVisible={setStakeholderSignupModalVisible}
           setWarningModalVisible={setWarningModalVisible}
           isAuthenticated={isAuthenticated}
           loginWithPopup={loginWithPopup}
         />
       </div>
-      <SignupModal
-        visible={signupModalVisible}
-        onCancel={() => setSignupModalVisible(false)}
-      />
       <ModalWarningUser
         visible={warningModalVisible}
         close={() => setWarningModalVisible(false)}
@@ -418,7 +398,10 @@ const ExploreDropdownMenu = withRouter(({ history }) => {
           <Menu.Item className="nav-link">
             Stories <span className="badge-count">8</span>
           </Menu.Item>
-          <Menu.Item className="nav-link">
+          <Menu.Item
+            className="nav-link"
+            onClick={() => history.push("/glossary")}
+          >
             Glossary <span className="badge-count">54</span>
           </Menu.Item>
         </Menu>
@@ -612,12 +595,12 @@ const UserButton = withRouter(({ history, logout }) => {
 const AddButton = withRouter(
   ({
     isAuthenticated,
-    setSignupModalVisible,
+    setStakeholderSignupModalVisible,
     setWarningModalVisible,
     loginWithPopup,
     history,
   }) => {
-    const { profile } = UIStore.currentState;
+    const profile = UIStore.useState((s) => s.profile);
     if (isAuthenticated) {
       if (profile?.reviewStatus === "APPROVED") {
         return (
@@ -782,7 +765,7 @@ const AddButton = withRouter(
           onClick={() => {
             Object.keys(profile).length > 1
               ? setWarningModalVisible(true)
-              : setSignupModalVisible(true);
+              : setStakeholderSignupModalVisible(true);
           }}
         >
           Add Content

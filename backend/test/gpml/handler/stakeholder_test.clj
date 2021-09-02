@@ -42,9 +42,9 @@
 
     (testing "Get stakeholders WITHOUT authenticating"
       (let [resp (handler (mock/request :get "/"))
-            body (:body resp)]
+            body (-> resp :body :stakeholders)]
         (is (= 200 (:status resp)))
-        (is (= 6 (count body)))
+        (is (= 3 (count body)))
         (is (nil? (:stakeholders body)))))
 
     (testing "Get all stakeholders WITHOUT admin role"
@@ -52,9 +52,9 @@
                               (assoc :approved? true
                                      :user user
                                      :parameters {:query {:page 1 :limit 10}})))
-            body (:body resp)]
+            body (-> resp :body :stakeholders)]
         (is (= 200 (:status resp)))
-        (is (= 6 (count body)))
+        (is (= 3 (count body)))
         (is (nil? (:stakeholders body)))))
 
     (testing "Get all stakeholders"
