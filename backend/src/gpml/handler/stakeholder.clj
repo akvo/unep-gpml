@@ -31,12 +31,12 @@
                        ;; uses of this end-point.
                        {:stakeholders stakeholders :page page :limit limit :pages pages :count count})
                      ;; FIXME: limit & page are ignored when returning public stakeholders!
-                     (->> (db.stakeholder/all-public-stakeholder (:spec db))
-                          (map (fn [stakeholder]
-                                 (let [common-keys [:id :title :first_name :last_name]]
-                                   (if (:public_email stakeholder)
-                                     (select-keys stakeholder (conj common-keys :email))
-                                     (select-keys stakeholder common-keys))))))))))
+                     {:stakeholders (->> (db.stakeholder/all-public-stakeholder (:spec db))
+                                         (map (fn [stakeholder]
+                                                (let [common-keys [:id :title :first_name :last_name]]
+                                                  (if (:public_email stakeholder)
+                                                    (select-keys stakeholder (conj common-keys :email))
+                                                    (select-keys stakeholder common-keys))))))}))))
 
 (defmethod ig/init-key ::list-params [_ _]
   {:query [:map
