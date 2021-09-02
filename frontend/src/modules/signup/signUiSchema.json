@@ -20,7 +20,8 @@
     },
     "email": {
       "ui:widget": "email",
-      "ui:placeholder": "Email"
+      "ui:placeholder": "Email",
+      "ui:disabled": true
     },
     "publicEmail": {
       "ui:widget": "checkbox",
