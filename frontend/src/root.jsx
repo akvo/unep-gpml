@@ -15,6 +15,7 @@ import {
 } from "@ant-design/icons";
 import Landing from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
+import Stakeholders from "./modules/stakeholders/view";
 import AddEvent from "./modules/events/view";
 import SignupView from "./modules/signup/view";
 import logo from "./images/GPML-logo-white.png";
@@ -278,6 +279,19 @@ const Root = () => {
           path="/browse"
           render={(props) => (
             <Browse
+              {...props}
+              setStakeholderSignupModalVisible={
+                setStakeholderSignupModalVisible
+              }
+              filters={filters}
+              setFilters={setFilters}
+            />
+          )}
+        />
+        <Route
+          path="/stakeholders"
+          render={(props) => (
+            <Stakeholders
               {...props}
               setStakeholderSignupModalVisible={
                 setStakeholderSignupModalVisible
