@@ -237,35 +237,37 @@ const Root = () => {
                 <Search />
               </Route>
             </Switch>
-            {!isAuthenticated ? (
-              <div className="rightside">
-                <JoinGPMLButton loginWithPopup={loginWithPopup} />
-                <Button type="ghost" className="left">
-                  <Link to="/" onClick={loginWithPopup}>
-                    Sign in
-                  </Link>
-                </Button>
-              </div>
-            ) : (
-              <div className="rightside">
-                <AddButton
-                  {...{
-                    setStakeholderSignupModalVisible,
-                    isAuthenticated,
-                    loginWithPopup,
-                    setWarningModalVisible,
-                  }}
+            <div className="rightside">
+              {!isAuthenticated ? (
+                <div className="rightside">
+                  <JoinGPMLButton loginWithPopup={loginWithPopup} />
+                  <Button type="ghost" className="left">
+                    <Link to="/" onClick={loginWithPopup}>
+                      Sign in
+                    </Link>
+                  </Button>
+                </div>
+              ) : (
+                <div className="rightside">
+                  <AddButton
+                    {...{
+                      setStakeholderSignupModalVisible,
+                      isAuthenticated,
+                      loginWithPopup,
+                      setWarningModalVisible,
+                    }}
+                  />
+                  <UserButton {...{ logout }} />
+                </div>
+              )}
+              {/* Drawer/ Menu for responsive design */}
+              <div className="responsive-menu-trigger">
+                <Button
+                  type="ghost"
+                  icon={<MenuOutlined />}
+                  onClick={() => setShowResponsiveMenu(true)}
                 />
-                <UserButton {...{ logout }} />
               </div>
-            )}
-            {/* Drawer/ Menu for responsive design */}
-            <div className="responsive-menu-trigger">
-              <Button
-                type="ghost"
-                icon={<MenuOutlined />}
-                onClick={() => setShowResponsiveMenu(true)}
-              />
             </div>
           </div>
         </Header>
