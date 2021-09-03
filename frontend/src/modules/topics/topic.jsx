@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Card, Image, Button } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -10,10 +10,14 @@ import TopicImages from "./topic-images";
 import { UIStore } from "../../store";
 import isEmpty from "lodash/isEmpty";
 
-const Topic = () => {
+const Topic = ({ setFilters }) => {
   const tags = UIStore.useState((s) => s.tags);
 
   const isLoaded = () => Boolean(!isEmpty(tags));
+
+  useEffect(() => {
+    setFilters(null);
+  }, [setFilters]);
 
   return (
     <div id="topics">

@@ -289,7 +289,11 @@ const Root = () => {
             />
           )}
         />
-        <Route exact path="/topics" render={(props) => <Topic {...props} />} />
+        <Route
+          exact
+          path="/topics"
+          render={(props) => <Topic {...props} setFilters={setFilters} />}
+        />
         <Route
           path="/stakeholders"
           render={(props) => (
