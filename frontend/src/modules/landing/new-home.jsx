@@ -14,6 +14,7 @@ import {
 } from "antd";
 import {
   LoadingOutlined,
+  LeftOutlined,
   RightOutlined,
   ArrowRightOutlined,
   RiseOutlined,
@@ -651,13 +652,22 @@ const renderEventContent = (event, eventCarousel) => {
             {event.length} event{event.length > 1 ? "s" : ""} on this day
           </span>
           {event.length > 1 && (
-            <Button
-              type="link"
-              icon={<RightOutlined />}
-              onClick={(e) => {
-                eventCarousel.current.next();
-              }}
-            />
+            <div className="button-carousel">
+              <Button
+                type="link"
+                icon={<LeftOutlined />}
+                onClick={(e) => {
+                  eventCarousel.current.prev();
+                }}
+              />
+              <Button
+                type="link"
+                icon={<RightOutlined />}
+                onClick={(e) => {
+                  eventCarousel.current.next();
+                }}
+              />
+            </div>
           )}
         </div>
       )}
