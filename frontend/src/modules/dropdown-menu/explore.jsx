@@ -3,21 +3,25 @@ import { withRouter } from "react-router";
 import { Button, Menu, Dropdown } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 
-const ExploreDropdownMenu = withRouter(({ history, topics }) => {
+const ExploreDropdownMenu = withRouter(({ history, topicsCount }) => {
   return (
     <Dropdown
       overlayClassName="menu-dropdown-wrapper"
       overlay={
         <Menu className="menu-dropdown">
-          <Menu.Item className="nav-link" disabled={!topics}>
+          <Menu.Item
+            className="nav-link"
+            disabled={!topicsCount}
+            onClick={() => history.push("/topics")}
+          >
             Topics
             <Button
               className="badge-count"
               size="small"
               type="ghost"
               shape="circle"
-              icon={topics}
-              loading={!topics}
+              icon={topicsCount}
+              loading={!topicsCount}
             />
           </Menu.Item>
           {/* <Menu.Item className="nav-link">

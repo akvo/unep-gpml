@@ -34,6 +34,7 @@ import AddInitiative from "./modules/initiative/view";
 import AddActionPlan from "./modules/action-plan/view";
 import AddTechnology from "./modules/technology/view";
 import AddPolicy from "./modules/policy/view";
+import Topic from "./modules/topics/topic";
 import AboutUs from "./modules/about/about-us";
 import Glossary from "./modules/glossary/glossary";
 
@@ -291,6 +292,11 @@ const Root = () => {
           )}
         />
         <Route
+          exact
+          path="/topics"
+          render={(props) => <Topic {...props} setFilters={setFilters} />}
+        />
+        <Route
           path="/stakeholders"
           render={(props) => (
             <Stakeholders
@@ -424,7 +430,9 @@ const renderDropdownMenu = (
   return (
     <div className="menu-dropdown-container">
       <AboutDropdownMenu />
-      <ExploreDropdownMenu topics={tags?.topics ? tags.topics.length : 0} />
+      <ExploreDropdownMenu
+        topicsCount={tags?.topics ? tags.topics.length : 0}
+      />
       <DataHubDropdownMenu />
       <KnowledgeExchangeDropdownMenu resources={summary} />
       <ConnectStakeholdersDropdownMenu

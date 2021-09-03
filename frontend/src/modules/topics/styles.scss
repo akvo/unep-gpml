@@ -1,0 +1,78 @@
+@import "../../vars.scss";
+
+#topics {
+  .section-container {
+    padding: 4rem 0;
+  }
+
+  h2 {
+    color: $blue02;
+  }
+
+  .loading {
+    margin: auto;
+  }
+
+  .section-featured-topic-container {
+    // background: #2d6796bf;
+  }
+
+  img.ant-image-img.topic-item-image {
+    object-fit: cover;
+    height: 28vh;
+    border-radius: 10px;
+  }
+
+  .topic-item-wrapper {
+    margin-top: 2rem !important;
+    .topic-item-card {
+      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
+      &:hover {
+        border: 1px solid $blue02;
+        opacity: 0.5;
+      }
+      .topic-item-title-wrapper {
+        margin-top: 0.8rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .topic-item-title {
+          color: $black;
+          text-transform: capitalize;
+          font-weight: 500;
+          font-size: 1.125rem;
+        }
+
+        .topic-item-count {
+          border: 1px solid $blue02;
+          box-sizing: border-box;
+          color: $blue02;
+          &:hover {
+            background: unset;
+            border: 1px solid $blue02;
+          }
+        }
+      }
+    }
+  }
+  // get it from .mark css on landing page
+  .featured-topic-label {
+    background: #fff;
+    padding: 2px 7px;
+    color: #2d6796;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border: 1px solid #2d6796;
+    box-sizing: border-box;
+    border-radius: 50px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 2rem;
+    margin-right: 2rem;
+    z-index: 1;
+  }
+}
