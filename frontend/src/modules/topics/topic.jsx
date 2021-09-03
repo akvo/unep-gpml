@@ -65,9 +65,10 @@ const renderTopics = (topics) => {
             />
             <div className="topic-item-title-wrapper">
               <div className="topic-item-title">{tag}</div>
+              {/* Uncoment this if count ready
               <Button className="topic-item-count" shape="circle" type="ghost">
                 10
-              </Button>
+              </Button> */}
             </div>
           </Card>
         </Link>
