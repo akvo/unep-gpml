@@ -278,6 +278,7 @@ const Landing = withRouter(
                     title=""
                     type="TREEMAP"
                     height={500}
+                    className="popular-topic-chart"
                     data={sortPopularTopic.map((x) => {
                       return {
                         id: x.id,

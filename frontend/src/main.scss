@@ -592,12 +592,25 @@ path {
 .responsive-menu-wrapper {
   .ant-drawer-body {
     padding: 0;
+    padding-right: 0.35rem;
+  }
+  .ant-menu-inline,
+  .ant-menu-vertical,
+  .ant-menu-vertical-left {
+    border-right: none;
   }
   .ant-menu-sub.ant-menu-inline > .ant-menu-item,
   .ant-menu-sub.ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .badge-count {
+    border: 1px solid $black;
+    color: $black;
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
   }
 }
 /* End of Responsive menu style */
