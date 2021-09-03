@@ -1,6 +1,6 @@
 import { Store } from "pullstate";
 import { UIStore } from "../../store";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Checkbox, Row, Col, Card, Steps, Switch, Button } from "antd";
 import {
   CheckOutlined,
@@ -55,19 +55,16 @@ export const signUpData = new Store({
   editId: null,
 });
 
-const getSchema = (
-  {
-    stakeholders,
-    countries,
-    tags,
-    regionOptions,
-    meaOptions,
-    sectorOptions,
-    organisationType,
-    profile,
-  },
-  loading
-) => {
+const getSchema = ({
+  stakeholders,
+  countries,
+  tags,
+  regionOptions,
+  meaOptions,
+  sectorOptions,
+  organisationType,
+  profile,
+}) => {
   const prop = cloneDeep(schema.properties);
   prop.S1.properties.email.default = profile.email;
   prop.S1.properties.S1_ExpertisesAndActivities.properties[
@@ -160,7 +157,6 @@ const getSchema = (
       ...schema,
       properties: prop,
     },
-    loading: loading,
   };
 };
 
@@ -233,7 +229,6 @@ const SignUp = ({ match: { params }, ...props }) => {
   const [tabsData, setTabsData] = useState(tabsDataRaw);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
-    loading: true,
   });
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
@@ -254,10 +249,10 @@ const SignUp = ({ match: { params }, ...props }) => {
     UIStore.update((e) => {
       e.highlight = highlight;
     });
-    setFormSchema({ schema: schema, loading: true });
+    setFormSchema({ schema: schema });
   }, [highlight]);
 
-  const isLoaded = () => {
+  const isLoaded = useCallback(() => {
     return Boolean(
       !isEmpty(countries) &&
         !isEmpty(tags) &&
@@ -268,12 +263,21 @@ const SignUp = ({ match: { params }, ...props }) => {
         !isEmpty(meaOptions) &&
         !isEmpty(stakeholders)
     );
-  };
+  }, [
+    countries,
+    tags,
+    profile,
+    regionOptions,
+    sectorOptions,
+    organisationType,
+    meaOptions,
+    stakeholders,
+  ]);
 
   useEffect(() => {
     const dataId = Number(params?.id || id);
-    if (formSchema.loading && isLoaded()) {
-      setFormSchema(getSchema(storeData, false));
+    if (isLoaded()) {
+      setFormSchema(getSchema(storeData));
       // Manage form status, add/edit
       if (
         (status === "edit" || dataId) &&
@@ -297,16 +301,7 @@ const SignUp = ({ match: { params }, ...props }) => {
         e.editId = null;
       });
     }
-  }, [
-    //loading,
-    storeData,
-    formSchema,
-    status,
-    id,
-    data,
-    editId,
-    params,
-  ]);
+  }, [storeData, status, id, data, editId, params, isLoaded]);
 
   const renderSteps = (parentTitle, section, steps, index) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
@@ -464,7 +459,7 @@ const SignUp = ({ match: { params }, ...props }) => {
               <Col xs={24} lg={24}>
                 <div
                   className={`form-meta ${
-                    formStep.signup === 2 ? "submitted" : ""
+                    formStep.signUp === 2 ? "submitted" : ""
                   }`}
                 >
                   <div className="highlight">
@@ -477,10 +472,10 @@ const SignUp = ({ match: { params }, ...props }) => {
                       ? "Required fields highlighted"
                       : "Highlight required"}
                   </div>
-                  {formStep.signup === 1 && (
+                  {formStep.signUp === 1 && (
                     <Button
                       disabled={disabledBtn.disabled}
-                      loading={sending}
+                      loading={!isLoaded()}
                       type={disabledBtn.type}
                       size="large"
                       onClick={(e) => handleOnClickBtnSubmit(e)}
@@ -501,7 +496,7 @@ const SignUp = ({ match: { params }, ...props }) => {
       ) : (
         <div className="ui container">
           <div className="form-container">
-            {formStep.signup === 1 && (
+            {formStep.signUp === 1 && (
               <Row
                 style={{
                   minHeight: `${minHeightContainer}px`,
@@ -598,7 +593,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                 </Col>
               </Row>
             )}
-            {formStep.signup === 2 && (
+            {formStep.signUp === 2 && (
               <Row>
                 <Col span={24}>
                   <Card
