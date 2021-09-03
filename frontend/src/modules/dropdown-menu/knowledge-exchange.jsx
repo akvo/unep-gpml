@@ -7,7 +7,7 @@ import { topicNames } from "../../utils/misc";
 import sumBy from "lodash/sumBy";
 
 const KnowledgeExchangeDropdownMenu = withRouter(({ history, resources }) => {
-  const loading = !resources.length;
+  const loading = !resources;
   const allResources = sumBy(resources, "count");
   return (
     <Dropdown
@@ -28,29 +28,30 @@ const KnowledgeExchangeDropdownMenu = withRouter(({ history, resources }) => {
               loading={loading}
             />
           </Menu.Item>
-          {resources.map((x, i) => {
-            const { name, count } = x;
-            return (
-              <Menu.Item
-                key={`${name}-${i}`}
-                className="indent-right nav-link"
-                disabled={loading}
-                onClick={() =>
-                  history.push(`/browse?topic=${humps.decamelize(name)}`)
-                }
-              >
-                {topicNames(name)}
-                <Button
-                  className="badge-count"
-                  size="small"
-                  type="ghost"
-                  shape="circle"
-                  icon={count}
-                  loading={loading}
-                />
-              </Menu.Item>
-            );
-          })}
+          {resources &&
+            resources.map((x, i) => {
+              const { name, count } = x;
+              return (
+                <Menu.Item
+                  key={`${name}-${i}`}
+                  className="indent-right nav-link"
+                  disabled={loading}
+                  onClick={() =>
+                    history.push(`/browse?topic=${humps.decamelize(name)}`)
+                  }
+                >
+                  {topicNames(name)}
+                  <Button
+                    className="badge-count"
+                    size="small"
+                    type="ghost"
+                    shape="circle"
+                    icon={count}
+                    loading={loading}
+                  />
+                </Menu.Item>
+              );
+            })}
           {/* <Menu.Item className="nav-link">
             Capacity building
             <Button

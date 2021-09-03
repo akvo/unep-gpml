@@ -63,8 +63,6 @@ const Browse = ({
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const pageSize = 10;
   const [toggleButton, setToggleButton] = useState("list");
-  // state for maps data
-  const [data, setData] = useState(null);
 
   const isLoaded = () => Boolean(!isEmpty(countries));
 
@@ -210,8 +208,6 @@ const Browse = ({
       {toggleButton === "map" ? (
         <MapLanding
           {...{
-            data,
-            setData,
             setWarningModalVisible,
             setStakeholderSignupModalVisible,
             loginWithPopup,

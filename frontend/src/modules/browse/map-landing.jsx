@@ -11,8 +11,6 @@ import api from "../../utils/api";
 
 const MapLanding = ({
   history,
-  data,
-  setData,
   setStakeholderSignupModalVisible,
   setWarningModalVisible,
   isAuthenticated,
@@ -23,9 +21,10 @@ const MapLanding = ({
   updateQuery,
 }) => {
   const { innerWidth, innerHeight } = window;
-  const { profile, countries } = UIStore.useState((s) => ({
+  const { profile, countries, landing } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
+    landing: s.landing,
   }));
   const [country, setCountry] = useState(null);
   const [counts, setCounts] = useState("project");
@@ -67,30 +66,28 @@ const MapLanding = ({
   };
 
   const selected =
-    countries && country ? data?.map?.find((x) => x.countryId === country) : {};
+    countries && country
+      ? landing?.map?.find((x) => x.countryId === country)
+      : {};
 
-  const summaryData = data?.summary?.filter((it, index) => {
+  const summaryData = landing?.summary?.filter((it, index) => {
     const current = Object.keys(it)[0];
     return tTypes.indexOf(current) > -1;
   });
 
   useEffect(() => {
     filters && setFilters(null);
-    !data &&
-      api.get("/landing").then((resp) => {
-        setData(resp.data);
-      });
-  }, [filters, setFilters, data, setData]);
+  }, [filters, setFilters]);
 
   return (
     <div id="map-landing">
       <div className="landing-container map-container">
-        {(!data || !isLoaded()) && (
+        {!isLoaded() && (
           <h2 className="loading">
             <LoadingOutlined spin /> Loading Data
           </h2>
         )}
-        {data && isLoaded() && (
+        {isLoaded() && (
           <div className="map-overlay">
             <Select
               showSearch
@@ -122,7 +119,7 @@ const MapLanding = ({
         {/* Dont render maps on mobile */}
         {innerWidth >= 768 && (
           <Maps
-            data={data?.map || []}
+            data={landing?.map || []}
             clickEvents={clickCountry}
             topic={counts}
             country={countries.find((x) => x.id === country)}

@@ -73,7 +73,7 @@ Promise.all([
     e.organisations = uniqBy(sortBy(organisation.data, ["name"])).sort((a, b) =>
       a.name.localeCompare(b.name)
     );
-    e.summary = landing.data?.summary ? landing.data.summary : [];
+    e.landing = landing.data;
     e.stakeholders = stakeholder.data;
   });
 });
@@ -132,10 +132,10 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
-  const { profile, disclaimer, summary, tags } = UIStore.useState((s) => ({
+  const { profile, disclaimer, landing, tags } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
-    summary: s.summary,
+    landing: s.landing,
     tags: s.tags,
   }));
   const [signupModalVisible, setSignupModalVisible] = useState(false);
@@ -207,7 +207,7 @@ const Root = () => {
             </div>
             {renderDropdownMenu(
               tags,
-              summary,
+              landing,
               profile,
               setWarningModalVisible,
               isAuthenticated,
@@ -403,7 +403,7 @@ const Root = () => {
 
 const renderDropdownMenu = (
   tags,
-  summary,
+  landing,
   profile,
   setWarningModalVisible,
   isAuthenticated,
@@ -411,14 +411,16 @@ const renderDropdownMenu = (
   loginWithPopup
 ) => {
   const excludeSummary = ["event", "organisation", "stakeholder"];
-  summary = summary
-    .filter((x) => !excludeSummary.includes(Object.keys(x)[0]))
-    .map((x) => {
-      return {
-        name: Object.keys(x)[0],
-        count: x[Object.keys(x)[0]],
-      };
-    });
+  const summary =
+    landing?.summary &&
+    landing.summary
+      .filter((x) => !excludeSummary.includes(Object.keys(x)[0]))
+      .map((x) => {
+        return {
+          name: Object.keys(x)[0],
+          count: x[Object.keys(x)[0]],
+        };
+      });
   return (
     <div className="menu-dropdown-container">
       <AboutDropdownMenu />
