@@ -3,7 +3,7 @@ import { withRouter } from "react-router";
 import { Button, Menu, Dropdown } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 
-const ExploreDropdownMenu = withRouter(({ history, topics }) => {
+const ExploreDropdownMenu = withRouter(({ history, topicsCount }) => {
   return (
     <Dropdown
       overlayClassName="menu-dropdown-wrapper"
@@ -11,7 +11,7 @@ const ExploreDropdownMenu = withRouter(({ history, topics }) => {
         <Menu className="menu-dropdown">
           <Menu.Item
             className="nav-link"
-            disabled={!topics}
+            disabled={!topicsCount}
             onClick={() => history.push("/topics")}
           >
             Topics
@@ -20,8 +20,8 @@ const ExploreDropdownMenu = withRouter(({ history, topics }) => {
               size="small"
               type="ghost"
               shape="circle"
-              icon={topics}
-              loading={!topics}
+              icon={topicsCount}
+              loading={!topicsCount}
             />
           </Menu.Item>
           {/* <Menu.Item className="nav-link">

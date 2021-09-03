@@ -422,7 +422,9 @@ const renderDropdownMenu = (
   return (
     <div className="menu-dropdown-container">
       <AboutDropdownMenu />
-      <ExploreDropdownMenu topics={tags?.topics ? tags.topics.length : 0} />
+      <ExploreDropdownMenu
+        topicsCount={tags?.topics ? tags.topics.length : 0}
+      />
       <DataHubDropdownMenu />
       <KnowledgeExchangeDropdownMenu resources={summary} />
       <ConnectStakeholdersDropdownMenu
