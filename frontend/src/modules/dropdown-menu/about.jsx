@@ -13,7 +13,7 @@ const AboutDropdownMenu = withRouter(({ history }) => {
       About
     </Button>
   );
-  // Unommented, if needed later
+  // Uncommented, if needed later
   // return (
   //   <Dropdown
   //     overlayClassName="menu-dropdown-wrapper"

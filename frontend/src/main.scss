@@ -583,4 +583,22 @@ path {
   opacity: 1 !important;
 }
 
+/* Responsive menu style */
+.responsive-menu-trigger {
+  display: none;
+  align-items: center;
+}
+.responsive-menu-wrapper {
+  .ant-drawer-body {
+    padding: 0;
+  }
+  .ant-menu-sub.ant-menu-inline > .ant-menu-item,
+  .ant-menu-sub.ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+/* End of Responsive menu style */
+
 @import "./container.scss";

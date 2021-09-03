@@ -15,9 +15,9 @@
     font-size: 14px;
   }
   .ui.container {
-    width: auto !important;
-    margin-left: 1.2em !important;
-    margin-right: 1.2em !important;
+    width: 96% !important;
+    margin-left: 3% !important;
+    margin-right: 3% !important;
     // enable mobile view
     flex-direction: column;
     .topic-item {
@@ -82,49 +82,16 @@
 
     header.ant-layout-header.nav-header-container {
       width: 100%;
-      position: static !important;
-    }
-
-    .menu-dropdown-wrapper {
-      flex-wrap: wrap;
-      justify-content: space-evenly !important;
-      margin: 15px 0;
     }
 
     // enable mobile view -- header
     & > header {
       height: auto !important;
-      padding-top: 15px;
-      padding-bottom: 15px;
-      .logo-wrapper {
-        clear: both !important;
-        text-align: center;
-        margin-right: 0;
-        margin-bottom: -10px;
-      }
-      .logo {
-        width: 40%;
-      }
       .ui.container {
-        align-items: center;
-        .rightside {
-          margin: 1.2rem 0;
-          justify-content: center;
-        }
+        flex-direction: row;
       }
       .src {
-        width: 80%;
-        margin-left: 0;
-      }
-      nav {
-        margin-left: 0;
-        margin-top: 15px;
-        width: 100%;
-        .ant-btn-primary {
-          margin-left: 0;
-          font-weight: bold;
-          width: 100%;
-        }
+        width: 30%;
       }
     }
   }
@@ -422,6 +389,14 @@
       }
     }
   }
+
+  /*Show responsive menu and disable normal menu */
+  .menu-dropdown-container {
+    display: none !important;
+  }
+  .responsive-menu-trigger {
+    display: flex;
+  }
 }
 
 /* Tablet */
@@ -430,9 +405,9 @@
     font-size: 14px;
   }
   .ui.container {
-    width: auto !important;
-    margin-left: 30px !important;
-    margin-right: 30px !important;
+    width: 96% !important;
+    margin-left: 3% !important;
+    margin-right: 3% !important;
   }
 
   .ui.grid.container {
@@ -455,25 +430,11 @@
       min-width: 0;
     }
 
-    .ui.container {
-      flex-wrap: wrap;
-      justify-content: space-evenly !important;
-    }
-
     header.ant-layout-header.nav-header-container {
       width: 100%;
-      position: static !important;
-      padding-bottom: 20px;
-    }
-
-    .menu-dropdown-wrapper {
-      flex-wrap: wrap;
-      justify-content: space-evenly !important;
-      margin: 15px 0;
     }
 
     & > header {
-      min-height: 200px;
       .src {
         width: 50%;
       }
@@ -680,17 +641,25 @@
       }
     }
   }
+
+  /*Show responsive menu and disable normal menu */
+  .menu-dropdown-container {
+    display: none !important;
+  }
+  .responsive-menu-trigger {
+    display: flex;
+  }
 }
 
 /* Small Monitor */
-@media only screen and (min-width: 992px) and (max-width: 1199px) {
+@media only screen and (min-width: 992px) and (max-width: 1219px) {
   html {
     font-size: 14px;
   }
   .ui.container {
-    width: auto !important;
-    margin-left: 30px !important;
-    margin-right: 30px !important;
+    width: 92% !important;
+    margin-left: 4% !important;
+    margin-right: 4% !important;
   }
 
   .ui.grid.container {
@@ -713,25 +682,11 @@
       min-width: 0;
     }
 
-    .ui.container {
-      flex-wrap: wrap;
-      justify-content: space-evenly !important;
-    }
-
     header.ant-layout-header.nav-header-container {
       width: 100%;
-      // position: static !important;
-      padding-bottom: 20px;
-    }
-
-    .menu-dropdown-wrapper {
-      flex-wrap: wrap;
-      justify-content: space-evenly !important;
-      margin: 15px 0;
     }
 
     & > header {
-      min-height: 140px;
       .src {
         width: 50%;
       }
@@ -868,10 +823,18 @@
       }
     }
   }
+
+  /*Show responsive menu and disable normal menu */
+  .menu-dropdown-container {
+    display: none !important;
+  }
+  .responsive-menu-trigger {
+    display: flex;
+  }
 }
 
 /* Large Monitor */
-@media only screen and (min-width: 1200px) and (max-width: 1365px) {
+@media only screen and (min-width: 1220px) and (max-width: 1365px) {
   html {
     font-size: 14px;
   }
@@ -1046,7 +1009,7 @@
     margin-right: 3% !important;
     width: 94%;
   }
-  @media (min-width: 1200px) {
+  @media (min-width: 1220px) {
     margin-left: 3% !important;
     margin-right: 3% !important;
     width: 94%;
