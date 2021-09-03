@@ -403,15 +403,15 @@
           border-radius: 25px;
         }
         .ant-select-selector {
-          background-color: transparent !important;
+          background-color: rgba(255, 255, 255, 0.5);
           border-radius: 25px;
-          border: 2px solid #4dffa5;
-          color: #fff;
+          border: 2px solid #2d6796;
+          color: #2d6796;
           font-weight: 600;
           font-size: 0.94rem;
         }
         .ant-select-arrow {
-          color: rgba(255, 255, 255, 0.5);
+          color: #2d6796;
         }
       }
       .content {
