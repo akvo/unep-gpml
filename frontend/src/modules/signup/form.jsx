@@ -135,7 +135,7 @@ const SignUpForm = withRouter(
             UIStore.update((e) => {
               e.formStep = {
                 ...e.formStep,
-                initiative: 2,
+                signup: 2,
               };
             });
             //            scroll top
@@ -160,7 +160,7 @@ const SignUpForm = withRouter(
       //       UIStore.update((e) => {
       //         e.formEdit = {
       //           ...e.formEdit,
-      //           initiative: {
+      //           signup: {
       //             status: "add",
       //             id: null,
       //           },

@@ -1,6 +1,6 @@
 import { Store } from "pullstate";
 import { UIStore } from "../../store";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Checkbox, Row, Col, Card, Steps, Switch, Button } from "antd";
 import {
   CheckOutlined,
@@ -55,20 +55,18 @@ export const signUpData = new Store({
   editId: null,
 });
 
-const getSchema = (
-  {
-    stakeholders,
-    countries,
-    tags,
-    regionOptions,
-    meaOptions,
-    sectorOptions,
-    organisationType,
-  },
-  loading
-) => {
+const getSchema = ({
+  stakeholders,
+  countries,
+  tags,
+  regionOptions,
+  meaOptions,
+  sectorOptions,
+  organisationType,
+  profile,
+}) => {
   const prop = cloneDeep(schema.properties);
-
+  prop.S1.properties.email.default = profile.email;
   prop.S1.properties.S1_ExpertisesAndActivities.properties[
     "seeking"
   ].enum = tags?.seeking?.map((it) => String(it.id));
@@ -159,7 +157,6 @@ const getSchema = (
       ...schema,
       properties: prop,
     },
-    loading: loading,
   };
 };
 
@@ -175,6 +172,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     sectorOptions: s.sectorOptions,
     organisationType: s.organisationType,
     meaOptions: s.meaOptions,
+    profile: s.profile,
     formStep: s.formStep,
     formEdit: s.formEdit,
   }));
@@ -189,11 +187,12 @@ const SignUp = ({ match: { params }, ...props }) => {
     meaOptions,
     formStep,
     formEdit,
+    profile,
   } = storeData;
 
   const formData = signUpData.useState();
   const { editId, data } = formData;
-  const { status, id } = formEdit.initiative;
+  const { status, id } = formEdit.signUp;
 
   const tabsDataRaw = [
     {
@@ -230,7 +229,6 @@ const SignUp = ({ match: { params }, ...props }) => {
   const [tabsData, setTabsData] = useState(tabsDataRaw);
   const [formSchema, setFormSchema] = useState({
     schema: schema,
-    loading: true,
   });
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
@@ -251,26 +249,35 @@ const SignUp = ({ match: { params }, ...props }) => {
     UIStore.update((e) => {
       e.highlight = highlight;
     });
-    setFormSchema({ schema: schema, loading: true });
+    setFormSchema({ schema: schema });
   }, [highlight]);
 
-  const isLoaded = () => {
-    console.log(storeData);
+  const isLoaded = useCallback(() => {
     return Boolean(
-      countries.length &&
+      !isEmpty(countries) &&
         !isEmpty(tags) &&
+        !isEmpty(profile) &&
         !isEmpty(regionOptions) &&
         !isEmpty(sectorOptions) &&
         !isEmpty(organisationType) &&
         !isEmpty(meaOptions) &&
         !isEmpty(stakeholders)
     );
-  };
+  }, [
+    countries,
+    tags,
+    profile,
+    regionOptions,
+    sectorOptions,
+    organisationType,
+    meaOptions,
+    stakeholders,
+  ]);
 
   useEffect(() => {
     const dataId = Number(params?.id || id);
-    if (formSchema.loading && isLoaded()) {
-      setFormSchema(getSchema(storeData, false));
+    if (isLoaded()) {
+      setFormSchema(getSchema(storeData));
       // Manage form status, add/edit
       if (
         (status === "edit" || dataId) &&
@@ -294,16 +301,7 @@ const SignUp = ({ match: { params }, ...props }) => {
         e.editId = null;
       });
     }
-  }, [
-    //loading,
-    storeData,
-    formSchema,
-    status,
-    id,
-    data,
-    editId,
-    params,
-  ]);
+  }, [storeData, status, id, data, editId, params, isLoaded]);
 
   const renderSteps = (parentTitle, section, steps, index) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
@@ -461,7 +459,7 @@ const SignUp = ({ match: { params }, ...props }) => {
               <Col xs={24} lg={24}>
                 <div
                   className={`form-meta ${
-                    formStep.initiative === 2 ? "submitted" : ""
+                    formStep.signUp === 2 ? "submitted" : ""
                   }`}
                 >
                   <div className="highlight">
@@ -474,15 +472,17 @@ const SignUp = ({ match: { params }, ...props }) => {
                       ? "Required fields highlighted"
                       : "Highlight required"}
                   </div>
-                  <Button
-                    disabled={disabledBtn.disabled}
-                    loading={sending}
-                    type={disabledBtn.type}
-                    size="large"
-                    onClick={(e) => handleOnClickBtnSubmit(e)}
-                  >
-                    SUBMIT
-                  </Button>
+                  {formStep.signUp === 1 && (
+                    <Button
+                      disabled={disabledBtn.disabled}
+                      loading={!isLoaded()}
+                      type={disabledBtn.type}
+                      size="large"
+                      onClick={(e) => handleOnClickBtnSubmit(e)}
+                    >
+                      SUBMIT
+                    </Button>
+                  )}
                 </div>
               </Col>
             </Row>
@@ -496,7 +496,7 @@ const SignUp = ({ match: { params }, ...props }) => {
       ) : (
         <div className="ui container">
           <div className="form-container">
-            {formStep.initiative === 1 && (
+            {formStep.signUp === 1 && (
               <Row
                 style={{
                   minHeight: `${minHeightContainer}px`,
@@ -593,7 +593,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                 </Col>
               </Row>
             )}
-            {formStep.initiative === 2 && (
+            {formStep.signUp === 2 && (
               <Row>
                 <Col span={24}>
                   <Card

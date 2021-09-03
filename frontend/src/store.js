@@ -88,6 +88,10 @@ const UIStore = new Store({
       status: "add",
       id: null,
     },
+    signUp: {
+      status: "add",
+      id: null,
+    },
   },
 });
 
