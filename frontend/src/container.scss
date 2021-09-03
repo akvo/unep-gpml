@@ -187,25 +187,26 @@
   // enable mobile view -- footer
   footer {
     .ui.container {
+      &:first-child {
+        flex-direction: row;
+        flex-wrap: wrap;
+        .col {
+          flex: 1 1 45% !important;
+          margin: 5px;
+        }
+      }
       &.unep {
         flex-direction: row;
+        flex-wrap: nowrap;
+        img.uneplogo {
+          width: 25%;
+        }
         .unepInfo {
-          width: 70%;
-          padding: 0 0 0 1rem;
-        }
-
-        h2 {
-          margin: 0rem;
-        }
-      }
-      .unepLogo {
-        img {
-          width: 80px;
-        }
-      }
-      &:first-child {
-        .col {
-          width: 100% !important;
+          width: 74%;
+          h2 {
+            margin: 0;
+            line-height: 1.5rem;
+          }
         }
       }
     }
@@ -584,25 +585,26 @@
   // enable mobile view -- footer
   footer {
     .ui.container {
+      &:first-child {
+        flex-direction: row;
+        flex-wrap: wrap;
+        .col {
+          flex: 1 1 45% !important;
+          margin: 10px;
+        }
+      }
       &.unep {
         flex-direction: row;
+        flex-wrap: nowrap;
+        img.uneplogo {
+          width: 25%;
+        }
         .unepInfo {
-          width: 70%;
-          padding: 0 0 0 1rem;
-        }
-
-        h2 {
-          margin: 0rem;
-        }
-      }
-      .unepLogo {
-        img {
-          width: 80px;
-        }
-      }
-      &:first-child {
-        .col {
-          width: 100% !important;
+          width: 74%;
+          h2 {
+            margin: 0;
+            line-height: 1.5rem;
+          }
         }
       }
     }
@@ -1445,15 +1447,15 @@
   }
 
   .ui.grid.container {
-    width: calc(1127px + 2rem) !important;
+    width: calc(1560px + 2rem) !important;
   }
 
   .ui.relaxed.grid.container {
-    width: calc(1127px + 3rem) !important;
+    width: calc(1560px + 3rem) !important;
   }
 
   .ui.very.relaxed.grid.container {
-    width: calc(1127px + 5rem) !important;
+    width: calc(1560px + 5rem) !important;
   }
 }
 

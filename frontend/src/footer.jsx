@@ -54,20 +54,10 @@ const Footer = ({
                 <h4>GPML Digital platform</h4>
               </li>
               <li>
-                <a
-                  href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Knowledge Exchange
-                </a>
+                <a href="/browse">Knowledge Exchange</a>
               </li>
               <li>
-                <a
-                  href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a href="/stakeholders?topic=stakeholder">
                   Connect Stakeholders
                 </a>
               </li>
@@ -212,9 +202,7 @@ const Footer = ({
       </div>
       <div className="second-footer">
         <div className="ui container unep">
-          <div className="unepLogo">
-            <img src={unepLogo} className="uneplogo" alt="unep" />
-          </div>
+          <img src={unepLogo} className="uneplogo" alt="unep" />
           <div className="unepInfo">
             <h2>
               The Digital Platform is a UNEP contribution to the Global
@@ -235,6 +223,7 @@ const Footer = ({
                       href="/privacy-policy-and-terms-of-use.pdf"
                       target="_blank"
                       rel="noreferrer"
+                      className="copy-right"
                     >
                       Privacy Policy &amp; Terms of use
                     </a>

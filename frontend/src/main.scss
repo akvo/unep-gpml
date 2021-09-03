@@ -68,8 +68,8 @@ h4 {
 }
 
 .copy-right {
-  font-size: 0.75rem;
-  line-height: 0.69rem;
+  font-size: 0.85rem;
+  line-height: 0.8rem;
 }
 
 .text-green {
@@ -438,17 +438,13 @@ footer {
   }
 
   .ui.container {
-    padding-bottom: 1rem;
     &:first-child {
       display: flex;
-
       .col {
         width: 33%;
         flex: 1;
-
         nav {
           margin-bottom: 2rem;
-
           ul {
             a,
             span {
@@ -463,16 +459,16 @@ footer {
       padding: 1rem 0;
       display: flex;
       align-items: center;
-      .unepLogo {
-        img {
-          width: 45%;
-          margin-left: 0;
-        }
+      img.uneplogo {
+        width: 10%;
+        margin: 0;
+        margin-right: 2rem;
       }
       .unepInfo {
+        width: 89%;
         h2 {
           color: white;
-          font-size: 0.9rem;
+          font-size: 0.95rem;
           font-weight: 400;
         }
       }
