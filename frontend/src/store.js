@@ -41,7 +41,7 @@ const UIStore = new Store({
   meaOptions: [],
   organisationType: sectorOptions,
   sectorOptions: sectorOptions,
-  summary: [],
+  landing: null,
   stakeholders: null,
   highlight: false,
   disclaimer: null,

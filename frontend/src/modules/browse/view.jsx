@@ -1,6 +1,6 @@
 import { UIStore } from "../../store";
 import React, { useEffect, useState } from "react";
-import { Card, Input, Select, Checkbox, Tag, Pagination } from "antd";
+import { Card, Input, Select, Checkbox, Tag, Pagination, Switch } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "./styles.scss";
@@ -20,6 +20,7 @@ import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 import { LoadingOutlined } from "@ant-design/icons";
 import { TrimText } from "../../utils/string";
+import MapLanding from "./map-landing";
 
 export const useQuery = () => {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -40,6 +41,7 @@ export const useQuery = () => {
 let tmid;
 
 const Browse = ({
+  setWarningModalVisible,
   history,
   setStakeholderSignupModalVisible,
   filters,
@@ -60,6 +62,10 @@ const Browse = ({
   const [warningVisible, setWarningVisible] = useState(false);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const pageSize = 10;
+  const [toggleButton, setToggleButton] = useState("list");
+
+  const isLoaded = () => Boolean(!isEmpty(countries));
+
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
     // of how `history` and `location` are interacting!
@@ -72,6 +78,7 @@ const Browse = ({
       setLoading(false);
     });
   };
+
   useEffect(() => {
     // setFilterCountries if user click from map to browse view
     query?.country &&
@@ -101,6 +108,7 @@ const Browse = ({
     // adding a dependency here on location makes the FE send multiple
     // requests to the backend.
   }, [isLoading]); // eslint-disable-line
+
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = "browse";
@@ -113,6 +121,7 @@ const Browse = ({
       }, 100);
     }
   }, [profile]);
+
   const updateQuery = (param, value) => {
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
@@ -133,6 +142,7 @@ const Browse = ({
       setFilterCountries(value);
     }
   };
+
   const handleRelationChange = (relation) => {
     api
       .post("/favorite", relation)
@@ -178,95 +188,145 @@ const Browse = ({
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
   );
+
   return (
     <div id="browse">
-      <div className="ui container">
-        <div className="main-content">
-          <StickyBox offsetBottom={20}>
-            <aside>
-              <div className="inner">
-                <Input
-                  value={query.q}
-                  className="src"
-                  placeholder="Search for resources and stakeholders"
-                  suffix={<SearchOutlined />}
-                  onChange={({ target: { value } }) => updateQuery("q", value)}
-                />
-                <div className="field">
-                  <div className="label">Country</div>
-                  <Select
-                    virtual={false}
-                    value={
-                      countries && query?.country
-                        ? countries
-                            .filter((x) => query.country.includes(String(x.id)))
-                            .map((x) => x.id)
-                        : []
+      <div className="section-header">
+        <div className="ui container page-title">
+          <h2 className="text-green">All Resources</h2>
+          <span className="text-white">
+            <Switch
+              checked={toggleButton === "map"}
+              disabled={loading}
+              onChange={(status) => setToggleButton(status ? "map" : "list")}
+              size="small"
+            />{" "}
+            Swith to {toggleButton === "list" ? "map" : "list"} view
+          </span>
+        </div>
+      </div>
+      {toggleButton === "map" ? (
+        <MapLanding
+          {...{
+            setWarningModalVisible,
+            setStakeholderSignupModalVisible,
+            loginWithPopup,
+            isAuthenticated,
+            filters,
+            setFilters,
+            setToggleButton,
+            updateQuery,
+          }}
+        />
+      ) : (
+        <div className="ui container">
+          <div className="main-content">
+            <StickyBox offsetBottom={20}>
+              <aside>
+                <div className="inner">
+                  <Input
+                    value={query.q}
+                    className="src"
+                    placeholder="Search for resources and stakeholders"
+                    suffix={<SearchOutlined />}
+                    onChange={({ target: { value } }) =>
+                      updateQuery("q", value)
                     }
-                    placeholder="Find country"
-                    mode="multiple"
-                    options={
-                      countries &&
-                      countries
-                        .map((it) => ({
-                          value: it.id,
-                          label: it.name,
-                        }))
-                        .sort((a, b) => a.label.localeCompare(b.label))
-                    }
-                    allowClear
-                    onChange={(val) => {
-                      const selected = countries?.filter((x) => {
-                        return val.includes(x.id);
-                      });
-                      updateQuery(
-                        "country",
-                        selected.map((x) => x.id)
-                      );
-                    }}
-                    filterOption={(input, option) =>
-                      option.label.toLowerCase().indexOf(input.toLowerCase()) >=
-                      0
-                    }
-                    onDeselect={(val) => {
-                      const diselected = countries?.find((x) => x.id === val);
-                      const selected =
-                        countries && query?.country
-                          ? countries.filter(
-                              (x) =>
-                                query.country.includes(String(x.id)) &&
-                                diselected.id !== x.id
-                            )
-                          : [];
-                      updateQuery(
-                        "country",
-                        selected.map((x) => x.id)
-                      );
-                    }}
                   />
-                  {isAuthenticated && (
-                    <Checkbox
-                      className="my-favorites"
-                      checked={query?.favorites?.indexOf("true") > -1}
-                      onChange={({ target: { checked } }) =>
-                        updateQuery("favorites", checked)
+                  <div className="field">
+                    <div className="label">Country</div>
+                    <Select
+                      virtual={false}
+                      value={
+                        countries && query?.country
+                          ? countries
+                              .filter((x) =>
+                                query.country.includes(String(x.id))
+                              )
+                              .map((x) => x.id)
+                          : []
                       }
-                    >
-                      My Bookmarks
-                    </Checkbox>
-                  )}
+                      placeholder="Find country"
+                      mode="multiple"
+                      options={
+                        countries &&
+                        countries
+                          .map((it) => ({
+                            value: it.id,
+                            label: it.name,
+                          }))
+                          .sort((a, b) => a.label.localeCompare(b.label))
+                      }
+                      allowClear
+                      onChange={(val) => {
+                        const selected = countries?.filter((x) => {
+                          return val.includes(x.id);
+                        });
+                        updateQuery(
+                          "country",
+                          selected.map((x) => x.id)
+                        );
+                      }}
+                      filterOption={(input, option) =>
+                        option.label
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      }
+                      onDeselect={(val) => {
+                        const diselected = countries?.find((x) => x.id === val);
+                        const selected =
+                          countries && query?.country
+                            ? countries.filter(
+                                (x) =>
+                                  query.country.includes(String(x.id)) &&
+                                  diselected.id !== x.id
+                              )
+                            : [];
+                        updateQuery(
+                          "country",
+                          selected.map((x) => x.id)
+                        );
+                      }}
+                    />
+                    {isAuthenticated && (
+                      <Checkbox
+                        className="my-favorites"
+                        checked={query?.favorites?.indexOf("true") > -1}
+                        onChange={({ target: { checked } }) =>
+                          updateQuery("favorites", checked)
+                        }
+                      >
+                        My Bookmarks
+                      </Checkbox>
+                    )}
+                  </div>
+                  <TopicSelect
+                    countData={countData}
+                    isApprovedUser={isApprovedUser}
+                    value={query.topic}
+                    onChange={(val) => updateQuery("topic", val)}
+                  />
                 </div>
-                <TopicSelect
-                  countData={countData}
-                  isApprovedUser={isApprovedUser}
-                  value={query.topic}
-                  onChange={(val) => updateQuery("topic", val)}
-                />
-              </div>
-            </aside>
-          </StickyBox>
-          <div className="scroll-content">
-            <StickyBox offsetBottom={500} className="sticky-pagination">
+              </aside>
+            </StickyBox>
+            <div className="scroll-content">
+              <StickyBox offsetBottom={500} className="sticky-pagination">
+                <div className="page">{}</div>
+              </StickyBox>
+              {!isLoaded() || loading || isEmpty(results) ? (
+                <h2 className="loading">
+                  <LoadingOutlined spin /> Loading
+                </h2>
+              ) : isLoaded() && !loading && !isEmpty(results) ? (
+                results.map((result) => (
+                  <Result
+                    key={`${result.type}-${result.id}`}
+                    {...{ result, handleRelationChange, relations, profile }}
+                  />
+                ))
+              ) : (
+                <h2 className="loading">There is no data to display</h2>
+              )}
               <div className="page">
                 {!isEmpty(results) && (
                   <Pagination
@@ -280,26 +340,11 @@ const Browse = ({
                     }
                   />
                 )}
-                {loading && (
-                  <h2 className="loading">
-                    <LoadingOutlined spin /> Loading
-                  </h2>
-                )}
               </div>
-            </StickyBox>
-            {isEmpty(results) && (
-              <h2 className="loading">There is no data to display</h2>
-            )}
-            {!loading &&
-              results.map((result) => (
-                <Result
-                  key={`${result.type}-${result.id}`}
-                  {...{ result, handleRelationChange, relations, profile }}
-                />
-              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
       <ModalWarningUser
         visible={warningVisible}
         close={() => setWarningVisible(false)}
@@ -336,6 +381,8 @@ const TopicSelect = ({ value, onChange, countData, isApprovedUser }) => {
         })}
       </ul>
     </div>,
+    /* Commented this to remove */
+    /*
     isApprovedUser ? (
       <div className="field" key={"topic-select-unlisted"}>
         <div className="label">Stakeholders</div>
@@ -362,6 +409,7 @@ const TopicSelect = ({ value, onChange, countData, isApprovedUser }) => {
         </ul>
       </div>
     ) : null,
+    */
   ];
 };
 

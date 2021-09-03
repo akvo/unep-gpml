@@ -4,28 +4,39 @@ import { Button, Select, Switch } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import Maps from "./maps";
-import "./styles.scss";
+import "./map-styles.scss";
 import humps from "humps";
 import { topicNames, tTypes } from "../../utils/misc";
+import api from "../../utils/api";
 
-const Landing = ({
+const MapLanding = ({
   history,
-  data,
   setStakeholderSignupModalVisible,
   setWarningModalVisible,
   isAuthenticated,
   loginWithPopup,
+  filters,
   setFilters,
+  setToggleButton,
+  updateQuery,
 }) => {
   const { innerWidth, innerHeight } = window;
-  const { profile, countries } = UIStore.currentState;
+  const { profile, countries, landing } = UIStore.useState((s) => ({
+    profile: s.profile,
+    countries: s.countries,
+    landing: s.landing,
+  }));
   const [country, setCountry] = useState(null);
   const [counts, setCounts] = useState("project");
-  const [mapData, setMapData] = useState([]);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
+
+  const isLoaded = () => Boolean(countries.length);
+
   const clickCountry = (name) => {
+    setToggleButton("list");
+    updateQuery("country", name);
     history.push(`/browse?country=${name}`);
   };
 
@@ -55,56 +66,28 @@ const Landing = ({
   };
 
   const selected =
-    countries && country ? data?.map?.find((x) => x.countryId === country) : {};
+    countries && country
+      ? landing?.map?.find((x) => x.countryId === country)
+      : {};
 
-  const summaryData = data?.summary?.filter((it, index) => {
+  const summaryData = landing?.summary?.filter((it, index) => {
     const current = Object.keys(it)[0];
     return tTypes.indexOf(current) > -1;
   });
 
   useEffect(() => {
-    setFilters(null);
-    UIStore.update((e) => {
-      e.disclaimer = "home";
-    });
-  }, [setFilters]);
+    filters && setFilters(null);
+  }, [filters, setFilters]);
 
   return (
-    <div id="landing">
-      <div className="landing-container">
-        <div className="landing-banner ui container">
-          <h2>
-            Welcome to the Global Partnership on Marine Litter Digital Platform!
-          </h2>
-          <p>
-            The Digital Platform is an open-source, multi-stakeholder platform
-            that compiles different resources, connects stakeholders and
-            integrates data to guide action. The resources have been collected
-            through research based on publicly available information, interviews
-            with experts, and inputs received through submissions. They cover
-            all stages in the plastics life cycle, with respect to prevention of
-            litter and waste, design and production, use and consumption, waste
-            management and marine litter monitoring and capturing. Explore the
-            map below by clicking on a country, or filter by resource. You can
-            learn more about each resource's source{" "}
-            <a
-              href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
-              target="_blank"
-              rel="noreferrer"
-            >
-              here
-            </a>
-            .
-          </p>
-        </div>
-      </div>
+    <div id="map-landing">
       <div className="landing-container map-container">
-        {!data && (
+        {!isLoaded() && (
           <h2 className="loading">
             <LoadingOutlined spin /> Loading Data
           </h2>
         )}
-        {data && (
+        {isLoaded() && (
           <div className="map-overlay">
             <Select
               showSearch
@@ -128,28 +111,20 @@ const Landing = ({
               counts={counts}
               selected={selected}
               init={counts}
+              setToggleButton={setToggleButton}
+              updateQuery={updateQuery}
             />
           </div>
         )}
         {/* Dont render maps on mobile */}
         {innerWidth >= 768 && (
           <Maps
-            data={data?.map || []}
+            data={landing?.map || []}
             clickEvents={clickCountry}
             topic={counts}
             country={countries.find((x) => x.id === country)}
           />
         )}
-      </div>
-      <div className="topics">
-        <div className="ui container">
-          {data?.topics.map(
-            (topic, index) =>
-              (topic.topicType !== "stakeholder" || isApprovedUser) && (
-                <TopicItem key={`topic-${index}`} {...{ topic }} />
-              )
-          )}
-        </div>
       </div>
     </div>
   );
@@ -164,6 +139,8 @@ const Summary = ({
   selected,
   init,
   isApprovedUser,
+  setToggleButton,
+  updateQuery,
 }) => {
   summary = summary.map((x) => ({
     ...x,
@@ -210,8 +187,14 @@ const Summary = ({
                   </Link>
                 ) : (
                   <Link
+                    onClick={() => {
+                      setToggleButton("list");
+                      updateQuery("topic", [humps.decamelize(current)]);
+                    }}
                     to={{
-                      pathname: "/browse",
+                      pathname: restricted.includes(current)
+                        ? "/stakeholders"
+                        : "/browse",
                       search: `?topic=${humps.decamelize(current)}`,
                     }}
                   >
@@ -267,4 +250,4 @@ const TopicItem = ({ topic }) => {
   );
 };
 
-export default withRouter(Landing);
+export default withRouter(MapLanding);

@@ -1,32 +1,7 @@
 @import "../../vars.scss";
 
-#landing {
+#map-landing {
   position: relative;
-
-  .landing-container {
-    background-color: #036799;
-    color: #ffffff;
-
-    .landing-banner {
-      padding: 0.5rem 0px;
-
-      h2 {
-        font-size: 1.2rem;
-        color: white;
-      }
-
-      p {
-        font-size: 0.95rem;
-        text-align: justify;
-      }
-
-      a {
-        color: white;
-        font-weight: 700;
-        text-decoration: underline;
-      }
-    }
-  }
 
   .landing-container.map-container {
     position: relative;
