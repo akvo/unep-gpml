@@ -177,14 +177,19 @@ const Landing = withRouter(
 
     const generateEvent = useCallback(
       (filterDate) => {
-        let eventNow = [];
-        data.results.forEach((x) => {
+        const eventNow = data.results.filter((x, i) => {
           const date = moment(x.startDate).format("DD-MM-YYYY");
-          if (date === filterDate) {
-            eventNow.push(x);
-          }
+          return date === filterDate;
         });
-        setEvent(eventNow);
+        if (!eventNow.length) {
+          const nextDay = moment(filterDate, "DD-MM-YYYY")
+            .add(1, "days")
+            .format("DD-MM-YYYY");
+          generateEvent(nextDay);
+        }
+        if (eventNow.length) {
+          setEvent(eventNow);
+        }
       },
       [data]
     );
@@ -616,23 +621,22 @@ const Landing = withRouter(
                     </span>
                   </h2>
                 </div>
-                <div className="body">
-                  <div className="content">
-                    {event.length === 0 && (
-                      <div className="no-event">No Event Today</div>
-                    )}
-                    {event.length > 0 &&
-                      renderEventContent(event, eventCarousel)}
-                  </div>
-                  <div className="calendar">
-                    <Calendar
-                      fullscreen={true}
-                      onPanelChange={handleOnPanelChange}
-                      onSelect={handleOnDateSelected}
-                      headerRender={(e) => calendarHeader(e)}
-                      dateCellRender={dateCellRender}
-                    />
-                  </div>
+              </div>
+              <div className="body">
+                <div className="content">
+                  {event.length === 0 && (
+                    <div className="no-event">No event on this day</div>
+                  )}
+                  {event.length > 0 && renderEventContent(event, eventCarousel)}
+                </div>
+                <div className="calendar">
+                  <Calendar
+                    fullscreen={true}
+                    onPanelChange={handleOnPanelChange}
+                    onSelect={handleOnDateSelected}
+                    headerRender={(e) => calendarHeader(e)}
+                    dateCellRender={dateCellRender}
+                  />
                 </div>
               </div>
             </div>
