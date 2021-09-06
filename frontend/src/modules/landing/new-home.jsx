@@ -195,12 +195,9 @@ const Landing = withRouter(
     );
 
     const handleOnDateSelected = (value) => {
+      setEvent(null);
       const selectedDate = moment(value).format("DD-MM-YYYY");
       generateEvent(selectedDate);
-    };
-
-    const handleOnPanelChange = (value) => {
-      generateEvent(dateNow);
     };
 
     useEffect(() => {
@@ -624,15 +621,24 @@ const Landing = withRouter(
               </div>
               <div className="body">
                 <div className="content">
-                  {event.length === 0 && (
+                  {!event && (
+                    <div className="no-event">
+                      <h2 className="loading text-white">
+                        <LoadingOutlined spin /> Loading...
+                      </h2>
+                    </div>
+                  )}
+                  {event && event.length === 0 && (
                     <div className="no-event">No event on this day</div>
                   )}
-                  {event.length > 0 && renderEventContent(event, eventCarousel)}
+                  {event &&
+                    event.length > 0 &&
+                    renderEventContent(event, eventCarousel)}
                 </div>
                 <div className="calendar">
                   <Calendar
                     fullscreen={true}
-                    onPanelChange={handleOnPanelChange}
+                    onPanelChange={handleOnDateSelected}
                     onSelect={handleOnDateSelected}
                     headerRender={(e) => calendarHeader(e)}
                     dateCellRender={dateCellRender}
