@@ -239,7 +239,7 @@ const Root = () => {
             </Switch>
             <div className="rightside">
               {!isAuthenticated ? (
-                <div className="rightside">
+                <div className="rightside btn-wrapper">
                   <JoinGPMLButton loginWithPopup={loginWithPopup} />
                   <Button type="ghost" className="left">
                     <Link to="/" onClick={loginWithPopup}>
@@ -248,7 +248,7 @@ const Root = () => {
                   </Button>
                 </div>
               ) : (
-                <div className="rightside">
+                <div className="rightside btn-wrapper">
                   <AddButton
                     {...{
                       setStakeholderSignupModalVisible,
@@ -452,6 +452,7 @@ const Root = () => {
           isAuthenticated,
           setStakeholderSignupModalVisible,
           loginWithPopup,
+          logout,
         }}
         showResponsiveMenu={showResponsiveMenu}
         setShowResponsiveMenu={setShowResponsiveMenu}
