@@ -1,6 +1,6 @@
 import { UIStore } from "../../store";
 import React, { useEffect } from "react";
-import { Row, Col, Card } from "antd";
+import { Button, Row, Col, Card } from "antd";
 import "./view-style.scss";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -37,33 +37,41 @@ const SignupView = ({ ...props }) => {
             <Card>
               <h2>How do I join?</h2>
               <div className="choices">
-                <div
-                  onClick={() => {
-                    setTypeSignUp("entity");
-                    loginWithPopup({ screen_hint: "signup" });
-                    //                  history.push("/entity-signup");
-                  }}
-                >
+                <div>
                   <h4>
                     I represent an <b>Entity</b> and I wish to become a member
                     of the <b>Global partnership on Marine Litter​</b>
                   </h4>
-                  <div className="caption">Go to the Partnership</div>
-                  <small>You will be taken to the GPML website</small>
+                  <h4>
+                    You will need to join as a member of the GPML Digital
+                    platform as well
+                  </h4>
+                  <Button
+                    type="default"
+                    onClick={() => {
+                      setTypeSignUp("entity");
+                      loginWithPopup({ screen_hint: "signup" });
+                      //                  history.push("/entity-signup");
+                    }}
+                  >
+                    Join as an entity
+                  </Button>
                 </div>
-                <div
-                  onClick={() => {
-                    setTypeSignUp("individual");
-                    loginWithPopup({ screen_hint: "signup" });
-                    //history.push("/stakeholder-signup");
-                  }}
-                >
+                <div>
                   <h4>
                     I am an <b>Individual</b> and I wish to sign up to the{" "}
                     <b>GPML Digital Platform​</b>
                   </h4>
-                  <div className="caption">Join the digital platform</div>
-                  <small>You will continue to the next step</small>
+                  <Button
+                    type="default"
+                    onClick={() => {
+                      setTypeSignUp("stakeholder");
+                      loginWithPopup({ screen_hint: "signup" });
+                      //                  history.push("/entity-signup");
+                    }}
+                  >
+                    Join as an individual
+                  </Button>
                 </div>
               </div>
               <div className="login">
