@@ -81,7 +81,10 @@ const renderSectionIssue = () => {
           </p>
           <div className="btn-wrapper">
             <Button type="ghost">Vital graphics</Button>
-            <Button type="ghost left">Clean seas</Button>
+            <Button type="ghost left"  onClick={(e) => {
+              window.location.href='https://www.cleanseas.org/';
+              }}>Clean seas
+            </Button>
           </div>
         </div>
         <div className="section-issue-graphic">
@@ -169,7 +172,9 @@ const renderSectionInfo = () => {
           <Button type="ghost" className="btn-item">
             Download Summary (1 Page)
           </Button>
-          <Button type="ghost" className="btn-item">
+          <Button type="ghost" className="btn-item"  onClick={(e) => {
+              window.location.href='https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf';
+              }}>
             Download Full Concept Document
           </Button>
         </div>
@@ -201,7 +206,7 @@ const renderSectionTimelineAndRoadmap = () => {
             UNEA-6, expected to be held in early 2023.
           </p>
           <a
-            href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP+GPML+Digital+Platform+Concept+for+User+and+Partner+Consultations+May+2021.pdf"
+            href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf"
             className="text-blue txt-emphasis"
           >
             Learn More
@@ -233,7 +238,7 @@ const renderSectionKeyFeaturesAndComponents = () => {
             Environment Situation Room (WESR).
           </p>
           <a
-            href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP+GPML+Digital+Platform+Concept+for+User+and+Partner+Consultations+May+2021.pdf"
+            href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf"
             className="text-blue txt-emphasis"
           >
             Learn More
@@ -252,7 +257,7 @@ const renderSectionCommunity = () => {
     <div className="section-container section-community-container">
       <div className="ui container section-community-wrapper">
         <div className="section-community-text">
-          <h2 className="text-green">GPML Community</h2>
+          <h2 className="text-green">Our community</h2>
           <p className="txt-emphasis text-white">
             The GPML Digital Platforms seeks to connect, inform and inspire all
             actors working to address marine litter and plastic pollution. Join
@@ -264,10 +269,10 @@ const renderSectionCommunity = () => {
             groups and stakeholders; and private citizens.
           </p>
           <a
-            href="https://digital.gpmarinelitter.org/browse"
+            href="https://digital.gpmarinelitter.org/signup"
             className="text-blue txt-emphasis"
           >
-            Sign up to visit the directory
+            Sign up to find out more
           </a>
         </div>
         <div className="section-community-graphic">
