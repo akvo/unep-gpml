@@ -14,7 +14,7 @@ import {
   SearchOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
-import Landing from "./modules/landing/new-home";
+import { Landing, JoinGPMLButton } from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import Stakeholders from "./modules/stakeholders/view";
 import AddEvent from "./modules/events/view";
@@ -135,6 +135,7 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
+
   const { profile, disclaimer, landing, tags } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
@@ -146,6 +147,8 @@ const Root = () => {
     stakeholderSignupModalVisible,
     setStakeholderSignupModalVisible,
   ] = useState(false);
+  const [typeSignUp, setTypeSignUp] = useState(null);
+
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [filters, setFilters] = useState(null);
 
@@ -225,12 +228,7 @@ const Root = () => {
             </Switch>
             {!isAuthenticated ? (
               <div className="rightside">
-                <Button
-                  type="primary"
-                  onClick={() => loginWithPopup({ screen_hint: "signup" })}
-                >
-                  Join GPML
-                </Button>
+                <JoinGPMLButton loginWithPopup={loginWithPopup} />
                 <Button type="ghost" className="left">
                   <Link to="/" onClick={loginWithPopup}>
                     Sign in
@@ -255,6 +253,7 @@ const Root = () => {
         <WithProfileRoute
           profile={profile}
           path="/"
+          typeSignUp={typeSignUp}
           exact
           render={(props) => (
             <Landing
@@ -393,7 +392,13 @@ const Root = () => {
         />
         <Route
           path="/signup"
-          render={(props) => <LandingSignupView {...props} />}
+          render={(props) => (
+            <LandingSignupView
+              {...props}
+              loginWithPopup={loginWithPopup}
+              setTypeSignUp={setTypeSignUp}
+            />
+          )}
         />
         <Route
           path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
@@ -422,9 +427,13 @@ const Root = () => {
 };
 
 const WithProfileRoute = (props) => {
-  const { profile } = props;
+  const { profile, typeSignUp } = props;
   return profile.email && !profile.about ? (
-    <Redirect to="/signup" />
+    typeSignUp === "entity" ? (
+      <Redirect to="/entity-signup" />
+    ) : (
+      <Redirect to="/stakeholder-signup" />
+    )
   ) : (
     <Route {...props} />
   );
