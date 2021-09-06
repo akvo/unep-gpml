@@ -425,7 +425,7 @@
         }
         .item {
           border-radius: 0 0 10px 10px;
-          min-height: 38rem;
+          // min-height: 38rem;
           .item-meta {
             display: flex;
             justify-content: space-between;
@@ -522,6 +522,7 @@
     border: 1px solid #2d6796;
     box-sizing: border-box;
     border-radius: 50px;
+    min-width: 5.7rem;
     .anticon {
       margin-right: 5px;
     }
