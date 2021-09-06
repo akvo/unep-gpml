@@ -81,9 +81,13 @@ const renderSectionIssue = () => {
           </p>
           <div className="btn-wrapper">
             <Button type="ghost">Vital graphics</Button>
-            <Button type="ghost left"  onClick={(e) => {
-              window.location.href='https://www.cleanseas.org/';
-              }}>Clean seas
+            <Button
+              type="ghost left"
+              onClick={(e) => {
+                window.location.href = "https://www.cleanseas.org/";
+              }}
+            >
+              Clean seas
             </Button>
           </div>
         </div>
@@ -172,9 +176,14 @@ const renderSectionInfo = () => {
           <Button type="ghost" className="btn-item">
             Download Summary (1 Page)
           </Button>
-          <Button type="ghost" className="btn-item"  onClick={(e) => {
-              window.location.href='https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf';
-              }}>
+          <Button
+            type="ghost"
+            className="btn-item"
+            onClick={(e) => {
+              window.location.href =
+                "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
+            }}
+          >
             Download Full Concept Document
           </Button>
         </div>
