@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
+  Redirect,
   Link,
   Switch,
   withRouter,
@@ -18,6 +19,7 @@ import Browse from "./modules/browse/view";
 import Stakeholders from "./modules/stakeholders/view";
 import AddEvent from "./modules/events/view";
 import SignupView from "./modules/signup/view";
+import LandingSignupView from "./modules/signup-old/view";
 import logo from "./images/GPML-logo-white.png";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
@@ -250,7 +252,8 @@ const Root = () => {
             )}
           </div>
         </Header>
-        <Route
+        <WithProfileRoute
+          profile={profile}
           path="/"
           exact
           render={(props) => (
@@ -380,7 +383,8 @@ const Root = () => {
           path="/profile"
           render={(props) => <ProfileView {...{ ...props }} />}
         />
-        <Route path="/signup" render={(props) => <SignupView {...props} />} />
+        <Route path="/stakeholder-signup" render={(props) => <SignupView {...props} />} />
+        <Route path="/signup" render={(props) => <LandingSignupView {...props} />} />
         <Route
           path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
           render={(props) => (
@@ -405,6 +409,13 @@ const Root = () => {
       />
     </Router>
   );
+};
+
+const WithProfileRoute = (props) => {
+  const { profile } = props;
+  return  profile.email && ! profile.about ?
+    (<Redirect to="/signup" />) :
+    (<Route {...props} />);
 };
 
 const renderDropdownMenu = (
