@@ -383,8 +383,18 @@ const Root = () => {
           path="/profile"
           render={(props) => <ProfileView {...{ ...props }} />}
         />
-        <Route path="/stakeholder-signup" render={(props) => <SignupView {...props} />} />
-        <Route path="/signup" render={(props) => <LandingSignupView {...props} />} />
+        <Route
+          path="/entity-signup"
+          render={(props) => <SignupView {...props} formType="entity" />}
+        />
+        <Route
+          path="/stakeholder-signup"
+          render={(props) => <SignupView {...props} formType="stakeholder" />}
+        />
+        <Route
+          path="/signup"
+          render={(props) => <LandingSignupView {...props} />}
+        />
         <Route
           path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
           render={(props) => (
@@ -413,9 +423,11 @@ const Root = () => {
 
 const WithProfileRoute = (props) => {
   const { profile } = props;
-  return  profile.email && ! profile.about ?
-    (<Redirect to="/signup" />) :
-    (<Route {...props} />);
+  return profile.email && !profile.about ? (
+    <Redirect to="/signup" />
+  ) : (
+    <Route {...props} />
+  );
 };
 
 const renderDropdownMenu = (

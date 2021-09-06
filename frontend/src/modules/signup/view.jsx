@@ -232,7 +232,9 @@ const SignUp = ({ match: { params }, ...props }) => {
   });
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
-  const [representEntity, setRepresentEntity] = useState(true);
+  const [representEntity, setRepresentEntity] = useState(
+    props.formType === "entity" ? true : false
+  );
   const [highlight, setHighlight] = useState(false);
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,

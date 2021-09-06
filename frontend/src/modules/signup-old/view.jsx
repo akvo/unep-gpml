@@ -6,7 +6,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const SignupView = ({ ...props }) => {
   const { loginWithPopup } = useAuth0();
-
+  const { history } = props;
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = null;
@@ -37,17 +37,17 @@ const SignupView = ({ ...props }) => {
             <Card>
               <h2>How do I join?</h2>
               <div className="choices">
-                <a href="https://www.gpmarinelitter.org/who-we-are/members/sign-up">
+                <div onClick={() => history.push("/entity-signup")}>
                   <h4>
                     I represent an <b>Entity</b> and I wish to become a member
                     of the <b>Global partnership on Marine Litter​</b>
                   </h4>
                   <div className="caption">Go to the Partnership</div>
                   <small>You will be taken to the GPML website</small>
-                </a>
-                <div onClick={() => loginWithPopup({ screen_hint: "signup" })}>
+                </div>
+                <div onClick={() => history.push("/stakeholder-signup")}>
                   <h4>
-                    I am an <b>Individual</b> and I wish to sign up to the{" "}
+                    YYYYYI am an <b>Individual</b> and I wish to sign up to the{" "}
                     <b>GPML Digital Platform​</b>
                   </h4>
                   <div className="caption">Join the digital platform</div>
