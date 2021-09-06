@@ -21,7 +21,7 @@ import {
   customFormats,
 } from "../../utils/forms";
 
-import uiSchema from "../signup/signUiSchema.json";
+import uiSchema from "./signUiSchema.json";
 
 import { UIStore } from "../../store";
 import { withRouter } from "react-router-dom";

@@ -11,7 +11,7 @@ import {
 import "./styles.scss";
 import SignUpForm from "./form";
 import StickyBox from "react-sticky-box";
-import { schema } from "../signup/schema";
+import { schema } from "./schema";
 import cloneDeep from "lodash/cloneDeep";
 import xor from "lodash/xor";
 import api from "../../utils/api";
