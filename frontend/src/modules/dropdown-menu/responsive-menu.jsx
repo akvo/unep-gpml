@@ -162,10 +162,10 @@ const ResponsiveMenu = withRouter(
           {/* Join GPML & Sign In */}
           {!isAuthenticated && (
             <>
-              <Menu.Item key="join-gpml" className="nav-link">
+              <Menu.Item key="join-gpml" className="auth-menu nav-link">
                 Join GPML
               </Menu.Item>
-              <Menu.Item key="sign-in" className="nav-link">
+              <Menu.Item key="sign-in" className="auth-menu nav-link">
                 Sign in
               </Menu.Item>
             </>
@@ -331,17 +331,20 @@ const ResponsiveMenu = withRouter(
           )}
           {/* Add Content Disabled */}
           {isAuthenticated && profile?.reviewStatus !== "APPROVED" && (
-            <Menu.Item key="add-content-disabled" className="nav-link">
+            <Menu.Item
+              key="add-content-disabled"
+              className="auth-menu nav-link"
+            >
               Add Content
             </Menu.Item>
           )}
           {/* Profile & Logout */}
           {isAuthenticated && (
             <>
-              <Menu.Item key="profile" className="nav-link">
+              <Menu.Item key="profile" className="auth-menu nav-link">
                 Profile
               </Menu.Item>
-              <Menu.Item key="logout" className="nav-link">
+              <Menu.Item key="logout" className="auth-menu nav-link">
                 Logout
               </Menu.Item>
             </>
