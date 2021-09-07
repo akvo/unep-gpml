@@ -165,26 +165,11 @@ export const schema = {
         id: "tabs",
         value: ["S4"],
       },
-      required: ["orgExpertise", "orgContribution"],
+      required: ["orgExpertise"],
       properties: {
         orgExpertise: {
           title: "What services/ expertise does your organisation offer*",
           enum: [],
-        },
-        orgContribution: {
-          title:
-            "What focus area would your organization like to contribute towards?*",
-          type: "array",
-          uniqueItems: true,
-          items: {
-            type: "string",
-            enum: ["A", "B", "C"],
-            enumNames: [
-              "Reducing levels and impacts of land-based litter and solid waste introduced into the aquatic environment.",
-              "Reducing levels and impacts of sea-based sources of marine debris including solid waste, lost cargo, abandoned lost or discarded fishing gear, and abandoned vessels introduced into the aquatic environment",
-              "Reduced levels and impacts of (accumulated) marine debris on shorelines, aquatic habitats, and biodiversity.",
-            ],
-          },
         },
       },
     },
