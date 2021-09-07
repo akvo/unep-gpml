@@ -61,8 +61,6 @@ const getSchema = ({
     "offering"
   ].enumNames = tags?.offering?.map((it) => it.tag);
 
-
-
   // // country options
   prop.S2.properties["country"].enum = countries?.map((x) => x.id);
   prop.S2.properties["country"].enumNames = countries?.map((x) => x.name);
@@ -85,7 +83,6 @@ const getSchema = ({
   //   (it) =>
   //     `${it.firstName} ${it.lastName} ${it.email ? "<" + it.email + ">" : ""}`
   // );
-
 
   // geocoverage regional options
   prop.S5.properties["geoCoverageValueRegional"].enum = regionOptions.map((x) =>
@@ -122,7 +119,6 @@ const getSchema = ({
   prop.S5.properties[
     "geoCoverageValueGlobalSpesific"
   ].enumNames = meaOptions?.map((x) => x.name);
-
 
   return {
     schema: {
@@ -165,4 +161,11 @@ const tabs = [
   },
 ];
 
-export default { me: "entity", initialSignUpData, signUpData, getSchema, tabs, schema };
+export default {
+  me: "entity",
+  initialSignUpData,
+  signUpData,
+  getSchema,
+  tabs,
+  schema,
+};

@@ -30,10 +30,10 @@ export const schema = {
       required: ["authorizeSubmission"],
       properties: {
         authorizeSubmission: {
-          title: "By completing this form I confirm that I have the authorization to submit an application on behalf of this Entity to become a member of the Global Partnership on Marine Litter (GPML)​.",
+          title:
+            "By completing this form I confirm that I have the authorization to submit an application on behalf of this Entity to become a member of the Global Partnership on Marine Litter (GPML)​.",
           type: "boolean",
         },
-
       },
     },
     S2: {

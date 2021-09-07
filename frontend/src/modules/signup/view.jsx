@@ -386,14 +386,28 @@ const SignUp = ({ match: { params }, ...props }) => {
                       overflow: "auto",
                     }}
                   >
-
-                    {getTabStepIndex().tabIndex === 0 && props.formType === 'entity'  ?
-                     (<Row>
+                    {getTabStepIndex().tabIndex === 0 &&
+                    props.formType === "entity" ? (
+                      <Row>
                         <h3>
-                          This is the application for of an Entity becoming a Member of the GPML, the person submitting the information is identifying themselves as Entity Focal Points.</h3>
-                        <h3>Membership applications are reviewed by the GPML Secreteriat on a weekly basis and confirmation will be communicated via email.</h3>
-                        <h3>More information on Entity Focal Points rights can be found [here].</h3>
-                      </Row>) : <span></span>}
+                          This is the application for of an Entity becoming a
+                          Member of the GPML, the person submitting the
+                          information is identifying themselves as Entity Focal
+                          Points.
+                        </h3>
+                        <h3>
+                          Membership applications are reviewed by the GPML
+                          Secreteriat on a weekly basis and confirmation will be
+                          communicated via email.
+                        </h3>
+                        <h3>
+                          More information on Entity Focal Points rights can be
+                          found [here].
+                        </h3>
+                      </Row>
+                    ) : (
+                      <span></span>
+                    )}
                     <SignUpForm
                       formType={props.formType}
                       btnSubmit={btnSubmit}

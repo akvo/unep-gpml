@@ -1,11 +1,11 @@
 {
-   "S1": {
+  "S1": {
     "ui:order": ["authorizeSubmission"],
     "authorizeSubmission": {
       "ui:widget": "checkbox",
       "ui:label": null
     }
-   },
+  },
   "S2": {
     "classNames": "list-group",
     "titleAndLastName": {
@@ -86,7 +86,6 @@
       "ui:mode": "multiple"
     },
     "S1_ExpertisesAndActivities": {
-
       "classNames": "list-group-item",
       "seeking": {
         "ui:widget": "select",
@@ -117,7 +116,6 @@
       },
 
       "ui:order": [
-
         "seeking",
         "offering",
         "about",
@@ -228,5 +226,4 @@
       "ui:mode": "multiple"
     }
   }
-
 }
