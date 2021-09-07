@@ -18,9 +18,8 @@ const SignupView = ({ ...props }) => {
       <div className="ui container">
         <Row>
           <Col span={12}>
-            <h1>Join the GPML</h1>
-            <h2>Benefits of joining the GPML:</h2>
-            <h3>GPML partnership</h3>
+            <h1>Joining the GPML</h1>
+            <h3>Global Partnership on Marine Litter (GPML)</h3>
             <ul>
               <li>Tap into a global network of like-minded members</li>
               <li>Discover opportunities to showcase your work</li>
@@ -35,16 +34,11 @@ const SignupView = ({ ...props }) => {
           </Col>
           <Col span={12}>
             <Card>
-              <h2>How do I join?</h2>
+              <h2>How do I Join the GPML?</h2>
               <div className="choices">
                 <div>
                   <h4>
-                    I represent an <b>Entity</b> and I wish to become a member
-                    of the <b>Global partnership on Marine Litter​</b>
-                  </h4>
-                  <h4>
-                    You will need to join as a member of the GPML Digital
-                    platform as well
+                    I represent an Entity and I wish to submit an application for this Entity to become a member of the Global Partnership on Marine Litter (GPML)​.
                   </h4>
                   <Button
                     type="default"
@@ -54,13 +48,12 @@ const SignupView = ({ ...props }) => {
                       //                  history.push("/entity-signup");
                     }}
                   >
-                    Join as an entity
+                    Apply for an Entity
                   </Button>
                 </div>
                 <div>
                   <h4>
-                    I am an <b>Individual</b> and I wish to sign up to the{" "}
-                    <b>GPML Digital Platform​</b>
+                    I wish to sign up to the GPML Digital Platform in my own individual capacity.
                   </h4>
                   <Button
                     type="default"
@@ -70,11 +63,17 @@ const SignupView = ({ ...props }) => {
                       //                  history.push("/entity-signup");
                     }}
                   >
-                    Join as an individual
+                    Sign up as an Individual
                   </Button>
                 </div>
               </div>
               <div className="login">
+                *Note: The GPML is a Partnership of Organizations and Governments, whereas the GPML Digital Platform is open to any individual sign up without necessarily reppresenting an Entity.
+                <br />
+                <br />
+*Note: The term Entity includes both governmental, non-governmental, for profit and non-for-profit organizations.
+                <br />
+                <br />
                 Already have an account?
                 <br />
                 <div onClick={loginWithPopup}>Sign In</div>
