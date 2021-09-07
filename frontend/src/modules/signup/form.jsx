@@ -255,6 +255,7 @@ const SignUpForm = withRouter(
           }
         });
         signUpData.update((e) => {
+          // TODO revert this old refactor
           let entitySections = {
             S2: {
               ...e.data.S2,
@@ -264,14 +265,15 @@ const SignUpForm = withRouter(
               ...e.data.S3,
               required: groupRequiredFields["S3"].required,
             },
-            S4: {
-              ...e.data.S4,
-              required: groupRequiredFields["S4"].required,
-            },
-            S5: {
-              ...e.data.S5,
-              required: groupRequiredFields["S5"].required,
-            },
+            //TODO feed from entity/staekholder
+            // S4: {
+            //   ...e.data.S4,
+            //   required: groupRequiredFields["S4"].required,
+            // },
+            // S5: {
+            //   ...e.data.S5,
+            //   required: groupRequiredFields["S5"].required,
+            // },
           };
           const stakeholderSections = {
             S1: {
