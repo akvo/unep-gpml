@@ -138,12 +138,6 @@
       "twitter",
       "photo",
       "country",
-      "geoCoverageType",
-      "geoCoverageValueRegional",
-      "geoCoverageValueNational",
-      "geoCoverageValueTransnational",
-      "geoCoverageValueSubNational",
-      "geoCoverageValueGlobalSpesific",
       "S1_ExpertisesAndActivities"
     ]
   },
@@ -193,45 +187,45 @@
   "S5": {
     "ui:order": [
       "orgHeadquarter",
-      "orggeoCoverageType",
-      "orggeoCoverageValueRegional",
-      "orggeoCoverageValueNational",
-      "orggeoCoverageValueTransnational",
-      "orggeoCoverageValueSubNational",
-      "orggeoCoverageValueGlobalSpesific"
+      "geoCoverageType",
+      "geoCoverageValueRegional",
+      "geoCoverageValueNational",
+      "geoCoverageValueTransnational",
+      "geoCoverageValueSubNational",
+      "geoCoverageValueGlobalSpesific"
     ],
     "orgHeadquarter": {
       "ui:widget": "select",
       "ui:placeholder": "Search",
       "ui:showSearch": true
     },
-    "orggeoCoverageType": {
+    "geoCoverageType": {
       "ui:placeholder": "Choose the coverage type",
       "ui:widget": "select"
     },
-    "orggeoCoverageValueRegional": {
+    "geoCoverageValueRegional": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple"
     },
-    "orggeoCoverageValueNational": {
+    "geoCoverageValueNational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true
     },
-    "orggeoCoverageValueTransnational": {
+    "geoCoverageValueTransnational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple"
     },
-    "orggeoCoverageValueSubNational": {
+    "geoCoverageValueSubNational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true
     },
-    "orggeoCoverageValueGlobalSpesific": {
+    "geoCoverageValueGlobalSpesific": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
