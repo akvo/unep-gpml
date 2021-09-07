@@ -4,7 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
 
-import SignupForm from "../old-signup/signup-form";
+import SignupForm from "../signup-old/signup-form";
 import {
   fetchArchiveData,
   fetchSubmissionData,

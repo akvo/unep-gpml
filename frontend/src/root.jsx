@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
+  Redirect,
   Link,
   Switch,
   withRouter,
@@ -13,11 +14,12 @@ import {
   SearchOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
-import Landing from "./modules/landing/new-home";
+import { Landing, JoinGPMLButton } from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import Stakeholders from "./modules/stakeholders/view";
 import AddEvent from "./modules/events/view";
 import SignupView from "./modules/signup/view";
+import LandingSignupView from "./modules/signup-old/view";
 import logo from "./images/GPML-logo-white.png";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
@@ -133,6 +135,7 @@ const Root = () => {
     logout,
     user,
   } = useAuth0();
+
   const { profile, disclaimer, landing, tags } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
@@ -144,6 +147,8 @@ const Root = () => {
     stakeholderSignupModalVisible,
     setStakeholderSignupModalVisible,
   ] = useState(false);
+  const [typeSignUp, setTypeSignUp] = useState(null);
+
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [filters, setFilters] = useState(null);
 
@@ -223,12 +228,7 @@ const Root = () => {
             </Switch>
             {!isAuthenticated ? (
               <div className="rightside">
-                <Button
-                  type="primary"
-                  onClick={() => loginWithPopup({ screen_hint: "signup" })}
-                >
-                  Join GPML
-                </Button>
+                <JoinGPMLButton loginWithPopup={loginWithPopup} />
                 <Button type="ghost" className="left">
                   <Link to="/" onClick={loginWithPopup}>
                     Sign in
@@ -250,8 +250,10 @@ const Root = () => {
             )}
           </div>
         </Header>
-        <Route
+        <WithProfileRoute
+          profile={profile}
           path="/"
+          typeSignUp={typeSignUp}
           exact
           render={(props) => (
             <Landing
@@ -380,7 +382,24 @@ const Root = () => {
           path="/profile"
           render={(props) => <ProfileView {...{ ...props }} />}
         />
-        <Route path="/signup" render={(props) => <SignupView {...props} />} />
+        <Route
+          path="/entity-signup"
+          render={(props) => <SignupView {...props} formType="entity" />}
+        />
+        <Route
+          path="/stakeholder-signup"
+          render={(props) => <SignupView {...props} formType="stakeholder" />}
+        />
+        <Route
+          path="/signup"
+          render={(props) => (
+            <LandingSignupView
+              {...props}
+              loginWithPopup={loginWithPopup}
+              setTypeSignUp={setTypeSignUp}
+            />
+          )}
+        />
         <Route
           path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
           render={(props) => (
@@ -404,6 +423,19 @@ const Root = () => {
         close={() => setWarningModalVisible(false)}
       />
     </Router>
+  );
+};
+
+const WithProfileRoute = (props) => {
+  const { profile, typeSignUp } = props;
+  return profile.email && !profile.about ? (
+    typeSignUp === "entity" ? (
+      <Redirect to="/entity-signup" />
+    ) : (
+      <Redirect to="/stakeholder-signup" />
+    )
+  ) : (
+    <Route {...props} />
   );
 };
 

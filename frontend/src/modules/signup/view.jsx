@@ -11,7 +11,7 @@ import {
 import "./styles.scss";
 import SignUpForm from "./form";
 import StickyBox from "react-sticky-box";
-import { schema } from "../signup/schema";
+import { schema } from "./schema";
 import cloneDeep from "lodash/cloneDeep";
 import xor from "lodash/xor";
 import api from "../../utils/api";
@@ -226,13 +226,26 @@ const SignUp = ({ match: { params }, ...props }) => {
       steps: [],
     },
   ];
-  const [tabsData, setTabsData] = useState(tabsDataRaw);
+
+  const loadTabs = (formType, tabsDataRaw) => {
+    if (formType === "entity") {
+      return tabsDataRaw;
+    } else {
+      return [tabsDataRaw[0]];
+    }
+  };
+
+  const [tabsData, setTabsData] = useState(
+    loadTabs(props.formType, tabsDataRaw)
+  );
   const [formSchema, setFormSchema] = useState({
     schema: schema,
   });
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
-  const [representEntity, setRepresentEntity] = useState(true);
+  const [representEntity, setRepresentEntity] = useState(
+    props.formType === "entity" ? true : false
+  );
   const [highlight, setHighlight] = useState(false);
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
@@ -514,24 +527,6 @@ const SignUp = ({ match: { params }, ...props }) => {
                     borderRadius: "15px 0px 0px 15px",
                   }}
                 >
-                  <div className="represent-checkbox-wrapper">
-                    <Checkbox
-                      checked={representEntity}
-                      onChange={(e) => {
-                        setRepresentEntity(e.target.checked);
-                        if (e.target.checked) {
-                          setTabsData(tabsDataRaw);
-                        } else {
-                          setTabsData(([t1]) => {
-                            handleOnTabChange("S1");
-                            return [t1];
-                          });
-                        }
-                      }}
-                    >
-                      I represent an entity
-                    </Checkbox>
-                  </div>
                   {tabsData.map(({ key, title, desc, steps }, i) => (
                     <>
                       <hr className="step-line" />
