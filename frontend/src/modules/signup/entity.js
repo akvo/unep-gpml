@@ -61,12 +61,7 @@ const getSchema = ({
     "offering"
   ].enumNames = tags?.offering?.map((it) => it.tag);
 
-  prop.S2.properties.S1_ExpertisesAndActivities.properties[
-    "tags"
-  ].enum = tags?.general?.map((it) => String(it.id));
-  prop.S2.properties.S1_ExpertisesAndActivities.properties[
-    "tags"
-  ].enumNames = tags?.general?.map((it) => it.tag);
+
 
   // // country options
   prop.S2.properties["country"].enum = countries?.map((x) => x.id);

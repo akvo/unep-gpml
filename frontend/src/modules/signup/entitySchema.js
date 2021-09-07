@@ -104,10 +104,6 @@ export const schema = {
               title: "About yourself",
               type: "string",
             },
-            tags: {
-              title: "Tags",
-              enum: [],
-            },
             portfolio: {
               title: "CV / Portfolio",
               type: "string",
