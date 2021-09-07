@@ -309,7 +309,7 @@ const SignUpForm = withRouter(
         requiredFilledIn.length !== 0 &&
           setDisabledBtn({ disabled: true, type: "default" });
       },
-      [formSchema, setDisabledBtn]
+      [isEntityType, signUpData, formSchema, setDisabledBtn]
     );
 
     const handleTransformErrors = (errors, dependValue) => {

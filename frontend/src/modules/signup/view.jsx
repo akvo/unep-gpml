@@ -88,7 +88,7 @@ const SignUp = ({ match: { params }, ...props }) => {
       e.highlight = highlight;
     });
     setFormSchema({ schema: schema });
-  }, [highlight]);
+  }, [schema, highlight]);
 
   const isLoaded = useCallback(() => {
     return Boolean(
@@ -139,7 +139,18 @@ const SignUp = ({ match: { params }, ...props }) => {
         e.editId = null;
       });
     }
-  }, [storeData, status, id, data, editId, params, isLoaded]);
+  }, [
+    initialSignUpData,
+    getSchema,
+    signUpData,
+    storeData,
+    status,
+    id,
+    data,
+    editId,
+    params,
+    isLoaded,
+  ]);
 
   const renderSteps = (parentTitle, section, steps, index) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
