@@ -1,0 +1,107 @@
+{
+  "S1": {
+    "classNames": "list-group",
+    "titleAndLastName": {
+      "ui:options": {
+        "orderable": false
+      },
+      "title": {
+        "ui:widget": "select",
+        "ui:span": 5,
+        "ui:placeholder": "Title"
+      },
+      "lastName": {
+        "ui:span": 19,
+        "ui:placeholder": "Last name"
+      }
+    },
+    "firstName": {
+      "ui:placeholder": "First name"
+    },
+    "email": {
+      "ui:widget": "email",
+      "ui:placeholder": "Email",
+      "ui:disabled": true
+    },
+    "publicEmail": {
+      "ui:widget": "checkbox",
+      "ui:label": null
+    },
+    "linkedin": {
+      "ui:placeholder": "Your LinkedIn username",
+      "ui:widget": "TextIconWidget",
+      "ui:icon": "linkedin"
+    },
+    "twitter": {
+      "ui:placeholder": "Your twitter username",
+      "ui:widget": "TextIconWidget",
+      "ui:icon": "twitter"
+    },
+    "photo": {
+      "ui:options": { "accept": "image/*" },
+      "ui:widget": "file"
+    },
+    "country": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search country",
+      "ui:showSearch": true
+    },
+    "ui:order": [
+      "titleAndLastName",
+      "firstName",
+      "email",
+      "publicEmail",
+      "linkedin",
+      "twitter",
+      "photo",
+      "country"
+    ]
+  },
+  "S2": {
+    "classNames": "list-group",
+    "orgName": {
+      "ui:placeholder": "Organisation name"
+    },
+    "memberName": {
+      "ui:placeholder": "Search"
+    },
+    "ui:order": ["orgName", "memberName"]
+  },
+  "S3": {
+    "classNames": "list-group",
+    "seeking": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search",
+      "ui:mode": "multiple",
+      "ui:showSearch": true
+    },
+    "offering": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search",
+      "ui:mode": "multiple",
+      "ui:showSearch": true
+    },
+    "about": {
+      "ui:placeholder": "",
+      "ui:widget": "textarea"
+    },
+    "portfolio": {
+      "ui:widget": "file",
+      "ui:options": {
+        "accept": ".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,application/pdf"
+      }
+    },
+    "public_database": {
+      "ui:widget": "checkbox",
+      "ui:label": null
+    },
+    "ui:order": [
+      "seeking",
+      "offering",
+      "about",
+      "tags",
+      "portfolio",
+      "public_database"
+    ]
+  }
+}

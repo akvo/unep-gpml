@@ -1,5 +1,12 @@
 {
   "S1": {
+    "ui:order": ["authorizeSubmission"],
+    "authorizeSubmission": {
+      "ui:widget": "checkbox",
+      "ui:label": null
+    }
+  },
+  "S2": {
     "classNames": "list-group",
     "titleAndLastName": {
       "ui:options": {
@@ -41,12 +48,6 @@
       "ui:options": { "accept": "image/*" },
       "ui:widget": "file"
     },
-    "representativeSector": {
-      "ui:widget": "select",
-      "ui:placeholder": "Search sectors",
-      "ui:showSearch": true,
-      "ui:mode": "multiple"
-    },
     "country": {
       "ui:widget": "select",
       "ui:placeholder": "Search country",
@@ -84,7 +85,6 @@
       "ui:showSearch": true,
       "ui:mode": "multiple"
     },
-
     "S1_ExpertisesAndActivities": {
       "classNames": "list-group-item",
       "seeking": {
@@ -103,12 +103,7 @@
         "ui:placeholder": "",
         "ui:widget": "textarea"
       },
-      "tags": {
-        "ui:widget": "select",
-        "ui:placeholder": "Search tags",
-        "ui:showSearch": true,
-        "ui:mode": "multiple"
-      },
+
       "portfolio": {
         "ui:widget": "file",
         "ui:options": {
@@ -119,11 +114,11 @@
         "ui:widget": "checkbox",
         "ui:label": null
       },
+
       "ui:order": [
         "seeking",
         "offering",
         "about",
-        "tags",
         "portfolio",
         "public_database"
       ]
@@ -136,18 +131,11 @@
       "linkedin",
       "twitter",
       "photo",
-      "representativeSector",
       "country",
-      "geoCoverageType",
-      "geoCoverageValueRegional",
-      "geoCoverageValueNational",
-      "geoCoverageValueTransnational",
-      "geoCoverageValueSubNational",
-      "geoCoverageValueGlobalSpesific",
       "S1_ExpertisesAndActivities"
     ]
   },
-  "S2": {
+  "S3": {
     "classNames": "list-group",
     "orgName": {
       "ui:placeholder": "Organisation name"
@@ -176,7 +164,7 @@
       "orgLogo"
     ]
   },
-  "S3": {
+  "S4": {
     "classNames": "list-group",
     "orgExpertise": {
       "ui:placeholder": "Search",
@@ -190,79 +178,52 @@
     },
     "ui:order": ["orgExpertise", "orgContribution"]
   },
-  "S4": {
+  "S5": {
     "ui:order": [
       "orgHeadquarter",
-      "orggeoCoverageType",
-      "orggeoCoverageValueRegional",
-      "orggeoCoverageValueNational",
-      "orggeoCoverageValueTransnational",
-      "orggeoCoverageValueSubNational",
-      "orggeoCoverageValueGlobalSpesific"
+      "geoCoverageType",
+      "geoCoverageValueRegional",
+      "geoCoverageValueNational",
+      "geoCoverageValueTransnational",
+      "geoCoverageValueSubNational",
+      "geoCoverageValueGlobalSpesific"
     ],
     "orgHeadquarter": {
       "ui:widget": "select",
       "ui:placeholder": "Search",
       "ui:showSearch": true
     },
-    "orggeoCoverageType": {
+    "geoCoverageType": {
       "ui:placeholder": "Choose the coverage type",
       "ui:widget": "select"
     },
-    "orggeoCoverageValueRegional": {
+    "geoCoverageValueRegional": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple"
     },
-    "orggeoCoverageValueNational": {
+    "geoCoverageValueNational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true
     },
-    "orggeoCoverageValueTransnational": {
+    "geoCoverageValueTransnational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple"
     },
-    "orggeoCoverageValueSubNational": {
+    "geoCoverageValueSubNational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true
     },
-    "orggeoCoverageValueGlobalSpesific": {
+    "geoCoverageValueGlobalSpesific": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple"
-    }
-  },
-  "S5": {
-    "ui:order": ["registeredStakeholders", "otherStakeholders"],
-    "registeredStakeholders": {
-      "ui:widget": "select",
-      "ui:placeholder": "Search by name or email",
-      "ui:mode": "multiple",
-      "uniqueItems": true,
-      "ui:showSearch": true
-    },
-    "otherStakeholders": {
-      "ui:options": {
-        "addItemText": "Add another stakeholder",
-        "removeItemText": "Remove stakeholder",
-        "orderable": false
-      },
-      "classNames": "list-group-item",
-      "ui:group": "border",
-      "items": {},
-      "ui:order": [
-        "title",
-        "lastName",
-        "firstName",
-        "email",
-        "organisationRole"
-      ]
     }
   }
 }

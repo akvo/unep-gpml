@@ -1,5 +1,5 @@
-import { signUpData, initialSignUpData } from "../signup/view";
 import React, { useEffect, useState, useCallback } from "react";
+
 import { notification } from "antd";
 import { withTheme } from "@rjsf/core";
 import api from "../../utils/api";
@@ -20,8 +20,10 @@ import {
   checkDependencyAnswer,
   customFormats,
 } from "../../utils/forms";
-
-import uiSchema from "./signUiSchema.json";
+import entity from "./entity";
+import stakeholder from "./stakeholder";
+import entityUiSchema from "./entityUiSchema.json";
+import stakeholderUiSchema from "./stakeholderUiSchema.json";
 
 import { UIStore } from "../../store";
 import { withRouter } from "react-router-dom";
@@ -34,6 +36,7 @@ const SignUpForm = withRouter(
     sending,
     setSending,
     representEntity,
+    formType,
     highlight,
     setHighlight,
     formSchema,
@@ -43,6 +46,10 @@ const SignUpForm = withRouter(
   }) => {
     const { countries, organisations, tags, formEdit } = UIStore.currentState;
     const { status, id } = formEdit.signUp;
+    const { initialSignUpData, signUpData } =
+      formType === "entity" ? entity : stakeholder;
+    const uiSchema =
+      formType === "entity" ? entityUiSchema : stakeholderUiSchema;
     const signUpFormData = signUpData.useState();
     const [dependValue, setDependValue] = useState([]);
     const [editCheck, setEditCheck] = useState(true);
@@ -248,6 +255,7 @@ const SignUpForm = withRouter(
           }
         });
         signUpData.update((e) => {
+          // TODO revert this old refactor
           let entitySections = {
             S2: {
               ...e.data.S2,
@@ -257,14 +265,15 @@ const SignUpForm = withRouter(
               ...e.data.S3,
               required: groupRequiredFields["S3"].required,
             },
-            S4: {
-              ...e.data.S4,
-              required: groupRequiredFields["S4"].required,
-            },
-            S5: {
-              ...e.data.S5,
-              required: groupRequiredFields["S5"].required,
-            },
+            //TODO feed from entity/staekholder
+            // S4: {
+            //   ...e.data.S4,
+            //   required: groupRequiredFields["S4"].required,
+            // },
+            // S5: {
+            //   ...e.data.S5,
+            //   required: groupRequiredFields["S5"].required,
+            // },
           };
           const stakeholderSections = {
             S1: {
