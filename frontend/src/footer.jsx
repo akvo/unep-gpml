@@ -127,8 +127,8 @@ const Footer = ({
                 <h4>Contact Us</h4>
               </li>
               <li>
-                <a href="mailto:unep-gpmmarinelitter@un.org">
-                  unep-gpmmarinelitter@un.org
+                <a href="mailto:unep-gpmarinelitter@un.org">
+                  unep-gpmarinelitter@un.org
                 </a>
               </li>
             </ul>

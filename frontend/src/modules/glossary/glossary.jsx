@@ -77,8 +77,8 @@ const Glossary = () => {
           Pollution Ontology. The peer-review process is ongoing to allow
           reviewers to request new content to be added. If you are interested in
           contributing, please contact us at{" "}
-          <a href="mailto:unep-gpmmarinelitter@un.org">
-            unep-gpmmarinelitter@un.org
+          <a href="mailto:unep-gpmarinelitter@un.org">
+            unep-gpmarinelitter@un.org
           </a>
           .
           <br />
