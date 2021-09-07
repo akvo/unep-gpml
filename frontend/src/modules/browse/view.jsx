@@ -27,6 +27,7 @@ export const useQuery = () => {
   const ret = {
     country: [],
     topic: [],
+    tag: [],
     q: "",
   };
   for (var key of srcParams.keys()) {
@@ -48,9 +49,10 @@ const Browse = ({
   setFilters,
 }) => {
   const query = useQuery();
-  const { profile, countries } = UIStore.useState((s) => ({
+  const { profile, countries, tags } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
+    tags: s.tags,
   }));
   const [results, setResults] = useState([]);
   const [countData, setCountData] = useState([]);
@@ -64,7 +66,8 @@ const Browse = ({
   const pageSize = 10;
   const [toggleButton, setToggleButton] = useState("list");
 
-  const isLoaded = () => Boolean(!isEmpty(countries));
+  const isLoaded = () =>
+    Boolean(!isEmpty(countries) && !isEmpty(profile) && !isEmpty(tags));
 
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
@@ -88,7 +91,7 @@ const Browse = ({
     // Manage filters display
     !filters && setFilters(query);
     if (filters) {
-      setFilters({ ...filters, topic: query.topic });
+      setFilters({ ...filters, topic: query.topic, tag: query.tag });
       setFilterCountries(filters.country);
     }
 
@@ -98,7 +101,11 @@ const Browse = ({
     }
 
     if (isLoading === false && filters) {
-      const newParams = new URLSearchParams({ ...filters, topic: query.topic });
+      const newParams = new URLSearchParams({
+        ...filters,
+        topic: query.topic,
+        tag: query.tag,
+      });
       history.push(`/browse?${newParams.toString()}`);
       clearTimeout(tmid);
       tmid = setTimeout(getResults, 1000);
@@ -303,8 +310,9 @@ const Browse = ({
                   <TopicSelect
                     countData={countData}
                     isApprovedUser={isApprovedUser}
-                    value={query.topic}
-                    onChange={(val) => updateQuery("topic", val)}
+                    value={query}
+                    onChange={(flag, val) => updateQuery(flag, val)}
+                    tagTopics={tags?.topics ? tags.topics : []}
                   />
                 </div>
               </aside>
@@ -353,12 +361,22 @@ const Browse = ({
   );
 };
 
-const TopicSelect = ({ value, onChange, countData, isApprovedUser }) => {
-  const handleChange = (type) => ({ target: { checked } }) => {
-    if (checked && value.indexOf(type) === -1) {
-      onChange([...value, type]);
-    } else if (!checked && value.indexOf(type) !== -1) {
-      onChange(value.filter((it) => it !== type));
+const TopicSelect = ({
+  value,
+  onChange,
+  countData,
+  isApprovedUser,
+  tagTopics,
+}) => {
+  const handleChange = (flag, type) => ({ target: { checked } }) => {
+    const val = value[flag];
+    if (checked && val.indexOf(type) === -1) {
+      onChange(flag, [...val, type]);
+    } else if (!checked && val.indexOf(type) !== -1) {
+      onChange(
+        flag,
+        val.filter((it) => it !== type)
+      );
     }
   };
   return [
@@ -371,10 +389,29 @@ const TopicSelect = ({ value, onChange, countData, isApprovedUser }) => {
           return (
             <li key={type}>
               <Checkbox
-                checked={value.indexOf(topic) !== -1}
-                onChange={handleChange(topic)}
+                checked={value.topic.indexOf(topic) !== -1}
+                onChange={handleChange("topic", topic)}
               >
                 {topicNames(type)} ({count})
+              </Checkbox>
+            </li>
+          );
+        })}
+      </ul>
+    </div>,
+    /* Topics / tags.topics */
+    <div className="field" key={"topic-tags-select"}>
+      <div className="label">Topics</div>
+      <ul className="topic-list">
+        {tagTopics.map((it) => {
+          const { id, tag } = it;
+          return (
+            <li key={`tags-topic-${tag}-${id}`}>
+              <Checkbox
+                checked={value.tag.indexOf(tag) !== -1}
+                onChange={handleChange("tag", tag)}
+              >
+                {tag}
               </Checkbox>
             </li>
           );
