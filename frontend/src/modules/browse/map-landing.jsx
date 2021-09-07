@@ -148,6 +148,8 @@ const Summary = ({
   }));
   summary = tTypes.map((x) => summary.find((it) => it.name === x));
   const restricted = ["stakeholder", "organisation"];
+  // Filter, do not show restricted
+  summary = summary.filter((x) => !restricted.includes(x.name));
   return (
     <div className="summary">
       <header>{!selected ? "Global summary" : "Summary"}</header>
