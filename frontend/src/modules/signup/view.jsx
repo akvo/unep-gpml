@@ -402,22 +402,22 @@ const SignUp = ({ match: { params }, ...props }) => {
                     }}
                   >
                     {getTabStepIndex().tabIndex === 0 && isEntityType ? (
-                      <Row>
-                        <h3>
+                      <Row className="entity-getting-started-heading">
+                        <div>
                           This is the application for of an Entity becoming a
                           Member of the GPML, the person submitting the
                           information is identifying themselves as Entity Focal
                           Points.
-                        </h3>
-                        <h3>
+                        </div>
+                        <div>
                           Membership applications are reviewed by the GPML
                           Secreteriat on a weekly basis and confirmation will be
                           communicated via email.
-                        </h3>
-                        <h3>
+                        </div>
+                        <div>
                           More information on Entity Focal Points rights can be
                           found [here].
-                        </h3>
+                        </div>
                       </Row>
                     ) : (
                       <span></span>
