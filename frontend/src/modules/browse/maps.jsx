@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import {
   ZoomableGroup,
   ComposableMap,
@@ -35,7 +35,7 @@ const higlightColor = "#84b4cc";
 
 const ToolTipContent = ({ data, geo }) => {
   return (
-    <div className="map-tooltip">
+    <div key={`${geo.ISO3CD}-tooltip`} className="map-tooltip">
       <h3>{geo.MAP_LABEL}</h3>
       <ul>
         {tTypes.map((topic) => (
@@ -54,7 +54,7 @@ const Legend = ({ data, setFilterColor, selected }) => {
   data = data.filter((x) => x !== 0);
   const range = data.map((x, i) => (
     <div
-      key={i + 1}
+      key={`legend-${i + 1}`}
       className={
         "legend" +
         (selected !== null && selected === colorRange[i]
@@ -81,7 +81,7 @@ const Legend = ({ data, setFilterColor, selected }) => {
       <div className="legends">
         {[
           <div
-            key={0}
+            key={"legend-0"}
             className={
               "legend" +
               (selected !== null && selected === "#fff"
@@ -103,7 +103,7 @@ const Legend = ({ data, setFilterColor, selected }) => {
           </div>,
           ...range,
           <div
-            key={"last"}
+            key={"legend-last"}
             className={
               "legend" +
               (selected !== null && selected === colorRange[range.length]
@@ -261,7 +261,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
             setPosition(x);
           }}
         >
-          <Geographies geography={geoUrl}>
+          <Geographies key="map-geo" geography={geoUrl}>
             {({ geographies }) =>
               geographies.map((geo) => {
                 const curr = data.find(
@@ -277,7 +277,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                 if (geo.properties.MAP_COLOR === "CHN") {
                   pattern = (
                     <PatternLines
-                      key={geo.rsmKey + "_pattern"}
+                      key={`${geo.rsmKey}-pattern`}
                       id="lines"
                       height={2.5}
                       width={2.5}
@@ -295,7 +295,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                   );
                 }
                 return (
-                  <>
+                  <Fragment key={`${geo.rsmKey}-geo-fragment`}>
                     {pattern}
                     <Geography
                       key={geo.rsmKey}
@@ -338,12 +338,12 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                           clickEvents(geo.properties.M49Code);
                       }}
                     />
-                  </>
+                  </Fragment>
                 );
               })
             }
           </Geographies>
-          <Geographies geography={lineBoundaries}>
+          <Geographies key="map-line" geography={lineBoundaries}>
             {({ geographies }) =>
               geographies.map((geo) => {
                 const isDashed =
@@ -358,7 +358,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
 
                 return (
                   <Geography
-                    key={geo.rsmKey}
+                    key={`${geo.rsmKey}-line`}
                     geography={geo}
                     stroke={isDashed || isDotted ? "#3080a8" : "#79B0CC"}
                     strokeDasharray={
