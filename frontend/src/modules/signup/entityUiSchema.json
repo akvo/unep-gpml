@@ -1,5 +1,12 @@
 {
-  "S1": {
+   "S1": {
+    "ui:order": ["authorizeSubmission"],
+    "authorizeSubmission": {
+      "ui:widget": "checkbox",
+      "ui:label": null
+    }
+   },
+  "S2": {
     "classNames": "list-group",
     "titleAndLastName": {
       "ui:options": {
@@ -147,7 +154,7 @@
       "S1_ExpertisesAndActivities"
     ]
   },
-  "S2": {
+  "S3": {
     "classNames": "list-group",
     "orgName": {
       "ui:placeholder": "Organisation name"
@@ -176,7 +183,7 @@
       "orgLogo"
     ]
   },
-  "S3": {
+  "S4": {
     "classNames": "list-group",
     "orgExpertise": {
       "ui:placeholder": "Search",
@@ -190,7 +197,7 @@
     },
     "ui:order": ["orgExpertise", "orgContribution"]
   },
-  "S4": {
+  "S5": {
     "ui:order": [
       "orgHeadquarter",
       "orggeoCoverageType",
@@ -237,32 +244,6 @@
       "ui:showSearch": true,
       "ui:mode": "multiple"
     }
-  },
-  "S5": {
-    "ui:order": ["registeredStakeholders", "otherStakeholders"],
-    "registeredStakeholders": {
-      "ui:widget": "select",
-      "ui:placeholder": "Search by name or email",
-      "ui:mode": "multiple",
-      "uniqueItems": true,
-      "ui:showSearch": true
-    },
-    "otherStakeholders": {
-      "ui:options": {
-        "addItemText": "Add another stakeholder",
-        "removeItemText": "Remove stakeholder",
-        "orderable": false
-      },
-      "classNames": "list-group-item",
-      "ui:group": "border",
-      "items": {},
-      "ui:order": [
-        "title",
-        "lastName",
-        "firstName",
-        "email",
-        "organisationRole"
-      ]
-    }
   }
+
 }

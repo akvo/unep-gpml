@@ -10,7 +10,7 @@ import {
 import "./styles.scss";
 import SignUpForm from "./form";
 import StickyBox from "react-sticky-box";
-import { schema } from "./schema";
+
 import cloneDeep from "lodash/cloneDeep";
 import isEmpty from "lodash/isEmpty";
 import xor from "lodash/xor";
@@ -22,7 +22,7 @@ const { Step } = Steps;
 
 const SignUp = ({ match: { params }, ...props }) => {
   console.log(props.formType);
-  const { tabs, getSchema, initialSignUpData, signUpData, loadTabs } =
+  const { tabs, getSchema, schema, initialSignUpData, signUpData, loadTabs } =
     props.formType === "entity" ? entity : stakeholder;
 
   const minHeightContainer = innerHeight * 0.8;
@@ -386,6 +386,14 @@ const SignUp = ({ match: { params }, ...props }) => {
                       overflow: "auto",
                     }}
                   >
+
+                    {getTabStepIndex().tabIndex === 0 && props.formType === 'entity'  ?
+                     (<Row>
+                        <h3>
+                          This is the application for of an Entity becoming a Member of the GPML, the person submitting the information is identifying themselves as Entity Focal Points.</h3>
+                        <h3>Membership applications are reviewed by the GPML Secreteriat on a weekly basis and confirmation will be communicated via email.</h3>
+                        <h3>More information on Entity Focal Points rights can be found [here].</h3>
+                      </Row>) : <span></span>}
                     <SignUpForm
                       formType={props.formType}
                       btnSubmit={btnSubmit}

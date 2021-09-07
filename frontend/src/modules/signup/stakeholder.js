@@ -1,5 +1,5 @@
 import { Store } from "pullstate";
-import { schema } from "./schema";
+import { schema } from "./stakeholderSchema";
 import cloneDeep from "lodash/cloneDeep";
 
 const initialSignUpData = {
@@ -180,4 +180,5 @@ export default {
   signUpData,
   getSchema,
   tabs,
+  schema,
 };
