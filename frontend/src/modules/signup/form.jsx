@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from "react";
-
 import { notification } from "antd";
 import { withTheme } from "@rjsf/core";
 import api from "../../utils/api";
@@ -35,10 +34,11 @@ const SignUpForm = withRouter(
     btnSubmit,
     sending,
     setSending,
-    representEntity,
     formType,
     highlight,
     setHighlight,
+    isStakeholderType,
+    isEntityType,
     formSchema,
     setDisabledBtn,
     history,
@@ -46,10 +46,10 @@ const SignUpForm = withRouter(
   }) => {
     const { countries, organisations, tags, formEdit } = UIStore.currentState;
     const { status, id } = formEdit.signUp;
-    const { initialSignUpData, signUpData } =
-      formType === "entity" ? entity : stakeholder;
-    const uiSchema =
-      formType === "entity" ? entityUiSchema : stakeholderUiSchema;
+    const { initialSignUpData, signUpData } = isEntityType
+      ? entity
+      : stakeholder;
+    const uiSchema = isEntityType ? entityUiSchema : stakeholderUiSchema;
     const signUpFormData = signUpData.useState();
     const [dependValue, setDependValue] = useState([]);
     const [editCheck, setEditCheck] = useState(true);
@@ -192,7 +192,7 @@ const SignUpForm = withRouter(
 
     const handleFormOnChange = useCallback(
       ({ formData, schema }) => {
-        //        console.log("handleFormOnChange representEntity", representEntity);
+        //        console.log("handleFormOnChange representEntity", );
         signUpData.update((e) => {
           e.data = {
             ...e.data,
@@ -210,12 +210,13 @@ const SignUpForm = withRouter(
           requiredFields
         );
         setDependValue(dependFields);
+        const stakeholderSections = new Set(["S1", "S2", "S3"]);
         const requiredFilledIn = checkRequiredFieldFilledIn(
           formData,
           dependFields,
-          representEntity
+          isEntityType
             ? requiredFields
-            : requiredFields.filter((x) => x.key.indexOf("S1") >= 0)
+            : requiredFields.filter((x) => stakeholderSections.has(x.key))
         );
         let sectionRequiredFields = {};
         let groupRequiredFields = {};
@@ -255,46 +256,52 @@ const SignUpForm = withRouter(
           }
         });
         signUpData.update((e) => {
-          // TODO revert this old refactor
-          let entitySections = {
-            S2: {
-              ...e.data.S2,
-              required: groupRequiredFields["S2"].required,
-            },
-            S3: {
-              ...e.data.S3,
-              required: groupRequiredFields["S3"].required,
-            },
-            //TODO feed from entity/staekholder
-            // S4: {
-            //   ...e.data.S4,
-            //   required: groupRequiredFields["S4"].required,
-            // },
-            // S5: {
-            //   ...e.data.S5,
-            //   required: groupRequiredFields["S5"].required,
-            // },
-          };
-          const stakeholderSections = {
-            S1: {
-              ...e.data.S1,
-              required: groupRequiredFields["S1"].required,
-            },
-          };
-          if (representEntity) {
-            e.data = {
-              ...e.data,
-              required: sectionRequiredFields,
-              ...stakeholderSections,
-              ...entitySections,
+          let formSections = null;
+          if (isEntityType) {
+            formSections = {
+              S1: {
+                ...e.data.S1,
+                required: groupRequiredFields["S1"].required,
+              },
+              S2: {
+                ...e.data.S2,
+                required: groupRequiredFields["S2"].required,
+              },
+              S3: {
+                ...e.data.S3,
+                required: groupRequiredFields["S3"].required,
+              },
+              S4: {
+                ...e.data.S4,
+                required: groupRequiredFields["S4"].required,
+              },
+              S5: {
+                ...e.data.S5,
+                required: groupRequiredFields["S5"].required,
+              },
             };
           } else {
-            e.data = {
-              ...e.data,
-              required: sectionRequiredFields,
-              ...stakeholderSections,
+            formSections = {
+              S1: {
+                ...e.data.S1,
+                required: groupRequiredFields["S1"].required,
+              },
+              S2: {
+                ...e.data.S2,
+                required: groupRequiredFields["S2"].required,
+              },
+              S3: {
+                ...e.data.S3,
+                required: groupRequiredFields["S3"].required,
+              },
             };
           }
+
+          e.data = {
+            ...e.data,
+            required: sectionRequiredFields,
+            ...formSections,
+          };
         });
         // enable btn submit
         requiredFilledIn.length === 0 &&
@@ -302,7 +309,7 @@ const SignUpForm = withRouter(
         requiredFilledIn.length !== 0 &&
           setDisabledBtn({ disabled: true, type: "default" });
       },
-      [formSchema, setDisabledBtn, representEntity]
+      [formSchema, setDisabledBtn]
     );
 
     const handleTransformErrors = (errors, dependValue) => {
@@ -335,7 +342,7 @@ const SignUpForm = withRouter(
         formData: signUpFormData.data,
         schema: formSchema.schema,
       });
-    }, [formSchema, signUpFormData, handleFormOnChange, representEntity]);
+    }, [formSchema, signUpFormData, handleFormOnChange]);
 
     useEffect(() => {
       if (

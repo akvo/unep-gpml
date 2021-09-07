@@ -21,9 +21,16 @@ import stakeholder from "./stakeholder";
 const { Step } = Steps;
 
 const SignUp = ({ match: { params }, ...props }) => {
-  console.log(props.formType);
-  const { tabs, getSchema, schema, initialSignUpData, signUpData, loadTabs } =
-    props.formType === "entity" ? entity : stakeholder;
+  const isEntityType = props.formType === "entity" ? true : false;
+  const isStakeholderType = !isEntityType;
+  const {
+    tabs,
+    getSchema,
+    schema,
+    initialSignUpData,
+    signUpData,
+    loadTabs,
+  } = isEntityType ? entity : stakeholder;
 
   const minHeightContainer = innerHeight * 0.8;
   const minHeightCard = innerHeight * 0.75;
@@ -64,9 +71,6 @@ const SignUp = ({ match: { params }, ...props }) => {
   });
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
-  const [representEntity, setRepresentEntity] = useState(
-    props.formType === "entity" ? true : false
-  );
   const [highlight, setHighlight] = useState(false);
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
@@ -261,8 +265,8 @@ const SignUp = ({ match: { params }, ...props }) => {
   };
 
   const isLastStep = () => {
-    const { tabIndex, stepIndex, steps } = getTabStepIndex();
-    return tabsData.length === tabIndex + 1 && steps.length === stepIndex + 1;
+    const { tabIndex } = getTabStepIndex();
+    return tabsData.length === tabIndex + 1;
   };
 
   const handleOnClickBtnNext = (e) => {
@@ -386,8 +390,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                       overflow: "auto",
                     }}
                   >
-                    {getTabStepIndex().tabIndex === 0 &&
-                    props.formType === "entity" ? (
+                    {getTabStepIndex().tabIndex === 0 && isEntityType ? (
                       <Row>
                         <h3>
                           This is the application for of an Entity becoming a
@@ -409,9 +412,10 @@ const SignUp = ({ match: { params }, ...props }) => {
                       <span></span>
                     )}
                     <SignUpForm
+                      isEntityType={isEntityType}
+                      isStakeholderType={isStakeholderType}
                       formType={props.formType}
                       btnSubmit={btnSubmit}
-                      representEntity={representEntity}
                       sending={sending}
                       setSending={setSending}
                       highlight={highlight}
@@ -419,7 +423,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                       formSchema={formSchema}
                       setDisabledBtn={setDisabledBtn}
                     />
-                    {!isLastStep() && representEntity && (
+                    {!isLastStep() && (
                       <Button
                         className="next-button"
                         type="ghost"
