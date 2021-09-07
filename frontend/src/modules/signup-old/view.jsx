@@ -1,6 +1,8 @@
 import { UIStore } from "../../store";
 import React, { useEffect } from "react";
-import { Button, Row, Col, Card } from "antd";
+import { Button, Row, Col, Card, Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+
 import "./view-style.scss";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -18,7 +20,7 @@ const SignupView = ({ ...props }) => {
       <div className="ui container">
         <Row>
           <Col span={12}>
-            <h1>Joining the GPML</h1>
+            <h1 className="joining-header">Joining the GPML</h1>
             <h3>Global Partnership on Marine Litter (GPML)</h3>
             <ul>
               <li>Tap into a global network of like-minded members</li>
@@ -33,15 +35,20 @@ const SignupView = ({ ...props }) => {
             </ul>
           </Col>
           <Col span={12}>
-            <Card>
+            <Card className="green-overlay">
               <h2>How do I Join the GPML?</h2>
               <div className="choices">
-                <div>
+                <Card>
+                  <Avatar icon={<UserOutlined />} />
+
                   <h4>
-                    I represent an Entity and I wish to submit an application for this Entity to become a member of the Global Partnership on Marine Litter (GPML)​.
+                    I represent an Entity and I wish to submit an application
+                    for this Entity to become a member of the Global Partnership
+                    on Marine Litter (GPML)​.
                   </h4>
                   <Button
-                    type="default"
+                    type="ghost"
+                    className="green"
                     onClick={() => {
                       setTypeSignUp("entity");
                       loginWithPopup({ screen_hint: "signup" });
@@ -50,13 +57,17 @@ const SignupView = ({ ...props }) => {
                   >
                     Apply for an Entity
                   </Button>
-                </div>
-                <div>
+                </Card>
+                <Card>
+                  <Avatar icon={<UserOutlined />} />
+
                   <h4>
-                    I wish to sign up to the GPML Digital Platform in my own individual capacity.
+                    I wish to sign up to the GPML Digital Platform in my own
+                    individual capacity.
                   </h4>
                   <Button
-                    type="default"
+                    type="ghost"
+                    className="green"
                     onClick={() => {
                       setTypeSignUp("stakeholder");
                       loginWithPopup({ screen_hint: "signup" });
@@ -65,18 +76,25 @@ const SignupView = ({ ...props }) => {
                   >
                     Sign up as an Individual
                   </Button>
-                </div>
+                </Card>
               </div>
               <div className="login">
-                *Note: The GPML is a Partnership of Organizations and Governments, whereas the GPML Digital Platform is open to any individual sign up without necessarily reppresenting an Entity.
+                *Note: The GPML is a Partnership of Organizations and
+                Governments, whereas the GPML Digital Platform is open to any
+                individual sign up without necessarily reppresenting an Entity.
                 <br />
                 <br />
-*Note: The term Entity includes both governmental, non-governmental, for profit and non-for-profit organizations.
+                *Note: The term Entity includes both governmental,
+                non-governmental, for profit and non-for-profit organizations.
                 <br />
                 <br />
                 Already have an account?
                 <br />
-                <div onClick={loginWithPopup}>Sign In</div>
+                <div>
+                  <Button type="ghost" onClick={loginWithPopup}>
+                    Sign In
+                  </Button>
+                </div>
               </div>
             </Card>
           </Col>
