@@ -9,6 +9,8 @@ import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
 import widgets from "../../utils/forms";
 import { overideValidation } from "../../utils/forms";
+import common from "./common";
+const { feedCountry, feedSeeking, feedOffering, feedTitle } = common;
 import {
   transformFormData,
   collectDependSchemaRefactor,
@@ -62,79 +64,76 @@ const SignUpForm = withRouter(
 
       setSending(true);
 
-      let data2 = handleGeoCoverageValue(
-        cloneDeep(formData.S1),
-        formData.S1,
-        countries
-      );
-      console.log(data2);
+      if (isEntityType) {
+        let data2 = handleGeoCoverageValue(
+          cloneDeep(formData.S1),
+          formData.S1,
+          countries
+        );
+        console.log(data2);
 
-      let orgGeo = handleGeoCoverageValue(
-        cloneDeep(formData.S4),
-        formData.S4,
-        countries,
-        "org"
-      );
+        let orgGeo = handleGeoCoverageValue(
+          cloneDeep(formData.S4),
+          formData.S4,
+          countries,
+          "org"
+        );
 
-      if (data.country?.[formData.S1.country]) {
-        data.country = formData.S1.country;
-      }
-      if (data.title?.[formData.S1.titleAndLastName.title]) {
-        data.title = formData.S1.titleAndLastName.title;
-      }
-      if (data2.geoCoverageType) {
-        data.geoCoverageType = data2.geoCoverageType;
-      }
-      if (data2.geoCoverageValue) {
-        data.geoCoverageValue = data2.geoCoverageValue;
-      }
-      if (data.seeking) {
-        data.seeking = data.seeking.map((x) => Number(x));
-      }
-      if (data.offering) {
-        data.offering = data.offering.map((x) => Number(x));
-      }
-      if (data.tags) {
-        data.tags = data.tags.map((x) => Number(x));
-      }
-      data.org = {};
+        feedCountry(data, formData); // TODO check paths
 
-      if (data.orgName) {
-        data.org.name = data.orgName;
-        data.org.type = data.orgRepresentative;
-        data.org.program = data.orgDescription;
-        data.org.url = data.orgUrl;
-        data.org.logo = data.orgLogo;
-
-        if (data.orgHeadquarter?.[formData.S4.orgHeadquarter]) {
-          data.org.country = formData.S4.orgHeadquarter;
+        feedTitle(data, formData); // TODO check paths
+        if (data2.geoCoverageType) {
+          data.geoCoverageType = data2.geoCoverageType;
         }
-        if (orgGeo.orggeoCoverageType) {
-          data.org.geoCoverageType = orgGeo.orggeoCoverageType;
-          data.org.geoCoverageValue = orgGeo.orggeoCoverageValue;
+        if (data2.geoCoverageValue) {
+          data.geoCoverageValue = data2.geoCoverageValue;
         }
-        delete data.orgHeadquarter;
-        delete data.orgName;
-        delete data.orgRepresentative;
-        delete data.orgDescription;
-        delete data.orgUrl;
-        delete data.orgLogo;
+        feedSeeking(data, formData); // TODO check paths
+        feedOffering(data, formData); // TODO check paths
+        data.org = {};
 
-        if (data.registeredStakeholders) {
-          data.org.registeredStakeholders = formData.S5.registeredStakeholders.map(
-            (x) => Number(x)
-          );
-          delete data.registeredStakeholders;
+        if (data.orgName) {
+          data.org.name = data.orgName;
+          data.org.type = data.orgRepresentative;
+          data.org.program = data.orgDescription;
+          data.org.url = data.orgUrl;
+          data.org.logo = data.orgLogo;
+
+          if (data.orgHeadquarter?.[formData.S4.orgHeadquarter]) {
+            data.org.country = formData.S4.orgHeadquarter;
+          }
+          if (orgGeo.orggeoCoverageType) {
+            data.org.geoCoverageType = orgGeo.orggeoCoverageType;
+            data.org.geoCoverageValue = orgGeo.orggeoCoverageValue;
+          }
+          delete data.orgHeadquarter;
+          delete data.orgName;
+          delete data.orgRepresentative;
+          delete data.orgDescription;
+          delete data.orgUrl;
+          delete data.orgLogo;
+
+          if (data.registeredStakeholders) {
+            data.org.registeredStakeholders = formData.S5.registeredStakeholders.map(
+              (x) => Number(x)
+            );
+            delete data.registeredStakeholders;
+          }
+          if (data.otherStakeholders) {
+            data.org.otherStakeholders = data.otherStakeholders;
+            delete data.otherStakeholders;
+          }
         }
-        if (data.otherStakeholders) {
-          data.org.otherStakeholders = data.otherStakeholders;
-          delete data.otherStakeholders;
-        }
+
+        console.log("data.qcountry", data.country);
+        console.log(data, formData);
+      } else {
+        feedCountry(data, formData);
+        feedTitle(data, formData);
+        feedSeeking(data, formData);
+        feedOffering(data, formData);
+        console.log(data, formData);
       }
-
-      console.log("data.qcountry", data.country);
-      console.log(data, formData);
-
       if (status === "add" && !params?.id) {
         api
           .post("/profile", data)

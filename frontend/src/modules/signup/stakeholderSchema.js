@@ -79,7 +79,7 @@ export const schema = {
         id: "tabs",
         value: ["S2"],
       },
-      required: ["orgName"],
+      required: [],
       properties: {
         orgName: {
           title: "Search Your Entity",
