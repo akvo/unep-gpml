@@ -83,11 +83,6 @@ export const schema = {
           type: "string",
           format: "data-url",
         },
-        representativeSector: {
-          title: "Representative sector",
-          enum: [],
-          enumNames: [],
-        },
         country: {
           title: "Country",
           type: "integer",

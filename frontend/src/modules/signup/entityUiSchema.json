@@ -48,12 +48,6 @@
       "ui:options": { "accept": "image/*" },
       "ui:widget": "file"
     },
-    "representativeSector": {
-      "ui:widget": "select",
-      "ui:placeholder": "Search sectors",
-      "ui:showSearch": true,
-      "ui:mode": "multiple"
-    },
     "country": {
       "ui:widget": "select",
       "ui:placeholder": "Search country",
@@ -143,7 +137,6 @@
       "linkedin",
       "twitter",
       "photo",
-      "representativeSector",
       "country",
       "geoCoverageType",
       "geoCoverageValueRegional",
