@@ -1,19 +1,30 @@
 import { UIStore } from "../../store";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Row, Col, Card, Avatar } from "antd";
 import { UserOutlined, UsergroupAddOutlined } from "@ant-design/icons";
-
+import { isRegistered } from "../../utils/profile";
 import "./view-style.scss";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const SignupView = ({ ...props }) => {
-  const { loginWithPopup } = useAuth0();
-  const { history, setTypeSignUp } = props;
+  const { isAuthenticated, loginWithPopup } = useAuth0();
+  const { profile, history } = props;
+  const [typeSignUp, setTypeSignUp] = useState(null);
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = null;
     });
   }, [props]);
+
+  useEffect(() => {
+    if (typeSignUp && profile.email && !profile.about) {
+      if (typeSignUp === "entity") {
+        history.push("/entity-signup");
+      } else {
+        history.push("/stakeholder-signup");
+      }
+    }
+  }, [profile, typeSignUp, history]);
 
   return (
     <div id="signup-view">
@@ -50,8 +61,11 @@ const SignupView = ({ ...props }) => {
                     className="green"
                     onClick={() => {
                       setTypeSignUp("entity");
-                      loginWithPopup({ screen_hint: "signup" });
-                      //                  history.push("/entity-signup");
+                      if (isRegistered(profile)) {
+                        loginWithPopup({ screen_hint: "signup" });
+                      } else {
+                        history.push("/entity-signup");
+                      }
                     }}
                   >
                     Apply for an Entity
@@ -68,8 +82,12 @@ const SignupView = ({ ...props }) => {
                     className="green"
                     onClick={() => {
                       setTypeSignUp("stakeholder");
-                      loginWithPopup({ screen_hint: "signup" });
-                      //                  history.push("/entity-signup");
+                      console.log(profile.about, Boolean(profile.about));
+                      if (isRegistered(profile)) {
+                        loginWithPopup({ screen_hint: "signup" });
+                      } else {
+                        history.push("/stakeholder-signup");
+                      }
                     }}
                   >
                     Sign up as an Individual

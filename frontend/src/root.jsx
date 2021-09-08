@@ -25,7 +25,7 @@ import LandingSignupView from "./modules/signup-old/view";
 import logo from "./images/GPML-logo-white.png";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
-import { updateStatusProfile } from "./utils/profile";
+import { updateStatusProfile, isRegistered } from "./utils/profile";
 import { storage } from "./utils/storage";
 import { UIStore } from "./store.js";
 import ProfileView from "./modules/profile/view";
@@ -159,7 +159,7 @@ const Root = () => {
     stakeholderSignupModalVisible,
     setStakeholderSignupModalVisible,
   ] = useState(false);
-  const [typeSignUp, setTypeSignUp] = useState(null);
+
 
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [filters, setFilters] = useState(null);
@@ -281,10 +281,9 @@ const Root = () => {
             </div>
           </div>
         </Header>
-        <WithProfileRoute
+        <Route
           profile={profile}
           path="/"
-          typeSignUp={typeSignUp}
           exact
           render={(props) => (
             <Landing
@@ -425,13 +424,7 @@ const Root = () => {
         />
         <Route
           path="/signup"
-          render={(props) => (
-            <LandingSignupView
-              {...props}
-              loginWithPopup={loginWithPopup}
-              setTypeSignUp={setTypeSignUp}
-            />
-          )}
+          render={(props) => <LandingSignupView {...props} profile={profile} />}
         />
         <Route
           path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
@@ -473,16 +466,44 @@ const Root = () => {
   );
 };
 
-const WithProfileRoute = (props) => {
-  const { profile, typeSignUp } = props;
-  return profile.email && !profile.about ? (
-    typeSignUp === "entity" ? (
-      <Redirect to="/entity-signup" />
-    ) : (
-      <Redirect to="/stakeholder-signup" />
-    )
-  ) : (
-    <Route {...props} />
+const renderDropdownMenu = (
+  tags,
+  landing,
+  profile,
+  setWarningModalVisible,
+  isAuthenticated,
+  setStakeholderSignupModalVisible,
+  loginWithPopup
+) => {
+  const excludeSummary = ["event", "organisation", "stakeholder"];
+  const summary =
+    landing?.summary &&
+    landing.summary
+      .filter((x) => !excludeSummary.includes(Object.keys(x)[0]))
+      .map((x) => {
+        return {
+          name: Object.keys(x)[0],
+          count: x[Object.keys(x)[0]],
+        };
+      });
+  return (
+    <div className="menu-dropdown-container">
+      <AboutDropdownMenu />
+      <ExploreDropdownMenu
+        topicsCount={tags?.topics ? tags.topics.length : 0}
+      />
+      <DataHubDropdownMenu />
+      <KnowledgeExchangeDropdownMenu resources={summary} />
+      <ConnectStakeholdersDropdownMenu
+        {...{
+          profile,
+          setWarningModalVisible,
+          isAuthenticated,
+          setStakeholderSignupModalVisible,
+          loginWithPopup,
+        }}
+      />
+    </div>
   );
 };
 
