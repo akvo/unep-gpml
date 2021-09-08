@@ -75,7 +75,7 @@ const SignUpForm = withRouter(
 
         feedCountry(data, formData); // TODO check paths
 
-        feedTitle(data, formData, "S2"); // TODO check paths
+        data.title = formData.S2.title;
 
         if (data2.geoCoverageType) {
           data.geoCoverageType = data2.geoCoverageType;
