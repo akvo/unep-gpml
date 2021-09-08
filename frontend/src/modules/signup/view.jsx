@@ -21,9 +21,16 @@ import stakeholder from "./stakeholder";
 const { Step } = Steps;
 
 const SignUp = ({ match: { params }, ...props }) => {
-  console.log(props.formType);
-  const { tabs, getSchema, schema, initialSignUpData, signUpData, loadTabs } =
-    props.formType === "entity" ? entity : stakeholder;
+  const isEntityType = props.formType === "entity" ? true : false;
+  const isStakeholderType = !isEntityType;
+  const {
+    tabs,
+    getSchema,
+    schema,
+    initialSignUpData,
+    signUpData,
+    loadTabs,
+  } = isEntityType ? entity : stakeholder;
 
   const minHeightContainer = innerHeight * 0.8;
   const minHeightCard = innerHeight * 0.75;
@@ -36,6 +43,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     sectorOptions: s.sectorOptions,
     organisationType: s.organisationType,
     meaOptions: s.meaOptions,
+    organisations: s.organisations,
     profile: s.profile,
     formStep: s.formStep,
     formEdit: s.formEdit,
@@ -49,6 +57,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     sectorOptions,
     organisationType,
     meaOptions,
+    organisations,
     formStep,
     formEdit,
     profile,
@@ -64,9 +73,6 @@ const SignUp = ({ match: { params }, ...props }) => {
   });
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
-  const [representEntity, setRepresentEntity] = useState(
-    props.formType === "entity" ? true : false
-  );
   const [highlight, setHighlight] = useState(false);
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
@@ -84,7 +90,7 @@ const SignUp = ({ match: { params }, ...props }) => {
       e.highlight = highlight;
     });
     setFormSchema({ schema: schema });
-  }, [highlight]);
+  }, [schema, highlight]);
 
   const isLoaded = useCallback(() => {
     return Boolean(
@@ -92,6 +98,7 @@ const SignUp = ({ match: { params }, ...props }) => {
         !isEmpty(tags) &&
         !isEmpty(profile) &&
         !isEmpty(regionOptions) &&
+        !isEmpty(organisations) &&
         !isEmpty(sectorOptions) &&
         !isEmpty(organisationType) &&
         !isEmpty(meaOptions) &&
@@ -103,6 +110,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     profile,
     regionOptions,
     sectorOptions,
+    organisations,
     organisationType,
     meaOptions,
     stakeholders,
@@ -135,7 +143,18 @@ const SignUp = ({ match: { params }, ...props }) => {
         e.editId = null;
       });
     }
-  }, [storeData, status, id, data, editId, params, isLoaded]);
+  }, [
+    initialSignUpData,
+    getSchema,
+    signUpData,
+    storeData,
+    status,
+    id,
+    data,
+    editId,
+    params,
+    isLoaded,
+  ]);
 
   const renderSteps = (parentTitle, section, steps, index) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
@@ -261,8 +280,8 @@ const SignUp = ({ match: { params }, ...props }) => {
   };
 
   const isLastStep = () => {
-    const { tabIndex, stepIndex, steps } = getTabStepIndex();
-    return tabsData.length === tabIndex + 1 && steps.length === stepIndex + 1;
+    const { tabIndex } = getTabStepIndex();
+    return tabsData.length === tabIndex + 1;
   };
 
   const handleOnClickBtnNext = (e) => {
@@ -386,32 +405,32 @@ const SignUp = ({ match: { params }, ...props }) => {
                       overflow: "auto",
                     }}
                   >
-                    {getTabStepIndex().tabIndex === 0 &&
-                    props.formType === "entity" ? (
-                      <Row>
-                        <h3>
+                    {getTabStepIndex().tabIndex === 0 && isEntityType ? (
+                      <Row className="entity-getting-started-heading">
+                        <div>
                           This is the application for of an Entity becoming a
                           Member of the GPML, the person submitting the
                           information is identifying themselves as Entity Focal
                           Points.
-                        </h3>
-                        <h3>
+                        </div>
+                        <div>
                           Membership applications are reviewed by the GPML
                           Secreteriat on a weekly basis and confirmation will be
                           communicated via email.
-                        </h3>
-                        <h3>
+                        </div>
+                        <div>
                           More information on Entity Focal Points rights can be
                           found [here].
-                        </h3>
+                        </div>
                       </Row>
                     ) : (
                       <span></span>
                     )}
                     <SignUpForm
+                      isEntityType={isEntityType}
+                      isStakeholderType={isStakeholderType}
                       formType={props.formType}
                       btnSubmit={btnSubmit}
-                      representEntity={representEntity}
                       sending={sending}
                       setSending={setSending}
                       highlight={highlight}
@@ -419,7 +438,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                       formSchema={formSchema}
                       setDisabledBtn={setDisabledBtn}
                     />
-                    {!isLastStep() && representEntity && (
+                    {!isLastStep() && (
                       <Button
                         className="next-button"
                         type="ghost"

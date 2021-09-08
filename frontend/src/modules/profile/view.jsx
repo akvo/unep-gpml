@@ -162,7 +162,7 @@ const ProfileView = ({ ...props }) => {
         );
       })();
     }
-  }, [profile]);
+  }, [profile, pendingItems, reviewItems, reviewedItems, stakeholdersData]);
 
   const onSubmit = (vals) => {
     setSaving(true);

@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from "react";
-
 import { notification } from "antd";
 import { withTheme } from "@rjsf/core";
 import api from "../../utils/api";
@@ -10,6 +9,8 @@ import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
 import widgets from "../../utils/forms";
 import { overideValidation } from "../../utils/forms";
+import common from "./common";
+const { feedCountry, feedSeeking, feedOffering, feedTitle } = common;
 import {
   transformFormData,
   collectDependSchemaRefactor,
@@ -35,10 +36,11 @@ const SignUpForm = withRouter(
     btnSubmit,
     sending,
     setSending,
-    representEntity,
     formType,
     highlight,
     setHighlight,
+    isStakeholderType,
+    isEntityType,
     formSchema,
     setDisabledBtn,
     history,
@@ -46,10 +48,10 @@ const SignUpForm = withRouter(
   }) => {
     const { countries, organisations, tags, formEdit } = UIStore.currentState;
     const { status, id } = formEdit.signUp;
-    const { initialSignUpData, signUpData } =
-      formType === "entity" ? entity : stakeholder;
-    const uiSchema =
-      formType === "entity" ? entityUiSchema : stakeholderUiSchema;
+    const { initialSignUpData, signUpData } = isEntityType
+      ? entity
+      : stakeholder;
+    const uiSchema = isEntityType ? entityUiSchema : stakeholderUiSchema;
     const signUpFormData = signUpData.useState();
     const [dependValue, setDependValue] = useState([]);
     const [editCheck, setEditCheck] = useState(true);
@@ -57,84 +59,86 @@ const SignUpForm = withRouter(
     const handleOnSubmit = ({ formData }) => {
       // # Transform data before sending to endpoint
       let data = {};
+      data.org = {};
       transformFormData(data, formData, formSchema.schema.properties, true);
       data.version = parseInt(formSchema.schema.version);
 
       setSending(true);
 
-      let data2 = handleGeoCoverageValue(
-        cloneDeep(formData.S1),
-        formData.S1,
-        countries
-      );
-      console.log(data2);
+      if (isEntityType) {
+        let data2 = handleGeoCoverageValue(
+          cloneDeep(formData.S1),
+          formData.S1,
+          countries
+        );
+        console.log(data2);
 
-      let orgGeo = handleGeoCoverageValue(
-        cloneDeep(formData.S4),
-        formData.S4,
-        countries,
-        "org"
-      );
+        let orgGeo = handleGeoCoverageValue(
+          cloneDeep(formData.S4),
+          formData.S4,
+          countries,
+          "org"
+        );
 
-      if (data.country?.[formData.S1.country]) {
-        data.country = formData.S1.country;
-      }
-      if (data.title?.[formData.S1.titleAndLastName.title]) {
-        data.title = formData.S1.titleAndLastName.title;
-      }
-      if (data2.geoCoverageType) {
-        data.geoCoverageType = data2.geoCoverageType;
-      }
-      if (data2.geoCoverageValue) {
-        data.geoCoverageValue = data2.geoCoverageValue;
-      }
-      if (data.seeking) {
-        data.seeking = data.seeking.map((x) => Number(x));
-      }
-      if (data.offering) {
-        data.offering = data.offering.map((x) => Number(x));
-      }
-      if (data.tags) {
-        data.tags = data.tags.map((x) => Number(x));
-      }
-      data.org = {};
+        feedCountry(data, formData); // TODO check paths
 
-      if (data.orgName) {
-        data.org.name = data.orgName;
-        data.org.type = data.orgRepresentative;
-        data.org.program = data.orgDescription;
-        data.org.url = data.orgUrl;
-        data.org.logo = data.orgLogo;
-
-        if (data.orgHeadquarter?.[formData.S4.orgHeadquarter]) {
-          data.org.country = formData.S4.orgHeadquarter;
+        feedTitle(data, formData); // TODO check paths
+        if (data2.geoCoverageType) {
+          data.geoCoverageType = data2.geoCoverageType;
         }
-        if (orgGeo.orggeoCoverageType) {
-          data.org.geoCoverageType = orgGeo.orggeoCoverageType;
-          data.org.geoCoverageValue = orgGeo.orggeoCoverageValue;
+        if (data2.geoCoverageValue) {
+          data.geoCoverageValue = data2.geoCoverageValue;
         }
-        delete data.orgHeadquarter;
-        delete data.orgName;
-        delete data.orgRepresentative;
-        delete data.orgDescription;
-        delete data.orgUrl;
-        delete data.orgLogo;
+        feedSeeking(data, formData); // TODO check paths
 
-        if (data.registeredStakeholders) {
-          data.org.registeredStakeholders = formData.S5.registeredStakeholders.map(
-            (x) => Number(x)
-          );
-          delete data.registeredStakeholders;
+        feedOffering(data, formData); // TODO check paths
+
+        if (data.orgName) {
+          data.org.name = data.orgName;
+          data.org.type = data.orgRepresentative;
+          data.org.program = data.orgDescription;
+          data.org.url = data.orgUrl;
+          data.org.logo = data.orgLogo;
+
+          if (data.orgHeadquarter?.[formData.S4.orgHeadquarter]) {
+            data.org.country = formData.S4.orgHeadquarter;
+          }
+          if (orgGeo.orggeoCoverageType) {
+            data.org.geoCoverageType = orgGeo.orggeoCoverageType;
+            data.org.geoCoverageValue = orgGeo.orggeoCoverageValue;
+          }
+          delete data.orgHeadquarter;
+          delete data.orgName;
+          delete data.orgRepresentative;
+          delete data.orgDescription;
+          delete data.orgUrl;
+          delete data.orgLogo;
+
+          if (data.registeredStakeholders) {
+            data.org.registeredStakeholders = formData.S5.registeredStakeholders.map(
+              (x) => Number(x)
+            );
+            delete data.registeredStakeholders;
+          }
+          if (data.otherStakeholders) {
+            data.org.otherStakeholders = data.otherStakeholders;
+            delete data.otherStakeholders;
+          }
         }
-        if (data.otherStakeholders) {
-          data.org.otherStakeholders = data.otherStakeholders;
-          delete data.otherStakeholders;
+
+        console.log("data.qcountry", data.country);
+        console.log(data, formData);
+      } else {
+        feedCountry(data, formData);
+        feedTitle(data, formData);
+        feedSeeking(data, formData);
+        feedOffering(data, formData);
+        if (data.orgName) {
+          data.org.id = formData.S2.orgName;
         }
+        data.representation = "";
+        console.log(data, formData);
       }
-
-      console.log("data.qcountry", data.country);
-      console.log(data, formData);
-
       if (status === "add" && !params?.id) {
         api
           .post("/profile", data)
@@ -142,7 +146,7 @@ const SignUpForm = withRouter(
             UIStore.update((e) => {
               e.formStep = {
                 ...e.formStep,
-                signup: 2,
+                signUp: 2,
               };
             });
             //            scroll top
@@ -192,7 +196,7 @@ const SignUpForm = withRouter(
 
     const handleFormOnChange = useCallback(
       ({ formData, schema }) => {
-        //        console.log("handleFormOnChange representEntity", representEntity);
+        //        console.log("handleFormOnChange representEntity", );
         signUpData.update((e) => {
           e.data = {
             ...e.data,
@@ -210,12 +214,13 @@ const SignUpForm = withRouter(
           requiredFields
         );
         setDependValue(dependFields);
+        const stakeholderSections = new Set(["S1", "S2", "S3"]);
         const requiredFilledIn = checkRequiredFieldFilledIn(
           formData,
           dependFields,
-          representEntity
+          isEntityType
             ? requiredFields
-            : requiredFields.filter((x) => x.key.indexOf("S1") >= 0)
+            : requiredFields.filter((x) => stakeholderSections.has(x.key))
         );
         let sectionRequiredFields = {};
         let groupRequiredFields = {};
@@ -255,46 +260,52 @@ const SignUpForm = withRouter(
           }
         });
         signUpData.update((e) => {
-          // TODO revert this old refactor
-          let entitySections = {
-            S2: {
-              ...e.data.S2,
-              required: groupRequiredFields["S2"].required,
-            },
-            S3: {
-              ...e.data.S3,
-              required: groupRequiredFields["S3"].required,
-            },
-            //TODO feed from entity/staekholder
-            // S4: {
-            //   ...e.data.S4,
-            //   required: groupRequiredFields["S4"].required,
-            // },
-            // S5: {
-            //   ...e.data.S5,
-            //   required: groupRequiredFields["S5"].required,
-            // },
-          };
-          const stakeholderSections = {
-            S1: {
-              ...e.data.S1,
-              required: groupRequiredFields["S1"].required,
-            },
-          };
-          if (representEntity) {
-            e.data = {
-              ...e.data,
-              required: sectionRequiredFields,
-              ...stakeholderSections,
-              ...entitySections,
+          let formSections = null;
+          if (isEntityType) {
+            formSections = {
+              S1: {
+                ...e.data.S1,
+                required: groupRequiredFields["S1"].required,
+              },
+              S2: {
+                ...e.data.S2,
+                required: groupRequiredFields["S2"].required,
+              },
+              S3: {
+                ...e.data.S3,
+                required: groupRequiredFields["S3"].required,
+              },
+              S4: {
+                ...e.data.S4,
+                required: groupRequiredFields["S4"].required,
+              },
+              S5: {
+                ...e.data.S5,
+                required: groupRequiredFields["S5"].required,
+              },
             };
           } else {
-            e.data = {
-              ...e.data,
-              required: sectionRequiredFields,
-              ...stakeholderSections,
+            formSections = {
+              S1: {
+                ...e.data.S1,
+                required: groupRequiredFields["S1"].required,
+              },
+              S2: {
+                ...e.data.S2,
+                required: groupRequiredFields["S2"].required,
+              },
+              S3: {
+                ...e.data.S3,
+                required: groupRequiredFields["S3"].required,
+              },
             };
           }
+
+          e.data = {
+            ...e.data,
+            required: sectionRequiredFields,
+            ...formSections,
+          };
         });
         // enable btn submit
         requiredFilledIn.length === 0 &&
@@ -302,7 +313,7 @@ const SignUpForm = withRouter(
         requiredFilledIn.length !== 0 &&
           setDisabledBtn({ disabled: true, type: "default" });
       },
-      [formSchema, setDisabledBtn, representEntity]
+      [isEntityType, signUpData, formSchema, setDisabledBtn]
     );
 
     const handleTransformErrors = (errors, dependValue) => {
@@ -335,7 +346,7 @@ const SignUpForm = withRouter(
         formData: signUpFormData.data,
         schema: formSchema.schema,
       });
-    }, [formSchema, signUpFormData, handleFormOnChange, representEntity]);
+    }, [formSchema, signUpFormData, handleFormOnChange]);
 
     useEffect(() => {
       if (
