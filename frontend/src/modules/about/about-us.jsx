@@ -79,9 +79,10 @@ const renderSectionIssue = () => {
             Find out more below.
           </p>
           <div className="btn-wrapper">
-            <Button type="ghost">Vital graphics</Button>
+            {/* Removed for now
+            <Button type="ghost">Vital graphics</Button> */}
             <Button
-              type="ghost left"
+              type="ghost"
               onClick={(e) => {
                 window.location.href = "https://www.cleanseas.org/";
               }}
