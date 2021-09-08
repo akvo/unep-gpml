@@ -762,6 +762,11 @@ const ButtonMenu = withRouter(
     // editable by the users themselves, and not by the admins.
     const noEditTopics = new Set(["organisation", "stakeholder"]);
 
+    const canEdit = () =>
+      profile.role === "ADMIN" &&
+      ((topic.type !== "project" && !noEditTopics.has(topic.type)) ||
+        (topic.type === "project" && topic.id > 10000));
+
     return (
       <div className="button-wrapper">
         <div className="portfolio-bar" onClick={(e) => e.stopPropagation()}>
@@ -792,12 +797,7 @@ const ButtonMenu = withRouter(
           </Dropdown>
           <div className="label">Bookmarks</div>
         </div>
-        {((profile.role === "ADMIN" &&
-          topic.type !== "project" &&
-          !noEditTopics.has(topic.type)) ||
-          (profile.role === "ADMIN" &&
-            topic.type === "project" &&
-            topic.id > 10000)) && (
+        {canEdit() && (
           <div className="edit-btn" onClick={(e) => e.stopPropagation()}>
             <Button
               onClick={() => handleEditBtn()}
