@@ -21,13 +21,13 @@ const SignupView = ({ ...props }) => {
         <Row>
           <Col sm={24} md={12} lg={12}>
             <h1 className="joining-header">Joining the GPML</h1>
-            <h3>Global Partnership on Marine Litter (GPML)</h3>
+            <h2>Global Partnership on Marine Litter (GPML)</h2>
             <ul>
               <li>Tap into a global network of like-minded members</li>
               <li>Discover opportunities to showcase your work</li>
               <li>Avoid duplication of effort and optimise impact​​</li>
             </ul>
-            <h3>GPML digital platform</h3>
+            <h2>GPML Digital Platform</h2>
             <ul>
               <li>Access a data hub to guide efforts towards SDGs and more</li>
               <li>Utilise an array of resources at your fingertips​</li>
