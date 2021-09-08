@@ -634,7 +634,7 @@ const DetailsView = ({
             <div className="bookmark">
               {allowBookmark && (
                 <ButtonMenu
-                  topic={params}
+                  topic={{ ...data, ...params }}
                   profile={profile}
                   {...{ handleRelationChange, relation }}
                 />
@@ -763,7 +763,7 @@ const ButtonMenu = withRouter(
     const noEditTopics = new Set(["organisation", "stakeholder"]);
 
     const canEdit = () =>
-      profile.role === "ADMIN" &&
+      (profile.role === "ADMIN" || profile.id === topic.createdBy) &&
       ((topic.type !== "project" && !noEditTopics.has(topic.type)) ||
         (topic.type === "project" && topic.id > 10000));
 
