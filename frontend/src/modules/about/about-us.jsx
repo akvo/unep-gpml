@@ -1,13 +1,12 @@
 import React from "react";
 import { Button, Image } from "antd";
+import { Link } from "react-router-dom";
 
 import "./styles.scss";
 import imageNotFound from "../../images/image-not-found.png";
 
 import issueGraphics from "./issue-section-content";
-import missionGraphic from "./mission-section-graphic";
 import timelineAndRoadmapGraphic from "../../images/timeline-roadmap-graphic.png";
-import featureComponentGraphic from "./feature-component-graphic";
 import ourCommunity from "../../images/about-our-community.png";
 import DPIcons from "../../images/GPML---DP---icons.png";
 import featureComponent from "../../images/feature-component-graphic.png";
@@ -277,12 +276,9 @@ const renderSectionCommunity = () => {
             participating in global/regional multilateral processes; other major
             groups and stakeholders; and private citizens.
           </p>
-          <a
-            href="https://digital.gpmarinelitter.org/signup"
-            className="text-blue txt-emphasis"
-          >
+          <Link to="/signup" className="text-blue txt-emphasis">
             Sign up to find out more
-          </a>
+          </Link>
         </div>
         <div className="section-community-graphic">
           <Image src={ourCommunity} preview={false} />
