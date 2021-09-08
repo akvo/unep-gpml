@@ -67,22 +67,15 @@ const SignUpForm = withRouter(
 
       if (isEntityType) {
         let data2 = handleGeoCoverageValue(
-          cloneDeep(formData.S1),
-          formData.S1,
+          cloneDeep(formData.S5),
+          formData.S5,
           countries
-        );
-        console.log(data2);
-
-        let orgGeo = handleGeoCoverageValue(
-          cloneDeep(formData.S4),
-          formData.S4,
-          countries,
-          "org"
         );
 
         feedCountry(data, formData); // TODO check paths
 
-        feedTitle(data, formData); // TODO check paths
+        feedTitle(data, formData, "S2"); // TODO check paths
+
         if (data2.geoCoverageType) {
           data.geoCoverageType = data2.geoCoverageType;
         }
@@ -103,10 +96,12 @@ const SignUpForm = withRouter(
           if (data.orgHeadquarter?.[formData.S4.orgHeadquarter]) {
             data.org.country = formData.S4.orgHeadquarter;
           }
-          if (orgGeo.orggeoCoverageType) {
-            data.org.geoCoverageType = orgGeo.orggeoCoverageType;
-            data.org.geoCoverageValue = orgGeo.orggeoCoverageValue;
+          if (data.geoCoverageType) {
+            data.org.geoCoverageType = data.geoCoverageType;
+            data.org.geoCoverageValue = data.geoCoverageValue;
           }
+          delete data.geoCoverageType;
+          delete data.geoCoverageValue;
           delete data.orgHeadquarter;
           delete data.orgName;
           delete data.orgRepresentative;
@@ -125,19 +120,15 @@ const SignUpForm = withRouter(
             delete data.otherStakeholders;
           }
         }
-
-        console.log("data.qcountry", data.country);
-        console.log(data, formData);
       } else {
         feedCountry(data, formData);
-        feedTitle(data, formData);
+        feedTitle(data, formData, "S1");
         feedSeeking(data, formData);
         feedOffering(data, formData);
         if (data.orgName) {
           data.org.id = formData.S2.orgName;
         }
         data.representation = "";
-        console.log(data, formData);
       }
       if (status === "add" && !params?.id) {
         api

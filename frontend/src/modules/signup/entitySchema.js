@@ -168,7 +168,7 @@ export const schema = {
       required: ["orgExpertise"],
       properties: {
         orgExpertise: {
-          title: "What services/ expertise does your organisation offer*",
+          title: "What services/ expertise does your organisation offer",
           enum: [],
         },
       },

@@ -14,9 +14,9 @@ export default {
       data.offering = data.offering.map((x) => Number(x));
     }
   },
-  feedTitle: (data, formData) => {
-    if (data.title?.[formData.S1.titleAndLastName.title]) {
-      data.title = formData.S1.titleAndLastName.title;
+  feedTitle: (data, formData, group) => {
+    if (data.title?.[formData[group].titleAndLastName.title]) {
+      data.title = formData[group].titleAndLastName.title;
     }
   },
 };
