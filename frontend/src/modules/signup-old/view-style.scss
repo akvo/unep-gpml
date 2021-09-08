@@ -22,7 +22,7 @@
       }
 
       h2 {
-        font-style: italic;
+        font-style: normal;
         font-weight: 500;
         margin-bottom: 25px;
         margin-top: 30px;
@@ -48,6 +48,10 @@
   }
   .ant-card.green-overlay {
     background: #4da68780;
+    p {
+      margin-top: 0.85rem;
+      min-height: 9rem;
+    }
   }
 
   button.ant-btn.ant-btn-ghost {
@@ -78,16 +82,17 @@
 
     .choices {
       display: flex;
+      flex-wrap: wrap;
 
       & > * {
         height: 340px;
         display: flex;
         flex-direction: column;
-        margin: 0 5px;
+        margin: 5px;
         border: 1px solid #dbe9f1;
         border-top: 1px solid #01abf1;
         text-align: center;
-        flex: 1;
+        flex: 1 1 45%;
         padding: 20px;
         cursor: pointer;
 
