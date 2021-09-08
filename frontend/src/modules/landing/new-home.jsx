@@ -122,8 +122,8 @@ const responsive = {
     items: 2,
   },
   mobile: {
-    breakpoint: { max: 767, min: 0 },
-    items: 2,
+    breakpoint: { max: 599, min: 0 },
+    items: 1,
   },
 };
 
@@ -281,6 +281,7 @@ const Landing = withRouter(
                     title=""
                     type="TREEMAP"
                     height={500}
+                    className="popular-topic-chart"
                     data={sortPopularTopic.map((x) => {
                       return {
                         id: x.id,
@@ -295,34 +296,6 @@ const Landing = withRouter(
                   />
                 </div>
                 <div className="content">
-                  <div className="content-header">
-                    {sortPopularTopic
-                      .find((x) => x.topic.toLowerCase() === selectedTopic)
-                      .summary.map((x, i) => {
-                        const { count, type } = x;
-                        return (
-                          <div key={`summary-${type}-${i}`} className="item">
-                            <h4>{count}</h4>
-                            <span>{type}</span>
-                          </div>
-                        );
-                      })}
-                    <div key="summary-read-more" className="item">
-                      <Link
-                        to={{
-                          pathname: "/browse",
-                          search: `?tag=${
-                            sortPopularTopic.find(
-                              (x) =>
-                                x.topic.toLocaleLowerCase() === selectedTopic
-                            )?.tag
-                          }`,
-                        }}
-                      >
-                        See all <RightOutlined />
-                      </Link>
-                    </div>
-                  </div>
                   <div className="content-body">
                     {sortPopularTopic
                       .find((x) => x.topic.toLowerCase() === selectedTopic)
@@ -339,7 +312,7 @@ const Landing = withRouter(
                             </div>
                             <div className="asset-title">{title}</div>
                             <div className="body-text">
-                              {TrimText({ text: description, max: 150 })}
+                              {TrimText({ text: description, max: 250 })}
                             </div>
                             <span className="read-more">
                               <Link to={link}>

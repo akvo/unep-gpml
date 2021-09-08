@@ -68,8 +68,8 @@ h4 {
 }
 
 .copy-right {
-  font-size: 0.75rem;
-  line-height: 0.69rem;
+  font-size: 0.85rem;
+  line-height: 0.8rem;
 }
 
 .text-green {
@@ -438,17 +438,13 @@ footer {
   }
 
   .ui.container {
-    padding-bottom: 1rem;
     &:first-child {
       display: flex;
-
       .col {
         width: 33%;
         flex: 1;
-
         nav {
           margin-bottom: 2rem;
-
           ul {
             a,
             span {
@@ -463,16 +459,16 @@ footer {
       padding: 1rem 0;
       display: flex;
       align-items: center;
-      .unepLogo {
-        img {
-          width: 45%;
-          margin-left: 0;
-        }
+      img.uneplogo {
+        width: 10%;
+        margin: 0;
+        margin-right: 2rem;
       }
       .unepInfo {
+        width: 89%;
         h2 {
           color: white;
-          font-size: 0.9rem;
+          font-size: 0.95rem;
           font-weight: 400;
         }
       }
@@ -582,5 +578,40 @@ path {
 .opaque {
   opacity: 1 !important;
 }
+
+/* Responsive menu style */
+.responsive-menu-trigger {
+  margin-left: 8px;
+  display: none;
+  align-items: center;
+}
+.responsive-menu-wrapper {
+  .ant-drawer-body {
+    padding: 0;
+    padding-right: 0.35rem;
+  }
+  .ant-menu-inline,
+  .ant-menu-vertical,
+  .ant-menu-vertical-left {
+    border-right: none;
+  }
+  .ant-menu-sub.ant-menu-inline > .ant-menu-item,
+  .ant-menu-sub.ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .badge-count {
+    border: 1px solid $black;
+    color: $black;
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
+  }
+  .auth-menu {
+    display: none;
+  }
+}
+/* End of Responsive menu style */
 
 @import "./container.scss";

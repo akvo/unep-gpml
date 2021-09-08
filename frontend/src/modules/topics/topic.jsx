@@ -10,14 +10,14 @@ import TopicImages from "./topic-images";
 import { UIStore } from "../../store";
 import isEmpty from "lodash/isEmpty";
 
-const Topic = ({ setFilters }) => {
+const Topic = ({ filters, setFilters }) => {
   const tags = UIStore.useState((s) => s.tags);
 
   const isLoaded = () => Boolean(!isEmpty(tags));
 
   useEffect(() => {
-    setFilters(null);
-  }, [setFilters]);
+    filters && setFilters(null);
+  }, [filters, setFilters]);
 
   return (
     <div id="topics">
@@ -50,7 +50,13 @@ const renderTopics = (topics) => {
     const image = TopicImages.find((x) => x.tag === tag).image;
 
     return (
-      <Col key={`${tag}-${id}`} sm={24} md={12} lg={8}>
+      <Col
+        key={`${tag}-${id}`}
+        className="topic-item-col"
+        sm={24}
+        md={12}
+        lg={8}
+      >
         <Link
           to={{
             pathname: "/browse",

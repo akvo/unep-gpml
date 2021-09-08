@@ -8,11 +8,12 @@ import {
   withRouter,
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Input, Button, Menu, Dropdown, Avatar, Popover, Layout } from "antd";
+import { Input, Button, Menu, Dropdown, Layout } from "antd";
 import {
   UserOutlined,
   SearchOutlined,
   CloseCircleOutlined,
+  MenuOutlined,
 } from "@ant-design/icons";
 import { Landing, JoinGPMLButton } from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
@@ -47,6 +48,7 @@ import ExploreDropdownMenu from "./modules/dropdown-menu/explore";
 import DataHubDropdownMenu from "./modules/dropdown-menu/data-hub";
 import KnowledgeExchangeDropdownMenu from "./modules/dropdown-menu/knowledge-exchange";
 import ConnectStakeholdersDropdownMenu from "./modules/dropdown-menu/connect-stakeholders";
+import ResponsiveMenu from "./modules/dropdown-menu/responsive-menu";
 
 Promise.all([
   api.get("/tag"),
@@ -152,6 +154,20 @@ const Root = () => {
 
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [filters, setFilters] = useState(null);
+  const [showResponsiveMenu, setShowResponsiveMenu] = useState(false);
+
+  const topicsCount = tags?.topics ? tags.topics.length : 0;
+  const excludeSummary = ["event", "organisation", "stakeholder"];
+  const summaryData =
+    landing?.summary &&
+    landing.summary
+      .filter((x) => !excludeSummary.includes(Object.keys(x)[0]))
+      .map((x) => {
+        return {
+          name: Object.keys(x)[0],
+          count: x[Object.keys(x)[0]],
+        };
+      });
 
   useEffect(() => {
     (async function fetchData() {
@@ -200,43 +216,59 @@ const Root = () => {
                 <img src={logo} className="logo" alt="GPML" />
               </Link>
             </div>
-            {renderDropdownMenu(
-              tags,
-              landing,
-              profile,
-              setWarningModalVisible,
-              isAuthenticated,
-              setStakeholderSignupModalVisible,
-              loginWithPopup
-            )}
+            <div className="menu-dropdown-container">
+              <AboutDropdownMenu />
+              <ExploreDropdownMenu topicsCount={topicsCount} />
+              <DataHubDropdownMenu />
+              <KnowledgeExchangeDropdownMenu resources={summaryData} />
+              <ConnectStakeholdersDropdownMenu
+                {...{
+                  profile,
+                  setWarningModalVisible,
+                  isAuthenticated,
+                  setStakeholderSignupModalVisible,
+                  loginWithPopup,
+                }}
+              />
+            </div>
             <Switch>
               <Route path="/browse" />
               <Route>
                 <Search />
               </Route>
             </Switch>
-            {!isAuthenticated ? (
-              <div className="rightside">
-                <JoinGPMLButton loginWithPopup={loginWithPopup} />
-                <Button type="ghost" className="left">
-                  <Link to="/" onClick={loginWithPopup}>
-                    Sign in
-                  </Link>
-                </Button>
-              </div>
-            ) : (
-              <div className="rightside">
-                <AddButton
-                  {...{
-                    setStakeholderSignupModalVisible,
-                    isAuthenticated,
-                    loginWithPopup,
-                    setWarningModalVisible,
-                  }}
+            <div className="rightside">
+              {!isAuthenticated ? (
+                <div className="rightside btn-wrapper">
+                  <JoinGPMLButton loginWithPopup={loginWithPopup} />
+                  <Button type="ghost" className="left">
+                    <Link to="/" onClick={loginWithPopup}>
+                      Sign in
+                    </Link>
+                  </Button>
+                </div>
+              ) : (
+                <div className="rightside btn-wrapper">
+                  <AddButton
+                    {...{
+                      setStakeholderSignupModalVisible,
+                      isAuthenticated,
+                      loginWithPopup,
+                      setWarningModalVisible,
+                    }}
+                  />
+                  <UserButton {...{ logout }} />
+                </div>
+              )}
+              {/* Drawer/ Menu for responsive design */}
+              <div className="responsive-menu-trigger">
+                <Button
+                  type="ghost"
+                  icon={<MenuOutlined />}
+                  onClick={() => setShowResponsiveMenu(true)}
                 />
-                <UserButton {...{ logout }} />
               </div>
-            )}
+            </div>
           </div>
         </Header>
         <WithProfileRoute
@@ -285,7 +317,9 @@ const Root = () => {
         <Route
           exact
           path="/topics"
-          render={(props) => <Topic {...props} setFilters={setFilters} />}
+          render={(props) => (
+            <Topic {...props} filters={filters} setFilters={setFilters} />
+          )}
         />
         <Route
           path="/stakeholders"
@@ -411,6 +445,20 @@ const Root = () => {
         visible={warningModalVisible}
         close={() => setWarningModalVisible(false)}
       />
+      <ResponsiveMenu
+        {...{
+          profile,
+          setWarningModalVisible,
+          isAuthenticated,
+          setStakeholderSignupModalVisible,
+          loginWithPopup,
+          logout,
+        }}
+        showResponsiveMenu={showResponsiveMenu}
+        setShowResponsiveMenu={setShowResponsiveMenu}
+        topicsCount={topicsCount}
+        resources={summaryData}
+      />
     </Router>
   );
 };
@@ -425,47 +473,6 @@ const WithProfileRoute = (props) => {
     )
   ) : (
     <Route {...props} />
-  );
-};
-
-const renderDropdownMenu = (
-  tags,
-  landing,
-  profile,
-  setWarningModalVisible,
-  isAuthenticated,
-  setStakeholderSignupModalVisible,
-  loginWithPopup
-) => {
-  const excludeSummary = ["event", "organisation", "stakeholder"];
-  const summary =
-    landing?.summary &&
-    landing.summary
-      .filter((x) => !excludeSummary.includes(Object.keys(x)[0]))
-      .map((x) => {
-        return {
-          name: Object.keys(x)[0],
-          count: x[Object.keys(x)[0]],
-        };
-      });
-  return (
-    <div className="menu-dropdown-container">
-      <AboutDropdownMenu />
-      <ExploreDropdownMenu
-        topicsCount={tags?.topics ? tags.topics.length : 0}
-      />
-      <DataHubDropdownMenu />
-      <KnowledgeExchangeDropdownMenu resources={summary} />
-      <ConnectStakeholdersDropdownMenu
-        {...{
-          profile,
-          setWarningModalVisible,
-          isAuthenticated,
-          setStakeholderSignupModalVisible,
-          loginWithPopup,
-        }}
-      />
-    </div>
   );
 };
 

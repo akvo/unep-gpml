@@ -41,6 +41,7 @@ const Chart = ({
   axis = null,
   onEvents = false,
   selected = false,
+  className = "",
 }) => {
   data = data.map((x) => ({
     ...x,
@@ -55,6 +56,7 @@ const Chart = ({
   );
   return (
     <ReactECharts
+      className={className}
       option={option}
       style={{ height: height - 50, width: "100%" }}
       onEvents={onEvents}
