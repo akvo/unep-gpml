@@ -23,6 +23,9 @@ import AddEvent from "./modules/events/view";
 import SignupView from "./modules/signup/view";
 import LandingSignupView from "./modules/signup-old/view";
 import logo from "./images/GPML-logo-white.png";
+// add auth0 logo pop-up
+// eslint-disable-next-line
+import tmpLogo from "./images/GPML-temporary-logo-horiz.jpg";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
 import { updateStatusProfile, isRegistered } from "./utils/profile";
