@@ -59,6 +59,7 @@ const SignUpForm = withRouter(
     const handleOnSubmit = ({ formData }) => {
       // # Transform data before sending to endpoint
       let data = {};
+      data.org = {};
       transformFormData(data, formData, formSchema.schema.properties, true);
       data.version = parseInt(formSchema.schema.version);
 
@@ -89,8 +90,8 @@ const SignUpForm = withRouter(
           data.geoCoverageValue = data2.geoCoverageValue;
         }
         feedSeeking(data, formData); // TODO check paths
+
         feedOffering(data, formData); // TODO check paths
-        data.org = {};
 
         if (data.orgName) {
           data.org.name = data.orgName;
@@ -132,6 +133,10 @@ const SignUpForm = withRouter(
         feedTitle(data, formData);
         feedSeeking(data, formData);
         feedOffering(data, formData);
+        if (data.orgName) {
+          data.org.id = formData.S2.orgName;
+        }
+        data.representation = "";
         console.log(data, formData);
       }
       if (status === "add" && !params?.id) {

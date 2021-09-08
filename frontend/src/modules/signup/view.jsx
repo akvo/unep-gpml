@@ -43,6 +43,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     sectorOptions: s.sectorOptions,
     organisationType: s.organisationType,
     meaOptions: s.meaOptions,
+    organisations: s.organisations,
     profile: s.profile,
     formStep: s.formStep,
     formEdit: s.formEdit,
@@ -56,6 +57,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     sectorOptions,
     organisationType,
     meaOptions,
+    organisations,
     formStep,
     formEdit,
     profile,
@@ -96,6 +98,7 @@ const SignUp = ({ match: { params }, ...props }) => {
         !isEmpty(tags) &&
         !isEmpty(profile) &&
         !isEmpty(regionOptions) &&
+        !isEmpty(organisations) &&
         !isEmpty(sectorOptions) &&
         !isEmpty(organisationType) &&
         !isEmpty(meaOptions) &&
@@ -107,6 +110,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     profile,
     regionOptions,
     sectorOptions,
+    organisations,
     organisationType,
     meaOptions,
     stakeholders,
