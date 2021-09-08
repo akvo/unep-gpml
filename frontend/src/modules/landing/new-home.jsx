@@ -618,31 +618,31 @@ const Landing = withRouter(
                     </span>
                   </h2>
                 </div>
-              </div>
-              <div className="body">
-                <div className="content">
-                  {!event && (
-                    <div className="no-event">
-                      <h2 className="loading text-white">
-                        <LoadingOutlined spin /> Loading...
-                      </h2>
-                    </div>
-                  )}
-                  {event && event.length === 0 && (
-                    <div className="no-event">No event on this day</div>
-                  )}
-                  {event &&
-                    event.length > 0 &&
-                    renderEventContent(event, eventCarousel)}
-                </div>
-                <div className="calendar">
-                  <Calendar
-                    fullscreen={true}
-                    onPanelChange={handleOnDateSelected}
-                    onSelect={handleOnDateSelected}
-                    headerRender={(e) => calendarHeader(e)}
-                    dateCellRender={dateCellRender}
-                  />
+                <div className="body">
+                  <div className="content">
+                    {!event && (
+                      <div className="no-event">
+                        <h2 className="loading text-white">
+                          <LoadingOutlined spin /> Loading...
+                        </h2>
+                      </div>
+                    )}
+                    {event && event.length === 0 && (
+                      <div className="no-event">No event on this day</div>
+                    )}
+                    {event &&
+                      event.length > 0 &&
+                      renderEventContent(event, eventCarousel)}
+                  </div>
+                  <div className="calendar">
+                    <Calendar
+                      fullscreen={true}
+                      onPanelChange={handleOnDateSelected}
+                      onSelect={handleOnDateSelected}
+                      headerRender={(e) => calendarHeader(e)}
+                      dateCellRender={dateCellRender}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
