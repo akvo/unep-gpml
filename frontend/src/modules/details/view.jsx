@@ -633,7 +633,7 @@ const DetailsView = ({
             </div>
             <div className="bookmark">
               {allowBookmark && (
-                <BookmarkBtn
+                <ButtonMenu
                   topic={params}
                   profile={profile}
                   {...{ handleRelationChange, relation }}
@@ -688,7 +688,7 @@ const DetailsView = ({
   );
 };
 
-const BookmarkBtn = withRouter(
+const ButtonMenu = withRouter(
   ({ topic, relation, handleRelationChange, profile, history }) => {
     const handleChangeRelation = (relationType) => ({
       target: { checked },
