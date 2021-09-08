@@ -145,12 +145,14 @@ const renderSectionMission = () => {
             experience, partners can work together to create and advance
             solutions to this pressing global issue.
           </p>
-          <a
-            href="https://www.gpmarinelitter.org/"
-            className="text-blue txt-emphasis"
+          <Button
+            type="ghost"
+            onClick={(e) => {
+              window.location.href = "https://www.gpmarinelitter.org/";
+            }}
           >
             Go to the partnership
-          </a>
+          </Button>
         </div>
       </div>
     </div>
@@ -214,12 +216,15 @@ const renderSectionTimelineAndRoadmap = () => {
             Marine Debris Conference (7IMDC) planned for 2022, as well as
             UNEA-6, expected to be held in early 2023.
           </p>
-          <a
-            href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf"
-            className="text-blue txt-emphasis"
+          <Button
+            type="primary"
+            onClick={(e) => {
+              window.location.href =
+                "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
+            }}
           >
             Learn More
-          </a>
+          </Button>
         </div>
         <div className="section-timeline-roadmap-graphic">
           <Image src={timelineAndRoadmapGraphic} width="80%" preview={false} />
@@ -246,12 +251,15 @@ const renderSectionKeyFeaturesAndComponents = () => {
             databases, datasets and key partner platforms, such as the World
             Environment Situation Room (WESR).
           </p>
-          <a
-            href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf"
-            className="text-blue txt-emphasis"
+          <Button
+            type="ghost"
+            onClick={(e) => {
+              window.location.href =
+                "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
+            }}
           >
             Learn More
-          </a>
+          </Button>
         </div>
         <div className="section-feature-component-graphic">
           <Image src={featureComponent} width="90%" preview={false} />
@@ -277,8 +285,8 @@ const renderSectionCommunity = () => {
             participating in global/regional multilateral processes; other major
             groups and stakeholders; and private citizens.
           </p>
-          <Link to="/signup" className="text-blue txt-emphasis">
-            Sign up to find out more
+          <Link to="/signup">
+            <Button type="ghost">Sign up to find out more</Button>
           </Link>
         </div>
         <div className="section-community-graphic">
