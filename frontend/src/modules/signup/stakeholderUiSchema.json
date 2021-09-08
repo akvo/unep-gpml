@@ -1,19 +1,14 @@
 {
   "S1": {
     "classNames": "list-group",
-    "titleAndLastName": {
-      "ui:options": {
-        "orderable": false
-      },
-      "title": {
-        "ui:widget": "select",
-        "ui:span": 5,
-        "ui:placeholder": "Title"
-      },
-      "lastName": {
-        "ui:span": 19,
-        "ui:placeholder": "Last name"
-      }
+    "title": {
+      "ui:widget": "select",
+      "ui:span": 5,
+      "ui:placeholder": "Title"
+    },
+    "lastName": {
+      "ui:span": 19,
+      "ui:placeholder": "Last name"
     },
     "firstName": {
       "ui:placeholder": "First name"
@@ -27,7 +22,7 @@
       "ui:widget": "checkbox",
       "ui:label": null
     },
-    "linkedin": {
+    "linkedIn": {
       "ui:placeholder": "Your LinkedIn username",
       "ui:widget": "TextIconWidget",
       "ui:icon": "linkedin"
@@ -47,8 +42,9 @@
       "ui:showSearch": true
     },
     "ui:order": [
-      "titleAndLastName",
+      "title",
       "firstName",
+      "lastName",
       "email",
       "publicEmail",
       "linkedin",

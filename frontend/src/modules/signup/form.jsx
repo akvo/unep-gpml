@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { notification } from "antd";
 import { withTheme } from "@rjsf/core";
 import api from "../../utils/api";
+import { updateStatusProfile } from "../../utils/profile";
 import { Theme as AntDTheme } from "@rjsf/antd";
 import cloneDeep from "lodash/cloneDeep";
 import ObjectFieldTemplate from "../../utils/forms/object-template";
@@ -122,8 +123,8 @@ const SignUpForm = withRouter(
         }
       } else {
         feedCountry(data, formData);
-        feedTitle(data, formData, "S1");
         feedSeeking(data, formData);
+        data.title = formData.S1.title;
         feedOffering(data, formData);
         if (data.orgName) {
           data.org.id = formData.S2.orgName;
@@ -133,13 +134,16 @@ const SignUpForm = withRouter(
       if (status === "add" && !params?.id) {
         api
           .post("/profile", data)
-          .then(() => {
+          .then((res) => {
             UIStore.update((e) => {
               e.formStep = {
                 ...e.formStep,
                 signUp: 2,
               };
+              e.profile = { ...res.data };
             });
+            updateStatusProfile(res.data);
+
             //            scroll top
             window.scrollTo({ top: 0 });
             signUpData.update((e) => {
