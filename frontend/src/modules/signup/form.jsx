@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { notification } from "antd";
 import { withTheme } from "@rjsf/core";
 import api from "../../utils/api";
+import { updateStatusProfile } from "../../utils/profile";
 import { Theme as AntDTheme } from "@rjsf/antd";
 import cloneDeep from "lodash/cloneDeep";
 import ObjectFieldTemplate from "../../utils/forms/object-template";
@@ -133,13 +134,16 @@ const SignUpForm = withRouter(
       if (status === "add" && !params?.id) {
         api
           .post("/profile", data)
-          .then(() => {
+          .then((res) => {
             UIStore.update((e) => {
               e.formStep = {
                 ...e.formStep,
                 signUp: 2,
               };
+              e.profile = { ...res.data };
             });
+            updateStatusProfile(res.data);
+
             //            scroll top
             window.scrollTo({ top: 0 });
             signUpData.update((e) => {

@@ -23,6 +23,7 @@ import LandingSignupView from "./modules/signup-old/view";
 import logo from "./images/GPML-logo-white.png";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
+import { updateStatusProfile } from "./utils/profile";
 import { storage } from "./utils/storage";
 import { UIStore } from "./store.js";
 import ProfileView from "./modules/profile/view";
@@ -175,19 +176,7 @@ const Root = () => {
           UIStore.update((e) => {
             e.profile = { ...resp.data, email: response.email };
           });
-          if (
-            storage.getCookie("profile") === "SUBMITTED" &&
-            resp.data.reviewStatus === "APPROVED"
-          ) {
-            document.cookie = "profileMessage=1";
-          }
-          if (
-            storage.getCookie("profile") === "APPROVED" &&
-            resp.data.reviewStatus === "APPROVED"
-          ) {
-            document.cookie = "profileMessage=0";
-          }
-          document.cookie = `profile=${resp.data.reviewStatus}`;
+          updateStatusProfile(resp.data);
         }
       }
     })();
