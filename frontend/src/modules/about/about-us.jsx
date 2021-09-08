@@ -175,7 +175,13 @@ const renderSectionInfo = () => {
           </p>
         </div>
         <div className="section-info-button-wrapper">
-          <Button type="ghost" className="btn-item">
+          <Button
+            type="ghost"
+            className="btn-item"
+            onClick={(e) => {
+              window.location.href = "/GPML-One-pager-19.08i.pdf";
+            }}
+          >
             Download Summary (1 Page)
           </Button>
           <Button
