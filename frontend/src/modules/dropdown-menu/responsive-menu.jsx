@@ -40,7 +40,7 @@ const ResponsiveMenu = withRouter(
             ? setWarningModalVisible(true)
             : setStakeholderSignupModalVisible(true);
         } else if (key === "join-gpml") {
-          loginWithPopup({ screen_hint: "signup" });
+          history.push("/signup");
         } else if (key === "sign-in") {
           loginWithPopup();
         } else if (key === "logout") {
@@ -176,7 +176,7 @@ const ResponsiveMenu = withRouter(
               <SubMenu
                 key="add-content"
                 title="Add Content"
-                className="nav-link"
+                className="auth-menu nav-link"
               >
                 <Menu.Item
                   key="add-initiative"
