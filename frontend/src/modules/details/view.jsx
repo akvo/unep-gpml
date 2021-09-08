@@ -633,8 +633,8 @@ const DetailsView = ({
             </div>
             <div className="bookmark">
               {allowBookmark && (
-                <BookmarkBtn
-                  topic={params}
+                <ButtonMenu
+                  topic={{ ...data, ...params }}
                   profile={profile}
                   {...{ handleRelationChange, relation }}
                 />
@@ -688,7 +688,7 @@ const DetailsView = ({
   );
 };
 
-const BookmarkBtn = withRouter(
+const ButtonMenu = withRouter(
   ({ topic, relation, handleRelationChange, profile, history }) => {
     const handleChangeRelation = (relationType) => ({
       target: { checked },
@@ -762,6 +762,11 @@ const BookmarkBtn = withRouter(
     // editable by the users themselves, and not by the admins.
     const noEditTopics = new Set(["organisation", "stakeholder"]);
 
+    const canEdit = () =>
+      (profile.role === "ADMIN" || profile.id === topic.createdBy) &&
+      ((topic.type !== "project" && !noEditTopics.has(topic.type)) ||
+        (topic.type === "project" && topic.id > 10000));
+
     return (
       <div className="button-wrapper">
         <div className="portfolio-bar" onClick={(e) => e.stopPropagation()}>
@@ -792,12 +797,7 @@ const BookmarkBtn = withRouter(
           </Dropdown>
           <div className="label">Bookmarks</div>
         </div>
-        {((profile.role === "ADMIN" &&
-          topic.type !== "project" &&
-          !noEditTopics.has(topic.type)) ||
-          (profile.role === "ADMIN" &&
-            topic.type === "project" &&
-            topic.id > 10000)) && (
+        {canEdit() && (
           <div className="edit-btn" onClick={(e) => e.stopPropagation()}>
             <Button
               onClick={() => handleEditBtn()}
