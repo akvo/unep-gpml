@@ -123,8 +123,8 @@ const SignUpForm = withRouter(
         }
       } else {
         feedCountry(data, formData);
-        feedTitle(data, formData, "S1");
         feedSeeking(data, formData);
+        data.title = formData.S1.title;
         feedOffering(data, formData);
         if (data.orgName) {
           data.org.id = formData.S2.orgName;
