@@ -14,6 +14,7 @@ import {
 } from "antd";
 import {
   LoadingOutlined,
+  LeftOutlined,
   RightOutlined,
   ArrowRightOutlined,
   RiseOutlined,
@@ -176,25 +177,27 @@ const Landing = withRouter(
 
     const generateEvent = useCallback(
       (filterDate) => {
-        let eventNow = [];
-        data.results.forEach((x) => {
+        const eventNow = data.results.filter((x, i) => {
           const date = moment(x.startDate).format("DD-MM-YYYY");
-          if (date === filterDate) {
-            eventNow.push(x);
-          }
+          return date === filterDate;
         });
-        setEvent(eventNow);
+        if (!eventNow.length) {
+          const nextDay = moment(filterDate, "DD-MM-YYYY")
+            .add(1, "days")
+            .format("DD-MM-YYYY");
+          generateEvent(nextDay);
+        }
+        if (eventNow.length) {
+          setEvent(eventNow);
+        }
       },
       [data]
     );
 
     const handleOnDateSelected = (value) => {
+      setEvent(null);
       const selectedDate = moment(value).format("DD-MM-YYYY");
       generateEvent(selectedDate);
-    };
-
-    const handleOnPanelChange = (value) => {
-      generateEvent(dateNow);
     };
 
     useEffect(() => {
@@ -617,16 +620,24 @@ const Landing = withRouter(
                 </div>
                 <div className="body">
                   <div className="content">
-                    {event.length === 0 && (
-                      <div className="no-event">No Event Today</div>
+                    {!event && (
+                      <div className="no-event">
+                        <h2 className="loading text-white">
+                          <LoadingOutlined spin /> Loading...
+                        </h2>
+                      </div>
                     )}
-                    {event.length > 0 &&
+                    {event && event.length === 0 && (
+                      <div className="no-event">No event on this day</div>
+                    )}
+                    {event &&
+                      event.length > 0 &&
                       renderEventContent(event, eventCarousel)}
                   </div>
                   <div className="calendar">
                     <Calendar
                       fullscreen={true}
-                      onPanelChange={handleOnPanelChange}
+                      onPanelChange={handleOnDateSelected}
                       onSelect={handleOnDateSelected}
                       headerRender={(e) => calendarHeader(e)}
                       dateCellRender={dateCellRender}
@@ -651,13 +662,22 @@ const renderEventContent = (event, eventCarousel) => {
             {event.length} event{event.length > 1 ? "s" : ""} on this day
           </span>
           {event.length > 1 && (
-            <Button
-              type="link"
-              icon={<RightOutlined />}
-              onClick={(e) => {
-                eventCarousel.current.next();
-              }}
-            />
+            <div className="button-carousel">
+              <Button
+                type="link"
+                icon={<LeftOutlined />}
+                onClick={(e) => {
+                  eventCarousel.current.prev();
+                }}
+              />
+              <Button
+                type="link"
+                icon={<RightOutlined />}
+                onClick={(e) => {
+                  eventCarousel.current.next();
+                }}
+              />
+            </div>
           )}
         </div>
       )}
