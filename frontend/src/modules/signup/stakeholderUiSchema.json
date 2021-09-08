@@ -22,7 +22,7 @@
       "ui:widget": "checkbox",
       "ui:label": null
     },
-    "linkedin": {
+    "linkedIn": {
       "ui:placeholder": "Your LinkedIn username",
       "ui:widget": "TextIconWidget",
       "ui:icon": "linkedin"

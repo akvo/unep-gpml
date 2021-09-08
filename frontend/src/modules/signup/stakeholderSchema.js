@@ -47,7 +47,7 @@ export const schema = {
           title: "Show my email address on public listing",
           type: "boolean",
         },
-        linkedin: {
+        linkedIn: {
           title: "LinkedIn",
           type: "string",
         },
