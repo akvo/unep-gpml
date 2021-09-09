@@ -240,15 +240,11 @@ const Landing = withRouter(
                     history={history}
                     loginWithPopup={loginWithPopup}
                   />
-                  <a
-                    href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <Link to="/about-us">
                     <Button type="ghost" className="left">
                       Learn More
                     </Button>
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
