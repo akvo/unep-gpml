@@ -39,6 +39,7 @@ import orderBy from "lodash/orderBy";
 import humps from "humps";
 import { topicNames } from "../../utils/misc";
 import capitalize from "lodash/capitalize";
+import sortBy from "lodash/sortBy";
 import api from "../../utils/api";
 
 const cardSvg = [
@@ -496,7 +497,7 @@ const Landing = withRouter(
                     renderDotsOutside={true}
                     removeArrowOnDeviceType={["tablet", "mobile"]}
                   >
-                    {ourCommunity.map((x, i) => {
+                    {sortBy(ourCommunity, "name").map((x, i) => {
                       const index = i > 3 ? i - 4 : i;
                       const { type, about, image, name, role } = x;
                       return (
