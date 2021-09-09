@@ -132,16 +132,22 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 20px;
+          margin-bottom: 0.85rem;
+          .resource-label {
+            width: 58%;
+          }
         }
         .item-body {
-          min-height: 12rem;
+          height: 14.5rem;
         }
         .item-footer {
           display: flex;
           justify-content: space-between;
           align-items: center;
           margin-top: 20px;
+          position: absolute;
+          bottom: 0;
+          margin-bottom: 24px;
         }
       }
       .content-left {
@@ -152,12 +158,14 @@
         .item {
           width: 49%;
           margin-bottom: 2%;
+          min-height: 40%;
         }
       }
       .content-right {
         width: 46%;
         .item {
           width: 100%;
+          min-height: calc(96% + 2%);
         }
       }
     }

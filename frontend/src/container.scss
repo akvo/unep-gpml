@@ -1558,6 +1558,11 @@
 
     .featured-content {
       .body {
+        .item {
+          .item-body {
+            height: 17.5rem !important;
+          }
+        }
         .content-left {
           width: 56% !important;
         }
