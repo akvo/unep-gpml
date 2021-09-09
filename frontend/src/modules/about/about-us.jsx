@@ -1,13 +1,12 @@
 import React from "react";
 import { Button, Image } from "antd";
+import { Link } from "react-router-dom";
 
 import "./styles.scss";
 import imageNotFound from "../../images/image-not-found.png";
 
 import issueGraphics from "./issue-section-content";
-import missionGraphic from "./mission-section-graphic";
 import timelineAndRoadmapGraphic from "../../images/timeline-roadmap-graphic.png";
-import featureComponentGraphic from "./feature-component-graphic";
 import ourCommunity from "../../images/about-our-community.png";
 import DPIcons from "../../images/GPML---DP---icons.png";
 import featureComponent from "../../images/feature-component-graphic.png";
@@ -80,9 +79,10 @@ const renderSectionIssue = () => {
             Find out more below.
           </p>
           <div className="btn-wrapper">
-            <Button type="ghost">Vital graphics</Button>
+            {/* Removed for now
+            <Button type="ghost">Vital graphics</Button> */}
             <Button
-              type="ghost left"
+              type="ghost"
               onClick={(e) => {
                 window.location.href = "https://www.cleanseas.org/";
               }}
@@ -145,12 +145,14 @@ const renderSectionMission = () => {
             experience, partners can work together to create and advance
             solutions to this pressing global issue.
           </p>
-          <a
-            href="https://www.gpmarinelitter.org/"
-            className="text-blue txt-emphasis"
+          <Button
+            type="ghost"
+            onClick={(e) => {
+              window.location.href = "https://www.gpmarinelitter.org/";
+            }}
           >
             Go to the partnership
-          </a>
+          </Button>
         </div>
       </div>
     </div>
@@ -173,7 +175,13 @@ const renderSectionInfo = () => {
           </p>
         </div>
         <div className="section-info-button-wrapper">
-          <Button type="ghost" className="btn-item">
+          <Button
+            type="ghost"
+            className="btn-item"
+            onClick={(e) => {
+              window.location.href = "/GPML-One-pager-19.08i.pdf";
+            }}
+          >
             Download Summary (1 Page)
           </Button>
           <Button
@@ -214,12 +222,15 @@ const renderSectionTimelineAndRoadmap = () => {
             Marine Debris Conference (7IMDC) planned for 2022, as well as
             UNEA-6, expected to be held in early 2023.
           </p>
-          <a
-            href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf"
-            className="text-blue txt-emphasis"
+          <Button
+            type="primary"
+            onClick={(e) => {
+              window.location.href =
+                "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
+            }}
           >
             Learn More
-          </a>
+          </Button>
         </div>
         <div className="section-timeline-roadmap-graphic">
           <Image src={timelineAndRoadmapGraphic} width="80%" preview={false} />
@@ -246,12 +257,15 @@ const renderSectionKeyFeaturesAndComponents = () => {
             databases, datasets and key partner platforms, such as the World
             Environment Situation Room (WESR).
           </p>
-          <a
-            href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf"
-            className="text-blue txt-emphasis"
+          <Button
+            type="ghost"
+            onClick={(e) => {
+              window.location.href =
+                "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
+            }}
           >
             Learn More
-          </a>
+          </Button>
         </div>
         <div className="section-feature-component-graphic">
           <Image src={featureComponent} width="90%" preview={false} />
@@ -277,12 +291,9 @@ const renderSectionCommunity = () => {
             participating in global/regional multilateral processes; other major
             groups and stakeholders; and private citizens.
           </p>
-          <a
-            href="https://digital.gpmarinelitter.org/signup"
-            className="text-blue txt-emphasis"
-          >
-            Sign up to find out more
-          </a>
+          <Link to="/signup">
+            <Button type="ghost">Sign up to find out more</Button>
+          </Link>
         </div>
         <div className="section-community-graphic">
           <Image src={ourCommunity} preview={false} />
