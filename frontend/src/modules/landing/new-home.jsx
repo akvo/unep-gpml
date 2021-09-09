@@ -39,6 +39,7 @@ import orderBy from "lodash/orderBy";
 import humps from "humps";
 import { topicNames } from "../../utils/misc";
 import capitalize from "lodash/capitalize";
+import sortBy from "lodash/sortBy";
 import api from "../../utils/api";
 
 const cardSvg = [
@@ -240,15 +241,11 @@ const Landing = withRouter(
                     history={history}
                     loginWithPopup={loginWithPopup}
                   />
-                  <a
-                    href="https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <Link to="/about-us">
                     <Button type="ghost" className="left">
                       Learn More
                     </Button>
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
@@ -368,7 +365,7 @@ const Landing = withRouter(
                           <div className="item-body">
                             <div className="asset-title">{title}</div>
                             <div className="body-text">
-                              {TrimText({ text: description, max: 150 })}
+                              {TrimText({ text: description, max: 100 })}
                             </div>
                           </div>
                           <div className="item-footer">
@@ -427,7 +424,9 @@ const Landing = withRouter(
                             alt={title}
                           />
                           <div className="item-header">
-                            <span className="resource-label upper">{type}</span>
+                            <span className="resource-label upper">
+                              {topicNames(humps.camelizeKeys(type))}
+                            </span>
                             <span className="mark">
                               <RiseOutlined />
                               Trending
@@ -436,7 +435,7 @@ const Landing = withRouter(
                           <div className="item-body">
                             <div className="asset-title">{title}</div>
                             <div className="body-text">
-                              {TrimText({ text: description, max: 425 })}
+                              {TrimText({ text: description, max: 450 })}
                             </div>
                           </div>
                           <div className="item-footer">
@@ -498,7 +497,7 @@ const Landing = withRouter(
                     renderDotsOutside={true}
                     removeArrowOnDeviceType={["tablet", "mobile"]}
                   >
-                    {ourCommunity.map((x, i) => {
+                    {sortBy(ourCommunity, "name").map((x, i) => {
                       const index = i > 3 ? i - 4 : i;
                       const { type, about, image, name, role } = x;
                       return (
