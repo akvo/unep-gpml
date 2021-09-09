@@ -672,6 +672,9 @@
 
   // browse - enable mobile view
   #browse {
+    .ui.container {
+      flex-direction: row;
+    }
     aside {
       width: 100% !important;
     }
@@ -1073,8 +1076,16 @@
 
   // browse - enable mobile view
   #browse {
+    .ui.container {
+      flex-direction: row;
+    }
     aside {
-      width: 100% !important;
+      width: 235px !important;
+    }
+    @media only screen and (max-width: 644px) {
+      aside {
+        width: 100% !important;
+      }
     }
     .main-content {
       .page {
