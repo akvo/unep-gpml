@@ -423,7 +423,9 @@ const Landing = withRouter(
                             alt={title}
                           />
                           <div className="item-header">
-                            <span className="resource-label upper">{type}</span>
+                            <span className="resource-label upper">
+                              {topicNames(humps.camelizeKeys(type))}
+                            </span>
                             <span className="mark">
                               <RiseOutlined />
                               Trending
