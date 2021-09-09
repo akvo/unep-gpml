@@ -128,11 +128,15 @@
       justify-content: space-between;
       .item {
         border-radius: 10px;
+        .item-img {
+          height: 18rem;
+          object-fit: contain;
+        }
         .item-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 0.85rem;
+          margin-bottom: 1rem;
           .resource-label {
             width: 58%;
           }

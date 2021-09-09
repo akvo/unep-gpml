@@ -435,7 +435,7 @@ const Landing = withRouter(
                           <div className="item-body">
                             <div className="asset-title">{title}</div>
                             <div className="body-text">
-                              {TrimText({ text: description, max: 550 })}
+                              {TrimText({ text: description, max: 450 })}
                             </div>
                           </div>
                           <div className="item-footer">
