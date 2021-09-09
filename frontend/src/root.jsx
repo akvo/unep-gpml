@@ -6,6 +6,7 @@ import {
   Link,
   Switch,
   withRouter,
+  useLocation,
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown, Layout } from "antd";
@@ -128,6 +129,14 @@ const disclaimerContent = {
   ),
 };
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
+
 const { Header } = Layout;
 
 const Root = () => {
@@ -200,6 +209,7 @@ const Root = () => {
 
   return (
     <Router>
+      <ScrollToTop />
       <div id="root">
         {storage.getCookie("showDisclaimer") !== "false" &&
           disclaimerContent?.[disclaimer] && (
