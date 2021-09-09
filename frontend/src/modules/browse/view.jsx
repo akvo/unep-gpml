@@ -74,8 +74,7 @@ const Browse = ({
   const [toggleButton, setToggleButton] = useState("list");
   const { innerWidth } = window;
 
-  const isLoaded = () =>
-    Boolean(!isEmpty(countries) && !isEmpty(profile) && !isEmpty(tags));
+  const isLoaded = () => Boolean(!isEmpty(countries) && !isEmpty(tags));
 
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
