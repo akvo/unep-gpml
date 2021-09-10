@@ -461,10 +461,10 @@
     text-transform: uppercase;
     font-weight: 500;
   }
-}
 
-.next-button {
-  margin-top: 2em;
-  position: absolute;
-  right: 24px; // Same as ant-card's right padding value
+  .next-button {
+    margin-top: 2em;
+    position: absolute;
+    right: 24px; // Same as ant-card's right padding value
+  }
 }
