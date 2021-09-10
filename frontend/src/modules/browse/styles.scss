@@ -1,10 +1,10 @@
 @import "../../vars.scss";
 
-@media (max-width: 640px) {
+@media (max-width: 644px) {
   #browse {
     .scroll-content {
-      .ant-card {
-        margin: 0px !important;
+      .ant-card.result {
+        margin: 0 0 0.75rem 0 !important;
 
         h4 {
           width: calc(100% - 100px) !important;
@@ -169,7 +169,7 @@
     flex: 1;
     // margin-left: 20px;
 
-    @media (min-width: 640px) {
+    @media (min-width: 645px) {
       display: flex;
       align-items: flex-start;
     }
@@ -200,7 +200,7 @@
     }
 
     .result {
-      margin: 1rem;
+      margin: 1rem 0 1rem 1rem;
     }
 
     .ant-card {

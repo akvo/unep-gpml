@@ -133,12 +133,20 @@
           width: 100% !important;
           flex-wrap: wrap;
           .item {
-            flex: 1 1 49%;
-            margin: 5px;
+            flex: 1 1 50%;
+            margin: 5px 1px;
+            .item-body {
+              height: 13rem !important;
+            }
           }
         }
         .content-right {
           width: 100% !important;
+          .item {
+            .item-body {
+              height: 23.5rem !important;
+            }
+          }
         }
       }
     }
@@ -543,12 +551,20 @@
           width: 100% !important;
           flex-wrap: wrap;
           .item {
-            flex: 1 1 49%;
-            margin: 5px;
+            flex: 1 1 50%;
+            margin: 5px 1px;
+            .item-body {
+              height: 12rem !important;
+            }
           }
         }
         .content-right {
           width: 100% !important;
+          .item {
+            .item-body {
+              height: 19rem !important;
+            }
+          }
         }
       }
     }
@@ -656,6 +672,9 @@
 
   // browse - enable mobile view
   #browse {
+    .ui.container {
+      flex-direction: row;
+    }
     aside {
       width: 100% !important;
     }
@@ -940,6 +959,11 @@
     .featured-content {
       .body {
         flex-direction: column;
+        .item {
+          .item-body {
+            height: 16.5rem !important;
+          }
+        }
         .content-left {
           width: 100% !important;
         }
@@ -1052,8 +1076,16 @@
 
   // browse - enable mobile view
   #browse {
+    .ui.container {
+      flex-direction: row;
+    }
     aside {
-      width: 100% !important;
+      width: 235px !important;
+    }
+    @media only screen and (max-width: 644px) {
+      aside {
+        width: 100% !important;
+      }
     }
     .main-content {
       .page {
@@ -1558,6 +1590,11 @@
 
     .featured-content {
       .body {
+        .item {
+          .item-body {
+            height: 17.5rem !important;
+          }
+        }
         .content-left {
           width: 56% !important;
         }

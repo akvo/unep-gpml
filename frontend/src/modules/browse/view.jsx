@@ -39,6 +39,13 @@ export const useQuery = () => {
   return ret;
 };
 
+const StickyAside = ({ children, innerWidth }) => {
+  if (innerWidth > 644) {
+    return <StickyBox offsetBottom={20}>{children}</StickyBox>;
+  }
+  return children;
+};
+
 let tmid;
 
 const Browse = ({
@@ -65,9 +72,9 @@ const Browse = ({
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const pageSize = 10;
   const [toggleButton, setToggleButton] = useState("list");
+  const { innerWidth } = window;
 
-  const isLoaded = () =>
-    Boolean(!isEmpty(countries) && !isEmpty(profile) && !isEmpty(tags));
+  const isLoaded = () => Boolean(!isEmpty(countries) && !isEmpty(tags));
 
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
@@ -228,95 +235,100 @@ const Browse = ({
       ) : (
         <div className="ui container">
           <div className="main-content">
-            <StickyBox offsetBottom={20}>
-              <aside>
-                <div className="inner">
-                  <Input
-                    value={query.q}
-                    className="src"
-                    placeholder="Search for resources and stakeholders"
-                    suffix={<SearchOutlined />}
-                    onChange={({ target: { value } }) =>
-                      updateQuery("q", value)
-                    }
-                  />
-                  <div className="field">
-                    <div className="label">Country</div>
-                    <Select
-                      virtual={false}
-                      value={
-                        countries && query?.country
-                          ? countries
-                              .filter((x) =>
-                                query.country.includes(String(x.id))
-                              )
-                              .map((x) => x.id)
-                          : []
+            <StickyAside
+              innerWidth={innerWidth}
+              children={
+                <aside>
+                  <div className="inner">
+                    <Input
+                      value={query.q}
+                      className="src"
+                      placeholder="Search for resources and stakeholders"
+                      suffix={<SearchOutlined />}
+                      onChange={({ target: { value } }) =>
+                        updateQuery("q", value)
                       }
-                      placeholder="Find country"
-                      mode="multiple"
-                      options={
-                        countries &&
-                        countries
-                          .map((it) => ({
-                            value: it.id,
-                            label: it.name,
-                          }))
-                          .sort((a, b) => a.label.localeCompare(b.label))
-                      }
-                      allowClear
-                      onChange={(val) => {
-                        const selected = countries?.filter((x) => {
-                          return val.includes(x.id);
-                        });
-                        updateQuery(
-                          "country",
-                          selected.map((x) => x.id)
-                        );
-                      }}
-                      filterOption={(input, option) =>
-                        option.label
-                          .toLowerCase()
-                          .indexOf(input.toLowerCase()) >= 0
-                      }
-                      onDeselect={(val) => {
-                        const diselected = countries?.find((x) => x.id === val);
-                        const selected =
-                          countries && query?.country
-                            ? countries.filter(
-                                (x) =>
-                                  query.country.includes(String(x.id)) &&
-                                  diselected.id !== x.id
-                              )
-                            : [];
-                        updateQuery(
-                          "country",
-                          selected.map((x) => x.id)
-                        );
-                      }}
                     />
-                    {isAuthenticated && (
-                      <Checkbox
-                        className="my-favorites"
-                        checked={query?.favorites?.indexOf("true") > -1}
-                        onChange={({ target: { checked } }) =>
-                          updateQuery("favorites", checked)
+                    <div className="field">
+                      <div className="label">Country</div>
+                      <Select
+                        virtual={false}
+                        value={
+                          countries && query?.country
+                            ? countries
+                                .filter((x) =>
+                                  query.country.includes(String(x.id))
+                                )
+                                .map((x) => x.id)
+                            : []
                         }
-                      >
-                        My Bookmarks
-                      </Checkbox>
-                    )}
+                        placeholder="Find country"
+                        mode="multiple"
+                        options={
+                          countries &&
+                          countries
+                            .map((it) => ({
+                              value: it.id,
+                              label: it.name,
+                            }))
+                            .sort((a, b) => a.label.localeCompare(b.label))
+                        }
+                        allowClear
+                        onChange={(val) => {
+                          const selected = countries?.filter((x) => {
+                            return val.includes(x.id);
+                          });
+                          updateQuery(
+                            "country",
+                            selected.map((x) => x.id)
+                          );
+                        }}
+                        filterOption={(input, option) =>
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        }
+                        onDeselect={(val) => {
+                          const diselected = countries?.find(
+                            (x) => x.id === val
+                          );
+                          const selected =
+                            countries && query?.country
+                              ? countries.filter(
+                                  (x) =>
+                                    query.country.includes(String(x.id)) &&
+                                    diselected.id !== x.id
+                                )
+                              : [];
+                          updateQuery(
+                            "country",
+                            selected.map((x) => x.id)
+                          );
+                        }}
+                      />
+                      {isAuthenticated && (
+                        <Checkbox
+                          className="my-favorites"
+                          checked={query?.favorites?.indexOf("true") > -1}
+                          onChange={({ target: { checked } }) =>
+                            updateQuery("favorites", checked)
+                          }
+                        >
+                          My Bookmarks
+                        </Checkbox>
+                      )}
+                    </div>
+                    <TopicSelect
+                      countData={countData}
+                      isApprovedUser={isApprovedUser}
+                      value={query}
+                      onChange={(flag, val) => updateQuery(flag, val)}
+                      tagTopics={tags?.topics ? tags.topics : []}
+                    />
                   </div>
-                  <TopicSelect
-                    countData={countData}
-                    isApprovedUser={isApprovedUser}
-                    value={query}
-                    onChange={(flag, val) => updateQuery(flag, val)}
-                    tagTopics={tags?.topics ? tags.topics : []}
-                  />
-                </div>
-              </aside>
-            </StickyBox>
+                </aside>
+              }
+            />
             <div className="scroll-content">
               <StickyBox offsetBottom={500} className="sticky-pagination">
                 <div className="page">{}</div>
