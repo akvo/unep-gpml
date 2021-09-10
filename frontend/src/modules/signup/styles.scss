@@ -548,3 +548,11 @@
     color: #1ca585;
   }
 }
+
+  .ant-col.left-sidebar {
+
+      border-right: 1px solid $green05;
+      min-height: 100%;
+      background: $green05;
+      border-radius: 15px 0px 0px 15px;
+  }

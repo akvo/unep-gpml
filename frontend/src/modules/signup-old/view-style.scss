@@ -47,7 +47,8 @@
     background-color: $green02;
   }
   .ant-card.green-overlay {
-    background: #4da68780;
+      background: $green05;
+      border: none;
     p {
       margin-top: 0.85rem;
       min-height: 9rem;

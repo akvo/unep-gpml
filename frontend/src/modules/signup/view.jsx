@@ -360,12 +360,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                 <Col
                   xs={24}
                   lg={6}
-                  style={{
-                    borderRight: "1px solid #D3DBDF",
-                    minHeight: "100%",
-                    background: "#2D6796",
-                    borderRadius: "15px 0px 0px 15px",
-                  }}
+                  className="left-sidebar"
                 >
                   {tabsData.map(({ key, title, desc, steps }, i) => (
                     <>
