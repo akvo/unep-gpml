@@ -1,13 +1,6 @@
 @import "../../vars.scss";
 
-// #initiative_S1 .ant-col:nth-child(3){
-//       width: 100px;
-//       float: left;
-//       margin-right: 15px;
-// }
-
 #add-sign-up {
-  // padding-top: 40px;
   padding-bottom: 40px;
   min-height: calc(100vh - 145px);
   background: linear-gradient(
@@ -19,14 +12,6 @@
   background-position-y: top;
   background-size: cover;
   background-repeat: no-repeat;
-
-  // & > .ui.container > .ant-row {
-  //   & > .ant-col:first-child {
-  //     * {
-  //       color: #fff;
-  //     }
-  //   }
-  // }
 
   .loading {
     color: white;
@@ -96,8 +81,6 @@
   }
 
   .form-container {
-    // background-color: #fff;
-    // padding: 20px;
     color: black;
     border-radius: 5px;
 
@@ -155,8 +138,6 @@
       .ant-steps-item-content {
         .ant-steps-item-title {
           font-size: 1rem;
-          // text-transform: uppercase;
-          // font-weight: bold;
           color: #fff;
           width: 90%;
 
@@ -179,9 +160,6 @@
       }
 
       .ant-steps-item-icon {
-        // background-color: #22ba9a;
-        // border-color: #b4e1f4;
-
         .ant-steps-icon {
           color: white;
         }
@@ -191,7 +169,6 @@
 
   .ant-steps {
     padding: 10px 10px 10px 25px;
-    // margin-bottom: 1rem;
   }
 
   // Active Sub Step
@@ -205,10 +182,7 @@
       }
 
       .ant-steps-item-icon {
-        // background-color: #fff;
-        // border-color: #398fff;
         border: none;
-
         .ant-steps-icon {
           color: #398fff;
         }
@@ -227,7 +201,6 @@
 
       .ant-steps-item-icon {
         background-color: #fff;
-        // border-color: #398fff;
         border-width: 2px;
 
         .ant-steps-icon {
@@ -276,7 +249,6 @@
 
       .ant-steps-item-icon {
         background-color: #fff;
-        // border-color: #398fff;
         border-width: 2px;
 
         .ant-steps-icon {
@@ -298,7 +270,6 @@
       .ant-steps-item-content {
         .ant-steps-item-title {
           font-size: 1rem;
-          // text-transform: uppercase;
           font-weight: bold;
           color: #fff;
           opacity: 1;
@@ -309,25 +280,8 @@
           }
         }
       }
-
-      .ant-steps-item-icon {
-        // background-color: #fff;
-
-        .ant-steps-icon {
-          // display: none;
-        }
-      }
     }
   }
-
-  // Active step border
-  // .ant-steps.ant-steps-vertical.current-tabs.ant-steps-small {
-  //   border-top: #ddd 1px solid;
-  //   border-left: #ddd 1px solid;
-  //   border-bottom: #ddd 1px solid;
-  //   border-right: 2px #fff solid;
-  //   border-radius: 10px 0px 0px 10px;
-  // }
 
   // Waiting steps
   .ant-steps-item.ant-steps-item-wait.step-section {
@@ -344,9 +298,6 @@
 
       .ant-steps-item-icon {
         opacity: 0.5;
-        .ant-steps-icon {
-          // display: none;
-        }
       }
     }
   }
@@ -386,13 +337,6 @@
 
     border: none;
     border-radius: 6px;
-
-    // input,
-    // textarea {
-    //   background-color: #edf2f6;
-    //   border-color: #edf2f6;
-    //   border-radius: 4px;
-    // }
 
     .ant-input,
     .ant-input-number-input,
@@ -445,8 +389,6 @@
       .ant-select-selector {
         border: 2px #22ba9a solid;
         border-radius: 2px;
-
-        // box-shadow: 1px 1px #22ba9a;
       }
 
       .radio-highlight {
@@ -551,7 +493,6 @@
   }
 
   .ant-btn-primary {
-    // margin-top: 20px;
     text-transform: uppercase;
     font-weight: 500;
   }
@@ -559,7 +500,6 @@
   .next-button {
     margin-top: 6rem;
     position: absolute;
-    // right: 24px; // Same as ant-card's right padding value
     right: 45%;
     border: 2px solid #1ca585;
     border-radius: 23.5px;
