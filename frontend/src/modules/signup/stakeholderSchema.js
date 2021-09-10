@@ -103,7 +103,7 @@ export const schema = {
           enum: [],
         },
         about: {
-          title: "About yourself",
+          title: "About yourself (Bio) (max 100 words)",
           type: "string",
         },
         portfolio: {

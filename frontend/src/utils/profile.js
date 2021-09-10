@@ -15,3 +15,7 @@ export const updateStatusProfile = (data) => {
   }
   document.cookie = `profile=${data.reviewStatus}`;
 };
+
+export const isRegistered = (profile) => {
+  return Boolean(profile.about);
+};

@@ -35,7 +35,7 @@ const URLWidget = ({
 
   let icon = "";
   switch (uiSchema?.["ui:icon"]) {
-    case "linkedIn":
+    case "linkedin":
       icon = <LinkedinOutlined />;
       break;
     case "twitter":
