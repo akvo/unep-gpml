@@ -4,6 +4,7 @@ import { Checkbox, Row, Col, Card, Steps, Switch, Button } from "antd";
 import {
   CheckOutlined,
   EditOutlined,
+  LeftOutlined,
   LoadingOutlined,
   RightOutlined,
 } from "@ant-design/icons";
@@ -284,6 +285,11 @@ const SignUp = ({ match: { params }, ...props }) => {
     return tabsData.length === tabIndex + 1;
   };
 
+  const isFirstStep = () => {
+    const { tabIndex } = getTabStepIndex();
+    return tabIndex === 0;
+  };
+
   const handleOnClickBtnNext = (e) => {
     const { tabIndex, stepIndex, steps } = getTabStepIndex();
     if (stepIndex < steps.length - 1) {
@@ -292,6 +298,20 @@ const SignUp = ({ match: { params }, ...props }) => {
     } else if (tabIndex < tabsData.length - 1) {
       // Next section, first step
       handleOnTabChange(tabsData[tabIndex + 1].key);
+    } else {
+      // We shouldn't get here, since the button should be hidden
+      console.error("Last step:", tabIndex, stepIndex);
+    }
+  };
+
+  const handleOnClickBtnBack = (e) => {
+    const { tabIndex, stepIndex, steps } = getTabStepIndex();
+    if (stepIndex > 0 && steps.length > 0) {
+      // Prev step, same section
+      handleOnStepClick(stepIndex - 1, tabsData[tabIndex].key);
+    } else if (tabIndex > 0) {
+      // Prev section, first step
+      handleOnTabChange(tabsData[tabIndex - 1].key);
     } else {
       // We shouldn't get here, since the button should be hidden
       console.error("Last step:", tabIndex, stepIndex);
@@ -353,7 +373,6 @@ const SignUp = ({ match: { params }, ...props }) => {
               <Row
                 style={{
                   minHeight: `${minHeightContainer}px`,
-                  backgroundColor: "#fff",
                   borderRadius: "18px",
                 }}
               >
@@ -361,15 +380,14 @@ const SignUp = ({ match: { params }, ...props }) => {
                   xs={24}
                   lg={6}
                   style={{
-                    borderRight: "1px solid #D3DBDF",
                     minHeight: "100%",
-                    background: "#2D6796",
-                    borderRadius: "15px 0px 0px 15px",
+                    background: "rgba(3, 155, 120, 0.4)",
+                    borderRadius: "15px 0 0 15px",
+                    padding: "13px 0",
                   }}
                 >
                   {tabsData.map(({ key, title, desc, steps }, i) => (
                     <>
-                      <hr className="step-line" />
                       <Steps
                         key={`steps-section-${key}`}
                         direction="vertical"
@@ -385,6 +403,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                       >
                         {renderSteps(title, key, steps, i)}
                       </Steps>
+                      <hr className="step-line" />
                     </>
                   ))}
                 </Col>
@@ -393,6 +412,8 @@ const SignUp = ({ match: { params }, ...props }) => {
                   lg={18}
                   style={{
                     padding: "20px 10px 20px 16px",
+                    backgroundColor: "#fff",
+                    borderRadius: "0 15px 15px 0",
                   }}
                 >
                   <Card
@@ -438,15 +459,26 @@ const SignUp = ({ match: { params }, ...props }) => {
                       formSchema={formSchema}
                       setDisabledBtn={setDisabledBtn}
                     />
-                    {!isLastStep() && (
-                      <Button
-                        className="next-button"
-                        type="ghost"
-                        onClick={(e) => handleOnClickBtnNext(e)}
-                      >
-                        Next <RightOutlined />
-                      </Button>
-                    )}
+                    <div className="button-row">
+                      {!isFirstStep() && (
+                        <Button
+                          className="back-button"
+                          type="ghost"
+                          onClick={(e) => handleOnClickBtnBack(e)}
+                        >
+                          <LeftOutlined /> Back
+                        </Button>
+                      )}
+                      {!isLastStep() && (
+                        <Button
+                          className="next-button"
+                          type="primary"
+                          onClick={(e) => handleOnClickBtnNext(e)}
+                        >
+                          Next <RightOutlined />
+                        </Button>
+                      )}
+                    </div>
                   </Card>
                 </Col>
               </Row>

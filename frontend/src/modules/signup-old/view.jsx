@@ -49,7 +49,7 @@ const SignupView = ({ ...props }) => {
               <h2>How do I Join the GPML?</h2>
               <div className="choices">
                 <Card>
-                  <Avatar icon={<UsergroupAddOutlined />} />
+                  <Avatar size="large" icon={<UsergroupAddOutlined />} />
                   <p className="body-text">
                     I represent an Entity and I wish to submit an application
                     for this Entity to become a member of the Global Partnership
@@ -71,7 +71,7 @@ const SignupView = ({ ...props }) => {
                   </Button>
                 </Card>
                 <Card>
-                  <Avatar icon={<UserOutlined />} />
+                  <Avatar size="large" icon={<UserOutlined />} />
                   <p className="body-text">
                     I wish to sign up to the GPML Digital Platform in my own
                     individual capacity.
