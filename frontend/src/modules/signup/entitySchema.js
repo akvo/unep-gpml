@@ -44,19 +44,12 @@ export const schema = {
         value: ["S2"],
       },
       value: ["S2"],
-      required: ["titleAndLastName", "firstName", "email"],
+      required: ["title", "lastName", "firstName", "email"],
       properties: {
-        titleAndLastName: {
-          title: "",
-          type: "object",
-          required: ["title", "lastName"],
-          properties: {
-            title: titleField,
-            lastName: {
-              title: "Last name",
-              type: "string",
-            },
-          },
+        title: titleField,
+        lastName: {
+          title: "Last name",
+          type: "string",
         },
         firstName: {
           title: "First name",
@@ -101,7 +94,7 @@ export const schema = {
               enum: [],
             },
             about: {
-              title: "About yourself",
+              title: "About yourself (Bio) (max 100 words)",
               type: "string",
             },
             portfolio: {
