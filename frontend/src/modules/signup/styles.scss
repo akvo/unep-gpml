@@ -493,17 +493,31 @@
     }
   }
 
-  .ant-btn-primary {
-    text-transform: uppercase;
-    font-weight: 500;
+  .button-row {
+    margin-top: 6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button {
+      margin: 1rem;
+    }
   }
 
+  .back-button,
   .next-button {
-    margin-top: 6rem;
-    position: absolute;
-    right: 45%;
-    border: 2px solid #1ca585;
-    border-radius: 23.5px;
-    color: #1ca585;
+    &:hover {
+      background: $green03;
+      border-color: $green03;
+      color: #fff;
+    }
+  }
+  .back-button {
+    color: $green02;
+    border-color: $green02;
+  }
+  .next-button {
+    background: $green02;
+    border-color: $green02;
+    color: #fff;
   }
 }
