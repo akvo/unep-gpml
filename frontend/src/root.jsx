@@ -163,7 +163,6 @@ const Root = () => {
     setStakeholderSignupModalVisible,
   ] = useState(false);
 
-
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [filters, setFilters] = useState(null);
   const [showResponsiveMenu, setShowResponsiveMenu] = useState(false);
@@ -251,7 +250,7 @@ const Root = () => {
               </Route>
             </Switch>
             <div className="rightside">
-              {!isAuthenticated ? (
+              {!isAuthenticated || !isRegistered(profile) ? (
                 <div className="rightside btn-wrapper">
                   <JoinGPMLButton loginWithPopup={loginWithPopup} />
                   <Button type="ghost" className="left">

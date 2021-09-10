@@ -2,7 +2,6 @@ import { UIStore } from "../../store";
 import React, { useEffect, useState } from "react";
 import { Button, Row, Col, Card, Avatar } from "antd";
 import { UserOutlined, UsergroupAddOutlined } from "@ant-design/icons";
-import { isRegistered } from "../../utils/profile";
 import "./view-style.scss";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -61,7 +60,7 @@ const SignupView = ({ ...props }) => {
                     className="green"
                     onClick={() => {
                       setTypeSignUp("entity");
-                      if (isRegistered(profile)) {
+                      if (!isAuthenticated) {
                         loginWithPopup({ screen_hint: "signup" });
                       } else {
                         history.push("/entity-signup");
@@ -82,8 +81,7 @@ const SignupView = ({ ...props }) => {
                     className="green"
                     onClick={() => {
                       setTypeSignUp("stakeholder");
-                      console.log(profile.about, Boolean(profile.about));
-                      if (isRegistered(profile)) {
+                      if (!isAuthenticated) {
                         loginWithPopup({ screen_hint: "signup" });
                       } else {
                         history.push("/stakeholder-signup");
