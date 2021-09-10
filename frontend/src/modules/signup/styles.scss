@@ -194,7 +194,7 @@
     // margin-bottom: 1rem;
   }
 
-  // Active Step
+  // Active Sub Step
   .ant-steps-item-process {
     .ant-steps-item-container {
       .ant-steps-item-content {
@@ -237,12 +237,29 @@
     }
   }
 
+  // Finish step active
+  .ant-steps.ant-steps-vertical.current-tabs {
+    .ant-steps-item-finish {
+      .ant-steps-item-container {
+        .ant-steps-item-content {
+          .ant-steps-item-title {
+            font-weight: bold;
+            opacity: 1;
+          }
+          .ant-steps-item-subtitle {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+  // Finish step not active
   .ant-steps-item-finish {
     .ant-steps-item-container {
       .ant-steps-item-content {
         .ant-steps-item-title {
-          font-weight: bold;
-          color: #29b696;
+          color: #fff;
+          opacity: 0.5;
         }
       }
     }
@@ -284,6 +301,7 @@
           // text-transform: uppercase;
           font-weight: bold;
           color: #fff;
+          opacity: 1;
 
           .ant-steps-item-subtitle {
             text-transform: none;

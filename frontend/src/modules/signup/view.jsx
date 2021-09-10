@@ -353,7 +353,6 @@ const SignUp = ({ match: { params }, ...props }) => {
               <Row
                 style={{
                   minHeight: `${minHeightContainer}px`,
-                  backgroundColor: "#fff",
                   borderRadius: "18px",
                 }}
               >
@@ -363,7 +362,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                   style={{
                     borderRight: "1px solid #D3DBDF",
                     minHeight: "100%",
-                    background: "#2D6796",
+                    background: "rgba(3, 155, 120, 0.4)",
                     borderRadius: "15px 0px 0px 15px",
                   }}
                 >
@@ -393,6 +392,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                   lg={18}
                   style={{
                     padding: "20px 10px 20px 16px",
+                    backgroundColor: "#fff",
                   }}
                 >
                   <Card
