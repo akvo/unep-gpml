@@ -360,15 +360,14 @@ const SignUp = ({ match: { params }, ...props }) => {
                   xs={24}
                   lg={6}
                   style={{
-                    borderRight: "1px solid #D3DBDF",
                     minHeight: "100%",
                     background: "rgba(3, 155, 120, 0.4)",
-                    borderRadius: "15px 0px 0px 15px",
+                    borderRadius: "15px 0 0 15px",
+                    padding: "13px 0",
                   }}
                 >
                   {tabsData.map(({ key, title, desc, steps }, i) => (
                     <>
-                      <hr className="step-line" />
                       <Steps
                         key={`steps-section-${key}`}
                         direction="vertical"
@@ -384,6 +383,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                       >
                         {renderSteps(title, key, steps, i)}
                       </Steps>
+                      <hr className="step-line" />
                     </>
                   ))}
                 </Col>
@@ -393,6 +393,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                   style={{
                     padding: "20px 10px 20px 16px",
                     backgroundColor: "#fff",
+                    borderRadius: "0 15px 15px 0",
                   }}
                 >
                   <Card
