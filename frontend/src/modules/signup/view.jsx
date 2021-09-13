@@ -423,7 +423,6 @@ const SignUp = ({ match: { params }, ...props }) => {
                       paddingRight: "24px",
                       paddingLeft: "30px",
                       minHeight: `${minHeightCard}px`,
-                      overflow: "auto",
                     }}
                   >
                     {getTabStepIndex().tabIndex === 0 && isEntityType ? (
