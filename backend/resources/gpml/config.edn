@@ -290,6 +290,9 @@
 
   :gpml.handler.main/root {}
   :gpml.handler.main/swagger-handler {}
+
+  :gpml.db/spec {:db #ig/ref :duct.database/sql}
+
   :gpml.handler.country/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.country-group/get {:db #ig/ref :duct.database/sql}
 
