@@ -119,13 +119,7 @@ export const schema = {
         id: "tabs",
         value: ["S3"],
       },
-      required: [
-        "orgName",
-        "orgRepresentative",
-        "orgDescription",
-        "orgUrl",
-        "orgLogo",
-      ],
+      required: ["orgName", "orgRepresentative", "orgDescription", "orgUrl"],
       properties: {
         orgName: {
           title: "What is the name of your Entity?",
