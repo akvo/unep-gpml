@@ -128,24 +128,24 @@ export const schema = {
       ],
       properties: {
         orgName: {
-          title: "What is the name of your organisation?",
+          title: "What is the name of your Entity?",
           type: "string",
         },
         orgRepresentative: {
-          title: "Which representative groups fits your organisation?",
+          title: "Which representative group fits your Entity?",
           type: "string",
           enum: [],
         },
         orgDescription: {
-          title: "Briefly describe your organisation",
+          title: "Briefly describe your Entity (200 words max)",
           type: "string",
         },
         orgUrl: {
-          title: "Your organisation website",
+          title: "Your Entity’s website",
           type: "string",
         },
         orgLogo: {
-          title: "Upload your organisation’s logo",
+          title: "Upload your Entity’s logo",
           type: "string",
           format: "data-url",
         },
