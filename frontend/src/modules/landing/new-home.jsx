@@ -177,18 +177,18 @@ const Landing = withRouter(
     };
 
     const generateEvent = useCallback(
-      (filterDate) => {
+      (filterDate, searchNextEvent = false) => {
         const eventNow = data.results.filter((x, i) => {
           const date = moment(x.startDate).format("DD-MM-YYYY");
           return date === filterDate;
         });
-        if (!eventNow.length) {
+        if (!eventNow.length && searchNextEvent) {
           const nextDay = moment(filterDate, "DD-MM-YYYY")
             .add(1, "days")
             .format("DD-MM-YYYY");
-          generateEvent(nextDay);
+          generateEvent(nextDay, searchNextEvent);
         }
-        if (eventNow.length) {
+        if (eventNow.length || !searchNextEvent) {
           setEvent(eventNow);
         }
       },
@@ -208,7 +208,7 @@ const Landing = withRouter(
         });
       }
       if (data && data?.results) {
-        generateEvent(dateNow);
+        generateEvent(dateNow, true);
       }
     }, [data, dateNow, generateEvent]);
 
@@ -534,7 +534,7 @@ const Landing = withRouter(
                                 xl: 115,
                                 xxl: 125,
                               }}
-                              src={image || logoNotFound}
+                              src={image || imageNotFound}
                               alt={name}
                             />
                             <h4>{name}</h4>
