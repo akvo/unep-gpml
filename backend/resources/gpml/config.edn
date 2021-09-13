@@ -355,8 +355,8 @@
   :gpml.handler.stakeholder/patch-params {}
   :gpml.handler.stakeholder/profile {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/get {:db #ig/ref :duct.database/sql}
-  :gpml.handler.stakeholder/post {:db #ig/ref :duct.database/sql
-                              :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.stakeholder/post {:db #ig/ref :gpml.db/spec
+                                  :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.stakeholder/post-params {}
   :gpml.handler.stakeholder/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.currency/all {:db #ig/ref :duct.database/sql}

@@ -157,9 +157,8 @@
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params headers]}]
-    (if-let [id (:id (make-profile (:spec db) jwt-claims body-params mailjet-config))]
+    (if-let [id (:id (make-profile db jwt-claims body-params mailjet-config))]
       (let [tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
-            db (:spec db)
             profile (db.stakeholder/stakeholder-by-id db {:id id})]
         (when (not-empty tags)
           (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
