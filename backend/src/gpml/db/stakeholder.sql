@@ -203,7 +203,7 @@ update stakeholder set
 --~ (when (contains? params :organisation_role) "organisation_role= :organisation_role,")
 --~ (when (contains? params :geo_coverage_type) "geo_coverage_type= :v:geo_coverage_type::geo_coverage_type,")
 --~ (when (contains? params :about) "about= :about,")
---~ (when (contains? params :about) "public_email= :public_email::boolean,")
+--~ (when (contains? params :public_email) "public_email= :public_email::boolean,")
     modified = now()
 where id = :id;
 
