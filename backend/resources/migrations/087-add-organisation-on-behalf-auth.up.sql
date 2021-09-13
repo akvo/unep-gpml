@@ -1,0 +1,1 @@
+ALTER TABLE organisation ADD COLUMN on_behalf_auth BOOLEAN NOT NULL DEFAULT FALSE;
