@@ -1,6 +1,6 @@
 import { UIStore } from "../../store";
 import React from "react";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 
 import Checkbox from "antd/lib/checkbox";
 
@@ -34,7 +34,7 @@ const CheckboxesWidget = ({
   // custom
   const highlight = UIStore.useState((s) => s.highlight);
 
-  return !_.isEmpty(enumOptions) ? (
+  return !isEmpty(enumOptions) ? (
     <Checkbox.Group
       disabled={disabled || (readonlyAsDisabled && readonly)}
       id={id}
