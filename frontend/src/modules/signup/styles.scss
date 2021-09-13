@@ -498,6 +498,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    position: absolute;
+    bottom: 3rem;
     button {
       margin: 1rem;
     }

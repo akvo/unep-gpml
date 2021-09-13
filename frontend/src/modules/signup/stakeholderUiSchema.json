@@ -79,7 +79,8 @@
     },
     "about": {
       "ui:placeholder": "",
-      "ui:widget": "textarea"
+      "ui:widget": "textarea",
+      "ui:maxWord": 100
     },
     "portfolio": {
       "ui:widget": "file",
