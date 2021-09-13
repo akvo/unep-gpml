@@ -534,7 +534,7 @@ const Landing = withRouter(
                                 xl: 115,
                                 xxl: 125,
                               }}
-                              src={image || logoNotFound}
+                              src={image || imageNotFound}
                               alt={name}
                             />
                             <h4>{name}</h4>

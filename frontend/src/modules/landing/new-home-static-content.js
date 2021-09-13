@@ -566,6 +566,15 @@ export const ourCommunity = [
     name: "Marvin Burman",
     role: "CEO - OceanHero.today",
   },
+  {
+    id: 1,
+    type: "stakeholder",
+    about:
+      "The GPML Digital Platform is an unparalleled tool to bring global actors fighting against our marine plastic crisis in community with each other. The platform outlines publicly available resources, events, funding opportunities, policies, initiatives, and more in their participating 189 countries. As a centralized database for information in the field, this is a truly invaluable resource for leading organizations seeking to act in alignment with global policy and initiatives, youth / communities / startups looking for funding to support their efforts, companies and the private sector interested in learning more about the issues and the opportunities for solutions, as well as policymakers and decisionmakers tasked with finding a way to address these issues. This is a gift for the movement at a time when we need to be working more closely together than ever.",
+    image: null,
+    name: "Cassia Patel",
+    role: null,
+  },
 ];
 
 export const benefit = [
