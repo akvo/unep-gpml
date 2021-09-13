@@ -94,7 +94,8 @@
       },
       "about": {
         "ui:placeholder": "",
-        "ui:widget": "textarea"
+        "ui:widget": "textarea",
+        "ui:maxWord": 100
       },
 
       "portfolio": {
@@ -139,7 +140,8 @@
     },
     "orgDescription": {
       "ui:placeholder": "Organisartion brief",
-      "ui:widget": "textarea"
+      "ui:widget": "textarea",
+      "ui:maxWord": 200
     },
     "orgUrl": {
       "ui:addOnBefore": "https://",

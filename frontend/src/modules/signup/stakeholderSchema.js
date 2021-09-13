@@ -92,7 +92,7 @@ export const schema = {
         id: "tabs",
         value: ["S3"],
       },
-      required: ["seeking", "offering", "about"],
+      required: ["seeking", "offering", "about", "public_database"],
       properties: {
         seeking: {
           title: "Seeking",
