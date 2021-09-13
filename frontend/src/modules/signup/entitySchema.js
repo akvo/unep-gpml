@@ -108,7 +108,7 @@ export const schema = {
               type: "boolean",
             },
           },
-          required: ["seeking", "offering", "about"],
+          required: ["seeking", "offering", "about", "public_database"],
         },
       },
     },
