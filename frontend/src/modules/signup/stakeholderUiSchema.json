@@ -58,10 +58,10 @@
     "orgName": {
       "ui:placeholder": "Organisation name"
     },
-    "memberName": {
+    "companyName": {
       "ui:placeholder": "Search"
     },
-    "ui:order": ["orgName", "memberName"]
+    "ui:order": ["orgName", "companyName"]
   },
   "S3": {
     "classNames": "list-group",
