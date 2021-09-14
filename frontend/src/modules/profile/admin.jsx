@@ -16,7 +16,7 @@ import api from "../../utils/api";
 import { fetchArchiveData, fetchSubmissionData } from "./utils";
 import moment from "moment";
 import capitalize from "lodash/capitalize";
-import find from "lodash/find";
+import isEmpty from "lodash/isEmpty";
 import { DetailCollapse } from "./preview";
 import {
   topicNames,
@@ -182,6 +182,11 @@ const AdminSection = ({
         className={className}
         disabled={disabled}
         onClick={review(item, "APPROVED")}
+        loading={
+          !isEmpty(approveLoading) &&
+          item?.id === approveLoading?.id &&
+          item?.type === approveLoading?.type
+        }
       >
         {publishStatusUIText["APPROVE"]}
       </Button>
