@@ -8,6 +8,7 @@ import "./map-styles.scss";
 import humps from "humps";
 import { topicNames, tTypes } from "../../utils/misc";
 import api from "../../utils/api";
+import isEmpty from "lodash/isEmpty";
 
 const MapLanding = ({
   history,
@@ -32,7 +33,7 @@ const MapLanding = ({
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
 
-  const isLoaded = () => Boolean(countries.length);
+  const isLoaded = () => !isEmpty(countries) && !isEmpty(landing?.map);
 
   const clickCountry = (name) => {
     setToggleButton("list");
