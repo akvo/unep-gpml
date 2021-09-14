@@ -1,13 +1,20 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
-import { Button, Select, Switch, Tabs } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Button, Select, Switch, Tabs, Popover } from "antd";
+import {
+  DownOutlined,
+  InfoCircleOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import Maps from "./maps";
 import "./map-styles.scss";
 import humps from "humps";
 import { topicNames, tTypes } from "../../utils/misc";
 import api from "../../utils/api";
+
+const { TabPane } = Tabs;
+const { Option, OptGroup } = Select;
 
 const MapLanding = ({
   history,
@@ -28,6 +35,7 @@ const MapLanding = ({
   }));
   const [country, setCountry] = useState(null);
   const [counts, setCounts] = useState("project");
+  const [multiCountry, setMultiCountry] = useState(null);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
@@ -90,10 +98,10 @@ const MapLanding = ({
         {isLoaded() && (
           <div className="map-overlay">
             <Tabs type="card" className="country-filter-tab">
-              <Tabs.TabPane
+              <TabPane
                 tab="Countries"
                 key="country"
-                className="country-filter-tab-pane"
+                className="country-filter-tab-pane country"
               >
                 <Select
                   showSearch
@@ -109,27 +117,41 @@ const MapLanding = ({
                   onChange={handleChangeCountry}
                   virtual={false}
                 />
-              </Tabs.TabPane>
-              <Tabs.TabPane
+              </TabPane>
+              <TabPane
                 tab="Multi-Country"
                 key="transnational"
-                className="country-filter-tab-pane"
+                className={`country-filter-tab-pane ${
+                  multiCountry ? "multi-country-info" : "multi-country"
+                }`}
               >
                 <Select
                   showSearch
                   allowClear
                   placeholder="Multi-Country"
-                  options={[]}
                   optionFilterProp="children"
                   filterOption={(input, option) =>
                     option?.label?.toLowerCase().indexOf(input.toLowerCase()) >=
                     0
                   }
-                  value={[]}
-                  onChange={console.log("test")}
-                  virtual={false}
-                />
-              </Tabs.TabPane>
+                  value={multiCountry}
+                  onChange={(val) => setMultiCountry(val)}
+                  dropdownClassName="country-filter-dropdown"
+                  dropdownMatchSelectWidth={325}
+                  // menuItemSelectedIcon={<MultiCountryInfo />}
+                  suffixIcon={
+                    multiCountry ? <MultiCountryInfo /> : <DownOutlined />
+                  }
+                >
+                  <OptGroup
+                    key="g1"
+                    label="UN Regional Groups of Member States"
+                  >
+                    <Option value="1">African States</Option>
+                    <Option value="2">Asia Pacific States</Option>
+                  </OptGroup>
+                </Select>
+              </TabPane>
             </Tabs>
             <Summary
               clickEvents={handleSummaryClick}
@@ -253,6 +275,25 @@ const Summary = ({
         </li>
       </ul>
     </div>
+  );
+};
+
+const MultiCountryInfo = () => {
+  const renderContent = () => {
+    return (
+      <div className="popover-content-wrapper">
+        <div className="popover-content-item">Niger</div>
+        <div className="popover-content-item">Nigeria</div>
+        <div className="popover-content-item">Senegal</div>
+        <div className="popover-content-item">Ghana</div>
+        <div className="popover-content-item">Rwanda</div>
+      </div>
+    );
+  };
+  return (
+    <Popover placement="right" title={""} content={renderContent}>
+      <InfoCircleOutlined />
+    </Popover>
   );
 };
 
