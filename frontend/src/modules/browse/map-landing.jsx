@@ -1,6 +1,6 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
-import { Button, Select, Switch } from "antd";
+import { Button, Select, Switch, Tabs } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import Maps from "./maps";
@@ -99,19 +99,48 @@ const MapLanding = ({
         )}
         {isLoaded() && (
           <div className="map-overlay">
-            <Select
-              showSearch
-              allowClear
-              placeholder="Countries"
-              options={countryOpts}
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-              value={country}
-              onChange={handleChangeCountry}
-              virtual={false}
-            />
+            <Tabs type="card" className="country-filter-tab">
+              <Tabs.TabPane
+                tab="Countries"
+                key="country"
+                className="country-filter-tab-pane"
+              >
+                <Select
+                  showSearch
+                  allowClear
+                  placeholder="Countries"
+                  options={countryOpts}
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    option?.label?.toLowerCase().indexOf(input.toLowerCase()) >=
+                    0
+                  }
+                  value={country}
+                  onChange={handleChangeCountry}
+                  virtual={false}
+                />
+              </Tabs.TabPane>
+              <Tabs.TabPane
+                tab="Multi-Country"
+                key="transnational"
+                className="country-filter-tab-pane"
+              >
+                <Select
+                  showSearch
+                  allowClear
+                  placeholder="Multi-Country"
+                  options={[]}
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    option?.label?.toLowerCase().indexOf(input.toLowerCase()) >=
+                    0
+                  }
+                  value={[]}
+                  onChange={console.log("test")}
+                  virtual={false}
+                />
+              </Tabs.TabPane>
+            </Tabs>
             <Summary
               clickEvents={handleSummaryClick}
               seeAllEvents={handleSeeAllStakeholderClick}
