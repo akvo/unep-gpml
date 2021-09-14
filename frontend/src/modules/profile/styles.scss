@@ -173,6 +173,14 @@
 
     .col {
       color: #2d6796;
+      &.content {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .content-img {
+          margin-right: 0.85rem;
+        }
+      }
       .status {
         border: 1px solid rgba(45, 103, 150, 0.2);
         box-sizing: border-box;
