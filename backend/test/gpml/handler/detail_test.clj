@@ -19,6 +19,8 @@
               :affiliation nil
               :country nil
               :representation ""
+              :public_email false
+              :public_database false
               :geo_coverage_type nil
               :title "Mr."
               :first_name first_name
