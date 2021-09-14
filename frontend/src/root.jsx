@@ -60,7 +60,7 @@ Promise.all([
   api.get("/country"),
   api.get("/country-group"),
   api.get("/organisation"),
-  api.get("/landing"),
+  api.get("/nav"),
   api.get("/stakeholder"),
 ]).then((res) => {
   const [
@@ -69,7 +69,7 @@ Promise.all([
     country,
     countryGroup,
     organisation,
-    landing,
+    nav,
     stakeholder,
   ] = res;
   UIStore.update((e) => {
@@ -83,7 +83,7 @@ Promise.all([
     e.organisations = uniqBy(sortBy(organisation.data, ["name"])).sort((a, b) =>
       a.name.localeCompare(b.name)
     );
-    e.landing = landing.data;
+    e.nav = nav.data;
     e.stakeholders = stakeholder.data;
   });
 });
@@ -151,10 +151,10 @@ const Root = () => {
     user,
   } = useAuth0();
 
-  const { profile, disclaimer, landing, tags } = UIStore.useState((s) => ({
+  const { profile, disclaimer, nav, tags } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
-    landing: s.landing,
+    nav: s.nav,
     tags: s.tags,
   }));
   const [signupModalVisible, setSignupModalVisible] = useState(false);
@@ -169,16 +169,14 @@ const Root = () => {
 
   const topicsCount = tags?.topics ? tags.topics.length : 0;
   const excludeSummary = ["event", "organisation", "stakeholder"];
-  const summaryData =
-    landing?.summary &&
-    landing.summary
-      .filter((x) => !excludeSummary.includes(Object.keys(x)[0]))
-      .map((x) => {
-        return {
-          name: Object.keys(x)[0],
-          count: x[Object.keys(x)[0]],
-        };
-      });
+  const resourceCounts = nav?.resourceCounts
+    ?.filter((x) => !excludeSummary.includes(Object.keys(x)[0]))
+    .map((x) => {
+      return {
+        name: Object.keys(x)[0],
+        count: x[Object.keys(x)[0]],
+      };
+    });
 
   useEffect(() => {
     (async function fetchData() {
@@ -232,7 +230,7 @@ const Root = () => {
               <AboutDropdownMenu />
               <ExploreDropdownMenu topicsCount={topicsCount} />
               <DataHubDropdownMenu />
-              <KnowledgeExchangeDropdownMenu resources={summaryData} />
+              <KnowledgeExchangeDropdownMenu resources={resourceCounts} />
               <ConnectStakeholdersDropdownMenu
                 {...{
                   profile,
@@ -462,7 +460,7 @@ const Root = () => {
         showResponsiveMenu={showResponsiveMenu}
         setShowResponsiveMenu={setShowResponsiveMenu}
         topicsCount={topicsCount}
-        resources={summaryData}
+        resources={resourceCounts}
       />
     </Router>
   );
