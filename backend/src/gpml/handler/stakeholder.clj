@@ -53,47 +53,34 @@
     :else (str/join ["/cv/profile/"
                      (:id (db.stakeholder/new-stakeholder-cv conn {:cv cv}))])))
 
-(defn make-profile [conn
-                    {:keys [email picture]}
-                    {:keys [title first_name
-                            last_name linked_in
-                            twitter photo cv organisation_role
-                            representation country
-                            org about geo_coverage_type]}
-                    mailjet-config]
-  (let [pic-url (if-let [upload-picture
-                         (handler.image/assoc-image conn photo "profile")]
-                  upload-picture
-                  (if picture picture nil))
-        cv-url (if-let [upload-cv (assoc-cv conn cv)]
-                 upload-cv
-                 (if cv cv nil))
-        affiliation (if (= -1 (:id org))
-                      (handler.org/find-or-create conn org)
-                      (:id org))
-        profile {:picture pic-url
-                 :cv cv-url
-                 :title title
-                 :first_name first_name
-                 :last_name last_name
-                 :email email
-                 :linked_in linked_in
-                 :twitter twitter
-                 :representation representation
-                 :organisation_role organisation_role
-                 :about about
-                 :geo_coverage_type geo_coverage_type
-                 :country country
-                 :affiliation affiliation}
-        stakeholder
-        (db.stakeholder/new-stakeholder conn profile)]
-    (email/notify-admins-pending-approval
-     conn
-     mailjet-config
-     (merge profile {:type "stakeholder"}))
-    stakeholder))
+(defn- make-profile [{:keys [title
+                             first_name
+                             last_name
+                             email
+                             linked_in
+                             public_database
+                             public_email
+                             cv
+                             affiliation
+                             twitter picture
+                             representation country
+                             about]}]
+  {:title             title
+   :first_name        first_name
+   :last_name         last_name
+   :email             email
+   :linked_in         linked_in
+   :twitter           twitter
+   :picture           picture
+   :cv                cv
+   :representation    representation
+   :about             about
+   :country           country
+   :public_email      public_email
+   :public_database   public_database
+   :affiliation       affiliation})
 
-(defn remap-profile
+(defn- remap-profile
   [{:keys [id photo about
            title first_name role
            last_name linked_in cv
@@ -155,13 +142,27 @@
         (resp/response profile))
       (resp/response {}))))
 
+(defn- make-affiliation [db org]
+  (if (= -1 (:id org)) ;; TODO Fix this logic, FE seems also related
+    (handler.org/find-or-create db org)
+    (:id org)))
+
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params headers]}]
-    (let [id (:id (make-profile db jwt-claims body-params mailjet-config))
-          profile (db.stakeholder/stakeholder-by-id db {:id id})
-          res (dissoc (assoc (merge body-params profile)
-                             :org (db.organisation/organisation-by-id db {:id (:affiliation profile)}))
-                      :affiliation :picture)]
+    (let [profile        (make-profile (assoc body-params
+                                       :affiliation (make-affiliation db (:org body-params))
+                                       :email (:email jwt-claims)
+                                       :cv (or (assoc-cv db (:cv body-params))
+                                               (:cv body-params))
+                                       :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
+                                                    (:picture jwt-claims))))
+          stakeholder-id (:id (db.stakeholder/new-stakeholder db profile))
+          _              (email/notify-admins-pending-approval db mailjet-config
+                                                               (merge profile {:type "stakeholder"}))
+          profile        (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
+          res (-> (merge body-params profile)
+                  (dissoc :affiliation :picture)
+                  (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
       (resp/created (:referer headers) res))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put [_ {:keys [db]}]
