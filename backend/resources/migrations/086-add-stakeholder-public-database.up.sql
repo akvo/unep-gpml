@@ -1,0 +1,1 @@
+ALTER TABLE stakeholder ADD COLUMN public_database BOOLEAN NOT NULL DEFAULT FALSE;
