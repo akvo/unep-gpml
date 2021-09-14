@@ -73,6 +73,15 @@
         .ant-tabs-nav .ant-tabs-nav-wrap::after {
           content: none !important;
         }
+        // css for select suffix
+        .multi-country-info {
+          .ant-select-arrow {
+            right: 32px;
+            font-size: 14px;
+            top: 48%;
+            color: #036799;
+          }
+        }
       }
 
       .summary {
@@ -369,3 +378,24 @@
     }
   }
 }
+
+// css for multi-country dropdown
+.country-filter-dropdown {
+  .ant-select-item-group {
+    color: #036799;
+    font-weight: 600;
+  }
+}
+// end of css for multi-country dropdown
+
+// css for multi-country popover
+.popover-content-wrapper {
+  padding-right: 1rem;
+  .popover-content-item {
+    display: list-item;
+    list-style-type: disc;
+    list-style-position: inside;
+    font-size: 13px;
+  }
+}
+// end of css for multi-country popover
