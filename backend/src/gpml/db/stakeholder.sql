@@ -43,11 +43,9 @@ select
     s.representation,
     s.about,
     s.role,
-    s.geo_coverage_type,
     s.cv,
     s.country,
     s.affiliation,
-    s.organisation_role,
     s.reviewed_at,
     s.reviewed_by,
     s.review_status from stakeholder s
@@ -69,11 +67,9 @@ select
     s.representation,
     s.about,
     s.role,
-    s.geo_coverage_type,
     s.cv,
     s.country,
     s.affiliation,
-    s.organisation_role,
     s.reviewed_at,
     s.reviewed_by,
     s.review_status from stakeholder s
