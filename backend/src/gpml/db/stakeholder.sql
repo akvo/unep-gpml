@@ -149,7 +149,6 @@ insert into stakeholder(
     country,
     representation
 --~ (when (contains? params :company_name) ",company_name")
---~ (when (contains? params :geo_coverage_type) ",geo_coverage_type")
 --~ (when (contains? params :linked_in) ",linked_in")
 --~ (when (contains? params :twitter) ",twitter")
 --~ (when (contains? params :cv) ",cv")
@@ -167,7 +166,6 @@ insert into stakeholder(
     :email,
     :country::integer,
     :representation
---~ (when (contains? params :geo_coverage_type) ",:v:geo_coverage_type::geo_coverage_type")
 --~ (when (contains? params :company_name) ",:company_name")
 --~ (when (contains? params :linked_in) ",:linked_in")
 --~ (when (contains? params :twitter) ",:twitter")
