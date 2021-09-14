@@ -1,5 +1,13 @@
 import React, { Fragment, useState } from "react";
-import { Button, Collapse, Space, Pagination, Modal, Input } from "antd";
+import {
+  Button,
+  Collapse,
+  Space,
+  Pagination,
+  Modal,
+  Input,
+  Avatar,
+} from "antd";
 import { DetailCollapse } from "./preview";
 import {
   topicNames,
@@ -9,6 +17,7 @@ import {
 import api from "../../utils/api";
 import { fetchReviewItems } from "./utils";
 import { titleCase } from "../../utils/string";
+import { UserOutlined } from "@ant-design/icons";
 
 const ReviewCommentModal = ({ status, visible, handleOk, handleCancel }) => {
   const [reviewComment, setReviewComment] = useState();
@@ -65,8 +74,22 @@ const ReviewSection = ({
     return (
       <div className="row">
         <div className="col content">
-          <div className="title">{item.title || "No Title"}</div>
-          <div className="topic">{topicNames(item.type)}</div>
+          <Avatar
+            className="content-img"
+            size={{
+              xs: 24,
+              sm: 32,
+              md: 40,
+              lg: 50,
+              xl: 50,
+              xxl: 50,
+            }}
+            icon={item.picture || <UserOutlined />}
+          />
+          <div className="content-body">
+            <div className="title">{item.title || "No Title"}</div>
+            <div className="topic">{topicNames(item.type)}</div>
+          </div>
         </div>
         <div
           className="col action"
@@ -119,8 +142,22 @@ const ReviewSection = ({
     return (
       <div className="row">
         <div className="col content">
-          <div className="title">{item.title || "No Title"}</div>
-          <div className="topic">{topicNames(item.type)}</div>
+          <Avatar
+            className="content-img"
+            size={{
+              xs: 24,
+              sm: 32,
+              md: 40,
+              lg: 50,
+              xl: 50,
+              xxl: 50,
+            }}
+            icon={item.picture || <UserOutlined />}
+          />
+          <div className="content-body">
+            <div className="title">{item.title || "No Title"}</div>
+            <div className="topic">{topicNames(item.type)}</div>
+          </div>
         </div>
         <div className="col status">
           <span className="status">

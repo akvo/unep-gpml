@@ -24,7 +24,8 @@ import {
   reviewStatusUIText,
   publishStatusUIText,
 } from "../../utils/misc";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
+import Avatar from "antd/lib/avatar/avatar";
 
 const ModalReject = ({ visible, close, reject, item }) => {
   return (
@@ -210,8 +211,24 @@ const AdminSection = ({
                   header={
                     <div className="row">
                       <div className="col content">
-                        <div className="title">{item.title || "No Title"}</div>
-                        <div className="topic">{topicNames(item.type)}</div>
+                        <Avatar
+                          className="content-img"
+                          size={{
+                            xs: 24,
+                            sm: 32,
+                            md: 40,
+                            lg: 50,
+                            xl: 50,
+                            xxl: 50,
+                          }}
+                          icon={item.picture || <UserOutlined />}
+                        />
+                        <div className="content-body">
+                          <div className="title">
+                            {item.title || "No Title"}
+                          </div>
+                          <div className="topic">{topicNames(item.type)}</div>
+                        </div>
                       </div>
                       <div className="col status">
                         {loadingAssignReviewer.id === item?.id &&
@@ -339,8 +356,24 @@ const AdminSection = ({
                   header={
                     <div className="row">
                       <div className="col content">
-                        <div className="title">{item.title || "No Title"}</div>
-                        <div className="topic">{topicNames(item.type)}</div>
+                        <Avatar
+                          className="content-img"
+                          size={{
+                            xs: 24,
+                            sm: 32,
+                            md: 40,
+                            lg: 50,
+                            xl: 50,
+                            xxl: 50,
+                          }}
+                          icon={item.picture || <UserOutlined />}
+                        />
+                        <div className="content-body">
+                          <div className="title">
+                            {item.title || "No Title"}
+                          </div>
+                          <div className="topic">{topicNames(item.type)}</div>
+                        </div>
                       </div>
                       <div className="col status">
                         <span className="status">
