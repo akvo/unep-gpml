@@ -554,7 +554,7 @@ export const ourCommunity = [
     about:
       "The GPML Digital Platform is a fantastic resource for knowledge management, networking and accessing and managing data. What is especially helpful is the wide variety of resources available which will allow those working on marine litter and plastic pollution to learn from the experiences of others regionally and globally. The platform is very user friendly and allows you to refine your search to get the most relevant content.",
     image: "https://digital.gpmarinelitter.org/image/profile/27",
-    name: "Fadilah Ali",
+    name: "Marvin Burman",
     role:
       "Assistant Executive Director - Gulf and Caribbean Fisheries Institute",
   },
@@ -564,7 +564,7 @@ export const ourCommunity = [
     about:
       "The GPML platform makes it much easier to discover relevant stakeholders, events, and experts in specific regions and fields related to marine litter. This was something that had been missing for a long time. Moreover, the platform is very intuitive and modern.",
     image: "https://digital.gpmarinelitter.org/image/profile/30",
-    name: "Marvin Burman",
+    name: "Fadilah Ali",
     role: "CEO - OceanHero.today",
   },
   {

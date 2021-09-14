@@ -87,7 +87,7 @@ const renderSectionIssue = () => {
                 window.location.href = "https://www.cleanseas.org/";
               }}
             >
-              Clean seas
+              Clean Seas
             </Button>
           </div>
         </div>
@@ -232,9 +232,9 @@ const renderSectionTimelineAndRoadmap = () => {
             Learn More
           </Button>
         </div>
-        <div className="section-timeline-roadmap-graphic">
-          <Image src={timelineAndRoadmapGraphic} width="80%" preview={false} />
-        </div>
+      </div>
+      <div className="section-timeline-roadmap-graphic">
+          <Image src={timelineAndRoadmapGraphic}  preview={false} />
       </div>
     </div>
   );
@@ -295,9 +295,9 @@ const renderSectionCommunity = () => {
             <Button type="ghost">Sign up to find out more</Button>
           </Link>
         </div>
-        <div className="section-community-graphic">
+      </div>
+      <div className="section-community-graphic">
           <Image src={ourCommunity} preview={false} />
-        </div>
       </div>
     </div>
   );
@@ -328,9 +328,9 @@ const renderSectionHistory = () => {
             international agreements.
           </p>
         </div>
-        <div className="section-mission-graphic">
+      </div>
+      <div className="section-mission-graphic">
           <Image src={GpmlHistory} preview={false} />
-        </div>
       </div>
     </div>
   );

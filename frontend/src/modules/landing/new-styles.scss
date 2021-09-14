@@ -416,12 +416,12 @@
         .month-select,
         .year-select {
           min-width: 123px;
-          border-radius: 25px;
+          border-radius: 5px;
         }
         .ant-select-selector {
-          background-color: rgba(255, 255, 255, 0.5);
-          border-radius: 25px;
-          border: 2px solid #2d6796;
+          background-color: rgba(255, 255, 255, 0.2);
+          border-radius: 5px;
+          border: 1px solid white;
           color: #2d6796;
           font-weight: 600;
           font-size: 0.94rem;

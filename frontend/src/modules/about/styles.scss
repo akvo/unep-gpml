@@ -25,11 +25,10 @@
   // Section Issue
   .section-issue-container {
     background: url("../../images/section-issue.png");
-    transform: matrix(-1, 0, 0, 1, 0, 0);
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: right;
     .section-issue-wrapper {
-      transform: matrix(-1, 0, 0, 1, 0, 0);
       display: flex;
       justify-content: space-between;
       .section-issue-text,
@@ -44,6 +43,9 @@
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
+        img {
+          min-width: 760px;
+        }
         .item {
           flex: 1 0 35%;
           margin: 0.7rem;
@@ -84,19 +86,25 @@
       .item {
         flex: 1 0 20%;
         margin: 1rem 2rem;
-        background-color: #4da687;
+        background-color: $yellow;
         border-radius: 0.75rem;
         padding: 1.5rem 2.5rem;
         .item-name,
         .item-increment {
           font-size: 0.9rem;
+          color: $blue02;
+
         }
         .item-name {
           text-transform: uppercase;
+          color: $blue02;
+
         }
         .item-value {
           font-size: 3.8rem;
           font-weight: 900;
+          color: $blue02;
+
         }
       }
     }
@@ -130,6 +138,8 @@
         justify-content: space-evenly;
         align-items: center;
         flex-wrap: wrap;
+        background: rgba($blue02, 0.2);
+
         .btn-item {
           flex: 1 0 40%;
           margin: 0.5rem 1rem;
@@ -141,9 +151,12 @@
   // Section Timeline & Roadmap
   .section-timeline-roadmap-container {
     .section-timeline-roadmap-wrapper {
-      .section-timeline-roadmap-graphic {
-        text-align: center;
-      }
+
+    }
+    .section-timeline-roadmap-graphic {
+      padding: 0;
+      text-align: center;
+      width: 100%;
     }
   }
 
@@ -179,30 +192,28 @@
   // Section GPML Community
   .section-community-container {
     background: $green04;
+    .section-community-graphic {
+      text-align: center;
+    }
     .section-community-wrapper {
-      .section-community-graphic {
-        text-align: center;
-      }
+
     }
   }
 
   // Section History
   .section-history-container {
     background: white;
+    padding-bottom: 0;
+    .section-mission-graphic {
+      background-color: #005B71!important;
+    }
     .section-history-wrapper {
       .section-history-text {
       }
       .section-history-img-wrapper {
         background-color: #006666 !important;
         display: block;
-        .section-mission-graphic {
-          img {
-            margin: 0 auto;
-          }
-          margin: 0 auto;
-          padding: 2rem 10rem;
-          text-align: center;
-        }
+
       }
     }
   }
