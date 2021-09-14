@@ -60,10 +60,11 @@
                              linked_in
                              public_database
                              public_email
+                             company_name
                              cv
                              affiliation
                              twitter picture
-                             representation country
+                             country
                              about]}]
   {:title             title
    :first_name        first_name
@@ -73,7 +74,7 @@
    :twitter           twitter
    :picture           picture
    :cv                cv
-   :representation    representation
+   :company_name      company_name
    :about             about
    :country           country
    :public_email      public_email
@@ -234,11 +235,11 @@
    [:twitter {:optional true} string?]
    [:photo {:optional true} string?]
    [:cv {:optional true} string?]
-   [:representation string?]
+   [:about {:optional true} string?]
    [:country {:optional true} int?]
    [:public_email {:optional true} boolean?]
    [:public_database {:optional true} boolean?]
-   [:about {:optional true} string?]
+   [:company_name {:optional true} string?]
    [:seeking {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for seeking"} int?]]
    [:offering {:optional true}
