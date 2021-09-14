@@ -22,10 +22,11 @@ const MapLanding = ({
   updateQuery,
 }) => {
   const { innerWidth, innerHeight } = window;
-  const { profile, countries, landing } = UIStore.useState((s) => ({
+  const { profile, countries, landing, nav } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
     landing: s.landing,
+    nav: s.nav,
   }));
   const [country, setCountry] = useState(null);
   const [counts, setCounts] = useState("project");
@@ -66,12 +67,20 @@ const MapLanding = ({
     return setWarningModalVisible(true);
   };
 
+  useEffect(() => {
+    api.get("/landing").then((resp) => {
+      UIStore.update((e) => {
+        e.landing = resp.data;
+      });
+    });
+  }, []);
+
   const selected =
     countries && country
       ? landing?.map?.find((x) => x.countryId === country)
       : {};
 
-  const summaryData = landing?.summary?.filter((it, index) => {
+  const resourceCounts = nav?.resourceCounts?.filter((it, index) => {
     const current = Object.keys(it)[0];
     return tTypes.indexOf(current) > -1;
   });
@@ -107,7 +116,7 @@ const MapLanding = ({
               clickEvents={handleSummaryClick}
               seeAllEvents={handleSeeAllStakeholderClick}
               isApprovedUser={isApprovedUser}
-              summary={summaryData}
+              summary={resourceCounts}
               country={countryObj}
               counts={counts}
               selected={selected}
@@ -143,20 +152,20 @@ const Summary = ({
   setToggleButton,
   updateQuery,
 }) => {
-  summary = summary.map((x) => ({
+  summary = summary?.map((x) => ({
     ...x,
     name: Object.keys(x).find((k) => k !== "country"),
   }));
-  summary = tTypes.map((x) => summary.find((it) => it.name === x));
+  summary = tTypes.map((x) => summary?.find((it) => it.name === x));
   const restricted = ["stakeholder", "organisation"];
   // Filter, do not show restricted
-  summary = summary.filter((x) => !restricted.includes(x.name));
+  summary = summary?.filter((x) => !restricted.includes(x.name));
   return (
     <div className="summary">
       <header>{!selected ? "Global summary" : "Summary"}</header>
       <ul>
         {!country &&
-          summary.map((it, index) => {
+          summary?.map((it, index) => {
             const current = Object.keys(it)[0];
             let className =
               init !== current
