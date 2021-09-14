@@ -26,7 +26,7 @@
    :last_name "Doe"
    :linked_in "johndoe"
    :twitter "johndoe"
-   :representation "test"
+   :representation ""
    :affiliation org
    :title "Mr"
    :about "Lorem Ipsum"
@@ -88,7 +88,7 @@
               :linked_in "johndoe"
               :photo "/image/profile/1"
               :cv "/cv/profile/1"
-              :representation "test"
+              :representation ""
               :title "Mr"
               :role "USER"
               :org (db.organisation/organisation-by-id db {:id 1})
@@ -134,7 +134,7 @@
               :linked_in "johndoe"
               :photo "/image/profile/1"
               :cv "/cv/profile/1"
-              :representation "test"
+              :representation ""
               :title "Mr"
               :role "USER"
               :org (db.organisation/organisation-by-id db {:id 10001})
@@ -216,7 +216,7 @@
               :twitter "johndoe"
               :photo "/image/profile/2"
               :cv "/cv/profile/2"
-              :representation "test"
+              :representation ""
               :role "USER"
               :about "Dolor sit Amet"
               :affiliation 1
@@ -263,7 +263,7 @@
               :linked_in "johndoe"
               :twitter "johndoe"
               :photo "https://lh3.googleusercontent.com"
-              :representation "test"
+              :representation ""
               :role "USER"
               :about "Dolor sit Amet"
               :affiliation 1
