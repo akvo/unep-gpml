@@ -157,19 +157,13 @@
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params headers]}]
-    (if-let [id (:id (make-profile db jwt-claims body-params mailjet-config))]
-      (let [tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
-            profile (db.stakeholder/stakeholder-by-id db {:id id})]
-        (when (not-empty tags)
-          (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
-        (when (some? (:geo_coverage_value body-params))
-          (let [geo-data (handler.geo/get-geo-vector id body-params)]
-            (db.stakeholder/add-stakeholder-geo db {:geo geo-data})))
-        (resp/created (:referer headers)
-                      (dissoc (assoc (merge body-params profile)
-                                     :org (db.organisation/organisation-by-id db {:id (:affiliation profile)}))
-                              :affiliation :picture)))
-      (assoc (resp/status 500) :body "Internal Server Error"))))
+    (let [id (:id (make-profile db jwt-claims body-params mailjet-config))
+          tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
+          profile (db.stakeholder/stakeholder-by-id db {:id id})
+          res (dissoc (assoc (merge body-params profile)
+                             :org (db.organisation/organisation-by-id db {:id (:affiliation profile)}))
+                      :affiliation :picture)]
+      (resp/created (:referer headers) res))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
