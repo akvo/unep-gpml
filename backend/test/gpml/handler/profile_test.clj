@@ -88,7 +88,7 @@
               :linked_in "johndoe"
               :photo "/image/profile/1"
               :cv "/cv/profile/1"
-              :representation "test"
+              :representation ""
               :title "Mr"
               :role "USER"
               :org (db.organisation/organisation-by-id db {:id 1})
