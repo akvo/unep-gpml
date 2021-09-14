@@ -30,8 +30,61 @@
         margin-bottom: 10px;
       }
 
+      .country-filter-tab,
       .summary {
-        border-radius: 3px;
+        border-radius: 5px;
+        border: 2px solid #dae9f1;
+        background-color: #fff;
+      }
+
+      .country-filter-tab {
+        margin-bottom: 1.5rem;
+        .country-filter-tab-pane {
+          padding: 0.5rem 1rem;
+        }
+        .ant-tabs-nav-list {
+          justify-content: space-evenly;
+          width: 100%;
+          align-items: center;
+        }
+        .ant-tabs-tab:not(:last-of-type) {
+          margin-right: 0;
+        }
+        .ant-tabs-tab {
+          width: 50%;
+          border-radius: 0;
+          border: none;
+          background: #dae9f1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .ant-tabs-tab-active {
+          background: #fff;
+          .ant-tabs-tab-btn {
+            font-weight: 600;
+          }
+        }
+        .ant-tabs-tab-btn {
+          color: #036799;
+        }
+        .ant-tabs-nav::before,
+        .ant-tabs-nav .ant-tabs-nav-wrap::before,
+        .ant-tabs-nav .ant-tabs-nav-wrap::after {
+          content: none !important;
+        }
+        // css for select suffix
+        .multi-country-info {
+          .ant-select-arrow {
+            right: 32px;
+            font-size: 14px;
+            top: 48%;
+            color: #036799;
+          }
+        }
+      }
+
+      .summary {
         overflow: hidden;
         min-width: 230px;
 
@@ -43,9 +96,6 @@
           line-height: 30px;
           padding: 0 10px 2px;
         }
-
-        background-color: #fff;
-        border: 2px solid #dae9f1;
 
         ul {
           padding: 0px;
@@ -328,3 +378,24 @@
     }
   }
 }
+
+// css for multi-country dropdown
+.country-filter-dropdown {
+  .ant-select-item-group {
+    color: #036799;
+    font-weight: 600;
+  }
+}
+// end of css for multi-country dropdown
+
+// css for multi-country popover
+.popover-content-wrapper {
+  padding-right: 1rem;
+  .popover-content-item {
+    display: list-item;
+    list-style-type: disc;
+    list-style-position: inside;
+    font-size: 13px;
+  }
+}
+// end of css for multi-country popover
