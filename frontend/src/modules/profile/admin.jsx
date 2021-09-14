@@ -24,6 +24,7 @@ import {
   reviewStatusUIText,
   publishStatusUIText,
 } from "../../utils/misc";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const ModalReject = ({ visible, close, reject, item }) => {
   return (
@@ -61,6 +62,7 @@ const AdminSection = ({
   const [previewContent, storePreviewContent] = useState({});
   const [approveLoading, setApproveLoading] = useState({});
   const [reviewers, setReviewers] = useState([]);
+  const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false);
 
   useEffect(() => {
     api.get("/reviewer").then((res) => {
@@ -126,9 +128,11 @@ const AdminSection = ({
   };
 
   const assignReviewer = (item, reviewer) => {
+    setLoadingAssignReviewer(item);
     const data = { reviewer };
     const apiCall = item?.reviewer?.id ? api.patch : api.post;
     apiCall(`/review/${item.type}/${item.id}`, data).then((res) => {
+      setLoadingAssignReviewer(false);
       (async () => {
         const { page, limit } = pendingItems;
         setPendingItems(await fetchSubmissionData(page, limit));
@@ -205,11 +209,20 @@ const AdminSection = ({
                         <div className="topic">{topicNames(item.type)}</div>
                       </div>
                       <div className="col status">
-                        {item?.reviewer?.id && (
-                          <span className="status">
-                            {reviewStatusUIText[item.reviewStatus]}
-                          </span>
-                        )}
+                        {loadingAssignReviewer.id === item?.id &&
+                          loadingAssignReviewer.type === item?.type && (
+                            <span className="status">
+                              <LoadingOutlined spin /> Loading
+                            </span>
+                          )}
+                        {(loadingAssignReviewer.id !== item?.id ||
+                          loadingAssignReviewer.type !== item?.type ||
+                          !loadingAssignReviewer) &&
+                          item?.reviewer?.id && (
+                            <span className="status">
+                              {reviewStatusUIText[item.reviewStatus]}
+                            </span>
+                          )}
                       </div>
                       <div
                         className="col reviewer"

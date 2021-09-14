@@ -170,9 +170,9 @@ const ProfileView = ({ ...props }) => {
         );
       })();
     }
-    // NOTE: dependency needs to be []. Ignore the linter warning, because
-    // adding a dependency here makes the FE send multiple
-    // requests to the backend.
+    // NOTE: Ignore the linter warning, because adding
+    // dependency other than profile makes the FE send
+    // multiple requests to the backend.
   }, [profile]); // eslint-disable-line
 
   const onSubmit = (vals) => {
