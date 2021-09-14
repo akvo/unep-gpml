@@ -104,7 +104,7 @@
           "accept": ".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,application/pdf"
         }
       },
-      "public_database": {
+      "publicDatabase": {
         "ui:widget": "checkbox",
         "ui:label": null
       },
@@ -114,7 +114,7 @@
         "offering",
         "about",
         "portfolio",
-        "public_database"
+        "publicDatabase"
       ]
     },
     "ui:order": [

@@ -22,6 +22,8 @@
                            :geo_coverage_type nil
                            :affiliation nil
                            :title "Mr"
+                           :public_email false
+                           :public_database false
                            :representation ""
                            :picture nil
                            :last_name "Doe"
