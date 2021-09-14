@@ -58,10 +58,10 @@
     "orgName": {
       "ui:placeholder": "Organisation name"
     },
-    "memberName": {
+    "companyName": {
       "ui:placeholder": "Search"
     },
-    "ui:order": ["orgName", "memberName"]
+    "ui:order": ["orgName", "companyName"]
   },
   "S3": {
     "classNames": "list-group",
@@ -88,7 +88,7 @@
         "accept": ".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,application/pdf"
       }
     },
-    "public_database": {
+    "publicDatabase": {
       "ui:widget": "checkbox",
       "ui:label": null
     },
@@ -98,7 +98,7 @@
       "about",
       "tags",
       "portfolio",
-      "public_database"
+      "publicDatabase"
     ]
   }
 }

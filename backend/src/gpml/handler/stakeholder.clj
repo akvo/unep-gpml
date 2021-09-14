@@ -53,47 +53,35 @@
     :else (str/join ["/cv/profile/"
                      (:id (db.stakeholder/new-stakeholder-cv conn {:cv cv}))])))
 
-(defn make-profile [conn
-                    {:keys [email picture]}
-                    {:keys [title first_name
-                            last_name linked_in
-                            twitter photo cv organisation_role
-                            representation country
-                            org about geo_coverage_type]}
-                    mailjet-config]
-  (let [pic-url (if-let [upload-picture
-                         (handler.image/assoc-image conn photo "profile")]
-                  upload-picture
-                  (if picture picture nil))
-        cv-url (if-let [upload-cv (assoc-cv conn cv)]
-                 upload-cv
-                 (if cv cv nil))
-        affiliation (if (= -1 (:id org))
-                      (handler.org/find-or-create conn org)
-                      (:id org))
-        profile {:picture pic-url
-                 :cv cv-url
-                 :title title
-                 :first_name first_name
-                 :last_name last_name
-                 :email email
-                 :linked_in linked_in
-                 :twitter twitter
-                 :representation representation
-                 :organisation_role organisation_role
-                 :about about
-                 :geo_coverage_type geo_coverage_type
-                 :country country
-                 :affiliation affiliation}
-        stakeholder
-        (db.stakeholder/new-stakeholder conn profile)]
-    (email/notify-admins-pending-approval
-     conn
-     mailjet-config
-     (merge profile {:type "stakeholder"}))
-    stakeholder))
+(defn- make-profile [{:keys [title
+                             first_name
+                             last_name
+                             email
+                             linked_in
+                             public_database
+                             public_email
+                             company_name
+                             cv
+                             affiliation
+                             twitter picture
+                             country
+                             about]}]
+  {:title             title
+   :first_name        first_name
+   :last_name         last_name
+   :email             email
+   :linked_in         linked_in
+   :twitter           twitter
+   :picture           picture
+   :cv                cv
+   :company_name      company_name
+   :about             about
+   :country           country
+   :public_email      public_email
+   :public_database   public_database
+   :affiliation       affiliation})
 
-(defn remap-profile
+(defn- remap-profile
   [{:keys [id photo about
            title first_name role
            last_name linked_in cv
@@ -155,22 +143,28 @@
         (resp/response profile))
       (resp/response {}))))
 
+(defn- make-affiliation [db org]
+  (if (= -1 (:id org)) ;; TODO Fix this logic, FE seems also related
+    (handler.org/find-or-create db org)
+    (:id org)))
+
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params headers]}]
-    (if-let [id (:id (make-profile (:spec db) jwt-claims body-params mailjet-config))]
-      (let [tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
-            db (:spec db)
-            profile (db.stakeholder/stakeholder-by-id db {:id id})]
-        (when (not-empty tags)
-          (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
-        (when (some? (:geo_coverage_value body-params))
-          (let [geo-data (handler.geo/get-geo-vector id body-params)]
-            (db.stakeholder/add-stakeholder-geo db {:geo geo-data})))
-        (resp/created (:referer headers)
-                      (dissoc (assoc (merge body-params profile)
-                                     :org (db.organisation/organisation-by-id db {:id (:affiliation profile)}))
-                              :affiliation :picture)))
-      (assoc (resp/status 500) :body "Internal Server Error"))))
+    (let [profile        (make-profile (assoc body-params
+                                       :affiliation (make-affiliation db (:org body-params))
+                                       :email (:email jwt-claims)
+                                       :cv (or (assoc-cv db (:cv body-params))
+                                               (:cv body-params))
+                                       :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
+                                                    (:picture jwt-claims))))
+          stakeholder-id (:id (db.stakeholder/new-stakeholder db profile))
+          _              (email/notify-admins-pending-approval db mailjet-config
+                                                               (merge profile {:type "stakeholder"}))
+          profile        (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
+          res (-> (merge body-params profile)
+                  (dissoc :affiliation :picture)
+                  (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
+      (resp/created (:referer headers) res))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
@@ -222,6 +216,16 @@
             (db.stakeholder/add-stakeholder-geo tx {:geo geo-data})))
         (resp/status 204)))))
 
+(def org-schema [:map
+                [:id {:optional true} int?]
+                [:name {:optional true} string?]
+                [:url {:optional true} string?]
+                [:country {:optional true} int?]
+                [:geo_coverage_type {:optional true} geo/coverage_type]
+                [:geo_coverage_value {:optional true}
+                 [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])
+
+
 (defmethod ig/init-key :gpml.handler.stakeholder/post-params [_ _]
   [:map
    [:title {:optional true} string?]
@@ -231,29 +235,16 @@
    [:twitter {:optional true} string?]
    [:photo {:optional true} string?]
    [:cv {:optional true} string?]
-   [:representation string?]
+   [:about {:optional true} string?]
    [:country {:optional true} int?]
    [:public_email {:optional true} boolean?]
-   [:about {:optional true} string?]
-   [:organisation_role {:optional true} string?]
-   [:geo_coverage_type {:optional true} geo/coverage_type]
-   [:tags {:optional true}
-    [:vector {:min 1 :error/message "Need at least one value for tags"} int?]]
+   [:public_database {:optional true} boolean?]
+   [:company_name {:optional true} string?]
    [:seeking {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for seeking"} int?]]
    [:offering {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for offering"} int?]]
-   [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one geo coverage value"} int?]]
-   [:org {:optional true} map?
-    [:map
-     [:id {:optional true} int?]
-     [:name {:optional true} string?]
-     [:url {:optional true} string?]
-     [:country {:optional true} int?]
-     [:geo_coverage_type {:optional true} geo/coverage_type]
-     [:geo_coverage_value {:optional true}
-      [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]]]])
+   [:org {:optional true} map? org-schema]])
 
 (defmethod ig/init-key ::get-params [_ _]
   {:query [:map
