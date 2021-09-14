@@ -251,375 +251,351 @@ const Landing = withRouter(
             </div>
           </div>
         </div>
-
-        {!data && (
-          <h2 className="loading">
-            <LoadingOutlined spin /> Loading Data
-          </h2>
-        )}
-        {data && (
-          <>
-            {/* Popular Topics */}
-            <div className="popular-topics ui container section-container">
-              <div className="section-title">
-                <h2>
-                  Popular Topics
-                  <span className="see-more-link">
-                    <Link to="/topics">
-                      See all topics <RightOutlined />
-                    </Link>
-                  </span>
-                </h2>
-              </div>
-              <div className="body">
-                <div className="chart-wrapper">
-                  <Chart
-                    key="popular-topic"
-                    title=""
-                    type="TREEMAP"
-                    height={500}
-                    className="popular-topic-chart"
-                    data={sortPopularTopic.map((x) => {
-                      return {
-                        id: x.id,
-                        name: x.topic,
-                        value: x.count,
-                      };
-                    })}
-                    onEvents={{
-                      click: (e) => setSelectedTopic(e.data.name.toLowerCase()),
-                    }}
-                    selected={selectedTopic}
-                  />
-                </div>
-                <div className="content">
-                  <div className="content-body">
-                    {sortPopularTopic
-                      .find((x) => x.topic.toLowerCase() === selectedTopic)
-                      .items.map((x, i) => {
-                        const { id, type, title, description } = x;
-                        const link = `/${type
-                          .toLowerCase()
-                          .split(" ")
-                          .join("_")}/${id}`;
-                        return (
-                          <div key={`summary-${i}`} className="item-body">
-                            <div className="resource-label upper">
-                              {topicNames(humps.camelizeKeys(type))}
-                            </div>
-                            <div className="asset-title">{title}</div>
-                            <div className="body-text">
-                              {TrimText({ text: description, max: 250 })}
-                            </div>
-                            <span className="read-more">
-                              <Link to={link}>
-                                Read more <ArrowRightOutlined />
-                              </Link>
-                            </span>
-                          </div>
-                        );
-                      })}
-                  </div>
-                </div>
-              </div>
+        {/* Popular Topics */}
+        <div className="popular-topics ui container section-container">
+          <div className="section-title">
+            <h2>
+              Popular Topics
+              <span className="see-more-link">
+                <Link to="/topics">
+                  See all topics <RightOutlined />
+                </Link>
+              </span>
+            </h2>
+          </div>
+          <div className="body">
+            <div className="chart-wrapper">
+              <Chart
+                key="popular-topic"
+                title=""
+                type="TREEMAP"
+                height={500}
+                className="popular-topic-chart"
+                data={sortPopularTopic.map((x) => {
+                  return {
+                    id: x.id,
+                    name: x.topic,
+                    value: x.count,
+                  };
+                })}
+                onEvents={{
+                  click: (e) => setSelectedTopic(e.data.name.toLowerCase()),
+                }}
+                selected={selectedTopic}
+              />
             </div>
-            <hr />
-            {/* Featured Content */}
-            <div className="featured-content ui container section-container">
-              <div className="section-title">
-                <h2>
-                  Featured Content{" "}
-                  <span className="see-more-link">
-                    See all <RightOutlined />
-                  </span>
-                </h2>
-              </div>
-              <div className="body">
-                <div className="content-left">
-                  {featuredContents
-                    .filter((x) => x.id !== 196)
-                    .map((x, i) => {
-                      const {
-                        id,
-                        image,
-                        type,
-                        title,
-                        description,
-                        bookmark,
-                      } = x;
-                      const link = `/${type
-                        .toLowerCase()
-                        .split(" ")
-                        .join("_")}/${id}`;
-                      return (
-                        <Card key={`fc-${i}`} className="item">
-                          <div className="item-header">
-                            <span className="resource-label upper">
-                              {topicNames(humps.camelizeKeys(type))}
-                            </span>
-                            <span className="mark">
-                              <RiseOutlined />
-                              Trending
-                            </span>
-                          </div>
-                          <div className="item-body">
-                            <div className="asset-title">{title}</div>
-                            <div className="body-text">
-                              {TrimText({ text: description, max: 100 })}
-                            </div>
-                          </div>
-                          <div className="item-footer">
-                            <Avatar.Group
-                              maxCount={3}
-                              maxStyle={{
-                                color: "#f56a00",
-                                backgroundColor: "#fde3cf",
-                              }}
-                            >
-                              {bookmark.map((b, i) => (
-                                <Tooltip
-                                  key={`avatar-${i}`}
-                                  title={b.name}
-                                  placement="top"
-                                >
-                                  <Avatar
-                                    style={{ backgroundColor: "#FFB800" }}
-                                    icon={<UserOutlined />}
-                                  />
-                                </Tooltip>
-                              ))}
-                            </Avatar.Group>
-                            <span className="read-more">
-                              <Link to={link}>
-                                Read more <ArrowRightOutlined />
-                              </Link>
-                            </span>
-                          </div>
-                        </Card>
-                      );
-                    })}
-                </div>
-                <div className="content-right">
-                  {featuredContents
-                    .filter((x) => x.id === 196)
-                    .map((x, i) => {
-                      const {
-                        id,
-                        image,
-                        type,
-                        title,
-                        description,
-                        bookmark,
-                      } = x;
-                      const link = `/${type
-                        .toLowerCase()
-                        .split(" ")
-                        .join("_")}/${id}`;
-                      return (
-                        <Card key={`fc-${i}`} className="item">
-                          <img
-                            className="item-img"
-                            width="100%"
-                            src={image || imageNotFound}
-                            alt={title}
-                          />
-                          <div className="item-header">
-                            <span className="resource-label upper">
-                              {topicNames(humps.camelizeKeys(type))}
-                            </span>
-                            <span className="mark">
-                              <RiseOutlined />
-                              Trending
-                            </span>
-                          </div>
-                          <div className="item-body">
-                            <div className="asset-title">{title}</div>
-                            <div className="body-text">
-                              {TrimText({ text: description, max: 450 })}
-                            </div>
-                          </div>
-                          <div className="item-footer">
-                            <Avatar.Group
-                              maxCount={3}
-                              maxStyle={{
-                                color: "#f56a00",
-                                backgroundColor: "#fde3cf",
-                              }}
-                            >
-                              {bookmark.map((b, i) => (
-                                <Tooltip
-                                  key={`avatar-${i}`}
-                                  title={b.name}
-                                  placement="top"
-                                >
-                                  <Avatar
-                                    style={{ backgroundColor: "#FFB800" }}
-                                    icon={<UserOutlined />}
-                                  />
-                                </Tooltip>
-                              ))}
-                            </Avatar.Group>
-                            <span className="read-more">
-                              <Link to={link}>
-                                Read more <ArrowRightOutlined />
-                              </Link>
-                            </span>
-                          </div>
-                        </Card>
-                      );
-                    })}
-                </div>
-              </div>
-            </div>
-            {/* Our Community */}
-            <div className="our-community section-container">
-              <div className="ui container">
-                <div className="section-title green">
-                  <h2>
-                    Our Community{" "}
-                    <span className="see-more-link">
-                      See all <RightOutlined />
-                    </span>
-                  </h2>
-                  <div className="body-text">
-                    Be part of an expanding active community and start sharing
-                    knowledges
-                  </div>
-                </div>
-                <div className="body">
-                  <Carousel
-                    centerMode={true}
-                    responsive={responsive}
-                    containerClass="carousel-container"
-                    itemClass="carousel-item"
-                    dotListClass="carousel-dot-list"
-                    showDots={true}
-                    renderDotsOutside={true}
-                    removeArrowOnDeviceType={["tablet", "mobile"]}
-                  >
-                    {sortBy(ourCommunity, "name").map((x, i) => {
-                      const index = i > 3 ? i - 4 : i;
-                      const { type, about, image, name, role } = x;
-                      return (
-                        <div key={`oc-card-${i}`}>
-                          <div className="type-wrapper">
-                            <span className="mark">
-                              {topicNames(humps.camelizeKeys(type))}
-                            </span>
-                          </div>
-                          <div
-                            className="about"
-                            style={{ color: cardSvg[index]?.color }}
-                          >
-                            {about.length > 105 ? (
-                              <Tooltip
-                                title={about}
-                                overlayClassName="our-community-tooltip"
-                              >
-                                {TrimText({ text: about, max: 105 })}
-                              </Tooltip>
-                            ) : (
-                              <q>{about}</q>
-                            )}
-                          </div>
-                          {cardSvg[index]?.svg}
-                          <div className="detail">
-                            <Avatar
-                              className="photo"
-                              size={{
-                                xs: 85,
-                                sm: 95,
-                                md: 105,
-                                lg: 110,
-                                xl: 115,
-                                xxl: 125,
-                              }}
-                              src={image || imageNotFound}
-                              alt={name}
-                            />
-                            <h4>{name}</h4>
-                            <p className="role">{role || ""}</p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </Carousel>
-                </div>
-              </div>
-            </div>
-            {/* Benefits of joining The GPML */}
-            <div className="benefit section-container">
-              <div className="ui container">
-                <div className="section-title green">
-                  <h2>Benefits of joining The GPML:​</h2>
-                </div>
-                <div className="body">
-                  {benefit.map((x, i) => {
+            <div className="content">
+              <div className="content-body">
+                {sortPopularTopic
+                  .find((x) => x.topic.toLowerCase() === selectedTopic)
+                  .items.map((x, i) => {
+                    const { id, type, title, description } = x;
+                    const link = `/${type
+                      .toLowerCase()
+                      .split(" ")
+                      .join("_")}/${id}`;
                     return (
-                      <div key={`benefit-${i}`} className="item">
-                        <div className="asset-title">{x.title}</div>
-                        <ul>
-                          {x.childs.map((c, i) => (
-                            <li key={`${c}-${i}`} className="body-text">
-                              {c}
-                            </li>
-                          ))}
-                        </ul>
+                      <div key={`summary-${i}`} className="item-body">
+                        <div className="resource-label upper">
+                          {topicNames(humps.camelizeKeys(type))}
+                        </div>
+                        <div className="asset-title">{title}</div>
+                        <div className="body-text">
+                          {TrimText({ text: description, max: 250 })}
+                        </div>
+                        <span className="read-more">
+                          <Link to={link}>
+                            Read more <ArrowRightOutlined />
+                          </Link>
+                        </span>
                       </div>
                     );
                   })}
-                </div>
-                <div className="btn-wrapper">
-                  <JoinGPMLButton
-                    history={history}
-                    loginWithPopup={loginWithPopup}
-                  />
-                </div>
               </div>
             </div>
-            {/* Event */}
-            <div className="event section-container">
-              <div className="ui container">
-                <div className="section-title green">
-                  <h2>
-                    Upcoming Events{" "}
-                    <span className="see-more-link">
-                      <Link to="/browse?topic=event">
-                        See all <RightOutlined />
-                      </Link>
-                    </span>
-                  </h2>
-                </div>
-                <div className="body">
-                  <div className="content">
-                    {!event && (
-                      <div className="no-event">
-                        <h2 className="loading text-white">
-                          <LoadingOutlined spin /> Loading...
-                        </h2>
+          </div>
+        </div>
+        <hr />
+        {/* Featured Content */}
+        <div className="featured-content ui container section-container">
+          <div className="section-title">
+            <h2>
+              Featured Content{" "}
+              <span className="see-more-link">
+                See all <RightOutlined />
+              </span>
+            </h2>
+          </div>
+          <div className="body">
+            <div className="content-left">
+              {featuredContents
+                .filter((x) => x.id !== 196)
+                .map((x, i) => {
+                  const { id, image, type, title, description, bookmark } = x;
+                  const link = `/${type
+                    .toLowerCase()
+                    .split(" ")
+                    .join("_")}/${id}`;
+                  return (
+                    <Card key={`fc-${i}`} className="item">
+                      <div className="item-header">
+                        <span className="resource-label upper">
+                          {topicNames(humps.camelizeKeys(type))}
+                        </span>
+                        <span className="mark">
+                          <RiseOutlined />
+                          Trending
+                        </span>
                       </div>
-                    )}
-                    {event && event.length === 0 && (
-                      <div className="no-event">No event on this day</div>
-                    )}
-                    {event &&
-                      event.length > 0 &&
-                      renderEventContent(event, eventCarousel)}
-                  </div>
-                  <div className="calendar">
-                    <Calendar
-                      fullscreen={true}
-                      onPanelChange={handleOnDateSelected}
-                      onSelect={handleOnDateSelected}
-                      headerRender={(e) => calendarHeader(e)}
-                      dateCellRender={dateCellRender}
-                    />
-                  </div>
-                </div>
+                      <div className="item-body">
+                        <div className="asset-title">{title}</div>
+                        <div className="body-text">
+                          {TrimText({ text: description, max: 100 })}
+                        </div>
+                      </div>
+                      <div className="item-footer">
+                        <Avatar.Group
+                          maxCount={3}
+                          maxStyle={{
+                            color: "#f56a00",
+                            backgroundColor: "#fde3cf",
+                          }}
+                        >
+                          {bookmark.map((b, i) => (
+                            <Tooltip
+                              key={`avatar-${i}`}
+                              title={b.name}
+                              placement="top"
+                            >
+                              <Avatar
+                                style={{ backgroundColor: "#FFB800" }}
+                                icon={<UserOutlined />}
+                              />
+                            </Tooltip>
+                          ))}
+                        </Avatar.Group>
+                        <span className="read-more">
+                          <Link to={link}>
+                            Read more <ArrowRightOutlined />
+                          </Link>
+                        </span>
+                      </div>
+                    </Card>
+                  );
+                })}
+            </div>
+            <div className="content-right">
+              {featuredContents
+                .filter((x) => x.id === 196)
+                .map((x, i) => {
+                  const { id, image, type, title, description, bookmark } = x;
+                  const link = `/${type
+                    .toLowerCase()
+                    .split(" ")
+                    .join("_")}/${id}`;
+                  return (
+                    <Card key={`fc-${i}`} className="item">
+                      <img
+                        className="item-img"
+                        width="100%"
+                        src={image || imageNotFound}
+                        alt={title}
+                      />
+                      <div className="item-header">
+                        <span className="resource-label upper">
+                          {topicNames(humps.camelizeKeys(type))}
+                        </span>
+                        <span className="mark">
+                          <RiseOutlined />
+                          Trending
+                        </span>
+                      </div>
+                      <div className="item-body">
+                        <div className="asset-title">{title}</div>
+                        <div className="body-text">
+                          {TrimText({ text: description, max: 450 })}
+                        </div>
+                      </div>
+                      <div className="item-footer">
+                        <Avatar.Group
+                          maxCount={3}
+                          maxStyle={{
+                            color: "#f56a00",
+                            backgroundColor: "#fde3cf",
+                          }}
+                        >
+                          {bookmark.map((b, i) => (
+                            <Tooltip
+                              key={`avatar-${i}`}
+                              title={b.name}
+                              placement="top"
+                            >
+                              <Avatar
+                                style={{ backgroundColor: "#FFB800" }}
+                                icon={<UserOutlined />}
+                              />
+                            </Tooltip>
+                          ))}
+                        </Avatar.Group>
+                        <span className="read-more">
+                          <Link to={link}>
+                            Read more <ArrowRightOutlined />
+                          </Link>
+                        </span>
+                      </div>
+                    </Card>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+        {/* Our Community */}
+        <div className="our-community section-container">
+          <div className="ui container">
+            <div className="section-title green">
+              <h2>
+                Our Community{" "}
+                <span className="see-more-link">
+                  See all <RightOutlined />
+                </span>
+              </h2>
+              <div className="body-text">
+                Be part of an expanding active community and start sharing
+                knowledges
               </div>
             </div>
-          </>
-        )}
+            <div className="body">
+              <Carousel
+                centerMode={true}
+                responsive={responsive}
+                containerClass="carousel-container"
+                itemClass="carousel-item"
+                dotListClass="carousel-dot-list"
+                showDots={true}
+                renderDotsOutside={true}
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+              >
+                {sortBy(ourCommunity, "name").map((x, i) => {
+                  const index = i > 3 ? i - 4 : i;
+                  const { type, about, image, name, role } = x;
+                  return (
+                    <div key={`oc-card-${i}`}>
+                      <div className="type-wrapper">
+                        <span className="mark">
+                          {topicNames(humps.camelizeKeys(type))}
+                        </span>
+                      </div>
+                      <div
+                        className="about"
+                        style={{ color: cardSvg[index]?.color }}
+                      >
+                        {about.length > 105 ? (
+                          <Tooltip
+                            title={about}
+                            overlayClassName="our-community-tooltip"
+                          >
+                            {TrimText({ text: about, max: 105 })}
+                          </Tooltip>
+                        ) : (
+                          <q>{about}</q>
+                        )}
+                      </div>
+                      {cardSvg[index]?.svg}
+                      <div className="detail">
+                        <Avatar
+                          className="photo"
+                          size={{
+                            xs: 85,
+                            sm: 95,
+                            md: 105,
+                            lg: 110,
+                            xl: 115,
+                            xxl: 125,
+                          }}
+                          src={image || imageNotFound}
+                          alt={name}
+                        />
+                        <h4>{name}</h4>
+                        <p className="role">{role || ""}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </Carousel>
+            </div>
+          </div>
+        </div>
+        {/* Benefits of joining The GPML */}
+        <div className="benefit section-container">
+          <div className="ui container">
+            <div className="section-title green">
+              <h2>Benefits of joining The GPML:​</h2>
+            </div>
+            <div className="body">
+              {benefit.map((x, i) => {
+                return (
+                  <div key={`benefit-${i}`} className="item">
+                    <div className="asset-title">{x.title}</div>
+                    <ul>
+                      {x.childs.map((c, i) => (
+                        <li key={`${c}-${i}`} className="body-text">
+                          {c}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="btn-wrapper">
+              <JoinGPMLButton
+                history={history}
+                loginWithPopup={loginWithPopup}
+              />
+            </div>
+          </div>
+        </div>
+        {/* Event */}
+        <div className="event section-container">
+          <div className="ui container">
+            <div className="section-title green">
+              <h2>
+                Upcoming Events{" "}
+                <span className="see-more-link">
+                  <Link to="/browse?topic=event">
+                    See all <RightOutlined />
+                  </Link>
+                </span>
+              </h2>
+            </div>
+            <div className="body">
+              <div className="content">
+                {(!data || !event) && (
+                  <div className="no-event">
+                    <h2 className="loading text-white">
+                      <LoadingOutlined spin /> Loading...
+                    </h2>
+                  </div>
+                )}
+                {event && event.length === 0 && (
+                  <div className="no-event">No event on this day</div>
+                )}
+                {event &&
+                  event.length > 0 &&
+                  renderEventContent(event, eventCarousel)}
+              </div>
+              <div className="calendar">
+                <Calendar
+                  fullscreen={true}
+                  onPanelChange={handleOnDateSelected}
+                  onSelect={handleOnDateSelected}
+                  headerRender={(e) => calendarHeader(e)}
+                  dateCellRender={dateCellRender}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
