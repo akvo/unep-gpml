@@ -79,7 +79,7 @@ export const schema = {
           title: "Search Your Entity",
           type: "string",
         },
-        memberName: {
+        companyName: {
           title: "Is your Entity not a GPML Member yet?",
           type: "string",
         },
