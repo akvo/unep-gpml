@@ -162,7 +162,10 @@ const ProfileView = ({ ...props }) => {
         );
       })();
     }
-  }, [profile, pendingItems, reviewItems, reviewedItems, stakeholdersData]);
+    // NOTE: dependency needs to be []. Ignore the linter warning, because
+    // adding a dependency here makes the FE send multiple
+    // requests to the backend.
+  }, [profile]); // eslint-disable-line
 
   const onSubmit = (vals) => {
     setSaving(true);
