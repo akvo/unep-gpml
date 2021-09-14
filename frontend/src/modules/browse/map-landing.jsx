@@ -48,9 +48,19 @@ const MapLanding = ({
     history.push(`/browse?country=${name}`);
   };
 
+  const handleChangeTab = (key) => {
+    key === "multi-country" && setCountry(null);
+    key === "country" && setMultiCountry(null);
+  };
+
   const handleChangeCountry = (id) => {
     setCountry(id);
   };
+
+  const handleChangeMultiCountry = (id) => {
+    setMultiCountry(id);
+  };
+
   const countryOpts = countries
     ? countries
         .map((it) => ({ value: it.id, label: it.name }))
@@ -97,7 +107,11 @@ const MapLanding = ({
         )}
         {isLoaded() && (
           <div className="map-overlay">
-            <Tabs type="card" className="country-filter-tab">
+            <Tabs
+              type="card"
+              className="country-filter-tab"
+              onChange={handleChangeTab}
+            >
               <TabPane
                 tab="Countries"
                 key="country"
@@ -120,7 +134,7 @@ const MapLanding = ({
               </TabPane>
               <TabPane
                 tab="Multi-Country"
-                key="transnational"
+                key="multi-country"
                 className={`country-filter-tab-pane ${
                   multiCountry ? "multi-country-info" : "multi-country"
                 }`}
@@ -135,10 +149,9 @@ const MapLanding = ({
                     0
                   }
                   value={multiCountry}
-                  onChange={(val) => setMultiCountry(val)}
+                  onChange={handleChangeMultiCountry}
                   dropdownClassName="country-filter-dropdown"
                   dropdownMatchSelectWidth={325}
-                  // menuItemSelectedIcon={<MultiCountryInfo />}
                   suffixIcon={
                     multiCountry ? <MultiCountryInfo /> : <DownOutlined />
                   }
