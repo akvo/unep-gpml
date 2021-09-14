@@ -157,20 +157,13 @@
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params headers]}]
-    (if-let [id (:id (make-profile (:spec db) jwt-claims body-params mailjet-config))]
-      (let [tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
-            db (:spec db)
-            profile (db.stakeholder/stakeholder-by-id db {:id id})]
-        (when (not-empty tags)
-          (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
-        (when (some? (:geo_coverage_value body-params))
-          (let [geo-data (handler.geo/get-geo-vector id body-params)]
-            (db.stakeholder/add-stakeholder-geo db {:geo geo-data})))
-        (resp/created (:referer headers)
-                      (dissoc (assoc (merge body-params profile)
-                                     :org (db.organisation/organisation-by-id db {:id (:affiliation profile)}))
-                              :affiliation :picture)))
-      (assoc (resp/status 500) :body "Internal Server Error"))))
+    (let [id (:id (make-profile db jwt-claims body-params mailjet-config))
+          tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
+          profile (db.stakeholder/stakeholder-by-id db {:id id})
+          res (dissoc (assoc (merge body-params profile)
+                             :org (db.organisation/organisation-by-id db {:id (:affiliation profile)}))
+                      :affiliation :picture)]
+      (resp/created (:referer headers) res))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
@@ -222,6 +215,16 @@
             (db.stakeholder/add-stakeholder-geo tx {:geo geo-data})))
         (resp/status 204)))))
 
+(def org-schema [:map
+                [:id {:optional true} int?]
+                [:name {:optional true} string?]
+                [:url {:optional true} string?]
+                [:country {:optional true} int?]
+                [:geo_coverage_type {:optional true} geo/coverage_type]
+                [:geo_coverage_value {:optional true}
+                 [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])
+
+
 (defmethod ig/init-key :gpml.handler.stakeholder/post-params [_ _]
   [:map
    [:title {:optional true} string?]
@@ -234,26 +237,13 @@
    [:representation string?]
    [:country {:optional true} int?]
    [:public_email {:optional true} boolean?]
+   [:public_database {:optional true} boolean?]
    [:about {:optional true} string?]
-   [:organisation_role {:optional true} string?]
-   [:geo_coverage_type {:optional true} geo/coverage_type]
-   [:tags {:optional true}
-    [:vector {:min 1 :error/message "Need at least one value for tags"} int?]]
    [:seeking {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for seeking"} int?]]
    [:offering {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for offering"} int?]]
-   [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one geo coverage value"} int?]]
-   [:org {:optional true} map?
-    [:map
-     [:id {:optional true} int?]
-     [:name {:optional true} string?]
-     [:url {:optional true} string?]
-     [:country {:optional true} int?]
-     [:geo_coverage_type {:optional true} geo/coverage_type]
-     [:geo_coverage_value {:optional true}
-      [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]]]])
+   [:org {:optional true} map? org-schema]])
 
 (defmethod ig/init-key ::get-params [_ _]
   {:query [:map

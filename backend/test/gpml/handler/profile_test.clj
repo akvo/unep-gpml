@@ -102,7 +102,8 @@
               :reviewed_at nil
               :reviewed_by nil
               :review_status "SUBMITTED"
-              :public_email false}
+              :public_email false
+              :public_database false}
              (:body resp)))
       (is (= "/image/profile/1" (-> resp :body :photo))))))
 
@@ -153,7 +154,8 @@
               :reviewed_at nil
               :reviewed_by nil
               :review_status "SUBMITTED"
-              :public_email false}
+              :public_email false
+              :public_database false}
              (:body resp)))
       (is (= "/image/profile/1" (-> resp :body :photo))))))
 
@@ -240,7 +242,8 @@
               :reviewed_at nil
               :reviewed_by nil
               :review_status "SUBMITTED"
-              :public_email true}
+              :public_email true
+              :public_database false}
              profile))))
 
 (deftest handler-put-test-but-the-pic-is-from-outside
@@ -290,7 +293,8 @@
               :reviewed_by nil
               :cv nil
               :review_status "SUBMITTED"
-              :public_email false}
+              :public_email false
+              :public_database false}
              profile))))
 
 (deftest handler-get-test-has-profile
