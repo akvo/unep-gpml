@@ -144,10 +144,10 @@ insert into stakeholder(
     title,
     first_name,
     last_name,
-    affiliation,
     email,
     country,
     representation
+--~ (when (contains? params :affiliation) ",affiliation")
 --~ (when (contains? params :company_name) ",company_name")
 --~ (when (contains? params :linked_in) ",linked_in")
 --~ (when (contains? params :twitter) ",twitter")
@@ -162,10 +162,10 @@ insert into stakeholder(
     :title,
     :first_name,
     :last_name,
-    :affiliation,
     :email,
     :country::integer,
     :representation
+--~ (when (contains? params :affiliation) ",:affiliation")
 --~ (when (contains? params :company_name) ",:company_name")
 --~ (when (contains? params :linked_in) ",:linked_in")
 --~ (when (contains? params :twitter) ",:twitter")
