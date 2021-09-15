@@ -77,7 +77,7 @@
    :company_name      company_name
    :about             about
    :country           country
-   :public_email      public_email
+   :public_email      (boolean public_email)
    :representation    ""
    :public_database   public_database
    :affiliation       affiliation})
@@ -239,7 +239,7 @@
    [:about {:optional true} string?]
    [:country {:optional true} int?]
    [:public_email {:optional true} boolean?]
-   [:public_database {:optional true} boolean?]
+   [:public_database boolean?]
    [:company_name {:optional true} string?]
    [:seeking {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for seeking"} int?]]
