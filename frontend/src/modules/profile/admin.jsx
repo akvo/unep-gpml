@@ -439,4 +439,4 @@ const AdminSection = ({
   );
 };
 
-export default AdminSection;
+export { AdminSection, HeaderSearch };

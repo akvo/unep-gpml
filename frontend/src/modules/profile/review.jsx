@@ -9,6 +9,7 @@ import {
   Avatar,
 } from "antd";
 import { DetailCollapse } from "./preview";
+import { HeaderSearch } from "./admin";
 import {
   topicNames,
   reviewStatusUIText,
@@ -16,7 +17,6 @@ import {
 } from "../../utils/misc";
 import api from "../../utils/api";
 import { fetchReviewItems } from "./utils";
-import { titleCase } from "../../utils/string";
 import { UserOutlined } from "@ant-design/icons";
 
 const ReviewCommentModal = ({ status, visible, handleOk, handleCancel }) => {
@@ -201,11 +201,7 @@ const ReviewSection = ({
       <>
         <div className="table-wrapper">
           <div className="row head">
-            {columns.map((x, i) => (
-              <div key={`${key}-${x}-${i}`} className="col">
-                {x}
-              </div>
-            ))}
+            <HeaderSearch />
           </div>
           <Collapse onChange={getPreviewContent}>
             {items?.reviews?.length > 0 ? (
