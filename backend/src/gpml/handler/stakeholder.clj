@@ -77,7 +77,7 @@
    :company_name      company_name
    :about             about
    :country           country
-   :public_email      public_email
+   :public_email      (boolean public_email)
    :representation    ""
    :public_database   public_database
    :affiliation       affiliation})
@@ -145,23 +145,29 @@
       (resp/response {}))))
 
 (defn- make-affiliation [db org]
-  (if (= -1 (:id org)) ;; TODO Fix this logic, FE seems also related
-    (handler.org/find-or-create db org)
+  (if-not (:id org)
+    (let [org-id (handler.org/find-or-create db org)]
+      (when-let [tag-ids (seq (:expertise org))]
+        (db.organisation/add-organisation-tags db {:tags (map #(vector org-id %) tag-ids)}))
+      org-id)
     (:id org)))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params headers]}]
     (let [profile        (make-profile (assoc body-params
-                                       :affiliation (make-affiliation db (:org body-params))
-                                       :email (:email jwt-claims)
-                                       :cv (or (assoc-cv db (:cv body-params))
-                                               (:cv body-params))
-                                       :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
-                                                    (:picture jwt-claims))))
+                                              :affiliation (when (:org body-params)
+                                                             (make-affiliation db (:org body-params)))
+                                              :email (:email jwt-claims)
+                                              :cv (or (assoc-cv db (:cv body-params))
+                                                      (:cv body-params))
+                                              :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
+                                                           (:picture jwt-claims))))
           stakeholder-id (:id (db.stakeholder/new-stakeholder db profile))
           _              (email/notify-admins-pending-approval db mailjet-config
                                                                (merge profile {:type "stakeholder"}))
           profile        (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
+          _ (when-let [tag-ids (seq (concat (:offering body-params) (:seeking body-params)))]
+              (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector (:id profile) %) tag-ids)}))
           res (-> (merge body-params profile)
                   (dissoc :affiliation :picture)
                   (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
@@ -217,15 +223,19 @@
             (db.stakeholder/add-stakeholder-geo tx {:geo geo-data})))
         (resp/status 204)))))
 
-(def org-schema [:map
-                [:id {:optional true} int?]
-                [:name {:optional true} string?]
-                [:url {:optional true} string?]
-                [:country {:optional true} int?]
-                [:geo_coverage_type {:optional true} geo/coverage_type]
-                [:geo_coverage_value {:optional true}
-                 [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])
-
+(def org-schema
+  [:map
+   [:authorize_submission  true?] ;; TODO keep optional until we align with PUT
+   [:id {:optional true} int?]
+   [:name {:optional true} string?]
+   [:url {:optional true} string?]
+   [:type {:optional true} string?]
+   [:country {:optional true} int?]
+   [:expertise {:optional true}
+    [:vector {:min 1 :error/message "Need at least one value for expertise"} int?]]
+   [:geo_coverage_type {:optional true} geo/coverage_type]
+   [:geo_coverage_value {:optional true}
+    [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post-params [_ _]
   [:map
@@ -239,13 +249,13 @@
    [:about {:optional true} string?]
    [:country {:optional true} int?]
    [:public_email {:optional true} boolean?]
-   [:public_database {:optional true} boolean?]
+   [:public_database boolean?]
    [:company_name {:optional true} string?]
    [:seeking {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for seeking"} int?]]
    [:offering {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for offering"} int?]]
-   [:org {:optional true} map? org-schema]])
+   [:org {:optional true} org-schema]])
 
 (defmethod ig/init-key ::get-params [_ _]
   {:query [:map
