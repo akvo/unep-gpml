@@ -27,6 +27,7 @@
    :linked_in "johndoe"
    :twitter "johndoe"
    :representation ""
+   :org {:id org}
    :affiliation org
    :title "Mr"
    :about "Lorem Ipsum"
@@ -109,8 +110,7 @@
           data (seed-important-database db)
           ;; John trying to sign up with new organisation
           body-params (assoc (new-profile 1)
-                             :org {:id -1
-                                   :name "My own company"
+                             :org {:name "My own company"
                                    :geo_coverage_type "regional"
                                    :country (-> (:countries data) second :id)
                                    :geo_coverage_value (mapv :id (:country_groups data))

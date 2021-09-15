@@ -82,7 +82,7 @@
       "ui:widget": "textarea",
       "ui:maxWord": 100
     },
-    "portfolio": {
+    "cv": {
       "ui:widget": "file",
       "ui:options": {
         "accept": ".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,application/pdf"
@@ -92,13 +92,6 @@
       "ui:widget": "checkbox",
       "ui:label": null
     },
-    "ui:order": [
-      "seeking",
-      "offering",
-      "about",
-      "tags",
-      "portfolio",
-      "publicDatabase"
-    ]
+    "ui:order": ["seeking", "offering", "about", "tags", "cv", "publicDatabase"]
   }
 }

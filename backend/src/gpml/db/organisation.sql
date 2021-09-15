@@ -50,11 +50,12 @@ values (
 
 -- :name update-organisation :! :n
 -- :doc Update organisation column
-update organisation set
+update organisation set id = :id
 --~ (when (contains? params :url) ",url= :url")
 --~ (when (contains? params :type) ",type= :type")
 --~ (when (contains? params :country) ",geo_coverage_type= :country")
 --~ (when (contains? params :geo_coverage_type) ",geo_coverage_type= :geo_coverage_type")
+--~ (when (contains? params :created_by) ",created_by= :created_by")
 where id = :id
 
 -- :name geo-coverage :? :*
