@@ -138,7 +138,7 @@
           _ (add-country-data conn)
           summary (fn [& orgs]
                     (doseq [org orgs]
-                      (handler.organisation/find-or-create conn org))
+                      (handler.organisation/create conn org))
                     (let [summary (db.landing/summary conn)
                           orgs-data (->> summary
                                          (filter #(= "organisation" (:resource_type %)))
