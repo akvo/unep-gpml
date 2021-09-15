@@ -43,9 +43,6 @@
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
-        img {
-          min-width: 760px;
-        }
         .item {
           flex: 1 0 35%;
           margin: 0.7rem;
@@ -84,7 +81,7 @@
       justify-content: space-evenly;
       align-items: center;
       .item {
-        flex: 1 0 20%;
+        flex: 0 0 23%;
         margin: 1rem 2rem;
         background-color: $yellow;
         border-radius: 0.75rem;

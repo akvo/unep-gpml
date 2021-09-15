@@ -12,34 +12,39 @@ import DPIcons from "../../images/GPML---DP---icons.png";
 import featureComponent from "../../images/feature-component-graphic.png";
 import GpmlHistory from "../../images/GPML-history.png";
 
+import { UIStore } from "../../store";
+import { topicTypes } from "../../utils/misc";
+import sumBy from "lodash/sumBy";
+import isEmpty from "lodash/isEmpty";
+
 const summary = [
   {
     name: "GPML Members",
-    value: "1412",
+    value: ["organisation", "stakeholder"],
+    startValue: 0,
     increment: "187",
   },
   {
     name: "Data Layers",
-    value: "67",
+    value: [],
+    startValue: "67",
     increment: "12",
   },
   {
     name: "Resources",
-    value: "6587",
-    increment: "32",
-  },
-  {
-    name: "Resources",
-    value: "6587",
+    value: topicTypes,
+    startValue: 0,
     increment: "32",
   },
 ];
 
 const AboutUs = () => {
+  const nav = UIStore.useState((s) => s.nav);
+
   return (
     <div id="about-us">
       {renderSectionIssue()}
-      {renderSectionSummary()}
+      {renderSectionSummary(nav)}
       {renderSectionMission()}
       {renderSectionInfo()}
       {renderSectionTimelineAndRoadmap()}
@@ -99,14 +104,29 @@ const renderSectionIssue = () => {
   );
 };
 
-const renderSectionSummary = () => {
-  const renderSummary = () => {
+const renderSectionSummary = (nav) => {
+  const renderSummary = (nav) => {
+    const isLoaded = () => Boolean(!isEmpty(nav));
     return summary.map((x, i) => {
-      const { name, value, increment } = x;
+      const { name, value, startValue } = x;
+      const navData =
+        isLoaded() &&
+        nav?.resourceCounts
+          ?.filter((x) => value.includes(Object.keys(x)[0]))
+          .map((x) => {
+            return {
+              name: Object.keys(x)[0],
+              count: x[Object.keys(x)[0]],
+            };
+          });
+      const total = sumBy(navData, "count");
+
       return (
         <div className="item" key={`summary-${i}`}>
           <div className="item-name text-green">{name}</div>
-          <div className="item-value text-white">{value}</div>
+          <div className="item-value text-white">
+            {isLoaded() ? total || startValue : 0}
+          </div>
         </div>
       );
     });
@@ -114,7 +134,7 @@ const renderSectionSummary = () => {
   return (
     <div className="section-container section-summary-container">
       <div className="ui container section-summary-wrapper">
-        {renderSummary()}
+        {renderSummary(nav)}
       </div>
     </div>
   );
