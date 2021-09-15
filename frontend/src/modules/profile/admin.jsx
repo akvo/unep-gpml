@@ -214,29 +214,12 @@ const AdminSection = ({
               pendingItems.data.map((item, index) => (
                 <Collapse.Panel
                   key={item.preview}
+                  className={`request-collapse-panel-item ${
+                    item?.reviewer?.id ? "status-show" : "status-none"
+                  }`}
                   header={
-                    <div className="row">
-                      <div className="col content">
-                        <Avatar
-                          className="content-img"
-                          size={{
-                            xs: 24,
-                            sm: 32,
-                            md: 40,
-                            lg: 50,
-                            xl: 50,
-                            xxl: 50,
-                          }}
-                          icon={item.picture || <UserOutlined />}
-                        />
-                        <div className="content-body">
-                          <div className="title">
-                            {item.title || "No Title"}
-                          </div>
-                          <div className="topic">{topicNames(item.type)}</div>
-                        </div>
-                      </div>
-                      <div className="col status">
+                    <>
+                      <div className="content-status">
                         {loadingAssignReviewer.id === item?.id &&
                           loadingAssignReviewer.type === item?.type && (
                             <span className="status">
@@ -252,62 +235,84 @@ const AdminSection = ({
                             </span>
                           )}
                       </div>
-                      <div
-                        className="col reviewer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                      >
-                        <ReviewStatus item={item} />
-                      </div>
-                      <div
-                        className="col action"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                      >
-                        <Space size="small">
-                          {item.type === "profile" ? (
-                            item.emailVerified ? (
-                              <ApproveButton
-                                item={item}
-                                type="ghost"
-                                className="black"
-                              />
-                            ) : (
-                              <Tooltip title="Profile cannot be approved since email is not verified">
+                      <div className="row">
+                        <div className="col content">
+                          <Avatar
+                            className="content-img"
+                            size={{
+                              xs: 24,
+                              sm: 32,
+                              md: 40,
+                              lg: 50,
+                              xl: 50,
+                              xxl: 50,
+                            }}
+                            icon={item.picture || <UserOutlined />}
+                          />
+                          <div className="content-body">
+                            <div className="title">
+                              {item.title || "No Title"}
+                            </div>
+                            <div className="topic">{topicNames(item.type)}</div>
+                          </div>
+                        </div>
+                        <div
+                          className="col reviewer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                        >
+                          <ReviewStatus item={item} />
+                        </div>
+                        <div
+                          className="col action"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                        >
+                          <Space size="small">
+                            {item.type === "profile" ? (
+                              item.emailVerified ? (
+                                <ApproveButton
+                                  item={item}
+                                  type="ghost"
+                                  className="black"
+                                />
+                              ) : (
+                                <Tooltip title="Profile cannot be approved since email is not verified">
+                                  <ApproveButton
+                                    item={item}
+                                    type="secondary"
+                                    disabled={true}
+                                  />
+                                </Tooltip>
+                              )
+                            ) : item.type === "policy" ? (
+                              <Tooltip title="Policies are imported from Law division system">
                                 <ApproveButton
                                   item={item}
                                   type="secondary"
                                   disabled={true}
                                 />
                               </Tooltip>
-                            )
-                          ) : item.type === "policy" ? (
-                            <Tooltip title="Policies are imported from Law division system">
+                            ) : (
                               <ApproveButton
                                 item={item}
-                                type="secondary"
-                                disabled={true}
+                                type="ghost"
+                                className="black"
                               />
-                            </Tooltip>
-                          ) : (
-                            <ApproveButton
-                              item={item}
-                              type="ghost"
+                            )}
+                            <Button
+                              type="link"
                               className="black"
-                            />
-                          )}
-                          <Button
-                            type="link"
-                            className="black"
-                            onClick={reject(item, "REJECTED")}
-                          >
-                            Decline
-                          </Button>
-                        </Space>
+                              onClick={reject(item, "REJECTED")}
+                            >
+                              Decline
+                            </Button>
+                          </Space>
+                        </div>
                       </div>
-                    </div>
+                    </>
                   }
                 >
                   <DetailCollapse
@@ -358,34 +363,37 @@ const AdminSection = ({
               archiveData.map((item, index) => (
                 <Collapse.Panel
                   key={item.preview}
+                  className="archive-collapse-panel-item status-show"
                   header={
-                    <div className="row">
-                      <div className="col content">
-                        <Avatar
-                          className="content-img"
-                          size={{
-                            xs: 24,
-                            sm: 32,
-                            md: 40,
-                            lg: 50,
-                            xl: 50,
-                            xxl: 50,
-                          }}
-                          icon={item.picture || <UserOutlined />}
-                        />
-                        <div className="content-body">
-                          <div className="title">
-                            {item.title || "No Title"}
-                          </div>
-                          <div className="topic">{topicNames(item.type)}</div>
-                        </div>
-                      </div>
-                      <div className="col status">
+                    <>
+                      <div className="content-status">
                         <span className="status">
                           {publishStatusUIText[item.reviewStatus]}
                         </span>
                       </div>
-                    </div>
+                      <div className="row">
+                        <div className="col content">
+                          <Avatar
+                            className="content-img"
+                            size={{
+                              xs: 24,
+                              sm: 32,
+                              md: 40,
+                              lg: 50,
+                              xl: 50,
+                              xxl: 50,
+                            }}
+                            icon={item.picture || <UserOutlined />}
+                          />
+                          <div className="content-body">
+                            <div className="title">
+                              {item.title || "No Title"}
+                            </div>
+                            <div className="topic">{topicNames(item.type)}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
                   }
                 >
                   <DetailCollapse
