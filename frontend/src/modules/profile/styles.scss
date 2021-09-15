@@ -101,39 +101,8 @@
     font-size: 1.4rem;
   }
 
-  .approval {
-    .col:nth-child(1) {
-      width: 38%;
-    }
-    .col:nth-child(2) {
-      width: 18%;
-    }
-    .col:nth-child(3) {
-      width: 18%;
-    }
-    .col:nth-child(4) {
-      width: 18%;
-    }
-  }
-
   .archive {
     margin-top: 55px;
-    .col:nth-child(1) {
-      width: 85%;
-    }
-    .col:nth-child(2) {
-      width: 12%;
-    }
-  }
-
-  .review,
-  .manage-stakeholder {
-    .col:nth-child(1) {
-      width: 80%;
-    }
-    .col:nth-child(2) {
-      width: 18%;
-    }
   }
 
   .row {
@@ -218,6 +187,7 @@
     .col {
       color: #2d6796;
       &.content {
+        flex: 1.5;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -226,6 +196,11 @@
         }
       }
       &.reviewer {
+        margin: 0 10px;
+        flex: 0.5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         .select-reviewer {
           width: 100%;
           .ant-select-selector {
@@ -235,6 +210,12 @@
             border-radius: 5px;
           }
         }
+      }
+      &.action {
+        flex: 0.5;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
       }
       .title {
         font-weight: 600;
@@ -248,20 +229,24 @@
     }
   }
 
+  // css for pending/approval status
+  .status {
+    color: #2d6796;
+    border: 1px solid rgba(45, 103, 150, 0.2);
+    box-sizing: border-box;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 0.2rem 0.7rem;
+  }
   .content-status {
     margin-bottom: 10px;
     margin-left: -24px;
     .status {
-      color: #2d6796;
-      border: 1px solid rgba(45, 103, 150, 0.2);
-      box-sizing: border-box;
-      border-radius: 50px;
-      font-size: 0.8rem;
-      text-align: center;
-      padding: 0.2rem 0.7rem;
       text-transform: uppercase;
     }
   }
+  // end of css for pending/approval status
 
   .stakeholder-info {
     display: flex;
