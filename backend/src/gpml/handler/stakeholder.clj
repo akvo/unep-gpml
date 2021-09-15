@@ -146,7 +146,10 @@
 
 (defn- make-affiliation [db org]
   (if (= -1 (:id org)) ;; TODO Fix this logic, FE seems also related
-    (handler.org/find-or-create db org)
+    (let [org-id (handler.org/find-or-create db org)
+          tags (when-let [tag-ids (seq (:expertise org))]
+                 (db.organisation/add-organisation-tags db {:tags (map #(vector org-id %) tag-ids)}))]
+      org-id)
     (:id org)))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config]}]
