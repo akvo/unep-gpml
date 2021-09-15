@@ -92,13 +92,6 @@
       "ui:widget": "checkbox",
       "ui:label": null
     },
-    "ui:order": [
-      "seeking",
-      "offering",
-      "about",
-      "tags",
-      "cv",
-      "publicDatabase"
-    ]
+    "ui:order": ["seeking", "offering", "about", "tags", "cv", "publicDatabase"]
   }
 }

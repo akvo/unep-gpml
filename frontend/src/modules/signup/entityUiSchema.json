@@ -109,13 +109,7 @@
         "ui:label": null
       },
 
-      "ui:order": [
-        "seeking",
-        "offering",
-        "about",
-        "cv",
-        "publicDatabase"
-      ]
+      "ui:order": ["seeking", "offering", "about", "cv", "publicDatabase"]
     },
     "ui:order": [
       "title",
