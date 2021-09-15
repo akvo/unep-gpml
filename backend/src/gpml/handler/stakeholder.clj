@@ -155,19 +155,18 @@
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params headers]}]
     (let [profile        (make-profile (assoc body-params
-                                       :affiliation (make-affiliation db (:org body-params))
-                                       :email (:email jwt-claims)
-                                       :cv (or (assoc-cv db (:cv body-params))
-                                               (:cv body-params))
-                                       :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
-                                                    (:picture jwt-claims))))
+                                              :affiliation (make-affiliation db (:org body-params))
+                                              :email (:email jwt-claims)
+                                              :cv (or (assoc-cv db (:cv body-params))
+                                                      (:cv body-params))
+                                              :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
+                                                           (:picture jwt-claims))))
           stakeholder-id (:id (db.stakeholder/new-stakeholder db profile))
           _              (email/notify-admins-pending-approval db mailjet-config
                                                                (merge profile {:type "stakeholder"}))
           profile        (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
           tags (when-let [tag-ids (seq (concat (:offering body-params) (:seeking body-params)))]
                  (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector (:id profile) %) tag-ids)}))
-
           res (-> (merge body-params profile)
                   (dissoc :affiliation :picture)
                   (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
@@ -223,15 +222,19 @@
             (db.stakeholder/add-stakeholder-geo tx {:geo geo-data})))
         (resp/status 204)))))
 
-(def org-schema [:map
-                [:id {:optional true} int?]
-                [:name {:optional true} string?]
-                [:url {:optional true} string?]
-                [:country {:optional true} int?]
-                [:geo_coverage_type {:optional true} geo/coverage_type]
-                [:geo_coverage_value {:optional true}
-                 [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])
-
+(def org-schema
+  [:map
+   [:authorize_submission  true?] ;; TODO keep optional until we align with PUT
+   [:id {:optional true} int?]
+   [:name {:optional true} string?]
+   [:url {:optional true} string?]
+   [:type {:optional true} string?]
+   [:country {:optional true} int?]
+   [:expertise {:optional true}
+    [:vector {:min 1 :error/message "Need at least one value for expertise"} int?]]
+   [:geo_coverage_type {:optional true} geo/coverage_type]
+   [:geo_coverage_value {:optional true}
+    [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post-params [_ _]
   [:map
