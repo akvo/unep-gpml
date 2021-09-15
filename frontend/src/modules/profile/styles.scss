@@ -215,6 +215,17 @@
           margin-right: 0.85rem;
         }
       }
+      &.reviewer {
+        .select-reviewer {
+          width: 100%;
+          .ant-select-selector {
+            color: #a5b0c9;
+            border: 0;
+            background-color: #edf2f7;
+            border-radius: 5px;
+          }
+        }
+      }
       .status {
         border: 1px solid rgba(45, 103, 150, 0.2);
         box-sizing: border-box;
