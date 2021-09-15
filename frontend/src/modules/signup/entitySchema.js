@@ -97,7 +97,7 @@ export const schema = {
               title: "About yourself (Bio) (max 100 words)",
               type: "string",
             },
-            portfolio: {
+            cv: {
               title: "CV / Portfolio",
               type: "string",
               format: "data-url",
