@@ -205,6 +205,11 @@
                                           {:get {:summary "End-point for the landing page"
                                                  :swagger {:tags ["landing"]}
                                                  :handler #ig/ref :gpml.handler.landing/get}}]]
+                                        ["/nav"
+                                         [""
+                                          {:get {:summary "End-point for the nav counts"
+                                                 :swagger {:tags ["nav"]}
+                                                 :handler #ig/ref :gpml.handler.nav/get}}]]
                                         ["/profile" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                   #ig/ref :gpml.auth/auth-required]}
                                          [""
@@ -318,6 +323,7 @@
   :gpml.handler.review/review-status-params {}
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.nav/get {:db #ig/ref :duct.database/sql}
 
   [:duct/const :gpml.config/mailjet] {:api-key #duct/env "MAILJET_API_KEY"
                                       :secret-key #duct/env "MAILJET_SECRET_KEY"
