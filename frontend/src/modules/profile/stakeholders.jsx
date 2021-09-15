@@ -97,7 +97,8 @@ const ManageRoles = ({ stakeholdersData, setStakeholdersData }) => {
           ))}
         </div>
       </div>
-      <div style={{ padding: "10px 0px" }}>
+      <div className="pagination-wrapper with-notes">
+        <small>* Only approved stakeholders are displayed here</small>
         <Pagination
           defaultCurrent={1}
           current={page}
@@ -107,7 +108,6 @@ const ManageRoles = ({ stakeholdersData, setStakeholdersData }) => {
           defaultPageSize={limit}
         />
       </div>
-      <small>* Only approved stakeholders are displayed here</small>
     </div>
   );
 };

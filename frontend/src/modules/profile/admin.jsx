@@ -330,7 +330,7 @@ const AdminSection = ({
             )}
           </Collapse>
         </div>
-        <div style={{ padding: "10px 0px" }}>
+        <div className="pagination-wrapper">
           <Pagination
             defaultCurrent={1}
             onChange={onChangePagePending}
@@ -411,7 +411,7 @@ const AdminSection = ({
             )}
           </Collapse>
         </div>
-        <div style={{ padding: "10px 0px" }}>
+        <div className="pagination-wrapper">
           <Pagination
             defaultCurrent={1}
             current={archiveItems.page}
