@@ -146,9 +146,9 @@
 
 (defn- make-affiliation [db org]
   (if (= -1 (:id org)) ;; TODO Fix this logic, FE seems also related
-    (let [org-id (handler.org/find-or-create db org)
-          tags (when-let [tag-ids (seq (:expertise org))]
-                 (db.organisation/add-organisation-tags db {:tags (map #(vector org-id %) tag-ids)}))]
+    (let [org-id (handler.org/find-or-create db org)]
+      (when-let [tag-ids (seq (:expertise org))]
+        (db.organisation/add-organisation-tags db {:tags (map #(vector org-id %) tag-ids)}))
       org-id)
     (:id org)))
 
@@ -165,8 +165,8 @@
           _              (email/notify-admins-pending-approval db mailjet-config
                                                                (merge profile {:type "stakeholder"}))
           profile        (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
-          tags (when-let [tag-ids (seq (concat (:offering body-params) (:seeking body-params)))]
-                 (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector (:id profile) %) tag-ids)}))
+          _ (when-let [tag-ids (seq (concat (:offering body-params) (:seeking body-params)))]
+              (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector (:id profile) %) tag-ids)}))
           res (-> (merge body-params profile)
                   (dissoc :affiliation :picture)
                   (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
