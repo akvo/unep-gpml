@@ -27,7 +27,7 @@
    :linked_in "johndoe"
    :twitter "johndoe"
    :representation ""
-   :affiliation org
+   :org {:id org}
    :title "Mr"
    :about "Lorem Ipsum"
    :picture picture
