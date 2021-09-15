@@ -98,7 +98,7 @@
         "ui:maxWord": 100
       },
 
-      "portfolio": {
+      "cv": {
         "ui:widget": "file",
         "ui:options": {
           "accept": ".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,application/pdf"
@@ -113,7 +113,7 @@
         "seeking",
         "offering",
         "about",
-        "portfolio",
+        "cv",
         "publicDatabase"
       ]
     },
