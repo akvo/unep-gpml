@@ -17,7 +17,7 @@
                                     attachments country urls tags remarks
                                     created_by mailjet-config]}]
   (let [organisation (if (= -1 (:id org))
-                       [(handler.org/find-or-create conn org)]
+                       [(handler.org/create conn org)]
                        [(:id org)])
         data {:type resource_type
               :title title

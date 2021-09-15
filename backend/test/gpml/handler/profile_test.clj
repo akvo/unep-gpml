@@ -94,6 +94,7 @@
               :role "USER"
               :org (db.organisation/organisation-by-id db {:id 1})
               :twitter "johndoe"
+              :company_name nil
               :reviewed_at nil
               :reviewed_by nil
               :review_status "SUBMITTED"
@@ -140,6 +141,7 @@
               :org (db.organisation/organisation-by-id db {:id 10001})
               :twitter "johndoe"
               :reviewed_at nil
+              :company_name nil
               :reviewed_by nil
               :review_status "SUBMITTED"
               :public_email false
@@ -221,6 +223,7 @@
               :about "Dolor sit Amet"
               :affiliation 1
               :reviewed_at nil
+              :company_name nil
               :reviewed_by nil
               :review_status "SUBMITTED"
               :public_email true
@@ -267,6 +270,7 @@
               :role "USER"
               :about "Dolor sit Amet"
               :affiliation 1
+              :company_name nil
               :reviewed_at nil
               :reviewed_by nil
               :cv nil
