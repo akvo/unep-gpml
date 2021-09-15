@@ -225,7 +225,7 @@
 
 (def org-schema
   [:map
-   [:authorize_submission  true?] ;; TODO keep optional until we align with PUT
+   [:authorize_submission {:optional true} true?] ;; TODO keep optional until we align with PUT
    [:id {:optional true} int?]
    [:name {:optional true} string?]
    [:url {:optional true} string?]
