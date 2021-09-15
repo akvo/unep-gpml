@@ -150,14 +150,7 @@ const ReviewSection = ({
           <div className="col content">
             <Avatar
               className="content-img"
-              size={{
-                xs: 24,
-                sm: 32,
-                md: 40,
-                lg: 50,
-                xl: 50,
-                xxl: 50,
-              }}
+              size={50}
               icon={item.picture || <UserOutlined />}
             />
             <div className="content-body">
