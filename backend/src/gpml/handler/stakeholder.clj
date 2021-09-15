@@ -85,6 +85,7 @@
 (defn- remap-profile
   [{:keys [id photo about
            title first_name role
+           company_name
            last_name linked_in cv
            twitter representation
            country geo_coverage_type
@@ -95,6 +96,7 @@
    org]
   {:id id
    :title title
+   :company_name company_name
    :first_name first_name
    :last_name last_name
    :linked_in linked_in
