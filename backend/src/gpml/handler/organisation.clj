@@ -8,7 +8,7 @@
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
-(defn find-or-create [conn org]
+(defn create [conn org]
   (let [org-id (:id (db.organisation/new-organisation conn (dissoc org :id)))
         org-geo (handler.geo/get-geo-vector org-id org)]
     (when (seq org-geo)
@@ -38,8 +38,8 @@
                        second-contact-email (:stakeholder body-params)]
                    (if-let [second-contact (db.stakeholder/stakeholder-by-email (:spec db) {:email second-contact-email})]
                      (->> (assoc params :second_contact (:id second-contact))
-                          (find-or-create (:spec db)))
-                     (let [org-id (find-or-create (:spec db) params)]
+                          (create (:spec db)))
+                     (let [org-id (create (:spec db) params)]
                        (db.invitation/new-invitation (:spec db) {:stakeholder-id (:id first-contact)
                                                                  :organisation-id org-id
                                                                  :email second-contact-email
