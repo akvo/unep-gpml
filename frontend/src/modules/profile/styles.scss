@@ -51,8 +51,15 @@
     }
   }
 
-  .ant-collapse-arrow {
-    top: 10.0005px !important;
+  .status-show {
+    .ant-collapse-arrow {
+      top: 40px !important;
+    }
+  }
+  .status-none {
+    .ant-collapse-arrow {
+      top: 20.005px !important;
+    }
   }
 }
 
@@ -226,15 +233,6 @@
           }
         }
       }
-      .status {
-        border: 1px solid rgba(45, 103, 150, 0.2);
-        box-sizing: border-box;
-        border-radius: 50px;
-        font-size: 0.85rem;
-        text-align: center;
-        padding: 0.2rem 0.7rem;
-        font-size: 0.75rem;
-      }
       .title {
         font-weight: 600;
         font-size: 1rem;
@@ -244,6 +242,21 @@
         text-transform: uppercase;
         font-size: 0.75rem;
       }
+    }
+  }
+
+  .content-status {
+    margin-bottom: 10px;
+    margin-left: -24px;
+    .status {
+      color: #2d6796;
+      border: 1px solid rgba(45, 103, 150, 0.2);
+      box-sizing: border-box;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 0.2rem 0.7rem;
+      text-transform: uppercase;
     }
   }
 
