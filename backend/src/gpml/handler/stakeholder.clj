@@ -146,9 +146,9 @@
 
 (defn- make-affiliation [db org]
   (if (= -1 (:id org)) ;; TODO Fix this logic, FE seems also related
-    (let [org-id (handler.org/find-or-create db org)
-          tags (when-let [tag-ids (seq (:expertise org))]
-                 (db.organisation/add-organisation-tags db {:tags (map #(vector org-id %) tag-ids)}))]
+    (let [org-id (handler.org/find-or-create db org)]
+      (when-let [tag-ids (seq (:expertise org))]
+        (db.organisation/add-organisation-tags db {:tags (map #(vector org-id %) tag-ids)}))
       org-id)
     (:id org)))
 
