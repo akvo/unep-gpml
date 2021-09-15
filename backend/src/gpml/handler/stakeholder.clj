@@ -162,6 +162,9 @@
           _              (email/notify-admins-pending-approval db mailjet-config
                                                                (merge profile {:type "stakeholder"}))
           profile        (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
+          tags (when-let [tag-ids (seq (concat (:offering body-params) (:seeking body-params)))]
+                 (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector (:id profile) %) tag-ids)}))
+
           res (-> (merge body-params profile)
                   (dissoc :affiliation :picture)
                   (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
