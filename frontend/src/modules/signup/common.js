@@ -1,7 +1,7 @@
 export default {
-  feedCountry: (data, formData) => {
-    if (data.country?.[formData.S1.country]) {
-      data.country = formData.S1.country;
+  feedCountry: (data, formData, group) => {
+    if (data.country?.[formData[group].country]) {
+      data.country = formData[group].country;
     }
   },
   feedSeeking: (data, formData) => {
