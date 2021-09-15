@@ -251,7 +251,7 @@
     [:vector {:min 1 :error/message "Need at least one value for seeking"} int?]]
    [:offering {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for offering"} int?]]
-   [:org {:optional true} map? org-schema]])
+   [:org {:optional true} org-schema]])
 
 (defmethod ig/init-key ::get-params [_ _]
   {:query [:map
