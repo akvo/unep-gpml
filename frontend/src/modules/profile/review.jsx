@@ -233,7 +233,7 @@ const ReviewSection = ({
             )}
           </Collapse>
         </div>
-        <div style={{ padding: "10px 0px" }}>
+        <div className="pagination-wrapper">
           <Pagination
             defaultCurrent={1}
             current={items.page}
