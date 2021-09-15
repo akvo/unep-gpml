@@ -36,6 +36,7 @@ select
     s.last_name,
     s.email,
     s.public_email,
+    s.company_name,
     s.public_database,
     s.picture as photo,
     s.linked_in,
