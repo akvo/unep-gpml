@@ -204,7 +204,7 @@ const AdminSection = ({
 
     return (
       <div key="new-approval" className="approval">
-        <h2>New resources</h2>
+        <h2>New resources ({pendingItems.count})</h2>
         <div className="table-wrapper">
           <div className="row head">
             <HeaderSearch />
@@ -239,14 +239,7 @@ const AdminSection = ({
                         <div className="col content">
                           <Avatar
                             className="content-img"
-                            size={{
-                              xs: 24,
-                              sm: 32,
-                              md: 40,
-                              lg: 50,
-                              xl: 50,
-                              xxl: 50,
-                            }}
+                            size={50}
                             icon={item.picture || <UserOutlined />}
                           />
                           <div className="content-body">
@@ -375,14 +368,7 @@ const AdminSection = ({
                         <div className="col content">
                           <Avatar
                             className="content-img"
-                            size={{
-                              xs: 24,
-                              sm: 32,
-                              md: 40,
-                              lg: 50,
-                              xl: 50,
-                              xxl: 50,
-                            }}
+                            size={50}
                             icon={item.picture || <UserOutlined />}
                           />
                           <div className="content-body">

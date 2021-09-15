@@ -30,17 +30,13 @@ const Stakeholder = ({ stakeholder, onChangeRole, loading }) => {
   return (
     <div className="row stakeholder-row">
       <div className="col content">
-        <div>
-          <Avatar
-            src={picture}
-            size={{ xs: 24, sm: 32, md: 40, lg: 50, xl: 50, xxl: 50 }}
-          />
-        </div>
-        <div>
+        <Avatar className="content-img" src={picture} size={50} />
+        <div className="content-body">
           <div className="title">
-            {`${firstName} ${lastName}`} <span className="status">{email}</span>
+            <span>{`${firstName} ${lastName}`}</span>{" "}
+            <span className="status">{email}</span>
           </div>
-          <div className="topic">Stakeholder</div>
+          <div className="topic">Individual</div>
         </div>
       </div>
       <div className="col action">
