@@ -156,25 +156,20 @@ const AdminSection = ({
   };
 
   const ReviewStatus = ({ item }) => {
-    const { reviewer } = item;
     return (
-      <>
-        <span>
-          <Select
-            showSearch={true}
-            style={{ width: "100%" }}
-            placeholder="Assign reviewer"
-            onChange={(reviewerId) => assignReviewer(item, reviewerId)}
-            defaultValue={item?.reviewer?.id}
-          >
-            {reviewers.map((r) => (
-              <Select.Option key={r.email} value={r.id}>
-                {r.email}
-              </Select.Option>
-            ))}
-          </Select>
-        </span>
-      </>
+      <Select
+        showSearch={true}
+        className="select-reviewer"
+        placeholder="Assign reviewer"
+        onChange={(reviewerId) => assignReviewer(item, reviewerId)}
+        defaultValue={item?.reviewer?.id}
+        filterOption={(input, option) =>
+          option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+        options={reviewers.map((r) => {
+          return { value: r.id, label: r.email };
+        })}
+      />
     );
   };
 
