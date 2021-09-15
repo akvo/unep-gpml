@@ -120,6 +120,14 @@ const SignUpForm = withRouter(
             data.org.otherStakeholders = data.otherStakeholders;
             delete data.otherStakeholders;
           }
+          data.org.authorizeSubmission=data.authorizeSubmission;
+          delete data.authorizeSubmission;
+
+          if (data.orgExpertise) {
+            console.log('data.orgExpertise', data.orgExpertise);
+            data.org.expertise = data.orgExpertise.map((x) => Number(x));
+            delete data.orgExpertise;
+          }
         }
       } else {
         feedCountry(data, formData, 'S1');
