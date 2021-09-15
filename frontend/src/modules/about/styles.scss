@@ -93,18 +93,15 @@
         .item-increment {
           font-size: 0.9rem;
           color: $blue02;
-
         }
         .item-name {
           text-transform: uppercase;
           color: $blue02;
-
         }
         .item-value {
           font-size: 3.8rem;
           font-weight: 900;
           color: $blue02;
-
         }
       }
     }
@@ -151,7 +148,6 @@
   // Section Timeline & Roadmap
   .section-timeline-roadmap-container {
     .section-timeline-roadmap-wrapper {
-
     }
     .section-timeline-roadmap-graphic {
       padding: 0;
@@ -196,7 +192,6 @@
       text-align: center;
     }
     .section-community-wrapper {
-
     }
   }
 
@@ -205,7 +200,7 @@
     background: white;
     padding-bottom: 0;
     .section-mission-graphic {
-      background-color: #005B71!important;
+      background-color: #005b71 !important;
     }
     .section-history-wrapper {
       .section-history-text {
@@ -213,7 +208,6 @@
       .section-history-img-wrapper {
         background-color: #006666 !important;
         display: block;
-
       }
     }
   }

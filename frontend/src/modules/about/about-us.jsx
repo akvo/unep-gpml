@@ -234,7 +234,7 @@ const renderSectionTimelineAndRoadmap = () => {
         </div>
       </div>
       <div className="section-timeline-roadmap-graphic">
-          <Image src={timelineAndRoadmapGraphic}  preview={false} />
+        <Image src={timelineAndRoadmapGraphic} preview={false} />
       </div>
     </div>
   );
@@ -297,7 +297,7 @@ const renderSectionCommunity = () => {
         </div>
       </div>
       <div className="section-community-graphic">
-          <Image src={ourCommunity} preview={false} />
+        <Image src={ourCommunity} preview={false} />
       </div>
     </div>
   );
@@ -330,7 +330,7 @@ const renderSectionHistory = () => {
         </div>
       </div>
       <div className="section-mission-graphic">
-          <Image src={GpmlHistory} preview={false} />
+        <Image src={GpmlHistory} preview={false} />
       </div>
     </div>
   );
