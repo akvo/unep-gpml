@@ -140,31 +140,33 @@ const ReviewSection = ({
 
   const ReviewedHeader = ({ item }) => {
     return (
-      <div className="row">
-        <div className="col content">
-          <Avatar
-            className="content-img"
-            size={{
-              xs: 24,
-              sm: 32,
-              md: 40,
-              lg: 50,
-              xl: 50,
-              xxl: 50,
-            }}
-            icon={item.picture || <UserOutlined />}
-          />
-          <div className="content-body">
-            <div className="title">{item.title || "No Title"}</div>
-            <div className="topic">{topicNames(item.type)}</div>
-          </div>
-        </div>
-        <div className="col status">
+      <>
+        <div className="content-status">
           <span className="status">
             {reviewStatusUIText[item.reviewStatus]}
           </span>
         </div>
-      </div>
+        <div className="row">
+          <div className="col content">
+            <Avatar
+              className="content-img"
+              size={{
+                xs: 24,
+                sm: 32,
+                md: 40,
+                lg: 50,
+                xl: 50,
+                xxl: 50,
+              }}
+              icon={item.picture || <UserOutlined />}
+            />
+            <div className="content-body">
+              <div className="title">{item.title || "No Title"}</div>
+              <div className="topic">{topicNames(item.type)}</div>
+            </div>
+          </div>
+        </div>
+      </>
     );
   };
 
@@ -175,6 +177,7 @@ const ReviewSection = ({
     items,
     setItems,
     reviewStatus,
+    collapsePanelClassName,
   }) => {
     const [previewContent, storePreviewContent] = useState({});
 
@@ -210,6 +213,7 @@ const ReviewSection = ({
                 return (
                   <Collapse.Panel
                     key={previewUrl}
+                    className={collapsePanelClassName}
                     header={<Header item={item} />}
                   >
                     <DetailCollapse
@@ -253,6 +257,7 @@ const ReviewSection = ({
           items={reviewItems}
           setItems={setReviewItems}
           reviewStatus="PENDING"
+          collapsePanelClassName="request-collapse-panel-item"
         />
       </div>
       <div key="reviewed" className="archive">
@@ -264,6 +269,7 @@ const ReviewSection = ({
           items={reviewedItems}
           setItems={setReviewedItems}
           reviewStatus="ACCEPTED,REJECTED"
+          collapsePanelClassName="archive-collapse-panel-item status-show"
         />
       </div>
     </div>
