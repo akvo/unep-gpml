@@ -26,15 +26,15 @@
    :last_name "Doe"
    :linked_in "johndoe"
    :twitter "johndoe"
-   :representation "test"
+   :representation ""
    :affiliation org
    :title "Mr"
-   :organisation_role "manager"
    :about "Lorem Ipsum"
    :picture picture
    :country 1
-   :cv picture
-   :geo_coverage_type "regional"})
+   :public_email false
+   :public_database false
+   :cv picture})
 
 (defn get-user [conn email]
   (:id (db.stakeholder/stakeholder-by-email conn {:email email})))
@@ -70,8 +70,6 @@
           ;; John trying to sign up with new organisation
           body-params (assoc (new-profile 1)
                              :org (:org data)
-                             :geo_coverage_value (mapv :id (:country_groups data))
-                             :tags (mapv :id (:tags data))
                              :country (-> (:countries data) first :id)
                              :photo picture)
           resp (handler (-> (mock/request :post "/")
@@ -90,19 +88,16 @@
               :linked_in "johndoe"
               :photo "/image/profile/1"
               :cv "/cv/profile/1"
-              :representation "test"
+              :representation ""
               :title "Mr"
               :role "USER"
               :org (db.organisation/organisation-by-id db {:id 1})
-              :geo_coverage_type "regional"
-              :geo_coverage_value (mapv :id (-> data :country_groups))
-              :tags (mapv :id (-> data :tags))
               :twitter "johndoe"
-              :organisation_role "manager"
               :reviewed_at nil
               :reviewed_by nil
               :review_status "SUBMITTED"
-              :public_email false}
+              :public_email false
+              :public_database false}
              (:body resp)))
       (is (= "/image/profile/1" (-> resp :body :photo))))))
 
@@ -121,8 +116,6 @@
                                    :geo_coverage_value (mapv :id (:country_groups data))
                                    :type "Company"
                                    :url "mycompany.org"}
-                             :geo_coverage_value (mapv :id (:country_groups data))
-                             :tags (mapv :id (:tags data))
                              :country (-> (:countries data) first :id)
                              :photo picture)
           resp (handler (-> (mock/request :post "/")
@@ -141,19 +134,16 @@
               :linked_in "johndoe"
               :photo "/image/profile/1"
               :cv "/cv/profile/1"
-              :representation "test"
+              :representation ""
               :title "Mr"
               :role "USER"
               :org (db.organisation/organisation-by-id db {:id 10001})
-              :geo_coverage_type "regional"
-              :geo_coverage_value (mapv :id (-> data :country_groups))
-              :tags (mapv :id (-> data :tags))
               :twitter "johndoe"
-              :organisation_role "manager"
               :reviewed_at nil
               :reviewed_by nil
               :review_status "SUBMITTED"
-              :public_email false}
+              :public_email false
+              :public_database false}
              (:body resp)))
       (is (= "/image/profile/1" (-> resp :body :photo))))))
 
@@ -165,9 +155,6 @@
           data (seed-important-database db)
           body-params (assoc (new-profile 1)
                              :org nil
-                             :organisation_role nil
-                             :geo_coverage_value (mapv :id (:country_groups data))
-                             :tags (mapv :id (:tags data))
                              :country (-> (:countries data) first :id))
           ;; John trying to sign up without any organisation and leave photo, twitter, and linkedin blank
           resp (handler (-> (mock/request :post "/")
@@ -207,8 +194,6 @@
                                              :country (-> (:countries data) second :id)
                                              :first_name "Mark"
                                              :org {:id 1 :name "Akvo" :url "https://akvo.org"}
-                                             :geo_coverage_value (mapv :id (:country_groups data))
-                                             :organisation_role "content creator"
                                              :photo picture
                                              :cv picture
                                              :picture nil
@@ -231,16 +216,15 @@
               :twitter "johndoe"
               :photo "/image/profile/2"
               :cv "/cv/profile/2"
-              :representation "test"
+              :representation ""
               :role "USER"
-              :organisation_role "content creator"
-              :geo_coverage_type "regional"
               :about "Dolor sit Amet"
               :affiliation 1
               :reviewed_at nil
               :reviewed_by nil
               :review_status "SUBMITTED"
-              :public_email true}
+              :public_email true
+              :public_database false}
              profile))))
 
 (deftest handler-put-test-but-the-pic-is-from-outside
@@ -264,7 +248,6 @@
                                              :first_name "Mark"
                                              :org {:id 1 :name "Akvo" :url "https://akvo.org"}
                                              :photo "https://lh3.googleusercontent.com"
-                                             :organisation_role "content creator"
                                              :cv nil
                                              :picture nil))))
           profile (db.stakeholder/stakeholder-by-id db {:id 10001})
@@ -280,17 +263,16 @@
               :linked_in "johndoe"
               :twitter "johndoe"
               :photo "https://lh3.googleusercontent.com"
-              :representation "test"
+              :representation ""
               :role "USER"
-              :organisation_role "content creator"
-              :geo_coverage_type "regional"
               :about "Dolor sit Amet"
               :affiliation 1
               :reviewed_at nil
               :reviewed_by nil
               :cv nil
               :review_status "SUBMITTED"
-              :public_email false}
+              :public_email false
+              :public_database false}
              profile))))
 
 (deftest handler-get-test-has-profile
@@ -302,8 +284,7 @@
           tags (->> (db.tag/all-tags db)
                     (take 2)
                     (map :id))
-          _ (db.stakeholder/new-stakeholder db (assoc (new-profile 1)
-                                                      :geo_coverage_type "transnational"))
+          _ (db.stakeholder/new-stakeholder db (new-profile 1))
           _ (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector 10001 %) tags)})
           geo (db.stakeholder/add-stakeholder-geo db {:geo [[10001 nil 1] [10001 nil 2]]})
           ;; dashboard check if this guy has profile
@@ -317,7 +298,6 @@
       (is (= "Doe" (-> resp :last_name)))
       (is (= "SUBMITTED" (-> resp :review_status)))
       (is (= (db.organisation/organisation-by-id db {:id 1}) (-> resp :org)))
-      (is (= (map :country geo) (-> resp :geo_coverage_value)))
       (is (= tags (-> resp :tags)))
       (is (= 1 (-> resp :country))))))
 
