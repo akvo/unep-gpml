@@ -73,7 +73,7 @@ const SignUpForm = withRouter(
           countries
         );
 
-        feedCountry(data, formData); // TODO check paths
+        feedCountry(data, formData, 'S2');
 
         data.title = formData.S2.title;
 
@@ -94,8 +94,8 @@ const SignUpForm = withRouter(
           data.org.url = data.orgUrl;
           data.org.logo = data.orgLogo;
 
-          if (data.orgHeadquarter?.[formData.S4.orgHeadquarter]) {
-            data.org.country = formData.S4.orgHeadquarter;
+          if (data.orgHeadquarter?.[formData.S5.orgHeadquarter]) {
+            data.org.country = formData.S5.orgHeadquarter;
           }
           if (data.geoCoverageType) {
             data.org.geoCoverageType = data.geoCoverageType;
@@ -122,7 +122,7 @@ const SignUpForm = withRouter(
           }
         }
       } else {
-        feedCountry(data, formData);
+        feedCountry(data, formData, 'S1');
         feedSeeking(data, formData);
         data.title = formData.S1.title;
         feedOffering(data, formData);
