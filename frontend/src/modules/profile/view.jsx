@@ -12,7 +12,7 @@ import {
   fetchStakeholders,
 } from "./utils";
 import { userRoles as roles } from "../../utils/misc";
-import AdminSection from "./admin";
+import { AdminSection } from "./admin";
 import ReviewSection from "./review";
 import ManageRoles from "./stakeholders";
 import "./styles.scss";
