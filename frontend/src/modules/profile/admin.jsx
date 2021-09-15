@@ -9,6 +9,7 @@ import {
   Select,
   Pagination,
   Tooltip,
+  Input,
 } from "antd";
 import React, { Fragment } from "react";
 import { useEffect, useState } from "react";
@@ -26,6 +27,8 @@ import {
 } from "../../utils/misc";
 import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
 import Avatar from "antd/lib/avatar/avatar";
+
+const { Search } = Input;
 
 const ModalReject = ({ visible, close, reject, item }) => {
   return (
@@ -47,6 +50,17 @@ const ModalReject = ({ visible, close, reject, item }) => {
         <p>Are you sure you want to decline?</p>
       </div>
     </Modal>
+  );
+};
+
+const HeaderSearch = () => {
+  return (
+    <Search
+      className="search"
+      placeholder="Search for a resource"
+      allowClear
+      onSearch={console.log("hi")}
+    />
   );
 };
 
@@ -198,10 +212,7 @@ const AdminSection = ({
         <h2>New resources</h2>
         <div className="table-wrapper">
           <div className="row head">
-            <div className="col">Name</div>
-            <div className="col">Review Status</div>
-            <div className="col">Reviewer</div>
-            <div className="col">Action</div>
+            <HeaderSearch />
           </div>
           <Collapse onChange={getPreviewContent}>
             {pendingItems?.data && pendingItems?.data?.length > 0 ? (
@@ -345,8 +356,7 @@ const AdminSection = ({
         <h2>Requests archive ({archiveItems.count})</h2>
         <div className="table-wrapper">
           <div className="row head">
-            <div className="col">Name</div>
-            <div className="col">Status</div>
+            <HeaderSearch />
           </div>
           <Collapse onChange={getPreviewContent}>
             {archiveData.length > 0 ? (
