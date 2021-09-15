@@ -67,7 +67,9 @@ const getSchema = ({
 
   prop.S3.properties["orgRepresentative"].enum = organisationType;
 
-  prop.S4.properties["orgExpertise"].enum = tags?.offering?.map((it) => it.id);
+  prop.S4.properties["orgExpertise"].enum = tags?.offering?.map((it) =>
+    String(it.id)
+  );
   prop.S4.properties["orgExpertise"].enumNames = tags?.offering?.map(
     (it) => it.tag
   );
