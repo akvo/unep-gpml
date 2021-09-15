@@ -155,7 +155,8 @@
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params headers]}]
     (let [profile        (make-profile (assoc body-params
-                                              :affiliation (make-affiliation db (:org body-params))
+                                              :affiliation (when (:org body-params)
+                                                             (make-affiliation db (:org body-params)))
                                               :email (:email jwt-claims)
                                               :cv (or (assoc-cv db (:cv body-params))
                                                       (:cv body-params))
