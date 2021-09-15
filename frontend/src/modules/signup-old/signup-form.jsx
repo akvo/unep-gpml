@@ -15,7 +15,6 @@ import { FieldsFromSchema } from "../../utils/form-utils";
 import cloneDeep from "lodash/cloneDeep";
 import isEmpty from "lodash/isEmpty";
 import { storage } from "../../utils/storage";
-import GeoCoverageInput from "./comp/geo-coverage-input";
 import { useRef } from "react";
 
 const { sectorOptions } = UIStore.currentState;
@@ -48,12 +47,6 @@ const defaultFormSchema = {
         maxFileSize: 1,
         accept: "image/*",
       },
-      representation: {
-        label: "Representative sector",
-        required: true,
-        control: "select",
-        options: sectorOptions.map((it) => ({ value: it, label: it })),
-      },
       country: {
         label: "Country",
         required: true,
@@ -62,12 +55,6 @@ const defaultFormSchema = {
         showSearch: true,
         options: [],
         autoComplete: "on",
-      },
-    },
-    geoCoverage: {
-      geoCoverageValue: {
-        label: "Geo coverage",
-        render: GeoCoverageInput,
       },
     },
   },
@@ -79,12 +66,11 @@ const defaultFormSchema = {
       options: [],
       placeholder: "Start typing...",
       order: 0,
-      required: true,
+      required: false,
     },
-    organisationRole: {
-      label: "Your role in the entity",
-      order: 2,
-      required: true,
+    companyName: {
+      label: "Company name",
+      required: false,
     },
   },
   expertiesActivities: {
@@ -109,13 +95,6 @@ const defaultFormSchema = {
       required: true,
       control: "textarea",
       placeholder: "Max 150 words",
-    },
-    tags: {
-      label: "Tags",
-      control: "select",
-      options: [],
-      mode: "multiple",
-      showSearch: true,
     },
     cv: {
       label: "CV / Portfolio",
@@ -163,14 +142,13 @@ const SignupForm = ({
     profile,
     organisations,
     organisationType,
-    geoCoverageTypeOptions,
   } = UIStore.currentState;
   const [noOrg, setNoOrg] = useState(false);
   const [pubEmail, setPubEmail] = useState({
     checked: false,
     text: "Show my email address on public listing",
   });
-  const [geoType, setGeoType] = useState({ value: null, error: false });
+
   const prevVals = useRef();
   const formRef = useRef();
   const formSchemaRef = useRef(defaultFormSchema);
@@ -191,10 +169,6 @@ const SignupForm = ({
     );
   };
 
-  newSchema["expertiesActivities"].tags.options = tags?.general?.map((x) => ({
-    value: x.id,
-    label: x.tag,
-  }));
   newSchema["expertiesActivities"].offering.options = tags?.offering?.map(
     (x) => ({
       value: x.id,
@@ -208,10 +182,6 @@ const SignupForm = ({
     })
   );
 
-  newSchema["personalDetails"]["geoCoverage"].geoCoverageValue = {
-    ...newSchema["personalDetails"]["geoCoverage"].geoCoverageValue,
-    countries: countries,
-  };
   newSchema["personalDetails"][
     "socialLocation"
   ].country.options = countries.map((x) => ({
@@ -242,7 +212,7 @@ const SignupForm = ({
   };
 
   const handleChangePublicEmail = (checked) => {
-    const preffix = checked ? "Dont' show" : "Show";
+    const preffix = !checked ? "Don't show" : "Show";
     setPubEmail({
       checked: checked,
       text: `${preffix} my email address on public listing`,
@@ -253,28 +223,9 @@ const SignupForm = ({
     });
   };
 
-  const handleChangeGeoType = (value, setError = true) => {
-    setGeoType({ value, error: setError ? !value : setError });
-    const newSchema = cloneDeep(formSchema);
-    Object.keys(newSchema["personalDetails"]["geoCoverage"]).forEach((key) => {
-      newSchema["personalDetails"]["geoCoverage"][key].required =
-        value !== "global";
-    });
-    setFormSchema(newSchema);
-    setTimeout(() => {
-      formRef.current?.change("ts", new Date().getTime());
-      formRef.current?.change("geoCoverageType", value);
-      // set geoCoverageValue to null when geoCoverageType change
-      initialValues?.geoCoverageType !== value &&
-        initialValues?.geoCoverageValue &&
-        formRef.current?.change("geoCoverageValue", null);
-    });
-  };
-
   useEffect(() => {
     if (initialValues) {
       handleChangePublicEmail(initialValues.publicEmail);
-      handleChangeGeoType(initialValues?.geoCoverageType, false);
     }
     if (initialValues && initialValues.org === null) {
       handleChangePrivateCitizen({ target: { checked: true } });
@@ -318,52 +269,6 @@ const SignupForm = ({
                   <FieldsFromSchema
                     schema={formSchema["personalDetails"]["socialLocation"]}
                   />
-                  <Field
-                    name="geoCoverageType"
-                    options={geoCoverageTypeOptions}
-                    component={(props) => {
-                      return (
-                        <Form.Item
-                          label="Geo coverage type"
-                          name={props.input.name}
-                          validateStatus={
-                            props.meta.error && props.meta.touched
-                              ? "error"
-                              : ""
-                          }
-                          help={
-                            props.meta.error &&
-                            props.meta.touched &&
-                            props.meta.error
-                          }
-                        >
-                          <Select
-                            onChange={(val) => handleChangeGeoType(val)}
-                            defaultValue={props.input.value}
-                          >
-                            {props.options.map((it) => (
-                              <Select.Option
-                                key={it.toLocaleLowerCase()}
-                                value={it.toLocaleLowerCase()}
-                              >
-                                {it}
-                              </Select.Option>
-                            ))}
-                          </Select>
-                        </Form.Item>
-                      );
-                    }}
-                    validate={(value) => {
-                      if (!value) {
-                        return "Required";
-                      } else {
-                        return undefined;
-                      }
-                    }}
-                  />
-                  <FieldsFromSchema
-                    schema={formSchema["personalDetails"]["geoCoverage"]}
-                  />
                 </div>
                 <div className={sectionGrid}>
                   <h2>Entity details</h2>
@@ -378,17 +283,6 @@ const SignupForm = ({
                   <FormSpy
                     subscription={{ values: true }}
                     onChange={({ values }) => {
-                      // set geoCoverageValue to null when geoCoverageType change
-                      if (
-                        prevVals.current?.org?.geoCoverageType !==
-                        values?.org?.geoCoverageType
-                      ) {
-                        setTimeout(() => {
-                          formRef.current?.change("ts", new Date().getTime());
-                          // set geoCoverageValue to null when geoCoverageType change
-                          formRef.current?.change("org.geoCoverageValue", null);
-                        });
-                      }
                       const newSchema = cloneDeep(formSchema);
                       let changedSchema = false;
                       if (
@@ -428,27 +322,6 @@ const SignupForm = ({
                           addonBefore: "https://",
                           required: true,
                         };
-                        newSchema["organisation"]["org.geoCoverageType"] = {
-                          label: "Geo coverage type",
-                          order: 6,
-                          required: true,
-                          control: "select",
-                          options: geoCoverageTypeOptions.map((it) => ({
-                            value: it.toLowerCase(),
-                            label: it,
-                          })),
-                        };
-                        newSchema["organisation"]["org.geoCoverageValue"] = {
-                          order: 7,
-                          required: true,
-                          label: "Geo coverage",
-                          render: GeoCoverageInput,
-                        };
-                        if (values.org.geoCoverageType === "global") {
-                          newSchema["organisation"][
-                            "org.geoCoverageValue"
-                          ].required = false;
-                        }
                         changedSchema = true;
                       }
                       if (
@@ -468,39 +341,9 @@ const SignupForm = ({
                             newSchema["organisation"][it].required = false;
                           });
                         changedSchema = true;
-                        [
-                          "country",
-                          "geoCoverageType",
-                          "geoCoverageValue",
-                          "type",
-                          "url",
-                        ].forEach((propKey) => {
+                        ["country", "type", "url"].forEach((propKey) => {
                           delete newSchema["organisation"][`org.${propKey}`];
                         });
-                      }
-                      if (
-                        values.org != null &&
-                        values?.org?.geoCoverageType !==
-                          prevVals.current?.org?.geoCoverageType
-                      ) {
-                        if (values.org.geoCoverageType === "global") {
-                          if (
-                            newSchema["organisation"]["org.geoCoverageValue"]
-                          ) {
-                            newSchema["organisation"][
-                              "org.geoCoverageValue"
-                            ].required = false;
-                          }
-                        } else {
-                          if (
-                            newSchema["organisation"]["org.geoCoverageValue"]
-                          ) {
-                            newSchema["organisation"][
-                              "org.geoCoverageValue"
-                            ].required = true;
-                          }
-                        }
-                        changedSchema = true;
                       }
                       if (changedSchema) {
                         setFormSchema(newSchema);
