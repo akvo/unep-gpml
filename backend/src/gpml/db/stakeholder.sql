@@ -59,6 +59,7 @@ select
     s.first_name,
     s.last_name,
     s.email,
+    s.company_name,
     s.public_email,
     s.public_database,
     s.picture as photo,
@@ -196,6 +197,7 @@ update stakeholder set
 --~ (when (contains? params :affiliation) "affiliation= :v:affiliation::integer, ")
 --~ (when (contains? params :linked_in) "linked_in= :linked_in,")
 --~ (when (contains? params :twitter) "twitter= :twitter,")
+--~ (when (contains? params :company_name) "twitter= :company_name,")
 --~ (when (contains? params :picture) "picture= :picture,")
 --~ (when (contains? params :cv) "cv= :cv, ")
 --~ (when (contains? params :country) "country= :v:country::integer,")
