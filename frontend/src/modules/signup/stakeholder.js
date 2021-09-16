@@ -60,8 +60,8 @@ const getSchema = ({
   );
 
   // New Entity S2
-  prop.S2.properties["companyName"].enum = [-1];
-  prop.S2.properties["companyName"].enumNames = ["Other"];
+  // prop.S2.properties["companyName"].enum = [-1];
+  // prop.S2.properties["companyName"].enumNames = ["Other"];
 
   prop.S2.properties["newCompanyHeadquarter"].enum = countries?.map(
     (x) => x.id
