@@ -235,7 +235,7 @@ const Landing = withRouter(
                 to guide action towards the long term elimination of marine
                 litter and plastic pollution.{" "}
               </div>
-              {!isAuthenticated && (
+              {!hasProfile && (
                 <div>
                   <JoinGPMLButton
                     history={history}
