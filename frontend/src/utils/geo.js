@@ -8,12 +8,12 @@ const {
 
 const geoCoverage = {
   geoCoverageType: {
-    title: "GEO COVERAGE TYPE",
+    title: "Geo Coverage Type",
     enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
     enumNames: geoCoverageTypeOptions,
   },
   geoCoverageValueRegional: {
-    title: "GEO COVERAGE",
+    title: "Geo Coverage",
     enum: [],
     depend: {
       id: "geoCoverageType",
@@ -21,7 +21,7 @@ const geoCoverage = {
     },
   },
   geoCoverageValueNational: {
-    title: "GEO COVERAGE",
+    title: "Geo Coverage",
     enum: [],
     depend: {
       id: "geoCoverageType",
@@ -29,7 +29,7 @@ const geoCoverage = {
     },
   },
   geoCoverageValueTransnational: {
-    title: "GEO COVERAGE",
+    title: "Geo Coverage",
     enum: [],
     depend: {
       id: "geoCoverageType",
@@ -37,14 +37,15 @@ const geoCoverage = {
     },
   },
   geoCoverageValueSubNational: {
-    //    $ref: "#/properties/geoCoverageValueNational",
+    title: "Geo Coverage",
+    enum: [],
     depend: {
       id: "geoCoverageType",
       value: ["sub-national"],
     },
   },
   geoCoverageValueGlobalSpesific: {
-    title: "GEO COVERAGE",
+    title: "Geo Coverage",
     enum: [],
     depend: {
       id: "geoCoverageType",

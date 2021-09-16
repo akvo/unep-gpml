@@ -59,6 +59,52 @@ const getSchema = ({
     (it) => it.tag
   );
 
+  // New Entity S2
+  // prop.S2.properties["companyName"].enum = [-1];
+  // prop.S2.properties["companyName"].enumNames = ["Other"];
+
+  prop.S2.properties["newCompanyHeadquarter"].enum = countries?.map(
+    (x) => x.id
+  );
+  prop.S2.properties["newCompanyHeadquarter"].enumNames = countries?.map(
+    (x) => x.name
+  );
+  // geocoverage regional options
+  prop.S2.properties["geoCoverageValueRegional"].enum = regionOptions.map((x) =>
+    String(x.id)
+  );
+  prop.S2.properties["geoCoverageValueRegional"].enumNames = regionOptions.map(
+    (x) => x.name
+  );
+  // geocoverage national options
+  prop.S2.properties["geoCoverageValueNational"].enum = countries?.map(
+    (x) => x.id
+  );
+  prop.S2.properties["geoCoverageValueNational"].enumNames = countries?.map(
+    (x) => x.name
+  );
+  // geocoverage sub-national options
+  prop.S2.properties["geoCoverageValueSubNational"].enum = countries?.map(
+    (x) => x.id
+  );
+  prop.S2.properties["geoCoverageValueSubNational"].enumNames = countries?.map(
+    (x) => x.name
+  );
+  // geocoverage transnational options
+  prop.S2.properties[
+    "geoCoverageValueTransnational"
+  ].enum = countries?.map((x) => String(x.id));
+  prop.S2.properties[
+    "geoCoverageValueTransnational"
+  ].enumNames = countries?.map((x) => x.name);
+  // geocoverage global with elements in specific areas options
+  prop.S2.properties[
+    "geoCoverageValueGlobalSpesific"
+  ].enum = meaOptions?.map((x) => String(x.id));
+  prop.S2.properties[
+    "geoCoverageValueGlobalSpesific"
+  ].enumNames = meaOptions?.map((x) => x.name);
+
   return {
     schema: {
       ...schema,

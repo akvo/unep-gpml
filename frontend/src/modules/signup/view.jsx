@@ -80,6 +80,11 @@ const SignUp = ({ match: { params }, ...props }) => {
     type: "default",
   });
 
+  // force required authorizeSubmission for entity before fill next step
+  const isAuthorizeSubmission = isEntityType
+    ? formData?.data?.S1?.authorizeSubmission
+    : true;
+
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = null;
@@ -208,6 +213,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     if (section !== data.tabs[0]) {
       return (
         <Step
+          disabled={!isAuthorizeSubmission}
           key={section}
           title={customTitle("waiting")}
           subTitle={`Total Required fields: ${totalRequiredFields}`}
@@ -225,6 +231,7 @@ const SignUp = ({ match: { params }, ...props }) => {
       const requiredFields = data?.[section]?.required?.[group]?.length || 0;
       return (
         <Step
+          disabled={!isAuthorizeSubmission}
           key={section + key}
           title={`${title}`}
           subTitle={`Required fields: ${requiredFields}`}
@@ -234,6 +241,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     });
     return [
       <Step
+        disabled={!isAuthorizeSubmission}
         key={section}
         title={customTitle("active")}
         subTitle={`Total Required fields: ${totalRequiredFields}`}
@@ -419,7 +427,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                   <Card
                     style={{
                       paddingTop: 0,
-                      paddingBottom: "275px",
+                      paddingBottom: "100px",
                       paddingRight: "24px",
                       paddingLeft: "30px",
                       minHeight: `${minHeightCard}px`,
@@ -440,7 +448,15 @@ const SignUp = ({ match: { params }, ...props }) => {
                         </div>
                         <div>
                           More information on Entity Focal Points rights can be
-                          found [here].
+                          found{" "}
+                          <a
+                            href="https://wedocs.unep.org/bitstream/handle/20.500.11822/36688/Phase%20II%20Focal%20Point%20Roles%2031-08-2021%20-%20Copy.pdf?sequence=1&isAllowed=y"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            here
+                          </a>
+                          .
                         </div>
                       </Row>
                     ) : (
@@ -468,7 +484,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                           <LeftOutlined /> Back
                         </Button>
                       )}
-                      {!isLastStep() && (
+                      {!isLastStep() && isAuthorizeSubmission && (
                         <Button
                           className="next-button"
                           type="primary"

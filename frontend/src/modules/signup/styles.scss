@@ -17,10 +17,16 @@
     color: white;
   }
   .entity-getting-started-heading {
-    div {
+    div,
+    a {
       color: $blue02;
+    }
+    div {
       margin: 10px;
       font-size: 18px;
+    }
+    a {
+      font-weight: 600;
     }
   }
 
@@ -500,7 +506,7 @@
     align-items: center;
     width: 100%;
     position: absolute;
-    bottom: 3rem;
+    bottom: 0;
     button {
       margin: 1rem;
     }
