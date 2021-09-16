@@ -85,6 +85,7 @@
 (defn- remap-profile
   [{:keys [id photo about
            title first_name role
+           company_name
            last_name linked_in cv
            twitter representation
            country geo_coverage_type
@@ -95,6 +96,7 @@
    org]
   {:id id
    :title title
+   :company_name company_name
    :first_name first_name
    :last_name last_name
    :linked_in linked_in
@@ -146,7 +148,7 @@
 
 (defn- make-affiliation [db org]
   (if-not (:id org)
-    (let [org-id (handler.org/find-or-create db org)]
+    (let [org-id (handler.org/create db org)]
       (when-let [tag-ids (seq (:expertise org))]
         (db.organisation/add-organisation-tags db {:tags (map #(vector org-id %) tag-ids)}))
       org-id)
@@ -201,7 +203,9 @@
                       (not= -1 (:id org))
                       (assoc :affiliation (:id org))
                       (= -1 (:id org))
-                      (assoc :affiliation (handler.org/find-or-create tx org)))]
+                      (assoc :affiliation (if (= -1 (:id org))
+                                            (handler.org/create tx org)
+                                            (:id org))))]
         (db.stakeholder/update-stakeholder tx profile)
         (db.stakeholder/delete-stakeholder-geo tx body-params)
         (db.stakeholder/delete-stakeholder-tags tx body-params)

@@ -390,9 +390,10 @@
         status (db.detail/update-resource-table conn params)
         org (:org updates)
         org-id (and org
-                    (or (and (= -1 (:id org))
-                             (handler.org/find-or-create conn org))
-                        (:id org)))]
+                    (or
+                     (:id org)
+                     (and (= -1 (:id org))
+                          (handler.org/create conn org))))]
     (when (contains? updates :image)
       (update-resource-image conn (:image updates) table id))
     (when (contains? updates :photo)
