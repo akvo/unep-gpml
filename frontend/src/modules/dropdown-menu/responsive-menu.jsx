@@ -46,7 +46,7 @@ const ResponsiveMenu = withRouter(
         } else if (key === "logout") {
           logout({ returnTo: window.location.origin });
         } else if (key === "data-hub") {
-          window.location.href = "http://datahub.gpmarinelitter.org/";
+          // do nothing
         } else {
           history.push(`/${key}`);
         }
@@ -99,7 +99,13 @@ const ResponsiveMenu = withRouter(
           </SubMenu>
           {/* Data Hub */}
           <Menu.Item key="data-hub" className="nav-link">
-            Data Hub
+            <a
+              href="https://datahub.gpmarinelitter.org/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Data Hub
+            </a>
           </Menu.Item>
           {/* Knowledge Exchange */}
           <SubMenu
