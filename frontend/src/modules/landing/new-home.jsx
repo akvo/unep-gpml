@@ -235,7 +235,7 @@ const Landing = withRouter(
                 to guide action towards the long term elimination of marine
                 litter and plastic pollution.{" "}
               </div>
-              {!isAuthenticated && (
+              {!hasProfile && (
                 <div>
                   <JoinGPMLButton
                     history={history}
@@ -660,27 +660,6 @@ const renderEventContent = (event, eventCarousel) => {
                   </div>
                 </div>
                 <div className="item-footer">
-                  <Avatar.Group
-                    maxCount={2}
-                    maxStyle={{
-                      color: "#f56a00",
-                      backgroundColor: "#fde3cf",
-                    }}
-                  >
-                    <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
-                    <Tooltip title="Ant User" placement="top">
-                      <Avatar
-                        style={{ backgroundColor: "#87d068" }}
-                        icon={<UserOutlined />}
-                      />
-                    </Tooltip>
-                    <Tooltip title="Ant User" placement="top">
-                      <Avatar
-                        style={{ backgroundColor: "#87d068" }}
-                        icon={<UserOutlined />}
-                      />
-                    </Tooltip>
-                  </Avatar.Group>
                   <span className="read-more">
                     <Link to={`/event/${id}`}>
                       Read more <ArrowRightOutlined />
