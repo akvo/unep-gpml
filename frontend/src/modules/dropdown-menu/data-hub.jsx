@@ -5,22 +5,13 @@ import { DownOutlined } from "@ant-design/icons";
 
 const DataHubDropdownMenu = withRouter(({ history }) => {
   return (
-    <Dropdown
-      overlayClassName="menu-dropdown-wrapper"
-      overlay={
-        <Menu className="menu-dropdown">
-          <Menu.Item className="nav-link">Data Map & Layers</Menu.Item>
-          <Menu.Item className="nav-link">Data Catalogue</Menu.Item>
-          <Menu.Item className="nav-link">Join Data Hub</Menu.Item>
-        </Menu>
-      }
-      trigger={["click"]}
-      placement="bottomRight"
+    <a
+      href="https://datahub.gpmarinelitter.org/"
+      rel="noreferrer"
+      className="menu-btn nav-link menu-dropdown"
     >
-      <Button type="link" className="menu-btn nav-link">
-        Data Hub <DownOutlined />
-      </Button>
-    </Dropdown>
+      Data Hub
+    </a>
   );
 });
 
