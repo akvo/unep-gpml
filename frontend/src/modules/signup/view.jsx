@@ -440,7 +440,15 @@ const SignUp = ({ match: { params }, ...props }) => {
                         </div>
                         <div>
                           More information on Entity Focal Points rights can be
-                          found [here].
+                          found{" "}
+                          <a
+                            href="https://wedocs.unep.org/bitstream/handle/20.500.11822/36688/Phase%20II%20Focal%20Point%20Roles%2031-08-2021%20-%20Copy.pdf?sequence=1&isAllowed=y"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            here
+                          </a>
+                          .
                         </div>
                       </Row>
                     ) : (

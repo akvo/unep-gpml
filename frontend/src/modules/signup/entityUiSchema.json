@@ -3,7 +3,10 @@
     "ui:order": ["authorizeSubmission"],
     "authorizeSubmission": {
       "ui:widget": "checkbox",
-      "ui:label": null
+      "ui:label": null,
+      "ui:options": {
+        "classNames": "authorize-submission-checkbox"
+      }
     }
   },
   "S2": {
