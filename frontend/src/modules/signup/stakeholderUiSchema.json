@@ -7,7 +7,6 @@
       "ui:placeholder": "Title"
     },
     "lastName": {
-      "ui:span": 19,
       "ui:placeholder": "Last name"
     },
     "firstName": {
@@ -56,12 +55,67 @@
   "S2": {
     "classNames": "list-group",
     "orgName": {
-      "ui:placeholder": "Organisation name"
+      "ui:placeholder": "Entity name"
     },
     "companyName": {
       "ui:placeholder": "Search"
     },
-    "ui:order": ["orgName", "companyName"]
+    "newCompanyName": {
+      "ui:placeholder": "Entity name"
+    },
+    "newCompanyHeadquarter": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search Country",
+      "ui:showSearch": true
+    },
+    "geoCoverageType": {
+      "ui:placeholder": "Choose the coverage type",
+      "ui:widget": "select"
+    },
+    "geoCoverageValueRegional": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
+    },
+    "geoCoverageValueNational": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "geoCoverageValueTransnational": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
+    },
+    "geoCoverageValueSubNational": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "geoCoverageValueGlobalSpesific": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
+    },
+    "newCompanySubnationalAreaOnly": {
+      "ui:placeholder": "Type..."
+    },
+    "ui:order": [
+      "orgName",
+      "companyName",
+      "newCompanyName",
+      "newCompanyHeadquarter",
+      "geoCoverageType",
+      "geoCoverageValueRegional",
+      "geoCoverageValueNational",
+      "geoCoverageValueTransnational",
+      "geoCoverageValueSubNational",
+      "geoCoverageValueGlobalSpesific",
+      "newCompanySubnationalAreaOnly"
+    ]
   },
   "S3": {
     "classNames": "list-group",
