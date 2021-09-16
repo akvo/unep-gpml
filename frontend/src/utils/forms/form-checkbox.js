@@ -12,7 +12,7 @@ const CheckboxWidget = ({
   onBlur,
   onChange,
   onFocus,
-  // options,
+  options,
   // placeholder,
   readonly,
   required,
@@ -30,16 +30,17 @@ const CheckboxWidget = ({
 
   // custom
   const highlight = UIStore.useState((s) => s.highlight);
+  const classNames = options?.classNames;
+  const className =
+    required && !!rawErrors
+      ? "checkbox-required"
+      : required && highlight && !!rawErrors === false
+      ? "checkbox-highlight"
+      : undefined;
 
   return (
     <Checkbox
-      className={
-        required && !!rawErrors
-          ? "checkbox-required"
-          : required && highlight && !!rawErrors === false
-          ? "checkbox-highlight"
-          : undefined
-      }
+      className={`${className} ${classNames}`}
       autoFocus={autofocus}
       checked={typeof value === "undefined" ? false : value}
       disabled={disabled || (readonlyAsDisabled && readonly)}
