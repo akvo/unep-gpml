@@ -80,6 +80,11 @@ const SignUp = ({ match: { params }, ...props }) => {
     type: "default",
   });
 
+  // force required authorizeSubmission for entity before fill next step
+  const isAuthorizeSubmission = isEntityType
+    ? formData?.data?.S1?.authorizeSubmission
+    : true;
+
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = null;
@@ -208,6 +213,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     if (section !== data.tabs[0]) {
       return (
         <Step
+          disabled={!isAuthorizeSubmission}
           key={section}
           title={customTitle("waiting")}
           subTitle={`Total Required fields: ${totalRequiredFields}`}
@@ -225,6 +231,7 @@ const SignUp = ({ match: { params }, ...props }) => {
       const requiredFields = data?.[section]?.required?.[group]?.length || 0;
       return (
         <Step
+          disabled={!isAuthorizeSubmission}
           key={section + key}
           title={`${title}`}
           subTitle={`Required fields: ${requiredFields}`}
@@ -234,6 +241,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     });
     return [
       <Step
+        disabled={!isAuthorizeSubmission}
         key={section}
         title={customTitle("active")}
         subTitle={`Total Required fields: ${totalRequiredFields}`}
@@ -476,7 +484,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                           <LeftOutlined /> Back
                         </Button>
                       )}
-                      {!isLastStep() && (
+                      {!isLastStep() && isAuthorizeSubmission && (
                         <Button
                           className="next-button"
                           type="primary"
