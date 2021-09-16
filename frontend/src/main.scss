@@ -245,6 +245,14 @@ h4 {
     color: #fff;
     font-weight: 500;
     border-right: 1px solid #3176ae;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: 4px 15px;
+    white-space: nowrap;
+    span.anticon.anticon-down {
+      margin-top: 5px;
+    }
     &:last-child {
       border: none;
     }
