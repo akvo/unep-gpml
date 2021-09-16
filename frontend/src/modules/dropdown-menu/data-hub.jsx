@@ -7,7 +7,6 @@ const DataHubDropdownMenu = withRouter(({ history }) => {
   return (
     <a
       href="https://datahub.gpmarinelitter.org/"
-      target="_blank"
       rel="noreferrer"
       className="menu-btn nav-link menu-dropdown"
     >
