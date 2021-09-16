@@ -97,19 +97,13 @@
         "ui:widget": "textarea",
         "ui:maxWord": 100
       },
-
       "cv": {
         "ui:widget": "file",
         "ui:options": {
           "accept": ".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,application/pdf"
         }
       },
-      "publicDatabase": {
-        "ui:widget": "checkbox",
-        "ui:label": null
-      },
-
-      "ui:order": ["seeking", "offering", "about", "cv", "publicDatabase"]
+      "ui:order": ["seeking", "offering", "about", "cv"]
     },
     "ui:order": [
       "title",
@@ -176,7 +170,8 @@
       "geoCoverageValueNational",
       "geoCoverageValueTransnational",
       "geoCoverageValueSubNational",
-      "geoCoverageValueGlobalSpesific"
+      "geoCoverageValueGlobalSpesific",
+      "publicDatabase"
     ],
     "orgHeadquarter": {
       "ui:widget": "select",
@@ -214,6 +209,13 @@
       "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple"
+    },
+    "publicDatabase": {
+      "ui:widget": "checkbox",
+      "ui:label": null,
+      "ui:options": {
+        "classNames": "public-database-checkbox"
+      }
     }
   }
 }
