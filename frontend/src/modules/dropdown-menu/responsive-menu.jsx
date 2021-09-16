@@ -45,6 +45,8 @@ const ResponsiveMenu = withRouter(
           loginWithPopup();
         } else if (key === "logout") {
           logout({ returnTo: window.location.origin });
+        } else if (key === "data-hub") {
+          // do nothing
         } else {
           history.push(`/${key}`);
         }
@@ -96,17 +98,15 @@ const ResponsiveMenu = withRouter(
             </Menu.Item>
           </SubMenu>
           {/* Data Hub */}
-          <SubMenu key="data-hub" title="Data Hub" className="nav-link">
-            <Menu.Item disabled={true} className="nav-link">
-              Data Map & Layers
-            </Menu.Item>
-            <Menu.Item disabled={true} className="nav-link">
-              Data Catalogue
-            </Menu.Item>
-            <Menu.Item disabled={true} className="nav-link">
-              Join Data Hub
-            </Menu.Item>
-          </SubMenu>
+          <Menu.Item key="data-hub" className="nav-link">
+            <a
+              href="https://datahub.gpmarinelitter.org/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Data Hub
+            </a>
+          </Menu.Item>
           {/* Knowledge Exchange */}
           <SubMenu
             key="knowledge-exchange"
