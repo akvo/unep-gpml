@@ -46,7 +46,7 @@ const SignupView = ({ ...props }) => {
           </Col>
           <Col sm={24} md={12} lg={12}>
             <Card className="green-overlay">
-              <h2>How do I Join the GPML?</h2>
+              <h2>How do I join the GPML?</h2>
               <div className="choices">
                 <Card>
                   <Avatar size="large" icon={<UsergroupAddOutlined />} />

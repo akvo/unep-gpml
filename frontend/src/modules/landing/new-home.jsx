@@ -455,7 +455,7 @@ const Landing = withRouter(
             <div className="section-title green">
               <h2>
                 Our Community{" "}
-                <span className="see-more-link ant-btn-ghost">
+                <span className="see-more-link ant-btn-ghost ant-btn">
                   See all <RightOutlined />
                 </span>
               </h2>

@@ -24,7 +24,9 @@
     background-position-x: right;
     background-repeat: no-repeat;
     background-size: 70%;
-
+    @media only screen and (max-width: 800px) {
+      background-size: 120%;
+    }
     .ui.container {
       h2 {
         color: white !important;
@@ -34,7 +36,11 @@
       color: white;
       max-width: 70%;
     }
-
+    @media only screen and (max-width: 474px) {
+      h1 {
+        font-size: 2rem !important;
+      }
+    }
     div.body-text {
       max-width: 70%;
       margin-bottom: 20px;
@@ -188,6 +194,12 @@
       url("../../images/our-community.png"), #ffffff;
     background-repeat: no-repeat;
     background-size: cover;
+    .see-more-link {
+      color: $green01 !important;
+      svg {
+        color: $green01;
+      }
+    }
     .body {
       .carousel-container {
         display: flex;
@@ -548,7 +560,6 @@
     border: 1px solid #2d6796;
     box-sizing: border-box;
     border-radius: 50px;
-    min-width: 5.7rem;
     .anticon {
       margin-right: 5px;
     }

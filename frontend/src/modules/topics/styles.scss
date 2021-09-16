@@ -31,6 +31,7 @@
     .topic-item-card {
       box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
       border-radius: 10px;
+      background: $green02;
       &:hover {
         border: 1px solid $blue02;
         opacity: 0.5;
@@ -42,7 +43,7 @@
         align-items: center;
 
         .topic-item-title {
-          color: $black;
+          color: white;
           text-transform: capitalize;
           font-weight: 500;
           font-size: 1.125rem;

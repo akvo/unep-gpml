@@ -552,7 +552,7 @@ export const ourCommunity = [
     id: 10082,
     type: "stakeholder",
     about:
-      "The GPML Digital Platform is a fantastic resource for knowledge management, networking and accessing and managing data. What is especially helpful is the wide variety of resources available which will allow those working on marine litter and plastic pollution to learn from the experiences of others regionally and globally. The platform is very user friendly and allows you to refine your search to get the most relevant content.",
+      "The GPML Digital Platform is a fantastic resource for knowledge management, networking and accessing and managing data.",
     image: "https://digital.gpmarinelitter.org/image/profile/27",
     name: "Marvin Burman",
     role:
@@ -562,7 +562,7 @@ export const ourCommunity = [
     id: 10078,
     type: "stakeholder",
     about:
-      "The GPML platform makes it much easier to discover relevant stakeholders, events, and experts in specific regions and fields related to marine litter. This was something that had been missing for a long time. Moreover, the platform is very intuitive and modern.",
+      "The GPML platform makes it much easier to discover relevant stakeholders, events, and experts in specific regions and fields related to marine litter.",
     image: "https://digital.gpmarinelitter.org/image/profile/30",
     name: "Fadilah Ali",
     role: "CEO - OceanHero.today",
@@ -571,10 +571,10 @@ export const ourCommunity = [
     id: 1,
     type: "stakeholder",
     about:
-      "The GPML Digital Platform is an unparalleled tool to bring global actors fighting against our marine plastic crisis in community with each other. The platform outlines publicly available resources, events, funding opportunities, policies, initiatives, and more in their participating 189 countries. As a centralized database for information in the field, this is a truly invaluable resource for leading organizations seeking to act in alignment with global policy and initiatives, youth / communities / startups looking for funding to support their efforts, companies and the private sector interested in learning more about the issues and the opportunities for solutions, as well as policymakers and decisionmakers tasked with finding a way to address these issues. This is a gift for the movement at a time when we need to be working more closely together than ever.",
+      "The GPML Digital Platform is an unparalleled tool to bring global actors fighting against our marine plastic crisis in community with each other.",
     image: casiaPatel,
     name: "Cassia Patel",
-    role: null,
+    role: "Program Director, Oceanic Global",
   },
 ];
 

@@ -19,7 +19,7 @@ import isEmpty from "lodash/isEmpty";
 
 const summary = [
   {
-    name: "GPML Members",
+    name: "GPML Community",
     value: ["organisation", "stakeholder"],
     startValue: 0,
     increment: "187",
@@ -27,7 +27,7 @@ const summary = [
   {
     name: "Data Layers",
     value: [],
-    startValue: "67",
+    startValue: "71",
     increment: "12",
   },
   {
