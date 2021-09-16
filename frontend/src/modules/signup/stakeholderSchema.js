@@ -73,14 +73,57 @@ export const schema = {
         id: "tabs",
         value: ["S2"],
       },
-      required: [],
+      required: [
+        "newCompanyName",
+        "newCompanyHeadquarter",
+        "geoCoverageType",
+        "geoCoverageValueRegional",
+        "geoCoverageValueNational",
+        "geoCoverageValueTransnational",
+        "geoCoverageValueSubNational",
+        "geoCoverageValueGlobalSpesific",
+      ],
       properties: {
         orgName: {
           title: "Search Your Entity",
-          type: "string",
+          enum: [],
         },
         companyName: {
           title: "Is your Entity not a GPML Member yet?",
+          enum: [],
+        },
+        newCompanyName: {
+          depend: {
+            id: "companyName",
+            value: [-1],
+          },
+          title: "Entity Name",
+          type: "string",
+        },
+        newCompanyHeadquarter: {
+          depend: {
+            id: "companyName",
+            value: [-1],
+          },
+          title: "In which country are your headquarters?",
+          enum: [],
+        },
+        ...geoCoverage,
+        geoCoverageType: {
+          ...geoCoverage.geoCoverageType,
+          depend: {
+            id: "companyName",
+            value: [-1],
+          },
+          title: "What is the geographical coverage of your Entity?",
+        },
+        newCompanySubnationalAreaOnly: {
+          depend: {
+            id: "companyName",
+            value: [-1],
+          },
+          title:
+            "Please indicate if your Entity operates in a Subnational area only",
           type: "string",
         },
       },
