@@ -2,11 +2,11 @@
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [gpml.fixtures :as fixtures]
             [gpml.handler.technology :as technology]
-            [gpml.handler.profile-test :as profile-test]
             [gpml.db.tag :as db.tag]
             [gpml.db.language :as db.language]
             [gpml.db.technology :as db.technology]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.test-util :refer [seed-important-database new-profile]]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
@@ -37,7 +37,7 @@
           ;; create new country group [Africa Asia Europe]
           ;; create new organisation [Akvo]
           ;; create new general 3 tags
-          data (profile-test/seed-important-database db)
+          data (seed-important-database db)
           ;; create new technology category tag
           _ (do (db.tag/new-tag-category db {:category "technology"})
                 (db.tag/new-tag db {:tag "RT 1" :tag_category 2})
@@ -47,7 +47,7 @@
                                           :english_name "Indonesian"
                                           :native_name "Bahasa Indonesia"})
           ;; create new user name John
-          user (db.stakeholder/new-stakeholder db (profile-test/new-profile 1))
+          user (db.stakeholder/new-stakeholder db (new-profile 1))
           _ (db.stakeholder/update-stakeholder-status db (assoc user :review_status "APPROVED"))
           ;; create John create new technology with available organisation
           resp-one (handler (-> (mock/request :post "/")

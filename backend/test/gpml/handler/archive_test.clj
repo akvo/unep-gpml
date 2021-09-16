@@ -2,7 +2,7 @@
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [gpml.handler.archive :as archive]
             [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.handler.profile-test :as profile-test]
+            [gpml.test-util :refer [seed-important-database new-profile]]
             [gpml.fixtures :as fixtures]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
@@ -14,9 +14,9 @@
     (let [system (ig/init fixtures/*system* [::archive/get])
           handler (::archive/get system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          _ (profile-test/seed-important-database db)
+          _ (seed-important-database db)
           ;; create new admin name Jane
-          admin (profile-test/new-profile 1)
+          admin (new-profile 1)
           admin (db.stakeholder/new-stakeholder db  (assoc admin
                                                            :email "jane@org"
                                                            :first_name "Jane"))
@@ -24,9 +24,9 @@
                                                               :role "ADMIN"
                                                               :review_status "APPROVED"))
           ;; User Default
-          user (profile-test/new-profile 1)
+          user (new-profile 1)
           ;; create new user name John
-          _ (db.stakeholder/new-stakeholder db  (profile-test/new-profile 1))
+          _ (db.stakeholder/new-stakeholder db  (new-profile 1))
 
           ;; create new user name Bob
           user_bob (db.stakeholder/new-stakeholder db  (assoc user

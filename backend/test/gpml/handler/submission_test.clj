@@ -3,7 +3,7 @@
             [gpml.handler.submission :as submission]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.event :as db.event]
-            [gpml.handler.profile-test :as profile-test]
+            [gpml.test-util :refer [seed-important-database new-profile]]
             [gpml.fixtures :as fixtures]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
@@ -15,9 +15,9 @@
     (let [system (ig/init fixtures/*system* [::submission/get])
           handler (::submission/get system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          _ (profile-test/seed-important-database db)
+          _ (seed-important-database db)
           ;; create new admin name Jane
-          admin (profile-test/new-profile 1)
+          admin (new-profile 1)
           admin (db.stakeholder/new-stakeholder db  (assoc admin
                                                            :email "jane@org"
                                                            :first_name "Jane"))
@@ -25,9 +25,9 @@
                                                               :role "ADMIN"
                                                               :review_status "APPROVED"))
           ;; User Default
-          user (profile-test/new-profile 1)
+          user (new-profile 1)
           ;; create new user name John
-          _ (db.stakeholder/new-stakeholder db  (profile-test/new-profile 1))
+          _ (db.stakeholder/new-stakeholder db  (new-profile 1))
 
           ;; create new user name Bob
           _ (db.stakeholder/new-stakeholder db  (assoc user
@@ -80,9 +80,9 @@
     (let [system (ig/init fixtures/*system* [::submission/get-detail])
           handler (::submission/get-detail system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          _ (profile-test/seed-important-database db)
+          _ (seed-important-database db)
           ;; create new admin name Jane
-          admin (profile-test/new-profile 1)
+          admin (new-profile 1)
           admin (db.stakeholder/new-stakeholder db  (assoc admin
                                                            :email "jane@org"
                                                            :first_name "Jane"))
@@ -90,7 +90,7 @@
                                                               :role "ADMIN"
                                                               :review_status "APPROVED"))
           ;; create new user name Justin
-          user (profile-test/new-profile 1)
+          user (new-profile 1)
           justin (db.stakeholder/new-stakeholder db (assoc user
                                                            :email "justin@org"
                                                            :first_name "Justin"

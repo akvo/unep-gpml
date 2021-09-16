@@ -2,8 +2,8 @@
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [gpml.fixtures :as fixtures]
             [gpml.handler.initiative :as initiative]
-            [gpml.handler.profile-test :as profile-test]
             [gpml.db.initiative :as db.initiative]
+            [gpml.test-util :refer [seed-important-database new-profile]]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.seeder.main :as seeder]
             [integrant.core :as ig]
@@ -23,9 +23,9 @@
           ;; create new country group [Africa Asia Europe]
           ;; create new organisation [Akvo]
           ;; create new general 3 tags
-          _ (profile-test/seed-important-database db)
+          _ (seed-important-database db)
           ;; create new user name John
-          user (db.stakeholder/new-stakeholder db (profile-test/new-profile 1))
+          user (db.stakeholder/new-stakeholder db (new-profile 1))
           _ (db.stakeholder/update-stakeholder-status db (assoc user :review_status "APPROVED"))
           ;; John create new initiative with new organisation
           submission (seeder/parse-data

@@ -1,13 +1,12 @@
 (ns gpml.handler.profile-test
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [gpml.db.country :as db.country]
-            [gpml.test-util :refer [picture]]
-            [gpml.db.tag :as db.tag]
-            [gpml.db.country-group :as db.country-group]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.tag :as db.tag]
             [gpml.fixtures :as fixtures]
             [gpml.handler.stakeholder :as stakeholder]
+            [gpml.test-util :refer [picture system-keys seed-important-database new-profile]]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
@@ -19,47 +18,10 @@
 (defn get-organisation [conn org-name]
   (:id (db.organisation/organisation-by-name conn {:name org-name})))
 
-(defn new-profile [org]
-  {:email "john@org"
-   :first_name "John"
-   :last_name "Doe"
-   :linked_in "johndoe"
-   :twitter "johndoe"
-   :representation ""
-   :org {:id org}
-   :affiliation org
-   :title "Mr"
-   :about "Lorem Ipsum"
-   :picture picture
-   :country 1
-   :public_email false
-   :public_database false
-   :cv picture})
+
 
 (defn get-user [conn email]
   (:id (db.stakeholder/stakeholder-by-email conn {:email email})))
-
-(defn seed-important-database [db]
-    (let [tag-category (db.tag/new-tag-category db {:category "general"})]
-      {:tags (db.tag/new-tags db {:tags (map #(vector % (:id tag-category)) ["Tag 1" "Tag 2" "Tag 3"])})
-       :org (db.organisation/new-organisation
-              db {:id 1
-                  :name "Akvo"
-                  :url "https://akvo.org"
-                  :geo_coverage_type "regional"
-                  :type "Academia and Research"
-                  :program "Test Program"
-                  :contribution "Test Contribution"
-                  :expertise "Test Expertise"
-                  :review_status "APPROVED"})
-       :countries [(db.country/new-country
-                     db {:name "Indonesia" :iso_code "IND" :description "Member State" :territory "IND"})
-                   (db.country/new-country
-                     db {:name "Spain" :iso_code "SPA" :description "Member State" :territory "SPA"})
-                   (db.country/new-country
-                     db {:name "Canary Island" :iso_code "SPA" :description "territory" :territory "SPA"})]
-       :country_groups (mapv (fn [x] (db.country-group/new-country-group
-                                       db {:type "region" :name x})) ["Asia" "Africa" "Europe"])}))
 
 (deftest handler-post-with-existing-organisation-test
   (testing "New profile is created with existing organisation"
@@ -150,10 +112,9 @@
 
 (deftest handler-post-test-as-citizen
   (testing "New profile without organisation and some other non-required detail is created"
-    (let [system (ig/init fixtures/*system* [::stakeholder/post])
+    (let [system (ig/init fixtures/*system* (system-keys))
           handler (::stakeholder/post system)
-          db (-> system :duct.database.sql/hikaricp :spec)
-          data (seed-important-database db)
+          data (seed-important-database (-> system :gpml.db/spec))
           body-params (assoc (new-profile 1)
                              :org nil
                              :country (-> (:countries data) first :id))
