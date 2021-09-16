@@ -62,7 +62,13 @@ const Footer = ({
                 </a>
               </li>
               <li>
-                <span>Data Hub (coming soon)</span>
+                <a
+                  href="https://datahub.gpmarinelitter.org/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Data Hub
+                </a>
               </li>
             </ul>
           </nav>
