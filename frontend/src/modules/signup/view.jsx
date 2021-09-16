@@ -419,7 +419,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                   <Card
                     style={{
                       paddingTop: 0,
-                      paddingBottom: "275px",
+                      paddingBottom: "100px",
                       paddingRight: "24px",
                       paddingLeft: "30px",
                       minHeight: `${minHeightCard}px`,

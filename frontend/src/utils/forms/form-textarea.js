@@ -2,8 +2,6 @@ import React, { useState } from "react";
 
 import Input from "antd/lib/input";
 
-import words from "lodash/words";
-
 const INPUT_STYLE = {
   width: "100%",
 };
@@ -43,17 +41,27 @@ const TextareaWidget = ({
 
   const handleOnKeyUp = ({ target, keyCode }) => {
     // custom handle for maxWord
-    if (keyCode === 32) {
-      const char = target?.value != "" ? target?.value.length : 0;
-      const wordLength = target?.value != "" ? words(target?.value).length : 0;
-      if (!isMaxWord && wordLength === maxWord) {
-        setIsMaxWord(char);
-      }
-      if (isMaxWord && wordLength < maxWord) {
-        setIsMaxWord(false);
-      }
-      setWordCount(wordLength);
-      // end of custom maxWord handle
+    const text = target?.value.trim();
+    const char = text != "" ? target?.value.length : 0;
+    const wordLength = text != "" ? text.split(" ").length : 0;
+    if (keyCode === 32 && !isMaxWord && wordLength >= maxWord) {
+      // when hit space
+      setIsMaxWord(char);
+    }
+    if (keyCode === 8 && isMaxWord && wordLength <= maxWord) {
+      // when hit backspace
+      setIsMaxWord(false);
+    }
+    setWordCount(wordLength);
+    // end of custom maxWord handle
+  };
+
+  const handleOnPaste = ({ clipboardData }) => {
+    // slice text value if more then maxWord
+    const text = clipboardData.getData("text").trim();
+    const word = text.split(" ");
+    if (text !== "" && !isMaxWord && word.length >= maxWord) {
+      setIsMaxWord(word.slice(0, maxWord).join(" ").length);
     }
   };
 
@@ -67,6 +75,7 @@ const TextareaWidget = ({
         onChange={!readonly ? handleChange : undefined}
         onFocus={!readonly ? handleFocus : undefined}
         onKeyUp={handleOnKeyUp}
+        onPaste={handleOnPaste}
         placeholder={placeholder}
         rows={options.rows || 4}
         style={INPUT_STYLE}
