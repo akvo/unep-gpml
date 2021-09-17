@@ -72,6 +72,23 @@ const getSchema = ({
     ...representative,
     "Other",
   ];
+  prop.S3.properties[
+    "orgRepresentativeGovernment"
+  ].enum = representativeGroup.find((x) => x.code === "government")?.childs;
+  prop.S3.properties[
+    "orgRepresentativePrivateSector"
+  ].enum = tags?.sector?.map((it) => String(it.id));
+  prop.S3.properties[
+    "orgRepresentativePrivateSector"
+  ].enumNames = tags?.sector?.map((it) => it.tag);
+  prop.S3.properties[
+    "orgRepresentativeAcademiaResearch"
+  ].enum = representativeGroup.find(
+    (x) => x.code === "academia-research"
+  )?.childs;
+  prop.S3.properties[
+    "orgRepresentativeCivilSociety"
+  ].enum = representativeGroup.find((x) => x.code === "civil-society")?.childs;
 
   prop.S4.properties["orgExpertise"].enum = tags?.offering?.map((it) =>
     String(it.id)
