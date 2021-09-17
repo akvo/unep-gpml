@@ -44,6 +44,7 @@ const getSchema = ({
   meaOptions,
   sectorOptions,
   organisationType,
+  representativeGroup,
   profile,
 }) => {
   const prop = cloneDeep(schema.properties);
@@ -65,7 +66,12 @@ const getSchema = ({
   prop.S2.properties["country"].enum = countries?.map((x) => x.id);
   prop.S2.properties["country"].enumNames = countries?.map((x) => x.name);
 
-  prop.S3.properties["orgRepresentative"].enum = organisationType;
+  const representative = representativeGroup?.map((x) => x.name);
+  prop.S3.properties["orgRepresentative"].enum = [...representative, -1];
+  prop.S3.properties["orgRepresentative"].enumNames = [
+    ...representative,
+    "Other",
+  ];
 
   prop.S4.properties["orgExpertise"].enum = tags?.offering?.map((it) =>
     String(it.id)

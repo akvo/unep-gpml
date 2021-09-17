@@ -29,6 +29,34 @@ const organisationType = [
   "Other",
 ];
 
+const representativeGroup = [
+  {
+    code: "government",
+    name: "Government",
+    childs: ["National", "State/Provincial", "Municipal"],
+  },
+  {
+    code: "private-sector",
+    name: "Private Sector (for-profit)",
+    childs: { tags: "sector" }, // All sectors list from tags group
+  },
+  {
+    code: "igos",
+    name: "Intergovernmental Organizations (IGOs)",
+    childs: null,
+  },
+  {
+    code: "academia-research",
+    name: "Academia & Research",
+    childs: ["Public Institute", "Privately Owned"],
+  },
+  {
+    code: "civil-society",
+    name: "Civil Society (not-for-profit)",
+    childs: ["Non-Governmental Organization (NGOs)", "Foundations"],
+  },
+];
+
 const UIStore = new Store({
   tags: {},
   countries: [],
@@ -41,6 +69,7 @@ const UIStore = new Store({
   meaOptions: [],
   organisationType: sectorOptions,
   sectorOptions: sectorOptions,
+  representativeGroup: representativeGroup,
   landing: null,
   stakeholders: null,
   highlight: false,
