@@ -322,7 +322,9 @@ const Landing = withRouter(
             <h2>
               Featured Content{" "}
               <span className="see-more-link">
-                See all <RightOutlined />
+                <Link to="/browse">
+                  See all <RightOutlined />
+                </Link>
               </span>
             </h2>
           </div>
