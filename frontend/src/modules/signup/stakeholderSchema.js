@@ -85,7 +85,7 @@ export const schema = {
       ],
       properties: {
         orgName: {
-          title: "Search Your Entity",
+          title: "Search for a GPML Member Entity",
           enum: [],
         },
         companyName: {

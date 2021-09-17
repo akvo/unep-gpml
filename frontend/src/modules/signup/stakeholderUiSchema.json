@@ -58,7 +58,7 @@
       "ui:placeholder": "Entity name"
     },
     "companyName": {
-      "ui:placeholder": "Search"
+      "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity"
     },
     "newCompanyName": {
       "ui:placeholder": "Entity name"
