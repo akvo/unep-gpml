@@ -115,79 +115,79 @@ export const schema = {
         value: ["S3"],
       },
       required: [
-        "orgName",
-        "orgRepresentative",
-        "orgRepresentativeGovernment",
-        "orgRepresentativePrivateSector",
-        "orgRepresentativeAcademiaResearch",
-        "orgRepresentativeCivilSociety",
-        "orgRepresentativeOther",
-        "orgDescription",
-        "orgUrl",
+        "org.name",
+        "org.representativeGroup",
+        "org.representativeGroupGovernment",
+        "org.representativeGroupPrivateSector",
+        "org.representativeGroupAcademiaResearch",
+        "org.representativeGroupCivilSociety",
+        "org.representativeGroupOther",
+        "org.program",
+        "org.url",
       ],
       properties: {
-        orgName: {
+        "org.name": {
           title: "What is the name of your Entity?",
           type: "string",
         },
-        orgRepresentative: {
+        "org.representativeGroup": {
           title: "Which representative group fits your Entity?",
           type: "string",
           enum: [],
         },
-        orgRepresentativeGovernment: {
+        "org.representativeGroupGovernment": {
           depend: {
-            id: "orgRepresentative",
+            id: "org.representativeGroup",
             value: ["government"],
           },
           title: "Select representative group",
           type: "string",
           enum: [],
         },
-        orgRepresentativePrivateSector: {
+        "org.representativeGroupPrivateSector": {
           depend: {
-            id: "orgRepresentative",
+            id: "org.representativeGroup",
             value: ["private sector (for-profit)"],
           },
           title: "Select representative group",
           type: "string",
           enum: [],
         },
-        orgRepresentativeAcademiaResearch: {
+        "org.representativeGroupAcademiaResearch": {
           depend: {
-            id: "orgRepresentative",
+            id: "org.representativeGroup",
             value: ["academia & research"],
           },
           title: "Select representative group",
           type: "string",
           enum: [],
         },
-        orgRepresentativeCivilSociety: {
+        "org.representativeGroupCivilSociety": {
           depend: {
-            id: "orgRepresentative",
+            id: "org.representativeGroup",
             value: ["civil society (not-for-profit)"],
           },
           title: "Select representative group",
           type: "string",
           enum: [],
         },
-        orgRepresentativeOther: {
+        "org.representativeGroupOther": {
           depend: {
-            id: "orgRepresentative",
+            id: "org.representativeGroup",
             value: ["-1"],
           },
           title: "Please specify your representative group",
           type: "string",
         },
-        orgDescription: {
+        "org.program": {
           title: "Briefly describe your Entity (200 words max)",
           type: "string",
         },
-        orgUrl: {
+        "org.url": {
           title: "Your Entity’s website",
           type: "string",
         },
-        orgLogo: {
+        "org.logo": {
           title: "Upload your Entity’s logo",
           type: "string",
           format: "data-url",

@@ -67,27 +67,27 @@ const getSchema = ({
   prop.S2.properties["country"].enumNames = countries?.map((x) => x.name);
 
   const representative = representativeGroup?.map((x) => x.name);
-  prop.S3.properties["orgRepresentative"].enum = [...representative, -1];
-  prop.S3.properties["orgRepresentative"].enumNames = [
+  prop.S3.properties["org.representativeGroup"].enum = [...representative, -1];
+  prop.S3.properties["org.representativeGroup"].enumNames = [
     ...representative,
     "Other",
   ];
   prop.S3.properties[
-    "orgRepresentativeGovernment"
+    "org.representativeGroupGovernment"
   ].enum = representativeGroup.find((x) => x.code === "government")?.childs;
   prop.S3.properties[
-    "orgRepresentativePrivateSector"
+    "org.representativeGroupPrivateSector"
   ].enum = tags?.sector?.map((it) => String(it.id));
   prop.S3.properties[
-    "orgRepresentativePrivateSector"
+    "org.representativeGroupPrivateSector"
   ].enumNames = tags?.sector?.map((it) => it.tag);
   prop.S3.properties[
-    "orgRepresentativeAcademiaResearch"
+    "org.representativeGroupAcademiaResearch"
   ].enum = representativeGroup.find(
     (x) => x.code === "academia-research"
   )?.childs;
   prop.S3.properties[
-    "orgRepresentativeCivilSociety"
+    "org.representativeGroupCivilSociety"
   ].enum = representativeGroup.find((x) => x.code === "civil-society")?.childs;
 
   prop.S4.properties["orgExpertise"].enum = tags?.offering?.map((it) =>

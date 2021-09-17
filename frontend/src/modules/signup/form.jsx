@@ -60,8 +60,9 @@ const SignUpForm = withRouter(
     const handleOnSubmit = ({ formData }) => {
       // # Transform data before sending to endpoint
       let data = {};
-      data.org = {};
+
       transformFormData(data, formData, formSchema.schema.properties, true);
+
       data.version = parseInt(formSchema.schema.version);
 
       setSending(true);
@@ -87,12 +88,33 @@ const SignUpForm = withRouter(
 
         feedOffering(data, formData); // TODO check paths
 
-        if (data.orgName) {
-          data.org.name = data.orgName;
-          data.org.type = data.orgRepresentative;
-          data.org.program = data.orgDescription;
-          data.org.url = data.orgUrl;
+        if (formData.S3["org.name"]) {
+          data.org = {};
+          data.org.name = formData.S3["org.name"];
+          data.org.type = formData.S3["org.representativeGroup"];
+          data.org.representativeGroupGovernment =
+            formData.S3["org.representativeGroupGovernment"];
+          data.org.representativeGroupPrivateSector =
+            formData.S3["org.representativeGroupPrivateSector"];
+          data.org.representativeGroupAcademiaResearch =
+            formData.S3["org.representativeGroupAcademiaResearch"];
+          data.org.representativeGroupCivilSociety =
+            formData.S3["org.representativeGroupCivilSociety"];
+          data.org.representativeGroupOther =
+            formData.S3["org.representativeGroupOther"];
+          data.org.program = formData.S3["org.program"];
+          data.org.url = formData.S3["org.url"];
           data.org.logo = data.orgLogo;
+
+          delete data.org_name;
+          delete data.org_representativeGroup;
+          delete data.org_representativeGroupGovernment;
+          delete data.org_representativeGroupPrivateSector;
+          delete data.org_representativeGroupAcademiaResearch;
+          delete data.org_representativeGroupCivilSociety;
+          delete data.org_representativeGroupOther;
+          delete data.org_program;
+          delete data.org_url;
 
           if (data.orgHeadquarter?.[formData.S5.orgHeadquarter]) {
             data.org.country = formData.S5.orgHeadquarter;
@@ -198,7 +220,6 @@ const SignUpForm = withRouter(
 
     const handleFormOnChange = useCallback(
       ({ formData, schema }) => {
-        //        console.log("handleFormOnChange representEntity", );
         signUpData.update((e) => {
           e.data = {
             ...e.data,
