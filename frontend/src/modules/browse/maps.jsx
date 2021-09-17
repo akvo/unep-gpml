@@ -150,16 +150,16 @@ const Maps = ({ data, topic, clickEvents, country }) => {
 
   const handleResize = () => {
     const box = document.getElementsByClassName("map-overlay");
+    const isTabletScreen = innerWidth >= 768 && innerWidth <= 991;
     if (box.length === 1) {
-      const width = innerWidth - (box[0].offsetLeft * 2 + box[0].offsetWidth);
-      const left =
-        innerWidth >= 768 && innerWidth <= 991
-          ? 23
-          : box[0].offsetLeft + box[0].offsetWidth;
-      const right =
-        innerWidth >= 768 && innerWidth <= 991 ? 50 : box[0].offsetLeft;
-      const height =
-        innerWidth >= 768 && innerWidth <= 991 ? 500 : box[0].offsetHeight;
+      const left = isTabletScreen
+        ? innerWidth * 0.03
+        : box[0].offsetLeft + box[0].offsetWidth;
+      const right = isTabletScreen ? innerWidth * 0.03 : box[0].offsetLeft;
+      const height = isTabletScreen ? 500 : box[0].offsetHeight;
+      const width = isTabletScreen
+        ? innerWidth - (left + right)
+        : innerWidth - (box[0].offsetLeft * 2 + box[0].offsetWidth);
       setMapPos({
         left: left,
         right: right,
@@ -171,6 +171,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
       }
     }
   };
+  console.log(mapPos);
 
   window.addEventListener("resize", handleResize);
 

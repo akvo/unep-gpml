@@ -1312,24 +1312,34 @@
   }
 
   // enable mobile view - maps
-  #landing {
-    .landing-container.map-container {
-      .map-overlay {
-        position: unset !important;
-        width: 100% !important;
-        padding: 0 30px;
-        .summary {
-          ul {
-            li {
-              .disclaimer {
-                max-width: 100% !important;
-              }
+  .landing-container.map-container {
+    .map-overlay {
+      position: unset !important;
+      width: 100% !important;
+      padding: 0 3%;
+      margin-bottom: 20px;
+      .summary {
+        ul {
+          li {
+            .disclaimer {
+              max-width: 100% !important;
             }
           }
         }
       }
     }
+    .map-buttons {
+      button {
+        margin-left: 0 !important;
+        margin-right: 10px;
+      }
+    }
+    .legends {
+      left: 0;
+    }
+  }
 
+  #landing {
     .popular-topics {
       .body {
         flex-direction: column;
@@ -1559,13 +1569,13 @@
   }
 
   // enable mobile view - maps
-  #landing {
-    .landing-container.map-container {
-      .map-overlay {
-        left: 35px !important;
-      }
+  .landing-container.map-container {
+    .map-overlay {
+      left: 35px !important;
     }
+  }
 
+  #landing {
     .popular-topics {
       .body {
         .chart-wrapper {
