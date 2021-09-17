@@ -129,6 +129,29 @@
     "orgRepresentative": {
       "ui:widget": "radio"
     },
+    "orgRepresentativeGovernment": {
+      "ui:placeholder": "Search Entity representative",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "orgRepresentativePrivateSector": {
+      "ui:placeholder": "Search Entity representative",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "orgRepresentativeAcademiaResearch": {
+      "ui:placeholder": "Search Entity representative",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "orgRepresentativeCivilSociety": {
+      "ui:placeholder": "Search Entity representative",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "orgRepresentativeOther": {
+      "ui:placeholder": "Entity representative"
+    },
     "orgDescription": {
       "ui:placeholder": "Organisartion brief",
       "ui:widget": "textarea",
@@ -146,6 +169,11 @@
     "ui:order": [
       "orgName",
       "orgRepresentative",
+      "orgRepresentativeGovernment",
+      "orgRepresentativePrivateSector",
+      "orgRepresentativeAcademiaResearch",
+      "orgRepresentativeCivilSociety",
+      "orgRepresentativeOther",
       "orgDescription",
       "orgUrl",
       "orgLogo"

@@ -114,7 +114,17 @@ export const schema = {
         id: "tabs",
         value: ["S3"],
       },
-      required: ["orgName", "orgRepresentative", "orgDescription", "orgUrl"],
+      required: [
+        "orgName",
+        "orgRepresentative",
+        "orgRepresentativeGovernment",
+        "orgRepresentativePrivateSector",
+        "orgRepresentativeAcademiaResearch",
+        "orgRepresentativeCivilSociety",
+        "orgRepresentativeOther",
+        "orgDescription",
+        "orgUrl",
+      ],
       properties: {
         orgName: {
           title: "What is the name of your Entity?",
@@ -124,6 +134,50 @@ export const schema = {
           title: "Which representative group fits your Entity?",
           type: "string",
           enum: [],
+        },
+        orgRepresentativeGovernment: {
+          depend: {
+            id: "orgRepresentative",
+            value: ["government"],
+          },
+          title: "Select representative group",
+          type: "string",
+          enum: [],
+        },
+        orgRepresentativePrivateSector: {
+          depend: {
+            id: "orgRepresentative",
+            value: ["private sector (for-profit)"],
+          },
+          title: "Select representative group",
+          type: "string",
+          enum: [],
+        },
+        orgRepresentativeAcademiaResearch: {
+          depend: {
+            id: "orgRepresentative",
+            value: ["academia & research"],
+          },
+          title: "Select representative group",
+          type: "string",
+          enum: [],
+        },
+        orgRepresentativeCivilSociety: {
+          depend: {
+            id: "orgRepresentative",
+            value: ["civil society (not-for-profit)"],
+          },
+          title: "Select representative group",
+          type: "string",
+          enum: [],
+        },
+        orgRepresentativeOther: {
+          depend: {
+            id: "orgRepresentative",
+            value: ["-1"],
+          },
+          title: "Please specify your representative group",
+          type: "string",
         },
         orgDescription: {
           title: "Briefly describe your Entity (200 words max)",
