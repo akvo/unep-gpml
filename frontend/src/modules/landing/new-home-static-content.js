@@ -568,7 +568,7 @@ export const ourCommunity = [
     role: "CEO - OceanHero.today",
   },
   {
-    id: 1,
+    id: null,
     type: "stakeholder",
     about:
       "The GPML Digital Platform is an unparalleled tool to bring global actors fighting against our marine plastic crisis in community with each other.",

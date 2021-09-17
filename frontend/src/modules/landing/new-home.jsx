@@ -153,13 +153,20 @@ const Landing = withRouter(
     const isApprovedUser = profile?.reviewStatus === "APPROVED";
     const hasProfile = profile?.reviewStatus;
     const eventCarousel = useRef(null);
+    const isMobileScreen = innerWidth <= 991;
 
-    const handleSeeAllStakeholderClick = () => {
+    const handlePopularTopicChartClick = (params) => {
+      const { name, tag } = params?.data;
+      !isMobileScreen && setSelectedTopic(name.toLowerCase());
+      isMobileScreen && history.push(`/browse?tag=${tag}`);
+    };
+
+    const handleOurCommunityProfileClick = () => {
       if (!isAuthenticated) {
         return loginWithPopup();
       }
       if (isAuthenticated && !hasProfile) {
-        return setSignupModalVisible(true);
+        return history.push("/signup");
       }
       return setWarningModalVisible(true);
     };
@@ -276,43 +283,46 @@ const Landing = withRouter(
                     id: x.id,
                     name: x.topic,
                     value: x.count,
+                    tag: x.tag,
                   };
                 })}
                 onEvents={{
-                  click: (e) => setSelectedTopic(e.data.name.toLowerCase()),
+                  click: (e) => handlePopularTopicChartClick(e),
                 }}
                 selected={selectedTopic}
               />
             </div>
-            <div className="content">
-              <div className="content-body">
-                {sortPopularTopic
-                  .find((x) => x.topic.toLowerCase() === selectedTopic)
-                  .items.map((x, i) => {
-                    const { id, type, title, description } = x;
-                    const link = `/${type
-                      .toLowerCase()
-                      .split(" ")
-                      .join("_")}/${id}`;
-                    return (
-                      <div key={`summary-${i}`} className="item-body">
-                        <div className="resource-label upper">
-                          {topicNames(humps.camelizeKeys(type))}
+            {!isMobileScreen && (
+              <div className="content">
+                <div className="content-body">
+                  {sortPopularTopic
+                    .find((x) => x.topic.toLowerCase() === selectedTopic)
+                    .items.map((x, i) => {
+                      const { id, type, title, description } = x;
+                      const link = `/${type
+                        .toLowerCase()
+                        .split(" ")
+                        .join("_")}/${id}`;
+                      return (
+                        <div key={`summary-${i}`} className="item-body">
+                          <div className="resource-label upper">
+                            {topicNames(humps.camelizeKeys(type))}
+                          </div>
+                          <div className="asset-title">{title}</div>
+                          <div className="body-text">
+                            {TrimText({ text: description, max: 250 })}
+                          </div>
+                          <span className="read-more">
+                            <Link to={link}>
+                              Read more <ArrowRightOutlined />
+                            </Link>
+                          </span>
                         </div>
-                        <div className="asset-title">{title}</div>
-                        <div className="body-text">
-                          {TrimText({ text: description, max: 250 })}
-                        </div>
-                        <span className="read-more">
-                          <Link to={link}>
-                            Read more <ArrowRightOutlined />
-                          </Link>
-                        </span>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <hr />
@@ -322,7 +332,9 @@ const Landing = withRouter(
             <h2>
               Featured Content{" "}
               <span className="see-more-link">
-                See all <RightOutlined />
+                <Link to="/browse">
+                  See all <RightOutlined />
+                </Link>
               </span>
             </h2>
           </div>
@@ -477,48 +489,60 @@ const Landing = withRouter(
               >
                 {sortBy(ourCommunity, "name").map((x, i) => {
                   const index = i > 3 ? i - 4 : i;
-                  const { type, about, image, name, role } = x;
+                  const { type, about, image, name, role, id } = x;
+                  const link = isApprovedUser
+                    ? id
+                      ? `/${type}/${id}`
+                      : "#"
+                    : "#";
                   return (
-                    <div key={`oc-card-${i}`}>
-                      <div className="type-wrapper">
-                        <span className="mark">
-                          {topicNames(humps.camelizeKeys(type))}
-                        </span>
+                    <Link
+                      to={link}
+                      onClick={
+                        !isApprovedUser && handleOurCommunityProfileClick
+                      }
+                    >
+                      <div key={`oc-card-${i}`}>
+                        <div className="type-wrapper">
+                          <span className="mark">
+                            {topicNames(humps.camelizeKeys(type))}
+                          </span>
+                        </div>
+                        <div
+                          className="about"
+                          style={{ color: cardSvg[index]?.color }}
+                        >
+                          {about.length > 105 ? (
+                            <Tooltip
+                              title={about}
+                              overlayClassName="our-community-tooltip"
+                            >
+                              {TrimText({ text: about, max: 105 })}
+                            </Tooltip>
+                          ) : (
+                            <q>{about}</q>
+                          )}
+                        </div>
+                        {cardSvg[index]?.svg}
+                        <div className="detail">
+                          <Avatar
+                            className="photo"
+                            size={{
+                              xs: 85,
+                              sm: 95,
+                              md: 105,
+                              lg: 110,
+                              xl: 115,
+                              xxl: 125,
+                            }}
+                            src={image || imageNotFound}
+                            alt={name}
+                          />
+                          <h4>{name}</h4>
+                          <p className="role">{role || ""}</p>
+                        </div>
                       </div>
-                      <div
-                        className="about"
-                        style={{ color: cardSvg[index]?.color }}
-                      >
-                        {about.length > 105 ? (
-                          <Tooltip
-                            title={about}
-                            overlayClassName="our-community-tooltip"
-                          >
-                            {TrimText({ text: about, max: 105 })}
-                          </Tooltip>
-                        ) : (
-                          <q>{about}</q>
-                        )}
-                      </div>
-                      {cardSvg[index]?.svg}
-                      <div className="detail">
-                        <Avatar
-                          className="photo"
-                          size={{
-                            xs: 85,
-                            sm: 95,
-                            md: 105,
-                            lg: 110,
-                            xl: 115,
-                            xxl: 125,
-                          }}
-                          src={image || imageNotFound}
-                          alt={name}
-                        />
-                        <h4>{name}</h4>
-                        <p className="role">{role || ""}</p>
-                      </div>
-                    </div>
+                    </Link>
                   );
                 })}
               </Carousel>
