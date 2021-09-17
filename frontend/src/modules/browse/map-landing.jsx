@@ -126,15 +126,12 @@ const MapLanding = ({
             />
           </div>
         )}
-        {/* Dont render maps on mobile */}
-        {innerWidth >= 768 && (
-          <Maps
-            data={landing?.map || []}
-            clickEvents={clickCountry}
-            topic={counts}
-            country={countries.find((x) => x.id === country)}
-          />
-        )}
+        <Maps
+          data={landing?.map || []}
+          clickEvents={clickCountry}
+          topic={counts}
+          country={countries.find((x) => x.id === country)}
+        />
       </div>
     </div>
   );
