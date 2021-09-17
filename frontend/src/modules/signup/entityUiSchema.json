@@ -123,32 +123,60 @@
   },
   "S3": {
     "classNames": "list-group",
-    "orgName": {
+    "org.name": {
       "ui:placeholder": "Organisation name"
     },
-    "orgRepresentative": {
+    "org.representativeGroup": {
       "ui:widget": "radio"
     },
-    "orgDescription": {
+    "org.representativeGroupGovernment": {
+      "ui:placeholder": "Search Entity representative",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "org.representativeGroupPrivateSector": {
+      "ui:placeholder": "Search Entity representative",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "org.representativeGroupAcademiaResearch": {
+      "ui:placeholder": "Search Entity representative",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "org.representativeGroupCivilSociety": {
+      "ui:placeholder": "Search Entity representative",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "org.representativeGroupOther": {
+      "ui:placeholder": "Entity representative"
+    },
+    "org.program": {
       "ui:placeholder": "Organisartion brief",
       "ui:widget": "textarea",
       "ui:maxWord": 200
     },
-    "orgUrl": {
+    "org.url": {
       "ui:addOnBefore": "https://",
       "ui:widget": "URLWidget",
       "ui:placeholder": "Url"
     },
-    "orgLogo": {
+    "org.logo": {
       "ui:options": { "accept": "image/*" },
       "ui:widget": "file"
     },
     "ui:order": [
-      "orgName",
-      "orgRepresentative",
-      "orgDescription",
-      "orgUrl",
-      "orgLogo"
+      "org.name",
+      "org.representativeGroup",
+      "org.representativeGroupGovernment",
+      "org.representativeGroupPrivateSector",
+      "org.representativeGroupAcademiaResearch",
+      "org.representativeGroupCivilSociety",
+      "org.representativeGroupOther",
+      "org.program",
+      "org.url",
+      "org.logo"
     ]
   },
   "S4": {

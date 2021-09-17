@@ -43,6 +43,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     regionOptions: s.regionOptions,
     sectorOptions: s.sectorOptions,
     organisationType: s.organisationType,
+    representativeGroup: s.representativeGroup,
     meaOptions: s.meaOptions,
     organisations: s.organisations,
     profile: s.profile,
@@ -57,6 +58,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     regionOptions,
     sectorOptions,
     organisationType,
+    representativeGroup,
     meaOptions,
     organisations,
     formStep,
@@ -108,7 +110,8 @@ const SignUp = ({ match: { params }, ...props }) => {
         !isEmpty(sectorOptions) &&
         !isEmpty(organisationType) &&
         !isEmpty(meaOptions) &&
-        !isEmpty(stakeholders)
+        !isEmpty(stakeholders) &&
+        !isEmpty(representativeGroup)
     );
   }, [
     countries,
@@ -120,6 +123,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     organisationType,
     meaOptions,
     stakeholders,
+    representativeGroup,
   ]);
 
   useEffect(() => {
@@ -299,6 +303,7 @@ const SignUp = ({ match: { params }, ...props }) => {
   };
 
   const handleOnClickBtnNext = (e) => {
+    window.scrollTo(0, 0);
     const { tabIndex, stepIndex, steps } = getTabStepIndex();
     if (stepIndex < steps.length - 1) {
       // Next step, same section
@@ -313,6 +318,7 @@ const SignUp = ({ match: { params }, ...props }) => {
   };
 
   const handleOnClickBtnBack = (e) => {
+    window.scrollTo(0, 0);
     const { tabIndex, stepIndex, steps } = getTabStepIndex();
     if (stepIndex > 0 && steps.length > 0) {
       // Prev step, same section
