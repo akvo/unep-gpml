@@ -154,12 +154,12 @@ const Landing = withRouter(
     const hasProfile = profile?.reviewStatus;
     const eventCarousel = useRef(null);
 
-    const handleSeeAllStakeholderClick = () => {
+    const handleOurCommunityProfileClick = () => {
       if (!isAuthenticated) {
         return loginWithPopup();
       }
       if (isAuthenticated && !hasProfile) {
-        return setSignupModalVisible(true);
+        return history.push("/signup");
       }
       return setWarningModalVisible(true);
     };
@@ -479,48 +479,60 @@ const Landing = withRouter(
               >
                 {sortBy(ourCommunity, "name").map((x, i) => {
                   const index = i > 3 ? i - 4 : i;
-                  const { type, about, image, name, role } = x;
+                  const { type, about, image, name, role, id } = x;
+                  const link = isApprovedUser
+                    ? id
+                      ? `/${type}/${id}`
+                      : "#"
+                    : "#";
                   return (
-                    <div key={`oc-card-${i}`}>
-                      <div className="type-wrapper">
-                        <span className="mark">
-                          {topicNames(humps.camelizeKeys(type))}
-                        </span>
+                    <Link
+                      to={link}
+                      onClick={
+                        !isApprovedUser && handleOurCommunityProfileClick
+                      }
+                    >
+                      <div key={`oc-card-${i}`}>
+                        <div className="type-wrapper">
+                          <span className="mark">
+                            {topicNames(humps.camelizeKeys(type))}
+                          </span>
+                        </div>
+                        <div
+                          className="about"
+                          style={{ color: cardSvg[index]?.color }}
+                        >
+                          {about.length > 105 ? (
+                            <Tooltip
+                              title={about}
+                              overlayClassName="our-community-tooltip"
+                            >
+                              {TrimText({ text: about, max: 105 })}
+                            </Tooltip>
+                          ) : (
+                            <q>{about}</q>
+                          )}
+                        </div>
+                        {cardSvg[index]?.svg}
+                        <div className="detail">
+                          <Avatar
+                            className="photo"
+                            size={{
+                              xs: 85,
+                              sm: 95,
+                              md: 105,
+                              lg: 110,
+                              xl: 115,
+                              xxl: 125,
+                            }}
+                            src={image || imageNotFound}
+                            alt={name}
+                          />
+                          <h4>{name}</h4>
+                          <p className="role">{role || ""}</p>
+                        </div>
                       </div>
-                      <div
-                        className="about"
-                        style={{ color: cardSvg[index]?.color }}
-                      >
-                        {about.length > 105 ? (
-                          <Tooltip
-                            title={about}
-                            overlayClassName="our-community-tooltip"
-                          >
-                            {TrimText({ text: about, max: 105 })}
-                          </Tooltip>
-                        ) : (
-                          <q>{about}</q>
-                        )}
-                      </div>
-                      {cardSvg[index]?.svg}
-                      <div className="detail">
-                        <Avatar
-                          className="photo"
-                          size={{
-                            xs: 85,
-                            sm: 95,
-                            md: 105,
-                            lg: 110,
-                            xl: 115,
-                            xxl: 125,
-                          }}
-                          src={image || imageNotFound}
-                          alt={name}
-                        />
-                        <h4>{name}</h4>
-                        <p className="role">{role || ""}</p>
-                      </div>
-                    </div>
+                    </Link>
                   );
                 })}
               </Carousel>
