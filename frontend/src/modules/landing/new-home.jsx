@@ -153,6 +153,13 @@ const Landing = withRouter(
     const isApprovedUser = profile?.reviewStatus === "APPROVED";
     const hasProfile = profile?.reviewStatus;
     const eventCarousel = useRef(null);
+    const isMobileScreen = innerWidth <= 991;
+
+    const handlePopularTopicChartClick = (params) => {
+      const { name, tag } = params?.data;
+      !isMobileScreen && setSelectedTopic(name.toLowerCase());
+      isMobileScreen && history.push(`/browse?tag=${tag}`);
+    };
 
     const handleOurCommunityProfileClick = () => {
       if (!isAuthenticated) {
@@ -276,43 +283,46 @@ const Landing = withRouter(
                     id: x.id,
                     name: x.topic,
                     value: x.count,
+                    tag: x.tag,
                   };
                 })}
                 onEvents={{
-                  click: (e) => setSelectedTopic(e.data.name.toLowerCase()),
+                  click: (e) => handlePopularTopicChartClick(e),
                 }}
                 selected={selectedTopic}
               />
             </div>
-            <div className="content">
-              <div className="content-body">
-                {sortPopularTopic
-                  .find((x) => x.topic.toLowerCase() === selectedTopic)
-                  .items.map((x, i) => {
-                    const { id, type, title, description } = x;
-                    const link = `/${type
-                      .toLowerCase()
-                      .split(" ")
-                      .join("_")}/${id}`;
-                    return (
-                      <div key={`summary-${i}`} className="item-body">
-                        <div className="resource-label upper">
-                          {topicNames(humps.camelizeKeys(type))}
+            {!isMobileScreen && (
+              <div className="content">
+                <div className="content-body">
+                  {sortPopularTopic
+                    .find((x) => x.topic.toLowerCase() === selectedTopic)
+                    .items.map((x, i) => {
+                      const { id, type, title, description } = x;
+                      const link = `/${type
+                        .toLowerCase()
+                        .split(" ")
+                        .join("_")}/${id}`;
+                      return (
+                        <div key={`summary-${i}`} className="item-body">
+                          <div className="resource-label upper">
+                            {topicNames(humps.camelizeKeys(type))}
+                          </div>
+                          <div className="asset-title">{title}</div>
+                          <div className="body-text">
+                            {TrimText({ text: description, max: 250 })}
+                          </div>
+                          <span className="read-more">
+                            <Link to={link}>
+                              Read more <ArrowRightOutlined />
+                            </Link>
+                          </span>
                         </div>
-                        <div className="asset-title">{title}</div>
-                        <div className="body-text">
-                          {TrimText({ text: description, max: 250 })}
-                        </div>
-                        <span className="read-more">
-                          <Link to={link}>
-                            Read more <ArrowRightOutlined />
-                          </Link>
-                        </span>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <hr />
