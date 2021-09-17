@@ -21,6 +21,11 @@ insert into organisation (
     name
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :type) ", type")
+--~ (when (contains? params :representative_group_government) ", representative_group_government")
+--~ (when (contains? params :representative_group_private_sector) ", representative_group_private_sector")
+--~ (when (contains? params :representative_group_academia_research) ", representative_group_academia_research")
+--~ (when (contains? params :representative_group_civil_society) ", representative_group_civil_society")
+--~ (when (contains? params :representative_group_other) ", representative_group_other")
 --~ (when (contains? params :country) ", country")
 --~ (when (contains? params :geo_coverage_type) ", geo_coverage_type")
 --~ (when (contains? params :url) ", url")
@@ -36,6 +41,11 @@ values (
     :name
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :type) ", :type")
+--~ (when (contains? params :representative_group_government) ", :representative_group_government")
+--~ (when (contains? params :representative_group_private_sector) ", :representative_group_private_sector")
+--~ (when (contains? params :representative_group_academia_research) ", :representative_group_academia_research")
+--~ (when (contains? params :representative_group_civil_society) ", :representative_group_civil_society")
+--~ (when (contains? params :representative_group_other) ", :representative_group_other")
 --~ (when (contains? params :country) ", :country::integer")
 --~ (when (contains? params :geo_coverage_type) ", :geo_coverage_type::geo_coverage_type")
 --~ (when (contains? params :url) ", :url")
