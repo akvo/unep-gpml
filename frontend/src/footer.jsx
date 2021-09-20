@@ -57,9 +57,45 @@ const Footer = ({
                 <a href="/browse">Knowledge Exchange</a>
               </li>
               <li>
-                <a href="/stakeholders?topic=stakeholder">
-                  Connect Stakeholders
-                </a>
+                <span>Connect Stakeholders</span>
+                <ul className="list-inside-list">
+                  <li>
+                    {profile?.reviewStatus === "APPROVED" ? (
+                      <a href="/stakeholders?topic=organisation">Entity</a>
+                    ) : (
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={(e) => {
+                          Object.keys(profile).length > 1
+                            ? setWarningModalVisible(true)
+                            : isAuthenticated
+                            ? setStakeholderSignupModalVisible(true)
+                            : loginWithPopup();
+                        }}
+                      >
+                        Entity
+                      </span>
+                    )}
+                  </li>
+                  <li>
+                    {profile?.reviewStatus === "APPROVED" ? (
+                      <a href="/stakeholders?topic=stakeholder">Individual</a>
+                    ) : (
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={(e) => {
+                          Object.keys(profile).length > 1
+                            ? setWarningModalVisible(true)
+                            : isAuthenticated
+                            ? setStakeholderSignupModalVisible(true)
+                            : loginWithPopup();
+                        }}
+                      >
+                        Individual
+                      </span>
+                    )}
+                  </li>
+                </ul>
               </li>
               <li>
                 <a href="https://datahub.gpmarinelitter.org/" rel="noreferrer">
@@ -152,49 +188,6 @@ const Footer = ({
                     }}
                   >
                     Sign up to the GPML Digital Platform (For All Individuals)
-                  </span>
-                )}
-              </li>
-            </ul>
-          </nav>
-          <nav>
-            <ul>
-              <li>
-                <h4>Stakeholders</h4>
-              </li>
-              <li>
-                {profile?.reviewStatus === "APPROVED" ? (
-                  <a href="/browse?topic=organisation">Entity</a>
-                ) : (
-                  <span
-                    style={{ cursor: "pointer" }}
-                    onClick={(e) => {
-                      Object.keys(profile).length > 1
-                        ? setWarningModalVisible(true)
-                        : isAuthenticated
-                        ? setStakeholderSignupModalVisible(true)
-                        : loginWithPopup();
-                    }}
-                  >
-                    Entity
-                  </span>
-                )}
-              </li>
-              <li>
-                {profile?.reviewStatus === "APPROVED" ? (
-                  <a href="/stakeholders?topic=stakeholder">Individual</a>
-                ) : (
-                  <span
-                    style={{ cursor: "pointer" }}
-                    onClick={(e) => {
-                      Object.keys(profile).length > 1
-                        ? setWarningModalVisible(true)
-                        : isAuthenticated
-                        ? setStakeholderSignupModalVisible(true)
-                        : loginWithPopup();
-                    }}
-                  >
-                    Individual
                   </span>
                 )}
               </li>
