@@ -239,6 +239,7 @@
    [:representative_group_academia_research {:optional true} string?]
    [:representative_group_civil_society {:optional true} string?]
    [:representative_group_other {:optional true} string?]
+   [:subnational_area {:optional true} string?]
    [:country {:optional true} int?]
    [:expertise {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for expertise"} int?]]

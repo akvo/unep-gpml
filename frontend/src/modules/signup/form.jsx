@@ -119,6 +119,10 @@ const SignUpForm = withRouter(
           if (data.orgHeadquarter?.[formData.S5.orgHeadquarter]) {
             data.org.country = formData.S5.orgHeadquarter;
           }
+          if (data.orgSubnationalArea) {
+            data.org.subnationalArea = data.orgSubnationalArea;
+          }
+          delete data.orgSubnationalArea;
           if (data.geoCoverageType) {
             data.org.geoCoverageType = data.geoCoverageType;
             data.org.geoCoverageValue = data.geoCoverageValue;

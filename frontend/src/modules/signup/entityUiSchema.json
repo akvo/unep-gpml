@@ -202,6 +202,7 @@
       "geoCoverageValueTransnational",
       "geoCoverageValueSubNational",
       "geoCoverageValueGlobalSpesific",
+      "orgSubnationalArea",
       "publicDatabase"
     ],
     "orgHeadquarter": {
@@ -241,6 +242,8 @@
       "ui:showSearch": true,
       "ui:mode": "multiple"
     },
+    "orgSubnationalArea": {},
+
     "publicDatabase": {
       "ui:widget": "checkbox",
       "ui:label": null,
