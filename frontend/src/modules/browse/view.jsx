@@ -215,7 +215,7 @@ const Browse = ({
               onChange={(status) => setToggleButton(status ? "map" : "list")}
               size="small"
             />{" "}
-            Swith to {toggleButton === "list" ? "map" : "list"} view
+            Switch to {toggleButton === "list" ? "map" : "list"} view
           </span>
         </div>
       </div>
