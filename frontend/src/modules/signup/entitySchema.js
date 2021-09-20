@@ -232,6 +232,11 @@ export const schema = {
           enum: [],
         },
         ...geoCoverage,
+        orgSubnationalArea: {
+          title:
+            "Please indicate if your Entity operates in a Subnational area only",
+          type: "string",
+        },
         publicDatabase: {
           title:
             "By submitting this form, I will be included in the public database of GPML Digital Platform members and acknowledge that the provided information will be made public and used to find and connect via smart-matchmaking functionalities with other stakeholders and resources.",
