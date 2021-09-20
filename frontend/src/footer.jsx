@@ -164,7 +164,7 @@ const Footer = ({
               </li>
               <li>
                 {profile?.reviewStatus === "APPROVED" ? (
-                  <a href="/browse?topic=organisation">Entity</a>
+                  <a href="/stakeholders?topic=organisation">Entity</a>
                 ) : (
                   <span
                     style={{ cursor: "pointer" }}
