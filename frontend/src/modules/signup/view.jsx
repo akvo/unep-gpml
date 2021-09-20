@@ -381,147 +381,154 @@ const SignUp = ({ match: { params }, ...props }) => {
           <LoadingOutlined spin /> Loading
         </h2>
       ) : (
-        <div className="ui container">
-          <div className="form-container">
-            {formStep.signUp === 1 && (
-              <Row
-                style={{
-                  minHeight: `${minHeightContainer}px`,
-                  borderRadius: "18px",
-                }}
-              >
-                <Col
-                  xs={24}
-                  lg={6}
+        <StickyBox style={{ zIndex: 9 }} offsetTop={20} offsetBottom={20}>
+          <div className="ui container">
+            <div className="form-container">
+              {formStep.signUp === 1 && (
+                <Row
                   style={{
-                    minHeight: "100%",
-                    background: "rgba(3, 155, 120, 0.4)",
-                    borderRadius: "15px 0 0 15px",
-                    padding: "13px 0",
+                    minHeight: `${minHeightContainer}px`,
+                    borderRadius: "18px",
                   }}
                 >
-                  {tabsData.map(({ key, title, desc, steps }, i) => (
-                    <>
-                      <Steps
-                        key={`steps-section-${key}`}
-                        direction="vertical"
-                        size="small"
-                        current={data[key]?.steps}
-                        initial={-1}
-                        onChange={(e) => {
-                          e === -1
-                            ? handleOnTabChange(key)
-                            : handleOnStepClick(e, data.tabs[0]);
-                        }}
-                        className={key === data.tabs[0] ? "current-tabs" : ""}
-                      >
-                        {renderSteps(title, key, steps, i)}
-                      </Steps>
-                      <hr className="step-line" />
-                    </>
-                  ))}
-                </Col>
-                <Col
-                  xs={24}
-                  lg={18}
-                  style={{
-                    padding: "20px 10px 20px 16px",
-                    backgroundColor: "#fff",
-                    borderRadius: "0 15px 15px 0",
-                  }}
-                >
-                  <Card
+                  <Col
+                    xs={24}
+                    lg={6}
                     style={{
-                      paddingTop: 0,
-                      paddingBottom: "100px",
-                      paddingRight: "24px",
-                      paddingLeft: "30px",
-                      minHeight: `${minHeightCard}px`,
+                      minHeight: "100%",
+                      background: "rgba(3, 155, 120, 0.4)",
+                      borderRadius: "15px 0 0 15px",
+                      padding: "13px 0",
                     }}
                   >
-                    {getTabStepIndex().tabIndex === 0 && isEntityType ? (
-                      <Row className="entity-getting-started-heading">
-                        <div>
-                          This is the application for of an Entity becoming a
-                          Member of the GPML, the person submitting the
-                          information is identifying themselves as Entity Focal
-                          Points.
-                        </div>
-                        <div>
-                          Membership applications are reviewed by the GPML
-                          Secreteriat on a weekly basis and confirmation will be
-                          communicated via email.
-                        </div>
-                        <div>
-                          More information on Entity Focal Points rights can be
-                          found{" "}
-                          <a
-                            href="https://wedocs.unep.org/bitstream/handle/20.500.11822/36688/Phase%20II%20Focal%20Point%20Roles%2031-08-2021%20-%20Copy.pdf?sequence=1&isAllowed=y"
-                            target="_blank"
-                            rel="noreferrer"
+                    <StickyBox style={{ zIndex: 9 }} offsetTop={100}>
+                      {tabsData.map(({ key, title, desc, steps }, i) => (
+                        <>
+                          <Steps
+                            key={`steps-section-${key}`}
+                            direction="vertical"
+                            size="small"
+                            current={data[key]?.steps}
+                            initial={-1}
+                            onChange={(e) => {
+                              e === -1
+                                ? handleOnTabChange(key)
+                                : handleOnStepClick(e, data.tabs[0]);
+                            }}
+                            className={
+                              key === data.tabs[0] ? "current-tabs" : ""
+                            }
                           >
-                            here
-                          </a>
-                          .
-                        </div>
-                      </Row>
-                    ) : (
-                      <span></span>
-                    )}
-                    <SignUpForm
-                      isEntityType={isEntityType}
-                      isStakeholderType={isStakeholderType}
-                      formType={props.formType}
-                      btnSubmit={btnSubmit}
-                      sending={sending}
-                      setSending={setSending}
-                      highlight={highlight}
-                      setHighlight={setHighlight}
-                      formSchema={formSchema}
-                      setDisabledBtn={setDisabledBtn}
-                    />
-                    <div className="button-row">
-                      {!isFirstStep() && (
-                        <Button
-                          className="back-button"
-                          type="ghost"
-                          onClick={(e) => handleOnClickBtnBack(e)}
-                        >
-                          <LeftOutlined /> Back
-                        </Button>
-                      )}
-                      {!isLastStep() && isAuthorizeSubmission && (
-                        <Button
-                          className="next-button"
-                          type="primary"
-                          onClick={(e) => handleOnClickBtnNext(e)}
-                        >
-                          Next <RightOutlined />
-                        </Button>
-                      )}
-                    </div>
-                  </Card>
-                </Col>
-              </Row>
-            )}
-            {formStep.signUp === 2 && (
-              <Row>
-                <Col span={24}>
-                  <Card
+                            {renderSteps(title, key, steps, i)}
+                          </Steps>
+                          <hr className="step-line" />
+                        </>
+                      ))}
+                    </StickyBox>
+                  </Col>
+
+                  <Col
+                    xs={24}
+                    lg={18}
                     style={{
-                      padding: "30px",
+                      padding: "20px 10px 20px 16px",
+                      backgroundColor: "#fff",
+                      borderRadius: "0 15px 15px 0",
                     }}
                   >
-                    <div>
-                      <h3>Thank you for signing up!</h3>
-                      <p>we'll let you know once an admin has approved it</p>
-                    </div>
-                  </Card>
-                </Col>
-              </Row>
-            )}
+                    <Card
+                      style={{
+                        paddingTop: 0,
+                        paddingBottom: "100px",
+                        paddingRight: "24px",
+                        paddingLeft: "30px",
+                        minHeight: `${minHeightCard}px`,
+                      }}
+                    >
+                      {getTabStepIndex().tabIndex === 0 && isEntityType ? (
+                        <Row className="entity-getting-started-heading">
+                          <div>
+                            This is the application for of an Entity becoming a
+                            Member of the GPML, the person submitting the
+                            information is identifying themselves as Entity
+                            Focal Points.
+                          </div>
+                          <div>
+                            Membership applications are reviewed by the GPML
+                            Secreteriat on a weekly basis and confirmation will
+                            be communicated via email.
+                          </div>
+                          <div>
+                            More information on Entity Focal Points rights can
+                            be found{" "}
+                            <a
+                              href="https://wedocs.unep.org/bitstream/handle/20.500.11822/36688/Phase%20II%20Focal%20Point%20Roles%2031-08-2021%20-%20Copy.pdf?sequence=1&isAllowed=y"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              here
+                            </a>
+                            .
+                          </div>
+                        </Row>
+                      ) : (
+                        <span></span>
+                      )}
+                      <SignUpForm
+                        isEntityType={isEntityType}
+                        isStakeholderType={isStakeholderType}
+                        formType={props.formType}
+                        btnSubmit={btnSubmit}
+                        sending={sending}
+                        setSending={setSending}
+                        highlight={highlight}
+                        setHighlight={setHighlight}
+                        formSchema={formSchema}
+                        setDisabledBtn={setDisabledBtn}
+                      />
+                      <div className="button-row">
+                        {!isFirstStep() && (
+                          <Button
+                            className="back-button"
+                            type="ghost"
+                            onClick={(e) => handleOnClickBtnBack(e)}
+                          >
+                            <LeftOutlined /> Back
+                          </Button>
+                        )}
+                        {!isLastStep() && isAuthorizeSubmission && (
+                          <Button
+                            className="next-button"
+                            type="primary"
+                            onClick={(e) => handleOnClickBtnNext(e)}
+                          >
+                            Next <RightOutlined />
+                          </Button>
+                        )}
+                      </div>
+                    </Card>
+                  </Col>
+                </Row>
+              )}
+              {formStep.signUp === 2 && (
+                <Row>
+                  <Col span={24}>
+                    <Card
+                      style={{
+                        padding: "30px",
+                      }}
+                    >
+                      <div>
+                        <h3>Thank you for signing up!</h3>
+                        <p>we'll let you know once an admin has approved it</p>
+                      </div>
+                    </Card>
+                  </Col>
+                </Row>
+              )}
+            </div>
           </div>
-        </div>
+        </StickyBox>
       )}
     </div>
   );
