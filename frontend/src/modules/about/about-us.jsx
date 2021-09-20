@@ -265,7 +265,7 @@ const renderSectionKeyFeaturesAndComponents = () => {
     <div className="section-container section-feature-component-container">
       <div className="ui container section-feature-component-wrapper">
         <div className="section-feature-component-text">
-          <h2 className="text-green">Key Feature & Components</h2>
+          <h2 className="text-green">Key Features & Components</h2>
           <p className="txt-emphasis text-white">
             Features of the GPML Digital Platform are made available via 3
             primary components.
