@@ -423,15 +423,24 @@ const AdminSection = ({
           <Button type="primary">Download as .csv</Button>
         </div>
       </div> */}
-      <Tabs onChange={(key) => setTab(key)} type="card" size="large">
-        <TabPane tab="Stakeholders & Entities" key="stakeholders-entities">
+      <Tabs
+        onChange={(key) => setTab(key)}
+        type="card"
+        size="large"
+        className="profile-tab-menu"
+      >
+        <TabPane
+          tab="Stakeholders & Entities"
+          key="stakeholders-entities"
+          className="profile-tab-pane"
+        >
           {renderNewApprovalRequests()}
           {renderArchiveRequests()}
         </TabPane>
-        <TabPane tab="Resources" key="resources">
+        <TabPane tab="Resources" key="resources" className="profile-tab-pane">
           Content of Tab Pane 2
         </TabPane>
-        <TabPane tab="Tags" key="tags">
+        <TabPane tab="Tags" key="tags" className="profile-tab-pane">
           Content of Tab Pane 3
         </TabPane>
       </Tabs>

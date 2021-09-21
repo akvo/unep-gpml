@@ -337,7 +337,13 @@ const ProfileView = ({ ...props }) => {
                   </Menu>
                 </StickyBox>
               </Col>
-              <Col xs={24} sm={24} md={17} lg={18} className="content-wrapper">
+              <Col
+                xs={24}
+                sm={24}
+                md={17}
+                lg={18}
+                className={menu !== "admin-section" ? "content-wrapper" : ""}
+              >
                 {menu === "personal-details" && (
                   <div>
                     <SignupForm

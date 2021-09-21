@@ -534,3 +534,43 @@
     margin-bottom: 20px;
   }
 }
+
+.profile-tab-menu {
+  background-color: #fff;
+  margin-bottom: 1.5rem;
+  .profile-tab-pane {
+    padding: 0.85rem 1.85rem;
+  }
+  .ant-tabs-nav-list {
+    justify-content: space-evenly;
+    width: 100%;
+    align-items: center;
+  }
+  .ant-tabs-tab {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    padding: 1.2rem 1.85rem !important;
+    margin-right: 0 !important;
+    background: #edf2f7 !important;
+    border: 1px solid #d3dee7 !important;
+    border-radius: 0 !important;
+  }
+  .ant-tabs-tab-btn {
+    color: #036799;
+  }
+  .ant-tabs-tab-active {
+    background: #fff !important;
+    border: none !important;
+    border-radius: 0 !important;
+    .ant-tabs-tab-btn {
+      font-weight: 600;
+      color: #036799;
+    }
+  }
+  .ant-tabs-nav::before,
+  .ant-tabs-nav .ant-tabs-nav-wrap::before,
+  .ant-tabs-nav .ant-tabs-nav-wrap::after {
+    content: none !important;
+  }
+}
