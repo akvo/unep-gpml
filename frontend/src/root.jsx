@@ -247,6 +247,7 @@ const Root = () => {
                   isAuthenticated,
                   setStakeholderSignupModalVisible,
                   loginWithPopup,
+                  stakeholderCounts,
                 }}
               />
             </div>

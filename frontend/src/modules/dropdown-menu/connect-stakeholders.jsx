@@ -2,6 +2,8 @@ import React from "react";
 import { withRouter } from "react-router";
 import { Button, Menu, Dropdown } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import humps from "humps";
+import { topicNames } from "../../utils/misc";
 
 const ConnectStakeholdersDropdownMenu = withRouter(
   ({
@@ -11,6 +13,7 @@ const ConnectStakeholdersDropdownMenu = withRouter(
     isAuthenticated,
     setStakeholderSignupModalVisible,
     loginWithPopup,
+    stakeholderCounts,
   }) => {
     const handleOnClickNeedAuth = (topic) => {
       {
@@ -24,32 +27,50 @@ const ConnectStakeholdersDropdownMenu = withRouter(
       }
     };
 
+    console.log(stakeholderCounts);
+    const loading = !stakeholderCounts;
+
     return (
       <Dropdown
         overlayClassName="menu-dropdown-wrapper"
         overlay={
           <Menu className="menu-dropdown">
-            {/* <Menu.Item
-            className="nav-link"
-            onClick={() => history.push("/browse?topic=event")}
-          >
-            Events
-          </Menu.Item> */}
-            <Menu.Item
-              className="nav-link"
-              onClick={() => handleOnClickNeedAuth("stakeholder")}
-            >
-              Individuals
-            </Menu.Item>
-            <Menu.Item
-              className="nav-link"
-              onClick={() => handleOnClickNeedAuth("organisation")}
-            >
-              Entities
-            </Menu.Item>
-            {/* <Menu.Item className="nav-link">Forums</Menu.Item>
-          <Menu.Item className="nav-link">Partners</Menu.Item>
-          <Menu.Item className="nav-link">Sponsors</Menu.Item> */}
+            {!loading ? (
+              stakeholderCounts.map((x, i) => {
+                const { name, count } = x;
+                return (
+                  <Menu.Item
+                    key={`${name}-${i}`}
+                    className="nav-link"
+                    disabled={loading}
+                    onClick={() =>
+                      handleOnClickNeedAuth(humps.decamelize(name))
+                    }
+                  >
+                    {topicNames(name)}
+                    <Button
+                      className="badge-count"
+                      size="small"
+                      type="ghost"
+                      shape="circle"
+                      icon={count}
+                      loading={loading}
+                    />
+                  </Menu.Item>
+                );
+              })
+            ) : (
+              <Menu.Item className="nav-link">
+                Loading
+                <Button
+                  className="badge-count"
+                  size="small"
+                  type="ghost"
+                  shape="circle"
+                  loading={loading}
+                />
+              </Menu.Item>
+            )}
           </Menu>
         }
         trigger={["click"]}
