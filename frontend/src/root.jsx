@@ -168,15 +168,24 @@ const Root = () => {
   const [showResponsiveMenu, setShowResponsiveMenu] = useState(false);
 
   const topicsCount = tags?.topics ? tags.topics.length : 0;
-  const excludeSummary = ["event", "organisation", "stakeholder"];
-  const resourceCounts = nav?.resourceCounts
-    ?.filter((x) => !excludeSummary.includes(Object.keys(x)[0]))
-    .map((x) => {
-      return {
-        name: Object.keys(x)[0],
-        count: x[Object.keys(x)[0]],
-      };
-    });
+  const excludeSummary = ["organisation", "stakeholder"];
+
+  const filterNav = (include) => {
+    return nav?.resourceCounts
+      ?.filter((x) =>
+        include
+          ? excludeSummary.includes(Object.keys(x)[0])
+          : !excludeSummary.includes(Object.keys(x)[0])
+      )
+      .map((x) => {
+        return {
+          name: Object.keys(x)[0],
+          count: x[Object.keys(x)[0]],
+        };
+      });
+  };
+  const resourceCounts = filterNav(false);
+  const stakeholderCounts = filterNav(true);
 
   useEffect(() => {
     (async function fetchData() {
@@ -238,6 +247,7 @@ const Root = () => {
                   isAuthenticated,
                   setStakeholderSignupModalVisible,
                   loginWithPopup,
+                  stakeholderCounts,
                 }}
               />
             </div>
