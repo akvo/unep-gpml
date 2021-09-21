@@ -3,13 +3,12 @@ import {
   Button,
   Collapse,
   Space,
-  Spin,
   Modal,
-  Form,
   Select,
   Pagination,
   Tooltip,
   Input,
+  Tabs,
 } from "antd";
 import React, { Fragment } from "react";
 import { useEffect, useState } from "react";
@@ -29,6 +28,7 @@ import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
 import Avatar from "antd/lib/avatar/avatar";
 
 const { Search } = Input;
+const { TabPane } = Tabs;
 
 const ModalReject = ({ visible, close, reject, item }) => {
   return (
@@ -78,6 +78,7 @@ const AdminSection = ({
   const [approveLoading, setApproveLoading] = useState({});
   const [reviewers, setReviewers] = useState([]);
   const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false);
+  const [tab, setTab] = useState("stakeholders-entities");
 
   useEffect(() => {
     api.get("/reviewer").then((res) => {
@@ -422,8 +423,19 @@ const AdminSection = ({
           <Button type="primary">Download as .csv</Button>
         </div>
       </div> */}
-      {renderNewApprovalRequests()}
-      {renderArchiveRequests()}
+      <Tabs onChange={(key) => setTab(key)} type="card" size="large">
+        <TabPane tab="Stakeholders & Entities" key="stakeholders-entities">
+          {renderNewApprovalRequests()}
+          {renderArchiveRequests()}
+        </TabPane>
+        <TabPane tab="Resources" key="resources">
+          Content of Tab Pane 2
+        </TabPane>
+        <TabPane tab="Tags" key="tags">
+          Content of Tab Pane 3
+        </TabPane>
+      </Tabs>
+
       <ModalReject
         visible={modalRejectVisible}
         reject={modalRejectFunction}
