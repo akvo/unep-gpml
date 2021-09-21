@@ -27,7 +27,6 @@ const ConnectStakeholdersDropdownMenu = withRouter(
       }
     };
 
-    console.log(stakeholderCounts);
     const loading = !stakeholderCounts;
 
     return (
