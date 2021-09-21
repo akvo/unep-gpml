@@ -140,6 +140,9 @@
     .body {
       display: flex;
       justify-content: space-between;
+      .ant-avatar-group {
+        display: none;
+      }
       .item {
         border-radius: 10px;
         .item-img {
