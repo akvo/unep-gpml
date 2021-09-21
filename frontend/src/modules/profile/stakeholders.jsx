@@ -84,8 +84,9 @@ const ManageRoles = ({ stakeholdersData, setStakeholdersData }) => {
       <div key="manage-stakeholder" className="manage-stakeholder">
         <h2>Manage Stakeholder Roles</h2>
         <div className="table-wrapper stakeholder-wrapper">
-          {stakeholders?.map((stakeholder) => (
+          {stakeholders?.map((stakeholder, index) => (
             <Stakeholder
+              key={`manage-role-item-${index}`}
               stakeholder={stakeholder}
               onChangeRole={changeRole}
               loading={loading}
