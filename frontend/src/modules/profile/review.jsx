@@ -164,7 +164,6 @@ const ReviewSection = ({
   };
 
   const CollapseItemTable = ({
-    key,
     columns,
     Header,
     items,
