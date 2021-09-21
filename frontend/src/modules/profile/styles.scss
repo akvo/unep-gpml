@@ -182,6 +182,27 @@
         }
       }
       // end of css for search input
+
+      // css for filter by status
+      .filter-by-status {
+        width: 215px;
+        .ant-select-selector {
+          border-radius: 5px;
+          border: 1px solid transparent;
+          background: #edf2f7;
+        }
+        .filter-icon,
+        .ant-select-selection-placeholder,
+        .ant-select-selection-item {
+          font-weight: 500;
+          color: #a5b0c9;
+        }
+        .ant-select-selection-placeholder,
+        .ant-select-selection-item {
+          text-transform: initial;
+        }
+      }
+      // end of css for filter by status
     }
 
     .col {
