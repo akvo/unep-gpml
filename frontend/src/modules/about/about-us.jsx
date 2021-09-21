@@ -349,7 +349,7 @@ const renderSectionHistory = () => {
           </p>
         </div>
       </div>
-      <div className="section-mission-graphic">
+      <div className="section-history-graphic">
         <Image src={GpmlHistory} preview={false} />
       </div>
     </div>

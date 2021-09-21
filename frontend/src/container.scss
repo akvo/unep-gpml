@@ -127,6 +127,9 @@
           width: 100% !important;
           .popular-topic-chart {
             height: 650px !important;
+            @media only screen and (max-width: 800px) {
+              height: 450px !important;
+            }
           }
         }
         .content {

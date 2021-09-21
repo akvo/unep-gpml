@@ -152,6 +152,12 @@
       padding: 0;
       text-align: center;
       width: 100%;
+      @media only screen and (max-width: 800px) {
+        .ant-image-img {
+          transform: scale(2);
+          margin-top: 10rem;
+        }
+      }
       .ant-image {
         width: 100%;
       }
@@ -192,6 +198,12 @@
     background: $green04;
     .section-community-graphic {
       text-align: center;
+      @media only screen and (max-width: 800px) {
+        .ant-image-img {
+          transform: scale(2);
+          margin-top: 10rem;
+        }
+      }
     }
     .section-community-wrapper {
     }
@@ -204,10 +216,16 @@
     h2 {
       color: #005b71;
     }
-    .section-mission-graphic {
+    .section-history-graphic {
       background-color: #005b71 !important;
       width: 100%;
       text-align: center;
+      @media only screen and (max-width: 800px) {
+        .ant-image-img {
+          transform: scale(2);
+          margin-top: 10rem;
+        }
+      }
     }
     .section-history-wrapper {
       .section-history-text {

@@ -36,9 +36,13 @@
       color: white;
       max-width: 70%;
     }
-    @media only screen and (max-width: 474px) {
+    @media only screen and (max-width: 800px) {
       h1 {
-        font-size: 2rem !important;
+        font-size: 2.5rem !important;
+        line-height: 2.6rem;
+      }
+      h2 {
+        font-size: 1.8rem;
       }
     }
     div.body-text {
@@ -141,6 +145,9 @@
         .item-img {
           height: 18rem;
           object-fit: contain;
+          @media only screen and (max-width: 800px) {
+            height: 8rem;
+          }
         }
         .item-header {
           display: flex;
