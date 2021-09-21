@@ -10,12 +10,11 @@ import {
   Input,
   Tabs,
 } from "antd";
-import React, { Fragment } from "react";
+import React from "react";
 import { useEffect, useState } from "react";
 import api from "../../utils/api";
 import { fetchArchiveData, fetchSubmissionData } from "./utils";
 import moment from "moment";
-import capitalize from "lodash/capitalize";
 import isEmpty from "lodash/isEmpty";
 import { DetailCollapse } from "./preview";
 import {
@@ -24,11 +23,16 @@ import {
   reviewStatusUIText,
   publishStatusUIText,
 } from "../../utils/misc";
-import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  UserOutlined,
+  FilterOutlined,
+} from "@ant-design/icons";
 import Avatar from "antd/lib/avatar/avatar";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
+const { Option } = Select;
 
 const ModalReject = ({ visible, close, reject, item }) => {
   return (
@@ -61,6 +65,40 @@ const HeaderSearch = () => {
       allowClear
       onSearch={console.log("hi")}
     />
+  );
+};
+
+const HeaderFilter = () => {
+  return (
+    <Select
+      showSearch
+      allowClear
+      className="filter-by-status"
+      onChange={null}
+      optionLabelProp="label"
+      placeholder={
+        <>
+          <FilterOutlined className="filter-icon" /> Filter by status
+        </>
+      }
+      filterOption={(input, option) =>
+        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      }
+    >
+      {["Approved", "Pending"].map((x, i) => (
+        <Option
+          key={`${x}-${i}`}
+          value={x}
+          label={
+            <>
+              <FilterOutlined className="filter-icon" /> {x}
+            </>
+          }
+        >
+          {x}
+        </Option>
+      ))}
+    </Select>
   );
 };
 
@@ -209,6 +247,7 @@ const AdminSection = ({
         <div className="table-wrapper">
           <div className="row head">
             <HeaderSearch />
+            <HeaderFilter />
           </div>
           <Collapse onChange={getPreviewContent}>
             {pendingItems?.data && pendingItems?.data?.length > 0 ? (
@@ -351,6 +390,7 @@ const AdminSection = ({
         <div className="table-wrapper">
           <div className="row head">
             <HeaderSearch />
+            <HeaderFilter />
           </div>
           <Collapse onChange={getPreviewContent}>
             {archiveData.length > 0 ? (
@@ -454,4 +494,4 @@ const AdminSection = ({
   );
 };
 
-export { AdminSection, HeaderSearch };
+export { AdminSection, HeaderSearch, HeaderFilter };
