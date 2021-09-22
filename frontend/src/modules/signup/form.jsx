@@ -155,6 +155,7 @@ const SignUpForm = withRouter(
           }
         }
       } else {
+        data.org = {};
         feedCountry(data, formData, "S1");
         feedSeeking(data, formData);
         data.title = formData.S1.title;
