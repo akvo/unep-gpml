@@ -159,7 +159,12 @@ const Browse = ({
   };
 
   useEffect(() => {
-    updateQuery("topic", isEmpty(filterMenu) ? [] : filterMenu);
+    updateQuery(
+      "topic",
+      isEmpty(filterMenu)
+        ? topicTypes.map((x) => humps.decamelize(x))
+        : filterMenu
+    );
     // NOTE: this are triggered when user click a topic from navigation menu
   }, [filterMenu]); // eslint-disable-line
 
