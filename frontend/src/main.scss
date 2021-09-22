@@ -379,7 +379,7 @@ button.ant-btn.ant-btn-link.ant-dropdown-trigger.menu-btn.nav-link {
   .add-dropdown,
   .user-btn-dropdown,
   .menu-dropdown {
-    min-width: 175px;
+    min-width: 200px;
     text-align: left;
     padding: 0px;
 
@@ -390,9 +390,24 @@ button.ant-btn.ant-btn-link.ant-dropdown-trigger.menu-btn.nav-link {
     .badge-count {
       border: 1px solid #255b87;
       color: #2d6796;
-      width: 27px;
-      height: 27px;
       font-size: 0.7rem;
+      display: inline-block;
+      padding: 2px;
+      text-align: center;
+      line-height: 1;
+      box-sizing: content-box;
+      white-space: nowrap;
+      &:before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        padding-top: 100%;
+        height: 0;
+      }
+      &:nth-child(1) {
+        display: inline-block;
+        vertical-align: middle;
+      }
     }
 
     :not(:last-child) {
