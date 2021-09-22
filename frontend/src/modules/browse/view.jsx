@@ -159,7 +159,7 @@ const Browse = ({
   };
 
   useEffect(() => {
-    updateQuery("topic", filterMenu);
+    updateQuery("topic", isEmpty(filterMenu) ? [] : filterMenu);
     // NOTE: this are triggered when user click a topic from navigation menu
   }, [filterMenu]); // eslint-disable-line
 

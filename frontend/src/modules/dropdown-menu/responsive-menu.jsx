@@ -22,9 +22,11 @@ const ResponsiveMenu = withRouter(
     loginWithPopup,
     logout,
     setFilterMenu,
+    stakeholderCounts,
   }) => {
     const loading = !resources;
     const allResources = sumBy(resources, "count");
+    const loadingStakeholders = !stakeholderCounts;
 
     const handleOnClickNeedAuth = ({ key }) => {
       {
@@ -158,12 +160,47 @@ const ResponsiveMenu = withRouter(
             title="Connect Stakeholders"
             className="nav-link"
           >
-            <Menu.Item key="stakeholder" className="nav-link">
+            {!loadingStakeholders ? (
+              stakeholderCounts.map((x, i) => {
+                const { name, count } = x;
+                const topic = humps.decamelize(name);
+                return (
+                  <Menu.Item
+                    key={topic}
+                    className="nav-link"
+                    disabled={loadingStakeholders}
+                    onClick={() => setFilterMenu([topic])}
+                  >
+                    {topicNames(name)}
+                    <Button
+                      className="badge-count"
+                      size="small"
+                      type="ghost"
+                      shape="circle"
+                      icon={count}
+                      loading={loadingStakeholders}
+                    />
+                  </Menu.Item>
+                );
+              })
+            ) : (
+              <Menu.Item className="nav-link">
+                Loading
+                <Button
+                  className="badge-count"
+                  size="small"
+                  type="ghost"
+                  shape="circle"
+                  loading={loadingStakeholders}
+                />
+              </Menu.Item>
+            )}
+            {/* <Menu.Item key="stakeholder" className="nav-link">
               Individuals
             </Menu.Item>
             <Menu.Item key="organisation" className="nav-link">
               Entities
-            </Menu.Item>
+            </Menu.Item> */}
           </SubMenu>
           {/* Join GPML & Sign In */}
           {!isAuthenticated && (

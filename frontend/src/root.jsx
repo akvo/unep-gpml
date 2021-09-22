@@ -479,6 +479,7 @@ const Root = () => {
         setShowResponsiveMenu={setShowResponsiveMenu}
         topicsCount={topicsCount}
         resources={resourceCounts}
+        stakeholderCounts={stakeholderCounts}
       />
     </Router>
   );
