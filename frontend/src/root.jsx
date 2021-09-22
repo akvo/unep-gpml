@@ -252,6 +252,7 @@ const Root = () => {
                   setStakeholderSignupModalVisible,
                   loginWithPopup,
                   stakeholderCounts,
+                  setFilterMenu,
                 }}
               />
             </div>
@@ -355,6 +356,7 @@ const Root = () => {
               }
               filters={filters}
               setFilters={setFilters}
+              filterMenu={filterMenu}
             />
           )}
         />

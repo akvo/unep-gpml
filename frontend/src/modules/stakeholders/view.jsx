@@ -29,6 +29,7 @@ const Stakeholders = ({
   setStakeholderSignupModalVisible,
   filters,
   setFilters,
+  filterMenu,
 }) => {
   const query = useQuery();
   const { profile, countries } = UIStore.useState((s) => ({
@@ -118,6 +119,12 @@ const Stakeholders = ({
       setFilterCountries(value);
     }
   };
+
+  useEffect(() => {
+    updateQuery("topic", filterMenu);
+    // NOTE: this are triggered when user click a topic from navigation menu
+  }, [filterMenu]); // eslint-disable-line
+
   const handleRelationChange = (relation) => {
     api
       .post("/favorite", relation)
