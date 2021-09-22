@@ -266,11 +266,15 @@ const Root = () => {
               {!isAuthenticated || !isRegistered(profile) ? (
                 <div className="rightside btn-wrapper">
                   <JoinGPMLButton loginWithPopup={loginWithPopup} />
-                  <Button type="ghost" className="left">
-                    <Link to="/" onClick={loginWithPopup}>
-                      Sign in
-                    </Link>
-                  </Button>
+                  {isAuthenticated && !isRegistered(profile) ? (
+                    <UserButton {...{ logout, isRegistered, profile }} />
+                  ) : (
+                    <Button type="ghost" className="left">
+                      <Link to="/" onClick={loginWithPopup}>
+                        Sign in
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               ) : (
                 <div className="rightside btn-wrapper">
@@ -282,7 +286,7 @@ const Root = () => {
                       setWarningModalVisible,
                     }}
                   />
-                  <UserButton {...{ logout }} />
+                  <UserButton {...{ logout, isRegistered, profile }} />
                 </div>
               )}
               {/* Drawer/ Menu for responsive design */}
@@ -555,7 +559,7 @@ const Search = withRouter(({ history }) => {
   );
 });
 
-const UserButton = withRouter(({ history, logout }) => {
+const UserButton = withRouter(({ history, logout, isRegistered, profile }) => {
   return (
     <Dropdown
       overlayClassName="user-btn-dropdown-wrapper"
@@ -563,7 +567,7 @@ const UserButton = withRouter(({ history, logout }) => {
         <Menu className="user-btn-dropdown">
           <Menu.Item
             onClick={() => {
-              history.push("/profile");
+              history.push(`/${isRegistered(profile) ? "profile" : "signup"}`);
             }}
           >
             Profile
