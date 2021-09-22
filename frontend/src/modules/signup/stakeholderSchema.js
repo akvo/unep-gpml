@@ -92,15 +92,15 @@ export const schema = {
         orgName: {
           depend: {
             id: "privateCitizen",
-            value: [false],
+            value: false,
           },
           title: "Search for a GPML Member Entity",
           enum: [],
         },
-        orgNameDisabled: {
+        orgDisabled: {
           depend: {
             id: "privateCitizen",
-            value: [true],
+            value: true,
           },
           title: "Search for a GPML Member Entity",
           enum: [],
@@ -108,15 +108,15 @@ export const schema = {
         companyName: {
           depend: {
             id: "privateCitizen",
-            value: [false],
+            value: false,
           },
           title: "Is your Entity not a GPML Member yet?",
           enum: [],
         },
-        companyNameDisabled: {
+        companyDisabled: {
           depend: {
             id: "privateCitizen",
-            value: [true],
+            value: true,
           },
           title: "Is your Entity not a GPML Member yet?",
           enum: [],

@@ -61,14 +61,14 @@
     "orgName": {
       "ui:placeholder": "Entity name"
     },
-    "orgNameDisabled": {
+    "orgDisabled": {
       "ui:placeholder": "Entity name",
       "ui:disabled": true
     },
     "companyName": {
       "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity"
     },
-    "companyNameDisabled": {
+    "companyDisabled": {
       "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
       "ui:disabled": true
     },
@@ -118,9 +118,9 @@
     "ui:order": [
       "privateCitizen",
       "orgName",
-      "orgNameDisabled",
+      "orgDisabled",
       "companyName",
-      "companyNameDisabled",
+      "companyDisabled",
       "newCompanyName",
       "newCompanyHeadquarter",
       "geoCoverageType",
