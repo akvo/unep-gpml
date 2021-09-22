@@ -209,6 +209,8 @@ const Browse = ({
     0
   );
 
+  console.log(filters);
+
   return (
     <div id="browse">
       <div className="section-header">
@@ -337,7 +339,11 @@ const Browse = ({
             />
             <div className="scroll-content">
               <StickyBox offsetBottom={500} className="sticky-pagination">
-                <div className="page">{}</div>
+                <div className="page">
+                  {filters?.q &&
+                    !isEmpty(filters.q) &&
+                    "The search functionality currently only shows resources"}
+                </div>
               </StickyBox>
               {!isLoaded() || loading || isEmpty(results) ? (
                 <h2 className="loading">
