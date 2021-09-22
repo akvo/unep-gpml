@@ -165,6 +165,7 @@ const Root = () => {
 
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [filters, setFilters] = useState(null);
+  const [filterMenu, setFilterMenu] = useState(null);
   const [showResponsiveMenu, setShowResponsiveMenu] = useState(false);
 
   const topicsCount = tags?.topics ? tags.topics.length : 0;
@@ -239,7 +240,10 @@ const Root = () => {
               <AboutDropdownMenu />
               <ExploreDropdownMenu topicsCount={topicsCount} />
               <DataHubDropdownMenu />
-              <KnowledgeExchangeDropdownMenu resources={resourceCounts} />
+              <KnowledgeExchangeDropdownMenu
+                resources={resourceCounts}
+                setFilterMenu={setFilterMenu}
+              />
               <ConnectStakeholdersDropdownMenu
                 {...{
                   profile,
@@ -330,6 +334,7 @@ const Root = () => {
               }
               filters={filters}
               setFilters={setFilters}
+              filterMenu={filterMenu}
             />
           )}
         />
