@@ -99,7 +99,10 @@ const ResponsiveMenu = withRouter(
           </SubMenu>
           {/* Data Hub */}
           <Menu.Item key="data-hub" className="nav-link">
-            <a href="https://datahub.gpmarinelitter.org/" rel="noreferrer">
+            <a
+              href="https://digital-gpmarinelitter.hub.arcgis.com/"
+              rel="noreferrer"
+            >
               Data Hub
             </a>
           </Menu.Item>
