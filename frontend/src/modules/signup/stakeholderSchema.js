@@ -85,11 +85,39 @@ export const schema = {
         "geoCoverageValueGlobalSpesific",
       ],
       properties: {
+        privateCitizen: {
+          title: "I am a private citizen",
+          type: "boolean",
+        },
         orgName: {
+          depend: {
+            id: "privateCitizen",
+            value: false,
+          },
+          title: "Search for a GPML Member Entity",
+          enum: [],
+        },
+        orgDisabled: {
+          depend: {
+            id: "privateCitizen",
+            value: true,
+          },
           title: "Search for a GPML Member Entity",
           enum: [],
         },
         companyName: {
+          depend: {
+            id: "privateCitizen",
+            value: false,
+          },
+          title: "Is your Entity not a GPML Member yet?",
+          enum: [],
+        },
+        companyDisabled: {
+          depend: {
+            id: "privateCitizen",
+            value: true,
+          },
           title: "Is your Entity not a GPML Member yet?",
           enum: [],
         },

@@ -16,6 +16,7 @@ const initialSignUpData = {
   S2: {
     steps: 0,
     required: {},
+    privateCitizen: false,
   },
   S3: {
     steps: 0,
