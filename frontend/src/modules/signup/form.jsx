@@ -163,6 +163,10 @@ const SignUpForm = withRouter(
         if (data.orgName) {
           data.org.id = formData.S2.orgName;
         }
+        if (data.privateCitizen) {
+          delete data.privateCitizen;
+          delete data.org;
+        }
         data.representation = "";
       }
       if (status === "add" && !params?.id) {

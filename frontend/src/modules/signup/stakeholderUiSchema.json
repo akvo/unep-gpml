@@ -54,11 +54,23 @@
   },
   "S2": {
     "classNames": "list-group",
+    "privateCitizen": {
+      "ui:widget": "checkbox",
+      "ui:label": null
+    },
     "orgName": {
       "ui:placeholder": "Entity name"
     },
+    "orgNameDisabled": {
+      "ui:placeholder": "Entity name",
+      "ui:disabled": true
+    },
     "companyName": {
       "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity"
+    },
+    "companyNameDisabled": {
+      "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
+      "ui:disabled": true
     },
     "newCompanyName": {
       "ui:placeholder": "Entity name"
@@ -104,8 +116,11 @@
       "ui:placeholder": "Type..."
     },
     "ui:order": [
+      "privateCitizen",
       "orgName",
+      "orgNameDisabled",
       "companyName",
+      "companyNameDisabled",
       "newCompanyName",
       "newCompanyHeadquarter",
       "geoCoverageType",

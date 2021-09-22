@@ -45,6 +45,7 @@ const getSchema = ({
   prop.S1.properties["country"].enum = countries?.map((x) => x.id);
   prop.S1.properties["country"].enumNames = countries?.map((x) => x.name);
 
+  prop.S2.properties["privateCitizen"].default = false;
   prop.S2.properties["orgName"].enum = organisations?.map((x) => x.id);
   prop.S2.properties["orgName"].enumNames = organisations?.map((x) => x.name);
 
