@@ -41,8 +41,9 @@ const KnowledgeExchangeDropdownMenu = withRouter(
                     className="indent-right nav-link"
                     disabled={loading}
                     onClick={() => {
-                      setFilterMenu([humps.decamelize(name)]);
-                      history.push(`/browse?topic=${humps.decamelize(name)}`);
+                      const topic = humps.decamelize(name);
+                      setFilterMenu([topic]);
+                      history.push(`/browse?topic=${topic}`);
                     }}
                   >
                     {topicNames(name)}
@@ -57,17 +58,6 @@ const KnowledgeExchangeDropdownMenu = withRouter(
                   </Menu.Item>
                 );
               })}
-            {/* <Menu.Item className="nav-link">
-            Capacity building
-            <Button
-              className="badge-count"
-              size="small"
-              type="ghost"
-              shape="circle"
-              icon={10}
-              loading={false}
-            />
-          </Menu.Item> */}
           </Menu>
         }
         trigger={["click"]}
