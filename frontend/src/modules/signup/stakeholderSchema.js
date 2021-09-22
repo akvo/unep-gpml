@@ -27,7 +27,7 @@ export const schema = {
         value: ["S1"],
       },
       value: ["S1"],
-      required: ["title", "lastName", "firstName", "email"],
+      required: ["title", "lastName", "firstName", "email", "country"],
       properties: {
         title: titleField,
 
@@ -74,6 +74,7 @@ export const schema = {
         value: ["S2"],
       },
       required: [
+        "orgName",
         "newCompanyName",
         "newCompanyHeadquarter",
         "geoCoverageType",
