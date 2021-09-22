@@ -17,5 +17,5 @@ export const updateStatusProfile = (data) => {
 };
 
 export const isRegistered = (profile) => {
-  return Boolean(profile.about);
+  return Boolean(profile?.reviewStatus);
 };
