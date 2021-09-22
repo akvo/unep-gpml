@@ -6,7 +6,7 @@ import { DownOutlined } from "@ant-design/icons";
 const DataHubDropdownMenu = withRouter(({ history }) => {
   return (
     <a
-      href="https://datahub.gpmarinelitter.org/"
+      href="https://digital-gpmarinelitter.hub.arcgis.com/"
       rel="noreferrer"
       className="menu-btn nav-link menu-dropdown"
     >

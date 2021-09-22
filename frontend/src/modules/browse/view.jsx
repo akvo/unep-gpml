@@ -54,6 +54,7 @@ const Browse = ({
   setStakeholderSignupModalVisible,
   filters,
   setFilters,
+  filterMenu,
 }) => {
   const query = useQuery();
   const { profile, countries, tags } = UIStore.useState((s) => ({
@@ -156,6 +157,11 @@ const Browse = ({
       setFilterCountries(value);
     }
   };
+
+  useEffect(() => {
+    updateQuery("topic", isEmpty(filterMenu) ? [] : filterMenu);
+    // NOTE: this are triggered when user click a topic from navigation menu
+  }, [filterMenu]); // eslint-disable-line
 
   const handleRelationChange = (relation) => {
     api

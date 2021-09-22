@@ -98,7 +98,10 @@ const Footer = ({
                 </ul>
               </li>
               <li>
-                <a href="https://datahub.gpmarinelitter.org/" rel="noreferrer">
+                <a
+                  href="https://digital-gpmarinelitter.hub.arcgis.com/"
+                  rel="noreferrer"
+                >
                   Data Hub
                 </a>
               </li>
