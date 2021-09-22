@@ -549,7 +549,7 @@ export const ourCommunity = [
     role: null,
   },
   {
-    id: 10082,
+    id: 10078,
     type: "stakeholder",
     about:
       "The GPML Digital Platform is a fantastic resource for knowledge management, networking and accessing and managing data.",
@@ -559,7 +559,7 @@ export const ourCommunity = [
       "Assistant Executive Director - Gulf and Caribbean Fisheries Institute",
   },
   {
-    id: 10078,
+    id: 10082,
     type: "stakeholder",
     about:
       "The GPML platform makes it much easier to discover relevant stakeholders, events, and experts in specific regions and fields related to marine litter.",
@@ -568,7 +568,7 @@ export const ourCommunity = [
     role: "CEO - OceanHero.today",
   },
   {
-    id: null,
+    id: 10089,
     type: "stakeholder",
     about:
       "The GPML Digital Platform is an unparalleled tool to bring global actors fighting against our marine plastic crisis in community with each other.",
