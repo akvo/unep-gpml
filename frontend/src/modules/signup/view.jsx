@@ -505,6 +505,16 @@ const SignUp = ({ match: { params }, ...props }) => {
                             Next <RightOutlined />
                           </Button>
                         )}
+                        {isLastStep() && (
+                          <Button
+                            disabled={disabledBtn.disabled}
+                            loading={!isLoaded()}
+                            type={disabledBtn.type}
+                            onClick={(e) => handleOnClickBtnSubmit(e)}
+                          >
+                            Submit
+                          </Button>
+                        )}
                       </div>
                     </Card>
                   </Col>
