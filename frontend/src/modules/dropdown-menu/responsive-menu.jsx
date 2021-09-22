@@ -21,6 +21,7 @@ const ResponsiveMenu = withRouter(
     setStakeholderSignupModalVisible,
     loginWithPopup,
     logout,
+    setFilterMenu,
   }) => {
     const loading = !resources;
     const allResources = sumBy(resources, "count");
@@ -112,7 +113,11 @@ const ResponsiveMenu = withRouter(
             title="Knowledge Exchange"
             className="nav-link"
           >
-            <Menu.Item key="browse" className="nav-link">
+            <Menu.Item
+              key="browse"
+              className="nav-link"
+              onClick={() => setFilterMenu([])}
+            >
               All Resources
               <Button
                 className="badge-count"
@@ -126,11 +131,13 @@ const ResponsiveMenu = withRouter(
             {resources &&
               resources.map((x, i) => {
                 const { name, count } = x;
+                const topic = humps.decamelize(name);
                 return (
                   <Menu.Item
-                    key={`browse?topic=${humps.decamelize(name)}`}
+                    key={`browse?topic=${topic}`}
                     className="indent-right nav-link"
                     disabled={loading}
+                    onClick={() => setFilterMenu([topic])}
                   >
                     {topicNames(name)}
                     <Button

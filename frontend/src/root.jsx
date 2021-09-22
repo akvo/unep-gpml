@@ -473,6 +473,7 @@ const Root = () => {
           setStakeholderSignupModalVisible,
           loginWithPopup,
           logout,
+          setFilterMenu,
         }}
         showResponsiveMenu={showResponsiveMenu}
         setShowResponsiveMenu={setShowResponsiveMenu}
