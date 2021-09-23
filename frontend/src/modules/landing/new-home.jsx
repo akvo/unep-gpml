@@ -38,7 +38,6 @@ import {
 import orderBy from "lodash/orderBy";
 import humps from "humps";
 import { topicNames } from "../../utils/misc";
-import capitalize from "lodash/capitalize";
 import sortBy from "lodash/sortBy";
 import api from "../../utils/api";
 
@@ -174,11 +173,33 @@ const Landing = withRouter(
     const dateCellRender = (value) => {
       const calendarDate = moment.utc(value).format("DD-MM-YYYY");
       if (data && data?.results) {
-        const eventByDate = data.results.filter((x) => {
-          const date = moment.utc(x.startDate).format("DD-MM-YYYY");
-          return date === calendarDate;
-        });
-        return eventByDate.length > 0 ? <Badge status="warning" /> : "";
+        const eventByDate = data.results
+          .map((x) => {
+            const startDate = moment.utc(x.startDate).format("DD-MM-YYYY");
+            const endDate = moment.utc(x.endDate).format("DD-MM-YYYY");
+            if (calendarDate >= startDate && calendarDate <= endDate) {
+              return {
+                ...x,
+                date: calendarDate,
+                isStart: calendarDate === startDate,
+              };
+            }
+            return null;
+          })
+          .filter((x) => x);
+        const start = eventByDate.filter(
+          (x) => x.date === calendarDate && x.isStart
+        );
+        const highlight = eventByDate.filter(
+          (x) => x.date === calendarDate && !x.isStart
+        );
+        if (start.length > 0) {
+          return <Badge status="warning" />;
+        }
+        if (highlight.length > 0) {
+          return <Badge status="default" />;
+        }
+        return "";
       }
       return;
     };
