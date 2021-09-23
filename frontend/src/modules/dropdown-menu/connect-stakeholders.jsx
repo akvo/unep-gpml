@@ -53,14 +53,14 @@ const ConnectStakeholdersDropdownMenu = withRouter(
                     }
                   >
                     {topicNames(name)}
-                    <Button
+                    {/* <Button
                       className="badge-count"
                       size="small"
                       type="ghost"
                       shape="circle"
                       icon={count}
                       loading={loading}
-                    />
+                    /> */}
                   </Menu.Item>
                 );
               })
