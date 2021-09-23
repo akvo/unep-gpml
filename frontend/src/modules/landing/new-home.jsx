@@ -38,7 +38,6 @@ import {
 import orderBy from "lodash/orderBy";
 import humps from "humps";
 import { topicNames } from "../../utils/misc";
-import capitalize from "lodash/capitalize";
 import sortBy from "lodash/sortBy";
 import api from "../../utils/api";
 
@@ -143,12 +142,13 @@ const Landing = withRouter(
     isAuthenticated,
     loginWithPopup,
   }) => {
-    const dateNow = moment().format("DD-MM-YYYY");
+    const dateNow = moment.utc().format("YYYY/MM/DD");
     const { innerWidth, innerHeight } = window;
     const profile = UIStore.useState((s) => s.profile);
     const [selectedTopic, setSelectedTopic] = useState(defTopic);
     const [event, setEvent] = useState([]);
     const [data, setData] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(dateNow);
 
     const isApprovedUser = profile?.reviewStatus === "APPROVED";
     const hasProfile = profile?.reviewStatus;
@@ -172,13 +172,35 @@ const Landing = withRouter(
     };
 
     const dateCellRender = (value) => {
-      const calendarDate = moment(value).format("DD-MM-YYYY");
+      const calendarDate = moment.utc(value).format("YYYY/MM/DD");
       if (data && data?.results) {
-        const eventByDate = data.results.filter((x) => {
-          const date = moment(x.startDate).format("DD-MM-YYYY");
-          return date === calendarDate;
-        });
-        return eventByDate.length > 0 ? <Badge status="warning" /> : "";
+        const eventByDate = data.results
+          .map((x) => {
+            const startDate = moment.utc(x.startDate).format("YYYY/MM/DD");
+            const endDate = moment.utc(x.endDate).format("YYYY/MM/DD");
+            if (calendarDate >= startDate && calendarDate <= endDate) {
+              return {
+                ...x,
+                date: calendarDate,
+                isStart: calendarDate === startDate,
+              };
+            }
+            return null;
+          })
+          .filter((x) => x);
+        const start = eventByDate.filter(
+          (x) => x.date === calendarDate && x.isStart
+        );
+        const highlight = eventByDate.filter(
+          (x) => x.date === calendarDate && !x.isStart
+        );
+        if (start.length > 0) {
+          return <Badge status="warning" />;
+        }
+        if (highlight.length > 0) {
+          return <Badge status="default" />;
+        }
+        return "";
       }
       return;
     };
@@ -186,13 +208,15 @@ const Landing = withRouter(
     const generateEvent = useCallback(
       (filterDate, searchNextEvent = false) => {
         const eventNow = data.results.filter((x, i) => {
-          const date = moment(x.startDate).format("DD-MM-YYYY");
-          return date === filterDate;
+          const startDate = moment.utc(x.startDate).format("YYYY/MM/DD");
+          const endDate = moment.utc(x.endDate).format("YYYY/MM/DD");
+          return filterDate >= startDate && filterDate <= endDate;
         });
         if (!eventNow.length && searchNextEvent) {
-          const nextDay = moment(filterDate, "DD-MM-YYYY")
+          const nextDay = moment
+            .utc(filterDate, "YYYY/MM/DD")
             .add(1, "days")
-            .format("DD-MM-YYYY");
+            .format("YYYY/MM/DD");
           generateEvent(nextDay, searchNextEvent);
         }
         if (eventNow.length || !searchNextEvent) {
@@ -204,9 +228,15 @@ const Landing = withRouter(
 
     const handleOnDateSelected = (value) => {
       setEvent(null);
-      const selectedDate = moment(value).format("DD-MM-YYYY");
+      const selectedDate = moment.utc(value).format("YYYY/MM/DD");
+      setSelectedDate(selectedDate);
       generateEvent(selectedDate);
     };
+
+    const onThisDayText =
+      dateNow === selectedDate
+        ? "this day"
+        : moment.utc(selectedDate, "YYYY/MM/DD").format("DD MMM YYYY");
 
     useEffect(() => {
       if (!data) {
@@ -492,6 +522,7 @@ const Landing = withRouter(
                     : "#";
                   return (
                     <Link
+                      key={`oc-card-link-${i}`}
                       to={link}
                       onClick={
                         !isApprovedUser && handleOurCommunityProfileClick
@@ -597,11 +628,16 @@ const Landing = withRouter(
                   </div>
                 )}
                 {event && event.length === 0 && (
-                  <div className="no-event">No event on this day</div>
+                  <div className="no-event">No event on {onThisDayText}</div>
                 )}
                 {event &&
                   event.length > 0 &&
-                  renderEventContent(event, eventCarousel)}
+                  renderEventContent(
+                    history,
+                    event,
+                    eventCarousel,
+                    onThisDayText
+                  )}
               </div>
               <div className="calendar">
                 <Calendar
@@ -620,13 +656,13 @@ const Landing = withRouter(
   }
 );
 
-const renderEventContent = (event, eventCarousel) => {
+const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
   return (
     <>
       {event.length > 0 && (
         <div className="event-more">
           <span>
-            {event.length} event{event.length > 1 ? "s" : ""} on this day
+            {event.length} event{event.length > 1 ? "s" : ""} on {onThisDayText}
           </span>
           {event.length > 1 && (
             <div className="button-carousel">
@@ -655,13 +691,29 @@ const renderEventContent = (event, eventCarousel) => {
       >
         {event.length &&
           event.map((x, i) => {
-            const { id, title, description, type, startDate, image } = x;
+            const { id, title, description, type, image } = x;
+
+            const startDate = moment.utc(x.startDate).format("YYYY/MM/DD");
+            const endDate = moment.utc(x.endDate).format("YYYY/MM/DD");
+            const startDateText = moment
+              .utc(startDate, "YYYY/MM/DD")
+              .format("DD MMMM YYYY");
+            const endDateText = moment
+              .utc(endDate, "YYYY/MM/DD")
+              .format("DD MMMM YYYY");
+            const dateText =
+              startDate < endDate
+                ? `${startDateText} - ${endDateText}`
+                : startDateText;
+
             return (
-              <Card key={`event-${id}-${i}`} className="item">
+              <Card
+                key={`event-${id}-${i}`}
+                className="item"
+                onClick={() => history.push(`/event/${id}`)}
+              >
                 <div className="item-meta">
-                  <div className="date">
-                    {moment(startDate).format("DD MMMM YYYY")}
-                  </div>
+                  <div className="date">{dateText}</div>
                   <div className="status">Online</div>
                   <div className="mark">Featured</div>
                 </div>
