@@ -15,20 +15,20 @@ const TreeMap = (data, extra, selected) => {
   let rich = {
     name: {
       ...fontFamily,
-      lineHeight: 20,
-      fontSize: 16,
+      lineHeight: 14,
+      fontSize: 12,
       fontWeight: "bold",
     },
     value: {
       ...fontFamily,
-      fontSize: 15,
+      fontSize: 12,
       fontWeight: "bold",
       backgroundColor: white,
       opacity: 0.95,
       padding: 8,
       borderRadius: 50,
-      width: 25,
-      height: 25,
+      width: 20,
+      height: 20,
     },
   };
   data = !data ? [] : data;
@@ -85,6 +85,7 @@ const TreeMap = (data, extra, selected) => {
         nodeClick: false,
         colorMappingBy: "index",
         breadcrumb: false,
+        squareRatio: 0.2 * (1 + Math.sqrt(5)),
         label: {
           formatter: function (params) {
             const value = params.data.value;
