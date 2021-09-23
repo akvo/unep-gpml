@@ -522,6 +522,7 @@ const Landing = withRouter(
                     : "#";
                   return (
                     <Link
+                      key={`oc-card-link-${i}`}
                       to={link}
                       onClick={
                         !isApprovedUser && handleOurCommunityProfileClick
@@ -631,7 +632,12 @@ const Landing = withRouter(
                 )}
                 {event &&
                   event.length > 0 &&
-                  renderEventContent(event, eventCarousel, onThisDayText)}
+                  renderEventContent(
+                    history,
+                    event,
+                    eventCarousel,
+                    onThisDayText
+                  )}
               </div>
               <div className="calendar">
                 <Calendar
@@ -650,7 +656,7 @@ const Landing = withRouter(
   }
 );
 
-const renderEventContent = (event, eventCarousel, onThisDayText) => {
+const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
   return (
     <>
       {event.length > 0 && (
@@ -701,35 +707,37 @@ const renderEventContent = (event, eventCarousel, onThisDayText) => {
                 : startDateText;
 
             return (
-              <Link to={`/event/${id}`}>
-                <Card key={`event-${id}-${i}`} className="item">
-                  <div className="item-meta">
-                    <div className="date">{dateText}</div>
-                    <div className="status">Online</div>
-                    <div className="mark">Featured</div>
+              <Card
+                key={`event-${id}-${i}`}
+                className="item"
+                onClick={() => history.push(`/event/${id}`)}
+              >
+                <div className="item-meta">
+                  <div className="date">{dateText}</div>
+                  <div className="status">Online</div>
+                  <div className="mark">Featured</div>
+                </div>
+                <div className="resource-label upper margin">{type}</div>
+                <img
+                  className="item-img"
+                  width="100%"
+                  src={image ? image : imageNotFound}
+                  alt={title}
+                />
+                <div className="item-body">
+                  <div className="asset-title">{title}</div>
+                  <div className="body-text">
+                    {TrimText({ text: description, max: 300 })}
                   </div>
-                  <div className="resource-label upper margin">{type}</div>
-                  <img
-                    className="item-img"
-                    width="100%"
-                    src={image ? image : imageNotFound}
-                    alt={title}
-                  />
-                  <div className="item-body">
-                    <div className="asset-title">{title}</div>
-                    <div className="body-text">
-                      {TrimText({ text: description, max: 300 })}
-                    </div>
-                  </div>
-                  <div className="item-footer">
-                    <span className="read-more">
-                      <Link to={`/event/${id}`}>
-                        Read more <ArrowRightOutlined />
-                      </Link>
-                    </span>
-                  </div>
-                </Card>
-              </Link>
+                </div>
+                <div className="item-footer">
+                  <span className="read-more">
+                    <Link to={`/event/${id}`}>
+                      Read more <ArrowRightOutlined />
+                    </Link>
+                  </span>
+                </div>
+              </Card>
             );
           })}
       </AntdCarousel>
