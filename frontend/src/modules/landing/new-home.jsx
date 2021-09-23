@@ -701,33 +701,35 @@ const renderEventContent = (event, eventCarousel, onThisDayText) => {
                 : startDateText;
 
             return (
-              <Card key={`event-${id}-${i}`} className="item">
-                <div className="item-meta">
-                  <div className="date">{dateText}</div>
-                  <div className="status">Online</div>
-                  <div className="mark">Featured</div>
-                </div>
-                <div className="resource-label upper margin">{type}</div>
-                <img
-                  className="item-img"
-                  width="100%"
-                  src={image ? image : imageNotFound}
-                  alt={title}
-                />
-                <div className="item-body">
-                  <div className="asset-title">{title}</div>
-                  <div className="body-text">
-                    {TrimText({ text: description, max: 300 })}
+              <Link to={`/event/${id}`}>
+                <Card key={`event-${id}-${i}`} className="item">
+                  <div className="item-meta">
+                    <div className="date">{dateText}</div>
+                    <div className="status">Online</div>
+                    <div className="mark">Featured</div>
                   </div>
-                </div>
-                <div className="item-footer">
-                  <span className="read-more">
-                    <Link to={`/event/${id}`}>
-                      Read more <ArrowRightOutlined />
-                    </Link>
-                  </span>
-                </div>
-              </Card>
+                  <div className="resource-label upper margin">{type}</div>
+                  <img
+                    className="item-img"
+                    width="100%"
+                    src={image ? image : imageNotFound}
+                    alt={title}
+                  />
+                  <div className="item-body">
+                    <div className="asset-title">{title}</div>
+                    <div className="body-text">
+                      {TrimText({ text: description, max: 300 })}
+                    </div>
+                  </div>
+                  <div className="item-footer">
+                    <span className="read-more">
+                      <Link to={`/event/${id}`}>
+                        Read more <ArrowRightOutlined />
+                      </Link>
+                    </span>
+                  </div>
+                </Card>
+              </Link>
             );
           })}
       </AntdCarousel>
