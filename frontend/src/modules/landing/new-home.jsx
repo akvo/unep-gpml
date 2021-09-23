@@ -685,24 +685,25 @@ const renderEventContent = (event, eventCarousel, onThisDayText) => {
       >
         {event.length &&
           event.map((x, i) => {
-            const {
-              id,
-              title,
-              description,
-              type,
-              startDate,
-              endDate,
-              image,
-            } = x;
+            const { id, title, description, type, image } = x;
+
+            const startDate = moment.utc(x.startDate).format("YYYY/MM/DD");
+            const endDate = moment.utc(x.endDate).format("YYYY/MM/DD");
+            const startDateText = moment
+              .utc(startDate, "YYYY/MM/DD")
+              .format("DD MMMM YYYY");
+            const endDateText = moment
+              .utc(endDate, "YYYY/MM/DD")
+              .format("DD MMMM YYYY");
+            const dateText =
+              startDate < endDate
+                ? `${startDateText} - ${endDateText}`
+                : startDateText;
+
             return (
               <Card key={`event-${id}-${i}`} className="item">
                 <div className="item-meta">
-                  <div className="date">
-                    {moment.utc(startDate).format("DD MMMM YYYY")}
-                    {moment.utc(startDate).format("DD MMMM YYYY") <
-                      moment.utc(endDate).format("DD MMMM YYYY") &&
-                      " - " + moment.utc(endDate).format("DD MMMM YYYY")}
-                  </div>
+                  <div className="date">{dateText}</div>
                   <div className="status">Online</div>
                   <div className="mark">Featured</div>
                 </div>
