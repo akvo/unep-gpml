@@ -143,7 +143,7 @@ const Landing = withRouter(
     isAuthenticated,
     loginWithPopup,
   }) => {
-    const dateNow = moment().format("DD-MM-YYYY");
+    const dateNow = moment.utc().format("DD-MM-YYYY");
     const { innerWidth, innerHeight } = window;
     const profile = UIStore.useState((s) => s.profile);
     const [selectedTopic, setSelectedTopic] = useState(defTopic);
@@ -172,10 +172,10 @@ const Landing = withRouter(
     };
 
     const dateCellRender = (value) => {
-      const calendarDate = moment(value).format("DD-MM-YYYY");
+      const calendarDate = moment.utc(value).format("DD-MM-YYYY");
       if (data && data?.results) {
         const eventByDate = data.results.filter((x) => {
-          const date = moment(x.startDate).format("DD-MM-YYYY");
+          const date = moment.utc(x.startDate).format("DD-MM-YYYY");
           return date === calendarDate;
         });
         return eventByDate.length > 0 ? <Badge status="warning" /> : "";
@@ -186,11 +186,12 @@ const Landing = withRouter(
     const generateEvent = useCallback(
       (filterDate, searchNextEvent = false) => {
         const eventNow = data.results.filter((x, i) => {
-          const date = moment(x.startDate).format("DD-MM-YYYY");
+          const date = moment.utc(x.startDate).format("DD-MM-YYYY");
           return date === filterDate;
         });
         if (!eventNow.length && searchNextEvent) {
-          const nextDay = moment(filterDate, "DD-MM-YYYY")
+          const nextDay = moment
+            .utc(filterDate, "DD-MM-YYYY")
             .add(1, "days")
             .format("DD-MM-YYYY");
           generateEvent(nextDay, searchNextEvent);
@@ -204,7 +205,7 @@ const Landing = withRouter(
 
     const handleOnDateSelected = (value) => {
       setEvent(null);
-      const selectedDate = moment(value).format("DD-MM-YYYY");
+      const selectedDate = moment.utc(value).format("DD-MM-YYYY");
       generateEvent(selectedDate);
     };
 
@@ -660,7 +661,7 @@ const renderEventContent = (event, eventCarousel) => {
               <Card key={`event-${id}-${i}`} className="item">
                 <div className="item-meta">
                   <div className="date">
-                    {moment(startDate).format("DD MMMM YYYY")}
+                    {moment.utc(startDate).format("DD MMMM YYYY")}
                   </div>
                   <div className="status">Online</div>
                   <div className="mark">Featured</div>
