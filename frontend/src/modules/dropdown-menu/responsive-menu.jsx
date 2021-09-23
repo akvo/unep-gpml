@@ -172,14 +172,14 @@ const ResponsiveMenu = withRouter(
                     onClick={() => setFilterMenu([topic])}
                   >
                     {topicNames(name)}
-                    <Button
+                    {/* <Button
                       className="badge-count"
                       size="small"
                       type="ghost"
                       shape="circle"
                       icon={count}
                       loading={loadingStakeholders}
-                    />
+                    /> */}
                   </Menu.Item>
                 );
               })
