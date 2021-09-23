@@ -148,6 +148,7 @@ const Landing = withRouter(
     const [selectedTopic, setSelectedTopic] = useState(defTopic);
     const [event, setEvent] = useState([]);
     const [data, setData] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(dateNow);
 
     const isApprovedUser = profile?.reviewStatus === "APPROVED";
     const hasProfile = profile?.reviewStatus;
@@ -227,8 +228,14 @@ const Landing = withRouter(
     const handleOnDateSelected = (value) => {
       setEvent(null);
       const selectedDate = moment.utc(value).format("DD-MM-YYYY");
+      setSelectedDate(selectedDate);
       generateEvent(selectedDate);
     };
+
+    const onThisDayText =
+      dateNow === selectedDate
+        ? "this day"
+        : moment.utc(selectedDate, "DD-MM-YYYY").format("DD MMM YYYY");
 
     useEffect(() => {
       if (!data) {
@@ -619,11 +626,11 @@ const Landing = withRouter(
                   </div>
                 )}
                 {event && event.length === 0 && (
-                  <div className="no-event">No event on this day</div>
+                  <div className="no-event">No event on {onThisDayText}</div>
                 )}
                 {event &&
                   event.length > 0 &&
-                  renderEventContent(event, eventCarousel)}
+                  renderEventContent(event, eventCarousel, onThisDayText)}
               </div>
               <div className="calendar">
                 <Calendar
@@ -642,13 +649,13 @@ const Landing = withRouter(
   }
 );
 
-const renderEventContent = (event, eventCarousel) => {
+const renderEventContent = (event, eventCarousel, onThisDayText) => {
   return (
     <>
       {event.length > 0 && (
         <div className="event-more">
           <span>
-            {event.length} event{event.length > 1 ? "s" : ""} on this day
+            {event.length} event{event.length > 1 ? "s" : ""} on {onThisDayText}
           </span>
           {event.length > 1 && (
             <div className="button-carousel">
@@ -677,12 +684,23 @@ const renderEventContent = (event, eventCarousel) => {
       >
         {event.length &&
           event.map((x, i) => {
-            const { id, title, description, type, startDate, image } = x;
+            const {
+              id,
+              title,
+              description,
+              type,
+              startDate,
+              endDate,
+              image,
+            } = x;
             return (
               <Card key={`event-${id}-${i}`} className="item">
                 <div className="item-meta">
                   <div className="date">
                     {moment.utc(startDate).format("DD MMMM YYYY")}
+                    {moment.utc(startDate).format("DD MMMM YYYY") <
+                      moment.utc(endDate).format("DD MMMM YYYY") &&
+                      " - " + moment.utc(endDate).format("DD MMMM YYYY")}
                   </div>
                   <div className="status">Online</div>
                   <div className="mark">Featured</div>
