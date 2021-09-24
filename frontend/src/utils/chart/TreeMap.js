@@ -7,6 +7,7 @@ import {
 } from "./chart-style.js";
 
 const TreeMap = (data, extra, selected) => {
+  console.log(window.innerWidth);
   const { blue, yellow, white } = singleColor;
   const itemStyle = {
     borderColor: white,
@@ -15,7 +16,7 @@ const TreeMap = (data, extra, selected) => {
   let rich = {
     name: {
       ...fontFamily,
-      lineHeight: 14,
+      lineHeight: 15,
       fontSize: 12,
       fontWeight: "bold",
     },
@@ -25,10 +26,10 @@ const TreeMap = (data, extra, selected) => {
       fontWeight: "bold",
       backgroundColor: white,
       opacity: 0.95,
-      padding: 8,
+      padding: 10,
       borderRadius: 50,
-      width: 20,
-      height: 20,
+      width: 15,
+      height: 15,
     },
   };
   data = !data ? [] : data;
@@ -85,7 +86,8 @@ const TreeMap = (data, extra, selected) => {
         nodeClick: false,
         colorMappingBy: "index",
         breadcrumb: false,
-        squareRatio: 0.2 * (1 + Math.sqrt(5)),
+        squareRatio:
+          0.5 * (0.5 + Math.sqrt(window.innerWidth / window.innerHeight)),
         label: {
           formatter: function (params) {
             const value = params.data.value;
@@ -107,7 +109,7 @@ const TreeMap = (data, extra, selected) => {
           position: "inside",
           align: "center",
           verticalAlign: "middle",
-          padding: [25, 0],
+          padding: [18, 0],
         },
       },
     ],
