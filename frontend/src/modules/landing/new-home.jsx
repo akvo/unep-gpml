@@ -143,7 +143,7 @@ const Landing = withRouter(
     loginWithPopup,
     setFilterMenu,
   }) => {
-    const dateNow = moment.utc().format("YYYY/MM/DD");
+    const dateNow = moment().format("YYYY/MM/DD");
     const { innerWidth, innerHeight } = window;
     const profile = UIStore.useState((s) => s.profile);
     const [selectedTopic, setSelectedTopic] = useState(defTopic);
@@ -173,12 +173,12 @@ const Landing = withRouter(
     };
 
     const dateCellRender = (value) => {
-      const calendarDate = moment.utc(value).format("YYYY/MM/DD");
+      const calendarDate = moment(value).format("YYYY/MM/DD");
       if (data && data?.results) {
         const eventByDate = data.results
           .map((x) => {
-            const startDate = moment.utc(x.startDate).format("YYYY/MM/DD");
-            const endDate = moment.utc(x.endDate).format("YYYY/MM/DD");
+            const startDate = moment(x.startDate).format("YYYY/MM/DD");
+            const endDate = moment(x.endDate).format("YYYY/MM/DD");
             if (calendarDate >= startDate && calendarDate <= endDate) {
               return {
                 ...x,
@@ -209,13 +209,12 @@ const Landing = withRouter(
     const generateEvent = useCallback(
       (filterDate, searchNextEvent = false) => {
         const eventNow = data.results.filter((x, i) => {
-          const startDate = moment.utc(x.startDate).format("YYYY/MM/DD");
-          const endDate = moment.utc(x.endDate).format("YYYY/MM/DD");
+          const startDate = moment(x.startDate).format("YYYY/MM/DD");
+          const endDate = moment(x.endDate).format("YYYY/MM/DD");
           return filterDate >= startDate && filterDate <= endDate;
         });
         if (!eventNow.length && searchNextEvent) {
-          const nextDay = moment
-            .utc(filterDate, "YYYY/MM/DD")
+          const nextDay = moment(filterDate, "YYYY/MM/DD")
             .add(1, "days")
             .format("YYYY/MM/DD");
           generateEvent(nextDay, searchNextEvent);
@@ -229,7 +228,7 @@ const Landing = withRouter(
 
     const handleOnDateSelected = (value) => {
       setEvent(null);
-      const selectedDate = moment.utc(value).format("YYYY/MM/DD");
+      const selectedDate = moment(value).format("YYYY/MM/DD");
       setSelectedDate(selectedDate);
       generateEvent(selectedDate);
     };
@@ -237,7 +236,7 @@ const Landing = withRouter(
     const onThisDayText =
       dateNow === selectedDate
         ? "this day"
-        : moment.utc(selectedDate, "YYYY/MM/DD").format("DD MMM YYYY");
+        : moment(selectedDate, "YYYY/MM/DD").format("DD MMM YYYY");
 
     useEffect(() => {
       if (!data) {
@@ -710,14 +709,14 @@ const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
           event.map((x, i) => {
             const { id, title, description, type, image } = x;
 
-            const startDate = moment.utc(x.startDate).format("YYYY/MM/DD");
-            const endDate = moment.utc(x.endDate).format("YYYY/MM/DD");
-            const startDateText = moment
-              .utc(startDate, "YYYY/MM/DD")
-              .format("DD MMMM YYYY");
-            const endDateText = moment
-              .utc(endDate, "YYYY/MM/DD")
-              .format("DD MMMM YYYY");
+            const startDate = moment(x.startDate).format("YYYY/MM/DD");
+            const endDate = moment(x.endDate).format("YYYY/MM/DD");
+            const startDateText = moment(startDate, "YYYY/MM/DD").format(
+              "DD MMMM YYYY"
+            );
+            const endDateText = moment(endDate, "YYYY/MM/DD").format(
+              "DD MMMM YYYY"
+            );
             const dateText =
               startDate < endDate
                 ? `${startDateText} - ${endDateText}`
