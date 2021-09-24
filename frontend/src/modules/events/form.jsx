@@ -291,7 +291,7 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
   }, [countries, tags, status, id, params]);
 
   const setFormData = (data) => {
-    const dateFormat = "YYYY/MM/DD";
+    const dateFormat = "YYYY/MM/DD HH:mm:ss ZZ";
     setTimeout(() => {
       formRef.current?.change("ts", new Date().getTime());
       data?.title && formRef.current?.change("title", data?.title);
