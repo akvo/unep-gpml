@@ -62,6 +62,7 @@ Promise.all([
   api.get("/organisation"),
   api.get("/nav"),
   api.get("/stakeholder"),
+  api.get("/organisation-non-member"),
 ]).then((res) => {
   const [
     tag,
@@ -71,6 +72,7 @@ Promise.all([
     organisation,
     nav,
     stakeholder,
+    organisationNonMembers,
   ] = res;
   UIStore.update((e) => {
     e.tags = tag.data;
@@ -81,6 +83,9 @@ Promise.all([
     e.regionOptions = countryGroup.data.filter((x) => x.type === "region");
     e.meaOptions = countryGroup.data.filter((x) => x.type === "mea");
     e.organisations = uniqBy(sortBy(organisation.data, ["name"])).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    e.organisationNonMembers = uniqBy(sortBy(organisationNonMembers.data, ["name"])).sort((a, b) =>
       a.name.localeCompare(b.name)
     );
     e.nav = nav.data;

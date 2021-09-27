@@ -36,6 +36,7 @@ const getSchema = ({
   meaOptions,
   sectorOptions,
   organisations,
+  organisationsNonMembers,
   organisationType,
   profile,
 }) => {
