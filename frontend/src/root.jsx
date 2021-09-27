@@ -62,7 +62,7 @@ Promise.all([
   api.get("/organisation"),
   api.get("/nav"),
   api.get("/stakeholder"),
-  api.get("/organisation-non-member"),
+  api.get("/non-member-organisation"),
 ]).then((res) => {
   const [
     tag,

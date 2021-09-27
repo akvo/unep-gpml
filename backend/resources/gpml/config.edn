@@ -239,6 +239,12 @@
                                           {:get {:summary "List tags by topic type"
                                                  :swagger {:tags ["tag"]}
                                                  :handler #ig/ref :gpml.handler.tag/by-topic}}]]
+                                        ["/non-member-organisation"
+                                         [""
+                                          {:get {:summary "List all non member organisations"
+                                                 :swagger {:tags ["non-member-organisation"]}
+                                                 :handler #ig/ref :gpml.handler.non-member-organisation/get}}]
+]
                                         ["/organisation"
                                          [""
                                           {:get {:summary "List all organisations"
@@ -370,6 +376,7 @@
   :gpml.handler.tag/by-topic {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/all {:db #ig/ref :duct.database/sql}
 
+  :gpml.handler.non-member-organisation/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation/post {:db #ig/ref :duct.database/sql
                                    :mailjet-config #ig/ref :gpml.config/mailjet}
