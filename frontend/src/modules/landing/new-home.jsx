@@ -375,12 +375,13 @@ const Landing = withRouter(
                 .filter((x) => x.id !== 196)
                 .map((x, i) => {
                   const { id, image, type, title, description, bookmark } = x;
-                  const link = `/${type
-                    .toLowerCase()
-                    .split(" ")
-                    .join("_")}/${id}`;
+                  const link = `/${humps.decamelize(type)}/${id}`;
                   return (
-                    <Card key={`fc-${i}`} className="item">
+                    <Card
+                      key={`fc-${i}`}
+                      className="item"
+                      onClick={() => history.push(link)}
+                    >
                       <div className="item-header">
                         <span className="resource-label upper">
                           {topicNames(humps.camelizeKeys(type))}
@@ -432,12 +433,13 @@ const Landing = withRouter(
                 .filter((x) => x.id === 196)
                 .map((x, i) => {
                   const { id, image, type, title, description, bookmark } = x;
-                  const link = `/${type
-                    .toLowerCase()
-                    .split(" ")
-                    .join("_")}/${id}`;
+                  const link = `${humps.decamelize(type)}/${id}`;
                   return (
-                    <Card key={`fc-${i}`} className="item">
+                    <Card
+                      key={`fc-${i}`}
+                      className="item"
+                      onClick={() => history.push(link)}
+                    >
                       <img
                         className="item-img"
                         width="100%"
