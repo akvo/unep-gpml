@@ -329,12 +329,13 @@ const Landing = withRouter(
                     .find((x) => x.topic.toLowerCase() === selectedTopic)
                     .items.map((x, i) => {
                       const { id, type, title, description } = x;
-                      const link = `/${type
-                        .toLowerCase()
-                        .split(" ")
-                        .join("_")}/${id}`;
+                      const link = `/${humps.decamelize(type)}/${id}`;
                       return (
-                        <div key={`summary-${i}`} className="item-body">
+                        <Card
+                          key={`summary-${i}`}
+                          className="item-body"
+                          onClick={() => history.push(link)}
+                        >
                           <div className="resource-label upper">
                             {topicNames(humps.camelizeKeys(type))}
                           </div>
@@ -347,7 +348,7 @@ const Landing = withRouter(
                               Read more <ArrowRightOutlined />
                             </Link>
                           </span>
-                        </div>
+                        </Card>
                       );
                     })}
                 </div>

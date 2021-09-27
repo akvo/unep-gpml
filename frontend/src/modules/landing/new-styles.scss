@@ -74,10 +74,10 @@
       justify-content: space-between;
       border: 1px solid rgb(255, 255, 255);
       .chart-wrapper {
-        width: 60%;
+        width: 50%;
       }
       .content {
-        width: 40%;
+        width: 50%;
         .content-header {
           border-top: 1px solid white;
           border-bottom: 1px solid white;
@@ -126,10 +126,12 @@
           }
         }
         .content-body {
-          padding: 10px 20px;
+          padding: 0 20px;
           background-color: rgba($yellow, 0);
           .item-body {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            cursor: pointer;
           }
         }
       }
