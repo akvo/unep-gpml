@@ -72,7 +72,7 @@ Promise.all([
     organisation,
     nav,
     stakeholder,
-    organisationNonMembers,
+    nonMemberOrganisations,
   ] = res;
   UIStore.update((e) => {
     e.tags = tag.data;
@@ -85,7 +85,7 @@ Promise.all([
     e.organisations = uniqBy(sortBy(organisation.data, ["name"])).sort((a, b) =>
       a.name.localeCompare(b.name)
     );
-    e.organisationNonMembers = uniqBy(sortBy(organisationNonMembers.data, ["name"])).sort((a, b) =>
+    e.nonMemberOrganisations = uniqBy(sortBy(nonMemberOrganisations.data, ["name"])).sort((a, b) =>
       a.name.localeCompare(b.name)
     );
     e.nav = nav.data;

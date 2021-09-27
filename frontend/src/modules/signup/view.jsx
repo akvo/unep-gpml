@@ -45,6 +45,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     organisationType: s.organisationType,
     representativeGroup: s.representativeGroup,
     meaOptions: s.meaOptions,
+    nonMemberOrganisations: s.nonMemberOrganisations,
     organisations: s.organisations,
     profile: s.profile,
     formStep: s.formStep,
@@ -60,6 +61,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     organisationType,
     representativeGroup,
     meaOptions,
+    nonMemberOrganisations,
     organisations,
     formStep,
     formEdit,
@@ -111,7 +113,8 @@ const SignUp = ({ match: { params }, ...props }) => {
         !isEmpty(organisationType) &&
         !isEmpty(meaOptions) &&
         !isEmpty(stakeholders) &&
-        !isEmpty(representativeGroup)
+        !isEmpty(representativeGroup) &&
+        !isEmpty(nonMemberOrganisations)
     );
   }, [
     countries,
@@ -123,6 +126,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     organisationType,
     meaOptions,
     stakeholders,
+    nonMemberOrganisations,
     representativeGroup,
   ]);
 

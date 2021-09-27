@@ -63,7 +63,7 @@ const UIStore = new Store({
   currencies: [],
   profile: {},
   organisations: [],
-  organisationNonMembers: [],
+  nonMemberOrganisations: [],
   languages: languages,
   geoCoverageTypeOptions: geoCoverageTypeOptions,
   regionOptions: [],
