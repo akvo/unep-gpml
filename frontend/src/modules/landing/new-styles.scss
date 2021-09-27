@@ -126,12 +126,19 @@
           }
         }
         .content-body {
-          padding: 0 20px;
+          padding: 10px 20px;
           background-color: rgba($yellow, 0);
           .item-body {
             margin-bottom: 12px;
             border-radius: 10px;
+            border-color: transparent;
             cursor: pointer;
+            &:hover {
+              border-color: #f0f0f0;
+            }
+            .ant-card-body {
+              padding: 14px;
+            }
           }
         }
       }
