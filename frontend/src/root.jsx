@@ -85,9 +85,9 @@ Promise.all([
     e.organisations = uniqBy(sortBy(organisation.data, ["name"])).sort((a, b) =>
       a.name.localeCompare(b.name)
     );
-    e.nonMemberOrganisations = uniqBy(sortBy(nonMemberOrganisations.data, ["name"])).sort((a, b) =>
-      a.name.localeCompare(b.name)
-    );
+    e.nonMemberOrganisations = uniqBy(
+      sortBy(nonMemberOrganisations.data, ["name"])
+    ).sort((a, b) => a.name.localeCompare(b.name));
     e.nav = nav.data;
     e.stakeholders = stakeholder.data;
   });
