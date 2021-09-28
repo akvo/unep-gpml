@@ -60,7 +60,8 @@
     },
     "orgName": {
       "ui:placeholder": "Entity name",
-      "ui:showSearch": true
+      "ui:showSearch": true,
+      "ui:allowClear": true
     },
     "orgDisabled": {
       "ui:placeholder": "Entity name",
@@ -68,7 +69,8 @@
     },
     "companyName": {
       "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
-      "ui:showSearch": true
+      "ui:showSearch": true,
+      "ui:allowClear": true
     },
     "companyDisabled": {
       "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
