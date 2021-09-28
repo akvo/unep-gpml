@@ -86,11 +86,10 @@ const TreeMap = (data, extra, selected) => {
         nodeClick: false,
         colorMappingBy: "index",
         breadcrumb: false,
-        squareRatio:
-          0.5 * (0.5 + Math.sqrt(window.innerWidth / window.innerHeight)),
+        squareRatio: 0.5 * (0.5 + Math.sqrt(5)),
         label: {
           formatter: function (params) {
-            const value = params.data.value;
+            const value = params.data.count;
             const name = params.data.name.split(" ");
             let nameTmp = [];
             if (name.length > 2) {

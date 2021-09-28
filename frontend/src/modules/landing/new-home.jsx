@@ -312,7 +312,8 @@ const Landing = withRouter(
                   return {
                     id: x.id,
                     name: x.topic,
-                    value: x.count,
+                    value: x.count > 100 ? x.count : x.count + 50,
+                    count: x.count,
                     tag: x.tag,
                   };
                 })}
