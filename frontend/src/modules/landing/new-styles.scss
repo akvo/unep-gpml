@@ -582,6 +582,10 @@
     margin-left: 20px;
     color: #34a6ff;
     vertical-align: middle;
+    &.ant-btn,
+    &.ant-btn-ghost {
+      line-height: 1.5rem;
+    }
   }
 
   // read more text

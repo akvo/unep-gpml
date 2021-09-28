@@ -495,7 +495,14 @@ const Landing = withRouter(
         <div className="our-community section-container">
           <div className="ui container">
             <div className="section-title green">
-              <h2>Our Community</h2>
+              <h2>
+                Our Community{" "}
+                <span className="see-more-link ant-btn-ghost ant-btn">
+                  <Link to="/stakeholders">
+                    See all <RightOutlined />
+                  </Link>
+                </span>
+              </h2>
               <div className="body-text">
                 Be part of an expanding active community and start sharing
                 knowledge
