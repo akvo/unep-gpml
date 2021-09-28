@@ -311,6 +311,7 @@ const Root = () => {
                 setStakeholderSignupModalVisible,
                 loginWithPopup,
                 isAuthenticated,
+                setFilterMenu,
                 ...props,
               }}
             />

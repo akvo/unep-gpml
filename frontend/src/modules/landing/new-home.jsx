@@ -141,6 +141,7 @@ const Landing = withRouter(
     setWarningModalVisible,
     isAuthenticated,
     loginWithPopup,
+    setFilterMenu,
   }) => {
     const dateNow = moment.utc().format("YYYY/MM/DD");
     const { innerWidth, innerHeight } = window;
@@ -498,7 +499,12 @@ const Landing = withRouter(
               <h2>
                 Our Community{" "}
                 <span className="see-more-link ant-btn-ghost ant-btn">
-                  <Link to="/stakeholders">
+                  <Link
+                    to="/stakeholders"
+                    onClick={() =>
+                      setFilterMenu(["organisation", "stakeholder"])
+                    }
+                  >
                     See all <RightOutlined />
                   </Link>
                 </span>
