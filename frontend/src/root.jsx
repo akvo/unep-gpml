@@ -62,6 +62,7 @@ Promise.all([
   api.get("/organisation"),
   api.get("/nav"),
   api.get("/stakeholder"),
+  api.get("/non-member-organisation"),
 ]).then((res) => {
   const [
     tag,
@@ -71,6 +72,7 @@ Promise.all([
     organisation,
     nav,
     stakeholder,
+    nonMemberOrganisations,
   ] = res;
   UIStore.update((e) => {
     e.tags = tag.data;
@@ -83,6 +85,9 @@ Promise.all([
     e.organisations = uniqBy(sortBy(organisation.data, ["name"])).sort((a, b) =>
       a.name.localeCompare(b.name)
     );
+    e.nonMemberOrganisations = uniqBy(
+      sortBy(nonMemberOrganisations.data, ["name"])
+    ).sort((a, b) => a.name.localeCompare(b.name));
     e.nav = nav.data;
     e.stakeholders = stakeholder.data;
   });

@@ -36,6 +36,7 @@ const getSchema = ({
   meaOptions,
   sectorOptions,
   organisations,
+  nonMemberOrganisations,
   organisationType,
   profile,
 }) => {
@@ -61,8 +62,12 @@ const getSchema = ({
   );
 
   // New Entity S2
-  // prop.S2.properties["companyName"].enum = [-1];
-  // prop.S2.properties["companyName"].enumNames = ["Other"];
+  prop.S2.properties["companyName"].enum = [-1].concat(
+    nonMemberOrganisations.map((x) => x.id)
+  );
+  prop.S2.properties["companyName"].enumNames = ["Other"].concat(
+    nonMemberOrganisations.map((x) => x.name)
+  );
 
   prop.S2.properties["newCompanyHeadquarter"].enum = countries?.map(
     (x) => x.id
