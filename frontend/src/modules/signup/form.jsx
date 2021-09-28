@@ -233,6 +233,12 @@ const SignUpForm = withRouter(
 
     const handleFormOnChange = useCallback(
       ({ formData, schema }) => {
+        // delete members/non-members value when private citizen true
+        if (formData?.S2?.privateCitizen) {
+          formData?.S2?.orgName && delete formData?.S2?.orgName;
+          formData?.S2?.companyName && delete formData?.S2?.companyName;
+        }
+
         signUpData.update((e) => {
           e.data = {
             ...e.data,
