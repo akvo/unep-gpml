@@ -7,7 +7,7 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import { Button, Tag, Image, Divider, Dropdown, Checkbox } from "antd";
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import api from "../../utils/api";
 import {
@@ -30,6 +30,7 @@ import moment from "moment";
 import imageNotFound from "../../images/image-not-found.png";
 import logoNotFound from "../../images/logo-not-found.png";
 import uniqBy from "lodash/uniqBy";
+import isEmpty from "lodash/isEmpty";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 const urlLink = (url) => (url.indexOf("http") !== 0 ? `http://${url}` : url);
@@ -499,7 +500,10 @@ const DetailsView = ({
       it.topicId === parseInt(params.id) &&
       it.topic === resourceTypeToTopicType(params.type)
   );
-  const isLoaded = () => Boolean(countries.length);
+  const isLoaded = useCallback(
+    () => Boolean(!isEmpty(profile) && !isEmpty(countries)),
+    [profile, countries]
+  );
 
   const allowBookmark =
     params.type !== "stakeholder" || profile.id !== params.id;
@@ -513,12 +517,13 @@ const DetailsView = ({
         };
 
   useEffect(() => {
-    params?.type &&
+    isLoaded() &&
+      params?.type &&
       params?.id &&
       api.get(`/detail/${params.type}/${params.id}`).then((d) => {
         setData(d.data);
       });
-    if (profile.reviewStatus === "APPROVED") {
+    if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
         api.get("/favorite").then((resp) => {
           setRelations(resp.data);
@@ -529,7 +534,7 @@ const DetailsView = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [params, profile]);
+  }, [params, profile, isLoaded]);
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
@@ -559,7 +564,7 @@ const DetailsView = ({
     }
   };
 
-  if (!isLoaded() || !data) {
+  if (!data) {
     return (
       <div className="details-view">
         <div className="loading">

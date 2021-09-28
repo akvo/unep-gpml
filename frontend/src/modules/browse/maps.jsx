@@ -172,7 +172,6 @@ const Maps = ({ data, topic, clickEvents, country }) => {
       }
     }
   };
-  console.log(innerWidth, mapPos);
 
   window.addEventListener("resize", handleResize);
 
