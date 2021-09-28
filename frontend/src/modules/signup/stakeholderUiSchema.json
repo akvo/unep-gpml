@@ -59,14 +59,16 @@
       "ui:label": null
     },
     "orgName": {
-      "ui:placeholder": "Entity name"
+      "ui:placeholder": "Entity name",
+      "ui:showSearch": true
     },
     "orgDisabled": {
       "ui:placeholder": "Entity name",
       "ui:disabled": true
     },
     "companyName": {
-      "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity"
+      "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
+      "ui:showSearch": true
     },
     "companyDisabled": {
       "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",

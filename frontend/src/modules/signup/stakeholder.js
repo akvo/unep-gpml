@@ -127,7 +127,7 @@ const tabs = [
   },
   {
     key: "S2",
-    title: "Afiliation",
+    title: "Affiliation",
     desc: "",
     steps: [],
   },
