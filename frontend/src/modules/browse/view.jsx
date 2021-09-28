@@ -214,8 +214,6 @@ const Browse = ({
     0
   );
 
-  console.log(filters);
-
   return (
     <div id="browse">
       <div className="section-header">
