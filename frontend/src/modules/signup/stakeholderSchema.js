@@ -96,7 +96,7 @@ export const schema = {
             value: false,
             andDepend: {
               id: "companyName",
-              value: false, // companyName not filled in
+              value: "not-filled-in", // companyName not filled in
             },
           },
           title: "Search for a GPML Member Entity",
@@ -108,7 +108,7 @@ export const schema = {
             value: true,
             orDepend: {
               id: "companyName",
-              value: true, // companyName filled in
+              value: "filled-in", // companyName filled in
             },
           },
           title: "Search for a GPML Member Entity",
@@ -120,7 +120,7 @@ export const schema = {
             value: false,
             andDepend: {
               id: "orgName",
-              value: false, // companyName not filled in
+              value: "not-filled-in", // companyName not filled in
             },
           },
           title: "Is your Entity not a GPML Member yet?",
@@ -132,7 +132,7 @@ export const schema = {
             value: true,
             orDepend: {
               id: "orgName",
-              value: true, // companyName filled in
+              value: "filled-in", // companyName filled in
             },
           },
           title: "Is your Entity not a GPML Member yet?",

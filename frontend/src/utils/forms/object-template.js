@@ -126,23 +126,12 @@ const ObjectFieldTemplate = ({
     // ## Check for dependency, hide or show question
     const dependentSchema = findSchemaDepend(element);
     if (dependentSchema) {
-      const orDepend = dependentSchema?.orDepend;
-      const andDepend = dependentSchema?.andDepend;
-
       const dependValue = checkDependencyAnswer(
         formData[dependentSchema.id],
-        dependentSchema
+        dependentSchema,
+        formData
       );
-      const orDependValue = orDepend?.value && formData[orDepend?.id];
-      const andDependValue = !andDepend?.value && !formData[andDepend?.id];
-
-      if (andDepend && dependValue && andDependValue) {
-        return { display: "block" };
-      }
-      if (orDepend && (dependValue || orDependValue)) {
-        return { display: "block" };
-      }
-      if (!orDepend && !andDepend && dependValue) {
+      if (dependValue) {
         // ## TODO:: Need to check if depend id also depend to other question, then delete it from formData
         let parentDependentSchema = props?.[dependentSchema.id]?.depend;
         if (parentDependentSchema) {
