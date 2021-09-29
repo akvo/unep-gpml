@@ -123,11 +123,13 @@ const ObjectFieldTemplate = ({
         delete formData?.[element.name];
     }
 
+    // ## Check for dependency, hide or show question
     const dependentSchema = findSchemaDepend(element);
     if (dependentSchema) {
-      let dependValue = checkDependencyAnswer(
+      const dependValue = checkDependencyAnswer(
         formData[dependentSchema.id],
-        dependentSchema
+        dependentSchema,
+        formData
       );
       if (dependValue) {
         // ## TODO:: Need to check if depend id also depend to other question, then delete it from formData

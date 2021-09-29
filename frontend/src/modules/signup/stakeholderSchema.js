@@ -75,6 +75,7 @@ export const schema = {
       },
       required: [
         "orgName",
+        "companyName",
         "newCompanyName",
         "newCompanyHeadquarter",
         "geoCoverageType",
@@ -93,6 +94,10 @@ export const schema = {
           depend: {
             id: "privateCitizen",
             value: false,
+            andDepend: {
+              id: "companyName",
+              value: "not-filled-in", // companyName not filled in
+            },
           },
           title: "Search for a GPML Member Entity",
           enum: [],
@@ -101,6 +106,10 @@ export const schema = {
           depend: {
             id: "privateCitizen",
             value: true,
+            orDepend: {
+              id: "companyName",
+              value: "filled-in", // companyName filled in
+            },
           },
           title: "Search for a GPML Member Entity",
           enum: [],
@@ -109,6 +118,10 @@ export const schema = {
           depend: {
             id: "privateCitizen",
             value: false,
+            andDepend: {
+              id: "orgName",
+              value: "not-filled-in", // companyName not filled in
+            },
           },
           title: "Is your Entity not a GPML Member yet?",
           enum: [],
@@ -117,6 +130,10 @@ export const schema = {
           depend: {
             id: "privateCitizen",
             value: true,
+            orDepend: {
+              id: "orgName",
+              value: "filled-in", // companyName filled in
+            },
           },
           title: "Is your Entity not a GPML Member yet?",
           enum: [],

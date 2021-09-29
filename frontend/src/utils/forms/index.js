@@ -285,9 +285,17 @@ export const handleGeoCoverageValue = (
   return data;
 };
 
-export const checkDependencyAnswer = (answer, dependentSchema) => {
+export const checkDependencyAnswer = (
+  answer,
+  dependentSchema,
+  formData = {}
+) => {
   answer = typeof answer === "string" ? answer.toLowerCase() : answer;
-  let dependValue = dependentSchema.value;
+  let dependValue = dependentSchema?.value;
+
+  const orDependSchema = dependentSchema?.orDepend;
+  const andDependSchema = dependentSchema?.andDepend;
+
   if (Array.isArray(answer)) {
     dependValue = intersection(dependValue, answer).length !== 0;
   }
@@ -296,6 +304,26 @@ export const checkDependencyAnswer = (answer, dependentSchema) => {
       ? dependValue.includes(answer)
       : dependValue === answer;
   }
+
+  if (orDependSchema) {
+    const orAnswer = formData[orDependSchema?.id];
+    if (orDependSchema?.value === "not-filled-in") {
+      dependValue = dependValue || !orAnswer;
+    }
+    if (orDependSchema?.value === "filled-in") {
+      dependValue = dependValue || orAnswer;
+    }
+  }
+  if (andDependSchema) {
+    const andAnswer = formData[andDependSchema?.id];
+    if (andDependSchema?.value === "not-filled-in") {
+      dependValue = dependValue && !andAnswer;
+    }
+    if (andDependSchema?.value === "filled-in") {
+      dependValue = dependValue && andAnswer;
+    }
+  }
+
   return dependValue;
 };
 

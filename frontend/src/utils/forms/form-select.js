@@ -64,6 +64,7 @@ const SelectWidget = ({
     Array.isArray(currentValue) ? value.map(String) : String(value);
   return (
     <Select
+      allowClear={uiSchema?.["ui:allowClear"] ? true : false}
       showSearch={uiSchema?.["ui:showSearch"] ? true : false}
       filterOption={(input, option) =>
         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
