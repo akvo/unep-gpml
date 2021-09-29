@@ -3,6 +3,7 @@
   (:require [clojure.repl :refer :all]
             [clojure.tools.namespace.repl :refer [refresh]]
             [clojure.java.jdbc :as jdbc]
+            [hikari-cp.core :as hikari]
             [clojure.java.io :as io]
             clojure.pprint
             [duct.core :as duct]
@@ -76,6 +77,31 @@
 
   ,)
 
+(assert (.exists (io/file "/credentials/cloud-database-service-account.json")) "there is no Google credentials available")
+
+(println "Connecting to Google Cloud Postgres ... ")
+
+(def opts {:jdbc-url (slurp "/credentials/database-url")
+           :register-mbeans false
+           :read-only? false})
+
+(defonce gc-db-conn {:datasource (hikari/make-datasource opts)})
+
+(println "Connection ready!" (jdbc/query gc-db-conn  ["SELECT true"]))
+
+(println "Now you can use: select, update!, insert! or delete! functions, passing only the related sql. Eg: (select \"Select 1\")")
+
+(defn select [sql]
+  (jdbc/query gc-db-conn  [sql]))
+
+(defn update! [sql]
+  (jdbc/execute! gc-db-conn [sql]))
+
+(defn insert! [sql]
+  (jdbc/execute! gc-db-conn [sql]))
+
+(defn delete! [sql]
+  (jdbc/execute! gc-db-conn [sql]))
 
 (comment
 

@@ -1,21 +1,5 @@
 version: "3"
 services:
-  db:
-    ports:
-      - 5432:5432
-  pgadmin:
-    image: dpage/pgadmin4:5.4
-    environment:
-      - PGADMIN_LISTEN_PORT=5050
-      - PGADMIN_DEFAULT_EMAIL=dev@akvo.org
-      - PGADMIN_DEFAULT_PASSWORD=password
-    ports:
-      - 5050:5050
-    volumes:
-      - ./pgadmin4/servers.json:/pgadmin4/servers.json
-      - pg-admin-data:/var/lib/pgadmin
-    depends_on:
-      - db
   backend:
     image: akvo/akvo-clojure-lein:20210124.114043.4437caf
     command: ["lein", "repl", ":headless"]
@@ -28,15 +12,7 @@ services:
     volumes:
       - ./backend:/app
       - ~/.m2:/home/akvo/.m2
+      - ../akvo-config/k8s-secrets/test/unep-gpml:/credentials
       - ~/.lein:/home/akvo/.lein
       - ~/.m2:/root/.m2:delegated
       - ~/.lein:/root/.lein:delegated
-
-  frontend:
-    image: akvo/akvo-node-14-alpine:20210106.152005.1864760
-    ports:
-      - 3001:3001
-    command: ["./start.sh"]
-    restart: unless-stopped
-volumes:
-  pg-admin-data:

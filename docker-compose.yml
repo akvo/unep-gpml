@@ -1,16 +1,6 @@
 version: "3"
 services:
-  db:
-    image: postgres:12-alpine
-    environment:
-      - POSTGRES_PASSWORD=password
-    volumes:
-      - pg-data:/var/lib/postgresql/data
-      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-      - ./db/script:/script:ro
   backend:
-    depends_on:
-      - db
     environment:
       - DATABASE_URL=jdbc:postgresql://db/gpml?user=unep&password=password
       - OIDC_ISSUER=https://unep-gpml-test.eu.auth0.com/
@@ -21,12 +11,3 @@ services:
       - AUTH0_BACKEND_SECRET
       - MAILJET_API_KEY
       - MAILJET_SECRET_KEY
-  frontend:
-    environment:
-      - PORT=3001
-    volumes:
-      - ./frontend:/app:delegated
-    working_dir: /app
-
-volumes:
-  pg-data:

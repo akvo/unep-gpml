@@ -1,0 +1,18 @@
+* UNEP - GPML Digital Platform
+
+This branch is only to connect to Google Cloud Postgres using clojure backend and local google credentials
+
+Your credentials should live on following relative path:
+
+~../akvo-config/k8s-secrets/test/unep-gpml~
+
+
+
+* How to use it:
+1. ~docker compose up --build -d && docker compose logs -f --tail=10~
+2. once you see this line ~NREPL ....~
+3. ~docker compose exec backend bash~
+4. ~lein repl :connect 47480~
+5. once you get ~dev>~
+6. you are ready to use following clojure functions:
+   ~(select your-sql)~ ~(update! your-sql)~ ~(insert! your-sql)~ ~(delete! your sql)~
