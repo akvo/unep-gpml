@@ -110,9 +110,10 @@ const MapLanding = ({
   }, []);
 
   useEffect(() => {
-    api.get(`/country-group/${multiCountry}`).then((resp) => {
-      setMultiCountryCountries(resp.data?.[0]?.countries);
-    });
+    multiCountry &&
+      api.get(`/country-group/${multiCountry}`).then((resp) => {
+        setMultiCountryCountries(resp.data?.[0]?.countries);
+      });
   }, [multiCountry]);
 
   const selected =
