@@ -316,6 +316,7 @@ const Root = () => {
                 setStakeholderSignupModalVisible,
                 loginWithPopup,
                 isAuthenticated,
+                setFilterMenu,
                 ...props,
               }}
             />
@@ -468,6 +469,7 @@ const Root = () => {
           setWarningModalVisible={setWarningModalVisible}
           isAuthenticated={isAuthenticated}
           loginWithPopup={loginWithPopup}
+          setFilterMenu={setFilterMenu}
         />
       </div>
       <ModalWarningUser

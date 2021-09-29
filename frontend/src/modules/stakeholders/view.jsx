@@ -121,7 +121,12 @@ const Stakeholders = ({
   };
 
   useEffect(() => {
-    updateQuery("topic", filterMenu);
+    updateQuery(
+      "topic",
+      isEmpty(filterMenu)
+        ? ["organisation", "stakeholder"].map((x) => humps.decamelize(x))
+        : filterMenu
+    );
     // NOTE: this are triggered when user click a topic from navigation menu
   }, [filterMenu]); // eslint-disable-line
 

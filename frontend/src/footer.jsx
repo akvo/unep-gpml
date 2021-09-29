@@ -8,6 +8,7 @@ const Footer = ({
   loginWithPopup,
   setStakeholderSignupModalVisible,
   setWarningModalVisible,
+  setFilterMenu,
 }) => {
   const profile = UIStore.useState((s) => s.profile);
   return (
@@ -57,45 +58,29 @@ const Footer = ({
                 <a href="/browse">Knowledge Exchange</a>
               </li>
               <li>
-                <span>Connect Stakeholders</span>
-                <ul className="list-inside-list">
-                  <li>
-                    {profile?.reviewStatus === "APPROVED" ? (
-                      <a href="/stakeholders?topic=organisation">Entity</a>
-                    ) : (
-                      <span
-                        style={{ cursor: "pointer" }}
-                        onClick={(e) => {
-                          Object.keys(profile).length > 1
-                            ? setWarningModalVisible(true)
-                            : isAuthenticated
-                            ? setStakeholderSignupModalVisible(true)
-                            : loginWithPopup();
-                        }}
-                      >
-                        Entity
-                      </span>
-                    )}
-                  </li>
-                  <li>
-                    {profile?.reviewStatus === "APPROVED" ? (
-                      <a href="/stakeholders?topic=stakeholder">Individual</a>
-                    ) : (
-                      <span
-                        style={{ cursor: "pointer" }}
-                        onClick={(e) => {
-                          Object.keys(profile).length > 1
-                            ? setWarningModalVisible(true)
-                            : isAuthenticated
-                            ? setStakeholderSignupModalVisible(true)
-                            : loginWithPopup();
-                        }}
-                      >
-                        Individual
-                      </span>
-                    )}
-                  </li>
-                </ul>
+                {profile?.reviewStatus === "APPROVED" ? (
+                  <a
+                    onClick={() =>
+                      setFilterMenu(["organisation", "stakeholder"])
+                    }
+                    href="/stakeholders"
+                  >
+                    Connect Stakeholders
+                  </a>
+                ) : (
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      Object.keys(profile).length > 1
+                        ? setWarningModalVisible(true)
+                        : isAuthenticated
+                        ? setStakeholderSignupModalVisible(true)
+                        : loginWithPopup();
+                    }}
+                  >
+                    Connect Stakeholders
+                  </span>
+                )}
               </li>
               <li>
                 <a
