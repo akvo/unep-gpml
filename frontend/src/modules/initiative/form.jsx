@@ -36,6 +36,7 @@ export const collectDependSchemaRefactor = (
   if (schema?.required) {
     required.push({ group: oldIndex, key: index, required: schema.required });
   }
+
   const { properties } = schema;
   Object.keys(properties).forEach((key) => {
     if (
@@ -54,7 +55,8 @@ export const collectDependSchemaRefactor = (
       properties?.[key]?.depend &&
       !checkDependencyAnswer(
         formData?.[index]?.[properties?.[key]?.depend.id],
-        properties?.[key]?.depend
+        properties?.[key]?.depend,
+        formData?.[index]
       )
     ) {
       if (key.includes(".")) {
