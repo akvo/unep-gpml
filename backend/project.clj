@@ -78,8 +78,5 @@
                            :fail-fast? true
                            :report clojure.test/report}
                   :repl-options {:init-ns dev
-                                 :init (do
-                                         (println "Starting backend ...")
-                                         (go))
                                  :host "0.0.0.0"
                                  :port 47480}}})

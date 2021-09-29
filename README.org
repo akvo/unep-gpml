@@ -10,8 +10,8 @@ Your credentials should live on following relative path:
 
 * How to use it:
 1. ~docker compose up --build -d && docker compose logs -f --tail=10~
-2. once you see this line ~NREPL ....~
-3. ~docker compose exec backend bash~
+2. once you see this line ~Now you can use: select, update!, insert! or delete! functions, passing only the related sql. Eg: (select "Select 1")~
+3. Open a new terminal and type: ~docker compose exec backend bash~
 4. ~lein repl :connect 47480~
 5. once you get ~dev>~
 6. you are ready to use following clojure functions:
