@@ -162,6 +162,7 @@ const SignUpForm = withRouter(
         feedOffering(data, formData);
         if (data.companyName?.[formData["S2"].companyName]) {
           data.nonMemberOrganisation = formData["S2"].companyName;
+          delete data.org;
         }
         delete data.companyName;
         if (data.orgName) {
