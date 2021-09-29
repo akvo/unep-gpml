@@ -234,9 +234,23 @@ const SignUpForm = withRouter(
     const handleFormOnChange = useCallback(
       ({ formData, schema }) => {
         // delete members/non-members value when private citizen true
-        if (formData?.S2?.privateCitizen) {
+        if (!isEntityType && formData?.S2?.privateCitizen) {
           formData?.S2?.orgName && delete formData?.S2?.orgName;
           formData?.S2?.companyName && delete formData?.S2?.companyName;
+        }
+        // delete members value when non-members selected
+        if (!isEntityType && formData?.S2?.companyName) {
+          formData?.S2?.orgName && delete formData?.S2?.orgName;
+        }
+        // delete non-members value when members selected
+        if (!isEntityType && formData?.S2?.orgName) {
+          formData?.S2?.companyName && delete formData?.S2?.companyName;
+          formData?.S2?.newCompanyName && delete formData?.S2?.newCompanyName;
+          formData?.S2?.newCompanyHeadquarter &&
+            delete formData?.S2?.newCompanyHeadquarter;
+          formData?.S2?.geoCoverageType && delete formData?.S2?.geoCoverageType;
+          formData?.S2?.newCompanySubnationalAreaOnly &&
+            delete formData?.S2?.newCompanySubnationalAreaOnly;
         }
 
         signUpData.update((e) => {
