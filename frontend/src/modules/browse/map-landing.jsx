@@ -13,6 +13,7 @@ import humps from "humps";
 import { topicNames, tTypes } from "../../utils/misc";
 import api from "../../utils/api";
 import isEmpty from "lodash/isEmpty";
+import sumBy from "lodash/sumBy";
 
 const { TabPane } = Tabs;
 const { Option, OptGroup } = Select;
@@ -116,10 +117,28 @@ const MapLanding = ({
       });
   }, [multiCountry]);
 
-  const selected =
+  const selectedCountry =
     countries && country
       ? landing?.map?.find((x) => x.countryId === country)
       : {};
+
+  const findMultiCountriesData =
+    transnationalOptions && multiCountry && !isEmpty(multiCountryCountries)
+      ? multiCountryCountries.map((country) =>
+          landing?.map?.find((x) => x.countryId === country.id)
+        )
+      : [];
+
+  const selectedMultiCountry = !isEmpty(findMultiCountriesData)
+    ? tTypes.map((x) => ({
+        x: sumBy(findMultiCountriesData, x),
+      }))[0]
+    : {};
+
+  const selected = isEmpty(selectedCountry)
+    ? selectedMultiCountry
+    : selectedCountry;
+  console.log(selected, landing);
 
   const resourceCounts = nav?.resourceCounts?.filter((it, index) => {
     const current = Object.keys(it)[0];
@@ -217,6 +236,9 @@ const MapLanding = ({
           clickEvents={clickCountry}
           topic={counts}
           country={countries.find((x) => x.id === country)}
+          multiCountries={multiCountryCountries.map((country) =>
+            countries.find((x) => x.id === country.id)
+          )}
         />
       </div>
     </div>
