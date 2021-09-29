@@ -138,7 +138,6 @@ const MapLanding = ({
   const selected = isEmpty(selectedCountry)
     ? selectedMultiCountry
     : selectedCountry;
-  console.log(selected, landing);
 
   const resourceCounts = nav?.resourceCounts?.filter((it, index) => {
     const current = Object.keys(it)[0];
@@ -236,9 +235,13 @@ const MapLanding = ({
           clickEvents={clickCountry}
           topic={counts}
           country={countries.find((x) => x.id === country)}
-          multiCountries={multiCountryCountries.map((country) =>
-            countries.find((x) => x.id === country.id)
-          )}
+          multiCountries={
+            multiCountryCountries
+              ? multiCountryCountries.map((country) =>
+                  countries.find((x) => x.id === country.id)
+                )
+              : []
+          }
         />
       </div>
     </div>
