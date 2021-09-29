@@ -68,6 +68,7 @@ const UIStore = new Store({
   geoCoverageTypeOptions: geoCoverageTypeOptions,
   regionOptions: [],
   meaOptions: [],
+  transnationalOptions: [],
   organisationType: sectorOptions,
   sectorOptions: sectorOptions,
   representativeGroup: representativeGroup,

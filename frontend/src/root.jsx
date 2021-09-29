@@ -82,6 +82,9 @@ Promise.all([
     );
     e.regionOptions = countryGroup.data.filter((x) => x.type === "region");
     e.meaOptions = countryGroup.data.filter((x) => x.type === "mea");
+    e.transnationalOptions = countryGroup.data.filter(
+      (x) => x.type === "transnational"
+    );
     e.organisations = uniqBy(sortBy(organisation.data, ["name"])).sort((a, b) =>
       a.name.localeCompare(b.name)
     );
