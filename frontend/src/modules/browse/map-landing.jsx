@@ -29,20 +29,31 @@ const MapLanding = ({
   updateQuery,
 }) => {
   const { innerWidth, innerHeight } = window;
-  const { profile, countries, landing, nav } = UIStore.useState((s) => ({
+  const {
+    profile,
+    countries,
+    landing,
+    nav,
+    transnationalOptions,
+  } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
     landing: s.landing,
     nav: s.nav,
+    transnationalOptions: s.transnationalOptions,
   }));
   const [country, setCountry] = useState(null);
   const [counts, setCounts] = useState("project");
   const [multiCountry, setMultiCountry] = useState(null);
+  const [multiCountryCountries, setMultiCountryCountries] = useState(null);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
 
-  const isLoaded = () => !isEmpty(countries) && !isEmpty(landing?.map);
+  const isLoaded = () =>
+    !isEmpty(countries) &&
+    !isEmpty(landing?.map) &&
+    !isEmpty(transnationalOptions);
 
   const clickCountry = (name) => {
     setToggleButton("list");
@@ -68,8 +79,13 @@ const MapLanding = ({
         .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
     : [];
-
   const countryObj = country && countries.find((it) => it.id === country);
+
+  const multiCountryOpts = transnationalOptions
+    ? transnationalOptions
+        .map((it) => ({ value: it.id, label: it.name }))
+        .sort((a, b) => a.label.localeCompare(b.label))
+    : [];
 
   const handleSummaryClick = (topic) => {
     setCounts(topic);
@@ -92,6 +108,12 @@ const MapLanding = ({
       });
     });
   }, []);
+
+  useEffect(() => {
+    api.get(`/country-group/${multiCountry}`).then((resp) => {
+      setMultiCountryCountries(resp.data?.[0]?.countries);
+    });
+  }, [multiCountry]);
 
   const selected =
     countries && country
@@ -153,6 +175,7 @@ const MapLanding = ({
                   showSearch
                   allowClear
                   placeholder="Multi-Country"
+                  options={multiCountryOpts}
                   optionFilterProp="children"
                   filterOption={(input, option) =>
                     option?.label?.toLowerCase().indexOf(input.toLowerCase()) >=
@@ -163,17 +186,15 @@ const MapLanding = ({
                   dropdownClassName="country-filter-dropdown"
                   dropdownMatchSelectWidth={325}
                   suffixIcon={
-                    multiCountry ? <MultiCountryInfo /> : <DownOutlined />
+                    multiCountry ? (
+                      <MultiCountryInfo
+                        multiCountryCountries={multiCountryCountries}
+                      />
+                    ) : (
+                      <DownOutlined />
+                    )
                   }
-                >
-                  <OptGroup
-                    key="g1"
-                    label="UN Regional Groups of Member States"
-                  >
-                    <Option value="1">African States</Option>
-                    <Option value="2">Asia Pacific States</Option>
-                  </OptGroup>
-                </Select>
+                />
               </TabPane>
             </Tabs>
             <Summary
@@ -298,18 +319,21 @@ const Summary = ({
   );
 };
 
-const MultiCountryInfo = () => {
+const MultiCountryInfo = ({ multiCountryCountries }) => {
   const renderContent = () => {
     return (
       <div className="popover-content-wrapper">
-        <div className="popover-content-item">Niger</div>
-        <div className="popover-content-item">Nigeria</div>
-        <div className="popover-content-item">Senegal</div>
-        <div className="popover-content-item">Ghana</div>
-        <div className="popover-content-item">Rwanda</div>
+        {multiCountryCountries &&
+          multiCountryCountries.map((country) => (
+            <div className="popover-content-item">{country?.name}</div>
+          ))}
       </div>
     );
   };
+
+  if (!multiCountryCountries || isEmpty(multiCountryCountries)) {
+    return "";
+  }
   return (
     <Popover placement="right" title={""} content={renderContent}>
       <InfoCircleOutlined />
