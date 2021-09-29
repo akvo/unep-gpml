@@ -16,3 +16,6 @@ Your credentials should live on following relative path:
 5. once you get ~dev>~
 6. you are ready to use following clojure functions:
    ~(select your-sql)~ ~(update! your-sql)~ ~(insert! your-sql)~ ~(delete! your sql)~
+
+
+eg: ~dev=> (select "select * from stakeholder limit 1")~
