@@ -9,7 +9,7 @@ export const popularTopics = [
     id: 1,
     topic: "Product by Design",
     tag: "product by design",
-    count: 4,
+    count: 7,
     summary: [
       {
         count: 1,
@@ -70,7 +70,7 @@ export const popularTopics = [
     id: 2,
     topic: "Waste Management",
     tag: "waste management",
-    count: 6,
+    count: 145,
     summary: [
       {
         count: 1,
@@ -131,7 +131,7 @@ export const popularTopics = [
     id: 3,
     topic: "Plastics",
     tag: "plastics",
-    count: 7,
+    count: 22,
     summary: [
       {
         count: 0,
@@ -190,7 +190,7 @@ export const popularTopics = [
     id: 4,
     topic: "Marine Litter",
     tag: "marine litter",
-    count: 4,
+    count: 48,
     summary: [
       {
         count: 0,
@@ -251,7 +251,7 @@ export const popularTopics = [
     id: 5,
     topic: "Capacity Building",
     tag: "capacity building",
-    count: 5,
+    count: 32,
     summary: [
       {
         count: 0,
@@ -312,7 +312,7 @@ export const popularTopics = [
     id: 6,
     topic: "Source to Sea",
     tag: "source-to-sea",
-    count: 3,
+    count: 4,
     summary: [
       {
         count: 0,

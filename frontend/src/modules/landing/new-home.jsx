@@ -307,13 +307,14 @@ const Landing = withRouter(
                 key="popular-topic"
                 title=""
                 type="TREEMAP"
-                height={500}
+                height={675}
                 className="popular-topic-chart"
                 data={sortPopularTopic.map((x) => {
                   return {
                     id: x.id,
                     name: x.topic,
-                    value: x.count,
+                    value: x.count > 100 ? x.count : x.count + 50,
+                    count: x.count,
                     tag: x.tag,
                   };
                 })}
@@ -330,12 +331,13 @@ const Landing = withRouter(
                     .find((x) => x.topic.toLowerCase() === selectedTopic)
                     .items.map((x, i) => {
                       const { id, type, title, description } = x;
-                      const link = `/${type
-                        .toLowerCase()
-                        .split(" ")
-                        .join("_")}/${id}`;
+                      const link = `/${humps.decamelize(type)}/${id}`;
                       return (
-                        <div key={`summary-${i}`} className="item-body">
+                        <Card
+                          key={`summary-${i}`}
+                          className="item-body"
+                          onClick={() => history.push(link)}
+                        >
                           <div className="resource-label upper">
                             {topicNames(humps.camelizeKeys(type))}
                           </div>
@@ -348,7 +350,7 @@ const Landing = withRouter(
                               Read more <ArrowRightOutlined />
                             </Link>
                           </span>
-                        </div>
+                        </Card>
                       );
                     })}
                 </div>
@@ -375,12 +377,13 @@ const Landing = withRouter(
                 .filter((x) => x.id !== 196)
                 .map((x, i) => {
                   const { id, image, type, title, description, bookmark } = x;
-                  const link = `/${type
-                    .toLowerCase()
-                    .split(" ")
-                    .join("_")}/${id}`;
+                  const link = `/${humps.decamelize(type)}/${id}`;
                   return (
-                    <Card key={`fc-${i}`} className="item">
+                    <Card
+                      key={`fc-${i}`}
+                      className="item"
+                      onClick={() => history.push(link)}
+                    >
                       <div className="item-header">
                         <span className="resource-label upper">
                           {topicNames(humps.camelizeKeys(type))}
@@ -432,12 +435,13 @@ const Landing = withRouter(
                 .filter((x) => x.id === 196)
                 .map((x, i) => {
                   const { id, image, type, title, description, bookmark } = x;
-                  const link = `/${type
-                    .toLowerCase()
-                    .split(" ")
-                    .join("_")}/${id}`;
+                  const link = `${humps.decamelize(type)}/${id}`;
                   return (
-                    <Card key={`fc-${i}`} className="item">
+                    <Card
+                      key={`fc-${i}`}
+                      className="item"
+                      onClick={() => history.push(link)}
+                    >
                       <img
                         className="item-img"
                         width="100%"
