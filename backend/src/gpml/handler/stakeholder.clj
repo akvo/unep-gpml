@@ -60,7 +60,7 @@
                              linked_in
                              public_database
                              public_email
-                             company_name
+                             non_member_organisation
                              cv
                              affiliation
                              twitter picture
@@ -74,7 +74,7 @@
    :twitter           twitter
    :picture           picture
    :cv                cv
-   :company_name      company_name
+   :non_member_organisation      non_member_organisation
    :about             about
    :country           country
    :public_email      (boolean public_email)
@@ -85,7 +85,7 @@
 (defn- remap-profile
   [{:keys [id photo about
            title first_name role
-           company_name
+           non_member_organisation
            last_name linked_in cv
            twitter representation
            country geo_coverage_type
@@ -96,7 +96,7 @@
    org]
   {:id id
    :title title
-   :company_name company_name
+   :non_member_organisation non_member_organisation
    :first_name first_name
    :last_name last_name
    :linked_in linked_in
@@ -260,7 +260,7 @@
    [:country {:optional true} int?]
    [:public_email {:optional true} boolean?]
    [:public_database boolean?]
-   [:company_name {:optional true} string?]
+   [:non_member_organisation {:optional true} int?]
    [:seeking {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for seeking"} int?]]
    [:offering {:optional true}
