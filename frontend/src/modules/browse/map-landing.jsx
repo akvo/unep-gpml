@@ -111,10 +111,11 @@ const MapLanding = ({
   }, []);
 
   useEffect(() => {
-    multiCountry &&
-      api.get(`/country-group/${multiCountry}`).then((resp) => {
-        setMultiCountryCountries(resp.data?.[0]?.countries);
-      });
+    multiCountry
+      ? api.get(`/country-group/${multiCountry}`).then((resp) => {
+          setMultiCountryCountries(resp.data?.[0]?.countries);
+        })
+      : setMultiCountryCountries(null);
   }, [multiCountry]);
 
   const selectedCountry =
@@ -130,9 +131,12 @@ const MapLanding = ({
       : [];
 
   const selectedMultiCountry = !isEmpty(findMultiCountriesData)
-    ? tTypes.map((x) => ({
-        x: sumBy(findMultiCountriesData, x),
-      }))[0]
+    ? Object.assign(
+        {},
+        ...tTypes.map((x) => ({
+          [x]: sumBy(findMultiCountriesData, x),
+        }))
+      )
     : {};
 
   const selected = isEmpty(selectedCountry)
@@ -222,6 +226,9 @@ const MapLanding = ({
               isApprovedUser={isApprovedUser}
               summary={resourceCounts}
               country={countryObj}
+              multiCountries={
+                multiCountryCountries ? multiCountryCountries : []
+              }
               counts={counts}
               selected={selected}
               init={counts}
@@ -253,6 +260,7 @@ const Summary = ({
   seeAllEvents,
   summary,
   country,
+  multiCountries,
   counts,
   selected,
   init,
@@ -272,7 +280,7 @@ const Summary = ({
     <div className="summary">
       <header>{!selected ? "Global summary" : "Summary"}</header>
       <ul>
-        {!country &&
+        {isEmpty(selected) &&
           summary?.map((it, index) => {
             const current = Object.keys(it)[0];
             let className =
@@ -324,7 +332,7 @@ const Summary = ({
               </li>
             );
           })}
-        {country &&
+        {!isEmpty(selected) &&
           tTypes.map((type) => (
             <li key={type}>
               <div className="text">
@@ -350,8 +358,10 @@ const MultiCountryInfo = ({ multiCountryCountries }) => {
     return (
       <div className="popover-content-wrapper">
         {multiCountryCountries &&
-          multiCountryCountries.map((country) => (
-            <div className="popover-content-item">{country?.name}</div>
+          multiCountryCountries.map(({ id, name }) => (
+            <div key={`popover-${name}-${id}`} className="popover-content-item">
+              {name}
+            </div>
           ))}
       </div>
     );
@@ -361,7 +371,12 @@ const MultiCountryInfo = ({ multiCountryCountries }) => {
     return "";
   }
   return (
-    <Popover placement="right" title={""} content={renderContent}>
+    <Popover
+      className="popover-multi-country"
+      placement="right"
+      title={""}
+      content={renderContent}
+    >
       <InfoCircleOutlined />
     </Popover>
   );

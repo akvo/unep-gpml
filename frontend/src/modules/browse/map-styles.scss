@@ -389,7 +389,12 @@
 // end of css for multi-country dropdown
 
 // css for multi-country popover
+.popover-multi-country {
+  color: #036799;
+}
 .popover-content-wrapper {
+  max-height: 50vh;
+  overflow: auto;
   padding-right: 1rem;
   .popover-content-item {
     display: list-item;
