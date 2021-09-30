@@ -123,21 +123,21 @@ const MapLanding = ({
       ? landing?.map?.find((x) => x.countryId === country)
       : {};
 
-  const findMultiCountriesData =
-    transnationalOptions && multiCountry && !isEmpty(multiCountryCountries)
-      ? multiCountryCountries.map((country) =>
-          landing?.map?.find((x) => x.countryId === country.id)
-        )
-      : [];
-
-  const selectedMultiCountry = !isEmpty(findMultiCountriesData)
-    ? Object.assign(
-        {},
-        ...tTypes.map((x) => ({
-          [x]: sumBy(findMultiCountriesData, x),
-        }))
+  const findMultiCountriesData = !isEmpty(multiCountryCountries)
+    ? multiCountryCountries.map((country) =>
+        landing?.map?.find((x) => x.countryId === country.id)
       )
-    : {};
+    : [];
+
+  const selectedMultiCountry =
+    transnationalOptions && multiCountry && findMultiCountriesData
+      ? Object.assign(
+          {},
+          ...tTypes.map((x) => ({
+            [x]: sumBy(findMultiCountriesData, x) || 0,
+          }))
+        )
+      : {};
 
   const selected = isEmpty(selectedCountry)
     ? selectedMultiCountry
@@ -278,7 +278,7 @@ const Summary = ({
   summary = summary?.filter((x) => !restricted.includes(x.name));
   return (
     <div className="summary">
-      <header>{!selected ? "Global summary" : "Summary"}</header>
+      <header>{isEmpty(selected) ? "Global summary" : "Summary"}</header>
       <ul>
         {isEmpty(selected) &&
           summary?.map((it, index) => {
