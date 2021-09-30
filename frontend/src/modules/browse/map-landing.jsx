@@ -16,7 +16,6 @@ import isEmpty from "lodash/isEmpty";
 import sumBy from "lodash/sumBy";
 
 const { TabPane } = Tabs;
-const { Option, OptGroup } = Select;
 
 const MapLanding = ({
   history,
@@ -29,7 +28,6 @@ const MapLanding = ({
   setToggleButton,
   updateQuery,
 }) => {
-  const { innerWidth, innerHeight } = window;
   const {
     profile,
     countries,
@@ -334,7 +332,7 @@ const Summary = ({
           })}
         {!isEmpty(selected) &&
           topicTypes.map((type) => (
-            <li key={type} class="summary-count-item">
+            <li key={type} className="summary-count-item">
               <div className="text">
                 <div className="label">{topicNames(type)}</div>
               </div>
