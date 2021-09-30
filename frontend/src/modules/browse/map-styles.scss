@@ -396,10 +396,29 @@
 .popover-multi-country {
   color: #036799;
 }
+.ant-popover-inner-content {
+  padding: 12px 8px;
+}
 .popover-content-wrapper {
   max-height: 50vh;
+  padding: 0 12px;
   overflow: auto;
-  padding-right: 1rem;
+  /* width */
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #7db0cb;
+  }
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #036799;
+  }
   .popover-content-item {
     display: list-item;
     list-style-type: disc;

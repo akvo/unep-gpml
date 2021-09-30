@@ -371,9 +371,10 @@ const MultiCountryInfo = ({ multiCountryCountries }) => {
   return (
     <Popover
       className="popover-multi-country"
-      placement="right"
       title={""}
       content={renderContent}
+      placement="right"
+      arrowPointAtCenter
     >
       <InfoCircleOutlined />
     </Popover>
