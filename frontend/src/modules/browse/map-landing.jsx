@@ -10,7 +10,7 @@ import { Link, withRouter } from "react-router-dom";
 import Maps from "./maps";
 import "./map-styles.scss";
 import humps from "humps";
-import { topicNames, tTypes } from "../../utils/misc";
+import { topicNames, tTypes, topicTypes } from "../../utils/misc";
 import api from "../../utils/api";
 import isEmpty from "lodash/isEmpty";
 import sumBy from "lodash/sumBy";
@@ -333,8 +333,8 @@ const Summary = ({
             );
           })}
         {!isEmpty(selected) &&
-          tTypes.map((type) => (
-            <li key={type}>
+          topicTypes.map((type) => (
+            <li key={type} class="summary-count-item">
               <div className="text">
                 <div className="label">{topicNames(type)}</div>
               </div>

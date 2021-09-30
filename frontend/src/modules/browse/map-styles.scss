@@ -76,7 +76,7 @@
         // css for select suffix
         .multi-country-info {
           .ant-select-arrow {
-            right: 32px;
+            right: 28px;
             font-size: 14px;
             top: 48%;
             color: #036799;
@@ -86,7 +86,7 @@
 
       .summary {
         overflow: hidden;
-        min-width: 230px;
+        min-width: 315px;
 
         header {
           background-color: #dae9f1;
@@ -148,7 +148,7 @@
               display: flex;
               font-size: 12px;
               flex-direction: column;
-              max-width: 230px;
+              max-width: 315px;
               padding-right: 5px;
               color: #036799;
             }
@@ -217,6 +217,10 @@
                 margin-bottom: 5px;
               }
             }
+          }
+
+          li.summary-count-item {
+            margin: 0.4rem 0;
           }
         }
       }
