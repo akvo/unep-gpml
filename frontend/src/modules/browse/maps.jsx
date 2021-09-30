@@ -134,7 +134,7 @@ const Legend = ({ data, setFilterColor, selected }) => {
   return "";
 };
 
-const Maps = ({ data, topic, clickEvents, country }) => {
+const Maps = ({ data, topic, clickEvents, country, multiCountries }) => {
   const mapMaxZoom = 4;
   const [selected, setSelected] = useState(null);
   const [filterColor, setFilterColor] = useState(null);
@@ -273,6 +273,11 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                   geo.properties.MAP_COLOR
                 );
                 const isPattern = geo.properties.MAP_COLOR === "xAC";
+                const isCountrySelected =
+                  country?.isoCode === geo.properties.MAP_COLOR ||
+                  multiCountries
+                    .map((x) => x.isoCode)
+                    .includes(geo.properties.MAP_COLOR);
 
                 let pattern = "";
                 if (geo.properties.MAP_COLOR === "CHN") {
@@ -285,7 +290,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                       stroke="#cecece"
                       strokeWidth={0.8}
                       background={
-                        country?.isoCode === geo.properties.MAP_COLOR
+                        isCountrySelected
                           ? "#84b4cc"
                           : geo.properties.MAP_COLOR === selected
                           ? "#84b4cc"
@@ -312,7 +317,7 @@ const Maps = ({ data, topic, clickEvents, country }) => {
                           ? "#cecece"
                           : isPattern
                           ? "url(#lines)"
-                          : country?.isoCode === geo.properties.MAP_COLOR
+                          : isCountrySelected
                           ? "#84b4cc"
                           : selected
                           ? geo.properties.MAP_COLOR === selected
