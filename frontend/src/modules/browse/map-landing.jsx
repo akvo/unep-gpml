@@ -61,8 +61,7 @@ const MapLanding = ({
   };
 
   const handleChangeTab = (key) => {
-    key === "multi-country" && setCountry(null);
-    key === "country" && setMultiCountry(null);
+    key === "multi-country" ? setCountry(null) : setMultiCountry(null);
   };
 
   const handleChangeCountry = (id) => {
