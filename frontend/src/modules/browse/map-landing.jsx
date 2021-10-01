@@ -14,8 +14,7 @@ import { topicNames, tTypes, topicTypes } from "../../utils/misc";
 import api from "../../utils/api";
 import isEmpty from "lodash/isEmpty";
 import sumBy from "lodash/sumBy";
-
-const { TabPane } = Tabs;
+import CountryTransnationalFilter from "./country-transnational-filter";
 
 const MapLanding = ({
   history,
@@ -72,19 +71,6 @@ const MapLanding = ({
     setMultiCountry(id);
   };
 
-  const countryOpts = countries
-    ? countries
-        .map((it) => ({ value: it.id, label: it.name }))
-        .sort((a, b) => a.label.localeCompare(b.label))
-    : [];
-  const countryObj = country && countries.find((it) => it.id === country);
-
-  const multiCountryOpts = transnationalOptions
-    ? transnationalOptions
-        .map((it) => ({ value: it.id, label: it.name }))
-        .sort((a, b) => a.label.localeCompare(b.label))
-    : [];
-
   const handleSummaryClick = (topic) => {
     setCounts(topic);
   };
@@ -114,6 +100,12 @@ const MapLanding = ({
         })
       : setMultiCountryCountries(null);
   }, [multiCountry]);
+
+  useEffect(() => {
+    filters && setFilters(null);
+  }, [filters, setFilters]);
+
+  const countryObj = country && countries.find((it) => it.id === country);
 
   const selectedCountry =
     countries && country
@@ -145,78 +137,24 @@ const MapLanding = ({
     return tTypes.indexOf(current) > -1;
   });
 
-  useEffect(() => {
-    filters && setFilters(null);
-  }, [filters, setFilters]);
-
   return (
     <div id="map-landing">
       <div className="landing-container map-container">
         {!isLoaded() && (
           <h2 className="loading">
-            <LoadingOutlined spin /> Loading Data
+            <LoadingOutlined spin /> Loading
           </h2>
         )}
         {isLoaded() && (
           <div className="map-overlay">
-            <Tabs
-              type="card"
-              className="country-filter-tab"
-              onChange={handleChangeTab}
-            >
-              <TabPane
-                tab="Countries"
-                key="country"
-                className="country-filter-tab-pane country"
-              >
-                <Select
-                  showSearch
-                  allowClear
-                  placeholder="Countries"
-                  options={countryOpts}
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    option?.label?.toLowerCase().indexOf(input.toLowerCase()) >=
-                    0
-                  }
-                  value={country}
-                  onChange={handleChangeCountry}
-                  virtual={false}
-                />
-              </TabPane>
-              <TabPane
-                tab="Multi-Country"
-                key="multi-country"
-                className={`country-filter-tab-pane ${
-                  multiCountry ? "multi-country-info" : "multi-country"
-                }`}
-              >
-                <Select
-                  showSearch
-                  allowClear
-                  placeholder="Multi-Country"
-                  options={multiCountryOpts}
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    option?.label?.toLowerCase().indexOf(input.toLowerCase()) >=
-                    0
-                  }
-                  value={multiCountry}
-                  onChange={handleChangeMultiCountry}
-                  dropdownClassName="country-filter-dropdown"
-                  dropdownMatchSelectWidth={325}
-                  suffixIcon={
-                    multiCountry ? (
-                      <MultiCountryInfo
-                        multiCountryCountries={multiCountryCountries}
-                      />
-                    ) : (
-                      <DownOutlined />
-                    )
-                  }
-                />
-              </TabPane>
-            </Tabs>
+            <CountryTransnationalFilter
+              handleChangeTab={handleChangeTab}
+              country={country}
+              handleChangeCountry={handleChangeCountry}
+              multiCountry={multiCountry}
+              handleChangeMultiCountry={handleChangeMultiCountry}
+              multiCountryCountries={multiCountryCountries}
+            />
             <Summary
               clickEvents={handleSummaryClick}
               seeAllEvents={handleSeeAllStakeholderClick}
@@ -347,36 +285,6 @@ const Summary = ({
         </li>
       </ul>
     </div>
-  );
-};
-
-const MultiCountryInfo = ({ multiCountryCountries }) => {
-  const renderContent = () => {
-    return (
-      <div className="popover-content-wrapper">
-        {multiCountryCountries &&
-          multiCountryCountries.map(({ id, name }) => (
-            <div key={`popover-${name}-${id}`} className="popover-content-item">
-              {name}
-            </div>
-          ))}
-      </div>
-    );
-  };
-
-  if (!multiCountryCountries || isEmpty(multiCountryCountries)) {
-    return "";
-  }
-  return (
-    <Popover
-      className="popover-multi-country"
-      title={""}
-      content={renderContent}
-      placement="right"
-      arrowPointAtCenter
-    >
-      <InfoCircleOutlined />
-    </Popover>
   );
 };
 
