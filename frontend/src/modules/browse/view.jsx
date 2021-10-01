@@ -27,6 +27,7 @@ export const useQuery = () => {
   const srcParams = new URLSearchParams(useLocation().search);
   const ret = {
     country: [],
+    transnational: [],
     topic: [],
     tag: [],
     q: "",
@@ -76,7 +77,6 @@ const Browse = ({
   const [toggleButton, setToggleButton] = useState("list");
   const { innerWidth } = window;
 
-  const [country, setCountry] = useState([]);
   const [multiCountry, setMultiCountry] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
@@ -178,11 +178,42 @@ const Browse = ({
   };
 
   const handleChangeTab = (key) => {
-    key === "multi-country" ? setCountry([]) : setMultiCountry([]);
+    const param = key === "multi-country" ? "transnational" : key;
+    updateQuery(param, []);
   };
 
-  const handleChangeCountry = (id) => {
-    setCountry(id);
+  console.log(filters);
+
+  const country =
+    countries && query?.country
+      ? countries
+          .filter((x) => query.country.includes(String(x.id)))
+          .map((x) => x.id)
+      : [];
+
+  const handleChangeCountry = (val) => {
+    const selected = countries?.filter((x) => {
+      return val.includes(x.id);
+    });
+    updateQuery(
+      "country",
+      selected.map((x) => x.id)
+    );
+  };
+
+  const handleDeselectCountry = (val) => {
+    const diselected = countries?.find((x) => x.id === val);
+    const selected =
+      countries && query?.country
+        ? countries.filter(
+            (x) =>
+              query.country.includes(String(x.id)) && diselected.id !== x.id
+          )
+        : [];
+    updateQuery(
+      "country",
+      selected.map((x) => x.id)
+    );
   };
 
   const handleChangeMultiCountry = (id) => {
@@ -262,12 +293,6 @@ const Browse = ({
             setFilters,
             setToggleButton,
             updateQuery,
-            country,
-            multiCountry,
-            multiCountryCountries,
-            handleChangeTab,
-            handleChangeCountry,
-            handleChangeMultiCountry,
           }}
         />
       ) : (
@@ -282,6 +307,7 @@ const Browse = ({
                       handleChangeTab={handleChangeTab}
                       country={country}
                       handleChangeCountry={handleChangeCountry}
+                      handleDeselectCountry={handleDeselectCountry}
                       multiCountry={multiCountry}
                       handleChangeMultiCountry={handleChangeMultiCountry}
                       multiCountryCountries={multiCountryCountries}

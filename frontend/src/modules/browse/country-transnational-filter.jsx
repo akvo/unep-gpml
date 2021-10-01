@@ -10,6 +10,7 @@ const CountryTransnationalFilter = ({
   handleChangeTab,
   country,
   handleChangeCountry,
+  handleDeselectCountry,
   multiCountry,
   handleChangeMultiCountry,
   multiCountryCountries,
@@ -54,6 +55,7 @@ const CountryTransnationalFilter = ({
           }
           value={country}
           onChange={handleChangeCountry}
+          onDeselect={handleDeselectCountry}
           virtual={false}
         />
       </TabPane>
