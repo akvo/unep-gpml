@@ -21,6 +21,7 @@ import isEmpty from "lodash/isEmpty";
 import { LoadingOutlined } from "@ant-design/icons";
 import { TrimText } from "../../utils/string";
 import MapLanding from "./map-landing";
+import CountryTransnationalFilter from "./country-transnational-filter";
 
 export const useQuery = () => {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -180,6 +181,12 @@ const Browse = ({
     }
   };
 
+  const handleChangeToggleButton = (status) => {
+    setCountry(null);
+    setMultiCountry(null);
+    setToggleButton(status ? "map" : "list");
+  };
+
   const handleChangeTab = (key) => {
     key === "multi-country" ? setCountry(null) : setMultiCountry(null);
   };
@@ -247,7 +254,7 @@ const Browse = ({
             <Switch
               checked={toggleButton === "map"}
               disabled={loading}
-              onChange={(status) => setToggleButton(status ? "map" : "list")}
+              onChange={handleChangeToggleButton}
               size="small"
             />{" "}
             Switch to {toggleButton === "list" ? "map" : "list"} view
@@ -280,6 +287,16 @@ const Browse = ({
               innerWidth={innerWidth}
               children={
                 <aside>
+                  <div className="country-filter-tab-wrapper">
+                    <CountryTransnationalFilter
+                      handleChangeTab={handleChangeTab}
+                      country={country}
+                      handleChangeCountry={handleChangeCountry}
+                      multiCountry={multiCountry}
+                      handleChangeMultiCountry={handleChangeMultiCountry}
+                      multiCountryCountries={multiCountryCountries}
+                    />
+                  </div>
                   <div className="inner">
                     <Input
                       value={query.q}
@@ -291,7 +308,7 @@ const Browse = ({
                       }
                     />
                     <div className="field">
-                      <div className="label">Country</div>
+                      {/* <div className="label">Country</div>
                       <Select
                         virtual={false}
                         value={
@@ -346,7 +363,7 @@ const Browse = ({
                             selected.map((x) => x.id)
                           );
                         }}
-                      />
+                      /> */}
                       {isAuthenticated && (
                         <Checkbox
                           className="my-favorites"
