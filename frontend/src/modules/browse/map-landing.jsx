@@ -110,11 +110,14 @@ const MapLanding = ({
       ? landing?.map?.find((x) => x.countryId === country)
       : {};
 
-  const findMultiCountriesData = !isEmpty(multiCountryCountries)
-    ? multiCountryCountries.map((country) =>
-        landing?.map?.find((x) => x.countryId === country.id)
-      )
-    : [];
+  const findMultiCountriesData =
+    multiCountry && !isEmpty(multiCountryCountries)
+      ? multiCountryCountries
+          .find((x) => x.id === multiCountry)
+          ?.countries.map((country) =>
+            landing?.map?.find((x) => x.countryId === country.id)
+          )
+      : [];
 
   const selectedMultiCountry =
     transnationalOptions && multiCountry && findMultiCountriesData
@@ -159,9 +162,7 @@ const MapLanding = ({
               isApprovedUser={isApprovedUser}
               summary={resourceCounts}
               country={countryObj}
-              multiCountries={
-                multiCountryCountries ? multiCountryCountries : []
-              }
+              multiCountries={multiCountryCountries}
               counts={counts}
               selected={selected}
               init={counts}
@@ -177,7 +178,7 @@ const MapLanding = ({
           country={countries.find((x) => x.id === country)}
           multiCountries={
             multiCountry &&
-            multiCountryCountries &&
+            !isEmpty(multiCountryCountries) &&
             multiCountryCountries.find((x) => x.id === multiCountry)
               ? multiCountryCountries
                   .find((x) => x.id === multiCountry)
