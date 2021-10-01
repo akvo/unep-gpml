@@ -75,6 +75,10 @@ const Browse = ({
   const [toggleButton, setToggleButton] = useState("list");
   const { innerWidth } = window;
 
+  const [country, setCountry] = useState(null);
+  const [multiCountry, setMultiCountry] = useState(null);
+  const [multiCountryCountries, setMultiCountryCountries] = useState(null);
+
   const isLoaded = () => Boolean(!isEmpty(countries) && !isEmpty(tags));
 
   const getResults = () => {
@@ -137,6 +141,24 @@ const Browse = ({
     }
   }, [profile]);
 
+  useEffect(() => {
+    updateQuery(
+      "topic",
+      isEmpty(filterMenu)
+        ? topicTypes.map((x) => humps.decamelize(x))
+        : filterMenu
+    );
+    // NOTE: this are triggered when user click a topic from navigation menu
+  }, [filterMenu]); // eslint-disable-line
+
+  useEffect(() => {
+    multiCountry
+      ? api.get(`/country-group/${multiCountry}`).then((resp) => {
+          setMultiCountryCountries(resp.data?.[0]?.countries);
+        })
+      : setMultiCountryCountries(null);
+  }, [multiCountry]);
+
   const updateQuery = (param, value) => {
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
@@ -158,15 +180,17 @@ const Browse = ({
     }
   };
 
-  useEffect(() => {
-    updateQuery(
-      "topic",
-      isEmpty(filterMenu)
-        ? topicTypes.map((x) => humps.decamelize(x))
-        : filterMenu
-    );
-    // NOTE: this are triggered when user click a topic from navigation menu
-  }, [filterMenu]); // eslint-disable-line
+  const handleChangeTab = (key) => {
+    key === "multi-country" ? setCountry(null) : setMultiCountry(null);
+  };
+
+  const handleChangeCountry = (id) => {
+    setCountry(id);
+  };
+
+  const handleChangeMultiCountry = (id) => {
+    setMultiCountry(id);
+  };
 
   const handleRelationChange = (relation) => {
     api
@@ -241,6 +265,12 @@ const Browse = ({
             setFilters,
             setToggleButton,
             updateQuery,
+            country,
+            multiCountry,
+            multiCountryCountries,
+            handleChangeTab,
+            handleChangeCountry,
+            handleChangeMultiCountry,
           }}
         />
       ) : (
