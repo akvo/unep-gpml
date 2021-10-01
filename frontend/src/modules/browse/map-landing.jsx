@@ -22,6 +22,8 @@ const MapLanding = ({
   setFilters,
   setToggleButton,
   updateQuery,
+  multiCountryCountries,
+  setMultiCountryCountries,
 }) => {
   const {
     profile,
@@ -39,7 +41,6 @@ const MapLanding = ({
   const [country, setCountry] = useState(null);
   const [counts, setCounts] = useState("project");
   const [multiCountry, setMultiCountry] = useState(null);
-  const [multiCountryCountries, setMultiCountryCountries] = useState(null);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
@@ -78,6 +79,16 @@ const MapLanding = ({
   };
 
   const handleChangeMultiCountry = (id) => {
+    if (id) {
+      const check = multiCountryCountries.find((x) => x.id === id);
+      !check &&
+        api.get(`/country-group/${id}`).then((resp) => {
+          setMultiCountryCountries([
+            ...multiCountryCountries,
+            { id: id, countries: resp.data?.[0]?.countries },
+          ]);
+        });
+    }
     setMultiCountry(id);
   };
 
@@ -88,14 +99,6 @@ const MapLanding = ({
       });
     });
   }, []);
-
-  useEffect(() => {
-    multiCountry
-      ? api.get(`/country-group/${multiCountry}`).then((resp) => {
-          setMultiCountryCountries(resp.data?.[0]?.countries);
-        })
-      : setMultiCountryCountries(null);
-  }, [multiCountry]);
 
   useEffect(() => {
     filters && setFilters(null);
@@ -173,10 +176,14 @@ const MapLanding = ({
           topic={counts}
           country={countries.find((x) => x.id === country)}
           multiCountries={
-            multiCountryCountries
-              ? multiCountryCountries.map((country) =>
-                  countries.find((x) => x.id === country.id)
-                )
+            multiCountry &&
+            multiCountryCountries &&
+            multiCountryCountries.find((x) => x.id === multiCountry)
+              ? multiCountryCountries
+                  .find((x) => x.id === multiCountry)
+                  ?.countries.map((country) =>
+                    countries.find((x) => x.id === country.id)
+                  )
               : []
           }
         />

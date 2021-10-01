@@ -1,5 +1,5 @@
 import { UIStore } from "../../store";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Card, Input, Select, Checkbox, Tag, Pagination, Switch } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
@@ -229,6 +229,19 @@ const Browse = ({
       : [];
 
   const handleChangeMultiCountry = (val) => {
+    // Fetch transnational countries
+    val.forEach((id) => {
+      const check = multiCountryCountries.find((x) => x.id === id);
+      !check &&
+        api.get(`/country-group/${id}`).then((resp) => {
+          setMultiCountryCountries([
+            ...multiCountryCountries,
+            { id: id, countries: resp.data?.[0]?.countries },
+          ]);
+        });
+    });
+    // End of fetch transnational countries
+
     const selected = transnationalOptions?.filter((x) => {
       return val.includes(x.id);
     });
@@ -327,6 +340,8 @@ const Browse = ({
             setFilters,
             setToggleButton,
             updateQuery,
+            multiCountryCountries,
+            setMultiCountryCountries,
           }}
         />
       ) : (

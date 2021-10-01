@@ -85,7 +85,12 @@ const CountryTransnationalFilter = ({
           dropdownMatchSelectWidth={325}
           suffixIcon={
             !multiCountryLabelCustomIcon && multiCountry ? (
-              <MultiCountryInfo multiCountryCountries={multiCountryCountries} />
+              <MultiCountryInfo
+                multiCountryCountries={
+                  multiCountryCountries.find((x) => x.id === multiCountry)
+                    ?.countries
+                }
+              />
             ) : (
               <DownOutlined />
             )
@@ -98,7 +103,10 @@ const CountryTransnationalFilter = ({
                 {multiCountryLabelCustomIcon &&
                   multiCountry.includes(value) && (
                     <MultiCountryInfo
-                      multiCountryCountries={multiCountryCountries}
+                      multiCountryCountries={
+                        multiCountryCountries.find((x) => x.id === value)
+                          ?.countries
+                      }
                     />
                   )}
               </div>
