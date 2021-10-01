@@ -22,12 +22,6 @@ const MapLanding = ({
   setFilters,
   setToggleButton,
   updateQuery,
-  country,
-  multiCountry,
-  multiCountryCountries,
-  handleChangeTab,
-  handleChangeCountry,
-  handleChangeMultiCountry,
 }) => {
   const {
     profile,
@@ -42,8 +36,10 @@ const MapLanding = ({
     nav: s.nav,
     transnationalOptions: s.transnationalOptions,
   }));
-
+  const [country, setCountry] = useState(null);
   const [counts, setCounts] = useState("project");
+  const [multiCountry, setMultiCountry] = useState(null);
+  const [multiCountryCountries, setMultiCountryCountries] = useState(null);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
@@ -73,6 +69,18 @@ const MapLanding = ({
     return setWarningModalVisible(true);
   };
 
+  const handleChangeTab = (key) => {
+    key === "multi-country" ? setCountry(null) : setMultiCountry(null);
+  };
+
+  const handleChangeCountry = (id) => {
+    setCountry(id);
+  };
+
+  const handleChangeMultiCountry = (id) => {
+    setMultiCountry(id);
+  };
+
   useEffect(() => {
     api.get("/landing").then((resp) => {
       UIStore.update((e) => {
@@ -82,11 +90,18 @@ const MapLanding = ({
   }, []);
 
   useEffect(() => {
+    multiCountry
+      ? api.get(`/country-group/${multiCountry}`).then((resp) => {
+          setMultiCountryCountries(resp.data?.[0]?.countries);
+        })
+      : setMultiCountryCountries(null);
+  }, [multiCountry]);
+
+  useEffect(() => {
     filters && setFilters(null);
   }, [filters, setFilters]);
 
   const countryObj = country && countries.find((it) => it.id === country);
-
   const selectedCountry =
     countries && country
       ? landing?.map?.find((x) => x.countryId === country)

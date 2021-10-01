@@ -13,6 +13,8 @@ const CountryTransnationalFilter = ({
   multiCountry,
   handleChangeMultiCountry,
   multiCountryCountries,
+  countrySelectMode,
+  multiCountrySelectMode,
 }) => {
   const { countries, transnationalOptions } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -43,6 +45,7 @@ const CountryTransnationalFilter = ({
         <Select
           showSearch
           allowClear
+          mode={countrySelectMode || ""}
           placeholder="Countries"
           options={countryOpts}
           optionFilterProp="children"
@@ -64,6 +67,7 @@ const CountryTransnationalFilter = ({
         <Select
           showSearch
           allowClear
+          mode={multiCountrySelectMode || ""}
           placeholder="Multi-Country"
           options={multiCountryOpts}
           optionFilterProp="children"

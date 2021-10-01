@@ -76,9 +76,9 @@ const Browse = ({
   const [toggleButton, setToggleButton] = useState("list");
   const { innerWidth } = window;
 
-  const [country, setCountry] = useState(null);
-  const [multiCountry, setMultiCountry] = useState(null);
-  const [multiCountryCountries, setMultiCountryCountries] = useState(null);
+  const [country, setCountry] = useState([]);
+  const [multiCountry, setMultiCountry] = useState([]);
+  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
   const isLoaded = () => Boolean(!isEmpty(countries) && !isEmpty(tags));
 
@@ -152,14 +152,6 @@ const Browse = ({
     // NOTE: this are triggered when user click a topic from navigation menu
   }, [filterMenu]); // eslint-disable-line
 
-  useEffect(() => {
-    multiCountry
-      ? api.get(`/country-group/${multiCountry}`).then((resp) => {
-          setMultiCountryCountries(resp.data?.[0]?.countries);
-        })
-      : setMultiCountryCountries(null);
-  }, [multiCountry]);
-
   const updateQuery = (param, value) => {
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
@@ -182,13 +174,11 @@ const Browse = ({
   };
 
   const handleChangeToggleButton = (status) => {
-    setCountry(null);
-    setMultiCountry(null);
     setToggleButton(status ? "map" : "list");
   };
 
   const handleChangeTab = (key) => {
-    key === "multi-country" ? setCountry(null) : setMultiCountry(null);
+    key === "multi-country" ? setCountry([]) : setMultiCountry([]);
   };
 
   const handleChangeCountry = (id) => {
@@ -295,6 +285,8 @@ const Browse = ({
                       multiCountry={multiCountry}
                       handleChangeMultiCountry={handleChangeMultiCountry}
                       multiCountryCountries={multiCountryCountries}
+                      countrySelectMode="multiple"
+                      multiCountrySelectMode="multiple"
                     />
                   </div>
                   <div className="inner">
