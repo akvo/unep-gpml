@@ -5,6 +5,7 @@ import { DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import isEmpty from "lodash/isEmpty";
 
 const { TabPane } = Tabs;
+const { Option } = Select;
 
 const CountryTransnationalFilter = ({
   handleChangeTab,
@@ -15,6 +16,7 @@ const CountryTransnationalFilter = ({
   handleChangeMultiCountry,
   handleDeselectMultiCountry,
   multiCountryCountries,
+  multiCountryLabelCustomIcon,
   countrySelectMode,
   multiCountrySelectMode,
 }) => {
@@ -72,7 +74,6 @@ const CountryTransnationalFilter = ({
           allowClear
           mode={multiCountrySelectMode || ""}
           placeholder="Multi-Country"
-          options={multiCountryOpts}
           optionFilterProp="children"
           filterOption={(input, option) =>
             option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -83,13 +84,27 @@ const CountryTransnationalFilter = ({
           dropdownClassName="country-filter-dropdown"
           dropdownMatchSelectWidth={325}
           suffixIcon={
-            multiCountry ? (
+            !multiCountryLabelCustomIcon && multiCountry ? (
               <MultiCountryInfo multiCountryCountries={multiCountryCountries} />
             ) : (
               <DownOutlined />
             )
           }
-        />
+        >
+          {multiCountryOpts.map(({ value, label }) => (
+            <Option key={`${value}-${label}`} value={value} label={label}>
+              <div>
+                {label}{" "}
+                {multiCountryLabelCustomIcon &&
+                  multiCountry.includes(value) && (
+                    <MultiCountryInfo
+                      multiCountryCountries={multiCountryCountries}
+                    />
+                  )}
+              </div>
+            </Option>
+          ))}
+        </Select>
       </TabPane>
     </Tabs>
   );

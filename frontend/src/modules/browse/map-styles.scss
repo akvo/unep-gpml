@@ -393,6 +393,9 @@
 // end of css for multi-country dropdown
 
 // css for multi-country popover
+.ant-popover {
+  z-index: 1051;
+}
 .popover-multi-country {
   color: #036799;
 }

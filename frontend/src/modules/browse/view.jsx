@@ -346,6 +346,7 @@ const Browse = ({
                       handleChangeMultiCountry={handleChangeMultiCountry}
                       handleDeselectMultiCountry={handleDeselectMultiCountry}
                       multiCountryCountries={multiCountryCountries}
+                      multiCountryLabelCustomIcon={true}
                       countrySelectMode="multiple"
                       multiCountrySelectMode="multiple"
                     />
