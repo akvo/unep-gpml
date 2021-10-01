@@ -1,6 +1,6 @@
 import { UIStore } from "../../store";
-import React, { useEffect, useState, useMemo } from "react";
-import { Card, Input, Select, Checkbox, Tag, Pagination, Switch } from "antd";
+import React, { useEffect, useState } from "react";
+import { Card, Input, Checkbox, Tag, Pagination, Switch } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "./styles.scss";
@@ -377,62 +377,6 @@ const Browse = ({
                       }
                     />
                     <div className="field">
-                      {/* <div className="label">Country</div>
-                      <Select
-                        virtual={false}
-                        value={
-                          countries && query?.country
-                            ? countries
-                                .filter((x) =>
-                                  query.country.includes(String(x.id))
-                                )
-                                .map((x) => x.id)
-                            : []
-                        }
-                        placeholder="Find country"
-                        mode="multiple"
-                        options={
-                          countries &&
-                          countries
-                            .map((it) => ({
-                              value: it.id,
-                              label: it.name,
-                            }))
-                            .sort((a, b) => a.label.localeCompare(b.label))
-                        }
-                        allowClear
-                        onChange={(val) => {
-                          const selected = countries?.filter((x) => {
-                            return val.includes(x.id);
-                          });
-                          updateQuery(
-                            "country",
-                            selected.map((x) => x.id)
-                          );
-                        }}
-                        filterOption={(input, option) =>
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        }
-                        onDeselect={(val) => {
-                          const diselected = countries?.find(
-                            (x) => x.id === val
-                          );
-                          const selected =
-                            countries && query?.country
-                              ? countries.filter(
-                                  (x) =>
-                                    query.country.includes(String(x.id)) &&
-                                    diselected.id !== x.id
-                                )
-                              : [];
-                          updateQuery(
-                            "country",
-                            selected.map((x) => x.id)
-                          );
-                        }}
-                      /> */}
                       {isAuthenticated && (
                         <Checkbox
                           className="my-favorites"
