@@ -59,11 +59,14 @@ const Browse = ({
   filterMenu,
 }) => {
   const query = useQuery();
-  const { profile, countries, tags } = UIStore.useState((s) => ({
-    profile: s.profile,
-    countries: s.countries,
-    tags: s.tags,
-  }));
+  const { profile, countries, tags, transnationalOptions } = UIStore.useState(
+    (s) => ({
+      profile: s.profile,
+      countries: s.countries,
+      tags: s.tags,
+      transnationalOptions: s.transnationalOptions,
+    })
+  );
   const [results, setResults] = useState([]);
   const [countData, setCountData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -76,11 +79,12 @@ const Browse = ({
   const pageSize = 10;
   const [toggleButton, setToggleButton] = useState("list");
   const { innerWidth } = window;
-
-  const [multiCountry, setMultiCountry] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
-  const isLoaded = () => Boolean(!isEmpty(countries) && !isEmpty(tags));
+  const isLoaded = () =>
+    Boolean(
+      !isEmpty(countries) && !isEmpty(tags) && !isEmpty(transnationalOptions)
+    );
 
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
@@ -181,7 +185,7 @@ const Browse = ({
   };
 
   const handleChangeTab = (key) => {
-    const param = key === "multi-country" ? "transnational" : key;
+    const param = key === "country" ? "transnational" : "country";
     updateQuery(param, []);
   };
 
@@ -217,8 +221,37 @@ const Browse = ({
     );
   };
 
-  const handleChangeMultiCountry = (id) => {
-    setMultiCountry(id);
+  const multiCountry =
+    transnationalOptions && query?.transnational
+      ? transnationalOptions
+          .filter((x) => query.transnational.includes(String(x.id)))
+          .map((x) => x.id)
+      : [];
+
+  const handleChangeMultiCountry = (val) => {
+    const selected = transnationalOptions?.filter((x) => {
+      return val.includes(x.id);
+    });
+    updateQuery(
+      "transnational",
+      selected.map((x) => x.id)
+    );
+  };
+
+  const handleDeselectMultiCountry = (val) => {
+    const diselected = transnationalOptions?.find((x) => x.id === val);
+    const selected =
+      transnationalOptions && query?.transnational
+        ? transnationalOptions.filter(
+            (x) =>
+              query.transnational.includes(String(x.id)) &&
+              diselected.id !== x.id
+          )
+        : [];
+    updateQuery(
+      "transnational",
+      selected.map((x) => x.id)
+    );
   };
 
   const handleRelationChange = (relation) => {
@@ -311,6 +344,7 @@ const Browse = ({
                       handleDeselectCountry={handleDeselectCountry}
                       multiCountry={multiCountry}
                       handleChangeMultiCountry={handleChangeMultiCountry}
+                      handleDeselectMultiCountry={handleDeselectMultiCountry}
                       multiCountryCountries={multiCountryCountries}
                       countrySelectMode="multiple"
                       multiCountrySelectMode="multiple"

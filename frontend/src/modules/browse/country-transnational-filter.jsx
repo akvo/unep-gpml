@@ -13,6 +13,7 @@ const CountryTransnationalFilter = ({
   handleDeselectCountry,
   multiCountry,
   handleChangeMultiCountry,
+  handleDeselectMultiCountry,
   multiCountryCountries,
   countrySelectMode,
   multiCountrySelectMode,
@@ -78,6 +79,7 @@ const CountryTransnationalFilter = ({
           }
           value={multiCountry}
           onChange={handleChangeMultiCountry}
+          onDeselect={handleDeselectMultiCountry}
           dropdownClassName="country-filter-dropdown"
           dropdownMatchSelectWidth={325}
           suffixIcon={
