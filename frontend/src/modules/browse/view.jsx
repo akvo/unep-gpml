@@ -143,12 +143,15 @@ const Browse = ({
   }, [profile]);
 
   useEffect(() => {
-    updateQuery(
-      "topic",
-      isEmpty(filterMenu)
-        ? topicTypes.map((x) => humps.decamelize(x))
-        : filterMenu
-    );
+    if (isEmpty(filterMenu) && isEmpty(query?.topic)) {
+      updateQuery(
+        "topic",
+        topicTypes.map((x) => humps.decamelize(x))
+      );
+    }
+    if (!isEmpty(filterMenu)) {
+      updateQuery("topic", filterMenu);
+    }
     // NOTE: this are triggered when user click a topic from navigation menu
   }, [filterMenu]); // eslint-disable-line
 
@@ -181,8 +184,6 @@ const Browse = ({
     const param = key === "multi-country" ? "transnational" : key;
     updateQuery(param, []);
   };
-
-  console.log(filters);
 
   const country =
     countries && query?.country
