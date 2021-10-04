@@ -230,6 +230,10 @@ export const schema = {
           enum: [],
         },
         ...newGeoCoverageFormat,
+        geoCoverageType: {
+          ...newGeoCoverageFormat.geoCoverageType,
+          title: "What is the geographical coverage of your Entity?",
+        },
         orgSubnationalArea: {
           title:
             "Please indicate if your Entity operates in a Subnational area only",
