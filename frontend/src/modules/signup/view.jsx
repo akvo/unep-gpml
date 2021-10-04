@@ -41,7 +41,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     countries: s.countries,
     tags: s.tags,
     regionOptions: s.regionOptions,
-    transnatinalOptions: s.transnationalOptions,
+    transnationalOptions: s.transnationalOptions,
     sectorOptions: s.sectorOptions,
     organisationType: s.organisationType,
     representativeGroup: s.representativeGroup,
@@ -58,7 +58,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     countries,
     tags,
     regionOptions,
-    transnatinalOptions,
+    transnationalOptions,
     sectorOptions,
     organisationType,
     representativeGroup,
@@ -110,7 +110,7 @@ const SignUp = ({ match: { params }, ...props }) => {
         !isEmpty(tags) &&
         !isEmpty(profile) &&
         !isEmpty(regionOptions) &&
-        !isEmpty(transnatinalOptions) &&
+        !isEmpty(transnationalOptions) &&
         !isEmpty(organisations) &&
         !isEmpty(sectorOptions) &&
         !isEmpty(organisationType) &&
@@ -124,7 +124,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     tags,
     profile,
     regionOptions,
-    transnatinalOptions,
+    transnationalOptions,
     sectorOptions,
     organisations,
     organisationType,
