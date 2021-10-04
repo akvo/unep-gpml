@@ -109,3 +109,26 @@ values :t*:geo RETURNING id;
 -- :doc Add language URLs to a technology
 insert into technology_language_url(technology, language, url)
 values :t*:urls RETURNING id;
+
+-- :name update-technology :! :n
+-- :doc Update technology column
+update technology set
+--~ (when (contains? params :name) "name = :name,")
+--~ (when (contains? params :year_founded) "year_founded = :year_founded,")
+--~ (when (contains? params :country) "country = :country,")
+--~ (when (contains? params :organisation_type) "organisation_type = :organisation_type,")
+--~ (when (contains? params :development_stage) "development_stage = :development_stage,")
+--~ (when (contains? params :specifications_provided) "specifications_provided = :specifications_provided,")
+--~ (when (contains? params :email) "email = :email,")
+--~ (when (contains? params :geo_coverage_type) "geo_coverage_type = :v:geo_coverage_type::geo_coverage_type,")
+--~ (when (contains? params :attachments) "attachments = :attachments,")
+--~ (when (contains? params :remarks) "remarks = :remarks,")
+--~ (when (contains? params :reviewed_at) "reviewed_at = :reviewed_at,")
+--~ (when (contains? params :reviewed_by) "reviewed_by = :reviewed_by,")
+--~ (when (contains? params :review_status) "review_status = :review_status,")
+--~ (when (contains? params :url) "url = :url,")
+--~ (when (contains? params :image) "image = :image,")
+--~ (when (contains? params :logo) "logo = :logo,")
+--~ (when (contains? params :created_by) "created_by = :created_by,")
+modified = now()
+where id = :id;
