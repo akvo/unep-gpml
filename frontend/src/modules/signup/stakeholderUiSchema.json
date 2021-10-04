@@ -42,8 +42,8 @@
     },
     "ui:order": [
       "title",
-      "firstName",
       "lastName",
+      "firstName",
       "email",
       "publicEmail",
       "linkedIn",
