@@ -54,4 +54,30 @@ const geoCoverage = {
   },
 };
 
-export { geoCoverage };
+const newGeoOptions = ["Global", "Transnational", "National"];
+
+const newGeoCoverageFormat = {
+  geoCoverageType: {
+    title: "Geo Coverage Type",
+    enum: newGeoOptions.map((x) => x.toLowerCase()),
+    enumNames: newGeoOptions,
+  },
+  geoCoverageValueTransnational: {
+    title: "Geo Coverage",
+    enum: [],
+    depend: {
+      id: "geoCoverageType",
+      value: ["transnational"],
+    },
+  },
+  geoCoverageValueNational: {
+    title: "Geo Coverage",
+    enum: [],
+    depend: {
+      id: "geoCoverageType",
+      value: ["national"],
+    },
+  },
+};
+
+export { geoCoverage, newGeoCoverageFormat };

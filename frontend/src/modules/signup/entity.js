@@ -41,6 +41,7 @@ const getSchema = ({
   countries,
   tags,
   regionOptions,
+  transnatinalOptions,
   meaOptions,
   sectorOptions,
   organisationType,
@@ -110,40 +111,40 @@ const getSchema = ({
   // );
 
   // geocoverage regional options
-  prop.S5.properties["geoCoverageValueRegional"].enum = regionOptions.map((x) =>
+  // prop.S5.properties["geoCoverageValueRegional"].enum = regionOptions.map((x) =>
+  //   String(x.id)
+  // );
+  // prop.S5.properties["geoCoverageValueRegional"].enumNames = regionOptions.map(
+  //   (x) => x.name
+  // );
+  // geocoverage national options
+  prop.S5.properties["geoCoverageValueNational"].enum = countries?.map((x) =>
     String(x.id)
-  );
-  prop.S5.properties["geoCoverageValueRegional"].enumNames = regionOptions.map(
-    (x) => x.name
-  );
-  // // geocoverage national options
-  prop.S5.properties["geoCoverageValueNational"].enum = countries?.map(
-    (x) => x.id
   );
   prop.S5.properties["geoCoverageValueNational"].enumNames = countries?.map(
     (x) => x.name
   );
-  // // geocoverage sub-national options
-  prop.S5.properties["geoCoverageValueSubNational"].enum = countries?.map(
-    (x) => x.id
-  );
-  prop.S5.properties["geoCoverageValueSubNational"].enumNames = countries?.map(
-    (x) => x.name
-  );
-  // // geocoverage transnational options
+  // geocoverage sub-national options
+  // prop.S5.properties["geoCoverageValueSubNational"].enum = countries?.map(
+  //   (x) => x.id
+  // );
+  // prop.S5.properties["geoCoverageValueSubNational"].enumNames = countries?.map(
+  //   (x) => x.name
+  // );
+  // geocoverage transnational options
   prop.S5.properties[
     "geoCoverageValueTransnational"
-  ].enum = countries?.map((x) => String(x.id));
+  ].enum = transnatinalOptions?.map((x) => x.id);
   prop.S5.properties[
     "geoCoverageValueTransnational"
-  ].enumNames = countries?.map((x) => x.name);
-  // // geocoverage global with elements in specific areas options
-  prop.S5.properties[
-    "geoCoverageValueGlobalSpesific"
-  ].enum = meaOptions?.map((x) => String(x.id));
-  prop.S5.properties[
-    "geoCoverageValueGlobalSpesific"
-  ].enumNames = meaOptions?.map((x) => x.name);
+  ].enumNames = transnatinalOptions?.map((x) => x.name);
+  // geocoverage global with elements in specific areas options
+  // prop.S5.properties[
+  //   "geoCoverageValueGlobalSpesific"
+  // ].enum = meaOptions?.map((x) => String(x.id));
+  // prop.S5.properties[
+  //   "geoCoverageValueGlobalSpesific"
+  // ].enumNames = meaOptions?.map((x) => x.name);
 
   return {
     schema: {

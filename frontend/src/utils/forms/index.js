@@ -255,16 +255,23 @@ export const handleGeoCoverageValue = (
     delete data[geoCoverageValueGlobalSpesific];
   data?.[geoCoverageValueSubNational] &&
     delete data[geoCoverageValueSubNational];
-  if (
-    data[geoCoverageType] === "national" &&
-    !Array.isArray(currentValue[geoCoverageValueNational])
-  ) {
-    data[geoCoverageValue] = [currentValue[geoCoverageValueNational]];
+  if (data[geoCoverageType] === "national") {
+    if (!Array.isArray(currentValue[geoCoverageValueNational])) {
+      data[geoCoverageValue] = [currentValue[geoCoverageValueNational]];
+    } else {
+      data[geoCoverageValue] = currentValue[geoCoverageValueNational].map((x) =>
+        parseInt(x)
+      );
+    }
   }
   if (data[geoCoverageType] === "transnational") {
-    data[geoCoverageValue] = currentValue[
-      geoCoverageValueTransnational
-    ].map((x) => parseInt(x));
+    if (Array.isArray(currentValue[geoCoverageValueTransnational])) {
+      data[geoCoverageValue] = currentValue[
+        geoCoverageValueTransnational
+      ].map((x) => parseInt(x));
+    } else {
+      data[geoCoverageValue] = [currentValue[geoCoverageValueTransnational]];
+    }
   }
   if (data[geoCoverageType] === "regional") {
     data[geoCoverageValue] = currentValue[geoCoverageValueRegional].map((x) =>
