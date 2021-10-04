@@ -49,38 +49,6 @@
       "ui:placeholder": "Search country",
       "ui:showSearch": true
     },
-    "geoCoverageType": {
-      "ui:placeholder": "Choose the coverage type",
-      "ui:widget": "select"
-    },
-    "geoCoverageValueRegional": {
-      "ui:placeholder": "Choose the coverage",
-      "ui:widget": "select",
-      "ui:showSearch": true,
-      "ui:mode": "multiple"
-    },
-    "geoCoverageValueNational": {
-      "ui:placeholder": "Choose the coverage",
-      "ui:widget": "select",
-      "ui:showSearch": true
-    },
-    "geoCoverageValueTransnational": {
-      "ui:placeholder": "Choose the coverage",
-      "ui:widget": "select",
-      "ui:showSearch": true,
-      "ui:mode": "multiple"
-    },
-    "geoCoverageValueSubNational": {
-      "ui:placeholder": "Choose the coverage",
-      "ui:widget": "select",
-      "ui:showSearch": true
-    },
-    "geoCoverageValueGlobalSpesific": {
-      "ui:placeholder": "Choose the coverage",
-      "ui:widget": "select",
-      "ui:showSearch": true,
-      "ui:mode": "multiple"
-    },
     "S1_ExpertisesAndActivities": {
       "classNames": "list-group-item",
       "seeking": {
@@ -197,11 +165,8 @@
     "ui:order": [
       "orgHeadquarter",
       "geoCoverageType",
-      "geoCoverageValueRegional",
-      "geoCoverageValueNational",
       "geoCoverageValueTransnational",
-      "geoCoverageValueSubNational",
-      "geoCoverageValueGlobalSpesific",
+      "geoCoverageValueNational",
       "orgSubnationalArea",
       "publicDatabase"
     ],
@@ -214,36 +179,18 @@
       "ui:placeholder": "Choose the coverage type",
       "ui:widget": "select"
     },
-    "geoCoverageValueRegional": {
-      "ui:placeholder": "Choose the coverage",
-      "ui:widget": "select",
-      "ui:showSearch": true,
-      "ui:mode": "multiple"
-    },
-    "geoCoverageValueNational": {
-      "ui:placeholder": "Choose the coverage",
-      "ui:widget": "select",
-      "ui:showSearch": true
-    },
     "geoCoverageValueTransnational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
-      "ui:showSearch": true,
-      "ui:mode": "multiple"
-    },
-    "geoCoverageValueSubNational": {
-      "ui:placeholder": "Choose the coverage",
-      "ui:widget": "select",
       "ui:showSearch": true
     },
-    "geoCoverageValueGlobalSpesific": {
+    "geoCoverageValueNational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
       "ui:mode": "multiple"
     },
     "orgSubnationalArea": {},
-
     "publicDatabase": {
       "ui:widget": "checkbox",
       "ui:label": null,

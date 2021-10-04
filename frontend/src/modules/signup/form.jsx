@@ -62,6 +62,7 @@ const SignUpForm = withRouter(
       let data = {};
 
       transformFormData(data, formData, formSchema.schema.properties, true);
+      console.log(formData, data);
 
       data.version = parseInt(formSchema.schema.version);
 
