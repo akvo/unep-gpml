@@ -44,7 +44,9 @@ const getSchema = ({ countries, tags, regionOptions, meaOptions }, loading) => {
   prop.geoCoverageValueGlobalSpesific.enumNames = meaOptions?.map(
     (x) => x.name
   );
-  const tagsPlusTopics = tags.technology?.concat(tags.topics);
+  const tagsPlusTopics = tags?.topics
+    ? tags.technology?.concat(tags.topics)
+    : tags.technology;
   prop.tags.enum = tagsPlusTopics?.map((x) => String(x.id));
   prop.tags.enumNames = tagsPlusTopics?.map((x) => x.tag);
   return {
