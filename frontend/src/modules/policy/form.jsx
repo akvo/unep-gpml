@@ -46,7 +46,9 @@ const getSchema = ({ countries, tags, regionOptions, meaOptions }, loading) => {
   );
   prop.implementingMea.enum = meaOptions?.map((x) => x.id);
   prop.implementingMea.enumNames = meaOptions?.map((x) => x.name);
-  const tagsPlusTopics = tags.policy?.concat(tags.topics);
+  const tagsPlusTopics = tags?.topics
+    ? tags.policy?.concat(tags.topics)
+    : tags.policy;
   prop.tags.enum = tagsPlusTopics?.map((x) => String(x.id));
   prop.tags.enumNames = tagsPlusTopics?.map((x) => x.tag);
   return {
