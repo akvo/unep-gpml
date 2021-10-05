@@ -500,10 +500,8 @@ const DetailsView = ({
       it.topicId === parseInt(params.id) &&
       it.topic === resourceTypeToTopicType(params.type)
   );
-  const isLoaded = useCallback(
-    () => Boolean(!isEmpty(profile) && !isEmpty(countries)),
-    [profile, countries]
-  );
+
+  const isLoaded = useCallback(() => Boolean(!isEmpty(countries)), [countries]);
 
   const allowBookmark =
     params.type !== "stakeholder" || profile.id !== params.id;
@@ -518,6 +516,7 @@ const DetailsView = ({
 
   useEffect(() => {
     isLoaded() &&
+      !data &&
       params?.type &&
       params?.id &&
       api.get(`/detail/${params.type}/${params.id}`).then((d) => {
@@ -534,7 +533,7 @@ const DetailsView = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [params, profile, isLoaded]);
+  }, [params, profile, isLoaded, data]);
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
