@@ -15,7 +15,7 @@
 
 (defn get-geo-vector [id {:keys [geo_coverage_type geo_coverage_value]}]
   (cond
-    (#{"regional" "global with elements in specific areas"} geo_coverage_type)
-    (->> geo_coverage_value (map #(vector id % nil)))
-    (#{"transnational" "national" "sub-national"} geo_coverage_type)
-    (->> geo_coverage_value (map #(vector id nil %)))))
+    (#{"transnational" "regional" "global with elements in specific areas"} geo_coverage_type)
+    (map #(vector id % nil) geo_coverage_value)
+    (#{"national" "sub-national"} geo_coverage_type)
+    (map #(vector id nil %) geo_coverage_value)))
