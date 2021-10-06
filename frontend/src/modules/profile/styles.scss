@@ -80,9 +80,9 @@
     border: 1px solid #cbd8e2;
     box-sizing: border-box;
     border-radius: 5px;
-    &.stakeholder-wrapper {
-      padding: 0.5rem 0;
-    }
+    // &.stakeholder-wrapper {
+    //   padding: 0.5rem 0;
+    // }
   }
 
   .ant-collapse {
@@ -137,6 +137,9 @@
         .content {
           margin-top: 0;
         }
+      }
+      &:nth-child(2) {
+        border-top: 1px solid #cbd8e2;
       }
       &:last-child {
         border: none;
