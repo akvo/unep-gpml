@@ -9,10 +9,10 @@ export const TrimText = ({ text, max = 400 }) => {
   }
 
   let escaped = [];
-  escaped = [...escaped, ...text.matchAll(escapeRegex)];
+  escaped = text.match(escapeRegex) || escaped;
   escaped.forEach((x, i) => {
-    const replacer = x[0].replace(/\s/g, "###");
-    text = text.replace(x[0], replacer);
+    const replacer = x.replace(/\s/g, "###");
+    text = text.replace(x, replacer);
   });
 
   let arrayText = text.split(" ");
