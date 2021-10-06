@@ -582,7 +582,7 @@
   }
   .ant-tabs-tab-active {
     background: #fff !important;
-    border: none !important;
+    border: 1px solid transparent !important;
     border-radius: 0 !important;
     .ant-tabs-tab-btn {
       font-weight: 600;
