@@ -86,7 +86,7 @@ const ManageRoles = ({ stakeholdersData, setStakeholdersData }) => {
         <h2>Manage Stakeholder Roles</h2>
         <div className="table-wrapper stakeholder-wrapper">
           <div className="row head">
-            <HeaderSearch />
+            <HeaderSearch placeholder="Search" />
           </div>
           {stakeholders?.map((stakeholder, index) => (
             <Stakeholder

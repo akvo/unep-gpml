@@ -57,13 +57,14 @@ const ModalReject = ({ visible, close, reject, item }) => {
   );
 };
 
-const HeaderSearch = () => {
+const HeaderSearch = ({ placeholder }) => {
+  console.log(placeholder);
   return (
     <Search
       className="search"
-      placeholder="Search for a resource"
+      placeholder={placeholder ? placeholder : "Search for a resource"}
       allowClear
-      onSearch={console.log("hi")}
+      onSearch={() => console.log("search")}
     />
   );
 };
