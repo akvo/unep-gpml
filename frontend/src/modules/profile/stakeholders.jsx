@@ -3,6 +3,7 @@ import { Select, Pagination, Avatar, notification } from "antd";
 import api from "../../utils/api";
 import { userRoles } from "../../utils/misc";
 import { fetchStakeholders } from "./utils";
+import { HeaderSearch } from "./admin";
 
 const RoleSelect = ({ stakeholder, onChangeRole, loading }) => {
   return (
@@ -84,6 +85,9 @@ const ManageRoles = ({ stakeholdersData, setStakeholdersData }) => {
       <div key="manage-stakeholder" className="manage-stakeholder">
         <h2>Manage Stakeholder Roles</h2>
         <div className="table-wrapper stakeholder-wrapper">
+          <div className="row head">
+            <HeaderSearch />
+          </div>
           {stakeholders?.map((stakeholder, index) => (
             <Stakeholder
               key={`manage-role-item-${index}`}
