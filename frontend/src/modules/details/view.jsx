@@ -95,7 +95,7 @@ const renderItemValues = (
         } else if (data.geoCoverageType === "regional") {
           dataCountries = data[key]
             ?.map((x) => {
-              return regionOptions.find((it) => it.id === x).name;
+              return regionOptions.find((it) => it.id === x)?.name;
             })
             .join(", ");
         } else if (data.geoCoverageType === "transnational") {
