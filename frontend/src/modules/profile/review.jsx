@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Collapse,
@@ -14,14 +14,57 @@ import {
   topicNames,
   reviewStatusUIText,
   reviewCommentModalTitle,
+  reviewCommentPlaceholder,
 } from "../../utils/misc";
 import api from "../../utils/api";
 import { fetchReviewItems } from "./utils";
 import { UserOutlined } from "@ant-design/icons";
+import humps from "humps";
 
-const ReviewCommentModal = ({ status, visible, handleOk, handleCancel }) => {
+const ReviewCommentModal = ({
+  item,
+  status,
+  visible,
+  handleOk,
+  handleCancel,
+}) => {
   const [reviewComment, setReviewComment] = useState();
   const action = status.slice(0, -2);
+  const topicName = topicNames(humps.camelizeKeys(item.type));
+
+  return (
+    <div
+      className={`review-comment-wrapper ${visible ? "show" : "hide"}`}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
+      <p>{`${reviewCommentModalTitle[status]} ${topicName}`}</p>
+      <Input.TextArea
+        rows={4}
+        bordered={false}
+        className="review-comment-input"
+        placeholder={`${reviewCommentPlaceholder[status]} ${topicName}`}
+        value={reviewComment}
+        onChange={(e) => setReviewComment(e.target.value)}
+      />
+      <div className="review-comment-btn-wrapper">
+        <Space size="small">
+          <Button
+            className="black"
+            type="primary"
+            onClick={() => handleOk(reviewComment)}
+          >
+            Send
+          </Button>
+          <Button className="black" type="link" onClick={handleCancel}>
+            Cancel
+          </Button>
+        </Space>
+      </div>
+    </div>
+  );
+
   return (
     <Modal
       title={reviewCommentModalTitle[status]}
@@ -72,68 +115,73 @@ const ReviewSection = ({
     };
 
     return (
-      <div className="row">
-        <div className="col content">
-          <Avatar
-            className="content-img"
-            size={{
-              xs: 24,
-              sm: 32,
-              md: 40,
-              lg: 50,
-              xl: 50,
-              xxl: 50,
+      <div>
+        <div className="row">
+          <div className="col content">
+            <Avatar
+              className="content-img"
+              size={{
+                xs: 24,
+                sm: 32,
+                md: 40,
+                lg: 50,
+                xl: 50,
+                xxl: 50,
+              }}
+              icon={item.picture || <UserOutlined />}
+            />
+            <div className="content-body">
+              <div className="title">{item.title || "No Title"}</div>
+              <div className="topic">
+                {topicNames(humps.camelizeKeys(item.type))}
+              </div>
+            </div>
+          </div>
+          <div
+            className="col action"
+            onClick={(e) => {
+              e.stopPropagation();
             }}
-            icon={item.picture || <UserOutlined />}
-          />
-          <div className="content-body">
-            <div className="title">{item.title || "No Title"}</div>
-            <div className="topic">{topicNames(item.type)}</div>
+          >
+            <Space size="small">
+              <Button
+                className="black"
+                type="ghost"
+                disabled={modalReviewStatus === "REJECTED"}
+                onClick={() => {
+                  setShowNoteInput(true);
+                  setModalReviewStatus("ACCEPTED");
+                }}
+              >
+                {reviewStatusUIText["ACCEPT"]}
+              </Button>
+              <Button
+                className="black"
+                type="link"
+                disabled={modalReviewStatus === "ACCEPTED"}
+                onClick={() => {
+                  setShowNoteInput(true);
+                  setModalReviewStatus("REJECTED");
+                }}
+              >
+                {reviewStatusUIText["REJECT"]}
+              </Button>
+            </Space>
           </div>
         </div>
-        <div
-          className="col action"
-          onClick={(e) => {
-            e.stopPropagation();
+        <ReviewCommentModal
+          item={item}
+          status={modalReviewStatus}
+          visible={showNoteInput}
+          handleCancel={() => {
+            setShowNoteInput(false);
+            setModalReviewStatus("");
           }}
-        >
-          <Space size="small">
-            <Button
-              className="black"
-              type="ghost"
-              onClick={() => {
-                setShowNoteInput(true);
-                setModalReviewStatus("ACCEPTED");
-              }}
-            >
-              {reviewStatusUIText["ACCEPT"]}
-            </Button>
-            <Button
-              className="black"
-              type="link"
-              onClick={() => {
-                setShowNoteInput(true);
-                setModalReviewStatus("REJECTED");
-              }}
-            >
-              {reviewStatusUIText["REJECT"]}
-            </Button>
-          </Space>
-        </div>
-        <div
-          onClick={(e) => {
-            e.stopPropagation();
+          handleOk={(reviewComment) => {
+            setModalReviewStatus("");
+            submitReview(item, modalReviewStatus, reviewComment);
           }}
-        >
-          <ReviewCommentModal
-            status={modalReviewStatus}
-            visible={showNoteInput}
-            handleCancel={() => setShowNoteInput(false)}
-            handleOk={(reviewComment) =>
-              submitReview(item, modalReviewStatus, reviewComment)
-            }
-          />
-        </div>
+        />
       </div>
     );
   };

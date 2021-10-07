@@ -68,6 +68,26 @@
   .photo-upload img {
     border-radius: 50%;
   }
+
+  .review-comment-wrapper {
+    margin-top: 1.5rem;
+    &.show {
+      display: block;
+    }
+    &.hide {
+      display: none;
+    }
+    p {
+      font-weight: 600;
+    }
+    .review-comment-input {
+      color: #a5b0c9;
+      background-color: #edf2f7;
+    }
+    .review-comment-btn-wrapper {
+      margin-top: 10px;
+    }
+  }
 }
 
 .admin-view {

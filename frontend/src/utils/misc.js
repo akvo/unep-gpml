@@ -30,6 +30,7 @@ export const topicTypesApprovedUser = topicTypes.concat([
 ]);
 
 export const topicNames = (topic) => {
+  console.log(topic);
   const names = {
     project: "Initiative",
     actionPlan: "Action Plan",
@@ -88,8 +89,13 @@ export const reviewStatusUIText = {
 };
 
 export const reviewCommentModalTitle = {
-  ACCEPTED: "Approve the reviewed resource",
-  REJECTED: "Revision needed for the reviewed resource",
+  ACCEPTED: "Approving",
+  REJECTED: "Declining",
+};
+
+export const reviewCommentPlaceholder = {
+  ACCEPTED: "Reason for approving this",
+  REJECTED: "Reason for declining this",
 };
 
 export const publishStatusUIText = {
