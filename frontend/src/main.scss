@@ -163,6 +163,16 @@ h4 {
       color: #00ff7f;
       background: #079e90;
     }
+    &.black {
+      color: #fff;
+      border-color: $black;
+      background: $black;
+      &:hover {
+        border-color: $black;
+        color: $black;
+        background: #fff;
+      }
+    }
   }
 
   // btn ghost
@@ -211,6 +221,31 @@ h4 {
     background: #bab9c1;
     color: #8b8a97;
     border: 1px solid #8b8a97;
+  }
+
+  // antd btn disabled
+  .ant-btn-primary,
+  .ant-btn-ghost,
+  .ant-btn-default {
+    &:disabled {
+      pointer-events: none;
+      background: #bab9c1;
+      color: #8b8a97;
+      border: 1px solid #8b8a97;
+    }
+  }
+  .ant-btn-ghost {
+    &:disabled {
+      pointer-events: none;
+      color: #8b8a97;
+      border: 1px solid #8b8a97;
+    }
+  }
+  .ant-btn-link {
+    &:disabled {
+      pointer-events: none;
+      color: #8b8a97;
+    }
   }
   // end of antd part
 
