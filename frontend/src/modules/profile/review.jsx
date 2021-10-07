@@ -11,7 +11,6 @@ import {
 import api from "../../utils/api";
 import { fetchReviewItems } from "./utils";
 import { UserOutlined } from "@ant-design/icons";
-import humps from "humps";
 
 const ReviewCommentModal = ({
   item,
@@ -22,7 +21,7 @@ const ReviewCommentModal = ({
 }) => {
   const [reviewComment, setReviewComment] = useState();
   const action = status.slice(0, -2);
-  const topicName = topicNames(humps.camelizeKeys(item.type));
+  const topicName = topicNames(item.type);
 
   return (
     <div
@@ -34,7 +33,7 @@ const ReviewCommentModal = ({
       <p>{`${reviewCommentModalTitle[status]} ${topicName}`}</p>
       <Input.TextArea
         rows={4}
-        bordered={false}
+        bordered={true}
         className="review-comment-input"
         placeholder={`${reviewCommentPlaceholder[status]} ${topicName}`}
         value={reviewComment}
@@ -47,7 +46,7 @@ const ReviewCommentModal = ({
             type="primary"
             onClick={() => handleOk(reviewComment)}
           >
-            Send
+            {reviewStatusUIText[action]}
           </Button>
           <Button className="black" type="link" onClick={handleCancel}>
             Cancel
@@ -84,6 +83,7 @@ const ReviewSection = ({
         // Fetch review items again, to fetch any new items in the current page, etc.
         (async () => {
           setReviewItems(await fetchReviewItems(reviewItems, "PENDING"));
+          setModalReviewStatus("");
         })();
       });
     };
@@ -106,9 +106,7 @@ const ReviewSection = ({
             />
             <div className="content-body">
               <div className="title">{item.title || "No Title"}</div>
-              <div className="topic">
-                {topicNames(humps.camelizeKeys(item.type))}
-              </div>
+              <div className="topic">{topicNames(item.type)}</div>
             </div>
           </div>
           <div
@@ -151,10 +149,9 @@ const ReviewSection = ({
             setShowNoteInput(false);
             setModalReviewStatus("");
           }}
-          handleOk={(reviewComment) => {
-            setModalReviewStatus("");
-            submitReview(item, modalReviewStatus, reviewComment);
-          }}
+          handleOk={(reviewComment) =>
+            submitReview(item, modalReviewStatus, reviewComment)
+          }
         />
       </div>
     );
