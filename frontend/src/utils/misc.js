@@ -30,7 +30,6 @@ export const topicTypesApprovedUser = topicTypes.concat([
 ]);
 
 export const topicNames = (topic) => {
-  console.log(topic);
   const names = {
     project: "Initiative",
     actionPlan: "Action Plan",
