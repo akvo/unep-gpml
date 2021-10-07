@@ -58,7 +58,6 @@ const ModalReject = ({ visible, close, reject, item }) => {
 };
 
 const HeaderSearch = ({ placeholder }) => {
-  console.log(placeholder);
   return (
     <Search
       className="search"
@@ -109,7 +108,6 @@ const AdminSection = ({
   archiveItems,
   setArchiveItems,
 }) => {
-  const archiveData = archiveItems.data;
   const profile = UIStore.useState((s) => s.profile);
   const [modalRejectVisible, setModalRejectVisible] = useState(false);
   const [modalRejectFunction, setModalRejectFunction] = useState(false);
@@ -118,6 +116,8 @@ const AdminSection = ({
   const [reviewers, setReviewers] = useState([]);
   const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false);
   const [tab, setTab] = useState("stakeholders-entities");
+  const archiveData =
+    tab === "resources" ? [] : tab === "tags" ? [] : archiveItems.data;
 
   useEffect(() => {
     api.get("/reviewer").then((res) => {
@@ -214,6 +214,15 @@ const AdminSection = ({
   };
 
   const renderNewApprovalRequests = () => {
+    const itemList =
+      tab === "resources" ? [] : tab === "tags" ? [] : pendingItems;
+    const sectionTitle =
+      tab === "resources"
+        ? "New Resources"
+        : tab === "tags"
+        ? "New Tags"
+        : "New Approval Request";
+
     const onChangePagePending = (current, pageSize) => {
       (async () => {
         const size = pageSize ? pageSize : pendingItems.limit;
@@ -244,15 +253,17 @@ const AdminSection = ({
 
     return (
       <div key="new-approval" className="approval">
-        <h2>New resources ({pendingItems.count})</h2>
+        <h2>
+          {sectionTitle} ({itemList.count || 0})
+        </h2>
         <div className="table-wrapper">
           <div className="row head">
             <HeaderSearch />
             <HeaderFilter />
           </div>
           <Collapse onChange={getPreviewContent}>
-            {pendingItems?.data && pendingItems?.data?.length > 0 ? (
-              pendingItems.data.map((item, index) => (
+            {itemList?.data && itemList?.data?.length > 0 ? (
+              itemList.data.map((item, index) => (
                 <Collapse.Panel
                   key={item.preview}
                   className={`request-collapse-panel-item ${
@@ -364,30 +375,40 @@ const AdminSection = ({
             )}
           </Collapse>
         </div>
-        <div className="pagination-wrapper">
-          <Pagination
-            defaultCurrent={1}
-            onChange={onChangePagePending}
-            current={pendingItems.page}
-            pageSize={pendingItems.limit}
-            total={pendingItems.count}
-            defaultPageSize={pendingItems.limit}
-          />
-        </div>
+        {!isEmpty(itemList) && (
+          <div className="pagination-wrapper">
+            <Pagination
+              defaultCurrent={1}
+              onChange={onChangePagePending}
+              current={itemList.page}
+              pageSize={itemList.limit}
+              total={itemList.count}
+              defaultPageSize={itemList.limit}
+            />
+          </div>
+        )}
       </div>
     );
   };
 
   const renderArchiveRequests = () => {
+    const itemList =
+      tab === "resources" ? [] : tab === "tags" ? [] : archiveItems;
+
     const onChangePageArchive = async (current, pageSize) => {
       const size = pageSize ? pageSize : archiveItems.limit;
       const archive = await fetchArchiveData(current, size);
       setArchiveItems(archive);
     };
 
+    const onChangePageArchiveSize = async (p, l) => {
+      const archive = await fetchArchiveData(p, l);
+      setArchiveItems(archive);
+    };
+
     return (
       <div key="archive-requests" className="archive">
-        <h2>Requests archive ({archiveItems.count})</h2>
+        <h2>Requests archive ({itemList.count || 0})</h2>
         <div className="table-wrapper">
           <div className="row head">
             <HeaderSearch />
@@ -439,16 +460,18 @@ const AdminSection = ({
             )}
           </Collapse>
         </div>
-        <div className="pagination-wrapper">
-          <Pagination
-            defaultCurrent={1}
-            current={archiveItems.page}
-            onChange={onChangePageArchive}
-            pageSize={archiveItems.limit}
-            total={archiveItems.count}
-            defaultPageSize={archiveItems.limit}
-          />
-        </div>
+        {!isEmpty(itemList) && (
+          <div className="pagination-wrapper">
+            <Pagination
+              defaultCurrent={1}
+              current={itemList.page}
+              onChange={onChangePageArchive}
+              pageSize={itemList.limit}
+              total={itemList.count}
+              defaultPageSize={itemList.limit}
+            />
+          </div>
+        )}
       </div>
     );
   };
@@ -479,10 +502,12 @@ const AdminSection = ({
           {renderArchiveRequests()}
         </TabPane>
         <TabPane tab="Resources" key="resources" className="profile-tab-pane">
-          Content of Tab Pane 2
+          {renderNewApprovalRequests()}
+          {renderArchiveRequests()}
         </TabPane>
         <TabPane tab="Tags" key="tags" className="profile-tab-pane">
-          Content of Tab Pane 3
+          {renderNewApprovalRequests()}
+          {renderArchiveRequests()}
         </TabPane>
       </Tabs>
 
