@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Collapse,
-  Space,
-  Pagination,
-  Modal,
-  Input,
-  Avatar,
-} from "antd";
+import { Button, Collapse, Space, Pagination, Input, Avatar } from "antd";
 import { DetailCollapse } from "./preview";
 import { HeaderSearch } from "./admin";
 import {
@@ -63,24 +55,6 @@ const ReviewCommentModal = ({
         </Space>
       </div>
     </div>
-  );
-
-  return (
-    <Modal
-      title={reviewCommentModalTitle[status]}
-      visible={visible}
-      onOk={() => handleOk(reviewComment)}
-      okText={reviewStatusUIText[action]}
-      onCancel={handleCancel}
-    >
-      <Input.TextArea
-        rows={4}
-        bordered={true}
-        placeholder="Add a review comment"
-        value={reviewComment}
-        onChange={(e) => setReviewComment(e.target.value)}
-      />
-    </Modal>
   );
 };
 
