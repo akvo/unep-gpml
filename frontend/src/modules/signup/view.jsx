@@ -370,7 +370,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                   {formStep.signUp === 1 && (
                     <Button
                       disabled={disabledBtn.disabled}
-                      loading={!isLoaded()}
+                      loading={sending}
                       type={disabledBtn.type}
                       size="large"
                       onClick={(e) => handleOnClickBtnSubmit(e)}
