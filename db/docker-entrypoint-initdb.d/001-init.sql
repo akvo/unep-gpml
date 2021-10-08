@@ -29275,8 +29275,8 @@ COPY public.tag (id, tag_category, tag) FROM stdin;
 909	8	representation
 910	8	seeking
 911	8	plastics
-912	8	waste separation
 913	8	expertise
+912	8	waste separation
 914	8	product by design
 \.
 
