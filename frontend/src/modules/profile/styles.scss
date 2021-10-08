@@ -291,8 +291,13 @@
     box-sizing: border-box;
     border-radius: 50px;
     font-size: 0.8rem;
+    font-weight: 600;
     text-align: center;
     padding: 0.2rem 0.7rem;
+    &.rejected {
+      color: #ffb800;
+      border-color: #ffb800;
+    }
   }
   .content-status {
     margin-bottom: 10px;

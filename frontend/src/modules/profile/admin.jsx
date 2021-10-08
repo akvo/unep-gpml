@@ -119,6 +119,8 @@ const AdminSection = ({
   const archiveData =
     tab === "resources" ? [] : tab === "tags" ? [] : archiveItems.data;
 
+  console.log(approveLoading);
+
   useEffect(() => {
     api.get("/reviewer").then((res) => {
       setReviewers(res.data);
@@ -126,7 +128,7 @@ const AdminSection = ({
   }, []);
 
   const review = (item, review_status) => () => {
-    setApproveLoading(item);
+    setApproveLoading({ ...item, button: review_status });
     const itemType =
       item.type === "project"
         ? "initiative"
@@ -243,6 +245,7 @@ const AdminSection = ({
         onClick={review(item, "APPROVED")}
         loading={
           !isEmpty(approveLoading) &&
+          approveLoading?.button === "APPROVED" &&
           item?.id === approveLoading?.id &&
           item?.type === approveLoading?.type
         }
@@ -282,7 +285,9 @@ const AdminSection = ({
                           loadingAssignReviewer.type !== item?.type ||
                           !loadingAssignReviewer) &&
                           item?.reviewer?.id && (
-                            <span className="status">
+                            <span
+                              className={`status ${item.reviewStatus.toLowerCase()}`}
+                            >
                               {reviewStatusUIText[item.reviewStatus]}
                             </span>
                           )}
@@ -351,6 +356,12 @@ const AdminSection = ({
                               type="link"
                               className="black"
                               onClick={reject(item, "REJECTED")}
+                              loading={
+                                !isEmpty(approveLoading) &&
+                                approveLoading?.button === "REJECTED" &&
+                                item?.id === approveLoading?.id &&
+                                item?.type === approveLoading?.type
+                              }
                             >
                               Decline
                             </Button>
