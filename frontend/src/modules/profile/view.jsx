@@ -372,14 +372,15 @@ const ProfileView = ({ ...props }) => {
                     setStakeholdersData={setStakeholdersData}
                   />
                 )}
-                {menu === "review-section" && adminRoles.has(profile?.role) && (
-                  <ReviewSection
-                    reviewItems={reviewItems}
-                    setReviewItems={setReviewItems}
-                    reviewedItems={reviewedItems}
-                    setReviewedItems={setReviewedItems}
-                  />
-                )}
+                {menu === "review-section" &&
+                  reviewerRoles.has(profile?.role) && (
+                    <ReviewSection
+                      reviewItems={reviewItems}
+                      setReviewItems={setReviewItems}
+                      reviewedItems={reviewedItems}
+                      setReviewedItems={setReviewedItems}
+                    />
+                  )}
                 {menu === "admin-section" && adminRoles.has(profile?.role) && (
                   <AdminSection
                     pendingItems={pendingItems}
