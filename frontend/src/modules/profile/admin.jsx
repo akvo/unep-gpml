@@ -384,18 +384,16 @@ const AdminSection = ({
             )}
           </Collapse>
         </div>
-        {!isEmpty(itemList) && (
-          <div className="pagination-wrapper">
-            <Pagination
-              defaultCurrent={1}
-              onChange={onChangePagePending}
-              current={itemList.page}
-              pageSize={itemList.limit}
-              total={itemList.count}
-              defaultPageSize={itemList.limit}
-            />
-          </div>
-        )}
+        <div className="pagination-wrapper">
+          <Pagination
+            defaultCurrent={1}
+            onChange={onChangePagePending}
+            current={itemList.page || 1}
+            pageSize={itemList.limit || 10}
+            total={itemList.count || 0}
+            defaultPageSize={itemList.limit || 10}
+          />
+        </div>
       </div>
     );
   };
@@ -407,11 +405,6 @@ const AdminSection = ({
     const onChangePageArchive = async (current, pageSize) => {
       const size = pageSize ? pageSize : archiveItems.limit;
       const archive = await fetchArchiveData(current, size);
-      setArchiveItems(archive);
-    };
-
-    const onChangePageArchiveSize = async (p, l) => {
-      const archive = await fetchArchiveData(p, l);
       setArchiveItems(archive);
     };
 
@@ -469,18 +462,16 @@ const AdminSection = ({
             )}
           </Collapse>
         </div>
-        {!isEmpty(itemList) && (
-          <div className="pagination-wrapper">
-            <Pagination
-              defaultCurrent={1}
-              current={itemList.page}
-              onChange={onChangePageArchive}
-              pageSize={itemList.limit}
-              total={itemList.count}
-              defaultPageSize={itemList.limit}
-            />
-          </div>
-        )}
+        <div className="pagination-wrapper">
+          <Pagination
+            defaultCurrent={1}
+            current={itemList.page || 1}
+            onChange={onChangePageArchive}
+            pageSize={itemList.limit || 10}
+            total={itemList.count || 0}
+            defaultPageSize={itemList.limit || 10}
+          />
+        </div>
       </div>
     );
   };
