@@ -503,10 +503,12 @@ const Landing = withRouter(
                 Our Community{" "}
                 <span className="see-more-link ant-btn-ghost ant-btn">
                   <Link
-                    to="/stakeholders"
-                    onClick={() =>
-                      setFilterMenu(["organisation", "stakeholder"])
-                    }
+                    to={isApprovedUser ? "/stakeholders" : "#"}
+                    onClick={() => {
+                      !isApprovedUser
+                        ? handleOurCommunityProfileClick()
+                        : setFilterMenu(["organisation", "stakeholder"]);
+                    }}
                   >
                     See all <RightOutlined />
                   </Link>
@@ -540,9 +542,9 @@ const Landing = withRouter(
                     <Link
                       key={`oc-card-link-${i}`}
                       to={link}
-                      onClick={
-                        !isApprovedUser && handleOurCommunityProfileClick
-                      }
+                      onClick={() => {
+                        !isApprovedUser && handleOurCommunityProfileClick();
+                      }}
                     >
                       <div key={`oc-card-${i}`}>
                         <div className="type-wrapper">
