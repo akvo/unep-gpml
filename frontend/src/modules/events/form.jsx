@@ -329,9 +329,10 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
       let geoCoverageValue = null;
       if (
         data.geoCoverageType === "national" ||
+        data.geoCoverageType === "transnational" ||
         data.geoCoverageType === "sub-national"
       ) {
-        geoCoverageValue = data?.geoCoverageValues[0];
+        geoCoverageValue = data?.geoCoverageValues?.[0];
       } else {
         geoCoverageValue = data?.geoCoverageValues;
       }
