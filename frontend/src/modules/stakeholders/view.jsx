@@ -47,6 +47,9 @@ const Stakeholders = ({
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
   const pageSize = 10;
+
+  const isValidUser = isAuthenticated && isApprovedUser && hasProfile;
+
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
     // of how `history` and `location` are interacting!
@@ -291,7 +294,7 @@ const Stakeholders = ({
             </StickyBox>
             {isEmpty(results) && (
               <h2 className="loading">
-                {isAuthenticated && isApprovedUser && hasProfile ? (
+                {isValidUser ? (
                   "There is no data to display"
                 ) : (
                   <>
@@ -299,15 +302,14 @@ const Stakeholders = ({
                       style={{ fontSize: "48px", color: "#ffb800" }}
                     />
                     <div>
-                      Sorry, you must registered as a member to access this page
+                      Please register as a user for the GPML Digital Platform to
+                      be able to access this page
                     </div>
                   </>
                 )}
               </h2>
             )}
-            {isAuthenticated &&
-              isApprovedUser &&
-              hasProfile &&
+            {isValidUser &&
               !loading &&
               results.map((result) => (
                 <Result
