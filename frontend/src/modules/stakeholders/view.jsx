@@ -1,7 +1,7 @@
 import { UIStore } from "../../store";
 import React, { useEffect, useState } from "react";
 import { Card, Input, Select, Checkbox, Tag, Pagination } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, WarningOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "../browse/styles.scss";
 import {
@@ -45,6 +45,7 @@ const Stakeholders = ({
   const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
+  const hasProfile = profile?.reviewStatus;
   const pageSize = 10;
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
@@ -58,6 +59,7 @@ const Stakeholders = ({
       setLoading(false);
     });
   };
+
   useEffect(() => {
     // setFilterCountries if user click from map to browse view
     query?.country &&
@@ -72,21 +74,39 @@ const Stakeholders = ({
     }
 
     setLoading(true);
-    if (isLoading === false && !filters) {
-      setTimeout(getResults, 0);
+    if (isAuthenticated) {
+      if (isApprovedUser) {
+        if (isLoading === false && !filters) {
+          setTimeout(getResults, 0);
+        }
+
+        if (isLoading === false && filters) {
+          const newParams = new URLSearchParams({
+            ...filters,
+            topic: query.topic,
+          });
+          history.push(`/stakeholders?${newParams.toString()}`);
+          clearTimeout(tmid);
+          tmid = setTimeout(getResults, 1000);
+        }
+      } else if (hasProfile) {
+        setLoading(false);
+        window.location = "/signup";
+      } else {
+        setLoading(false);
+        setWarningVisible(true);
+      }
+    } else {
+      setLoading(false);
+      loginWithPopup();
     }
 
-    if (isLoading === false && filters) {
-      const newParams = new URLSearchParams({ ...filters, topic: query.topic });
-      history.push(`/stakeholders?${newParams.toString()}`);
-      clearTimeout(tmid);
-      tmid = setTimeout(getResults, 1000);
-    }
     // NOTE: Since we are using `history` and `location`, the
     // dependency needs to be []. Ignore the linter warning, because
     // adding a dependency here on location makes the FE send multiple
     // requests to the backend.
   }, [isLoading]); // eslint-disable-line
+
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = "stakeholders";
@@ -99,6 +119,7 @@ const Stakeholders = ({
       }, 100);
     }
   }, [profile]);
+
   const updateQuery = (param, value) => {
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
@@ -149,7 +170,7 @@ const Stakeholders = ({
       })
       .catch((err) => {
         if (isAuthenticated) {
-          if (Object.keys(profile).length === 0) {
+          if (hasProfile) {
             setStakeholderSignupModalVisible(true);
           } else {
             setWarningVisible(true);
@@ -175,6 +196,7 @@ const Stakeholders = ({
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
   );
+
   return (
     <div id="browse">
       <div className="ui container">
@@ -267,10 +289,25 @@ const Stakeholders = ({
                 )}
               </div>
             </StickyBox>
-            {isEmpty(results) && (
+            {isAuthenticated &&
+            isApprovedUser &&
+            hasProfile &&
+            isEmpty(results) ? (
               <h2 className="loading">There is no data to display</h2>
+            ) : (
+              <h2 className="loading">
+                <WarningOutlined
+                  style={{ fontSize: "48px", color: "#ffb800" }}
+                />
+                <div>
+                  Sorry, you must registered as a member to access this page
+                </div>
+              </h2>
             )}
-            {!loading &&
+            {isAuthenticated &&
+              isApprovedUser &&
+              hasProfile &&
+              !loading &&
               results.map((result) => (
                 <Result
                   key={`${result.type}-${result.id}`}
