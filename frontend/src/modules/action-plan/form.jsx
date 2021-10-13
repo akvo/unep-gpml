@@ -25,7 +25,14 @@ import { withRouter } from "react-router-dom";
 const Form = withTheme(AntDTheme);
 
 const getSchema = (
-  { countries, organisations, tags, regionOptions, meaOptions },
+  {
+    countries,
+    organisations,
+    tags,
+    regionOptions,
+    meaOptions,
+    transnationalOptions,
+  },
   loading
 ) => {
   const prop = cloneDeep(schema.properties);
@@ -38,10 +45,10 @@ const getSchema = (
   prop.geoCoverageValueRegional.enumNames = regionOptions?.map((x) => x.name);
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
   prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
-  prop.geoCoverageValueTransnational.enum = countries?.map((x, i) =>
-    String(x.id)
+  prop.geoCoverageValueTransnational.enum = transnationalOptions?.map(
+    (x, i) => x.id
   );
-  prop.geoCoverageValueTransnational.enumNames = countries?.map(
+  prop.geoCoverageValueTransnational.enumNames = transnationalOptions?.map(
     (x, i) => x.name
   );
   prop.geoCoverageValueGlobalSpesific.enum = meaOptions?.map((x) =>
@@ -162,6 +169,7 @@ const AddActionPlanForm = withRouter(
       tags,
       regionOptions,
       meaOptions,
+      transnationalOptions,
       formStep,
       formEdit,
     } = UIStore.useState((s) => ({
@@ -170,6 +178,7 @@ const AddActionPlanForm = withRouter(
       tags: s.tags,
       regionOptions: s.regionOptions,
       meaOptions: s.meaOptions,
+      transnationalOptions: s.transnationalOptions,
       formStep: s.formStep,
       formEdit: s.formEdit,
     }));
@@ -187,7 +196,14 @@ const AddActionPlanForm = withRouter(
       if (formSchema.loading && isLoaded) {
         setFormSchema(
           getSchema(
-            { countries, organisations, tags, regionOptions, meaOptions },
+            {
+              countries,
+              organisations,
+              tags,
+              regionOptions,
+              meaOptions,
+              transnationalOptions,
+            },
             false
           )
         );
@@ -224,6 +240,7 @@ const AddActionPlanForm = withRouter(
       tags,
       regionOptions,
       meaOptions,
+      transnationalOptions,
     ]);
 
     useEffect(() => {

@@ -13,6 +13,7 @@ const AddTechnology = ({ match: { params }, ...props }) => {
     tags,
     regionOptions,
     meaOptions,
+    transnationalOptions,
     formStep,
     formEdit,
   } = UIStore.useState((s) => ({
@@ -20,6 +21,7 @@ const AddTechnology = ({ match: { params }, ...props }) => {
     tags: s.tags,
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
+    transnationalOptions: s.transnationalOptions,
     formStep: s.formStep,
     formEdit: s.formEdit,
   }));
@@ -32,10 +34,11 @@ const AddTechnology = ({ match: { params }, ...props }) => {
   });
   const isLoaded = () =>
     Boolean(
-      countries.length &&
+      !isEmpty(countries) &&
         !isEmpty(tags) &&
-        regionOptions.length &&
-        meaOptions.length
+        !isEmpty(regionOptions) &&
+        !isEmpty(meaOptions) &&
+        !isEmpty(transnationalOptions)
     );
 
   useEffect(() => {

@@ -216,7 +216,6 @@ export const uiSchema = {
     "ui:placeholder": "Choose the technology coverage",
     "ui:widget": "select",
     "ui:showSearch": true,
-    "ui:mode": "multiple",
   },
   geoCoverageValueSubNational: {
     "ui:placeholder": "Choose the technology coverage",
