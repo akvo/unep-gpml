@@ -74,7 +74,7 @@ const Stakeholders = ({
     }
 
     setLoading(true);
-    if (isAuthenticated) {
+    if (!isEmpty(profile) && isAuthenticated) {
       if (isApprovedUser) {
         if (isLoading === false && !filters) {
           setTimeout(getResults, 0);
@@ -91,10 +91,10 @@ const Stakeholders = ({
         }
       } else if (hasProfile) {
         setLoading(false);
-        window.location = "/signup";
+        setWarningVisible(true);
       } else {
         setLoading(false);
-        setWarningVisible(true);
+        history.push("/signup");
       }
     } else {
       setLoading(false);
@@ -105,7 +105,7 @@ const Stakeholders = ({
     // dependency needs to be []. Ignore the linter warning, because
     // adding a dependency here on location makes the FE send multiple
     // requests to the backend.
-  }, [isLoading]); // eslint-disable-line
+  }, [profile]); // eslint-disable-line
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -289,19 +289,20 @@ const Stakeholders = ({
                 )}
               </div>
             </StickyBox>
-            {isAuthenticated &&
-            isApprovedUser &&
-            hasProfile &&
-            isEmpty(results) ? (
-              <h2 className="loading">There is no data to display</h2>
-            ) : (
+            {isEmpty(results) && (
               <h2 className="loading">
-                <WarningOutlined
-                  style={{ fontSize: "48px", color: "#ffb800" }}
-                />
-                <div>
-                  Sorry, you must registered as a member to access this page
-                </div>
+                {isAuthenticated && isApprovedUser && hasProfile ? (
+                  "There is no data to display"
+                ) : (
+                  <>
+                    <WarningOutlined
+                      style={{ fontSize: "48px", color: "#ffb800" }}
+                    />
+                    <div>
+                      Sorry, you must registered as a member to access this page
+                    </div>
+                  </>
+                )}
               </h2>
             )}
             {isAuthenticated &&
