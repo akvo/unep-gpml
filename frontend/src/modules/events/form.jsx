@@ -104,7 +104,6 @@ const defaultFormSchema = [
       label: "Date",
       required: true,
       control: "date-range",
-      disabledDate: disablePastDate,
     },
     urls: {
       type: "array",
