@@ -74,7 +74,7 @@
    :twitter           twitter
    :picture           picture
    :cv                cv
-   :non_member_organisation      non_member_organisation
+   :non_member_organisation      (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation)
    :about             about
    :country           country
    :public_email      (boolean public_email)
@@ -96,7 +96,7 @@
    org]
   {:id id
    :title title
-   :non_member_organisation non_member_organisation
+   :non_member_organisation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation)
    :first_name first_name
    :last_name last_name
    :linked_in linked_in
@@ -245,7 +245,18 @@
     [:vector {:min 1 :error/message "Need at least one value for expertise"} int?]]
    [:geo_coverage_type {:optional true} geo/coverage_type]
    [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])
+    [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]
+   ])
+
+(def new-org-schema
+  [:map
+   [:geo_coverage_type {:optional true} geo/coverage_type]
+   [:geo_coverage_value {:optional true}
+    [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]
+   [:country {:optional true} int?]
+   [:subnational_area_only {:optional true} string?]
+   [:name {:optional true} string?]
+])
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post-params [_ _]
   [:map
@@ -260,11 +271,13 @@
    [:country {:optional true} int?]
    [:public_email {:optional true} boolean?]
    [:public_database boolean?]
-   [:non_member_organisation {:optional true} int?]
+   [:non-org {:optional true} int?]
+   [:geo_coverage_type {:optional true} map?]
    [:seeking {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for seeking"} int?]]
    [:offering {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for offering"} int?]]
+   [:new-org {:optional true} new-org-schema]
    [:org {:optional true} org-schema]])
 
 (defmethod ig/init-key ::get-params [_ _]
