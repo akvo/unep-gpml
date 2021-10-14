@@ -642,6 +642,7 @@ const DetailsView = ({
                 <ButtonMenu
                   topic={{ ...data, ...params }}
                   profile={profile}
+                  isAuthenticated={isAuthenticated}
                   {...{ handleRelationChange, relation }}
                 />
               )}
@@ -695,7 +696,14 @@ const DetailsView = ({
 };
 
 const ButtonMenu = withRouter(
-  ({ topic, relation, handleRelationChange, profile, history }) => {
+  ({
+    topic,
+    relation,
+    handleRelationChange,
+    profile,
+    history,
+    isAuthenticated,
+  }) => {
     const handleChangeRelation = (relationType) => ({
       target: { checked },
     }) => {
@@ -769,6 +777,8 @@ const ButtonMenu = withRouter(
     const noEditTopics = new Set(["organisation", "stakeholder"]);
 
     const canEdit = () =>
+      isAuthenticated &&
+      profile.reviewStatus === "APPROVED" &&
       (profile.role === "ADMIN" || profile.id === topic.createdBy) &&
       ((topic.type !== "project" && !noEditTopics.has(topic.type)) ||
         (topic.type === "project" && topic.id > 10000));
