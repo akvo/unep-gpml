@@ -408,7 +408,7 @@ const Browse = ({
                     "The search functionality currently only shows resources"}
                 </div>
               </StickyBox>
-              {!isLoaded() || loading || isEmpty(results) ? (
+              {!isLoaded() || loading ? (
                 <h2 className="loading">
                   <LoadingOutlined spin /> Loading
                 </h2>
