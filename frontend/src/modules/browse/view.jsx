@@ -321,7 +321,7 @@ const Browse = ({
           <span className="text-white">
             <Switch
               checked={toggleButton === "map"}
-              disabled={loading}
+              disabled={!isLoaded()}
               onChange={handleChangeToggleButton}
               size="small"
             />{" "}
