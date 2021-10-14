@@ -98,3 +98,32 @@ export const publishStatusUIText = {
   REJECTED: "Declined",
   REJECT: "Decline",
 };
+
+export const staticTopics = {
+  topics: [
+    {
+      id: 1558,
+      tag: "capacity building",
+    },
+    {
+      id: 1557,
+      tag: "marine litter",
+    },
+    {
+      id: 1556,
+      tag: "plastics",
+    },
+    {
+      id: 1554,
+      tag: "product by design",
+    },
+    {
+      id: 1559,
+      tag: "source-to-sea",
+    },
+    {
+      id: 1555,
+      tag: "waste management",
+    },
+  ],
+};

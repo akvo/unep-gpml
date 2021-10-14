@@ -54,6 +54,8 @@ import KnowledgeExchangeDropdownMenu from "./modules/dropdown-menu/knowledge-exc
 import ConnectStakeholdersDropdownMenu from "./modules/dropdown-menu/connect-stakeholders";
 import ResponsiveMenu from "./modules/dropdown-menu/responsive-menu";
 
+import { staticTopics } from "./utils/misc";
+
 Promise.all([
   api.get("/tag"),
   api.get("/currency"),
@@ -75,7 +77,7 @@ Promise.all([
     nonMemberOrganisations,
   ] = res;
   UIStore.update((e) => {
-    e.tags = tag.data;
+    e.tags = { ...tag.data, ...staticTopics };
     e.currencies = currency.data;
     e.countries = uniqBy(country.data).sort((a, b) =>
       a.name.localeCompare(b.name)
