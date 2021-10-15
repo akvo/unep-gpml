@@ -170,7 +170,6 @@ const SignupForm = ({
 
   newSchema["organisation"]["org.id"].options = [
     ...organisations.map((it) => ({ value: it.id, label: it.name })),
-    { value: -1, label: "Other" },
   ];
   newSchema["organisation"]["nonMemberOrganisation"].options = [
     ...nonMemberOrganisations.map((it) => ({ value: it.id, label: it.name })),
