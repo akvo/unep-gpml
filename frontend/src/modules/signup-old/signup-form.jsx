@@ -60,7 +60,7 @@ const defaultFormSchema = {
   },
   organisation: {
     "org.id": {
-      label: "Entity",
+      label: "Member Entity",
       control: "select",
       showSearch: true,
       options: [],
@@ -68,8 +68,12 @@ const defaultFormSchema = {
       order: 0,
       required: false,
     },
-    companyName: {
-      label: "Company name",
+    nonMemberOrganisation: {
+      label: "Non Member Entity",
+      control: "select",
+      showSearch: true,
+      options: [],
+      placeholder: "Start typing...",
       required: false,
     },
   },
@@ -139,10 +143,17 @@ const SignupForm = ({
   const {
     countries,
     tags,
-    profile,
     organisations,
     organisationType,
-  } = UIStore.currentState;
+    nonMemberOrganisations,
+  } = UIStore.useState((s) => ({
+    countries: s.countries,
+    tags: s.tags,
+    organisations: s.organisations,
+    organisationType: s.organisationType,
+    nonMemberOrganisations: s.nonMemberOrganisations,
+  }));
+
   const [noOrg, setNoOrg] = useState(false);
   const [pubEmail, setPubEmail] = useState({
     checked: false,
@@ -161,8 +172,20 @@ const SignupForm = ({
     ...organisations.map((it) => ({ value: it.id, label: it.name })),
     { value: -1, label: "Other" },
   ];
+  newSchema["organisation"]["nonMemberOrganisation"].options = [
+    ...nonMemberOrganisations.map((it) => ({ value: it.id, label: it.name })),
+  ];
 
   newSchema["organisation"]["org.id"].filterOption = (input, option) => {
+    return (
+      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
+      option.value === -1
+    );
+  };
+  newSchema["organisation"]["nonMemberOrganisation"].filterOption = (
+    input,
+    option
+  ) => {
     return (
       option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
       option.value === -1
@@ -227,7 +250,11 @@ const SignupForm = ({
     if (initialValues) {
       handleChangePublicEmail(initialValues.publicEmail);
     }
-    if (initialValues && initialValues.org === null) {
+    if (
+      initialValues &&
+      initialValues?.org === null &&
+      initialValues?.nonMemberOrganisation === null
+    ) {
       handleChangePrivateCitizen({ target: { checked: true } });
     }
   }, [initialValues]); // eslint-disable-line
