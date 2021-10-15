@@ -229,6 +229,7 @@ const SignupForm = ({
       formRef.current?.change("ts", new Date().getTime());
       if (checked) {
         formRef.current?.change("org.id", null);
+        formRef.current?.change("nonMemberOrganisation", null);
       }
     });
   };
@@ -245,6 +246,12 @@ const SignupForm = ({
     });
   };
 
+  const changeOrganisationFormSchema = (key) => {
+    newSchema["organisation"][key].disabled = true;
+    newSchema["organisation"][key].required = false;
+    setFormSchema(newSchema);
+  };
+
   useEffect(() => {
     if (initialValues) {
       handleChangePublicEmail(initialValues.publicEmail);
@@ -255,6 +262,10 @@ const SignupForm = ({
       initialValues?.nonMemberOrganisation === null
     ) {
       handleChangePrivateCitizen({ target: { checked: true } });
+    } else if (initialValues?.org === null) {
+      changeOrganisationFormSchema("org.id");
+    } else {
+      changeOrganisationFormSchema("nonMemberOrganisation");
     }
   }, [initialValues]); // eslint-disable-line
 
