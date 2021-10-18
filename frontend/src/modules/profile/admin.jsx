@@ -160,15 +160,10 @@ const AdminSection = ({
   };
 
   const renderNewApprovalRequests = () => {
-    const onChangePagePending = (page) => {
+    const onChangePagePending = (current, pageSize) => {
       (async () => {
-        const { limit } = pendingItems;
-        setPendingItems(await fetchSubmissionData(page, limit));
-      })();
-    };
-    const onChangePagePendingSize = (page, limit) => {
-      (async () => {
-        setPendingItems(await fetchSubmissionData(page, limit));
+        const size = pageSize ? pageSize : pendingItems.limit;
+        setPendingItems(await fetchSubmissionData(current, size));
       })();
     };
 
@@ -297,7 +292,6 @@ const AdminSection = ({
             pageSize={pendingItems.limit}
             total={pendingItems.count}
             defaultPageSize={pendingItems.limit}
-            onShowSizeChange={onChangePagePendingSize}
           />
         </div>
       </div>
@@ -305,14 +299,12 @@ const AdminSection = ({
   };
 
   const renderArchiveRequests = () => {
-    const onChangePageArchive = async (p) => {
-      const archive = await fetchArchiveData(p, archiveItems.limit);
+    const onChangePageArchive = async (current, pageSize) => {
+      const size = pageSize ? pageSize : archiveItems.limit;
+      const archive = await fetchArchiveData(current, size);
       setArchiveItems(archive);
     };
-    const onChangePageArchiveSize = async (p, l) => {
-      const archive = await fetchArchiveData(p, l);
-      setArchiveItems(archive);
-    };
+
     return (
       <div key="archive-requests" className="archive">
         <h2>Requests archive ({archiveItems.count})</h2>
@@ -363,7 +355,6 @@ const AdminSection = ({
             pageSize={archiveItems.limit}
             total={archiveItems.count}
             defaultPageSize={archiveItems.limit}
-            onShowSizeChange={onChangePageArchiveSize}
           />
         </div>
       </div>
