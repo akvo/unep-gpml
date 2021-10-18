@@ -21,12 +21,5 @@ services:
       - AUTH0_BACKEND_SECRET
       - MAILJET_API_KEY
       - MAILJET_SECRET_KEY
-  frontend:
-    environment:
-      - PORT=3001
-    volumes:
-      - ./frontend:/app:delegated
-    working_dir: /app
-
 volumes:
   pg-data:

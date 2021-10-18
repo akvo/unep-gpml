@@ -31,12 +31,5 @@ services:
       - ~/.lein:/home/akvo/.lein
       - ~/.m2:/root/.m2:delegated
       - ~/.lein:/root/.lein:delegated
-
-  frontend:
-    image: akvo/akvo-node-14-alpine:20210106.152005.1864760
-    ports:
-      - 3001:3001
-    command: ["./start.sh"]
-    restart: unless-stopped
 volumes:
   pg-admin-data:
