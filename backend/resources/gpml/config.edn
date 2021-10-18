@@ -401,8 +401,6 @@
   :gpml.handler.detail/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.detail/put-params {}
 
-  :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
-  :duct.migrator.ragtime/resources {:path "migrations"}
   :duct.database/sql {:jdbc-url #duct/env "DATABASE_URL"}
 
   :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
