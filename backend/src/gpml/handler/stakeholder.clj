@@ -8,6 +8,7 @@
             [gpml.constants :as constants]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.organisation :as handler.org]
+            [gpml.handler.non-member-organisation :as handler.non-member-org]
             [gpml.handler.image :as handler.image]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
@@ -153,26 +154,33 @@
         (db.organisation/add-organisation-tags db {:tags (map #(vector org-id %) tag-ids)}))
       org-id)
     (:id org)))
+(defn- make-organisation [db org]
+  (if-not (:id org)
+    (let [org-id (handler.non-member-org/create db org)]
+      org-id)
+    (:id org)))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params headers]}]
-    (let [profile        (make-profile (assoc body-params
-                                              :affiliation (when (:org body-params)
-                                                             (make-affiliation db (:org body-params)))
-                                              :email (:email jwt-claims)
-                                              :cv (or (assoc-cv db (:cv body-params))
-                                                      (:cv body-params))
-                                              :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
-                                                           (:picture jwt-claims))))
+    (let [profile        (make-profile (merge (assoc body-params
+                                                     :affiliation (when (:org body-params)
+                                                                    (make-affiliation db (:org body-params)))
+                                                     :email (:email jwt-claims)
+                                                     :cv (or (assoc-cv db (:cv body-params))
+                                                             (:cv body-params))
+                                                     :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
+                                                                  (:picture jwt-claims)))
+                                              (when (:new_org body-params)
+                                                {:non_member_organisation (make-organisation db (:new_org body-params))})))
           stakeholder-id (:id (db.stakeholder/new-stakeholder db profile))
           _              (email/notify-admins-pending-approval db mailjet-config
                                                                (merge profile {:type "stakeholder"}))
           profile        (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
-          _ (when-let [tag-ids (seq (concat (:offering body-params) (:seeking body-params)))]
-              (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector (:id profile) %) tag-ids)}))
-          res (-> (merge body-params profile)
-                  (dissoc :affiliation :picture)
-                  (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
+          _              (when-let [tag-ids (seq (concat (:offering body-params) (:seeking body-params)))]
+                           (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector (:id profile) %) tag-ids)}))
+          res            (-> (merge body-params profile)
+                             (dissoc :affiliation :picture :new_org)
+                             (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
       (resp/created (:referer headers) res))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put [_ {:keys [db]}]
@@ -256,7 +264,7 @@
    [:country {:optional true} int?]
    [:subnational_area_only {:optional true} string?]
    [:name {:optional true} string?]
-])
+   ])
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post-params [_ _]
   [:map
@@ -277,7 +285,7 @@
     [:vector {:min 1 :error/message "Need at least one value for seeking"} int?]]
    [:offering {:optional true}
     [:vector {:min 1 :error/message "Need at least one value for offering"} int?]]
-   [:new-org {:optional true} new-org-schema]
+   [:new_org {:optional true} new-org-schema]
    [:org {:optional true} org-schema]])
 
 (defmethod ig/init-key ::get-params [_ _]

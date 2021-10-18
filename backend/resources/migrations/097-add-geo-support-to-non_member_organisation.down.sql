@@ -1,0 +1,2 @@
+ALTER TABLE non_member_organisation DROP COLUMN geo_coverage_type;
+DROP TABLE non_member_organisation_geo_coverage CASCADE;
