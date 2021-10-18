@@ -12,20 +12,23 @@ const AddEvent = ({ ...props }) => {
     tags,
     regionOptions,
     meaOptions,
+    transnationalOptions,
     formEdit,
   } = UIStore.useState((s) => ({
     countries: s.countries,
     tags: s.tags,
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
+    transnationalOptions: s.transnationalOptions,
     formEdit: s.formEdit,
   }));
   const isLoaded = () =>
     Boolean(
-      countries.length &&
+      !isEmpty(countries) &&
         !isEmpty(tags) &&
-        regionOptions.length &&
-        meaOptions.length
+        !isEmpty(regionOptions) &&
+        !isEmpty(meaOptions) &&
+        !isEmpty(transnationalOptions)
     );
 
   useEffect(() => {

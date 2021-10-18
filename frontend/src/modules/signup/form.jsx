@@ -173,6 +173,27 @@ const SignUpForm = withRouter(
           delete data.org;
         }
         data.representation = "";
+        if (formData.S2["newCompanyName"]) {
+          let data2 = handleGeoCoverageValue(
+            cloneDeep(formData.S2),
+            formData.S2,
+            countries
+          );
+          data2.name = data2.newCompanyName;
+          data2.country = data2.newCompanyHeadquarter;
+          data2.subnationalAreaOnly = data2.newCompanySubnationalAreaOnly;
+          delete data2.newCompanySubnationalAreaOnly;
+          delete data2.newCompanyName;
+          delete data2.newCompanyHeadquarter;
+          delete data2.companyName;
+          delete data2.privateCitizen;
+          data.new_org = data2;
+          delete data.geoCoverageType;
+          delete data.geoCoverageValue;
+          delete data.newCompanyHeadquarter;
+          delete data.newCompanySubnationalAreaOnly;
+          delete data.newCompanyName;
+        }
       }
       if (status === "add" && !params?.id) {
         api

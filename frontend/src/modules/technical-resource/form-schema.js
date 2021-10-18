@@ -245,7 +245,6 @@ export const uiSchema = {
       "ui:placeholder": "Choose the entity coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
-      "ui:mode": "multiple",
     },
     geoCoverageValueSubNational: {
       "ui:placeholder": "Choose the entity coverage",
@@ -292,7 +291,6 @@ export const uiSchema = {
     "ui:placeholder": "Choose the resource coverage",
     "ui:widget": "select",
     "ui:showSearch": true,
-    "ui:mode": "multiple",
   },
   geoCoverageValueSubNational: {
     "ui:placeholder": "Choose the resource coverage",

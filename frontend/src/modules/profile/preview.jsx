@@ -9,7 +9,10 @@ import { topicNames, resourceSubTypes } from "../../utils/misc";
 const currencyFormat = (cur) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: cur });
 
-const findCountries = ({ countries, regionOptions, meaOptions }, item) => {
+const findCountries = (
+  { countries, regionOptions, meaOptions, transnationalOptions },
+  item
+) => {
   const {
     country,
     geoCoverageType,
@@ -53,9 +56,7 @@ const findCountries = ({ countries, regionOptions, meaOptions }, item) => {
   }
 
   if (
-    (geoCoverageType === "transnational" ||
-      geoCoverageType === "national" ||
-      geoCoverageType === "sub-national") &&
+    (geoCoverageType === "national" || geoCoverageType === "sub-national") &&
     (geoCoverageValue !== null || geoCoverageValues !== null)
   ) {
     const values = geoCoverageValues || geoCoverageValue;
@@ -66,7 +67,26 @@ const findCountries = ({ countries, regionOptions, meaOptions }, item) => {
       <div className="scrollable">
         {values
           .map((v) => {
-            return countries.find((x) => x.id === v).name;
+            return transnationalOptions.find((x) => x.id === v)?.name;
+          })
+          .join(", ")}
+      </div>
+    );
+  }
+
+  if (
+    geoCoverageType === "transnational" &&
+    (geoCoverageValue !== null || geoCoverageValues !== null)
+  ) {
+    const values = geoCoverageValues || geoCoverageValue;
+    if (values === null || typeof values === "undefined") {
+      return "-";
+    }
+    return (
+      <div className="scrollable">
+        {values
+          .map((v) => {
+            return transnationalOptions.find((x) => x.id === v)?.name;
           })
           .join(", ")}
       </div>
@@ -76,10 +96,16 @@ const findCountries = ({ countries, regionOptions, meaOptions }, item) => {
 };
 
 export const GeneralPreview = ({ item }) => {
-  const { countries, regionOptions, meaOptions } = UIStore.useState((s) => ({
+  const {
+    countries,
+    regionOptions,
+    meaOptions,
+    transnationalOptions,
+  } = UIStore.useState((s) => ({
     countries: s.countries,
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
+    transnationalOptions: s.transnationalOptions,
   }));
   const country = countries.find((x) => x.id === item.country)?.name || "-";
   return (
@@ -248,7 +274,10 @@ export const GeneralPreview = ({ item }) => {
           <li>
             <div className="detail-title">Geo coverage</div>:
             <div className="detail-content">
-              {findCountries({ countries, regionOptions, meaOptions }, item)}
+              {findCountries(
+                { countries, regionOptions, meaOptions, transnationalOptions },
+                item
+              )}
             </div>
           </li>
         )}
@@ -290,10 +319,16 @@ export const GeneralPreview = ({ item }) => {
 };
 
 export const ProfilePreview = ({ item }) => {
-  const { countries, regionOptions, meaOptions } = UIStore.useState((s) => ({
+  const {
+    countries,
+    regionOptions,
+    meaOptions,
+    transnationalOptions,
+  } = UIStore.useState((s) => ({
     countries: s.countries,
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
+    transnationalOptions: s.transnationalOptions,
   }));
   const country = countries.find((x) => x.id === item.country)?.name || "-";
   return (
@@ -350,7 +385,15 @@ export const ProfilePreview = ({ item }) => {
               <div className="detail-title">Geo coverage</div>:
               <div className="detail-content">
                 {item?.geoCoverageValue}
-                {findCountries({ countries, regionOptions, meaOptions }, item)}
+                {findCountries(
+                  {
+                    countries,
+                    regionOptions,
+                    meaOptions,
+                    transnationalOptions,
+                  },
+                  item
+                )}
               </div>
             </li>
           )}

@@ -13,10 +13,16 @@ import { withRouter } from "react-router-dom";
 import { customFormats } from "../../utils/forms";
 
 const GeoCoverageInput = (props) => {
-  const { countries, regionOptions, meaOptions } = UIStore.useState((s) => ({
+  const {
+    countries,
+    regionOptions,
+    meaOptions,
+    transnationalOptions,
+  } = UIStore.useState((s) => ({
     countries: s.countries,
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
+    transnationalOptions: s.transnationalOptions,
   }));
   const national =
     countries &&
@@ -26,6 +32,13 @@ const GeoCoverageInput = (props) => {
         label: it.name,
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
+
+  const transnational =
+    transnationalOptions &&
+    transnationalOptions.map((it) => ({
+      value: it.id,
+      label: it.name,
+    }));
 
   return (
     <Field
@@ -57,20 +70,16 @@ const GeoCoverageInput = (props) => {
                   label: it.name,
                 }));
                 selectProps.mode = "multiple";
-              } else if (
-                typeInput.value === "national" ||
-                typeInput.value === "transnational"
-              ) {
+              } else if (typeInput.value === "national") {
                 selectProps.options = national;
                 selectProps.showSearch = true;
                 selectProps.filterOption = (input, option) =>
                   option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-                if (typeInput.value === "transnational") {
-                  if (input.value === "" || input?.[0] === "") {
-                    input.onChange([]);
-                  }
-                  selectProps.mode = "multiple";
-                }
+              } else if (typeInput.value === "transnational") {
+                selectProps.options = transnational;
+                selectProps.showSearch = true;
+                selectProps.filterOption = (input, option) =>
+                  option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
               } else if (
                 typeInput.value === "global with elements in specific areas"
               ) {
@@ -192,7 +201,8 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
     data.endDate = vals.date[1].toISOString();
     if (
       data.geoCoverageType === "national" ||
-      data.geoCoverageType === "sub-national"
+      data.geoCoverageType === "sub-national" ||
+      data.geoCoverageType === "transnational"
     ) {
       data.geoCoverageValue = [data.geoCoverageValue];
     } else if (data.geoCoverageType === "global") {
@@ -259,7 +269,9 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
 
   useEffect(() => {
     const newSchema = cloneDeep(defaultFormSchema);
-    const tagsPlusTopics = tags.events?.concat(tags.topics);
+    const tagsPlusTopics = tags?.topics
+      ? tags.events?.concat(tags.topics)
+      : tags.events;
     newSchema[3].tags.options = tagsPlusTopics?.map((x) => ({
       value: x.id,
       label: x.tag,
@@ -317,9 +329,10 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
       let geoCoverageValue = null;
       if (
         data.geoCoverageType === "national" ||
+        data.geoCoverageType === "transnational" ||
         data.geoCoverageType === "sub-national"
       ) {
-        geoCoverageValue = data?.geoCoverageValues[0];
+        geoCoverageValue = data?.geoCoverageValues?.[0];
       } else {
         geoCoverageValue = data?.geoCoverageValues;
       }

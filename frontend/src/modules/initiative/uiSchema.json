@@ -244,7 +244,6 @@
       },
       "S3_G2_24.4": {
         "ui:widget": "select",
-        "ui:mode": "multiple",
         "ui:showSearch": true
       },
       "S3_G2_24.5": {

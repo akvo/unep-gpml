@@ -24,7 +24,10 @@ import { withRouter } from "react-router-dom";
 
 const Form = withTheme(AntDTheme);
 
-const getSchema = ({ countries, tags, regionOptions, meaOptions }, loading) => {
+const getSchema = (
+  { countries, tags, regionOptions, meaOptions, transnationalOptions },
+  loading
+) => {
   const prop = cloneDeep(schema.properties);
   prop.country.enum = countries?.map((x, i) => x.id);
   prop.country.enumNames = countries?.map((x, i) => x.name);
@@ -32,10 +35,10 @@ const getSchema = ({ countries, tags, regionOptions, meaOptions }, loading) => {
   prop.geoCoverageValueRegional.enumNames = regionOptions?.map((x) => x.name);
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
   prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
-  prop.geoCoverageValueTransnational.enum = countries?.map((x, i) =>
-    String(x.id)
+  prop.geoCoverageValueTransnational.enum = transnationalOptions?.map(
+    (x, i) => x.id
   );
-  prop.geoCoverageValueTransnational.enumNames = countries?.map(
+  prop.geoCoverageValueTransnational.enumNames = transnationalOptions?.map(
     (x, i) => x.name
   );
   prop.geoCoverageValueGlobalSpesific.enum = meaOptions?.map((x) =>
@@ -46,7 +49,9 @@ const getSchema = ({ countries, tags, regionOptions, meaOptions }, loading) => {
   );
   prop.implementingMea.enum = meaOptions?.map((x) => x.id);
   prop.implementingMea.enumNames = meaOptions?.map((x) => x.name);
-  const tagsPlusTopics = tags.policy?.concat(tags.topics);
+  const tagsPlusTopics = tags?.topics
+    ? tags.policy?.concat(tags.topics)
+    : tags.policy;
   prop.tags.enum = tagsPlusTopics?.map((x) => String(x.id));
   prop.tags.enumNames = tagsPlusTopics?.map((x) => x.tag);
   return {
@@ -182,6 +187,7 @@ const AddPolicyForm = withRouter(
       tags,
       regionOptions,
       meaOptions,
+      transnationalOptions,
       formStep,
       formEdit,
     } = UIStore.useState((s) => ({
@@ -189,6 +195,7 @@ const AddPolicyForm = withRouter(
       tags: s.tags,
       regionOptions: s.regionOptions,
       meaOptions: s.meaOptions,
+      transnationalOptions: s.transnationalOptions,
       formStep: s.formStep,
       formEdit: s.formEdit,
     }));
@@ -211,6 +218,7 @@ const AddPolicyForm = withRouter(
               tags,
               regionOptions,
               meaOptions,
+              transnationalOptions,
             },
             false
           )
@@ -227,6 +235,7 @@ const AddPolicyForm = withRouter(
                 tags,
                 regionOptions,
                 meaOptions,
+                transnationalOptions,
               });
               e.editId = dataId;
             });
@@ -252,6 +261,7 @@ const AddPolicyForm = withRouter(
       tags,
       regionOptions,
       meaOptions,
+      transnationalOptions,
     ]);
 
     useEffect(() => {

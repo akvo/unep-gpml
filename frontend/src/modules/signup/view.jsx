@@ -41,6 +41,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     countries: s.countries,
     tags: s.tags,
     regionOptions: s.regionOptions,
+    transnationalOptions: s.transnationalOptions,
     sectorOptions: s.sectorOptions,
     organisationType: s.organisationType,
     representativeGroup: s.representativeGroup,
@@ -57,6 +58,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     countries,
     tags,
     regionOptions,
+    transnationalOptions,
     sectorOptions,
     organisationType,
     representativeGroup,
@@ -108,6 +110,7 @@ const SignUp = ({ match: { params }, ...props }) => {
         !isEmpty(tags) &&
         !isEmpty(profile) &&
         !isEmpty(regionOptions) &&
+        !isEmpty(transnationalOptions) &&
         !isEmpty(organisations) &&
         !isEmpty(sectorOptions) &&
         !isEmpty(organisationType) &&
@@ -121,6 +124,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     tags,
     profile,
     regionOptions,
+    transnationalOptions,
     sectorOptions,
     organisations,
     organisationType,
@@ -366,7 +370,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                   {formStep.signUp === 1 && (
                     <Button
                       disabled={disabledBtn.disabled}
-                      loading={!isLoaded()}
+                      loading={sending}
                       type={disabledBtn.type}
                       size="large"
                       onClick={(e) => handleOnClickBtnSubmit(e)}

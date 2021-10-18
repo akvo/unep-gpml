@@ -1,5 +1,5 @@
 import { UIStore } from "../../store";
-import { geoCoverage } from "../../utils/geo";
+import { geoCoverage, newGeoCoverageFormat } from "../../utils/geo";
 
 const {
   languages,
@@ -220,11 +220,8 @@ export const schema = {
       required: [
         "orgHeadquarter",
         "geoCoverageType",
-        "geoCoverageValueRegional",
-        "geoCoverageValueNational",
         "geoCoverageValueTransnational",
-        "geoCoverageValueSubNational",
-        "geoCoverageValueGlobalSpesific",
+        "geoCoverageValueNational",
         "publicDatabase",
       ],
       properties: {
@@ -232,7 +229,11 @@ export const schema = {
           title: "In which country are you headquarters?",
           enum: [],
         },
-        ...geoCoverage,
+        ...newGeoCoverageFormat,
+        geoCoverageType: {
+          ...newGeoCoverageFormat.geoCoverageType,
+          title: "What is the geographical coverage of your Entity?",
+        },
         orgSubnationalArea: {
           title:
             "Please indicate if your Entity operates in a Subnational area only",

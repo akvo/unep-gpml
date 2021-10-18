@@ -14,6 +14,7 @@ const AddFinancingResource = ({ match: { params }, ...props }) => {
     tags,
     regionOptions,
     meaOptions,
+    transnationalOptions,
     currencies,
     formStep,
     formEdit,
@@ -23,6 +24,7 @@ const AddFinancingResource = ({ match: { params }, ...props }) => {
     tags: s.tags,
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
+    transnationalOptions: s.transnationalOptions,
     currencies: s.currencies,
     formStep: s.formStep,
     formEdit: s.formEdit,
@@ -36,12 +38,13 @@ const AddFinancingResource = ({ match: { params }, ...props }) => {
   });
   const isLoaded = () =>
     Boolean(
-      countries.length &&
-        organisations.length &&
+      !isEmpty(countries) &&
+        !isEmpty(organisations) &&
         !isEmpty(tags) &&
-        regionOptions.length &&
-        meaOptions.length &&
-        currencies.length
+        !isEmpty(regionOptions) &&
+        !isEmpty(meaOptions) &&
+        !isEmpty(currencies) &&
+        !isEmpty(transnationalOptions)
     );
 
   useEffect(() => {

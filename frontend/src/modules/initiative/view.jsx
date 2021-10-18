@@ -759,7 +759,15 @@ export const initiativeData = new Store({
 });
 
 const getSchema = (
-  { countries, organisations, tags, currencies, regionOptions, meaOptions },
+  {
+    countries,
+    organisations,
+    tags,
+    currencies,
+    regionOptions,
+    meaOptions,
+    transnationalOptions,
+  },
   loading
 ) => {
   const prop = cloneDeep(schema.properties);
@@ -835,12 +843,12 @@ const getSchema = (
     (x) => x.name
   );
   // geocoverage transnational options
-  prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enum = countries?.map((x) =>
-    String(x.id)
-  );
-  prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enumNames = countries?.map(
-    (x) => x.name
-  );
+  prop.S3.properties.S3_G2.properties[
+    "S3_G2_24.4"
+  ].enum = transnationalOptions?.map((x) => x.id);
+  prop.S3.properties.S3_G2.properties[
+    "S3_G2_24.4"
+  ].enumNames = transnationalOptions?.map((x) => x.name);
   // geocoverage global with elements in specific areas options
   prop.S3.properties.S3_G2.properties[
     "S3_G2_24.5"
@@ -866,6 +874,7 @@ const AddInitiative = ({ match: { params }, ...props }) => {
     tags,
     regionOptions,
     meaOptions,
+    transnationalOptions,
     currencies,
     formStep,
     formEdit,
@@ -875,6 +884,7 @@ const AddInitiative = ({ match: { params }, ...props }) => {
     tags: s.tags,
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
+    transnationalOptions: s.transnationalOptions,
     currencies: s.currencies,
     formStep: s.formStep,
     formEdit: s.formEdit,
@@ -896,14 +906,23 @@ const AddInitiative = ({ match: { params }, ...props }) => {
   });
   const isLoaded = useCallback(() => {
     return Boolean(
-      countries.length &&
-        organisations.length &&
+      !isEmpty(countries) &&
+        !isEmpty(organisations) &&
         !isEmpty(tags) &&
-        regionOptions.length &&
-        meaOptions.length &&
-        currencies.length
+        !isEmpty(regionOptions) &&
+        !isEmpty(meaOptions) &&
+        !isEmpty(currencies) &&
+        !isEmpty(transnationalOptions)
     );
-  }, [countries, organisations, tags, regionOptions, meaOptions, currencies]);
+  }, [
+    countries,
+    organisations,
+    tags,
+    regionOptions,
+    meaOptions,
+    currencies,
+    transnationalOptions,
+  ]);
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -930,6 +949,7 @@ const AddInitiative = ({ match: { params }, ...props }) => {
             currencies,
             regionOptions,
             meaOptions,
+            transnationalOptions,
           },
           false
         )
@@ -971,6 +991,7 @@ const AddInitiative = ({ match: { params }, ...props }) => {
     currencies,
     regionOptions,
     meaOptions,
+    transnationalOptions,
   ]);
 
   const renderSteps = (parentTitle, section, steps) => {

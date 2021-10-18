@@ -42,8 +42,8 @@
     },
     "ui:order": [
       "title",
-      "firstName",
       "lastName",
+      "firstName",
       "email",
       "publicEmail",
       "linkedIn",
@@ -88,29 +88,12 @@
       "ui:placeholder": "Choose the coverage type",
       "ui:widget": "select"
     },
-    "geoCoverageValueRegional": {
-      "ui:placeholder": "Choose the coverage",
-      "ui:widget": "select",
-      "ui:showSearch": true,
-      "ui:mode": "multiple"
-    },
-    "geoCoverageValueNational": {
-      "ui:placeholder": "Choose the coverage",
-      "ui:widget": "select",
-      "ui:showSearch": true
-    },
     "geoCoverageValueTransnational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
-      "ui:showSearch": true,
-      "ui:mode": "multiple"
-    },
-    "geoCoverageValueSubNational": {
-      "ui:placeholder": "Choose the coverage",
-      "ui:widget": "select",
       "ui:showSearch": true
     },
-    "geoCoverageValueGlobalSpesific": {
+    "geoCoverageValueNational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
@@ -128,11 +111,8 @@
       "newCompanyName",
       "newCompanyHeadquarter",
       "geoCoverageType",
-      "geoCoverageValueRegional",
-      "geoCoverageValueNational",
       "geoCoverageValueTransnational",
-      "geoCoverageValueSubNational",
-      "geoCoverageValueGlobalSpesific",
+      "geoCoverageValueNational",
       "newCompanySubnationalAreaOnly"
     ]
   },

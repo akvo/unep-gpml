@@ -24,7 +24,10 @@ import { withRouter } from "react-router-dom";
 
 const Form = withTheme(AntDTheme);
 
-const getSchema = ({ countries, tags, regionOptions, meaOptions }, loading) => {
+const getSchema = (
+  { countries, tags, regionOptions, meaOptions, transnationalOptions },
+  loading
+) => {
   const prop = cloneDeep(schema.properties);
   prop.country.enum = countries?.map((x, i) => x.id);
   prop.country.enumNames = countries?.map((x, i) => x.name);
@@ -32,10 +35,10 @@ const getSchema = ({ countries, tags, regionOptions, meaOptions }, loading) => {
   prop.geoCoverageValueRegional.enumNames = regionOptions?.map((x) => x.name);
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
   prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
-  prop.geoCoverageValueTransnational.enum = countries?.map((x, i) =>
-    String(x.id)
+  prop.geoCoverageValueTransnational.enum = transnationalOptions?.map(
+    (x, i) => x.id
   );
-  prop.geoCoverageValueTransnational.enumNames = countries?.map(
+  prop.geoCoverageValueTransnational.enumNames = transnationalOptions?.map(
     (x, i) => x.name
   );
   prop.geoCoverageValueGlobalSpesific.enum = meaOptions?.map((x) =>
@@ -44,7 +47,9 @@ const getSchema = ({ countries, tags, regionOptions, meaOptions }, loading) => {
   prop.geoCoverageValueGlobalSpesific.enumNames = meaOptions?.map(
     (x) => x.name
   );
-  const tagsPlusTopics = tags.technology?.concat(tags.topics);
+  const tagsPlusTopics = tags?.topics
+    ? tags.technology?.concat(tags.topics)
+    : tags.technology;
   prop.tags.enum = tagsPlusTopics?.map((x) => String(x.id));
   prop.tags.enumNames = tagsPlusTopics?.map((x) => x.tag);
   return {
@@ -162,6 +167,7 @@ const AddTechnologyForm = withRouter(
       tags,
       regionOptions,
       meaOptions,
+      transnationalOptions,
       formStep,
       formEdit,
     } = UIStore.useState((s) => ({
@@ -169,6 +175,7 @@ const AddTechnologyForm = withRouter(
       tags: s.tags,
       regionOptions: s.regionOptions,
       meaOptions: s.meaOptions,
+      transnationalOptions: s.transnationalOptions,
       formStep: s.formStep,
       formEdit: s.formEdit,
     }));
@@ -186,7 +193,16 @@ const AddTechnologyForm = withRouter(
       const dataId = Number(params?.id || id);
       if (formSchema.loading && isLoaded) {
         setFormSchema(
-          getSchema({ countries, tags, regionOptions, meaOptions }, false)
+          getSchema(
+            {
+              countries,
+              tags,
+              regionOptions,
+              meaOptions,
+              transnationalOptions,
+            },
+            false
+          )
         );
         // Manage form status, add/edit
         if (
@@ -220,6 +236,7 @@ const AddTechnologyForm = withRouter(
       tags,
       regionOptions,
       meaOptions,
+      transnationalOptions,
     ]);
 
     useEffect(() => {
