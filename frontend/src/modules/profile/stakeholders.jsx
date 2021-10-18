@@ -1,18 +1,20 @@
-import React from "react";
-import { Select, Pagination, Avatar } from "antd";
+import React, { useState } from "react";
+import { Select, Pagination, Avatar, notification } from "antd";
 import api from "../../utils/api";
 import { userRoles } from "../../utils/misc";
 import { fetchStakeholders } from "./utils";
 
-const RoleSelect = ({ stakeholder, onChangeRole }) => {
+const RoleSelect = ({ stakeholder, onChangeRole, loading }) => {
   return (
     <Select
       showSearch={false}
       style={{ width: "100%" }}
       onChange={(role) => onChangeRole(stakeholder, role)}
-      defaultValue={stakeholder?.role}
+      value={[stakeholder?.role]}
+      loading={stakeholder?.id === loading}
       // FIXME: Disallow changing roles of other admins?
-      // disabled={stakeholder?.role === "ADMIN"}
+      // stakeholder?.role === "ADMIN"
+      disabled={stakeholder?.id === loading}
     >
       {userRoles.map((r) => (
         <Select.Option key={r} value={r}>
@@ -23,7 +25,7 @@ const RoleSelect = ({ stakeholder, onChangeRole }) => {
   );
 };
 
-const Stakeholder = ({ stakeholder, onChangeRole }) => {
+const Stakeholder = ({ stakeholder, onChangeRole, loading }) => {
   const { firstName, lastName, title, email, picture } = stakeholder;
   return (
     <div className="row stakeholder-row">
@@ -42,7 +44,11 @@ const Stakeholder = ({ stakeholder, onChangeRole }) => {
         </div>
       </div>
       <div className="col action">
-        <RoleSelect stakeholder={stakeholder} onChangeRole={onChangeRole} />
+        <RoleSelect
+          stakeholder={stakeholder}
+          onChangeRole={onChangeRole}
+          loading={loading}
+        />
       </div>
     </div>
   );
@@ -50,6 +56,7 @@ const Stakeholder = ({ stakeholder, onChangeRole }) => {
 
 const ManageRoles = ({ stakeholdersData, setStakeholdersData }) => {
   const { stakeholders, page, limit, count } = stakeholdersData;
+  const [loading, setLoading] = useState(false);
 
   const updateStakeholdersData = async (page, limit) => {
     setStakeholdersData(await fetchStakeholders(page, limit));
@@ -61,10 +68,18 @@ const ManageRoles = ({ stakeholdersData, setStakeholdersData }) => {
 
   // FIXME: Add Search
   const changeRole = (stakeholder, role) => {
-    api.patch(`/stakeholder/${stakeholder.id}`, { role }).then((resp) => {
-      // FIXME: Add error handling in case the PATCH fails!
-      updateStakeholdersData(page, limit);
-    });
+    setLoading(stakeholder.id);
+    api
+      .patch(`/stakeholder/${stakeholder.id}`, { role })
+      .then((resp) => {
+        notification.success({ message: "User role changed" });
+        // FIXME: Add error handling in case the PATCH fails!
+        updateStakeholdersData(page, limit);
+        setLoading(false);
+      })
+      .catch((err) => {
+        notification.error({ message: "Something went wrong" });
+      });
   };
 
   return (
@@ -73,7 +88,11 @@ const ManageRoles = ({ stakeholdersData, setStakeholdersData }) => {
         <h2>Manage Stakeholder Roles</h2>
         <div className="table-wrapper stakeholder-wrapper">
           {stakeholders?.map((stakeholder) => (
-            <Stakeholder stakeholder={stakeholder} onChangeRole={changeRole} />
+            <Stakeholder
+              stakeholder={stakeholder}
+              onChangeRole={changeRole}
+              loading={loading}
+            />
           ))}
         </div>
       </div>
