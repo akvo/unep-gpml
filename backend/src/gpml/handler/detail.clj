@@ -287,13 +287,15 @@
 (defmethod ig/init-key ::get [_ {:keys [db]}]
   (cache-hierarchies! (:spec db))
   (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
-    (let [conn (:spec db)
-          topic (:topic-type path)]
-      (if-let [data (when (and (or (model.topic/public? topic) approved?)
-                               (some? (get-resource-if-allowed conn path user)))
-                      (:json (db.detail/get-detail conn path)))]
-        (resp/response (merge data (extra-details topic conn data)))
-        util/not-found))))
+    (let [conn        (:spec db)
+          topic       (:topic-type path)
+          authorized? (and (or (model.topic/public? topic) approved?)
+                           (some? (get-resource-if-allowed conn path user)))]
+      (if authorized?
+        (if-let [data (:json (db.detail/get-detail conn path))]
+          (resp/response (merge data (extra-details topic conn data)))
+          util/not-found)
+        util/unauthorized))))
 
 (def put-params
   ;; FIXME: Add validation
