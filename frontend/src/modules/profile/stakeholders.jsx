@@ -62,8 +62,9 @@ const ManageRoles = ({ stakeholdersData, setStakeholdersData }) => {
     setStakeholdersData(await fetchStakeholders(page, limit));
   };
 
-  const onPageChange = (page) => {
-    updateStakeholdersData(page, limit);
+  const onPageChange = (current, pageSize) => {
+    const size = pageSize ? pageSize : limit;
+    updateStakeholdersData(current, size);
   };
 
   // FIXME: Add Search
