@@ -170,7 +170,7 @@
       (let [resp (handler (-> (mock/request :put "/")
                               (assoc :parameters
                                      {:path {:topic-type "project" :topic-id (:id initiative)}})))]
-        (is (= 404 (:status resp)))))
+        (is (= 403 (:status resp)))))
 
     (testing "Fetching detail of unapproved resource as authenticated user"
       (let [resp (handler (-> (mock/request :put "/")
@@ -178,7 +178,7 @@
                                :user {:id 0 :role "USER"}
                                :parameters
                                {:path {:topic-type "project" :topic-id (:id initiative)}})))]
-        (is (= 404 (:status resp)))))
+        (is (= 403 (:status resp)))))
 
     (testing "Fetching detail of unapproved resource as different ADMIN"
       (let [resp (handler (-> (mock/request :put "/")
