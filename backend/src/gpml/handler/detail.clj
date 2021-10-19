@@ -283,6 +283,21 @@
                                  (= (:created_by submission) (:id user))))]
     (when access-allowed?
       submission)))
+(def not-nil-name #(vec (filter :name %)))
+
+(defn adapt [data]
+  (-> data
+      (update :organisation not-nil-name)
+      (update :lifecycle_phase not-nil-name)
+      (update :sector not-nil-name)
+      (update :funding #(when (:name %) %))
+      (update :outcome_and_impact not-nil-name)
+      (update :focus_area not-nil-name)
+      (update :currency_amount_invested not-nil-name)
+      (update :currency_in_kind_contribution not-nil-name)
+      (update :activity_owner not-nil-name)
+      (update :activity_term not-nil-name)
+      (update :is_action_being_reported #(when (:reports %) %))))
 
 (defmethod ig/init-key ::get [_ {:keys [db]}]
   (cache-hierarchies! (:spec db))
@@ -293,7 +308,7 @@
                            (some? (get-resource-if-allowed conn path user)))]
       (if authorized?
         (if-let [data (:json (db.detail/get-detail conn path))]
-          (resp/response (merge data (extra-details topic conn data)))
+          (resp/response (adapt (merge data (extra-details topic conn data))))
           util/not-found)
         util/unauthorized))))
 
