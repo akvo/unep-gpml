@@ -104,8 +104,6 @@ country_counts AS (
 totals AS (
     SELECT COUNT(*) as total, 'project' as data, 1 as o
     FROM (
-      SELECT id FROM project
-      UNION ALL
       SELECT id FROM initiative
     ) all_initiatives
     UNION
