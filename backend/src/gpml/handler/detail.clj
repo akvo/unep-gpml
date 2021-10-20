@@ -287,7 +287,11 @@
 
 (defn adapt [data]
   (-> data
-      (update :organisation not-nil-name)
+      (update :organisation (fn [orgs]
+                              (let [clean-orgs (vec (filter :name orgs))]
+                                (if (= [] clean-orgs)
+                                  (vec (filter :name (:non_member_organisation data)))
+                                  clean-orgs))))
       (update :lifecycle_phase not-nil-name)
       (update :sector not-nil-name)
       (update :funding #(when (:name %) %))
