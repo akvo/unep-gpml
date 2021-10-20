@@ -10,7 +10,7 @@ export const TopicImages = [
   { tag: "marine litter", image: imgMarineLitter },
   { tag: "plastics", image: imgPlastics },
   { tag: "product by design", image: imgProductByDesign },
-  { tag: "source-to-sea", image: imgSourceToSea },
+  { tag: "source to sea", image: imgSourceToSea },
   { tag: "waste management", image: imgWasteManagement },
 ];
 
