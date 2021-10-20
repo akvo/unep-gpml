@@ -77,10 +77,10 @@
     (when (seq (:tag params))
       "JOIN json_array_elements(t.json->'tags') tags ON true JOIN json_each_text(tags) tag ON tag.value = ANY(ARRAY[:v*:tag]::varchar[])")
     "WHERE 1=1"
-    (when (seq (:search-text params)) "AND t.search_text @@ to_tsquery(:search-text)")
-    (when (seq (:geo-coverage params)) "AND t.geo_coverage IN (:v*:geo-coverage)")
+    (when (seq (:search-text params)) " AND t.search_text @@ to_tsquery(:search-text)")
+    (when (seq (:geo-coverage params)) " AND t.geo_coverage IN (:v*:geo-coverage)")
     ;; NOTE: Empty strings in the tags column cause problems with using json_array_elements
-     (when (seq (:tag params)) "AND t.json->>'tags' <> ''"))))
+     (when (seq (:tag params)) " AND t.json->>'tags' <> ''"))))
 
 (comment
   (generate-jsonb {:q3 1 :q4 "300" :q5 nil :created_by "John" :version 1})
