@@ -26,7 +26,7 @@ json_agg(DISTINCT jsonb_build_object('name', infos.value)) AS info_resource_link
 json_agg(DISTINCT jsonb_build_object('name', sector_names.value)) AS sector,
 json_agg(DISTINCT jsonb_build_object('name', phase_names.value)) AS lifecycle_phase,
 json_agg(DISTINCT jsonb_build_object('name', country.value)) AS organisation,
-
+json_agg(DISTINCT jsonb_build_object('name', non_member_organisation.value)) AS non_member_organisation,
 json_agg(DISTINCT jsonb_build_object('name', SUBSTR(currency_amount_invested.value,1, POSITION(' ' IN currency_amount_invested.value)))) AS currency_amount_invested,
 json_agg(DISTINCT jsonb_build_object('name', SUBSTR(currency_in_kind_contribution.value,1, POSITION(' ' IN currency_in_kind_contribution.value)))) AS currency_in_kind_contribution,
 jsonb_build_object('name', STRING_AGG(DISTINCT donor_names.value,', '), 'types', json_agg(DISTINCT jsonb_build_object('name', funding_type.value))) AS funding
@@ -37,6 +37,7 @@ jsonb_build_object('name', STRING_AGG(DISTINCT donor_names.value,', '), 'types',
   LEFT JOIN jsonb_each_text(activities) activity_names ON true
 
   LEFT JOIN jsonb_each_text(q1_1) country ON true
+  LEFT JOIN jsonb_each_text(q1_1_1) non_member_organisation ON true
   LEFT JOIN jsonb_each_text(q36_1) currency_amount_invested ON true
   LEFT JOIN jsonb_each_text(q37_1) currency_in_kind_contribution ON true
 
