@@ -68,9 +68,9 @@
     (testing "Filtering by topic"
       (is (empty? (db.browse/filter-topic db {:topic #{"policy"}}))))
     (testing "Filtering of unapproved events"
-      (is (empty? (db.browse/filter-topic db {:topic #{"event"}}))))
+      (is (not-empty (db.browse/filter-topic db {:topic #{"event"}}))))
     (testing "Filtering by stakeholders"
-      (is (empty? (db.browse/filter-topic db {:topic #{"stakeholder"}}))))
+      (is (not-empty (db.browse/filter-topic db {:topic #{"stakeholder"}}))))
     (testing "Filtering of approved stakeholders"
       (is (not-empty (do
                        ;; Approve an event
