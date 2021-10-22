@@ -5,8 +5,9 @@ import {
   RightOutlined,
   PlusOutlined,
   EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
-import { Button, Tag, Image, Divider, Dropdown, Checkbox } from "antd";
+import { Button, Tag, Image, Divider, Dropdown, Checkbox, Modal } from "antd";
 import React, { Fragment, useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import api from "../../utils/api";
@@ -771,6 +772,25 @@ const ButtonMenu = withRouter(
       history.push(`/${link}/${topic.id}`);
     };
 
+    const handleDeleteBtn = () => {
+      const { type, id } = topic;
+      Modal.error({
+        centered: true,
+        closable: true,
+        icon: <DeleteOutlined />,
+        title: "Are you sure to delete this resource?",
+        content: "This action can't be undone, please be careful!",
+        okText: "Delete",
+        okType: "danger",
+        onOk() {
+          // !! API Call Here
+          return new Promise((resolve, reject) => {
+            setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          }).catch(() => console.error("Oops errors!"));
+        },
+      });
+    };
+
     // Organisations are not yet editable, since they don't have a
     // form to edit them in. Stakeholder information should be
     // editable by the users themselves, and not by the admins.
@@ -782,6 +802,11 @@ const ButtonMenu = withRouter(
       (profile.role === "ADMIN" || profile.id === topic.createdBy) &&
       ((topic.type !== "project" && !noEditTopics.has(topic.type)) ||
         (topic.type === "project" && topic.id > 10000));
+
+    const canDelete = () =>
+      isAuthenticated &&
+      profile.reviewStatus === "APPROVED" &&
+      profile.role === "ADMIN";
 
     return (
       <div className="button-wrapper">
@@ -822,6 +847,17 @@ const ButtonMenu = withRouter(
               shape="circle"
             />
             <div className="label">Edit</div>
+          </div>
+        )}
+        {canDelete() && (
+          <div className="edit-btn" onClick={(e) => e.stopPropagation()}>
+            <Button
+              onClick={handleDeleteBtn}
+              size="large"
+              icon={<DeleteOutlined />}
+              shape="circle"
+            />
+            <div className="label">Delete</div>
           </div>
         )}
       </div>
