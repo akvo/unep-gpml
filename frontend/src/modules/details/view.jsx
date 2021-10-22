@@ -5,8 +5,18 @@ import {
   RightOutlined,
   PlusOutlined,
   EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
-import { Button, Tag, Image, Divider, Dropdown, Checkbox } from "antd";
+import {
+  Button,
+  Tag,
+  Image,
+  Divider,
+  Dropdown,
+  Checkbox,
+  Modal,
+  notification,
+} from "antd";
 import React, { Fragment, useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import api from "../../utils/api";
@@ -771,6 +781,35 @@ const ButtonMenu = withRouter(
       history.push(`/${link}/${topic.id}`);
     };
 
+    const handleDeleteBtn = () => {
+      const { type, id } = topic;
+      Modal.error({
+        className: "popup-delete",
+        centered: true,
+        closable: true,
+        icon: <DeleteOutlined />,
+        title: "Are you sure you want to delete this resource?",
+        content: "Please be aware this action cannot be undone.",
+        okText: "Delete",
+        okType: "danger",
+        onOk() {
+          return api
+            .delete(`/detail/${type}/${id}`)
+            .then((res) => {
+              notification.success({
+                message: "Resource deleted",
+              });
+            })
+            .catch((err) => {
+              console.error(err);
+              notification.error({
+                message: "Oops, something went wrong",
+              });
+            });
+        },
+      });
+    };
+
     // Organisations are not yet editable, since they don't have a
     // form to edit them in. Stakeholder information should be
     // editable by the users themselves, and not by the admins.
@@ -782,6 +821,11 @@ const ButtonMenu = withRouter(
       (profile.role === "ADMIN" || profile.id === topic.createdBy) &&
       ((topic.type !== "project" && !noEditTopics.has(topic.type)) ||
         (topic.type === "project" && topic.id > 10000));
+
+    const canDelete = () =>
+      isAuthenticated &&
+      profile.reviewStatus === "APPROVED" &&
+      profile.role === "ADMIN";
 
     return (
       <div className="button-wrapper">
@@ -822,6 +866,17 @@ const ButtonMenu = withRouter(
               shape="circle"
             />
             <div className="label">Edit</div>
+          </div>
+        )}
+        {canDelete() && (
+          <div className="delete-btn" onClick={(e) => e.stopPropagation()}>
+            <Button
+              onClick={handleDeleteBtn}
+              size="large"
+              icon={<DeleteOutlined />}
+              shape="circle"
+            />
+            <div className="label">Delete</div>
           </div>
         )}
       </div>

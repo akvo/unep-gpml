@@ -152,7 +152,8 @@
           font-weight: 500;
         }
 
-        .edit-btn {
+        .edit-btn,
+        .delete-btn {
           margin-left: 20px;
         }
       }
@@ -363,5 +364,17 @@
       margin-left: 4rem;
       margin-right: 2rem;
     }
+  }
+}
+
+.popup-delete {
+  span.anticon.anticon-delete {
+    color: #ff3d00;
+  }
+
+  button.ant-btn-dangerous {
+    border-radius: 50px;
+    color: #ff3d00;
+    border-color: #ff3d00;
   }
 }
