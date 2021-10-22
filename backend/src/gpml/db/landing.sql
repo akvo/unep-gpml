@@ -103,9 +103,7 @@ country_counts AS (
 ),
 totals AS (
     SELECT COUNT(*) as total, 'project' as data, 1 as o
-    FROM (
-      SELECT id FROM initiative
-    ) all_initiatives
+    FROM initiative where review_status = 'APPROVED'    
     UNION
     SELECT COUNT(*) as total, replace(lower(type),' ','_') as data, 2 as o
     FROM resource WHERE type IS NOT NULL GROUP BY data
