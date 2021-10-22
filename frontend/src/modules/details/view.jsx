@@ -7,7 +7,16 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { Button, Tag, Image, Divider, Dropdown, Checkbox, Modal } from "antd";
+import {
+  Button,
+  Tag,
+  Image,
+  Divider,
+  Dropdown,
+  Checkbox,
+  Modal,
+  notification,
+} from "antd";
 import React, { Fragment, useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import api from "../../utils/api";
@@ -784,10 +793,19 @@ const ButtonMenu = withRouter(
         okText: "Delete",
         okType: "danger",
         onOk() {
-          // !! API Call Here
-          return new Promise((resolve, reject) => {
-            setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-          }).catch(() => console.error("Oops errors!"));
+          return api
+            .delete(`/detail/${type}/${id}`)
+            .then((res) => {
+              notification.success({
+                message: "Resource deleted",
+              });
+            })
+            .catch((err) => {
+              console.error(err);
+              notification.error({
+                message: "Oops, something went wrong",
+              });
+            });
         },
       });
     };
