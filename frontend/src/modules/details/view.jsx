@@ -778,8 +778,8 @@ const ButtonMenu = withRouter(
         centered: true,
         closable: true,
         icon: <DeleteOutlined />,
-        title: "Are you sure to delete this resource?",
-        content: "This action can't be undone, please be careful!",
+        title: "Are you sure you want to delete this resource?",
+        content: "Please be aware this action cannot be undone.",
         okText: "Delete",
         okType: "danger",
         onOk() {
@@ -850,7 +850,7 @@ const ButtonMenu = withRouter(
           </div>
         )}
         {canDelete() && (
-          <div className="edit-btn" onClick={(e) => e.stopPropagation()}>
+          <div className="delete-btn" onClick={(e) => e.stopPropagation()}>
             <Button
               onClick={handleDeleteBtn}
               size="large"
