@@ -366,3 +366,15 @@
     }
   }
 }
+
+.popup-delete {
+  span.anticon.anticon-delete {
+    color: #ff3d00;
+  }
+
+  button.ant-btn-dangerous {
+    border-radius: 50px;
+    color: #ff3d00;
+    border-color: #ff3d00;
+  }
+}

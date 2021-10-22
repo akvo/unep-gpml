@@ -775,6 +775,7 @@ const ButtonMenu = withRouter(
     const handleDeleteBtn = () => {
       const { type, id } = topic;
       Modal.error({
+        className: "popup-delete",
         centered: true,
         closable: true,
         icon: <DeleteOutlined />,
