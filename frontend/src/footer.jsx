@@ -59,14 +59,14 @@ const Footer = ({
               </li>
               <li>
                 {profile?.reviewStatus === "APPROVED" ? (
-                  <a
+                  <Link
                     onClick={() =>
                       setFilterMenu(["organisation", "stakeholder"])
                     }
-                    href="/stakeholders"
+                    to="/stakeholders"
                   >
                     Connect Stakeholders
-                  </a>
+                  </Link>
                 ) : (
                   <span
                     style={{ cursor: "pointer" }}
@@ -97,29 +97,60 @@ const Footer = ({
                 <h4>Resources</h4>
               </li>
               <li>
-                <a href="/browse?topic=project">Initiative</a>
+                <Link
+                  onClick={() => setFilterMenu(["project"])}
+                  to="/browse?topic=project"
+                >
+                  Initiative
+                </Link>
               </li>
               <li>
-                <a href="/browse?topic=action_plan">Action Plan</a>
+                <Link
+                  onClick={() => setFilterMenu(["action_plan"])}
+                  to="/browse?topic=action_plan"
+                >
+                  Action Plan
+                </Link>
               </li>
               <li>
-                <a href="/browse?topic=policy">Policy</a>
+                <Link
+                  onClick={() => setFilterMenu(["policy"])}
+                  to="/browse?topic=policy"
+                >
+                  Policy
+                </Link>
               </li>
               <li>
-                <a href="/browse?topic=technical_resource">
+                <a
+                  onClick={() => setFilterMenu(["technical_resource"])}
+                  to="/browse?topic=technical_resource"
+                >
                   Technical Resources
                 </a>
               </li>
               <li>
-                <a href="/browse?topic=financing_resource">
+                <Link
+                  onClick={() => setFilterMenu(["financing_resource"])}
+                  to="/browse?topic=financing_resource"
+                >
                   Financing Resources
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/browse?topic=event">Event</a>
+                <Link
+                  onClick={() => setFilterMenu(["event"])}
+                  to="/browse?topic=event"
+                >
+                  Event
+                </Link>
               </li>
               <li>
-                <a href="/browse?topic=technology">Technology</a>
+                <Link
+                  onClick={() => setFilterMenu(["technology"])}
+                  to="/browse?topic=technology"
+                >
+                  Technology
+                </Link>
               </li>
             </ul>
           </nav>

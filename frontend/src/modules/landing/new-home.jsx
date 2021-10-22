@@ -240,9 +240,15 @@ const Landing = withRouter(
 
     useEffect(() => {
       if (!data) {
-        api.get("browse?topic=event").then((resp) => {
-          setData(resp.data);
-        });
+        api
+          .get("browse?topic=event")
+          .then((resp) => {
+            setData(resp.data);
+          })
+          .catch((err) => {
+            console.error(err);
+            setData([]);
+          });
       }
       if (data && data?.results) {
         generateEvent(dateNow, true);
@@ -645,7 +651,7 @@ const Landing = withRouter(
                     </h2>
                   </div>
                 )}
-                {event && event.length === 0 && (
+                {data && event && event.length === 0 && (
                   <div className="no-event">No event on {onThisDayText}</div>
                 )}
                 {event &&
