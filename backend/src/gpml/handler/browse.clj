@@ -18,6 +18,14 @@
     [:or
      [:string {:max 0}]
      [:re country-re]]]
+   [:transnational {:optional true
+                    :swagger {:description "Comma separated list of transnational id"
+                              :type "string"
+                              :collectionFormat "csv"
+                              :allowEmptyValue true}}
+    [:or
+     [:string {:max 0}]
+     [:re country-re]]]
    [:topic {:optional true
             :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "," topics))
                       :type "string"
@@ -55,7 +63,7 @@
     [:int {:min 0}]]])
 
 (defn get-db-filter
-  [{:keys [q country topic tag favorites user-id limit offset]}]
+  [{:keys [q transnational country country topic tag favorites user-id limit offset]}]
   (merge {}
          (when offset
            {:offset offset})
@@ -67,6 +75,10 @@
          (when (seq country)
            {:geo-coverage (->> (set (str/split country #","))
                                (map read-string))})
+         (when (seq transnational)
+           {:transnational  (->> (set (str/split transnational #","))
+                                 (mapv read-string)
+                                 str)})
          (when (seq topic)
            {:topic (set (str/split topic #","))})
          (when (seq tag)
