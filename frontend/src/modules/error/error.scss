@@ -1,0 +1,12 @@
+.error-container {
+  min-height: 42vh;
+
+  .error-icon,
+  .try-again-btn {
+    color: #ff3d00 !important;
+  }
+
+  .try-again-btn {
+    border-color: #ff3d00 !important;
+  }
+}
