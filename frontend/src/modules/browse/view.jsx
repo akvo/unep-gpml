@@ -364,7 +364,7 @@ const Browse = ({
                       multiCountryCountries={multiCountryCountries}
                       multiCountryLabelCustomIcon={true}
                       countrySelectMode="multiple"
-                      multiCountrySelectMode=""
+                      multiCountrySelectMode="multiple"
                     />
                   </div>
                   <div className="inner">
