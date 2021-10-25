@@ -1,5 +1,5 @@
 import { UIStore } from "../../store";
-import { withRouter } from "react-router-dom";
+import { withRouter, useHistory } from "react-router-dom";
 import {
   LoadingOutlined,
   RightOutlined,
@@ -41,6 +41,7 @@ import imageNotFound from "../../images/image-not-found.png";
 import logoNotFound from "../../images/logo-not-found.png";
 import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
+import { redirectError } from "../error/error-util";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 const urlLink = (url) => (url.indexOf("http") !== 0 ? `http://${url}` : url);
@@ -502,6 +503,7 @@ const DetailsView = ({
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
   }));
+  const history = useHistory();
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
@@ -530,9 +532,15 @@ const DetailsView = ({
       !data &&
       params?.type &&
       params?.id &&
-      api.get(`/detail/${params.type}/${params.id}`).then((d) => {
-        setData(d.data);
-      });
+      api
+        .get(`/detail/${params.type}/${params.id}`)
+        .then((d) => {
+          setData(d.data);
+        })
+        .catch((err) => {
+          console.error(err);
+          redirectError(err, history);
+        });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
         api.get("/favorite").then((resp) => {
@@ -544,7 +552,7 @@ const DetailsView = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [params, profile, isLoaded, data]);
+  }, [params, profile, isLoaded, data, history]);
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
