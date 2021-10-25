@@ -487,6 +487,7 @@ const renderDetailImage = (params, data) => {
 const DetailsView = ({
   match: { params },
   setStakeholderSignupModalVisible,
+  setFilterMenu,
 }) => {
   const {
     profile,
@@ -653,6 +654,7 @@ const DetailsView = ({
                   topic={{ ...data, ...params }}
                   profile={profile}
                   isAuthenticated={isAuthenticated}
+                  setFilterMenu={setFilterMenu}
                   {...{ handleRelationChange, relation }}
                 />
               )}
@@ -713,6 +715,7 @@ const ButtonMenu = withRouter(
     profile,
     history,
     isAuthenticated,
+    setFilterMenu,
   }) => {
     const handleChangeRelation = (relationType) => ({
       target: { checked },
@@ -797,8 +800,10 @@ const ButtonMenu = withRouter(
             .delete(`/detail/${type}/${id}`)
             .then((res) => {
               notification.success({
-                message: "Resource deleted",
+                message: "Resource deleted successfully",
               });
+              setFilterMenu([type]);
+              history.push("/browse");
             })
             .catch((err) => {
               console.error(err);
