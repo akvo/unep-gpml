@@ -28,8 +28,8 @@ json_agg(DISTINCT jsonb_build_object('name', sector_names.value)) AS sector,
 json_agg(DISTINCT jsonb_build_object('name', phase_names.value)) AS lifecycle_phase,
 json_agg(DISTINCT jsonb_build_object('name', organisation.value)) AS organisation,
 json_agg(DISTINCT jsonb_build_object('name', non_member_organisation.value)) AS non_member_organisation,
-json_agg(DISTINCT jsonb_build_object('name', SUBSTR(currency_amount_invested.value,1, POSITION(' ' IN currency_amount_invested.value)))) AS currency_amount_invested,
-json_agg(DISTINCT jsonb_build_object('name', SUBSTR(currency_in_kind_contribution.value,1, POSITION(' ' IN currency_in_kind_contribution.value)))) AS currency_in_kind_contribution,
+json_agg(DISTINCT jsonb_build_object('name', SUBSTR(currency_amount_invested.key,1, POSITION(' ' IN currency_amount_invested.value)))) AS currency_amount_invested,
+json_agg(DISTINCT jsonb_build_object('name', SUBSTR(currency_in_kind_contribution.key,1, POSITION(' ' IN currency_in_kind_contribution.value)))) AS currency_in_kind_contribution,
 jsonb_build_object('name', STRING_AGG(DISTINCT donor_names.value,', '), 'types', json_agg(DISTINCT jsonb_build_object('name', funding_type.value))) AS funding
 
   FROM initiative i
