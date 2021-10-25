@@ -41,6 +41,7 @@ import imageNotFound from "../../images/image-not-found.png";
 import logoNotFound from "../../images/logo-not-found.png";
 import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
+import { redirectError } from "../error/error-util";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 const urlLink = (url) => (url.indexOf("http") !== 0 ? `http://${url}` : url);
@@ -538,14 +539,7 @@ const DetailsView = ({
         })
         .catch((err) => {
           console.error(err);
-          const { status } = err?.response;
-          if (status === 403) {
-            history.push("/not-authorized");
-          } else if (status === 404) {
-            history.push("/not-found");
-          } else {
-            history.push("/error");
-          }
+          redirectError(err, history);
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
