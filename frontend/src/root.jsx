@@ -464,6 +464,7 @@ const Root = () => {
               setStakeholderSignupModalVisible={
                 setStakeholderSignupModalVisible
               }
+              setFilterMenu={setFilterMenu}
             />
           )}
         />
