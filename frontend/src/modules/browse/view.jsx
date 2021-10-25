@@ -229,7 +229,6 @@ const Browse = ({
       : [];
 
   const handleChangeMultiCountry = (val) => {
-    val = [val];
     // Fetch transnational countries
     val.forEach((id) => {
       const check = multiCountryCountries.find((x) => x.id === id);
