@@ -25,16 +25,7 @@ const pageProps = (status) => {
       return {
         status: "warning",
         title: "Page not found",
-        subTitle: (
-          <>
-            <div>Sorry, we couldn't find that page</div>
-            <div>
-              <a href="mailto:unep-gpmarinelitter@un.org">
-                unep-gpmarinelitter@un.org
-              </a>
-            </div>
-          </>
-        ),
+        subTitle: "Sorry, we couldn't find that page",
       };
     case 403:
       return {
