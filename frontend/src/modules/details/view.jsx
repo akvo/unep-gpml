@@ -1,5 +1,5 @@
 import { UIStore } from "../../store";
-import { withRouter } from "react-router-dom";
+import { withRouter, useHistory } from "react-router-dom";
 import {
   LoadingOutlined,
   RightOutlined,
@@ -502,6 +502,7 @@ const DetailsView = ({
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
   }));
+  const history = useHistory();
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
@@ -530,9 +531,22 @@ const DetailsView = ({
       !data &&
       params?.type &&
       params?.id &&
-      api.get(`/detail/${params.type}/${params.id}`).then((d) => {
-        setData(d.data);
-      });
+      api
+        .get(`/detail/${params.type}/${params.id}`)
+        .then((d) => {
+          setData(d.data);
+        })
+        .catch((err) => {
+          console.error(err);
+          const { status } = err?.response;
+          if (status === 403) {
+            history.push("/not-authorized");
+          } else if (status === 404) {
+            history.push("/not-found");
+          } else {
+            history.push("/error");
+          }
+        });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
         api.get("/favorite").then((resp) => {
@@ -544,7 +558,7 @@ const DetailsView = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [params, profile, isLoaded, data]);
+  }, [params, profile, isLoaded, data, history]);
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
