@@ -62,7 +62,7 @@
         .ant-tabs-tab-active {
           background: #fff;
           .ant-tabs-tab-btn {
-            font-weight: 600;
+            font-weight: normal;
           }
         }
         .ant-tabs-tab-btn {
@@ -393,6 +393,9 @@
 // end of css for multi-country dropdown
 
 // css for multi-country popover
+.ant-popover {
+  z-index: 1051;
+}
 .popover-multi-country {
   color: #036799;
 }

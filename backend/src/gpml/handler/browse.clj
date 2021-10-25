@@ -2,6 +2,7 @@
   (:require [clojure.string :as str]
             [gpml.constants :refer [topics resource-types approved-user-topics]]
             [gpml.db.browse :as db.browse]
+            [gpml.db.country-group :as db.country-group]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -15,6 +16,14 @@
                         :type "string"
                         :collectionFormat "csv"
                         :allowEmptyValue true}}
+    [:or
+     [:string {:max 0}]
+     [:re country-re]]]
+   [:transnational {:optional true
+                    :swagger {:description "Comma separated list of transnational id"
+                              :type "string"
+                              :collectionFormat "csv"
+                              :allowEmptyValue true}}
     [:or
      [:string {:max 0}]
      [:re country-re]]]
@@ -55,7 +64,7 @@
     [:int {:min 0}]]])
 
 (defn get-db-filter
-  [{:keys [q country topic tag favorites user-id limit offset]}]
+  [{:keys [q transnational country topic tag favorites user-id limit offset]}]
   (merge {}
          (when offset
            {:offset offset})
@@ -67,6 +76,8 @@
          (when (seq country)
            {:geo-coverage (->> (set (str/split country #","))
                                (map read-string))})
+         (when (seq transnational)
+           {:transnational  (set (map str (str/split transnational #",")))})
          (when (seq topic)
            {:topic (set (str/split topic #","))})
          (when (seq tag)
@@ -95,6 +106,12 @@
                             (get-db-filter)
                             (merge {:approved approved?})
                             (modify-db-filter-topics))
+        modified-query (if (:geo-coverage modified-query)
+                         (let [transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-query))})
+                                                  (map (comp str :id))
+                                                  set)]
+                           (assoc modified-query :transnational transnational))
+                         modified-query)
         results (->> modified-query
                      (db.browse/filter-topic db)
                      (map (fn [{:keys [json topic]}]

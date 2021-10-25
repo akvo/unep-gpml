@@ -1,6 +1,6 @@
 import { UIStore } from "../../store";
 import React, { useEffect, useState } from "react";
-import { Card, Input, Select, Checkbox, Tag, Pagination, Switch } from "antd";
+import { Card, Input, Checkbox, Tag, Pagination, Switch } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "./styles.scss";
@@ -21,11 +21,13 @@ import isEmpty from "lodash/isEmpty";
 import { LoadingOutlined } from "@ant-design/icons";
 import { TrimText } from "../../utils/string";
 import MapLanding from "./map-landing";
+import CountryTransnationalFilter from "./country-transnational-filter";
 
 export const useQuery = () => {
   const srcParams = new URLSearchParams(useLocation().search);
   const ret = {
     country: [],
+    transnational: [],
     topic: [],
     tag: [],
     q: "",
@@ -57,11 +59,14 @@ const Browse = ({
   filterMenu,
 }) => {
   const query = useQuery();
-  const { profile, countries, tags } = UIStore.useState((s) => ({
-    profile: s.profile,
-    countries: s.countries,
-    tags: s.tags,
-  }));
+  const { profile, countries, tags, transnationalOptions } = UIStore.useState(
+    (s) => ({
+      profile: s.profile,
+      countries: s.countries,
+      tags: s.tags,
+      transnationalOptions: s.transnationalOptions,
+    })
+  );
   const [results, setResults] = useState([]);
   const [countData, setCountData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -74,8 +79,12 @@ const Browse = ({
   const pageSize = 10;
   const [toggleButton, setToggleButton] = useState("list");
   const { innerWidth } = window;
+  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
-  const isLoaded = () => Boolean(!isEmpty(countries) && !isEmpty(tags));
+  const isLoaded = () =>
+    Boolean(
+      !isEmpty(countries) && !isEmpty(tags) && !isEmpty(transnationalOptions)
+    );
 
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
@@ -137,6 +146,19 @@ const Browse = ({
     }
   }, [profile]);
 
+  useEffect(() => {
+    if (isEmpty(filterMenu) && isEmpty(query?.topic)) {
+      updateQuery(
+        "topic",
+        topicTypes.map((x) => humps.decamelize(x))
+      );
+    }
+    if (!isEmpty(filterMenu)) {
+      updateQuery("topic", filterMenu);
+    }
+    // NOTE: this are triggered when user click a topic from navigation menu
+  }, [filterMenu]); // eslint-disable-line
+
   const updateQuery = (param, value) => {
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
@@ -158,15 +180,92 @@ const Browse = ({
     }
   };
 
-  useEffect(() => {
+  const handleChangeToggleButton = (status) => {
+    setToggleButton(status ? "map" : "list");
+  };
+
+  const handleChangeTab = (key) => {
+    const param = key === "country" ? "transnational" : "country";
+    updateQuery(param, []);
+  };
+
+  const country =
+    countries && query?.country
+      ? countries
+          .filter((x) => query.country.includes(String(x.id)))
+          .map((x) => x.id)
+      : [];
+
+  const handleChangeCountry = (val) => {
+    const selected = countries?.filter((x) => {
+      return val.includes(x.id);
+    });
     updateQuery(
-      "topic",
-      isEmpty(filterMenu)
-        ? topicTypes.map((x) => humps.decamelize(x))
-        : filterMenu
+      "country",
+      selected.map((x) => x.id)
     );
-    // NOTE: this are triggered when user click a topic from navigation menu
-  }, [filterMenu]); // eslint-disable-line
+  };
+
+  const handleDeselectCountry = (val) => {
+    const diselected = countries?.find((x) => x.id === val);
+    const selected =
+      countries && query?.country
+        ? countries.filter(
+            (x) =>
+              query.country.includes(String(x.id)) && diselected.id !== x.id
+          )
+        : [];
+    updateQuery(
+      "country",
+      selected.map((x) => x.id)
+    );
+  };
+
+  const multiCountry =
+    transnationalOptions && query?.transnational
+      ? transnationalOptions
+          .filter((x) => query.transnational.includes(String(x.id)))
+          .map((x) => x.id)
+      : [];
+
+  const handleChangeMultiCountry = (val) => {
+    // Fetch transnational countries
+    val.forEach((id) => {
+      const check = multiCountryCountries.find((x) => x.id === id);
+      !check &&
+        api.get(`/country-group/${id}`).then((resp) => {
+          setMultiCountryCountries([
+            ...multiCountryCountries,
+            { id: id, countries: resp.data?.[0]?.countries },
+          ]);
+        });
+    });
+    // End of fetch transnational countries
+
+    const selected = transnationalOptions?.filter((x) => {
+      return val.includes(x.id);
+    });
+    updateQuery(
+      "transnational",
+      selected.map((x) => x.id)
+    );
+  };
+
+  const handleDeselectMultiCountry = (val) => {
+    const diselected = transnationalOptions?.find((x) => x.id === val);
+    const selected =
+      transnationalOptions && query?.transnational
+        ? transnationalOptions.filter(
+            (x) =>
+              query.transnational.includes(String(x.id)) &&
+              diselected.id !== x.id
+          )
+        : [];
+    updateQuery(
+      "transnational",
+      selected.map((x) => x.id)
+    );
+  };
 
   const handleRelationChange = (relation) => {
     api
@@ -222,8 +321,8 @@ const Browse = ({
           <span className="text-white">
             <Switch
               checked={toggleButton === "map"}
-              disabled={loading}
-              onChange={(status) => setToggleButton(status ? "map" : "list")}
+              disabled={!isLoaded()}
+              onChange={handleChangeToggleButton}
               size="small"
             />{" "}
             Switch to {toggleButton === "list" ? "map" : "list"} view
@@ -241,6 +340,8 @@ const Browse = ({
             setFilters,
             setToggleButton,
             updateQuery,
+            multiCountryCountries,
+            setMultiCountryCountries,
           }}
         />
       ) : (
@@ -250,6 +351,21 @@ const Browse = ({
               innerWidth={innerWidth}
               children={
                 <aside>
+                  <div className="country-filter-tab-wrapper">
+                    <CountryTransnationalFilter
+                      handleChangeTab={handleChangeTab}
+                      country={country}
+                      handleChangeCountry={handleChangeCountry}
+                      handleDeselectCountry={handleDeselectCountry}
+                      multiCountry={multiCountry}
+                      handleChangeMultiCountry={handleChangeMultiCountry}
+                      handleDeselectMultiCountry={handleDeselectMultiCountry}
+                      multiCountryCountries={multiCountryCountries}
+                      multiCountryLabelCustomIcon={true}
+                      countrySelectMode="multiple"
+                      multiCountrySelectMode="multiple"
+                    />
+                  </div>
                   <div className="inner">
                     <Input
                       value={query.q}
@@ -261,62 +377,6 @@ const Browse = ({
                       }
                     />
                     <div className="field">
-                      <div className="label">Country</div>
-                      <Select
-                        virtual={false}
-                        value={
-                          countries && query?.country
-                            ? countries
-                                .filter((x) =>
-                                  query.country.includes(String(x.id))
-                                )
-                                .map((x) => x.id)
-                            : []
-                        }
-                        placeholder="Find country"
-                        mode="multiple"
-                        options={
-                          countries &&
-                          countries
-                            .map((it) => ({
-                              value: it.id,
-                              label: it.name,
-                            }))
-                            .sort((a, b) => a.label.localeCompare(b.label))
-                        }
-                        allowClear
-                        onChange={(val) => {
-                          const selected = countries?.filter((x) => {
-                            return val.includes(x.id);
-                          });
-                          updateQuery(
-                            "country",
-                            selected.map((x) => x.id)
-                          );
-                        }}
-                        filterOption={(input, option) =>
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        }
-                        onDeselect={(val) => {
-                          const diselected = countries?.find(
-                            (x) => x.id === val
-                          );
-                          const selected =
-                            countries && query?.country
-                              ? countries.filter(
-                                  (x) =>
-                                    query.country.includes(String(x.id)) &&
-                                    diselected.id !== x.id
-                                )
-                              : [];
-                          updateQuery(
-                            "country",
-                            selected.map((x) => x.id)
-                          );
-                        }}
-                      />
                       {isAuthenticated && (
                         <Checkbox
                           className="my-favorites"
@@ -348,7 +408,7 @@ const Browse = ({
                     "The search functionality currently only shows resources"}
                 </div>
               </StickyBox>
-              {!isLoaded() || loading || isEmpty(results) ? (
+              {!isLoaded() || loading ? (
                 <h2 className="loading">
                   <LoadingOutlined spin /> Loading
                 </h2>
