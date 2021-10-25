@@ -25,7 +25,16 @@ const pageProps = (status) => {
       return {
         status: "warning",
         title: "Page not found",
-        subTitle: "Sorry, we couldn't find that page",
+        subTitle: (
+          <>
+            <div>Sorry, we couldn't find that page</div>
+            <div>
+              <a href="mailto:unep-gpmarinelitter@un.org">
+                unep-gpmarinelitter@un.org
+              </a>
+            </div>
+          </>
+        ),
       };
     case 403:
       return {
@@ -38,8 +47,13 @@ const pageProps = (status) => {
         status: "info",
         icon: <ErrorIcon />,
         title: "Oops, Something went wrong",
-        subTitle:
-          "Try to refresh this page or feel free to contact us if the problem persist.",
+        subTitle: (
+          <div>
+            Try to refresh this page or feel free to{" "}
+            <a href="mailto:unep-gpmarinelitter@un.org">contact us</a> if the
+            problem persist.
+          </div>
+        ),
         extra: <RefreshButton />,
       };
   }
