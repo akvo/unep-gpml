@@ -63,7 +63,7 @@
     [:int {:min 0}]]])
 
 (defn get-db-filter
-  [{:keys [q transnational country country topic tag favorites user-id limit offset]}]
+  [{:keys [q transnational country topic tag favorites user-id limit offset]}]
   (merge {}
          (when offset
            {:offset offset})
