@@ -229,6 +229,7 @@ const Browse = ({
       : [];
 
   const handleChangeMultiCountry = (val) => {
+    val = [val];
     // Fetch transnational countries
     val.forEach((id) => {
       const check = multiCountryCountries.find((x) => x.id === id);
@@ -363,7 +364,7 @@ const Browse = ({
                       multiCountryCountries={multiCountryCountries}
                       multiCountryLabelCustomIcon={true}
                       countrySelectMode="multiple"
-                      multiCountrySelectMode="multiple"
+                      multiCountrySelectMode=""
                     />
                   </div>
                   <div className="inner">
