@@ -22,6 +22,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { TrimText } from "../../utils/string";
 import MapLanding from "./map-landing";
 import CountryTransnationalFilter from "./country-transnational-filter";
+import { redirectError } from "../error/error-util";
 
 export const useQuery = () => {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -92,11 +93,17 @@ const Browse = ({
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
     const url = `/browse?${String(searchParms)}`;
-    api.get(url).then((resp) => {
-      setResults(resp?.data?.results);
-      setCountData(resp?.data?.counts);
-      setLoading(false);
-    });
+    api
+      .get(url)
+      .then((resp) => {
+        setResults(resp?.data?.results);
+        setCountData(resp?.data?.counts);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        redirectError(err, history);
+      });
   };
 
   useEffect(() => {
