@@ -101,10 +101,11 @@
             filtered-topics (set (maybe-filter-private-topics t approved?))]
         (merge db-filter {:topic filtered-topics})))))
 
-(defn browse-response [query db approved?]
+(defn browse-response [query db approved? admin]
   (let [modified-query (->> query
                             (get-db-filter)
-                            (merge {:approved approved?})
+                            (merge {:approved approved?
+                                    :admin admin})
                             (modify-db-filter-topics))
         modified-query (if (:geo-coverage modified-query)
                          (let [transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-query))})
@@ -125,11 +126,13 @@
 (defmethod ig/init-key :gpml.handler.browse/get [_ {:keys [db]}]
   (fn [{{:keys [query]} :parameters
         approved? :approved?
+        admin :admin
         user :user}]
     (resp/response (#'browse-response
                     (merge query {:user-id (:id user)})
                     (:spec db)
-                    approved?))))
+                    approved?
+                    admin))))
 
 (defmethod ig/init-key :gpml.handler.browse/query-params [_ _]
   query-params)

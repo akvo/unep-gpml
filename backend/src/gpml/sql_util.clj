@@ -79,7 +79,8 @@
     (when (seq (:transnational params))
       "join lateral json_array_elements(t.json->'geo_coverage_values') j on true")
     "WHERE 1=1"
-    " AND t.json->>'review_status'='APPROVED' "
+    (when-not (:admin params)
+      " AND t.json->>'review_status'='APPROVED' ")
     (when (seq (:search-text params)) " AND t.search_text @@ to_tsquery(:search-text)")
     (when (seq (:geo-coverage params)) " AND t.geo_coverage IN (:v*:geo-coverage) ")
     (when (seq (:transnational params)) " AND t.json->>'geo_coverage_type'='transnational' AND t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:transnational)")
