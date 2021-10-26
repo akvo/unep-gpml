@@ -423,7 +423,13 @@ const Browse = ({
                 results.map((result) => (
                   <Result
                     key={`${result.type}-${result.id}`}
-                    {...{ result, handleRelationChange, relations, profile }}
+                    {...{
+                      result,
+                      handleRelationChange,
+                      relations,
+                      profile,
+                      isApprovedUser,
+                    }}
                   />
                 ))
               ) : (
@@ -549,6 +555,7 @@ export const Result = ({
   relations,
   handleRelationChange,
   profile,
+  isApprovedUser,
 }) => {
   const fullName = (data) =>
     data.title
@@ -572,9 +579,21 @@ export const Result = ({
   const allowBookmark =
     result.type !== "stakeholder" || profile.id !== result.id;
   const tagClassname = "type " + result.type;
+  const reviewStatus = result?.reviewStatus;
+
+  const showReviewStatus =
+    !isEmpty(profile) && isApprovedUser && profile?.role === "ADMIN";
 
   return (
     <Linkify result={result}>
+      {showReviewStatus && (
+        <Tag
+          color={reviewStatus === "APPROVED" ? "success" : "processing"}
+          key={`review-status-${result?.id}`}
+        >
+          {reviewStatus}
+        </Tag>
+      )}
       <h4>{title}</h4>
       <div className={tagClassname}>{topicNames(result.type)}</div>
       <ul className="stats">
