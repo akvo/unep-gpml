@@ -151,20 +151,11 @@ export const transformFormData = (data, formData, schema, not_q_prefixed) => {
             schema[key]?.enum.length > 0 &&
             schema[key].enumNames.length > 0
           ) {
-            const val = {
+            data[`${q_prefix}${qKey}`] = {
               [String(formData[key]).toLowerCase()]: schema?.[key].enumNames?.[
                 schema[key].enum.indexOf(formData[key])
               ],
             };
-            data[`${q_prefix}${qKey}`] = val;
-            /*
-              for initiative form
-              transform transnational value to send as an array of object
-              (24_4 is the transnational question)
-            */
-            if (qKey === "24_4") {
-              data[`${q_prefix}${qKey}`] = [val];
-            }
           }
         }
       }
