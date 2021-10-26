@@ -47,7 +47,7 @@ const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 const urlLink = (url) => (url.indexOf("http") !== 0 ? `http://${url}` : url);
 
 const renderItemValues = (
-  { countries, languages, regionOptions, meaOptions },
+  { countries, languages, regionOptions, meaOptions, transnationalOptions },
   params,
   mapping,
   data
@@ -110,19 +110,23 @@ const renderItemValues = (
             })
             .join(", ");
         } else if (data.geoCoverageType === "transnational") {
-          dataCountries = null;
+          dataCountries = data[key]
+            ?.map((x) => {
+              return transnationalOptions.find((it) => it.id === x)?.name;
+            })
+            .join(", ");
         } else if (
           data.geoCoverageType === "global with elements in specific areas"
         ) {
-          dataCountries = dataCountries = data[key]
+          dataCountries = data[key]
             ?.map((x) => {
-              return meaOptions.find((it) => it.id === x).name;
+              return meaOptions.find((it) => it.id === x)?.name;
             })
             .join(", ");
         } else {
           dataCountries = data[key]
             ?.map((x) => {
-              return countries.find((it) => it.id === x).name;
+              return countries.find((it) => it.id === x)?.name;
             })
             .join(", ");
         }
@@ -379,7 +383,7 @@ const renderTypeOfActions = (params, data) => {
 };
 
 const renderDetails = (
-  { countries, languages, regionOptions, meaOptions },
+  { countries, languages, regionOptions, meaOptions, transnationalOptions },
   params,
   data
 ) => {
@@ -392,7 +396,13 @@ const renderDetails = (
       <h3>{topicNames(params.type)} Detail</h3>
       <div className="table">
         {renderItemValues(
-          { countries, languages, regionOptions, meaOptions },
+          {
+            countries,
+            languages,
+            regionOptions,
+            meaOptions,
+            transnationalOptions,
+          },
           params,
           details,
           data
@@ -496,12 +506,14 @@ const DetailsView = ({
     languages,
     regionOptions,
     meaOptions,
+    transnationalOptions,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
     languages: s.languages,
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
+    transnationalOptions: s.transnationalOptions,
   }));
   const history = useHistory();
   const [data, setData] = useState(null);
@@ -690,7 +702,13 @@ const DetailsView = ({
           <div key="right" className={`content-column ${params.type}-right`}>
             {countries &&
               renderDetails(
-                { countries, languages, regionOptions, meaOptions },
+                {
+                  countries,
+                  languages,
+                  regionOptions,
+                  meaOptions,
+                  transnationalOptions,
+                },
                 params,
                 data,
                 profile,
