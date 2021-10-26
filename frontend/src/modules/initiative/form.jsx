@@ -196,8 +196,6 @@ const AddInitiativeForm = withRouter(
       let data = {};
       transformFormData(data, formData, formSchema.schema.properties);
       data.version = parseInt(formSchema.schema.version);
-      console.log(data);
-      // return;
 
       setSending(true);
       if (status === "add" && !params?.id) {
