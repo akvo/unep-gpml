@@ -152,10 +152,9 @@ export const transformFormData = (data, formData, schema, not_q_prefixed) => {
             schema[key].enumNames.length > 0
           ) {
             data[`${q_prefix}${qKey}`] = {
-              [formData[key]]:
-                schema?.[key].enumNames?.[
-                  schema[key].enum.indexOf(formData[key])
-                ],
+              [String(formData[key]).toLowerCase()]: schema?.[key].enumNames?.[
+                schema[key].enum.indexOf(formData[key])
+              ],
             };
           }
         }
