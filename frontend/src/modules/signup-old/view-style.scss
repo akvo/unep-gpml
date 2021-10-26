@@ -93,20 +93,10 @@
     }
 
     .choices {
-      display: flex;
-      flex-wrap: wrap;
-
-      & > * {
+      .choices-item > * {
         height: 340px;
-        display: flex;
-        flex-direction: column;
-        margin: 5px;
-        border: 1px solid #dbe9f1;
-        border-top: 1px solid #01abf1;
-        text-align: center;
-        flex: 1 1 45%;
         padding: 20px;
-        cursor: pointer;
+        text-align: center;
 
         .caption {
           color: #01abf1;
