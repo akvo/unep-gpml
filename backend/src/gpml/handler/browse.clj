@@ -116,7 +116,7 @@
                      (db.browse/filter-topic db)
                      (map (fn [{:keys [json topic]}]
                             (assoc json :type topic))))
-        counts (->> (assoc modified-query :only-approved? approved?)
+        counts (->> modified-query
                     (db.browse/topic-counts db)
                     (filter #(or approved?
                                  (not (contains? approved-user-topics (:topic %))))))]
