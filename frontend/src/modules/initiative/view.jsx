@@ -535,7 +535,7 @@ const formDataMapping = [
     section: "S3",
     group: "S3_G2",
     question: "S3_G2_24.4",
-    type: "option",
+    type: "multiple-option",
   },
   {
     name: "q24_5",
@@ -711,19 +711,6 @@ const getRevertValue = (type, value, name) => {
       res = String(res).toUpperCase();
     }
   }
-
-  // Geo Transnational handle
-  // case for transnational geo value
-  if (type === "option" && isArray && name === "q24_4") {
-    res = isArray
-      ? value.map((item) => {
-          const enumKey = Object.keys(item)[0];
-          return enumKey;
-        })
-      : Object.keys(value);
-  }
-  // EOL Geo Transnational handle
-
   if (type === "multiple-option" && isObject && isArray) {
     res = value.map((item) => {
       const enumKey = Object.keys(item)[0];
