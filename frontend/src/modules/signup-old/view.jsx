@@ -28,8 +28,8 @@ const SignupView = ({ ...props }) => {
   return (
     <div id="signup-view">
       <div className="ui container">
-        <Row>
-          <Col sm={24} md={12} lg={12}>
+        <Row justify="space-between" gutter={[10, 10]}>
+          <Col sm={24} md={12} lg={9} xl={12}>
             <h1 className="joining-header">Joining the GPML</h1>
             <h2>Global Partnership on Marine Litter (GPML)</h2>
             <ul>
@@ -44,54 +44,75 @@ const SignupView = ({ ...props }) => {
               <li>Network with other stakeholders</li>
             </ul>
           </Col>
-          <Col sm={24} md={12} lg={12}>
+          <Col sm={24} md={12} lg={15} xl={12}>
             <Card className="green-overlay">
               <h2>How do I join the GPML?</h2>
-              <div className="choices">
-                <Card>
-                  <Avatar size="large" icon={<UsergroupAddOutlined />} />
-                  <p className="body-text">
-                    I represent an Entity and I wish to submit an application
-                    for this Entity to become a member of the Global Partnership
-                    on Marine Litter (GPML)​.
-                  </p>
-                  <Button
-                    type="ghost"
-                    className="green"
-                    onClick={() => {
-                      setTypeSignUp("entity");
-                      if (!isAuthenticated) {
-                        loginWithPopup({ screen_hint: "signup" });
-                      } else {
-                        history.push("/entity-signup");
-                      }
-                    }}
-                  >
-                    Apply for an Entity
-                  </Button>
-                </Card>
-                <Card>
-                  <Avatar size="large" icon={<UserOutlined />} />
-                  <p className="body-text">
-                    I wish to sign up to the GPML Digital Platform in my own
-                    individual capacity.
-                  </p>
-                  <Button
-                    type="ghost"
-                    className="green"
-                    onClick={() => {
-                      setTypeSignUp("stakeholder");
-                      if (!isAuthenticated) {
-                        loginWithPopup({ screen_hint: "signup" });
-                      } else {
-                        history.push("/stakeholder-signup");
-                      }
-                    }}
-                  >
-                    Sign up as an Individual
-                  </Button>
-                </Card>
-              </div>
+              <Row
+                className="choices"
+                align="middle"
+                justify="space-between"
+                gutter={[10, 10]}
+              >
+                <Col
+                  sm={24}
+                  md={24}
+                  lg={12}
+                  align="center"
+                  className="choices-item"
+                >
+                  <Card>
+                    <Avatar size="large" icon={<UsergroupAddOutlined />} />
+                    <p className="body-text">
+                      I represent an Entity and I wish to submit an application
+                      for this Entity to become a member of the Global
+                      Partnership on Marine Litter (GPML)​.
+                    </p>
+                    <Button
+                      type="ghost"
+                      className="green"
+                      onClick={() => {
+                        setTypeSignUp("entity");
+                        if (!isAuthenticated) {
+                          loginWithPopup({ screen_hint: "signup" });
+                        } else {
+                          history.push("/entity-signup");
+                        }
+                      }}
+                    >
+                      Apply for an Entity
+                    </Button>
+                  </Card>
+                </Col>
+                <Col
+                  sm={24}
+                  md={24}
+                  lg={12}
+                  align="center"
+                  className="choices-item"
+                >
+                  <Card>
+                    <Avatar size="large" icon={<UserOutlined />} />
+                    <p className="body-text">
+                      I wish to sign up to the GPML Digital Platform in my own
+                      individual capacity.
+                    </p>
+                    <Button
+                      type="ghost"
+                      className="green"
+                      onClick={() => {
+                        setTypeSignUp("stakeholder");
+                        if (!isAuthenticated) {
+                          loginWithPopup({ screen_hint: "signup" });
+                        } else {
+                          history.push("/stakeholder-signup");
+                        }
+                      }}
+                    >
+                      Sign up as an Individual
+                    </Button>
+                  </Card>
+                </Col>
+              </Row>
               <div className="login">
                 *Note: The GPML is a Partnership of Organizations and
                 Governments, whereas the GPML Digital Platform is open to any
