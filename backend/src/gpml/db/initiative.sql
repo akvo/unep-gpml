@@ -21,7 +21,7 @@ json_agg(DISTINCT jsonb_build_object('name', focus_names.value)) AS focus_area,
 jsonb_build_object('name', STRING_AGG(DISTINCT outcome_names.value, ', ')) AS outcome_and_impact,
 jsonb_build_object('reports', report.value) AS is_action_being_reported,
 jsonb_build_object('name', term.value) AS activity_term,
--- json_agg(DISTINCT jsonb_build_object('name', activity_names.value)) AS activity_owner,
+json_agg(DISTINCT jsonb_build_object('name', implementing_entity_names.value)) AS activity_owner,
 json_agg(DISTINCT jsonb_build_object('name', main_focus_names.value)) AS main_focus,
 json_agg(DISTINCT jsonb_build_object('name', infos.value)) AS info_resource_links,
 json_agg(DISTINCT jsonb_build_object('name', sector_names.value)) AS sector,
@@ -37,8 +37,8 @@ jsonb_build_object('name', STRING_AGG(DISTINCT donor_names.value,', '), 'types',
   LEFT JOIN jsonb_array_elements(q4) main_focus ON true
   LEFT JOIN jsonb_each_text(main_focus) main_focus_names ON true
 
---  LEFT JOIN jsonb_array_elements(q4) activities ON true
---  LEFT JOIN jsonb_each_text(activities) activity_names ON true
+  LEFT JOIN jsonb_array_elements(q16) implementing_entity ON true
+  LEFT JOIN jsonb_each_text(implementing_entity) implementing_entity_names ON true
 
   LEFT JOIN jsonb_each_text(q1_1) organisation ON true
   LEFT JOIN jsonb_each_text(q1_1_1) non_member_organisation ON true
