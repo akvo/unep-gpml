@@ -126,13 +126,12 @@
 (defmethod ig/init-key :gpml.handler.browse/get [_ {:keys [db]}]
   (fn [{{:keys [query]} :parameters
         approved? :approved?
-        admin :admin
         user :user}]
     (resp/response (#'browse-response
                     (merge query {:user-id (:id user)})
                     (:spec db)
                     approved?
-                    admin))))
+                    (= "ADMIN" (:role user))))))
 
 (defmethod ig/init-key :gpml.handler.browse/query-params [_ _]
   query-params)
