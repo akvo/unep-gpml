@@ -165,7 +165,7 @@ const renderItemValues = (
                   data?.publicEmail &&
                   data[key]}
                 {currencyObject && data[currencyObject.name]
-                  ? `${data[currencyObject.name][0].name} `
+                  ? `${data[currencyObject.name]?.[0]?.name?.toUpperCase()} `
                   : ""}
                 {value === key &&
                   type === "currency" &&
