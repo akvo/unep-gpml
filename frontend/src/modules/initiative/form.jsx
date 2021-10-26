@@ -151,11 +151,20 @@ export const transformFormData = (data, formData, schema, not_q_prefixed) => {
             schema[key]?.enum.length > 0 &&
             schema[key].enumNames.length > 0
           ) {
-            data[`${q_prefix}${qKey}`] = {
+            const val = {
               [String(formData[key]).toLowerCase()]: schema?.[key].enumNames?.[
                 schema[key].enum.indexOf(formData[key])
               ],
             };
+            data[`${q_prefix}${qKey}`] = val;
+            /*
+              for initiative form
+              transform transnational value to send as an array of object
+              (24_4 is the transnational question)
+            */
+            if (qKey === "24_4") {
+              data[`${q_prefix}${qKey}`] = [val];
+            }
           }
         }
       }
@@ -187,6 +196,8 @@ const AddInitiativeForm = withRouter(
       let data = {};
       transformFormData(data, formData, formSchema.schema.properties);
       data.version = parseInt(formSchema.schema.version);
+      console.log(data);
+      // return;
 
       setSending(true);
       if (status === "add" && !params?.id) {
