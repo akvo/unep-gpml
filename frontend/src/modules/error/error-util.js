@@ -1,5 +1,5 @@
 export const redirectError = (err, history) => {
-  const { status } = err?.response;
+  const status = err?.response?.status;
   if (status === 403) {
     return history.push("/not-authorized");
   }
