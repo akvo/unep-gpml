@@ -157,6 +157,14 @@ export const transformFormData = (data, formData, schema, not_q_prefixed) => {
               ],
             };
             data[`${q_prefix}${qKey}`] = val;
+            /*
+              for initiative form
+              transform transnational value to send as an array of object
+              (24_4 is the transnational question)
+            */
+            if (qKey === "24_4") {
+              data[`${q_prefix}${qKey}`] = [val];
+            }
           }
         }
       }
