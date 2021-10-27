@@ -151,10 +151,58 @@ export const transformFormData = (data, formData, schema, not_q_prefixed) => {
             schema[key]?.enum.length > 0 &&
             schema[key].enumNames.length > 0
           ) {
+            // geotype value handle
+            if (qKey === "24") {
+              const geoTypeValue = formData[key].toLowerCase();
+              if (geoTypeValue === "global") {
+                data["q24_1"] = null;
+                data["q24_2"] = null;
+                data["q24_3"] = null;
+                data["q24_4"] = null;
+                data["q24_5"] = null;
+              }
+              if (geoTypeValue === "regional") {
+                data["q24_2"] = null;
+                data["q24_3"] = null;
+                data["q24_4"] = null;
+                data["q24_5"] = null;
+              }
+              if (geoTypeValue === "national") {
+                data["q24_1"] = null;
+                data["q24_3"] = null;
+                data["q24_4"] = null;
+                data["q24_5"] = null;
+              }
+              if (geoTypeValue === "sub-national") {
+                data["q24_1"] = null;
+                data["q24_2"] = null;
+                data["q24_4"] = null;
+                data["q24_5"] = null;
+              }
+              if (geoTypeValue === "transnational") {
+                data["q24_1"] = null;
+                data["q24_2"] = null;
+                data["q24_3"] = null;
+                data["q24_5"] = null;
+              }
+              if (geoTypeValue === "global with elements in specific areas") {
+                data["q24_1"] = null;
+                data["q24_2"] = null;
+                data["q24_3"] = null;
+                data["q24_4"] = null;
+              }
+            }
             const val = {
               [String(formData[key]).toLowerCase()]: schema?.[key].enumNames?.[
                 schema[key].enum.indexOf(formData[key])
               ],
+            }
+            // eol geotype value handle
+            data[`${q_prefix}${qKey}`] = {
+              [formData[key]]:
+                schema?.[key].enumNames?.[
+                  schema[key].enum.indexOf(formData[key])
+                ],
             };
             data[`${q_prefix}${qKey}`] = val;
             /*
