@@ -200,7 +200,7 @@ const AddInitiativeForm = withRouter(
       setSending(true);
       if (status === "add" && !params?.id) {
         api
-          .post("/initiative", data)
+          .postRaw("/initiative", data)
           .then(() => {
             UIStore.update((e) => {
               e.formStep = {
@@ -224,7 +224,7 @@ const AddInitiativeForm = withRouter(
       }
       if (status === "edit" || params?.id) {
         api
-          .put(`/detail/project/${id || params?.id}`, data)
+          .putRaw(`/detail/project/${id || params?.id}`, data)
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {
