@@ -301,7 +301,6 @@
       (update :currency_amount_invested not-nil-name)
       (update :currency_in_kind_contribution not-nil-name)
       (update :activity_owner not-nil-name)
-      (update :activity_term not-nil-name)
       (update :is_action_being_reported #(when (:reports %) %))))
 
 (defn- common-queries [table path & [geo url tags]]
