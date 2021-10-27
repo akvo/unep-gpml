@@ -535,7 +535,7 @@ const formDataMapping = [
     section: "S3",
     group: "S3_G2",
     question: "S3_G2_24.4",
-    type: "option",
+    type: "multiple-option",
   },
   {
     name: "q24_5",
