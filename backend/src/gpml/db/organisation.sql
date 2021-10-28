@@ -37,6 +37,7 @@ insert into organisation (
 --~ (when (contains? params :created_by) ", created_by")
 --~ (when (contains? params :second_contact) ", second_contact")
 --~ (when (contains? params :review_status) ", review_status")
+--~ (when (contains? params :is_member) ", is_member")
 )
 values (
     :name
@@ -58,6 +59,7 @@ values (
 --~ (when (contains? params :created_by) ", :created_by")
 --~ (when (contains? params :second_contact) ", :second_contact")
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
+--~ (when (contains? params :is_member) ", :is_member")
 ) returning id;
 
 -- :name update-organisation :! :n
