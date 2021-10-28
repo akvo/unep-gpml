@@ -193,7 +193,7 @@
             tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
             org (:org body-params)
             old-profile (db.stakeholder/stakeholder-by-email tx jwt-claims)
-            new-profile (merge old-profile body-params)
+            new-profile (merge (dissoc old-profile :non_member_organisation) body-params)
             profile (cond-> new-profile
                       (:photo body-params)
                       (assoc :picture
