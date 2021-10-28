@@ -17,7 +17,7 @@
 
 (defmethod ig/init-key :gpml.handler.organisation/get [_ {:keys [db]}]
   (fn [_]
-      (resp/response (db.organisation/all-organisation (:spec db)))))
+      (resp/response (db.organisation/all-members (:spec db)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/get-id [_ {:keys [db]}]
   (fn [{{:keys [path]} :parameters}]
