@@ -174,7 +174,7 @@ const renderItemValues = (
                   <a
                     target="_blank"
                     rel="noreferrer"
-                    href={data[value] || ""}
+                    href={urlLink(data[value]) || ""}
                     style={{ wordBreak: "break-word" }}
                   >
                     {data[value] || ""}
