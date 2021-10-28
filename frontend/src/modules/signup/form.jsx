@@ -205,6 +205,7 @@ const SignUpForm = withRouter(
       // add stakeholder id
       if (hideEntityPersonalDetail) {
         data.stakeholderId = profile?.id;
+        delete data.title;
       }
 
       if (status === "add" && !params?.id) {
