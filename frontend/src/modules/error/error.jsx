@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router";
 import { Row, Col, Result, Button } from "antd";
 import { InfoCircleFilled } from "@ant-design/icons";
 
@@ -6,12 +7,12 @@ import "./error.scss";
 
 const ErrorIcon = () => <InfoCircleFilled className="error-icon" />;
 
-const RefreshButton = () => {
+const RefreshButton = ({ history }) => {
   return (
     <Button
       type="ghost"
       className="try-again-btn"
-      onClick={() => window.location.reload()}
+      onClick={() => history.goBack()}
       danger
     >
       Try Again
@@ -19,7 +20,7 @@ const RefreshButton = () => {
   );
 };
 
-const pageProps = (status) => {
+const pageProps = (status, history) => {
   switch (status) {
     case 404:
       return {
@@ -45,13 +46,15 @@ const pageProps = (status) => {
             problem persist.
           </div>
         ),
-        extra: <RefreshButton />,
+        extra: <RefreshButton history={history} />,
       };
   }
 };
 
 const Error = ({ status }) => {
-  const props = pageProps(status);
+  const history = useHistory();
+  console.log(history);
+  const props = pageProps(status, history);
   return (
     <Row className="error-container" align="middle" justify="center">
       <Col span={24}>

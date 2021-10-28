@@ -174,7 +174,7 @@ const renderItemValues = (
                   <a
                     target="_blank"
                     rel="noreferrer"
-                    href={data[value] || ""}
+                    href={urlLink(data[value]) || ""}
                     style={{ wordBreak: "break-word" }}
                   >
                     {data[value] || ""}
@@ -526,7 +526,16 @@ const DetailsView = ({
       it.topic === resourceTypeToTopicType(params.type)
   );
 
-  const isLoaded = useCallback(() => Boolean(!isEmpty(countries)), [countries]);
+  const isLoaded = useCallback(
+    () =>
+      Boolean(
+        !isEmpty(countries) &&
+          (["organisation", "stakeholder"].includes(params?.type)
+            ? !isEmpty(profile)
+            : true)
+      ),
+    [countries, params, profile]
+  );
 
   const allowBookmark =
     params.type !== "stakeholder" || profile.id !== params.id;
