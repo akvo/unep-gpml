@@ -46,7 +46,7 @@
    ",\n"
    (for [k (keys (dissoc data :id))]
      (str (str/replace (str k) ":" "")
-          (if (is-jsonb k)
+          (if (and (is-jsonb k) (get data k))
             (format "= to_jsonb(:v%s)" k)
             (format "= %s" k))))))
 
