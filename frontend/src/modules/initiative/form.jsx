@@ -193,10 +193,11 @@ export const transformFormData = (data, formData, schema, not_q_prefixed) => {
               }
             }
             const val = {
-              [String(formData[key]).toLowerCase()]: schema?.[key].enumNames?.[
-                schema[key].enum.indexOf(formData[key])
-              ],
-            }
+              [formData[key]]:
+                schema?.[key].enumNames?.[
+                  schema[key].enum.indexOf(formData[key])
+                ],
+            };
             // eol geotype value handle
             data[`${q_prefix}${qKey}`] = {
               [formData[key]]:
