@@ -175,7 +175,7 @@
                                                                   (:picture jwt-claims)))
                                               (when (:new_org body-params)
                                                 {:affiliation (make-organisation db (:new_org body-params))})))
-          stakeholder-id (if-let [current-stakeholder (db.stakeholder/stakeholder-by-email db (:email jwt-claims))]
+          stakeholder-id (if-let [current-stakeholder (db.stakeholder/stakeholder-by-email db {:email (:email profile)})]
                            (:id current-stakeholder)
                            (let [new-stakeholder (db.stakeholder/new-stakeholder db profile)]
                              (email/notify-admins-pending-approval db mailjet-config
