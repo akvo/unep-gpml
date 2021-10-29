@@ -205,6 +205,19 @@ const SignUpForm = withRouter(
 
       if (hideEntityPersonalDetail) {
         delete data.title;
+        // get personal details data from profile
+        // filter null value
+        let filteredProfile = {};
+        Object.keys(profile).forEach((key) => {
+          if (profile[key]) {
+            filteredProfile = {
+              ...filteredProfile,
+              [key]: profile[key],
+            };
+          }
+        });
+        // add filtered profile to data payload
+        data = { ...filteredProfile, ...data };
       }
 
       if (status === "add" && !params?.id) {
