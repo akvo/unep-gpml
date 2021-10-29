@@ -90,27 +90,29 @@ const SignupView = ({ ...props }) => {
                   align="center"
                   className="choices-item"
                 >
-                  <Card>
-                    <Avatar size="large" icon={<UserOutlined />} />
-                    <p className="body-text">
-                      I wish to sign up to the GPML Digital Platform in my own
-                      individual capacity.
-                    </p>
-                    <Button
-                      type="ghost"
-                      className="green"
-                      onClick={() => {
-                        setTypeSignUp("stakeholder");
-                        if (!isAuthenticated) {
-                          loginWithPopup({ screen_hint: "signup" });
-                        } else {
-                          history.push("/stakeholder-signup");
-                        }
-                      }}
-                    >
-                      Sign up as an Individual
-                    </Button>
-                  </Card>
+                  {!profile?.reviewStatus && (
+                    <Card>
+                      <Avatar size="large" icon={<UserOutlined />} />
+                      <p className="body-text">
+                        I wish to sign up to the GPML Digital Platform in my own
+                        individual capacity.
+                      </p>
+                      <Button
+                        type="ghost"
+                        className="green"
+                        onClick={() => {
+                          setTypeSignUp("stakeholder");
+                          if (!isAuthenticated) {
+                            loginWithPopup({ screen_hint: "signup" });
+                          } else {
+                            history.push("/stakeholder-signup");
+                          }
+                        }}
+                      >
+                        Sign up as an Individual
+                      </Button>
+                    </Card>
+                  )}
                 </Col>
               </Row>
               <div className="login">

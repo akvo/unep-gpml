@@ -639,159 +639,164 @@ const AddButton = withRouter(
     if (isAuthenticated) {
       if (profile?.reviewStatus === "APPROVED") {
         return (
-          <Dropdown
-            overlayClassName="add-dropdown-wrapper"
-            overlay={
-              <Menu className="add-dropdown">
-                <Menu.Item
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        initiative: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        initiative: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                    history.push("/add-initiative");
-                  }}
-                >
-                  Initiative
-                </Menu.Item>
-                <Menu.Item
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        actionPlan: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        actionPlan: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                    history.push("/add-action-plan");
-                  }}
-                >
-                  Action Plan
-                </Menu.Item>
-                <Menu.Item
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        policy: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        policy: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                    history.push("/add-policy");
-                  }}
-                >
-                  Policy
-                </Menu.Item>
-                <Menu.Item
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        technicalResource: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        technicalResource: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                    history.push("/add-technical-resource");
-                  }}
-                >
-                  Technical Resource
-                </Menu.Item>
-                <Menu.Item
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        financingResource: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        financingResource: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                    history.push("/add-financing-resource");
-                  }}
-                >
-                  Financing Resource
-                </Menu.Item>
-                <Menu.Item
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        event: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        event: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                    history.push("/add-event");
-                  }}
-                >
-                  Event
-                </Menu.Item>
-                <Menu.Item
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        technology: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        technology: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                    history.push("/add-technology");
-                  }}
-                >
-                  Technology
-                </Menu.Item>
-              </Menu>
-            }
-            trigger={["click"]}
-            placement="bottomRight"
-          >
-            <Button type="primary" placement="bottomRight">
-              Add Content
-            </Button>
-          </Dropdown>
+          <>
+            {!profile?.org && (
+              <JoinGPMLButton loginWithPopup={loginWithPopup} />
+            )}
+            <Dropdown
+              overlayClassName="add-dropdown-wrapper"
+              overlay={
+                <Menu className="add-dropdown">
+                  <Menu.Item
+                    onClick={() => {
+                      UIStore.update((e) => {
+                        e.formStep = {
+                          ...e.formStep,
+                          initiative: 1,
+                        };
+                        e.formEdit = {
+                          ...e.formEdit,
+                          initiative: {
+                            status: "add",
+                            id: null,
+                          },
+                        };
+                      });
+                      history.push("/add-initiative");
+                    }}
+                  >
+                    Initiative
+                  </Menu.Item>
+                  <Menu.Item
+                    onClick={() => {
+                      UIStore.update((e) => {
+                        e.formStep = {
+                          ...e.formStep,
+                          actionPlan: 1,
+                        };
+                        e.formEdit = {
+                          ...e.formEdit,
+                          actionPlan: {
+                            status: "add",
+                            id: null,
+                          },
+                        };
+                      });
+                      history.push("/add-action-plan");
+                    }}
+                  >
+                    Action Plan
+                  </Menu.Item>
+                  <Menu.Item
+                    onClick={() => {
+                      UIStore.update((e) => {
+                        e.formStep = {
+                          ...e.formStep,
+                          policy: 1,
+                        };
+                        e.formEdit = {
+                          ...e.formEdit,
+                          policy: {
+                            status: "add",
+                            id: null,
+                          },
+                        };
+                      });
+                      history.push("/add-policy");
+                    }}
+                  >
+                    Policy
+                  </Menu.Item>
+                  <Menu.Item
+                    onClick={() => {
+                      UIStore.update((e) => {
+                        e.formStep = {
+                          ...e.formStep,
+                          technicalResource: 1,
+                        };
+                        e.formEdit = {
+                          ...e.formEdit,
+                          technicalResource: {
+                            status: "add",
+                            id: null,
+                          },
+                        };
+                      });
+                      history.push("/add-technical-resource");
+                    }}
+                  >
+                    Technical Resource
+                  </Menu.Item>
+                  <Menu.Item
+                    onClick={() => {
+                      UIStore.update((e) => {
+                        e.formStep = {
+                          ...e.formStep,
+                          financingResource: 1,
+                        };
+                        e.formEdit = {
+                          ...e.formEdit,
+                          financingResource: {
+                            status: "add",
+                            id: null,
+                          },
+                        };
+                      });
+                      history.push("/add-financing-resource");
+                    }}
+                  >
+                    Financing Resource
+                  </Menu.Item>
+                  <Menu.Item
+                    onClick={() => {
+                      UIStore.update((e) => {
+                        e.formStep = {
+                          ...e.formStep,
+                          event: 1,
+                        };
+                        e.formEdit = {
+                          ...e.formEdit,
+                          event: {
+                            status: "add",
+                            id: null,
+                          },
+                        };
+                      });
+                      history.push("/add-event");
+                    }}
+                  >
+                    Event
+                  </Menu.Item>
+                  <Menu.Item
+                    onClick={() => {
+                      UIStore.update((e) => {
+                        e.formStep = {
+                          ...e.formStep,
+                          technology: 1,
+                        };
+                        e.formEdit = {
+                          ...e.formEdit,
+                          technology: {
+                            status: "add",
+                            id: null,
+                          },
+                        };
+                      });
+                      history.push("/add-technology");
+                    }}
+                  >
+                    Technology
+                  </Menu.Item>
+                </Menu>
+              }
+              trigger={["click"]}
+              placement="bottomRight"
+            >
+              <Button type="primary" placement="bottomRight">
+                Add Content
+              </Button>
+            </Dropdown>
+          </>
         );
       }
       return (
