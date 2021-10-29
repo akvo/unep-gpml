@@ -908,7 +908,7 @@ export const schema = {
                   questions: ["S3_G2_24.5"],
                 },
               ],
-              enum: geoCoverageTypeOptions,
+              enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
               enumNames: geoCoverageTypeOptions,
             },
             "S3_G2_24.1": {

@@ -47,8 +47,26 @@ const API = () => {
       axios({ url, params, ...getConfig(), ...config, transformResponse: [] }),
     post: (url, data, config = {}) =>
       axios({ url, method: "POST", data, ...getConfig(), ...config }),
+    postRaw: (url, data, config = {}) =>
+      axios({
+        url,
+        method: "POST",
+        data,
+        ...getConfig(),
+        ...config,
+        transformRequest: [(data) => data, ...axios.defaults.transformRequest],
+      }),
     put: (url, data, config) =>
       axios({ url, method: "PUT", data, ...getConfig(), ...config }),
+    putRaw: (url, data, config) =>
+      axios({
+        url,
+        method: "PUT",
+        data,
+        ...getConfig(),
+        ...config,
+        transformRequest: [(data) => data, ...axios.defaults.transformRequest],
+      }),
     patch: (url, data, config) =>
       axios({ url, method: "PATCH", data, ...getConfig(), ...config }),
     delete: (url) => axios({ url, method: "DELETE", ...getConfig() }),

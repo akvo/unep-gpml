@@ -702,7 +702,7 @@ const getRevertValue = (type, value, name) => {
     res = Object.keys(value)[0];
     // case for geocoveragetype
     if (name === "q24") {
-      res = Object.values(value)[0];
+      res = Object.values(value)?.[0]?.toLowerCase();
     }
     res = isNaN(Number(res)) ? res : Number(res);
     // case for currency code

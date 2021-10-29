@@ -36,7 +36,9 @@
    (str/join ", "
              (for [k (keys data)]
                (if-not (= k :id)
-                 (str (str/replace (str k) ":" "") (str " = to_jsonb(:v" k "::json) "))
+                 (if (get data k)
+                   (str (str/replace (str k) ":" "") (str " = to_jsonb(:v" k "::json) "))
+                   (str (str/replace (str k) ":" "") (str " = :v" k " ")))
                  ""))) "," ""))
 
 (defn generate-update-initiative [data]
@@ -44,7 +46,7 @@
    ",\n"
    (for [k (keys (dissoc data :id))]
      (str (str/replace (str k) ":" "")
-          (if (is-jsonb k)
+          (if (and (is-jsonb k) (get data k))
             (format "= to_jsonb(:v%s)" k)
             (format "= %s" k))))))
 
