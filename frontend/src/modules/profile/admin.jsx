@@ -184,7 +184,7 @@ const AdminSection = ({
 
   const assignReviewer = (item, reviewer) => {
     setLoadingAssignReviewer(item);
-    const data = { reviewer };
+    const data = { reviewer: reviewer };
     const apiCall = item?.reviewer?.id ? api.patch : api.post;
     apiCall(`/review/${item.type}/${item.id}`, data).then((res) => {
       setLoadingAssignReviewer(false);
@@ -198,11 +198,12 @@ const AdminSection = ({
   const ReviewStatus = ({ item }) => {
     return (
       <Select
+        mode="multiple"
         showSearch={true}
         className="select-reviewer"
         placeholder="Assign reviewer"
         onChange={(reviewerId) => assignReviewer(item, reviewerId)}
-        defaultValue={item?.reviewer?.id}
+        value={item?.reviewer?.id ? [item.reviewer.id] : []}
         filterOption={(input, option) =>
           option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
