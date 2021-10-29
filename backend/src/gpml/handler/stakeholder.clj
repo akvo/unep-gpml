@@ -175,12 +175,15 @@
                                                                   (:picture jwt-claims)))
                                               (when (:new_org body-params)
                                                 {:affiliation (make-organisation db (:new_org body-params))})))
-          stakeholder-id (:id (db.stakeholder/new-stakeholder db profile))
-          _              (email/notify-admins-pending-approval db mailjet-config
-                                                               (merge profile {:type "stakeholder"}))
+          stakeholder-id (if-let [current-stakeholder (db.stakeholder/stakeholder-by-email db (:email jwt-claims))]
+                           (:id current-stakeholder)
+                           (let [new-stakeholder (db.stakeholder/new-stakeholder db profile)]
+                             (email/notify-admins-pending-approval db mailjet-config
+                                                                   (merge profile {:type "stakeholder"}))
+                             (when-let [tag-ids (seq (concat (:offering body-params) (:seeking body-params)))]
+                               (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector (:id new-stakeholder) %) tag-ids)}))
+                             (:id new-stakeholder)))
           profile        (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
-          _              (when-let [tag-ids (seq (concat (:offering body-params) (:seeking body-params)))]
-                           (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector (:id profile) %) tag-ids)}))
           res            (-> (merge body-params profile)
                              (dissoc :affiliation :picture :new_org)
                              (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
