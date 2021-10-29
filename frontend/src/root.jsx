@@ -206,7 +206,12 @@ const Root = () => {
         api.setToken(null);
       }
       if (isAuthenticated) {
-        const resp = await api.get("/profile");
+        let resp = await api.get("/profile");
+        if (!resp.data?.org?.isMember) {
+          resp.data.org = null;
+        } else if (resp?.data) {
+          resp.data.non_member_organisation = null;
+        }
         if (Object.keys(resp.data).length === 0) {
           UIStore.update((e) => {
             e.profile = { email: response.email };
