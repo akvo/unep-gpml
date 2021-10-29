@@ -202,15 +202,14 @@ const SignUpForm = withRouter(
           delete data.newCompanyName;
         }
       }
-      // add stakeholder id
+
       if (hideEntityPersonalDetail) {
-        data.stakeholderId = profile?.id;
         delete data.title;
       }
 
       if (status === "add" && !params?.id) {
-        const apiCall = hideEntityPersonalDetail ? api.patch : api.post;
-        apiCall("/profile", data)
+        api
+          .post("/profile", data)
           .then((res) => {
             UIStore.update((e) => {
               e.formStep = {
