@@ -146,9 +146,11 @@
         (resp/response profile))
       (resp/response {}))))
 
-(defn- make-affiliation [db org]
+(defn- make-affiliation [db mailjet-config org]
   (if-not (:id org)
     (let [org-id (handler.org/create db org)]
+      (email/notify-admins-pending-approval db mailjet-config
+                                            {:title (:name org) :type "organisation"})
       (when-let [tag-ids (seq (:expertise org))]
         (db.organisation/add-organisation-tags db {:tags (map #(vector org-id %) tag-ids)}))
       org-id)
@@ -167,7 +169,7 @@
   (fn [{:keys [jwt-claims body-params headers]}]
     (let [profile        (make-profile (merge (assoc body-params
                                                      :affiliation (when (:org body-params)
-                                                                    (make-affiliation db (:org body-params)))
+                                                                    (make-affiliation db mailjet-config (:org body-params)))
                                                      :email (:email jwt-claims)
                                                      :cv (or (assoc-cv db (:cv body-params))
                                                              (:cv body-params))
