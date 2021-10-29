@@ -74,10 +74,19 @@ const SignUp = ({ match: { params }, ...props }) => {
   const { editId, data } = formData;
   const { status, id } = formEdit.signUp;
 
-  const tabsData = tabs;
+  // hide personal details when user already registered
+  const hasProfile = profile?.reviewStatus;
+  const hideEntityPersonalDetail = hasProfile && isEntityType;
+  hideEntityPersonalDetail &&
+    schema?.properties?.["S2"] &&
+    delete schema?.properties?.["S2"];
+  const tabsData = hideEntityPersonalDetail
+    ? tabs.filter((x) => x?.key !== "S2")
+    : tabs;
   const [formSchema, setFormSchema] = useState({
     schema: schema,
   });
+
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -137,7 +146,7 @@ const SignUp = ({ match: { params }, ...props }) => {
   useEffect(() => {
     const dataId = Number(params?.id || id);
     if (isLoaded()) {
-      setFormSchema(getSchema(storeData));
+      setFormSchema(getSchema(storeData, hideEntityPersonalDetail));
       // Manage form status, add/edit
       if (
         (status === "edit" || dataId) &&
@@ -172,6 +181,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     editId,
     params,
     isLoaded,
+    hideEntityPersonalDetail,
   ]);
 
   const renderSteps = (parentTitle, section, steps, index) => {
@@ -493,6 +503,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                         setHighlight={setHighlight}
                         formSchema={formSchema}
                         setDisabledBtn={setDisabledBtn}
+                        hideEntityPersonalDetail={hideEntityPersonalDetail}
                       />
                       <div className="button-row">
                         {!isFirstStep() && (

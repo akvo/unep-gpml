@@ -45,9 +45,16 @@ const SignUpForm = withRouter(
     formSchema,
     setDisabledBtn,
     history,
+    hideEntityPersonalDetail,
     match: { params },
   }) => {
-    const { countries, organisations, tags, formEdit } = UIStore.currentState;
+    const {
+      countries,
+      organisations,
+      tags,
+      formEdit,
+      profile,
+    } = UIStore.currentState;
     const { status, id } = formEdit.signUp;
     const { initialSignUpData, signUpData } = isEntityType
       ? entity
@@ -195,6 +202,24 @@ const SignUpForm = withRouter(
           delete data.newCompanyName;
         }
       }
+
+      if (hideEntityPersonalDetail) {
+        delete data.title;
+        // get personal details data from profile
+        // filter null value
+        let filteredProfile = {};
+        Object.keys(profile).forEach((key) => {
+          if (profile[key]) {
+            filteredProfile = {
+              ...filteredProfile,
+              [key]: profile[key],
+            };
+          }
+        });
+        // add filtered profile to data payload
+        data = { ...filteredProfile, ...data };
+      }
+
       if (status === "add" && !params?.id) {
         api
           .post("/profile", data)
@@ -345,10 +370,6 @@ const SignUpForm = withRouter(
                 ...e.data.S1,
                 required: groupRequiredFields["S1"].required,
               },
-              S2: {
-                ...e.data.S2,
-                required: groupRequiredFields["S2"].required,
-              },
               S3: {
                 ...e.data.S3,
                 required: groupRequiredFields["S3"].required,
@@ -362,6 +383,16 @@ const SignUpForm = withRouter(
                 required: groupRequiredFields["S5"].required,
               },
             };
+            // add S2- Personal Details here
+            if (!hideEntityPersonalDetail) {
+              formSections = {
+                ...formSections,
+                S2: {
+                  ...e.data.S2,
+                  required: groupRequiredFields["S2"].required,
+                },
+              };
+            }
           } else {
             formSections = {
               S1: {
@@ -391,7 +422,13 @@ const SignUpForm = withRouter(
         requiredFilledIn.length !== 0 &&
           setDisabledBtn({ disabled: true, type: "default" });
       },
-      [isEntityType, signUpData, formSchema, setDisabledBtn]
+      [
+        isEntityType,
+        signUpData,
+        formSchema,
+        setDisabledBtn,
+        hideEntityPersonalDetail,
+      ]
     );
 
     const handleTransformErrors = (errors, dependValue) => {

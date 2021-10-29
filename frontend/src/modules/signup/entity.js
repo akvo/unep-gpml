@@ -36,36 +36,41 @@ const signUpData = new Store({
   data: initialSignUpData,
   editId: null,
 });
-const getSchema = ({
-  stakeholders,
-  countries,
-  tags,
-  regionOptions,
-  transnationalOptions,
-  meaOptions,
-  sectorOptions,
-  organisationType,
-  representativeGroup,
-  profile,
-}) => {
+const getSchema = (
+  {
+    stakeholders,
+    countries,
+    tags,
+    regionOptions,
+    transnationalOptions,
+    meaOptions,
+    sectorOptions,
+    organisationType,
+    representativeGroup,
+    profile,
+  },
+  hideEntityPersonalDetail = false
+) => {
   const prop = cloneDeep(schema.properties);
-  prop.S2.properties.email.default = profile.email;
-  prop.S2.properties.S1_ExpertisesAndActivities.properties[
-    "seeking"
-  ].enum = tags?.seeking?.map((it) => String(it.id));
-  prop.S2.properties.S1_ExpertisesAndActivities.properties[
-    "seeking"
-  ].enumNames = tags?.seeking?.map((it) => it.tag);
-  prop.S2.properties.S1_ExpertisesAndActivities.properties[
-    "offering"
-  ].enum = tags?.offering?.map((it) => String(it.id));
-  prop.S2.properties.S1_ExpertisesAndActivities.properties[
-    "offering"
-  ].enumNames = tags?.offering?.map((it) => it.tag);
+  if (!hideEntityPersonalDetail) {
+    prop.S2.properties.email.default = profile.email;
+    prop.S2.properties.S1_ExpertisesAndActivities.properties[
+      "seeking"
+    ].enum = tags?.seeking?.map((it) => String(it.id));
+    prop.S2.properties.S1_ExpertisesAndActivities.properties[
+      "seeking"
+    ].enumNames = tags?.seeking?.map((it) => it.tag);
+    prop.S2.properties.S1_ExpertisesAndActivities.properties[
+      "offering"
+    ].enum = tags?.offering?.map((it) => String(it.id));
+    prop.S2.properties.S1_ExpertisesAndActivities.properties[
+      "offering"
+    ].enumNames = tags?.offering?.map((it) => it.tag);
 
-  // // country options
-  prop.S2.properties["country"].enum = countries?.map((x) => x.id);
-  prop.S2.properties["country"].enumNames = countries?.map((x) => x.name);
+    // // country options
+    prop.S2.properties["country"].enum = countries?.map((x) => x.id);
+    prop.S2.properties["country"].enumNames = countries?.map((x) => x.name);
+  }
 
   const representative = representativeGroup?.map((x) => x.name);
   prop.S3.properties["org.representativeGroup"].enum = [...representative, -1];
