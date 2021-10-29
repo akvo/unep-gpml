@@ -94,8 +94,8 @@
               :role "USER"
               :org (db.organisation/organisation-by-id db {:id 1})
               :twitter "johndoe"
-              :non_member_organisation nil
               :reviewed_at nil
+              :non_member_organisation 1
               :reviewed_by nil
               :review_status "SUBMITTED"
               :public_email false
@@ -141,8 +141,8 @@
               :org (db.organisation/organisation-by-id db {:id 10001})
               :twitter "johndoe"
               :reviewed_at nil
-              :non_member_organisation nil
               :reviewed_by nil
+              :non_member_organisation 10001
               :review_status "SUBMITTED"
               :public_email false
               :public_database false}
@@ -222,8 +222,8 @@
               :role "USER"
               :about "Dolor sit Amet"
               :affiliation 1
+              :non_member_organisation 1
               :reviewed_at nil
-              :non_member_organisation nil
               :reviewed_by nil
               :review_status "SUBMITTED"
               :public_email true
@@ -268,9 +268,9 @@
               :photo "https://lh3.googleusercontent.com"
               :representation ""
               :role "USER"
+              :non_member_organisation 1
               :about "Dolor sit Amet"
               :affiliation 1
-              :non_member_organisation nil
               :reviewed_at nil
               :reviewed_by nil
               :cv nil

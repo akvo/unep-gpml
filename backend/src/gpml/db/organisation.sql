@@ -2,6 +2,15 @@
 -- :doc Get all organisations
 select id, name from organisation order by id
 
+-- :name all-members :? :*
+-- :doc Get all member organisations
+select id, name from organisation where is_member=true order by id
+
+-- :name all-non-members :? :*
+-- :doc Get all non member organisations
+select id, name from organisation where is_member=false order by id
+
+
 -- :name organisation-by-id :? :1
 -- :doc Get organisation by id
 select id, name, url, type, geo_coverage_type, country
@@ -37,6 +46,7 @@ insert into organisation (
 --~ (when (contains? params :created_by) ", created_by")
 --~ (when (contains? params :second_contact) ", second_contact")
 --~ (when (contains? params :review_status) ", review_status")
+--~ (when (contains? params :is_member) ", is_member")
 )
 values (
     :name
@@ -58,6 +68,7 @@ values (
 --~ (when (contains? params :created_by) ", :created_by")
 --~ (when (contains? params :second_contact) ", :second_contact")
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
+--~ (when (contains? params :is_member) ", :is_member")
 ) returning id;
 
 -- :name update-organisation :! :n

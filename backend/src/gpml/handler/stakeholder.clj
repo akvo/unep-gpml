@@ -8,7 +8,6 @@
             [gpml.constants :as constants]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.organisation :as handler.org]
-            [gpml.handler.non-member-organisation :as handler.non-member-org]
             [gpml.handler.image :as handler.image]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
@@ -154,9 +153,13 @@
         (db.organisation/add-organisation-tags db {:tags (map #(vector org-id %) tag-ids)}))
       org-id)
     (:id org)))
+
 (defn- make-organisation [db org]
   (if-not (:id org)
-    (let [org-id (handler.non-member-org/create db org)]
+    (let [org-id (handler.org/create db (-> (if (:subnational_area_only org)
+                                              (-> org (dissoc :subnational_area_only) (assoc :subnational_area (:subnational_area_only org)))
+                                              org)
+                                            (assoc :is_member false)))]
       org-id)
     (:id org)))
 
@@ -171,7 +174,7 @@
                                                      :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
                                                                   (:picture jwt-claims)))
                                               (when (:new_org body-params)
-                                                {:non_member_organisation (make-organisation db (:new_org body-params))})))
+                                                {:affiliation (make-organisation db (:new_org body-params))})))
           stakeholder-id (:id (db.stakeholder/new-stakeholder db profile))
           _              (email/notify-admins-pending-approval db mailjet-config
                                                                (merge profile {:type "stakeholder"}))
@@ -190,7 +193,7 @@
             tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
             org (:org body-params)
             old-profile (db.stakeholder/stakeholder-by-email tx jwt-claims)
-            new-profile (merge old-profile body-params)
+            new-profile (merge (dissoc old-profile :non_member_organisation) body-params)
             profile (cond-> new-profile
                       (:photo body-params)
                       (assoc :picture
