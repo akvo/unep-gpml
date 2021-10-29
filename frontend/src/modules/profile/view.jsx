@@ -290,6 +290,10 @@ const ProfileView = ({ ...props }) => {
         window.screen.width > 640 ? `s${window.screen.height}-c` : `s640-c`
       )
     : profile?.photo;
+  let updatedProfile = { ...profile };
+  if (!profile.org?.is_member) {
+    updatedProfile.org = null;
+  }
   return (
     <div id="profile">
       <div className="profile-container">
@@ -337,7 +341,7 @@ const ProfileView = ({ ...props }) => {
                       handleSubmitRef={(ref) => {
                         handleSubmitRef.current = ref;
                       }}
-                      initialValues={profile}
+                      initialValues={updatedProfile}
                       isModal={false}
                     />
                     <Button
