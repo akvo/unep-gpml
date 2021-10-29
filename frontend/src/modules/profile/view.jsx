@@ -291,7 +291,7 @@ const ProfileView = ({ ...props }) => {
       )
     : profile?.photo;
   let updatedProfile = { ...profile };
-  if (!profile.org?.is_member) {
+  if (!profile.org?.isMember) {
     updatedProfile.org = null;
   }
   return (
