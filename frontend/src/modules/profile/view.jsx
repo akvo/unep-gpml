@@ -293,6 +293,8 @@ const ProfileView = ({ ...props }) => {
   let updatedProfile = { ...profile };
   if (!profile.org?.isMember) {
     updatedProfile.org = null;
+  } else {
+    updatedProfile.non_member_organisation = null;
   }
   return (
     <div id="profile">
