@@ -3,7 +3,7 @@ import { Button, notification, Avatar, Menu, Row, Col } from "antd";
 import React, { useRef, useState, useEffect } from "react";
 import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
-
+import { useAuth0 } from "@auth0/auth0-react";
 import SignupForm from "../signup-old/signup-form";
 import {
   fetchArchiveData,
@@ -70,6 +70,8 @@ const menuItems = [
 ];
 
 const ProfileView = ({ ...props }) => {
+  const { isAuthenticated, loginWithPopup } = useAuth0();
+
   const {
     countries,
     tags,
@@ -137,6 +139,12 @@ const ProfileView = ({ ...props }) => {
     UIStore.update((e) => {
       e.disclaimer = null;
     });
+
+    // show login prompt
+    if (isEmpty(profile) && !isAuthenticated) {
+      loginWithPopup();
+    }
+
     if (adminRoles.has(profile?.role)) {
       (async () => {
         const { page, limit } = pendingItems;
