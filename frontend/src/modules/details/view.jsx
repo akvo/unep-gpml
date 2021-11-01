@@ -526,15 +526,18 @@ const DetailsView = ({
       it.topic === resourceTypeToTopicType(params.type)
   );
 
+  const isConnectStakeholders = ["organisation", "stakeholder"].includes(
+    params?.type
+  );
+  const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
+
   const isLoaded = useCallback(
     () =>
       Boolean(
         !isEmpty(countries) &&
-          (["organisation", "stakeholder"].includes(params?.type)
-            ? !isEmpty(profile)
-            : true)
+          (isConnectStakeholders ? !isEmpty(profile) : true)
       ),
-    [countries, params, profile]
+    [countries, profile, isConnectStakeholders]
   );
 
   const allowBookmark =
@@ -618,9 +621,14 @@ const DetailsView = ({
     <div className="details-view">
       <div className="bc">
         <div className="ui container">
-          <Link to="/browse">All resources</Link>
+          <Link onClick={() => setFilterMenu([])} to={`/${breadcrumbLink}`}>
+            All resources
+          </Link>
           <RightOutlined />
-          <Link to={`/browse?topic=${params.type}`}>
+          <Link
+            onClick={() => setFilterMenu([params.type])}
+            to={`/${breadcrumbLink}?topic=${params.type}`}
+          >
             {topicNames(params.type)}
           </Link>
           <RightOutlined />
@@ -684,6 +692,7 @@ const DetailsView = ({
                   profile={profile}
                   isAuthenticated={isAuthenticated}
                   setFilterMenu={setFilterMenu}
+                  breadcrumbLink={breadcrumbLink}
                   {...{ handleRelationChange, relation }}
                 />
               )}
@@ -751,6 +760,7 @@ const ButtonMenu = withRouter(
     history,
     isAuthenticated,
     setFilterMenu,
+    breadcrumbLink,
   }) => {
     const handleChangeRelation = (relationType) => ({
       target: { checked },
@@ -838,7 +848,7 @@ const ButtonMenu = withRouter(
                 message: "Resource deleted successfully",
               });
               setFilterMenu([type]);
-              history.push("/browse");
+              history.push(`/${breadcrumbLink}`);
             })
             .catch((err) => {
               console.error(err);
