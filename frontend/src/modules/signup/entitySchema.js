@@ -186,6 +186,7 @@ export const schema = {
         "org.url": {
           title: "Your Entity’s website",
           type: "string",
+          format: "url",
         },
         "org.logo": {
           title: "Upload your Entity’s logo",
