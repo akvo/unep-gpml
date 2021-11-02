@@ -8,7 +8,7 @@ submission AS (
     UNION
     SELECT id, 'organisation' AS type, 'organisation' AS topic, name as title, id as created_by, created
     FROM organisation
-    WHERE review_status = 'SUBMITTED'
+    WHERE review_status = 'SUBMITTED' and is_member=true
     UNION
     SELECT id, 'event' AS type, 'event' AS topic, title, created_by, created
     FROM event where review_status = 'SUBMITTED'
