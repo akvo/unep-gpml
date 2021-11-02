@@ -451,6 +451,12 @@ const Root = () => {
           />
 
           <Route
+            exact
+            path="/edit-entity/:id"
+            render={(props) => <h1>Edit Entity</h1>}
+          />
+
+          <Route
             path="/profile"
             render={(props) => <ProfileView {...{ ...props }} />}
           />

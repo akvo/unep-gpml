@@ -811,6 +811,8 @@ const ButtonMenu = withRouter(
           link = "edit-event";
           break;
         default:
+          form = "entity";
+          link = "edit-entity";
           break;
       }
       UIStore.update((e) => {
@@ -863,7 +865,7 @@ const ButtonMenu = withRouter(
     // Organisations are not yet editable, since they don't have a
     // form to edit them in. Stakeholder information should be
     // editable by the users themselves, and not by the admins.
-    const noEditTopics = new Set(["organisation", "stakeholder"]);
+    const noEditTopics = new Set(["stakeholder"]);
 
     const canEdit = () =>
       isAuthenticated &&

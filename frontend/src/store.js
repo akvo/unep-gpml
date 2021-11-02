@@ -123,6 +123,10 @@ const UIStore = new Store({
       status: "add",
       id: null,
     },
+    entity: {
+      status: "edit",
+      id: null,
+    },
   },
 });
 
