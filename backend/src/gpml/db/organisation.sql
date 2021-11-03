@@ -13,7 +13,7 @@ select id, name from organisation where is_member=false order by id
 
 -- :name organisation-by-id :? :1
 -- :doc Get organisation by id
-select id, name, url, type, geo_coverage_type, country, is_member
+select *
 from organisation
 where id = :id;
 
