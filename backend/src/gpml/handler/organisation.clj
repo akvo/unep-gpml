@@ -84,8 +84,8 @@
     [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])
 
 (defmethod ig/init-key :gpml.handler.organisation/put [_ {:keys [db]}]
-  (fn [{:keys [body-params referrer path]}]
-    (let [org-id (update-org db (assoc body-params :id (:id path)))]
+  (fn [{:keys [body-params referrer parameters]}]
+    (let [org-id (update-org db (assoc body-params :id (:id (:path parameters))))]
       (resp/created referrer (assoc body-params :id org-id)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
@@ -97,10 +97,10 @@
    [:geo_coverage_value
     [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]
    [:type string?]
-   [:representative_group_other string?]
-   [:representative_group_civil_society string?]
-   [:representative_group_private_sector string?]
-   [:representative_group_government string?]
-   [:representative_group_academia_research string?]
+   [:representative_group_other [:maybe int?]]
+   [:representative_group_civil_society [:maybe string?]]
+   [:representative_group_private_sector [:maybe int?]]
+   [:representative_group_government [:maybe string?]]
+   [:representative_group_academia_research [:maybe string?]]
    [:expertise vector?]
    [:program string?]])
