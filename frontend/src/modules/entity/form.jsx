@@ -204,7 +204,7 @@ const EntityForm = withRouter(
           (status === "edit" || dataId) &&
           (editId !== dataId || Object.keys(data).includes("title") === 0)
         ) {
-          api.get(`/detail/organisation/${dataId}`).then((d) => {
+          api.get(`/organisation/${dataId}`).then((d) => {
             entityData.update((e) => {
               e.data = revertFormData(formDataMapping, d.data, {
                 countries,
