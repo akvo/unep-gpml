@@ -383,6 +383,13 @@ export const revertFormData = (formDataMapping, editData, store = {}) => {
       );
       data = mea ? mea.id : null;
     }
+    if (pKey === "expertise") {
+      if (!Array.isArray(data)) {
+        data = data ? JSON.parse(data) : [];
+      } else {
+        data = data ? data : [];
+      }
+    }
 
     if (type === "string") {
       data = String(data);

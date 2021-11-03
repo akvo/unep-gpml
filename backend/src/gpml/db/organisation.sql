@@ -13,7 +13,7 @@ select id, name from organisation where is_member=false order by id
 
 -- :name organisation-by-id :? :1
 -- :doc Get organisation by id
-select id, name, url, type, geo_coverage_type, country, is_member
+select *
 from organisation
 where id = :id;
 
@@ -74,10 +74,17 @@ values (
 -- :name update-organisation :! :n
 -- :doc Update organisation column
 update organisation set id = :id
+--~ (when (contains? params :name) ",name= :name")
 --~ (when (contains? params :url) ",url= :url")
 --~ (when (contains? params :type) ",type= :type")
---~ (when (contains? params :country) ",geo_coverage_type= :country")
---~ (when (contains? params :geo_coverage_type) ",geo_coverage_type= :geo_coverage_type")
+--~ (when (contains? params :country) ",country= :country")
+--~ (when (contains? params :program) ",program= :program")
+--~ (when (contains? params :representative_group_other) ",representative_group_other= :representative_group_other")
+--~ (when (contains? params :representative_group_civil_society) ",representative_group_civil_society= :representative_group_civil_society")
+--~ (when (contains? params :representative_group_private_sector) ",representative_group_private_sector= :representative_group_private_sector")
+--~ (when (contains? params :representative_group_government) ",representative_group_government= :representative_group_government")
+--~ (when (contains? params :representative_group_academia_research) ",representative_group_academia_research= :representative_group_academia_research")
+--~ (when (contains? params :geo_coverage_type) ",geo_coverage_type= :geo_coverage_type::geo_coverage_type")
 --~ (when (contains? params :created_by) ",created_by= :created_by")
 where id = :id
 

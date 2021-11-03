@@ -262,7 +262,16 @@
                                           {:get {:summary "Get organisation by id"
                                                  :swagger {:tags ["organisation"]}
                                                  :parameters {:path [:map [:id int?]]}
-                                                 :handler #ig/ref :gpml.handler.organisation/get-id}}]]
+                                                 :handler #ig/ref :gpml.handler.organisation/get-id}
+                                           :put {:summary "Update organisation by id and body params"
+                                                 :swagger {:tags ["organisation"]
+                                                           :security [{:id_token []}]}
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required
+                                                              #ig/ref :gpml.auth/approved-user]
+                                                 :parameters {:path [:map [:id int?]]
+                                                              :body #ig/ref :gpml.handler.organisation/put-params}
+                                                 :handler #ig/ref :gpml.handler.organisation/put}}]]
                                         ["/favorite" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                    #ig/ref :gpml.auth/auth-required]}
                                          [""
@@ -387,7 +396,9 @@
   :gpml.handler.organisation/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation/post {:db #ig/ref :duct.database/sql
                                    :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.organisation/put {:db #ig/ref :gpml.db/spec}
   :gpml.handler.organisation/post-params {}
+  :gpml.handler.organisation/put-params {}
   :gpml.handler.organisation/get-id {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.image/get {:db #ig/ref :duct.database/sql}

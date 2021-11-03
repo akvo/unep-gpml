@@ -46,6 +46,7 @@ import Topic from "./modules/topics/topic";
 import AboutUs from "./modules/about/about-us";
 import Glossary from "./modules/glossary/glossary";
 import Error from "./modules/error/error";
+import EntityFormView from "./modules/entity/view";
 
 // Menu dropdown
 import AboutDropdownMenu from "./modules/dropdown-menu/about";
@@ -451,6 +452,12 @@ const Root = () => {
             exact
             path="/edit-initiative/:id"
             render={(props) => <AddInitiative {...props} />}
+          />
+
+          <Route
+            exact
+            path="/edit-entity/:id"
+            render={(props) => <EntityFormView {...props} />}
           />
 
           <Route
