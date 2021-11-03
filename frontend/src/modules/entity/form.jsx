@@ -87,8 +87,38 @@ const formDataMapping = [
     type: "string",
   },
   {
-    key: "type", // be property
+    key: "type", // BE property
     name: "representativeGroup", // match to static formSchema
+    group: null,
+    type: "string",
+  },
+  {
+    key: "representativeGroupGovernment",
+    name: "representativeGroupGovernment",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "representativeGroupPrivateSector",
+    name: "representativeGroupPrivateSector",
+    group: null,
+    type: "integer",
+  },
+  {
+    key: "representativeGroupAcademiaResearch",
+    name: "representativeGroupAcademiaResearch",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "representativeGroupCivilSociety",
+    name: "representativeGroupCivilSociety",
+    group: null,
+    type: "string",
+  },
+  {
+    key: "representativeGroupOther",
+    name: "representativeGroupOther",
     group: null,
     type: "string",
   },
@@ -129,14 +159,20 @@ const formDataMapping = [
     type: "string",
   },
   {
-    key: "geoCoverageValues",
-    name: "geoCoverageValue",
+    key: "geoCoverageValue",
+    name: "geoCoverageValueTransnational",
     group: null,
     type: "array",
   },
   {
-    key: "abstract",
-    name: "abstract",
+    key: "geoCoverageValue",
+    name: "geoCoverageValueNational",
+    group: null,
+    type: "array",
+  },
+  {
+    key: "subNationalArea",
+    name: "subNationalArea",
     group: null,
     type: "string",
   },
