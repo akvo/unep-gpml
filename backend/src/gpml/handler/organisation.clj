@@ -15,6 +15,19 @@
       (db.organisation/add-geo-coverage conn {:geo org-geo}))
     org-id))
 
+(defn update-org [conn org]
+  (let [org-id (do (db.organisation/update-organisation conn org)
+                   (:id org))
+        org-geo (handler.geo/get-geo-vector org-id org)]
+    (when (seq org-geo)
+      (db.organisation/delete-geo-coverage conn org)
+      (db.organisation/add-geo-coverage conn {:id org-id :geo org-geo}))
+    (when (seq (:expertise org))
+      (db.organisation/delete-organisation-tags conn org)
+      (db.organisation/add-organisation-tags conn {:tags (map #(vector org-id %) (:expertise org ))}))
+    org-id))
+
+
 (defmethod ig/init-key :gpml.handler.organisation/get [_ {:keys [db]}]
   (fn [_]
       (resp/response (db.organisation/all-members (:spec db)))))
@@ -69,6 +82,11 @@
    [:geo_coverage_type geo/coverage_type]
    [:geo_coverage_value
     [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])
+
+(defmethod ig/init-key :gpml.handler.organisation/put [_ {:keys [db]}]
+  (fn [{:keys [body-params referrer path]}]
+    (let [org-id (update-org db (assoc body-params :id (:id path)))]
+      (resp/created referrer (assoc body-params :id org-id)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
   [:map
