@@ -55,6 +55,9 @@ import KnowledgeExchangeDropdownMenu from "./modules/dropdown-menu/knowledge-exc
 import ConnectStakeholdersDropdownMenu from "./modules/dropdown-menu/connect-stakeholders";
 import ResponsiveMenu from "./modules/dropdown-menu/responsive-menu";
 
+// Discourse Forum
+import DiscourseForum from "./modules/discourse-forum/discourse-forum";
+
 Promise.all([
   api.get("/tag"),
   api.get("/currency"),
@@ -467,6 +470,10 @@ const Root = () => {
             render={(props) => (
               <LandingSignupView {...props} profile={profile} />
             )}
+          />
+          <Route
+            path="/discourse-forum"
+            render={(props) => <DiscourseForum />}
           />
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
