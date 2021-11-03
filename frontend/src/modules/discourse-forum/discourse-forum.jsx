@@ -5,7 +5,7 @@ const DiscourseForum = () => {
     window.DiscourseEmbed = {
       discourseUrl: "https://unepdevtest.discoursehosting.net/",
       discourseEmbedUrl: "https://unep-gpml.akvotest.org/discourse-forum",
-      discourseReferrerPolicy: 'strict-origin-when-cross-origin',
+      discourseReferrerPolicy: "strict-origin-when-cross-origin",
       topicId: 25,
     };
 
