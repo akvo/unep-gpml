@@ -255,6 +255,13 @@ const EntityForm = withRouter(
       data.expertise =
         formData?.expertise && formData.expertise.map((x) => parseInt(x));
 
+      data.country = formData.headquarter;
+      delete data.headquarter;
+
+      // handle representative group
+      data.type = formData.representativeGroup;
+      delete data.representativeGroup;
+
       setSending(true);
       if (status === "add" && !params?.id) {
         api
