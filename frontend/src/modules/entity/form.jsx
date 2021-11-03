@@ -364,7 +364,7 @@ const EntityForm = withRouter(
       if (status === "edit" || params?.id) {
         // !! FIXME : We need to change the endpoint??
         api
-          .put(`/detail/organisation/${id || params?.id}`, data)
+          .put(`/organisation/${id || params?.id}`, data)
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {
