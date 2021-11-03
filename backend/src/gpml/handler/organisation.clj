@@ -69,3 +69,20 @@
    [:geo_coverage_type geo/coverage_type]
    [:geo_coverage_value
     [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])
+
+(defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
+  [:map
+   [:name string?]
+   [:url string?]
+   [:country int?]
+   [:geo_coverage_type geo/coverage_type]
+   [:geo_coverage_value
+    [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]
+   [:type string?]
+   [:representative_group_other string?]
+   [:representative_group_civil_society string?]
+   [:representative_group_private_sector string?]
+   [:representative_group_government string?]
+   [:representative_group_academia_research string?]
+   [:expertise vector?]
+   [:program string?]])
