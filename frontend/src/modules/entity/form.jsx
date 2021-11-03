@@ -395,10 +395,10 @@ const EntityForm = withRouter(
     };
 
     return (
-      <div className="add-policy-form">
+      <div className="add-entity-form">
         {formStep.policy === 1 && (
           <Form
-            idPrefix="policy"
+            idPrefix="entity"
             schema={formSchema.schema}
             uiSchema={uiSchema}
             formData={data}
