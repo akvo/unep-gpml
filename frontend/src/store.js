@@ -85,6 +85,7 @@ const UIStore = new Store({
     financingResource: 1,
     event: 1,
     technology: 1,
+    entity: 1,
   },
   formEdit: {
     signUp: {

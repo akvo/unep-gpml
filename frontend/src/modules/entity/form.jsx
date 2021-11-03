@@ -177,7 +177,7 @@ const EntityForm = withRouter(
     }));
     const formData = entityData.useState();
     const { editId, data } = formData;
-    const { status, id } = formEdit.policy;
+    const { status, id } = formEdit.entity;
     const [dependValue, setDependValue] = useState([]);
     const [formSchema, setFormSchema] = useState({
       schema: schema,
@@ -245,38 +245,25 @@ const EntityForm = withRouter(
     const handleOnSubmit = ({ formData }) => {
       let data = { ...formData };
 
-      delete data.date;
-      data.firstPublicationDate = formData.date.firstPublicationDate;
-      data.latestAmendmentDate =
-        formData?.date?.latestAmendmentDate || "Ongoing";
-
-      if (data?.urls[0]?.url) {
-        data.urls = formData.urls.filter((it) => it?.url && it.url.length > 0);
-      }
-      if (!data?.urls[0]?.url) {
-        delete data.urls;
-      }
-
       data = handleGeoCoverageValue(data, formData, countries);
       if (status === "add" && !params?.id) {
-        data?.image && data?.image === "" && delete data.image;
+        data?.logo && data?.logo === "" && delete data.logo;
       }
       if (status === "edit" || params?.id) {
-        data?.image &&
-          data?.image.match(customFormats.url) &&
-          delete data.image;
+        data?.logo && data?.logo.match(customFormats.url) && delete data.logo;
       }
-      data.tags = formData.tags && formData.tags.map((x) => parseInt(x));
+      data.expertise =
+        formData?.expertise && formData.expertise.map((x) => parseInt(x));
 
       setSending(true);
       if (status === "add" && !params?.id) {
         api
-          .post("/policy", data)
+          .post("/organisation", data)
           .then(() => {
             UIStore.update((e) => {
               e.formStep = {
                 ...e.formStep,
-                policy: 2,
+                entity: 2,
               };
             });
             // scroll top
@@ -295,13 +282,13 @@ const EntityForm = withRouter(
       }
       if (status === "edit" || params?.id) {
         api
-          .put(`/detail/policy/${id || params?.id}`, data)
+          .put(`/detail/organisation/${id || params?.id}`, data)
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {
               e.formEdit = {
                 ...e.formEdit,
-                policy: {
+                entity: {
                   status: "add",
                   id: null,
                 },
@@ -314,7 +301,7 @@ const EntityForm = withRouter(
               e.editId = null;
             });
             setDisabledBtn({ disabled: true, type: "default" });
-            history.push(`/policy/${id || params?.id}`);
+            history.push(`/organisation/${id || params?.id}`);
           })
           .catch(() => {
             notification.error({ message: "An error occured" });
@@ -363,28 +350,13 @@ const EntityForm = withRouter(
 
     const handleTransformErrors = (errors, dependValue) => {
       let res = overideValidation(errors, dependValue);
-      // publication and amandment date validation
-      const { firstPublicationDate, latestAmendmentDate } = data?.date;
-      if (firstPublicationDate && latestAmendmentDate) {
-        if (new Date(firstPublicationDate) > new Date(latestAmendmentDate)) {
-          res.push({
-            message:
-              "First publication date must be date before last amandment date",
-            name: "required",
-            params: { missingProperty: "firstPublicationDate" },
-            property: ".date.firstPublicationDate",
-            schemaPath: "#/properties/date/required",
-            stack: ".date.firstPublicationDate is a required property",
-          });
-        }
-      }
       // overiding image validation when edit
       if (
         (res.length > 0 &&
           (status === "edit" || params?.id) &&
-          data?.image &&
-          data?.image.match(customFormats.url)) ||
-        !data.image
+          data?.logo &&
+          data?.logo.match(customFormats.url)) ||
+        !data.logo
       ) {
         res = res.filter(
           (x) => x?.params && x.params?.format && x.params.format !== "data-url"
@@ -396,7 +368,7 @@ const EntityForm = withRouter(
 
     return (
       <div className="add-entity-form">
-        {formStep.policy === 1 && (
+        {formStep.entity === 1 && (
           <Form
             idPrefix="entity"
             schema={formSchema.schema}
@@ -419,9 +391,9 @@ const EntityForm = withRouter(
             </button>
           </Form>
         )}
-        {formStep.policy === 2 && (
+        {formStep.entity === 2 && (
           <div>
-            <h3>Thank you for adding the Policy</h3>
+            <h3>Thank you for adding the Entity</h3>
             <p>we'll let you know once an admin has approved it</p>
           </div>
         )}
