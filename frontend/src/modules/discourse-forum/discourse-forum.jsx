@@ -4,7 +4,9 @@ const DiscourseForum = () => {
   useEffect(() => {
     window.DiscourseEmbed = {
       discourseUrl: "https://unepdevtest.discoursehosting.net/",
-      discourseEmbedUrl: "https://fb43-182-253-132-174.ngrok.io",
+      discourseEmbedUrl: "https://unep-gpml.akvotest.org/discourse-forum",
+      discourseReferrerPolicy: 'strict-origin-when-cross-origin',
+      topicId: 25,
     };
 
     const d = document.createElement("script");
