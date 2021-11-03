@@ -25,10 +25,16 @@
           organisation (db.organisation/organisation-by-id conn path)
           geo (db.organisation/geo-coverage conn organisation)
           geo-coverage (cond
-                (= (:geo_coverage_type organisation) "regional")
-                (mapv #(:name %) geo)
-                (= (:geo_coverage_type organisation) "global")
-                (mapv #(:iso_code %) geo))]
+                         (= (:geo_coverage_type organisation) "regional")
+                         (mapv #(:geo_coverage_values %) geo)
+                         (= (:geo_coverage_type organisation) "transnational")
+                         (mapv #(:geo_coverage_values %) geo)
+                         (= (:geo_coverage_type organisation) "global with elements in specific areas")
+                         (mapv #(:geo_coverage_values %) geo)
+                         (= (:geo_coverage_type organisation) "national")
+                         (mapv #(:geo_coverage_values %) geo)
+                         (= (:geo_coverage_type organisation) "global")
+                         (mapv #(:iso_code %) geo))]
       (resp/response (assoc organisation :geo_coverage_value geo-coverage)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post [_ {:keys [db mailjet-config]}]
