@@ -298,31 +298,72 @@ const EntityForm = withRouter(
       data.type = formData.representativeGroup;
       delete data.representativeGroup;
 
-      setSending(true);
-      if (status === "add" && !params?.id) {
-        api
-          .post("/organisation", data)
-          .then(() => {
-            UIStore.update((e) => {
-              e.formStep = {
-                ...e.formStep,
-                entity: 2,
-              };
-            });
-            // scroll top
-            window.scrollTo({ top: 0 });
-            entityData.update((e) => {
-              e.data = {};
-            });
-            setDisabledBtn({ disabled: true, type: "default" });
-          })
-          .catch(() => {
-            notification.error({ message: "An error occured" });
-          })
-          .finally(() => {
-            setSending(false);
-          });
+      if (data.type === "Intergovernmental Organizations (IGOs)") {
+        data.representativeGroupGovernment = null;
+        data.representativeGroupPrivateSector = null;
+        data.representativeGroupAcademiaResearch = null;
+        data.representativeGroupCivilSociety = null;
+        data.representativeGroupOther = null;
       }
+      if (data.type === "Private Sector (for-profit)") {
+        data.representativeGroupGovernment = null;
+        data.representativeGroupAcademiaResearch = null;
+        data.representativeGroupCivilSociety = null;
+        data.representativeGroupOther = null;
+      }
+      if (data.type === "Government") {
+        data.representativeGroupPrivateSector = null;
+        data.representativeGroupAcademiaResearch = null;
+        data.representativeGroupCivilSociety = null;
+        data.representativeGroupOther = null;
+      }
+      if (data.type === "Academia & Research") {
+        data.representativeGroupGovernment = null;
+        data.representativeGroupPrivateSector = null;
+        data.representativeGroupCivilSociety = null;
+        data.representativeGroupOther = null;
+      }
+      if (data.type === "Civil Society (not-for-profit)") {
+        data.representativeGroupGovernment = null;
+        data.representativeGroupPrivateSector = null;
+        data.representativeGroupAcademiaResearch = null;
+        data.representativeGroupOther = null;
+      }
+      if (data.type === "-1") {
+        data.representativeGroupGovernment = null;
+        data.representativeGroupPrivateSector = null;
+        data.representativeGroupAcademiaResearch = null;
+        data.representativeGroupCivilSociety = null;
+      }
+
+      console.log(formData, data);
+      return;
+
+      setSending(true);
+      // if (status === "add" && !params?.id) {
+      //   api
+      //     .post("/organisation", data)
+      //     .then(() => {
+      //       UIStore.update((e) => {
+      //         e.formStep = {
+      //           ...e.formStep,
+      //           entity: 2,
+      //         };
+      //       });
+      //       // scroll top
+      //       window.scrollTo({ top: 0 });
+      //       entityData.update((e) => {
+      //         e.data = {};
+      //       });
+      //       setDisabledBtn({ disabled: true, type: "default" });
+      //     })
+      //     .catch(() => {
+      //       notification.error({ message: "An error occured" });
+      //     })
+      //     .finally(() => {
+      //       setSending(false);
+      //     });
+      // }
       if (status === "edit" || params?.id) {
         api
           .put(`/detail/organisation/${id || params?.id}`, data)
