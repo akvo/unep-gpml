@@ -504,6 +504,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                         formSchema={formSchema}
                         setDisabledBtn={setDisabledBtn}
                         hideEntityPersonalDetail={hideEntityPersonalDetail}
+                        tabsData={tabsData}
                       />
                       <div className="button-row">
                         {!isFirstStep() && (

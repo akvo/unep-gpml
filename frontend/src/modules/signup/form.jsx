@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { notification } from "antd";
+import { notification, Typography } from "antd";
 import { withTheme } from "@rjsf/core";
 import api from "../../utils/api";
 import { updateStatusProfile } from "../../utils/profile";
@@ -46,6 +46,7 @@ const SignUpForm = withRouter(
     setDisabledBtn,
     history,
     hideEntityPersonalDetail,
+    tabsData,
     match: { params },
   }) => {
     const {
@@ -433,26 +434,34 @@ const SignUpForm = withRouter(
 
     const handleTransformErrors = (errors, dependValue) => {
       // custom errors handle
-      [
-        // ".S1",
-        // ".S2",
-        // ".S3",
-        // ".S2.S2_G1",
-        // ".S2.S2_G2",
-        // ".S2.S2_G3",
-        // ".S3.S3_G1",
-        // ".S3.S3_G2",
-        // ".S3.S3_G3",
-        // ".S3.S3_G4",
-        // ".S3.S3_G5",
-        // ".S3.S3_G6",
-        // ".S3.S3_G7",
-      ].forEach((x) => {
+      [".S1", ".S3", ".S4"].forEach((x) => {
         let index = dependValue.indexOf(x);
         index !== -1 && dependValue.splice(index, 1);
       });
       const res = overideValidation(errors, dependValue);
       res.length === 0 && setHighlight(false);
+      if (res.length > 0) {
+        const descriptionList = res.map((r, index) => {
+          const { property, message } = r;
+          const tabSection = property
+            .replace(".", "")
+            .replace("['", "_")
+            .replace("']", "_")
+            .split("_")[0];
+          const tabSectionTitle = tabsData.find((x) => x.key === tabSection)
+            ?.title;
+          return (
+            <li key={`${property}-${index}`}>
+              {tabSectionTitle}:{" "}
+              <Typography.Text type="danger">{message}</Typography.Text>
+            </li>
+          );
+        });
+        notification.error({
+          message: "Error",
+          description: <ul>{descriptionList}</ul>,
+        });
+      }
       return res;
     };
 
