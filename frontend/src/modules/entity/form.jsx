@@ -282,12 +282,12 @@ const EntityForm = withRouter(
       let data = { ...formData };
 
       data = handleGeoCoverageValue(data, formData, countries);
-      if (status === "add" && !params?.id) {
-        data?.logo && data?.logo === "" && delete data.logo;
-      }
+
+      data?.logo === "" && delete data.logo;
       if (status === "edit" || params?.id) {
         data?.logo && data?.logo.match(customFormats.url) && delete data.logo;
       }
+
       data.expertise =
         formData?.expertise && formData.expertise.map((x) => parseInt(x));
 
@@ -336,9 +336,6 @@ const EntityForm = withRouter(
         data.representativeGroupCivilSociety = null;
       }
 
-      console.log(formData, data);
-      return;
-
       setSending(true);
       // if (status === "add" && !params?.id) {
       //   api
@@ -365,6 +362,7 @@ const EntityForm = withRouter(
       //     });
       // }
       if (status === "edit" || params?.id) {
+        // !! FIXME : We need to change the endpoint??
         api
           .put(`/detail/organisation/${id || params?.id}`, data)
           .then(() => {
