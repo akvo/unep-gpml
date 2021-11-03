@@ -124,7 +124,7 @@ const UIStore = new Store({
       id: null,
     },
     entity: {
-      status: "edit",
+      status: "add",
       id: null,
     },
   },
