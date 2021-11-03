@@ -3,7 +3,22 @@ import { newGeoCoverageFormat } from "../../utils/geo";
 export const schema = {
   title: "",
   type: "object",
-  required: ["name"],
+  required: [
+    "name",
+    "representativeGroup",
+    "representativeGroupGovernment",
+    "representativeGroupPrivateSector",
+    "representativeGroupAcademiaResearch",
+    "representativeGroupCivilSociety",
+    "representativeGroupOther",
+    "program",
+    "url",
+    "expertise",
+    "headquarter",
+    "geoCoverageType",
+    "geoCoverageValueTransnational",
+    "geoCoverageValueNational",
+  ],
   properties: {
     name: {
       title: "What is the name of your Entity?",
