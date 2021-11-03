@@ -26,14 +26,7 @@ import { withRouter } from "react-router-dom";
 const Form = withTheme(AntDTheme);
 
 const getSchema = (
-  {
-    countries,
-    tags,
-    regionOptions,
-    meaOptions,
-    transnationalOptions,
-    representativeGroup,
-  },
+  { countries, tags, transnationalOptions, representativeGroup },
   loading
 ) => {
   const representative = representativeGroup?.map((x) => x.name);
@@ -41,31 +34,42 @@ const getSchema = (
   const prop = cloneDeep(schema.properties);
   prop.representativeGroup.enum = [...representative, -1];
   prop.representativeGroup.enumNames = [...representative, "Other"];
-  // prop.country.enum = countries?.map((x, i) => x.id);
-  // prop.country.enumNames = countries?.map((x, i) => x.name);
-  // prop.geoCoverageValueRegional.enum = regionOptions?.map((x) => String(x.id));
-  // prop.geoCoverageValueRegional.enumNames = regionOptions?.map((x) => x.name);
-  // prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
-  // prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
-  // prop.geoCoverageValueTransnational.enum = transnationalOptions?.map(
-  //   (x, i) => x.id
-  // );
-  // prop.geoCoverageValueTransnational.enumNames = transnationalOptions?.map(
-  //   (x, i) => x.name
-  // );
-  // prop.geoCoverageValueGlobalSpesific.enum = meaOptions?.map((x) =>
-  //   String(x.id)
-  // );
-  // prop.geoCoverageValueGlobalSpesific.enumNames = meaOptions?.map(
-  //   (x) => x.name
-  // );
-  // prop.implementingMea.enum = meaOptions?.map((x) => x.id);
-  // prop.implementingMea.enumNames = meaOptions?.map((x) => x.name);
-  // const tagsPlusTopics = tags?.topics
-  //   ? tags.policy?.concat(tags.topics)
-  //   : tags.policy;
-  // prop.tags.enum = tagsPlusTopics?.map((x) => String(x.id));
-  // prop.tags.enumNames = tagsPlusTopics?.map((x) => x.tag);
+
+  prop.representativeGroupGovernment.enum = representativeGroup.find(
+    (x) => x.code === "government"
+  )?.childs;
+
+  prop.representativeGroupPrivateSector.enum = tags?.sector?.map((it) =>
+    String(it.id)
+  );
+  prop.representativeGroupPrivateSector.enumNames = tags?.sector?.map(
+    (it) => it.tag
+  );
+
+  prop.representativeGroupAcademiaResearch.enum = representativeGroup.find(
+    (x) => x.code === "academia-research"
+  )?.childs;
+
+  prop.representativeGroupCivilSociety.enum = representativeGroup.find(
+    (x) => x.code === "civil-society"
+  )?.childs;
+
+  prop.expertise.enum = tags?.offering?.map((it) => String(it.id));
+  prop.expertise.enumNames = tags?.offering?.map((it) => it.tag);
+
+  prop.headquarter.enum = countries?.map((x) => x.id);
+  prop.headquarter.enumNames = countries?.map((x) => x.name);
+
+  prop.geoCoverageValueNational.enum = countries?.map((x) => String(x.id));
+  prop.geoCoverageValueNational.enumNames = countries?.map((x) => x.name);
+
+  prop.geoCoverageValueTransnational.enum = transnationalOptions?.map(
+    (x) => x.id
+  );
+  prop.geoCoverageValueTransnational.enumNames = transnationalOptions?.map(
+    (x) => x.name
+  );
+
   return {
     schema: {
       ...schema,
@@ -77,20 +81,20 @@ const getSchema = (
 
 const formDataMapping = [
   {
-    key: "title",
-    name: "title",
+    key: "name",
+    name: "name",
     group: null,
     type: "string",
   },
   {
-    key: "originalTitle",
-    name: "originalTitle",
+    key: "type", // be property
+    name: "representativeGroup", // match to static formSchema
     group: null,
     type: "string",
   },
   {
-    key: "dataSource",
-    name: "dataSource",
+    key: "program",
+    name: "program",
     group: null,
     type: "string",
   },
@@ -101,38 +105,20 @@ const formDataMapping = [
     type: "string",
   },
   {
-    key: "typeOfLaw",
-    name: "typeOfLaw",
+    key: "logo",
+    name: "logo",
     group: null,
-    type: "string",
+    type: "image",
   },
   {
-    key: "recordNumber",
-    name: "recordNumber",
+    key: "expertise",
+    name: "expertise",
     group: null,
-    type: "string",
-  },
-  {
-    key: "firstPublicationDate",
-    name: "firstPublicationDate",
-    group: "date",
-    type: "date",
-  },
-  {
-    key: "latestAmendmentDate",
-    name: "latestAmendmentDate",
-    group: "date",
-    type: "date",
-  },
-  {
-    key: "status",
-    name: "status",
-    group: null,
-    type: "string",
+    type: "array",
   },
   {
     key: "country",
-    name: "country",
+    name: "headquarter",
     group: null,
     type: "integer",
   },
@@ -154,30 +140,6 @@ const formDataMapping = [
     group: null,
     type: "string",
   },
-  {
-    key: "image",
-    name: "image",
-    group: null,
-    type: "image",
-  },
-  {
-    key: "implementingMea",
-    name: "implementingMea",
-    group: null,
-    type: "integer",
-  },
-  {
-    key: "tags",
-    name: "tags",
-    group: null,
-    type: "array",
-  },
-  {
-    key: "languages",
-    name: "urls",
-    group: null,
-    type: "array",
-  },
 ];
 
 export const entityData = new Store({ data: {}, editId: null });
@@ -197,8 +159,6 @@ const EntityForm = withRouter(
     const {
       countries,
       tags,
-      regionOptions,
-      meaOptions,
       transnationalOptions,
       formStep,
       formEdit,
@@ -232,8 +192,6 @@ const EntityForm = withRouter(
             {
               countries,
               tags,
-              regionOptions,
-              meaOptions,
               transnationalOptions,
               representativeGroup,
             },
@@ -251,8 +209,6 @@ const EntityForm = withRouter(
               e.data = revertFormData(formDataMapping, d.data, {
                 countries,
                 tags,
-                regionOptions,
-                meaOptions,
                 transnationalOptions,
               });
               e.editId = dataId;
@@ -278,8 +234,6 @@ const EntityForm = withRouter(
       isLoaded,
       countries,
       tags,
-      regionOptions,
-      meaOptions,
       transnationalOptions,
       representativeGroup,
     ]);

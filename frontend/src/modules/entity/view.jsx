@@ -11,8 +11,6 @@ const EntityFormView = ({ match: { params }, ...props }) => {
   const {
     countries,
     tags,
-    regionOptions,
-    meaOptions,
     transnationalOptions,
     formStep,
     formEdit,
@@ -21,8 +19,6 @@ const EntityFormView = ({ match: { params }, ...props }) => {
   } = UIStore.useState((s) => ({
     countries: s.countries,
     tags: s.tags,
-    regionOptions: s.regionOptions,
-    meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
     formStep: s.formStep,
     formEdit: s.formEdit,
@@ -40,8 +36,6 @@ const EntityFormView = ({ match: { params }, ...props }) => {
     Boolean(
       !isEmpty(countries) &&
         !isEmpty(tags) &&
-        !isEmpty(regionOptions) &&
-        !isEmpty(meaOptions) &&
         !isEmpty(transnationalOptions) &&
         !isEmpty(profile) &&
         !isEmpty(representativeGroup)
