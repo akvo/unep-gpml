@@ -100,10 +100,11 @@
    [:geo_coverage_value {:optional true}
     [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]
    [:type string?]
-   [:representative_group_other [:maybe int?]]
+   [:representative_group_other [:maybe string?]]
    [:representative_group_civil_society [:maybe string?]]
-   [:representative_group_private_sector [:maybe int?]]
+   [:representative_group_private_sector [:maybe string?]]
    [:representative_group_government [:maybe string?]]
    [:representative_group_academia_research [:maybe string?]]
+   [:subnational_area [:maybe string?]]
    [:expertise vector?]
    [:program string?]])
