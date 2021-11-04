@@ -75,6 +75,7 @@ values (
 -- :doc Update organisation column
 update organisation set id = :id
 --~ (when (contains? params :name) ",name= :name")
+--~ (when (contains? params :logo) ",logo= :logo")
 --~ (when (contains? params :url) ",url= :url")
 --~ (when (contains? params :type) ",type= :type")
 --~ (when (contains? params :country) ",country= :country")

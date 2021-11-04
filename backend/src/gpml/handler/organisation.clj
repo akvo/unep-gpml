@@ -37,6 +37,7 @@
     (let [conn (:spec db)
           organisation (db.organisation/organisation-by-id conn path)
           geo (db.organisation/geo-coverage conn organisation)
+          seeks (:tags (first (db.organisation/organisation-tags conn path)))
           geo-coverage (cond
                          (= (:geo_coverage_type organisation) "regional")
                          (mapv #(:geo_coverage_values %) geo)
@@ -48,7 +49,8 @@
                          (mapv #(:geo_coverage_values %) geo)
                          (= (:geo_coverage_type organisation) "global")
                          (mapv #(:iso_code %) geo))]
-      (resp/response (assoc organisation :geo_coverage_value geo-coverage)))))
+      (resp/response (assoc organisation :geo_coverage_value geo-coverage
+                            :expertise seeks)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [body-params referrer jwt-claims]}]
@@ -92,9 +94,10 @@
   [:map
    [:name string?]
    [:url string?]
+   [:logo {:optional true} string?]
    [:country int?]
    [:geo_coverage_type geo/coverage_type]
-   [:geo_coverage_value
+   [:geo_coverage_value {:optional true}
     [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]
    [:type string?]
    [:representative_group_other [:maybe int?]]
