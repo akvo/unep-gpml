@@ -67,31 +67,32 @@
         (resp/created (:referrer req) {:message "New policy created" :id policy-id})))))
 
 (def post-params
-  [:map
-   [:title string?]
-   [:original_title string?]
-   [:abstract {:optional true} string?]
-   [:data_source {:optional true} string?]
-   [:type_of_law {:optional true}
-    [:enum "Legislation", "Miscellaneous", "Regulation", "Constitution"]]
-   [:record_number string?]
-   [:first_publication_date string?]
-   [:latest_amendment_date string?]
-   [:status [:enum "Repealed", "In force", "Not yet in force"]]
-   [:country integer?]
-   [:geo_coverage_type
-    [:enum "global", "regional", "national", "transnational",
-     "sub-national", "global with elements in specific areas"]]
-   [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one geo coverage value"} integer?]]
-   [:image {:optional true} string?]
-   [:implementing_mea integer?]
-   [:tags {:optional true}
-    [:vector {:optional true} integer?]]
-   [:url {:optional true} string?]
-   [:urls {:optional true}
-    [:vector {:optional true}
-     [:map [:lang string?] [:url [:string {:min 1}]]]]]])
+  (->
+   [:map
+    [:title string?]
+    [:original_title string?]
+    [:abstract {:optional true} string?]
+    [:data_source {:optional true} string?]
+    [:type_of_law {:optional true}
+     [:enum "Legislation", "Miscellaneous", "Regulation", "Constitution"]]
+    [:record_number string?]
+    [:first_publication_date string?]
+    [:latest_amendment_date string?]
+    [:status [:enum "Repealed", "In force", "Not yet in force"]]
+    [:country integer?]
+    [:geo_coverage_type
+     [:enum "global", "regional", "national", "transnational",
+      "sub-national", "global with elements in specific areas"]]
+
+    [:image {:optional true} string?]
+    [:implementing_mea integer?]
+    [:tags {:optional true}
+     [:vector {:optional true} integer?]]
+    [:url {:optional true} string?]
+    [:urls {:optional true}
+     [:vector {:optional true}
+      [:map [:lang string?] [:url [:string {:min 1}]]]]]]
+   (into handler.geo/params-payload)))
 
 (defmethod ig/init-key :gpml.handler.policy/post-params [_ _]
   post-params)

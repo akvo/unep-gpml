@@ -62,29 +62,29 @@
         (resp/created (:referrer req) {:message "New technology created" :id technology-id})))))
 
 (def post-params
-  [:map
-   [:name string?]
-   [:year_founded integer?]
-   [:organisation_type {:optional true}
-    [:enum "Established Company", "Research Lab", "Academic Institution",
-     "Startup", "Non-Profit Org", "Partnerships"]]
-   [:development_stage {:optional true}
-    [:enum "In market", "Scale up", "Prototype", "Pilot"
-     "Development", "Research"]]
-   [:country integer?]
-   [:geo_coverage_type
-    [:enum "global", "regional", "national", "transnational",
-     "sub-national", "global with elements in specific areas"]]
-   [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one geo coverage value"} integer?]]
-   [:image {:optional true} string?]
-   [:logo {:optional true} string?]
-   [:tags {:optional true}
-    [:vector {:optional true} integer?]]
-   [:url {:optional true} string?]
-   [:urls {:optional true}
-    [:vector {:optional true}
-     [:map [:lang string?] [:url [:string {:min 1}]]]]]])
+  (into [:map
+    [:name string?]
+    [:year_founded integer?]
+    [:organisation_type {:optional true}
+     [:enum "Established Company", "Research Lab", "Academic Institution",
+      "Startup", "Non-Profit Org", "Partnerships"]]
+    [:development_stage {:optional true}
+     [:enum "In market", "Scale up", "Prototype", "Pilot"
+      "Development", "Research"]]
+    [:country integer?]
+    [:geo_coverage_type
+     [:enum "global", "regional", "national", "transnational",
+      "sub-national", "global with elements in specific areas"]]
+
+    [:image {:optional true} string?]
+    [:logo {:optional true} string?]
+    [:tags {:optional true}
+     [:vector {:optional true} integer?]]
+    [:url {:optional true} string?]
+    [:urls {:optional true}
+     [:vector {:optional true}
+      [:map [:lang string?] [:url [:string {:min 1}]]]]]]
+        handler.geo/params-payload))
 
 (defmethod ig/init-key :gpml.handler.technology/post-params [_ _]
   post-params)

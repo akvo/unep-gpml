@@ -75,41 +75,41 @@
 
 (def post-params
   [:and
-   [:map
-    [:resource_type
-     [:enum "Financing Resource", "Technical Resource", "Action Plan"]]
-    [:title string?]
-    [:country integer?]
-    [:org {:optional true} map?
-     [:map
-      [:id {:optional true} integer?]
-      [:name {:optional true} string?]
-      [:url {:optional true} string?]
-      [:country {:optional true} integer?]
-      [:geo_coverage_type {:optional true}
-       [:enum "global", "regional", "national", "transnational",
-        "sub-national", "global with elements in specific areas"]]
-      [:geo_coverage_value {:optional true}
-       [:vector {:min 1 :error/message "Need at least one of geo coverage value"} integer?]]]]
-    [:publish_year integer?]
-    [:summary {:optional true} string?]
-    [:value {:optional true} integer?]
-    [:value_currency {:optional true} string?]
-    [:value_remarks {:optional true} string?]
-    [:valid_from {:optional true} string?]
-    [:valid_to {:optional true} string?]
-    [:geo_coverage_type
-     [:enum "global", "regional", "national", "transnational",
-      "sub-national", "global with elements in specific areas"]]
-    [:geo_coverage_value {:optional true}
-     [:vector {:min 1 :error/message "Need at least one geo coverage value"} integer?]]
-    [:image {:optional true} string?]
-   [:remarks {:optional true} string?]
-   [:urls {:optional true}
-    [:vector {:optional true}
-     [:map [:lang string?] [:url [:string {:min 1}]]]]]
-   [:tags {:optional true}
-    [:vector {:optional true} integer?]]]
+   (into [:map
+     [:resource_type
+      [:enum "Financing Resource", "Technical Resource", "Action Plan"]]
+     [:title string?]
+     [:country integer?]
+     [:org {:optional true} map?
+      (into
+       [:map
+        [:id {:optional true} integer?]
+        [:name {:optional true} string?]
+        [:url {:optional true} string?]
+        [:country {:optional true} integer?]
+        [:geo_coverage_type {:optional true}
+         [:enum "global", "regional", "national", "transnational",
+          "sub-national", "global with elements in specific areas"]]]
+       handler.geo/params-payload)]
+     [:publish_year integer?]
+     [:summary {:optional true} string?]
+     [:value {:optional true} integer?]
+     [:value_currency {:optional true} string?]
+     [:value_remarks {:optional true} string?]
+     [:valid_from {:optional true} string?]
+     [:valid_to {:optional true} string?]
+     [:geo_coverage_type
+      [:enum "global", "regional", "national", "transnational",
+       "sub-national", "global with elements in specific areas"]]
+
+     [:image {:optional true} string?]
+     [:remarks {:optional true} string?]
+     [:urls {:optional true}
+      [:vector {:optional true}
+       [:map [:lang string?] [:url [:string {:min 1}]]]]]
+     [:tags {:optional true}
+      [:vector {:optional true} integer?]]]
+         handler.geo/params-payload)
    [:fn {:error/message "value is required" :error/path [:value]}
     (fn [{:keys [resource_type value]}] (or-and resource_type value))]
    [:fn {:error/message "value_currency is required" :error/path [:value_currency]}

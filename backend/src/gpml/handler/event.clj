@@ -44,27 +44,27 @@
      (merge data {:type "event"}))))
 
 (def post-params
-  [:map
-   [:title string?]
-   [:start_date string?]
-   [:end_date string?]
-   [:description {:optional true} string?]
-   [:photo {:optional true} string?]
-   [:remarks {:optional true} string?]
-   [:geo_coverage_type
-    [:enum "global", "regional", "national", "transnational",
-     "sub-national", "global with elements in specific areas"]]
-   [:country {:optional true} integer?]
-   [:city {:optional true} string?]
-   [:urls {:optional true}
-    [:vector {:optional true}
-     [:map
-      [:lang string?]
-      [:url [:string {:min 1}]]]]]
-   [:tags {:optional true}
-    [:vector {:optional true} integer?]]
-   [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one geo coverage value"} integer?]]])
+  (->
+   [:map
+    [:title string?]
+    [:start_date string?]
+    [:end_date string?]
+    [:description {:optional true} string?]
+    [:photo {:optional true} string?]
+    [:remarks {:optional true} string?]
+    [:geo_coverage_type
+     [:enum "global", "regional", "national", "transnational",
+      "sub-national", "global with elements in specific areas"]]
+    [:country {:optional true} integer?]
+    [:city {:optional true} string?]
+    [:urls {:optional true}
+     [:vector {:optional true}
+      [:map
+       [:lang string?]
+       [:url [:string {:min 1}]]]]]
+    [:tags {:optional true}
+     [:vector {:optional true} integer?]]]
+   (into handler.geo/params-payload)))
 
 (defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params] :as req}]

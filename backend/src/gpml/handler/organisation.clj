@@ -76,14 +76,13 @@
       (resp/created referrer (assoc body-params :id org-id)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post-params [_ _]
-  [:map
-   [:name string?]
-   [:url string?]
-   [:stakeholder string?]
-   [:country int?]
-   [:geo_coverage_type geo/coverage_type]
-   [:geo_coverage_value
-    [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])
+  (into [:map
+    [:name string?]
+    [:url string?]
+    [:stakeholder string?]
+    [:country int?]
+         [:geo_coverage_type geo/coverage_type]]
+        handler.geo/params-payload))
 
 (defmethod ig/init-key :gpml.handler.organisation/put [_ {:keys [db]}]
   (fn [{:keys [body-params referrer parameters]}]
@@ -91,20 +90,19 @@
       (resp/created referrer (assoc body-params :id org-id)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
-  [:map
-   [:name string?]
-   [:url string?]
-   [:logo {:optional true} string?]
-   [:country int?]
-   [:geo_coverage_type geo/coverage_type]
-   [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]
-   [:type string?]
-   [:representative_group_other [:maybe string?]]
-   [:representative_group_civil_society [:maybe string?]]
-   [:representative_group_private_sector [:maybe string?]]
-   [:representative_group_government [:maybe string?]]
-   [:representative_group_academia_research [:maybe string?]]
-   [:subnational_area [:maybe string?]]
-   [:expertise vector?]
-   [:program string?]])
+  (into [:map
+    [:name string?]
+    [:url string?]
+    [:logo {:optional true} string?]
+    [:country int?]
+    [:geo_coverage_type geo/coverage_type]
+    [:type string?]
+    [:representative_group_other [:maybe string?]]
+    [:representative_group_civil_society [:maybe string?]]
+    [:representative_group_private_sector [:maybe string?]]
+    [:representative_group_government [:maybe string?]]
+    [:representative_group_academia_research [:maybe string?]]
+    [:subnational_area [:maybe string?]]
+    [:expertise vector?]
+         [:program string?]]
+        handler.geo/params-payload))
