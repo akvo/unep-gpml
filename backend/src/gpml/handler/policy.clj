@@ -32,7 +32,7 @@
               :image (handler.image/assoc-image conn image "policy")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
-              :geo_coverage_value_countries geo_coverage_countries
+              :geo_coverage_countries geo_coverage_countries
               :geo_coverage_country_groups geo_coverage_country_groups
               :implementing_mea implementing_mea
               :attachments attachments

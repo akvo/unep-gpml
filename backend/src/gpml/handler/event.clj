@@ -22,7 +22,7 @@
               :image (handler.image/assoc-image conn photo "event")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
-              :geo_coverage_value_countries geo_coverage_countries
+              :geo_coverage_countries geo_coverage_countries
               :geo_coverage_country_groups geo_coverage_country_groups
               :city city
               :country country

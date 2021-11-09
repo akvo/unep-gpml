@@ -28,7 +28,7 @@
               :logo (handler.image/assoc-image conn logo "technology")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
-              :geo_coverage_value_countries geo_coverage_countries
+              :geo_coverage_countries geo_coverage_countries
               :geo_coverage_country_groups geo_coverage_country_groups
               :remarks remarks
               :attachments attachments
