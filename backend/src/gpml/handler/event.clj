@@ -12,6 +12,7 @@
 (defn create-event [conn {:keys [tags urls title start_date end_date
                                  description remarks geo_coverage_type
                                  country city geo_coverage_value photo
+                                 geo_coverage_countries geo_coverage_country_groups
                                  created_by mailjet-config]}]
   (let [data {:title title
               :start_date start_date
@@ -21,6 +22,8 @@
               :image (handler.image/assoc-image conn photo "event")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
+              :geo_coverage_value_countries geo_coverage_countries
+              :geo_coverage_country_groups geo_coverage_country_groups
               :city city
               :country country
               :created_by created_by}
@@ -35,9 +38,13 @@
                                          :id)
                                     (:url %)) urls)]
         (db.event/add-event-language-urls conn {:urls lang-urls})))
-    (when (not-empty geo_coverage_value)
-      (let [geo-data (handler.geo/get-geo-vector event-id data)]
-          (db.event/add-event-geo-coverage conn {:geo geo-data})))
+    (if (or (not-empty geo_coverage_country_groups)
+            (not-empty geo_coverage_countries))
+      (let [geo-data (handler.geo/get-geo-vector-v2 event-id data)]
+        (db.event/add-event-geo-coverage conn {:geo geo-data}))
+      (when (not-empty geo_coverage_value)
+        (let [geo-data (handler.geo/get-geo-vector event-id data)]
+          (db.event/add-event-geo-coverage conn {:geo geo-data}))))
     (email/notify-admins-pending-approval
      conn
      mailjet-config

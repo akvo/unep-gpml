@@ -242,9 +242,13 @@
             (db.stakeholder/delete-stakeholder-cv-by-id tx {:id old-cv})))
         (when (not-empty tags)
           (db.stakeholder/add-stakeholder-tags tx {:tags (map #(vector id %) tags)}))
-        (when (some? (:geo_coverage_value body-params))
-          (let [geo-data (handler.geo/get-geo-vector id body-params)]
-            (db.stakeholder/add-stakeholder-geo tx {:geo geo-data})))
+        (if (or (some? (:geo_coverage_country_groups body-params))
+                (some? (:geo_coverage_countries body-params)))
+          (let [geo-data (handler.geo/get-geo-vector-v2 id body-params)]
+            (db.stakeholder/add-stakeholder-geo tx {:geo geo-data}))
+          (when (some? (:geo_coverage_value body-params))
+            (let [geo-data (handler.geo/get-geo-vector id body-params)]
+              (db.stakeholder/add-stakeholder-geo tx {:geo geo-data}))))
         (resp/status 204)))))
 
 (def org-schema

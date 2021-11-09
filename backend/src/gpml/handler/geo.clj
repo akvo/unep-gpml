@@ -20,6 +20,10 @@
     (#{"national" "sub-national"} geo_coverage_type)
     (map #(vector id nil %) geo_coverage_value)))
 
+(defn get-geo-vector-v2 [id {:keys [geo_coverage_countries geo_coverage_country_groups]}]
+  (-> []
+      (into (mapv #(vector id % nil) geo_coverage_country_groups))
+      (into (mapv #(vector id nil %) geo_coverage_countries))))
 
 (def params-payload
   [[:geo_coverage_countries {:optional true}

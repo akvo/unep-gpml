@@ -13,6 +13,7 @@
                                       development_stage specifications_provided
                                       year_founded email country
                                       geo_coverage_type geo_coverage_value
+                                      geo_coverage_countries geo_coverage_country_groups
                                       tags url urls created_by image
                                       logo attachments remarks mailjet-config]}]
   (let [data {:name name
@@ -27,6 +28,8 @@
               :logo (handler.image/assoc-image conn logo "technology")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
+              :geo_coverage_value_countries geo_coverage_countries
+              :geo_coverage_country_groups geo_coverage_country_groups
               :remarks remarks
               :attachments attachments
               :created_by created_by
@@ -43,9 +46,13 @@
                                          :id)
                                     (:url %)) urls)]
         (db.technology/add-technology-language-urls conn {:urls lang-urls})))
-    (when (not-empty geo_coverage_value)
-      (let [geo-data (handler.geo/get-geo-vector technology-id data)]
-        (db.technology/add-technology-geo conn {:geo geo-data})))
+    (if (or (not-empty geo_coverage_country_groups)
+            (not-empty geo_coverage_countries))
+      (let [geo-data (handler.geo/get-geo-vector-v2 technology-id data)]
+        (db.technology/add-technology-geo conn {:geo geo-data}))
+      (when (not-empty geo_coverage_value)
+        (let [geo-data (handler.geo/get-geo-vector technology-id data)]
+          (db.technology/add-technology-geo conn {:geo geo-data}))))
     (email/notify-admins-pending-approval
      conn
      mailjet-config

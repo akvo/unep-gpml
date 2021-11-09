@@ -15,6 +15,7 @@
                                   first_publication_date latest_amendment_date
                                   status country geo_coverage_type
                                   geo_coverage_value implementing_mea
+                                  geo_coverage_countries geo_coverage_country_groups
                                   tags urls created_by image
                                   attachments remarks mailjet-config]}]
   (let [data {:title title
@@ -31,6 +32,8 @@
               :image (handler.image/assoc-image conn image "policy")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
+              :geo_coverage_value_countries geo_coverage_countries
+              :geo_coverage_country_groups geo_coverage_country_groups
               :implementing_mea implementing_mea
               :attachments attachments
               :remarks remarks
@@ -48,9 +51,13 @@
                                          :id)
                                     (:url %)) urls)]
         (db.policy/add-policy-language-urls conn {:urls lang-urls})))
-    (when (not-empty geo_coverage_value)
-      (let [geo-data (handler.geo/get-geo-vector policy-id data)]
-        (db.policy/add-policy-geo conn {:geo geo-data})))
+    (if (or (not-empty geo_coverage_country_groups)
+            (not-empty geo_coverage_countries))
+      (let [geo-data (handler.geo/get-geo-vector-v2 policy-id data)]
+        (db.policy/add-policy-geo conn {:geo geo-data}))
+      (when (not-empty geo_coverage_value)
+        (let [geo-data (handler.geo/get-geo-vector policy-id data)]
+          (db.policy/add-policy-geo conn {:geo geo-data}))))
     (email/notify-admins-pending-approval
      conn
      mailjet-config

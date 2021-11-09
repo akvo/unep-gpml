@@ -14,6 +14,7 @@
                                     summary value value_currency
                                     value_remarks valid_from valid_to image
                                     geo_coverage_type geo_coverage_value
+                                    geo_coverage_countries geo_coverage_country_groups
                                     attachments country urls tags remarks
                                     created_by mailjet-config]}]
   (let [organisation (if (= -1 (:id org))
@@ -31,6 +32,8 @@
               :image (handler.image/assoc-image conn image "resource")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
+              :geo_coverage_value_countries geo_coverage_countries
+              :geo_coverage_country_groups geo_coverage_country_groups
               :country country
               :attachments attachments
               :remarks remarks
@@ -50,9 +53,13 @@
                                          :id)
                                     (:url %)) urls)]
         (db.resource/add-resource-language-urls conn {:urls lang-urls})))
-    (when (not-empty geo_coverage_value)
-      (let [geo-data (handler.geo/get-geo-vector resource-id data)]
-        (db.resource/add-resource-geo conn {:geo geo-data})))
+    (if (or (not-empty geo_coverage_country_groups)
+            (not-empty geo_coverage_countries))
+      (let [geo-data (handler.geo/get-geo-vector-v2 resource-id data)]
+        (db.resource/add-resource-geo conn {:geo geo-data}))
+      (when (not-empty geo_coverage_value)
+        (let [geo-data (handler.geo/get-geo-vector resource-id data)]
+          (db.resource/add-resource-geo conn {:geo geo-data}))))
     (email/notify-admins-pending-approval
      conn
      mailjet-config

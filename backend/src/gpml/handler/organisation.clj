@@ -10,18 +10,26 @@
 
 (defn create [conn org]
   (let [org-id (:id (db.organisation/new-organisation conn (dissoc org :id)))
+        org-geo2 (handler.geo/get-geo-vector-v2 org-id org)
         org-geo (handler.geo/get-geo-vector org-id org)]
-    (when (seq org-geo)
-      (db.organisation/add-geo-coverage conn {:geo org-geo}))
+    (if (seq org-geo2)
+      (db.organisation/add-geo-coverage conn {:geo org-geo2})
+      (when (seq org-geo)
+        (db.organisation/add-geo-coverage conn {:geo org-geo})))
     org-id))
 
 (defn update-org [conn org]
   (let [org-id (do (db.organisation/update-organisation conn org)
                    (:id org))
-        org-geo (handler.geo/get-geo-vector org-id org)]
-    (when (seq org-geo)
-      (db.organisation/delete-geo-coverage conn org)
-      (db.organisation/add-geo-coverage conn {:id org-id :geo org-geo}))
+        org-geo (handler.geo/get-geo-vector org-id org)
+        org-geo2 (handler.geo/get-geo-vector-v2 org-id org)]
+    (if (seq org-geo2)
+      (do
+        (db.organisation/delete-geo-coverage conn org)
+        (db.organisation/add-geo-coverage conn {:id org-id :geo org-geo2}))
+      (when (seq org-geo)
+        (db.organisation/delete-geo-coverage conn org)
+        (db.organisation/add-geo-coverage conn {:id org-id :geo org-geo})))
     (when (seq (:expertise org))
       (db.organisation/delete-organisation-tags conn org)
       (db.organisation/add-organisation-tags conn {:tags (map #(vector org-id %) (:expertise org ))}))
