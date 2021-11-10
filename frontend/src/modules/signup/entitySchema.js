@@ -222,6 +222,7 @@ export const schema = {
         "orgHeadquarter",
         "geoCoverageType",
         "geoCoverageValueTransnational",
+        "geoCoverageCountries",
         "geoCoverageValueNational",
         "publicDatabase",
       ],

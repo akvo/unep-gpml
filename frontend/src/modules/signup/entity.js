@@ -139,10 +139,17 @@ const getSchema = (
   // geocoverage transnational options
   prop.S5.properties[
     "geoCoverageValueTransnational"
-  ].enum = transnationalOptions?.map((x) => x.id);
+  ].enum = transnationalOptions?.map((x) => String(x.id));
   prop.S5.properties[
     "geoCoverageValueTransnational"
   ].enumNames = transnationalOptions?.map((x) => x.name);
+
+  prop.S5.properties["geoCoverageCountries"].enum = countries?.map((x) =>
+    String(x.id)
+  );
+  prop.S5.properties["geoCoverageCountries"].enumNames = countries?.map(
+    (x) => x.name
+  );
   // geocoverage global with elements in specific areas options
   // prop.S5.properties[
   //   "geoCoverageValueGlobalSpesific"
