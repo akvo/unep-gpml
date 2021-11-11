@@ -150,6 +150,8 @@ const SignUpForm = withRouter(
           delete data.orgDescription;
           delete data.orgUrl;
           delete data.orgLogo;
+          delete data.geoCoverageValueTransnational;
+          delete data.geoCoverageCountries;
 
           if (data.registeredStakeholders) {
             data.org.registeredStakeholders = formData.S5.registeredStakeholders.map(
@@ -208,6 +210,7 @@ const SignUpForm = withRouter(
           delete data.newCompanyHeadquarter;
           delete data.newCompanySubnationalAreaOnly;
           delete data.newCompanyName;
+          delete data.geoCoverageValueTransnational;
         }
       }
 

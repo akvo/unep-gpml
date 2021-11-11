@@ -234,7 +234,7 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
       }
     }
     data?.ts && delete data.ts;
-    console.log(data);
+
     setSending(true);
     if (status === "add" && !params?.id) {
       api
