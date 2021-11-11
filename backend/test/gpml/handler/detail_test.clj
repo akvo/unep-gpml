@@ -107,7 +107,7 @@
             data (-> (seeder/parse-data
                       (slurp (io/resource "examples/initiative-national.json"))
                       {:keywords? true})
-                     (assoc :q24_2 [{(:id country) "Indonesia"}]))
+                     (assoc :q24_2 [{(keyword (str (:id country))) "Indonesia"}]))
             initiative (db.initiative/new-initiative db data)
             edited-data (merge data {:q2 "New Title"})
             resp (handler (-> (mock/request :put "/")
