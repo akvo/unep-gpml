@@ -4,6 +4,7 @@
             [gpml.handler.detail :as detail]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.policy :as db.policy]
+            [gpml.db.country :as db.country]
             [gpml.db.technology :as db.technology]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.event :as db.event]
@@ -101,9 +102,12 @@
         (is (= 403 (:status resp)))))
 
     (testing "Initiative editing"
-      (let [data (seeder/parse-data
-                  (slurp (io/resource "examples/initiative-national.json"))
-                  {:keywords? true})
+      (let [country (db.country/new-country
+                     db {:name "Indonesia" :iso_code "IND" :description "Member State" :territory "IND"})
+            data (-> (seeder/parse-data
+                      (slurp (io/resource "examples/initiative-national.json"))
+                      {:keywords? true})
+                     (assoc :q24_2 [{(:id country) "Indonesia"}]))
             initiative (db.initiative/new-initiative db data)
             edited-data (merge data {:q2 "New Title"})
             resp (handler (-> (mock/request :put "/")
