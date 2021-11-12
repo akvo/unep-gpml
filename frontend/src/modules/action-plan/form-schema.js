@@ -20,6 +20,7 @@ export const schema = {
     "geoCoverageValueRegional",
     "geoCoverageValueNational",
     "geoCoverageValueTransnational",
+    "geoCoverageCountries",
     "geoCoverageValueGlobalSpesific",
     "geoCoverageValueSubNational",
     "tags",
@@ -49,6 +50,7 @@ export const schema = {
         "geoCoverageValueNational",
         "geoCoverageValueRegional",
         "geoCoverageValueTransnational",
+        "geoCoverageCountries",
         "geoCoverageValueGlobalSpesific",
         "geoCoverageValueSubNational",
       ],
@@ -89,6 +91,14 @@ export const schema = {
         },
         geoCoverageValueTransnational: {
           $ref: "#/properties/geoCoverageValueTransnational",
+          depend: {
+            id: "geoCoverageType",
+            value: ["transnational"],
+          },
+        },
+        geoCoverageCountries: {
+          $ref: "#/properties/geoCoverageCountries",
+          enum: [],
           depend: {
             id: "geoCoverageType",
             value: ["transnational"],
@@ -158,6 +168,14 @@ export const schema = {
     },
     geoCoverageValueTransnational: {
       title: "GEO COVERAGE",
+      enum: [],
+      depend: {
+        id: "geoCoverageType",
+        value: ["transnational"],
+      },
+    },
+    geoCoverageCountries: {
+      title: "GEO COVERAGE (Countries)",
       enum: [],
       depend: {
         id: "geoCoverageType",
@@ -264,6 +282,13 @@ export const uiSchema = {
       "ui:placeholder": "Choose the entity coverage",
       "ui:widget": "select",
       "ui:showSearch": true,
+      "ui:mode": "multiple",
+    },
+    geoCoverageCountries: {
+      "ui:placeholder": "Choose the transnational country",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple",
     },
     geoCoverageValueSubNational: {
       "ui:placeholder": "Choose the entity coverage",
@@ -322,6 +347,13 @@ export const uiSchema = {
     "ui:placeholder": "Choose the resource coverage",
     "ui:widget": "select",
     "ui:showSearch": true,
+    "ui:mode": "multiple",
+  },
+  geoCoverageCountries: {
+    "ui:placeholder": "Choose the transnational country",
+    "ui:widget": "select",
+    "ui:showSearch": true,
+    "ui:mode": "multiple",
   },
   geoCoverageValueSubNational: {
     "ui:placeholder": "Choose the resource coverage",
