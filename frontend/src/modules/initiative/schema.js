@@ -896,7 +896,7 @@ export const schema = {
                   questions: ["S3_G2_24.2"],
                 },
                 {
-                  value: ["sub-national"],
+                  value: ["transnational"],
                   questions: ["S3_G2_24.3"],
                 },
                 {
@@ -936,13 +936,13 @@ export const schema = {
               type: "string",
               depend: {
                 id: "S3_G2_24",
-                value: ["sub-national"],
+                value: ["transnational"],
               },
               enum: [],
               enumNames: [],
             },
             "S3_G2_24.4": {
-              title: "Geo Coverage",
+              title: "Geo Coverage (Countries)",
               type: "string",
               depend: {
                 id: "S3_G2_24",
