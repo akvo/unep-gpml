@@ -46,7 +46,6 @@ const ConnectStakeholdersDropdownMenu = withRouter(
           <Menu className="menu-dropdown">
             {!loading ? (
               stakeholderCounts.map((x, i) => {
-                console.log(x);
                 const { name, count } = x;
                 return (
                   <Menu.Item
