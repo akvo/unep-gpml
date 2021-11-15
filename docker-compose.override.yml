@@ -21,6 +21,7 @@ services:
     command: ["lein", "repl", ":headless"]
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/credentials/cloud-database-service-account.json
+      - APP_USER_ADMIN=deden@akvo.org
     ports:
       - 3000:3000
       - 47480:47480
