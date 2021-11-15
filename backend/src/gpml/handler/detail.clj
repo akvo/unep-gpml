@@ -304,13 +304,50 @@
       (update :activity_term (fn [x] (when (:name x) x)))
       (update :is_action_being_reported #(when (:reports %) %))))
 
-(defn- common-queries [table path & [geo url tags]]
+(defn- common-queries [table path & [geo url tags conn]]
   (filter some?
           [(when geo [(format "delete from %s_geo_coverage where %s = ?" table table) (:topic-id path)])
            (when url [(format "delete from %s_language_url where %s = ?" table table) (:topic-id path)])
            (when tags [(format "delete from %s_tag where %s = ?" table table) (:topic-id path)])
            (when (= "organisation" table)
              ["delete from resource_organisation where organisation=?" (:topic-id path)])
+           (when (= "stakeholder" table)
+             (let [unep-admin (:id (first (jdbc/query conn  ["SELECT id from stakeholder where email='caroline.kamau@un.org'"])))]
+               ["update event set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update event set created_by=? where created_by=?" unep-admin (:topic-id path)]
+               ["update stakeholder_event set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+
+               ["update initiative set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update initiative set created_by=? where created_by=?" unep-admin (:topic-id path)]
+
+               ["update invitation set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+
+               ["update organisation set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update organisation set created_by=? where created_by=?" unep-admin (:topic-id path)]
+               ["update organisation set second_contact=? where second_contact=?" unep-admin (:topic-id path)]
+               ["update stakeholder_organisation set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+
+               ["update policy set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update policy set created_by=? where created_by=?" unep-admin (:topic-id path)]
+               ["update stakeholder_policy set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+
+               ["update project set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update stakeholder_project set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+
+               ["update resource set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update resource set created_by=? where created_by=?" unep-admin (:topic-id path)]
+               ["update stakeholder_resource set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+
+               ["update review set assigned_by=? where assigned_by=?" unep-admin (:topic-id path)]
+               ["update review set reviewer=? where reviewer=?" unep-admin (:topic-id path)]
+
+               ["update technology set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update technology set created_by=? where created_by=?" unep-admin (:topic-id path)]
+               ["update stakeholder_technology set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+
+               ["update stakeholder set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update stakeholder set other_stakeholder=? where other_stakeholder=?" unep-admin (:topic-id path)]
+               ["update stakeholder_stakeholder set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]))
            (when (= "resource" table)
              ["delete from resource_organisation where resource=?" (:topic-id path)] )
            [(format "delete from %s where id = ?" table) (:topic-id path)] ]))
@@ -325,11 +362,9 @@
                  "policy" (common-queries topic path true true true)
                  "event" (common-queries topic path true true true)
                  "technology" (common-queries topic path true true true)
-
                  "organisation" (common-queries topic path true false true)
-;;               "stakeholder" (common-queries topic path true false true) TODO: define better what to do with dependant objects
+                 "stakeholder" (common-queries topic path true false true conn)
                  "project" [["delete from initiative where id = ?"  (:topic-id path)]]
-
                  "action_plan" (common-queries "resource" path true true true)
                  "technical_resource" (common-queries "resource" path true true true)
                  "financing_resource" (common-queries "resource" path true true true))]
