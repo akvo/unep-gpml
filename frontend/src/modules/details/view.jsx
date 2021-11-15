@@ -110,9 +110,12 @@ const renderItemValues = (
             })
             .join(", ");
         } else if (data.geoCoverageType === "transnational") {
+          const newArray = [
+            ...new Set([...countries, ...transnationalOptions]),
+          ];
           dataCountries = data[key]
             ?.map((x) => {
-              return transnationalOptions.find((it) => it.id === x)?.name;
+              return newArray.find((it) => it.id === x)?.name;
             })
             .join(", ");
         } else if (
