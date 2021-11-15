@@ -13,6 +13,7 @@ services:
       - APP_VERSION=ci
       - POD_NAME=ci
       - ENV_NAME=ci
+      - APP_USER_ADMIN=deden@akvo.org
   frontend:
     network_mode: service:mainnetwork
     image: eu.gcr.io/akvo-lumen/unep-gpml/frontend:latest

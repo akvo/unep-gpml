@@ -304,7 +304,7 @@
       (update :activity_term (fn [x] (when (:name x) x)))
       (update :is_action_being_reported #(when (:reports %) %))))
 
-(defn- common-queries [table path & [geo url tags conn]]
+(defn- common-queries [table path & [geo url tags app-user-admin conn]]
   (let [sqls (filter some?
                      [(when geo [(format "delete from %s_geo_coverage where %s = ?" table table) (:topic-id path)])
                       (when url [(format "delete from %s_language_url where %s = ?" table table) (:topic-id path)])
@@ -316,7 +316,7 @@
                       [(format "delete from %s where id = ?" table) (:topic-id path)]])]
     (if (= "stakeholder" table)
       (into sqls
-            (let [unep-admin (:id (first (jdbc/query conn  ["SELECT id from stakeholder where email='caroline.kamau@un.org'"])))]
+            (let [unep-admin (:id (first (jdbc/query conn  ["SELECT id from stakeholder where email='?'" app-user-admin])))]
              [["update event set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
               ["update event set created_by=? where created_by=?" unep-admin (:topic-id path)]
               ["update stakeholder_event set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
@@ -354,7 +354,7 @@
               ["update stakeholder_stakeholder set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]]))
       sqls)))
 
-(defmethod ig/init-key ::delete [_ {:keys [db]}]
+(defmethod ig/init-key ::delete [_ {:keys [db app-user-admin]}]
   (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
     (let [conn        (:spec db)
           topic       (:topic-type path)
@@ -365,7 +365,7 @@
                  "event" (common-queries topic path true true true)
                  "technology" (common-queries topic path true true true)
                  "organisation" (common-queries topic path true false true)
-                 "stakeholder" (common-queries topic path true false true conn)
+                 "stakeholder" (common-queries topic path true false true app-user-admin conn)
                  "project" [["delete from initiative where id = ?"  (:topic-id path)]]
                  "action_plan" (common-queries "resource" path true true true)
                  "technical_resource" (common-queries "resource" path true true true)
