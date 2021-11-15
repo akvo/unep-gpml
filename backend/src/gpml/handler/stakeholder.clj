@@ -242,41 +242,45 @@
             (db.stakeholder/delete-stakeholder-cv-by-id tx {:id old-cv})))
         (when (not-empty tags)
           (db.stakeholder/add-stakeholder-tags tx {:tags (map #(vector id %) tags)}))
-        (when (some? (:geo_coverage_value body-params))
-          (let [geo-data (handler.geo/get-geo-vector id body-params)]
-            (db.stakeholder/add-stakeholder-geo tx {:geo geo-data})))
+        (if (or (some? (:geo_coverage_country_groups body-params))
+                (some? (:geo_coverage_countries body-params)))
+          (let [geo-data (handler.geo/get-geo-vector-v2 id body-params)]
+            (db.stakeholder/add-stakeholder-geo tx {:geo geo-data}))
+          (when (some? (:geo_coverage_value body-params))
+            (let [geo-data (handler.geo/get-geo-vector id body-params)]
+              (db.stakeholder/add-stakeholder-geo tx {:geo geo-data}))))
         (resp/status 204)))))
 
 (def org-schema
-  [:map
-   [:authorize_submission {:optional true} true?] ;; TODO keep optional until we align with PUT
-   [:id {:optional true} int?]
-   [:name {:optional true} string?]
-   [:url {:optional true} string?]
-   [:type {:optional true} string?] ;;representative_group
-   [:representative_group_government {:optional true} string?]
-   [:representative_group_private_sector {:optional true} string?]
-   [:representative_group_academia_research {:optional true} string?]
-   [:representative_group_civil_society {:optional true} string?]
-   [:representative_group_other {:optional true} string?]
-   [:subnational_area {:optional true} string?]
-   [:country {:optional true} int?]
-   [:expertise {:optional true}
-    [:vector {:min 1 :error/message "Need at least one value for expertise"} int?]]
-   [:geo_coverage_type {:optional true} geo/coverage_type]
-   [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]
-   ])
+  (into [:map
+    [:authorize_submission {:optional true} true?] ;; TODO keep optional until we align with PUT
+    [:id {:optional true} int?]
+    [:name {:optional true} string?]
+    [:url {:optional true} string?]
+    [:type {:optional true} string?] ;;representative_group
+    [:representative_group_government {:optional true} string?]
+    [:representative_group_private_sector {:optional true} string?]
+    [:representative_group_academia_research {:optional true} string?]
+    [:representative_group_civil_society {:optional true} string?]
+    [:representative_group_other {:optional true} string?]
+    [:subnational_area {:optional true} string?]
+    [:country {:optional true} int?]
+    [:expertise {:optional true}
+     [:vector {:min 1 :error/message "Need at least one value for expertise"} int?]]
+    [:geo_coverage_type {:optional true} geo/coverage_type]
+
+         ]
+        handler.geo/params-payload))
 
 (def new-org-schema
-  [:map
-   [:geo_coverage_type {:optional true} geo/coverage_type]
-   [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]
-   [:country {:optional true} int?]
-   [:subnational_area_only {:optional true} string?]
-   [:name {:optional true} string?]
-   ])
+  (into
+   [:map
+    [:geo_coverage_type {:optional true} geo/coverage_type]
+    [:country {:optional true} int?]
+    [:subnational_area_only {:optional true} string?]
+    [:name {:optional true} string?]
+    ]
+   handler.geo/params-payload))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post-params [_ _]
   [:map

@@ -17,6 +17,7 @@ export const schema = {
     "geoCoverageValueRegional",
     "geoCoverageValueNational",
     "geoCoverageValueTransnational",
+    "geoCoverageCountries",
     "geoCoverageValueGlobalSpesific",
     "geoCoverageValueSubNational",
     "tags",
@@ -89,6 +90,14 @@ export const schema = {
     },
     geoCoverageValueTransnational: {
       title: "GEO COVERAGE",
+      enum: [],
+      depend: {
+        id: "geoCoverageType",
+        value: ["transnational"],
+      },
+    },
+    geoCoverageCountries: {
+      title: "GEO COVERAGE (Countries)",
       enum: [],
       depend: {
         id: "geoCoverageType",
@@ -216,6 +225,13 @@ export const uiSchema = {
     "ui:placeholder": "Choose the technology coverage",
     "ui:widget": "select",
     "ui:showSearch": true,
+    "ui:mode": "multiple",
+  },
+  geoCoverageCountries: {
+    "ui:placeholder": "Choose the transnational country",
+    "ui:widget": "select",
+    "ui:showSearch": true,
+    "ui:mode": "multiple",
   },
   geoCoverageValueSubNational: {
     "ui:placeholder": "Choose the technology coverage",

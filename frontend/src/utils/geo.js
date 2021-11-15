@@ -63,6 +63,38 @@ const newGeoCoverageFormat = {
     enumNames: newGeoOptions,
   },
   geoCoverageValueTransnational: {
+    title: "Geo Coverage (Transnational)",
+    enum: [],
+    depend: {
+      id: "geoCoverageType",
+      value: ["transnational"],
+    },
+  },
+  geoCoverageCountries: {
+    title: "Geo Coverage (countries)",
+    enum: [],
+    depend: {
+      id: "geoCoverageType",
+      value: ["transnational"],
+    },
+  },
+  geoCoverageValueNational: {
+    title: "Geo Coverage",
+    enum: [],
+    depend: {
+      id: "geoCoverageType",
+      value: ["national"],
+    },
+  },
+};
+
+const newGeoCoverageFormatStakeholder = {
+  geoCoverageType: {
+    title: "Geo Coverage Type",
+    enum: newGeoOptions.map((x) => x.toLowerCase()),
+    enumNames: newGeoOptions,
+  },
+  geoCoverageValueTransnational: {
     title: "Geo Coverage",
     enum: [],
     depend: {
@@ -80,4 +112,4 @@ const newGeoCoverageFormat = {
   },
 };
 
-export { geoCoverage, newGeoCoverageFormat };
+export { geoCoverage, newGeoCoverageFormat, newGeoCoverageFormatStakeholder };

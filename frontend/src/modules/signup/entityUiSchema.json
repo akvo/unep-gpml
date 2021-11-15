@@ -166,6 +166,7 @@
       "orgHeadquarter",
       "geoCoverageType",
       "geoCoverageValueTransnational",
+      "geoCoverageCountries",
       "geoCoverageValueNational",
       "orgSubnationalArea",
       "publicDatabase"
@@ -182,13 +183,19 @@
     "geoCoverageValueTransnational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
-      "ui:showSearch": true
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
+    },
+    "geoCoverageCountries": {
+      "ui:placeholder": "Choose the Country",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
     },
     "geoCoverageValueNational": {
       "ui:placeholder": "Choose the coverage",
       "ui:widget": "select",
-      "ui:showSearch": true,
-      "ui:mode": "multiple"
+      "ui:showSearch": true
     },
     "orgSubnationalArea": {},
     "publicDatabase": {

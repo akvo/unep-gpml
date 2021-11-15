@@ -1,5 +1,5 @@
 import { UIStore } from "../../store";
-import { geoCoverage, newGeoCoverageFormat } from "../../utils/geo";
+import { geoCoverage, newGeoCoverageFormatStakeholder } from "../../utils/geo";
 
 const {
   languages,
@@ -151,9 +151,9 @@ export const schema = {
           title: "In which country are your headquarters?",
           enum: [],
         },
-        ...newGeoCoverageFormat,
+        ...newGeoCoverageFormatStakeholder,
         geoCoverageType: {
-          ...newGeoCoverageFormat.geoCoverageType,
+          ...newGeoCoverageFormatStakeholder.geoCoverageType,
           depend: {
             id: "companyName",
             value: [-1],

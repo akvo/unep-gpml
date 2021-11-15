@@ -246,7 +246,14 @@ const AddInitiativeForm = withRouter(
       transformFormData(data, formData, formSchema.schema.properties);
       data.version = parseInt(formSchema.schema.version);
 
+      if (data.q24.hasOwnProperty("transnational")) {
+        data.q24_2 = data.q24_4;
+        data.q24_4 = data.q24_3;
+        data.q24_3 = null;
+      }
+
       setSending(true);
+
       if (status === "add" && !params?.id) {
         api
           .postRaw("/initiative", data)

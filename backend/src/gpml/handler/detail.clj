@@ -9,6 +9,7 @@
             [gpml.handler.image :as handler.image]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.organisation :as handler.org]
+            [gpml.handler.initiative :as handler.initiative]
             [integrant.core :as ig]
             [medley.core :as medley]
             [ring.util.response :as resp]
@@ -506,7 +507,10 @@
 
 (defn update-initiative [conn id data]
   (let [params (merge {:id id} data)
-        status (db.detail/update-initiative conn params)]
+        status (jdbc/with-db-transaction [conn-tx conn]
+                 (let [status (db.detail/update-initiative conn-tx params)]
+                   (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
+                   status))]
     status))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]
