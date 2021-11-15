@@ -316,7 +316,7 @@
                       [(format "delete from %s where id = ?" table) (:topic-id path)]])]
     (if (= "stakeholder" table)
       (into sqls
-            (let [unep-admin (:id (first (jdbc/query conn  ["SELECT id from stakeholder where email='?'" app-user-admin])))]
+            (let [unep-admin (:id (first (jdbc/query conn  ["SELECT id from stakeholder where email=?" app-user-admin])))]
              [["update event set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
               ["update event set created_by=? where created_by=?" unep-admin (:topic-id path)]
               ["update stakeholder_event set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
@@ -350,7 +350,7 @@
               ["update stakeholder_technology set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
 
               ["update stakeholder set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
-              ["update stakeholder set other_stakeholder=? where other_stakeholder=?" unep-admin (:topic-id path)]
+              ["update stakeholder_stakeholder set other_stakeholder=? where other_stakeholder=?" unep-admin (:topic-id path)]
               ["update stakeholder_stakeholder set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]]))
       sqls)))
 
