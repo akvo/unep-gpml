@@ -20,7 +20,9 @@ END) AS title,
 END) AS type
 FROM review r
 WHERE reviewer = :reviewer
---~ (when (seq (:review-status params)) "AND review_status = ANY(ARRAY[:v*:review-status]::reviewer_review_status[])")
+--~ (when (seq (:review-status params)) "AND review_status = ANY(ARRAY[:v*:review-status]::reviewer_review_status[]) ")
+--~ (when (= "stakeholders" (:only params)) "AND topic_type IN ('stakeholder', 'organisation') ")
+--~ (when (= "resources" (:only params)) "AND topic_type NOT IN ('stakeholder', 'organisation') ")
 ORDER BY id
 LIMIT :limit
 OFFSET :limit * (:page - 1);
@@ -29,7 +31,9 @@ OFFSET :limit * (:page - 1);
 -- :doc Get reviews for reviewer
 SELECT COUNT(*) FROM review
 WHERE reviewer = :reviewer
---~ (when (seq (:review-status params)) "AND review_status = ANY(ARRAY[:v*:review-status]::reviewer_review_status[])")
+--~ (when (seq (:review-status params)) "AND review_status = ANY(ARRAY[:v*:review-status]::reviewer_review_status[]) ")
+--~ (when (= "stakeholders" (:only params)) "AND topic_type IN ('stakeholder', 'organisation') ")
+--~ (when (= "resources" (:only params)) "AND topic_type NOT IN ('stakeholder', 'organisation') ")
 
 -- :name review-by-id :? :1
 -- :doc Get review by id
