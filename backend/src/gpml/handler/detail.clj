@@ -479,6 +479,8 @@
         table-columns (dissoc updates
                               :tags :urls :geo_coverage_value :org
                               :image :photo :logo
+                              :geo_coverage_country_groups
+                              :geo_coverage_countries
                               ;; NOTE: we ignore resource_type since
                               ;; we don't expect it to change!
                               :resource_type)
