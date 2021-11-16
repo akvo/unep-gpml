@@ -10,6 +10,15 @@
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
+(defn reviews-by-reviewer-id [conn opts]
+  (map (fn [{:keys [details] :as review}]
+         (let [[title picture] details]
+           (-> review
+               (assoc :title title)
+               (assoc :picture picture)
+               (dissoc :details))))
+       (db.review/reviews-by-reviewer-id conn opts)))
+
 (def review-status-re (->> constants/reviewer-review-status
                            (map symbol)
                            (str/join "|")
@@ -106,7 +115,7 @@
         review-status (and status (str/split status #","))
         params {:reviewer (:id reviewer) :page page :limit limit :review-status review-status
                 :only only}
-        reviews (db.review/reviews-by-reviewer-id conn params)
+        reviews (reviews-by-reviewer-id conn params)
         count (:count (db.review/count-by-reviewer-id conn params))
         pages (util/page-count count limit)]
     (resp/response {:reviews reviews :page page :limit limit :pages pages :count count})))
