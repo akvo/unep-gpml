@@ -351,15 +351,21 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
       let geoCoverageValue = null;
       if (
         data.geoCoverageType === "national" ||
-        data.geoCoverageType === "transnational" ||
         data.geoCoverageType === "sub-national"
       ) {
         geoCoverageValue = data?.geoCoverageValues?.[0];
+      } else if (data.geoCoverageType === "transnational") {
+        geoCoverageValue = data?.geoCoverageCountryGroups;
       } else {
         geoCoverageValue = data?.geoCoverageValues;
       }
       data?.geoCoverageValues &&
         formRef.current?.change("geoCoverageValue", geoCoverageValue);
+      data?.geoCoverageCountries &&
+        formRef.current?.change(
+          "geoCoverageCountries",
+          data.geoCoverageCountries
+        );
       data?.remarks && formRef.current?.change("remarks", data?.remarks);
       data?.tags &&
         formRef.current?.change(
