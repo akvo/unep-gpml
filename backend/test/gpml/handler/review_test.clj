@@ -84,7 +84,8 @@
         handler (::review/new-review system)
         db (-> system :duct.database.sql/hikaricp :spec)
         admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
-        reviewer (new-stakeholder db "reviewer@org.com" "R" "A" "REVIEWER" "APPROVED")
+        reviewer1 (new-stakeholder db "reviewer1@org.com" "R" "A" "REVIEWER" "APPROVED")
+        reviewer2 (new-stakeholder db "reviewer2@org.com" "R" "A" "REVIEWER" "APPROVED")
         user (new-stakeholder db "user-submitted@org.com" "U" "S" "USER" "SUBMITTED")]
 
     (testing "Assign new reviewer"
@@ -93,11 +94,11 @@
                                :admin admin
                                :parameters {:path {:topic-type "stakeholder"
                                                    :topic-id (:id user)}
-                                            :body {:reviewer (:id reviewer)}})))
+                                            :body {:reviewers [(:id reviewer1) (:id reviewer2)]}})))
             body (:body resp)
             review (db.review/review-by-id db body)]
         (is (= 200 (:status resp)))
-        (is (= (:reviewer review) (:id reviewer)))
+        (is (= (:reviewer review) (:id reviewer1)))
         (is (= (:assigned_by review) (:id admin)))
         (is (= (:topic_id review) (:id user)))))
 
@@ -107,7 +108,7 @@
                                :admin admin
                                :parameters {:path {:topic-type "stakeholder"
                                                    :topic-id (:id user)}
-                                            :body {:reviewer (:id reviewer)}})))]
+                                            :body {:reviewers [(:id reviewer1)]}})))]
         (is (= 409 (:status resp)))))))
 
 (deftest update-review
@@ -115,7 +116,7 @@
         handler (::review/update-review system)
         db (-> system :duct.database.sql/hikaricp :spec)
         admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
-        reviewer (new-stakeholder db "reviewer@org.com" "R" "A" "REVIEWER" "APPROVED")
+        reviewer1 (new-stakeholder db "reviewer@org.com" "R" "A" "REVIEWER" "APPROVED")
         reviewer2 (new-stakeholder db "reviewer2@org.com" "R" "A" "REVIEWER" "APPROVED")
         user (new-stakeholder db "user@org.com" "U" "S" "USER" "SUBMITTED")]
 
@@ -132,7 +133,7 @@
       (let [_ (db.review/new-review db {:topic-type "stakeholder"
                                         :topic-id (:id user)
                                         :assigned-by (:id admin)
-                                        :reviewer (:id reviewer)})
+                                        :reviewer [(:id reviewer1)]})
 
             resp (handler (-> (mock/request :get "/")
                               (assoc
