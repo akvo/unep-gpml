@@ -436,12 +436,13 @@
    {:table (str table "_geo_coverage") :resource_type table :id id})
 
   ;; Create geo coverage values for the resource
-  (when (seq (:geo_coverage_value geo_data))
+  (when (or (seq (:geo_coverage_country_groups geo_data))
+            (seq (:geo_coverage_countries geo_data)))
     (db.detail/add-resource-related-geo
      conn
      {:table (str table "_geo_coverage")
       :resource_type table
-      :geo (handler.geo/get-geo-vector id geo_data)})))
+      :geo (handler.geo/get-geo-vector-v2 id geo_data)})))
 
 (defn update-resource-organisation [conn table id org-id]
   ;; Delete any existing org
@@ -479,6 +480,8 @@
         table-columns (dissoc updates
                               :tags :urls :geo_coverage_value :org
                               :image :photo :logo
+                              :geo_coverage_country_groups
+                              :geo_coverage_countries
                               ;; NOTE: we ignore resource_type since
                               ;; we don't expect it to change!
                               :resource_type)
