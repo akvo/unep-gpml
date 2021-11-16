@@ -337,6 +337,8 @@ export const checkDependencyAnswer = (
 };
 
 export const revertFormData = (formDataMapping, editData, store = {}) => {
+  console.log(formDataMapping);
+  console.log(editData);
   const formData = {};
   formDataMapping.forEach((item) => {
     const { key, name, group, type } = item;
