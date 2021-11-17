@@ -119,6 +119,12 @@ const formDataMapping = [
     type: "array",
   },
   {
+    key: "geoCoverageCountries",
+    name: "geoCoverageCountries",
+    group: null,
+    type: "array",
+  },
+  {
     key: "remarks",
     name: "remarks",
     group: null,
