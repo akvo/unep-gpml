@@ -283,6 +283,24 @@
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.favorite/post-params}
                                                   :handler #ig/ref :gpml.handler.favorite/post}}]]
+                                        ["/auth" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
+                                         ["/{topic-type}/{topic-id}"
+                                          [""
+                                           {:get {
+                                                  :summary "Get auth details for a specific resource"
+                                                  :swagger {:tags ["topic auth detail"]}
+                                                  :parameters {:path [:map
+                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                      [:topic-id int?]]}
+                                                  :handler #ig/ref :gpml.handler.auth/get-topic-auth}}]
+                                          ["/{stakeholder-id}"
+                                           {:get {:summary "Get auth details for a specific resource and stakeholder"
+                                                  :swagger {:tags ["topic stakeholder auth detail"]}
+                                                  :parameters {:path [:map
+                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                      [:topic-id int?]
+                                                                      [:stakeholder-id int?]]}
+                                                  :handler #ig/ref :gpml.handler.auth/get-topic-stakeholder-auth}}]]]
                                         ["/detail"
                                          ["/{topic-type}/{topic-id}"
                                           {:get {:middleware [#ig/ref :gpml.auth/auth-middleware]
@@ -412,6 +430,9 @@
                                  :clientId #duct/env "OIDC_AUDIENCE"}
                          :sentry {:dsn #duct/env "SENTRY_DSN"
                                   :environment #duct/env "ENV_NAME"}}
+
+  :gpml.handler.auth/get-topic-stakeholder-auth {:db #ig/ref :duct.database/sql}
+  :gpml.handler.auth/get-topic-auth {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.detail/topics {}
   :gpml.handler.detail/get {:db #ig/ref :duct.database/sql}
