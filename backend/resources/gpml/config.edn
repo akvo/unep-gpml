@@ -431,8 +431,8 @@
                          :sentry {:dsn #duct/env "SENTRY_DSN"
                                   :environment #duct/env "ENV_NAME"}}
 
-  :gpml.handler.auth/get-topic-stakeholder-auth {:db #ig/ref :duct.database/sql}
-  :gpml.handler.auth/get-topic-auth {:db #ig/ref :duct.database/sql}
+  :gpml.handler.auth/get-topic-stakeholder-auth {:conn #ig/ref :gpml.db/spec}
+  :gpml.handler.auth/get-topic-auth {:conn #ig/ref :gpml.db/spec}
 
   :gpml.handler.detail/topics {}
   :gpml.handler.detail/get {:db #ig/ref :duct.database/sql}
