@@ -251,6 +251,9 @@ const AddInitiativeForm = withRouter(
         data.q24_4 = data.q24_3;
         data.q24_3 = null;
       }
+      if (data.q24.hasOwnProperty("national")) {
+        data.q24_2 = [data.q24_2];
+      }
 
       setSending(true);
 
