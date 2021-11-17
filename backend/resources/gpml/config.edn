@@ -284,32 +284,32 @@
                                                   :parameters {:body #ig/ref :gpml.handler.favorite/post-params}
                                                   :handler #ig/ref :gpml.handler.favorite/post}}]]
                                         ["/detail"
-                                        ["/{topic-type}/{topic-id}"
-                                         {:get {:middleware [#ig/ref :gpml.auth/auth-middleware]
-                                                :summary "Get the details for a specific resource"
-                                                :swagger {:tags ["resource detail"]}
-                                                :parameters {:path [:map
-                                                                    [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                    [:topic-id int?]]}
-                                                :handler #ig/ref :gpml.handler.detail/get}
-                                          :delete {:middleware [#ig/ref :gpml.auth/auth-middleware]
-                                                   :summary "remove specific resource"
-                                                   :swagger {:tags ["resource detail"]}
-                                                   :parameters {:path [:map
-                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                       [:topic-id int?]]}
-                                                   :handler #ig/ref :gpml.handler.detail/delete}
-                                          :put {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                             #ig/ref :gpml.auth/auth-required
-                                                             #ig/ref :gpml.auth/approved-user]
-                                                :summary "Edit the details for a specific resource"
-                                                :swagger {:tags ["resource detail"]
-                                                          :security[{:id_token []}]}
-                                                :parameters {:path [:map
-                                                                    [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                    [:topic-id int?]]
-                                                             :body #ig/ref :gpml.handler.detail/put-params}
-                                                :handler #ig/ref :gpml.handler.detail/put}}]]]]
+                                         ["/{topic-type}/{topic-id}"
+                                          {:get {:middleware [#ig/ref :gpml.auth/auth-middleware]
+                                                 :summary "Get the details for a specific resource"
+                                                 :swagger {:tags ["resource detail"]}
+                                                 :parameters {:path [:map
+                                                                     [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                     [:topic-id int?]]}
+                                                 :handler #ig/ref :gpml.handler.detail/get}
+                                           :delete {:middleware [#ig/ref :gpml.auth/auth-middleware]
+                                                    :summary "remove specific resource"
+                                                    :swagger {:tags ["resource detail"]}
+                                                    :parameters {:path [:map
+                                                                        [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                        [:topic-id int?]]}
+                                                    :handler #ig/ref :gpml.handler.detail/delete}
+                                           :put {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required
+                                                              #ig/ref :gpml.auth/approved-user]
+                                                 :summary "Edit the details for a specific resource"
+                                                 :swagger {:tags ["resource detail"]
+                                                           :security[{:id_token []}]}
+                                                 :parameters {:path [:map
+                                                                     [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                     [:topic-id int?]]
+                                                              :body #ig/ref :gpml.handler.detail/put-params}
+                                                 :handler #ig/ref :gpml.handler.detail/put}}]]]]
                               :logger #ig/ref :duct.logger/timbre}
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
