@@ -14,8 +14,8 @@
     (let [authorized? user]
       (if authorized?
         (if-let [data (db.ts-auth/get-auth-by-topic conn path)]
-         (resp/response (merge path {:auth-stakeholders data}))
-         util/not-found)
+          (resp/response (merge path {:auth-stakeholders data}))
+          util/not-found)
         util/unauthorized))))
 
 (defmethod ig/init-key ::get-topic-stakeholder-auth [_ {:keys [conn]}]
@@ -24,5 +24,32 @@
       (if authorized?
         (if-let [data (db.ts-auth/get-auth-by-topic-and-stakeholder conn path)]
           (resp/response (merge path data))
-         util/not-found)
+          util/not-found)
+        util/unauthorized))))
+
+(defmethod ig/init-key ::new-roles [_ {:keys [conn]}]
+  (fn [{{:keys [path body]} :parameters user :user}]
+    (let [authorized? user]
+      (if authorized?
+        (do
+          (db.ts-auth/new-auth conn (merge path body))
+          (resp/response (merge path body)))
+        util/unauthorized))))
+
+(defmethod ig/init-key ::update-roles [_ {:keys [conn]}]
+  (fn [{{:keys [path body]} :parameters user :user}]
+    (let [authorized? user]
+      (if authorized?
+        (do
+          (db.ts-auth/update-auth conn (merge path body))
+          (resp/response (merge path body)))
+        util/unauthorized))))
+
+(defmethod ig/init-key ::delete [_ {:keys [conn]}]
+  (fn [{{:keys [path body]} :parameters user :user}]
+    (let [authorized? user]
+      (if authorized?
+        (do
+          (db.ts-auth/delete-auth conn path)
+          (resp/response (merge path body)))
         util/unauthorized))))
