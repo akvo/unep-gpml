@@ -286,13 +286,24 @@
                                         ["/auth" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          ["/{topic-type}/{topic-id}"
                                           [""
-                                           {:get {
-                                                  :summary "Get auth details for a specific topic"
+                                           {:get {:summary "Get auth details for a specific topic"
                                                   :swagger {:tags ["topic auth detail"]}
                                                   :parameters {:path [:map
                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                       [:topic-id int?]]}
-                                                  :handler #ig/ref :gpml.handler.auth/get-topic-auth}}]
+                                                  :handler #ig/ref :gpml.handler.auth/get-topic-auth}
+                                            :post {:summary "Add stakeholders auth roles to topic"
+                                                   :swagger {:tags ["topic auth stakeholder"]
+                                                             :security [{:id_token []}]}
+                                                   :parameters {:path [:map
+                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                      [:topic-id int?]]
+                                                                :body [:map
+                                                                       [:stakeholders
+                                                                        [:vector [:map
+                                                                                  [:id int?]
+                                                                                  [:roles [:vector [:enum "owner"]]]]]]]}
+                                                   :handler #ig/ref :gpml.handler.auth/post-topic-auth}}]
                                           ["/{stakeholder}"
                                            {:put {:summary "Update stakeholder auth roles"
                                                    :swagger {:tags ["topic auth stakeholder"]
@@ -461,6 +472,7 @@
 
   :gpml.handler.auth/get-topic-stakeholder-auth {:conn #ig/ref :gpml.db/spec}
   :gpml.handler.auth/get-topic-auth {:conn #ig/ref :gpml.db/spec}
+  :gpml.handler.auth/post-topic-auth {:conn #ig/ref :gpml.db/spec}
   :gpml.handler.auth/new-roles {:conn #ig/ref :gpml.db/spec}
   :gpml.handler.auth/update-roles {:conn #ig/ref :gpml.db/spec}
   :gpml.handler.auth/delete {:conn #ig/ref :gpml.db/spec}

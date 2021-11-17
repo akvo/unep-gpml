@@ -1,6 +1,6 @@
 (ns gpml.handler.auth
   (:require
-   ;;   [clojure.java.jdbc :as jdbc]
+    [clojure.java.jdbc :as jdbc]
    ;;   [clojure.string :as str]
    ;;   [gpml.constants :as constants]
    [gpml.handler.util :as util]
@@ -16,6 +16,20 @@
         (if-let [data (db.ts-auth/get-auth-by-topic conn path)]
           (resp/response (merge path {:auth-stakeholders data}))
           util/not-found)
+        util/unauthorized))))
+
+(defmethod ig/init-key ::post-topic-auth [_ {:keys [conn]}]
+  (fn [{{:keys [path body]} :parameters user :user}]
+    (let [authorized? user]
+      (if authorized?
+        (do
+          (jdbc/with-db-transaction [tx-conn conn]
+           (doseq [s (:stakeholders body)]
+             (let [opts (assoc path :stakeholder (:id s)
+                               :roles (:roles s))]
+               (db.ts-auth/delete-auth tx-conn opts)
+               (db.ts-auth/new-auth tx-conn opts))))
+          (resp/response (merge path body)))
         util/unauthorized))))
 
 (defmethod ig/init-key ::get-topic-stakeholder-auth [_ {:keys [conn]}]
