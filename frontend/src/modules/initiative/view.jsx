@@ -723,6 +723,15 @@ const getRevertValue = (type, value, name) => {
       : Object.keys(value);
     res = transnationalValue.map((x) => parseInt(x));
   }
+  if (type === "option" && isArray && name === "q24_2") {
+    const transnationalValue = isArray
+      ? value.map((item) => {
+          const enumKey = Object.keys(item)[0];
+          return enumKey;
+        })
+      : Object.keys(value);
+    res = transnationalValue.map((x) => parseInt(x));
+  }
   // EOL Geo Transnational handle
 
   if (type === "multiple-option" && isObject && isArray) {
