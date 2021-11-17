@@ -293,13 +293,13 @@
                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                       [:topic-id int?]]}
                                                   :handler #ig/ref :gpml.handler.auth/get-topic-auth}}]
-                                          ["/{stakeholder-id}"
+                                          ["/{stakeholder}"
                                            {:get {:summary "Get auth details for a specific resource and stakeholder"
                                                   :swagger {:tags ["topic stakeholder auth detail"]}
                                                   :parameters {:path [:map
                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                       [:topic-id int?]
-                                                                      [:stakeholder-id int?]]}
+                                                                      [:stakeholder int?]]}
                                                   :handler #ig/ref :gpml.handler.auth/get-topic-stakeholder-auth}}]]]
                                         ["/detail"
                                          ["/{topic-type}/{topic-id}"

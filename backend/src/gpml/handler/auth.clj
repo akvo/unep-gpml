@@ -9,16 +9,12 @@
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
-
 (defmethod ig/init-key ::get-topic-auth [_ {:keys [conn]}]
   (fn [{{:keys [path]} :parameters user :user}]
     (let [authorized? user]
       (if authorized?
-        (if-let [data {}]
-         (resp/response (merge path
-                               data
-                               {:message "topic auth"
-                                :user user}))
+        (if-let [data (db.ts-auth/get-auth-by-topic conn path)]
+         (resp/response (merge path {:auth-stakeholders data}))
          util/not-found)
         util/unauthorized))))
 
@@ -26,10 +22,7 @@
   (fn [{{:keys [path]} :parameters user :user}]
     (let [authorized? user]
       (if authorized?
-        (if-let [data {}]
-          (resp/response (merge path
-                                data
-                               {:message "topic auth"
-                                :user user}))
+        (if-let [data (db.ts-auth/get-auth-by-topic-and-stakeholder conn path)]
+          (resp/response (merge path data))
          util/not-found)
         util/unauthorized))))
