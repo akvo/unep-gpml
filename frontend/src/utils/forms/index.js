@@ -364,6 +364,7 @@ export const revertFormData = (formDataMapping, editData, store = {}) => {
       }
       if (geoCoverageType === "transnational") {
         pKey = "geoCoverageValueTransnational";
+        data = editData.geoCoverageCountryGroups;
       }
       if (geoCoverageType === "global with elements in specific areas") {
         pKey = "geoCoverageValueGlobalSpesific";
