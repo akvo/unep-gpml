@@ -137,7 +137,7 @@
   (fn [{{{:keys [topic-type topic-id]} :path
          {:keys [reviewers]} :body} :parameters
         admin :admin}]
-    (new-review db mailjet-config topic-type topic-id reviewers (:id admin))))
+    (new-multiple-review db mailjet-config topic-type topic-id reviewers (:id admin))))
 
 
 (defmethod ig/init-key ::update-review [_ {:keys [db mailjet-config]}]
@@ -148,7 +148,7 @@
       (change-reviewers db mailjet-config topic-type topic-id reviewers current-user)
       (update-review-status db mailjet-config topic-type topic-id review-status review-comment current-user))))
 
-(defmethod ig/init-key ::list-reviews [_ {:keys [db]}]
+(defmethod ig/init-key ::list-user-reviews [_ {:keys [db]}]
   (fn [{{{:keys [page limit review-status only]} :query} :parameters
         reviewer :reviewer}]
     (list-reviews db reviewer page limit review-status only)))
@@ -156,7 +156,7 @@
 (defmethod ig/init-key ::review-status-params [_ _]
   (apply conj [:enum] (map name constants/reviewer-review-status)))
 
-(defmethod ig/init-key ::list-reviews-params [_ _]
+(defmethod ig/init-key ::list-user-reviews-params [_ _]
   {:query [:map
            [:page {:optional true
                    :default 1}
