@@ -167,3 +167,15 @@
            [:only {:optional true} [:enum "resources" "stakeholders"]]
            [:review-status {:optional true}
             [:re review-status-re]]]})
+
+(defn get-reviews [db topic-type topic-id]
+  (let [conn (:spec db)
+        topic-type (util/get-internal-topic-type topic-type)
+        reviews (db.review/reviews-filter
+                 conn
+                 {:topic-type topic-type "topic-id" topic-id})]
+    (resp/response reviews)))
+
+(defmethod ig/init-key ::get-reviews [_ {:keys [db]}]
+  (fn [{{{:keys [topic-type topic-id]} :path} :parameters}]
+    (get-reviews db topic-type topic-id)))

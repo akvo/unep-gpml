@@ -111,14 +111,14 @@
                                                  :parameters #ig/ref :gpml.handler.review/list-reviews-params
                                                  :handler #ig/ref :gpml.handler.review/list-reviews}}]
                                          ["/{topic-type}/{topic-id}"
-                                          {:get {:summary "Get review for a submission"
+                                          {:get {:summary "Get reviews for a submission"
                                                  :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["review"]
                                                            :security [{:id_token []}]}
                                                  :parameters {:path [:map
                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                      [:topic-id int?]]}
-                                                 :handler #ig/ref :gpml.handler.review/get-review}
+                                                 :handler #ig/ref :gpml.handler.review/get-reviews}
                                            :post {:summary "Assign reviewers for a submission"
                                                   :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                   :swagger {:tags ["review"]
@@ -403,7 +403,7 @@
   :gpml.handler.submission/put-params {}
 
   :gpml.handler.review/get-reviewers {:db #ig/ref :duct.database/sql}
-  :gpml.handler.review/get-review {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/get-reviews {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/new-multiple-review {:db #ig/ref :duct.database/sql
                                             :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.review/update-review {:db #ig/ref :duct.database/sql
