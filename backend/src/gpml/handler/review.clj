@@ -29,14 +29,6 @@
   (let [conn (:spec db)]
     (resp/response (db.stakeholder/get-reviewers conn))))
 
-(defn get-review [db topic-type topic-id]
-  (let [conn (:spec db)
-        topic-type (util/get-internal-topic-type topic-type)
-        review (db.review/review-by-topic-item
-                conn
-                {:topic-type topic-type "topic-id" topic-id})]
-    (resp/response review)))
-
 (defn new-review* [{:keys [conn mailjet-config topic-type* topic-type topic-id assigned-by]} c reviewer-id]
   (let [params {:topic-type topic-type*
                 :topic-id topic-id
@@ -79,7 +71,7 @@
         assigned-by (:id admin)]
     (if (= "ADMIN" (:role admin))
       (jdbc/with-db-transaction [conn (:spec db)]
-        (let [reviews (db.review/reviews-by-topic-item conn {:topic-type topic-type* :topic-id topic-id})
+        (let [reviews (db.review/reviews-filter conn {:topic-type topic-type* :topic-id topic-id})
               current-reviewers (set (map :reviewer reviews))
               [reviewers-to-delete reviewers-to-create reviewers-to-keep] (let [news (set reviewers)
                                                               olds (set current-reviewers)
@@ -99,13 +91,14 @@
                                                                   :assigned-by assigned-by}) [] reviews-to-create))})))
       {:status 403 :body {:message "Cannot update reviewers for this topic"}})))
 
+(def resp403 {:status 403 :body {:message "Cannot update review for this topic"}})
+
 (defn update-review-status [db mailjet-config topic-type topic-id review-status review-comment reviewer]
-  (let [topic-type* (util/get-internal-topic-type topic-type)
-        resp403 {:status 403 :body {:message "Cannot update review for this topic"}}]
+  (let [topic-type* (util/get-internal-topic-type topic-type)]
     (jdbc/with-db-transaction [conn (:spec db)]
-      (if-let [review (db.review/review-by-topic-item
-                       conn
-                       {:topic-type topic-type* :topic-id topic-id})]
+      (if-let [review (first (db.review/reviews-filter
+                              conn
+                              {:topic-type topic-type* :topic-id topic-id :reviewer reviewer}))]
         ;; If assigned to the current-user
         (if (= (:reviewer review) (:id reviewer))
           (let [review-id (db.review/update-review-status
@@ -139,9 +132,6 @@
   (fn [_]
     (get-reviewers db)))
 
-(defmethod ig/init-key ::get-review [_ {:keys [db]}]
-  (fn [{{{:keys [topic-type topic-id]} :path} :parameters}]
-    (get-review db topic-type topic-id)))
 
 (defmethod ig/init-key ::new-multiple-review [_ {:keys [db mailjet-config]}]
   (fn [{{{:keys [topic-type topic-id]} :path

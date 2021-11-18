@@ -141,7 +141,7 @@
                                                                         [:review-comment string?]
                                                                         [:review-status #ig/ref :gpml.handler.review/review-status-params]]
                                                                        [:map
-                                                                        [:reviewer int?]]]}
+                                                                        [:reviewers [:vector int?]]]]}
                                                    :handler #ig/ref :gpml.handler.review/update-review}}]]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required
