@@ -10,6 +10,15 @@
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
+(defn reviews-by-reviewer-id [conn opts]
+  (map (fn [{:keys [details] :as review}]
+         (let [[title picture] details]
+           (-> review
+               (assoc :title title)
+               (assoc :picture picture)
+               (dissoc :details))))
+       (db.review/reviews-by-reviewer-id conn opts)))
+
 (def review-status-re (->> constants/reviewer-review-status
                            (map symbol)
                            (str/join "|")
@@ -101,11 +110,12 @@
           resp403)
         resp403))))
 
-(defn list-reviews [db reviewer page limit status]
+(defn list-reviews [db reviewer page limit status only]
   (let [conn (:spec db)
         review-status (and status (str/split status #","))
-        params {:reviewer (:id reviewer) :page page :limit limit :review-status review-status}
-        reviews (db.review/reviews-by-reviewer-id conn params)
+        params {:reviewer (:id reviewer) :page page :limit limit :review-status review-status
+                :only only}
+        reviews (reviews-by-reviewer-id conn params)
         count (:count (db.review/count-by-reviewer-id conn params))
         pages (util/page-count count limit)]
     (resp/response {:reviews reviews :page page :limit limit :pages pages :count count})))
@@ -133,9 +143,9 @@
       (update-review-status db mailjet-config topic-type topic-id review-status review-comment current-user))))
 
 (defmethod ig/init-key ::list-reviews [_ {:keys [db]}]
-  (fn [{{{:keys [page limit review-status]} :query} :parameters
+  (fn [{{{:keys [page limit review-status only]} :query} :parameters
         reviewer :reviewer}]
-    (list-reviews db reviewer page limit review-status)))
+    (list-reviews db reviewer page limit review-status only)))
 
 (defmethod ig/init-key ::review-status-params [_ _]
   (apply conj [:enum] (map name constants/reviewer-review-status)))
@@ -148,5 +158,6 @@
            [:limit {:optional true
                     :default 10}
             int?]
+           [:only {:optional true} [:enum "resources" "stakeholders"]]
            [:review-status {:optional true}
             [:re review-status-re]]]})
