@@ -39,8 +39,8 @@ WHERE reviewer = :reviewer
 -- :doc Get review by id
 SELECT * FROM review WHERE id = :id;
 
--- :name review-by-topic-item :? :1
--- :doc Get review by topic_type, topic_id
+-- :name reviews-by-topic-item :? :*
+-- :doc Get reviews by topic_type, topic_id
 SELECT r.*, (CASE
   WHEN r.topic_type = 'initiative' THEN (SELECT TRIM('"' FROM t.q2::text) FROM initiative t WHERE t.id = r.topic_id)
   WHEN r.topic_type = 'technology' THEN (SELECT t.name FROM technology t WHERE t.id = r.topic_id)

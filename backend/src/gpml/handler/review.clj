@@ -37,26 +37,33 @@
                 {:topic-type topic-type "topic-id" topic-id})]
     (resp/response review)))
 
+(defn new-review* [{:keys [conn mailjet-config topic-type* topic-type topic-id assigned-by]} c reviewer-id]
+  (let [params {:topic-type topic-type*
+                :topic-id topic-id
+                :assigned-by assigned-by
+                :reviewer reviewer-id}
+        reviewer (db.stakeholder/stakeholder-by-id conn {:id reviewer-id})
+        reviewer-name (email/get-user-full-name reviewer)
+        _ (db.review/new-review conn params)
+        review (db.review/review-by-topic-item conn params)]
+    (email/send-email mailjet-config
+                      email/unep-sender
+                      (format "[%s] Review requested on new %s" (:app-name mailjet-config) topic-type)
+                      (list {:Name reviewer-name :Email (:email reviewer)})
+                      (list (email/notify-reviewer-pending-review-text reviewer-name (:app-domain mailjet-config) topic-type (:title review)))
+                      (list nil))
+    (conj c review)))
+
 (defn new-multiple-review [db mailjet-config topic-type topic-id reviewers assigned-by]
   (let [topic-type* (util/get-internal-topic-type topic-type)]
     (jdbc/with-db-transaction [conn (:spec db)]
       (db.review/delete-reviews db {:topic-type topic-type* :topic-id topic-id})
-      (resp/response {:reviews (reduce (fn [c reviewer-id]
-                                         (let [params {:topic-type topic-type*
-                                                       :topic-id topic-id
-                                                       :assigned-by assigned-by
-                                                       :reviewer reviewer-id}
-                                               reviewer (db.stakeholder/stakeholder-by-id conn {:id reviewer-id})
-                                               reviewer-name (email/get-user-full-name reviewer)
-                                               _ (db.review/new-review conn params)
-                                               review (db.review/review-by-topic-item conn params)]
-                                           (email/send-email mailjet-config
-                                                             email/unep-sender
-                                                             (format "[%s] Review requested on new %s" (:app-name mailjet-config) topic-type)
-                                                             (list {:Name reviewer-name :Email (:email reviewer)})
-                                                             (list (email/notify-reviewer-pending-review-text reviewer-name (:app-domain mailjet-config) topic-type (:title review)))
-                                                             (list nil))
-                                           (conj c review)))
+      (resp/response {:reviews (reduce (partial new-review* {:conn conn
+                                                             :mailjet-config mailjet-config
+                                                             :topic-type* topic-type*
+                                                             :topic-type topic-type
+                                                             :topic-id topic-id
+                                                             :assigned-by assigned-by})
                                        reviewers)})
 
 
@@ -67,28 +74,30 @@
         {:status 409 :body {:message "Review already created for this resource"}}
         ))))
 
-(defn change-reviewer [db mailjet-config topic-type topic-id reviewer-id admin]
+(defn change-reviewers [db mailjet-config topic-type topic-id reviewer-id reviewers admin]
   (let [topic-type* (util/get-internal-topic-type topic-type)
-        assigned-by (:id admin)
-        is-admin (= "ADMIN" (:role admin))
-        resp403 {:status 403 :body {:message "Cannot update reviewer for this topic"}}]
-    (jdbc/with-db-transaction [conn (:spec db)]
-      (if-let [review (and is-admin
-                            (db.review/review-by-topic-item
-                             conn
-                             {:topic-type topic-type* :topic-id topic-id}))]
-        (let [reviewer (db.stakeholder/stakeholder-by-id conn {:id reviewer-id})
-              review-id (db.review/change-reviewer conn {:id (:id review)
-                                                         :assigned-by assigned-by
-                                                         :reviewer reviewer-id})]
-          (email/send-email mailjet-config
-                            email/unep-sender
-                            (format "[%s] Review requested on new %s" (:app-name mailjet-config) topic-type)
-                            (list {:Name (email/get-user-full-name reviewer) :Email (:email reviewer)})
-                            (list (email/notify-reviewer-pending-review-text (email/get-user-full-name reviewer) (:app-domain mailjet-config) topic-type (:title review)))
-                            (list nil))
-          (resp/response review-id))
-         resp403))))
+        assigned-by (:id admin)]
+    (if (= "ADMIN" (:role admin))
+      (jdbc/with-db-transaction [conn (:spec db)]
+        (let [reviews (db.review/reviews-by-topic-item conn {:topic-type topic-type* :topic-id topic-id})
+              current-reviewers (set (map :reviewer reviews))
+              [reviewers-to-delete reviewers-to-create reviewers-to-keep] (let [news (set reviewers)
+                                                              olds (set current-reviewers)
+                                                              keep (clojure.set/intersection news olds)
+                                                              delete (clojure.set/difference olds news)
+                                                              create (clojure.set/difference news olds)]
+                                                          [delete create keep])
+              reviews-to-delete (filter #(contains? reviewers-to-delete (:reviewer %)) reviews)
+              reviews-to-create (filter #(contains? reviewers-to-create (:reviewer %)) reviews)]
+          (resp/response {:reviews (into
+                                    (filter #(contains? reviewers-to-delete (:reviewer %)) reviewers-to-keep)
+                                    (reduce (partial new-review* {:conn conn
+                                                                  :mailjet-config mailjet-config
+                                                                  :topic-type* topic-type*
+                                                                  :topic-type topic-type
+                                                                  :topic-id topic-id
+                                                                  :assigned-by assigned-by}) [] reviews-to-create))})))
+      {:status 403 :body {:message "Cannot update reviewers for this topic"}})))
 
 (defn update-review-status [db mailjet-config topic-type topic-id review-status review-comment reviewer]
   (let [topic-type* (util/get-internal-topic-type topic-type)
@@ -143,10 +152,10 @@
 
 (defmethod ig/init-key ::update-review [_ {:keys [db mailjet-config]}]
   (fn [{{{:keys [topic-type topic-id]} :path
-         {:keys [review-status review-comment reviewer]} :body} :parameters
+         {:keys [review-status review-comment reviewers]} :body} :parameters
         current-user :reviewer}]
-    (if reviewer
-      (change-reviewer db mailjet-config topic-type topic-id reviewer current-user)
+    (if reviewers
+      (change-reviewers db mailjet-config topic-type topic-id reviewers current-user)
       (update-review-status db mailjet-config topic-type topic-id review-status review-comment current-user))))
 
 (defmethod ig/init-key ::list-reviews [_ {:keys [db]}]
