@@ -469,7 +469,12 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
                         }
                       }}
                     />
-                    <FieldsFromSchema schema={formSchema[2]} />
+                    <Condition when="geoCoverageType" is={"national"}>
+                      <FieldsFromSchema schema={formSchema[2]} />
+                    </Condition>
+                    <Condition when="geoCoverageType" is={"transnational"}>
+                      <FieldsFromSchema schema={formSchema[2]} />
+                    </Condition>
                     <Condition when="geoCoverageType" is={"transnational"}>
                       <FieldsFromSchema schema={formSchema[4]} />
                     </Condition>
