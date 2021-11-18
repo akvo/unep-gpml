@@ -773,7 +773,28 @@ const revertFormData = (data) => {
       };
     }
   });
-  return formData;
+  let newData = {};
+  if (formData.S3.S3_G2.S3_G2_24 === "transnational") {
+    newData = {
+      ...formData,
+      S3: {
+        ...formData.S3,
+        S3_G2: {
+          ...formData.S3.S3_G2,
+          "S3_G2_24.3": formData.S3.S3_G2["S3_G2_24.4"].map((num) => {
+            return num.toString();
+          }),
+          "S3_G2_24.4": formData.S3.S3_G2["S3_G2_24.2"].map((num) => {
+            return num.toString();
+          }),
+          "S3_G2_24.2": null,
+        },
+      },
+    };
+  } else {
+    newData = formData;
+  }
+  return newData;
 };
 
 export const initiativeData = new Store({
