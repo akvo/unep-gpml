@@ -119,7 +119,7 @@
                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                      [:topic-id int?]]}
                                                  :handler #ig/ref :gpml.handler.review/get-review}
-                                           :post {:summary "Assign reviewer for a submission"
+                                           :post {:summary "Assign reviewers for a submission"
                                                   :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                   :swagger {:tags ["review"]
                                                             :security [{:id_token []}]}
@@ -127,8 +127,8 @@
                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                       [:topic-id int?]]
                                                                :body [:map
-                                                                      [:reviewer int?]]}
-                                                  :handler #ig/ref :gpml.handler.review/new-review}
+                                                                      [:reviewers [:vector int?]]]}
+                                                  :handler #ig/ref :gpml.handler.review/new-multiple-review}
                                            :patch {:summary "Update review for a submission"
                                                    :middleware [#ig/ref :gpml.auth/reviewer-required-middleware]
                                                    :swagger {:tags ["review"]
@@ -404,8 +404,8 @@
 
   :gpml.handler.review/get-reviewers {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/get-review {:db #ig/ref :duct.database/sql}
-  :gpml.handler.review/new-review {:db #ig/ref :duct.database/sql
-                                   :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.review/new-multiple-review {:db #ig/ref :duct.database/sql
+                                            :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.review/update-review {:db #ig/ref :duct.database/sql
                                       :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.review/list-reviews {:db #ig/ref :duct.database/sql}

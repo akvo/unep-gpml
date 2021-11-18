@@ -59,6 +59,9 @@ WHERE
 INSERT INTO review (topic_type, topic_id, assigned_by, reviewer)
 VALUES (:topic-type::topic_type, :topic-id, :assigned-by, :reviewer) returning id;
 
+-- :name delete-reviews :! *
+DELETE FROM review where topic_type=:topic-type::topic_type and topic_id=:topic-id::topic_id;
+
 -- :name update-review-status :<! :1
 UPDATE review SET
   review_status = :review-status::reviewer_review_status,
