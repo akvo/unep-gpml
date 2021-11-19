@@ -118,7 +118,7 @@
                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                       [:topic-id int?]]
                                                                :body [:map
-                                                                      [:reviewer int?]]}
+                                                                      [:reviewers [:vector int?]]]}
                                                   :handler #ig/ref :gpml.handler.review/new-review}
                                            :patch {:summary "Update review for a submission"
                                                    :middleware [#ig/ref :gpml.auth/reviewer-required-middleware]
@@ -132,7 +132,7 @@
                                                                         [:review-comment string?]
                                                                         [:review-status #ig/ref :gpml.handler.review/review-status-params]]
                                                                        [:map
-                                                                        [:reviewer int?]]]}
+                                                                        [:reviewer [:vector int?]]]]}
                                                    :handler #ig/ref :gpml.handler.review/update-review}}]]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required
