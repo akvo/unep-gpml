@@ -77,7 +77,7 @@
       (if-let [review (and is-admin
                             (db.review/review-by-topic-item-and-reviewer-id
                              conn
-                             {:topic-type topic-type* :topic-id topic-id :reviewer (:id reviewer)}))]
+                             {:topic-type topic-type* :topic-id topic-id :reviewer reviewer-id}))]
         (let [reviewer (db.stakeholder/stakeholder-by-id conn {:id reviewer-id})
               review-id (db.review/change-reviewer conn {:id (:id review)
                                                          :assigned-by assigned-by
