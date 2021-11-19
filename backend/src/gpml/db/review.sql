@@ -63,6 +63,10 @@ VALUES (:topic-type::topic_type, :topic-id, :assigned-by, :reviewer) returning i
 -- :name delete-reviews :! *
 DELETE FROM review where topic_type=:topic-type::topic_type and topic_id=:topic-id::topic_id;
 
+-- :name delete-review-by-id :! :1
+DELETE FROM review where id=:id;
+
+
 -- :name update-review-status :<! :1
 UPDATE review SET
   review_status = :review-status::reviewer_review_status,

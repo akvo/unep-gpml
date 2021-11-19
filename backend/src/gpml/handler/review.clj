@@ -1,6 +1,7 @@
 (ns gpml.handler.review
   (:require
    [clojure.string :as str]
+   [clojure.set :as set]
    [clojure.java.jdbc :as jdbc]
    [gpml.constants :as constants]
    [gpml.db.stakeholder :as db.stakeholder]
@@ -36,8 +37,8 @@
                 :reviewer reviewer-id}
         reviewer (db.stakeholder/stakeholder-by-id conn {:id reviewer-id})
         reviewer-name (email/get-user-full-name reviewer)
-        _ (db.review/new-review conn params)
-        review (db.review/review-by-topic-item conn params)]
+        new-review (db.review/new-review conn params)
+        review (db.review/review-by-id conn new-review)]
     (email/send-email mailjet-config
                       email/unep-sender
                       (format "[%s] Review requested on new %s" (:app-name mailjet-config) topic-type)
@@ -56,17 +57,9 @@
                                                              :topic-type topic-type
                                                              :topic-id topic-id
                                                              :assigned-by assigned-by})
-                                       reviewers)})
+                                       reviewers)}))))
 
-
-
-      (if-let [_ (db.review/review-by-topic-item
-                   conn
-                   {:topic-type topic-type* :topic-id topic-id})]
-        {:status 409 :body {:message "Review already created for this resource"}}
-        ))))
-
-(defn change-reviewers [db mailjet-config topic-type topic-id reviewer-id reviewers admin]
+(defn change-reviewers [db mailjet-config topic-type topic-id reviewers admin]
   (let [topic-type* (util/get-internal-topic-type topic-type)
         assigned-by (:id admin)]
     (if (= "ADMIN" (:role admin))
@@ -75,12 +68,14 @@
               current-reviewers (set (map :reviewer reviews))
               [reviewers-to-delete reviewers-to-create reviewers-to-keep] (let [news (set reviewers)
                                                               olds (set current-reviewers)
-                                                              keep (clojure.set/intersection news olds)
-                                                              delete (clojure.set/difference olds news)
-                                                              create (clojure.set/difference news olds)]
+                                                              keep (set/intersection news olds)
+                                                              delete (set/difference olds news)
+                                                              create (set/difference news olds)]
                                                           [delete create keep])
               reviews-to-delete (filter #(contains? reviewers-to-delete (:reviewer %)) reviews)
               reviews-to-create (filter #(contains? reviewers-to-create (:reviewer %)) reviews)]
+          (doseq [r reviews-to-delete]
+            (db.review/delete-review-by-id db {:id (:id r)}))
           (resp/response {:reviews (into
                                     (filter #(contains? reviewers-to-delete (:reviewer %)) reviewers-to-keep)
                                     (reduce (partial new-review* {:conn conn
