@@ -171,8 +171,8 @@ const formDataMapping = [
     type: "array",
   },
   {
-    key: "subNationalArea",
-    name: "subNationalArea",
+    key: "subnationalArea",
+    name: "subnationalArea",
     group: null,
     type: "string",
   },
@@ -310,6 +310,9 @@ const EntityForm = withRouter(
         data.representativeGroupAcademiaResearch = null;
         data.representativeGroupCivilSociety = null;
         data.representativeGroupOther = null;
+        data.representativeGroupPrivateSector = String(
+          formData.representativeGroupPrivateSector
+        );
       }
       if (data.type === "Government") {
         data.representativeGroupPrivateSector = null;

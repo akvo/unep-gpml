@@ -78,8 +78,10 @@ const GeoCoverageInput = (props) => {
               } else if (typeInput.value === "transnational") {
                 selectProps.options = transnational;
                 selectProps.showSearch = true;
-                selectProps.filterOption = (input, option) =>
-                  option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+                selectProps.mode = "multiple";
+                if (input.value === "" || input?.[0] === "") {
+                  input.onChange([]);
+                }
               } else if (
                 typeInput.value === "global with elements in specific areas"
               ) {
@@ -165,6 +167,16 @@ const defaultFormSchema = [
       showSearch: true,
     },
   },
+  {
+    geoCoverageCountries: {
+      label: "Geo Coverage (countries)",
+      control: "select",
+      options: [],
+      loading: true,
+      mode: "multiple",
+      showSearch: true,
+    },
+  },
 ];
 
 const validation = (formSchema) => {
@@ -201,10 +213,14 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
     data.endDate = vals.date[1].toISOString();
     if (
       data.geoCoverageType === "national" ||
-      data.geoCoverageType === "sub-national" ||
-      data.geoCoverageType === "transnational"
+      data.geoCoverageType === "sub-national"
     ) {
-      data.geoCoverageValue = [data.geoCoverageValue];
+      data.geoCoverageCountries = [data.geoCoverageValue];
+      delete data.geoCoverageValue;
+    } else if (data.geoCoverageType === "transnational") {
+      data.geoCoverageCountryGroups = data.geoCoverageValue;
+      data.geoCoverageCountries = data.geoCoverageCountries;
+      delete data.geoCoverageValue;
     } else if (data.geoCoverageType === "global") {
       delete data.geoCoverageValue;
     }
@@ -284,6 +300,12 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
           label: x.name,
         }))
         .sort((a, b) => a.label.localeCompare(b.label));
+      newSchema[4].geoCoverageCountries.options = countries
+        .map((x) => ({
+          value: x.id,
+          label: x.name,
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label));
     }
     setFormSchema(newSchema);
 
@@ -329,15 +351,21 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
       let geoCoverageValue = null;
       if (
         data.geoCoverageType === "national" ||
-        data.geoCoverageType === "transnational" ||
         data.geoCoverageType === "sub-national"
       ) {
         geoCoverageValue = data?.geoCoverageValues?.[0];
+      } else if (data.geoCoverageType === "transnational") {
+        geoCoverageValue = data?.geoCoverageCountryGroups;
       } else {
         geoCoverageValue = data?.geoCoverageValues;
       }
       data?.geoCoverageValues &&
         formRef.current?.change("geoCoverageValue", geoCoverageValue);
+      data?.geoCoverageCountries &&
+        formRef.current?.change(
+          "geoCoverageCountries",
+          data.geoCoverageCountries
+        );
       data?.remarks && formRef.current?.change("remarks", data?.remarks);
       data?.tags &&
         formRef.current?.change(
@@ -356,6 +384,12 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
     onSubmit,
     validate: validation(formSchema),
   });
+
+  const Condition = ({ when, is, children }) => (
+    <Field name={when} subscription={{ value: true }}>
+      {({ input: { value } }) => (value === is ? children : null)}
+    </Field>
+  );
 
   const handleChangeGeoType = (value, setError = true) => {
     setGeoType({ value, error: setError ? !value : setError });
@@ -435,7 +469,15 @@ const AddEventForm = withRouter(({ match: { params }, history }) => {
                         }
                       }}
                     />
-                    <FieldsFromSchema schema={formSchema[2]} />
+                    <Condition when="geoCoverageType" is={"national"}>
+                      <FieldsFromSchema schema={formSchema[2]} />
+                    </Condition>
+                    <Condition when="geoCoverageType" is={"transnational"}>
+                      <FieldsFromSchema schema={formSchema[2]} />
+                    </Condition>
+                    <Condition when="geoCoverageType" is={"transnational"}>
+                      <FieldsFromSchema schema={formSchema[4]} />
+                    </Condition>
                   </div>
                   <div className="section">
                     <h3>Other</h3>

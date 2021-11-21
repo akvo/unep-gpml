@@ -149,7 +149,7 @@
       (let [comment "Missing lot of data"
             resp (handler (-> (mock/request :get "/")
                               (assoc
-                               :reviewer reviewer
+                               :reviewer reviewer1
                                :parameters {:path {:topic-type "stakeholder"
                                                    :topic-id (:id user)}
                                             :body {:review-comment comment
@@ -157,7 +157,7 @@
             body (:body resp)
             review (db.review/review-by-id db body)]
         (is (= 200 (:status resp)))
-        (is (= (:reviewer review) (:id reviewer)))
+        (is (= (:reviewer review) (:id reviewer1)))
         (is (= (:assigned_by review) (:id admin)))
         (is (= (:topic_id review) (:id user)))
         (is (= (:review_status review) "REJECTED"))
@@ -167,7 +167,7 @@
       (let [comment "Best user!!!"
             resp (handler (-> (mock/request :get "/")
                               (assoc
-                               :reviewer reviewer
+                               :reviewer reviewer1
                                :parameters {:path {:topic-type "stakeholder"
                                                    :topic-id (:id user)}
                                             :body {:review-comment comment
@@ -175,7 +175,7 @@
             body (:body resp)
             review (db.review/review-by-id db body)]
         (is (= 200 (:status resp)))
-        (is (= (:reviewer review) (:id reviewer)))
+        (is (= (:reviewer review) (:id reviewer1)))
         (is (= (:assigned_by review) (:id admin)))
         (is (= (:topic_id review) (:id user)))
         (is (= (:review_status review) "ACCEPTED"))
@@ -187,7 +187,7 @@
                                :reviewer reviewer2
                                :parameters {:path {:topic-type "stakeholder"
                                                    :topic-id (:id user)}
-                                            :body {:reviewer (:id reviewer)}})))]
+                                            :body {:reviewer (:id reviewer1)}})))]
         (is (= 403 (:status resp)))))
 
     (testing "Changing reviewer as ADMIN"

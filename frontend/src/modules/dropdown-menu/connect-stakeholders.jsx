@@ -33,6 +33,10 @@ const ConnectStakeholdersDropdownMenu = withRouter(
       }
     };
 
+    const handleComunityClick = () => {
+      window.open("https://communities.gpmarinelitter.org/", "_blank");
+    };
+
     const loading = !stakeholderCounts;
 
     return (
@@ -53,14 +57,6 @@ const ConnectStakeholdersDropdownMenu = withRouter(
                     }
                   >
                     {topicNames(name)}
-                    {/* <Button
-                      className="badge-count"
-                      size="small"
-                      type="ghost"
-                      shape="circle"
-                      icon={count}
-                      loading={loading}
-                    /> */}
                   </Menu.Item>
                 );
               })
@@ -76,6 +72,13 @@ const ConnectStakeholdersDropdownMenu = withRouter(
                 />
               </Menu.Item>
             )}
+            <Menu.Item
+              className="nav-link"
+              disabled={loading}
+              onClick={() => handleComunityClick()}
+            >
+              Community
+            </Menu.Item>
           </Menu>
         }
         trigger={["click"]}

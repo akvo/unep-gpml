@@ -148,7 +148,7 @@
                 country-n-new (:q24_2 new-n-initiative)
                 country-n-old (:q24_2 n-initiative)]
             (check-country country-new country-old)
-            (check-country country-n-new country-n-old)))))))
+            (check-country (first country-n-new) (first country-n-old))))))))
 
 (deftest revert-update-country-test
   (let [db (test-util/db-test-conn)

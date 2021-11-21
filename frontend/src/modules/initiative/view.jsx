@@ -723,6 +723,15 @@ const getRevertValue = (type, value, name) => {
       : Object.keys(value);
     res = transnationalValue.map((x) => parseInt(x));
   }
+  if (type === "option" && isArray && name === "q24_2") {
+    const transnationalValue = isArray
+      ? value.map((item) => {
+          const enumKey = Object.keys(item)[0];
+          return enumKey;
+        })
+      : Object.keys(value);
+    res = transnationalValue.map((x) => parseInt(x));
+  }
   // EOL Geo Transnational handle
 
   if (type === "multiple-option" && isObject && isArray) {
@@ -764,7 +773,28 @@ const revertFormData = (data) => {
       };
     }
   });
-  return formData;
+  let newData = {};
+  if (formData.S3.S3_G2.S3_G2_24 === "transnational") {
+    newData = {
+      ...formData,
+      S3: {
+        ...formData.S3,
+        S3_G2: {
+          ...formData.S3.S3_G2,
+          "S3_G2_24.3": formData.S3.S3_G2["S3_G2_24.4"].map((num) => {
+            return num.toString();
+          }),
+          "S3_G2_24.4": formData.S3.S3_G2["S3_G2_24.2"].map((num) => {
+            return num.toString();
+          }),
+          "S3_G2_24.2": null,
+        },
+      },
+    };
+  } else {
+    newData = formData;
+  }
+  return newData;
 };
 
 export const initiativeData = new Store({
@@ -850,19 +880,27 @@ const getSchema = (
     (x) => x.name
   );
   // geocoverage sub-national options
-  prop.S3.properties.S3_G2.properties["S3_G2_24.3"].enum = countries?.map(
-    (x) => x.id
+  prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enum = countries?.map((x) =>
+    String(x.id)
   );
-  prop.S3.properties.S3_G2.properties["S3_G2_24.3"].enumNames = countries?.map(
+  prop.S3.properties.S3_G2.properties["S3_G2_24.4"].enumNames = countries?.map(
     (x) => x.name
   );
   // geocoverage transnational options
   prop.S3.properties.S3_G2.properties[
-    "S3_G2_24.4"
-  ].enum = transnationalOptions?.map((x) => x.id);
+    "S3_G2_24.3"
+  ].enum = transnationalOptions?.map((x) => String(x.id));
   prop.S3.properties.S3_G2.properties[
-    "S3_G2_24.4"
+    "S3_G2_24.3"
   ].enumNames = transnationalOptions?.map((x) => x.name);
+
+  // prop.S3.properties.S3_G2.properties["S3_G2_24.6"].enum = countries?.map((x) =>
+  //   String(x.id)
+  // );
+  // prop.S3.properties.S3_G2.properties["S3_G2_24.6"].enumNames = countries?.map(
+  //   (x) => x.name
+  // );
+
   // geocoverage global with elements in specific areas options
   prop.S3.properties.S3_G2.properties[
     "S3_G2_24.5"

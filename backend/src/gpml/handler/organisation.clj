@@ -10,18 +10,26 @@
 
 (defn create [conn org]
   (let [org-id (:id (db.organisation/new-organisation conn (dissoc org :id)))
+        org-geo2 (handler.geo/get-geo-vector-v2 org-id org)
         org-geo (handler.geo/get-geo-vector org-id org)]
-    (when (seq org-geo)
-      (db.organisation/add-geo-coverage conn {:geo org-geo}))
+    (if (seq org-geo2)
+      (db.organisation/add-geo-coverage conn {:geo org-geo2})
+      (when (seq org-geo)
+        (db.organisation/add-geo-coverage conn {:geo org-geo})))
     org-id))
 
 (defn update-org [conn org]
   (let [org-id (do (db.organisation/update-organisation conn org)
                    (:id org))
-        org-geo (handler.geo/get-geo-vector org-id org)]
-    (when (seq org-geo)
-      (db.organisation/delete-geo-coverage conn org)
-      (db.organisation/add-geo-coverage conn {:id org-id :geo org-geo}))
+        org-geo (handler.geo/get-geo-vector org-id org)
+        org-geo2 (handler.geo/get-geo-vector-v2 org-id org)]
+    (if (seq org-geo2)
+      (do
+        (db.organisation/delete-geo-coverage conn org)
+        (db.organisation/add-geo-coverage conn {:id org-id :geo org-geo2}))
+      (when (seq org-geo)
+        (db.organisation/delete-geo-coverage conn org)
+        (db.organisation/add-geo-coverage conn {:id org-id :geo org-geo})))
     (when (seq (:expertise org))
       (db.organisation/delete-organisation-tags conn org)
       (db.organisation/add-organisation-tags conn {:tags (map #(vector org-id %) (:expertise org ))}))
@@ -76,14 +84,13 @@
       (resp/created referrer (assoc body-params :id org-id)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post-params [_ _]
-  [:map
-   [:name string?]
-   [:url string?]
-   [:stakeholder string?]
-   [:country int?]
-   [:geo_coverage_type geo/coverage_type]
-   [:geo_coverage_value
-    [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]])
+  (into [:map
+    [:name string?]
+    [:url string?]
+    [:stakeholder string?]
+    [:country int?]
+         [:geo_coverage_type geo/coverage_type]]
+        handler.geo/params-payload))
 
 (defmethod ig/init-key :gpml.handler.organisation/put [_ {:keys [db]}]
   (fn [{:keys [body-params referrer parameters]}]
@@ -91,20 +98,19 @@
       (resp/created referrer (assoc body-params :id org-id)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
-  [:map
-   [:name string?]
-   [:url string?]
-   [:logo {:optional true} string?]
-   [:country int?]
-   [:geo_coverage_type geo/coverage_type]
-   [:geo_coverage_value {:optional true}
-    [:vector {:min 1 :error/message "Need at least one of geo coverage value"} int?]]
-   [:type string?]
-   [:representative_group_other [:maybe string?]]
-   [:representative_group_civil_society [:maybe string?]]
-   [:representative_group_private_sector [:maybe string?]]
-   [:representative_group_government [:maybe string?]]
-   [:representative_group_academia_research [:maybe string?]]
-   [:subnational_area [:maybe string?]]
-   [:expertise vector?]
-   [:program string?]])
+  (into [:map
+    [:name string?]
+    [:url string?]
+    [:logo {:optional true} string?]
+    [:country int?]
+    [:geo_coverage_type geo/coverage_type]
+    [:type string?]
+    [:representative_group_other [:maybe string?]]
+    [:representative_group_civil_society [:maybe string?]]
+    [:representative_group_private_sector [:maybe string?]]
+    [:representative_group_government [:maybe string?]]
+    [:representative_group_academia_research [:maybe string?]]
+    [:subnational_area [:maybe string?]]
+    [:expertise vector?]
+         [:program string?]]
+        handler.geo/params-payload))

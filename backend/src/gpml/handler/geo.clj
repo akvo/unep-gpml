@@ -19,3 +19,16 @@
     (map #(vector id % nil) geo_coverage_value)
     (#{"national" "sub-national"} geo_coverage_type)
     (map #(vector id nil %) geo_coverage_value)))
+
+(defn get-geo-vector-v2 [id {:keys [geo_coverage_countries geo_coverage_country_groups]}]
+  (-> []
+      (into (mapv #(vector id % nil) geo_coverage_country_groups))
+      (into (mapv #(vector id nil %) geo_coverage_countries))))
+
+(def params-payload
+  [[:geo_coverage_countries {:optional true}
+    [:vector {:min 1 :error/message "Need at least one geo coverage value"} integer?]]
+   [:geo_coverage_country_groups {:optional true}
+    [:vector {:min 1 :error/message "Need at least one geo coverage value"} integer?]]
+   [:geo_coverage_value {:optional true}
+    [:vector {:min 1 :error/message "Need at least one geo coverage value"} integer?]]])

@@ -16,6 +16,7 @@ services:
       - OIDC_ISSUER=https://unep-gpml-test.eu.auth0.com/
       - OIDC_AUDIENCE=dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J
       - APP_NAME=UNEP GPML (test)
+      - APP_USER_ADMIN=caroline.kamau@un.org
       - APP_DOMAIN=http://localhost
       - AUTH0_BACKEND_CLIENT_ID
       - AUTH0_BACKEND_SECRET

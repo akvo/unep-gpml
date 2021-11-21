@@ -84,9 +84,9 @@
   "q24": {
     "national": "National"
   },
-  "q24_2": {
+  "q24_2": [{
     "108": "India"
-  },
+  }],
   "q26": [
     {
       "26-3": "Use / consumption"

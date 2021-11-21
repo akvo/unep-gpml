@@ -45,12 +45,14 @@ const getSchema = (
   prop.geoCoverageValueRegional.enumNames = regionOptions?.map((x) => x.name);
   prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
   prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
-  prop.geoCoverageValueTransnational.enum = transnationalOptions?.map(
-    (x, i) => x.id
+  prop.geoCoverageValueTransnational.enum = transnationalOptions?.map((x, i) =>
+    String(x.id)
   );
   prop.geoCoverageValueTransnational.enumNames = transnationalOptions?.map(
     (x, i) => x.name
   );
+  prop.geoCoverageCountries.enum = countries?.map((x) => String(x.id));
+  prop.geoCoverageCountries.enumNames = countries?.map((x) => x.name);
   prop.geoCoverageValueGlobalSpesific.enum = meaOptions?.map((x) =>
     String(x.id)
   );
@@ -105,6 +107,12 @@ const formDataMapping = [
   {
     key: "geoCoverageValues",
     name: "geoCoverageValue",
+    group: null,
+    type: "array",
+  },
+  {
+    key: "geoCoverageCountries",
+    name: "geoCoverageCountries",
     group: null,
     type: "array",
   },
@@ -257,6 +265,20 @@ const AddResourceForm = withRouter(
       }
 
       data = handleGeoCoverageValue(data, formData, countries);
+
+      if (data.geoCoverageType === "transnational") {
+        data.geoCoverageCountryGroups = data.geoCoverageValue;
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
+      }
+
+      if (data.geoCoverageType === "national") {
+        data.geoCoverageCountries = data.geoCoverageValue;
+      }
+
+      delete data.geoCoverageValue;
+
       if (status === "add" && !params?.id) {
         data?.image && data?.image === "" && delete data.image;
       }
@@ -273,6 +295,7 @@ const AddResourceForm = withRouter(
       }
 
       setSending(true);
+
       if (status === "add" && !params?.id) {
         api
           .post("/resource", data)

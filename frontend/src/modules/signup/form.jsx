@@ -134,6 +134,13 @@ const SignUpForm = withRouter(
           if (data.geoCoverageType) {
             data.org.geoCoverageType = data.geoCoverageType;
             data.org.geoCoverageValue = data.geoCoverageValue;
+            data.org.geoCoverageCountries = data.geoCoverageValue;
+            if (data.geoCoverageType === "transnational") {
+              data.org.geoCoverageCountryGroups = data.geoCoverageValue;
+              data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
+                (x) => parseInt(x)
+              );
+            }
           }
           delete data.geoCoverageType;
           delete data.geoCoverageValue;
@@ -143,6 +150,8 @@ const SignUpForm = withRouter(
           delete data.orgDescription;
           delete data.orgUrl;
           delete data.orgLogo;
+          delete data.geoCoverageValueTransnational;
+          delete data.geoCoverageCountries;
 
           if (data.registeredStakeholders) {
             data.org.registeredStakeholders = formData.S5.registeredStakeholders.map(
@@ -201,6 +210,7 @@ const SignUpForm = withRouter(
           delete data.newCompanyHeadquarter;
           delete data.newCompanySubnationalAreaOnly;
           delete data.newCompanyName;
+          delete data.geoCoverageValueTransnational;
         }
       }
 
@@ -248,35 +258,35 @@ const SignUpForm = withRouter(
             setSending(false);
           });
       }
-      // if (status === "edit" || params?.id) {
-      //   api
-      //     .put(`/detail/project/${id || params?.id}`, data)
-      //     .then(() => {
-      //       notification.success({ message: "Update success" });
-      //       UIStore.update((e) => {
-      //         e.formEdit = {
-      //           ...e.formEdit,
-      //           signup: {
-      //             status: "add",
-      //             id: null,
-      //           },
-      //         };
-      //       });
-      //       // scroll top
-      //       window.scrollTo({ top: 0 });
-      //       signUpData.update((e) => {
-      //         e.data = initialSignUpData;
-      //       });
-      //       setDisabledBtn({ disabled: true, type: "default" });
-      //       history.push(`/project/${id || params?.id}`);
-      //     })
-      //     .catch(() => {
-      //       notification.error({ message: "An error occured" });
-      //     })
-      //     .finally(() => {
-      //       setSending(false);
-      //     });
-      // }
+      if (status === "edit" || params?.id) {
+        api
+          .put(`/detail/project/${id || params?.id}`, data)
+          .then(() => {
+            notification.success({ message: "Update success" });
+            UIStore.update((e) => {
+              e.formEdit = {
+                ...e.formEdit,
+                signup: {
+                  status: "add",
+                  id: null,
+                },
+              };
+            });
+            // scroll top
+            window.scrollTo({ top: 0 });
+            signUpData.update((e) => {
+              e.data = initialSignUpData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            history.push(`/project/${id || params?.id}`);
+          })
+          .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
     };
 
     const handleFormOnChange = useCallback(

@@ -257,7 +257,9 @@ export const handleGeoCoverageValue = (
     delete data[geoCoverageValueSubNational];
   if (data[geoCoverageType] === "national") {
     if (!Array.isArray(currentValue[geoCoverageValueNational])) {
-      data[geoCoverageValue] = [currentValue[geoCoverageValueNational]];
+      data[geoCoverageValue] = [
+        parseInt(currentValue[geoCoverageValueNational]),
+      ];
     } else {
       data[geoCoverageValue] = currentValue[geoCoverageValueNational].map((x) =>
         parseInt(x)
@@ -362,6 +364,7 @@ export const revertFormData = (formDataMapping, editData, store = {}) => {
       }
       if (geoCoverageType === "transnational") {
         pKey = "geoCoverageValueTransnational";
+        data = editData.geoCoverageCountryGroups;
       }
       if (geoCoverageType === "global with elements in specific areas") {
         pKey = "geoCoverageValueGlobalSpesific";

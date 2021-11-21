@@ -3,11 +3,11 @@ import { Store } from "pullstate";
 
 const geoCoverageTypeOptions = [
   "Global",
-  "Regional",
-  "National",
-  "Sub-national",
+  // "Regional",
   "Transnational",
-  "Global with elements in specific areas",
+  "National",
+  // "Sub-national",
+  // "Global with elements in specific areas",
 ];
 
 const sectorOptions = [

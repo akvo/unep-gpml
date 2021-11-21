@@ -9,6 +9,7 @@
             [gpml.handler.image :as handler.image]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.organisation :as handler.org]
+            [gpml.handler.initiative :as handler.initiative]
             [integrant.core :as ig]
             [medley.core :as medley]
             [ring.util.response :as resp]
@@ -304,18 +305,57 @@
       (update :activity_term (fn [x] (when (:name x) x)))
       (update :is_action_being_reported #(when (:reports %) %))))
 
-(defn- common-queries [table path & [geo url tags]]
-  (filter some?
-          [(when geo [(format "delete from %s_geo_coverage where %s = ?" table table) (:topic-id path)])
-           (when url [(format "delete from %s_language_url where %s = ?" table table) (:topic-id path)])
-           (when tags [(format "delete from %s_tag where %s = ?" table table) (:topic-id path)])
-           (when (= "organisation" table)
-             ["delete from resource_organisation where organisation=?" (:topic-id path)])
-           (when (= "resource" table)
-             ["delete from resource_organisation where resource=?" (:topic-id path)] )
-           [(format "delete from %s where id = ?" table) (:topic-id path)] ]))
+(defn- common-queries [table path & [geo url tags app-user-admin conn]]
+  (let [sqls (filter some?
+                     [(when geo [(format "delete from %s_geo_coverage where %s = ?" table table) (:topic-id path)])
+                      (when url [(format "delete from %s_language_url where %s = ?" table table) (:topic-id path)])
+                      (when tags [(format "delete from %s_tag where %s = ?" table table) (:topic-id path)])
+                      (when (= "organisation" table)
+                        ["delete from resource_organisation where organisation=?" (:topic-id path)])
+                      (when (= "resource" table)
+                        ["delete from resource_organisation where resource=?" (:topic-id path)] )
+                      [(format "delete from %s where id = ?" table) (:topic-id path)]])]
+    (if (= "stakeholder" table)
+      (into sqls
+            (let [unep-admin (:id (first (jdbc/query conn  ["SELECT id from stakeholder where email=?" app-user-admin])))]
+             [["update event set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+              ["update event set created_by=? where created_by=?" unep-admin (:topic-id path)]
+              ["update stakeholder_event set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
 
-(defmethod ig/init-key ::delete [_ {:keys [db]}]
+              ["update initiative set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+              ["update initiative set created_by=? where created_by=?" unep-admin (:topic-id path)]
+
+              ["update invitation set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+
+              ["update organisation set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+              ["update organisation set created_by=? where created_by=?" unep-admin (:topic-id path)]
+              ["update organisation set second_contact=? where second_contact=?" unep-admin (:topic-id path)]
+              ["update stakeholder_organisation set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+
+              ["update policy set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+              ["update policy set created_by=? where created_by=?" unep-admin (:topic-id path)]
+              ["update stakeholder_policy set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+
+              ["update project set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+              ["update stakeholder_project set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+
+              ["update resource set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+              ["update resource set created_by=? where created_by=?" unep-admin (:topic-id path)]
+              ["update stakeholder_resource set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+
+              ["update review set assigned_by=? where assigned_by=?" unep-admin (:topic-id path)]
+              ["update review set reviewer=? where reviewer=?" unep-admin (:topic-id path)]
+
+              ["update technology set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+              ["update technology set created_by=? where created_by=?" unep-admin (:topic-id path)]
+              ["update stakeholder_technology set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+
+              ["update stakeholder set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+              ["update stakeholder_stakeholder set other_stakeholder=? where other_stakeholder=?" unep-admin (:topic-id path)]
+              ["update stakeholder_stakeholder set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]]))
+      sqls)))
+
+(defmethod ig/init-key ::delete [_ {:keys [db app-user-admin]}]
   (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
     (let [conn        (:spec db)
           topic       (:topic-type path)
@@ -325,11 +365,9 @@
                  "policy" (common-queries topic path true true true)
                  "event" (common-queries topic path true true true)
                  "technology" (common-queries topic path true true true)
-
                  "organisation" (common-queries topic path true false true)
-;;               "stakeholder" (common-queries topic path true false true) TODO: define better what to do with dependant objects
+                 "stakeholder" (common-queries topic path true false true app-user-admin conn)
                  "project" [["delete from initiative where id = ?"  (:topic-id path)]]
-
                  "action_plan" (common-queries "resource" path true true true)
                  "technical_resource" (common-queries "resource" path true true true)
                  "financing_resource" (common-queries "resource" path true true true))]
@@ -398,12 +436,13 @@
    {:table (str table "_geo_coverage") :resource_type table :id id})
 
   ;; Create geo coverage values for the resource
-  (when (seq (:geo_coverage_value geo_data))
+  (when (or (seq (:geo_coverage_country_groups geo_data))
+            (seq (:geo_coverage_countries geo_data)))
     (db.detail/add-resource-related-geo
      conn
      {:table (str table "_geo_coverage")
       :resource_type table
-      :geo (handler.geo/get-geo-vector id geo_data)})))
+      :geo (handler.geo/get-geo-vector-v2 id geo_data)})))
 
 (defn update-resource-organisation [conn table id org-id]
   ;; Delete any existing org
@@ -441,6 +480,8 @@
         table-columns (dissoc updates
                               :tags :urls :geo_coverage_value :org
                               :image :photo :logo
+                              :geo_coverage_country_groups
+                              :geo_coverage_countries
                               ;; NOTE: we ignore resource_type since
                               ;; we don't expect it to change!
                               :resource_type)
@@ -469,7 +510,10 @@
 
 (defn update-initiative [conn id data]
   (let [params (merge {:id id} data)
-        status (db.detail/update-initiative conn params)]
+        status (jdbc/with-db-transaction [conn-tx conn]
+                 (let [status (db.detail/update-initiative conn-tx params)]
+                   (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
+                   status))]
     status))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]
