@@ -88,3 +88,9 @@ UPDATE review SET
   reviewer = :reviewer
     WHERE id = :id
     RETURNING id;
+
+-- :name delete-reviewers :! :n
+DELETE FROM review
+WHERE topic_type = :topic-type AND
+      topic_id = :topic-id AND
+      reviewer in :reviewers

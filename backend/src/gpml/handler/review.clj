@@ -111,7 +111,7 @@
                               (format "[%s] Review submitted on %s: %s" (:app-name mailjet-config) topic-type (:title review))
                               (list {:Name (email/get-user-full-name admin) :Email (:email admin)})
                               (list (email/notify-review-submitted-text
-                                     (email/get-user-full-name admin) (:app-domain mailjet-config) topic-type (:title review) review-status review-comment))
+                                      (email/get-user-full-name admin) (:app-domain mailjet-config) topic-type (:title review) review-status review-comment))
                               (list nil))
             (resp/response review-id))
           resp403)
@@ -146,9 +146,12 @@
           {:keys [review-status review-comment reviewers]} :body} :parameters
            current-user :reviewer}]
      (if (seq reviewers)
-       (-> (mapv #(change-reviewer db mailjet-config topic-type topic-id % current-user) reviewers)
-           (resp/response))
-           (-> (update-review-status db mailjet-config topic-type topic-id review-status review-comment current-user)
+       (do
+         (db.review/delete-reviewers (:spec db) {:topic-type topic-type
+                                                 :topic-id topic-id
+                                                 :reviewers reviewers})
+         (new-review db mailjet-config topic-type topic-id reviewers current-user))
+       (-> (update-review-status db mailjet-config topic-type topic-id review-status review-comment current-user)
            (resp/response)))))
 
 (defmethod ig/init-key ::list-reviews [_ {:keys [db]}]
