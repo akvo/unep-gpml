@@ -170,11 +170,12 @@ const Root = () => {
     nav: s.nav,
     tags: s.tags,
   }));
-  const [signupModalVisible, setSignupModalVisible] = useState(false);
-  const [
-    stakeholderSignupModalVisible,
-    setStakeholderSignupModalVisible,
-  ] = useState(false);
+
+  // const [signupModalVisible, setSignupModalVisible] = useState(false);
+  // const [
+  //   stakeholderSignupModalVisible,
+  //   setStakeholderSignupModalVisible,
+  // ] = useState(false);
 
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [filters, setFilters] = useState(null);
@@ -220,11 +221,6 @@ const Root = () => {
           UIStore.update((e) => {
             e.profile = { email: response.email };
           });
-          setTimeout(() => {
-            setStakeholderSignupModalVisible(
-              Object.keys(resp.data).length === 0
-            );
-          }, 100);
         } else {
           UIStore.update((e) => {
             e.profile = { ...resp.data, email: response.email };
@@ -267,7 +263,6 @@ const Root = () => {
                   profile,
                   setWarningModalVisible,
                   isAuthenticated,
-                  setStakeholderSignupModalVisible,
                   loginWithPopup,
                   stakeholderCounts,
                   setFilterMenu,
@@ -301,7 +296,6 @@ const Root = () => {
                 <div className="rightside btn-wrapper">
                   <AddButton
                     {...{
-                      setStakeholderSignupModalVisible,
                       isAuthenticated,
                       loginWithPopup,
                       setWarningModalVisible,
@@ -330,7 +324,6 @@ const Root = () => {
               <Landing
                 {...{
                   setWarningModalVisible,
-                  setStakeholderSignupModalVisible,
                   loginWithPopup,
                   isAuthenticated,
                   setFilterMenu,
@@ -357,9 +350,6 @@ const Root = () => {
                   setWarningModalVisible,
                   ...props,
                 }}
-                setStakeholderSignupModalVisible={
-                  setStakeholderSignupModalVisible
-                }
                 filters={filters}
                 setFilters={setFilters}
                 filterMenu={filterMenu}
@@ -378,9 +368,6 @@ const Root = () => {
             render={(props) => (
               <Stakeholders
                 {...props}
-                setStakeholderSignupModalVisible={
-                  setStakeholderSignupModalVisible
-                }
                 filters={filters}
                 setFilters={setFilters}
                 filterMenu={filterMenu}
@@ -488,13 +475,7 @@ const Root = () => {
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
             render={(props) => (
-              <DetailsView
-                {...props}
-                setStakeholderSignupModalVisible={
-                  setStakeholderSignupModalVisible
-                }
-                setFilterMenu={setFilterMenu}
-              />
+              <DetailsView {...props} setFilterMenu={setFilterMenu} />
             )}
           />
           <Route exact path="/not-found">
@@ -509,7 +490,6 @@ const Root = () => {
           <Route component={(props) => <Error {...props} status={404} />} />
         </Switch>
         <Footer
-          setStakeholderSignupModalVisible={setStakeholderSignupModalVisible}
           setWarningModalVisible={setWarningModalVisible}
           isAuthenticated={isAuthenticated}
           loginWithPopup={loginWithPopup}
@@ -525,7 +505,6 @@ const Root = () => {
           profile,
           setWarningModalVisible,
           isAuthenticated,
-          setStakeholderSignupModalVisible,
           loginWithPopup,
           logout,
           setFilterMenu,
@@ -546,7 +525,6 @@ const renderDropdownMenu = (
   profile,
   setWarningModalVisible,
   isAuthenticated,
-  setStakeholderSignupModalVisible,
   loginWithPopup
 ) => {
   const excludeSummary = ["event", "organisation", "stakeholder"];
@@ -573,7 +551,6 @@ const renderDropdownMenu = (
           profile,
           setWarningModalVisible,
           isAuthenticated,
-          setStakeholderSignupModalVisible,
           loginWithPopup,
         }}
       />
@@ -645,13 +622,7 @@ const UserButton = withRouter(({ history, logout, isRegistered, profile }) => {
 });
 
 const AddButton = withRouter(
-  ({
-    isAuthenticated,
-    setStakeholderSignupModalVisible,
-    setWarningModalVisible,
-    loginWithPopup,
-    history,
-  }) => {
+  ({ isAuthenticated, setWarningModalVisible, loginWithPopup, history }) => {
     const profile = UIStore.useState((s) => s.profile);
     if (isAuthenticated) {
       if (profile?.reviewStatus === "APPROVED") {
@@ -820,9 +791,7 @@ const AddButton = withRouter(
         <Button
           type="primary"
           onClick={() => {
-            Object.keys(profile).length > 1
-              ? setWarningModalVisible(true)
-              : setStakeholderSignupModalVisible(true);
+            Object.keys(profile).length > 1 && setWarningModalVisible(true);
           }}
         >
           Add Content
