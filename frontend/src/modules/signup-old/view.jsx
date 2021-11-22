@@ -129,7 +129,10 @@ const SignupView = ({ ...props }) => {
                 <br />
                 <br />
                 <div>
-                  <Button type="ghost" onClick={()=>loginWithPopup({ action: "login" })}>
+                  <Button
+                    type="ghost"
+                    onClick={() => loginWithPopup({ action: "login" })}
+                  >
                     Sign In
                   </Button>
                 </div>

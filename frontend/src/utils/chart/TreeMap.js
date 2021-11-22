@@ -7,7 +7,7 @@ import {
 } from "./chart-style.js";
 
 const TreeMap = (data, extra, selected) => {
-//  console.log(window.innerWidth);
+  //  console.log(window.innerWidth);
   const { blue, yellow, white } = singleColor;
   const itemStyle = {
     borderColor: white,
