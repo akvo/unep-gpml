@@ -174,7 +174,8 @@
                                                      :cv (or (assoc-cv db (:cv body-params))
                                                              (:cv body-params))
                                                      :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
-                                                                  (:picture jwt-claims)))
+                                                                  (let [{:keys [first_name last_name]} (select-keys body-params [:first_name :last_name])]
+                                                                    (format "https://ui-avatars.com/api/?size=480&name=%s+%s" first_name last_name))))
                                               (when (:new_org body-params)
                                                 {:affiliation (make-organisation db (:new_org body-params))})))
           stakeholder-id (if-let [current-stakeholder (db.stakeholder/stakeholder-by-email db {:email (:email profile)})]
