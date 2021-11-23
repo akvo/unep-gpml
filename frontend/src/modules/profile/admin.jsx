@@ -34,7 +34,7 @@ const { Search } = Input;
 const { TabPane } = Tabs;
 const { Option } = Select;
 
-const ModalReject = ({ visible, close, reject, item }) => {
+const ModalReject = ({ visible, close, reject, item, action = "Decline" }) => {
   return (
     <Modal
       width={600}
@@ -51,7 +51,7 @@ const ModalReject = ({ visible, close, reject, item }) => {
       closable={false}
     >
       <div className="warning-modal-user">
-        <p>Are you sure you want to decline?</p>
+        <p>Are you sure you want to {action?.toLowerCase()}?</p>
       </div>
     </Modal>
   );
@@ -112,6 +112,7 @@ const AdminSection = ({
 }) => {
   const profile = UIStore.useState((s) => s.profile);
   const [modalRejectVisible, setModalRejectVisible] = useState(false);
+  const [modalRejectAction, setModalRejectAction] = useState("decline");
   const [modalRejectFunction, setModalRejectFunction] = useState(false);
   const [previewContent, storePreviewContent] = useState({});
   const [approveLoading, setApproveLoading] = useState({});
@@ -173,8 +174,9 @@ const AdminSection = ({
       });
   };
 
-  const reject = (item, review_status) => () => {
+  const reject = (item, review_status, action) => () => {
     setModalRejectFunction(() => review(item, review_status));
+    setModalRejectAction(action);
     setModalRejectVisible(true);
   };
 
@@ -230,6 +232,47 @@ const AdminSection = ({
     );
   };
 
+  const PublishButton = ({ item, type, className = "", disabled = false }) => (
+    <Button
+      type={type}
+      className={className}
+      disabled={disabled}
+      onClick={review(item, "APPROVED")}
+      loading={
+        !isEmpty(approveLoading) &&
+        approveLoading?.button === "APPROVED" &&
+        item?.id === approveLoading?.id &&
+        item?.type === approveLoading?.type
+      }
+    >
+      {publishStatusUIText["APPROVE"]}
+    </Button>
+  );
+
+  const UnpublishButton = ({
+    item,
+    type,
+    className = "",
+    disabled = false,
+    uiTitle = "REJECT",
+    action = "REJECTED",
+  }) => (
+    <Button
+      type={type}
+      className={className}
+      disabled={disabled}
+      onClick={reject(item, "REJECTED", publishStatusUIText[uiTitle])}
+      loading={
+        !isEmpty(approveLoading) &&
+        approveLoading?.button === action &&
+        item?.id === approveLoading?.id &&
+        item?.type === approveLoading?.type
+      }
+    >
+      {publishStatusUIText[uiTitle]}
+    </Button>
+  );
+
   const renderNewApprovalRequests = () => {
     const filter =
       tab === "resources"
@@ -262,28 +305,6 @@ const AdminSection = ({
         setPendingItemList(await fetchSubmissionData(current, size, filter));
       })();
     };
-
-    const ApproveButton = ({
-      item,
-      type,
-      className = "",
-      disabled = false,
-    }) => (
-      <Button
-        type={type}
-        className={className}
-        disabled={disabled}
-        onClick={review(item, "APPROVED")}
-        loading={
-          !isEmpty(approveLoading) &&
-          approveLoading?.button === "APPROVED" &&
-          item?.id === approveLoading?.id &&
-          item?.type === approveLoading?.type
-        }
-      >
-        {publishStatusUIText["APPROVE"]}
-      </Button>
-    );
 
     return (
       <div key="new-approval" className="approval">
@@ -354,14 +375,14 @@ const AdminSection = ({
                           <Space size="small">
                             {item.type === "profile" ? (
                               item.emailVerified ? (
-                                <ApproveButton
+                                <PublishButton
                                   item={item}
                                   type="ghost"
                                   className="black"
                                 />
                               ) : (
                                 <Tooltip title="Profile cannot be approved since email is not verified">
-                                  <ApproveButton
+                                  <PublishButton
                                     item={item}
                                     type="secondary"
                                     disabled={true}
@@ -370,32 +391,26 @@ const AdminSection = ({
                               )
                             ) : item.type === "policy" ? (
                               <Tooltip title="Policies are imported from Law division system">
-                                <ApproveButton
+                                <PublishButton
                                   item={item}
                                   type="secondary"
                                   disabled={true}
                                 />
                               </Tooltip>
                             ) : (
-                              <ApproveButton
+                              <PublishButton
                                 item={item}
                                 type="ghost"
                                 className="black"
                               />
                             )}
-                            <Button
+                            <UnpublishButton
+                              item={item}
                               type="link"
                               className="black"
-                              onClick={reject(item, "REJECTED")}
-                              loading={
-                                !isEmpty(approveLoading) &&
-                                approveLoading?.button === "REJECTED" &&
-                                item?.id === approveLoading?.id &&
-                                item?.type === approveLoading?.type
-                              }
-                            >
-                              Decline
-                            </Button>
+                              uiTitle="REJECT"
+                              action="REJECTED"
+                            />
                           </Space>
                         </div>
                       </div>
@@ -484,6 +499,24 @@ const AdminSection = ({
                             </div>
                             <div className="topic">{topicNames(item.type)}</div>
                           </div>
+                          <div
+                            className="col action"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                          >
+                            <Space size="small">
+                              {item.reviewStatus !== "REJECTED" && (
+                                <UnpublishButton
+                                  item={item}
+                                  type="ghost"
+                                  className="black"
+                                  uiTitle="UNAPPROVE"
+                                  action="UNAPPROVED"
+                                />
+                              )}
+                            </Space>
+                          </div>
                         </div>
                       </div>
                     </>
@@ -557,6 +590,7 @@ const AdminSection = ({
         visible={modalRejectVisible}
         reject={modalRejectFunction}
         close={() => setModalRejectVisible(false)}
+        action={modalRejectAction}
       />
     </div>
   );
