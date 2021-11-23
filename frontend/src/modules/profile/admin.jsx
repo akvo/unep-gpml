@@ -119,8 +119,6 @@ const AdminSection = ({
   const archiveData =
     tab === "resources" ? [] : tab === "tags" ? [] : archiveItems.data;
 
-  console.log(approveLoading);
-
   useEffect(() => {
     api.get("/reviewer").then((res) => {
       setReviewers(res.data);
