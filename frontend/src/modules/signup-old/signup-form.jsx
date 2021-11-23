@@ -60,7 +60,7 @@ const defaultFormSchema = {
   },
   organisation: {
     "org.id": {
-      label: "Member Entity",
+      label: "GPML Entity",
       control: "select",
       showSearch: true,
       options: [],
