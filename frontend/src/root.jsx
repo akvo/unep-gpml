@@ -59,6 +59,9 @@ import ResponsiveMenu from "./modules/dropdown-menu/responsive-menu";
 // Discourse Forum
 import DiscourseForum from "./modules/discourse-forum/discourse-forum";
 
+// Flexible Form
+import FlexibleForms from "./modules/flexible-forms/view";
+
 Promise.all([
   api.get("/tag"),
   api.get("/currency"),
@@ -288,10 +291,7 @@ const Root = () => {
                     <UserButton {...{ logout, isRegistered, profile }} />
                   ) : (
                     <Button type="ghost" className="left">
-                      <Link
-                        to="/"
-                        onClick={() => loginWithPopup({ action: "login" })}
-                      >
+                      <Link to="/" onClick={loginWithPopup}>
                         Sign in
                       </Link>
                     </Button>
@@ -480,6 +480,10 @@ const Root = () => {
             render={(props) => (
               <LandingSignupView {...props} profile={profile} />
             )}
+          />
+          <Route
+            path="/flexible-forms"
+            render={(props) => <FlexibleForms {...props} />}
           />
           <Route
             path="/discourse-forum"
@@ -830,10 +834,7 @@ const AddButton = withRouter(
       );
     }
     return (
-      <Button
-        type="primary"
-        onClick={() => loginWithPopup({ action: "login" })}
-      >
+      <Button type="primary" onClick={loginWithPopup}>
         Add Content
       </Button>
     );
