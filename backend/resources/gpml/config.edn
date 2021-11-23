@@ -67,8 +67,10 @@
                                          [""
                                           {:get {:summary "Get the list of pending submissions"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
-                                                 :parameters {:query [:map [:page {:optional true
-                                                                                   :default 1} int?]
+                                                 :parameters {:query [:map
+                                                                      [:only {:optional true} [:enum "resources" "stakeholders" "tags"]]
+                                                                      [:page {:optional true
+                                                                              :default 1} int?]
                                                                       [:limit {:optional true
                                                                                :default 10} int?]]}
                                                  :handler #ig/ref :gpml.handler.submission/get}
