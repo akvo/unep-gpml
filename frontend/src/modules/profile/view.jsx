@@ -100,7 +100,14 @@ const ProfileView = ({ ...props }) => {
   const handleSubmitRef = useRef();
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState("personal-details");
-  const [pendingItems, setPendingItems] = useState({
+  const [pendingResources, setPendingResources] = useState({
+    data: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
+  const [pendingStakeholders, setPendingStakeholders] = useState({
     data: [],
     limit: 10,
     page: 1,
@@ -147,8 +154,16 @@ const ProfileView = ({ ...props }) => {
 
     if (adminRoles.has(profile?.role)) {
       (async () => {
-        const { page, limit } = pendingItems;
-        setPendingItems(await fetchSubmissionData(page, limit));
+        const { page, limit } = pendingResources;
+        setPendingResources(
+          await fetchSubmissionData(page, limit, "resources")
+        );
+      })();
+      (async () => {
+        const { page, limit } = pendingStakeholders;
+        setPendingStakeholders(
+          await fetchSubmissionData(page, limit, "stakeholders")
+        );
       })();
       (async function fetchData() {
         const archive = await fetchArchiveData(1, 10);
@@ -266,7 +281,7 @@ const ProfileView = ({ ...props }) => {
           menuText = renderMenuText(it.name, reviewItems.count);
           break;
         case "admin-section":
-          menuText = renderMenuText(it.name, pendingItems.count);
+          menuText = renderMenuText(it.name, pendingResources.count); // TODO : sum pendingStakeholders
           break;
         default:
           menuText = renderMenuText(it.name);
@@ -383,8 +398,10 @@ const ProfileView = ({ ...props }) => {
                   )}
                 {menu === "admin-section" && adminRoles.has(profile?.role) && (
                   <AdminSection
-                    pendingItems={pendingItems}
-                    setPendingItems={setPendingItems}
+                    pendingResources={pendingResources}
+                    setPendingResources={setPendingResources}
+                    pendingStakeholders={pendingStakeholders}
+                    setPendingStakeholders={setPendingStakeholders}
                     archiveItems={archiveItems}
                     setArchiveItems={setArchiveItems}
                   />

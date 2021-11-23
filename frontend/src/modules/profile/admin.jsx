@@ -103,8 +103,10 @@ const HeaderFilter = () => {
 };
 
 const AdminSection = ({
-  pendingItems,
-  setPendingItems,
+  pendingResources,
+  setPendingResources,
+  pendingStakeholders,
+  setPendingStakeholders,
   archiveItems,
   setArchiveItems,
 }) => {
@@ -156,9 +158,15 @@ const AdminSection = ({
           count: archiveItems.count + 1,
         });
         (async () => {
-          const { page, limit } = pendingItems;
-          const items = await fetchSubmissionData(page, limit);
-          setPendingItems(items);
+          const { page, limit } = pendingResources;
+          const items = await fetchSubmissionData(page, limit, "resources");
+          setPendingResources(items);
+          setApproveLoading({});
+        })();
+        (async () => {
+          const { page, limit } = pendingStakeholders;
+          const items = await fetchSubmissionData(page, limit, "stakeholders");
+          setPendingStakeholders(items);
           setApproveLoading({});
         })();
         setModalRejectVisible(false);
@@ -189,8 +197,16 @@ const AdminSection = ({
     apiCall(`/review/${item.type}/${item.id}`, data).then((res) => {
       setLoadingAssignReviewer(false);
       (async () => {
-        const { page, limit } = pendingItems;
-        setPendingItems(await fetchSubmissionData(page, limit));
+        const { page, limit } = pendingResources;
+        setPendingResources(
+          await fetchSubmissionData(page, limit, "resources")
+        );
+      })();
+      (async () => {
+        const { page, limit } = pendingStakeholders;
+        setPendingStakeholders(
+          await fetchSubmissionData(page, limit, "stakeholders")
+        );
       })();
     });
   };
@@ -215,19 +231,35 @@ const AdminSection = ({
   };
 
   const renderNewApprovalRequests = () => {
-    const itemList =
-      tab === "resources" ? [] : tab === "tags" ? [] : pendingItems;
-    const sectionTitle =
+    const filter =
       tab === "resources"
-        ? "New Resources"
+        ? "resources"
         : tab === "tags"
+        ? "tags"
+        : "stakeholders";
+    const itemList =
+      filter === "resources"
+        ? pendingResources
+        : filter === "stakeholders"
+        ? pendingStakeholders
+        : [];
+    const setPendingItemList =
+      filter === "resources"
+        ? setPendingResources
+        : filter === "stakeholders"
+        ? setPendingStakeholders
+        : setPendingResources;
+    const sectionTitle =
+      filter === "resources"
+        ? "New Resources"
+        : filter === "tags"
         ? "New Tags"
         : "New Approval Request";
 
     const onChangePagePending = (current, pageSize) => {
       (async () => {
-        const size = pageSize ? pageSize : pendingItems.limit;
-        setPendingItems(await fetchSubmissionData(current, size));
+        const size = pageSize ? pageSize : itemList.limit;
+        setPendingItemList(await fetchSubmissionData(current, size, filter));
       })();
     };
 
