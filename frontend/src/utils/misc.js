@@ -102,4 +102,6 @@ export const publishStatusUIText = {
   APPROVE: "Publish",
   REJECTED: "Declined",
   REJECT: "Decline",
+  UNAPPROVED: "Unpublished",
+  UNAPPROVE: "Unpublish",
 };
