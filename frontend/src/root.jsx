@@ -291,7 +291,10 @@ const Root = () => {
                     <UserButton {...{ logout, isRegistered, profile }} />
                   ) : (
                     <Button type="ghost" className="left">
-                      <Link to="/" onClick={loginWithPopup}>
+                      <Link
+                        to="/"
+                        onClick={() => loginWithPopup({ action: "login" })}
+                      >
                         Sign in
                       </Link>
                     </Button>
@@ -834,7 +837,10 @@ const AddButton = withRouter(
       );
     }
     return (
-      <Button type="primary" onClick={loginWithPopup}>
+      <Button
+        type="primary"
+        onClick={() => loginWithPopup({ action: "login" })}
+      >
         Add Content
       </Button>
     );
