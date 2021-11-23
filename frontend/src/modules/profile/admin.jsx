@@ -403,6 +403,13 @@ const AdminSection = ({
     const itemList =
       tab === "resources" ? [] : tab === "tags" ? [] : archiveItems;
 
+    const title =
+      tab === "resources"
+        ? "Approved resources"
+        : tab === "tags"
+        ? "Approved tags"
+        : "Approved stakeholders and entities";
+
     const onChangePageArchive = async (current, pageSize) => {
       const size = pageSize ? pageSize : archiveItems.limit;
       const archive = await fetchArchiveData(current, size);
@@ -411,7 +418,9 @@ const AdminSection = ({
 
     return (
       <div key="archive-requests" className="archive">
-        <h2>Requests archive ({itemList.count || 0})</h2>
+        <h2>
+          {title} ({itemList.count || 0})
+        </h2>
         <div className="table-wrapper">
           <div className="row head">
             <HeaderSearch />
