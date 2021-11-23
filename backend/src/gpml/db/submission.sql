@@ -24,6 +24,7 @@ submission AS (
     UNION
     SELECT id, 'project' AS type, 'initiative' AS topic, replace(q2::text,'"','') as title, created_by, created
     FROM initiative where review_status = 'SUBMITTED'
+    order by created
 ),
 data AS (
     SELECT s.id, s.type, s.topic, s.title, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || type || '/' || s.id as preview, COALESCE(r.review_status, 'PENDING') AS review_status, row_to_json(reviewer.*) AS reviewer
@@ -31,15 +32,25 @@ data AS (
     LEFT JOIN stakeholder c ON c.id = s.created_by
     LEFT JOIN review r ON r.topic_type = s.topic::topic_type AND r.topic_id = s.id
     LEFT JOIN stakeholder reviewer ON reviewer.id = r.reviewer
+--~ (when (= "stakeholders" (:only params)) "WHERE s.type IN ('stakeholder', 'organisation') ")
+--~ (when (= "resources" (:only params)) "WHERE s.type NOT IN ('stakeholder', 'organisation') ")
     ORDER BY s.created
     LIMIT :limit
     OFFSET :limit * (:page - 1)
 )
 SELECT json_build_object(
     'data', (select json_agg(row_to_json(data)) from data),
-    'count', (SELECT COUNT(*) FROM submission),
+    'count', (
+    SELECT COUNT(*) FROM submission
+--~ (when (= "stakeholders" (:only params)) " WHERE type IN ('stakeholder', 'organisation') ")
+--~ (when (= "resources" (:only params)) " WHERE type NOT IN ('stakeholder', 'organisation') ")
+    ),
     'page', :page,
-    'pages', (SELECT COUNT(*) FROM submission) / :limit,
+    'pages', (
+    SELECT COUNT(*) FROM submission
+--~ (when (= "stakeholders" (:only params)) " WHERE type IN ('stakeholder', 'organisation') ")
+--~ (when (= "resources" (:only params)) " WHERE type NOT IN ('stakeholder', 'organisation') ")
+    ) / :limit,
     'limit', :limit) as result;
 
 -- :name detail :? :1
