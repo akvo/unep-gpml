@@ -1,7 +1,7 @@
 import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Card, Button, Switch, Radio, Steps } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
+import { DownloadOutlined, InfoOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "./styles.scss";
 import ExampleIcon from "../../images/examples.png";
@@ -10,6 +10,8 @@ import ActionPlanImage from "../../images/action-plan.png";
 import FinancingResourceImage from "../../images/financing-resource.png";
 import TechnicalResourceImage from "../../images/technical-resource.png";
 import CapacityBuildingImage from "../../images/capacity-building.png";
+import InfoGreen from "../../images/i-green.png";
+import InfoBlue from "../../images/i-blue.png";
 
 const { Step } = Steps;
 
@@ -208,12 +210,80 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     <h5>Pick the sub-content type</h5>
                     <span>Optional</span>
                   </div>
-                  <div className="before-selection">
+                  <div className="sub-content-topics">
+                    <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 16 }}>
+                      <Col className="gutter-row" xs={12} lg={6}>
+                        <Radio.Button value="large">
+                          Capacity building initiatives
+                          <div className="info-icon-wrapper">
+                            <img src={InfoBlue} />
+                          </div>
+                        </Radio.Button>
+                      </Col>
+                      <Col className="gutter-row" xs={12} lg={6}>
+                        <Radio.Button value="large" className="selected">
+                          Courses and trainings
+                          <div className="info-icon-wrapper selected">
+                            <img src={InfoGreen} />
+                          </div>
+                        </Radio.Button>
+                      </Col>
+                      <Col className="gutter-row" xs={12} lg={6}>
+                        <Radio.Button value="large">
+                          Educational events
+                          <div className="info-icon-wrapper">
+                            <img src={InfoBlue} />
+                          </div>
+                        </Radio.Button>
+                      </Col>
+                      <Col className="gutter-row" xs={12} lg={6}>
+                        <Radio.Button value="large">
+                          Tools and toolkits
+                          <div className="info-icon-wrapper">
+                            <img src={InfoBlue} />
+                          </div>
+                        </Radio.Button>
+                      </Col>
+                      <Col className="gutter-row" xs={12} lg={6}>
+                        <Radio.Button value="large">
+                          Case studies
+                          <div className="info-icon-wrapper">
+                            <img src={InfoBlue} />
+                          </div>
+                        </Radio.Button>
+                      </Col>
+                      <Col className="gutter-row" xs={12} lg={6}>
+                        <Radio.Button value="large">
+                          Opportunities
+                          <div className="info-icon-wrapper">
+                            <img src={InfoBlue} />
+                          </div>
+                        </Radio.Button>
+                      </Col>
+                      <Col className="gutter-row" xs={12} lg={6}>
+                        <Radio.Button value="large">
+                          Stakeholders
+                          <div className="info-icon-wrapper">
+                            <img src={InfoBlue} />
+                          </div>
+                        </Radio.Button>
+                      </Col>
+                      <Col className="gutter-row" xs={12} lg={6}>
+                        <Radio.Button value="large">
+                          Large
+                          <div className="info-icon-wrapper">
+                            <img src={InfoBlue} />
+                          </div>
+                        </Radio.Button>
+                      </Col>
+                    </Row>
+                  </div>
+                  {/* <div className="before-selection">
                     <p>
                       Select a Main Content Type above to see sub-content type
                       options
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               </Row>
             </Col>
