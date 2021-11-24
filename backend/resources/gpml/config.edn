@@ -53,7 +53,9 @@
                                          [""
                                           {:get {:summary "Get the list approved submissions"
                                                  :swagger {:tags ["archive"] :security [{:id_token []}]}
-                                                 :parameters {:query [:map [:page {:optional true
+                                                 :parameters {:query [:map
+                                                                      [:only {:optional true} [:enum "resources" "stakeholders" "tags"]]
+                                                                      [:page {:optional true
                                                                                    :default 1} int?]
                                                                       [:limit {:optional true
                                                                                :default 10} int?]]}
