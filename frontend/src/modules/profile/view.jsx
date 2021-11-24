@@ -14,7 +14,6 @@ import {
 import { userRoles as roles } from "../../utils/misc";
 import { AdminSection } from "./admin";
 import ReviewSection from "./review";
-import ManageRoles from "./stakeholders";
 import "./styles.scss";
 import isEmpty from "lodash/isEmpty";
 import {
@@ -48,12 +47,6 @@ const menuItems = [
     name: "My Network",
     role: userRoles,
     icon: <UsergroupAddOutlined />,
-  },
-  {
-    key: "manage-roles",
-    name: "Manage User Roles",
-    role: adminRoles,
-    icon: <UserSwitchOutlined />,
   },
   {
     key: "review-section",
@@ -381,12 +374,6 @@ const ProfileView = ({ ...props }) => {
                     </Button>
                   </div>
                 )}
-                {menu === "manage-roles" && adminRoles.has(profile?.role) && (
-                  <ManageRoles
-                    stakeholdersData={stakeholdersData}
-                    setStakeholdersData={setStakeholdersData}
-                  />
-                )}
                 {menu === "review-section" &&
                   reviewerRoles.has(profile?.role) && (
                     <ReviewSection
@@ -398,6 +385,8 @@ const ProfileView = ({ ...props }) => {
                   )}
                 {menu === "admin-section" && adminRoles.has(profile?.role) && (
                   <AdminSection
+                    stakeholdersData={stakeholdersData}
+                    setStakeholdersData={setStakeholdersData}
                     pendingResources={pendingResources}
                     setPendingResources={setPendingResources}
                     pendingStakeholders={pendingStakeholders}

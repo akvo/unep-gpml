@@ -1,5 +1,6 @@
 import { UIStore } from "../../store";
 import {
+  notification,
   Button,
   Collapse,
   Space,
@@ -13,11 +14,16 @@ import {
 import React from "react";
 import { useEffect, useState } from "react";
 import api from "../../utils/api";
-import { fetchArchiveData, fetchSubmissionData } from "./utils";
+import {
+  fetchArchiveData,
+  fetchSubmissionData,
+  fetchStakeholders,
+} from "./utils";
 import moment from "moment";
 import isEmpty from "lodash/isEmpty";
 import { DetailCollapse } from "./preview";
 import {
+  userRoles,
   topicNames,
   resourceTypeToTopicType,
   reviewStatusUIText,
@@ -102,7 +108,30 @@ const HeaderFilter = () => {
   );
 };
 
+const RoleSelect = ({ stakeholder, onChangeRole, loading }) => {
+  return (
+    <Select
+      showSearch={false}
+      style={{ width: "100%" }}
+      onChange={(role) => onChangeRole(stakeholder, role)}
+      value={[stakeholder?.role]}
+      loading={stakeholder?.id === loading}
+      // FIXME: Disallow changing roles of other admins?
+      // stakeholder?.role === "ADMIN"
+      disabled={stakeholder?.id === loading}
+    >
+      {userRoles.map((r) => (
+        <Select.Option key={r} value={r}>
+          {r}
+        </Select.Option>
+      ))}
+    </Select>
+  );
+};
+
 const AdminSection = ({
+  stakeholdersData,
+  setStakeholdersData,
   pendingResources,
   setPendingResources,
   pendingStakeholders,
@@ -127,6 +156,27 @@ const AdminSection = ({
       setReviewers(res.data);
     });
   }, []);
+
+  const [loading, setLoading] = useState(false);
+
+  const updateStakeholdersData = async (page, limit) => {
+    setStakeholdersData(await fetchStakeholders(page, limit));
+  };
+
+  const changeRole = (stakeholder, role) => {
+    setLoading(stakeholder.id);
+    api
+      .patch(`/stakeholder/${stakeholder.id}`, { role })
+      .then((resp) => {
+        notification.success({ message: "User role changed" });
+        // FIXME: Add error handling in case the PATCH fails!
+        //TODO        updateStakeholdersData(page, limit);
+        setLoading(false);
+      })
+      .catch((err) => {
+        notification.error({ message: "Something went wrong" });
+      });
+  };
 
   const review = (item, review_status) => () => {
     setApproveLoading({ ...item, button: review_status });
@@ -505,6 +555,13 @@ const AdminSection = ({
                               e.stopPropagation();
                             }}
                           >
+                            {item.type === "stakeholder" && (
+                              <RoleSelect
+                                stakeholder={item}
+                                onChangeRole={changeRole}
+                                loading={loading}
+                              />
+                            )}
                             <Space size="small">
                               {item.reviewStatus !== "REJECTED" && (
                                 <UnpublishButton
