@@ -76,12 +76,15 @@ const HeaderFilter = ({
   setStakeholdersData,
   setTableFilter,
 }) => {
+  const [headerValue, setHeaderValue] = useState("Pending");
   return (
     <Select
       showSearch
       allowClear
       className="filter-by-status"
+      value={headerValue}
       onChange={(x) => {
+        setHeaderValue(x);
         console.log(resources_or_stakeholders, x);
         const setFun =
           resources_or_stakeholders === "resources"
