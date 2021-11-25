@@ -17,6 +17,7 @@ export const schema = {
     "headquarter",
     "geoCoverageType",
     "geoCoverageValueTransnational",
+    "geoCoverageCountries",
     "geoCoverageValueNational",
   ],
   properties: {
@@ -179,6 +180,12 @@ export const uiSchema = {
     "ui:showSearch": true,
     "ui:mode": "multiple",
   },
+  geoCoverageCountries: {
+    "ui:placeholder": "Choose the coverage",
+    "ui:widget": "select",
+    "ui:showSearch": true,
+    "ui:mode": "multiple",
+  },
   subnationalArea: {},
   "ui:order": [
     "name",
@@ -195,6 +202,7 @@ export const uiSchema = {
     "headquarter",
     "geoCoverageType",
     "geoCoverageValueTransnational",
+    "geoCoverageCountries",
     "geoCoverageValueNational",
     "subnationalArea",
   ],

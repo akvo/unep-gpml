@@ -267,10 +267,13 @@ const AddTechnologyForm = withRouter(
       data = handleGeoCoverageValue(data, formData, countries);
 
       if (data.geoCoverageType === "transnational") {
-        data.geoCoverageCountryGroups = data.geoCoverageValue;
-        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
-          parseInt(x)
-        );
+        data.geoCoverageCountryGroups =
+          data.geoCoverageValue.indexOf(undefined) !== -1
+            ? []
+            : data.geoCoverageValue;
+        data.geoCoverageCountries = data.geoCoverageCountries
+          ? data.geoCoverageCountries.map((x) => parseInt(x))
+          : [];
       }
 
       if (data.geoCoverageType === "national") {
@@ -375,13 +378,41 @@ const AddTechnologyForm = withRouter(
       technologyData.update((e) => {
         e.data = formData;
       });
+
+      let updatedFormDataSchema = {};
+
+      if (
+        formData?.geoCoverageType === "transnational" &&
+        formData?.geoCoverageValueTransnational
+      ) {
+        let result = formSchema.schema.required.filter(
+          (value) => value !== "geoCoverageCountries"
+        );
+        updatedFormDataSchema = {
+          ...formSchema.schema,
+          required: result,
+        };
+      } else if (
+        formData?.geoCoverageType === "transnational" &&
+        formData?.geoCoverageCountries
+      ) {
+        let result = formSchema.schema.required.filter(
+          (value) => value !== "geoCoverageValueTransnational"
+        );
+        updatedFormDataSchema = {
+          ...formSchema.schema,
+          required: result,
+        };
+      } else {
+        updatedFormDataSchema = formSchema.schema;
+      }
       // to overide validation
       let dependFields = [];
       let requiredFields = [];
       collectDependSchema(
         dependFields,
         formData,
-        formSchema.schema,
+        updatedFormDataSchema,
         requiredFields
       );
       setDependValue(dependFields);
