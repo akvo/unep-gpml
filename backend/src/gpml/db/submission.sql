@@ -2,38 +2,52 @@
 -- :doc Get paginated submission contents
 WITH
 submission AS (
-    SELECT id, 'stakeholder' AS type, 'stakeholder' AS topic, CONCAT(title, '. ', last_name,' ', first_name) as title, id as created_by, created, role
+    SELECT id, 'stakeholder' AS type, 'stakeholder' AS topic, CONCAT(title, '. ', last_name,' ', first_name) as title, id as created_by, created, role, review_status
     FROM stakeholder
-    WHERE review_status = :review_status::review_status
+--~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'organisation' AS type, 'organisation' AS topic, name as title, id as created_by, created, 'USER' as role
+    SELECT id, 'organisation' AS type, 'organisation' AS topic, name as title, id as created_by, created, 'USER' as role, review_status
     FROM organisation
-    WHERE review_status = :review_status::review_status and is_member=true
+    WHERE is_member=true
+--~ (when (:review_status params) " AND review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'event' AS type, 'event' AS topic, title, created_by, created, 'USER' as role
-    FROM event where review_status = :review_status::review_status
+    SELECT id, 'event' AS type, 'event' AS topic, title, created_by, created, 'USER' as role, review_status
+    FROM event
+--~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'technology' AS type, 'technology' AS topic, name as title, created_by, created, 'USER' as role
-    FROM technology where review_status = :review_status::review_status
+    SELECT id, 'technology' AS type, 'technology' AS topic, name as title, created_by, created, 'USER' as role, review_status
+    FROM technology
+--~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'policy' AS type, 'policy' AS topic, title, created_by, created, 'USER' as role
-    FROM policy where review_status = :review_status::review_status
+    SELECT id, 'policy' AS type, 'policy' AS topic, title, created_by, created, 'USER' as role, review_status
+    FROM policy
+--~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, REPLACE(LOWER(type), ' ', '_') AS type, 'resource' AS topic, title, created_by, created, 'USER' as role
-    FROM resource where review_status = :review_status::review_status
+    SELECT id, REPLACE(LOWER(type), ' ', '_') AS type, 'resource' AS topic, title, created_by, created, 'USER' as role, review_status
+    FROM resource
+--~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'project' AS type, 'initiative' AS topic, replace(q2::text,'"','') as title, created_by, created, 'USER' as role
-    FROM initiative where review_status = :review_status::review_status
+    SELECT id, 'project' AS type, 'initiative' AS topic, replace(q2::text,'"','') as title, created_by, created, 'USER' as role, review_status
+    FROM initiative
+--~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     order by created
 ),
+authz AS (
+    select s.id, s.type, COALESCE(json_agg(st.id) FILTER (WHERE st.email IS NOT NULL), '[]') as owners  from submission s
+    LEFT JOIN topic_stakeholder_auth a ON a.topic_type = s.topic::topic_type AND a.topic_id = s.id and a.roles @>'["owner"]'
+    LEFT JOIN stakeholder st ON a.stakeholder = st.id
+    GROUP BY s.id, s.type),
 data AS (
-    SELECT s.id, s.type, s.topic, s.title, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || type || '/' || s.id as preview, COALESCE(r.review_status, 'PENDING') AS review_status, row_to_json(reviewer.*) AS reviewer, s.role
+    SELECT s.id, s.type, s.topic, s.title, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || s.type || '/' || s.id as preview, COALESCE(s.review_status, 'SUBMITTED') AS review_status, row_to_json(reviewer.*) AS reviewer, s.role, a.owners
     FROM submission s
     LEFT JOIN stakeholder c ON c.id = s.created_by
     LEFT JOIN review r ON r.topic_type = s.topic::topic_type AND r.topic_id = s.id
     LEFT JOIN stakeholder reviewer ON reviewer.id = r.reviewer
---~ (when (= "stakeholders" (:only params)) "WHERE s.type IN ('stakeholder', 'organisation') ")
---~ (when (= "resources" (:only params)) "WHERE s.type NOT IN ('stakeholder', 'organisation') ")
+    LEFT JOIN authz a on s.id=a.id and s.type=a.type
+    WHERE 1=1
+--~ (when (= "stakeholders" (:only params)) " AND  s.type IN ('stakeholder', 'organisation') ")
+--~ (when (= "resources" (:only params)) " AND  s.type NOT IN ('stakeholder', 'organisation') ")
+--~ (when (:title params) (str " AND s.title ILIKE '%" (:title params) "%' ") )
     ORDER BY s.created
     LIMIT :limit
     OFFSET :limit * (:page - 1)
@@ -48,8 +62,10 @@ SELECT json_build_object(
     'page', :page,
     'pages', (
     SELECT COUNT(*) FROM submission
---~ (when (= "stakeholders" (:only params)) " WHERE type IN ('stakeholder', 'organisation') ")
---~ (when (= "resources" (:only params)) " WHERE type NOT IN ('stakeholder', 'organisation') ")
+    WHERE 1=1
+--~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder', 'organisation') ")
+--~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation') ")
+--~ (when (:title params) (str " AND s.title ILIKE '%" (:title params) "%' ") )
     ) / :limit,
     'limit', :limit) as result;
 
