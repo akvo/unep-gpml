@@ -91,6 +91,6 @@ UPDATE review SET
 
 -- :name delete-reviewers :! :n
 DELETE FROM review
-WHERE topic_type = :topic-type AND
+WHERE topic_type = :topic-type::topic_type AND
       topic_id = :topic-id AND
-      reviewer in :reviewers
+      reviewer IN (:v*:reviewers);

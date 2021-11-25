@@ -18,7 +18,7 @@ services:
       - db
   backend:
     image: akvo/akvo-clojure-lein:20210124.114043.4437caf
-    command: ["lein", "repl", ":headless"]
+    command: ["tail", "-f", "/dev/null"]
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/credentials/cloud-database-service-account.json
       - APP_USER_ADMIN=deden@akvo.org
