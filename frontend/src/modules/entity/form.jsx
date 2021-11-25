@@ -63,12 +63,15 @@ const getSchema = (
   prop.geoCoverageValueNational.enum = countries?.map((x) => String(x.id));
   prop.geoCoverageValueNational.enumNames = countries?.map((x) => x.name);
 
-  prop.geoCoverageValueTransnational.enum = transnationalOptions?.map(
-    (x) => x.id
+  prop.geoCoverageValueTransnational.enum = transnationalOptions?.map((x) =>
+    String(x.id)
   );
   prop.geoCoverageValueTransnational.enumNames = transnationalOptions?.map(
     (x) => x.name
   );
+
+  prop.geoCoverageCountries.enum = countries?.map((x) => String(x.id));
+  prop.geoCoverageCountries.enumNames = countries?.map((x) => x.name);
 
   return {
     schema: {
@@ -297,6 +300,22 @@ const EntityForm = withRouter(
       // handle representative group
       data.type = formData.representativeGroup;
       delete data.representativeGroup;
+
+      if (data.geoCoverageType === "transnational") {
+        data.geoCoverageCountryGroups =
+          data.geoCoverageValue.indexOf(undefined) !== -1
+            ? []
+            : data.geoCoverageValue;
+        data.geoCoverageCountries = data.geoCoverageCountries
+          ? data.geoCoverageCountries.map((x) => parseInt(x))
+          : [];
+      }
+
+      if (data.geoCoverageType === "national") {
+        data.geoCoverageCountries = data.geoCoverageValue;
+      }
+
+      delete data.geoCoverageValue;
 
       if (data.type === "Intergovernmental Organizations (IGOs)") {
         data.representativeGroupGovernment = null;
