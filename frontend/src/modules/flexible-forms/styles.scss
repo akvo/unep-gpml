@@ -102,38 +102,54 @@
       .ant-steps {
         .ant-steps-item {
           border-bottom: 1px solid #d3dee7;
-          padding: 20px 0px;
+          padding: 20px;
+          opacity: 0.5;
           .ant-steps-item-content {
             min-height: auto;
           }
           .ant-steps-item-tail {
             display: none;
           }
-          .ant-steps-item-icon {
-            background: #255b87;
-            border-color: #255b87;
+          .ant-steps-icon {
+            font-size: inherit;
+            line-height: inherit;
           }
         }
-        .ant-steps-item-active {
+        .custom-step-icon {
+          background: #255b87;
+          border-color: #255b87;
+          color: #fff;
+        }
+        .ant-steps-item-title {
+          color: #255b87;
+        }
+        &.current-tabs {
+          background: rgba(49, 118, 174, 0.17);
+
+          .ant-steps-item {
+            opacity: 1;
+          }
           .ant-steps-item-title {
-            color: #255b87;
             font-weight: 700;
-          }
-        }
-        .ant-steps-item-wait {
-          opacity: 0.5;
-          .ant-steps-item-icon {
-            background: #255b87;
-            border-color: #255b87;
-            .ant-steps-icon {
-              color: #fff;
-            }
           }
         }
       }
     }
     .content-panel {
       padding: 13px 10px 0px 13px;
+      .getting-started-content {
+        padding: 40px !important;
+        h5 {
+          font-size: 18px;
+          font-weight: 700;
+        }
+        p {
+          font-size: 18px;
+        }
+        a {
+          color: #34a6ff;
+        }
+      }
       .main-content {
         background: #ffffff;
         border-top: 5px solid #d3dee7;
@@ -250,7 +266,7 @@
             border-radius: 13px;
             border: 2px solid #10f9b7;
             height: auto;
-            padding: 5px 10px;
+            padding: 10px 10px;
             margin-bottom: 10px;
             span {
               &:nth-child(2) {

@@ -173,6 +173,11 @@ export const uiSchema = {
     "ui:widget": "select",
     "ui:showSearch": true,
   },
+  geoCoverageCountries: {
+    "ui:placeholder": "Choose the coverage",
+    "ui:widget": "select",
+    "ui:showSearch": true,
+  },
   geoCoverageValueNational: {
     "ui:placeholder": "Choose the coverage",
     "ui:widget": "select",
@@ -195,6 +200,7 @@ export const uiSchema = {
     "headquarter",
     "geoCoverageType",
     "geoCoverageValueTransnational",
+    "geoCoverageCountries",
     "geoCoverageValueNational",
     "subnationalArea",
   ],
