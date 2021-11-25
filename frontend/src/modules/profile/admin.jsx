@@ -59,13 +59,24 @@ const ModalReject = ({ visible, close, reject, item, action = "Decline" }) => {
   );
 };
 
-const HeaderSearch = ({ placeholder }) => {
+const HeaderSearch = ({
+  placeholder,
+  setResourcesData,
+  setStakeholdersData,
+}) => {
   return (
     <Search
       className="search"
       placeholder={placeholder ? placeholder : "Search for a resource"}
       allowClear
-      onSearch={() => console.log("search")}
+      onSearch={(x) => {
+        console.log("search", x);
+        (async () => {
+          setStakeholdersData(
+            await fetchSubmissionData(1, 10, "resources", "APPROVED", x)
+          );
+        })();
+      }}
     />
   );
 };
@@ -75,6 +86,7 @@ const HeaderFilter = ({
   setResourcesData,
   setStakeholdersData,
   setTableFilter,
+  reviewers,
 }) => {
   const [headerValue, setHeaderValue] = useState("Pending");
   return (
@@ -90,17 +102,10 @@ const HeaderFilter = ({
           resources_or_stakeholders === "resources"
             ? setResourcesData
             : setStakeholdersData;
-        if (x === "undefined") {
-          setTableFilter("SUBMITTED");
+        if (typeof x === "undefined") {
+          setTableFilter(null);
           (async () => {
-            setFun(
-              await fetchSubmissionData(
-                1,
-                10,
-                resources_or_stakeholders,
-                "SUBMITTED"
-              )
-            );
+            setFun(await fetchSubmissionData(1, 10, resources_or_stakeholders));
           })();
         } else {
           const review_status =
@@ -108,7 +113,9 @@ const HeaderFilter = ({
               ? "APPROVED"
               : x === "Pending"
               ? "SUBMITTED"
-              : "REJECTED";
+              : x === "Declined"
+              ? "REJECTED"
+              : null;
           setTableFilter(review_status);
           console.log(review_status);
           (async () => {
@@ -152,19 +159,48 @@ const HeaderFilter = ({
 
 const RoleSelect = ({ stakeholder, onChangeRole, loading }) => {
   return (
+    <div
+      className="col reviewer"
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
+      <Select
+        showSearch={false}
+        style={{ width: "100%" }}
+        onChange={(role) => onChangeRole(stakeholder, role)}
+        value={[stakeholder?.role]}
+        loading={stakeholder?.id === loading}
+        // FIXME: Disallow changing roles of other admins?
+        // stakeholder?.role === "ADMIN"
+        disabled={stakeholder?.id === loading}
+      >
+        {userRoles.map((r) => (
+          <Select.Option key={r} value={r}>
+            {r}
+          </Select.Option>
+        ))}
+      </Select>
+    </div>
+  );
+};
+
+const OwnerSelect = ({ resource, onChangeOwner, loading, reviewers }) => {
+  return (
     <Select
       showSearch={false}
+      mode="multiple"
       style={{ width: "100%" }}
-      onChange={(role) => onChangeRole(stakeholder, role)}
-      value={[stakeholder?.role]}
-      loading={stakeholder?.id === loading}
+      onChange={(data) => onChangeOwner(resource, data)} // onChangeOwner(resource, role)}
+      value={resource?.owners}
+      loading={resource?.id === loading}
       // FIXME: Disallow changing roles of other admins?
       // stakeholder?.role === "ADMIN"
-      disabled={stakeholder?.id === loading}
+      disabled={resource?.id === loading}
     >
-      {userRoles.map((r) => (
-        <Select.Option key={r} value={r}>
-          {r}
+      {reviewers.map((r) => (
+        <Select.Option key={r.email} value={r.id}>
+          {r.email}
         </Select.Option>
       ))}
     </Select>
@@ -207,6 +243,22 @@ const AdminSection = ({
       })
       .then(() => fetchSubmissionData(1, 10, "stakeholders", "APPROVED"))
       .then((x) => setStakeholdersData(x))
+      .catch((err) => {
+        notification.error({ message: "Something went wrong" });
+      });
+  };
+
+  const changeOwner = (resource, owners) => {
+    setLoading(resource.id);
+    const stakeholders = owners.map((x) => ({ id: x, roles: ["owner"] }));
+    api
+      .post(`/auth/${resource.type}/${resource.id}`, { stakeholders })
+      .then((resp) => {
+        notification.success({ message: "Ownerships changed" });
+        setLoading(false);
+      })
+      .then(() => fetchSubmissionData(1, 10, "resources", "APPROVED"))
+      .then((x) => setResourcesData(x))
       .catch((err) => {
         notification.error({ message: "Something went wrong" });
       });
@@ -295,20 +347,27 @@ const AdminSection = ({
 
   const ReviewStatus = ({ item }) => {
     return (
-      <Select
-        mode="multiple"
-        showSearch={true}
-        className="select-reviewer"
-        placeholder="Assign reviewer"
-        onChange={(reviewerId) => assignReviewer(item, reviewerId)}
-        value={item?.reviewer?.id ? [item.reviewer.id] : []}
-        filterOption={(input, option) =>
-          option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-        options={reviewers.map((r) => {
-          return { value: r.id, label: r.email };
-        })}
-      />
+      <div
+        className="col reviewer"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <Select
+          mode="multiple"
+          showSearch={true}
+          className="select-reviewer"
+          placeholder="Assign reviewer"
+          onChange={(reviewerId) => assignReviewer(item, reviewerId)}
+          value={item?.reviewer?.id ? [item.reviewer.id] : []}
+          filterOption={(input, option) =>
+            option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          options={reviewers.map((r) => {
+            return { value: r.id, label: r.email };
+          })}
+        />
+      </div>
     );
   };
 
@@ -354,28 +413,28 @@ const AdminSection = ({
   );
 
   const renderNewApprovalRequests = () => {
-    const filter =
+    const entityFilter =
       tab === "resources"
         ? "resources"
         : tab === "tags"
         ? "tags"
         : "stakeholders";
     const itemList =
-      filter === "resources"
+      entityFilter === "resources"
         ? resourcesData
-        : filter === "stakeholders"
+        : entityFilter === "stakeholders"
         ? stakeholdersData
         : [];
     const setItemList =
-      filter === "resources"
+      entityFilter === "resources"
         ? setResourcesData
-        : filter === "stakeholders"
+        : entityFilter === "stakeholders"
         ? setStakeholdersData
         : setResourcesData;
     const sectionTitle =
-      filter === "resources"
+      entityFilter === "resources"
         ? "New Resources"
-        : filter === "tags"
+        : entityFilter === "tags"
         ? "New Tags"
         : "New Approval Request";
 
@@ -383,7 +442,7 @@ const AdminSection = ({
       (async () => {
         const size = pageSize ? pageSize : itemList.limit;
         setItemList(
-          await fetchSubmissionData(current, size, filter, "SUBMITTED")
+          await fetchSubmissionData(current, size, entityFilter, "SUBMITTED")
         );
       })();
     };
@@ -453,42 +512,45 @@ const AdminSection = ({
           </Space>
         </div>
       );
-
+      //      console.log(item);
       return (
         <div className="row">
           <ResourceAvatar />
-          <div
-            className="col reviewer"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            {tableFilter === "SUBMITTED" && <ReviewStatus item={item} />}
-            {tableFilter === "APPROVED" && item.type === "stakeholder" && (
-              <RoleSelect
-                stakeholder={item}
-                onChangeRole={changeRole}
-                loading={loading}
-              />
-            )}
-          </div>
-          {tableFilter === "SUBMITTED" && <ResourceSubmittedActions />}
-          {tableFilter === "APPROVED" && <ResourceApprovedActions />}
+          {item.reviewStatus === "SUBMITTED" && <ReviewStatus item={item} />}
+          {item.reviewStatus === "APPROVED" && item.type === "stakeholder" && (
+            <RoleSelect
+              stakeholder={item}
+              onChangeRole={changeRole}
+              loading={loading}
+            />
+          )}
+          {item.reviewStatus === "APPROVED" && (
+            <OwnerSelect
+              reviewers={reviewers}
+              resource={item}
+              onChangeOwner={changeOwner}
+              loading={loading}
+            />
+          )}
+          {item.reviewStatus === "SUBMITTED" && <ResourceSubmittedActions />}
+          {item.reviewStatus === "APPROVED" && <ResourceApprovedActions />}
         </div>
       );
     };
 
     return (
       <div key="new-approval" className="approval">
-        <h2>
-          Showing {tableFilter.toLowerCase()} {tab} ({itemList.count || 0})
-        </h2>
+        {tableFilter && <h3>Filtering by: {tableFilter.toLowerCase()}</h3>}
+        <h4>Total: {itemList.count || 0}</h4>
         <div className="table-wrapper">
           <div className="row head">
-            <HeaderSearch />
+            <HeaderSearch
+              setResourcesData={setResourcesData}
+              setStakeholdersData={setStakeholdersData}
+            />
             <HeaderFilter
               setTableFilter={setTableFilter}
-              resources_or_stakeholders={filter}
+              resources_or_stakeholders={entityFilter}
               setResourcesData={setResourcesData}
               setStakeholdersData={setStakeholdersData}
             />
