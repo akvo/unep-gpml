@@ -14,11 +14,7 @@ import {
 import React from "react";
 import { useEffect, useState } from "react";
 import api from "../../utils/api";
-import {
-  fetchArchiveData,
-  fetchSubmissionData,
-  fetchStakeholders,
-} from "./utils";
+import { fetchSubmissionData, fetchStakeholders } from "./utils";
 import moment from "moment";
 import isEmpty from "lodash/isEmpty";
 import { DetailCollapse } from "./preview";
@@ -74,13 +70,56 @@ const HeaderSearch = ({ placeholder }) => {
   );
 };
 
-const HeaderFilter = () => {
+const HeaderFilter = ({
+  resources_or_stakeholders,
+  setResourcesData,
+  setStakeholdersData,
+  setTableFilter,
+}) => {
   return (
     <Select
       showSearch
       allowClear
       className="filter-by-status"
-      onChange={null}
+      onChange={(x) => {
+        console.log(resources_or_stakeholders, x);
+        const setFun =
+          resources_or_stakeholders === "resources"
+            ? setResourcesData
+            : setStakeholdersData;
+        if (x === "undefined") {
+          setTableFilter("SUBMITTED");
+          (async () => {
+            setFun(
+              await fetchSubmissionData(
+                1,
+                10,
+                resources_or_stakeholders,
+                "SUBMITTED"
+              )
+            );
+          })();
+        } else {
+          const review_status =
+            x === "Approved"
+              ? "APPROVED"
+              : x === "Pending"
+              ? "SUBMITTED"
+              : "REJECTED";
+          setTableFilter(review_status);
+          console.log(review_status);
+          (async () => {
+            setFun(
+              await fetchSubmissionData(
+                1,
+                10,
+                resources_or_stakeholders,
+                review_status
+              )
+            );
+          })();
+        }
+      }}
       optionLabelProp="label"
       placeholder={
         <>
@@ -91,7 +130,7 @@ const HeaderFilter = () => {
         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
     >
-      {["Approved", "Pending"].map((x, i) => (
+      {["Approved", "Pending", "Declined"].map((x, i) => (
         <Option
           key={`${x}-${i}`}
           value={x}
@@ -130,14 +169,10 @@ const RoleSelect = ({ stakeholder, onChangeRole, loading }) => {
 };
 
 const AdminSection = ({
+  resourcesData,
+  setResourcesData,
   stakeholdersData,
   setStakeholdersData,
-  pendingResources,
-  setPendingResources,
-  pendingStakeholders,
-  setPendingStakeholders,
-  archiveItems,
-  setArchiveItems,
 }) => {
   const profile = UIStore.useState((s) => s.profile);
   const [modalRejectVisible, setModalRejectVisible] = useState(false);
@@ -148,8 +183,6 @@ const AdminSection = ({
   const [reviewers, setReviewers] = useState([]);
   const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false);
   const [tab, setTab] = useState("stakeholders-entities");
-  const archiveData =
-    tab === "resources" ? [] : tab === "tags" ? [] : archiveItems.data;
 
   useEffect(() => {
     api.get("/reviewer").then((res) => {
@@ -158,10 +191,7 @@ const AdminSection = ({
   }, []);
 
   const [loading, setLoading] = useState(false);
-
-  const updateStakeholdersData = async (page, limit) => {
-    setStakeholdersData(await fetchStakeholders(page, limit));
-  };
+  const [tableFilter, setTableFilter] = useState("SUBMITTED");
 
   const changeRole = (stakeholder, role) => {
     setLoading(stakeholder.id);
@@ -170,9 +200,10 @@ const AdminSection = ({
       .then((resp) => {
         notification.success({ message: "User role changed" });
         // FIXME: Add error handling in case the PATCH fails!
-        //TODO        updateStakeholdersData(page, limit);
         setLoading(false);
       })
+      .then(() => fetchSubmissionData(1, 10, "stakeholders", "APPROVED"))
+      .then((x) => setStakeholdersData(x))
       .catch((err) => {
         notification.error({ message: "Something went wrong" });
       });
@@ -194,30 +225,26 @@ const AdminSection = ({
         let title = item.title;
         title = item?.firstName ? `${title} ${item.firstName}` : title;
         title = item?.lastName ? `${title} ${item.lastName}` : title;
-        const newArchive = {
-          ...item,
-          title: title,
-          type: item.type,
-          createdBy: item.submitter ? item.submitter : null,
-          reviewStatus: review_status,
-          reviewedBy: profile.firstName + " " + profile.lastName,
-          reviewedAt: moment().format("L LT"),
-        };
-        setArchiveItems({
-          ...archiveItems,
-          data: [newArchive, ...archiveData],
-          count: archiveItems.count + 1,
-        });
         (async () => {
-          const { page, limit } = pendingResources;
-          const items = await fetchSubmissionData(page, limit, "resources");
-          setPendingResources(items);
+          const { page, limit } = resourcesData;
+          const items = await fetchSubmissionData(
+            page,
+            limit,
+            "resources",
+            "SUBMITTED"
+          );
+          setResourcesData(items);
           setApproveLoading({});
         })();
         (async () => {
-          const { page, limit } = pendingStakeholders;
-          const items = await fetchSubmissionData(page, limit, "stakeholders");
-          setPendingStakeholders(items);
+          const { page, limit } = stakeholdersData;
+          const items = await fetchSubmissionData(
+            page,
+            limit,
+            "stakeholders",
+            "SUBMITTED"
+          );
+          setStakeholdersData(items);
           setApproveLoading({});
         })();
         setModalRejectVisible(false);
@@ -249,15 +276,15 @@ const AdminSection = ({
     apiCall(`/review/${item.type}/${item.id}`, data).then((res) => {
       setLoadingAssignReviewer(false);
       (async () => {
-        const { page, limit } = pendingResources;
-        setPendingResources(
-          await fetchSubmissionData(page, limit, "resources")
+        const { page, limit } = resourcesData;
+        setResourcesData(
+          await fetchSubmissionData(page, limit, "resources", "SUBMITTED")
         );
       })();
       (async () => {
-        const { page, limit } = pendingStakeholders;
-        setPendingStakeholders(
-          await fetchSubmissionData(page, limit, "stakeholders")
+        const { page, limit } = stakeholdersData;
+        setStakeholdersData(
+          await fetchSubmissionData(page, limit, "stakeholders", "SUBMITTED")
         );
       })();
     });
@@ -332,16 +359,16 @@ const AdminSection = ({
         : "stakeholders";
     const itemList =
       filter === "resources"
-        ? pendingResources
+        ? resourcesData
         : filter === "stakeholders"
-        ? pendingStakeholders
+        ? stakeholdersData
         : [];
-    const setPendingItemList =
+    const setItemList =
       filter === "resources"
-        ? setPendingResources
+        ? setResourcesData
         : filter === "stakeholders"
-        ? setPendingStakeholders
-        : setPendingResources;
+        ? setStakeholdersData
+        : setResourcesData;
     const sectionTitle =
       filter === "resources"
         ? "New Resources"
@@ -349,22 +376,119 @@ const AdminSection = ({
         ? "New Tags"
         : "New Approval Request";
 
-    const onChangePagePending = (current, pageSize) => {
+    const onChangePage = (current, pageSize) => {
       (async () => {
         const size = pageSize ? pageSize : itemList.limit;
-        setPendingItemList(await fetchSubmissionData(current, size, filter));
+        setItemList(
+          await fetchSubmissionData(current, size, filter, "SUBMITTED")
+        );
       })();
+    };
+
+    const RenderRow = ({ item }) => {
+      const ResourceAvatar = () => (
+        <div className="col content">
+          <Avatar
+            className="content-img"
+            size={50}
+            icon={item.picture || <UserOutlined />}
+          />
+          <div className="content-body">
+            <div className="title">{item.title || "No Title"}</div>
+            <div className="topic">{topicNames(item.type)}</div>
+          </div>
+        </div>
+      );
+      const ResourceSubmittedActions = () => (
+        <div
+          className="col action"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <Space size="small">
+            {item.type === "profile" ? (
+              item.emailVerified ? (
+                <PublishButton item={item} type="ghost" className="black" />
+              ) : (
+                <Tooltip title="Profile cannot be approved since email is not verified">
+                  <PublishButton item={item} type="secondary" disabled={true} />
+                </Tooltip>
+              )
+            ) : item.type === "policy" ? (
+              <Tooltip title="Policies are imported from Law division system">
+                <PublishButton item={item} type="secondary" disabled={true} />
+              </Tooltip>
+            ) : (
+              <PublishButton item={item} type="ghost" className="black" />
+            )}
+            <UnpublishButton
+              item={item}
+              type="link"
+              className="black"
+              uiTitle="REJECT"
+              action="REJECTED"
+            />
+          </Space>
+        </div>
+      );
+      const ResourceApprovedActions = () => (
+        <div
+          className="col action"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <Space size="small">
+            <UnpublishButton
+              item={item}
+              type="ghost"
+              className="black"
+              uiTitle="UNAPPROVE"
+              action="UNAPPROVED"
+            />
+          </Space>
+        </div>
+      );
+
+      return (
+        <div className="row">
+          <ResourceAvatar />
+          <div
+            className="col reviewer"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            {tableFilter === "SUBMITTED" && <ReviewStatus item={item} />}
+            {tableFilter === "APPROVED" && item.type === "stakeholder" && (
+              <RoleSelect
+                stakeholder={item}
+                onChangeRole={changeRole}
+                loading={loading}
+              />
+            )}
+          </div>
+          {tableFilter === "SUBMITTED" && <ResourceSubmittedActions />}
+          {tableFilter === "APPROVED" && <ResourceApprovedActions />}
+        </div>
+      );
     };
 
     return (
       <div key="new-approval" className="approval">
         <h2>
-          {sectionTitle} ({itemList.count || 0})
+          Showing {tableFilter.toLowerCase()} {tab} ({itemList.count || 0})
         </h2>
         <div className="table-wrapper">
           <div className="row head">
             <HeaderSearch />
-            <HeaderFilter />
+            <HeaderFilter
+              setTableFilter={setTableFilter}
+              resources_or_stakeholders={filter}
+              setResourcesData={setResourcesData}
+              setStakeholdersData={setStakeholdersData}
+            />
           </div>
           <Collapse onChange={getPreviewContent}>
             {itemList?.data && itemList?.data?.length > 0 ? (
@@ -394,76 +518,7 @@ const AdminSection = ({
                             </span>
                           )}
                       </div>
-                      <div className="row">
-                        <div className="col content">
-                          <Avatar
-                            className="content-img"
-                            size={50}
-                            icon={item.picture || <UserOutlined />}
-                          />
-                          <div className="content-body">
-                            <div className="title">
-                              {item.title || "No Title"}
-                            </div>
-                            <div className="topic">{topicNames(item.type)}</div>
-                          </div>
-                        </div>
-                        <div
-                          className="col reviewer"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                          }}
-                        >
-                          <ReviewStatus item={item} />
-                        </div>
-                        <div
-                          className="col action"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                          }}
-                        >
-                          <Space size="small">
-                            {item.type === "profile" ? (
-                              item.emailVerified ? (
-                                <PublishButton
-                                  item={item}
-                                  type="ghost"
-                                  className="black"
-                                />
-                              ) : (
-                                <Tooltip title="Profile cannot be approved since email is not verified">
-                                  <PublishButton
-                                    item={item}
-                                    type="secondary"
-                                    disabled={true}
-                                  />
-                                </Tooltip>
-                              )
-                            ) : item.type === "policy" ? (
-                              <Tooltip title="Policies are imported from Law division system">
-                                <PublishButton
-                                  item={item}
-                                  type="secondary"
-                                  disabled={true}
-                                />
-                              </Tooltip>
-                            ) : (
-                              <PublishButton
-                                item={item}
-                                type="ghost"
-                                className="black"
-                              />
-                            )}
-                            <UnpublishButton
-                              item={item}
-                              type="link"
-                              className="black"
-                              uiTitle="REJECT"
-                              action="REJECTED"
-                            />
-                          </Space>
-                        </div>
-                      </div>
+                      <RenderRow item={item} />
                     </>
                   }
                 >
@@ -485,120 +540,8 @@ const AdminSection = ({
         <div className="pagination-wrapper">
           <Pagination
             defaultCurrent={1}
-            onChange={onChangePagePending}
+            onChange={onChangePage}
             current={itemList.page || 1}
-            pageSize={itemList.limit || 10}
-            total={itemList.count || 0}
-            defaultPageSize={itemList.limit || 10}
-          />
-        </div>
-      </div>
-    );
-  };
-
-  const renderArchiveRequests = () => {
-    const itemList =
-      tab === "resources" ? [] : tab === "tags" ? [] : archiveItems;
-
-    const title =
-      tab === "resources"
-        ? "Approved resources"
-        : tab === "tags"
-        ? "Approved tags"
-        : "Approved stakeholders and entities";
-
-    const onChangePageArchive = async (current, pageSize) => {
-      const size = pageSize ? pageSize : archiveItems.limit;
-      const archive = await fetchArchiveData(current, size);
-      setArchiveItems(archive);
-    };
-
-    return (
-      <div key="archive-requests" className="archive">
-        <h2>
-          {title} ({itemList.count || 0})
-        </h2>
-        <div className="table-wrapper">
-          <div className="row head">
-            <HeaderSearch />
-            <HeaderFilter />
-          </div>
-          <Collapse onChange={getPreviewContent}>
-            {archiveData.length > 0 ? (
-              archiveData.map((item, index) => (
-                <Collapse.Panel
-                  key={item.preview}
-                  className="archive-collapse-panel-item status-show"
-                  header={
-                    <>
-                      <div className="content-status">
-                        <span className="status">
-                          {publishStatusUIText[item.reviewStatus]}
-                        </span>
-                      </div>
-                      <div className="row">
-                        <div className="col content">
-                          <Avatar
-                            className="content-img"
-                            size={50}
-                            icon={item.picture || <UserOutlined />}
-                          />
-                          <div className="content-body">
-                            <div className="title">
-                              {item.title || "No Title"}
-                            </div>
-                            <div className="topic">{topicNames(item.type)}</div>
-                          </div>
-                          <div
-                            className="col action"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                            }}
-                          >
-                            {item.type === "stakeholder" && (
-                              <RoleSelect
-                                stakeholder={item}
-                                onChangeRole={changeRole}
-                                loading={loading}
-                              />
-                            )}
-                            <Space size="small">
-                              {item.reviewStatus !== "REJECTED" && (
-                                <UnpublishButton
-                                  item={item}
-                                  type="ghost"
-                                  className="black"
-                                  uiTitle="UNAPPROVE"
-                                  action="UNAPPROVED"
-                                />
-                              )}
-                            </Space>
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  }
-                >
-                  <DetailCollapse
-                    data={previewContent?.[item.preview] || {}}
-                    item={item}
-                  />
-                </Collapse.Panel>
-              ))
-            ) : (
-              <Collapse.Panel
-                showArrow={false}
-                key="collapse-archive-no-data"
-                header={<div className="row">No data to display</div>}
-              ></Collapse.Panel>
-            )}
-          </Collapse>
-        </div>
-        <div className="pagination-wrapper">
-          <Pagination
-            defaultCurrent={1}
-            current={itemList.page || 1}
-            onChange={onChangePageArchive}
             pageSize={itemList.limit || 10}
             total={itemList.count || 0}
             defaultPageSize={itemList.limit || 10}
@@ -631,15 +574,12 @@ const AdminSection = ({
           className="profile-tab-pane"
         >
           {renderNewApprovalRequests()}
-          {renderArchiveRequests()}
         </TabPane>
         <TabPane tab="Resources" key="resources" className="profile-tab-pane">
           {renderNewApprovalRequests()}
-          {renderArchiveRequests()}
         </TabPane>
         <TabPane tab="Tags" key="tags" className="profile-tab-pane">
           {renderNewApprovalRequests()}
-          {renderArchiveRequests()}
         </TabPane>
       </Tabs>
 
