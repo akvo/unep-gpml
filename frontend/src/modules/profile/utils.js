@@ -18,14 +18,20 @@ export const fetchSubmissionData = async (
   page,
   limit,
   resources_or_stakeholders,
-  review_status
+  review_status,
+  title
 ) => {
-  const params = {
+  let params = {
     page,
     limit,
     only: resources_or_stakeholders,
-    review_status,
   };
+  if (review_status) {
+    params = { review_status, ...params };
+  }
+  if (title) {
+    params = { title, ...params };
+  }
   const resp = await api.get("/submission", params);
   return resp.data;
 };
