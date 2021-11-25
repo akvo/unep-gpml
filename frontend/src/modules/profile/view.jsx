@@ -6,7 +6,6 @@ import api from "../../utils/api";
 import { useAuth0 } from "@auth0/auth0-react";
 import SignupForm from "../signup-old/signup-form";
 import {
-  fetchArchiveData,
   fetchSubmissionData,
   fetchReviewItems,
   fetchStakeholders,
@@ -93,27 +92,6 @@ const ProfileView = ({ ...props }) => {
   const handleSubmitRef = useRef();
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState("personal-details");
-  const [pendingResources, setPendingResources] = useState({
-    data: [],
-    limit: 10,
-    page: 1,
-    count: 0,
-    pages: 0,
-  });
-  const [pendingStakeholders, setPendingStakeholders] = useState({
-    data: [],
-    limit: 10,
-    page: 1,
-    count: 0,
-    pages: 0,
-  });
-  const [archiveItems, setArchiveItems] = useState({
-    data: [],
-    limit: 10,
-    page: 1,
-    count: 0,
-    pages: 0,
-  });
   const [reviewItems, setReviewItems] = useState({
     reviews: [],
     limit: 10,
@@ -135,6 +113,13 @@ const ProfileView = ({ ...props }) => {
     count: 0,
     pages: 0,
   });
+  const [resourcesData, setResourcesData] = useState({
+    stakeholders: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = null;
@@ -147,24 +132,13 @@ const ProfileView = ({ ...props }) => {
 
     if (adminRoles.has(profile?.role)) {
       (async () => {
-        const { page, limit } = pendingResources;
-        setPendingResources(
-          await fetchSubmissionData(page, limit, "resources")
-        );
-      })();
-      (async () => {
-        const { page, limit } = pendingStakeholders;
-        setPendingStakeholders(
-          await fetchSubmissionData(page, limit, "stakeholders")
-        );
-      })();
-      (async function fetchData() {
-        const archive = await fetchArchiveData(1, 10);
-        setArchiveItems(archive);
-      })();
-      (async () => {
         const { page, limit } = stakeholdersData;
-        const data = await fetchStakeholders(page, limit);
+        const data = await fetchSubmissionData(
+          page,
+          limit,
+          "stakeholders",
+          "SUBMITTED"
+        );
         setStakeholdersData(data);
       })();
     }
@@ -274,7 +248,7 @@ const ProfileView = ({ ...props }) => {
           menuText = renderMenuText(it.name, reviewItems.count);
           break;
         case "admin-section":
-          menuText = renderMenuText(it.name, pendingResources.count); // TODO : sum pendingStakeholders
+          menuText = renderMenuText(it.name, stakeholdersData.count); // TODO : sum resourcesData.count
           break;
         default:
           menuText = renderMenuText(it.name);
@@ -387,12 +361,8 @@ const ProfileView = ({ ...props }) => {
                   <AdminSection
                     stakeholdersData={stakeholdersData}
                     setStakeholdersData={setStakeholdersData}
-                    pendingResources={pendingResources}
-                    setPendingResources={setPendingResources}
-                    pendingStakeholders={pendingStakeholders}
-                    setPendingStakeholders={setPendingStakeholders}
-                    archiveItems={archiveItems}
-                    setArchiveItems={setArchiveItems}
+                    resourcesData={resourcesData}
+                    setResourcesData={setResourcesData}
                   />
                 )}
               </Col>
