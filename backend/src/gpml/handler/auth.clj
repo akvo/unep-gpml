@@ -24,10 +24,10 @@
       (if authorized?
         (do
           (jdbc/with-db-transaction [tx-conn conn]
+            (db.ts-auth/delete-auth-by-topic tx-conn path)
            (doseq [s (:stakeholders body)]
              (let [opts (assoc path :stakeholder (:id s)
                                :roles (:roles s))]
-               (db.ts-auth/delete-auth tx-conn opts)
                (db.ts-auth/new-auth tx-conn opts))))
           (resp/response (merge path body)))
         util/unauthorized))))
