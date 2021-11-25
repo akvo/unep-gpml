@@ -110,7 +110,7 @@
     [:representative_group_private_sector [:maybe string?]]
     [:representative_group_government [:maybe string?]]
     [:representative_group_academia_research [:maybe string?]]
-    [:subnational_area [:maybe string?]]
+    [:subnational_area {:optional true} [:maybe string?]]
     [:expertise vector?]
          [:program string?]]
         handler.geo/params-payload))
