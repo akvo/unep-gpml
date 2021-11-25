@@ -71,6 +71,9 @@
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:query [:map
                                                                       [:only {:optional true} [:enum "resources" "stakeholders" "tags"]]
+                                                                      [:review_status
+                                                                       {:optional true :default "SUBMITTED"}
+                                                                       [:enum "SUBMITTED" "APPROVED" "REJECTED"]]
                                                                       [:page {:optional true
                                                                               :default 1} int?]
                                                                       [:limit {:optional true
