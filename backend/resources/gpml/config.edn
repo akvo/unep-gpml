@@ -67,13 +67,15 @@
                                                         :responses {401 {:description "Need authentication"}
                                                                     403 {:description "Insufficient permissions"}}}
                                          [""
-                                          {:get {:summary "Get the list of pending submissions"
+                                          {:get {:summary "Get the list of submissions"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:query [:map
                                                                       [:only {:optional true} [:enum "resources" "stakeholders" "tags"]]
                                                                       [:review_status
-                                                                       {:optional true :default "SUBMITTED"}
+                                                                       {:optional true #_#_:default "SUBMITTED"
+                                                                        }
                                                                        [:enum "SUBMITTED" "APPROVED" "REJECTED"]]
+                                                                      [:title {:optional true} string?]
                                                                       [:page {:optional true
                                                                               :default 1} int?]
                                                                       [:limit {:optional true
