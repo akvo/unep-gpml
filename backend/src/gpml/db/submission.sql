@@ -56,8 +56,10 @@ SELECT json_build_object(
     'data', (select json_agg(row_to_json(data)) from data),
     'count', (
     SELECT COUNT(*) FROM submission
---~ (when (= "stakeholders" (:only params)) " WHERE type IN ('stakeholder', 'organisation') ")
---~ (when (= "resources" (:only params)) " WHERE type NOT IN ('stakeholder', 'organisation') ")
+    WHERE 1=1
+--~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder', 'organisation') ")
+--~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation') ")
+--~ (when (:title params) (str " AND title ILIKE '%" (:title params) "%' ") )
     ),
     'page', :page,
     'pages', (
@@ -65,7 +67,7 @@ SELECT json_build_object(
     WHERE 1=1
 --~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder', 'organisation') ")
 --~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation') ")
---~ (when (:title params) (str " AND s.title ILIKE '%" (:title params) "%' ") )
+--~ (when (:title params) (str " AND title ILIKE '%" (:title params) "%' ") )
     ) / :limit,
     'limit', :limit) as result;
 
