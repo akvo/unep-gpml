@@ -1,5 +1,6 @@
 import moment from "moment";
 import capitalize from "lodash/capitalize";
+import { Link } from "react-router-dom";
 import values from "lodash/values";
 import { UIStore } from "../../store";
 import imageNotFound from "../../images/image-not-found.png";
@@ -95,6 +96,16 @@ const findCountries = (
   return "-";
 };
 
+const GpmlLinkLi = ({ item }) => {
+  return (
+    <li className="has-border">
+      <Link to={`/${item.type}/${item.id}`} className="browse-card">
+        GPML LINK: /{item.type}/{item.id}{" "}
+      </Link>
+    </li>
+  );
+};
+
 export const GeneralPreview = ({ item }) => {
   const {
     countries,
@@ -117,6 +128,7 @@ export const GeneralPreview = ({ item }) => {
         />
       </div>
       <ul>
+        <GpmlLinkLi item={item} />
         <li className="has-border">
           <p className="section-title">{topicNames(item.type)} detail</p>
         </li>
@@ -343,6 +355,7 @@ export const ProfilePreview = ({ item }) => {
         </div>
 
         <ul>
+          <GpmlLinkLi item={item} />
           <li className="has-border">
             <p className="section-title">Personal Details</p>
           </li>
@@ -444,6 +457,7 @@ export const InitiativePreview = ({ item }) => {
         />
       </div>
       <ul>
+        <GpmlLinkLi item={item} />
         <li className="has-border">
           <p className="section-title">Initiative Details</p>
         </li>
