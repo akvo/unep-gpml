@@ -73,23 +73,24 @@ const HeaderSearch = ({ placeholder, listOpts, setListOpts }) => {
               listOpts.current,
               listOpts.size,
               listOpts.type,
-              listOpts.reviewStatus
+              listOpts.reviewStatus,
+              listOpts.title
             );
             setListOpts((opts) => ({ ...opts, data }));
           })();
         }
       }}
-      onSearch={(x) => {
-        console.log("search", x, listOpts.type, listOpts.reviewStatus);
+      onSearch={(title) => {
+        console.log("search", title, listOpts.type, listOpts.reviewStatus);
         (async () => {
           const data = await fetchSubmissionData(
             listOpts.current,
             listOpts.size,
             listOpts.type,
             listOpts.reviewStatus,
-            x
+            title
           );
-          setListOpts((opts) => ({ ...opts, data }));
+          setListOpts((opts) => ({ ...opts, data, title }));
         })();
       }}
     />
@@ -127,7 +128,8 @@ const HeaderFilter = ({
             const data = await fetchSubmissionData(
               listOpts.current,
               listOpts.size,
-              listOpts.type
+              listOpts.type,
+              listOpts.title
             );
             setListOpts((opts) => ({ ...opts, reviewStatus: null, data }));
           })();
@@ -140,7 +142,8 @@ const HeaderFilter = ({
               listOpts.current,
               listOpts.size,
               listOpts.type,
-              reviewStatus
+              reviewStatus,
+              listOpts.title
             );
             setListOpts((opts) => ({ ...opts, reviewStatus, data }));
           })();
@@ -305,7 +308,8 @@ const AdminSection = ({
           listOpts.current,
           listOpts.size,
           listOpts.type,
-          listOpts.reviewStatus
+          listOpts.reviewStatus,
+          listOpts.title
         )
       )
       .then((data) => setListOpts((opts) => ({ ...opts, data })))
@@ -328,7 +332,8 @@ const AdminSection = ({
           listOpts.current,
           listOpts.size,
           listOpts.type,
-          listOpts.reviewStatus
+          listOpts.reviewStatus,
+          listOpts.title
         )
       )
       .then((data) => setListOpts((opts) => ({ ...opts, data })))
@@ -358,7 +363,8 @@ const AdminSection = ({
             listOpts.current,
             listOpts.size,
             listOpts.type,
-            listOpts.reviewStatus
+            listOpts.reviewStatus,
+            listOpts.title
           );
           setListOpts((opts) => ({ ...opts, data }));
           setApproveLoading({});
@@ -398,7 +404,8 @@ const AdminSection = ({
           listOpts.current,
           listOpts.size,
           listOpts.type,
-          listOpts.reviewStatus
+          listOpts.reviewStatus,
+          listOpts.title
         );
         setListOpts((opts) => ({ ...opts, data }));
       })();
@@ -416,7 +423,6 @@ const AdminSection = ({
         <Select
           //          mode="multiple"
           showSearch={true}
-          allowClear
           className="select-reviewer"
           placeholder="Assign reviewer"
           onChange={(reviewerId) =>
@@ -501,7 +507,8 @@ const AdminSection = ({
           listOpts.current,
           listOpts.size,
           listOpts.type,
-          listOpts.reviewStatus
+          listOpts.reviewStatus,
+          listOpts.title
         );
         setListOpts((opts) => ({ ...opts, data }));
       })();
