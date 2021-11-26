@@ -90,10 +90,9 @@ update organisation set id = :id
 --~ (when (contains? params :created_by) ",created_by= :created_by")
 where id = :id
 
--- :name geo-coverage :? :*
+-- :name geo-coverage-v2 :? :*
 -- :doc Get geo coverage by organisation id
-select id, coalesce(country, country_group) as geo_coverage_values from organisation_geo_coverage
-where organisation = :id
+select id, country, country_group from organisation_geo_coverage where organisation = :id
 
 -- :name add-geo-coverage :<! :1
 -- :doc add organisation geo coverage
