@@ -88,6 +88,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   };
 
   const handleOnTabChange = (key) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     const tabActive = tabsData.filter((x) => x.key === key);
     initialFormData.update((e) => {
       e.data = {
@@ -246,8 +247,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                 minHeight: "100%",
               }}
             >
-              <Row>
-                {getTabStepIndex().tabIndex === 0 ? (
+              {getTabStepIndex().tabIndex === 0 ? (
+                <Row>
                   <div className="getting-started-content main-content">
                     <h5>Welcome to the GPML Digital Platform!</h5>
                     <p>
@@ -265,7 +266,9 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       be downloaded <a href="#">here</a>.
                     </p>
                   </div>
-                ) : (
+                </Row>
+              ) : (
+                <Row>
                   <div className="main-content">
                     <div className="button-wrapper">
                       <h5>Pick the main content type</h5>
@@ -364,90 +367,88 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       </Col>
                     </Row>
                   </div>
-                )}
-              </Row>
-              <Row>
-                <div className="sub-content">
-                  <div className="sub-content-top">
-                    <h5>Pick the sub-content type</h5>
-                    <span>Optional</span>
+                  <div className="sub-content">
+                    <div className="sub-content-top">
+                      <h5>Pick the sub-content type</h5>
+                      <span>Optional</span>
+                    </div>
+                    <div className="sub-content-topics">
+                      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 16 }}>
+                        <Col className="gutter-row" xs={12} lg={6}>
+                          <Radio.Button value="large">
+                            Capacity building initiatives
+                            <div className="info-icon-wrapper">
+                              <img src={InfoBlue} />
+                            </div>
+                          </Radio.Button>
+                        </Col>
+                        <Col className="gutter-row" xs={12} lg={6}>
+                          <Radio.Button value="large" className="selected">
+                            Courses and trainings
+                            <div className="info-icon-wrapper selected">
+                              <img src={InfoGreen} />
+                            </div>
+                          </Radio.Button>
+                        </Col>
+                        <Col className="gutter-row" xs={12} lg={6}>
+                          <Radio.Button value="large">
+                            Educational events
+                            <div className="info-icon-wrapper">
+                              <img src={InfoBlue} />
+                            </div>
+                          </Radio.Button>
+                        </Col>
+                        <Col className="gutter-row" xs={12} lg={6}>
+                          <Radio.Button value="large">
+                            Tools and toolkits
+                            <div className="info-icon-wrapper">
+                              <img src={InfoBlue} />
+                            </div>
+                          </Radio.Button>
+                        </Col>
+                        <Col className="gutter-row" xs={12} lg={6}>
+                          <Radio.Button value="large">
+                            Case studies
+                            <div className="info-icon-wrapper">
+                              <img src={InfoBlue} />
+                            </div>
+                          </Radio.Button>
+                        </Col>
+                        <Col className="gutter-row" xs={12} lg={6}>
+                          <Radio.Button value="large">
+                            Opportunities
+                            <div className="info-icon-wrapper">
+                              <img src={InfoBlue} />
+                            </div>
+                          </Radio.Button>
+                        </Col>
+                        <Col className="gutter-row" xs={12} lg={6}>
+                          <Radio.Button value="large">
+                            Stakeholders
+                            <div className="info-icon-wrapper">
+                              <img src={InfoBlue} />
+                            </div>
+                          </Radio.Button>
+                        </Col>
+                        <Col className="gutter-row" xs={12} lg={6}>
+                          <Radio.Button value="large">
+                            Large
+                            <div className="info-icon-wrapper">
+                              <img src={InfoBlue} />
+                            </div>
+                          </Radio.Button>
+                        </Col>
+                      </Row>
+                    </div>
+                    {/* <div className="before-selection">
+                      <p>
+                        Select a Main Content Type above to see sub-content type
+                        options
+                      </p>
+                    </div> */}
                   </div>
-                  <div className="sub-content-topics">
-                    <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 16 }}>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large">
-                          Capacity building initiatives
-                          <div className="info-icon-wrapper">
-                            <img src={InfoBlue} />
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large" className="selected">
-                          Courses and trainings
-                          <div className="info-icon-wrapper selected">
-                            <img src={InfoGreen} />
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large">
-                          Educational events
-                          <div className="info-icon-wrapper">
-                            <img src={InfoBlue} />
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large">
-                          Tools and toolkits
-                          <div className="info-icon-wrapper">
-                            <img src={InfoBlue} />
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large">
-                          Case studies
-                          <div className="info-icon-wrapper">
-                            <img src={InfoBlue} />
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large">
-                          Opportunities
-                          <div className="info-icon-wrapper">
-                            <img src={InfoBlue} />
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large">
-                          Stakeholders
-                          <div className="info-icon-wrapper">
-                            <img src={InfoBlue} />
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large">
-                          Large
-                          <div className="info-icon-wrapper">
-                            <img src={InfoBlue} />
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                    </Row>
-                  </div>
-                  {/* <div className="before-selection">
-                    <p>
-                      Select a Main Content Type above to see sub-content type
-                      options
-                    </p>
-                  </div> */}
-                </div>
-              </Row>
+                </Row>
+              )}
             </Col>
           </Row>
         </div>

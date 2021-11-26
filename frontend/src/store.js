@@ -57,6 +57,49 @@ const representativeGroup = [
   },
 ];
 
+const mainContentType = [
+  {
+    code: "initiative",
+    name: "Initiative",
+    childs: [],
+  },
+  {
+    code: "actionPlan",
+    name: "Action Plan",
+    childs: [],
+  },
+  {
+    code: "policy",
+    name: "Policy",
+    childs: [],
+  },
+  {
+    code: "financingResource",
+    name: "Financing Resource",
+    childs: [],
+  },
+  {
+    code: "technicalResource",
+    name: "Technical Resource",
+    childs: [],
+  },
+  {
+    code: "event",
+    name: "Event",
+    childs: [],
+  },
+  {
+    code: "technology",
+    name: "Technology",
+    childs: [],
+  },
+  {
+    code: "capacityBuilding",
+    name: "Capacity Building",
+    childs: [],
+  },
+];
+
 const UIStore = new Store({
   tags: {},
   countries: [],
@@ -72,6 +115,7 @@ const UIStore = new Store({
   organisationType: sectorOptions,
   sectorOptions: sectorOptions,
   representativeGroup: representativeGroup,
+  mainContentType: mainContentType,
   landing: null,
   stakeholders: null,
   highlight: false,
