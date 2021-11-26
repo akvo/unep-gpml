@@ -70,8 +70,8 @@ const HeaderSearch = ({ placeholder, listOpts, setListOpts }) => {
         if (x.target.value === "") {
           (async () => {
             const data = await fetchSubmissionData(
-              1,
-              10,
+              listOpts.current,
+              listOpts.size,
               listOpts.type,
               listOpts.reviewStatus
             );
@@ -83,8 +83,8 @@ const HeaderSearch = ({ placeholder, listOpts, setListOpts }) => {
         console.log("search", x, listOpts.type, listOpts.reviewStatus);
         (async () => {
           const data = await fetchSubmissionData(
-            1,
-            10,
+            listOpts.current,
+            listOpts.size,
             listOpts.type,
             listOpts.reviewStatus,
             x
@@ -110,7 +110,7 @@ const HeaderFilter = ({
   initialReviewStatus,
 }) => {
   const [selectedValue, setSelectedValue] = useState(
-    (listOpts.reviewStatus && statusDictToHuman(listOpts.reviewStatus)) ||
+    (listOpts.reviewStatus && statusDictToHuman[listOpts.reviewStatus]) ||
       initialReviewStatus
   );
   return (
@@ -124,7 +124,11 @@ const HeaderFilter = ({
         console.log(listOpts.type, x);
         if (typeof x === "undefined") {
           (async () => {
-            const data = await fetchSubmissionData(1, 10, listOpts.type);
+            const data = await fetchSubmissionData(
+              listOpts.current,
+              listOpts.size,
+              listOpts.type
+            );
             setListOpts((opts) => ({ ...opts, reviewStatus: null, data }));
           })();
         } else {
@@ -133,8 +137,8 @@ const HeaderFilter = ({
           console.log(reviewStatus);
           (async () => {
             const data = await fetchSubmissionData(
-              1,
-              10,
+              listOpts.current,
+              listOpts.size,
               listOpts.type,
               reviewStatus
             );
@@ -169,7 +173,13 @@ const HeaderFilter = ({
   );
 };
 
-const RoleSelect = ({ stakeholder, onChangeRole, loading }) => {
+const RoleSelect = ({
+  stakeholder,
+  onChangeRole,
+  loading,
+  listOpts,
+  setListOpts,
+}) => {
   return (
     <div
       className="col reviewer"
@@ -180,7 +190,9 @@ const RoleSelect = ({ stakeholder, onChangeRole, loading }) => {
       <Select
         showSearch={false}
         style={{ width: "100%" }}
-        onChange={(role) => onChangeRole(stakeholder, role)}
+        onChange={(role) =>
+          onChangeRole(stakeholder, role, listOpts, setListOpts)
+        }
         value={[stakeholder?.role]}
         loading={stakeholder?.id === loading}
         // FIXME: Disallow changing roles of other admins?
@@ -197,19 +209,26 @@ const RoleSelect = ({ stakeholder, onChangeRole, loading }) => {
   );
 };
 
-const OwnerSelect = ({ resource, onChangeOwner, loading, reviewers }) => {
+const OwnerSelect = ({
+  item,
+  onChangeOwner,
+  loading,
+  reviewers,
+  listOpts,
+  setListOpts,
+}) => {
   return (
     <Select
       showSearch={false}
       mode="multiple"
       style={{ width: "100%" }}
       placeholder="Assign owner"
-      onChange={(data) => onChangeOwner(resource, data)} // onChangeOwner(resource, role)}
-      value={resource?.owners}
-      loading={resource?.id === loading}
+      onChange={(data) => onChangeOwner(item, data, listOpts, setListOpts)} // onChangeOwner(resource, role)}
+      value={item?.owners}
+      loading={item?.id === loading}
       // FIXME: Disallow changing roles of other admins?
       // stakeholder?.role === "ADMIN"
-      disabled={resource?.id === loading}
+      disabled={item?.id === loading}
     >
       {reviewers.map((r) => (
         <Select.Option key={r.email} value={r.id}>
@@ -245,18 +264,24 @@ const AdminSection = ({
     reviewStatus: null,
     data: stakeholdersData,
     type: "stakeholders",
+    current: 1,
+    size: 10,
   });
   const [resourcesListOpts, setResourcesListOpts] = useState({
     titleFilter: null,
     reviewStatus: null,
     data: resourcesData,
     type: "resources",
+    current: 1,
+    size: 10,
   });
   const [tagsListOpts, setTagsListOpts] = useState({
     titleFilter: null,
     reviewStatus: null,
     data: null,
     type: "tags",
+    current: 1,
+    size: 10,
   });
 
   const [reviewers, setReviewers] = useState([]);
@@ -266,7 +291,7 @@ const AdminSection = ({
     });
   }, []);
 
-  const changeRole = (stakeholder, role) => {
+  const changeRole = (stakeholder, role, listOpts, setListOpts) => {
     setLoading(stakeholder.id);
     api
       .patch(`/stakeholder/${stakeholder.id}`, { role })
@@ -275,30 +300,44 @@ const AdminSection = ({
         // FIXME: Add error handling in case the PATCH fails!
         setLoading(false);
       })
-      .then(() => fetchSubmissionData(1, 10, "stakeholders", "APPROVED"))
-      .then((x) => setStakeholdersData(x))
+      .then(() =>
+        fetchSubmissionData(
+          listOpts.current,
+          listOpts.size,
+          listOpts.type,
+          listOpts.reviewStatus
+        )
+      )
+      .then((data) => setListOpts((opts) => ({ ...opts, data })))
       .catch((err) => {
         notification.error({ message: "Something went wrong" });
       });
   };
 
-  const changeOwner = (resource, owners) => {
-    setLoading(resource.id);
+  const changeOwner = (item, owners, listOpts, setListOpts) => {
+    setLoading(item.id);
     const stakeholders = owners.map((x) => ({ id: x, roles: ["owner"] }));
     api
-      .post(`/auth/${resource.type}/${resource.id}`, { stakeholders })
+      .post(`/auth/${item.type}/${item.id}`, { stakeholders })
       .then((resp) => {
         notification.success({ message: "Ownerships changed" });
         setLoading(false);
       })
-      .then(() => fetchSubmissionData(1, 10, "resources", "APPROVED"))
-      .then((x) => setResourcesData(x))
+      .then(() =>
+        fetchSubmissionData(
+          listOpts.current,
+          listOpts.size,
+          listOpts.type,
+          listOpts.reviewStatus
+        )
+      )
+      .then((data) => setListOpts((opts) => ({ ...opts, data })))
       .catch((err) => {
         notification.error({ message: "Something went wrong" });
       });
   };
 
-  const review = (item, reviewStatus) => () => {
+  const review = (item, reviewStatus, listOpts, setListOpts) => () => {
     setApproveLoading({ ...item, button: reviewStatus });
     const itemType =
       item.type === "project"
@@ -315,33 +354,23 @@ const AdminSection = ({
         title = item?.firstName ? `${title} ${item.firstName}` : title;
         title = item?.lastName ? `${title} ${item.lastName}` : title;
         (async () => {
-          const { page, limit } = resourcesData;
-          const items = await fetchSubmissionData(
-            page,
-            limit,
-            "resources",
-            "SUBMITTED"
+          const data = await fetchSubmissionData(
+            listOpts.current,
+            listOpts.size,
+            listOpts.type,
+            listOpts.reviewStatus
           );
-          setResourcesData(items);
-          setApproveLoading({});
-        })();
-        (async () => {
-          const { page, limit } = stakeholdersData;
-          const items = await fetchSubmissionData(
-            page,
-            limit,
-            "stakeholders",
-            "SUBMITTED"
-          );
-          setStakeholdersData(items);
+          setListOpts((opts) => ({ ...opts, data }));
           setApproveLoading({});
         })();
         setModalRejectVisible(false);
       });
   };
 
-  const reject = (item, reviewStatus, action) => () => {
-    setModalRejectFunction(() => review(item, reviewStatus));
+  const reject = (item, reviewStatus, action, listOpts, setListOpts) => () => {
+    setModalRejectFunction(() =>
+      review(item, reviewStatus, listOpts, setListOpts)
+    );
     setModalRejectAction(action);
     setModalRejectVisible(true);
   };
@@ -358,28 +387,25 @@ const AdminSection = ({
     }
   };
 
-  const assignReviewer = (item, reviewer) => {
+  const assignReviewer = (item, reviewer, listOpts, setListOpts) => {
     setLoadingAssignReviewer(item);
     const data = { reviewer: reviewer };
     const apiCall = item?.reviewer?.id ? api.patch : api.post;
     apiCall(`/review/${item.type}/${item.id}`, data).then((res) => {
       setLoadingAssignReviewer(false);
       (async () => {
-        const { page, limit } = resourcesData;
-        setResourcesData(
-          await fetchSubmissionData(page, limit, "resources", "SUBMITTED")
+        const data = await fetchSubmissionData(
+          listOpts.current,
+          listOpts.size,
+          listOpts.type,
+          listOpts.reviewStatus
         );
-      })();
-      (async () => {
-        const { page, limit } = stakeholdersData;
-        setStakeholdersData(
-          await fetchSubmissionData(page, limit, "stakeholders", "SUBMITTED")
-        );
+        setListOpts((opts) => ({ ...opts, data }));
       })();
     });
   };
 
-  const ReviewStatus = ({ item }) => {
+  const ReviewStatus = ({ item, listOpts, setListOpts }) => {
     return (
       <div
         className="col reviewer"
@@ -388,11 +414,14 @@ const AdminSection = ({
         }}
       >
         <Select
-          mode="multiple"
+          //          mode="multiple"
           showSearch={true}
+          allowClear
           className="select-reviewer"
           placeholder="Assign reviewer"
-          onChange={(reviewerId) => assignReviewer(item, reviewerId)}
+          onChange={(reviewerId) =>
+            assignReviewer(item, reviewerId, listOpts, setListOpts)
+          }
           value={item?.reviewer?.id ? [item.reviewer.id] : []}
           filterOption={(input, option) =>
             option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -405,12 +434,19 @@ const AdminSection = ({
     );
   };
 
-  const PublishButton = ({ item, type, className = "", disabled = false }) => (
+  const PublishButton = ({
+    item,
+    type,
+    className = "",
+    disabled = false,
+    listOpts,
+    setListOpts,
+  }) => (
     <Button
       type={type}
       className={className}
       disabled={disabled}
-      onClick={review(item, "APPROVED")}
+      onClick={review(item, "APPROVED", listOpts, setListOpts)}
       loading={
         !isEmpty(approveLoading) &&
         approveLoading?.button === "APPROVED" &&
@@ -429,12 +465,20 @@ const AdminSection = ({
     disabled = false,
     uiTitle = "REJECT",
     action = "REJECTED",
+    listOpts,
+    setListOpts,
   }) => (
     <Button
       type={type}
       className={className}
       disabled={disabled}
-      onClick={reject(item, "REJECTED", publishStatusUIText[uiTitle])}
+      onClick={reject(
+        item,
+        "REJECTED",
+        publishStatusUIText[uiTitle],
+        listOpts,
+        setListOpts
+      )}
       loading={
         !isEmpty(approveLoading) &&
         approveLoading?.button === action &&
@@ -452,9 +496,10 @@ const AdminSection = ({
     const onChangePage = (current, pageSize) => {
       (async () => {
         const size = pageSize ? pageSize : itemList.limit;
+        setListOpts((opts) => ({ ...opts, size, current }));
         const data = await fetchSubmissionData(
-          current,
-          size,
+          listOpts.current,
+          listOpts.size,
           listOpts.type,
           listOpts.reviewStatus
         );
@@ -462,7 +507,7 @@ const AdminSection = ({
       })();
     };
 
-    const RenderRow = ({ item }) => {
+    const RenderRow = ({ item, setListOpts, listOpts }) => {
       const ResourceAvatar = () => (
         <div className="col content">
           <Avatar
@@ -486,18 +531,42 @@ const AdminSection = ({
           <Space size="small">
             {item.type === "profile" ? (
               item.emailVerified ? (
-                <PublishButton item={item} type="ghost" className="black" />
+                <PublishButton
+                  item={item}
+                  type="ghost"
+                  className="black"
+                  listOpts={listOpts}
+                  setListOpts={setListOpts}
+                />
               ) : (
                 <Tooltip title="Profile cannot be approved since email is not verified">
-                  <PublishButton item={item} type="secondary" disabled={true} />
+                  <PublishButton
+                    item={item}
+                    type="secondary"
+                    disabled={true}
+                    listOpts={listOpts}
+                    setListOpts={setListOpts}
+                  />
                 </Tooltip>
               )
             ) : item.type === "policy" ? (
               <Tooltip title="Policies are imported from Law division system">
-                <PublishButton item={item} type="secondary" disabled={true} />
+                <PublishButton
+                  item={item}
+                  type="secondary"
+                  disabled={true}
+                  listOpts={listOpts}
+                  setListOpts={setListOpts}
+                />
               </Tooltip>
             ) : (
-              <PublishButton item={item} type="ghost" className="black" />
+              <PublishButton
+                item={item}
+                type="ghost"
+                className="black"
+                listOpts={listOpts}
+                setListOpts={setListOpts}
+              />
             )}
             <UnpublishButton
               item={item}
@@ -505,6 +574,8 @@ const AdminSection = ({
               className="black"
               uiTitle="REJECT"
               action="REJECTED"
+              listOpts={listOpts}
+              setListOpts={setListOpts}
             />
           </Space>
         </div>
@@ -523,6 +594,8 @@ const AdminSection = ({
               className="black"
               uiTitle="UNAPPROVE"
               action="UNAPPROVED"
+              listOpts={listOpts}
+              setListOpts={setListOpts}
             />
           </Space>
         </div>
@@ -531,17 +604,28 @@ const AdminSection = ({
       return (
         <div className="row">
           <ResourceAvatar />
-          {item.reviewStatus === "SUBMITTED" && <ReviewStatus item={item} />}
+          {item.reviewStatus === "SUBMITTED" && (
+            <ReviewStatus
+              item={item}
+              listOpts={listOpts}
+              setListOpts={setListOpts}
+            />
+          )}
           {item.reviewStatus === "APPROVED" && item.type === "stakeholder" && (
             <RoleSelect
               stakeholder={item}
               onChangeRole={changeRole}
               loading={loading}
+              listOpts={listOpts}
+              setListOpts={setListOpts}
             />
           )}
           {item.reviewStatus === "APPROVED" && (
             <OwnerSelect
+              item={item}
               reviewers={reviewers}
+              setListOpts={setListOpts}
+              listOpts={listOpts}
               resource={item}
               onChangeOwner={changeOwner}
               loading={loading}
@@ -596,7 +680,11 @@ const AdminSection = ({
                             </span>
                           )}
                       </div>
-                      <RenderRow item={item} />
+                      <RenderRow
+                        item={item}
+                        listOpts={listOpts}
+                        setListOpts={setListOpts}
+                      />
                     </>
                   }
                 >
