@@ -70,13 +70,13 @@ const HeaderSearch = ({ placeholder, listOpts, setListOpts }) => {
         if (x.target.value === "") {
           (async () => {
             const data = await fetchSubmissionData(
-              listOpts.current,
-              listOpts.size,
+              1,
+              10,
               listOpts.type,
               listOpts.reviewStatus,
               listOpts.title
             );
-            setListOpts((opts) => ({ ...opts, data }));
+            setListOpts((opts) => ({ ...opts, data, size: 10, current: 1 }));
           })();
         }
       }}
@@ -84,13 +84,19 @@ const HeaderSearch = ({ placeholder, listOpts, setListOpts }) => {
         console.log("search", title, listOpts.type, listOpts.reviewStatus);
         (async () => {
           const data = await fetchSubmissionData(
-            listOpts.current,
-            listOpts.size,
+            1,
+            10,
             listOpts.type,
             listOpts.reviewStatus,
             title
           );
-          setListOpts((opts) => ({ ...opts, data, title }));
+          setListOpts((opts) => ({
+            ...opts,
+            data,
+            title,
+            size: 10,
+            current: 1,
+          }));
         })();
       }}
     />
@@ -126,12 +132,18 @@ const HeaderFilter = ({
         if (typeof x === "undefined") {
           (async () => {
             const data = await fetchSubmissionData(
-              listOpts.current,
-              listOpts.size,
+              1,
+              10,
               listOpts.type,
               listOpts.title
             );
-            setListOpts((opts) => ({ ...opts, reviewStatus: null, data }));
+            setListOpts((opts) => ({
+              ...opts,
+              reviewStatus: null,
+              data,
+              size: 10,
+              current: 1,
+            }));
           })();
         } else {
           const reviewStatus = statusDictToAPI[x];
@@ -139,13 +151,19 @@ const HeaderFilter = ({
           console.log(reviewStatus);
           (async () => {
             const data = await fetchSubmissionData(
-              listOpts.current,
-              listOpts.size,
+              1,
+              10,
               listOpts.type,
               reviewStatus,
               listOpts.title
             );
-            setListOpts((opts) => ({ ...opts, reviewStatus, data }));
+            setListOpts((opts) => ({
+              ...opts,
+              reviewStatus,
+              data,
+              current: 1,
+              size: 10,
+            }));
           })();
         }
       }}
@@ -264,7 +282,7 @@ const AdminSection = ({
   const [tab, setTab] = useState("stakeholders-entities");
   const [stakeholdersListOpts, setStakeholdersListOpts] = useState({
     titleFilter: null,
-    reviewStatus: null,
+    reviewStatus: "SUBMITTED",
     data: stakeholdersData,
     type: "stakeholders",
     current: 1,
@@ -272,7 +290,7 @@ const AdminSection = ({
   });
   const [resourcesListOpts, setResourcesListOpts] = useState({
     titleFilter: null,
-    reviewStatus: null,
+    reviewStatus: "SUBMITTED",
     data: resourcesData,
     type: "resources",
     current: 1,
@@ -280,7 +298,7 @@ const AdminSection = ({
   });
   const [tagsListOpts, setTagsListOpts] = useState({
     titleFilter: null,
-    reviewStatus: null,
+    reviewStatus: "SUBMITTED",
     data: null,
     type: "tags",
     current: 1,
@@ -355,9 +373,6 @@ const AdminSection = ({
         reviewStatus: reviewStatus,
       })
       .then(() => {
-        let title = item.title;
-        title = item?.firstName ? `${title} ${item.firstName}` : title;
-        title = item?.lastName ? `${title} ${item.lastName}` : title;
         (async () => {
           const data = await fetchSubmissionData(
             listOpts.current,
