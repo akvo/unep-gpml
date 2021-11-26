@@ -162,22 +162,22 @@ const formDataMapping = [
     type: "string",
   },
   {
-    key: "geoCoverageValue",
-    name: "geoCoverageValueTransnational",
+    key: "geoCoverageValues",
+    name: "geoCoverageValue",
     group: null,
     type: "array",
   },
   {
-    key: "geoCoverageValue",
+    key: "geoCoverageCountries",
+    name: "geoCoverageCountries",
+    group: null,
+    type: "array",
+  },
+  {
+    key: "geoCoverageCountries",
     name: "geoCoverageValueNational",
     group: null,
     type: "array",
-  },
-  {
-    key: "subnationalArea",
-    name: "subnationalArea",
-    group: null,
-    type: "string",
   },
 ];
 
@@ -313,6 +313,11 @@ const EntityForm = withRouter(
 
       if (data.geoCoverageType === "national") {
         data.geoCoverageCountries = data.geoCoverageValue;
+      }
+
+      if (data.geoCoverageType === "global") {
+        delete data.geoCoverageCountries;
+        delete data.geoCoverageCountryGroups;
       }
 
       delete data.geoCoverageValue;
