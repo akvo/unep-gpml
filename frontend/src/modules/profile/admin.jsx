@@ -17,6 +17,7 @@ import api from "../../utils/api";
 import { fetchSubmissionData, fetchStakeholders } from "./utils";
 import moment from "moment";
 import isEmpty from "lodash/isEmpty";
+import invert from "lodash/invert";
 import { DetailCollapse } from "./preview";
 import {
   userRoles,
@@ -59,88 +60,99 @@ const ModalReject = ({ visible, close, reject, item, action = "Decline" }) => {
   );
 };
 
-const HeaderSearch = ({
-  placeholder,
-  setResourcesData,
-  setStakeholdersData,
-}) => {
+const HeaderSearch = ({ placeholder, listOpts, setListOpts }) => {
   return (
     <Search
       className="search"
       placeholder={placeholder ? placeholder : "Search for a resource"}
       allowClear
+      onChange={(x) => {
+        if (x.target.value === "") {
+          (async () => {
+            const data = await fetchSubmissionData(
+              1,
+              10,
+              listOpts.type,
+              listOpts.reviewStatus
+            );
+            setListOpts((opts) => ({ ...opts, data }));
+          })();
+        }
+      }}
       onSearch={(x) => {
-        console.log("search", x);
+        console.log("search", x, listOpts.type, listOpts.reviewStatus);
         (async () => {
-          setStakeholdersData(
-            await fetchSubmissionData(1, 10, "resources", "APPROVED", x)
+          const data = await fetchSubmissionData(
+            1,
+            10,
+            listOpts.type,
+            listOpts.reviewStatus,
+            x
           );
+          setListOpts((opts) => ({ ...opts, data }));
         })();
       }}
     />
   );
 };
+const reviewStatusOrderedList = ["Approved", "Pending", "Declined"];
+const statusDictToHuman = {
+  APPROVED: "Approved",
+  SUBMITTED: "Pending",
+  REJECTED: "Declined",
+};
+const statusDictToAPI = invert(statusDictToHuman);
 
 const HeaderFilter = ({
-  resources_or_stakeholders,
-  setResourcesData,
-  setStakeholdersData,
-  setTableFilter,
+  listOpts,
   reviewers,
+  setListOpts,
+  initialReviewStatus,
 }) => {
-  const [headerValue, setHeaderValue] = useState("Pending");
+  const [selectedValue, setSelectedValue] = useState(
+    (listOpts.reviewStatus && statusDictToHuman(listOpts.reviewStatus)) ||
+      initialReviewStatus
+  );
   return (
     <Select
       showSearch
       allowClear
       className="filter-by-status"
-      value={headerValue}
+      value={selectedValue}
       onChange={(x) => {
-        setHeaderValue(x);
-        console.log(resources_or_stakeholders, x);
-        const setFun =
-          resources_or_stakeholders === "resources"
-            ? setResourcesData
-            : setStakeholdersData;
+        setSelectedValue(x);
+        console.log(listOpts.type, x);
         if (typeof x === "undefined") {
-          setTableFilter(null);
           (async () => {
-            setFun(await fetchSubmissionData(1, 10, resources_or_stakeholders));
+            const data = await fetchSubmissionData(1, 10, listOpts.type);
+            setListOpts((opts) => ({ ...opts, reviewStatus: null, data }));
           })();
         } else {
-          const review_status =
-            x === "Approved"
-              ? "APPROVED"
-              : x === "Pending"
-              ? "SUBMITTED"
-              : x === "Declined"
-              ? "REJECTED"
-              : null;
-          setTableFilter(review_status);
-          console.log(review_status);
+          const reviewStatus = statusDictToAPI[x];
+          setListOpts((opts) => ({ ...opts, reviewStatus }));
+          console.log(reviewStatus);
           (async () => {
-            setFun(
-              await fetchSubmissionData(
-                1,
-                10,
-                resources_or_stakeholders,
-                review_status
-              )
+            const data = await fetchSubmissionData(
+              1,
+              10,
+              listOpts.type,
+              reviewStatus
             );
+            setListOpts((opts) => ({ ...opts, reviewStatus, data }));
           })();
         }
       }}
       optionLabelProp="label"
       placeholder={
         <>
-          <FilterOutlined className="filter-icon" /> Filter by status
+          <FilterOutlined className="filter-icon" /> Filter by review status
         </>
       }
       filterOption={(input, option) =>
         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
     >
-      {["Approved", "Pending", "Declined"].map((x, i) => (
+      {reviewStatusOrderedList.map((x, i) => (
         <Option
           key={`${x}-${i}`}
           value={x}
@@ -191,6 +203,7 @@ const OwnerSelect = ({ resource, onChangeOwner, loading, reviewers }) => {
       showSearch={false}
       mode="multiple"
       style={{ width: "100%" }}
+      placeholder="Assign owner"
       onChange={(data) => onChangeOwner(resource, data)} // onChangeOwner(resource, role)}
       value={resource?.owners}
       loading={resource?.id === loading}
@@ -215,22 +228,43 @@ const AdminSection = ({
 }) => {
   const profile = UIStore.useState((s) => s.profile);
   const [modalRejectVisible, setModalRejectVisible] = useState(false);
+  // TODO:: refactor modalRejectAction and modalRejectFunction
   const [modalRejectAction, setModalRejectAction] = useState("decline");
   const [modalRejectFunction, setModalRejectFunction] = useState(false);
-  const [previewContent, storePreviewContent] = useState({});
-  const [approveLoading, setApproveLoading] = useState({});
-  const [reviewers, setReviewers] = useState([]);
-  const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false);
-  const [tab, setTab] = useState("stakeholders-entities");
 
+  //TODO :: improve detail preview
+  const [previewContent, storePreviewContent] = useState({});
+
+  const [approveLoading, setApproveLoading] = useState({});
+  const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [tab, setTab] = useState("stakeholders-entities");
+  const [stakeholdersListOpts, setStakeholdersListOpts] = useState({
+    titleFilter: null,
+    reviewStatus: null,
+    data: stakeholdersData,
+    type: "stakeholders",
+  });
+  const [resourcesListOpts, setResourcesListOpts] = useState({
+    titleFilter: null,
+    reviewStatus: null,
+    data: resourcesData,
+    type: "resources",
+  });
+  const [tagsListOpts, setTagsListOpts] = useState({
+    titleFilter: null,
+    reviewStatus: null,
+    data: null,
+    type: "tags",
+  });
+
+  const [reviewers, setReviewers] = useState([]);
   useEffect(() => {
     api.get("/reviewer").then((res) => {
       setReviewers(res.data);
     });
   }, []);
-
-  const [loading, setLoading] = useState(false);
-  const [tableFilter, setTableFilter] = useState("SUBMITTED");
 
   const changeRole = (stakeholder, role) => {
     setLoading(stakeholder.id);
@@ -264,8 +298,8 @@ const AdminSection = ({
       });
   };
 
-  const review = (item, review_status) => () => {
-    setApproveLoading({ ...item, button: review_status });
+  const review = (item, reviewStatus) => () => {
+    setApproveLoading({ ...item, button: reviewStatus });
     const itemType =
       item.type === "project"
         ? "initiative"
@@ -274,7 +308,7 @@ const AdminSection = ({
       .put("submission", {
         id: item.id,
         itemType: itemType,
-        reviewStatus: review_status,
+        reviewStatus: reviewStatus,
       })
       .then(() => {
         let title = item.title;
@@ -306,8 +340,8 @@ const AdminSection = ({
       });
   };
 
-  const reject = (item, review_status, action) => () => {
-    setModalRejectFunction(() => review(item, review_status));
+  const reject = (item, reviewStatus, action) => () => {
+    setModalRejectFunction(() => review(item, reviewStatus));
     setModalRejectAction(action);
     setModalRejectVisible(true);
   };
@@ -412,38 +446,19 @@ const AdminSection = ({
     </Button>
   );
 
-  const renderNewApprovalRequests = () => {
-    const entityFilter =
-      tab === "resources"
-        ? "resources"
-        : tab === "tags"
-        ? "tags"
-        : "stakeholders";
-    const itemList =
-      entityFilter === "resources"
-        ? resourcesData
-        : entityFilter === "stakeholders"
-        ? stakeholdersData
-        : [];
-    const setItemList =
-      entityFilter === "resources"
-        ? setResourcesData
-        : entityFilter === "stakeholders"
-        ? setStakeholdersData
-        : setResourcesData;
-    const sectionTitle =
-      entityFilter === "resources"
-        ? "New Resources"
-        : entityFilter === "tags"
-        ? "New Tags"
-        : "New Approval Request";
+  const renderList = (listOpts, setListOpts) => {
+    const itemList = listOpts.data || [];
 
     const onChangePage = (current, pageSize) => {
       (async () => {
         const size = pageSize ? pageSize : itemList.limit;
-        setItemList(
-          await fetchSubmissionData(current, size, entityFilter, "SUBMITTED")
+        const data = await fetchSubmissionData(
+          current,
+          size,
+          listOpts.type,
+          listOpts.reviewStatus
         );
+        setListOpts((opts) => ({ ...opts, data }));
       })();
     };
 
@@ -540,19 +555,17 @@ const AdminSection = ({
 
     return (
       <div key="new-approval" className="approval">
-        {tableFilter && <h3>Filtering by: {tableFilter.toLowerCase()}</h3>}
+        {listOpts.reviewStatus && (
+          <h3>Filtering by: {listOpts.reviewStatus?.toLowerCase()}</h3>
+        )}
         <h4>Total: {itemList.count || 0}</h4>
         <div className="table-wrapper">
           <div className="row head">
-            <HeaderSearch
-              setResourcesData={setResourcesData}
-              setStakeholdersData={setStakeholdersData}
-            />
+            <HeaderSearch setListOpts={setListOpts} listOpts={listOpts} />
             <HeaderFilter
-              setTableFilter={setTableFilter}
-              resources_or_stakeholders={entityFilter}
-              setResourcesData={setResourcesData}
-              setStakeholdersData={setStakeholdersData}
+              setListOpts={setListOpts}
+              listOpts={listOpts}
+              initialReviewStatus="Pending"
             />
           </div>
           <Collapse onChange={getPreviewContent}>
@@ -638,13 +651,13 @@ const AdminSection = ({
           key="stakeholders-entities"
           className="profile-tab-pane"
         >
-          {renderNewApprovalRequests()}
+          {renderList(stakeholdersListOpts, setStakeholdersListOpts)}
         </TabPane>
         <TabPane tab="Resources" key="resources" className="profile-tab-pane">
-          {renderNewApprovalRequests()}
+          {renderList(resourcesListOpts, setResourcesListOpts)}
         </TabPane>
         <TabPane tab="Tags" key="tags" className="profile-tab-pane">
-          {renderNewApprovalRequests()}
+          {renderList(tagsListOpts, setTagsListOpts)}
         </TabPane>
       </Tabs>
 

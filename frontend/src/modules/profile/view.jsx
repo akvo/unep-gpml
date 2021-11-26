@@ -141,6 +141,16 @@ const ProfileView = ({ ...props }) => {
         );
         setStakeholdersData(data);
       })();
+      (async () => {
+        const { page, limit } = resourcesData;
+        const data = await fetchSubmissionData(
+          page,
+          limit,
+          "resources",
+          "SUBMITTED"
+        );
+        setResourcesData(data);
+      })();
     }
     if (reviewerRoles.has(profile?.role)) {
       (async () => {
@@ -248,7 +258,10 @@ const ProfileView = ({ ...props }) => {
           menuText = renderMenuText(it.name, reviewItems.count);
           break;
         case "admin-section":
-          menuText = renderMenuText(it.name, stakeholdersData.count); // TODO : sum resourcesData.count
+          menuText = renderMenuText(
+            it.name,
+            stakeholdersData.count + resourcesData.count
+          );
           break;
         default:
           menuText = renderMenuText(it.name);
