@@ -77,7 +77,7 @@
         assigned-by (:id admin)]
     (if (dbg (= "ADMIN" (:role (dbg admin))))
       (jdbc/with-db-transaction [conn (:spec (dbg db))]
-        (let [reviews (dbg (db.review/reviews-filter conn {:topic-type (dbg topic-type*) :topic-id (dbg topic-id)}))
+        (let [reviews (dbg (db.review/review-by-topic-item (dbg conn) {:topic-type (dbg topic-type*) :topic-id (dbg topic-id)}))
               current-reviewers (set (map :reviewer reviews))
               [reviewers-to-delete reviewers-to-create reviewers-to-keep] (let [news   (set reviewers)
                                                                                 olds   (set current-reviewers)
@@ -88,7 +88,7 @@
               reviews-to-delete (dbg (filter #(contains? reviewers-to-delete (:reviewer %)) reviews))
               reviews-to-create (dbg (filter #(contains? reviewers-to-create (:reviewer %)) reviews))]
           (doseq [r reviews-to-delete]
-            (db.review/delete-review-by-id db {:id (:id r)}))
+            (db.review/delete-review-by-id (dbg conn) {:id (:id r)}))
           (resp/response {:reviews (into
                                      (filter #(contains? reviewers-to-delete (:reviewer %)) reviewers-to-keep)
                                      (reduce (partial new-review {:conn conn
@@ -153,7 +153,7 @@
    (fn [{{{:keys [topic-type topic-id]} :path
           {:keys [review-status review-comment reviewers]} :body} :parameters
            current-user :reviewer}]
-     (if (seq (dbg reviewers))
+     (if (dbg (seq (dbg reviewers)))
        (change-reviewers db mailjet-config topic-type topic-id reviewers (dbg current-user))
        (dbg (update-review-status db mailjet-config (dbg topic-type) (dbg topic-id) (dbg review-status) (dbg review-comment) (dbg current-user))))))
 
