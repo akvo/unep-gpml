@@ -91,6 +91,7 @@
         admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
         reviewer1 (new-stakeholder db "reviewer1@org.com" "R" "A" "REVIEWER" "APPROVED")
         reviewer2 (new-stakeholder db "reviewer2@org.com" "R" "A" "REVIEWER" "APPROVED")
+        reviewer3 (new-stakeholder db "reviewer3@org.com" "R" "A" "REVIEWER" "APPROVED")
         user (new-stakeholder db "user-submitted@org.com" "U" "S" "USER" "SUBMITTED")]
 
     (testing "Assign new reviewer"
@@ -125,7 +126,7 @@
         reviewer2 (new-stakeholder db "reviewer2@org.com" "R" "A" "REVIEWER" "APPROVED")
         user (new-stakeholder db "user@org.com" "U" "S" "USER" "SUBMITTED")]
 
-    #_(testing "Updating unassigned review"
+    (testing "Updating unassigned review"
       (let [resp (handler (-> (mock/request :get "/")
                               (assoc
                                :parameters {:path {:topic-type "stakeholder"
@@ -134,7 +135,7 @@
                                                    :review-status "REJECTED"}})))]
         (is (= 403 (:status resp)))))
 
-    #_(testing "Updating review assigned to another user"
+    (testing "Updating review assigned to another user"
       (let [_ (db.review/new-review db {:topic-type "stakeholder"
                                         :topic-id (:id user)
                                         :assigned-by (:id admin)
@@ -150,17 +151,17 @@
                                                    :review-status "REJECTED"}})))]
         (is (= 403 (:status resp)))))
 
-    #_(testing "Rejecting a submission in a review"
+    (testing "Rejecting a submission in a review"
       (let [comment "Missing lot of data"
             resp (handler (-> (mock/request :get "/")
                               (assoc
-                               :reviewer reviewer1
+                               :reviewer (dbg1 reviewer1)
                                :parameters {:path {:topic-type "stakeholder"
                                                    :topic-id (:id user)}
                                             :body {:review-comment comment
                                                    :review-status "REJECTED"}})))
-            body (:body resp)
-            review (db.review/review-by-id db body)]
+            body (dbg1 (:body resp))
+            review (dbg1 (db.review/review-by-id db body))]
         (is (= 200 (:status resp)))
         (is (= (:reviewer review) (:id reviewer1)))
         (is (= (:assigned_by review) (:id admin)))
@@ -168,7 +169,7 @@
         (is (= (:review_status review) "REJECTED"))
         (is (= (:review_comment review) comment))))
 
-    #_(testing "Accepting a submission in a review"
+    (testing "Accepting a submission in a review"
       (let [comment "Best user!!!"
             resp (handler (-> (mock/request :get "/")
                               (assoc
@@ -186,7 +187,7 @@
         (is (= (:review_status review) "ACCEPTED"))
         (is (= (:review_comment review) comment))))
 
-    #_(testing "Changing reviewer as a REVIEWER"
+    (testing "Changing reviewer as a REVIEWER"
       (let [resp (handler (-> (mock/request :get "/")
                               (assoc
                                :reviewer reviewer2
@@ -198,11 +199,11 @@
     (testing "Changing reviewer as ADMIN"
       (let [resp (handler (-> (mock/request :get "/")
                               (assoc
-                               :reviewers (assoc admin :role "ADMIN")
+                               :reviewer (assoc admin :role "ADMIN")
                                :parameters {:path {:topic-type "stakeholder"
                                                    :topic-id (:id user)}
-                                            :body {:reviewer (:id reviewer2)}})))
-            body (:body resp)
+                                            :body {:reviewers [(:id reviewer2)]}})))
+            body (dbg1 (:body resp))
             review (db.review/review-by-id db body)]
         (is (= 200 (:status resp)))
         (is (= (:reviewer review) (:id reviewer2)))))))
