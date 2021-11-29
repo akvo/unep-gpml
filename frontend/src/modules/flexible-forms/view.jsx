@@ -1,5 +1,5 @@
 import { UIStore } from "../../store";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Row, Col, Card, Button, Switch, Radio, Steps } from "antd";
 import { DownloadOutlined, InfoOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
@@ -13,10 +13,56 @@ import TechnicalResourceImage from "../../images/technical-resource.png";
 import CapacityBuildingImage from "../../images/capacity-building.png";
 import InfoGreen from "../../images/i-green.png";
 import InfoBlue from "../../images/i-blue.png";
+import FlexibleForm from "./form";
+import isEmpty from "lodash/isEmpty";
 
 const { Step } = Steps;
 
 const FlexibleForms = ({ match: { params }, ...props }) => {
+  const { tabs, getSchema, schema, initialData, initialFormData } = common;
+
+  const storeData = UIStore.useState((s) => ({
+    stakeholders: s.stakeholders?.stakeholders,
+    countries: s.countries,
+    tags: s.tags,
+    regionOptions: s.regionOptions,
+    transnationalOptions: s.transnationalOptions,
+    sectorOptions: s.sectorOptions,
+    organisationType: s.organisationType,
+    representativeGroup: s.representativeGroup,
+    mainContentType: s.mainContentType,
+    meaOptions: s.meaOptions,
+    nonMemberOrganisations: s.nonMemberOrganisations,
+    organisations: s.organisations,
+    profile: s.profile,
+    formStep: s.formStep,
+    formEdit: s.formEdit,
+  }));
+
+  const {
+    stakeholders,
+    countries,
+    tags,
+    regionOptions,
+    transnationalOptions,
+    sectorOptions,
+    organisationType,
+    representativeGroup,
+    mainContentType,
+    meaOptions,
+    nonMemberOrganisations,
+    organisations,
+    formStep,
+    formEdit,
+    profile,
+  } = storeData;
+
+  const tabsData = tabs;
+
+  const formData = initialFormData.useState();
+  const { editId, data } = formData;
+  const { status, id } = formEdit.flexible;
+
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -25,20 +71,66 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     type: "default",
   });
 
-  const { tabs, initialData, initialFormData } = common;
+  const [formSchema, setFormSchema] = useState({
+    schema: schema,
+  });
 
-  const tabsData = tabs;
-
-  const formData = initialFormData.useState();
-  const { editId, data } = formData;
-
-  const isAuthorizeSubmission = formData?.data?.S1?.authorizeSubmission;
+  useEffect(() => {
+    UIStore.update((e) => {
+      e.disclaimer = null;
+    });
+  }, [props]);
 
   useEffect(() => {
     UIStore.update((e) => {
       e.highlight = highlight;
     });
-  }, [highlight]);
+    setFormSchema({ schema: schema });
+  }, [schema, highlight]);
+
+  const isLoaded = useCallback(() => {
+    return Boolean(
+      !isEmpty(countries) &&
+        !isEmpty(tags) &&
+        !isEmpty(profile) &&
+        !isEmpty(regionOptions) &&
+        !isEmpty(transnationalOptions) &&
+        !isEmpty(organisations) &&
+        !isEmpty(sectorOptions) &&
+        !isEmpty(organisationType) &&
+        !isEmpty(meaOptions) &&
+        !isEmpty(stakeholders) &&
+        !isEmpty(representativeGroup)
+    );
+  }, [
+    countries,
+    tags,
+    profile,
+    regionOptions,
+    transnationalOptions,
+    sectorOptions,
+    organisations,
+    organisationType,
+    meaOptions,
+    stakeholders,
+    representativeGroup,
+  ]);
+
+  useEffect(() => {
+    if (isLoaded()) {
+      setFormSchema(getSchema(storeData));
+    }
+  }, [
+    initialFormData,
+    getSchema,
+    initialData,
+    storeData,
+    id,
+    data,
+    editId,
+    params,
+    isLoaded,
+  ]);
 
   const renderSteps = (parentTitle, section, steps, index) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
@@ -269,7 +361,18 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                 </Row>
               ) : (
                 <Row>
-                  <div className="main-content">
+                  <FlexibleForm
+                    // formType={props.formType}
+                    // btnSubmit={btnSubmit}
+                    // sending={sending}
+                    // setSending={setSending}
+                    // highlight={highlight}
+                    // setHighlight={setHighlight}
+                    formSchema={formSchema}
+                    // setDisabledBtn={setDisabledBtn}
+                    // tabsData={tabsData}
+                  />
+                  {/* <div className="main-content">
                     <div className="button-wrapper">
                       <h5>Pick the main content type</h5>
                       <Button
@@ -439,14 +542,14 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                           </Radio.Button>
                         </Col>
                       </Row>
-                    </div>
-                    {/* <div className="before-selection">
+                    </div> */}
+                  {/* <div className="before-selection">
                       <p>
                         Select a Main Content Type above to see sub-content type
                         options
                       </p>
                     </div> */}
-                  </div>
+                  {/* </div> */}
                 </Row>
               )}
             </Col>

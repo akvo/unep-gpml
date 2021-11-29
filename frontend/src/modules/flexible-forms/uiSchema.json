@@ -1,0 +1,23 @@
+{
+  "S2": {
+    "classNames": "list-group",
+    "S2_1": {
+      "ui:widget": "radio"
+    },
+    "S2_G1_1.1": {
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "ui:order": ["S2_1", "S2_G1_1.1"]
+  },
+  "S3": {
+    "classNames": "list-group",
+    "mainContentType": {
+      "ui:widget": "radio"
+    },
+    "subContentType": {
+      "ui:widget": "checkboxes"
+    },
+    "ui:order": ["mainContentType", "subContentType"]
+  }
+}

@@ -1,4 +1,6 @@
 import { Store } from "pullstate";
+import { schema } from "./form-schema";
+import cloneDeep from "lodash/cloneDeep";
 
 const initialData = {
   tabs: ["S1"],
@@ -34,6 +36,36 @@ const initialFormData = new Store({
   data: initialData,
   editId: null,
 });
+
+const getSchema = ({
+  stakeholders,
+  countries,
+  tags,
+  regionOptions,
+  transnationalOptions,
+  meaOptions,
+  sectorOptions,
+  organisationType,
+  representativeGroup,
+  profile,
+  mainContentType,
+}) => {
+  const prop = cloneDeep(schema.properties);
+
+  prop.S3.properties["mainContentType"].enum = mainContentType?.map(
+    (x) => x.code
+  );
+  prop.S3.properties["mainContentType"].enumNames = mainContentType?.map(
+    (x) => x.name
+  );
+
+  return {
+    schema: {
+      ...schema,
+      properties: prop,
+    },
+  };
+};
 
 const tabs = [
   {
@@ -71,5 +103,7 @@ const tabs = [
 export default {
   initialData,
   initialFormData,
+  getSchema,
   tabs,
+  schema,
 };

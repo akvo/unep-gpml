@@ -136,6 +136,10 @@ const UIStore = new Store({
       status: "add",
       id: null,
     },
+    flexible: {
+      status: "add",
+      id: null,
+    },
     initiative: {
       status: "add",
       id: null,
@@ -161,10 +165,6 @@ const UIStore = new Store({
       id: null,
     },
     technology: {
-      status: "add",
-      id: null,
-    },
-    signUp: {
       status: "add",
       id: null,
     },
