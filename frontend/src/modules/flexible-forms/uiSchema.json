@@ -15,9 +15,40 @@
     "mainContentType": {
       "ui:widget": "radio"
     },
-    "subContentType": {
-      "ui:widget": "checkboxes"
+    "initiative": {
+      "ui:widget": "radio"
     },
-    "ui:order": ["mainContentType", "subContentType"]
+    "action": {
+      "ui:widget": "radio"
+    },
+    "policy": {
+      "ui:widget": "radio"
+    },
+    "financing": {
+      "ui:widget": "radio"
+    },
+    "technical": {
+      "ui:widget": "radio"
+    },
+    "event": {
+      "ui:widget": "radio"
+    },
+    "technology": {
+      "ui:widget": "radio"
+    },
+    "capacity_building": {
+      "ui:widget": "radio"
+    },
+    "ui:order": [
+      "mainContentType",
+      "initiative",
+      "action",
+      "policy",
+      "financing",
+      "technical",
+      "event",
+      "technology",
+      "capacity_building"
+    ]
   }
 }

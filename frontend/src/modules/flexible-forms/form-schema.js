@@ -46,17 +46,77 @@ export const schema = {
           enum: [],
           enumNames: [],
         },
-        subContentType: {
+        initiative: {
           depend: {
             id: "mainContentType",
+            value: ["initiative"],
           },
           title: "Pick the sub-content type",
-          type: "array",
-          items: {
-            enum: [],
-            enumNames: [],
+          type: "string",
+          enum: [],
+        },
+        action: {
+          depend: {
+            id: "mainContentType",
+            value: ["action"],
           },
-          uniqueItems: true,
+          title: "Pick the sub-content type",
+          type: "string",
+          enum: [],
+        },
+        policy: {
+          depend: {
+            id: "mainContentType",
+            value: ["policy"],
+          },
+          title: "Pick the sub-content type",
+          type: "string",
+          enum: [],
+        },
+        financing: {
+          depend: {
+            id: "mainContentType",
+            value: ["financing"],
+          },
+          title: "Pick the sub-content type",
+          type: "string",
+          enum: [],
+        },
+        technical: {
+          depend: {
+            id: "mainContentType",
+            value: ["technical"],
+          },
+          title: "Pick the sub-content type",
+          type: "string",
+          enum: [],
+        },
+        event: {
+          depend: {
+            id: "mainContentType",
+            value: ["event"],
+          },
+          title: "Pick the sub-content type",
+          type: "string",
+          enum: [],
+        },
+        technology: {
+          depend: {
+            id: "mainContentType",
+            value: ["technology"],
+          },
+          title: "Pick the sub-content type",
+          type: "string",
+          enum: [],
+        },
+        capacity_building: {
+          depend: {
+            id: "mainContentType",
+            value: ["capacity_building"],
+          },
+          title: "Pick the sub-content type",
+          type: "string",
+          enum: [],
         },
       },
     },

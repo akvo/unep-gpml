@@ -59,6 +59,34 @@ const getSchema = ({
     (x) => x.name
   );
 
+  prop.S3.properties["initiative"].enum = mainContentType.find(
+    (x) => x.code === "initiative"
+  )?.childs;
+
+  prop.S3.properties["action"].enum = mainContentType.find(
+    (x) => x.code === "action"
+  )?.childs;
+
+  prop.S3.properties["policy"].enum = mainContentType.find(
+    (x) => x.code === "policy"
+  )?.childs;
+
+  prop.S3.properties["financing"].enum = mainContentType.find(
+    (x) => x.code === "financing"
+  )?.childs;
+  prop.S3.properties["technical"].enum = mainContentType.find(
+    (x) => x.code === "technical"
+  )?.childs;
+  prop.S3.properties["event"].enum = mainContentType.find(
+    (x) => x.code === "event"
+  )?.childs;
+  prop.S3.properties["technology"].enum = mainContentType.find(
+    (x) => x.code === "technology"
+  )?.childs;
+  prop.S3.properties["capacity_building"].enum = mainContentType.find(
+    (x) => x.code === "capacity_building"
+  )?.childs;
+
   return {
     schema: {
       ...schema,
