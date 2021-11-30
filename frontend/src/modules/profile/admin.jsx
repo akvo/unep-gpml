@@ -224,24 +224,32 @@ const OwnerSelect = ({
   setListOpts,
 }) => {
   return (
-    <Select
-      showSearch={false}
-      mode="multiple"
-      style={{ width: "100%" }}
-      placeholder="Assign owner"
-      onChange={(data) => onChangeOwner(item, data, listOpts, setListOpts)} // onChangeOwner(resource, role)}
-      value={item?.owners}
-      loading={item?.id === loading}
-      // FIXME: Disallow changing roles of other admins?
-      // stakeholder?.role === "ADMIN"
-      disabled={item?.id === loading}
+    <div
+      style={{ width: "50%" }}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
     >
-      {reviewers.map((r) => (
-        <Select.Option key={r.email} value={r.id}>
-          {r.email}
-        </Select.Option>
-      ))}
-    </Select>
+      <div>Owners</div>
+      <Select
+        style={{ width: "100%" }}
+        showSearch={false}
+        mode="multiple"
+        placeholder="Assign owner"
+        onChange={(data) => onChangeOwner(item, data, listOpts, setListOpts)} // onChangeOwner(resource, role)}
+        value={item?.owners}
+        loading={item?.id === loading}
+        // FIXME: Disallow changing roles of other admins?
+        // stakeholder?.role === "ADMIN"
+        disabled={item?.id === loading}
+      >
+        {reviewers.map((r) => (
+          <Select.Option key={r.email} value={r.id}>
+            {r.email}
+          </Select.Option>
+        ))}
+      </Select>
+    </div>
   );
 };
 
