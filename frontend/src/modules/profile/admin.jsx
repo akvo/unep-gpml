@@ -503,15 +503,14 @@ const AdminSection = ({
     const onChangePage = (current, pageSize) => {
       (async () => {
         const size = pageSize ? pageSize : itemList.limit;
-        setListOpts((opts) => ({ ...opts, size, current }));
         const data = await fetchSubmissionData(
-          listOpts.current,
-          listOpts.size,
+          current,
+          size,
           listOpts.type,
           listOpts.reviewStatus,
           listOpts.title
         );
-        setListOpts((opts) => ({ ...opts, data }));
+        setListOpts((opts) => ({ ...opts, data, size, current }));
       })();
     };
 
