@@ -520,6 +520,7 @@ const AdminSection = ({
           <Avatar
             className="content-img"
             size={50}
+            src={item.image}
             icon={item.picture || <UserOutlined />}
           />
           <div className="content-body">

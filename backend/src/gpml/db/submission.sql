@@ -2,32 +2,32 @@
 -- :doc Get paginated submission contents
 WITH
 submission AS (
-    SELECT id, 'stakeholder' AS type, 'stakeholder' AS topic, CONCAT(title, '. ', last_name,' ', first_name) as title, id as created_by, created, role, review_status
+    SELECT id, 'stakeholder' AS type, 'stakeholder' AS topic, CONCAT(title, '. ', last_name,' ', first_name) as title, id as created_by, created, role, review_status, picture as image
     FROM stakeholder
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'organisation' AS type, 'organisation' AS topic, name as title, id as created_by, created, 'USER' as role, review_status
+    SELECT id, 'organisation' AS type, 'organisation' AS topic, name as title, id as created_by, created, 'USER' as role, review_status, logo as image
     FROM organisation
     WHERE is_member=true
 --~ (when (:review_status params) " AND review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'event' AS type, 'event' AS topic, title, created_by, created, 'USER' as role, review_status
+    SELECT id, 'event' AS type, 'event' AS topic, title, created_by, created, 'USER' as role, review_status, image
     FROM event
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'technology' AS type, 'technology' AS topic, name as title, created_by, created, 'USER' as role, review_status
+    SELECT id, 'technology' AS type, 'technology' AS topic, name as title, created_by, created, 'USER' as role, review_status, image
     FROM technology
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'policy' AS type, 'policy' AS topic, title, created_by, created, 'USER' as role, review_status
+    SELECT id, 'policy' AS type, 'policy' AS topic, title, created_by, created, 'USER' as role, review_status, image as picture
     FROM policy
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, REPLACE(LOWER(type), ' ', '_') AS type, 'resource' AS topic, title, created_by, created, 'USER' as role, review_status
+    SELECT id, REPLACE(LOWER(type), ' ', '_') AS type, 'resource' AS topic, title, created_by, created, 'USER' as role, review_status, image
     FROM resource
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'project' AS type, 'initiative' AS topic, replace(q2::text,'"','') as title, created_by, created, 'USER' as role, review_status
+    SELECT id, 'project' AS type, 'initiative' AS topic, replace(q2::text,'"','') as title, created_by, created, 'USER' as role, review_status, '' as image
     FROM initiative
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     order by created
@@ -38,7 +38,7 @@ authz AS (
     LEFT JOIN stakeholder st ON a.stakeholder = st.id
     GROUP BY s.id, s.type),
 data AS (
-    SELECT s.id, s.type, s.topic, s.title, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || s.type || '/' || s.id as preview, COALESCE(s.review_status, 'SUBMITTED') AS review_status, row_to_json(reviewer.*) AS reviewer, s.role, a.owners
+    SELECT s.id, s.type, s.topic, s.title, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || s.type || '/' || s.id as preview, COALESCE(s.review_status, 'SUBMITTED') AS review_status, row_to_json(reviewer.*) AS reviewer, s.role, a.owners, s.image
     FROM submission s
     LEFT JOIN stakeholder c ON c.id = s.created_by
     LEFT JOIN review r ON r.topic_type = s.topic::topic_type AND r.topic_id = s.id
