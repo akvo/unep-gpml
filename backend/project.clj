@@ -1,4 +1,3 @@
-
 (defproject gpml "1.0.0"
   :description "UNEP - GPML Digital Platform"
   :url "https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
