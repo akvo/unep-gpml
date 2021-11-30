@@ -392,11 +392,10 @@ const AdminSection = ({
     }
   };
 
-  const assignReviewer = (item, reviewer, listOpts, setListOpts) => {
+  const assignReviewer = (item, reviewers, listOpts, setListOpts) => {
     setLoadingAssignReviewer(item);
-    const data = { reviewer: reviewer };
-    const apiCall = item?.reviewer?.id ? api.patch : api.post;
-    apiCall(`/review/${item.type}/${item.id}`, data).then((res) => {
+    const apiCall = isEmpty(item?.reviewers) ? api.post : api.patch;
+    apiCall(`/review/${item.type}/${item.id}`, { reviewers }).then((res) => {
       setLoadingAssignReviewer(false);
       (async () => {
         const data = await fetchSubmissionData(
@@ -422,21 +421,23 @@ const AdminSection = ({
         <div style={{ width: "100%" }}>Reviewers</div>
         <Select
           style={{ width: "50%" }}
-          //          mode="multiple"
-          showSearch={true}
+          mode="multiple"
+          showSearch={false}
           className="select-reviewer"
-          placeholder="Assign reviewer"
-          onChange={(reviewerId) =>
-            assignReviewer(item, reviewerId, listOpts, setListOpts)
-          }
-          value={item?.reviewer?.id ? [item.reviewer.id] : []}
-          filterOption={(input, option) =>
-            option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
-          options={reviewers.map((r) => {
-            return { value: r.id, label: r.email };
-          })}
-        />
+          placeholder="Assign reviewers"
+          onChange={(data) => assignReviewer(item, data, listOpts, setListOpts)}
+          value={item?.reviewers}
+          loading={item?.id === loading}
+          // FIXME: Disallow changing roles of other admins?
+          // stakeholder?.role === "ADMIN"
+          disabled={item?.id === loading}
+        >
+          {reviewers.map((r) => (
+            <Select.Option key={r.email} value={r.id}>
+              {r.email}
+            </Select.Option>
+          ))}
+        </Select>
       </div>
     );
   };
@@ -520,6 +521,7 @@ const AdminSection = ({
           <Avatar
             className="content-img"
             size={50}
+            src={item.image}
             icon={item.picture || <UserOutlined />}
           />
           <div className="content-body">
