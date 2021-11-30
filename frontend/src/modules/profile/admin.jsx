@@ -66,22 +66,7 @@ const HeaderSearch = ({ placeholder, listOpts, setListOpts }) => {
       className="search"
       placeholder={placeholder ? placeholder : "Search for a resource"}
       allowClear
-      onChange={(x) => {
-        if (x.target.value === "") {
-          (async () => {
-            const data = await fetchSubmissionData(
-              1,
-              10,
-              listOpts.type,
-              listOpts.reviewStatus,
-              listOpts.title
-            );
-            setListOpts((opts) => ({ ...opts, data, size: 10, current: 1 }));
-          })();
-        }
-      }}
       onSearch={(title) => {
-        console.log("search", title, listOpts.type, listOpts.reviewStatus);
         (async () => {
           const data = await fetchSubmissionData(
             1,
@@ -128,7 +113,6 @@ const HeaderFilter = ({
       value={selectedValue}
       onChange={(x) => {
         setSelectedValue(x);
-        console.log(listOpts.type, x);
         if (typeof x === "undefined") {
           (async () => {
             const data = await fetchSubmissionData(
@@ -148,7 +132,6 @@ const HeaderFilter = ({
         } else {
           const reviewStatus = statusDictToAPI[x];
           setListOpts((opts) => ({ ...opts, reviewStatus }));
-          console.log(reviewStatus);
           (async () => {
             const data = await fetchSubmissionData(
               1,
@@ -203,14 +186,15 @@ const RoleSelect = ({
 }) => {
   return (
     <div
-      className="col reviewer"
+      style={{ width: "20%" }}
       onClick={(e) => {
         e.stopPropagation();
       }}
     >
+      <div style={{ width: "100%" }}>User role</div>
       <Select
         showSearch={false}
-        style={{ width: "100%" }}
+        style={{ width: "50%" }}
         onChange={(role) =>
           onChangeRole(stakeholder, role, listOpts, setListOpts)
         }
@@ -239,24 +223,32 @@ const OwnerSelect = ({
   setListOpts,
 }) => {
   return (
-    <Select
-      showSearch={false}
-      mode="multiple"
-      style={{ width: "100%" }}
-      placeholder="Assign owner"
-      onChange={(data) => onChangeOwner(item, data, listOpts, setListOpts)} // onChangeOwner(resource, role)}
-      value={item?.owners}
-      loading={item?.id === loading}
-      // FIXME: Disallow changing roles of other admins?
-      // stakeholder?.role === "ADMIN"
-      disabled={item?.id === loading}
+    <div
+      style={{ width: "40%" }}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
     >
-      {reviewers.map((r) => (
-        <Select.Option key={r.email} value={r.id}>
-          {r.email}
-        </Select.Option>
-      ))}
-    </Select>
+      <div style={{ width: "100%" }}>Owners</div>
+      <Select
+        style={{ width: "100%" }}
+        showSearch={false}
+        mode="multiple"
+        placeholder="Assign owner"
+        onChange={(data) => onChangeOwner(item, data, listOpts, setListOpts)} // onChangeOwner(resource, role)}
+        value={item?.owners}
+        loading={item?.id === loading}
+        // FIXME: Disallow changing roles of other admins?
+        // stakeholder?.role === "ADMIN"
+        disabled={item?.id === loading}
+      >
+        {reviewers.map((r) => (
+          <Select.Option key={r.email} value={r.id}>
+            {r.email}
+          </Select.Option>
+        ))}
+      </Select>
+    </div>
   );
 };
 
@@ -293,14 +285,6 @@ const AdminSection = ({
     reviewStatus: "SUBMITTED",
     data: resourcesData,
     type: "resources",
-    current: 1,
-    size: 10,
-  });
-  const [tagsListOpts, setTagsListOpts] = useState({
-    titleFilter: null,
-    reviewStatus: "SUBMITTED",
-    data: null,
-    type: "tags",
     current: 1,
     size: 10,
   });
@@ -430,12 +414,14 @@ const AdminSection = ({
   const ReviewStatus = ({ item, listOpts, setListOpts }) => {
     return (
       <div
-        className="col reviewer"
+        style={{ width: "50%" }}
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
+        <div style={{ width: "100%" }}>Reviewers</div>
         <Select
+          style={{ width: "50%" }}
           //          mode="multiple"
           showSearch={true}
           className="select-reviewer"
@@ -517,15 +503,14 @@ const AdminSection = ({
     const onChangePage = (current, pageSize) => {
       (async () => {
         const size = pageSize ? pageSize : itemList.limit;
-        setListOpts((opts) => ({ ...opts, size, current }));
         const data = await fetchSubmissionData(
-          listOpts.current,
-          listOpts.size,
+          current,
+          size,
           listOpts.type,
           listOpts.reviewStatus,
           listOpts.title
         );
-        setListOpts((opts) => ({ ...opts, data }));
+        setListOpts((opts) => ({ ...opts, data, size, current }));
       })();
     };
 
@@ -622,7 +607,6 @@ const AdminSection = ({
           </Space>
         </div>
       );
-      //      console.log(item);
       return (
         <div className="row">
           <ResourceAvatar />
@@ -661,10 +645,27 @@ const AdminSection = ({
 
     return (
       <div key="new-approval" className="approval">
-        {listOpts.reviewStatus && (
-          <h3>Filtering by: {listOpts.reviewStatus?.toLowerCase()}</h3>
+        <div>
+          <b>Total:</b> {itemList.count || 0}
+        </div>
+        {(listOpts.reviewStatus || listOpts.title) && (
+          <div>
+            <div>
+              <b>Filtering by:</b>
+              <hr />
+            </div>
+            {listOpts.reviewStatus && (
+              <div>
+                <b>Review status:</b> {statusDictToHuman[listOpts.reviewStatus]}
+              </div>
+            )}
+            {listOpts.title && (
+              <div>
+                <b>Title:</b> {listOpts.title}
+              </div>
+            )}
+          </div>
         )}
-        <h4>Total: {itemList.count || 0}</h4>
         <div className="table-wrapper">
           <div className="row head">
             <HeaderSearch setListOpts={setListOpts} listOpts={listOpts} />
@@ -691,16 +692,13 @@ const AdminSection = ({
                               <LoadingOutlined spin /> Loading
                             </span>
                           )}
-                        {(loadingAssignReviewer.id !== item?.id ||
-                          loadingAssignReviewer.type !== item?.type ||
-                          !loadingAssignReviewer) &&
-                          item?.reviewer?.id && (
-                            <span
-                              className={`status ${item.reviewStatus.toLowerCase()}`}
-                            >
-                              {reviewStatusUIText[item.reviewStatus]}
-                            </span>
-                          )}
+                        {listOpts.reviewStatus === null && (
+                          <span
+                            className={`status review-status ${item.reviewStatus.toLowerCase()}`}
+                          >
+                            {reviewStatusUIText[item.reviewStatus]}
+                          </span>
+                        )}
                       </div>
                       <RenderRow
                         item={item}
@@ -721,7 +719,7 @@ const AdminSection = ({
                 showArrow={false}
                 key="collapse-pending-no-data"
                 header={<div className="row">No data to display</div>}
-              ></Collapse.Panel>
+              />
             )}
           </Collapse>
         </div>
@@ -765,9 +763,6 @@ const AdminSection = ({
         </TabPane>
         <TabPane tab="Resources" key="resources" className="profile-tab-pane">
           {renderList(resourcesListOpts, setResourcesListOpts)}
-        </TabPane>
-        <TabPane tab="Tags" key="tags" className="profile-tab-pane">
-          {renderList(tagsListOpts, setTagsListOpts)}
         </TabPane>
       </Tabs>
 
