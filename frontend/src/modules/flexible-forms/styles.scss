@@ -100,9 +100,34 @@
       box-shadow: 2px 1px 5px rgba(45, 103, 150, 0.15);
       border-right: 2px solid #d3dee7;
       .ant-steps {
-        .ant-steps-item {
+        &.ant-steps-vertical {
           border-bottom: 1px solid #d3dee7;
           padding: 20px;
+        }
+        .child-item {
+          margin-left: 48px;
+          padding: 5px 10px;
+          margin-top: 10px;
+          border-radius: 3px;
+          background: #edf2f7;
+          opacity: 0.5;
+          .ant-steps-item-title {
+            font-size: 14px;
+            color: #255b87;
+            font-weight: 400 !important;
+          }
+          &.ant-steps-item-active {
+            background: #92adc3;
+            .ant-steps-item-title {
+              color: #fff;
+              font-weight: 700 !important;
+            }
+          }
+          .ant-steps-item-icon {
+            display: none;
+          }
+        }
+        .ant-steps-item {
           opacity: 0.5;
           .ant-steps-item-content {
             min-height: auto;

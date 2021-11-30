@@ -106,19 +106,76 @@ const tabs = [
     key: "S2",
     title: "Submitter",
     desc: "",
-    steps: [],
+    steps: [
+      {
+        group: "S1",
+        key: "S1-p1-personal-information",
+        title: "Personal Information",
+        desc: "",
+      },
+    ],
   },
   {
     key: "S3",
     title: "Content type",
     desc: "",
-    steps: [],
+    steps: [
+      {
+        group: "S3",
+        key: "S3-p1-main-content",
+        title: "Main Content",
+        desc: "",
+      },
+      {
+        group: "S3",
+        key: "S3-p2-sub-content",
+        title: "Sub Content",
+        desc: "",
+      },
+    ],
   },
   {
     key: "S4",
     title: "Basic info",
     desc: "",
-    steps: [],
+    steps: [
+      {
+        group: "S4",
+        key: "S4-p1-title-desc",
+        title: "Title, Description & Link",
+        desc: "",
+      },
+      {
+        group: "S4",
+        key: "S4-p2-location",
+        title: "Location and Geo-coverage",
+        desc: "",
+      },
+      {
+        group: "S4",
+        key: "S4-p3-tags",
+        title: "Tags",
+        desc: "",
+      },
+      {
+        group: "S4",
+        key: "S4-p4-img",
+        title: "Image",
+        desc: "",
+      },
+      {
+        group: "S4",
+        key: "S4-p5-stakeholder",
+        title: "Stakeholders connections",
+        desc: "",
+      },
+      {
+        group: "S4",
+        key: "S4-p6-related-content",
+        title: "Related Content, Documents & Info",
+        desc: "",
+      },
+    ],
   },
   {
     key: "S5",

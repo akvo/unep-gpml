@@ -164,6 +164,17 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
         />
       );
     }
+    const childs = steps.map(({ group, key, title, desc }) => {
+      const requiredFields = data?.[section]?.required?.[group]?.length || 0;
+      return (
+        <Step
+          key={section + key}
+          title={`${title}`}
+          className={"child-item"}
+          status={requiredFields === 0 ? "finish" : "process"}
+        />
+      );
+    });
     return [
       <Step
         key={section}
@@ -171,11 +182,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
         icon={customIcon("active")}
         className={
           totalRequiredFields === 0
-            ? "step-section step-section-finish"
-            : "step-section"
+            ? "step-section step-section-finish parent-item"
+            : "step-section parent-item"
         }
         status={totalRequiredFields === 0 ? "finish" : "process"}
       />,
+      ...childs,
     ];
   };
 
