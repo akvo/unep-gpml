@@ -1,9 +1,12 @@
 -- :name get-detail :? :1
 -- :doc Get details about a particular topic
-SELECT json
-  FROM v_topic_all
+SELECT json::jsonb,
+COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners
+FROM v_topic_all t
+   left join topic_stakeholder_auth authz ON authz.topic_type::text=t.topic AND authz.topic_id=(t.json->>'id')::int
  WHERE topic = :topic-type
-   AND (json->>'id')::int = :topic-id;
+   AND (json->>'id')::int = :topic-id
+   GROUP BY json::jsonb;
 
 -- :name get-stakeholder-tags :? :1
 -- :doc Get Stakehodler tags

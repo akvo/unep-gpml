@@ -388,8 +388,8 @@
           authorized? (and (or (model.topic/public? topic) approved?)
                            (some? (get-resource-if-allowed conn path user)))]
       (if authorized?
-        (if-let [data (:json (db.detail/get-detail conn path))]
-          (resp/response (adapt (merge data (extra-details topic conn data))))
+        (if-let [data (db.detail/get-detail conn path)]
+          (resp/response (merge (adapt (merge (:json data) (extra-details topic conn (:json data)))) {:owners (:owners data)}))
           util/not-found)
         util/unauthorized))))
 
