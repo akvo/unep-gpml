@@ -296,14 +296,6 @@ const AdminSection = ({
     current: 1,
     size: 10,
   });
-  const [tagsListOpts, setTagsListOpts] = useState({
-    titleFilter: null,
-    reviewStatus: "SUBMITTED",
-    data: null,
-    type: "tags",
-    current: 1,
-    size: 10,
-  });
 
   const [reviewers, setReviewers] = useState([]);
   useEffect(() => {
@@ -765,9 +757,6 @@ const AdminSection = ({
         </TabPane>
         <TabPane tab="Resources" key="resources" className="profile-tab-pane">
           {renderList(resourcesListOpts, setResourcesListOpts)}
-        </TabPane>
-        <TabPane tab="Tags" key="tags" className="profile-tab-pane">
-          {renderList(tagsListOpts, setTagsListOpts)}
         </TabPane>
       </Tabs>
 
