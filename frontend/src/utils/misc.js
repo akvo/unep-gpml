@@ -85,6 +85,7 @@ export const reviewStatusUIText = {
   ACCEPTED: "Approved",
   REJECTED: "Declined",
   ACCEPT: "Approve",
+  APPROVED: "Approved",
   REJECT: "Decline",
 };
 

@@ -113,7 +113,6 @@ const HeaderFilter = ({
       value={selectedValue}
       onChange={(x) => {
         setSelectedValue(x);
-        console.log(listOpts.type, x);
         if (typeof x === "undefined") {
           (async () => {
             const data = await fetchSubmissionData(
@@ -133,7 +132,6 @@ const HeaderFilter = ({
         } else {
           const reviewStatus = statusDictToAPI[x];
           setListOpts((opts) => ({ ...opts, reviewStatus }));
-          console.log(reviewStatus);
           (async () => {
             const data = await fetchSubmissionData(
               1,
@@ -188,14 +186,15 @@ const RoleSelect = ({
 }) => {
   return (
     <div
-      className="col reviewer"
+      style={{ width: "20%" }}
       onClick={(e) => {
         e.stopPropagation();
       }}
     >
+      <div style={{ width: "100%" }}>User role</div>
       <Select
         showSearch={false}
-        style={{ width: "100%" }}
+        style={{ width: "50%" }}
         onChange={(role) =>
           onChangeRole(stakeholder, role, listOpts, setListOpts)
         }
@@ -225,12 +224,12 @@ const OwnerSelect = ({
 }) => {
   return (
     <div
-      style={{ width: "50%" }}
+      style={{ width: "40%" }}
       onClick={(e) => {
         e.stopPropagation();
       }}
     >
-      <div>Owners</div>
+      <div style={{ width: "100%" }}>Owners</div>
       <Select
         style={{ width: "100%" }}
         showSearch={false}
@@ -415,12 +414,14 @@ const AdminSection = ({
   const ReviewStatus = ({ item, listOpts, setListOpts }) => {
     return (
       <div
-        className="col reviewer"
+        style={{ width: "50%" }}
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
+        <div style={{ width: "100%" }}>Reviewers</div>
         <Select
+          style={{ width: "50%" }}
           //          mode="multiple"
           showSearch={true}
           className="select-reviewer"
@@ -607,7 +608,6 @@ const AdminSection = ({
           </Space>
         </div>
       );
-      //      console.log(item);
       return (
         <div className="row">
           <ResourceAvatar />
@@ -693,16 +693,13 @@ const AdminSection = ({
                               <LoadingOutlined spin /> Loading
                             </span>
                           )}
-                        {(loadingAssignReviewer.id !== item?.id ||
-                          loadingAssignReviewer.type !== item?.type ||
-                          !loadingAssignReviewer) &&
-                          item?.reviewer?.id && (
-                            <span
-                              className={`status ${item.reviewStatus.toLowerCase()}`}
-                            >
-                              {reviewStatusUIText[item.reviewStatus]}
-                            </span>
-                          )}
+                        {listOpts.reviewStatus === null && (
+                          <span
+                            className={`status review-status ${item.reviewStatus.toLowerCase()}`}
+                          >
+                            {reviewStatusUIText[item.reviewStatus]}
+                          </span>
+                        )}
                       </div>
                       <RenderRow
                         item={item}
