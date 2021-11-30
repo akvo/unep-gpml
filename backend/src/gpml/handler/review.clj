@@ -30,8 +30,8 @@
   (let [conn (:spec db)]
     (resp/response (db.stakeholder/get-reviewers conn))))
 
-(defn new-review* [{:keys [conn mailjet-config topic-type* topic-type topic-id assigned-by]} c reviewer-id]
-  (let [params {:topic-type topic-type*
+(defn new-review* [{:keys [conn mailjet-config topic-type topic-id assigned-by]} c reviewer-id]
+  (let [params {:topic-type topic-type
                 :topic-id topic-id
                 :assigned-by assigned-by
                 :reviewer reviewer-id}
@@ -50,13 +50,13 @@
 (defn new-multiple-review [db mailjet-config topic-type topic-id reviewers assigned-by]
   (let [topic-type* (util/get-internal-topic-type topic-type)]
     (jdbc/with-db-transaction [conn (:spec db)]
-      (db.review/delete-reviews db {:topic-type topic-type* :topic-id topic-id})
+      (db.review/delete-reviews conn {:topic-type topic-type* :topic-id topic-id})
       (resp/response {:reviews (reduce (partial new-review* {:conn conn
                                                              :mailjet-config mailjet-config
-                                                             :topic-type* topic-type*
-                                                             :topic-type topic-type
+                                                             :topic-type topic-type*
                                                              :topic-id topic-id
                                                              :assigned-by assigned-by})
+                                       []
                                        reviewers)}))))
 
 (defn change-reviewers [db mailjet-config topic-type topic-id reviewers admin]
@@ -67,23 +67,21 @@
         (let [reviews (db.review/reviews-filter conn {:topic-type topic-type* :topic-id topic-id})
               current-reviewers (set (map :reviewer reviews))
               [reviewers-to-delete reviewers-to-create reviewers-to-keep] (let [news (set reviewers)
-                                                              olds (set current-reviewers)
-                                                              keep (set/intersection news olds)
-                                                              delete (set/difference olds news)
-                                                              create (set/difference news olds)]
-                                                          [delete create keep])
-              reviews-to-delete (filter #(contains? reviewers-to-delete (:reviewer %)) reviews)
-              reviews-to-create (filter #(contains? reviewers-to-create (:reviewer %)) reviews)]
+                                                                                olds (set current-reviewers)
+                                                                                to-keep (set/intersection news olds)
+                                                                                to-delete (set/difference olds news)
+                                                                                to-create (set/difference news olds)]
+                                                                            [to-delete to-create to-keep])
+              reviews-to-delete (filter #(contains? reviewers-to-delete (:reviewer %)) reviews)]
           (doseq [r reviews-to-delete]
-            (db.review/delete-review-by-id db {:id (:id r)}))
+            (db.review/delete-review-by-id conn {:id (:id r)}))
           (resp/response {:reviews (into
-                                    (filter #(contains? reviewers-to-delete (:reviewer %)) reviewers-to-keep)
+                                    reviewers-to-keep
                                     (reduce (partial new-review* {:conn conn
                                                                   :mailjet-config mailjet-config
-                                                                  :topic-type* topic-type*
-                                                                  :topic-type topic-type
+                                                                  :topic-type topic-type*
                                                                   :topic-id topic-id
-                                                                  :assigned-by assigned-by}) [] reviews-to-create))})))
+                                                                  :assigned-by assigned-by}) [] reviewers-to-create))})))
       {:status 403 :body {:message "Cannot update reviewers for this topic"}})))
 
 (def resp403 {:status 403 :body {:message "Cannot update review for this topic"}})
