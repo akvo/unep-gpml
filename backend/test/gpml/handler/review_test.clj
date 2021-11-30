@@ -203,8 +203,8 @@
         (is (= (:reviewer review) (:id reviewer2)))))))
 
 (deftest list-reviews
-  (let [system (ig/init fixtures/*system* [::review/list-reviews])
-        handler (::review/list-reviews system)
+  (let [system (ig/init fixtures/*system* [:gpml.handler.review/list-user-reviews])
+        handler (:gpml.handler.review/list-user-reviews system)
         db (-> system :duct.database.sql/hikaricp :spec)
         admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
         reviewer (new-stakeholder db "reviewer@org.com" "R" "A" "REVIEWER" "APPROVED")
