@@ -91,7 +91,7 @@
     (jdbc/with-db-transaction [conn (:spec db)]
       (if-let [review (first (db.review/reviews-filter
                               conn
-                              {:topic-type topic-type* :topic-id topic-id :reviewer reviewer}))]
+                              {:topic-type topic-type* :topic-id topic-id :reviewer (:id reviewer)}))]
         ;; If assigned to the current-user
         (if (= (:reviewer review) (:id reviewer))
           (let [review-id (db.review/update-review-status
@@ -166,7 +166,7 @@
         topic-type (util/get-internal-topic-type topic-type)
         reviews (db.review/reviews-filter
                  conn
-                 {:topic-type topic-type "topic-id" topic-id})]
+                 {:topic-type topic-type :topic-id topic-id})]
     (resp/response reviews)))
 
 (defmethod ig/init-key ::get-reviews [_ {:keys [db]}]

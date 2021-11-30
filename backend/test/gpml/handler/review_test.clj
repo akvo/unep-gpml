@@ -45,8 +45,8 @@
       (is (= #{"ADMIN" "REVIEWER"} (set (map :role body)))))))
 
 (deftest get-topic-review
-  (let [system (ig/init fixtures/*system* [::review/get-review])
-        handler (::review/get-review system)
+  (let [system (ig/init fixtures/*system* [::review/get-reviews])
+        handler (::review/get-reviews system)
         db (-> system :duct.database.sql/hikaricp :spec)
         admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
         reviewer (new-stakeholder db "reviewer-approved@org.com" "R" "A" "REVIEWER" "APPROVED")
@@ -73,15 +73,16 @@
                                                    :topic-id (:id user)}})))
             body (:body resp)]
         (is (= 200 (:status resp)))
-        (is (= (:id reviewer) (:reviewer body)))
-        (is (= (:id admin) (:assigned_by body)))
-        (is (= "stakeholder" (:topic_type body)))
-        (is (= (:id user) (:topic_id body)))))))
+        (let [res body]
+          (is (= (:id reviewer) (-> res first :reviewer)))
+          (is (= (:id admin) (-> res first :assigned_by )))
+          (is (= "stakeholder" (-> res first :topic_type)))
+          (is (= (:id user) (-> res first :topic_id))))))))
 
 
 (deftest new-review
-  (let [system (ig/init fixtures/*system* [::review/new-review])
-        handler (::review/new-review system)
+  (let [system (ig/init fixtures/*system* [:gpml.handler.review/new-multiple-review])
+        handler (:gpml.handler.review/new-multiple-review system)
         db (-> system :duct.database.sql/hikaricp :spec)
         admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
         reviewer1 (new-stakeholder db "reviewer1@org.com" "R" "A" "REVIEWER" "APPROVED")
@@ -96,20 +97,11 @@
                                                    :topic-id (:id user)}
                                             :body {:reviewers [(:id reviewer1) (:id reviewer2)]}})))
             body (:body resp)
-            review (db.review/review-by-id db body)]
+            review (db.review/review-by-id db (first (:reviews body)))]
         (is (= 200 (:status resp)))
         (is (= (:reviewer review) (:id reviewer1)))
         (is (= (:assigned_by review) (:id admin)))
-        (is (= (:topic_id review) (:id user)))))
-
-    (testing "Try assigning new reviewer to already assigned resource"
-      (let [resp (handler (-> (mock/request :get "/")
-                              (assoc
-                               :admin admin
-                               :parameters {:path {:topic-type "stakeholder"
-                                                   :topic-id (:id user)}
-                                            :body {:reviewers [(:id reviewer1)]}})))]
-        (is (= 409 (:status resp)))))))
+        (is (= (:topic_id review) (:id user)))))))
 
 (deftest update-review
   (let [system (ig/init fixtures/*system* [::review/update-review])
@@ -127,13 +119,14 @@
                                                    :topic-id (:id user)}
                                             :body {:review-comment ""
                                                    :review-status "REJECTED"}})))]
+
         (is (= 403 (:status resp)))))
 
     (testing "Updating review assigned to another user"
       (let [_ (db.review/new-review db {:topic-type "stakeholder"
                                         :topic-id (:id user)
                                         :assigned-by (:id admin)
-                                        :reviewer [(:id reviewer1)]})
+                                        :reviewer (:id reviewer1)})
 
             resp (handler (-> (mock/request :get "/")
                               (assoc
@@ -147,6 +140,7 @@
 
     (testing "Rejecting a submission in a review"
       (let [comment "Missing lot of data"
+            _ (println reviewer1)
             resp (handler (-> (mock/request :get "/")
                               (assoc
                                :reviewer reviewer1
@@ -196,9 +190,9 @@
                                :reviewer (assoc admin :role "ADMIN")
                                :parameters {:path {:topic-type "stakeholder"
                                                    :topic-id (:id user)}
-                                            :body {:reviewer (:id reviewer2)}})))
+                                            :body {:reviewers [(:id reviewer2)]}})))
             body (:body resp)
-            review (db.review/review-by-id db body)]
+            review (db.review/review-by-id db (-> body :reviews first))]
         (is (= 200 (:status resp)))
         (is (= (:reviewer review) (:id reviewer2)))))))
 
