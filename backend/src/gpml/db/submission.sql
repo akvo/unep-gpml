@@ -37,13 +37,17 @@ authz AS (
     LEFT JOIN topic_stakeholder_auth a ON a.topic_type = s.topic::topic_type AND a.topic_id = s.id and a.roles @>'["owner"]'
     LEFT JOIN stakeholder st ON a.stakeholder = st.id
     GROUP BY s.id, s.type),
+reviewers AS (
+    select s.id, s.type, COALESCE(json_agg(st.id) FILTER (WHERE st.email IS NOT NULL), '[]') as reviewers  from submission s
+    LEFT JOIN review r ON r.topic_type = s.topic::topic_type AND r.topic_id = s.id
+    LEFT JOIN stakeholder st ON r.reviewer = st.id
+    GROUP BY s.id, s.type),
 data AS (
-    SELECT s.id, s.type, s.topic, s.title, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || s.type || '/' || s.id as preview, COALESCE(s.review_status, 'SUBMITTED') AS review_status, row_to_json(reviewer.*) AS reviewer, s.role, a.owners, s.image
+    SELECT s.id, s.type, s.topic, s.title, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || s.type || '/' || s.id as preview, COALESCE(s.review_status, 'SUBMITTED') AS review_status, s.role, a.owners, s.image, r.reviewers
     FROM submission s
     LEFT JOIN stakeholder c ON c.id = s.created_by
-    LEFT JOIN review r ON r.topic_type = s.topic::topic_type AND r.topic_id = s.id
-    LEFT JOIN stakeholder reviewer ON reviewer.id = r.reviewer
     LEFT JOIN authz a on s.id=a.id and s.type=a.type
+    LEFT JOIN reviewers r on s.id=r.id and s.type=r.type
     WHERE 1=1
 --~ (when (= "stakeholders" (:only params)) " AND  s.type IN ('stakeholder', 'organisation') ")
 --~ (when (= "resources" (:only params)) " AND  s.type NOT IN ('stakeholder', 'organisation') ")
