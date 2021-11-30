@@ -67,7 +67,6 @@ const HeaderSearch = ({ placeholder, listOpts, setListOpts }) => {
       placeholder={placeholder ? placeholder : "Search for a resource"}
       allowClear
       onSearch={(title) => {
-        console.log("search", title, listOpts.type, listOpts.reviewStatus);
         (async () => {
           const data = await fetchSubmissionData(
             1,
@@ -639,10 +638,27 @@ const AdminSection = ({
 
     return (
       <div key="new-approval" className="approval">
-        {listOpts.reviewStatus && (
-          <h3>Filtering by: {listOpts.reviewStatus?.toLowerCase()}</h3>
+        <div>
+          <b>Total:</b> {itemList.count || 0}
+        </div>
+        {(listOpts.reviewStatus || listOpts.title) && (
+          <div>
+            <div>
+              <b>Filtering by:</b>
+              <hr />
+            </div>
+            {listOpts.reviewStatus && (
+              <div>
+                <b>Review status:</b> {statusDictToHuman[listOpts.reviewStatus]}
+              </div>
+            )}
+            {listOpts.title && (
+              <div>
+                <b>Title:</b> {listOpts.title}
+              </div>
+            )}
+          </div>
         )}
-        <h4>Total: {itemList.count || 0}</h4>
         <div className="table-wrapper">
           <div className="row head">
             <HeaderSearch setListOpts={setListOpts} listOpts={listOpts} />
@@ -699,7 +715,7 @@ const AdminSection = ({
                 showArrow={false}
                 key="collapse-pending-no-data"
                 header={<div className="row">No data to display</div>}
-              ></Collapse.Panel>
+              />
             )}
           </Collapse>
         </div>
