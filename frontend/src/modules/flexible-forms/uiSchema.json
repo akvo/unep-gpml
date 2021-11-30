@@ -50,5 +50,23 @@
       "technology",
       "capacity_building"
     ]
+  },
+  "S4": {
+    "classNames": "list-group",
+    "S4_G1": {
+      "S4_G1_2": {
+        "ui:placeholder": "Title"
+      },
+      "S4_G1_3": {
+        "ui:placeholder": "Description",
+        "ui:widget": "textarea"
+      },
+      "S4_G1_4": {
+        "ui:addOnBefore": "https://",
+        "ui:widget": "URLWidget",
+        "ui:placeholder": "Url"
+      },
+      "ui:order": ["S4_G1_2", "S4_G1_3", "S4_G1_4"]
+    }
   }
 }

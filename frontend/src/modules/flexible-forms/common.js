@@ -140,37 +140,37 @@ const tabs = [
     desc: "",
     steps: [
       {
-        group: "S4",
+        group: "S4_G1",
         key: "S4-p1-title-desc",
         title: "Title, Description & Link",
         desc: "",
       },
       {
-        group: "S4",
+        group: "S4_G2",
         key: "S4-p2-location",
         title: "Location and Geo-coverage",
         desc: "",
       },
       {
-        group: "S4",
+        group: "S4_G3",
         key: "S4-p3-tags",
         title: "Tags",
         desc: "",
       },
       {
-        group: "S4",
+        group: "S4_G4",
         key: "S4-p4-img",
         title: "Image",
         desc: "",
       },
       {
-        group: "S4",
+        group: "S4_G5",
         key: "S4-p5-stakeholder",
         title: "Stakeholders connections",
         desc: "",
       },
       {
-        group: "S4",
+        group: "S4_G6",
         key: "S4-p6-related-content",
         title: "Related Content, Documents & Info",
         desc: "",

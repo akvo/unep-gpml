@@ -372,7 +372,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                   </div>
                 </Row>
               ) : (
-                <Row>
+                <Row className="main-content">
                   <FlexibleForm
                     // formType={props.formType}
                     // btnSubmit={btnSubmit}
@@ -382,7 +382,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     // setHighlight={setHighlight}
                     formSchema={formSchema}
                     // setDisabledBtn={setDisabledBtn}
-                    // tabsData={tabsData}
+                    tabsData={tabsData}
                   />
                   {/* <div className="main-content">
                     <div className="button-wrapper">

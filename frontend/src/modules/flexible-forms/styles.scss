@@ -96,6 +96,19 @@
     }
   }
   .form-container {
+    input {
+      background-color: #edf2f7;
+    }
+    textarea {
+      background-color: #edf2f7;
+    }
+    .ant-input-group-addon {
+      background: #ccd2e3;
+      color: #fff;
+    }
+    .ant-radio-wrapper {
+      display: block;
+    }
     .step-panel {
       box-shadow: 2px 1px 5px rgba(45, 103, 150, 0.15);
       border-right: 2px solid #d3dee7;

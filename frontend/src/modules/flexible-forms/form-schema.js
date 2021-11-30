@@ -120,5 +120,39 @@ export const schema = {
         },
       },
     },
+    S4: {
+      title: "",
+      type: "object",
+      depend: {
+        id: "tabs",
+        value: ["S4"],
+      },
+      properties: {
+        S4_G1: {
+          title: "",
+          type: "object",
+          depend: {
+            id: "steps",
+            value: 0,
+          },
+          required: ["S4_G1_2", "S4_G1_3", "S4_G1_4"],
+          properties: {
+            S4_G1_2: {
+              title: "Title",
+              type: "string",
+            },
+            S4_G1_3: {
+              title: "Description",
+              type: "string",
+            },
+            S4_G1_4: {
+              title: "URL",
+              type: "string",
+              format: "url",
+            },
+          },
+        },
+      },
+    },
   },
 };
