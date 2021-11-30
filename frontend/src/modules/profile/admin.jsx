@@ -66,20 +66,6 @@ const HeaderSearch = ({ placeholder, listOpts, setListOpts }) => {
       className="search"
       placeholder={placeholder ? placeholder : "Search for a resource"}
       allowClear
-      onChange={(x) => {
-        if (x.target.value === "") {
-          (async () => {
-            const data = await fetchSubmissionData(
-              1,
-              10,
-              listOpts.type,
-              listOpts.reviewStatus,
-              listOpts.title
-            );
-            setListOpts((opts) => ({ ...opts, data, size: 10, current: 1 }));
-          })();
-        }
-      }}
       onSearch={(title) => {
         console.log("search", title, listOpts.type, listOpts.reviewStatus);
         (async () => {
