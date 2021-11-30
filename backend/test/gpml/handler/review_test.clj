@@ -1,5 +1,5 @@
 (ns gpml.handler.review-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures run-tests ]]
+  (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [gpml.fixtures :as fixtures]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.review :as db.review]
@@ -86,7 +86,6 @@
         admin (new-stakeholder db "admin-approved@org.com" "R" "A" "ADMIN" "APPROVED")
         reviewer1 (new-stakeholder db "reviewer1@org.com" "R" "A" "REVIEWER" "APPROVED")
         reviewer2 (new-stakeholder db "reviewer2@org.com" "R" "A" "REVIEWER" "APPROVED")
-        reviewer3 (new-stakeholder db "reviewer3@org.com" "R" "A" "REVIEWER" "APPROVED")
         user (new-stakeholder db "user-submitted@org.com" "U" "S" "USER" "SUBMITTED")]
 
     (testing "Assign new reviewer"

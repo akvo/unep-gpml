@@ -63,9 +63,8 @@
                         conn
                         {:topic-type topic-type* :topic-id topic-id}))]
         resp409
-        (if (seq reviewers)
-          (-> (mapv #(create-review-with-new-reviewer mailjet-config topic-type* topic-id assigned-by conn %) reviewers)
-              (resp/response)))))))
+        (let [res (mapv #(create-review-with-new-reviewer mailjet-config topic-type* topic-id assigned-by conn %) reviewers)]
+            (resp/response (or res [])))))))
 
 (defn change-reviewers [db mailjet-config topic-type topic-id reviewers admin]
   (let [topic-type* (util/get-internal-topic-type topic-type)
