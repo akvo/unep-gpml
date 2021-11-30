@@ -7,11 +7,6 @@
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
-(defmacro dbg1 [body]
-  `(let [x# ~body]
-     (println "dbg1:" '~body "=" x#)
-     x#))
-
 (use-fixtures :each fixtures/with-test-system)
 
 (defn- new-stakeholder [db email first_name last_name role review_status]
@@ -155,13 +150,13 @@
       (let [comment "Missing lot of data"
             resp (handler (-> (mock/request :get "/")
                               (assoc
-                               :reviewer (dbg1 reviewer1)
+                               :reviewer reviewer1
                                :parameters {:path {:topic-type "stakeholder"
                                                    :topic-id (:id user)}
                                             :body {:review-comment comment
                                                    :review-status "REJECTED"}})))
-            body (dbg1 (:body resp))
-            review (dbg1 (db.review/review-by-id db body))]
+            body (:body resp)
+            review (db.review/review-by-id db body)]
         (is (= 200 (:status resp)))
         (is (= (:reviewer review) (:id reviewer1)))
         (is (= (:assigned_by review) (:id admin)))
@@ -203,7 +198,7 @@
                                :parameters {:path {:topic-type "stakeholder"
                                                    :topic-id (:id user)}
                                             :body {:reviewers [(:id reviewer2)]}})))
-            body (dbg1 (:body resp))
+            body (:body resp)
             review (db.review/review-by-id db body)]
         (is (= 200 (:status resp)))
         (is (= (:reviewer review) (:id reviewer2)))))))

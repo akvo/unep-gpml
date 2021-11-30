@@ -38,7 +38,7 @@
                 {:topic-type topic-type :topic-id topic-id})]
     (resp/response review)))
 
-(defn create-review-with-multiple-reviewers [mailjet-config topic-type topic-id assigned-by conn reviewer-id]
+(defn create-review-with-new-reviewer [mailjet-config topic-type topic-id assigned-by conn reviewer-id]
   (let [params {:topic-type topic-type
                 :topic-id topic-id
                 :assigned-by assigned-by
@@ -55,29 +55,24 @@
                       (list nil))
     review))
 
-(defmacro dbg [body]
-  `(let [x# ~body]
-     (println "dbg:" '~body "=" x#)
-     x#))
-
 (defn new-review [db mailjet-config topic-type topic-id reviewers assigned-by]
   (let [topic-type* (util/get-internal-topic-type topic-type)
         resp409 {:status 409 :body {:message "Review already created for this resource"}}]
-    (jdbc/with-db-transaction [conn (:spec (dbg db))]
-      (if-let [_ (dbg (seq (dbg (db.review/review-by-topic-item
-                                  conn
-                                  {:topic-type topic-type* :topic-id topic-id}))))]
+    (jdbc/with-db-transaction [conn (:spec db)]
+      (if-let [_ (seq (db.review/review-by-topic-item
+                        conn
+                        {:topic-type topic-type* :topic-id topic-id}))]
         resp409
-        (if (dbg (seq reviewers))
+        (if (seq reviewers)
           (-> (mapv #(create-review-with-multiple-reviewers mailjet-config topic-type* topic-id assigned-by conn %) reviewers)
               (resp/response)))))))
 
 (defn change-reviewers [db mailjet-config topic-type topic-id reviewers admin]
   (let [topic-type* (util/get-internal-topic-type topic-type)
         assigned-by (:id admin)]
-    (if (dbg (= "ADMIN" (:role (dbg admin))))
-      (jdbc/with-db-transaction [conn (:spec (dbg db))]
-        (let [reviews (dbg (db.review/review-by-topic-item (dbg conn) {:topic-type (dbg topic-type*) :topic-id (dbg topic-id)}))
+    (if (= "ADMIN" (:role admin))
+      (jdbc/with-db-transaction [conn (:spec db)]
+        (let [reviews (db.review/review-by-topic-item conn {:topic-type topic-type* :topic-id topic-id})
               current-reviewers (set (map :reviewer reviews))
               [reviewers-to-delete reviewers-to-create reviewers-to-keep] (let [news   (set reviewers)
                                                                                 olds   (set current-reviewers)
@@ -85,10 +80,10 @@
                                                                                 delete (set/difference olds news)
                                                                                 create (set/difference news olds)]
                                                                              [delete create keep])
-              reviews-to-delete (dbg (filter #(contains? reviewers-to-delete (:reviewer %)) reviews))
-              reviews-to-create (dbg (filter #(contains? reviewers-to-create (:reviewer %)) reviews))]
+              reviews-to-delete (filter #(contains? reviewers-to-delete (:reviewer %)) reviews)
+              reviews-to-create (filter #(contains? reviewers-to-create (:reviewer %)) reviews)]
           (doseq [r reviews-to-delete]
-            (db.review/delete-review-by-id (dbg conn) {:id (:id r)}))
+            (db.review/delete-review-by-id conn {:id (:id r)}))
           (resp/response {:reviews (into
                                      (filter #(contains? reviewers-to-delete (:reviewer %)) reviewers-to-keep)
                                      (reduce (partial new-review {:conn conn
@@ -103,14 +98,14 @@
   (let [topic-type* (util/get-internal-topic-type topic-type)
         resp403 {:status 403 :body {:message "Cannot update review for this topic"}}]
     (jdbc/with-db-transaction [conn (:spec db)]
-      (if-let [review (dbg (db.review/review-by-topic-item-and-reviewer-id
-                             conn
-                             {:topic-type topic-type* :topic-id topic-id :reviewer (dbg (:id reviewer))}))]
+      (if-let [review (db.review/review-by-topic-item-and-reviewer-id
+                        conn
+                        {:topic-type topic-type* :topic-id topic-id :reviewer (:id reviewer)})]
         ;; If assigned to the current-user
-        (if (dbg (:reviewer (dbg review)))
+        (if (:reviewer review)
           (let [review-id (db.review/update-review-status
                            conn
-                           {:id (:id (dbg review))
+                           {:id (:id review)
                             :review-status review-status
                             :review-comment review-comment})
                 admin (db.stakeholder/stakeholder-by-id conn {:id (:assigned_by review)})]
@@ -153,9 +148,9 @@
    (fn [{{{:keys [topic-type topic-id]} :path
           {:keys [review-status review-comment reviewers]} :body} :parameters
            current-user :reviewer}]
-     (if (dbg (seq (dbg reviewers)))
-       (change-reviewers db mailjet-config topic-type topic-id reviewers (dbg current-user))
-       (dbg (update-review-status db mailjet-config (dbg topic-type) (dbg topic-id) (dbg review-status) (dbg review-comment) (dbg current-user))))))
+     (if (seq reviewers)
+       (change-reviewers db mailjet-config topic-type topic-id reviewers current-user)
+       (update-review-status db mailjet-config topic-type topic-id review-status review-comment current-user))))
 
 (defmethod ig/init-key ::list-reviews [_ {:keys [db]}]
   (fn [{{{:keys [page limit review-status only]} :query} :parameters
