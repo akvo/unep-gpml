@@ -18,6 +18,7 @@ import {
   checkRequiredFieldFilledIn,
   checkDependencyAnswer,
   customFormats,
+  collectDependSchema,
 } from "../../utils/forms";
 
 const Form = withTheme(AntDTheme);
@@ -58,7 +59,18 @@ const FlexibleForm = withRouter(
 
     const handleOnSubmit = ({ formData }) => {};
 
-    const handleFormOnChange = useCallback(({ formData, schema }) => {}, []);
+    const handleFormOnChange = useCallback(
+      ({ formData, schema }) => {
+        console.log(formData);
+        initialFormData.update((e) => {
+          e.data = {
+            ...e.data,
+            ...formData,
+          };
+        });
+      },
+      [initialFormData]
+    );
 
     const handleTransformErrors = (errors, dependValue) => {};
 

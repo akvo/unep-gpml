@@ -22,7 +22,6 @@ const RadioWidget = ({
   rawErrors,
 }) => {
   const { readonlyAsDisabled = true } = formContext;
-
   const { enumOptions, enumDisabled } = options;
 
   const handleChange = ({ target: { value: nextValue } }) =>
@@ -59,6 +58,11 @@ const RadioWidget = ({
           key={`${optionValue}`}
           value={`${optionValue}`}
         >
+          {options.flexible && (
+            <span className="optional-params">{`${
+              optionValue === "1-0" ? "Yes" : "No"
+            }`}</span>
+          )}
           {optionLabel}
         </Radio>
       ))}

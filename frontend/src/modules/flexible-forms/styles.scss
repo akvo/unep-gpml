@@ -96,6 +96,11 @@
     }
   }
   .form-container {
+    .field-label {
+      color: #255b87;
+      font-size: 16px;
+      font-weight: 400;
+    }
     input {
       background-color: #edf2f7;
     }
@@ -107,7 +112,17 @@
       color: #fff;
     }
     .ant-radio-wrapper {
-      display: block;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      .optional-params {
+        width: 45px;
+        display: inline-block;
+        color: #000;
+      }
+      & span {
+        color: #a5b0c9;
+      }
     }
     .step-panel {
       box-shadow: 2px 1px 5px rgba(45, 103, 150, 0.15);
@@ -200,7 +215,7 @@
           height: auto;
           margin-bottom: 20px;
           display: block;
-          border: none;
+          border: 2px solid #fff;
           &:focus-within {
             box-shadow: none;
           }

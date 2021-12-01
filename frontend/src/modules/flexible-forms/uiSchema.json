@@ -2,7 +2,10 @@
   "S2": {
     "classNames": "list-group",
     "S2_1": {
-      "ui:widget": "radio"
+      "ui:widget": "radio",
+      "ui:options": {
+        "flexible": true
+      }
     },
     "S2_G1_1.1": {
       "ui:widget": "select",
