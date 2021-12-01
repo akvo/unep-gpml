@@ -5,14 +5,14 @@ import { DownloadOutlined, InfoOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "./styles.scss";
 import common from "./common";
-import ExampleIcon from "../../images/examples.png";
-import InitiativeImage from "../../images/initiative.png";
-import ActionPlanImage from "../../images/action-plan.png";
-import FinancingResourceImage from "../../images/financing-resource.png";
-import TechnicalResourceImage from "../../images/technical-resource.png";
-import CapacityBuildingImage from "../../images/capacity-building.png";
-import InfoGreen from "../../images/i-green.png";
-import InfoBlue from "../../images/i-blue.png";
+// import ExampleIcon from "../../images/examples.png";
+// import InitiativeImage from "../../images/initiative.png";
+// import ActionPlanImage from "../../images/action-plan.png";
+// import FinancingResourceImage from "../../images/financing-resource.png";
+// import TechnicalResourceImage from "../../images/technical-resource.png";
+// import CapacityBuildingImage from "../../images/capacity-building.png";
+// import InfoGreen from "../../images/i-green.png";
+// import InfoBlue from "../../images/i-blue.png";
 import FlexibleForm from "./form";
 import isEmpty from "lodash/isEmpty";
 
@@ -374,14 +374,14 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
               ) : (
                 <Row className="main-content">
                   <FlexibleForm
-                    // formType={props.formType}
-                    // btnSubmit={btnSubmit}
-                    // sending={sending}
-                    // setSending={setSending}
-                    // highlight={highlight}
-                    // setHighlight={setHighlight}
+                    formType={props.formType}
+                    btnSubmit={btnSubmit}
+                    sending={sending}
+                    setSending={setSending}
+                    highlight={highlight}
+                    setHighlight={setHighlight}
                     formSchema={formSchema}
-                    // setDisabledBtn={setDisabledBtn}
+                    setDisabledBtn={setDisabledBtn}
                     tabsData={tabsData}
                   />
                   {/* <div className="main-content">
@@ -394,95 +394,117 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                         SHOW EXAMPLES
                       </Button>
                     </div>
-                    <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                    <Radio.Group className="ant-row">
                       <Col className="gutter-row" xs={12} lg={6}>
-                        <div className="content-circle-wrapper">
-                          <div className="content-circle">
-                            <img src={InitiativeImage} alt="Initiative Image" />
+                        <Radio.Button
+                          value="large"
+                          className="custom-radio selected"
+                        >
+                          <div className="content-circle-wrapper">
+                            <div className="content-circle">
+                              <img
+                                src={InitiativeImage}
+                                alt="Initiative Image"
+                              />
+                            </div>
+                            <h2>initiative</h2>
                           </div>
-                          <h2>initiative</h2>
-                        </div>
+                        </Radio.Button>
                       </Col>
                       <Col className="gutter-row" xs={12} lg={6}>
-                        <div className="content-circle-wrapper">
-                          <div className="content-circle">
-                            <img
-                              src={ActionPlanImage}
-                              alt="Action Plan Image"
-                            />
+                        <Radio.Button value="large" className="custom-radio">
+                          <div className="content-circle-wrapper">
+                            <div className="content-circle">
+                              <img
+                                src={ActionPlanImage}
+                                alt="Action Plan Image"
+                              />
+                            </div>
+                            <h2>Action plan</h2>
                           </div>
-                          <h2>Action plan</h2>
-                        </div>
+                        </Radio.Button>
                       </Col>
                       <Col className="gutter-row" xs={12} lg={6}>
-                        <div className="content-circle-wrapper">
-                          <div className="content-circle">
-                            <img
-                              src={FinancingResourceImage}
-                              alt="Financing Resource Image"
-                            />
+                        <Radio.Button value="large" className="custom-radio">
+                          <div className="content-circle-wrapper">
+                            <div className="content-circle">
+                              <img
+                                src={FinancingResourceImage}
+                                alt="Financing Resource Image"
+                              />
+                            </div>
+                            <h2>Policy</h2>
                           </div>
-                          <h2>Policy</h2>
-                        </div>
+                        </Radio.Button>
                       </Col>
                       <Col className="gutter-row" xs={12} lg={6}>
-                        <div className="content-circle-wrapper">
-                          <div className="content-circle">
-                            <img
-                              src={FinancingResourceImage}
-                              alt="Financing Resource Image"
-                            />
+                        <Radio.Button value="large" className="custom-radio">
+                          <div className="content-circle-wrapper">
+                            <div className="content-circle">
+                              <img
+                                src={FinancingResourceImage}
+                                alt="Financing Resource Image"
+                              />
+                            </div>
+                            <h2>Financing resource</h2>
                           </div>
-                          <h2>Financing resource</h2>
-                        </div>
+                        </Radio.Button>
                       </Col>
                       <Col className="gutter-row" xs={12} lg={6}>
-                        <div className="content-circle-wrapper selected">
-                          <div className="content-circle">
-                            <img
-                              src={TechnicalResourceImage}
-                              alt="Technical Resource Image"
-                            />
+                        <Radio.Button value="large" className="custom-radio">
+                          <div className="content-circle-wrapper">
+                            <div className="content-circle">
+                              <img
+                                src={TechnicalResourceImage}
+                                alt="Technical Resource Image"
+                              />
+                            </div>
+                            <h2>Technical Resource</h2>
                           </div>
-                          <h2>Technical Resource</h2>
-                        </div>
+                        </Radio.Button>
                       </Col>
                       <Col className="gutter-row" xs={12} lg={6}>
-                        <div className="content-circle-wrapper">
-                          <div className="content-circle">
-                            <img
-                              src={CapacityBuildingImage}
-                              alt="Capacity Building Image"
-                            />
+                        <Radio.Button value="large" className="custom-radio">
+                          <div className="content-circle-wrapper">
+                            <div className="content-circle">
+                              <img
+                                src={CapacityBuildingImage}
+                                alt="Capacity Building Image"
+                              />
+                            </div>
+                            <h2>Event</h2>
                           </div>
-                          <h2>Event</h2>
-                        </div>
+                        </Radio.Button>
                       </Col>
                       <Col className="gutter-row" xs={12} lg={6}>
-                        <div className="content-circle-wrapper">
-                          <div className="content-circle">
-                            <img
-                              src={CapacityBuildingImage}
-                              alt="Capacity Building Image"
-                            />
+                        <Radio.Button value="large" className="custom-radio">
+                          <div className="content-circle-wrapper">
+                            <div className="content-circle">
+                              <img
+                                src={CapacityBuildingImage}
+                                alt="Capacity Building Image"
+                              />
+                            </div>
+                            <h2>Technology</h2>
                           </div>
-                          <h2>Technology</h2>
-                        </div>
+                        </Radio.Button>
                       </Col>
                       <Col className="gutter-row" xs={12} lg={6}>
-                        <div className="content-circle-wrapper">
-                          <div className="content-circle">
-                            <img
-                              src={CapacityBuildingImage}
-                              alt="Capacity Building Image"
-                            />
+                        <Radio.Button value="large" className="custom-radio">
+                          <div className="content-circle-wrapper">
+                            <div className="content-circle">
+                              <img
+                                src={CapacityBuildingImage}
+                                alt="Capacity Building Image"
+                              />
+                            </div>
+                            <h2>Capacity Building</h2>
                           </div>
-                          <h2>Capacity Building</h2>
-                        </div>
+                        </Radio.Button>
                       </Col>
-                    </Row>
-                  </div>
-                  <div className="sub-content">
+                    </Radio.Group>
+                  </div> */}
+                  {/* <div className="sub-content">
                     <div className="sub-content-top">
                       <h5>Pick the sub-content type</h5>
                       <span>Optional</span>

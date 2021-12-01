@@ -113,7 +113,7 @@ const mainContentType = [
     ],
   },
   {
-    code: "event",
+    code: "eventFlexible",
     name: "Event",
     childs: [
       "Webinars & Seminars",

@@ -63,10 +63,10 @@ const FlexibleForm = withRouter(
     const handleTransformErrors = (errors, dependValue) => {};
 
     return (
-      <div className="add-sign-up-form">
+      <div className="add-flexible-form">
         <>
           <Form
-            idPrefix="signUp"
+            idPrefix="flexibleForm"
             schema={formSchema.schema}
             uiSchema={uiSchema}
             formData={flexibleFormData.data}

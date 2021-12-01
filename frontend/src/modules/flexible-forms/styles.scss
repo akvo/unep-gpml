@@ -196,8 +196,27 @@
         border-radius: 5px;
         width: 100%;
         padding: 20px;
-        .content-circle-wrapper {
+        .custom-radio {
+          height: auto;
           margin-bottom: 20px;
+          display: block;
+          border: none;
+          &:focus-within {
+            box-shadow: none;
+          }
+          &.selected {
+            border: 2px solid #34a6ff;
+            border-radius: 10px;
+            background: rgba(52, 166, 255, 0.1);
+            .content-circle {
+              background: #10f9b7;
+            }
+            h2 {
+              font-weight: 700;
+            }
+          }
+        }
+        .content-circle-wrapper {
           padding-top: 40px;
           .content-circle {
             width: 180px;

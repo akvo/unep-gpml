@@ -77,8 +77,8 @@ const getSchema = ({
   prop.S3.properties["technical"].enum = mainContentType.find(
     (x) => x.code === "technical"
   )?.childs;
-  prop.S3.properties["event"].enum = mainContentType.find(
-    (x) => x.code === "event"
+  prop.S3.properties["eventFlexible"].enum = mainContentType.find(
+    (x) => x.code === "eventFlexible"
   )?.childs;
   prop.S3.properties["technology"].enum = mainContentType.find(
     (x) => x.code === "technology"

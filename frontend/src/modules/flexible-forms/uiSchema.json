@@ -13,7 +13,7 @@
   "S3": {
     "classNames": "list-group",
     "mainContentType": {
-      "ui:widget": "radio"
+      "ui:widget": "MainContentRadioWidget"
     },
     "initiative": {
       "ui:widget": "radio"
@@ -30,7 +30,7 @@
     "technical": {
       "ui:widget": "radio"
     },
-    "event": {
+    "eventFlexible": {
       "ui:widget": "radio"
     },
     "technology": {
@@ -46,7 +46,7 @@
       "policy",
       "financing",
       "technical",
-      "event",
+      "eventFlexible",
       "technology",
       "capacity_building"
     ]

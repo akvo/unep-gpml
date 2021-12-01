@@ -91,10 +91,10 @@ export const schema = {
           type: "string",
           enum: [],
         },
-        event: {
+        eventFlexible: {
           depend: {
             id: "mainContentType",
-            value: ["event"],
+            value: ["eventFlexible"],
           },
           title: "Pick the sub-content type",
           type: "string",
