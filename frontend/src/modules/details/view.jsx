@@ -873,14 +873,16 @@ const ButtonMenu = withRouter(
     const canEdit = () =>
       isAuthenticated &&
       profile.reviewStatus === "APPROVED" &&
-      (profile.role === "ADMIN" || profile.id === topic.createdBy) &&
+      (profile.role === "ADMIN" ||
+        profile.id === topic.createdBy ||
+        topic.owners.includes(profile.id)) &&
       ((topic.type !== "project" && !noEditTopics.has(topic.type)) ||
         (topic.type === "project" && topic.id > 10000));
 
     const canDelete = () =>
       isAuthenticated &&
       profile.reviewStatus === "APPROVED" &&
-      profile.role === "ADMIN";
+      (topic.owners.includes(profile.id) || profile.role === "ADMIN");
 
     return (
       <div className="button-wrapper">

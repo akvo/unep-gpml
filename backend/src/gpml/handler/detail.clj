@@ -4,6 +4,7 @@
             [gpml.db.project :as db.project]
             [clojure.java.jdbc :as jdbc]
             [gpml.db.initiative :as db.initiative]
+            [gpml.db.topic-stakeholder-auth :as db.topic-stakeholder-auth]
             [gpml.db.language :as db.language]
             [gpml.db.submission :as db.submission]
             [gpml.handler.image :as handler.image]
@@ -279,12 +280,16 @@
   (let [topic (:topic-type path)
         submission (->> {:table-name (util/get-internal-topic-type topic) :id (:topic-id path)}
                         (db.submission/detail conn))
-        access-allowed? (or (= (:review_status submission) "APPROVED")
+        user-auth-roles (:roles (db.topic-stakeholder-auth/get-auth-by-topic-and-stakeholder conn {:topic-id (:topic-id path)
+                                                                                                   :topic-type (util/get-internal-topic-type topic)
+                                                                                                   :stakeholder (:id user)}))
+        access-allowed? (or (contains? (set user-auth-roles) "owner")
                             (= (:role user) "ADMIN")
                             (and (not (nil? (:id user)))
                                  (= (:created_by submission) (:id user))))]
     (when access-allowed?
       submission)))
+
 (def not-nil-name #(vec (filter :name %)))
 
 (defn adapt [data]
@@ -388,8 +393,8 @@
           authorized? (and (or (model.topic/public? topic) approved?)
                            (some? (get-resource-if-allowed conn path user)))]
       (if authorized?
-        (if-let [data (:json (db.detail/get-detail conn path))]
-          (resp/response (adapt (merge data (extra-details topic conn data))))
+        (if-let [data (db.detail/get-detail conn path)]
+          (resp/response (merge (adapt (merge (:json data) (extra-details topic conn (:json data)))) {:owners (:owners data)}))
           util/not-found)
         util/unauthorized))))
 

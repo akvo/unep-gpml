@@ -11,7 +11,8 @@
 
 (defmethod ig/init-key ::get-topic-auth [_ {:keys [conn]}]
   (fn [{{:keys [path]} :parameters user :user}]
-    (let [authorized? user]
+    (let [authorized? user
+          path (update path :topic-type util/get-internal-topic-type)]
       (if authorized?
         (if-let [data (db.ts-auth/get-auth-by-topic conn path)]
           (resp/response (merge path {:auth-stakeholders data}))
@@ -20,7 +21,8 @@
 
 (defmethod ig/init-key ::post-topic-auth [_ {:keys [conn]}]
   (fn [{{:keys [path body]} :parameters user :user}]
-    (let [authorized? user]
+    (let [authorized? user
+          path (update path :topic-type util/get-internal-topic-type)]
       (if authorized?
         (do
           (jdbc/with-db-transaction [tx-conn conn]
@@ -34,7 +36,8 @@
 
 (defmethod ig/init-key ::get-topic-stakeholder-auth [_ {:keys [conn]}]
   (fn [{{:keys [path]} :parameters user :user}]
-    (let [authorized? user]
+    (let [authorized? user
+          path (update path :topic-type util/get-internal-topic-type)]
       (if authorized?
         (if-let [data (db.ts-auth/get-auth-by-topic-and-stakeholder conn path)]
           (resp/response (merge path data))
@@ -43,7 +46,8 @@
 
 (defmethod ig/init-key ::new-roles [_ {:keys [conn]}]
   (fn [{{:keys [path body]} :parameters user :user}]
-    (let [authorized? user]
+    (let [authorized? user
+          path (update path :topic-type util/get-internal-topic-type)]
       (if authorized?
         (do
           (db.ts-auth/new-auth conn (merge path body))
@@ -52,7 +56,8 @@
 
 (defmethod ig/init-key ::update-roles [_ {:keys [conn]}]
   (fn [{{:keys [path body]} :parameters user :user}]
-    (let [authorized? user]
+    (let [authorized? user
+          path (update path :topic-type util/get-internal-topic-type)]
       (if authorized?
         (do
           (db.ts-auth/update-auth conn (merge path body))
@@ -61,7 +66,8 @@
 
 (defmethod ig/init-key ::delete [_ {:keys [conn]}]
   (fn [{{:keys [path body]} :parameters user :user}]
-    (let [authorized? user]
+    (let [authorized? user
+          path (update path :topic-type util/get-internal-topic-type)]
       (if authorized?
         (do
           (db.ts-auth/delete-auth conn path)
