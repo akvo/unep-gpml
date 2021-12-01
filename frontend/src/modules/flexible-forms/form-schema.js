@@ -54,6 +54,7 @@ export const schema = {
           title: "Pick the sub-content type",
           type: "string",
           enum: [],
+          enumNames: [],
         },
         action: {
           depend: {
@@ -63,6 +64,7 @@ export const schema = {
           title: "Pick the sub-content type",
           type: "string",
           enum: [],
+          enumNames: [],
         },
         policy: {
           depend: {
@@ -72,6 +74,7 @@ export const schema = {
           title: "Pick the sub-content type",
           type: "string",
           enum: [],
+          enumNames: [],
         },
         financing: {
           depend: {
@@ -81,6 +84,7 @@ export const schema = {
           title: "Pick the sub-content type",
           type: "string",
           enum: [],
+          enumNames: [],
         },
         technical: {
           depend: {
@@ -90,15 +94,17 @@ export const schema = {
           title: "Pick the sub-content type",
           type: "string",
           enum: [],
+          enumNames: [],
         },
-        eventFlexible: {
+        event_flexible: {
           depend: {
             id: "mainContentType",
-            value: ["eventFlexible"],
+            value: ["event_flexible"],
           },
           title: "Pick the sub-content type",
           type: "string",
           enum: [],
+          enumNames: [],
         },
         technology: {
           depend: {
@@ -108,6 +114,7 @@ export const schema = {
           title: "Pick the sub-content type",
           type: "string",
           enum: [],
+          enumNames: [],
         },
         capacity_building: {
           depend: {
@@ -117,6 +124,7 @@ export const schema = {
           title: "Pick the sub-content type",
           type: "string",
           enum: [],
+          enumNames: [],
         },
       },
     },

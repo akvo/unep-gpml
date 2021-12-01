@@ -1,9 +1,7 @@
 /* eslint-disable no-else-return */
 import { UIStore } from "../../store";
 import React from "react";
-import InitiativeImage from "../../images/initiative.png";
 import { Col, Radio } from "antd";
-import "./style.scss";
 
 const RadioWidget = ({
   autofocus,

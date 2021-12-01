@@ -16,28 +16,28 @@
       "ui:widget": "MainContentRadioWidget"
     },
     "initiative": {
-      "ui:widget": "radio"
+      "ui:widget": "SubContentRadioWidget"
     },
     "action": {
-      "ui:widget": "radio"
+      "ui:widget": "SubContentRadioWidget"
     },
     "policy": {
-      "ui:widget": "radio"
+      "ui:widget": "SubContentRadioWidget"
     },
     "financing": {
-      "ui:widget": "radio"
+      "ui:widget": "SubContentRadioWidget"
     },
     "technical": {
-      "ui:widget": "radio"
+      "ui:widget": "SubContentRadioWidget"
     },
-    "eventFlexible": {
-      "ui:widget": "radio"
+    "event_flexible": {
+      "ui:widget": "SubContentRadioWidget"
     },
     "technology": {
-      "ui:widget": "radio"
+      "ui:widget": "SubContentRadioWidget"
     },
     "capacity_building": {
-      "ui:widget": "radio"
+      "ui:widget": "SubContentRadioWidget"
     },
     "ui:order": [
       "mainContentType",
@@ -46,7 +46,7 @@
       "policy",
       "financing",
       "technical",
-      "eventFlexible",
+      "event_flexible",
       "technology",
       "capacity_building"
     ]
