@@ -731,7 +731,9 @@ const AdminSection = ({
                           </span>
                         )}
                         {listOpts.reviewStatus !== null &&
-                          !isEmpty(item.reviewers) && <span>Review: </span>}
+                          !isEmpty(item.reviewers) && (
+                            <span>Status of the review: </span>
+                          )}
                         {listOpts.reviewStatus !== null &&
                           item.reviewers.map((x) => (
                             <span
