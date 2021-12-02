@@ -120,6 +120,13 @@ const ProfileView = ({ ...props }) => {
     count: 0,
     pages: 0,
   });
+  const [entitiesData, setEntitiesData] = useState({
+    stakeholders: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = null;
@@ -150,6 +157,16 @@ const ProfileView = ({ ...props }) => {
           "SUBMITTED"
         );
         setResourcesData(data);
+      })();
+      (async () => {
+        const { page, limit } = resourcesData;
+        const data = await fetchSubmissionData(
+          page,
+          limit,
+          "entities",
+          "SUBMITTED"
+        );
+        setEntitiesData(data);
       })();
     }
     if (reviewerRoles.has(profile?.role)) {
@@ -260,7 +277,7 @@ const ProfileView = ({ ...props }) => {
         case "admin-section":
           menuText = renderMenuText(
             it.name,
-            stakeholdersData.count + resourcesData.count
+            stakeholdersData.count + resourcesData.count + entitiesData.count
           );
           break;
         default:
@@ -376,6 +393,8 @@ const ProfileView = ({ ...props }) => {
                     setStakeholdersData={setStakeholdersData}
                     resourcesData={resourcesData}
                     setResourcesData={setResourcesData}
+                    entitiesData={entitiesData}
+                    setEntitiesData={setEntitiesData}
                   />
                 )}
               </Col>

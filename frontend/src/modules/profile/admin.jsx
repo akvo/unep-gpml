@@ -14,7 +14,7 @@ import {
 import React from "react";
 import { useEffect, useState } from "react";
 import api from "../../utils/api";
-import { fetchSubmissionData, fetchStakeholders } from "./utils";
+import { fetchSubmissionData } from "./utils";
 import moment from "moment";
 import isEmpty from "lodash/isEmpty";
 import invert from "lodash/invert";
@@ -257,6 +257,8 @@ const AdminSection = ({
   setResourcesData,
   stakeholdersData,
   setStakeholdersData,
+  entitiesData,
+  setEntitiesData,
 }) => {
   const profile = UIStore.useState((s) => s.profile);
   const [modalRejectVisible, setModalRejectVisible] = useState(false);
@@ -271,12 +273,20 @@ const AdminSection = ({
   const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [tab, setTab] = useState("stakeholders-entities");
+  const [tab, setTab] = useState("stakeholders");
   const [stakeholdersListOpts, setStakeholdersListOpts] = useState({
     titleFilter: null,
     reviewStatus: "SUBMITTED",
     data: stakeholdersData,
     type: "stakeholders",
+    current: 1,
+    size: 10,
+  });
+  const [entitiesListOpts, setEntitiesListOpts] = useState({
+    titleFilter: null,
+    reviewStatus: "SUBMITTED",
+    data: entitiesData,
+    type: "entities",
     current: 1,
     size: 10,
   });
@@ -757,11 +767,14 @@ const AdminSection = ({
         className="profile-tab-menu"
       >
         <TabPane
-          tab="Stakeholders & Entities"
-          key="stakeholders-entities"
+          tab="Stakeholders"
+          key="stakeholders"
           className="profile-tab-pane"
         >
           {renderList(stakeholdersListOpts, setStakeholdersListOpts)}
+        </TabPane>
+        <TabPane tab="Entities" key="entities" className="profile-tab-pane">
+          {renderList(entitiesListOpts, setEntitiesListOpts)}
         </TabPane>
         <TabPane tab="Resources" key="resources" className="profile-tab-pane">
           {renderList(resourcesListOpts, setResourcesListOpts)}
