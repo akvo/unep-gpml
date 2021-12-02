@@ -103,9 +103,15 @@
     }
     input {
       background-color: #edf2f7;
+      &::placeholder {
+        color: #a5b0c9;
+      }
     }
     textarea {
       background-color: #edf2f7;
+      &::placeholder {
+        color: #a5b0c9;
+      }
     }
     .ant-input-group-addon {
       background: #ccd2e3;
@@ -213,6 +219,9 @@
         padding: 20px;
         .ant-select-selector {
           background-color: #edf2f7;
+          .ant-select-selection-placeholder {
+            color: #a5b0c9;
+          }
           input {
             background-color: transparent;
           }

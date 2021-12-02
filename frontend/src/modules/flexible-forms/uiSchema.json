@@ -74,11 +74,11 @@
     },
     "S4_G2": {
       "S4_G2_5": {
-        "ui:placeholder": "Select a city",
+        "ui:placeholder": "Search",
         "ui:showSearch": true
       },
       "S4_G2_6": {
-        "ui:placeholder": "Select a city",
+        "ui:placeholder": "Choose the coverage type",
         "ui:showSearch": true
       },
       "S4_G2_7": {},
