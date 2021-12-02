@@ -628,7 +628,7 @@ const AdminSection = ({
               setListOpts={setListOpts}
             />
           )}
-          {item.reviewStatus === "APPROVED" && (
+          {item.reviewStatus === "APPROVED" && item.type !== "stakeholder" && (
             <OwnerSelect
               item={item}
               reviewers={reviewers}
