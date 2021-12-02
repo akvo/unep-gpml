@@ -49,7 +49,8 @@ data AS (
     LEFT JOIN authz a on s.id=a.id and s.type=a.type
     LEFT JOIN reviewers r on s.id=r.id and s.type=r.type
     WHERE 1=1
---~ (when (= "stakeholders" (:only params)) " AND  s.type IN ('stakeholder', 'organisation') ")
+--~ (when (= "entities" (:only params)) " AND  s.type IN ( 'organisation') ")
+--~ (when (= "stakeholders" (:only params)) " AND  s.type IN ('stakeholder') ")
 --~ (when (= "resources" (:only params)) " AND  s.type NOT IN ('stakeholder', 'organisation') ")
 --~ (when (:title params) (str " AND s.title ILIKE '%" (:title params) "%' ") )
     ORDER BY s.created
@@ -61,7 +62,8 @@ SELECT json_build_object(
     'count', (
     SELECT COUNT(*) FROM submission
     WHERE 1=1
---~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder', 'organisation') ")
+--~ (when (= "entities" (:only params)) " AND type IN ('organisation') ")
+--~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder') ")
 --~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation') ")
 --~ (when (:title params) (str " AND title ILIKE '%" (:title params) "%' ") )
     ),
@@ -69,7 +71,8 @@ SELECT json_build_object(
     'pages', (
     SELECT COUNT(*) FROM submission
     WHERE 1=1
---~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder', 'organisation') ")
+--~ (when (= "entities" (:only params)) " AND type IN ( 'organisation') ")
+--~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder') ")
 --~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation') ")
 --~ (when (:title params) (str " AND title ILIKE '%" (:title params) "%' ") )
     ) / :limit,

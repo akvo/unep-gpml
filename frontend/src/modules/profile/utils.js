@@ -17,14 +17,14 @@ export const fetchArchiveData = async (
 export const fetchSubmissionData = async (
   page,
   limit,
-  resources_or_stakeholders,
+  resources_or_entities_or_stakeholders,
   review_status,
   title
 ) => {
   let params = {
     page,
     limit,
-    only: resources_or_stakeholders,
+    only: resources_or_entities_or_stakeholders,
   };
   if (review_status) {
     params = { review_status, ...params };

@@ -54,7 +54,7 @@
                                           {:get {:summary "Get the list approved submissions"
                                                  :swagger {:tags ["archive"] :security [{:id_token []}]}
                                                  :parameters {:query [:map
-                                                                      [:only {:optional true} [:enum "resources" "stakeholders" "tags"]]
+                                                                      [:only {:optional true} [:enum "resources" "stakeholders" "tags" "entities"]]
                                                                       [:page {:optional true
                                                                                    :default 1} int?]
                                                                       [:limit {:optional true
@@ -70,7 +70,7 @@
                                           {:get {:summary "Get the list of submissions"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:query [:map
-                                                                      [:only {:optional true} [:enum "resources" "stakeholders" "tags"]]
+                                                                      [:only {:optional true} [:enum "resources" "stakeholders" "tags" "entities"]]
                                                                       [:review_status
                                                                        {:optional true #_#_:default "SUBMITTED"
                                                                         }
