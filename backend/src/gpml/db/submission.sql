@@ -38,7 +38,7 @@ authz AS (
     LEFT JOIN stakeholder st ON a.stakeholder = st.id
     GROUP BY s.id, s.type),
 reviewers AS (
-    select s.id, s.type, COALESCE(json_agg(st.id) FILTER (WHERE st.email IS NOT NULL), '[]') as reviewers  from submission s
+    select s.id, s.type, COALESCE(json_agg(json_build_object ('id', st.id, 'review_status', st.review_status)) FILTER (WHERE st.email IS NOT NULL), '[]') as reviewers   from submission s
     LEFT JOIN review r ON r.topic_type = s.topic::topic_type AND r.topic_id = s.id
     LEFT JOIN stakeholder st ON r.reviewer = st.id
     GROUP BY s.id, s.type),
