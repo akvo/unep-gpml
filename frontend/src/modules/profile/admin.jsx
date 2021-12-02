@@ -232,12 +232,21 @@ const OwnerSelect = ({
       <div style={{ width: "100%" }}>Owners</div>
       <Select
         style={{ width: "100%" }}
-        showSearch={false}
+        showSearch={true}
         mode="multiple"
         placeholder="Assign owner"
         onChange={(data) => onChangeOwner(item, data, listOpts, setListOpts)} // onChangeOwner(resource, role)}
         value={item?.owners}
         loading={item?.id === loading}
+        optionFilterProp="children"
+        filterOption={(input, option) =>
+          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+        filterSort={(optionA, optionB) =>
+          optionA.children
+            .toLowerCase()
+            .localeCompare(optionB.children.toLowerCase())
+        }
         // FIXME: Disallow changing roles of other admins?
         // stakeholder?.role === "ADMIN"
         disabled={item?.id === loading}
@@ -432,12 +441,21 @@ const AdminSection = ({
         <Select
           style={{ width: "50%" }}
           mode="multiple"
-          showSearch={false}
+          showSearch={true}
           className="select-reviewer"
           placeholder="Assign reviewers"
           onChange={(data) => assignReviewer(item, data, listOpts, setListOpts)}
-          value={item?.reviewers.map(x => x.id)}
+          value={item?.reviewers.map((x) => x.id)}
           loading={item?.id === loading}
+          optionFilterProp="children"
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          filterSort={(optionA, optionB) =>
+            optionA.children
+              .toLowerCase()
+              .localeCompare(optionB.children.toLowerCase())
+          }
           // FIXME: Disallow changing roles of other admins?
           // stakeholder?.role === "ADMIN"
           disabled={item?.id === loading}
