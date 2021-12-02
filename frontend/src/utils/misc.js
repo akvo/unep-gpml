@@ -89,6 +89,12 @@ export const reviewStatusUIText = {
   REJECT: "Decline",
 };
 
+export const submissionReviewStatusUIText = {
+  SUBMITTED: "Submitted",
+  APPROVED: "Published",
+  REJECTED: "Declined",
+};
+
 export const reviewCommentModalTitle = {
   ACCEPTED: "Approving",
   REJECTED: "Declining",

@@ -25,6 +25,7 @@ import {
   resourceTypeToTopicType,
   reviewStatusUIText,
   publishStatusUIText,
+  submissionReviewStatusUIText,
 } from "../../utils/misc";
 import {
   LoadingOutlined,
@@ -726,9 +727,19 @@ const AdminSection = ({
                           <span
                             className={`status review-status ${item.reviewStatus.toLowerCase()}`}
                           >
-                            {reviewStatusUIText[item.reviewStatus]}
+                            {submissionReviewStatusUIText[item.reviewStatus]}
                           </span>
                         )}
+                        {listOpts.reviewStatus !== null &&
+                          !isEmpty(item.reviewers) && <span>Review: </span>}
+                        {listOpts.reviewStatus !== null &&
+                          item.reviewers.map((x) => (
+                            <span
+                              className={`status review-status ${x.reviewStatus.toLowerCase()}`}
+                            >
+                              {reviewStatusUIText[x.reviewStatus]}
+                            </span>
+                          ))}
                       </div>
                       <RenderRow
                         item={item}
