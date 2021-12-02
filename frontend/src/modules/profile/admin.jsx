@@ -436,7 +436,7 @@ const AdminSection = ({
           className="select-reviewer"
           placeholder="Assign reviewers"
           onChange={(data) => assignReviewer(item, data, listOpts, setListOpts)}
-          value={item?.reviewers}
+          value={item?.reviewers.map(x => x.id)}
           loading={item?.id === loading}
           // FIXME: Disallow changing roles of other admins?
           // stakeholder?.role === "ADMIN"
