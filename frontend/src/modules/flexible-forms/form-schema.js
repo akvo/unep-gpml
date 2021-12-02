@@ -1,4 +1,5 @@
 import { UIStore } from "../../store";
+const { geoCoverageTypeOptions } = UIStore.currentState;
 
 export const schema = {
   type: "object",
@@ -157,6 +158,42 @@ export const schema = {
               title: "URL",
               type: "string",
               format: "url",
+            },
+          },
+        },
+        S4_G2: {
+          title: "",
+          type: "object",
+          depend: {
+            id: "steps",
+            value: 1,
+          },
+          required: ["S4_G2_5", "S4_G2_6"],
+          properties: {
+            S4_G2_5: {
+              title: "In which country are you headquarters?",
+              enum: [],
+            },
+            S4_G2_6: {
+              title: "What is the geographical coverage of your Entity?",
+              type: "string",
+              dependency: [
+                {
+                  value: ["national"],
+                  questions: ["S4_G2_6.1"],
+                },
+                {
+                  value: ["transnational"],
+                  questions: ["S4_G2_6.2"],
+                },
+              ],
+              enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
+              enumNames: geoCoverageTypeOptions,
+            },
+            S4_G2_7: {
+              title:
+                "Please indicate if your Entity operates in a Subnational area only",
+              type: "string",
             },
           },
         },

@@ -211,6 +211,12 @@
         border-radius: 5px;
         width: 100%;
         padding: 20px;
+        .ant-select-selector {
+          background-color: #edf2f7;
+          input {
+            background-color: transparent;
+          }
+        }
         .custom-radio {
           height: auto;
           margin-bottom: 20px;

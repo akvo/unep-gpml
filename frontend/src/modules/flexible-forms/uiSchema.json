@@ -9,6 +9,7 @@
     },
     "S2_G1_1.1": {
       "ui:widget": "select",
+      "ui:placeholder": "Select individuals",
       "ui:showSearch": true
     },
     "ui:order": ["S2_1", "S2_G1_1.1"]
@@ -70,6 +71,18 @@
         "ui:placeholder": "Url"
       },
       "ui:order": ["S4_G1_2", "S4_G1_3", "S4_G1_4"]
+    },
+    "S4_G2": {
+      "S4_G2_5": {
+        "ui:placeholder": "Select a city",
+        "ui:showSearch": true
+      },
+      "S4_G2_6": {
+        "ui:placeholder": "Select a city",
+        "ui:showSearch": true
+      },
+      "S4_G2_7": {},
+      "ui:order": ["S4_G2_5", "S4_G2_6", "S4_G2_7"]
     }
   }
 }

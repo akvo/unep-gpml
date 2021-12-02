@@ -55,7 +55,7 @@ const RadioWidget = ({
           }
           autoFocus={i === 0 ? autofocus : false}
           disabled={enumDisabled && enumDisabled.indexOf(value) !== -1}
-          key={`${optionValue}`}
+          key={`${optionValue + i}`}
           value={`${optionValue}`}
         >
           {options.flexible && (
