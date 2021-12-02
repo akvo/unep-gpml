@@ -80,13 +80,18 @@ export const relationsByTopicType = {
 export const userRoles = ["USER", "REVIEWER", "ADMIN"];
 
 export const reviewStatusUIText = {
-  SUBMITTED: "Submitted",
   PENDING: "Awaiting Review",
   ACCEPTED: "Approved",
   REJECTED: "Declined",
   ACCEPT: "Approve",
   APPROVED: "Approved",
   REJECT: "Decline",
+};
+
+export const submissionReviewStatusUIText = {
+  SUBMITTED: "Submitted",
+  APPROVED: "Published",
+  REJECTED: "Declined",
 };
 
 export const reviewCommentModalTitle = {
