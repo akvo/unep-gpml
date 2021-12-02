@@ -87,9 +87,9 @@ const HeaderSearch = ({ placeholder, listOpts, setListOpts }) => {
     />
   );
 };
-const reviewStatusOrderedList = ["Approved", "Pending", "Declined"];
+const reviewStatusOrderedList = ["Published", "Pending", "Declined"];
 const statusDictToHuman = {
-  APPROVED: "Approved",
+  APPROVED: "Published",
   SUBMITTED: "Pending",
   REJECTED: "Declined",
 };
