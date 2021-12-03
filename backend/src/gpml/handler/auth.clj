@@ -1,10 +1,20 @@
 (ns gpml.handler.auth
   (:require
    [clojure.java.jdbc :as jdbc]
+   [clojure.set :as set]
    [gpml.db.topic-stakeholder-auth :as db.ts-auth]
    [gpml.handler.util :as util]
+   [gpml.auth :as auth]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
+
+(defn grant-topic-to-stakeholder! [conn {:keys [topic-id topic-type stakeholder-id roles]}]
+  {:pre [(empty? (set/difference (set roles)  auth/authz-roles))]}
+  (let [opts {:topic-id    topic-id
+              :topic-type  topic-type
+              :stakeholder stakeholder-id
+              :roles       roles}]
+    (db.ts-auth/new-auth conn opts)))
 
 (defmethod ig/init-key ::get-topic-auth [_ {:keys [conn]}]
   (fn [{{:keys [path]} :parameters user :user}]
@@ -19,15 +29,16 @@
 (defmethod ig/init-key ::post-topic-auth [_ {:keys [conn]}]
   (fn [{{:keys [path body]} :parameters user :user}]
     (let [authorized? user
-          path (update path :topic-type util/get-internal-topic-type)]
+          path        (update path :topic-type util/get-internal-topic-type)]
       (if authorized?
         (do
           (jdbc/with-db-transaction [tx-conn conn]
             (db.ts-auth/delete-auth-by-topic tx-conn path)
-           (doseq [s (:stakeholders body)]
-             (let [opts (assoc path :stakeholder (:id s)
-                               :roles (:roles s))]
-               (db.ts-auth/new-auth tx-conn opts))))
+            (doseq [s (:stakeholders body)]
+              (grant-topic-to-stakeholder! tx-conn
+                                           (assoc path
+                                                  :stakeholder-id (:id s)
+                                                  :roles (:roles s)))))
           (resp/response (merge path body)))
         util/unauthorized))))
 

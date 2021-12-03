@@ -129,3 +129,5 @@
 (def owners-schema
   [:owners {:optional true}
    [:vector integer?]])
+
+(def authz-roles #{"owner"})
