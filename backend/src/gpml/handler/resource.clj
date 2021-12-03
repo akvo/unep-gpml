@@ -7,6 +7,7 @@
             [gpml.email-util :as email]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
+            [gpml.handler.auth :as h.auth]
             [gpml.handler.organisation :as handler.org]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
@@ -17,7 +18,7 @@
                                     geo_coverage_type geo_coverage_value
                                     geo_coverage_countries geo_coverage_country_groups
                                     attachments country urls tags remarks
-                                    created_by mailjet-config]}]
+                                    created_by mailjet-config owners]}]
   (let [organisation (if (= -1 (:id org))
                        [(handler.org/create conn org)]
                        [(:id org)])
@@ -40,6 +41,14 @@
               :remarks remarks
               :created_by created_by}
         resource-id (->> data (db.resource/new-resource conn) :id)]
+    (when (not-empty owners)
+      (doseq [stakeholder-id owners]
+        (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
+                                                  :topic-type "resource"
+                                                  :stakeholder-id stakeholder-id
+                                                  :roles ["owner"]}))
+      (db.resource/add-resource-organisations conn {:organisations
+                                                    (map #(vector resource-id %) organisation)}))
     (when (not-empty organisation)
       (db.resource/add-resource-organisations conn {:organisations
                                                     (map #(vector resource-id %) organisation)}))
