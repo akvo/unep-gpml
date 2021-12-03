@@ -1,11 +1,8 @@
 (ns gpml.handler.auth
   (:require
-    [clojure.java.jdbc :as jdbc]
-   ;;   [clojure.string :as str]
-   ;;   [gpml.constants :as constants]
-   [gpml.handler.util :as util]
+   [clojure.java.jdbc :as jdbc]
    [gpml.db.topic-stakeholder-auth :as db.ts-auth]
-   ;;   [gpml.model.topic :as model.topic]
+   [gpml.handler.util :as util]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
