@@ -125,3 +125,7 @@
         (handler (assoc request :reviewer user))
         {:status 403
          :body {:message "Unauthorized"}}))))
+
+(def owners-schema
+  [:owners {:optional true}
+   [:vector integer?]])
