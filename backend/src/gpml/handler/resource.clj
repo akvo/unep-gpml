@@ -1,12 +1,13 @@
 (ns gpml.handler.resource
   (:require [clojure.java.jdbc :as jdbc]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.organisation :as handler.org]
-            [gpml.handler.image :as handler.image]
+            [gpml.auth :as auth]
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.image :as handler.image]
+            [gpml.handler.organisation :as handler.org]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -114,7 +115,8 @@
            [:vector {:optional true}
             [:map [:lang string?] [:url [:string {:min 1}]]]]]
           [:tags {:optional true}
-           [:vector {:optional true} integer?]]]
+           [:vector {:optional true} integer?]]
+          auth/owners-schema]
          handler.geo/params-payload)
    [:fn {:error/message "value is required" :error/path [:value]}
     (fn [{:keys [resource_type value]}] (or-and resource_type value))]
