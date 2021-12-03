@@ -1,12 +1,14 @@
 (ns gpml.handler.resource
   (:require [clojure.java.jdbc :as jdbc]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.organisation :as handler.org]
-            [gpml.handler.image :as handler.image]
+            [gpml.auth :as auth]
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.image :as handler.image]
+            [gpml.handler.auth :as h.auth]
+            [gpml.handler.organisation :as handler.org]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -16,7 +18,7 @@
                                     geo_coverage_type geo_coverage_value
                                     geo_coverage_countries geo_coverage_country_groups
                                     attachments country urls tags remarks
-                                    created_by mailjet-config]}]
+                                    created_by mailjet-config owners]}]
   (let [organisation (if (= -1 (:id org))
                        [(handler.org/create conn org)]
                        [(:id org)])
@@ -39,6 +41,14 @@
               :remarks remarks
               :created_by created_by}
         resource-id (->> data (db.resource/new-resource conn) :id)]
+    (when (not-empty owners)
+      (doseq [stakeholder-id owners]
+        (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
+                                                  :topic-type "resource"
+                                                  :stakeholder-id stakeholder-id
+                                                  :roles ["owner"]}))
+      (db.resource/add-resource-organisations conn {:organisations
+                                                    (map #(vector resource-id %) organisation)}))
     (when (not-empty organisation)
       (db.resource/add-resource-organisations conn {:organisations
                                                     (map #(vector resource-id %) organisation)}))
@@ -83,39 +93,39 @@
 (def post-params
   [:and
    (into [:map
-     [:resource_type
-      [:enum "Financing Resource", "Technical Resource", "Action Plan"]]
-     [:title string?]
-     [:country integer?]
-     [:org {:optional true} map?
-      (into
-       [:map
-        [:id {:optional true} integer?]
-        [:name {:optional true} string?]
-        [:url {:optional true} string?]
-        [:country {:optional true} integer?]
-        [:geo_coverage_type {:optional true}
-         [:enum "global", "regional", "national", "transnational",
-          "sub-national", "global with elements in specific areas"]]]
-       handler.geo/params-payload)]
-     [:publish_year integer?]
-     [:summary {:optional true} string?]
-     [:value {:optional true} integer?]
-     [:value_currency {:optional true} string?]
-     [:value_remarks {:optional true} string?]
-     [:valid_from {:optional true} string?]
-     [:valid_to {:optional true} string?]
-     [:geo_coverage_type
-      [:enum "global", "regional", "national", "transnational",
-       "sub-national", "global with elements in specific areas"]]
-
-     [:image {:optional true} string?]
-     [:remarks {:optional true} string?]
-     [:urls {:optional true}
-      [:vector {:optional true}
-       [:map [:lang string?] [:url [:string {:min 1}]]]]]
-     [:tags {:optional true}
-      [:vector {:optional true} integer?]]]
+          [:resource_type
+           [:enum "Financing Resource", "Technical Resource", "Action Plan"]]
+          [:title string?]
+          [:country integer?]
+          [:org {:optional true} map?
+           (into
+            [:map
+             [:id {:optional true} integer?]
+             [:name {:optional true} string?]
+             [:url {:optional true} string?]
+             [:country {:optional true} integer?]
+             [:geo_coverage_type {:optional true}
+              [:enum "global", "regional", "national", "transnational",
+               "sub-national", "global with elements in specific areas"]]]
+            handler.geo/params-payload)]
+          [:publish_year integer?]
+          [:summary {:optional true} string?]
+          [:value {:optional true} integer?]
+          [:value_currency {:optional true} string?]
+          [:value_remarks {:optional true} string?]
+          [:valid_from {:optional true} string?]
+          [:valid_to {:optional true} string?]
+          [:geo_coverage_type
+           [:enum "global", "regional", "national", "transnational",
+            "sub-national", "global with elements in specific areas"]]
+          [:image {:optional true} string?]
+          [:remarks {:optional true} string?]
+          [:urls {:optional true}
+           [:vector {:optional true}
+            [:map [:lang string?] [:url [:string {:min 1}]]]]]
+          [:tags {:optional true}
+           [:vector {:optional true} integer?]]
+          auth/owners-schema]
          handler.geo/params-payload)
    [:fn {:error/message "value is required" :error/path [:value]}
     (fn [{:keys [resource_type value]}] (or-and resource_type value))]
