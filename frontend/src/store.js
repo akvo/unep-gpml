@@ -67,11 +67,15 @@ const mainContentType = [
       "Technology and Processes",
       "Monitoring and Analysis",
     ],
+    desc:
+      "These include a wide range of actions from legislation, behaviour change initiatives, education, training, events, new technologies, monitoring and analysis initiatives and science Initiatives. Existing actions and initiatives have been collected via an online survey for voluntary inputs and narrative submissions. Initiatives are linked to a Dashboard.",
   },
   {
     code: "action",
     name: "Action Plan",
     childs: ["Global", "Transnational", "National", "Sub-national"],
+    desc:
+      "An action plan is a detailed plan outlining actions needed to reach one or more goals. Alternatively, it can be defined as a sequence of steps that must be taken, or activities that must be performed well, for a strategy to succeed. Development of action plans is required under many multilateral environmental agreements to facilitate implementation.",
   },
   {
     code: "policy",
@@ -84,6 +88,8 @@ const mainContentType = [
       "Certification, Licensing and Registration",
       "Policy Guidance and Information",
     ],
+    desc:
+      "Policy documents defined here as official (and occasionally unofficial translations of) documents that include public-facing laws and amendments, statutes, ordinances, management plans, executive orders, agreements, treaties, and memorandums of understanding, among others written and adopted by government entities, demonstrating an intent to reduce plastic pollution at varying stages of the plastics lifecycle.",
   },
   {
     code: "financing",
@@ -97,6 +103,8 @@ const mainContentType = [
       "Multidonor trust fund",
       "Sustainable development bonds, green bonds and blue bonds ",
     ],
+    desc:
+      "Organizations or programmes providing financial support to entities tackling marine plastic litter. Such support includes grants, investment, and loans, among others.",
   },
   {
     code: "technical",
@@ -111,6 +119,8 @@ const mainContentType = [
       "Courses & Trainings",
       "Case studies",
     ],
+    desc:
+      "Resources and mechanisms collected through research based on publicly available information. Examples of technical resources range from pilot projects, policy recommendations, assessments, calculation model and tools, operational and technical guidelines, toolkits for decision-makers, best practices, manuals and more.",
   },
   {
     code: "event_flexible",
@@ -123,6 +133,8 @@ const mainContentType = [
       "Courses & Trainings",
       "Awareness Raising",
     ],
+    desc:
+      "Upcoming capacity building activities and events on marine litter, plastic pollution and related topics.",
   },
   {
     code: "technology",
@@ -135,6 +147,8 @@ const mainContentType = [
       "Development",
       "Research",
     ],
+    desc:
+      "A collection of technology solutions and of environmentally sound technologies, which identifies commercial solutions for the prevention of marine litter following a lifecycle approach, from source to sea, with a focus on both land-based and near-shore (litter capturing) technologies. Environmentally sound technologies, sections explaining alternative materials, chemical recycling, additives etc.",
   },
   {
     code: "capacity_building",
@@ -149,6 +163,8 @@ const mainContentType = [
       "Financing Resources",
       "Case studies",
     ],
+    desc:
+      "The definition of capacity building is broad. It is a holistic enterprise, encompassing a multitude of activities. It means building abilities, relationships and values that will enable organisations, groups and individuals to improve their performance and achieve their development objectives. It includes strengthening the processes, systems and rules that influence collective and individual behaviour and performance in all development endeavours. And it means enhancing people’s technical ability and willingness to play new developmental roles and adapt to new demands and situations.",
   },
 ];
 

@@ -46,46 +46,70 @@ const getSchema = ({
   meaOptions,
   sectorOptions,
   organisationType,
+  organisations,
   representativeGroup,
   profile,
   mainContentType,
+  nonMemberOrganisations,
 }) => {
   const prop = cloneDeep(schema.properties);
+  const orgs = [...organisations];
 
-  prop.S3.properties["mainContentType"].enum = mainContentType?.map(
-    (x) => x.code
-  );
-  prop.S3.properties["mainContentType"].enumNames = mainContentType?.map(
-    (x) => x.name
-  );
+  prop.S2.properties["S2_G1_1.1"].enum = orgs?.map((it) => it.id);
+  prop.S2.properties["S2_G1_1.1"].enumNames = orgs?.map((it) => it.name);
 
-  prop.S3.properties["initiative"].enum = mainContentType.find(
+  prop.S3.properties["S3_G1"].enum = mainContentType?.map((x) => x.code);
+  prop.S3.properties["S3_G1"].enumNames = mainContentType?.map((x) => x.name);
+
+  prop.S3.properties["S3_G2"].enum = mainContentType.find(
     (x) => x.code === "initiative"
   )?.childs;
 
-  prop.S3.properties["action"].enum = mainContentType.find(
+  prop.S3.properties["S3_G3"].enum = mainContentType.find(
     (x) => x.code === "action"
   )?.childs;
 
-  prop.S3.properties["policy"].enum = mainContentType.find(
+  prop.S3.properties["S3_G4"].enum = mainContentType.find(
     (x) => x.code === "policy"
   )?.childs;
 
-  prop.S3.properties["financing"].enum = mainContentType.find(
+  prop.S3.properties["S3_G5"].enum = mainContentType.find(
     (x) => x.code === "financing"
   )?.childs;
-  prop.S3.properties["technical"].enum = mainContentType.find(
+  prop.S3.properties["S3_G6"].enum = mainContentType.find(
     (x) => x.code === "technical"
   )?.childs;
-  prop.S3.properties["event_flexible"].enum = mainContentType.find(
+  prop.S3.properties["S3_G7"].enum = mainContentType.find(
     (x) => x.code === "event_flexible"
   )?.childs;
-  prop.S3.properties["technology"].enum = mainContentType.find(
+  prop.S3.properties["S3_G8"].enum = mainContentType.find(
     (x) => x.code === "technology"
   )?.childs;
-  prop.S3.properties["capacity_building"].enum = mainContentType.find(
+  prop.S3.properties["S3_G9"].enum = mainContentType.find(
     (x) => x.code === "capacity_building"
   )?.childs;
+
+  // country options
+  prop.S4.properties.S4_G2.properties["S4_G2_5"].enum = countries?.map(
+    (x) => x.id
+  );
+  prop.S4.properties.S4_G2.properties["S4_G2_5"].enumNames = countries?.map(
+    (x) => x.name
+  );
+
+  prop.S4.properties.S4_G5.properties["S4_G5_11"].enum = organisations?.map(
+    (x) => x.id
+  );
+  prop.S4.properties.S4_G5.properties[
+    "S4_G5_11"
+  ].enumNames = organisations?.map((x) => x.name);
+
+  prop.S4.properties.S4_G5.properties["S4_G5_13"].enum = [-1].concat(
+    nonMemberOrganisations.map((x) => x.id)
+  );
+  prop.S4.properties.S4_G5.properties["S4_G5_13"].enumNames = ["Other"].concat(
+    nonMemberOrganisations.map((x) => x.name)
+  );
 
   return {
     schema: {
@@ -184,6 +208,8 @@ const tabs = [
     steps: [],
   },
 ];
+
+console.log(schema);
 
 export default {
   initialData,

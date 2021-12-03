@@ -2,7 +2,7 @@
 import { UIStore } from "../../store";
 import React from "react";
 import InfoBlue from "../../images/i-blue.png";
-import { Col, Radio } from "antd";
+import { Col, Radio, Popover } from "antd";
 
 const RadioWidget = ({
   autofocus,
@@ -71,9 +71,12 @@ const RadioWidget = ({
                   value={`${optionValue}`}
                 >
                   {optionLabel}
-                  <div className="info-icon-wrapper">
-                    <img src={InfoBlue} />
-                  </div>
+
+                  <Popover content="Title">
+                    <div className="info-icon-wrapper">
+                      <img src={InfoBlue} />
+                    </div>
+                  </Popover>
                 </Radio.Button>
               </Col>
             );

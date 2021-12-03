@@ -1,7 +1,9 @@
 /* eslint-disable no-else-return */
 import { UIStore } from "../../store";
+const { mainContentType } = UIStore.currentState;
 import React from "react";
-import { Col, Radio } from "antd";
+import { Col, Radio, Popover } from "antd";
+import InfoBlue from "../../images/i-blue.png";
 
 const RadioWidget = ({
   autofocus,
@@ -47,6 +49,9 @@ const RadioWidget = ({
     >
       {enumOptions.map(({ value: optionValue, label: optionLabel }, i) => {
         const img = require(`../../images/${optionValue}.png`).default;
+        const desc = mainContentType.find(
+          (element) => element.code === optionValue
+        ).desc;
         return (
           <Col className="gutter-row" xs={12} lg={6}>
             <Radio.Button
@@ -66,7 +71,14 @@ const RadioWidget = ({
                 <div className="content-circle">
                   <img src={img} alt="Initiative Image" />
                 </div>
-                <h2>{optionLabel}</h2>
+                <div className="info-icon-container">
+                  <h2>{optionLabel}</h2>
+                  <Popover content={desc}>
+                    <div className="info-icon-wrapper">
+                      <img src={InfoBlue} />
+                    </div>
+                  </Popover>
+                </div>
               </div>
             </Radio.Button>
           </Col>
