@@ -198,7 +198,7 @@ update stakeholder set
 --~ (when (contains? params :affiliation) "affiliation= :v:affiliation::integer, ")
 --~ (when (contains? params :linked_in) "linked_in= :linked_in,")
 --~ (when (contains? params :twitter) "twitter= :twitter,")
---~ (when (contains? params :non_member_organisation) "affiliation= :non_member_organisation,")
+--~ (when (contains? params :non_member_organisation) "non_member_organisation= :non_member_organisation,")
 --~ (when (contains? params :picture) "picture= :picture,")
 --~ (when (contains? params :cv) "cv= :cv, ")
 --~ (when (contains? params :country) "country= :v:country::integer,")
