@@ -1,154 +1,141 @@
 {
-  "S2": {
-    "classNames": "list-group",
-    "S2_1": {
-      "ui:widget": "radio",
-      "ui:options": {
-        "flexible": true
-      }
-    },
-    "S2_G1_1.1": {
-      "ui:widget": "select",
-      "ui:placeholder": "Select individuals",
-      "ui:showSearch": true
-    },
-    "ui:order": ["S2_1", "S2_G1_1.1"]
-  },
-  "S3": {
-    "classNames": "list-group",
-    "S3_G1": {
-      "ui:widget": "MainContentRadioWidget"
-    },
-    "S3_G2": {
-      "ui:widget": "SubContentRadioWidget"
-    },
-    "S3_G3": {
-      "ui:widget": "SubContentRadioWidget"
-    },
-    "S3_G4": {
-      "ui:widget": "SubContentRadioWidget"
-    },
-    "S3_G5": {
-      "ui:widget": "SubContentRadioWidget"
-    },
-    "S3_G6": {
-      "ui:widget": "SubContentRadioWidget"
-    },
-    "S3_G7": {
-      "ui:widget": "SubContentRadioWidget"
-    },
-    "S3_G8": {
-      "ui:widget": "SubContentRadioWidget"
-    },
-    "S3_G9": {
-      "ui:widget": "SubContentRadioWidget"
-    },
-    "ui:order": [
-      "S3_G1",
-      "S3_G2",
-      "S3_G3",
-      "S3_G4",
-      "S3_G5",
-      "S3_G6",
-      "S3_G7",
-      "S3_G8",
-      "S3_G9"
-    ]
-  },
-  "S4": {
-    "classNames": "list-group",
-    "S4_G1": {
-      "S4_G1_2": {
-        "ui:placeholder": "Title"
+  "initiative": {
+    "S2": {
+      "classNames": "list-group",
+      "S2_1": {
+        "ui:widget": "radio",
+        "ui:options": {
+          "flexible": true
+        }
       },
-      "S4_G1_3": {
-        "ui:placeholder": "Description",
-        "ui:widget": "textarea"
-      },
-      "S4_G1_4": {
-        "ui:addOnBefore": "https://",
-        "ui:widget": "URLWidget",
-        "ui:placeholder": "Url"
-      },
-      "ui:order": ["S4_G1_2", "S4_G1_3", "S4_G1_4"]
-    },
-    "S4_G2": {
-      "S4_G2_5": {
-        "ui:placeholder": "Search",
-        "ui:showSearch": true
-      },
-      "S4_G2_6": {
-        "ui:placeholder": "Choose the coverage type",
-        "ui:showSearch": true
-      },
-      "S4_G2_7": {},
-      "ui:order": ["S4_G2_5", "S4_G2_6", "S4_G2_7"]
-    },
-    "S4_G3": {
-      "S4_G3_8": {
-        "ui:placeholder": "Select a tag",
-        "ui:showSearch": true
-      },
-      "ui:order": ["S4_G3_8"]
-    },
-    "S4_G4": {
-      "S4_G4_9": {
-        "ui:options": { "accept": "image/*" },
-        "ui:widget": "file"
-      },
-      "S4_G4_10": {
-        "ui:options": { "accept": "image/*" },
-        "ui:widget": "file"
-      },
-      "ui:order": ["S4_G4_9", "S4_G4_10"]
-    },
-    "S4_G5": {
-      "S4_G5_11": {
-        "ui:placeholder": "Entity name",
-        "ui:showSearch": true,
-        "ui:allowClear": true
-      },
-      "S4_G5_12": {
-        "ui:placeholder": "Entity name",
-        "ui:disabled": true
-      },
-      "S4_G5_13": {
-        "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
-        "ui:showSearch": true,
-        "ui:allowClear": true
-      },
-      "S4_G5_14": {
-        "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
-        "ui:disabled": true
-      },
-      "S4_G5_15": {
-        "ui:placeholder": "Entity name"
-      },
-      "S4_G5_16": {
+      "S2_G1_1.1": {
         "ui:widget": "select",
-        "ui:placeholder": "Search Country",
+        "ui:placeholder": "Select individuals",
         "ui:showSearch": true
+      },
+      "ui:order": ["S2_1", "S2_G1_1.1"]
+    },
+    "S3": {
+      "classNames": "list-group",
+      "S3_G1": {
+        "ui:widget": "MainContentRadioWidget"
+      },
+      "S3_G2": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G3": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G4": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G5": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G6": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G7": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G8": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G9": {
+        "ui:widget": "SubContentRadioWidget"
       },
       "ui:order": [
-        "S4_G5_11",
-        "S4_G5_12",
-        "S4_G5_13",
-        "S4_G5_14",
-        "S4_G5_15",
-        "S4_G5_16"
+        "S3_G1",
+        "S3_G2",
+        "S3_G3",
+        "S3_G4",
+        "S3_G5",
+        "S3_G6",
+        "S3_G7",
+        "S3_G8",
+        "S3_G9"
       ]
-    }
-  },
-  "S5": {
-    "classNames": "list-group",
-    "S5_G1": {
-      "S5_G1_17": {
-        "ui:widget": "date",
-        "ui:showSearch": true,
-        "ui:span": 12,
-        "ui:options": {
-          "mode": "year",
-          "disableDate": "future"
+    },
+    "S4": {
+      "classNames": "list-group",
+      "S4_G1": {
+        "S4_G1_2": {
+          "ui:placeholder": "Title"
+        },
+        "S4_G1_3": {
+          "ui:placeholder": "Description",
+          "ui:widget": "textarea"
+        },
+        "S4_G1_4": {
+          "ui:addOnBefore": "https://",
+          "ui:widget": "URLWidget",
+          "ui:placeholder": "Url"
+        },
+        "ui:order": ["S4_G1_2", "S4_G1_3", "S4_G1_4"]
+      },
+      "S4_G2": {
+        "S4_G2_5": {
+          "ui:placeholder": "Search",
+          "ui:showSearch": true
+        },
+        "S4_G2_6": {
+          "ui:placeholder": "Choose the coverage type",
+          "ui:showSearch": true
+        },
+        "S4_G2_7": {},
+        "ui:order": ["S4_G2_5", "S4_G2_6", "S4_G2_7"]
+      },
+      "S4_G3": {
+        "S4_G3_8": {
+          "ui:placeholder": "Select a tag",
+          "ui:showSearch": true
+        },
+        "ui:order": ["S4_G3_8"]
+      },
+      "S4_G4": {
+        "S4_G4_9": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "S4_G4_10": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "ui:order": ["S4_G4_9", "S4_G4_10"]
+      },
+      "S4_G5": {
+        "S4_G5_11": {
+          "ui:placeholder": "Entity name",
+          "ui:showSearch": true,
+          "ui:allowClear": true
+        },
+        "S4_G5_12": {
+          "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
+          "ui:showSearch": true,
+          "ui:allowClear": true
+        },
+        "S4_G5_13": {
+          "ui:placeholder": "Entity name"
+        },
+        "S4_G5_14": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search Country",
+          "ui:showSearch": true
+        },
+        "ui:order": ["S4_G5_11", "S4_G5_12", "S4_G5_13", "S4_G5_14"]
+      }
+    },
+    "S5": {
+      "classNames": "list-group",
+      "S5_G1": {
+        "S5_G1_17": {
+          "ui:widget": "date",
+          "ui:showSearch": true,
+          "ui:span": 12,
+          "ui:options": {
+            "mode": "year",
+            "disableDate": "future"
+          }
         }
       }
     }

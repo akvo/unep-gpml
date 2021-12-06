@@ -51,43 +51,13 @@ const getSchema = ({
   profile,
   mainContentType,
   nonMemberOrganisations,
+  selectedMainContentType,
 }) => {
-  const prop = cloneDeep(schema.properties);
+  const prop = cloneDeep(schema[selectedMainContentType].properties);
   const orgs = [...organisations];
 
   prop.S2.properties["S2_G1_1.1"].enum = orgs?.map((it) => it.id);
   prop.S2.properties["S2_G1_1.1"].enumNames = orgs?.map((it) => it.name);
-
-  prop.S3.properties["S3_G1"].enum = mainContentType?.map((x) => x.code);
-  prop.S3.properties["S3_G1"].enumNames = mainContentType?.map((x) => x.name);
-
-  prop.S3.properties["S3_G2"].enum = mainContentType.find(
-    (x) => x.code === "initiative"
-  )?.childs;
-
-  prop.S3.properties["S3_G3"].enum = mainContentType.find(
-    (x) => x.code === "action"
-  )?.childs;
-
-  prop.S3.properties["S3_G4"].enum = mainContentType.find(
-    (x) => x.code === "policy"
-  )?.childs;
-
-  prop.S3.properties["S3_G5"].enum = mainContentType.find(
-    (x) => x.code === "financing"
-  )?.childs;
-  prop.S3.properties["S3_G6"].enum = mainContentType.find(
-    (x) => x.code === "technical"
-  )?.childs;
-  prop.S3.properties["S3_G7"].enum = mainContentType.find(
-    (x) => x.code === "event_flexible"
-  )?.childs;
-  prop.S3.properties["S3_G8"].enum = mainContentType.find(
-    (x) => x.code === "technology"
-  )?.childs;
-  prop.S3.properties["S3_G9"].enum = mainContentType.find(
-    (x) => x.code === "capacity_building"
-  )?.childs;
 
   // country options
   prop.S4.properties.S4_G2.properties["S4_G2_5"].enum = countries?.map(
@@ -104,16 +74,15 @@ const getSchema = ({
     "S4_G5_11"
   ].enumNames = organisations?.map((x) => x.name);
 
-  prop.S4.properties.S4_G5.properties["S4_G5_13"].enum = [-1].concat(
+  prop.S4.properties.S4_G5.properties["S4_G5_12"].enum = [-1].concat(
     nonMemberOrganisations.map((x) => x.id)
   );
-  prop.S4.properties.S4_G5.properties["S4_G5_13"].enumNames = ["Other"].concat(
+  prop.S4.properties.S4_G5.properties["S4_G5_12"].enumNames = ["Other"].concat(
     nonMemberOrganisations.map((x) => x.name)
   );
-
   return {
     schema: {
-      ...schema,
+      ...schema[selectedMainContentType],
       properties: prop,
     },
   };
@@ -144,18 +113,18 @@ const tabs = [
     title: "Content type",
     desc: "",
     steps: [
-      {
-        group: "S3",
-        key: "S3-p1-main-content",
-        title: "Main Content",
-        desc: "",
-      },
-      {
-        group: "S3",
-        key: "S3-p2-sub-content",
-        title: "Sub Content",
-        desc: "",
-      },
+      // {
+      //   group: "S3",
+      //   key: "S3-p1-main-content",
+      //   title: "Main Content",
+      //   desc: "",
+      // },
+      // {
+      //   group: "S3",
+      //   key: "S3-p2-sub-content",
+      //   title: "Sub Content",
+      //   desc: "",
+      // },
     ],
   },
   {
@@ -208,8 +177,6 @@ const tabs = [
     steps: [],
   },
 ];
-
-console.log(schema);
 
 export default {
   initialData,

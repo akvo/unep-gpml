@@ -184,6 +184,7 @@ const UIStore = new Store({
   sectorOptions: sectorOptions,
   representativeGroup: representativeGroup,
   mainContentType: mainContentType,
+  selectedMainContentType: "initiative",
   landing: null,
   stakeholders: null,
   highlight: false,

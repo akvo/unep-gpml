@@ -1,18 +1,12 @@
 import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Row, Col, Card, Button, Switch, Radio, Steps } from "antd";
+import { Row, Col, Card, Button, Switch, Radio, Popover, Steps } from "antd";
 import { DownloadOutlined, InfoOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "./styles.scss";
 import common from "./common";
-// import ExampleIcon from "../../images/examples.png";
-// import InitiativeImage from "../../images/initiative.png";
-// import ActionPlanImage from "../../images/action-plan.png";
-// import FinancingResourceImage from "../../images/financing-resource.png";
-// import TechnicalResourceImage from "../../images/technical-resource.png";
-// import CapacityBuildingImage from "../../images/capacity-building.png";
-// import InfoGreen from "../../images/i-green.png";
-// import InfoBlue from "../../images/i-blue.png";
+import ExampleIcon from "../../images/examples.png";
+import InfoBlue from "../../images/i-blue.png";
 import FlexibleForm from "./form";
 import isEmpty from "lodash/isEmpty";
 
@@ -37,6 +31,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     profile: s.profile,
     formStep: s.formStep,
     formEdit: s.formEdit,
+    selectedMainContentType: s.selectedMainContentType,
   }));
 
   const {
@@ -55,6 +50,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     formStep,
     formEdit,
     profile,
+    selectedMainContentType,
   } = storeData;
 
   const tabsData = tabs;
@@ -62,10 +58,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const formData = initialFormData.useState();
   const { editId, data } = formData;
   const { status, id } = formEdit.flexible;
-
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
+  const [mainType, setMainType] = useState(false);
+  const [subType, setSubType] = useState(false);
+  const [subContentType, setSubContentType] = useState([]);
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
     type: "default",
@@ -216,6 +214,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     });
   };
 
+  console.log(formSchema, "formSchema");
+
   const getTabStepIndex = () => {
     const section = data.tabs[0];
     const stepIndex = data[section].steps;
@@ -267,6 +267,21 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const handleOnClickBtnSubmit = (e) => {
     setHighlight(true);
     btnSubmit.current.click();
+  };
+
+  const handleMainContentType = (e) => {
+    setMainType(e.target.value);
+    const search = mainContentType.find(
+      (element) => element.code === e.target.value
+    ).childs;
+    setSubContentType(search);
+    UIStore.update((event) => {
+      event.selectedMainContentType = e.target.value;
+    });
+  };
+
+  const handleSubContentType = (e) => {
+    setSubType(e.target.value);
   };
 
   return (
@@ -371,6 +386,96 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     </p>
                   </div>
                 </Row>
+              ) : getTabStepIndex().tabIndex === 2 ? (
+                <Row>
+                  <div className="main-content">
+                    <div className="button-wrapper">
+                      <h5>Pick the main content type</h5>
+                      <Button
+                        icon={<img src={ExampleIcon} alt="Example button" />}
+                        size="large"
+                      >
+                        SHOW EXAMPLES
+                      </Button>
+                    </div>
+                    <Radio.Group
+                      className="ant-row"
+                      onChange={handleMainContentType}
+                    >
+                      {mainContentType.map((item) => {
+                        const img = require(`../../images/${item.code}.png`)
+                          .default;
+                        return (
+                          <Col
+                            className="gutter-row"
+                            xs={12}
+                            lg={6}
+                            key={item.code}
+                          >
+                            <Radio.Button
+                              value="large"
+                              className="custom-radio"
+                              id={item.code}
+                              value={item.code}
+                              key={item.code}
+                            >
+                              <div className="content-circle-wrapper">
+                                <div className="content-circle">
+                                  <img src={img} alt={`${item.name} Image`} />
+                                </div>
+                                <div className="info-icon-container">
+                                  <h2>{item.name}</h2>
+                                  <Popover content={item.desc}>
+                                    <div className="info-icon-wrapper">
+                                      <img src={InfoBlue} />
+                                    </div>
+                                  </Popover>
+                                </div>
+                              </div>
+                            </Radio.Button>
+                          </Col>
+                        );
+                      })}
+                    </Radio.Group>
+                  </div>
+                  <div className="sub-content">
+                    <div className="sub-content-top">
+                      <h5>Pick the sub-content type</h5>
+                      <span>Optional</span>
+                    </div>
+                    {subContentType.length > 0 ? (
+                      <div className="sub-content-topics">
+                        <Radio.Group
+                          className="ant-row"
+                          onChange={handleSubContentType}
+                        >
+                          {subContentType.map((item) => (
+                            <Col
+                              className="gutter-row"
+                              xs={12}
+                              lg={6}
+                              key={item}
+                            >
+                              <Radio.Button id={item} value={item} key={item}>
+                                {item}
+                                <div className="info-icon-wrapper">
+                                  <img src={InfoBlue} />
+                                </div>
+                              </Radio.Button>
+                            </Col>
+                          ))}
+                        </Radio.Group>
+                      </div>
+                    ) : (
+                      <div className="before-selection">
+                        <p>
+                          Select a Main Content Type above to see sub-content
+                          type options
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </Row>
               ) : (
                 <Row className="main-content">
                   <FlexibleForm
@@ -384,206 +489,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     setDisabledBtn={setDisabledBtn}
                     tabsData={tabsData}
                   />
-                  {/* <div className="main-content">
-                    <div className="button-wrapper">
-                      <h5>Pick the main content type</h5>
-                      <Button
-                        icon={<img src={ExampleIcon} alt="Example button" />}
-                        size="large"
-                      >
-                        SHOW EXAMPLES
-                      </Button>
-                    </div>
-                    <Radio.Group className="ant-row">
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button
-                          value="large"
-                          className="custom-radio selected"
-                        >
-                          <div className="content-circle-wrapper">
-                            <div className="content-circle">
-                              <img
-                                src={InitiativeImage}
-                                alt="Initiative Image"
-                              />
-                            </div>
-                            <h2>initiative</h2>
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large" className="custom-radio">
-                          <div className="content-circle-wrapper">
-                            <div className="content-circle">
-                              <img
-                                src={ActionPlanImage}
-                                alt="Action Plan Image"
-                              />
-                            </div>
-                            <h2>Action plan</h2>
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large" className="custom-radio">
-                          <div className="content-circle-wrapper">
-                            <div className="content-circle">
-                              <img
-                                src={FinancingResourceImage}
-                                alt="Financing Resource Image"
-                              />
-                            </div>
-                            <h2>Policy</h2>
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large" className="custom-radio">
-                          <div className="content-circle-wrapper">
-                            <div className="content-circle">
-                              <img
-                                src={FinancingResourceImage}
-                                alt="Financing Resource Image"
-                              />
-                            </div>
-                            <h2>Financing resource</h2>
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large" className="custom-radio">
-                          <div className="content-circle-wrapper">
-                            <div className="content-circle">
-                              <img
-                                src={TechnicalResourceImage}
-                                alt="Technical Resource Image"
-                              />
-                            </div>
-                            <h2>Technical Resource</h2>
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large" className="custom-radio">
-                          <div className="content-circle-wrapper">
-                            <div className="content-circle">
-                              <img
-                                src={CapacityBuildingImage}
-                                alt="Capacity Building Image"
-                              />
-                            </div>
-                            <h2>Event</h2>
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large" className="custom-radio">
-                          <div className="content-circle-wrapper">
-                            <div className="content-circle">
-                              <img
-                                src={CapacityBuildingImage}
-                                alt="Capacity Building Image"
-                              />
-                            </div>
-                            <h2>Technology</h2>
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                      <Col className="gutter-row" xs={12} lg={6}>
-                        <Radio.Button value="large" className="custom-radio">
-                          <div className="content-circle-wrapper">
-                            <div className="content-circle">
-                              <img
-                                src={CapacityBuildingImage}
-                                alt="Capacity Building Image"
-                              />
-                            </div>
-                            <h2>Capacity Building</h2>
-                          </div>
-                        </Radio.Button>
-                      </Col>
-                    </Radio.Group>
-                  </div> */}
-                  {/* <div className="sub-content">
-                    <div className="sub-content-top">
-                      <h5>Pick the sub-content type</h5>
-                      <span>Optional</span>
-                    </div>
-                    <div className="sub-content-topics">
-                      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 16 }}>
-                        <Col className="gutter-row" xs={12} lg={6}>
-                          <Radio.Button value="large">
-                            Capacity building initiatives
-                            <div className="info-icon-wrapper">
-                              <img src={InfoBlue} />
-                            </div>
-                          </Radio.Button>
-                        </Col>
-                        <Col className="gutter-row" xs={12} lg={6}>
-                          <Radio.Button value="large" className="selected">
-                            Courses and trainings
-                            <div className="info-icon-wrapper selected">
-                              <img src={InfoGreen} />
-                            </div>
-                          </Radio.Button>
-                        </Col>
-                        <Col className="gutter-row" xs={12} lg={6}>
-                          <Radio.Button value="large">
-                            Educational events
-                            <div className="info-icon-wrapper">
-                              <img src={InfoBlue} />
-                            </div>
-                          </Radio.Button>
-                        </Col>
-                        <Col className="gutter-row" xs={12} lg={6}>
-                          <Radio.Button value="large">
-                            Tools and toolkits
-                            <div className="info-icon-wrapper">
-                              <img src={InfoBlue} />
-                            </div>
-                          </Radio.Button>
-                        </Col>
-                        <Col className="gutter-row" xs={12} lg={6}>
-                          <Radio.Button value="large">
-                            Case studies
-                            <div className="info-icon-wrapper">
-                              <img src={InfoBlue} />
-                            </div>
-                          </Radio.Button>
-                        </Col>
-                        <Col className="gutter-row" xs={12} lg={6}>
-                          <Radio.Button value="large">
-                            Opportunities
-                            <div className="info-icon-wrapper">
-                              <img src={InfoBlue} />
-                            </div>
-                          </Radio.Button>
-                        </Col>
-                        <Col className="gutter-row" xs={12} lg={6}>
-                          <Radio.Button value="large">
-                            Stakeholders
-                            <div className="info-icon-wrapper">
-                              <img src={InfoBlue} />
-                            </div>
-                          </Radio.Button>
-                        </Col>
-                        <Col className="gutter-row" xs={12} lg={6}>
-                          <Radio.Button value="large">
-                            Large
-                            <div className="info-icon-wrapper">
-                              <img src={InfoBlue} />
-                            </div>
-                          </Radio.Button>
-                        </Col>
-                      </Row>
-                    </div> */}
-                  {/* <div className="before-selection">
-                      <p>
-                        Select a Main Content Type above to see sub-content type
-                        options
-                      </p>
-                    </div> */}
-                  {/* </div> */}
                 </Row>
               )}
             </Col>

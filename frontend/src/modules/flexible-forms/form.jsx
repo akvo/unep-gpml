@@ -14,6 +14,10 @@ import { notification } from "antd";
 import { Theme as AntDTheme } from "@rjsf/antd";
 import { withTheme } from "@rjsf/core";
 import {
+  transformFormData,
+  collectDependSchemaRefactor,
+} from "../initiative/form";
+import {
   handleGeoCoverageValue,
   checkRequiredFieldFilledIn,
   checkDependencyAnswer,
@@ -61,15 +65,26 @@ const FlexibleForm = withRouter(
 
     const handleFormOnChange = useCallback(
       ({ formData, schema }) => {
-        console.log(formData);
+        console.log(formData, "HandleChange");
         initialFormData.update((e) => {
           e.data = {
             ...e.data,
             ...formData,
           };
         });
+        // to overide validation
+        let dependFields = [];
+        let requiredFields = [];
+        // this function eliminate required key from required list when that required form appear (show)
+        collectDependSchemaRefactor(
+          dependFields,
+          formData,
+          formSchema.schema,
+          requiredFields
+        );
+        setDependValue(dependFields);
       },
-      [initialFormData]
+      [initialFormData, formSchema]
     );
 
     const handleTransformErrors = (errors, dependValue) => {};
@@ -80,7 +95,7 @@ const FlexibleForm = withRouter(
           <Form
             idPrefix="flexibleForm"
             schema={formSchema.schema}
-            uiSchema={uiSchema}
+            uiSchema={uiSchema["initiative"]}
             formData={flexibleFormData.data}
             onChange={(e) => handleFormOnChange(e)}
             onSubmit={(e) => handleOnSubmit(e)}
