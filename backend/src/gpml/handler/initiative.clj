@@ -3,6 +3,7 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.handler.geo :as handler.geo]
             [clojure.java.jdbc :as jdbc]
+            [gpml.handler.auth :as h.auth]
             [gpml.db.initiative :as db.initiative]
             [gpml.email-util :as email]
             [ring.util.response :as resp]))
@@ -30,8 +31,16 @@
           user (db.stakeholder/stakeholder-by-email conn jwt-claims)
           data (assoc body-params :created_by (:id user))
           initiative-id (jdbc/with-db-transaction [tx-conn conn]
-                          (let [initiative-id (db.initiative/new-initiative tx-conn data)]
+                          (let [initiative-id (db.initiative/new-initiative tx-conn data)
+                                owners (:owners data)]
                             (add-geo-initiative tx-conn (:id initiative-id) (extract-geo-data data))
+                            (when (not-empty owners)
+                              (doseq [stakeholder-id owners]
+                                (h.auth/grant-topic-to-stakeholder! conn {:topic-id initiative-id
+                                                                          :topic-type "initiative"
+                                                                          :stakeholder-id stakeholder-id
+                                                                          :roles ["owner"]})))
+
                             initiative-id))]
       (email/notify-admins-pending-approval
        conn
