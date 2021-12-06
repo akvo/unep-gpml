@@ -283,7 +283,8 @@
         user-auth-roles (:roles (db.topic-stakeholder-auth/get-auth-by-topic-and-stakeholder conn {:topic-id (:topic-id path)
                                                                                                    :topic-type (util/get-internal-topic-type topic)
                                                                                                    :stakeholder (:id user)}))
-        access-allowed? (or (contains? (set user-auth-roles) "owner")
+        access-allowed? (or (= (:review_status submission) "APPROVED")
+                            (contains? (set user-auth-roles) "owner")
                             (= (:role user) "ADMIN")
                             (and (not (nil? (:id user)))
                                  (= (:created_by submission) (:id user))))]
