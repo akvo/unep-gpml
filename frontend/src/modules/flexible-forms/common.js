@@ -60,26 +60,26 @@ const getSchema = ({
   prop.S2.properties["S2_G1_1.1"].enumNames = orgs?.map((it) => it.name);
 
   // country options
-  prop.S4.properties.S4_G2.properties["S4_G2_5"].enum = countries?.map(
+  prop.S4.properties.S4_G2.properties["headquarter"].enum = countries?.map(
     (x) => x.id
   );
-  prop.S4.properties.S4_G2.properties["S4_G2_5"].enumNames = countries?.map(
+  prop.S4.properties.S4_G2.properties["headquarter"].enumNames = countries?.map(
     (x) => x.name
   );
 
-  prop.S4.properties.S4_G5.properties["S4_G5_11"].enum = organisations?.map(
+  prop.S4.properties.S4_G5.properties["orgName"].enum = organisations?.map(
     (x) => x.id
   );
-  prop.S4.properties.S4_G5.properties[
-    "S4_G5_11"
-  ].enumNames = organisations?.map((x) => x.name);
+  prop.S4.properties.S4_G5.properties["orgName"].enumNames = organisations?.map(
+    (x) => x.name
+  );
 
-  prop.S4.properties.S4_G5.properties["S4_G5_12"].enum = [-1].concat(
+  prop.S4.properties.S4_G5.properties["companyName"].enum = [-1].concat(
     nonMemberOrganisations.map((x) => x.id)
   );
-  prop.S4.properties.S4_G5.properties["S4_G5_12"].enumNames = ["Other"].concat(
-    nonMemberOrganisations.map((x) => x.name)
-  );
+  prop.S4.properties.S4_G5.properties["companyName"].enumNames = [
+    "Other",
+  ].concat(nonMemberOrganisations.map((x) => x.name));
   return {
     schema: {
       ...schema[selectedMainContentType],

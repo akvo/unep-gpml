@@ -59,70 +59,75 @@
     "S4": {
       "classNames": "list-group",
       "S4_G1": {
-        "S4_G1_2": {
+        "title": {
           "ui:placeholder": "Title"
         },
-        "S4_G1_3": {
+        "summary": {
           "ui:placeholder": "Description",
           "ui:widget": "textarea"
         },
-        "S4_G1_4": {
+        "url": {
           "ui:addOnBefore": "https://",
           "ui:widget": "URLWidget",
           "ui:placeholder": "Url"
         },
-        "ui:order": ["S4_G1_2", "S4_G1_3", "S4_G1_4"]
+        "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "S4_G2_5": {
+        "headquarter": {
           "ui:placeholder": "Search",
           "ui:showSearch": true
         },
-        "S4_G2_6": {
+        "geoCoverageType": {
           "ui:placeholder": "Choose the coverage type",
           "ui:showSearch": true
         },
-        "S4_G2_7": {},
-        "ui:order": ["S4_G2_5", "S4_G2_6", "S4_G2_7"]
+        "subnationalArea": {},
+        "ui:order": ["headquarter", "geoCoverageType", "subnationalArea"]
       },
       "S4_G3": {
-        "S4_G3_8": {
+        "tags": {
           "ui:placeholder": "Select a tag",
           "ui:showSearch": true
         },
-        "ui:order": ["S4_G3_8"]
+        "ui:order": ["tags"]
       },
       "S4_G4": {
-        "S4_G4_9": {
+        "image": {
           "ui:options": { "accept": "image/*" },
           "ui:widget": "file"
         },
-        "S4_G4_10": {
+        "banner": {
           "ui:options": { "accept": "image/*" },
           "ui:widget": "file"
         },
-        "ui:order": ["S4_G4_9", "S4_G4_10"]
+        "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "S4_G5_11": {
+        "orgName": {
           "ui:placeholder": "Entity name",
           "ui:showSearch": true,
           "ui:allowClear": true
         },
-        "S4_G5_12": {
+        "companyName": {
           "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
           "ui:showSearch": true,
           "ui:allowClear": true
         },
-        "S4_G5_13": {
+        "newCompanyName": {
           "ui:placeholder": "Entity name"
         },
-        "S4_G5_14": {
+        "newCompanyHeadquarter": {
           "ui:widget": "select",
           "ui:placeholder": "Search Country",
           "ui:showSearch": true
         },
-        "ui:order": ["S4_G5_11", "S4_G5_12", "S4_G5_13", "S4_G5_14"]
+        "ui:order": [
+          "orgName",
+          "companyName",
+          "newCompanyName",
+          "newCompanyHeadquarter"
+        ]
       }
     },
     "S5": {

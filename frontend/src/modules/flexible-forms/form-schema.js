@@ -52,17 +52,17 @@ export const schema = {
               id: "steps",
               value: 0,
             },
-            required: ["S4_G1_2", "S4_G1_3", "S4_G1_4"],
+            required: ["title", "summary", "url"],
             properties: {
-              S4_G1_2: {
+              title: {
                 title: "Title",
                 type: "string",
               },
-              S4_G1_3: {
+              summary: {
                 title: "Description",
                 type: "string",
               },
-              S4_G1_4: {
+              url: {
                 title: "URL",
                 type: "string",
                 format: "url",
@@ -76,29 +76,19 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["S4_G2_5", "S4_G2_6"],
+            required: ["headquarter", "geoCoverageType"],
             properties: {
-              S4_G2_5: {
+              headquarter: {
                 title: "In which country are you headquarters?",
                 enum: [],
               },
-              S4_G2_6: {
+              geoCoverageType: {
                 title: "What is the geographical coverage of your Entity?",
                 type: "string",
-                dependency: [
-                  {
-                    value: ["national"],
-                    questions: ["S4_G2_6.1"],
-                  },
-                  {
-                    value: ["transnational"],
-                    questions: ["S4_G2_6.2"],
-                  },
-                ],
                 enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
                 enumNames: geoCoverageTypeOptions,
               },
-              S4_G2_7: {
+              subnationalArea: {
                 title:
                   "Please indicate if your Entity operates in a Subnational area only",
                 type: "string",
@@ -112,9 +102,9 @@ export const schema = {
               id: "steps",
               value: 2,
             },
-            required: ["S4_G3_8"],
+            required: ["tags"],
             properties: {
-              S4_G3_8: {
+              tags: {
                 title: "Tags",
                 enum: [],
               },
@@ -129,19 +119,15 @@ export const schema = {
             },
             required: [""],
             properties: {
-              S4_G4_9: {
+              image: {
                 title: "Image",
                 type: "string",
                 format: "data-url",
               },
-              S4_G4_10: {
+              banner: {
                 title: "Banner",
                 type: "string",
                 format: "data-url",
-                depend: {
-                  id: "S3_G1",
-                  value: ["technical"],
-                },
               },
             },
           },
@@ -152,27 +138,27 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["S4_G5_11", "S4_G5_13", "S4_G5_14"],
+            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              S4_G5_11: {
+              orgName: {
                 title: "Search for a GPML Member Entity",
                 enum: [],
               },
-              S4_G5_12: {
+              companyName: {
                 title: "Is your Entity not a GPML Member yet?",
                 enum: [],
               },
-              S4_G5_13: {
+              newCompanyName: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "Entity Name",
                 type: "string",
               },
-              S4_G5_14: {
+              newCompanyHeadquarter: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "In which country are your headquarters?",
@@ -252,17 +238,17 @@ export const schema = {
               id: "steps",
               value: 0,
             },
-            required: ["S4_G1_2", "S4_G1_3", "S4_G1_4"],
+            required: ["title", "summary", "url"],
             properties: {
-              S4_G1_2: {
+              title: {
                 title: "Title",
                 type: "string",
               },
-              S4_G1_3: {
+              summary: {
                 title: "Description",
                 type: "string",
               },
-              S4_G1_4: {
+              url: {
                 title: "URL",
                 type: "string",
                 format: "url",
@@ -276,29 +262,19 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["S4_G2_5", "S4_G2_6"],
+            required: ["headquarter", "geoCoverageType"],
             properties: {
-              S4_G2_5: {
+              headquarter: {
                 title: "In which country are you headquarters?",
                 enum: [],
               },
-              S4_G2_6: {
+              geoCoverageType: {
                 title: "What is the geographical coverage of your Entity?",
                 type: "string",
-                dependency: [
-                  {
-                    value: ["national"],
-                    questions: ["S4_G2_6.1"],
-                  },
-                  {
-                    value: ["transnational"],
-                    questions: ["S4_G2_6.2"],
-                  },
-                ],
                 enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
                 enumNames: geoCoverageTypeOptions,
               },
-              S4_G2_7: {
+              subnationalArea: {
                 title:
                   "Please indicate if your Entity operates in a Subnational area only",
                 type: "string",
@@ -312,9 +288,9 @@ export const schema = {
               id: "steps",
               value: 2,
             },
-            required: ["S4_G3_8"],
+            required: ["tags"],
             properties: {
-              S4_G3_8: {
+              tags: {
                 title: "Tags",
                 enum: [],
               },
@@ -329,19 +305,15 @@ export const schema = {
             },
             required: [""],
             properties: {
-              S4_G4_9: {
+              image: {
                 title: "Image",
                 type: "string",
                 format: "data-url",
               },
-              S4_G4_10: {
+              banner: {
                 title: "Banner",
                 type: "string",
                 format: "data-url",
-                depend: {
-                  id: "S3_G1",
-                  value: ["technical"],
-                },
               },
             },
           },
@@ -352,27 +324,27 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["S4_G5_11", "S4_G5_13", "S4_G5_14"],
+            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              S4_G5_11: {
+              orgName: {
                 title: "Search for a GPML Member Entity",
                 enum: [],
               },
-              S4_G5_12: {
+              companyName: {
                 title: "Is your Entity not a GPML Member yet?",
                 enum: [],
               },
-              S4_G5_13: {
+              newCompanyName: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "Entity Name",
                 type: "string",
               },
-              S4_G5_14: {
+              newCompanyHeadquarter: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "In which country are your headquarters?",
@@ -452,17 +424,17 @@ export const schema = {
               id: "steps",
               value: 0,
             },
-            required: ["S4_G1_2", "S4_G1_3", "S4_G1_4"],
+            required: ["title", "summary", "url"],
             properties: {
-              S4_G1_2: {
+              title: {
                 title: "Title",
                 type: "string",
               },
-              S4_G1_3: {
+              summary: {
                 title: "Description",
                 type: "string",
               },
-              S4_G1_4: {
+              url: {
                 title: "URL",
                 type: "string",
                 format: "url",
@@ -476,29 +448,19 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["S4_G2_5", "S4_G2_6"],
+            required: ["headquarter", "geoCoverageType"],
             properties: {
-              S4_G2_5: {
+              headquarter: {
                 title: "In which country are you headquarters?",
                 enum: [],
               },
-              S4_G2_6: {
+              geoCoverageType: {
                 title: "What is the geographical coverage of your Entity?",
                 type: "string",
-                dependency: [
-                  {
-                    value: ["national"],
-                    questions: ["S4_G2_6.1"],
-                  },
-                  {
-                    value: ["transnational"],
-                    questions: ["S4_G2_6.2"],
-                  },
-                ],
                 enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
                 enumNames: geoCoverageTypeOptions,
               },
-              S4_G2_7: {
+              subnationalArea: {
                 title:
                   "Please indicate if your Entity operates in a Subnational area only",
                 type: "string",
@@ -512,9 +474,9 @@ export const schema = {
               id: "steps",
               value: 2,
             },
-            required: ["S4_G3_8"],
+            required: ["tags"],
             properties: {
-              S4_G3_8: {
+              tags: {
                 title: "Tags",
                 enum: [],
               },
@@ -529,19 +491,15 @@ export const schema = {
             },
             required: [""],
             properties: {
-              S4_G4_9: {
+              image: {
                 title: "Image",
                 type: "string",
                 format: "data-url",
               },
-              S4_G4_10: {
+              banner: {
                 title: "Banner",
                 type: "string",
                 format: "data-url",
-                depend: {
-                  id: "S3_G1",
-                  value: ["technical"],
-                },
               },
             },
           },
@@ -552,27 +510,27 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["S4_G5_11", "S4_G5_13", "S4_G5_14"],
+            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              S4_G5_11: {
+              orgName: {
                 title: "Search for a GPML Member Entity",
                 enum: [],
               },
-              S4_G5_12: {
+              companyName: {
                 title: "Is your Entity not a GPML Member yet?",
                 enum: [],
               },
-              S4_G5_13: {
+              newCompanyName: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "Entity Name",
                 type: "string",
               },
-              S4_G5_14: {
+              newCompanyHeadquarter: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "In which country are your headquarters?",
@@ -652,17 +610,17 @@ export const schema = {
               id: "steps",
               value: 0,
             },
-            required: ["S4_G1_2", "S4_G1_3", "S4_G1_4"],
+            required: ["title", "summary", "url"],
             properties: {
-              S4_G1_2: {
+              title: {
                 title: "Title",
                 type: "string",
               },
-              S4_G1_3: {
+              summary: {
                 title: "Description",
                 type: "string",
               },
-              S4_G1_4: {
+              url: {
                 title: "URL",
                 type: "string",
                 format: "url",
@@ -676,29 +634,19 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["S4_G2_5", "S4_G2_6"],
+            required: ["headquarter", "geoCoverageType"],
             properties: {
-              S4_G2_5: {
+              headquarter: {
                 title: "In which country are you headquarters?",
                 enum: [],
               },
-              S4_G2_6: {
+              geoCoverageType: {
                 title: "What is the geographical coverage of your Entity?",
                 type: "string",
-                dependency: [
-                  {
-                    value: ["national"],
-                    questions: ["S4_G2_6.1"],
-                  },
-                  {
-                    value: ["transnational"],
-                    questions: ["S4_G2_6.2"],
-                  },
-                ],
                 enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
                 enumNames: geoCoverageTypeOptions,
               },
-              S4_G2_7: {
+              subnationalArea: {
                 title:
                   "Please indicate if your Entity operates in a Subnational area only",
                 type: "string",
@@ -712,9 +660,9 @@ export const schema = {
               id: "steps",
               value: 2,
             },
-            required: ["S4_G3_8"],
+            required: ["tags"],
             properties: {
-              S4_G3_8: {
+              tags: {
                 title: "Tags",
                 enum: [],
               },
@@ -729,8 +677,13 @@ export const schema = {
             },
             required: [""],
             properties: {
-              S4_G4_9: {
+              image: {
                 title: "Image",
+                type: "string",
+                format: "data-url",
+              },
+              banner: {
+                title: "Banner",
                 type: "string",
                 format: "data-url",
               },
@@ -743,27 +696,27 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["S4_G5_11", "S4_G5_13", "S4_G5_14"],
+            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              S4_G5_11: {
+              orgName: {
                 title: "Search for a GPML Member Entity",
                 enum: [],
               },
-              S4_G5_12: {
+              companyName: {
                 title: "Is your Entity not a GPML Member yet?",
                 enum: [],
               },
-              S4_G5_13: {
+              newCompanyName: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "Entity Name",
                 type: "string",
               },
-              S4_G5_14: {
+              newCompanyHeadquarter: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "In which country are your headquarters?",
@@ -781,24 +734,24 @@ export const schema = {
           value: ["S5"],
         },
         properties: {
-          S5_G1: {
+          publishYear: {
             title: "YEAR FOUNDED / YEAR OF COMMENCEMENT",
             type: "string",
           },
           S5_G2: {
             type: "object",
             title: "",
-            required: [],
+            required: ["valueAmount", "valueCurrency"],
             properties: {
-              S5_G2_15: {
+              valueAmount: {
                 title: "VALUE AMOUNT",
                 type: "number",
               },
-              S5_G2_16: {
+              valueCurrency: {
                 title: "VALUE CURRENCY",
                 enum: [],
               },
-              S5_G2_17: {
+              valueRemark: {
                 title: "VALUE REMARK",
                 type: "string",
               },
@@ -807,14 +760,14 @@ export const schema = {
           S5_G3: {
             type: "object",
             title: "",
-            required: [""],
+            required: ["validFrom"],
             properties: {
-              S5_G3_18: {
+              validFrom: {
                 title: "VALID FROM",
                 type: "string",
                 format: "date",
               },
-              S5_G3_19: {
+              validTo: {
                 title: "VALID TO",
                 type: "string",
                 format: "date",
@@ -872,17 +825,17 @@ export const schema = {
               id: "steps",
               value: 0,
             },
-            required: ["S4_G1_2", "S4_G1_3", "S4_G1_4"],
+            required: ["title", "summary", "url"],
             properties: {
-              S4_G1_2: {
+              title: {
                 title: "Title",
                 type: "string",
               },
-              S4_G1_3: {
+              summary: {
                 title: "Description",
                 type: "string",
               },
-              S4_G1_4: {
+              url: {
                 title: "URL",
                 type: "string",
                 format: "url",
@@ -896,29 +849,19 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["S4_G2_5", "S4_G2_6"],
+            required: ["headquarter", "geoCoverageType"],
             properties: {
-              S4_G2_5: {
+              headquarter: {
                 title: "In which country are you headquarters?",
                 enum: [],
               },
-              S4_G2_6: {
+              geoCoverageType: {
                 title: "What is the geographical coverage of your Entity?",
                 type: "string",
-                dependency: [
-                  {
-                    value: ["national"],
-                    questions: ["S4_G2_6.1"],
-                  },
-                  {
-                    value: ["transnational"],
-                    questions: ["S4_G2_6.2"],
-                  },
-                ],
                 enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
                 enumNames: geoCoverageTypeOptions,
               },
-              S4_G2_7: {
+              subnationalArea: {
                 title:
                   "Please indicate if your Entity operates in a Subnational area only",
                 type: "string",
@@ -932,9 +875,9 @@ export const schema = {
               id: "steps",
               value: 2,
             },
-            required: ["S4_G3_8"],
+            required: ["tags"],
             properties: {
-              S4_G3_8: {
+              tags: {
                 title: "Tags",
                 enum: [],
               },
@@ -949,12 +892,12 @@ export const schema = {
             },
             required: [""],
             properties: {
-              S4_G4_9: {
+              image: {
                 title: "Image",
                 type: "string",
                 format: "data-url",
               },
-              S4_G4_10: {
+              banner: {
                 title: "Banner",
                 type: "string",
                 format: "data-url",
@@ -968,27 +911,27 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["S4_G5_11", "S4_G5_13", "S4_G5_14"],
+            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              S4_G5_11: {
+              orgName: {
                 title: "Search for a GPML Member Entity",
                 enum: [],
               },
-              S4_G5_12: {
+              companyName: {
                 title: "Is your Entity not a GPML Member yet?",
                 enum: [],
               },
-              S4_G5_13: {
+              newCompanyName: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "Entity Name",
                 type: "string",
               },
-              S4_G5_14: {
+              newCompanyHeadquarter: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "In which country are your headquarters?",
@@ -1068,17 +1011,17 @@ export const schema = {
               id: "steps",
               value: 0,
             },
-            required: ["S4_G1_2", "S4_G1_3", "S4_G1_4"],
+            required: ["title", "summary", "url"],
             properties: {
-              S4_G1_2: {
+              title: {
                 title: "Title",
                 type: "string",
               },
-              S4_G1_3: {
+              summary: {
                 title: "Description",
                 type: "string",
               },
-              S4_G1_4: {
+              url: {
                 title: "URL",
                 type: "string",
                 format: "url",
@@ -1092,29 +1035,19 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["S4_G2_5", "S4_G2_6"],
+            required: ["headquarter", "geoCoverageType"],
             properties: {
-              S4_G2_5: {
+              headquarter: {
                 title: "In which country are you headquarters?",
                 enum: [],
               },
-              S4_G2_6: {
+              geoCoverageType: {
                 title: "What is the geographical coverage of your Entity?",
                 type: "string",
-                dependency: [
-                  {
-                    value: ["national"],
-                    questions: ["S4_G2_6.1"],
-                  },
-                  {
-                    value: ["transnational"],
-                    questions: ["S4_G2_6.2"],
-                  },
-                ],
                 enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
                 enumNames: geoCoverageTypeOptions,
               },
-              S4_G2_7: {
+              subnationalArea: {
                 title:
                   "Please indicate if your Entity operates in a Subnational area only",
                 type: "string",
@@ -1128,9 +1061,9 @@ export const schema = {
               id: "steps",
               value: 2,
             },
-            required: ["S4_G3_8"],
+            required: ["tags"],
             properties: {
-              S4_G3_8: {
+              tags: {
                 title: "Tags",
                 enum: [],
               },
@@ -1145,19 +1078,15 @@ export const schema = {
             },
             required: [""],
             properties: {
-              S4_G4_9: {
+              image: {
                 title: "Image",
                 type: "string",
                 format: "data-url",
               },
-              S4_G4_10: {
+              banner: {
                 title: "Banner",
                 type: "string",
                 format: "data-url",
-                depend: {
-                  id: "S3_G1",
-                  value: ["technical"],
-                },
               },
             },
           },
@@ -1168,27 +1097,27 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["S4_G5_11", "S4_G5_13", "S4_G5_14"],
+            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              S4_G5_11: {
+              orgName: {
                 title: "Search for a GPML Member Entity",
                 enum: [],
               },
-              S4_G5_12: {
+              companyName: {
                 title: "Is your Entity not a GPML Member yet?",
                 enum: [],
               },
-              S4_G5_13: {
+              newCompanyName: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "Entity Name",
                 type: "string",
               },
-              S4_G5_14: {
+              newCompanyHeadquarter: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "In which country are your headquarters?",
@@ -1268,17 +1197,17 @@ export const schema = {
               id: "steps",
               value: 0,
             },
-            required: ["S4_G1_2", "S4_G1_3", "S4_G1_4"],
+            required: ["title", "summary", "url"],
             properties: {
-              S4_G1_2: {
+              title: {
                 title: "Title",
                 type: "string",
               },
-              S4_G1_3: {
+              summary: {
                 title: "Description",
                 type: "string",
               },
-              S4_G1_4: {
+              url: {
                 title: "URL",
                 type: "string",
                 format: "url",
@@ -1292,29 +1221,19 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["S4_G2_5", "S4_G2_6"],
+            required: ["headquarter", "geoCoverageType"],
             properties: {
-              S4_G2_5: {
+              headquarter: {
                 title: "In which country are you headquarters?",
                 enum: [],
               },
-              S4_G2_6: {
+              geoCoverageType: {
                 title: "What is the geographical coverage of your Entity?",
                 type: "string",
-                dependency: [
-                  {
-                    value: ["national"],
-                    questions: ["S4_G2_6.1"],
-                  },
-                  {
-                    value: ["transnational"],
-                    questions: ["S4_G2_6.2"],
-                  },
-                ],
                 enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
                 enumNames: geoCoverageTypeOptions,
               },
-              S4_G2_7: {
+              subnationalArea: {
                 title:
                   "Please indicate if your Entity operates in a Subnational area only",
                 type: "string",
@@ -1328,9 +1247,9 @@ export const schema = {
               id: "steps",
               value: 2,
             },
-            required: ["S4_G3_8"],
+            required: ["tags"],
             properties: {
-              S4_G3_8: {
+              tags: {
                 title: "Tags",
                 enum: [],
               },
@@ -1345,19 +1264,15 @@ export const schema = {
             },
             required: [""],
             properties: {
-              S4_G4_9: {
+              image: {
                 title: "Image",
                 type: "string",
                 format: "data-url",
               },
-              S4_G4_10: {
+              banner: {
                 title: "Banner",
                 type: "string",
                 format: "data-url",
-                depend: {
-                  id: "S3_G1",
-                  value: ["technical"],
-                },
               },
             },
           },
@@ -1368,27 +1283,27 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["S4_G5_11", "S4_G5_13", "S4_G5_14"],
+            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              S4_G5_11: {
+              orgName: {
                 title: "Search for a GPML Member Entity",
                 enum: [],
               },
-              S4_G5_12: {
+              companyName: {
                 title: "Is your Entity not a GPML Member yet?",
                 enum: [],
               },
-              S4_G5_13: {
+              newCompanyName: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "Entity Name",
                 type: "string",
               },
-              S4_G5_14: {
+              newCompanyHeadquarter: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "In which country are your headquarters?",
@@ -1468,17 +1383,17 @@ export const schema = {
               id: "steps",
               value: 0,
             },
-            required: ["S4_G1_2", "S4_G1_3", "S4_G1_4"],
+            required: ["title", "summary", "url"],
             properties: {
-              S4_G1_2: {
+              title: {
                 title: "Title",
                 type: "string",
               },
-              S4_G1_3: {
+              summary: {
                 title: "Description",
                 type: "string",
               },
-              S4_G1_4: {
+              url: {
                 title: "URL",
                 type: "string",
                 format: "url",
@@ -1492,29 +1407,19 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["S4_G2_5", "S4_G2_6"],
+            required: ["headquarter", "geoCoverageType"],
             properties: {
-              S4_G2_5: {
+              headquarter: {
                 title: "In which country are you headquarters?",
                 enum: [],
               },
-              S4_G2_6: {
+              geoCoverageType: {
                 title: "What is the geographical coverage of your Entity?",
                 type: "string",
-                dependency: [
-                  {
-                    value: ["national"],
-                    questions: ["S4_G2_6.1"],
-                  },
-                  {
-                    value: ["transnational"],
-                    questions: ["S4_G2_6.2"],
-                  },
-                ],
                 enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
                 enumNames: geoCoverageTypeOptions,
               },
-              S4_G2_7: {
+              subnationalArea: {
                 title:
                   "Please indicate if your Entity operates in a Subnational area only",
                 type: "string",
@@ -1528,9 +1433,9 @@ export const schema = {
               id: "steps",
               value: 2,
             },
-            required: ["S4_G3_8"],
+            required: ["tags"],
             properties: {
-              S4_G3_8: {
+              tags: {
                 title: "Tags",
                 enum: [],
               },
@@ -1545,19 +1450,15 @@ export const schema = {
             },
             required: [""],
             properties: {
-              S4_G4_9: {
+              image: {
                 title: "Image",
                 type: "string",
                 format: "data-url",
               },
-              S4_G4_10: {
+              banner: {
                 title: "Banner",
                 type: "string",
                 format: "data-url",
-                depend: {
-                  id: "S3_G1",
-                  value: ["technical"],
-                },
               },
             },
           },
@@ -1568,27 +1469,27 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["S4_G5_11", "S4_G5_13", "S4_G5_14"],
+            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              S4_G5_11: {
+              orgName: {
                 title: "Search for a GPML Member Entity",
                 enum: [],
               },
-              S4_G5_12: {
+              companyName: {
                 title: "Is your Entity not a GPML Member yet?",
                 enum: [],
               },
-              S4_G5_13: {
+              newCompanyName: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "Entity Name",
                 type: "string",
               },
-              S4_G5_14: {
+              newCompanyHeadquarter: {
                 depend: {
-                  id: "S4_G5_12",
+                  id: "companyName",
                   value: [-1],
                 },
                 title: "In which country are your headquarters?",
