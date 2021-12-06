@@ -75,6 +75,11 @@ update event
 
 -- :name event-by-id :? :1
 -- :doc Returns the data for a given event
+  WITH owners_data as (
+   select COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners, authz.topic_id
+ from  topic_stakeholder_auth authz where authz.topic_type::text='event' AND authz.topic_id=:id
+group by topic_id
+   )
 select
     e.id,
     e.title,
@@ -93,9 +98,11 @@ select
     e.review_status,
     (select json_agg(tag) from event_tag where event = :id) as tags,
     (select json_agg(coalesce(country, country_group))
-        from event_geo_coverage where event = :id) as geo_coverage_value
+        from event_geo_coverage where event = :id) as geo_coverage_value,
+      COALESCE(owners_data.owners, '[]') as owners
 from v_event_data e
-where id = :id
+LEFT JOIN owners_data ON owners_data.topic_id=:id
+where e.id = :id
 
 -- :name event-image-by-id :? :1
 -- :doc Get event image by id
