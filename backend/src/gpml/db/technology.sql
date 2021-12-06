@@ -41,7 +41,7 @@ returning id;
 -- :name technology-by-id :? :1
 -- :doc returns technology data
 select
-    id,
+    technology.id,
     name,
     year_founded,
     country,
@@ -56,6 +56,7 @@ select
     image,
     logo,
     created_by,
+    COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners,
     (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
         from technology_language_url plu
         left join language l on l.id = plu.language
@@ -64,7 +65,9 @@ select
     (select json_agg(coalesce(country, country_group))
         from technology_geo_coverage where technology = :id) as geo_coverage_value
 from technology
-where id = :id
+left join topic_stakeholder_auth authz ON authz.topic_type::text='technology' AND authz.topic_id=technology.id
+where technology.id = :id
+GROUP BY technology.id
 
 -- :name pending-technology :? :1
 -- :doc Returns the pending technology data

@@ -46,9 +46,7 @@
         (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
                                                   :topic-type "resource"
                                                   :stakeholder-id stakeholder-id
-                                                  :roles ["owner"]}))
-      (db.resource/add-resource-organisations conn {:organisations
-                                                    (map #(vector resource-id %) organisation)}))
+                                                  :roles ["owner"]})))
     (when (not-empty organisation)
       (db.resource/add-resource-organisations conn {:organisations
                                                     (map #(vector resource-id %) organisation)}))
