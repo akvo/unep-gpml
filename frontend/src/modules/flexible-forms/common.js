@@ -56,30 +56,78 @@ const getSchema = ({
   const prop = cloneDeep(schema[selectedMainContentType].properties);
   const orgs = [...organisations];
 
-  prop.S2.properties["S2_G1_1.1"].enum = orgs?.map((it) => it.id);
-  prop.S2.properties["S2_G1_1.1"].enumNames = orgs?.map((it) => it.name);
+  prop.S2.properties["S2_G1_1.1"].enum = stakeholders?.map((it) => it.id);
+  prop.S2.properties["S2_G1_1.1"].enumNames = stakeholders?.map(
+    (it) => it.firstName
+  );
 
   // country options
-  prop.S4.properties.S4_G2.properties["headquarter"].enum = countries?.map(
+  prop.S4.properties.S4_G2.properties["country"].enum = countries?.map(
     (x) => x.id
   );
-  prop.S4.properties.S4_G2.properties["headquarter"].enumNames = countries?.map(
+  prop.S4.properties.S4_G2.properties["country"].enumNames = countries?.map(
     (x) => x.name
   );
 
-  prop.S4.properties.S4_G5.properties["orgName"].enum = organisations?.map(
-    (x) => x.id
-  );
-  prop.S4.properties.S4_G5.properties["orgName"].enumNames = organisations?.map(
+  let otherArray = [
+    {
+      id: -1,
+      name: "Other",
+    },
+    {
+      id: -2,
+      name: "NA",
+    },
+  ];
+
+  let array = [...organisations, ...nonMemberOrganisations, ...otherArray];
+
+  prop.S4.properties.S4_G5.properties["orgName"].enum = array.map((x) => x.id);
+  prop.S4.properties.S4_G5.properties["orgName"].enumNames = array.map(
     (x) => x.name
   );
 
-  prop.S4.properties.S4_G5.properties["companyName"].enum = [-1].concat(
-    nonMemberOrganisations.map((x) => x.id)
-  );
-  prop.S4.properties.S4_G5.properties["companyName"].enumNames = [
-    "Other",
-  ].concat(nonMemberOrganisations.map((x) => x.name));
+  prop.S4.properties.S4_G5.properties[
+    "newCompanyHeadquarter"
+  ].enum = countries?.map((x) => x.id);
+  prop.S4.properties.S4_G5.properties[
+    "newCompanyHeadquarter"
+  ].enumNames = countries?.map((x) => x.name);
+
+  // geocoverage national options
+  prop.S4.properties.S4_G2.properties[
+    "geoCoverageValueNational"
+  ].enum = countries?.map((x) => String(x.id));
+  prop.S4.properties.S4_G2.properties[
+    "geoCoverageValueNational"
+  ].enumNames = countries?.map((x) => x.name);
+  // geocoverage transnational options
+  prop.S4.properties.S4_G2.properties[
+    "geoCoverageValueTransnational"
+  ].enum = transnationalOptions?.map((x) => String(x.id));
+  prop.S4.properties.S4_G2.properties[
+    "geoCoverageValueTransnational"
+  ].enumNames = transnationalOptions?.map((x) => x.name);
+
+  prop.S4.properties.S4_G2.properties[
+    "geoCoverageCountries"
+  ].enum = countries?.map((x) => String(x.id));
+  prop.S4.properties.S4_G2.properties[
+    "geoCoverageCountries"
+  ].enumNames = countries?.map((x) => x.name);
+
+  if (selectedMainContentType === "technical") {
+    const tagsPlusTopics = tags?.topics
+      ? tags.technicalResourceType?.concat(tags.topics)
+      : tags.technicalResourceType;
+    prop.S4.properties.S4_G3.properties[
+      "tags"
+    ].enum = tagsPlusTopics?.map((x) => String(x.id));
+    prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
+      (x) => x.tag
+    );
+  }
+
   return {
     schema: {
       ...schema[selectedMainContentType],
@@ -113,18 +161,18 @@ const tabs = [
     title: "Content type",
     desc: "",
     steps: [
-      // {
-      //   group: "S3",
-      //   key: "S3-p1-main-content",
-      //   title: "Main Content",
-      //   desc: "",
-      // },
-      // {
-      //   group: "S3",
-      //   key: "S3-p2-sub-content",
-      //   title: "Sub Content",
-      //   desc: "",
-      // },
+      {
+        group: "S3",
+        key: "S3-p1-main-content",
+        title: "Main Content",
+        desc: "",
+      },
+      {
+        group: "S3",
+        key: "S3-p2-sub-content",
+        title: "Sub Content",
+        desc: "",
+      },
     ],
   },
   {

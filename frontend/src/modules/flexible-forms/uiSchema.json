@@ -74,7 +74,8 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "headquarter": {
+        "country": {
+          "ui:widget": "select",
           "ui:placeholder": "Search",
           "ui:showSearch": true
         },
@@ -82,13 +83,39 @@
           "ui:placeholder": "Choose the coverage type",
           "ui:showSearch": true
         },
+        "geoCoverageValueTransnational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageCountries": {
+          "ui:placeholder": "Choose the Country",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageValueNational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
         "subnationalArea": {},
-        "ui:order": ["headquarter", "geoCoverageType", "subnationalArea"]
+        "ui:order": [
+          "country",
+          "geoCoverageType",
+          "geoCoverageValueTransnational",
+          "geoCoverageCountries",
+          "geoCoverageValueNational",
+          "subnationalArea"
+        ]
       },
       "S4_G3": {
         "tags": {
-          "ui:placeholder": "Select a tag",
-          "ui:showSearch": true
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Pick at least one tag"
         },
         "ui:order": ["tags"]
       },
@@ -109,11 +136,6 @@
           "ui:showSearch": true,
           "ui:allowClear": true
         },
-        "companyName": {
-          "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
-          "ui:showSearch": true,
-          "ui:allowClear": true
-        },
         "newCompanyName": {
           "ui:placeholder": "Entity name"
         },
@@ -122,18 +144,30 @@
           "ui:placeholder": "Search Country",
           "ui:showSearch": true
         },
-        "ui:order": [
-          "orgName",
-          "companyName",
-          "newCompanyName",
-          "newCompanyHeadquarter"
-        ]
+        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+      },
+      "S4_G6": {
+        "classNames": "list-group-item",
+        "urls": {
+          "ui:options": {
+            "showToolbar": true,
+            "orderable": false
+          },
+          "items": {
+            "ui:placeholder": "Please copy and paste one link per box provided.",
+            "ui:widget": "uri",
+            "ui:addOnBefore": "https://",
+            "ui:options": {
+              "label": false
+            }
+          }
+        }
       }
     },
     "S5": {
       "classNames": "list-group",
       "S5_G1": {
-        "S5_G1_17": {
+        "publishYear": {
           "ui:widget": "date",
           "ui:showSearch": true,
           "ui:span": 12,

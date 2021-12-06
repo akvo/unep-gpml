@@ -1,6 +1,6 @@
 import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Row, Col, Card, Button, Switch, Radio, Popover, Steps } from "antd";
+import { Row, Col, Select, Button, Switch, Radio, Popover, Steps } from "antd";
 import { DownloadOutlined, InfoOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "./styles.scss";
@@ -61,8 +61,11 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
-  const [mainType, setMainType] = useState(false);
-  const [subType, setSubType] = useState(false);
+  const [mainType, setMainType] = useState("");
+  const [label, setLabel] = useState("");
+  const [subType, setSubType] = useState("");
+  const [manageResource, setManageResource] = useState("");
+  const [owners, setOwners] = useState([]);
   const [subContentType, setSubContentType] = useState([]);
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
@@ -70,7 +73,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   });
 
   const [formSchema, setFormSchema] = useState({
-    schema: schema,
+    schema: schema[selectedMainContentType],
   });
 
   useEffect(() => {
@@ -83,8 +86,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     UIStore.update((e) => {
       e.highlight = highlight;
     });
-    setFormSchema({ schema: schema });
-  }, [schema, highlight]);
+    setFormSchema({ schema: schema[selectedMainContentType] });
+  }, [schema, highlight, selectedMainContentType]);
 
   const isLoaded = useCallback(() => {
     return Boolean(
@@ -214,8 +217,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     });
   };
 
-  console.log(formSchema, "formSchema");
-
   const getTabStepIndex = () => {
     const section = data.tabs[0];
     const stepIndex = data[section].steps;
@@ -275,6 +276,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       (element) => element.code === e.target.value
     ).childs;
     setSubContentType(search);
+    setLabel(
+      mainContentType.find((element) => element.code === e.target.value).name
+    );
+    setFormSchema({ schema: schema[selectedMainContentType] });
     UIStore.update((event) => {
       event.selectedMainContentType = e.target.value;
     });
@@ -282,6 +287,23 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
   const handleSubContentType = (e) => {
     setSubType(e.target.value);
+  };
+
+  const onChangeSubmitter = (e) => {
+    setManageResource(e.target.value);
+    if (e.target.value === "Yes") {
+      setOwners([profile.id]);
+    } else {
+      setOwners([]);
+    }
+  };
+
+  const onChangeOwners = (e) => {
+    let arr = owners;
+    if (!arr.some((r) => e.includes(r))) {
+      arr = [...arr, ...e];
+    }
+    setOwners(arr);
   };
 
   return (
@@ -298,7 +320,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     </Button>
                     <Button
                       className="custom-button"
-                      disabled={disabledBtn.disabled}
+                      // disabled={disabledBtn.disabled}
                       loading={sending}
                       type={disabledBtn.type}
                       size="large"
@@ -307,7 +329,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       Submit
                     </Button>
                     <div className="form-title">
-                      <span className="title">Add Content</span>
+                      <span className="title">Add {label} Content</span>
                     </div>
                   </div>
                   <div className="highlight">
@@ -401,6 +423,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     <Radio.Group
                       className="ant-row"
                       onChange={handleMainContentType}
+                      value={mainType}
                     >
                       {mainContentType.map((item) => {
                         const img = require(`../../images/${item.code}.png`)
@@ -448,6 +471,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                         <Radio.Group
                           className="ant-row"
                           onChange={handleSubContentType}
+                          value={subType}
                         >
                           {subContentType.map((item) => (
                             <Col
@@ -476,6 +500,51 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     )}
                   </div>
                 </Row>
+              ) : getTabStepIndex().tabIndex === 1 ? (
+                <div className="main-content">
+                  <div>
+                    <p className="field-label">
+                      Are you directly managing this resource?
+                    </p>
+                    <Radio.Group
+                      value={manageResource}
+                      onChange={onChangeSubmitter}
+                    >
+                      <Radio value="Yes">
+                        <span className="optional-params">Yes</span>You are
+                        granting editing and deleting rights
+                      </Radio>
+                      <Radio value="No">
+                        <span className="optional-params">No</span>You are
+                        categorized as a submitter
+                      </Radio>
+                    </Radio.Group>
+                  </div>
+                  {manageResource === "Yes" && (
+                    <div style={{ marginTop: 10 }}>
+                      <p className="field-label">
+                        Please select other individuals that will support in
+                        managing the resource.
+                      </p>
+                      <Select
+                        mode="multiple"
+                        showSearch
+                        style={{ width: "100%" }}
+                        placeholder="Select individuals"
+                        optionFilterProp="children"
+                        onChange={onChangeOwners}
+                      >
+                        {stakeholders
+                          .filter((item) => item.id !== profile.id)
+                          .map((item) => (
+                            <Select.Option value={item.id} key={item.id}>
+                              {item.firstName}
+                            </Select.Option>
+                          ))}
+                      </Select>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <Row className="main-content">
                   <FlexibleForm
@@ -488,6 +557,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     formSchema={formSchema}
                     setDisabledBtn={setDisabledBtn}
                     tabsData={tabsData}
+                    mainType={label}
+                    owners={owners}
                   />
                 </Row>
               )}
