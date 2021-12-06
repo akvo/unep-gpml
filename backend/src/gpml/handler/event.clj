@@ -4,8 +4,10 @@
             [gpml.handler.image :as handler.image]
             [gpml.db.event :as db.event]
             [gpml.db.language :as db.language]
+            [gpml.handler.auth :as h.auth]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
+            [gpml.auth :as auth]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -13,7 +15,7 @@
                                  description remarks geo_coverage_type
                                  country city geo_coverage_value photo
                                  geo_coverage_countries geo_coverage_country_groups
-                                 created_by mailjet-config]}]
+                                 created_by mailjet-config owners]}]
   (let [data {:title title
               :start_date start_date
               :end_date end_date
@@ -26,10 +28,17 @@
               :geo_coverage_country_groups geo_coverage_country_groups
               :city city
               :country country
+              :owners owners
               :created_by created_by}
         event-id (->> data (db.event/new-event conn) :id)]
     (when (not-empty tags)
       (db.event/add-event-tags conn {:tags (map #(vector event-id %) tags)}))
+    (when (not-empty owners)
+      (doseq [stakeholder-id owners]
+        (h.auth/grant-topic-to-stakeholder! conn {:topic-id event-id
+                                                  :topic-type "event"
+                                                  :stakeholder-id stakeholder-id
+                                                  :roles ["owner"]})))
     (when (not-empty urls)
       (let [lang-urls (map #(vector event-id
                                     (->> % :lang
@@ -69,6 +78,7 @@
       [:map
        [:lang string?]
        [:url [:string {:min 1}]]]]]
+    auth/owners-schema
     [:tags {:optional true}
      [:vector {:optional true} integer?]]]
    (into handler.geo/params-payload)))
