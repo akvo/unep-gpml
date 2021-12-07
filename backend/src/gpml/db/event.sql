@@ -13,6 +13,7 @@ insert into event(
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :review_status) ", review_status")
 --~ (when (contains? params :created_by) ", created_by")
+--~ (when (contains? params :url) ", url")
 )
 values(
     :title,
@@ -27,6 +28,7 @@ values(
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
 --~ (when (contains? params :created_by) ", :created_by")
+--~ (when (contains? params :url) ", :url")
 ) RETURNING id;
 
 -- :name add-event-tags :<! :1
@@ -95,6 +97,7 @@ select
     e.country,
     e.languages,
     e.tags,
+    e.url,
     e.review_status,
     (select json_agg(tag) from event_tag where event = :id) as tags,
     (select json_agg(coalesce(country, country_group))

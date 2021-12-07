@@ -18,6 +18,7 @@ insert into resource(
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :review_status) ", review_status")
 --~ (when (contains? params :created_by) ", created_by")
+--~ (when (contains? params :url) ", url")
 )
 values(
     :title,
@@ -37,6 +38,7 @@ values(
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
 --~ (when (contains? params :created_by) ", :created_by")
+--~ (when (contains? params :url) ", :url")
 )
 returning id;
 
@@ -81,6 +83,7 @@ select
     value_currency,
     value_remarks,
     remarks,
+    url,
     created_by,
     (select json_build_object('id',o.id,'name',o.name)
         from resource_organisation ro
