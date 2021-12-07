@@ -2,11 +2,9 @@
   (:require [integrant.core :as ig]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.handler.geo :as handler.geo]
-            [compojure.core :refer [context GET PUT POST routes wrap-routes]]
             [clojure.java.jdbc :as jdbc]
             [gpml.handler.auth :as h.auth]
             [gpml.db.initiative :as db.initiative]
-            [gpml.db.language :as db.language]
             [gpml.email-util :as email]
             [ring.util.response :as resp]))
 
