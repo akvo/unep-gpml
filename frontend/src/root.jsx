@@ -59,6 +59,9 @@ import ResponsiveMenu from "./modules/dropdown-menu/responsive-menu";
 // Discourse Forum
 import DiscourseForum from "./modules/discourse-forum/discourse-forum";
 
+// Flexible Form
+import FlexibleForms from "./modules/flexible-forms/view";
+
 Promise.all([
   api.get("/tag"),
   api.get("/currency"),
@@ -480,6 +483,10 @@ const Root = () => {
             render={(props) => (
               <LandingSignupView {...props} profile={profile} />
             )}
+          />
+          <Route
+            path="/flexible-forms"
+            render={(props) => <FlexibleForms {...props} />}
           />
           <Route
             path="/discourse-forum"

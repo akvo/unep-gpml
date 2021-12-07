@@ -1,0 +1,1468 @@
+{
+  "initiative": {
+    "S2": {
+      "classNames": "list-group",
+      "S2_1": {
+        "ui:widget": "radio",
+        "ui:options": {
+          "flexible": true
+        }
+      },
+      "S2_G1_1.1": {
+        "ui:widget": "select",
+        "ui:placeholder": "Select individuals",
+        "ui:showSearch": true
+      },
+      "ui:order": ["S2_1", "S2_G1_1.1"]
+    },
+    "S3": {
+      "classNames": "list-group",
+      "S3_G1": {
+        "ui:widget": "MainContentRadioWidget"
+      },
+      "S3_G2": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G3": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G4": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G5": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G6": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G7": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G8": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G9": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "ui:order": [
+        "S3_G1",
+        "S3_G2",
+        "S3_G3",
+        "S3_G4",
+        "S3_G5",
+        "S3_G6",
+        "S3_G7",
+        "S3_G8",
+        "S3_G9"
+      ]
+    },
+    "S4": {
+      "classNames": "list-group",
+      "S4_G1": {
+        "title": {
+          "ui:placeholder": "Title"
+        },
+        "summary": {
+          "ui:placeholder": "Description",
+          "ui:widget": "textarea"
+        },
+        "url": {
+          "ui:addOnBefore": "https://",
+          "ui:widget": "URLWidget",
+          "ui:placeholder": "Url"
+        },
+        "ui:order": ["title", "summary", "url"]
+      },
+      "S4_G2": {
+        "country": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search",
+          "ui:showSearch": true
+        },
+        "geoCoverageType": {
+          "ui:placeholder": "Choose the coverage type",
+          "ui:showSearch": true
+        },
+        "geoCoverageValueTransnational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageCountries": {
+          "ui:placeholder": "Choose the Country",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageValueNational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "subnationalArea": {},
+        "ui:order": [
+          "country",
+          "geoCoverageType",
+          "geoCoverageValueTransnational",
+          "geoCoverageCountries",
+          "geoCoverageValueNational",
+          "subnationalArea"
+        ]
+      },
+      "S4_G3": {
+        "tags": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Pick at least one tag"
+        },
+        "ui:order": ["tags"]
+      },
+      "S4_G4": {
+        "image": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "banner": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "ui:order": ["image", "banner"]
+      },
+      "S4_G5": {
+        "orgName": {
+          "ui:placeholder": "Entity name",
+          "ui:showSearch": true,
+          "ui:allowClear": true
+        },
+        "newCompanyName": {
+          "ui:placeholder": "Entity name"
+        },
+        "newCompanyHeadquarter": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search Country",
+          "ui:showSearch": true
+        },
+        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+      },
+      "S4_G6": {
+        "classNames": "list-group-item",
+        "urls": {
+          "ui:options": {
+            "showToolbar": true,
+            "orderable": false
+          },
+          "items": {
+            "ui:placeholder": "Please copy and paste one link per box provided.",
+            "ui:widget": "uri",
+            "ui:addOnBefore": "https://",
+            "ui:options": {
+              "label": false
+            }
+          }
+        }
+      }
+    },
+    "S5": {
+      "classNames": "list-group",
+      "S5_G1": {
+        "publishYear": {
+          "ui:widget": "date",
+          "ui:showSearch": true,
+          "ui:span": 12,
+          "ui:options": {
+            "mode": "year",
+            "disableDate": "future"
+          }
+        }
+      }
+    }
+  },
+  "action": {
+    "S2": {
+      "classNames": "list-group",
+      "S2_1": {
+        "ui:widget": "radio",
+        "ui:options": {
+          "flexible": true
+        }
+      },
+      "S2_G1_1.1": {
+        "ui:widget": "select",
+        "ui:placeholder": "Select individuals",
+        "ui:showSearch": true
+      },
+      "ui:order": ["S2_1", "S2_G1_1.1"]
+    },
+    "S3": {
+      "classNames": "list-group",
+      "S3_G1": {
+        "ui:widget": "MainContentRadioWidget"
+      },
+      "S3_G2": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G3": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G4": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G5": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G6": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G7": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G8": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G9": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "ui:order": [
+        "S3_G1",
+        "S3_G2",
+        "S3_G3",
+        "S3_G4",
+        "S3_G5",
+        "S3_G6",
+        "S3_G7",
+        "S3_G8",
+        "S3_G9"
+      ]
+    },
+    "S4": {
+      "classNames": "list-group",
+      "S4_G1": {
+        "title": {
+          "ui:placeholder": "Title"
+        },
+        "summary": {
+          "ui:placeholder": "Description",
+          "ui:widget": "textarea"
+        },
+        "url": {
+          "ui:addOnBefore": "https://",
+          "ui:widget": "URLWidget",
+          "ui:placeholder": "Url"
+        },
+        "ui:order": ["title", "summary", "url"]
+      },
+      "S4_G2": {
+        "country": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search",
+          "ui:showSearch": true
+        },
+        "geoCoverageType": {
+          "ui:placeholder": "Choose the coverage type",
+          "ui:showSearch": true
+        },
+        "geoCoverageValueTransnational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageCountries": {
+          "ui:placeholder": "Choose the Country",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageValueNational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "subnationalArea": {},
+        "ui:order": [
+          "country",
+          "geoCoverageType",
+          "geoCoverageValueTransnational",
+          "geoCoverageCountries",
+          "geoCoverageValueNational",
+          "subnationalArea"
+        ]
+      },
+      "S4_G3": {
+        "tags": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Pick at least one tag"
+        },
+        "ui:order": ["tags"]
+      },
+      "S4_G4": {
+        "image": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "banner": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "ui:order": ["image", "banner"]
+      },
+      "S4_G5": {
+        "orgName": {
+          "ui:placeholder": "Entity name",
+          "ui:showSearch": true,
+          "ui:allowClear": true
+        },
+        "newCompanyName": {
+          "ui:placeholder": "Entity name"
+        },
+        "newCompanyHeadquarter": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search Country",
+          "ui:showSearch": true
+        },
+        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+      },
+      "S4_G6": {
+        "classNames": "list-group-item",
+        "urls": {
+          "ui:options": {
+            "showToolbar": true,
+            "orderable": false
+          },
+          "items": {
+            "ui:placeholder": "Please copy and paste one link per box provided.",
+            "ui:widget": "uri",
+            "ui:addOnBefore": "https://",
+            "ui:options": {
+              "label": false
+            }
+          }
+        }
+      }
+    },
+    "S5": {
+      "classNames": "list-group",
+      "S5_G1": {
+        "publishYear": {
+          "ui:widget": "date",
+          "ui:showSearch": true,
+          "ui:span": 12,
+          "ui:options": {
+            "mode": "year",
+            "disableDate": "future"
+          }
+        }
+      }
+    }
+  },
+  "policy": {
+    "S2": {
+      "classNames": "list-group",
+      "S2_1": {
+        "ui:widget": "radio",
+        "ui:options": {
+          "flexible": true
+        }
+      },
+      "S2_G1_1.1": {
+        "ui:widget": "select",
+        "ui:placeholder": "Select individuals",
+        "ui:showSearch": true
+      },
+      "ui:order": ["S2_1", "S2_G1_1.1"]
+    },
+    "S3": {
+      "classNames": "list-group",
+      "S3_G1": {
+        "ui:widget": "MainContentRadioWidget"
+      },
+      "S3_G2": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G3": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G4": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G5": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G6": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G7": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G8": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G9": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "ui:order": [
+        "S3_G1",
+        "S3_G2",
+        "S3_G3",
+        "S3_G4",
+        "S3_G5",
+        "S3_G6",
+        "S3_G7",
+        "S3_G8",
+        "S3_G9"
+      ]
+    },
+    "S4": {
+      "classNames": "list-group",
+      "S4_G1": {
+        "title": {
+          "ui:placeholder": "Title"
+        },
+        "summary": {
+          "ui:placeholder": "Description",
+          "ui:widget": "textarea"
+        },
+        "url": {
+          "ui:addOnBefore": "https://",
+          "ui:widget": "URLWidget",
+          "ui:placeholder": "Url"
+        },
+        "ui:order": ["title", "summary", "url"]
+      },
+      "S4_G2": {
+        "country": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search",
+          "ui:showSearch": true
+        },
+        "geoCoverageType": {
+          "ui:placeholder": "Choose the coverage type",
+          "ui:showSearch": true
+        },
+        "geoCoverageValueTransnational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageCountries": {
+          "ui:placeholder": "Choose the Country",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageValueNational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "subnationalArea": {},
+        "ui:order": [
+          "country",
+          "geoCoverageType",
+          "geoCoverageValueTransnational",
+          "geoCoverageCountries",
+          "geoCoverageValueNational",
+          "subnationalArea"
+        ]
+      },
+      "S4_G3": {
+        "tags": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Pick at least one tag"
+        },
+        "ui:order": ["tags"]
+      },
+      "S4_G4": {
+        "image": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "banner": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "ui:order": ["image", "banner"]
+      },
+      "S4_G5": {
+        "orgName": {
+          "ui:placeholder": "Entity name",
+          "ui:showSearch": true,
+          "ui:allowClear": true
+        },
+        "newCompanyName": {
+          "ui:placeholder": "Entity name"
+        },
+        "newCompanyHeadquarter": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search Country",
+          "ui:showSearch": true
+        },
+        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+      },
+      "S4_G6": {
+        "classNames": "list-group-item",
+        "urls": {
+          "ui:options": {
+            "showToolbar": true,
+            "orderable": false
+          },
+          "items": {
+            "ui:placeholder": "Please copy and paste one link per box provided.",
+            "ui:widget": "uri",
+            "ui:addOnBefore": "https://",
+            "ui:options": {
+              "label": false
+            }
+          }
+        }
+      }
+    },
+    "S5": {
+      "classNames": "list-group",
+      "S5_G1": {
+        "publishYear": {
+          "ui:widget": "date",
+          "ui:showSearch": true,
+          "ui:span": 12,
+          "ui:options": {
+            "mode": "year",
+            "disableDate": "future"
+          }
+        }
+      }
+    }
+  },
+  "financing": {
+    "S2": {
+      "classNames": "list-group",
+      "S2_1": {
+        "ui:widget": "radio",
+        "ui:options": {
+          "flexible": true
+        }
+      },
+      "S2_G1_1.1": {
+        "ui:widget": "select",
+        "ui:placeholder": "Select individuals",
+        "ui:showSearch": true
+      },
+      "ui:order": ["S2_1", "S2_G1_1.1"]
+    },
+    "S3": {
+      "classNames": "list-group",
+      "S3_G1": {
+        "ui:widget": "MainContentRadioWidget"
+      },
+      "S3_G2": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G3": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G4": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G5": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G6": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G7": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G8": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G9": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "ui:order": [
+        "S3_G1",
+        "S3_G2",
+        "S3_G3",
+        "S3_G4",
+        "S3_G5",
+        "S3_G6",
+        "S3_G7",
+        "S3_G8",
+        "S3_G9"
+      ]
+    },
+    "S4": {
+      "classNames": "list-group",
+      "S4_G1": {
+        "title": {
+          "ui:placeholder": "Title"
+        },
+        "summary": {
+          "ui:placeholder": "Description",
+          "ui:widget": "textarea"
+        },
+        "url": {
+          "ui:addOnBefore": "https://",
+          "ui:widget": "URLWidget",
+          "ui:placeholder": "Url"
+        },
+        "ui:order": ["title", "summary", "url"]
+      },
+      "S4_G2": {
+        "country": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search",
+          "ui:showSearch": true
+        },
+        "geoCoverageType": {
+          "ui:placeholder": "Choose the coverage type",
+          "ui:showSearch": true
+        },
+        "geoCoverageValueTransnational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageCountries": {
+          "ui:placeholder": "Choose the Country",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageValueNational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "subnationalArea": {},
+        "ui:order": [
+          "country",
+          "geoCoverageType",
+          "geoCoverageValueTransnational",
+          "geoCoverageCountries",
+          "geoCoverageValueNational",
+          "subnationalArea"
+        ]
+      },
+      "S4_G3": {
+        "tags": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Pick at least one tag"
+        },
+        "ui:order": ["tags"]
+      },
+      "S4_G4": {
+        "image": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "banner": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "ui:order": ["image", "banner"]
+      },
+      "S4_G5": {
+        "orgName": {
+          "ui:placeholder": "Entity name",
+          "ui:showSearch": true,
+          "ui:allowClear": true
+        },
+        "newCompanyName": {
+          "ui:placeholder": "Entity name"
+        },
+        "newCompanyHeadquarter": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search Country",
+          "ui:showSearch": true
+        },
+        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+      },
+      "S4_G6": {
+        "classNames": "list-group-item",
+        "urls": {
+          "ui:options": {
+            "showToolbar": true,
+            "orderable": false
+          },
+          "items": {
+            "ui:placeholder": "Please copy and paste one link per box provided.",
+            "ui:widget": "uri",
+            "ui:addOnBefore": "https://",
+            "ui:options": {
+              "label": false
+            }
+          }
+        }
+      }
+    },
+    "S5": {
+      "classNames": "list-group",
+      "publishYear": {
+        "ui:widget": "date",
+        "ui:showSearch": true,
+        "ui:span": 17,
+        "ui:options": {
+          "mode": "year",
+          "disableDate": "future"
+        }
+      },
+      "value": {
+        "ui:group": "border",
+        "valueAmount": {
+          "ui:placeholder": "Type in the value amount",
+          "ui:span": 14
+        },
+        "valueCurrency": {
+          "ui:placeholder": "Choose value currency",
+          "ui:span": 10,
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "valueRemark": {
+          "ui:placeholder": "Value remark"
+        }
+      },
+      "date": {
+        "validFrom": {
+          "ui:placeholder": "YYYY-MM-DD",
+          "ui:widget": "date",
+          "ui:span": 12
+        },
+        "validTo": {
+          "ui:placeholder": "YYYY-MM-DD - Leave empty if ongoing",
+          "ui:widget": "date",
+          "ui:span": 12
+        }
+      }
+    }
+  },
+  "technical": {
+    "S2": {
+      "classNames": "list-group",
+      "S2_1": {
+        "ui:widget": "radio",
+        "ui:options": {
+          "flexible": true
+        }
+      },
+      "S2_G1_1.1": {
+        "ui:widget": "select",
+        "ui:placeholder": "Select individuals",
+        "ui:showSearch": true
+      },
+      "ui:order": ["S2_1", "S2_G1_1.1"]
+    },
+    "S3": {
+      "classNames": "list-group",
+      "S3_G1": {
+        "ui:widget": "MainContentRadioWidget"
+      },
+      "S3_G2": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G3": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G4": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G5": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G6": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G7": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G8": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G9": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "ui:order": [
+        "S3_G1",
+        "S3_G2",
+        "S3_G3",
+        "S3_G4",
+        "S3_G5",
+        "S3_G6",
+        "S3_G7",
+        "S3_G8",
+        "S3_G9"
+      ]
+    },
+    "S4": {
+      "classNames": "list-group",
+      "S4_G1": {
+        "title": {
+          "ui:placeholder": "Title"
+        },
+        "summary": {
+          "ui:placeholder": "Description",
+          "ui:widget": "textarea"
+        },
+        "url": {
+          "ui:addOnBefore": "https://",
+          "ui:widget": "URLWidget",
+          "ui:placeholder": "Url"
+        },
+        "ui:order": ["title", "summary", "url"]
+      },
+      "S4_G2": {
+        "country": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search",
+          "ui:showSearch": true
+        },
+        "geoCoverageType": {
+          "ui:placeholder": "Choose the coverage type",
+          "ui:showSearch": true
+        },
+        "geoCoverageValueTransnational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageCountries": {
+          "ui:placeholder": "Choose the Country",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageValueNational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "subnationalArea": {},
+        "ui:order": [
+          "country",
+          "geoCoverageType",
+          "geoCoverageValueTransnational",
+          "geoCoverageCountries",
+          "geoCoverageValueNational",
+          "subnationalArea"
+        ]
+      },
+      "S4_G3": {
+        "tags": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Pick at least one tag"
+        },
+        "ui:order": ["tags"]
+      },
+      "S4_G4": {
+        "image": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "banner": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "ui:order": ["image", "banner"]
+      },
+      "S4_G5": {
+        "orgName": {
+          "ui:placeholder": "Entity name",
+          "ui:showSearch": true,
+          "ui:allowClear": true
+        },
+        "newCompanyName": {
+          "ui:placeholder": "Entity name"
+        },
+        "newCompanyHeadquarter": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search Country",
+          "ui:showSearch": true
+        },
+        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+      },
+      "S4_G6": {
+        "classNames": "list-group-item",
+        "urls": {
+          "ui:options": {
+            "showToolbar": true,
+            "orderable": false
+          },
+          "items": {
+            "ui:placeholder": "Please copy and paste one link per box provided.",
+            "ui:widget": "uri",
+            "ui:addOnBefore": "https://",
+            "ui:options": {
+              "label": false
+            }
+          }
+        }
+      }
+    },
+    "S5": {
+      "classNames": "list-group",
+      "S5_G1": {
+        "publishYear": {
+          "ui:widget": "date",
+          "ui:showSearch": true,
+          "ui:span": 12,
+          "ui:options": {
+            "mode": "year",
+            "disableDate": "future"
+          }
+        }
+      }
+    }
+  },
+  "event_flexible": {
+    "S2": {
+      "classNames": "list-group",
+      "S2_1": {
+        "ui:widget": "radio",
+        "ui:options": {
+          "flexible": true
+        }
+      },
+      "S2_G1_1.1": {
+        "ui:widget": "select",
+        "ui:placeholder": "Select individuals",
+        "ui:showSearch": true
+      },
+      "ui:order": ["S2_1", "S2_G1_1.1"]
+    },
+    "S3": {
+      "classNames": "list-group",
+      "S3_G1": {
+        "ui:widget": "MainContentRadioWidget"
+      },
+      "S3_G2": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G3": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G4": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G5": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G6": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G7": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G8": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G9": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "ui:order": [
+        "S3_G1",
+        "S3_G2",
+        "S3_G3",
+        "S3_G4",
+        "S3_G5",
+        "S3_G6",
+        "S3_G7",
+        "S3_G8",
+        "S3_G9"
+      ]
+    },
+    "S4": {
+      "classNames": "list-group",
+      "S4_G1": {
+        "title": {
+          "ui:placeholder": "Title"
+        },
+        "summary": {
+          "ui:placeholder": "Description",
+          "ui:widget": "textarea"
+        },
+        "url": {
+          "ui:addOnBefore": "https://",
+          "ui:widget": "URLWidget",
+          "ui:placeholder": "Url"
+        },
+        "ui:order": ["title", "summary", "url"]
+      },
+      "S4_G2": {
+        "country": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search",
+          "ui:showSearch": true
+        },
+        "geoCoverageType": {
+          "ui:placeholder": "Choose the coverage type",
+          "ui:showSearch": true
+        },
+        "geoCoverageValueTransnational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageCountries": {
+          "ui:placeholder": "Choose the Country",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageValueNational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "subnationalArea": {},
+        "ui:order": [
+          "country",
+          "geoCoverageType",
+          "geoCoverageValueTransnational",
+          "geoCoverageCountries",
+          "geoCoverageValueNational",
+          "subnationalArea"
+        ]
+      },
+      "S4_G3": {
+        "tags": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Pick at least one tag"
+        },
+        "ui:order": ["tags"]
+      },
+      "S4_G4": {
+        "image": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "banner": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "ui:order": ["image", "banner"]
+      },
+      "S4_G5": {
+        "orgName": {
+          "ui:placeholder": "Entity name",
+          "ui:showSearch": true,
+          "ui:allowClear": true
+        },
+        "newCompanyName": {
+          "ui:placeholder": "Entity name"
+        },
+        "newCompanyHeadquarter": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search Country",
+          "ui:showSearch": true
+        },
+        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+      },
+      "S4_G6": {
+        "classNames": "list-group-item",
+        "urls": {
+          "ui:options": {
+            "showToolbar": true,
+            "orderable": false
+          },
+          "items": {
+            "ui:placeholder": "Please copy and paste one link per box provided.",
+            "ui:widget": "uri",
+            "ui:addOnBefore": "https://",
+            "ui:options": {
+              "label": false
+            }
+          }
+        }
+      }
+    },
+    "S5": {
+      "classNames": "list-group",
+      "S5_G1": {
+        "publishYear": {
+          "ui:widget": "date",
+          "ui:showSearch": true,
+          "ui:span": 12,
+          "ui:options": {
+            "mode": "year",
+            "disableDate": "future"
+          }
+        }
+      }
+    }
+  },
+  "technology": {
+    "S2": {
+      "classNames": "list-group",
+      "S2_1": {
+        "ui:widget": "radio",
+        "ui:options": {
+          "flexible": true
+        }
+      },
+      "S2_G1_1.1": {
+        "ui:widget": "select",
+        "ui:placeholder": "Select individuals",
+        "ui:showSearch": true
+      },
+      "ui:order": ["S2_1", "S2_G1_1.1"]
+    },
+    "S3": {
+      "classNames": "list-group",
+      "S3_G1": {
+        "ui:widget": "MainContentRadioWidget"
+      },
+      "S3_G2": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G3": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G4": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G5": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G6": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G7": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G8": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G9": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "ui:order": [
+        "S3_G1",
+        "S3_G2",
+        "S3_G3",
+        "S3_G4",
+        "S3_G5",
+        "S3_G6",
+        "S3_G7",
+        "S3_G8",
+        "S3_G9"
+      ]
+    },
+    "S4": {
+      "classNames": "list-group",
+      "S4_G1": {
+        "title": {
+          "ui:placeholder": "Title"
+        },
+        "summary": {
+          "ui:placeholder": "Description",
+          "ui:widget": "textarea"
+        },
+        "url": {
+          "ui:addOnBefore": "https://",
+          "ui:widget": "URLWidget",
+          "ui:placeholder": "Url"
+        },
+        "ui:order": ["title", "summary", "url"]
+      },
+      "S4_G2": {
+        "country": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search",
+          "ui:showSearch": true
+        },
+        "geoCoverageType": {
+          "ui:placeholder": "Choose the coverage type",
+          "ui:showSearch": true
+        },
+        "geoCoverageValueTransnational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageCountries": {
+          "ui:placeholder": "Choose the Country",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageValueNational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "subnationalArea": {},
+        "ui:order": [
+          "country",
+          "geoCoverageType",
+          "geoCoverageValueTransnational",
+          "geoCoverageCountries",
+          "geoCoverageValueNational",
+          "subnationalArea"
+        ]
+      },
+      "S4_G3": {
+        "tags": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Pick at least one tag"
+        },
+        "ui:order": ["tags"]
+      },
+      "S4_G4": {
+        "image": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "banner": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "ui:order": ["image", "banner"]
+      },
+      "S4_G5": {
+        "orgName": {
+          "ui:placeholder": "Entity name",
+          "ui:showSearch": true,
+          "ui:allowClear": true
+        },
+        "newCompanyName": {
+          "ui:placeholder": "Entity name"
+        },
+        "newCompanyHeadquarter": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search Country",
+          "ui:showSearch": true
+        },
+        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+      },
+      "S4_G6": {
+        "classNames": "list-group-item",
+        "urls": {
+          "ui:options": {
+            "showToolbar": true,
+            "orderable": false
+          },
+          "items": {
+            "ui:placeholder": "Please copy and paste one link per box provided.",
+            "ui:widget": "uri",
+            "ui:addOnBefore": "https://",
+            "ui:options": {
+              "label": false
+            }
+          }
+        }
+      }
+    },
+    "S5": {
+      "classNames": "list-group",
+      "S5_G1": {
+        "publishYear": {
+          "ui:widget": "date",
+          "ui:showSearch": true,
+          "ui:span": 12,
+          "ui:options": {
+            "mode": "year",
+            "disableDate": "future"
+          }
+        }
+      }
+    }
+  },
+  "capacity_building": {
+    "S2": {
+      "classNames": "list-group",
+      "S2_1": {
+        "ui:widget": "radio",
+        "ui:options": {
+          "flexible": true
+        }
+      },
+      "S2_G1_1.1": {
+        "ui:widget": "select",
+        "ui:placeholder": "Select individuals",
+        "ui:showSearch": true
+      },
+      "ui:order": ["S2_1", "S2_G1_1.1"]
+    },
+    "S3": {
+      "classNames": "list-group",
+      "S3_G1": {
+        "ui:widget": "MainContentRadioWidget"
+      },
+      "S3_G2": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G3": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G4": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G5": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G6": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G7": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G8": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "S3_G9": {
+        "ui:widget": "SubContentRadioWidget"
+      },
+      "ui:order": [
+        "S3_G1",
+        "S3_G2",
+        "S3_G3",
+        "S3_G4",
+        "S3_G5",
+        "S3_G6",
+        "S3_G7",
+        "S3_G8",
+        "S3_G9"
+      ]
+    },
+    "S4": {
+      "classNames": "list-group",
+      "S4_G1": {
+        "title": {
+          "ui:placeholder": "Title"
+        },
+        "summary": {
+          "ui:placeholder": "Description",
+          "ui:widget": "textarea"
+        },
+        "url": {
+          "ui:addOnBefore": "https://",
+          "ui:widget": "URLWidget",
+          "ui:placeholder": "Url"
+        },
+        "ui:order": ["title", "summary", "url"]
+      },
+      "S4_G2": {
+        "country": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search",
+          "ui:showSearch": true
+        },
+        "geoCoverageType": {
+          "ui:placeholder": "Choose the coverage type",
+          "ui:showSearch": true
+        },
+        "geoCoverageValueTransnational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageCountries": {
+          "ui:placeholder": "Choose the Country",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageValueNational": {
+          "ui:placeholder": "Choose the coverage",
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "subnationalArea": {},
+        "ui:order": [
+          "country",
+          "geoCoverageType",
+          "geoCoverageValueTransnational",
+          "geoCoverageCountries",
+          "geoCoverageValueNational",
+          "subnationalArea"
+        ]
+      },
+      "S4_G3": {
+        "tags": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Pick at least one tag"
+        },
+        "ui:order": ["tags"]
+      },
+      "S4_G4": {
+        "image": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "banner": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "ui:order": ["image", "banner"]
+      },
+      "S4_G5": {
+        "orgName": {
+          "ui:placeholder": "Entity name",
+          "ui:showSearch": true,
+          "ui:allowClear": true
+        },
+        "newCompanyName": {
+          "ui:placeholder": "Entity name"
+        },
+        "newCompanyHeadquarter": {
+          "ui:widget": "select",
+          "ui:placeholder": "Search Country",
+          "ui:showSearch": true
+        },
+        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+      },
+      "S4_G6": {
+        "classNames": "list-group-item",
+        "urls": {
+          "ui:options": {
+            "showToolbar": true,
+            "orderable": false
+          },
+          "items": {
+            "ui:placeholder": "Please copy and paste one link per box provided.",
+            "ui:widget": "uri",
+            "ui:addOnBefore": "https://",
+            "ui:options": {
+              "label": false
+            }
+          }
+        }
+      }
+    },
+    "S5": {
+      "classNames": "list-group",
+      "S5_G1": {
+        "publishYear": {
+          "ui:widget": "date",
+          "ui:showSearch": true,
+          "ui:span": 12,
+          "ui:options": {
+            "mode": "year",
+            "disableDate": "future"
+          }
+        }
+      }
+    }
+  }
+}

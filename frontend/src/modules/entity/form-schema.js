@@ -175,6 +175,11 @@ export const uiSchema = {
     "ui:showSearch": true,
     "ui:mode": "multiple",
   },
+  geoCoverageCountries: {
+    "ui:placeholder": "Choose the coverage",
+    "ui:widget": "select",
+    "ui:showSearch": true,
+  },
   geoCoverageValueNational: {
     "ui:placeholder": "Choose the coverage",
     "ui:widget": "select",
