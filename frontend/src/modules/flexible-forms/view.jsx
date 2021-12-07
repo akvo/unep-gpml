@@ -32,6 +32,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     formStep: s.formStep,
     formEdit: s.formEdit,
     selectedMainContentType: s.selectedMainContentType,
+    currencies: s.currencies,
   }));
 
   const {
@@ -51,6 +52,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     formEdit,
     profile,
     selectedMainContentType,
+    currencies,
   } = storeData;
 
   const tabsData = tabs;
@@ -61,7 +63,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
-  const [mainType, setMainType] = useState("");
+  const [mainType, setMainType] = useState("initiative");
   const [label, setLabel] = useState("");
   const [subType, setSubType] = useState("");
   const [manageResource, setManageResource] = useState("");
@@ -528,11 +530,17 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       </p>
                       <Select
                         mode="multiple"
-                        showSearch
+                        showSearch={true}
+                        allowClear={true}
                         style={{ width: "100%" }}
                         placeholder="Select individuals"
                         optionFilterProp="children"
                         onChange={onChangeOwners}
+                        filterOption={(input, option) =>
+                          option.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        }
                       >
                         {stakeholders
                           .filter((item) => item.id !== profile.id)

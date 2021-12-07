@@ -52,6 +52,7 @@ const getSchema = ({
   mainContentType,
   nonMemberOrganisations,
   selectedMainContentType,
+  currencies,
 }) => {
   const prop = cloneDeep(schema[selectedMainContentType].properties);
   const orgs = [...organisations];
@@ -126,6 +127,27 @@ const getSchema = ({
     prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
       (x) => x.tag
     );
+  }
+
+  if (selectedMainContentType === "financing") {
+    const tagsPlusTopics = tags?.topics
+      ? tags.financingMechanism?.concat(tags.topics)
+      : tags.financingMechanism;
+    prop.S4.properties.S4_G3.properties[
+      "tags"
+    ].enum = tagsPlusTopics?.map((x) => String(x.id));
+    prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
+      (x) => x.tag
+    );
+
+    prop.S5.properties.value.properties["valueCurrency"].enum = currencies?.map(
+      (x) => x.value
+    );
+    prop.S5.properties.value.properties[
+      "valueCurrency"
+    ].enumNames = currencies?.map((x) => x.label);
+
+    console.log(prop.S5.properties.value.properties["valueCurrency"]);
   }
 
   return {

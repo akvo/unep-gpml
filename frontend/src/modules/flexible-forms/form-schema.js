@@ -76,7 +76,13 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["country", "geoCoverageType"],
+            required: [
+              "country",
+              "geoCoverageType",
+              "geoCoverageValueTransnational",
+              "geoCoverageCountries",
+              "geoCoverageValueNational",
+            ],
             properties: {
               country: {
                 title: "In which country are you headquarters?",
@@ -277,7 +283,13 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["country", "geoCoverageType"],
+            required: [
+              "country",
+              "geoCoverageType",
+              "geoCoverageValueTransnational",
+              "geoCoverageCountries",
+              "geoCoverageValueNational",
+            ],
             properties: {
               country: {
                 title: "In which country are you headquarters?",
@@ -478,7 +490,13 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["country", "geoCoverageType"],
+            required: [
+              "country",
+              "geoCoverageType",
+              "geoCoverageValueTransnational",
+              "geoCoverageCountries",
+              "geoCoverageValueNational",
+            ],
             properties: {
               country: {
                 title: "In which country are you headquarters?",
@@ -679,12 +697,18 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["country", "geoCoverageType"],
+            required: [
+              "country",
+              "geoCoverageType",
+              "geoCoverageValueTransnational",
+              "geoCoverageCountries",
+              "geoCoverageValueNational",
+            ],
             properties: {
               country: {
                 title: "In which country are you headquarters?",
-                enum: [],
-                type: "array",
+                enum: ["23-0"],
+                enumNames: ["List of country"],
               },
               ...newGeoCoverageFormat,
               geoCoverageType: {
@@ -795,12 +819,13 @@ export const schema = {
           id: "tabs",
           value: ["S5"],
         },
+        required: ["publishYear"],
         properties: {
           publishYear: {
             title: "YEAR FOUNDED / YEAR OF COMMENCEMENT",
             type: "string",
           },
-          S5_G2: {
+          value: {
             type: "object",
             title: "",
             required: ["valueAmount", "valueCurrency"],
@@ -819,7 +844,7 @@ export const schema = {
               },
             },
           },
-          S5_G3: {
+          date: {
             type: "object",
             title: "",
             required: ["validFrom"],
@@ -910,7 +935,13 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["country", "geoCoverageType"],
+            required: [
+              "country",
+              "geoCoverageType",
+              "geoCoverageValueTransnational",
+              "geoCoverageCountries",
+              "geoCoverageValueNational",
+            ],
             properties: {
               country: {
                 title: "In which country are you headquarters?",
@@ -1108,7 +1139,13 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["country", "geoCoverageType"],
+            required: [
+              "country",
+              "geoCoverageType",
+              "geoCoverageValueTransnational",
+              "geoCoverageCountries",
+              "geoCoverageValueNational",
+            ],
             properties: {
               country: {
                 title: "In which country are you headquarters?",
@@ -1309,7 +1346,13 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["country", "geoCoverageType"],
+            required: [
+              "country",
+              "geoCoverageType",
+              "geoCoverageValueTransnational",
+              "geoCoverageCountries",
+              "geoCoverageValueNational",
+            ],
             properties: {
               country: {
                 title: "In which country are you headquarters?",
@@ -1510,7 +1553,13 @@ export const schema = {
               id: "steps",
               value: 1,
             },
-            required: ["country", "geoCoverageType"],
+            required: [
+              "country",
+              "geoCoverageType",
+              "geoCoverageValueTransnational",
+              "geoCoverageCountries",
+              "geoCoverageValueNational",
+            ],
             properties: {
               country: {
                 title: "In which country are you headquarters?",

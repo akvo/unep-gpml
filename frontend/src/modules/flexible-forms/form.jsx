@@ -24,6 +24,7 @@ import {
   customFormats,
   collectDependSchema,
 } from "../../utils/forms";
+import api from "../../utils/api";
 
 const Form = withTheme(AntDTheme);
 
@@ -52,6 +53,7 @@ const FlexibleForm = withRouter(
       tags,
       formEdit,
       profile,
+      selectedMainContentType,
     } = UIStore.currentState;
 
     const { status, id } = formEdit.flexible;
@@ -84,13 +86,21 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.country = parseInt(Object.keys(data.country)[0]);
-      data.geoCoverageType =
-        data.geoCoverageType[Object.keys(data.geoCoverageType)[0]];
+      data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
       data.org = {
         id: parseInt(Object.keys(data.orgName)[0]),
       };
-
+      if (data.resourceType === "Financing Resource") {
+        data.valueCurrency = Object.keys(data.valueCurrency)[0];
+        data.validTo = data.validTo || "Ongoing";
+        data.value = data.valueAmount;
+        delete data.valueAmount;
+        if (data.valueRemark) {
+          data.valueRemarks = data.valueRemark;
+          delete data.valueRemark;
+        }
+      }
       delete data.orgName;
 
       data.tags =
@@ -102,29 +112,52 @@ const FlexibleForm = withRouter(
         data.publishYear = publishYear.getFullYear();
       }
 
+      if (data.geoCoverageType === "transnational") {
+        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational.map(
+          (x) => parseInt(x)
+        );
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
+        delete data.geoCoverageValueTransnational;
+      }
+
+      if (data.geoCoverageType === "national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
+        ];
+
+        delete data.geoCoverageValueNational;
+      }
+
       if (data?.urls) {
         data.urls = data.urls.map((x) => {
           return {
             url: x,
+            lang: "en",
           };
         });
       }
-
       console.log(data);
-
-      const d = {
-        title: "test",
-        org: {
-          id: 1000,
-        },
-        publishYear: 2020,
-        country: 1029,
-        geoCoverageType: "transnational",
-        geoCoverageCountries: [1098],
-        tags: [143],
-        resourceType: "Technical Resource",
-        geoCoverageCountryGroups: [157],
-      };
+      if (status === "add" && !params?.id) {
+        api
+          .post("/resource", data)
+          .then(() => {
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully created" });
+          })
+          .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
     };
 
     const handleFormOnChange = useCallback(
@@ -190,7 +223,7 @@ const FlexibleForm = withRouter(
           <Form
             idPrefix="flexibleForm"
             schema={formSchema.schema}
-            uiSchema={uiSchema["initiative"]}
+            uiSchema={uiSchema[selectedMainContentType]}
             formData={flexibleFormData.data}
             onChange={(e) => handleFormOnChange(e)}
             onSubmit={(e) => handleOnSubmit(e)}
