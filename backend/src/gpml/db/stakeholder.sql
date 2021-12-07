@@ -150,7 +150,6 @@ insert into stakeholder(
     country,
     representation
 --~ (when (contains? params :affiliation) ",affiliation")
---~ (when (contains? params :non_member_organisation) ",non_member_organisation")
 --~ (when (contains? params :linked_in) ",linked_in")
 --~ (when (contains? params :twitter) ",twitter")
 --~ (when (contains? params :cv) ",cv")
@@ -168,7 +167,6 @@ insert into stakeholder(
     :country::integer,
     :representation
 --~ (when (contains? params :affiliation) ",:affiliation")
---~ (when (contains? params :non_member_organisation) ",:non_member_organisation")
 --~ (when (contains? params :linked_in) ",:linked_in")
 --~ (when (contains? params :twitter) ",:twitter")
 --~ (when (contains? params :cv) ",:cv")
