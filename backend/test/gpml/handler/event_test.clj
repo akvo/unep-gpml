@@ -1,24 +1,19 @@
 (ns gpml.handler.event-test
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [gpml.fixtures :as fixtures]
-            [gpml.handler.image :as image]
             [gpml.handler.event :as event]
             [gpml.handler.profile-test :as profile-test]
-            [gpml.db.tag :as db.tag]
-            [gpml.db.language :as db.language]
             [gpml.db.event :as db.event]
             [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.topic-stakeholder-auth :as db.ts-auth]
             [integrant.core :as ig]
-            [ring.mock.request :as mock]
-            [clojure.string :as s])
+            [ring.mock.request :as mock])
   (:import [java.time Instant]
            [java.sql Timestamp]))
 
 (use-fixtures :each fixtures/with-test-system)
 
 (defn time* []
-  (java.sql.Timestamp. (.toEpochMilli (Instant/now))))
+  (Timestamp. (.toEpochMilli (Instant/now))))
 
 (defn new-event [data]
   {:title "title" :start_date (time*) :end_date (time*)
