@@ -1,15 +1,15 @@
-ALTER TABLE event DROP COLUMN url text;
---;;
-ALTER TABLE resource DROP COLUMN url text;
---;;
-ALTER TABLE initiative DROP COLUMN url text;
-;;
 DROP VIEW v_event_data CASCADE;
 --;;
 DROP VIEW v_initiative_data CASCADE;
 --;;
 DROP VIEW v_resource_data CASCADE;
 --;;
+ALTER TABLE event DROP COLUMN url;
+--;;
+ALTER TABLE resource DROP COLUMN url;
+--;;
+ALTER TABLE initiative DROP COLUMN url;
+;;
 CREATE VIEW public.v_event_data AS
  SELECT e.id,
     e.title,
