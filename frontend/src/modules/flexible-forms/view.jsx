@@ -564,7 +564,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                           .filter((item) => item.id !== profile.id)
                           .map((item) => (
                             <Select.Option value={item.id} key={item.id}>
-                              {item.firstName}
+                              {`${item.firstName} ${item.lastName}`}
                             </Select.Option>
                           ))}
                       </Select>
