@@ -15,7 +15,7 @@
                                  description remarks geo_coverage_type
                                  country city geo_coverage_value photo
                                  geo_coverage_countries geo_coverage_country_groups
-                                 created_by mailjet-config owners]}]
+                                 created_by mailjet-config owners url]}]
   (let [data {:title title
               :start_date start_date
               :end_date end_date
@@ -27,6 +27,7 @@
               :geo_coverage_countries geo_coverage_countries
               :geo_coverage_country_groups geo_coverage_country_groups
               :city city
+              :url url
               :country country
               :owners owners
               :created_by created_by}
@@ -57,7 +58,8 @@
     (email/notify-admins-pending-approval
      conn
      mailjet-config
-     (merge data {:type "event"}))))
+     (merge data {:type "event"}))
+    {:id event-id}))
 
 (def post-params
   (->
@@ -86,11 +88,11 @@
 (defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
     (jdbc/with-db-transaction [conn (:spec db)]
-      (create-event conn (assoc body-params
-                                :mailjet-config mailjet-config
-                                :created_by
-                                (-> (db.stakeholder/stakeholder-by-email conn jwt-claims) :id))))
-    (resp/created (:referrer req) {:message "New event created"})))
+      (let [result (create-event conn (assoc body-params
+                                        :mailjet-config mailjet-config
+                                        :created_by
+                                        (-> (db.stakeholder/stakeholder-by-email conn jwt-claims) :id)))]
+        (resp/created (:referrer req) {:message "New event created" :id (:id result)})))))
 
 (defmethod ig/init-key :gpml.handler.event/post-params [_ _]
   post-params)

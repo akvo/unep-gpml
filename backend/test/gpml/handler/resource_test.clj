@@ -35,6 +35,7 @@
    :urls [{:lang "id" :url "https://www.test.org"}]
    :country (-> (:countries data) first :id)
    :tags [4 5]
+   :url "resource url"
    :owners (:owners data)})
 
 
@@ -63,10 +64,11 @@
           user (db.stakeholder/new-stakeholder db (profile-test/new-profile 1))
           _ (db.stakeholder/update-stakeholder-status db (assoc user :review_status "APPROVED"))
           ;; create John create new resource with available organisation
+          payload (new-resource data)
           resp-one (with-redefs [image/upload-blob fake-upload-blob]
                      (handler (-> (mock/request :post "/")
                                   (assoc :jwt-claims {:email "john@org"})
-                                  (assoc :body-params (new-resource data)))))
+                                  (assoc :body-params payload))))
           ;; create John create new resource with new organisation
           resp-two (with-redefs [image/upload-blob fake-upload-blob]
                      (handler (-> (mock/request :post "/")
@@ -100,4 +102,5 @@
                             :image "/image/resource/2"
                             :value "2000"
                             :created_by 10001) :image :owners)
-             (dissoc resource-two :image))))))
+             (dissoc resource-two :image)))
+      (is (= (:url payload) (:url resource-one))))))

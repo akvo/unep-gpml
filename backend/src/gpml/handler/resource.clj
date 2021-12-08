@@ -18,7 +18,7 @@
                                     geo_coverage_type geo_coverage_value
                                     geo_coverage_countries geo_coverage_country_groups
                                     attachments country urls tags remarks
-                                    created_by mailjet-config owners]}]
+                                    created_by url mailjet-config owners]}]
   (let [organisation (if (= -1 (:id org))
                        [(handler.org/create conn org)]
                        [(:id org)])
@@ -39,8 +39,9 @@
               :country country
               :attachments attachments
               :remarks remarks
-              :created_by created_by}
-        resource-id (->> data (db.resource/new-resource conn) :id)]
+              :created_by created_by
+              :url url}
+        resource-id (:id (db.resource/new-resource conn data))]
     (when (not-empty owners)
       (doseq [stakeholder-id owners]
         (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
