@@ -408,6 +408,24 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       quick summary sheet with categories and sub-categories can
                       be downloaded <a href="#">here</a>.
                     </p>
+                    <p>
+                      Once submitted resources go through a review process which
+                      is being fine-tuned via consultations to assess content
+                      accuracy and quality. The current validation mechanism
+                      draft can be found under{" "}
+                      <a href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf">
+                        Annex C of the Concept Document.
+                      </a>
+                    </p>
+                    <p>
+                      You can access existing content via the{" "}
+                      <a href="https://digital.gpmarinelitter.org/browse?country=&transnational=&topic=project%2Caction_plan%2Cpolicy%2Ctechnical_resource%2Cfinancing_resource%2Cevent%2Ctechnology&tag=&q=&offset=0">
+                        Knowledge Exchange Library.
+                      </a>
+                      Make sure to browse around and leave a review under the
+                      resources you enjoy the most!
+                    </p>
+                    <p>To get started sign up or log in now.</p>
                   </div>
                 </Row>
               ) : getTabStepIndex().tabIndex === 2 ? (
