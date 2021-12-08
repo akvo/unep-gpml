@@ -493,18 +493,24 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                           onChange={handleSubContentType}
                           value={subType}
                         >
-                          {subContentType.map((item) => (
+                          {subContentType.map((item, index) => (
                             <Col
                               className="gutter-row"
                               xs={12}
                               lg={6}
-                              key={item}
+                              key={index}
                             >
-                              <Radio.Button id={item} value={item} key={item}>
-                                {item}
-                                <div className="info-icon-wrapper">
-                                  <img src={InfoBlue} />
-                                </div>
+                              <Radio.Button
+                                id={item}
+                                value={item.title}
+                                key={index}
+                              >
+                                {item.title}
+                                <Popover content={item.des}>
+                                  <div className="info-icon-wrapper">
+                                    <img src={InfoBlue} />
+                                  </div>
+                                </Popover>
                               </Radio.Button>
                             </Col>
                           ))}
