@@ -93,8 +93,10 @@
            organisation_role public_email]}
    tags
    geo
-   org]
+   org
+   jwt-claims]
   {:id id
+   :idp_username (:sub jwt-claims)
    :title title
    :non_member_organisation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation)
    :first_name first_name
@@ -142,7 +144,7 @@
                   (mapv :country_group geo-value)
                   (contains? #{"national" "transnational" "sub-national"} geo-type)
                   (mapv :country geo-value))
-            profile (remap-profile profile tags geo org)]
+            profile (remap-profile profile tags geo org jwt-claims)]
         (resp/response profile))
       (resp/response {}))))
 
