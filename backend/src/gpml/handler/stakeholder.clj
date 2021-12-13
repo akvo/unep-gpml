@@ -21,8 +21,7 @@
                    re-pattern))
 
 (defn add-idp-usernames [auth0-config stakeholders]
-  (let [opts {:filters {:email (mapv :email stakeholders)}}
-        users (group-by :email (auth0/get-auth0-users-ids auth0-config opts))]
+  (let [users (group-by :email (auth0/get-auth0-users-ids auth0-config))]
     (map (fn [{:keys [email] :as stakeholder}]
            (assoc stakeholder :idp_username (get-in users [email 0 :user_id])))
          stakeholders)))
