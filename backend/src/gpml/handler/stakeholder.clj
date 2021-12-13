@@ -20,7 +20,13 @@
                    (format "^(%1$s)((,(%1$s))+)?$")
                    re-pattern))
 
-(defmethod ig/init-key :gpml.handler.stakeholder/get [_ {:keys [db]}]
+(defn add-idp-usernames [auth0-config stakeholders]
+  (let [users (group-by :email (auth0/get-auth0-users-ids auth0-config))]
+    (map (fn [{:keys [email] :as stakeholder}]
+           (assoc stakeholder :idp_username (get-in users [email 0 :user_id])))
+         stakeholders)))
+
+(defmethod ig/init-key :gpml.handler.stakeholder/get [_ {:keys [db auth0]}]
   (fn [{{{:keys [page limit email-like roles] :as query} :query} :parameters
         user :user approved? :approved?}]
     (resp/response (if (and approved? (= (:role user) "ADMIN"))
@@ -37,7 +43,7 @@
                        ;; is finalized. Currently, leaving the public
                        ;; response shape as before to not break other
                        ;; uses of this end-point.
-                       {:stakeholders stakeholders :page page :limit limit :pages pages :count count})
+                       {:stakeholders (add-idp-usernames auth0 stakeholders) :page page :limit limit :pages pages :count count})
                      ;; FIXME: limit & page are ignored when returning public stakeholders!
                      {:stakeholders (->> (db.stakeholder/all-public-stakeholder (:spec db))
                                          (map (fn [stakeholder]

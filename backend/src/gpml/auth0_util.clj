@@ -5,7 +5,14 @@
 
 (def auth0-token (atom ""))
 
-(defn fetch-auth0-users [domain]
+(defn- parse-response-body [response]
+  (->> response
+       :body
+       j/read-value
+       w/keywordize-keys))
+
+(defn fetch-auth0-users
+  [domain]
   (client/get (format "%sapi/v2/users" domain)
               {:content-type :json
                :throw-exceptions false
@@ -40,12 +47,16 @@
         (fetch-auth0-users domain))
       data)))
 
+(defn get-auth0-users-ids
+  "Returns a collection of user emails and their corresponding auth0 user_id."
+  [auth0-config]
+  (let [response (maybe-refresh-token-fetch-auth0-users auth0-config)]
+    (->> (parse-response-body response)
+         (map #(select-keys % [:email :user_id])))))
+
 (defn list-auth0-verified-emails [auth0-config]
   (let [response (maybe-refresh-token-fetch-auth0-users auth0-config)
-        verified-emails (->> response
-                             :body
-                             j/read-value
-                             w/keywordize-keys
+        verified-emails (->> (parse-response-body response)
                              (filter :email_verified)
                              (map :email))]
     verified-emails))
@@ -54,5 +65,4 @@
   (let [auth0-config {:domain (System/getenv "OIDC_ISSUER")
                       :client-id (System/getenv "AUTH0_BACKEND_CLIENT_ID")
                       :secret (System/getenv "AUTH0_BACKEND_SECRET")}]
-    (list-auth0-verified-emails auth0-config))
-  )
+    (list-auth0-verified-emails auth0-config)))
