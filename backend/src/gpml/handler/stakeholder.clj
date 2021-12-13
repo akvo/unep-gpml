@@ -47,9 +47,8 @@
                        {:stakeholders (add-idp-usernames auth0 stakeholders) :page page :limit limit :pages pages :count count})
                      ;; FIXME: limit & page are ignored when returning public stakeholders!
                      {:stakeholders (->> (db.stakeholder/all-public-stakeholder (:spec db))
-                                         (add-idp-usernames auth0)
                                          (map (fn [stakeholder]
-                                                (let [common-keys [:id :title :first_name :last_name :idp_username]]
+                                                (let [common-keys [:id :title :first_name :last_name]]
                                                   (if (:public_email stakeholder)
                                                     (select-keys stakeholder (conj common-keys :email))
                                                     (select-keys stakeholder common-keys))))))}))))
