@@ -20,7 +20,14 @@
                    (format "^(%1$s)((,(%1$s))+)?$")
                    re-pattern))
 
-(defmethod ig/init-key :gpml.handler.stakeholder/get [_ {:keys [db]}]
+(defn add-idp-usernames [auth0-config stakeholders]
+  (let [opts {:filters {:email (mapv :email stakeholders)}}
+        users (group-by :email (auth0/get-auth0-users-ids auth0-config opts))]
+    (map (fn [{:keys [email] :as stakeholder}]
+           (assoc stakeholder :idp_username (get-in users [email 0 :user_id])))
+         stakeholders)))
+
+(defmethod ig/init-key :gpml.handler.stakeholder/get [_ {:keys [db auth0]}]
   (fn [{{{:keys [page limit email-like roles] :as query} :query} :parameters
         user :user approved? :approved?}]
     (resp/response (if (and approved? (= (:role user) "ADMIN"))
@@ -37,11 +44,12 @@
                        ;; is finalized. Currently, leaving the public
                        ;; response shape as before to not break other
                        ;; uses of this end-point.
-                       {:stakeholders stakeholders :page page :limit limit :pages pages :count count})
+                       {:stakeholders (add-idp-usernames auth0 stakeholders) :page page :limit limit :pages pages :count count})
                      ;; FIXME: limit & page are ignored when returning public stakeholders!
                      {:stakeholders (->> (db.stakeholder/all-public-stakeholder (:spec db))
+                                         (add-idp-usernames auth0)
                                          (map (fn [stakeholder]
-                                                (let [common-keys [:id :title :first_name :last_name]]
+                                                (let [common-keys [:id :title :first_name :last_name :idp_username]]
                                                   (if (:public_email stakeholder)
                                                     (select-keys stakeholder (conj common-keys :email))
                                                     (select-keys stakeholder common-keys))))))}))))
@@ -93,10 +101,8 @@
            organisation_role public_email]}
    tags
    geo
-   org
-   jwt-claims]
+   org]
   {:id id
-   :idp_username (:sub jwt-claims)
    :title title
    :non_member_organisation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation)
    :first_name first_name
@@ -144,7 +150,7 @@
                   (mapv :country_group geo-value)
                   (contains? #{"national" "transnational" "sub-national"} geo-type)
                   (mapv :country geo-value))
-            profile (remap-profile profile tags geo org jwt-claims)]
+            profile (remap-profile profile tags geo org)]
         (resp/response profile))
       (resp/response {}))))
 
