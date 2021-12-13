@@ -1,0 +1,103 @@
+#details {
+  .section-header {
+    background-color: #007090;
+    padding: 15px 0px;
+    width: 100%;
+    .header-wrapper {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      h4,
+      h2 {
+        margin: 0;
+      }
+      h2 {
+        font-size: 16px;
+        color: #1ca585;
+      }
+      h4 {
+        color: #fff;
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 25px;
+      }
+      img {
+        margin-right: 20px;
+      }
+    }
+  }
+  .section-banner {
+    padding: 20px 0px;
+    background: #d3dee7 url("../../images/detail-banner.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    .resource-image {
+      width: 100%;
+      border-radius: 10px;
+    }
+  }
+  .card-wrapper {
+    .ant-card {
+      padding: 10px 0px;
+      height: 100%;
+      border-radius: 10px;
+      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+      .ant-card-head {
+        border: none;
+        min-height: auto;
+        padding: 0px 40px;
+        .ant-card-head-title {
+          padding-bottom: 0px;
+          color: #1ca585;
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
+      .ant-card-body {
+        padding: 24px 40px;
+        p {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+  .section-info {
+    background: #edf2f7;
+    padding: 30px 0px;
+    .tab-wrapper {
+      background: #d3dee7;
+      border-radius: 5px;
+      padding: 10px 0px;
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        li {
+          display: table-cell;
+          text-align: center;
+          border-right: 1px solid #ffffff;
+          &:last-child {
+            border-right: none;
+          }
+          a {
+            color: #2d6796;
+            font-weight: bold;
+            font-size: 18px;
+          }
+        }
+      }
+    }
+    .list {
+      .ant-list-item {
+        border-bottom: none;
+        .ant-list-item-meta {
+          align-items: center;
+        }
+      }
+    }
+  }
+}

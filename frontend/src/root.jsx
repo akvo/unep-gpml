@@ -62,6 +62,9 @@ import DiscourseForum from "./modules/discourse-forum/discourse-forum";
 // Flexible Form
 import FlexibleForms from "./modules/flexible-forms/view";
 
+// New Details Page
+import NewDetailsView from "./modules/detailsPage/view";
+
 Promise.all([
   api.get("/tag"),
   api.get("/currency"),
@@ -487,6 +490,10 @@ const Root = () => {
           <Route
             path="/flexible-forms"
             render={(props) => <FlexibleForms {...props} />}
+          />
+          <Route
+            path="/details-view"
+            render={(props) => <NewDetailsView {...props} />}
           />
           <Route
             path="/discourse-forum"
