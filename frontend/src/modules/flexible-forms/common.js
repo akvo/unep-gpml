@@ -63,12 +63,12 @@ const getSchema = ({
   // );
 
   // country options
-  prop.S4.properties.S4_G2.properties["country"].enum = countries?.map(
-    (x) => x.id
-  );
-  prop.S4.properties.S4_G2.properties["country"].enumNames = countries?.map(
-    (x) => x.name
-  );
+  // prop.S4.properties.S4_G2.properties["country"].enum = countries?.map(
+  //   (x) => x.id
+  // );
+  // prop.S4.properties.S4_G2.properties["country"].enumNames = countries?.map(
+  //   (x) => x.name
+  // );
 
   let otherArray = [
     {
@@ -115,6 +115,13 @@ const getSchema = ({
   ].enum = countries?.map((x) => String(x.id));
   prop.S4.properties.S4_G2.properties[
     "geoCoverageCountries"
+  ].enumNames = countries?.map((x) => x.name);
+
+  prop.S4.properties.S4_G2.properties[
+    "geoCoverageValueSubnational"
+  ].enum = countries?.map((x) => String(x.id));
+  prop.S4.properties.S4_G2.properties[
+    "geoCoverageValueSubnational"
   ].enumNames = countries?.map((x) => x.name);
 
   if (selectedMainContentType === "technical") {
