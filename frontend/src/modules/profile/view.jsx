@@ -6,15 +6,13 @@ import api from "../../utils/api";
 import { useAuth0 } from "@auth0/auth0-react";
 import SignupForm from "../signup-old/signup-form";
 import {
-  fetchArchiveData,
   fetchSubmissionData,
   fetchReviewItems,
   fetchStakeholders,
 } from "./utils";
 import { userRoles as roles } from "../../utils/misc";
-import AdminSection from "./admin";
+import { AdminSection } from "./admin";
 import ReviewSection from "./review";
-import ManageRoles from "./stakeholders";
 import "./styles.scss";
 import isEmpty from "lodash/isEmpty";
 import {
@@ -48,12 +46,6 @@ const menuItems = [
     name: "My Network",
     role: userRoles,
     icon: <UsergroupAddOutlined />,
-  },
-  {
-    key: "manage-roles",
-    name: "Manage User Roles",
-    role: adminRoles,
-    icon: <UserSwitchOutlined />,
   },
   {
     key: "review-section",
@@ -100,20 +92,6 @@ const ProfileView = ({ ...props }) => {
   const handleSubmitRef = useRef();
   const [saving, setSaving] = useState(false);
   const [menu, setMenu] = useState("personal-details");
-  const [pendingItems, setPendingItems] = useState({
-    data: [],
-    limit: 10,
-    page: 1,
-    count: 0,
-    pages: 0,
-  });
-  const [archiveItems, setArchiveItems] = useState({
-    data: [],
-    limit: 10,
-    page: 1,
-    count: 0,
-    pages: 0,
-  });
   const [reviewItems, setReviewItems] = useState({
     reviews: [],
     limit: 10,
@@ -135,6 +113,20 @@ const ProfileView = ({ ...props }) => {
     count: 0,
     pages: 0,
   });
+  const [resourcesData, setResourcesData] = useState({
+    stakeholders: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
+  const [entitiesData, setEntitiesData] = useState({
+    stakeholders: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = null;
@@ -147,17 +139,34 @@ const ProfileView = ({ ...props }) => {
 
     if (adminRoles.has(profile?.role)) {
       (async () => {
-        const { page, limit } = pendingItems;
-        setPendingItems(await fetchSubmissionData(page, limit));
-      })();
-      (async function fetchData() {
-        const archive = await fetchArchiveData(1, 10);
-        setArchiveItems(archive);
+        const { page, limit } = stakeholdersData;
+        const data = await fetchSubmissionData(
+          page,
+          limit,
+          "stakeholders",
+          "SUBMITTED"
+        );
+        setStakeholdersData(data);
       })();
       (async () => {
-        const { page, limit } = stakeholdersData;
-        const data = await fetchStakeholders(page, limit);
-        setStakeholdersData(data);
+        const { page, limit } = resourcesData;
+        const data = await fetchSubmissionData(
+          page,
+          limit,
+          "resources",
+          "SUBMITTED"
+        );
+        setResourcesData(data);
+      })();
+      (async () => {
+        const { page, limit } = resourcesData;
+        const data = await fetchSubmissionData(
+          page,
+          limit,
+          "entities",
+          "SUBMITTED"
+        );
+        setEntitiesData(data);
       })();
     }
     if (reviewerRoles.has(profile?.role)) {
@@ -170,9 +179,9 @@ const ProfileView = ({ ...props }) => {
         );
       })();
     }
-    // NOTE: dependency needs to be []. Ignore the linter warning, because
-    // adding a dependency here makes the FE send multiple
-    // requests to the backend.
+    // NOTE: Ignore the linter warning, because adding
+    // dependency other than profile makes the FE send
+    // multiple requests to the backend.
   }, [profile]); // eslint-disable-line
 
   const onSubmit = (vals) => {
@@ -266,7 +275,10 @@ const ProfileView = ({ ...props }) => {
           menuText = renderMenuText(it.name, reviewItems.count);
           break;
         case "admin-section":
-          menuText = renderMenuText(it.name, pendingItems.count);
+          menuText = renderMenuText(
+            it.name,
+            stakeholdersData.count + resourcesData.count + entitiesData.count
+          );
           break;
         default:
           menuText = renderMenuText(it.name);
@@ -337,7 +349,13 @@ const ProfileView = ({ ...props }) => {
                   </Menu>
                 </StickyBox>
               </Col>
-              <Col xs={24} sm={24} md={17} lg={18} className="content-wrapper">
+              <Col
+                xs={24}
+                sm={24}
+                md={17}
+                lg={18}
+                className={menu !== "admin-section" ? "content-wrapper" : ""}
+              >
                 {menu === "personal-details" && (
                   <div>
                     <SignupForm
@@ -360,26 +378,23 @@ const ProfileView = ({ ...props }) => {
                     </Button>
                   </div>
                 )}
-                {menu === "manage-roles" && adminRoles.has(profile?.role) && (
-                  <ManageRoles
-                    stakeholdersData={stakeholdersData}
-                    setStakeholdersData={setStakeholdersData}
-                  />
-                )}
-                {menu === "review-section" && adminRoles.has(profile?.role) && (
-                  <ReviewSection
-                    reviewItems={reviewItems}
-                    setReviewItems={setReviewItems}
-                    reviewedItems={reviewedItems}
-                    setReviewedItems={setReviewedItems}
-                  />
-                )}
+                {menu === "review-section" &&
+                  reviewerRoles.has(profile?.role) && (
+                    <ReviewSection
+                      reviewItems={reviewItems}
+                      setReviewItems={setReviewItems}
+                      reviewedItems={reviewedItems}
+                      setReviewedItems={setReviewedItems}
+                    />
+                  )}
                 {menu === "admin-section" && adminRoles.has(profile?.role) && (
                   <AdminSection
-                    pendingItems={pendingItems}
-                    setPendingItems={setPendingItems}
-                    archiveItems={archiveItems}
-                    setArchiveItems={setArchiveItems}
+                    stakeholdersData={stakeholdersData}
+                    setStakeholdersData={setStakeholdersData}
+                    resourcesData={resourcesData}
+                    setResourcesData={setResourcesData}
+                    entitiesData={entitiesData}
+                    setEntitiesData={setEntitiesData}
                   />
                 )}
               </Col>

@@ -1,7 +1,11 @@
 import api from "../../utils/api";
 
-export const fetchArchiveData = async (page, limit) => {
-  const params = { page, limit };
+export const fetchArchiveData = async (
+  page,
+  limit,
+  resources_or_stakeholders
+) => {
+  const params = { page, limit, only: resources_or_stakeholders };
   const res = await api.get("/archive", params);
   const data = res.data.data.map((item) => ({
     ...item,
@@ -10,8 +14,24 @@ export const fetchArchiveData = async (page, limit) => {
   return { ...res.data, data };
 };
 
-export const fetchSubmissionData = async (page, limit) => {
-  const params = { page, limit };
+export const fetchSubmissionData = async (
+  page,
+  limit,
+  resources_or_entities_or_stakeholders,
+  review_status,
+  title
+) => {
+  let params = {
+    page,
+    limit,
+    only: resources_or_entities_or_stakeholders,
+  };
+  if (review_status) {
+    params = { review_status, ...params };
+  }
+  if (title) {
+    params = { title, ...params };
+  }
   const resp = await api.get("/submission", params);
   return resp.data;
 };

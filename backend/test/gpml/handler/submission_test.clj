@@ -63,6 +63,7 @@
                             (assoc :jwt-claims {:email "jane@org"}
                                    :admin admin
                                    :parameters {:query {:page 1
+                                                        :review_status "SUBMITTED"
                                                         :limit 10}})))]
       (is (= 200 (:status resp)))
       ;; John and Bob, Exclude Justin

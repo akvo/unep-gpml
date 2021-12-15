@@ -1,34 +1,59 @@
-import React, { Fragment, useState } from "react";
-import { Button, Collapse, Space, Pagination, Modal, Input } from "antd";
+import React, { useState } from "react";
+import { Button, Collapse, Space, Pagination, Input, Avatar } from "antd";
 import { DetailCollapse } from "./preview";
+import { HeaderSearch } from "./admin";
 import {
   topicNames,
   reviewStatusUIText,
   reviewCommentModalTitle,
+  reviewCommentPlaceholder,
 } from "../../utils/misc";
 import api from "../../utils/api";
 import { fetchReviewItems } from "./utils";
-import { titleCase } from "../../utils/string";
+import { UserOutlined } from "@ant-design/icons";
 
-const ReviewCommentModal = ({ status, visible, handleOk, handleCancel }) => {
+const ReviewCommentModal = ({
+  item,
+  status,
+  visible,
+  handleOk,
+  handleCancel,
+}) => {
   const [reviewComment, setReviewComment] = useState();
   const action = status.slice(0, -2);
+  const topicName = topicNames(item.type);
+
   return (
-    <Modal
-      title={reviewCommentModalTitle[status]}
-      visible={visible}
-      onOk={() => handleOk(reviewComment)}
-      okText={reviewStatusUIText[action]}
-      onCancel={handleCancel}
+    <div
+      className={`review-comment-wrapper ${visible ? "show" : "hide"}`}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
     >
+      <p>{`${reviewCommentModalTitle[status]} ${topicName}`}</p>
       <Input.TextArea
         rows={4}
         bordered={true}
-        placeholder="Add a review comment"
+        className="review-comment-input"
+        placeholder={`${reviewCommentPlaceholder[status]} ${topicName}`}
         value={reviewComment}
         onChange={(e) => setReviewComment(e.target.value)}
       />
-    </Modal>
+      <div className="review-comment-btn-wrapper">
+        <Space size="small">
+          <Button
+            className="black"
+            type="primary"
+            onClick={() => handleOk(reviewComment)}
+          >
+            {reviewStatusUIText[action]}
+          </Button>
+          <Button className="black" type="link" onClick={handleCancel}>
+            Cancel
+          </Button>
+        </Space>
+      </div>
+    </div>
   );
 };
 
@@ -58,86 +83,112 @@ const ReviewSection = ({
         // Fetch review items again, to fetch any new items in the current page, etc.
         (async () => {
           setReviewItems(await fetchReviewItems(reviewItems, "PENDING"));
+          setModalReviewStatus("");
         })();
       });
     };
 
     return (
-      <div className="row">
-        <div className="col content">
-          <div className="title">{item.title || "No Title"}</div>
-          <div className="topic">{topicNames(item.type)}</div>
-        </div>
-        <div
-          className="col action"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <Space size="small">
-            <Button
-              className="black"
-              type="ghost"
-              onClick={() => {
-                setShowNoteInput(true);
-                setModalReviewStatus("ACCEPTED");
+      <div>
+        <div className="row">
+          <div className="col content">
+            <Avatar
+              className="content-img"
+              size={{
+                xs: 24,
+                sm: 32,
+                md: 40,
+                lg: 50,
+                xl: 50,
+                xxl: 50,
               }}
-            >
-              {reviewStatusUIText["ACCEPT"]}
-            </Button>
-            <Button
-              className="black"
-              type="link"
-              onClick={() => {
-                setShowNoteInput(true);
-                setModalReviewStatus("REJECTED");
-              }}
-            >
-              {reviewStatusUIText["REJECT"]}
-            </Button>
-          </Space>
+              icon={item.picture || <UserOutlined />}
+            />
+            <div className="content-body">
+              <div className="title">{item.title || "No Title"}</div>
+              <div className="topic">{topicNames(item.type)}</div>
+            </div>
+          </div>
+          <div
+            className="col action"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <Space size="small">
+              <Button
+                className="black"
+                type="ghost"
+                disabled={modalReviewStatus === "REJECTED"}
+                onClick={() => {
+                  setShowNoteInput(true);
+                  setModalReviewStatus("ACCEPTED");
+                }}
+              >
+                {reviewStatusUIText["ACCEPT"]}
+              </Button>
+              <Button
+                className="black"
+                type="link"
+                disabled={modalReviewStatus === "ACCEPTED"}
+                onClick={() => {
+                  setShowNoteInput(true);
+                  setModalReviewStatus("REJECTED");
+                }}
+              >
+                {reviewStatusUIText["REJECT"]}
+              </Button>
+            </Space>
+          </div>
         </div>
-        <div
-          onClick={(e) => {
-            e.stopPropagation();
+        <ReviewCommentModal
+          item={item}
+          status={modalReviewStatus}
+          visible={showNoteInput}
+          handleCancel={() => {
+            setShowNoteInput(false);
+            setModalReviewStatus("");
           }}
-        >
-          <ReviewCommentModal
-            status={modalReviewStatus}
-            visible={showNoteInput}
-            handleCancel={() => setShowNoteInput(false)}
-            handleOk={(reviewComment) =>
-              submitReview(item, modalReviewStatus, reviewComment)
-            }
-          />
-        </div>
+          handleOk={(reviewComment) =>
+            submitReview(item, modalReviewStatus, reviewComment)
+          }
+        />
       </div>
     );
   };
 
   const ReviewedHeader = ({ item }) => {
     return (
-      <div className="row">
-        <div className="col content">
-          <div className="title">{item.title || "No Title"}</div>
-          <div className="topic">{topicNames(item.type)}</div>
-        </div>
-        <div className="col status">
+      <>
+        <div className="content-status">
           <span className="status">
             {reviewStatusUIText[item.reviewStatus]}
           </span>
         </div>
-      </div>
+        <div className="row">
+          <div className="col content">
+            <Avatar
+              className="content-img"
+              size={50}
+              icon={item.picture || <UserOutlined />}
+            />
+            <div className="content-body">
+              <div className="title">{item.title || "No Title"}</div>
+              <div className="topic">{topicNames(item.type)}</div>
+            </div>
+          </div>
+        </div>
+      </>
     );
   };
 
   const CollapseItemTable = ({
-    key,
     columns,
     Header,
     items,
     setItems,
     reviewStatus,
+    collapsePanelClassName,
   }) => {
     const [previewContent, storePreviewContent] = useState({});
 
@@ -164,11 +215,7 @@ const ReviewSection = ({
       <>
         <div className="table-wrapper">
           <div className="row head">
-            {columns.map((x, i) => (
-              <div key={`${key}-${x}-${i}`} className="col">
-                {x}
-              </div>
-            ))}
+            <HeaderSearch />
           </div>
           <Collapse onChange={getPreviewContent}>
             {items?.reviews?.length > 0 ? (
@@ -177,6 +224,7 @@ const ReviewSection = ({
                 return (
                   <Collapse.Panel
                     key={previewUrl}
+                    className={collapsePanelClassName}
                     header={<Header item={item} />}
                   >
                     <DetailCollapse
@@ -196,7 +244,7 @@ const ReviewSection = ({
             )}
           </Collapse>
         </div>
-        <div style={{ padding: "10px 0px" }}>
+        <div className="pagination-wrapper">
           <Pagination
             defaultCurrent={1}
             current={items.page}
@@ -220,6 +268,7 @@ const ReviewSection = ({
           items={reviewItems}
           setItems={setReviewItems}
           reviewStatus="PENDING"
+          collapsePanelClassName="request-collapse-panel-item"
         />
       </div>
       <div key="reviewed" className="archive">
@@ -231,6 +280,7 @@ const ReviewSection = ({
           items={reviewedItems}
           setItems={setReviewedItems}
           reviewStatus="ACCEPTED,REJECTED"
+          collapsePanelClassName="archive-collapse-panel-item status-show"
         />
       </div>
     </div>

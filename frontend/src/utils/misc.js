@@ -82,14 +82,26 @@ export const userRoles = ["USER", "REVIEWER", "ADMIN"];
 export const reviewStatusUIText = {
   PENDING: "Awaiting Review",
   ACCEPTED: "Approved",
-  REJECTED: "Revision Needed",
+  REJECTED: "Declined",
   ACCEPT: "Approve",
+  APPROVED: "Approved",
   REJECT: "Decline",
 };
 
+export const submissionReviewStatusUIText = {
+  SUBMITTED: "Submitted",
+  APPROVED: "Published",
+  REJECTED: "Declined",
+};
+
 export const reviewCommentModalTitle = {
-  ACCEPTED: "Approve the reviewed resource",
-  REJECTED: "Revision needed for the reviewed resource",
+  ACCEPTED: "Approving",
+  REJECTED: "Declining",
+};
+
+export const reviewCommentPlaceholder = {
+  ACCEPTED: "Reason for approving this",
+  REJECTED: "Reason for declining this",
 };
 
 export const publishStatusUIText = {
@@ -97,4 +109,6 @@ export const publishStatusUIText = {
   APPROVE: "Publish",
   REJECTED: "Declined",
   REJECT: "Decline",
+  UNAPPROVED: "Unpublished",
+  UNAPPROVE: "Unpublish",
 };

@@ -34,6 +34,14 @@ FROM (
 -- :name summary
 -- :doc Get summary of count of entities and number of countries
 WITH
+initiative_countries AS (
+    SELECT c.id FROM initiative_geo_coverage ig, country_group_country cgc
+    JOIN country c ON cgc.country = c.id
+    WHERE ig.country_group = cgc.country_group
+    UNION
+    SELECT ig.country AS id FROM initiative_geo_coverage ig
+    WHERE ig.country IS NOT NULL
+),
 resource_countries AS (
     SELECT c.id, r.type FROM resource_geo_coverage rg
     LEFT JOIN resource r ON rg.resource = r.id, country_group_country cgc
@@ -86,7 +94,7 @@ organisation_countries AS (
     WHERE o.country IS NOT NULL
 ),
 country_counts AS (
-    SELECT COUNT(DISTINCT country) as country, 'project' as data FROM project_country
+    SELECT COUNT(*) as country, 'project' as data FROM initiative_countries
     UNION
     SELECT COUNT(*) as country, replace(lower(type),' ', '_') as data
     FROM resource_countries WHERE type IS NOT NULL GROUP BY data

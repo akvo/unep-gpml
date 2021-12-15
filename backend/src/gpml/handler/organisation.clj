@@ -44,21 +44,11 @@
   (fn [{{:keys [path]} :parameters}]
     (let [conn (:spec db)
           organisation (db.organisation/organisation-by-id conn path)
-          geo (db.organisation/geo-coverage conn organisation)
           seeks (:tags (first (db.organisation/organisation-tags conn path)))
-          geo-coverage (cond
-                         (= (:geo_coverage_type organisation) "regional")
-                         (mapv #(:geo_coverage_values %) geo)
-                         (= (:geo_coverage_type organisation) "transnational")
-                         (mapv #(:geo_coverage_values %) geo)
-                         (= (:geo_coverage_type organisation) "global with elements in specific areas")
-                         (mapv #(:geo_coverage_values %) geo)
-                         (= (:geo_coverage_type organisation) "national")
-                         (mapv #(:geo_coverage_values %) geo)
-                         (= (:geo_coverage_type organisation) "global")
-                         (mapv #(:iso_code %) geo))]
-      (resp/response (assoc organisation :geo_coverage_value geo-coverage
-                            :expertise seeks)))))
+          geo-coverage (let [data (db.organisation/geo-coverage-v2 conn organisation)]
+                         {:geo_coverage_countries      (vec (filter some? (mapv :country data)))
+                          :geo_coverage_country_groups (vec (filter some? (mapv :country_group data)))})]
+      (resp/response (merge (assoc organisation :expertise seeks) geo-coverage)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [body-params referrer jwt-claims]}]
@@ -110,7 +100,7 @@
     [:representative_group_private_sector [:maybe string?]]
     [:representative_group_government [:maybe string?]]
     [:representative_group_academia_research [:maybe string?]]
-    [:subnational_area [:maybe string?]]
+    [:subnational_area {:optional true} [:maybe string?]]
     [:expertise vector?]
          [:program string?]]
         handler.geo/params-payload))

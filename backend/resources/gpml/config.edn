@@ -53,7 +53,9 @@
                                          [""
                                           {:get {:summary "Get the list approved submissions"
                                                  :swagger {:tags ["archive"] :security [{:id_token []}]}
-                                                 :parameters {:query [:map [:page {:optional true
+                                                 :parameters {:query [:map
+                                                                      [:only {:optional true} [:enum "resources" "stakeholders" "tags" "entities"]]
+                                                                      [:page {:optional true
                                                                                    :default 1} int?]
                                                                       [:limit {:optional true
                                                                                :default 10} int?]]}
@@ -65,10 +67,17 @@
                                                         :responses {401 {:description "Need authentication"}
                                                                     403 {:description "Insufficient permissions"}}}
                                          [""
-                                          {:get {:summary "Get the list of pending submissions"
+                                          {:get {:summary "Get the list of submissions"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
-                                                 :parameters {:query [:map [:page {:optional true
-                                                                                   :default 1} int?]
+                                                 :parameters {:query [:map
+                                                                      [:only {:optional true} [:enum "resources" "stakeholders" "tags" "entities"]]
+                                                                      [:review_status
+                                                                       {:optional true #_#_:default "SUBMITTED"
+                                                                        }
+                                                                       [:enum "SUBMITTED" "APPROVED" "REJECTED"]]
+                                                                      [:title {:optional true} string?]
+                                                                      [:page {:optional true
+                                                                              :default 1} int?]
                                                                       [:limit {:optional true
                                                                                :default 10} int?]]}
                                                  :handler #ig/ref :gpml.handler.submission/get}
@@ -99,18 +108,18 @@
                                                  :middleware [#ig/ref :gpml.auth/reviewer-required-middleware]
                                                  :swagger {:tags ["review"]
                                                            :security [{:id_token []}]}
-                                                 :parameters #ig/ref :gpml.handler.review/list-reviews-params
-                                                 :handler #ig/ref :gpml.handler.review/list-reviews}}]
+                                                 :parameters #ig/ref :gpml.handler.review/list-user-reviews-params
+                                                 :handler #ig/ref :gpml.handler.review/list-user-reviews}}]
                                          ["/{topic-type}/{topic-id}"
-                                          {:get {:summary "Get review for a submission"
+                                          {:get {:summary "Get reviews for a submission"
                                                  :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["review"]
                                                            :security [{:id_token []}]}
                                                  :parameters {:path [:map
                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                      [:topic-id int?]]}
-                                                 :handler #ig/ref :gpml.handler.review/get-review}
-                                           :post {:summary "Assign reviewer for a submission"
+                                                 :handler #ig/ref :gpml.handler.review/get-reviews}
+                                           :post {:summary "Assign reviewers for a submission"
                                                   :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                   :swagger {:tags ["review"]
                                                             :security [{:id_token []}]}
@@ -118,8 +127,8 @@
                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                       [:topic-id int?]]
                                                                :body [:map
-                                                                      [:reviewer int?]]}
-                                                  :handler #ig/ref :gpml.handler.review/new-review}
+                                                                      [:reviewers [:vector int?]]]}
+                                                  :handler #ig/ref :gpml.handler.review/new-multiple-review}
                                            :patch {:summary "Update review for a submission"
                                                    :middleware [#ig/ref :gpml.auth/reviewer-required-middleware]
                                                    :swagger {:tags ["review"]
@@ -132,7 +141,7 @@
                                                                         [:review-comment string?]
                                                                         [:review-status #ig/ref :gpml.handler.review/review-status-params]]
                                                                        [:map
-                                                                        [:reviewer int?]]]}
+                                                                        [:reviewers [:vector int?]]]]}
                                                    :handler #ig/ref :gpml.handler.review/update-review}}]]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required
@@ -394,13 +403,13 @@
   :gpml.handler.submission/put-params {}
 
   :gpml.handler.review/get-reviewers {:db #ig/ref :duct.database/sql}
-  :gpml.handler.review/get-review {:db #ig/ref :duct.database/sql}
-  :gpml.handler.review/new-review {:db #ig/ref :duct.database/sql
-                                   :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.review/get-reviews {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/new-multiple-review {:db #ig/ref :duct.database/sql
+                                            :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.review/update-review {:db #ig/ref :duct.database/sql
                                       :mailjet-config #ig/ref :gpml.config/mailjet}
-  :gpml.handler.review/list-reviews {:db #ig/ref :duct.database/sql}
-  :gpml.handler.review/list-reviews-params {}
+  :gpml.handler.review/list-user-reviews {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/list-user-reviews-params {}
   :gpml.handler.review/review-status-params {}
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}

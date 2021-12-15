@@ -6,6 +6,8 @@
             [gpml.db.technology :as db.technology]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
+            [gpml.handler.auth :as h.auth]
+            [gpml.auth :as auth]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -14,7 +16,7 @@
                                       year_founded email country
                                       geo_coverage_type geo_coverage_value
                                       geo_coverage_countries geo_coverage_country_groups
-                                      tags url urls created_by image
+                                      tags url urls created_by image owners
                                       logo attachments remarks mailjet-config]}]
   (let [data {:name name
               :year_founded year_founded
@@ -33,8 +35,15 @@
               :remarks remarks
               :attachments attachments
               :created_by created_by
+              :owners owners
               :review_status "SUBMITTED"}
         technology-id (->> data (db.technology/new-technology conn) :id)]
+    (when (not-empty owners)
+      (doseq [stakeholder-id owners]
+        (h.auth/grant-topic-to-stakeholder! conn {:topic-id technology-id
+                                                  :topic-type "technology"
+                                                  :stakeholder-id stakeholder-id
+                                                  :roles ["owner"]})))
     (when (not-empty tags)
       (db.technology/add-technology-tags
         conn {:tags (map #(vector technology-id %) tags)}))
@@ -90,7 +99,9 @@
     [:url {:optional true} string?]
     [:urls {:optional true}
      [:vector {:optional true}
-      [:map [:lang string?] [:url [:string {:min 1}]]]]]]
+      [:map [:lang string?] [:url [:string {:min 1}]]]]]
+         auth/owners-schema
+         ]
         handler.geo/params-payload))
 
 (defmethod ig/init-key :gpml.handler.technology/post-params [_ _]

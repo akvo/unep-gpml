@@ -7,6 +7,8 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
             [integrant.core :as ig]
+            [gpml.handler.auth :as h.auth]
+            [gpml.auth :as auth]
             [ring.util.response :as resp]))
 
 
@@ -17,6 +19,7 @@
                                   geo_coverage_value implementing_mea
                                   geo_coverage_countries geo_coverage_country_groups
                                   tags urls created_by image
+                                  owners
                                   attachments remarks mailjet-config]}]
   (let [data {:title title
               :original_title original_title
@@ -29,6 +32,7 @@
               :first_publication_date first_publication_date
               :latest_amendment_date latest_amendment_date
               :status status
+              :owners owners
               :image (handler.image/assoc-image conn image "policy")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
@@ -51,6 +55,12 @@
                                          :id)
                                     (:url %)) urls)]
         (db.policy/add-policy-language-urls conn {:urls lang-urls})))
+    (when (not-empty owners)
+      (doseq [stakeholder-id owners]
+        (h.auth/grant-topic-to-stakeholder! conn {:topic-id policy-id
+                                                  :topic-type "policy"
+                                                  :stakeholder-id stakeholder-id
+                                                  :roles ["owner"]})))
     (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 policy-id data)]
@@ -90,7 +100,6 @@
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
-
     [:image {:optional true} string?]
     [:implementing_mea integer?]
     [:tags {:optional true}
@@ -98,7 +107,8 @@
     [:url {:optional true} string?]
     [:urls {:optional true}
      [:vector {:optional true}
-      [:map [:lang string?] [:url [:string {:min 1}]]]]]]
+      [:map [:lang string?] [:url [:string {:min 1}]]]]]
+    auth/owners-schema]
    (into handler.geo/params-payload)))
 
 (defmethod ig/init-key :gpml.handler.policy/post-params [_ _]

@@ -12,8 +12,6 @@
 
 (use-fixtures :each fixtures/with-test-system)
 
-
-
 (deftest handler-post-test
   (testing "New initiative is created"
     (let [system (ig/init fixtures/*system* [::initiative/post])
@@ -40,6 +38,7 @@
       (is (= 10001 (-> data :created_by)))
       (is (= 10001 (-> data :id)))
       (is (= "SUBMITTED" (-> data :review_status)))
+      (is (= (:url data) (:url submission)))
       (doseq [[k v] submission]
         (testing (str "testing-" k)
           (is (= v (get data k))))))))

@@ -63,12 +63,15 @@ const getSchema = (
   prop.geoCoverageValueNational.enum = countries?.map((x) => String(x.id));
   prop.geoCoverageValueNational.enumNames = countries?.map((x) => x.name);
 
-  prop.geoCoverageValueTransnational.enum = transnationalOptions?.map(
-    (x) => x.id
+  prop.geoCoverageValueTransnational.enum = transnationalOptions?.map((x) =>
+    String(x.id)
   );
   prop.geoCoverageValueTransnational.enumNames = transnationalOptions?.map(
     (x) => x.name
   );
+
+  prop.geoCoverageCountries.enum = countries?.map((x) => String(x.id));
+  prop.geoCoverageCountries.enumNames = countries?.map((x) => x.name);
 
   return {
     schema: {
@@ -159,22 +162,22 @@ const formDataMapping = [
     type: "string",
   },
   {
-    key: "geoCoverageValue",
-    name: "geoCoverageValueTransnational",
+    key: "geoCoverageValues",
+    name: "geoCoverageValue",
     group: null,
     type: "array",
   },
   {
-    key: "geoCoverageValue",
+    key: "geoCoverageCountries",
+    name: "geoCoverageCountries",
+    group: null,
+    type: "array",
+  },
+  {
+    key: "geoCoverageCountries",
     name: "geoCoverageValueNational",
     group: null,
     type: "array",
-  },
-  {
-    key: "subnationalArea",
-    name: "subnationalArea",
-    group: null,
-    type: "string",
   },
 ];
 
@@ -297,6 +300,27 @@ const EntityForm = withRouter(
       // handle representative group
       data.type = formData.representativeGroup;
       delete data.representativeGroup;
+
+      if (data.geoCoverageType === "transnational") {
+        data.geoCoverageCountryGroups =
+          data.geoCoverageValue.indexOf(undefined) !== -1
+            ? []
+            : data.geoCoverageValue;
+        data.geoCoverageCountries = data.geoCoverageCountries
+          ? data.geoCoverageCountries.map((x) => parseInt(x))
+          : [];
+      }
+
+      if (data.geoCoverageType === "national") {
+        data.geoCoverageCountries = data.geoCoverageValue;
+      }
+
+      if (data.geoCoverageType === "global") {
+        delete data.geoCoverageCountries;
+        delete data.geoCoverageCountryGroups;
+      }
+
+      delete data.geoCoverageValue;
 
       if (data.type === "Intergovernmental Organizations (IGOs)") {
         data.representativeGroupGovernment = null;
