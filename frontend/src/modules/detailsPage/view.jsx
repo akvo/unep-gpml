@@ -190,13 +190,53 @@ function DetailsView() {
                 style={{
                   marginBottom: "30px",
                 }}
-              />
+              >
+                <div className="record-table">
+                  <div className="record-table-wrapper">
+                    <div>Amount Invested</div>
+                    <div>USD 000</div>
+                  </div>
+                  <div className="record-table-wrapper">
+                    <div>In Kind Contributions</div>
+                    <div>USD 000</div>
+                  </div>
+                  <div className="record-table-wrapper">
+                    <div>Funding Type</div>
+                    <div>Not applicable</div>
+                  </div>
+                  <div className="record-table-wrapper">
+                    <div>Funding Name</div>
+                    <div>
+                      Financial Rules of the Helsinki Commission can be found
+                      here:
+                      https://helcom.fi/about-us/internal-rules/internal-rules/
+                    </div>
+                  </div>
+                  <div className="record-table-wrapper">
+                    <div>Focus Area:</div>
+                    <div>The Baltic Sea</div>
+                  </div>
+                </div>
+              </CardComponent>
               <CardComponent
                 title="Documents and info"
                 style={{
                   marginBottom: "30px",
                 }}
-              />
+              >
+                <div className="list">
+                  <List itemLayout="horizontal">
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={
+                          <Avatar src="https://joeschmoe.io/api/v1/random" />
+                        }
+                        title={"www.link.fi"}
+                      />
+                    </List.Item>
+                  </List>
+                </div>
+              </CardComponent>
               <CardComponent
                 title="Related content (4)"
                 style={{

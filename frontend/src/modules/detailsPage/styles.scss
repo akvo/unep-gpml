@@ -99,5 +99,17 @@
         }
       }
     }
+    .record-table {
+      .record-table-wrapper {
+        display: flex;
+        padding: 6px 6px;
+        &:nth-of-type(odd) {
+          background: #edf2f7;
+        }
+        & > div {
+          flex: 0 0 50%;
+        }
+      }
+    }
   }
 }
