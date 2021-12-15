@@ -1,7 +1,7 @@
 import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Row, Col, Select, Button, Switch, Radio, Popover, Steps } from "antd";
-import { DownloadOutlined, InfoOutlined } from "@ant-design/icons";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "./styles.scss";
 import common from "./common";
@@ -549,6 +549,76 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     owners={owners}
                   />
                 </Row>
+              )}
+              {getTabStepIndex().tabIndex === 0 ? (
+                <div className="bottom-panel">
+                  <div className="center-content">
+                    <p>Getting Started</p>
+                  </div>
+                  <div
+                    className="next-button"
+                    onClick={(e) => handleOnClickBtnNext(e)}
+                  >
+                    <p>Next</p>
+                    <RightOutlined />
+                  </div>
+                </div>
+              ) : getTabStepIndex().tabIndex === 1 ? (
+                <div className="bottom-panel">
+                  <div
+                    className="back-button"
+                    onClick={(e) => handleOnClickBtnBack(e)}
+                  >
+                    <LeftOutlined />
+                    <p>Back</p>
+                  </div>
+                  <div className="center-content">
+                    <p>Field to submit</p>
+                    <h6>0 of 1</h6>
+                  </div>
+                  <div
+                    className="next-button"
+                    onClick={(e) => handleOnClickBtnNext(e)}
+                  >
+                    <p>Next</p>
+                    <RightOutlined />
+                  </div>
+                </div>
+              ) : getTabStepIndex().tabIndex === 2 ? (
+                <div className="bottom-panel">
+                  <div
+                    className="back-button"
+                    onClick={(e) => handleOnClickBtnBack(e)}
+                  >
+                    <LeftOutlined />
+                    <p>Back</p>
+                  </div>
+                  <div className="center-content">
+                    <p>Field to submit</p>
+                    <h6>0 of 3</h6>
+                  </div>
+                  <div
+                    className="next-button"
+                    onClick={(e) => handleOnClickBtnNext(e)}
+                  >
+                    <p>Next</p>
+                    <RightOutlined />
+                  </div>
+                </div>
+              ) : (
+                <div className="bottom-panel">
+                  <div
+                    className="back-button"
+                    onClick={(e) => handleOnClickBtnBack(e)}
+                  >
+                    <LeftOutlined />
+                    <p>Back</p>
+                  </div>
+                  {/* <div className="center-content">
+                    <p>Field to submit</p>
+                    <h6>0 of 3</h6>
+                  </div> */}
+                </div>
               )}
             </Col>
           </Row>
