@@ -328,21 +328,60 @@ export const schema = {
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
               "geoCoverageValueNational",
+              "geoCoverageValueSubnational",
+              "geoCoverageValueSubnationalCity",
             ],
             properties: {
-              country: {
-                title: "In which country are you headquarters?",
-                enum: [],
-              },
-              ...newGeoCoverageFormat,
               geoCoverageType: {
-                ...newGeoCoverageFormat.geoCoverageType,
-                title: "What is the geographical coverage of your Entity?",
-              },
-              subnationalArea: {
-                title:
-                  "Please indicate if your Entity operates in a Subnational area only",
+                title: "Select Geo-Coverage Type",
                 type: "string",
+                enum: ["global", "transnational", "national", "subnational"],
+                enumNames: [
+                  "Global",
+                  "Transnational",
+                  "National",
+                  "Subnational",
+                ],
+              },
+              geoCoverageValueTransnational: {
+                title: "GEO COVERAGE (Transnational)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageCountries: {
+                title: "GEO COVERAGE (Countries)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageValueNational: {
+                title: "National",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["national"],
+                },
+              },
+              geoCoverageValueSubnational: {
+                title: "Subnational",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
+              },
+              geoCoverageValueSubnationalCity: {
+                title: "City",
+                type: "string",
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
               },
             },
           },
@@ -535,21 +574,60 @@ export const schema = {
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
               "geoCoverageValueNational",
+              "geoCoverageValueSubnational",
+              "geoCoverageValueSubnationalCity",
             ],
             properties: {
-              country: {
-                title: "In which country are you headquarters?",
-                enum: [],
-              },
-              ...newGeoCoverageFormat,
               geoCoverageType: {
-                ...newGeoCoverageFormat.geoCoverageType,
-                title: "What is the geographical coverage of your Entity?",
-              },
-              subnationalArea: {
-                title:
-                  "Please indicate if your Entity operates in a Subnational area only",
+                title: "Select Geo-Coverage Type",
                 type: "string",
+                enum: ["global", "transnational", "national", "subnational"],
+                enumNames: [
+                  "Global",
+                  "Transnational",
+                  "National",
+                  "Subnational",
+                ],
+              },
+              geoCoverageValueTransnational: {
+                title: "GEO COVERAGE (Transnational)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageCountries: {
+                title: "GEO COVERAGE (Countries)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageValueNational: {
+                title: "National",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["national"],
+                },
+              },
+              geoCoverageValueSubnational: {
+                title: "Subnational",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
+              },
+              geoCoverageValueSubnationalCity: {
+                title: "City",
+                type: "string",
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
               },
             },
           },
@@ -742,22 +820,60 @@ export const schema = {
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
               "geoCoverageValueNational",
+              "geoCoverageValueSubnational",
+              "geoCoverageValueSubnationalCity",
             ],
             properties: {
-              country: {
-                title: "In which country are you headquarters?",
-                enum: ["23-0"],
-                enumNames: ["List of country"],
-              },
-              ...newGeoCoverageFormat,
               geoCoverageType: {
-                ...newGeoCoverageFormat.geoCoverageType,
-                title: "What is the geographical coverage of your Entity?",
-              },
-              subnationalArea: {
-                title:
-                  "Please indicate if your Entity operates in a Subnational area only",
+                title: "Select Geo-Coverage Type",
                 type: "string",
+                enum: ["global", "transnational", "national", "subnational"],
+                enumNames: [
+                  "Global",
+                  "Transnational",
+                  "National",
+                  "Subnational",
+                ],
+              },
+              geoCoverageValueTransnational: {
+                title: "GEO COVERAGE (Transnational)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageCountries: {
+                title: "GEO COVERAGE (Countries)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageValueNational: {
+                title: "National",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["national"],
+                },
+              },
+              geoCoverageValueSubnational: {
+                title: "Subnational",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
+              },
+              geoCoverageValueSubnationalCity: {
+                title: "City",
+                type: "string",
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
               },
             },
           },
@@ -980,23 +1096,60 @@ export const schema = {
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
               "geoCoverageValueNational",
+              "geoCoverageValueSubnational",
+              "geoCoverageValueSubnationalCity",
             ],
             properties: {
-              country: {
-                title: "In which country are you headquarters?",
-                type: "string",
-                enum: ["23-0"],
-                enumNames: ["List of country"],
-              },
-              ...newGeoCoverageFormat,
               geoCoverageType: {
-                ...newGeoCoverageFormat.geoCoverageType,
-                title: "What is the geographical coverage of your Entity?",
-              },
-              subnationalArea: {
-                title:
-                  "Please indicate if your Entity operates in a Subnational area only",
+                title: "Select Geo-Coverage Type",
                 type: "string",
+                enum: ["global", "transnational", "national", "subnational"],
+                enumNames: [
+                  "Global",
+                  "Transnational",
+                  "National",
+                  "Subnational",
+                ],
+              },
+              geoCoverageValueTransnational: {
+                title: "GEO COVERAGE (Transnational)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageCountries: {
+                title: "GEO COVERAGE (Countries)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageValueNational: {
+                title: "National",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["national"],
+                },
+              },
+              geoCoverageValueSubnational: {
+                title: "Subnational",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
+              },
+              geoCoverageValueSubnationalCity: {
+                title: "City",
+                type: "string",
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
               },
             },
           },
@@ -1184,21 +1337,60 @@ export const schema = {
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
               "geoCoverageValueNational",
+              "geoCoverageValueSubnational",
+              "geoCoverageValueSubnationalCity",
             ],
             properties: {
-              country: {
-                title: "In which country are you headquarters?",
-                enum: [],
-              },
-              ...newGeoCoverageFormat,
               geoCoverageType: {
-                ...newGeoCoverageFormat.geoCoverageType,
-                title: "What is the geographical coverage of your Entity?",
-              },
-              subnationalArea: {
-                title:
-                  "Please indicate if your Entity operates in a Subnational area only",
+                title: "Select Geo-Coverage Type",
                 type: "string",
+                enum: ["global", "transnational", "national", "subnational"],
+                enumNames: [
+                  "Global",
+                  "Transnational",
+                  "National",
+                  "Subnational",
+                ],
+              },
+              geoCoverageValueTransnational: {
+                title: "GEO COVERAGE (Transnational)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageCountries: {
+                title: "GEO COVERAGE (Countries)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageValueNational: {
+                title: "National",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["national"],
+                },
+              },
+              geoCoverageValueSubnational: {
+                title: "Subnational",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
+              },
+              geoCoverageValueSubnationalCity: {
+                title: "City",
+                type: "string",
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
               },
             },
           },
@@ -1391,21 +1583,60 @@ export const schema = {
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
               "geoCoverageValueNational",
+              "geoCoverageValueSubnational",
+              "geoCoverageValueSubnationalCity",
             ],
             properties: {
-              country: {
-                title: "In which country are you headquarters?",
-                enum: [],
-              },
-              ...newGeoCoverageFormat,
               geoCoverageType: {
-                ...newGeoCoverageFormat.geoCoverageType,
-                title: "What is the geographical coverage of your Entity?",
-              },
-              subnationalArea: {
-                title:
-                  "Please indicate if your Entity operates in a Subnational area only",
+                title: "Select Geo-Coverage Type",
                 type: "string",
+                enum: ["global", "transnational", "national", "subnational"],
+                enumNames: [
+                  "Global",
+                  "Transnational",
+                  "National",
+                  "Subnational",
+                ],
+              },
+              geoCoverageValueTransnational: {
+                title: "GEO COVERAGE (Transnational)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageCountries: {
+                title: "GEO COVERAGE (Countries)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageValueNational: {
+                title: "National",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["national"],
+                },
+              },
+              geoCoverageValueSubnational: {
+                title: "Subnational",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
+              },
+              geoCoverageValueSubnationalCity: {
+                title: "City",
+                type: "string",
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
               },
             },
           },
@@ -1598,21 +1829,60 @@ export const schema = {
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
               "geoCoverageValueNational",
+              "geoCoverageValueSubnational",
+              "geoCoverageValueSubnationalCity",
             ],
             properties: {
-              country: {
-                title: "In which country are you headquarters?",
-                enum: [],
-              },
-              ...newGeoCoverageFormat,
               geoCoverageType: {
-                ...newGeoCoverageFormat.geoCoverageType,
-                title: "What is the geographical coverage of your Entity?",
-              },
-              subnationalArea: {
-                title:
-                  "Please indicate if your Entity operates in a Subnational area only",
+                title: "Select Geo-Coverage Type",
                 type: "string",
+                enum: ["global", "transnational", "national", "subnational"],
+                enumNames: [
+                  "Global",
+                  "Transnational",
+                  "National",
+                  "Subnational",
+                ],
+              },
+              geoCoverageValueTransnational: {
+                title: "GEO COVERAGE (Transnational)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageCountries: {
+                title: "GEO COVERAGE (Countries)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageValueNational: {
+                title: "National",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["national"],
+                },
+              },
+              geoCoverageValueSubnational: {
+                title: "Subnational",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
+              },
+              geoCoverageValueSubnationalCity: {
+                title: "City",
+                type: "string",
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["subnational"],
+                },
               },
             },
           },
