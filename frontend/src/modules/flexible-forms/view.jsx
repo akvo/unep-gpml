@@ -410,7 +410,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     </p>
                   </div>
                 </Row>
-              ) : getTabStepIndex().tabIndex === 2 ? (
+              ) : getTabStepIndex().tabIndex === 1 ? (
                 <Row>
                   <div className="main-content">
                     <div className="button-wrapper">
@@ -428,7 +428,9 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       value={mainType}
                     >
                       {mainContentType.map((item) => {
-                        const img = require(`../../images/${item.code}.png`)
+                        const img = require(`../../images/${item.code}.svg`)
+                          .default;
+                        const imgSelected = require(`../../images/${item.code}-selected.svg`)
                           .default;
                         return (
                           <Col
@@ -446,7 +448,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                             >
                               <div className="content-circle-wrapper">
                                 <div className="content-circle">
-                                  <img src={img} alt={`${item.name} Image`} />
+                                  <img
+                                    src={
+                                      mainType === item.code ? imgSelected : img
+                                    }
+                                    alt={`${item.name} Image`}
+                                  />
                                 </div>
                                 <div className="info-icon-container">
                                   <h2>{item.name}</h2>
@@ -502,57 +509,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     )}
                   </div>
                 </Row>
-              ) : getTabStepIndex().tabIndex === 1 ? (
-                <div className="main-content">
-                  <div>
-                    <p className="field-label">
-                      Are you directly managing this resource?
-                    </p>
-                    <Radio.Group
-                      value={manageResource}
-                      onChange={onChangeSubmitter}
-                    >
-                      <Radio value="Yes">
-                        <span className="optional-params">Yes</span>You are
-                        granting editing and deleting rights
-                      </Radio>
-                      <Radio value="No">
-                        <span className="optional-params">No</span>You are
-                        categorized as a submitter
-                      </Radio>
-                    </Radio.Group>
-                  </div>
-                  {manageResource === "Yes" && (
-                    <div style={{ marginTop: 10 }}>
-                      <p className="field-label">
-                        Please select other individuals that will support in
-                        managing the resource.
-                      </p>
-                      <Select
-                        mode="multiple"
-                        showSearch={true}
-                        allowClear={true}
-                        style={{ width: "100%" }}
-                        placeholder="Select individuals"
-                        optionFilterProp="children"
-                        onChange={onChangeOwners}
-                        filterOption={(input, option) =>
-                          option.children
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        }
-                      >
-                        {stakeholders
-                          .filter((item) => item.id !== profile.id)
-                          .map((item) => (
-                            <Select.Option value={item.id} key={item.id}>
-                              {item.firstName}
-                            </Select.Option>
-                          ))}
-                      </Select>
-                    </div>
-                  )}
-                </div>
               ) : (
                 <Row className="main-content">
                   <FlexibleForm

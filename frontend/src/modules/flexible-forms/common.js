@@ -6,7 +6,7 @@ const initialData = {
   tabs: ["S1"],
   required: {
     S1: [],
-    S2: [],
+    // S2: [],
     S3: [],
     S4: [],
     S5: [],
@@ -15,10 +15,10 @@ const initialData = {
     steps: 0,
     required: {},
   },
-  S2: {
-    steps: 0,
-    required: {},
-  },
+  // S2: {
+  //   steps: 0,
+  //   required: {},
+  // },
   S3: {
     steps: 0,
     required: {},
@@ -57,10 +57,10 @@ const getSchema = ({
   const prop = cloneDeep(schema[selectedMainContentType].properties);
   const orgs = [...organisations];
 
-  prop.S2.properties["S2_G1_1.1"].enum = stakeholders?.map((it) => it.id);
-  prop.S2.properties["S2_G1_1.1"].enumNames = stakeholders?.map(
-    (it) => it.firstName
-  );
+  // prop.S2.properties["S2_G1_1.1"].enum = stakeholders?.map((it) => it.id);
+  // prop.S2.properties["S2_G1_1.1"].enumNames = stakeholders?.map(
+  //   (it) => it.firstName
+  // );
 
   // country options
   prop.S4.properties.S4_G2.properties["country"].enum = countries?.map(
@@ -165,19 +165,19 @@ const tabs = [
     desc: "",
     steps: [],
   },
-  {
-    key: "S2",
-    title: "Submitter",
-    desc: "",
-    steps: [
-      {
-        group: "S1",
-        key: "S1-p1-personal-information",
-        title: "Personal Information",
-        desc: "",
-      },
-    ],
-  },
+  // {
+  //   key: "S2",
+  //   title: "Submitter",
+  //   desc: "",
+  //   steps: [
+  //     {
+  //       group: "S1",
+  //       key: "S1-p1-personal-information",
+  //       title: "Personal Information",
+  //       desc: "",
+  //     },
+  //   ],
+  // },
   {
     key: "S3",
     title: "Content type",
