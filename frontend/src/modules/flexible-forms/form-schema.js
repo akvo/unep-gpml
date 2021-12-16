@@ -243,7 +243,7 @@ export const schema = {
             required: [],
             properties: {
               publishYear: {
-                title: "PUBLICATION YEARS Initiative",
+                title: "PUBLICATION YEARS ",
                 type: "string",
               },
             },
@@ -489,7 +489,7 @@ export const schema = {
             required: [],
             properties: {
               publishYear: {
-                title: "PUBLICATION YEAR",
+                title: "PUBLICATION YEARS ",
                 type: "string",
               },
             },
