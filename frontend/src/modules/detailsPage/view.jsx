@@ -30,7 +30,7 @@ import {
 const CardComponent = ({ title, style, children }) => {
   return (
     <div className="card-wrapper" style={style}>
-      <Card title={title} bordered={false}>
+      <Card title={title} bordered={false} style={style}>
         {children}
       </Card>
     </div>
@@ -54,6 +54,33 @@ const TabComponent = ({ title, style, children }) => {
           <a href="#">Reviews</a>
         </li>
       </ul>
+    </div>
+  );
+};
+
+const SharePanel = () => {
+  return (
+    <div className="sticky-panel">
+      <div className="sticky-panel-item">
+        <DownloadOutlined />
+        <h2>View</h2>
+      </div>
+      <div className="sticky-panel-item">
+        <HeartOutlined />
+        <h2>Bookmark</h2>
+      </div>
+      <div className="sticky-panel-item">
+        <ShareAltOutlined />
+        <h2>Bookmark</h2>
+      </div>
+      <div className="sticky-panel-item">
+        <DeleteOutlined />
+        <h2>Delete</h2>
+      </div>
+      <div className="sticky-panel-item">
+        <EditOutlined />
+        <h2>Update</h2>
+      </div>
     </div>
   );
 };
@@ -85,55 +112,36 @@ function DetailsView() {
             <Col xs={6} lg={6}>
               <img src={LeftImage} className="resource-image" />
             </Col>
-            <Col xs={16} lg={16}>
-              <CardComponent
-                title="Description"
-                style={{
-                  height: "100%",
-                }}
-              >
-                <p>
-                  A healthy Baltic Sea environment with diverse biological
-                  components functioning in balance, resulting in a good
-                  ecological status and supporting a wide range of sustainable
-                  economic and social activities. Initially adopted in 2015, the
-                  plan has already led to significant progress on marine litter,
-                  including the development of a knowledge base and various
-                  HELCOM commitments to address marine litter in the Baltic Sea.
-                  In 2020, the revision of the HELCOM Regional Action Plan on
-                  Marine Litter (RAP ML) has started. As a first step, a
-                  thorough evaluation of the implementation of each of the
-                  regional and voluntary national actions has been initiated.
-                  The revision of the Action Plan is to be conducted
-                  simultaneously and in connection with the revision of the
-                  Baltic Sea Action Plan (BSAP), the RAP ML being one of the key
-                  supplementary documents of the updated BSAP. Both updates are
-                  to conclude in 2021.
-                </p>
-              </CardComponent>
-            </Col>
-            <Col xs={2} lg={2}>
-              <div className="sticky-panel">
-                <div className="sticky-panel-item">
-                  <DownloadOutlined />
-                  <h2>View</h2>
-                </div>
-                <div className="sticky-panel-item">
-                  <HeartOutlined />
-                  <h2>Bookmark</h2>
-                </div>
-                <div className="sticky-panel-item">
-                  <ShareAltOutlined />
-                  <h2>Bookmark</h2>
-                </div>
-                <div className="sticky-panel-item">
-                  <DeleteOutlined />
-                  <h2>Delete</h2>
-                </div>
-                <div className="sticky-panel-item">
-                  <EditOutlined />
-                  <h2>Update</h2>
-                </div>
+            <Col xs={18} lg={18} style={{ display: "flex" }}>
+              <div className="banner-wrapper">
+                <CardComponent
+                  title="Description"
+                  style={{
+                    height: "100%",
+                    boxShadow: "none",
+                    borderRadius: "none",
+                  }}
+                >
+                  <p>
+                    A healthy Baltic Sea environment with diverse biological
+                    components functioning in balance, resulting in a good
+                    ecological status and supporting a wide range of sustainable
+                    economic and social activities. Initially adopted in 2015,
+                    the plan has already led to significant progress on marine
+                    litter, including the development of a knowledge base and
+                    various HELCOM commitments to address marine litter in the
+                    Baltic Sea. In 2020, the revision of the HELCOM Regional
+                    Action Plan on Marine Litter (RAP ML) has started. As a
+                    first step, a thorough evaluation of the implementation of
+                    each of the regional and voluntary national actions has been
+                    initiated. The revision of the Action Plan is to be
+                    conducted simultaneously and in connection with the revision
+                    of the Baltic Sea Action Plan (BSAP), the RAP ML being one
+                    of the key supplementary documents of the updated BSAP. Both
+                    updates are to conclude in 2021.
+                  </p>
+                </CardComponent>
+                <SharePanel />
               </div>
             </Col>
           </Row>
