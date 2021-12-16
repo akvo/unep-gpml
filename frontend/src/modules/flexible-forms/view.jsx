@@ -1,7 +1,7 @@
 import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Row, Col, Select, Button, Switch, Radio, Popover, Steps } from "antd";
-import { DownloadOutlined, InfoOutlined } from "@ant-design/icons";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "./styles.scss";
 import common from "./common";
@@ -408,9 +408,27 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       quick summary sheet with categories and sub-categories can
                       be downloaded <a href="#">here</a>.
                     </p>
+                    <p>
+                      Once submitted resources go through a review process which
+                      is being fine-tuned via consultations to assess content
+                      accuracy and quality. The current validation mechanism
+                      draft can be found under{" "}
+                      <a href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf">
+                        Annex C of the Concept Document.
+                      </a>
+                    </p>
+                    <p>
+                      You can access existing content via the{" "}
+                      <a href="https://digital.gpmarinelitter.org/browse?country=&transnational=&topic=project%2Caction_plan%2Cpolicy%2Ctechnical_resource%2Cfinancing_resource%2Cevent%2Ctechnology&tag=&q=&offset=0">
+                        Knowledge Exchange Library.
+                      </a>
+                      Make sure to browse around and leave a review under the
+                      resources you enjoy the most!
+                    </p>
+                    <p>To get started sign up or log in now.</p>
                   </div>
                 </Row>
-              ) : getTabStepIndex().tabIndex === 2 ? (
+              ) : getTabStepIndex().tabIndex === 1 ? (
                 <Row>
                   <div className="main-content">
                     <div className="button-wrapper">
@@ -428,7 +446,9 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       value={mainType}
                     >
                       {mainContentType.map((item) => {
-                        const img = require(`../../images/${item.code}.png`)
+                        const img = require(`../../images/${item.code}.svg`)
+                          .default;
+                        const imgSelected = require(`../../images/${item.code}-selected.svg`)
                           .default;
                         return (
                           <Col
@@ -446,7 +466,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                             >
                               <div className="content-circle-wrapper">
                                 <div className="content-circle">
-                                  <img src={img} alt={`${item.name} Image`} />
+                                  <img
+                                    src={
+                                      mainType === item.code ? imgSelected : img
+                                    }
+                                    alt={`${item.name} Image`}
+                                  />
                                 </div>
                                 <div className="info-icon-container">
                                   <h2>{item.name}</h2>
@@ -475,18 +500,24 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                           onChange={handleSubContentType}
                           value={subType}
                         >
-                          {subContentType.map((item) => (
+                          {subContentType.map((item, index) => (
                             <Col
                               className="gutter-row"
                               xs={12}
                               lg={6}
-                              key={item}
+                              key={index}
                             >
-                              <Radio.Button id={item} value={item} key={item}>
-                                {item}
-                                <div className="info-icon-wrapper">
-                                  <img src={InfoBlue} />
-                                </div>
+                              <Radio.Button
+                                id={item}
+                                value={item.title}
+                                key={index}
+                              >
+                                {item.title}
+                                <Popover content={item.des}>
+                                  <div className="info-icon-wrapper">
+                                    <img src={InfoBlue} />
+                                  </div>
+                                </Popover>
                               </Radio.Button>
                             </Col>
                           ))}
@@ -502,57 +533,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     )}
                   </div>
                 </Row>
-              ) : getTabStepIndex().tabIndex === 1 ? (
-                <div className="main-content">
-                  <div>
-                    <p className="field-label">
-                      Are you directly managing this resource?
-                    </p>
-                    <Radio.Group
-                      value={manageResource}
-                      onChange={onChangeSubmitter}
-                    >
-                      <Radio value="Yes">
-                        <span className="optional-params">Yes</span>You are
-                        granting editing and deleting rights
-                      </Radio>
-                      <Radio value="No">
-                        <span className="optional-params">No</span>You are
-                        categorized as a submitter
-                      </Radio>
-                    </Radio.Group>
-                  </div>
-                  {manageResource === "Yes" && (
-                    <div style={{ marginTop: 10 }}>
-                      <p className="field-label">
-                        Please select other individuals that will support in
-                        managing the resource.
-                      </p>
-                      <Select
-                        mode="multiple"
-                        showSearch={true}
-                        allowClear={true}
-                        style={{ width: "100%" }}
-                        placeholder="Select individuals"
-                        optionFilterProp="children"
-                        onChange={onChangeOwners}
-                        filterOption={(input, option) =>
-                          option.children
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        }
-                      >
-                        {stakeholders
-                          .filter((item) => item.id !== profile.id)
-                          .map((item) => (
-                            <Select.Option value={item.id} key={item.id}>
-                              {item.firstName}
-                            </Select.Option>
-                          ))}
-                      </Select>
-                    </div>
-                  )}
-                </div>
               ) : (
                 <Row className="main-content">
                   <FlexibleForm
@@ -569,6 +549,76 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     owners={owners}
                   />
                 </Row>
+              )}
+              {getTabStepIndex().tabIndex === 0 ? (
+                <div className="bottom-panel">
+                  <div className="center-content">
+                    <p>Getting Started</p>
+                  </div>
+                  <div
+                    className="next-button"
+                    onClick={(e) => handleOnClickBtnNext(e)}
+                  >
+                    <p>Next</p>
+                    <RightOutlined />
+                  </div>
+                </div>
+              ) : getTabStepIndex().tabIndex === 1 ? (
+                <div className="bottom-panel">
+                  <div
+                    className="back-button"
+                    onClick={(e) => handleOnClickBtnBack(e)}
+                  >
+                    <LeftOutlined />
+                    <p>Back</p>
+                  </div>
+                  <div className="center-content">
+                    <p>Field to submit</p>
+                    <h6>0 of 1</h6>
+                  </div>
+                  <div
+                    className="next-button"
+                    onClick={(e) => handleOnClickBtnNext(e)}
+                  >
+                    <p>Next</p>
+                    <RightOutlined />
+                  </div>
+                </div>
+              ) : getTabStepIndex().tabIndex === 2 ? (
+                <div className="bottom-panel">
+                  <div
+                    className="back-button"
+                    onClick={(e) => handleOnClickBtnBack(e)}
+                  >
+                    <LeftOutlined />
+                    <p>Back</p>
+                  </div>
+                  <div className="center-content">
+                    <p>Field to submit</p>
+                    <h6>0 of 3</h6>
+                  </div>
+                  <div
+                    className="next-button"
+                    onClick={(e) => handleOnClickBtnNext(e)}
+                  >
+                    <p>Next</p>
+                    <RightOutlined />
+                  </div>
+                </div>
+              ) : (
+                <div className="bottom-panel">
+                  <div
+                    className="back-button"
+                    onClick={(e) => handleOnClickBtnBack(e)}
+                  >
+                    <LeftOutlined />
+                    <p>Back</p>
+                  </div>
+                  {/* <div className="center-content">
+                    <p>Field to submit</p>
+                    <h6>0 of 3</h6>
+                  </div> */}
+                </div>
               )}
             </Col>
           </Row>

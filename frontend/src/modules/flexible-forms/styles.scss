@@ -22,7 +22,7 @@
 
   .form-info-wrapper {
     background-color: #005b70;
-    padding: 10px 0;
+    padding: 20px 0;
 
     .ui.container {
       color: #fff;
@@ -123,14 +123,14 @@
     .ant-radio-wrapper {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       .optional-params {
         width: 45px;
         display: inline-block;
         color: #000;
       }
       & span {
-        color: #a5b0c9;
+        color: #384e85;
       }
     }
     .step-panel {
@@ -142,7 +142,7 @@
           padding: 20px;
         }
         .child-item {
-          margin-left: 48px;
+          // margin-left: 48px;
           padding: 5px 10px;
           margin-top: 10px;
           border-radius: 3px;
@@ -199,6 +199,9 @@
     }
     .content-panel {
       padding: 13px 10px 0px 13px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       .getting-started-content {
         padding: 40px !important;
         h5 {
@@ -240,11 +243,12 @@
             box-shadow: none;
           }
           &.ant-radio-button-wrapper-checked {
-            border: 2px solid #34a6ff;
             border-radius: 10px;
             background: rgba(52, 166, 255, 0.1);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.25);
             .content-circle {
               background: #10f9b7;
+              border: 5px solid #fff;
             }
             h2 {
               font-weight: 700;
@@ -417,6 +421,57 @@
                 }
               }
             }
+          }
+        }
+      }
+      .bottom-panel {
+        margin-top: 10px;
+        background: rgba(237, 242, 247, 0.35);
+        padding: 15px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .next-button {
+          display: flex;
+          align-items: center;
+          width: fit-content;
+          padding: 5px 10px;
+          border-radius: 20px;
+          border: 1px solid;
+          color: #34a6ff;
+          cursor: pointer;
+          p {
+            margin-bottom: 0px;
+            padding-right: 5px;
+          }
+        }
+        .back-button {
+          display: flex;
+          align-items: center;
+          width: fit-content;
+          padding: 5px 10px;
+          border-radius: 20px;
+          border: 1px solid;
+          color: #34a6ff;
+          cursor: pointer;
+          p {
+            margin-bottom: 0px;
+            padding-left: 5px;
+          }
+        }
+        .center-content {
+          margin-right: 40px;
+          margin-left: 40px;
+          p {
+            margin-bottom: 0px;
+            color: #3176ae;
+            font-weight: 400;
+          }
+          h6 {
+            text-align: center;
+            font-size: 18px;
+            color: #3176ae;
+            font-weight: 700;
           }
         }
       }
