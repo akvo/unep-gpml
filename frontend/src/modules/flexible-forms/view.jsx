@@ -1,5 +1,11 @@
 import { UIStore } from "../../store";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import { Row, Col, Select, Button, Switch, Radio, Popover, Steps } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
@@ -9,6 +15,18 @@ import ExampleIcon from "../../images/examples.png";
 import InfoBlue from "../../images/i-blue.png";
 import FlexibleForm from "./form";
 import isEmpty from "lodash/isEmpty";
+import {
+  Editor,
+  Transforms,
+  createEditor,
+  Descendant,
+  Element as SlateElement,
+} from "slate";
+import { Editable, withReact, useSlate, Slate } from "slate-react";
+import { withHistory } from "slate-history";
+import { Element, Leaf } from "./SlateEditorMarkup";
+import SlateEditorToolbar, { toggleMark } from "./SlateEditorToolbar";
+import isHotkey from "is-hotkey";
 
 const { Step } = Steps;
 
