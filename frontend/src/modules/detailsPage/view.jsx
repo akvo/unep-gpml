@@ -19,6 +19,13 @@ const { Title } = Typography;
 import StickyBox from "react-sticky-box";
 import ActionGreen from "../../images/action-green.png";
 import LeftImage from "../../images/sea-dark.jpg";
+import {
+  DownloadOutlined,
+  HeartOutlined,
+  ShareAltOutlined,
+  DeleteOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 
 const CardComponent = ({ title, style, children }) => {
   return (
@@ -78,7 +85,7 @@ function DetailsView() {
             <Col xs={6} lg={6}>
               <img src={LeftImage} className="resource-image" />
             </Col>
-            <Col xs={18} lg={18}>
+            <Col xs={16} lg={16}>
               <CardComponent
                 title="Description"
                 style={{
@@ -104,6 +111,30 @@ function DetailsView() {
                   to conclude in 2021.
                 </p>
               </CardComponent>
+            </Col>
+            <Col xs={2} lg={2}>
+              <div className="sticky-panel">
+                <div className="sticky-panel-item">
+                  <DownloadOutlined />
+                  <h2>View</h2>
+                </div>
+                <div className="sticky-panel-item">
+                  <HeartOutlined />
+                  <h2>Bookmark</h2>
+                </div>
+                <div className="sticky-panel-item">
+                  <ShareAltOutlined />
+                  <h2>Bookmark</h2>
+                </div>
+                <div className="sticky-panel-item">
+                  <DeleteOutlined />
+                  <h2>Delete</h2>
+                </div>
+                <div className="sticky-panel-item">
+                  <EditOutlined />
+                  <h2>Update</h2>
+                </div>
+              </div>
             </Col>
           </Row>
         </div>

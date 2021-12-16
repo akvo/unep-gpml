@@ -36,6 +36,42 @@
       width: 100%;
       border-radius: 10px;
     }
+    .sticky-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #255b87;
+      height: 100%;
+      border: 1px solid #d3dee7;
+      box-sizing: border-box;
+      border-radius: 0px 10px 10px 0px;
+      padding: 0px 5px;
+      .sticky-panel-item {
+        border-bottom: 1px solid #094271;
+        box-shadow: 0px 1px 0px #3872a0;
+        width: 100%;
+        cursor: pointer;
+        flex: 1 1 50%;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        &:last-child {
+          border-bottom: none;
+          box-shadow: none;
+        }
+        span {
+          font-size: 30px;
+          color: #ffffff;
+        }
+        h2 {
+          font-size: 18px;
+          font-weight: 400;
+          color: #ffffff;
+          margin-bottom: 0px;
+        }
+      }
+    }
   }
   .card-wrapper {
     .ant-card {
