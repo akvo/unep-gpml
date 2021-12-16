@@ -73,7 +73,7 @@ const SignupView = ({ ...props }) => {
                       onClick={() => {
                         setTypeSignUp("entity");
                         if (!isAuthenticated) {
-                          loginWithPopup({ action: "signup" });
+                          loginWithPopup( { action: "mixed" });
                         } else {
                           history.push("/entity-signup");
                         }
@@ -103,7 +103,7 @@ const SignupView = ({ ...props }) => {
                         onClick={() => {
                           setTypeSignUp("stakeholder");
                           if (!isAuthenticated) {
-                            loginWithPopup({ action: "signup" });
+                            loginWithPopup( { action: "signup" });
                           } else {
                             history.push("/stakeholder-signup");
                           }
