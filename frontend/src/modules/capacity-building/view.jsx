@@ -1,73 +1,74 @@
-import React, { useState, useRef } from 'react';
-import { Carousel, PageHeader, Row, Col, List, Card, Button } from 'antd';
-import classNames from 'classnames';
-import { groupBy } from 'lodash';
-import moment from 'moment';
-import { TrimText } from '../../utils/string';
-import Banner from './Banner';
-import Thumbnail from './Thumbnail';
-import capacities from './json/capacity-building.json';
-import IconLibrary from '../../images/capacity-building/ic_library.svg';
-import IconLearning from '../../images/capacity-building/ic_learning.svg';
-import IconExchange from '../../images/capacity-building/ic_exchange.svg';
-import SlidePrev from '../../images/capacity-building/slide-prev.svg';
-import SlideNext from '../../images/capacity-building/slide-next.svg';
-import IconCaseStudies from '../../images/capacity-building/ic_case_studies.svg';
-import './styles.scss';
+import React, { useState, useRef } from "react";
+import { Carousel, PageHeader, Row, Col, List, Card, Button } from "antd";
+import classNames from "classnames";
+import { groupBy } from "lodash";
+import moment from "moment";
+import { TrimText } from "../../utils/string";
+import Banner from "./Banner";
+import Thumbnail from "./Thumbnail";
+import capacities from "./json/capacity-building.json";
+import IconLibrary from "../../images/capacity-building/ic_library.svg";
+import IconLearning from "../../images/capacity-building/ic_learning.svg";
+import IconExchange from "../../images/capacity-building/ic_exchange.svg";
+import SlidePrev from "../../images/capacity-building/slide-prev.svg";
+import SlideNext from "../../images/capacity-building/slide-next.svg";
+import IconCaseStudies from "../../images/capacity-building/ic_case_studies.svg";
+import "./styles.scss";
 
 const CapacityBuilding = () => {
   const [activeMenu, setActiveMenu] = useState(1);
   const slider = useRef();
   const prev = () => {
     slider.current.prev();
-  }
-  const next = () => { 
+  };
+  const next = () => {
     slider.current.next();
-  }
+  };
   const sidebar = [
     {
       id: 1,
-      title: 'LIBRARY',
+      title: "LIBRARY",
     },
     {
       id: 2,
-      title: 'LEARNING',
+      title: "LEARNING",
     },
     {
       id: 3,
-      title: 'EXCHANGE',
+      title: "EXCHANGE",
     },
     {
       id: 4,
-      title: 'Case studies',
+      title: "Case studies",
     },
   ];
   const banners = [
     {
       uid: 1,
-      title: 'Third COBSEA Webinar on the Post-2020 Global Biodiversity Framework',
-      date: moment().format('DD MMMM YYYY'),
-      category: 'Webinar'
+      title:
+        "Third COBSEA Webinar on the Post-2020 Global Biodiversity Framework",
+      date: moment().format("DD MMMM YYYY"),
+      category: "Webinar",
     },
     {
       uid: 2,
-      title: 'Troisième webinaire COBSEA sur le cadre mondial de la biodiversité post-2020',
-      date: moment().format('DD MMMM YYYY'),
-      category: 'Webinar'
-    }
+      title:
+        "Troisième webinaire COBSEA sur le cadre mondial de la biodiversité post-2020",
+      date: moment().format("DD MMMM YYYY"),
+      category: "Webinar",
+    },
   ];
-  const groupCapacities = groupBy(capacities, 'category');
-  const icons = [
-    IconLibrary,
-    IconLearning,
-    IconExchange,
-    IconCaseStudies
-  ]
+  const groupCapacities = groupBy(capacities, "category");
+  const icons = [IconLibrary, IconLearning, IconExchange, IconCaseStudies];
   return (
     <div id="capacity-building">
       <Row type="flex" className="bg-dark-primary">
         <Col>
-          <PageHeader title={<span className="text-green">Capacity building & awareness</span>} />
+          <PageHeader
+            title={
+              <span className="text-green">Capacity building & awareness</span>
+            }
+          />
         </Col>
       </Row>
       <Row type="flex">
@@ -79,12 +80,14 @@ const CapacityBuilding = () => {
                 lg={24}
                 md={24}
                 xs={6}
-                className={classNames('item-sidebar', { active: (activeMenu === s.id) })}
+                className={classNames("item-sidebar", {
+                  active: activeMenu === s.id,
+                })}
                 onClick={() => setActiveMenu(s.id)}
               >
-                <div style={{ margin: 'auto', textAlign: 'center' }}>
+                <div style={{ margin: "auto", textAlign: "center" }}>
                   <img src={icons[sx] || IconLibrary} />
-                  <p style={{ color: '#fff' }}>{s.title}</p>
+                  <p style={{ color: "#fff" }}>{s.title}</p>
                 </div>
               </Col>
             ))}
@@ -92,25 +95,26 @@ const CapacityBuilding = () => {
         </Col>
         <Col lg={21} md={21} xs={24} order={2}>
           <Row>
-            <Col span={24} style={{ position: 'relative' }}>
+            <Col span={24} style={{ position: "relative" }}>
               <Carousel className="pm_event_banner" ref={slider}>
-                {banners.map((b, bx) => <Banner key={bx} {...b} />)}
+                {banners.map((b, bx) => (
+                  <Banner key={bx} {...b} />
+                ))}
               </Carousel>
               <div className="carousel-control">
                 <img src={SlidePrev} className="carousel-prev" onClick={prev} />
                 <img src={SlideNext} className="carousel-next" onClick={next} />
               </div>
             </Col>
-            <Col span={24} style={{ padding: '0 16px', marginTop: 45 }}>
+            <Col span={24} style={{ padding: "0 16px", marginTop: 45 }}>
               {Object.keys(groupCapacities)?.map((g, gx) => (
-                <div className={`capacity-section bg-image ${groupCapacities[g][0]?.category_id}`} key={gx}>
+                <div
+                  className={`capacity-section bg-image ${groupCapacities[g][0]?.category_id}`}
+                  key={gx}
+                >
                   <PageHeader
                     title={<span className="text-green">{g}</span>}
-                    extra={
-                      <Button type="ghost">
-                        See all &gt;
-                      </Button>
-                    }
+                    extra={<Button type="ghost">See all &gt;</Button>}
                   />
                   <div className="section-content">
                     <List
@@ -124,8 +128,11 @@ const CapacityBuilding = () => {
                         xxl: 3,
                       }}
                       dataSource={groupCapacities[g] || []}
-                      renderItem={item => {
-                        const thumb = item.category_id === 'events' ? { width: 172, height: 114 } : {}
+                      renderItem={(item) => {
+                        const thumb =
+                          item.category_id === "events"
+                            ? { width: 172, height: 114 }
+                            : {};
                         return (
                           <List.Item>
                             <Card
@@ -147,25 +154,26 @@ const CapacityBuilding = () => {
                                 <span className="title">
                                   <TrimText text={item.title} max={95} />
                                 </span>
-                                <span style={{ textAlign: 'right' }}>
-                                  <Button type="link" href={item.platform_link}>See more</Button>
+                                <span style={{ textAlign: "right" }}>
+                                  <Button type="link" href={item.platform_link}>
+                                    See more
+                                  </Button>
                                 </span>
                               </Card.Grid>
                             </Card>
                           </List.Item>
-                        )
+                        );
                       }}
                     />
                   </div>
                 </div>
               ))}
-
             </Col>
           </Row>
         </Col>
       </Row>
     </div>
   );
-}
+};
 
 export default CapacityBuilding;
