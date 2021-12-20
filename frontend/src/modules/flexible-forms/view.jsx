@@ -15,18 +15,6 @@ import ExampleIcon from "../../images/examples.png";
 import InfoBlue from "../../images/i-blue.png";
 import FlexibleForm from "./form";
 import isEmpty from "lodash/isEmpty";
-import {
-  Editor,
-  Transforms,
-  createEditor,
-  Descendant,
-  Element as SlateElement,
-} from "slate";
-import { Editable, withReact, useSlate, Slate } from "slate-react";
-import { withHistory } from "slate-history";
-import { Element, Leaf } from "./SlateEditorMarkup";
-import SlateEditorToolbar, { toggleMark } from "./SlateEditorToolbar";
-import isHotkey from "is-hotkey";
 
 const { Step } = Steps;
 

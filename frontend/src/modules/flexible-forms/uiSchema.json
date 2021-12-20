@@ -149,6 +149,9 @@
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -330,6 +333,9 @@
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -511,6 +517,9 @@
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -692,6 +701,9 @@
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -899,6 +911,9 @@
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -1080,6 +1095,9 @@
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -1261,6 +1279,9 @@
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -1442,6 +1463,9 @@
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,

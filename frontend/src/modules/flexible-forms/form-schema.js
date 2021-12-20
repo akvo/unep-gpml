@@ -207,13 +207,17 @@ export const schema = {
             },
           },
           S4_G6: {
-            title: "Related Resources",
+            title: "",
             type: "object",
             depend: {
               id: "steps",
               value: 5,
             },
             properties: {
+              info: {
+                title: "Info And Docs",
+                type: "string",
+              },
               urls: {
                 title:
                   "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
@@ -453,13 +457,17 @@ export const schema = {
             },
           },
           S4_G6: {
-            title: "Related Resources",
+            title: "",
             type: "object",
             depend: {
               id: "steps",
               value: 5,
             },
             properties: {
+              info: {
+                title: "Info And Docs",
+                type: "string",
+              },
               urls: {
                 title:
                   "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
@@ -706,6 +714,10 @@ export const schema = {
               value: 5,
             },
             properties: {
+              info: {
+                title: "Info And Docs",
+                type: "string",
+              },
               urls: {
                 title:
                   "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
@@ -952,6 +964,10 @@ export const schema = {
               value: 5,
             },
             properties: {
+              info: {
+                title: "Info And Docs",
+                type: "string",
+              },
               urls: {
                 title:
                   "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
@@ -1223,6 +1239,10 @@ export const schema = {
               value: 5,
             },
             properties: {
+              info: {
+                title: "Info And Docs",
+                type: "string",
+              },
               urls: {
                 title:
                   "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
@@ -1469,6 +1489,10 @@ export const schema = {
               value: 5,
             },
             properties: {
+              info: {
+                title: "Info And Docs",
+                type: "string",
+              },
               urls: {
                 title:
                   "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
@@ -1715,6 +1739,10 @@ export const schema = {
               value: 5,
             },
             properties: {
+              info: {
+                title: "Info And Docs",
+                type: "string",
+              },
               urls: {
                 title:
                   "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
@@ -1961,6 +1989,10 @@ export const schema = {
               value: 5,
             },
             properties: {
+              info: {
+                title: "Info And Docs",
+                type: "string",
+              },
               urls: {
                 title:
                   "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
