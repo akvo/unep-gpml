@@ -10,8 +10,7 @@ import EmailWidget from "./form-email";
 import TextIconWidget from "./form-text-icon";
 import TextareaWidget from "./form-textarea";
 import CheckboxWidget from "./form-checkbox";
-import MainContentRadioWidget from "./form-custom-main-radio";
-import SubContentRadioWidget from "./form-custom-sub-radio";
+import RichWidget from "./richEditor/form-editor";
 
 import difference from "lodash/difference";
 import intersection from "lodash/intersection";
@@ -30,8 +29,7 @@ const widgets = {
   TextIconWidget: TextIconWidget,
   TextareaWidget: TextareaWidget,
   CheckboxWidget: CheckboxWidget,
-  MainContentRadioWidget: MainContentRadioWidget,
-  SubContentRadioWidget: SubContentRadioWidget,
+  RichWidget: RichWidget,
 };
 
 /**
