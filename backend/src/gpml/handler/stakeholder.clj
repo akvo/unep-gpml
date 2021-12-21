@@ -185,7 +185,7 @@
                                               (when (:new_org body-params)
                                                 {:affiliation (make-organisation db (:new_org body-params))})))
           stakeholder-id (if-let [current-stakeholder (db.stakeholder/stakeholder-by-email db {:email (:email profile)})]
-                           (let [idp-usernames (-> current-stakeholder :idp_usernames (concat (:idp_usernames profile)))]
+                           (let [idp-usernames (vec (-> current-stakeholder :idp_usernames (concat (:idp_usernames profile))))]
                              (db.stakeholder/update-stakeholder db (assoc (select-keys profile [:affiliation])
                                                                           :id (:id current-stakeholder)
                                                                           :idp_usernames idp-usernames
