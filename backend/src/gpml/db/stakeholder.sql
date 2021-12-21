@@ -37,7 +37,6 @@ select
     s.email,
     s.idp_usernames,
     s.public_email,
-    s.affiliation as non_member_organisation,
     s.public_database,
     s.picture as photo,
     s.linked_in,
@@ -154,7 +153,6 @@ insert into stakeholder(
     representation,
     idp_usernames
 --~ (when (contains? params :affiliation) ",affiliation")
---~ (when (contains? params :non_member_organisation) ",non_member_organisation")
 --~ (when (contains? params :linked_in) ",linked_in")
 --~ (when (contains? params :twitter) ",twitter")
 --~ (when (contains? params :cv) ",cv")
@@ -173,7 +171,6 @@ insert into stakeholder(
     :representation,
     :idp_usernames::jsonb
 --~ (when (contains? params :affiliation) ",:affiliation")
---~ (when (contains? params :non_member_organisation) ",:non_member_organisation")
 --~ (when (contains? params :linked_in) ",:linked_in")
 --~ (when (contains? params :twitter) ",:twitter")
 --~ (when (contains? params :cv) ",:cv")
@@ -203,7 +200,6 @@ update stakeholder set
 --~ (when (contains? params :affiliation) "affiliation= :v:affiliation::integer, ")
 --~ (when (contains? params :linked_in) "linked_in= :linked_in,")
 --~ (when (contains? params :twitter) "twitter= :twitter,")
---~ (when (contains? params :non_member_organisation) "affiliation= :non_member_organisation,")
 --~ (when (contains? params :picture) "picture= :picture,")
 --~ (when (contains? params :cv) "cv= :cv, ")
 --~ (when (contains? params :country) "country= :v:country::integer,")

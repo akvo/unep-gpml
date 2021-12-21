@@ -59,6 +59,13 @@ import ResponsiveMenu from "./modules/dropdown-menu/responsive-menu";
 // Discourse Forum
 import DiscourseForum from "./modules/discourse-forum/discourse-forum";
 
+// Flexible Form
+import FlexibleForms from "./modules/flexible-forms/view";
+import CapacityBuilding from "./modules/capacity-building/view";
+
+// New Details Page
+import NewDetailsView from "./modules/detailsPage/view";
+
 Promise.all([
   api.get("/tag"),
   api.get("/currency"),
@@ -482,8 +489,21 @@ const Root = () => {
             )}
           />
           <Route
+            path="/flexible-forms"
+            render={(props) => <FlexibleForms {...props} />}
+          />
+          <Route
+            path="/details-view"
+            render={(props) => <NewDetailsView {...props} />}
+          />
+          <Route
             path="/discourse-forum"
             render={(props) => <DiscourseForum />}
+          />
+          <Route
+            exact
+            path="/capacity-building"
+            render={(props) => <CapacityBuilding {...props} />}
           />
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"

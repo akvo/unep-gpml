@@ -54,7 +54,7 @@ const FieldTemplate = ({
     if (displayLabel) {
       if (!required) {
         return (
-          <p style={LABEL_STYLE}>
+          <p className="field-label" style={LABEL_STYLE}>
             {label}
             <span
               style={{
@@ -70,7 +70,11 @@ const FieldTemplate = ({
           </p>
         );
       }
-      return <p style={LABEL_STYLE}>{label}</p>;
+      return (
+        <p className="field-label" style={LABEL_STYLE}>
+          {label}
+        </p>
+      );
     }
     return "";
   };

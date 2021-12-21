@@ -26,7 +26,8 @@
    :country (-> (:countries data) first :id)
    :email "john@akvo.org"
    :year_founded 2021
-   :tags [4 5]})
+   :tags [4 5]
+   :owners (or (:owners data) [])})
 
 (deftest handler-post-test
   (testing "New technology is created"
@@ -56,7 +57,9 @@
           ;; create John create new technology with new organisation
           resp-two (handler (-> (mock/request :post "/")
                                 (assoc :jwt-claims {:email "john@org"})
-                                (assoc :body-params (assoc (new-technology data) :org
+                                (assoc :body-params (assoc (new-technology data)
+                                                           :owners [(:id user)]
+                                                           :org
                                                            {:id -1
                                                             :name "New Era"
                                                             :geo_coverage_type "regional"
@@ -74,4 +77,5 @@
                     :id 10002
                     :image nil
                     :logo nil
+                    :owners [(:id user)]
                     :created_by 10001) technology-two)))))

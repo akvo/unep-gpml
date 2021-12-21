@@ -13,6 +13,7 @@ insert into event(
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :review_status) ", review_status")
 --~ (when (contains? params :created_by) ", created_by")
+--~ (when (contains? params :url) ", url")
 )
 values(
     :title,
@@ -27,6 +28,7 @@ values(
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
 --~ (when (contains? params :created_by) ", :created_by")
+--~ (when (contains? params :url) ", :url")
 ) RETURNING id;
 
 -- :name add-event-tags :<! :1
@@ -75,6 +77,11 @@ update event
 
 -- :name event-by-id :? :1
 -- :doc Returns the data for a given event
+  WITH owners_data as (
+   select COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners, authz.topic_id
+ from  topic_stakeholder_auth authz where authz.topic_type::text='event' AND authz.topic_id=:id
+group by topic_id
+   )
 select
     e.id,
     e.title,
@@ -90,12 +97,15 @@ select
     e.country,
     e.languages,
     e.tags,
+    e.url,
     e.review_status,
     (select json_agg(tag) from event_tag where event = :id) as tags,
     (select json_agg(coalesce(country, country_group))
-        from event_geo_coverage where event = :id) as geo_coverage_value
+        from event_geo_coverage where event = :id) as geo_coverage_value,
+      COALESCE(owners_data.owners, '[]') as owners
 from v_event_data e
-where id = :id
+LEFT JOIN owners_data ON owners_data.topic_id=:id
+where e.id = :id
 
 -- :name event-image-by-id :? :1
 -- :doc Get event image by id

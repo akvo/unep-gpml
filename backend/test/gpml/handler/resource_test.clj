@@ -8,6 +8,7 @@
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.topic-stakeholder-auth :as db.ts-auth]
             [integrant.core :as ig]
             [ring.mock.request :as mock]
             [clojure.string :as s]))
@@ -33,7 +34,9 @@
    :remarks nil
    :urls [{:lang "id" :url "https://www.test.org"}]
    :country (-> (:countries data) first :id)
-   :tags [4 5]})
+   :tags [4 5]
+   :url "resource url"
+   :owners (:owners data)})
 
 
 (defn fake-upload-blob [_ _ _ content-type]
@@ -61,16 +64,17 @@
           user (db.stakeholder/new-stakeholder db (profile-test/new-profile 1))
           _ (db.stakeholder/update-stakeholder-status db (assoc user :review_status "APPROVED"))
           ;; create John create new resource with available organisation
+          payload (new-resource data)
           resp-one (with-redefs [image/upload-blob fake-upload-blob]
                      (handler (-> (mock/request :post "/")
                                   (assoc :jwt-claims {:email "john@org"})
-                                  (assoc :body-params (new-resource data)))))
+                                  (assoc :body-params payload))))
           ;; create John create new resource with new organisation
           resp-two (with-redefs [image/upload-blob fake-upload-blob]
                      (handler (-> (mock/request :post "/")
                                   (assoc :jwt-claims {:email "john@org"})
                                   (assoc :body-params
-                                         (assoc (new-resource data)
+                                         (assoc (new-resource (merge data {:owners [(:id user)]}))
                                                 :org {:id -1
                                                       :name "New Era"
                                                       :geo_coverage_type "regional"
@@ -78,6 +82,8 @@
                                                       :country (-> (:countries data) second :id)})))))
           resource-one (db.resource/resource-by-id db (:body resp-one))
           resource-two (db.resource/resource-by-id db (:body resp-two))]
+      (is (empty? (db.ts-auth/get-auth-by-topic db {:topic-id (:id resource-one) :topic-type "resource"})))
+      (is (= (:id user) (:stakeholder (first (db.ts-auth/get-auth-by-topic db {:topic-id (:id resource-two) :topic-type "resource"})))))
       (is (= 201 (:status resp-one)))
       (let [image-one (:image resource-one)]
         (is (s/includes? image-one "images/resource-"))
@@ -88,12 +94,13 @@
                             :id 10001
                             :org {:id 1 :name "Akvo"}
                             :value "2000"
-                            :created_by 10001) :image)
-             (dissoc resource-one :image)))
+                            :created_by 10001) :image :owners)
+             (dissoc resource-one :image :owners)))
       (is (= (dissoc (assoc (new-resource data)
                             :id 10002
                             :org {:id 10001 :name "New Era"}
                             :image "/image/resource/2"
                             :value "2000"
-                            :created_by 10001) :image)
-             (dissoc resource-two :image))))))
+                            :created_by 10001) :image :owners)
+             (dissoc resource-two :image)))
+      (is (= (:url payload) (:url resource-one))))))

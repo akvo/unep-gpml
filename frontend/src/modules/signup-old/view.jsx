@@ -73,7 +73,7 @@ const SignupView = ({ ...props }) => {
                       onClick={() => {
                         setTypeSignUp("entity");
                         if (!isAuthenticated) {
-                          loginWithPopup({ action: "signup" });
+                          loginWithPopup({ action: "mixed" });
                         } else {
                           history.push("/entity-signup");
                         }

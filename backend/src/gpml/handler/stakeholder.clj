@@ -76,20 +76,20 @@
    :twitter           twitter
    :picture           picture
    :cv                cv
-   :non_member_organisation      (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation)
    :about             about
    :country           country
    :public_email      (boolean public_email)
    :representation    ""
    :public_database   public_database
-   :affiliation       affiliation})
+   :affiliation       (or affiliation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation))})
 
 (defn- remap-profile
   [{:keys [id photo about
            title first_name role
            non_member_organisation
            last_name idp_usernames
-           linked_in cv twitter representation
+           linked_in cv twitter
+           affiliation representation
            country geo_coverage_type
            reviewed_at reviewed_by review_status
            organisation_role public_email]}
@@ -98,7 +98,7 @@
    org]
   {:id id
    :title title
-   :non_member_organisation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation)
+   :affiliation (or affiliation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation))
    :first_name first_name
    :last_name last_name
    :idp_usernames idp_usernames
@@ -146,7 +146,9 @@
                   (contains? #{"national" "transnational" "sub-national"} geo-type)
                   (mapv :country geo-value))
             profile (remap-profile profile tags geo org)]
-        (resp/response profile))
+        (resp/response (if (-> profile :org :is_member)
+                         (assoc profile :affiliation (-> profile :org :id) :non_member_organisation nil)
+                         (assoc profile :non_member_organisation (-> profile :org :id) :affiliation nil))))
       (resp/response {}))))
 
 (defn- make-affiliation [db mailjet-config org]
@@ -208,7 +210,10 @@
             tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
             org (:org body-params)
             old-profile (db.stakeholder/stakeholder-by-email tx jwt-claims)
-            new-profile (merge (dissoc old-profile :non_member_organisation) body-params)
+            new-profile (merge  (dissoc old-profile :non_member_organisation)
+                                (if (:non_member_organisation body-params)
+                                  (-> body-params (assoc :affiliation (:non_member_organisation body-params)) (dissoc :non_member_organisation))
+                                  body-params) )
             profile (cond-> new-profile
                       (:photo body-params)
                       (assoc :picture
@@ -226,7 +231,7 @@
                                (assoc-cv tx (:cv body-params))))
                       (= (:cv body-params) nil)
                       (assoc :cv nil)
-                      (not= -1 (:id org))
+                      (and (:id org) (not= -1 (:id org)))
                       (assoc :affiliation (:id org))
                       (= -1 (:id org))
                       (assoc :affiliation (if (= -1 (:id org))
