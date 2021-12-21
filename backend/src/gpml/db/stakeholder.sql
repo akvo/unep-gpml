@@ -35,6 +35,7 @@ select
     s.first_name,
     s.last_name,
     s.email,
+    s.idp_usernames,
     s.public_email,
     s.public_database,
     s.picture as photo,
@@ -59,6 +60,8 @@ select
     s.first_name,
     s.last_name,
     s.email,
+    s.idp_usernames,
+    s.affiliation as non_member_organisation,
     s.public_email,
     s.public_database,
     s.picture as photo,
@@ -94,6 +97,7 @@ select
     s.first_name,
     s.last_name,
     s.email,
+    s.idp_usernames,
     s.picture as photo,
     s.linked_in,
     s.twitter,
@@ -146,7 +150,8 @@ insert into stakeholder(
     last_name,
     email,
     country,
-    representation
+    representation,
+    idp_usernames
 --~ (when (contains? params :affiliation) ",affiliation")
 --~ (when (contains? params :linked_in) ",linked_in")
 --~ (when (contains? params :twitter) ",twitter")
@@ -163,7 +168,8 @@ insert into stakeholder(
     :last_name,
     :email,
     :country::integer,
-    :representation
+    :representation,
+    :idp_usernames::jsonb
 --~ (when (contains? params :affiliation) ",:affiliation")
 --~ (when (contains? params :linked_in) ",:linked_in")
 --~ (when (contains? params :twitter) ",:twitter")
@@ -203,6 +209,7 @@ update stakeholder set
 --~ (when (contains? params :about) "about= :about,")
 --~ (when (contains? params :public_email) "public_email= :public_email::boolean,")
 --~ (when (contains? params :public_database) "public_database= :public_database::boolean,")
+--~ (when (contains? params :idp_usernames) "idp_usernames= :idp_usernames::jsonb,")
     modified = now()
 where id = :id;
 

@@ -27,7 +27,8 @@
    :about "Lorem Ipsum"
    :geo_coverage_type nil
    :role "USER"
-   :public_email true})
+   :public_email true
+   :idp_usernames ["auth0|123"]})
 
 (defn add-stakeholder-data [conn]
   (let [country "Indonesia"

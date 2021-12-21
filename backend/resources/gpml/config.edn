@@ -453,8 +453,7 @@
   :gpml.handler.stakeholder/patch {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/patch-params {}
   :gpml.handler.stakeholder/profile {:db #ig/ref :duct.database/sql}
-  :gpml.handler.stakeholder/get {:db #ig/ref :duct.database/sql
-                                 :auth0 #ig/ref :gpml.config/auth0}
+  :gpml.handler.stakeholder/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/post {:db #ig/ref :gpml.db/spec
                                   :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.stakeholder/post-params {}

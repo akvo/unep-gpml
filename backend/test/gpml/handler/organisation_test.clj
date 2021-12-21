@@ -27,7 +27,8 @@
                            :representation ""
                            :picture nil
                            :last_name "Doe"
-                           :country nil}
+                           :country nil
+                           :idp_usernames ["auth0|123"]}
           _ (db.stakeholder/new-stakeholder db profile)
           stakeholder     (format "stakeholder_%s@akvo.org" (fixtures/uuid))
           body-params     {:name              "test10001"
