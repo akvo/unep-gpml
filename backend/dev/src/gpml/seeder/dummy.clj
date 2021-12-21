@@ -82,6 +82,7 @@
                                     :last_name (last me)
                                     :country (get-country-id db "NLD")
                                     :geo_coverage_type "regional"
+                                    :idp_usernames ["auth0|123"]
                                     :geo_coverage_value
                                     (map :id
                                          (db.country-group/country-group-by-names
