@@ -61,7 +61,6 @@ select
     s.last_name,
     s.email,
     s.idp_usernames,
-    s.affiliation as non_member_organisation,
     s.public_email,
     s.public_database,
     s.picture as photo,
