@@ -1,18 +1,7 @@
 /* eslint-disable no-else-return */
 import { UIStore } from "../../../store";
 import React, { useState, useCallback, useMemo } from "react";
-import {
-  Editor,
-  Transforms,
-  createEditor,
-  Descendant,
-  Element as SlateElement,
-} from "slate";
-import { Editable, withReact, useSlate, Slate } from "slate-react";
-import { withHistory } from "slate-history";
-import { Element, Leaf } from "./SlateEditorMarkup";
-import SlateEditorToolbar, { toggleMark } from "./SlateEditorToolbar";
-import isHotkey from "is-hotkey";
+import RichTextEditor from "react-rte";
 
 const HOTKEYS = {
   "mod+b": "bold",
@@ -42,56 +31,34 @@ const RichWidget = ({
   readonly,
   required,
   schema,
-  // value,
+  value,
   rawErrors,
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
   const { enumOptions, enumDisabled } = options;
 
-  const handleChange = ({ target: { value: nextValue } }) =>
-    onChange(schema.type === "boolean" ? nextValue !== "false" : nextValue);
+  const handleChange = (value) => {
+    setEditorValue(value);
+  };
 
-  const handleBlur = ({ target }) => onBlur(id, target.value);
+  const handleBlur = (value) => onBlur(id, value.toString("html"));
 
-  const handleFocus = ({ target }) => onFocus(id, target.value);
-
-  const [value, setValue] = useState(initialValue);
-  const renderElement = useCallback((props) => <Element {...props} />, []);
-  const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const handleFocus = (value) => onFocus(id, value.toString("html"));
 
   // custom
   const highlight = UIStore.useState((s) => s.highlight);
 
+  const [editorValue, setEditorValue] = useState(
+    RichTextEditor.createValueFromString("", "html")
+  );
+
   return (
-    <Slate editor={editor} value={value} onChange={(value) => setValue(value)}>
-      <SlateEditorToolbar />
-      <div
-        className="prose"
-        style={{
-          padding: "20px",
-          backgroundColor: "#edf2f7",
-        }}
-      >
-        <Editable
-          renderElement={renderElement}
-          renderLeaf={renderLeaf}
-          placeholder="Enter some rich text…"
-          spellCheck
-          autoFocus
-          onKeyDown={(event) => {
-            Object.keys(HOTKEYS).forEach((hotkey) => {
-              if (isHotkey(hotkey, event)) {
-                event.preventDefault();
-                const mark = HOTKEYS[hotkey];
-                toggleMark(editor, mark);
-              }
-            });
-          }}
-        />
-      </div>
-    </Slate>
+    <RichTextEditor
+      onChange={handleChange}
+      value={editorValue}
+      placeholder="Start typing here...."
+    />
   );
 };
 
