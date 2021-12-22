@@ -63,14 +63,6 @@ const NormalArrayFieldTemplate = ({
     }
   }, [group, items, onAddClick]);
 
-  const genExtra = () => (
-    <DeleteOutlined
-      onClick={(event) => {
-        event.stopPropagation();
-      }}
-    />
-  );
-
   return (
     <>
       <fieldset className={`${className} ${formGroup}`} id={idSchema.$id}>
@@ -90,7 +82,20 @@ const NormalArrayFieldTemplate = ({
               {items &&
                 items.map((itemProps, index) => {
                   return (
-                    <Panel header="Akvo" key={index} extra={genExtra()}>
+                    <Panel
+                      header="Akvo"
+                      key={index}
+                      extra={
+                        <DeleteOutlined
+                          onClick={
+                            items.length !== 0 &&
+                            items[items.length - 1].onDropIndexClick(
+                              items.length - 1
+                            )
+                          }
+                        />
+                      }
+                    >
                       <ArrayFieldTemplateItem
                         {...itemProps}
                         showToolbar={showToolbar}
