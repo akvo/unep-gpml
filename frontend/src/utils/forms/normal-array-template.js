@@ -10,6 +10,10 @@ import MinusOutlined from "@ant-design/icons/MinusOutlined";
 
 import ArrayFieldTemplateItem from "./array-template-item";
 
+import { Collapse } from "antd";
+
+const { Panel } = Collapse;
+
 const DESCRIPTION_COL_STYLE = {
   paddingBottom: "8px",
 };
@@ -44,13 +48,14 @@ const NormalArrayFieldTemplate = ({
 
   // custom options
   const showToolbar = uiSchema["ui:options"]?.["showToolbar"];
+  const showCollapse = uiSchema["ui:options"]?.["collapsible"];
   // https://github.com/rjsf-team/react-jsonschema-form/issues/2082
 
   const addItemText = uiSchema["ui:options"]?.["addItemText"] || "Add Item";
   const removeItemText =
     uiSchema["ui:options"]?.["removeItemText"] || "Remove Item";
   const group = uiSchema["ui:group"];
-  const formGroup = group && items.length !== 0 && `group-${group}`;
+  const formGroup = group && items.length !== 0 ? `group-${group}` : "";
 
   useEffect(() => {
     // add one items by default
@@ -62,63 +67,92 @@ const NormalArrayFieldTemplate = ({
   return (
     <>
       <fieldset className={`${className} ${formGroup}`} id={idSchema.$id}>
-        <Row gutter={rowGutter}>
-          {title && (
-            <Col className={labelColClassName} span={24}>
-              <TitleField
-                id={`${idSchema.$id}__title`}
-                key={`array-field-title-${idSchema.$id}`}
-                required={required}
-                title={uiSchema["ui:title"] || title}
-              />
-            </Col>
-          )}
-
-          {(uiSchema["ui:description"] || schema.description) && (
-            <Col span={24} style={DESCRIPTION_COL_STYLE}>
-              <DescriptionField
-                description={uiSchema["ui:description"] || schema.description}
-                id={`${idSchema.$id}__description`}
-                key={`array-field-description-${idSchema.$id}`}
-              />
-            </Col>
-          )}
-
-          <Col className="row array-item-list" span={24}>
-            {items &&
-              items.map((itemProps) => (
-                <ArrayFieldTemplateItem
-                  {...itemProps}
-                  showToolbar={showToolbar}
-                  formContext={formContext}
+        {showCollapse ? (
+          <div className="collapse-wrapper">
+            {title && (
+              <Col className={labelColClassName} span={24}>
+                <TitleField
+                  id={`${idSchema.$id}__title`}
+                  key={`array-field-title-${idSchema.$id}`}
+                  required={required}
+                  title={uiSchema["ui:title"] || title}
                 />
-              ))}
-          </Col>
+              </Col>
+            )}
+            <Collapse defaultActiveKey={["1"]}>
+              {items &&
+                items.map((itemProps, index) => {
+                  return (
+                    <Panel header="Akvo" key={index}>
+                      <ArrayFieldTemplateItem
+                        {...itemProps}
+                        showToolbar={showToolbar}
+                        formContext={formContext}
+                      />
+                    </Panel>
+                  );
+                })}
+            </Collapse>
+          </div>
+        ) : (
+          <Row gutter={rowGutter}>
+            {title && (
+              <Col className={labelColClassName} span={24}>
+                <TitleField
+                  id={`${idSchema.$id}__title`}
+                  key={`array-field-title-${idSchema.$id}`}
+                  required={required}
+                  title={uiSchema["ui:title"] || title}
+                />
+              </Col>
+            )}
 
-          {canAdd && !group && (
-            <Col span={24}>
-              <Row
-                gutter={rowGutter}
-                justify="start"
-                style={{ marginTop: "10px" }}
-              >
-                <Col flex="1">
-                  <Button
-                    block
-                    className="array-item-add"
-                    disabled={disabled || readonly}
-                    onClick={onAddClick}
-                    type="primary"
-                  >
-                    <PlusOutlined /> {addItemText}
-                  </Button>
-                </Col>
-              </Row>
+            {(uiSchema["ui:description"] || schema.description) && (
+              <Col span={24} style={DESCRIPTION_COL_STYLE}>
+                <DescriptionField
+                  description={uiSchema["ui:description"] || schema.description}
+                  id={`${idSchema.$id}__description`}
+                  key={`array-field-description-${idSchema.$id}`}
+                />
+              </Col>
+            )}
+
+            <Col className="row array-item-list" span={24}>
+              {items &&
+                items.map((itemProps) => (
+                  <ArrayFieldTemplateItem
+                    {...itemProps}
+                    showToolbar={showToolbar}
+                    formContext={formContext}
+                  />
+                ))}
             </Col>
-          )}
-        </Row>
+
+            {canAdd && !group && (
+              <Col span={24}>
+                <Row
+                  gutter={rowGutter}
+                  justify="start"
+                  style={{ marginTop: "10px" }}
+                >
+                  <Col flex="1">
+                    <Button
+                      block
+                      className="array-item-add"
+                      disabled={disabled || readonly}
+                      onClick={onAddClick}
+                      type="primary"
+                    >
+                      <PlusOutlined /> {addItemText}
+                    </Button>
+                  </Col>
+                </Row>
+              </Col>
+            )}
+          </Row>
+        )}
       </fieldset>
-      {canAdd && group && (
+      {canAdd && group && !showCollapse && (
         <Row gutter={rowGutter} justify="start" style={{ marginTop: "10px" }}>
           <Col flex="1">
             <Button
@@ -139,6 +173,19 @@ const NormalArrayFieldTemplate = ({
               type="link"
             >
               <MinusOutlined /> {removeItemText}
+            </Button>
+          </Col>
+        </Row>
+      )}
+      {canAdd && group && showCollapse && (
+        <Row gutter={rowGutter} justify="start" style={{ marginTop: "10px" }}>
+          <Col flex="1">
+            <Button
+              className="array-item-add collapse-add-button"
+              disabled={disabled || readonly}
+              onClick={onAddClick}
+            >
+              <PlusOutlined /> {addItemText}
             </Button>
           </Col>
         </Row>

@@ -81,19 +81,19 @@ const getSchema = ({
     },
   ];
 
-  let array = [...organisations, ...nonMemberOrganisations, ...otherArray];
+  // let array = [...organisations, ...nonMemberOrganisations, ...otherArray];
 
-  prop.S4.properties.S4_G5.properties["orgName"].enum = array.map((x) => x.id);
-  prop.S4.properties.S4_G5.properties["orgName"].enumNames = array.map(
-    (x) => x.name
-  );
+  // prop.S4.properties.S4_G5.properties["orgName"].enum = array.map((x) => x.id);
+  // prop.S4.properties.S4_G5.properties["orgName"].enumNames = array.map(
+  //   (x) => x.name
+  // );
 
-  prop.S4.properties.S4_G5.properties[
-    "newCompanyHeadquarter"
-  ].enum = countries?.map((x) => x.id);
-  prop.S4.properties.S4_G5.properties[
-    "newCompanyHeadquarter"
-  ].enumNames = countries?.map((x) => x.name);
+  // prop.S4.properties.S4_G5.properties[
+  //   "newCompanyHeadquarter"
+  // ].enum = countries?.map((x) => x.id);
+  // prop.S4.properties.S4_G5.properties[
+  //   "newCompanyHeadquarter"
+  // ].enumNames = countries?.map((x) => x.name);
 
   // geocoverage national options
   prop.S4.properties.S4_G2.properties[

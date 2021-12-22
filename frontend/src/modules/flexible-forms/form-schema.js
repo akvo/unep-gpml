@@ -182,27 +182,48 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              orgName: {
-                title: "Search for a GPML Member Entity",
-                enum: [],
-              },
-              newCompanyName: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              entity_connection: {
+                title: "Entity connection",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "Entity Name",
-                type: "string",
               },
-              newCompanyHeadquarter: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              individual_connection: {
+                title: "Individual connection",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "In which country are your headquarters?",
-                enum: [],
               },
             },
           },
@@ -432,27 +453,48 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              orgName: {
-                title: "Search for a GPML Member Entity",
-                enum: [],
-              },
-              newCompanyName: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              entity_connection: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "Entity Name",
-                type: "string",
               },
-              newCompanyHeadquarter: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              individual_connection: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "In which country are your headquarters?",
-                enum: [],
               },
             },
           },
@@ -682,27 +724,48 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              orgName: {
-                title: "Search for a GPML Member Entity",
-                enum: [],
-              },
-              newCompanyName: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              entity_connection: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "Entity Name",
-                type: "string",
               },
-              newCompanyHeadquarter: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              individual_connection: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "In which country are your headquarters?",
-                enum: [],
               },
             },
           },
@@ -932,27 +995,48 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              orgName: {
-                title: "Search for a GPML Member Entity",
-                enum: [],
-              },
-              newCompanyName: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              entity_connection: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "Entity Name",
-                type: "string",
               },
-              newCompanyHeadquarter: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              individual_connection: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "In which country are your headquarters?",
-                enum: [],
               },
             },
           },
@@ -1207,27 +1291,48 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              orgName: {
-                title: "Search for a GPML Member Entity",
-                enum: [],
-              },
-              newCompanyName: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              entity_connection: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "Entity Name",
-                type: "string",
               },
-              newCompanyHeadquarter: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              individual_connection: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "In which country are your headquarters?",
-                enum: [],
               },
             },
           },
@@ -1457,27 +1562,48 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              orgName: {
-                title: "Search for a GPML Member Entity",
-                enum: [],
-              },
-              newCompanyName: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              entity_connection: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "Entity Name",
-                type: "string",
               },
-              newCompanyHeadquarter: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              individual_connection: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "In which country are your headquarters?",
-                enum: [],
               },
             },
           },
@@ -1707,27 +1833,48 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              orgName: {
-                title: "Search for a GPML Member Entity",
-                enum: [],
-              },
-              newCompanyName: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              entity_connection: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "Entity Name",
-                type: "string",
               },
-              newCompanyHeadquarter: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              individual_connection: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "In which country are your headquarters?",
-                enum: [],
               },
             },
           },
@@ -1957,27 +2104,48 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["orgName", "newCompanyName", "newCompanyHeadquarter"],
             properties: {
-              orgName: {
-                title: "Search for a GPML Member Entity",
-                enum: [],
-              },
-              newCompanyName: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              entity_connection: {
+                title: "Entity connection",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "Entity Name",
-                type: "string",
               },
-              newCompanyHeadquarter: {
-                depend: {
-                  id: "orgName",
-                  value: [-1],
+              individual_connection: {
+                title: "Individual connection",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: [],
+                      enumNames: [],
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
                 },
-                title: "In which country are your headquarters?",
-                enum: [],
               },
             },
           },
