@@ -72,7 +72,7 @@ const CapacityBuilding = () => {
         </Col>
       </Row>
       <Row type="flex">
-        <Col lg={3} md={3} xs={24} order={1} className="sidebar">
+        <Col lg={2} xs={24} order={1} className="sidebar">
           <Row type="flex" justify="center">
             {sidebar.map((s, sx) => (
               <Col
@@ -85,15 +85,15 @@ const CapacityBuilding = () => {
                 })}
                 onClick={() => setActiveMenu(s.id)}
               >
-                <div style={{ margin: "auto", textAlign: "center" }}>
+                <div className="item-menu">
                   <img src={icons[sx] || IconLibrary} />
-                  <p style={{ color: "#fff" }}>{s.title}</p>
+                  <p>{s.title}</p>
                 </div>
               </Col>
             ))}
           </Row>
         </Col>
-        <Col lg={21} md={21} xs={24} order={2}>
+        <Col lg={22} xs={24} order={2}>
           <Row>
             <Col span={24} style={{ position: "relative" }}>
               <Carousel className="pm_event_banner" ref={slider}>
@@ -135,32 +135,37 @@ const CapacityBuilding = () => {
                             : {};
                         return (
                           <List.Item>
-                            <Card
-                              className={`card bg-color ${item.category_id}`}
-                              bordered="false"
-                            >
-                              <Card.Grid
-                                className={`left ${item.category_id}`}
+                            <a href={item.platform_link}>
+                              <Card
+                                className={`card bg-color ${item.category_id}`}
                                 bordered="false"
-                                hoverable
                               >
-                                <Thumbnail url={item.image} {...thumb} />
-                              </Card.Grid>
-                              <Card.Grid
-                                className={`right ${item.category_id}`}
-                                bordered="false"
-                                hoverable={false}
-                              >
-                                <span className="title">
-                                  <TrimText text={item.title} max={95} />
-                                </span>
-                                <span style={{ textAlign: "right" }}>
-                                  <Button type="link" href={item.platform_link}>
-                                    See more
-                                  </Button>
-                                </span>
-                              </Card.Grid>
-                            </Card>
+                                <Card.Grid
+                                  className={`left ${item.category_id}`}
+                                  bordered="false"
+                                  hoverable
+                                >
+                                  <Thumbnail url={item.image} {...thumb} />
+                                </Card.Grid>
+                                <Card.Grid
+                                  className={`right ${item.category_id}`}
+                                  bordered="false"
+                                  hoverable={false}
+                                >
+                                  <span className="title">
+                                    <TrimText text={item.title} max={95} />
+                                  </span>
+                                  <span style={{ textAlign: "right" }}>
+                                    <Button
+                                      type="link"
+                                      href={item.platform_link}
+                                    >
+                                      See more
+                                    </Button>
+                                  </span>
+                                </Card.Grid>
+                              </Card>
+                            </a>
                           </List.Item>
                         );
                       }}

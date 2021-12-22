@@ -24,9 +24,15 @@ $bg-events: #5f4373;
       margin-top: 10px;
       text-transform: uppercase;
       font-weight: bold;
+      font-size: 12px;
+      color: #fff;
     }
     &.active {
       background: rgba(5, 240, 129, 0.2);
+    }
+    .item-menu {
+      margin: auto;
+      text-align: center;
     }
   }
 }
