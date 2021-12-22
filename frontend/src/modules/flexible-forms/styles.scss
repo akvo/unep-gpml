@@ -343,6 +343,11 @@
               .ant-collapse-content {
                 border-top: 1px solid #edf2f7;
               }
+              .ant-collapse-extra {
+                span {
+                  font-size: 20px;
+                }
+              }
             }
           }
           .ant-form-item-label {

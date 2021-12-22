@@ -5,8 +5,7 @@ import Button from "antd/lib/button";
 import Col from "antd/lib/col";
 import Row from "antd/lib/row";
 import { withConfigConsumer } from "antd/lib/config-provider/context";
-import PlusOutlined from "@ant-design/icons/PlusOutlined";
-import MinusOutlined from "@ant-design/icons/MinusOutlined";
+import { MinusOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import ArrayFieldTemplateItem from "./array-template-item";
 
@@ -64,6 +63,14 @@ const NormalArrayFieldTemplate = ({
     }
   }, [group, items, onAddClick]);
 
+  const genExtra = () => (
+    <DeleteOutlined
+      onClick={(event) => {
+        event.stopPropagation();
+      }}
+    />
+  );
+
   return (
     <>
       <fieldset className={`${className} ${formGroup}`} id={idSchema.$id}>
@@ -83,7 +90,7 @@ const NormalArrayFieldTemplate = ({
               {items &&
                 items.map((itemProps, index) => {
                   return (
-                    <Panel header="Akvo" key={index}>
+                    <Panel header="Akvo" key={index} extra={genExtra()}>
                       <ArrayFieldTemplateItem
                         {...itemProps}
                         showToolbar={showToolbar}
