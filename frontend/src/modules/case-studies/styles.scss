@@ -1,0 +1,106 @@
+$green-primary: #4dffa5;
+.case-studies {
+  .ant-btn-link {
+    &.green-border {
+      border: 2px solid $green-primary;
+      box-sizing: border-box;
+      border-radius: 20.5px;
+      color: $green-primary !important;
+    }
+  }
+  h2.ant-typography {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    text-transform: capitalize;
+    color: #fff !important;
+    text-shadow: 1px 0 rgba(0, 0, 0, 0.3);
+  }
+  .title {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 25px;
+    text-transform: capitalize;
+    color: $green-primary;
+  }
+  .p-4 {
+    padding: 4%;
+  }
+  .content-text {
+    .ant-typography {
+      font-family: Open Sans;
+      font-style: normal;
+      font-weight: normal;
+      text-align: justify;
+      text-transform: capitalize;
+      color: #fff !important;
+    }
+  }
+  /**
+  * Tag component
+  **/
+  .tags {
+    list-style: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+  .tags li {
+    float: left;
+  }
+  .tag-item {
+    background: #3176ae;
+    border-radius: 23px 5px 5px 23px;
+    color: #fff;
+    display: inline-block;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 20px 0 23px;
+    position: relative;
+    margin: 0 10px 10px 0;
+    text-decoration: none;
+    &::before {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+      content: "";
+      height: 6px;
+      left: 10px;
+      position: absolute;
+      width: 6px;
+      top: 10px;
+    }
+    &:hover {
+      background-color: crimson;
+      color: white;
+    }
+  }
+  /**
+  * / Tag component
+  **/
+
+  .avatars {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    .avatar {
+      position: relative;
+      overflow: hidden;
+      width: 60px;
+      height: 60px;
+      &:not(:last-child) {
+        margin-left: -30px;
+      }
+      &.green-border {
+        color: $green-primary;
+        border: 2px solid $green-primary;
+        border-radius: 50%;
+        margin-left: 30px;
+        text-align: center;
+        font-weight: bold;
+        line-height: 60px;
+      }
+    }
+  }
+}
