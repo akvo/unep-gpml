@@ -332,6 +332,37 @@
             }
           }
         }
+        .collapse-wrapper {
+          .ant-collapse {
+            background: transparent;
+            border: none;
+            .ant-collapse-item {
+              margin-bottom: 10px;
+              border: 2px solid #edf2f7;
+              border-radius: 7px;
+              .ant-collapse-content {
+                border-top: 1px solid #edf2f7;
+              }
+            }
+          }
+          .ant-form-item-label {
+            label {
+              font-size: 16px;
+              color: #000;
+              font-weight: 400;
+            }
+          }
+        }
+        .collapse-add-button {
+          width: 100%;
+          border: 1px dashed rgba(24, 22, 47, 0.1);
+          border-radius: 7px;
+          height: auto;
+          padding: 7px 15px;
+          span {
+            font-weight: 700;
+          }
+        }
       }
       .sub-content {
         background: #ffffff;
