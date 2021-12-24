@@ -230,13 +230,18 @@ const FlexibleForm = withRouter(
               required: groupRequiredFields["S4"].required,
             },
             S5: {
-              ...e.data.S4,
+              ...e.data.S5,
               required: groupRequiredFields["S5"].required,
             },
           };
         });
+        // enable btn submit
+        requiredFilledIn.length === 0 &&
+          setDisabledBtn({ disabled: false, type: "primary" });
+        requiredFilledIn.length !== 0 &&
+          setDisabledBtn({ disabled: true, type: "default" });
       },
-      [initialFormData, formSchema]
+      [initialFormData, formSchema, setDisabledBtn]
     );
 
     const handleTransformErrors = (errors, dependValue) => {
