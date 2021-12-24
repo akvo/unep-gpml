@@ -297,23 +297,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     setSubType(e.target.value);
   };
 
-  const onChangeSubmitter = (e) => {
-    setManageResource(e.target.value);
-    if (e.target.value === "Yes") {
-      setOwners([profile.id]);
-    } else {
-      setOwners([]);
-    }
-  };
-
-  const onChangeOwners = (e) => {
-    let arr = owners;
-    if (!arr.some((r) => e.includes(r))) {
-      arr = [...arr, ...e];
-    }
-    setOwners(arr);
-  };
-
   return (
     <div id="flexible-forms">
       <StickyBox style={{ zIndex: 10 }}>
