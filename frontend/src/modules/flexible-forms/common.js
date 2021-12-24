@@ -6,7 +6,6 @@ const initialData = {
   tabs: ["S1"],
   required: {
     S1: [],
-    // S2: [],
     S3: [],
     S4: [],
     S5: [],
@@ -15,10 +14,6 @@ const initialData = {
     steps: 0,
     required: {},
   },
-  // S2: {
-  //   steps: 0,
-  //   required: {},
-  // },
   S3: {
     steps: 0,
     required: {},
@@ -153,8 +148,6 @@ const getSchema = ({
     prop.S5.properties.value.properties[
       "valueCurrency"
     ].enumNames = currencies?.map((x) => x.label);
-
-    console.log(prop.S5.properties.value.properties["valueCurrency"]);
   }
 
   return {
@@ -172,19 +165,6 @@ const tabs = [
     desc: "",
     steps: [],
   },
-  // {
-  //   key: "S2",
-  //   title: "Submitter",
-  //   desc: "",
-  //   steps: [
-  //     {
-  //       group: "S1",
-  //       key: "S1-p1-personal-information",
-  //       title: "Personal Information",
-  //       desc: "",
-  //     },
-  //   ],
-  // },
   {
     key: "S3",
     title: "Content type",

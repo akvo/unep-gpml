@@ -162,7 +162,6 @@ const FlexibleForm = withRouter(
 
     const handleFormOnChange = useCallback(
       ({ formData, schema }) => {
-        console.log(formData, "HandleChange");
         initialFormData.update((e) => {
           e.data = {
             ...e.data,
@@ -180,6 +179,62 @@ const FlexibleForm = withRouter(
           requiredFields
         );
         setDependValue(dependFields);
+        const requiredFilledIn = checkRequiredFieldFilledIn(
+          formData,
+          dependFields,
+          requiredFields
+        );
+        let sectionRequiredFields = {};
+        let groupRequiredFields = {};
+        requiredFields.forEach(({ group, key, required }) => {
+          let index = group ? group : key;
+          let filterRequired = required.filter((r) =>
+            requiredFilledIn.includes(r)
+          );
+          sectionRequiredFields = {
+            ...sectionRequiredFields,
+            [index]: sectionRequiredFields?.[index]
+              ? sectionRequiredFields?.[index].concat(filterRequired)
+              : filterRequired,
+          };
+          if (!group) {
+            groupRequiredFields = {
+              ...groupRequiredFields,
+              [key]: {
+                ...groupRequiredFields[key],
+                required: {
+                  [key]: filterRequired,
+                },
+              },
+            };
+          }
+          if (group) {
+            groupRequiredFields = {
+              ...groupRequiredFields,
+              [group]: {
+                ...groupRequiredFields[group],
+                required: {
+                  ...groupRequiredFields?.[group]?.required,
+                  [key]: filterRequired,
+                },
+              },
+            };
+          }
+        });
+        initialFormData.update((e) => {
+          e.data = {
+            ...e.data,
+            required: sectionRequiredFields,
+            S4: {
+              ...e.data.S4,
+              required: groupRequiredFields["S4"].required,
+            },
+            S5: {
+              ...e.data.S4,
+              required: groupRequiredFields["S5"].required,
+            },
+          };
+        });
       },
       [initialFormData, formSchema]
     );
