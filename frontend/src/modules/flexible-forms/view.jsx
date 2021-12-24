@@ -213,7 +213,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   };
 
   const handleOnStepClick = (current, section) => {
-    console.log(current);
     initialFormData.update((e) => {
       e.data = {
         ...e.data,
@@ -311,7 +310,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     </Button>
                     <Button
                       className="custom-button"
-                      // disabled={disabledBtn.disabled}
+                      disabled={disabledBtn.disabled}
                       loading={sending}
                       type={disabledBtn.type}
                       size="large"

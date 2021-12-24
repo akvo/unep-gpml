@@ -526,7 +526,7 @@
   .ant-input-number-input,
   .ant-picker,
   .ant-select-selector {
-    border: 2px #22ba9a solid;
+    border: 2px #22ba9a solid !important;
     border-radius: 2px;
   }
 
@@ -535,5 +535,27 @@
       border: 2px solid #22ba9a;
       border-radius: 50%;
     }
+  }
+}
+.checkbox-highlight {
+  span.ant-checkbox {
+    border: 2px solid #22ba9a;
+    border-radius: 2px;
+  }
+}
+
+// required
+.ant-row.ant-form-item.ant-form-item-has-error {
+  .radio-required {
+    span.ant-radio {
+      border: 1px solid red;
+      border-radius: 50%;
+    }
+  }
+}
+.checkbox-required {
+  span.ant-checkbox {
+    border: 1px solid red;
+    border-radius: 2px;
   }
 }
