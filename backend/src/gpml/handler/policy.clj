@@ -2,6 +2,7 @@
   (:require [clojure.java.jdbc :as jdbc]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
+            [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.db.policy :as db.policy]
             [gpml.db.stakeholder :as db.stakeholder]
@@ -11,6 +12,25 @@
             [gpml.auth :as auth]
             [ring.util.response :as resp]))
 
+(defn expand-entity-associations
+  [entity-connections resource-id]
+  (vec (for [connection entity-connections]
+         {:column_name "policy"
+          :topic "policy"
+          :topic_id resource-id
+          :organisation (:entity connection)
+          :association (:role connection)
+          :remarks nil})))
+
+(defn expand-individual-associations
+  [individual-connections resource-id]
+  (vec (for [connection individual-connections]
+         {:column_name "policy"
+          :topic "policy"
+          :topic_id resource-id
+          :stakeholder (:stakeholder connection)
+          :association (:role connection)
+          :remarks nil})))
 
 (defn create-policy [conn {:keys [title original_title abstract url
                                   data_source type_of_law record_number
@@ -20,7 +40,8 @@
                                   geo_coverage_countries geo_coverage_country_groups
                                   tags urls created_by image
                                   owners
-                                  attachments remarks mailjet-config]}]
+                                  attachments remarks mailjet-config
+                                  entity_connections individual_connections]}]
   (let [data {:title title
               :original_title original_title
               :abstract abstract
@@ -61,6 +82,12 @@
                                                   :topic-type "policy"
                                                   :stakeholder-id stakeholder-id
                                                   :roles ["owner"]})))
+    (when (not-empty entity_connections)
+      (doseq [association (expand-entity-associations entity_connections policy-id)]
+        (db.favorite/new-organisation-association conn association)))
+    (when (not-empty individual_connections)
+      (doseq [association (expand-individual-associations entity_connections policy-id)]
+        (db.favorite/new-association conn association)))
     (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 policy-id data)]
