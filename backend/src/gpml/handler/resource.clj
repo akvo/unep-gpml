@@ -42,11 +42,7 @@
                                     created_by url mailjet-config owners
                                     info_docs sub_content_type
                                     entity_connections individual_connections]}]
-  (let [entity_connections [{:entity 8
-                             :role "owner"}]
-        individual_connections [{:stakeholder 10003
-                                 :role "owner"}]
-        organisation (if (= -1 (:id org))
+  (let [organisation (if (= -1 (:id org))
                        [(handler.org/create conn org)]
                        [(:id org)])
         data {:type resource_type
