@@ -132,6 +132,20 @@
     [:tags {:optional true}
      [:vector {:optional true} integer?]]
     [:url {:optional true} string?]
+    [:entity_connections {:optional true}
+     [:vector {:optional true}
+      [:map
+       [:entity int?]
+       [:role
+        [:enum "regulator" "implementor" "reviewer"
+         "interested in" "partner" "donor" "other"]]]]]
+    [:individual_connections {:optional true}
+     [:vector {:optional true}
+      [:map
+       [:stakeholder int?]
+       [:role
+        [:enum "regulator" "implementor" "reviewer"
+         "interested in" "partner" "donor" "other"]]]]]
     [:urls {:optional true}
      [:vector {:optional true}
       [:map [:lang string?] [:url [:string {:min 1}]]]]]

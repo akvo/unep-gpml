@@ -106,6 +106,25 @@
       "sub-national", "global with elements in specific areas"]]
     [:country {:optional true} integer?]
     [:city {:optional true} string?]
+    [:url {:optional true} string?]
+    [:info_docs {:optional true} string?]
+    [:sub_content_type {:optional true} string?]
+    [:entity_connections {:optional true}
+     [:vector {:optional true}
+      [:map
+       [:entity int?]
+       [:role
+        [:enum "resource person" "organiser" "participant"
+         "sponsor" "host" "interested in" "implementor"
+         "partner" "donor" "other"]]]]]
+    [:individual_connections {:optional true}
+     [:vector {:optional true}
+      [:map
+       [:stakeholder int?]
+       [:role
+        [:enum "resource person" "organiser" "participant"
+         "sponsor" "host" "interested in" "implementor"
+         "partner" "donor" "other"]]]]]
     [:urls {:optional true}
      [:vector {:optional true}
       [:map

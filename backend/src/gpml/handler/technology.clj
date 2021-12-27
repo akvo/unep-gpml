@@ -119,18 +119,32 @@
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
-
     [:image {:optional true} string?]
     [:logo {:optional true} string?]
     [:tags {:optional true}
      [:vector {:optional true} integer?]]
     [:url {:optional true} string?]
+    [:info_docs {:optional true} string?]
+    [:sub_content_type {:optional true} string?]
+    [:entity_connections {:optional true}
+     [:vector {:optional true}
+      [:map
+       [:entity int?]
+       [:role
+        [:enum "owner" "user" "reviewer" "interested in"
+         "implementor" "partner" "donor" "other"]]]]]
+    [:individual_connections {:optional true}
+      [:vector {:optional true}
+       [:map
+        [:stakeholder int?]
+        [:role
+         [:enum "owner" "user" "reviewer" "interested in"
+          "implementor" "partner" "donor" "other"]]]]]
     [:urls {:optional true}
      [:vector {:optional true}
       [:map [:lang string?] [:url [:string {:min 1}]]]]]
-         auth/owners-schema
-         ]
-        handler.geo/params-payload))
+    auth/owners-schema]
+  handler.geo/params-payload))
 
 (defmethod ig/init-key :gpml.handler.technology/post-params [_ _]
   post-params)

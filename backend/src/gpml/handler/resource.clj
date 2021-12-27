@@ -156,7 +156,27 @@
           [:remarks {:optional true} string?]
           [:urls {:optional true}
            [:vector {:optional true}
-            [:map [:lang string?] [:url [:string {:min 1}]]]]]
+            [:map
+             [:lang string?]
+             [:url
+              [:string {:min 1}]]]]]
+          [:url {:optional true} string?]
+          [:info_docs {:optional true} string?]
+          [:sub_content_type {:optional true} string?]
+          [:entity_connections {:optional true}
+           [:vector {:optional true}
+            [:map
+             [:entity int?]
+             [:role
+              [:enum "owner" "reviewer" "user" "interested in"
+               "implementor" "partner" "donor" "other"]]]]]
+          [:individual_connections {:optional true}
+           [:vector {:optional true}
+            [:map
+             [:stakeholder int?]
+             [:role
+              [:enum "owner" "reviewer" "user" "interested in"
+               "implementor" "partner" "donor" "other"]]]]]
           [:tags {:optional true}
            [:vector {:optional true} integer?]]
           auth/owners-schema]
