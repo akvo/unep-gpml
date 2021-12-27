@@ -1,6 +1,7 @@
 (ns gpml.handler.resource
   (:require [clojure.java.jdbc :as jdbc]
             [gpml.auth :as auth]
+            [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
             [gpml.db.stakeholder :as db.stakeholder]
@@ -12,13 +13,35 @@
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
+(defn expand-entity-associations
+  [entity-connections resource-id]
+  (vec (for [connection entity-connections]
+         {:column_name "resource"
+          :topic "resource"
+          :topic_id resource-id
+          :organisation (:entity connection)
+          :association (:role connection)
+          :remarks nil})))
+
+(defn expand-individual-associations
+  [individual-connections resource-id]
+  (vec (for [connection individual-connections]
+         {:column_name "resource"
+          :topic "resource"
+          :topic_id resource-id
+          :stakeholder (:stakeholder connection)
+          :association (:role connection)
+          :remarks nil})))
+
 (defn create-resource [conn {:keys [resource_type title org publish_year
                                     summary value value_currency
                                     value_remarks valid_from valid_to image
                                     geo_coverage_type geo_coverage_value
                                     geo_coverage_countries geo_coverage_country_groups
                                     attachments country urls tags remarks
-                                    created_by url mailjet-config owners]}]
+                                    created_by url mailjet-config owners
+                                    info_docs sub_content_type
+                                    entity_connections individual_connections]}]
   (let [organisation (if (= -1 (:id org))
                        [(handler.org/create conn org)]
                        [(:id org)])
@@ -40,7 +63,9 @@
               :attachments attachments
               :remarks remarks
               :created_by created_by
-              :url url}
+              :url url
+              :info-docs info_docs
+              :sub_content_type sub_content_type}
         resource-id (:id (db.resource/new-resource conn data))]
     (when (not-empty owners)
       (doseq [stakeholder-id owners]
@@ -54,6 +79,12 @@
     (when (not-empty tags)
       (db.resource/add-resource-tags conn {:tags
                                            (map #(vector resource-id %) tags)}))
+    (when (not-empty entity_connections)
+      (doseq [association (expand-entity-associations entity_connections resource-id)]
+        (db.favorite/new-organisation-association conn association)))
+    (when (not-empty individual_connections)
+      (doseq [association (expand-individual-associations individual_connections resource-id)]
+        (db.favorite/new-association conn association)))
     (when (not-empty urls)
       (let [lang-urls (map #(vector resource-id
                                     (->> % :lang
@@ -121,7 +152,27 @@
           [:remarks {:optional true} string?]
           [:urls {:optional true}
            [:vector {:optional true}
-            [:map [:lang string?] [:url [:string {:min 1}]]]]]
+            [:map
+             [:lang string?]
+             [:url
+              [:string {:min 1}]]]]]
+          [:url {:optional true} string?]
+          [:info_docs {:optional true} string?]
+          [:sub_content_type {:optional true} string?]
+          [:entity_connections {:optional true}
+           [:vector {:optional true}
+            [:map
+             [:entity int?]
+             [:role
+              [:enum "owner" "reviewer" "user" "interested in"
+               "implementor" "partner" "donor" "other"]]]]]
+          [:individual_connections {:optional true}
+           [:vector {:optional true}
+            [:map
+             [:stakeholder int?]
+             [:role
+              [:enum "owner" "reviewer" "user" "interested in"
+               "implementor" "partner" "donor" "other"]]]]]
           [:tags {:optional true}
            [:vector {:optional true} integer?]]
           auth/owners-schema]

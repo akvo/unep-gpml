@@ -19,6 +19,8 @@ insert into resource(
 --~ (when (contains? params :review_status) ", review_status")
 --~ (when (contains? params :created_by) ", created_by")
 --~ (when (contains? params :url) ", url")
+--~ (when (contains? params :info_docs) ", info_docs")
+--~ (when (contains? params :sub_content_type) ", sub_content_type")
 )
 values(
     :title,
@@ -39,6 +41,8 @@ values(
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
 --~ (when (contains? params :created_by) ", :created_by")
 --~ (when (contains? params :url) ", :url")
+--~ (when (contains? params :info_docs) ", :info_docs")
+--~ (when (contains? params :sub_content_type) ", :sub_content_type")
 )
 returning id;
 
