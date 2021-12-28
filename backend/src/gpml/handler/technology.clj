@@ -2,6 +2,7 @@
   (:require [clojure.java.jdbc :as jdbc]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
+            [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.db.technology :as db.technology]
             [gpml.db.stakeholder :as db.stakeholder]
@@ -11,13 +12,34 @@
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
+(defn expand-entity-associations
+  [entity-connections resource-id]
+  (vec (for [connection entity-connections]
+         {:column_name "technology"
+          :topic "technology"
+          :topic_id resource-id
+          :organisation (:entity connection)
+          :association (:role connection)
+          :remarks nil})))
+
+(defn expand-individual-associations
+  [individual-connections resource-id]
+  (vec (for [connection individual-connections]
+         {:column_name "technology"
+          :topic "technology"
+          :topic_id resource-id
+          :stakeholder (:stakeholder connection)
+          :association (:role connection)
+          :remarks nil})))
+
 (defn create-technology [conn {:keys [name organisation_type
                                       development_stage specifications_provided
                                       year_founded email country
                                       geo_coverage_type geo_coverage_value
                                       geo_coverage_countries geo_coverage_country_groups
                                       tags url urls created_by image owners
-                                      logo attachments remarks mailjet-config]}]
+                                      logo attachments remarks mailjet-config
+                                      entity_connections individual_connections]}]
   (let [data {:name name
               :year_founded year_founded
               :organisation_type organisation_type
@@ -44,6 +66,12 @@
                                                   :topic-type "technology"
                                                   :stakeholder-id stakeholder-id
                                                   :roles ["owner"]})))
+    (when (not-empty entity_connections)
+      (doseq [association (expand-entity-associations entity_connections technology-id)]
+        (db.favorite/new-organisation-association conn association)))
+    (when (not-empty individual_connections)
+      (doseq [association (expand-individual-associations entity_connections technology-id)]
+        (db.favorite/new-association conn association)))
     (when (not-empty tags)
       (db.technology/add-technology-tags
         conn {:tags (map #(vector technology-id %) tags)}))
@@ -91,18 +119,32 @@
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
-
     [:image {:optional true} string?]
     [:logo {:optional true} string?]
     [:tags {:optional true}
      [:vector {:optional true} integer?]]
     [:url {:optional true} string?]
+    [:info_docs {:optional true} string?]
+    [:sub_content_type {:optional true} string?]
+    [:entity_connections {:optional true}
+     [:vector {:optional true}
+      [:map
+       [:entity int?]
+       [:role
+        [:enum "owner" "user" "reviewer" "interested in"
+         "implementor" "partner" "donor" "other"]]]]]
+    [:individual_connections {:optional true}
+      [:vector {:optional true}
+       [:map
+        [:stakeholder int?]
+        [:role
+         [:enum "owner" "user" "reviewer" "interested in"
+          "implementor" "partner" "donor" "other"]]]]]
     [:urls {:optional true}
      [:vector {:optional true}
       [:map [:lang string?] [:url [:string {:min 1}]]]]]
-         auth/owners-schema
-         ]
-        handler.geo/params-payload))
+    auth/owners-schema]
+  handler.geo/params-payload))
 
 (defmethod ig/init-key :gpml.handler.technology/post-params [_ _]
   post-params)
