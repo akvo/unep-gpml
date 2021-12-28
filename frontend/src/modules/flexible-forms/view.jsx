@@ -175,6 +175,9 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
     const childs = steps.map(({ group, key, title, desc }) => {
       const requiredFields = data?.[section]?.required?.[group]?.length || 0;
+      // console.log(group, "group");
+      // console.log(data, "data");
+      // console.log(section, "section");
       return (
         <Step
           key={section + key}
@@ -188,13 +191,13 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       <Step
         key={section}
         title={customTitle("active")}
-        icon={customIcon("active")}
         className={
           totalRequiredFields === 0
             ? "step-section step-section-finish parent-item"
             : "step-section parent-item"
         }
         status={totalRequiredFields === 0 ? "finish" : "process"}
+        icon={customIcon("active")}
       />,
       ...childs,
     ];
@@ -295,6 +298,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const handleSubContentType = (e) => {
     setSubType(e.target.value);
   };
+
+  // console.log(data?.required?.[data.tabs[0]]?.length || 0);
 
   return (
     <div id="flexible-forms">
@@ -583,7 +588,14 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                   </div>
                   <div className="center-content">
                     <p>Field to submit</p>
-                    <h6>0 of 3</h6>
+                    <h6>
+                      0 of{" "}
+                      {data?.[data.tabs[0]]?.required?.[
+                        Object.keys(data?.[data.tabs[0]]?.required)[
+                          getTabStepIndex().stepIndex
+                        ]
+                      ]?.length || 0}
+                    </h6>
                   </div>
                   <div
                     className="next-button"
