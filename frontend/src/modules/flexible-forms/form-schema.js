@@ -52,7 +52,6 @@ export const schema = {
               value: 1,
             },
             required: [
-              "country",
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
@@ -1239,6 +1238,7 @@ export const schema = {
               id: "steps",
               value: 4,
             },
+            required: ["individual_connection"],
             properties: {
               entity_connection: {
                 title: "",
