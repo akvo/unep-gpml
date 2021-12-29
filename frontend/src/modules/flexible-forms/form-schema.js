@@ -2,6 +2,8 @@ import { UIStore } from "../../store";
 const {
   geoCoverageTypeOptions,
   newGeoCoverageFormatStakeholder,
+  entityRoleOptions,
+  individualRoleOptions,
 } = UIStore.currentState;
 
 import { newGeoCoverageFormat } from "../../utils/geo";
@@ -156,8 +158,9 @@ export const schema = {
               id: "steps",
               value: 4,
             },
+            required: ["individual"],
             properties: {
-              entity_connection: {
+              entity: {
                 title: "Entity connection",
                 type: "array",
                 items: {
@@ -167,8 +170,8 @@ export const schema = {
                   properties: {
                     role: {
                       title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      enum: entityRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: entityRoleOptions,
                     },
                     entity: {
                       title: "Entity",
@@ -178,21 +181,21 @@ export const schema = {
                   },
                 },
               },
-              individual_connection: {
+              individual: {
                 title: "Individual connection",
                 type: "array",
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  required: ["role", "stakeholder"],
                   properties: {
                     role: {
-                      title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      title: "User role",
+                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: individualRoleOptions,
                     },
-                    entity: {
-                      title: "Entity",
+                    stakeholder: {
+                      title: "Indvidual",
                       enum: [],
                       enumNames: [],
                     },
@@ -428,8 +431,8 @@ export const schema = {
               value: 4,
             },
             properties: {
-              entity_connection: {
-                title: "",
+              entity_connections: {
+                title: "Entity connection",
                 type: "array",
                 items: {
                   title: "",
@@ -438,8 +441,8 @@ export const schema = {
                   properties: {
                     role: {
                       title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      enum: entityRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: entityRoleOptions,
                     },
                     entity: {
                       title: "Entity",
@@ -449,8 +452,8 @@ export const schema = {
                   },
                 },
               },
-              individual_connection: {
-                title: "",
+              individual_connections: {
+                title: "Individual connection",
                 type: "array",
                 items: {
                   title: "",
@@ -458,12 +461,12 @@ export const schema = {
                   required: ["role", "entity"],
                   properties: {
                     role: {
-                      title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      title: "User role",
+                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: individualRoleOptions,
                     },
-                    entity: {
-                      title: "Entity",
+                    stakeholder: {
+                      title: "Indvidual",
                       enum: [],
                       enumNames: [],
                     },
@@ -699,8 +702,8 @@ export const schema = {
               value: 4,
             },
             properties: {
-              entity_connection: {
-                title: "",
+              entity_connections: {
+                title: "Entity connection",
                 type: "array",
                 items: {
                   title: "",
@@ -709,8 +712,8 @@ export const schema = {
                   properties: {
                     role: {
                       title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      enum: entityRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: entityRoleOptions,
                     },
                     entity: {
                       title: "Entity",
@@ -720,8 +723,8 @@ export const schema = {
                   },
                 },
               },
-              individual_connection: {
-                title: "",
+              individual_connections: {
+                title: "Individual connection",
                 type: "array",
                 items: {
                   title: "",
@@ -729,12 +732,12 @@ export const schema = {
                   required: ["role", "entity"],
                   properties: {
                     role: {
-                      title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      title: "User role",
+                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: individualRoleOptions,
                     },
-                    entity: {
-                      title: "Entity",
+                    stakeholder: {
+                      title: "Indvidual",
                       enum: [],
                       enumNames: [],
                     },
@@ -970,8 +973,8 @@ export const schema = {
               value: 4,
             },
             properties: {
-              entity_connection: {
-                title: "",
+              entity_connections: {
+                title: "Entity connection",
                 type: "array",
                 items: {
                   title: "",
@@ -980,8 +983,8 @@ export const schema = {
                   properties: {
                     role: {
                       title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      enum: entityRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: entityRoleOptions,
                     },
                     entity: {
                       title: "Entity",
@@ -991,8 +994,8 @@ export const schema = {
                   },
                 },
               },
-              individual_connection: {
-                title: "",
+              individual_connections: {
+                title: "Individual connection",
                 type: "array",
                 items: {
                   title: "",
@@ -1000,12 +1003,12 @@ export const schema = {
                   required: ["role", "entity"],
                   properties: {
                     role: {
-                      title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      title: "User role",
+                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: individualRoleOptions,
                     },
-                    entity: {
-                      title: "Entity",
+                    stakeholder: {
+                      title: "Indvidual",
                       enum: [],
                       enumNames: [],
                     },
@@ -1238,10 +1241,10 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["individual_connection"],
+            required: ["individual"],
             properties: {
-              entity_connection: {
-                title: "",
+              entity: {
+                title: "Entity connection",
                 type: "array",
                 items: {
                   title: "",
@@ -1250,8 +1253,8 @@ export const schema = {
                   properties: {
                     role: {
                       title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      enum: entityRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: entityRoleOptions,
                     },
                     entity: {
                       title: "Entity",
@@ -1261,21 +1264,21 @@ export const schema = {
                   },
                 },
               },
-              individual_connection: {
-                title: "",
+              individual: {
+                title: "Individual connection",
                 type: "array",
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  required: ["role", "stakeholder"],
                   properties: {
                     role: {
-                      title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      title: "User role",
+                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: individualRoleOptions,
                     },
-                    entity: {
-                      title: "Entity",
+                    stakeholder: {
+                      title: "Indvidual",
                       enum: [],
                       enumNames: [],
                     },
@@ -1511,8 +1514,8 @@ export const schema = {
               value: 4,
             },
             properties: {
-              entity_connection: {
-                title: "",
+              entity_connections: {
+                title: "Entity connection",
                 type: "array",
                 items: {
                   title: "",
@@ -1521,8 +1524,8 @@ export const schema = {
                   properties: {
                     role: {
                       title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      enum: entityRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: entityRoleOptions,
                     },
                     entity: {
                       title: "Entity",
@@ -1532,8 +1535,8 @@ export const schema = {
                   },
                 },
               },
-              individual_connection: {
-                title: "",
+              individual_connections: {
+                title: "Individual connection",
                 type: "array",
                 items: {
                   title: "",
@@ -1541,12 +1544,12 @@ export const schema = {
                   required: ["role", "entity"],
                   properties: {
                     role: {
-                      title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      title: "User role",
+                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: individualRoleOptions,
                     },
-                    entity: {
-                      title: "Entity",
+                    stakeholder: {
+                      title: "Indvidual",
                       enum: [],
                       enumNames: [],
                     },
@@ -1782,8 +1785,8 @@ export const schema = {
               value: 4,
             },
             properties: {
-              entity_connection: {
-                title: "",
+              entity_connections: {
+                title: "Entity connection",
                 type: "array",
                 items: {
                   title: "",
@@ -1792,8 +1795,8 @@ export const schema = {
                   properties: {
                     role: {
                       title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      enum: entityRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: entityRoleOptions,
                     },
                     entity: {
                       title: "Entity",
@@ -1803,8 +1806,8 @@ export const schema = {
                   },
                 },
               },
-              individual_connection: {
-                title: "",
+              individual_connections: {
+                title: "Individual connection",
                 type: "array",
                 items: {
                   title: "",
@@ -1812,12 +1815,12 @@ export const schema = {
                   required: ["role", "entity"],
                   properties: {
                     role: {
-                      title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      title: "User role",
+                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: individualRoleOptions,
                     },
-                    entity: {
-                      title: "Entity",
+                    stakeholder: {
+                      title: "Indvidual",
                       enum: [],
                       enumNames: [],
                     },
@@ -2053,7 +2056,7 @@ export const schema = {
               value: 4,
             },
             properties: {
-              entity_connection: {
+              entity_connections: {
                 title: "Entity connection",
                 type: "array",
                 items: {
@@ -2063,8 +2066,8 @@ export const schema = {
                   properties: {
                     role: {
                       title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      enum: entityRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: entityRoleOptions,
                     },
                     entity: {
                       title: "Entity",
@@ -2074,7 +2077,7 @@ export const schema = {
                   },
                 },
               },
-              individual_connection: {
+              individual_connections: {
                 title: "Individual connection",
                 type: "array",
                 items: {
@@ -2083,12 +2086,12 @@ export const schema = {
                   required: ["role", "entity"],
                   properties: {
                     role: {
-                      title: "Entity role",
-                      enum: [],
-                      enumNames: [],
+                      title: "User role",
+                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: individualRoleOptions,
                     },
-                    entity: {
-                      title: "Entity",
+                    stakeholder: {
+                      title: "Indvidual",
                       enum: [],
                       enumNames: [],
                     },

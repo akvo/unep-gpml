@@ -10,7 +10,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { withRouter } from "react-router-dom";
 import { UIStore } from "../../store";
 import { Store } from "pullstate";
-import { notification } from "antd";
+import { notification, Typography } from "antd";
 import { Theme as AntDTheme } from "@rjsf/antd";
 import { withTheme } from "@rjsf/core";
 import {
@@ -45,6 +45,7 @@ const FlexibleForm = withRouter(
     tabsData,
     mainType,
     owners,
+    subContentType,
     match: { params },
   }) => {
     const {
@@ -73,7 +74,11 @@ const FlexibleForm = withRouter(
       delete formData?.required;
 
       // # Transform data before sending to endpoint
-      let data = { ...formData, resourceType: mainType, owners: owners };
+      let data = {
+        ...formData,
+        resourceType: mainType,
+        subContentType: subContentType,
+      };
 
       transformFormData(data, formData, formSchema.schema.properties, true);
 
@@ -85,12 +90,10 @@ const FlexibleForm = withRouter(
       delete data?.S4;
       delete data?.S5;
 
-      data.country = parseInt(Object.keys(data.country)[0]);
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
-
-      data.org = {
-        id: parseInt(Object.keys(data.orgName)[0]),
-      };
+      // data.org = {
+      //   id: parseInt(Object.keys(data.orgName)[0]),
+      // };
       if (data.resourceType === "Financing Resource") {
         data.valueCurrency = Object.keys(data.valueCurrency)[0];
         data.validTo = data.validTo || "Ongoing";
@@ -138,7 +141,19 @@ const FlexibleForm = withRouter(
           };
         });
       }
-      console.log(data);
+
+      if (data?.entity) {
+        data.entityConnections = data.entity;
+        delete data.entity;
+      }
+      if (data?.individual) {
+        data.individualConnections = data.individual;
+        delete data.individual;
+      }
+      if (data?.info) {
+        data.infoDocs = data.info;
+        delete data.info;
+      }
       if (status === "add" && !params?.id) {
         api
           .post("/resource", data)
@@ -246,7 +261,7 @@ const FlexibleForm = withRouter(
 
     const handleTransformErrors = (errors, dependValue) => {
       // custom errors handle
-      [".S1", ".S3", ".S4", ".S5"].forEach((x) => {
+      [".S4", ".S5"].forEach((x) => {
         let index = dependValue.indexOf(x);
         index !== -1 && dependValue.splice(index, 1);
       });
