@@ -1,0 +1,15 @@
+ALTER TYPE resource_association ADD VALUE 'implementor';
+--;;
+ALTER TYPE resource_association ADD VALUE 'partner';
+--;;
+ALTER TYPE resource_association ADD VALUE 'donor';
+--;;
+ALTER TYPE technology_association ADD VALUE 'implementor';
+--;;
+ALTER TYPE technology_association ADD VALUE 'partner';
+--;;
+ALTER TYPE technology_association ADD VALUE 'donor';
+--;;
+ALTER TYPE project_association ADD VALUE 'partner';
+--;;
+ALTER TYPE project_association ADD VALUE 'donor';

@@ -37,7 +37,8 @@
    :representation "test"
    :about "Lorem Ipsum"
    :geo_coverage_type "global"
-   :role "USER"})
+   :role "USER"
+   :idp_usernames ["auth0|123"]})
 
 (defn get-country-id [db codes]
   (->> {:codes codes}

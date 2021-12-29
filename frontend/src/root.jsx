@@ -61,6 +61,7 @@ import DiscourseForum from "./modules/discourse-forum/discourse-forum";
 
 // Flexible Form
 import FlexibleForms from "./modules/flexible-forms/view";
+import CapacityBuilding from "./modules/capacity-building/view";
 
 // New Details Page
 import NewDetailsView from "./modules/detailsPage/view";
@@ -498,6 +499,11 @@ const Root = () => {
           <Route
             path="/discourse-forum"
             render={(props) => <DiscourseForum />}
+          />
+          <Route
+            exact
+            path="/capacity-building"
+            render={(props) => <CapacityBuilding {...props} />}
           />
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"

@@ -47,13 +47,6 @@
         (fetch-auth0-users domain))
       data)))
 
-(defn get-auth0-users-ids
-  "Returns a collection of user emails and their corresponding auth0 user_id."
-  [auth0-config]
-  (let [response (maybe-refresh-token-fetch-auth0-users auth0-config)]
-    (->> (parse-response-body response)
-         (map #(select-keys % [:email :user_id])))))
-
 (defn list-auth0-verified-emails [auth0-config]
   (let [response (maybe-refresh-token-fetch-auth0-users auth0-config)
         verified-emails (->> (parse-response-body response)

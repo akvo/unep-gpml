@@ -25,7 +25,8 @@
         :representation "test"
         :about "Lorem Ipsum"
         :geo_coverage_type nil
-        :role "USER"}))
+        :role "USER"
+        :idp_usernames ["auth0|123"]}))
 
 
 (deftest new-relation-test

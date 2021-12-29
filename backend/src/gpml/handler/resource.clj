@@ -126,7 +126,7 @@
           [:resource_type
            [:enum "Financing Resource", "Technical Resource", "Action Plan"]]
           [:title string?]
-          [:country integer?]
+          [:country {:optional true} integer?]
           [:org {:optional true} map?
            (into
             [:map

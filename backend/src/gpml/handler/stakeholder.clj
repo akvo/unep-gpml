@@ -20,13 +20,7 @@
                    (format "^(%1$s)((,(%1$s))+)?$")
                    re-pattern))
 
-(defn add-idp-usernames [auth0-config stakeholders]
-  (let [users (group-by :email (auth0/get-auth0-users-ids auth0-config))]
-    (map (fn [{:keys [email] :as stakeholder}]
-           (assoc stakeholder :idp_username (get-in users [email 0 :user_id])))
-         stakeholders)))
-
-(defmethod ig/init-key :gpml.handler.stakeholder/get [_ {:keys [db auth0]}]
+(defmethod ig/init-key :gpml.handler.stakeholder/get [_ {:keys [db]}]
   (fn [{{{:keys [page limit email-like roles] :as query} :query} :parameters
         user :user approved? :approved?}]
     (resp/response (if (and approved? (= (:role user) "ADMIN"))
@@ -43,7 +37,7 @@
                        ;; is finalized. Currently, leaving the public
                        ;; response shape as before to not break other
                        ;; uses of this end-point.
-                       {:stakeholders (add-idp-usernames auth0 stakeholders) :page page :limit limit :pages pages :count count})
+                       {:stakeholders stakeholders :page page :limit limit :pages pages :count count})
                      ;; FIXME: limit & page are ignored when returning public stakeholders!
                      {:stakeholders (->> (db.stakeholder/all-public-stakeholder (:spec db))
                                          (map (fn [stakeholder]
@@ -63,6 +57,7 @@
                              first_name
                              last_name
                              email
+                             idp_usernames
                              linked_in
                              public_database
                              public_email
@@ -76,6 +71,7 @@
    :first_name        first_name
    :last_name         last_name
    :email             email
+   :idp_usernames     idp_usernames
    :linked_in         linked_in
    :twitter           twitter
    :picture           picture
@@ -91,9 +87,9 @@
   [{:keys [id photo about
            title first_name role
            non_member_organisation
-           last_name linked_in cv
-           twitter representation
-           affiliation
+           last_name idp_usernames
+           linked_in cv twitter
+           affiliation representation
            country geo_coverage_type
            reviewed_at reviewed_by review_status
            organisation_role public_email]}
@@ -105,6 +101,7 @@
    :affiliation (or affiliation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation))
    :first_name first_name
    :last_name last_name
+   :idp_usernames idp_usernames
    :linked_in linked_in
    :twitter twitter
    :photo photo
@@ -179,6 +176,7 @@
                                                      :affiliation (when (:org body-params)
                                                                     (make-affiliation db mailjet-config (:org body-params)))
                                                      :email (:email jwt-claims)
+                                                     :idp_usernames [(:sub jwt-claims)]
                                                      :cv (or (assoc-cv db (:cv body-params))
                                                              (:cv body-params))
                                                      :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
@@ -187,9 +185,10 @@
                                               (when (:new_org body-params)
                                                 {:affiliation (make-organisation db (:new_org body-params))})))
           stakeholder-id (if-let [current-stakeholder (db.stakeholder/stakeholder-by-email db {:email (:email profile)})]
-                           (do
+                           (let [idp-usernames (vec (-> current-stakeholder :idp_usernames (concat (:idp_usernames profile))))]
                              (db.stakeholder/update-stakeholder db (assoc (select-keys profile [:affiliation])
                                                                           :id (:id current-stakeholder)
+                                                                          :idp_usernames idp-usernames
                                                                           :non_member_organisation nil))
                              (:id current-stakeholder))
                            (let [new-stakeholder (db.stakeholder/new-stakeholder db profile)]
