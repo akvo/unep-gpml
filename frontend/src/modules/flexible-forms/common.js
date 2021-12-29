@@ -50,45 +50,30 @@ const getSchema = ({
   currencies,
 }) => {
   const prop = cloneDeep(schema[selectedMainContentType].properties);
-  const orgs = [...organisations];
-
-  // prop.S2.properties["S2_G1_1.1"].enum = stakeholders?.map((it) => it.id);
-  // prop.S2.properties["S2_G1_1.1"].enumNames = stakeholders?.map(
-  //   (it) => it.firstName
-  // );
-
-  // country options
-  // prop.S4.properties.S4_G2.properties["country"].enum = countries?.map(
-  //   (x) => x.id
-  // );
-  // prop.S4.properties.S4_G2.properties["country"].enumNames = countries?.map(
-  //   (x) => x.name
-  // );
-
   let otherArray = [
     {
       id: -1,
       name: "Other",
     },
-    {
-      id: -2,
-      name: "NA",
-    },
   ];
 
-  // let array = [...organisations, ...nonMemberOrganisations, ...otherArray];
+  let array = [...organisations, ...nonMemberOrganisations, ...otherArray];
 
-  // prop.S4.properties.S4_G5.properties["orgName"].enum = array.map((x) => x.id);
-  // prop.S4.properties.S4_G5.properties["orgName"].enumNames = array.map(
-  //   (x) => x.name
-  // );
+  prop.S4.properties.S4_G5.properties[
+    "entity"
+  ].items.properties.entity.enum = array.map((x) => x.id);
+  prop.S4.properties.S4_G5.properties[
+    "entity"
+  ].items.properties.entity.enumNames = array.map((x) => x.name);
 
-  // prop.S4.properties.S4_G5.properties[
-  //   "newCompanyHeadquarter"
-  // ].enum = countries?.map((x) => x.id);
-  // prop.S4.properties.S4_G5.properties[
-  //   "newCompanyHeadquarter"
-  // ].enumNames = countries?.map((x) => x.name);
+  prop.S4.properties.S4_G5.properties[
+    "individual"
+  ].items.properties.stakeholder.enum = stakeholders.map((x) => x.id);
+  prop.S4.properties.S4_G5.properties[
+    "individual"
+  ].items.properties.stakeholder.enumNames = stakeholders.map(
+    (x) => x.firstName + " " + x.lastName
+  );
 
   // geocoverage national options
   prop.S4.properties.S4_G2.properties[

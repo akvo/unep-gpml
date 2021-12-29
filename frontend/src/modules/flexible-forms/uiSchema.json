@@ -132,7 +132,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connection": {
+        "entity": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -154,7 +154,7 @@
             }
           }
         },
-        "individual_connection": {
+        "individual": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -168,15 +168,15 @@
               "ui:placeholder": "Select entity role",
               "ui:span": 24
             },
-            "entity": {
+            "stakeholder": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select an entity",
+              "ui:placeholder": "Select an individual",
               "ui:span": 24
             }
           }
         },
-        "ui:order": ["entity_connection", "individual_connection"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
@@ -347,7 +347,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connection": {
+        "entity_connections": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -369,11 +369,11 @@
             }
           }
         },
-        "individual_connection": {
+        "individual_connections": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect a new individual"
           },
           "ui:group": "border",
           "items": {
@@ -391,7 +391,7 @@
             }
           }
         },
-        "ui:order": ["entity_connection", "individual_connection"]
+        "ui:order": ["entity_connections", "individual_connections"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
@@ -562,7 +562,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connection": {
+        "entity_connections": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -584,11 +584,11 @@
             }
           }
         },
-        "individual_connection": {
+        "individual_connections": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect a new individual"
           },
           "ui:group": "border",
           "items": {
@@ -606,7 +606,7 @@
             }
           }
         },
-        "ui:order": ["entity_connection", "individual_connection"]
+        "ui:order": ["entity_connections", "individual_connections"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
@@ -777,7 +777,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connection": {
+        "entity_connections": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -799,11 +799,11 @@
             }
           }
         },
-        "individual_connection": {
+        "individual_connections": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect a new individual"
           },
           "ui:group": "border",
           "items": {
@@ -821,7 +821,7 @@
             }
           }
         },
-        "ui:order": ["entity_connection", "individual_connection"]
+        "ui:order": ["entity_connections", "individual_connections"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
@@ -1018,7 +1018,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connection": {
+        "entity": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -1040,11 +1040,11 @@
             }
           }
         },
-        "individual_connection": {
+        "individual": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect a new individual"
           },
           "ui:group": "border",
           "items": {
@@ -1054,15 +1054,15 @@
               "ui:placeholder": "Select entity role",
               "ui:span": 24
             },
-            "entity": {
+            "stakeholder": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select an entity",
+              "ui:placeholder": "Select an individual",
               "ui:span": 24
             }
           }
         },
-        "ui:order": ["entity_connection", "individual_connection"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
@@ -1233,7 +1233,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connection": {
+        "entity_connections": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -1255,11 +1255,11 @@
             }
           }
         },
-        "individual_connection": {
+        "individual_connections": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect a new individual"
           },
           "ui:group": "border",
           "items": {
@@ -1277,7 +1277,7 @@
             }
           }
         },
-        "ui:order": ["entity_connection", "individual_connection"]
+        "ui:order": ["entity_connections", "individual_connections"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
@@ -1448,7 +1448,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connection": {
+        "entity_connections": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -1470,11 +1470,11 @@
             }
           }
         },
-        "individual_connection": {
+        "individual_connections": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect a new individual"
           },
           "ui:group": "border",
           "items": {
@@ -1492,7 +1492,7 @@
             }
           }
         },
-        "ui:order": ["entity_connection", "individual_connection"]
+        "ui:order": ["entity_connections", "individual_connections"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
@@ -1663,7 +1663,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connection": {
+        "entity_connections": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -1685,11 +1685,11 @@
             }
           }
         },
-        "individual_connection": {
+        "individual_connections": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect a new individual"
           },
           "ui:group": "border",
           "items": {
@@ -1707,7 +1707,7 @@
             }
           }
         },
-        "ui:order": ["entity_connection", "individual_connection"]
+        "ui:order": ["entity_connections", "individual_connections"]
       },
       "S4_G6": {
         "classNames": "list-group-item",

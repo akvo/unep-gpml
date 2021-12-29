@@ -26,6 +26,7 @@ const RichWidget = ({
 
   const handleChange = (value) => {
     setEditorValue(value);
+    onChange(value === "" ? options.emptyValue : value.toString("html"));
   };
 
   const handleBlur = (value) => onBlur(id, value.toString("html"));
