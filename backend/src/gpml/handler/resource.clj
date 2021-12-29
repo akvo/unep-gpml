@@ -162,17 +162,13 @@
           [:entity_connections {:optional true}
            [:vector {:optional true}
             [:map
-             [:entity int?]
-             [:role
-              [:enum "owner" "reviewer" "user" "interested in"
-               "implementor" "partner" "donor" "other"]]]]]
+             [:role string?]
+             [:entity int?]]]]
           [:individual_connections {:optional true}
            [:vector {:optional true}
             [:map
-             [:stakeholder int?]
-             [:role
-              [:enum "owner" "reviewer" "user" "interested in"
-               "implementor" "partner" "donor" "other"]]]]]
+             [:role string?]
+             [:stakeholder int?]]]]
           [:tags {:optional true}
            [:vector {:optional true} integer?]]
           auth/owners-schema]
