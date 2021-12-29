@@ -168,6 +168,9 @@
           opacity: 0.5;
           .ant-steps-item-content {
             min-height: auto;
+            .ant-steps-item-title {
+              width: 100%;
+            }
           }
           .ant-steps-item-tail {
             display: none;

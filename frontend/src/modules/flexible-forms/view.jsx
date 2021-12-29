@@ -11,6 +11,8 @@ import {
   LeftOutlined,
   RightOutlined,
   LoadingOutlined,
+  EditOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "./styles.scss";
@@ -148,9 +150,32 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const renderSteps = (parentTitle, section, steps, index) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
     const customTitle = (status) => {
+      const color = totalRequiredFields === 0 ? "#fff" : "#255B87";
+      const background = totalRequiredFields === 0 ? "#1CA585" : "#fff";
+      const display =
+        status === "active"
+          ? "unset"
+          : totalRequiredFields === 0
+          ? "unset"
+          : "none";
       return (
         <div className="custom-step-title">
           <span>{parentTitle}</span>
+          <Button
+            type="ghost"
+            size="small"
+            shape="circle"
+            icon={
+              totalRequiredFields === 0 ? <CheckOutlined /> : <EditOutlined />
+            }
+            style={{
+              right: "0",
+              position: "absolute",
+              color: color,
+              backgroundColor: background,
+              display: display,
+            }}
+          />
         </div>
       );
     };
@@ -179,9 +204,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
     const childs = steps.map(({ group, key, title, desc }) => {
       const requiredFields = data?.[section]?.required?.[group]?.length || 0;
-      // console.log(group, "group");
-      // console.log(data, "data");
-      // console.log(section, "section");
       return (
         <Step
           key={section + key}
