@@ -347,7 +347,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connections": {
+        "entity": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -369,7 +369,7 @@
             }
           }
         },
-        "individual_connections": {
+        "individual": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -383,15 +383,15 @@
               "ui:placeholder": "Select entity role",
               "ui:span": 24
             },
-            "entity": {
+            "stakeholder": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select an entity",
+              "ui:placeholder": "Select an individual",
               "ui:span": 24
             }
           }
         },
-        "ui:order": ["entity_connections", "individual_connections"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
@@ -416,15 +416,25 @@
     },
     "S5": {
       "classNames": "list-group",
-      "S5_G1": {
-        "publishYear": {
+      "publishYear": {
+        "ui:widget": "date",
+        "ui:showSearch": true,
+        "ui:span": 12,
+        "ui:options": {
+          "mode": "year",
+          "disableDate": "future"
+        }
+      },
+      "date": {
+        "validFrom": {
+          "ui:placeholder": "YYYY-MM-DD",
           "ui:widget": "date",
-          "ui:showSearch": true,
-          "ui:span": 12,
-          "ui:options": {
-            "mode": "year",
-            "disableDate": "future"
-          }
+          "ui:span": 12
+        },
+        "validTo": {
+          "ui:placeholder": "YYYY-MM-DD - Leave empty if ongoing",
+          "ui:widget": "date",
+          "ui:span": 12
         }
       }
     }
@@ -562,7 +572,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connections": {
+        "entity": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -584,7 +594,7 @@
             }
           }
         },
-        "individual_connections": {
+        "individual": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -598,15 +608,15 @@
               "ui:placeholder": "Select entity role",
               "ui:span": 24
             },
-            "entity": {
+            "stakeholder": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select an entity",
+              "ui:placeholder": "Select an individual",
               "ui:span": 24
             }
           }
         },
-        "ui:order": ["entity_connections", "individual_connections"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
@@ -632,14 +642,46 @@
     "S5": {
       "classNames": "list-group",
       "S5_G1": {
-        "publishYear": {
-          "ui:widget": "date",
-          "ui:showSearch": true,
-          "ui:span": 12,
-          "ui:options": {
-            "mode": "year",
-            "disableDate": "future"
+        "originalTitle": {
+          "ui:placeholder": "Type in the policy original title"
+        },
+        "dataSource": {
+          "ui:placeholder": "Type in the data source, e.g. FAOLEX, InforMEA, Other (please specify)."
+        },
+        "typeOfLaw": {
+          "ui:placeholder": "Choose the type of law",
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "recordNumber": {
+          "ui:placeholder": "Type in the record number"
+        },
+        "date": {
+          "firstPublicationDate": {
+            "ui:placeholder": "YYYY-MM-DD",
+            "ui:widget": "date",
+            "ui:span": 12,
+            "ui:options": {
+              "disableDate": "future"
+            }
+          },
+          "latestAmendmentDate": {
+            "ui:placeholder": "YYYY-MM-DD",
+            "ui:widget": "date",
+            "ui:span": 12,
+            "ui:options": {
+              "disableDate": "future"
+            }
           }
+        },
+        "status": {
+          "ui:placeholder": "Choose the policy status",
+          "ui:widget": "select"
+        },
+        "implementingMea": {
+          "ui:placeholder": "Choose the implementing MEA",
+          "ui:widget": "select",
+          "ui:showSearch": true
         }
       }
     }
@@ -777,7 +819,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connections": {
+        "entity": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -799,7 +841,7 @@
             }
           }
         },
-        "individual_connections": {
+        "individual": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -813,15 +855,15 @@
               "ui:placeholder": "Select entity role",
               "ui:span": 24
             },
-            "entity": {
+            "stakeholder": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select an entity",
+              "ui:placeholder": "Select an individual",
               "ui:span": 24
             }
           }
         },
-        "ui:order": ["entity_connections", "individual_connections"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
@@ -1233,7 +1275,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connections": {
+        "entity": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -1255,7 +1297,7 @@
             }
           }
         },
-        "individual_connections": {
+        "individual": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -1269,15 +1311,15 @@
               "ui:placeholder": "Select entity role",
               "ui:span": 24
             },
-            "entity": {
+            "stakeholder": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select an entity",
+              "ui:placeholder": "Select an individual",
               "ui:span": 24
             }
           }
         },
-        "ui:order": ["entity_connections", "individual_connections"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
@@ -1448,7 +1490,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connections": {
+        "entity": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -1470,7 +1512,7 @@
             }
           }
         },
-        "individual_connections": {
+        "individual": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -1484,15 +1526,15 @@
               "ui:placeholder": "Select entity role",
               "ui:span": 24
             },
-            "entity": {
+            "stakeholder": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select an entity",
+              "ui:placeholder": "Select an individual",
               "ui:span": 24
             }
           }
         },
-        "ui:order": ["entity_connections", "individual_connections"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
@@ -1663,7 +1705,7 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "entity_connections": {
+        "entity": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -1685,7 +1727,7 @@
             }
           }
         },
-        "individual_connections": {
+        "individual": {
           "ui:options": {
             "orderable": false,
             "collapsible": true,
@@ -1699,15 +1741,15 @@
               "ui:placeholder": "Select entity role",
               "ui:span": 24
             },
-            "entity": {
+            "stakeholder": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select an entity",
+              "ui:placeholder": "Select an individual",
               "ui:span": 24
             }
           }
         },
-        "ui:order": ["entity_connections", "individual_connections"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",

@@ -430,8 +430,9 @@ export const schema = {
               id: "steps",
               value: 4,
             },
+            required: ["individual"],
             properties: {
-              entity_connections: {
+              entity: {
                 title: "Entity connection",
                 type: "array",
                 items: {
@@ -452,13 +453,13 @@ export const schema = {
                   },
                 },
               },
-              individual_connections: {
+              individual: {
                 title: "Individual connection",
                 type: "array",
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  required: ["role", "stakeholder"],
                   properties: {
                     role: {
                       title: "User role",
@@ -509,15 +510,26 @@ export const schema = {
           id: "tabs",
           value: ["S5"],
         },
+        required: ["publishYear"],
         properties: {
-          S5_G1: {
-            title: "",
+          publishYear: {
+            title: "PUBLICATION YEAR",
+            type: "string",
+          },
+          date: {
             type: "object",
-            required: [],
+            title: "",
+            required: ["validFrom"],
             properties: {
-              publishYear: {
-                title: "PUBLICATION YEARS ",
+              validFrom: {
+                title: "VALID FROM",
                 type: "string",
+                format: "date",
+              },
+              validTo: {
+                title: "VALID TO",
+                type: "string",
+                format: "date",
               },
             },
           },
@@ -701,8 +713,9 @@ export const schema = {
               id: "steps",
               value: 4,
             },
+            required: ["individual"],
             properties: {
-              entity_connections: {
+              entity: {
                 title: "Entity connection",
                 type: "array",
                 items: {
@@ -723,13 +736,13 @@ export const schema = {
                   },
                 },
               },
-              individual_connections: {
+              individual: {
                 title: "Individual connection",
                 type: "array",
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  required: ["role", "stakeholder"],
                   properties: {
                     role: {
                       title: "User role",
@@ -786,9 +799,51 @@ export const schema = {
             type: "object",
             required: [],
             properties: {
-              publishYear: {
-                title: "PUBLICATION YEAR",
+              originalTitle: {
+                title: "Original Title",
                 type: "string",
+              },
+              dataSource: {
+                title: "Data Source",
+                type: "string",
+              },
+              typeOfLaw: {
+                title: "Type Of Law",
+                enum: [
+                  "Miscellaneous",
+                  "Legislation",
+                  "Regulation",
+                  "Constitution",
+                ],
+              },
+              recordNumber: {
+                title: "Record Number",
+                type: "string",
+              },
+              date: {
+                type: "object",
+                title: "",
+                required: ["firstPublicationDate", "latestAmendmentDate"],
+                properties: {
+                  firstPublicationDate: {
+                    title: "First Publication Date",
+                    type: "string",
+                    format: "date",
+                  },
+                  latestAmendmentDate: {
+                    title: "Last Amendment Date",
+                    type: "string",
+                    format: "date",
+                  },
+                },
+              },
+              status: {
+                title: "STATUS",
+                enum: ["Repealed", "In force", "Not yet in force"],
+              },
+              implementingMea: {
+                title: "Implementing MEA",
+                enum: [],
               },
             },
           },
@@ -972,8 +1027,9 @@ export const schema = {
               id: "steps",
               value: 4,
             },
+            required: ["individual"],
             properties: {
-              entity_connections: {
+              entity: {
                 title: "Entity connection",
                 type: "array",
                 items: {
@@ -994,13 +1050,13 @@ export const schema = {
                   },
                 },
               },
-              individual_connections: {
+              individual: {
                 title: "Individual connection",
                 type: "array",
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  required: ["role", "stakeholder"],
                   properties: {
                     role: {
                       title: "User role",
@@ -1513,8 +1569,9 @@ export const schema = {
               id: "steps",
               value: 4,
             },
+            required: ["individual"],
             properties: {
-              entity_connections: {
+              entity: {
                 title: "Entity connection",
                 type: "array",
                 items: {
@@ -1535,13 +1592,13 @@ export const schema = {
                   },
                 },
               },
-              individual_connections: {
+              individual: {
                 title: "Individual connection",
                 type: "array",
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  required: ["role", "stakeholder"],
                   properties: {
                     role: {
                       title: "User role",
@@ -1784,8 +1841,9 @@ export const schema = {
               id: "steps",
               value: 4,
             },
+            required: ["individual"],
             properties: {
-              entity_connections: {
+              entity: {
                 title: "Entity connection",
                 type: "array",
                 items: {
@@ -1806,13 +1864,13 @@ export const schema = {
                   },
                 },
               },
-              individual_connections: {
+              individual: {
                 title: "Individual connection",
                 type: "array",
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  required: ["role", "stakeholder"],
                   properties: {
                     role: {
                       title: "User role",
@@ -2055,8 +2113,9 @@ export const schema = {
               id: "steps",
               value: 4,
             },
+            required: ["individual"],
             properties: {
-              entity_connections: {
+              entity: {
                 title: "Entity connection",
                 type: "array",
                 items: {
@@ -2077,13 +2136,13 @@ export const schema = {
                   },
                 },
               },
-              individual_connections: {
+              individual: {
                 title: "Individual connection",
                 type: "array",
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  required: ["role", "stakeholder"],
                   properties: {
                     role: {
                       title: "User role",

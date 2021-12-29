@@ -104,7 +104,10 @@ const getSchema = ({
     "geoCoverageValueSubnational"
   ].enumNames = countries?.map((x) => x.name);
 
-  if (selectedMainContentType === "technical") {
+  if (
+    selectedMainContentType === "technical" ||
+    selectedMainContentType === "action"
+  ) {
     const tagsPlusTopics = tags?.topics
       ? tags.technicalResourceType?.concat(tags.topics)
       : tags.technicalResourceType;
@@ -114,6 +117,24 @@ const getSchema = ({
     prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
       (x) => x.tag
     );
+  }
+
+  if (selectedMainContentType === "policy") {
+    const tagsPlusTopics = tags?.topics
+      ? tags.policy?.concat(tags.topics)
+      : tags.policy;
+    prop.S4.properties.S4_G3.properties[
+      "tags"
+    ].enum = tagsPlusTopics?.map((x) => String(x.id));
+    prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
+      (x) => x.tag
+    );
+    prop.S5.properties.S5_G1.properties[
+      "implementingMea"
+    ].enum = meaOptions?.map((x) => x.id);
+    prop.S5.properties.S5_G1.properties[
+      "implementingMea"
+    ].enumNames = meaOptions?.map((x) => x.name);
   }
 
   if (selectedMainContentType === "financing") {
