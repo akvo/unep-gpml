@@ -42,7 +42,7 @@
                                     created_by url mailjet-config owners
                                     info_docs sub_content_type
                                     entity_connections individual_connections]}]
-  (let [organisation (if (= -1 (:id org))
+  (let [#_#_organisation (if (= -1 (:id org))
                        [(handler.org/create conn org)]
                        [(:id org)])
         data {:type resource_type
@@ -73,7 +73,7 @@
                                                   :topic-type "resource"
                                                   :stakeholder-id stakeholder-id
                                                   :roles ["owner"]})))
-    (when (not-empty organisation)
+    #_(when (not-empty organisation)
       (db.resource/add-resource-organisations conn {:organisations
                                                     (map #(vector resource-id %) organisation)}))
     (when (not-empty tags)
