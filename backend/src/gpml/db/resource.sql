@@ -89,11 +89,11 @@ select
     remarks,
     url,
     created_by,
-    (select json_build_object('id',o.id,'name',o.name)
-        from resource_organisation ro
-        left join organisation o on o.id = ro.organisation
-        where ro.resource = :id
-        limit 1) as org,
+--    (select json_build_object('id',o.id,'name',o.name)
+--        from resource_organisation ro
+--        left join organisation o on o.id = ro.organisation
+--        where ro.resource = :id
+--        limit 1) as org,
     (select json_agg(json_build_object('url',rlu.url, 'lang', l.iso_code))
         from resource_language_url rlu
         left join language l on l.id = rlu.language
