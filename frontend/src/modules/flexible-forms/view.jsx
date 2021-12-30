@@ -1,7 +1,19 @@
 import { UIStore } from "../../store";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import { Row, Col, Select, Button, Switch, Radio, Popover, Steps } from "antd";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import {
+  LeftOutlined,
+  RightOutlined,
+  LoadingOutlined,
+  EditOutlined,
+  CheckOutlined,
+} from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "./styles.scss";
 import common from "./common";
@@ -138,9 +150,32 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const renderSteps = (parentTitle, section, steps, index) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
     const customTitle = (status) => {
+      const color = totalRequiredFields === 0 ? "#fff" : "#255B87";
+      const background = totalRequiredFields === 0 ? "#1CA585" : "#fff";
+      const display =
+        status === "active"
+          ? "unset"
+          : totalRequiredFields === 0
+          ? "unset"
+          : "none";
       return (
         <div className="custom-step-title">
           <span>{parentTitle}</span>
+          <Button
+            type="ghost"
+            size="small"
+            shape="circle"
+            icon={
+              totalRequiredFields === 0 ? <CheckOutlined /> : <EditOutlined />
+            }
+            style={{
+              right: "0",
+              position: "absolute",
+              color: color,
+              backgroundColor: background,
+              display: display,
+            }}
+          />
         </div>
       );
     };
@@ -182,13 +217,13 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       <Step
         key={section}
         title={customTitle("active")}
-        icon={customIcon("active")}
         className={
           totalRequiredFields === 0
             ? "step-section step-section-finish parent-item"
             : "step-section parent-item"
         }
         status={totalRequiredFields === 0 ? "finish" : "process"}
+        icon={customIcon("active")}
       />,
       ...childs,
     ];
@@ -207,7 +242,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   };
 
   const handleOnStepClick = (current, section) => {
-    console.log(current);
     initialFormData.update((e) => {
       e.data = {
         ...e.data,
@@ -291,22 +325,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     setSubType(e.target.value);
   };
 
-  const onChangeSubmitter = (e) => {
-    setManageResource(e.target.value);
-    if (e.target.value === "Yes") {
-      setOwners([profile.id]);
-    } else {
-      setOwners([]);
-    }
-  };
-
-  const onChangeOwners = (e) => {
-    let arr = owners;
-    if (!arr.some((r) => e.includes(r))) {
-      arr = [...arr, ...e];
-    }
-    setOwners(arr);
-  };
+  // console.log(data?.required?.[data.tabs[0]]?.length || 0);
 
   return (
     <div id="flexible-forms">
@@ -322,7 +341,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     </Button>
                     <Button
                       className="custom-button"
-                      // disabled={disabledBtn.disabled}
+                      disabled={disabledBtn.disabled}
                       loading={sending}
                       type={disabledBtn.type}
                       size="large"
@@ -382,245 +401,262 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                 ))}
               </StickyBox>
             </Col>
-            <Col
-              className="content-panel"
-              xs={24}
-              lg={18}
-              style={{
-                minHeight: "100%",
-              }}
-            >
-              {getTabStepIndex().tabIndex === 0 ? (
-                <Row>
-                  <div className="getting-started-content main-content">
-                    <h5>Welcome to the GPML Digital Platform!</h5>
-                    <p>
-                      We are excited to hear from the members of our community.
-                      The GPML Digital Platform is crowdsourced and allows
-                      everyone to submit new content via this form.
-                    </p>
-                    <p>
-                      A wide range of resources can be submitted, and these
-                      include Action Plans, Initiatives, Technical resources,
-                      Financing resources, Policies, Events, and Technologies.
-                      Learn more about each category and sub-categories
-                      definitions in the “Content Type” section of this form. A
-                      quick summary sheet with categories and sub-categories can
-                      be downloaded <a href="#">here</a>.
-                    </p>
-                    <p>
-                      Once submitted resources go through a review process which
-                      is being fine-tuned via consultations to assess content
-                      accuracy and quality. The current validation mechanism
-                      draft can be found under{" "}
-                      <a href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf">
-                        Annex C of the Concept Document.
-                      </a>
-                    </p>
-                    <p>
-                      You can access existing content via the{" "}
-                      <a href="https://digital.gpmarinelitter.org/browse?country=&transnational=&topic=project%2Caction_plan%2Cpolicy%2Ctechnical_resource%2Cfinancing_resource%2Cevent%2Ctechnology&tag=&q=&offset=0">
-                        Knowledge Exchange Library.
-                      </a>
-                      Make sure to browse around and leave a review under the
-                      resources you enjoy the most!
-                    </p>
-                    <p>To get started sign up or log in now.</p>
-                  </div>
-                </Row>
-              ) : getTabStepIndex().tabIndex === 1 ? (
-                <Row>
-                  <div className="main-content">
-                    <div className="button-wrapper">
-                      <h5>Pick the main content type</h5>
-                      <Button
-                        icon={<img src={ExampleIcon} alt="Example button" />}
-                        size="large"
-                      >
-                        SHOW EXAMPLES
-                      </Button>
+
+            {!isLoaded() ? (
+              <h2 className="loading">
+                <LoadingOutlined spin /> Loading
+              </h2>
+            ) : (
+              <Col
+                className="content-panel"
+                xs={24}
+                lg={18}
+                style={{
+                  minHeight: "100%",
+                }}
+              >
+                {getTabStepIndex().tabIndex === 0 ? (
+                  <Row>
+                    <div className="getting-started-content main-content">
+                      <h5>Welcome to the GPML Digital Platform!</h5>
+                      <p>
+                        We are excited to hear from the members of our
+                        community. The GPML Digital Platform is crowdsourced and
+                        allows everyone to submit new content via this form.
+                      </p>
+                      <p>
+                        A wide range of resources can be submitted, and these
+                        include Action Plans, Initiatives, Technical resources,
+                        Financing resources, Policies, Events, and Technologies.
+                        Learn more about each category and sub-categories
+                        definitions in the “Content Type” section of this form.
+                        A quick summary sheet with categories and sub-categories
+                        can be downloaded <a href="#">here</a>.
+                      </p>
+                      <p>
+                        Once submitted resources go through a review process
+                        which is being fine-tuned via consultations to assess
+                        content accuracy and quality. The current validation
+                        mechanism draft can be found under{" "}
+                        <a href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf">
+                          Annex C of the Concept Document.
+                        </a>
+                      </p>
+                      <p>
+                        You can access existing content via the{" "}
+                        <a href="https://digital.gpmarinelitter.org/browse?country=&transnational=&topic=project%2Caction_plan%2Cpolicy%2Ctechnical_resource%2Cfinancing_resource%2Cevent%2Ctechnology&tag=&q=&offset=0">
+                          Knowledge Exchange Library.
+                        </a>
+                        Make sure to browse around and leave a review under the
+                        resources you enjoy the most!
+                      </p>
+                      <p>To get started sign up or log in now.</p>
                     </div>
-                    <Radio.Group
-                      className="ant-row"
-                      onChange={handleMainContentType}
-                      value={mainType}
-                    >
-                      {mainContentType.map((item) => {
-                        const img = require(`../../images/${item.code}.svg`)
-                          .default;
-                        const imgSelected = require(`../../images/${item.code}-selected.svg`)
-                          .default;
-                        return (
-                          <Col
-                            className="gutter-row"
-                            xs={12}
-                            lg={6}
-                            key={item.code}
-                          >
-                            <Radio.Button
-                              value="large"
-                              className="custom-radio"
-                              id={item.code}
-                              value={item.code}
-                              key={item.code}
-                            >
-                              <div className="content-circle-wrapper">
-                                <div className="content-circle">
-                                  <img
-                                    src={
-                                      mainType === item.code ? imgSelected : img
-                                    }
-                                    alt={`${item.name} Image`}
-                                  />
-                                </div>
-                                <div className="info-icon-container">
-                                  <h2>{item.name}</h2>
-                                  <Popover content={item.desc}>
-                                    <div className="info-icon-wrapper">
-                                      <img src={InfoBlue} />
-                                    </div>
-                                  </Popover>
-                                </div>
-                              </div>
-                            </Radio.Button>
-                          </Col>
-                        );
-                      })}
-                    </Radio.Group>
-                  </div>
-                  <div className="sub-content">
-                    <div className="sub-content-top">
-                      <h5>Pick the sub-content type</h5>
-                      <span>Optional</span>
-                    </div>
-                    {subContentType.length > 0 ? (
-                      <div className="sub-content-topics">
-                        <Radio.Group
-                          className="ant-row"
-                          onChange={handleSubContentType}
-                          value={subType}
+                  </Row>
+                ) : getTabStepIndex().tabIndex === 1 ? (
+                  <Row>
+                    <div className="main-content">
+                      <div className="button-wrapper">
+                        <h5>Pick the main content type</h5>
+                        <Button
+                          icon={<img src={ExampleIcon} alt="Example button" />}
+                          size="large"
                         >
-                          {subContentType.map((item, index) => (
+                          SHOW EXAMPLES
+                        </Button>
+                      </div>
+                      <Radio.Group
+                        className="ant-row"
+                        onChange={handleMainContentType}
+                        value={mainType}
+                      >
+                        {mainContentType.map((item) => {
+                          const img = require(`../../images/${item.code}.svg`)
+                            .default;
+                          const imgSelected = require(`../../images/${item.code}-selected.svg`)
+                            .default;
+                          return (
                             <Col
                               className="gutter-row"
                               xs={12}
                               lg={6}
-                              key={index}
+                              key={item.code}
                             >
                               <Radio.Button
-                                id={item}
-                                value={item.title}
-                                key={index}
+                                value="large"
+                                className="custom-radio"
+                                id={item.code}
+                                value={item.code}
+                                key={item.code}
                               >
-                                {item.title}
-                                <Popover content={item.des}>
-                                  <div className="info-icon-wrapper">
-                                    <img src={InfoBlue} />
+                                <div className="content-circle-wrapper">
+                                  <div className="content-circle">
+                                    <img
+                                      src={
+                                        mainType === item.code
+                                          ? imgSelected
+                                          : img
+                                      }
+                                      alt={`${item.name} Image`}
+                                    />
                                   </div>
-                                </Popover>
+                                  <div className="info-icon-container">
+                                    <h2>{item.name}</h2>
+                                    <Popover content={item.desc}>
+                                      <div className="info-icon-wrapper">
+                                        <img src={InfoBlue} />
+                                      </div>
+                                    </Popover>
+                                  </div>
+                                </div>
                               </Radio.Button>
                             </Col>
-                          ))}
-                        </Radio.Group>
+                          );
+                        })}
+                      </Radio.Group>
+                    </div>
+                    <div className="sub-content">
+                      <div className="sub-content-top">
+                        <h5>Pick the sub-content type</h5>
+                        <span>Optional</span>
                       </div>
-                    ) : (
-                      <div className="before-selection">
-                        <p>
-                          Select a Main Content Type above to see sub-content
-                          type options
-                        </p>
-                      </div>
-                    )}
+                      {subContentType.length > 0 ? (
+                        <div className="sub-content-topics">
+                          <Radio.Group
+                            className="ant-row"
+                            onChange={handleSubContentType}
+                            value={subType}
+                          >
+                            {subContentType.map((item, index) => (
+                              <Col
+                                className="gutter-row"
+                                xs={12}
+                                lg={6}
+                                key={index}
+                              >
+                                <Radio.Button
+                                  id={item}
+                                  value={item.title}
+                                  key={index}
+                                >
+                                  {item.title}
+                                  <Popover content={item.des}>
+                                    <div className="info-icon-wrapper">
+                                      <img src={InfoBlue} />
+                                    </div>
+                                  </Popover>
+                                </Radio.Button>
+                              </Col>
+                            ))}
+                          </Radio.Group>
+                        </div>
+                      ) : (
+                        <div className="before-selection">
+                          <p>
+                            Select a Main Content Type above to see sub-content
+                            type options
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </Row>
+                ) : (
+                  <Row className="main-content">
+                    <FlexibleForm
+                      formType={props.formType}
+                      btnSubmit={btnSubmit}
+                      sending={sending}
+                      setSending={setSending}
+                      highlight={highlight}
+                      setHighlight={setHighlight}
+                      formSchema={formSchema}
+                      setDisabledBtn={setDisabledBtn}
+                      tabsData={tabsData}
+                      mainType={label}
+                      owners={owners}
+                      subContentType={subType}
+                    />
+                  </Row>
+                )}
+                {getTabStepIndex().tabIndex === 0 ? (
+                  <div className="bottom-panel">
+                    <div className="center-content">
+                      <p>Getting Started</p>
+                    </div>
+                    <div
+                      className="next-button"
+                      onClick={(e) => handleOnClickBtnNext(e)}
+                    >
+                      <p>Next</p>
+                      <RightOutlined />
+                    </div>
                   </div>
-                </Row>
-              ) : (
-                <Row className="main-content">
-                  <FlexibleForm
-                    formType={props.formType}
-                    btnSubmit={btnSubmit}
-                    sending={sending}
-                    setSending={setSending}
-                    highlight={highlight}
-                    setHighlight={setHighlight}
-                    formSchema={formSchema}
-                    setDisabledBtn={setDisabledBtn}
-                    tabsData={tabsData}
-                    mainType={label}
-                    owners={owners}
-                  />
-                </Row>
-              )}
-              {getTabStepIndex().tabIndex === 0 ? (
-                <div className="bottom-panel">
-                  <div className="center-content">
-                    <p>Getting Started</p>
+                ) : getTabStepIndex().tabIndex === 1 ? (
+                  <div className="bottom-panel">
+                    <div
+                      className="back-button"
+                      onClick={(e) => handleOnClickBtnBack(e)}
+                    >
+                      <LeftOutlined />
+                      <p>Back</p>
+                    </div>
+                    <div className="center-content">
+                      <p>Field to submit</p>
+                      <h6>0 of 1</h6>
+                    </div>
+                    <div
+                      className="next-button"
+                      onClick={(e) => handleOnClickBtnNext(e)}
+                    >
+                      <p>Next</p>
+                      <RightOutlined />
+                    </div>
                   </div>
-                  <div
-                    className="next-button"
-                    onClick={(e) => handleOnClickBtnNext(e)}
-                  >
-                    <p>Next</p>
-                    <RightOutlined />
+                ) : getTabStepIndex().tabIndex === 2 ? (
+                  <div className="bottom-panel">
+                    <div
+                      className="back-button"
+                      onClick={(e) => handleOnClickBtnBack(e)}
+                    >
+                      <LeftOutlined />
+                      <p>Back</p>
+                    </div>
+                    <div className="center-content">
+                      <p>Field to submit</p>
+                      <h6>
+                        0 of{" "}
+                        {data?.[data.tabs[0]]?.required?.[
+                          Object.keys(data?.[data.tabs[0]]?.required)[
+                            getTabStepIndex().stepIndex
+                          ]
+                        ]?.length || 0}
+                      </h6>
+                    </div>
+                    <div
+                      className="next-button"
+                      onClick={(e) => handleOnClickBtnNext(e)}
+                    >
+                      <p>Next</p>
+                      <RightOutlined />
+                    </div>
                   </div>
-                </div>
-              ) : getTabStepIndex().tabIndex === 1 ? (
-                <div className="bottom-panel">
-                  <div
-                    className="back-button"
-                    onClick={(e) => handleOnClickBtnBack(e)}
-                  >
-                    <LeftOutlined />
-                    <p>Back</p>
-                  </div>
-                  <div className="center-content">
-                    <p>Field to submit</p>
-                    <h6>0 of 1</h6>
-                  </div>
-                  <div
-                    className="next-button"
-                    onClick={(e) => handleOnClickBtnNext(e)}
-                  >
-                    <p>Next</p>
-                    <RightOutlined />
-                  </div>
-                </div>
-              ) : getTabStepIndex().tabIndex === 2 ? (
-                <div className="bottom-panel">
-                  <div
-                    className="back-button"
-                    onClick={(e) => handleOnClickBtnBack(e)}
-                  >
-                    <LeftOutlined />
-                    <p>Back</p>
-                  </div>
-                  <div className="center-content">
-                    <p>Field to submit</p>
-                    <h6>0 of 3</h6>
-                  </div>
-                  <div
-                    className="next-button"
-                    onClick={(e) => handleOnClickBtnNext(e)}
-                  >
-                    <p>Next</p>
-                    <RightOutlined />
-                  </div>
-                </div>
-              ) : (
-                <div className="bottom-panel">
-                  <div
-                    className="back-button"
-                    onClick={(e) => handleOnClickBtnBack(e)}
-                  >
-                    <LeftOutlined />
-                    <p>Back</p>
-                  </div>
-                  {/* <div className="center-content">
+                ) : (
+                  <div className="bottom-panel">
+                    <div
+                      className="back-button"
+                      onClick={(e) => handleOnClickBtnBack(e)}
+                    >
+                      <LeftOutlined />
+                      <p>Back</p>
+                    </div>
+                    {/* <div className="center-content">
                     <p>Field to submit</p>
                     <h6>0 of 3</h6>
                   </div> */}
-                </div>
-              )}
-            </Col>
+                  </div>
+                )}
+              </Col>
+            )}
           </Row>
         </div>
       </div>
