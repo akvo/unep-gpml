@@ -69,9 +69,6 @@
                                                   :topic-type "resource"
                                                   :stakeholder-id stakeholder-id
                                                   :roles ["owner"]})))
-    #_(when (not-empty organisation)
-      (db.resource/add-resource-organisations conn {:organisations
-                                                    (map #(vector resource-id %) organisation)}))
     (when (not-empty tags)
       (db.resource/add-resource-tags conn {:tags
                                            (map #(vector resource-id %) tags)}))

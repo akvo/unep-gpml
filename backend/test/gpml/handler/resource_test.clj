@@ -20,7 +20,6 @@
 (defn new-resource [data]
   {:resource_type "Financing Resource"
    :title "Financing Resource Title"
-   ;:org {:id 1}
    :publish_year 2021
    :summary "Financing Resource Summary"
    :value 2000
@@ -92,13 +91,11 @@
       (is (s/ends-with? (:image resource-one) "uploaded.png"))
       (is (= (dissoc (assoc (new-resource data)
                             :id 10001
-                            ;:org {:id 1 :name "Akvo"}
                             :value "2000"
                             :created_by 10001) :image :owners)
              (dissoc resource-one :image :owners)))
       (is (= (dissoc (assoc (new-resource data)
                             :id 10002
-                            ;:org {:id 10001 :name "New Era"}
                             :image "/image/resource/2"
                             :value "2000"
                             :created_by 10001) :image :owners)
