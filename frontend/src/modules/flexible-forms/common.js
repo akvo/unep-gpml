@@ -180,13 +180,7 @@ const tabs = [
       {
         group: "S3",
         key: "S3-p1-main-content",
-        title: "Main Content",
-        desc: "",
-      },
-      {
-        group: "S3",
-        key: "S3-p2-sub-content",
-        title: "Sub Content",
+        title: "Main & Sub Content",
         desc: "",
       },
     ],

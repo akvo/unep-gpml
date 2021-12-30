@@ -56,13 +56,10 @@ const NormalArrayFieldTemplate = ({
   const formGroup = group && items.length !== 0 ? `group-${group}` : "";
 
   useEffect(() => {
-    // add one items by default
     if (group && items.length === 0) {
       onAddClick();
     }
   }, [group, items, onAddClick]);
-
-  console.log(formData, "data");
 
   return (
     <>
