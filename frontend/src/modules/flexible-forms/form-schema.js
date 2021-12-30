@@ -1224,7 +1224,6 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
                   properties: {
                     role: {
                       title: "Entity role",

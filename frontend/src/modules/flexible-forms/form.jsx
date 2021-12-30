@@ -252,8 +252,20 @@ const FlexibleForm = withRouter(
         });
         // enable btn submit
         requiredFilledIn.length === 0 &&
+          (initialFormData?.currentState?.data.S4[
+            "S4_G5"
+          ].individual[0].hasOwnProperty("role") &&
+            initialFormData?.currentState?.data.S4[
+              "S4_G5"
+            ].individual[0].hasOwnProperty("stakeholder")) === true &&
           setDisabledBtn({ disabled: false, type: "primary" });
         requiredFilledIn.length !== 0 &&
+          (initialFormData?.currentState?.data.S4[
+            "S4_G5"
+          ].individual[0].hasOwnProperty("role") &&
+            initialFormData?.currentState?.data.S4[
+              "S4_G5"
+            ].individual[0].hasOwnProperty("stakeholder")) === false &&
           setDisabledBtn({ disabled: true, type: "default" });
       },
       [initialFormData, formSchema, setDisabledBtn]
