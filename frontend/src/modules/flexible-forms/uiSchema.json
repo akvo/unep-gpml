@@ -1,61 +1,5 @@
 {
   "initiative": {
-    "S2": {
-      "classNames": "list-group",
-      "S2_1": {
-        "ui:widget": "radio",
-        "ui:options": {
-          "flexible": true
-        }
-      },
-      "S2_G1_1.1": {
-        "ui:widget": "select",
-        "ui:placeholder": "Select individuals",
-        "ui:showSearch": true
-      },
-      "ui:order": ["S2_1", "S2_G1_1.1"]
-    },
-    "S3": {
-      "classNames": "list-group",
-      "S3_G1": {
-        "ui:widget": "MainContentRadioWidget"
-      },
-      "S3_G2": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G3": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G4": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G5": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G6": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G7": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G8": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G9": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "ui:order": [
-        "S3_G1",
-        "S3_G2",
-        "S3_G3",
-        "S3_G4",
-        "S3_G5",
-        "S3_G6",
-        "S3_G7",
-        "S3_G8",
-        "S3_G9"
-      ]
-    },
     "S4": {
       "classNames": "list-group",
       "S4_G1": {
@@ -132,23 +76,57 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "orgName": {
-          "ui:placeholder": "Entity name",
-          "ui:showSearch": true,
-          "ui:allowClear": true
+        "entity": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect an other entity"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "entity": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an entity",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyName": {
-          "ui:placeholder": "Entity name"
+        "individual": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect a new individual"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "stakeholder": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an individual",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyHeadquarter": {
-          "ui:widget": "select",
-          "ui:placeholder": "Search Country",
-          "ui:showSearch": true
-        },
-        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -181,62 +159,6 @@
     }
   },
   "action": {
-    "S2": {
-      "classNames": "list-group",
-      "S2_1": {
-        "ui:widget": "radio",
-        "ui:options": {
-          "flexible": true
-        }
-      },
-      "S2_G1_1.1": {
-        "ui:widget": "select",
-        "ui:placeholder": "Select individuals",
-        "ui:showSearch": true
-      },
-      "ui:order": ["S2_1", "S2_G1_1.1"]
-    },
-    "S3": {
-      "classNames": "list-group",
-      "S3_G1": {
-        "ui:widget": "MainContentRadioWidget"
-      },
-      "S3_G2": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G3": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G4": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G5": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G6": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G7": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G8": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G9": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "ui:order": [
-        "S3_G1",
-        "S3_G2",
-        "S3_G3",
-        "S3_G4",
-        "S3_G5",
-        "S3_G6",
-        "S3_G7",
-        "S3_G8",
-        "S3_G9"
-      ]
-    },
     "S4": {
       "classNames": "list-group",
       "S4_G1": {
@@ -313,23 +235,57 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "orgName": {
-          "ui:placeholder": "Entity name",
-          "ui:showSearch": true,
-          "ui:allowClear": true
+        "entity": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect an other entity"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "entity": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an entity",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyName": {
-          "ui:placeholder": "Entity name"
+        "individual": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect a new individual"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "stakeholder": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an individual",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyHeadquarter": {
-          "ui:widget": "select",
-          "ui:placeholder": "Search Country",
-          "ui:showSearch": true
-        },
-        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -348,15 +304,25 @@
     },
     "S5": {
       "classNames": "list-group",
-      "S5_G1": {
-        "publishYear": {
+      "publishYear": {
+        "ui:widget": "date",
+        "ui:showSearch": true,
+        "ui:span": 12,
+        "ui:options": {
+          "mode": "year",
+          "disableDate": "future"
+        }
+      },
+      "date": {
+        "validFrom": {
+          "ui:placeholder": "YYYY-MM-DD",
           "ui:widget": "date",
-          "ui:showSearch": true,
-          "ui:span": 12,
-          "ui:options": {
-            "mode": "year",
-            "disableDate": "future"
-          }
+          "ui:span": 12
+        },
+        "validTo": {
+          "ui:placeholder": "YYYY-MM-DD - Leave empty if ongoing",
+          "ui:widget": "date",
+          "ui:span": 12
         }
       }
     }
@@ -494,23 +460,57 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "orgName": {
-          "ui:placeholder": "Entity name",
-          "ui:showSearch": true,
-          "ui:allowClear": true
+        "entity": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect an other entity"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "entity": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an entity",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyName": {
-          "ui:placeholder": "Entity name"
+        "individual": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect a new individual"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "stakeholder": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an individual",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyHeadquarter": {
-          "ui:widget": "select",
-          "ui:placeholder": "Search Country",
-          "ui:showSearch": true
-        },
-        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -530,14 +530,46 @@
     "S5": {
       "classNames": "list-group",
       "S5_G1": {
-        "publishYear": {
-          "ui:widget": "date",
-          "ui:showSearch": true,
-          "ui:span": 12,
-          "ui:options": {
-            "mode": "year",
-            "disableDate": "future"
+        "originalTitle": {
+          "ui:placeholder": "Type in the policy original title"
+        },
+        "dataSource": {
+          "ui:placeholder": "Type in the data source, e.g. FAOLEX, InforMEA, Other (please specify)."
+        },
+        "typeOfLaw": {
+          "ui:placeholder": "Choose the type of law",
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "recordNumber": {
+          "ui:placeholder": "Type in the record number"
+        },
+        "date": {
+          "firstPublicationDate": {
+            "ui:placeholder": "YYYY-MM-DD",
+            "ui:widget": "date",
+            "ui:span": 12,
+            "ui:options": {
+              "disableDate": "future"
+            }
+          },
+          "latestAmendmentDate": {
+            "ui:placeholder": "YYYY-MM-DD",
+            "ui:widget": "date",
+            "ui:span": 12,
+            "ui:options": {
+              "disableDate": "future"
+            }
           }
+        },
+        "status": {
+          "ui:placeholder": "Choose the policy status",
+          "ui:widget": "select"
+        },
+        "implementingMea": {
+          "ui:placeholder": "Choose the implementing MEA",
+          "ui:widget": "select",
+          "ui:showSearch": true
         }
       }
     }
@@ -675,23 +707,57 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "orgName": {
-          "ui:placeholder": "Entity name",
-          "ui:showSearch": true,
-          "ui:allowClear": true
+        "entity": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect an other entity"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "entity": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an entity",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyName": {
-          "ui:placeholder": "Entity name"
+        "individual": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect a new individual"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "stakeholder": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an individual",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyHeadquarter": {
-          "ui:widget": "select",
-          "ui:placeholder": "Search Country",
-          "ui:showSearch": true
-        },
-        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -882,23 +948,57 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "orgName": {
-          "ui:placeholder": "Entity name",
-          "ui:showSearch": true,
-          "ui:allowClear": true
+        "entity": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect an other entity"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "entity": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an entity",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyName": {
-          "ui:placeholder": "Entity name"
+        "individual": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect a new individual"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "stakeholder": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an individual",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyHeadquarter": {
-          "ui:widget": "select",
-          "ui:placeholder": "Search Country",
-          "ui:showSearch": true
-        },
-        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -1063,23 +1163,57 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "orgName": {
-          "ui:placeholder": "Entity name",
-          "ui:showSearch": true,
-          "ui:allowClear": true
+        "entity": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect an other entity"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "entity": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an entity",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyName": {
-          "ui:placeholder": "Entity name"
+        "individual": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect a new individual"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "stakeholder": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an individual",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyHeadquarter": {
-          "ui:widget": "select",
-          "ui:placeholder": "Search Country",
-          "ui:showSearch": true
-        },
-        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -1244,23 +1378,57 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "orgName": {
-          "ui:placeholder": "Entity name",
-          "ui:showSearch": true,
-          "ui:allowClear": true
+        "entity": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect an other entity"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "entity": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an entity",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyName": {
-          "ui:placeholder": "Entity name"
+        "individual": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect a new individual"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "stakeholder": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an individual",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyHeadquarter": {
-          "ui:widget": "select",
-          "ui:placeholder": "Search Country",
-          "ui:showSearch": true
-        },
-        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,
@@ -1425,23 +1593,57 @@
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
-        "orgName": {
-          "ui:placeholder": "Entity name",
-          "ui:showSearch": true,
-          "ui:allowClear": true
+        "entity": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect an other entity"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "entity": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an entity",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyName": {
-          "ui:placeholder": "Entity name"
+        "individual": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect a new individual"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "stakeholder": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an individual",
+              "ui:span": 24
+            }
+          }
         },
-        "newCompanyHeadquarter": {
-          "ui:widget": "select",
-          "ui:placeholder": "Search Country",
-          "ui:showSearch": true
-        },
-        "ui:order": ["orgName", "newCompanyName", "newCompanyHeadquarter"]
+        "ui:order": ["entity", "individual"]
       },
       "S4_G6": {
         "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
         "urls": {
           "ui:options": {
             "showToolbar": true,

@@ -168,6 +168,9 @@
           opacity: 0.5;
           .ant-steps-item-content {
             min-height: auto;
+            .ant-steps-item-title {
+              width: 100%;
+            }
           }
           .ant-steps-item-tail {
             display: none;
@@ -332,6 +335,42 @@
             }
           }
         }
+        .collapse-wrapper {
+          .ant-collapse {
+            background: transparent;
+            border: none;
+            .ant-collapse-item {
+              margin-bottom: 10px;
+              border: 2px solid #edf2f7;
+              border-radius: 7px;
+              .ant-collapse-content {
+                border-top: 1px solid #edf2f7;
+              }
+              .ant-collapse-extra {
+                span {
+                  font-size: 20px;
+                }
+              }
+            }
+          }
+          .ant-form-item-label {
+            label {
+              font-size: 16px;
+              color: #000;
+              font-weight: 400;
+            }
+          }
+        }
+        .collapse-add-button {
+          width: 100%;
+          border: 1px dashed rgba(24, 22, 47, 0.1);
+          border-radius: 7px;
+          height: auto;
+          padding: 7px 15px;
+          span {
+            font-weight: 700;
+          }
+        }
       }
       .sub-content {
         background: #ffffff;
@@ -484,4 +523,42 @@
 .ant-popover {
   width: 300px;
   font-size: 12px;
+}
+.ant-row.ant-form-item.ant-form-item-has-success {
+  .ant-input,
+  .ant-input-number-input,
+  .ant-picker,
+  .ant-select-selector {
+    border: 2px #22ba9a solid !important;
+    border-radius: 2px;
+  }
+
+  .radio-highlight {
+    span.ant-radio {
+      border: 2px solid #22ba9a;
+      border-radius: 50%;
+    }
+  }
+}
+.checkbox-highlight {
+  span.ant-checkbox {
+    border: 2px solid #22ba9a;
+    border-radius: 2px;
+  }
+}
+
+// required
+.ant-row.ant-form-item.ant-form-item-has-error {
+  .radio-required {
+    span.ant-radio {
+      border: 1px solid red;
+      border-radius: 50%;
+    }
+  }
+}
+.checkbox-required {
+  span.ant-checkbox {
+    border: 1px solid red;
+    border-radius: 2px;
+  }
 }

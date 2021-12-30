@@ -10,6 +10,17 @@ const geoCoverageTypeOptions = [
   // "Global with elements in specific areas",
 ];
 
+const entityRole = ["Owner", "Implementator", "Partner", "Donor"];
+const individualRole = [
+  "Owner",
+  "Reviewer",
+  "User",
+  "Interested in",
+  "Implementor",
+  "Partner",
+  "Donor or other",
+];
+
 const sectorOptions = [
   "Government",
   "Private Sector",
@@ -363,6 +374,8 @@ const UIStore = new Store({
   nonMemberOrganisations: [],
   languages: languages,
   geoCoverageTypeOptions: geoCoverageTypeOptions,
+  entityRoleOptions: entityRole,
+  individualRoleOptions: individualRole,
   regionOptions: [],
   meaOptions: [],
   transnationalOptions: [],
