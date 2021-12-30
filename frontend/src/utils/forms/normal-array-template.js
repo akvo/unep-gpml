@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import classNames from "classnames";
-
 import Button from "antd/lib/button";
 import Col from "antd/lib/col";
 import Row from "antd/lib/row";
@@ -23,7 +22,7 @@ const NormalArrayFieldTemplate = ({
   DescriptionField,
   disabled,
   formContext,
-  // formData,
+  formData,
   idSchema,
   items,
   onAddClick,
@@ -63,6 +62,8 @@ const NormalArrayFieldTemplate = ({
     }
   }, [group, items, onAddClick]);
 
+  console.log(formData, "data");
+
   return (
     <>
       <fieldset className={`${className} ${formGroup}`} id={idSchema.$id}>
@@ -83,7 +84,7 @@ const NormalArrayFieldTemplate = ({
                 items.map((itemProps, index) => {
                   return (
                     <Panel
-                      header="Akvo"
+                      header={"Akvo"}
                       key={index}
                       extra={
                         <DeleteOutlined

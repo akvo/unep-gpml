@@ -58,6 +58,15 @@ const KnowledgeExchangeDropdownMenu = withRouter(
                   </Menu.Item>
                 );
               })}
+            <Menu.Item
+              className="nav-link"
+              onClick={() => {
+                setFilterMenu([]);
+                history.push("/flexible-forms");
+              }}
+            >
+              Flex Form
+            </Menu.Item>
           </Menu>
         }
         trigger={["click"]}

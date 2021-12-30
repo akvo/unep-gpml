@@ -45,6 +45,8 @@ const ArrayFieldTemplate = ({
   const { fields, rootSchema, widgets } = registry;
   const { UnsupportedField } = fields;
 
+  console.log(formData, "tem");
+
   const renderFiles = () => {
     const { widget = "files", ...options } = getUiOptions(uiSchema);
 
