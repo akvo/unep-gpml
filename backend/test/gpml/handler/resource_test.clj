@@ -20,7 +20,7 @@
 (defn new-resource [data]
   {:resource_type "Financing Resource"
    :title "Financing Resource Title"
-   :org {:id 1}
+   ;:org {:id 1}
    :publish_year 2021
    :summary "Financing Resource Summary"
    :value 2000
