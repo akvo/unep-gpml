@@ -92,13 +92,13 @@
       (is (s/ends-with? (:image resource-one) "uploaded.png"))
       (is (= (dissoc (assoc (new-resource data)
                             :id 10001
-                            :org {:id 1 :name "Akvo"}
+                            ;:org {:id 1 :name "Akvo"}
                             :value "2000"
                             :created_by 10001) :image :owners)
              (dissoc resource-one :image :owners)))
       (is (= (dissoc (assoc (new-resource data)
                             :id 10002
-                            :org {:id 10001 :name "New Era"}
+                            ;:org {:id 10001 :name "New Era"}
                             :image "/image/resource/2"
                             :value "2000"
                             :created_by 10001) :image :owners)
