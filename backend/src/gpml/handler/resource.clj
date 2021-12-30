@@ -9,7 +9,7 @@
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
             [gpml.handler.auth :as h.auth]
-            [gpml.handler.organisation :as handler.org]
+            #_[gpml.handler.organisation :as handler.org]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -33,7 +33,7 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn create-resource [conn {:keys [resource_type title org publish_year
+(defn create-resource [conn {:keys [resource_type title #_org publish_year
                                     summary value value_currency
                                     value_remarks valid_from valid_to image
                                     geo_coverage_type geo_coverage_value
