@@ -1,61 +1,5 @@
 {
   "initiative": {
-    "S2": {
-      "classNames": "list-group",
-      "S2_1": {
-        "ui:widget": "radio",
-        "ui:options": {
-          "flexible": true
-        }
-      },
-      "S2_G1_1.1": {
-        "ui:widget": "select",
-        "ui:placeholder": "Select individuals",
-        "ui:showSearch": true
-      },
-      "ui:order": ["S2_1", "S2_G1_1.1"]
-    },
-    "S3": {
-      "classNames": "list-group",
-      "S3_G1": {
-        "ui:widget": "MainContentRadioWidget"
-      },
-      "S3_G2": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G3": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G4": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G5": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G6": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G7": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G8": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G9": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "ui:order": [
-        "S3_G1",
-        "S3_G2",
-        "S3_G3",
-        "S3_G4",
-        "S3_G5",
-        "S3_G6",
-        "S3_G7",
-        "S3_G8",
-        "S3_G9"
-      ]
-    },
     "S4": {
       "classNames": "list-group",
       "S4_G1": {
@@ -215,62 +159,6 @@
     }
   },
   "action": {
-    "S2": {
-      "classNames": "list-group",
-      "S2_1": {
-        "ui:widget": "radio",
-        "ui:options": {
-          "flexible": true
-        }
-      },
-      "S2_G1_1.1": {
-        "ui:widget": "select",
-        "ui:placeholder": "Select individuals",
-        "ui:showSearch": true
-      },
-      "ui:order": ["S2_1", "S2_G1_1.1"]
-    },
-    "S3": {
-      "classNames": "list-group",
-      "S3_G1": {
-        "ui:widget": "MainContentRadioWidget"
-      },
-      "S3_G2": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G3": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G4": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G5": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G6": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G7": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G8": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "S3_G9": {
-        "ui:widget": "SubContentRadioWidget"
-      },
-      "ui:order": [
-        "S3_G1",
-        "S3_G2",
-        "S3_G3",
-        "S3_G4",
-        "S3_G5",
-        "S3_G6",
-        "S3_G7",
-        "S3_G8",
-        "S3_G9"
-      ]
-    },
     "S4": {
       "classNames": "list-group",
       "S4_G1": {

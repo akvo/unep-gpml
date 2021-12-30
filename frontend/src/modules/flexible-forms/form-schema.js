@@ -259,32 +259,6 @@ export const schema = {
     version: "2",
     label: "action",
     properties: {
-      S2: {
-        title: "",
-        type: "object",
-        depend: {
-          id: "tabs",
-          value: ["S2"],
-        },
-        required: ["S2_1"],
-        properties: {
-          S2_1: {
-            title: "Are you directly managing this resource?",
-            type: "string",
-            enum: ["1-0", "1-1"],
-            enumNames: [
-              "You are granting editing and deleting rights ",
-              "You are categorized as a submitter ",
-            ],
-          },
-          "S2_G1_1.1": {
-            title:
-              "Please select other individuals that will support in managing the resource.",
-            enum: [],
-            enumNames: [],
-          },
-        },
-      },
       S4: {
         title: "",
         type: "object",
@@ -325,7 +299,6 @@ export const schema = {
               value: 1,
             },
             required: [
-              "country",
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
@@ -856,32 +829,6 @@ export const schema = {
     version: "2",
     label: "financing",
     properties: {
-      S2: {
-        title: "",
-        type: "object",
-        depend: {
-          id: "tabs",
-          value: ["S2"],
-        },
-        required: ["S2_1"],
-        properties: {
-          S2_1: {
-            title: "Are you directly managing this resource?",
-            type: "string",
-            enum: ["1-0", "1-1"],
-            enumNames: [
-              "You are granting editing and deleting rights ",
-              "You are categorized as a submitter ",
-            ],
-          },
-          "S2_G1_1.1": {
-            title:
-              "Please select other individuals that will support in managing the resource.",
-            enum: [],
-            enumNames: [],
-          },
-        },
-      },
       S4: {
         title: "",
         type: "object",
@@ -922,7 +869,6 @@ export const schema = {
               value: 1,
             },
             required: [
-              "country",
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
@@ -1110,7 +1056,7 @@ export const schema = {
         required: ["publishYear"],
         properties: {
           publishYear: {
-            title: "YEAR FOUNDED / YEAR OF COMMENCEMENT",
+            title: "Year Founded",
             type: "string",
           },
           value: {
@@ -1119,15 +1065,15 @@ export const schema = {
             required: ["valueAmount", "valueCurrency"],
             properties: {
               valueAmount: {
-                title: "VALUE AMOUNT",
+                title: "Value Amount",
                 type: "number",
               },
               valueCurrency: {
-                title: "VALUE CURRENCY",
+                title: "Value Currency",
                 enum: [],
               },
               valueRemark: {
-                title: "VALUE REMARK",
+                title: "Value Remark",
                 type: "string",
               },
             },
@@ -1138,12 +1084,12 @@ export const schema = {
             required: ["validFrom"],
             properties: {
               validFrom: {
-                title: "VALID FROM",
+                title: "Valid From",
                 type: "string",
                 format: "date",
               },
               validTo: {
-                title: "VALID TO",
+                title: "Valid To",
                 type: "string",
                 format: "date",
               },
