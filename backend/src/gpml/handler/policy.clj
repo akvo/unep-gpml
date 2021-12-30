@@ -114,21 +114,21 @@
   (->
    [:map
     [:title string?]
-    [:original_title string?]
+    [:original_title {:optional true} string?]
     [:abstract {:optional true} string?]
     [:data_source {:optional true} string?]
     [:type_of_law {:optional true}
      [:enum "Legislation", "Miscellaneous", "Regulation", "Constitution"]]
-    [:record_number string?]
-    [:first_publication_date string?]
-    [:latest_amendment_date string?]
+    [:record_number {:optional true} string?]
+    [:first_publication_date {:optional true} string?]
+    [:latest_amendment_date {:optional true} string?]
     [:status [:enum "Repealed", "In force", "Not yet in force"]]
     [:country integer?]
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
     [:image {:optional true} string?]
-    [:implementing_mea integer?]
+    [:implementing_mea {:optional true} integer?]
     [:tags {:optional true}
      [:vector {:optional true} integer?]]
     [:url {:optional true} string?]
