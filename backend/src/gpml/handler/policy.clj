@@ -86,7 +86,7 @@
       (doseq [association (expand-entity-associations entity_connections policy-id)]
         (db.favorite/new-organisation-association conn association)))
     (when (not-empty individual_connections)
-      (doseq [association (expand-individual-associations entity_connections policy-id)]
+      (doseq [association (expand-individual-associations individual_connections policy-id)]
         (db.favorite/new-association conn association)))
     (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
