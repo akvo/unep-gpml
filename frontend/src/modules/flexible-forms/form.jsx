@@ -66,6 +66,11 @@ const FlexibleForm = withRouter(
         return false;
       }
 
+      if (mainType === "Event") {
+        handleOnSubmitEvent(formData);
+        return false;
+      }
+
       delete formData?.tabs;
       delete formData?.steps;
       delete formData?.required;
@@ -272,6 +277,82 @@ const FlexibleForm = withRouter(
       }
     };
 
+    const handleOnSubmitEvent = (formData) => {
+      delete formData?.tabs;
+      delete formData?.steps;
+      delete formData?.required;
+
+      let data = {
+        ...formData,
+      };
+
+      transformFormData(data, formData, formSchema.schema.properties, true);
+
+      data.version = parseInt(formSchema.schema.version);
+
+      delete data?.S1;
+      delete data?.S2;
+      delete data?.S3;
+      delete data?.S4;
+      delete data?.S5;
+
+      data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
+
+      if (data?.urls) {
+        data.urls = data.urls.map((x) => {
+          return {
+            url: x,
+            lang: "en",
+          };
+        });
+      }
+
+      data.tags =
+        formData.S4.S4_G3.tags &&
+        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+
+      if (data.hasOwnProperty("startDate")) {
+        data.startDate = data.startDate;
+      }
+
+      if (data.hasOwnProperty("endDate")) {
+        data.endDate = data.endDate;
+      }
+
+      if (data?.entity) {
+        data.entityConnections = data.entity;
+        delete data.entity;
+      }
+
+      if (data?.individual) {
+        data.individualConnections = data.individual;
+        delete data.individual;
+      }
+      if (data?.info) {
+        data.infoDocs = data.info;
+        delete data.info;
+      }
+
+      if (status === "add" && !params?.id) {
+        api
+          .post("/event", data)
+          .then(() => {
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully created" });
+          })
+          .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+    };
+
     const handleFormOnChange = useCallback(
       ({ formData, schema }) => {
         initialFormData.update((e) => {
@@ -376,28 +457,6 @@ const FlexibleForm = withRouter(
       });
       const res = overideValidation(errors, dependValue);
       res.length === 0 && setHighlight(false);
-      if (res.length > 0) {
-        const descriptionList = res.map((r, index) => {
-          const { property, message } = r;
-          const tabSection = property
-            .replace(".", "")
-            .replace("['", "_")
-            .replace("']", "_")
-            .split("_")[0];
-          const tabSectionTitle = tabsData.find((x) => x.key === tabSection)
-            ?.title;
-          return (
-            <li key={`${property}-${index}`}>
-              {tabSectionTitle}:{" "}
-              <Typography.Text type="danger">{message}</Typography.Text>
-            </li>
-          );
-        });
-        notification.error({
-          message: "Error",
-          description: <ul>{descriptionList}</ul>,
-        });
-      }
       return res;
     };
 

@@ -120,6 +120,18 @@ const getSchema = ({
     );
   }
 
+  if (selectedMainContentType === "event_flexible") {
+    const tagsPlusTopics = tags?.topics
+      ? tags.events?.concat(tags.topics)
+      : tags.events;
+    prop.S4.properties.S4_G3.properties[
+      "tags"
+    ].enum = tagsPlusTopics?.map((x) => String(x.id));
+    prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
+      (x) => x.tag
+    );
+  }
+
   if (selectedMainContentType === "policy") {
     const tagsPlusTopics = tags?.topics
       ? tags.policy?.concat(tags.topics)

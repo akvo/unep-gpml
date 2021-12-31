@@ -1232,16 +1232,26 @@
     },
     "S5": {
       "classNames": "list-group",
-      "S5_G1": {
-        "publishYear": {
+      "date": {
+        "startDate": {
+          "ui:placeholder": "YYYY-MM-DD",
           "ui:widget": "date",
-          "ui:showSearch": true,
-          "ui:span": 12,
-          "ui:options": {
-            "mode": "year",
-            "disableDate": "future"
-          }
+          "ui:span": 12
+        },
+        "endDate": {
+          "ui:placeholder": "YYYY-MM-DD",
+          "ui:widget": "date",
+          "ui:span": 12
         }
+      },
+      "eventType": {
+        "ui:placeholder": "Choose event type",
+        "ui:widget": "select"
+      },
+      "recording": {
+        "ui:addOnBefore": "https://",
+        "ui:widget": "URLWidget",
+        "ui:placeholder": "Url"
       }
     }
   },
