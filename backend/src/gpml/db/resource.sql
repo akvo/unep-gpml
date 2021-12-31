@@ -21,6 +21,7 @@ insert into resource(
 --~ (when (contains? params :url) ", url")
 --~ (when (contains? params :info_docs) ", info_docs")
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
+--~ (when (contains? params :capacity_building) ", capacity_building")
 )
 values(
     :title,
@@ -43,6 +44,7 @@ values(
 --~ (when (contains? params :url) ", :url")
 --~ (when (contains? params :info_docs) ", :info_docs")
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
+--~ (when (contains? params :capacity_building) ", :capacity_building")
 )
 returning id;
 

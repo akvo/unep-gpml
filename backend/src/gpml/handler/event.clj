@@ -109,6 +109,9 @@
     [:url {:optional true} string?]
     [:info_docs {:optional true} string?]
     [:sub_content_type {:optional true} string?]
+    [:capacity_building {:optional true} boolean?]
+    [:event_type {:optional true} string?]
+    [:recording {:optional true} string?]
     [:entity_connections {:optional true}
      [:vector {:optional true}
       [:map

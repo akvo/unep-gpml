@@ -151,6 +151,7 @@
               [:string {:min 1}]]]]]
           [:url {:optional true} string?]
           [:info_docs {:optional true} string?]
+          [:capacity_building {:optional true} boolean?]
           [:sub_content_type {:optional true} string?]
           [:entity_connections {:optional true}
            [:vector {:optional true}
