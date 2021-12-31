@@ -6,12 +6,13 @@ ALTER TABLE event
 ADD COLUMN event_type text,
 ADD COLUMN recording text;
 --;;
-DROP VIEW v_policy_data CASCADE;
+DROP VIEW IF EXISTS v_policy_data CASCADE;
 --;;
-DROP VIEW v_event_data CASCADE;
+DROP VIEW IF EXISTS v_event_data CASCADE;
+--;;
 --;;
 CREATE VIEW v_policy_data AS
-SELECT p.id,
+ SELECT p.id,
     p.title,
     p.original_title,
     p.data_source,
@@ -32,41 +33,40 @@ SELECT p.id,
     p.reviewed_by,
     p.review_status,
     p.url,
-    p.info_docs,
-    p.sub_content_type,
     p.image,
     p.created_by,
     geo.geo_coverage_values,
     lang.languages,
-    tag.tags
-    FROM (((policy p
-        LEFT JOIN (
-            SELECT plu.policy,
+    tag.tags,
+    geo.geo_coverage_country_groups,
+    geo.geo_coverage_countries
+   FROM (((policy p
+     LEFT JOIN ( SELECT plu.policy,
             json_agg(json_build_object('url', plu.url, 'iso_code', l.iso_code)) AS languages
-            FROM (policy_language_url plu
-                JOIN language l ON ((plu.language = l.id)))
-            GROUP BY plu.policy) lang ON ((p.id = lang.policy)))
-        LEFT JOIN ( SELECT pt.policy,
-            json_agg(t.tag) AS tags
-            FROM (policy_tag pt
-                JOIN tag t ON ((pt.tag = t.id)))
-            GROUP BY pt.policy) tag ON ((p.id = tag.policy)))
-        LEFT JOIN ( SELECT pg.policy,
+           FROM (policy_language_url plu
+             JOIN language l ON ((plu.language = l.id)))
+          GROUP BY plu.policy) lang ON ((p.id = lang.policy)))
+     LEFT JOIN ( SELECT pt.policy,
+            json_agg(json_build_object(t.id, t.tag)) AS tags
+           FROM (policy_tag pt
+             JOIN tag t ON ((pt.tag = t.id)))
+          GROUP BY pt.policy) tag ON ((p.id = tag.policy)))
+     LEFT JOIN ( SELECT pg.policy,
+            json_agg(COALESCE(pg.country_group, 0)) FILTER (WHERE (pg.country_group IS NOT NULL)) AS geo_coverage_country_groups,
+            json_agg(COALESCE(pg.country, 0)) FILTER (WHERE (pg.country IS NOT NULL)) AS geo_coverage_countries,
             json_agg(COALESCE(pg.country, pg.country_group, 0)) AS geo_coverage_values
-            FROM policy_geo_coverage pg
-            GROUP BY pg.policy) geo ON ((p.id = geo.policy)))
-    ORDER BY p.created;
+           FROM policy_geo_coverage pg
+          GROUP BY pg.policy) geo ON ((p.id = geo.policy)))
+  ORDER BY p.created;
 --;;
-CREATE VIEW v_policy_geo AS
-SELECT p.id as id, coalesce(cgc.country,pgc.country) AS geo_coverage
-    FROM policy p
-    LEFT JOIN policy_geo_coverage pgc on p.id = pgc.policy
-    LEFT JOIN country_group_country cgc ON cgc.country_group = pgc.country_group
-WHERE p.geo_coverage_type <> 'global'
-UNION ALL
-SELECT p.id as id, 0 AS geo_coverage
-    FROM policy p
-WHERE p.geo_coverage_type = 'global';
+CREATE VIEW v_policy AS
+ SELECT 'policy'::text AS topic,
+    geo.geo_coverage,
+    st.search_text,
+    row_to_json(p.*) AS json
+   FROM ((v_policy_data p
+     LEFT JOIN v_policy_geo geo ON ((p.id = geo.id)))
+     LEFT JOIN v_policy_search_text st ON ((p.id = st.id)));
 --;;
 CREATE VIEW v_event_data AS
  SELECT e.id,
