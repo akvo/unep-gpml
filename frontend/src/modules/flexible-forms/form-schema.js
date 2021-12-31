@@ -1026,7 +1026,7 @@ export const schema = {
           id: "tabs",
           value: ["S5"],
         },
-        required: ["publishYear"],
+        required: [],
         properties: {
           publishYear: {
             title: "Year Founded",
@@ -1035,7 +1035,7 @@ export const schema = {
           value: {
             type: "object",
             title: "",
-            required: ["valueAmount", "valueCurrency"],
+            required: [],
             properties: {
               valueAmount: {
                 title: "Value Amount",
@@ -1054,7 +1054,7 @@ export const schema = {
           date: {
             type: "object",
             title: "",
-            required: ["validFrom"],
+            required: [],
             properties: {
               validFrom: {
                 title: "Valid From",

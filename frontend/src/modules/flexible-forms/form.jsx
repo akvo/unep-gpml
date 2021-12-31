@@ -17,13 +17,7 @@ import {
   transformFormData,
   collectDependSchemaRefactor,
 } from "../initiative/form";
-import {
-  handleGeoCoverageValue,
-  checkRequiredFieldFilledIn,
-  checkDependencyAnswer,
-  customFormats,
-  collectDependSchema,
-} from "../../utils/forms";
+import { checkRequiredFieldFilledIn, customFormats } from "../../utils/forms";
 import api from "../../utils/api";
 
 const Form = withTheme(AntDTheme);
@@ -91,15 +85,21 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
-      // data.org = {
-      //   id: parseInt(Object.keys(data.orgName)[0]),
-      // };
+      console.log(formData);
+      console.log(data);
       if (data.resourceType === "Financing Resource") {
-        data.valueCurrency = Object.keys(data.valueCurrency)[0];
-        data.validTo = data.validTo || "Ongoing";
-        data.value = data.valueAmount;
+        if (data.hasOwnProperty("valueCurrency")) {
+          data.valueCurrency = Object.keys(data?.valueCurrency)[0];
+        }
+        if (data.hasOwnProperty("validTo")) {
+          data.validTo = data?.validTo || "Ongoing";
+        }
+        if (data.hasOwnProperty("valueAmount")) {
+          data.value = data?.valueAmount;
+        }
+
         delete data.valueAmount;
-        if (data.valueRemark) {
+        if (data.hasOwnProperty("valueRemark")) {
           data.valueRemarks = data.valueRemark;
           delete data.valueRemark;
         }
