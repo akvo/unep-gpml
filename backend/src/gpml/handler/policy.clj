@@ -123,7 +123,7 @@
     [:first_publication_date {:optional true} string?]
     [:latest_amendment_date {:optional true} string?]
     [:status {:optional true} [:enum "Repealed", "In force", "Not yet in force"]]
-    [:country integer?]
+    [:country {:optional true} integer?]
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
