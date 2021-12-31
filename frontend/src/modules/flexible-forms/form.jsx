@@ -85,14 +85,17 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
-      console.log(formData);
-      console.log(data);
+
       if (data.resourceType === "Financing Resource") {
         if (data.hasOwnProperty("valueCurrency")) {
           data.valueCurrency = Object.keys(data?.valueCurrency)[0];
         }
+        if (data.hasOwnProperty("validFrom")) {
+          data.validFrom = data?.validFrom;
+          data.validTo = "Ongoing";
+        }
         if (data.hasOwnProperty("validTo")) {
-          data.validTo = data?.validTo || "Ongoing";
+          data.validTo = data?.validTo;
         }
         if (data.hasOwnProperty("valueAmount")) {
           data.value = data?.valueAmount;
@@ -104,6 +107,17 @@ const FlexibleForm = withRouter(
           delete data.valueRemark;
         }
       }
+
+      if (data.resourceType === "Action Plan") {
+        if (data.hasOwnProperty("validTo")) {
+          data.validTo = data?.validTo;
+        }
+        if (data.hasOwnProperty("validFrom")) {
+          data.validFrom = data?.validFrom;
+          data.validTo = "Ongoing";
+        }
+      }
+
       delete data.orgName;
 
       data.tags =

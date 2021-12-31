@@ -483,24 +483,24 @@ export const schema = {
           id: "tabs",
           value: ["S5"],
         },
-        required: ["publishYear"],
+        required: [],
         properties: {
           publishYear: {
-            title: "PUBLICATION YEAR",
+            title: "Publication Year",
             type: "string",
           },
           date: {
             type: "object",
             title: "",
-            required: ["validFrom"],
+            required: [],
             properties: {
               validFrom: {
-                title: "VALID FROM",
+                title: "Valid From",
                 type: "string",
                 format: "date",
               },
               validTo: {
-                title: "VALID TO",
+                title: "Valid To",
                 type: "string",
                 format: "date",
               },
