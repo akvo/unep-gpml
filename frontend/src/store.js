@@ -10,7 +10,7 @@ const geoCoverageTypeOptions = [
   // "Global with elements in specific areas",
 ];
 
-const entityRole = ["Owner", "Implementator", "Partner", "Donor"];
+const entityRole = ["Owner", "Implementor", "Partner", "Donor"];
 const individualRole = [
   "Owner",
   "Reviewer",

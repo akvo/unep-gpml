@@ -769,7 +769,7 @@ export const schema = {
               date: {
                 type: "object",
                 title: "",
-                required: ["firstPublicationDate", "latestAmendmentDate"],
+                required: [],
                 properties: {
                   firstPublicationDate: {
                     title: "First Publication Date",
@@ -784,7 +784,7 @@ export const schema = {
                 },
               },
               status: {
-                title: "STATUS",
+                title: "Status",
                 enum: ["Repealed", "In force", "Not yet in force"],
               },
               implementingMea: {
