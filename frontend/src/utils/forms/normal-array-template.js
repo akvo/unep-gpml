@@ -61,6 +61,8 @@ const NormalArrayFieldTemplate = ({
     }
   }, [group, items, onAddClick]);
 
+  console.log(formData, "data");
+
   return (
     <>
       <fieldset className={`${className} ${formGroup}`} id={idSchema.$id}>

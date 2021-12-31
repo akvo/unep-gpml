@@ -69,9 +69,6 @@
                                                   :topic-type "resource"
                                                   :stakeholder-id stakeholder-id
                                                   :roles ["owner"]})))
-    #_(when (not-empty organisation)
-      (db.resource/add-resource-organisations conn {:organisations
-                                                    (map #(vector resource-id %) organisation)}))
     (when (not-empty tags)
       (db.resource/add-resource-tags conn {:tags
                                            (map #(vector resource-id %) tags)}))
@@ -134,7 +131,7 @@
               [:enum "global", "regional", "national", "transnational",
                "sub-national", "global with elements in specific areas"]]]
             handler.geo/params-payload)]
-          [:publish_year integer?]
+          [:publish_year {:optional true} integer?]
           [:summary {:optional true} string?]
           [:value {:optional true} integer?]
           [:value_currency {:optional true} string?]
@@ -168,15 +165,7 @@
           [:tags {:optional true}
            [:vector {:optional true} integer?]]
           auth/owners-schema]
-         handler.geo/params-payload)
-   [:fn {:error/message "value is required" :error/path [:value]}
-    (fn [{:keys [resource_type value]}] (or-and resource_type value))]
-   [:fn {:error/message "value_currency is required" :error/path [:value_currency]}
-    (fn [{:keys [resource_type value_currency]}] (or-and resource_type value_currency))]
-   [:fn {:error/message "valid_from is required" :error/path [:valid_from]}
-    (fn [{:keys [resource_type valid_from]}] (or-and resource_type valid_from))]
-   [:fn {:error/message "valid_to is required" :error/path [:valid_to]}
-    (fn [{:keys [resource_type valid_to]}] (or-and resource_type valid_to))]])
+         handler.geo/params-payload)])
 
 (defmethod ig/init-key :gpml.handler.resource/post-params [_ _]
   post-params)
