@@ -8,8 +8,12 @@
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
-(defn create [conn org]
-  (let [org-id (:id (db.organisation/new-organisation conn (dissoc org :id)))
+(defn create [conn {:keys [id] :as org}]
+  (let [org-id (:id (if (and id (= id -1))
+                      (db.organisation/new-organisation conn (-> org
+                                                               (assoc :is_member false)
+                                                               (dissoc :id)))
+                      (db.organisation/new-organisation conn (dissoc org :id))))
         org-geo2 (handler.geo/get-geo-vector-v2 org-id org)
         org-geo (handler.geo/get-geo-vector org-id org)]
     (if (seq org-geo2)
@@ -89,6 +93,7 @@
 
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
   (into [:map
+    [:id {:optional true} int?]
     [:name string?]
     [:url string?]
     [:logo {:optional true} string?]
