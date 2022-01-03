@@ -69,7 +69,7 @@
       (doseq [association (expand-entity-associations entity_connections event-id)]
         (db.favorite/new-organisation-association conn association)))
     (when (not-empty individual_connections)
-      (doseq [association (expand-individual-associations entity_connections event-id)]
+      (doseq [association (expand-individual-associations individual_connections event-id)]
         (db.favorite/new-association conn association)))
     (when (not-empty urls)
       (let [lang-urls (map #(vector event-id
