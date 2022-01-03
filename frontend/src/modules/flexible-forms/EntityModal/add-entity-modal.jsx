@@ -21,6 +21,8 @@ import cloneDeep from "lodash/cloneDeep";
 import isEmpty from "lodash/isEmpty";
 import api from "../../../utils/api";
 import { notification } from "antd";
+import uniqBy from "lodash/uniqBy";
+import sortBy from "lodash/sortBy";
 
 const Form = withTheme(AntDTheme);
 
@@ -141,7 +143,7 @@ const ModalAddEntity = ({ visible, close }) => {
   };
 
   const handleOnSubmit = ({ formData }) => {
-    let data = { ...formData };
+    let data = { ...formData, id: -1, stakeholder: "" };
     data = handleGeoCoverageValue(data, formData, countries);
 
     if (data.geoCoverageType === "transnational") {
@@ -158,8 +160,9 @@ const ModalAddEntity = ({ visible, close }) => {
     delete data.geoCoverageValue;
 
     setSending(true);
+
     api
-      .post("//api/organisation", data)
+      .post("/organisation", data)
       .then(() => {
         UIStore.update((e) => {
           e.formStep = {
@@ -172,6 +175,21 @@ const ModalAddEntity = ({ visible, close }) => {
         entityData.update((e) => {
           e.data = {};
         });
+        Promise.all([
+          api.get("/organisation"),
+          api.get("/non-member-organisation"),
+        ]).then((res) => {
+          const [organisation, nonMemberOrganisations] = res;
+          UIStore.update((e) => {
+            e.organisations = uniqBy(
+              sortBy(organisation.data, ["name"])
+            ).sort((a, b) => a.name.localeCompare(b.name));
+            e.nonMemberOrganisations = uniqBy(
+              sortBy(nonMemberOrganisations.data, ["name"])
+            ).sort((a, b) => a.name.localeCompare(b.name));
+          });
+        });
+        close();
         setDisabledBtn({ disabled: true, type: "default" });
       })
       .catch(() => {
