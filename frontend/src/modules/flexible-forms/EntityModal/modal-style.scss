@@ -14,4 +14,17 @@
     border-radius: 50px;
     line-height: 16px;
   }
+  .ant-input,
+  .ant-input-number-input,
+  .ant-picker,
+  .ant-select,
+  .ant-select-selector {
+    background-color: #edf2f6;
+
+    // border-color: #edf2f6;
+  }
+
+  .ant-select-selector {
+    background-color: #edf2f6 !important;
+  }
 }

@@ -6,10 +6,10 @@ export const schema = {
   title: "",
   type: "object",
   required: [
-    "title",
-    "org",
-    "publishYear",
+    "name",
+    "url",
     "country",
+    "type",
     "geoCoverageType",
     "geoCoverageValueRegional",
     "geoCoverageValueNational",
