@@ -51,14 +51,8 @@ const getSchema = ({
   currencies,
 }) => {
   const prop = cloneDeep(schema[selectedMainContentType].properties);
-  let otherArray = [
-    {
-      id: -1,
-      name: "Other",
-    },
-  ];
 
-  let array = [...organisations, ...nonMemberOrganisations, ...otherArray];
+  let array = [...organisations, ...nonMemberOrganisations];
 
   prop.S4.properties.S4_G5.properties[
     "entity"
