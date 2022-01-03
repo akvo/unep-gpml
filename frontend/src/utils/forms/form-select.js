@@ -1,8 +1,8 @@
 /* eslint-disable no-else-return */
 import React from "react";
-
 import { utils } from "@rjsf/core";
-import Select from "antd/lib/select";
+import { Select, Divider, Input } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
 const { asNumber, guessType } = utils;
 
@@ -36,6 +36,20 @@ const processValue = (schema, value) => {
   return value;
 };
 
+const AddOrgBtn = () => (
+  <div className="add-org-btn">
+    <Divider style={{ margin: "4px 0" }} />
+    <div
+      role="button"
+      tabIndex={-1}
+      style={{ padding: "8px", cursor: "pointer" }}
+    >
+      <PlusOutlined />
+      {"Add new entity"}
+    </div>
+  </div>
+);
+
 const SelectWidget = ({
   autofocus,
   disabled,
@@ -62,6 +76,9 @@ const SelectWidget = ({
   const getPopupContainer = (node) => node.parentNode;
   const stringify = (currentValue) =>
     Array.isArray(currentValue) ? value.map(String) : String(value);
+
+  const showEntity = uiSchema["ui:options"]?.["showEntity"];
+
   return (
     <Select
       allowClear={uiSchema?.["ui:allowClear"] ? true : false}
@@ -83,6 +100,21 @@ const SelectWidget = ({
       style={SELECT_STYLE}
       value={typeof value !== "undefined" ? stringify(value) : undefined}
       virtual={false}
+      dropdownRender={(menu) => (
+        <div>
+          {menu}
+          {showEntity && (
+            <>
+              <Divider style={{ margin: "4px 0" }} />
+              <div style={{ display: "flex", flexWrap: "nowrap", padding: 8 }}>
+                <a>
+                  <PlusOutlined /> Add new entity
+                </a>
+              </div>
+            </>
+          )}
+        </div>
+      )}
     >
       {enumOptions &&
         enumOptions.map(({ value: optionValue, label: optionLabel }, i) => (
