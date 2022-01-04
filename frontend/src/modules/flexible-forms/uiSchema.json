@@ -1479,7 +1479,7 @@
     "S5": {
       "classNames": "list-group",
       "S5_G1": {
-        "publishYear": {
+        "yearFounded": {
           "ui:widget": "date",
           "ui:showSearch": true,
           "ui:span": 12,
@@ -1487,6 +1487,12 @@
             "mode": "year",
             "disableDate": "future"
           }
+        },
+        "organisationType": {
+          "ui:span": 12,
+          "ui:placeholder": "Choose the organisation type",
+          "ui:widget": "select",
+          "ui:showSearch": true
         }
       }
     }

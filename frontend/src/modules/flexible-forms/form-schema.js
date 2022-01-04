@@ -162,6 +162,8 @@ export const schema = {
             properties: {
               entity: {
                 title: "Entity connection",
+                description: "entity",
+                custom: "entity",
                 type: "array",
                 items: {
                   title: "",
@@ -183,6 +185,8 @@ export const schema = {
               },
               individual: {
                 title: "Individual connection",
+                description: "individual",
+                custom: "stakeholder",
                 type: "array",
                 items: {
                   title: "",
@@ -407,6 +411,8 @@ export const schema = {
             properties: {
               entity: {
                 title: "Entity connection",
+                description: "entity",
+                custom: "entity",
                 type: "array",
                 items: {
                   title: "",
@@ -428,6 +434,8 @@ export const schema = {
               },
               individual: {
                 title: "Individual connection",
+                description: "individual",
+                custom: "stakeholder",
                 type: "array",
                 items: {
                   title: "",
@@ -663,6 +671,8 @@ export const schema = {
             properties: {
               entity: {
                 title: "Entity connection",
+                description: "entity",
+                custom: "entity",
                 type: "array",
                 items: {
                   title: "",
@@ -684,6 +694,8 @@ export const schema = {
               },
               individual: {
                 title: "Individual connection",
+                description: "individual",
+                custom: "stakeholder",
                 type: "array",
                 items: {
                   title: "",
@@ -950,6 +962,8 @@ export const schema = {
             properties: {
               entity: {
                 title: "Entity connection",
+                description: "entity",
+                custom: "entity",
                 type: "array",
                 items: {
                   title: "",
@@ -971,6 +985,8 @@ export const schema = {
               },
               individual: {
                 title: "Individual connection",
+                description: "individual",
+                custom: "stakeholder",
                 type: "array",
                 items: {
                   title: "",
@@ -1220,10 +1236,13 @@ export const schema = {
             properties: {
               entity: {
                 title: "Entity connection",
+                description: "entity",
+                custom: "entity",
                 type: "array",
                 items: {
                   title: "",
                   type: "object",
+                  required: ["role", "entity"],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -1240,6 +1259,8 @@ export const schema = {
               },
               individual: {
                 title: "Individual connection",
+                description: "individual",
+                custom: "stakeholder",
                 type: "array",
                 items: {
                   title: "",
@@ -1464,6 +1485,8 @@ export const schema = {
             properties: {
               entity: {
                 title: "Entity connection",
+                description: "entity",
+                custom: "entity",
                 type: "array",
                 items: {
                   title: "",
@@ -1485,6 +1508,8 @@ export const schema = {
               },
               individual: {
                 title: "Individual connection",
+                description: "individual",
+                custom: "stakeholder",
                 type: "array",
                 items: {
                   title: "",
@@ -1576,32 +1601,6 @@ export const schema = {
     version: "2",
     label: "technology",
     properties: {
-      S2: {
-        title: "",
-        type: "object",
-        depend: {
-          id: "tabs",
-          value: ["S2"],
-        },
-        required: ["S2_1"],
-        properties: {
-          S2_1: {
-            title: "Are you directly managing this resource?",
-            type: "string",
-            enum: ["1-0", "1-1"],
-            enumNames: [
-              "You are granting editing and deleting rights ",
-              "You are categorized as a submitter ",
-            ],
-          },
-          "S2_G1_1.1": {
-            title:
-              "Please select other individuals that will support in managing the resource.",
-            enum: [],
-            enumNames: [],
-          },
-        },
-      },
       S4: {
         title: "",
         type: "object",
@@ -1642,7 +1641,6 @@ export const schema = {
               value: 1,
             },
             required: [
-              "country",
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
@@ -1751,6 +1749,8 @@ export const schema = {
             properties: {
               entity: {
                 title: "Entity connection",
+                description: "entity",
+                custom: "entity",
                 type: "array",
                 items: {
                   title: "",
@@ -1772,6 +1772,8 @@ export const schema = {
               },
               individual: {
                 title: "Individual connection",
+                description: "individual",
+                custom: "stakeholder",
                 type: "array",
                 items: {
                   title: "",
@@ -1833,9 +1835,20 @@ export const schema = {
             type: "object",
             required: [],
             properties: {
-              publishYear: {
-                title: "PUBLICATION YEAR",
+              yearFounded: {
+                title: "Year Founded",
                 type: "string",
+              },
+              organisationType: {
+                title: "ORGANISATION TYPE",
+                enum: [
+                  "Established Company",
+                  "Research Lab",
+                  "Academic Institution",
+                  "Startup",
+                  "Non-Profit Org",
+                  "Partnerships",
+                ],
               },
             },
           },
@@ -2023,6 +2036,8 @@ export const schema = {
             properties: {
               entity: {
                 title: "Entity connection",
+                description: "entity",
+                custom: "entity",
                 type: "array",
                 items: {
                   title: "",
@@ -2044,6 +2059,8 @@ export const schema = {
               },
               individual: {
                 title: "Individual connection",
+                description: "individual",
+                custom: "stakeholder",
                 type: "array",
                 items: {
                   title: "",

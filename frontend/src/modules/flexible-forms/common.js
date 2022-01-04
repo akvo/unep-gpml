@@ -126,6 +126,18 @@ const getSchema = ({
     );
   }
 
+  if (selectedMainContentType === "technology") {
+    const tagsPlusTopics = tags?.topics
+      ? tags.technology?.concat(tags.topics)
+      : tags.technology;
+    prop.S4.properties.S4_G3.properties[
+      "tags"
+    ].enum = tagsPlusTopics?.map((x) => String(x.id));
+    prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
+      (x) => x.tag
+    );
+  }
+
   if (selectedMainContentType === "policy") {
     const tagsPlusTopics = tags?.topics
       ? tags.policy?.concat(tags.topics)

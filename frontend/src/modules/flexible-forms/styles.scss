@@ -562,3 +562,27 @@
     border-radius: 2px;
   }
 }
+.ant-collapse-header {
+  display: flex;
+  width: 100%;
+  .collapse-heaeder {
+    color: #3176ae;
+    font-weight: 700;
+    text-transform: capitalize;
+  }
+  .collapse-subHeaeder {
+    text-transform: uppercase;
+    color: #384e85;
+    border: 1px solid #384e85;
+    box-sizing: border-box;
+    border-radius: 60px;
+    padding: 0px 10px;
+  }
+  .ant-collapse-extra {
+    display: flex;
+    float: none !important;
+    justify-content: space-between;
+    flex: 1;
+    padding-left: 35px;
+  }
+}
