@@ -172,6 +172,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
               right: "0",
               position: "absolute",
               color: color,
+              borderColor: "#1CA585",
               backgroundColor: background,
               display: display,
             }}
