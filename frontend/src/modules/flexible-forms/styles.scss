@@ -586,3 +586,8 @@
     padding-left: 35px;
   }
 }
+.custom-child-title,
+.custom-step-title {
+  display: flex;
+  align-items: center;
+}
