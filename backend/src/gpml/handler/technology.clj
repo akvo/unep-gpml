@@ -115,7 +115,7 @@
     [:development_stage {:optional true}
      [:enum "In market", "Scale up", "Prototype", "Pilot"
       "Development", "Research"]]
-    [:country integer?]
+    [:country {:optional true} integer?]
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]

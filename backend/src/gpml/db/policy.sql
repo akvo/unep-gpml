@@ -20,6 +20,8 @@ insert into policy(
     image
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :created_by) ", created_by")
+--~ (when (contains? params :info_docs) ", info_docs")
+--~ (when (contains? params :sub_content_type) ", sub_content_type")
 )
 values(
     :title,
@@ -41,6 +43,8 @@ values(
     :image
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :created_by) ", :created_by")
+--~ (when (contains? params :info_docs) ", :info_docs")
+--~ (when (contains? params :sub_content_type) ", :sub_content_type")
 )
 returning id;
 
