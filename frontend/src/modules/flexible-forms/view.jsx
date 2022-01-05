@@ -172,6 +172,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
               right: "0",
               position: "absolute",
               color: color,
+              borderColor: "#1CA585",
               backgroundColor: background,
               display: display,
             }}
@@ -204,10 +205,39 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
     const childs = steps.map(({ group, key, title, desc }) => {
       const requiredFields = data?.[section]?.required?.[group]?.length || 0;
+      const customChildTitle = (status) => {
+        const color = requiredFields === 0 ? "#255B87" : "#fff";
+        const background = requiredFields === 0 ? "#fff" : "#fff";
+        const display =
+          status === "active"
+            ? "unset"
+            : requiredFields === 0
+            ? "unset"
+            : "none";
+        return (
+          <div className="custom-child-title">
+            <span>{title}</span>
+            <Button
+              type="ghost"
+              size="small"
+              shape="circle"
+              icon={requiredFields === 0 ? <CheckOutlined /> : <EditOutlined />}
+              style={{
+                right: "0",
+                position: "absolute",
+                color: color,
+                borderColor: "#255B87",
+                backgroundColor: background,
+                display: display,
+              }}
+            />
+          </div>
+        );
+      };
       return (
         <Step
           key={section + key}
-          title={`${title}`}
+          title={customChildTitle("active")}
           className={"child-item"}
           status={requiredFields === 0 ? "finish" : "process"}
         />

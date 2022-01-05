@@ -12,6 +12,8 @@ import { Collapse } from "antd";
 
 const { Panel } = Collapse;
 
+import { UIStore } from "../../store";
+
 const DESCRIPTION_COL_STYLE = {
   paddingBottom: "8px",
 };
@@ -56,13 +58,10 @@ const NormalArrayFieldTemplate = ({
   const formGroup = group && items.length !== 0 ? `group-${group}` : "";
 
   useEffect(() => {
-    // add one items by default
     if (group && items.length === 0) {
       onAddClick();
     }
   }, [group, items, onAddClick]);
-
-  console.log(formData, "data");
 
   return (
     <>
@@ -82,19 +81,63 @@ const NormalArrayFieldTemplate = ({
             <Collapse defaultActiveKey={["1"]}>
               {items &&
                 items.map((itemProps, index) => {
+                  const label = schema?.["description"];
+                  const custom = schema?.["custom"];
+                  let array = [
+                    ...UIStore.currentState.organisations,
+                    ...UIStore.currentState.nonMemberOrganisations,
+                  ];
                   return (
                     <Panel
-                      header={"Akvo"}
+                      header={
+                        <div className="collapse-heaeder">
+                          {formContext?.data.S4["S4_G5"][label].length > 0 &&
+                          formContext?.data.S4["S4_G5"][label][
+                            index
+                          ]?.hasOwnProperty("role")
+                            ? custom === "entity"
+                              ? array.find(
+                                  (element) =>
+                                    element.id ===
+                                    formContext?.data.S4["S4_G5"][label]?.[
+                                      index
+                                    ]?.[custom]
+                                )?.name
+                              : UIStore.currentState.stakeholders.stakeholders.find(
+                                  (element) =>
+                                    element.id ===
+                                    formContext?.data.S4["S4_G5"][label]?.[
+                                      index
+                                    ]?.[custom]
+                                )?.firstName
+                            : ""}
+                        </div>
+                      }
                       key={index}
                       extra={
-                        <DeleteOutlined
-                          onClick={
-                            items.length !== 0 &&
-                            items[items.length - 1].onDropIndexClick(
-                              items.length - 1
-                            )
-                          }
-                        />
+                        <>
+                          {formContext?.data.S4["S4_G5"][label].length > 0 &&
+                            formContext?.data.S4["S4_G5"][label][
+                              index
+                            ]?.hasOwnProperty("role") && (
+                              <div className="collapse-subHeaeder">
+                                {
+                                  formContext?.data.S4["S4_G5"][label][index]
+                                    .role
+                                }
+                              </div>
+                            )}
+                          <div style={{ marginLeft: "auto" }}>
+                            <DeleteOutlined
+                              onClick={
+                                items.length !== 0 &&
+                                items[items.length - 1].onDropIndexClick(
+                                  items.length - 1
+                                )
+                              }
+                            />
+                          </div>
+                        </>
                       }
                     >
                       <ArrayFieldTemplateItem

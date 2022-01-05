@@ -17,13 +17,7 @@ import {
   transformFormData,
   collectDependSchemaRefactor,
 } from "../initiative/form";
-import {
-  handleGeoCoverageValue,
-  checkRequiredFieldFilledIn,
-  checkDependencyAnswer,
-  customFormats,
-  collectDependSchema,
-} from "../../utils/forms";
+import { checkRequiredFieldFilledIn, customFormats } from "../../utils/forms";
 import api from "../../utils/api";
 
 const Form = withTheme(AntDTheme);
@@ -67,7 +61,20 @@ const FlexibleForm = withRouter(
     const [editCheck, setEditCheck] = useState(true);
 
     const handleOnSubmit = ({ formData }) => {
-      console.log(formData);
+      if (mainType === "Policy") {
+        handleOnSubmitPolicy(formData);
+        return false;
+      }
+
+      if (mainType === "Event") {
+        handleOnSubmitEvent(formData);
+        return false;
+      }
+
+      if (mainType === "Technology") {
+        handleOnSubmitTechnology(formData);
+        return false;
+      }
 
       delete formData?.tabs;
       delete formData?.steps;
@@ -91,19 +98,39 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
-      // data.org = {
-      //   id: parseInt(Object.keys(data.orgName)[0]),
-      // };
+
       if (data.resourceType === "Financing Resource") {
-        data.valueCurrency = Object.keys(data.valueCurrency)[0];
-        data.validTo = data.validTo || "Ongoing";
-        data.value = data.valueAmount;
+        if (data.hasOwnProperty("valueCurrency")) {
+          data.valueCurrency = Object.keys(data?.valueCurrency)[0];
+        }
+        if (data.hasOwnProperty("validFrom")) {
+          data.validFrom = data?.validFrom;
+          data.validTo = "Ongoing";
+        }
+        if (data.hasOwnProperty("validTo")) {
+          data.validTo = data?.validTo;
+        }
+        if (data.hasOwnProperty("valueAmount")) {
+          data.value = data?.valueAmount;
+        }
+
         delete data.valueAmount;
-        if (data.valueRemark) {
+        if (data.hasOwnProperty("valueRemark")) {
           data.valueRemarks = data.valueRemark;
           delete data.valueRemark;
         }
       }
+
+      if (data.resourceType === "Action Plan") {
+        if (data.hasOwnProperty("validTo")) {
+          data.validTo = data?.validTo;
+        }
+        if (data.hasOwnProperty("validFrom")) {
+          data.validFrom = data?.validFrom;
+          data.validTo = "Ongoing";
+        }
+      }
+
       delete data.orgName;
 
       data.tags =
@@ -159,6 +186,244 @@ const FlexibleForm = withRouter(
           .post("/resource", data)
           .then(() => {
             // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully created" });
+          })
+          .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+    };
+
+    const handleOnSubmitPolicy = (formData) => {
+      delete formData?.tabs;
+      delete formData?.steps;
+      delete formData?.required;
+
+      let data = {
+        ...formData,
+      };
+
+      transformFormData(data, formData, formSchema.schema.properties, true);
+
+      data.version = parseInt(formSchema.schema.version);
+
+      delete data?.S1;
+      delete data?.S2;
+      delete data?.S3;
+      delete data?.S4;
+      delete data?.S5;
+
+      data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
+
+      if (data?.urls) {
+        data.urls = data.urls.map((x) => {
+          return {
+            url: x,
+            lang: "en",
+          };
+        });
+      }
+
+      data.tags =
+        formData.S4.S4_G3.tags &&
+        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+
+      if (data.hasOwnProperty("firstPublicationDate")) {
+        data.firstPublicationDate = data.firstPublicationDate;
+      }
+
+      if (data.hasOwnProperty("latestAmendmentDate")) {
+        data.latestAmendmentDate = data.latestAmendmentDate;
+      }
+
+      if (data.hasOwnProperty("implementingMea")) {
+        data.implementingMea = parseInt(Object.keys(data.implementingMea)[0]);
+      }
+
+      if (data?.entity) {
+        data.entityConnections = data.entity;
+        delete data.entity;
+      }
+
+      if (data?.individual) {
+        data.individualConnections = data.individual;
+        delete data.individual;
+      }
+      if (data?.info) {
+        data.infoDocs = data.info;
+        delete data.info;
+      }
+
+      if (status === "add" && !params?.id) {
+        api
+          .post("/policy", data)
+          .then(() => {
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully created" });
+          })
+          .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+    };
+
+    ///
+
+    const handleOnSubmitEvent = (formData) => {
+      delete formData?.tabs;
+      delete formData?.steps;
+      delete formData?.required;
+
+      let data = {
+        ...formData,
+      };
+
+      transformFormData(data, formData, formSchema.schema.properties, true);
+
+      data.version = parseInt(formSchema.schema.version);
+
+      delete data?.S1;
+      delete data?.S2;
+      delete data?.S3;
+      delete data?.S4;
+      delete data?.S5;
+
+      data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
+
+      if (data?.urls) {
+        data.urls = data.urls.map((x) => {
+          return {
+            url: x,
+            lang: "en",
+          };
+        });
+      }
+
+      data.tags =
+        formData.S4.S4_G3.tags &&
+        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+
+      if (data.hasOwnProperty("startDate")) {
+        data.startDate = data.startDate;
+      }
+
+      if (data.hasOwnProperty("endDate")) {
+        data.endDate = data.endDate;
+      }
+
+      if (data?.entity) {
+        data.entityConnections = data.entity;
+        delete data.entity;
+      }
+
+      if (data?.individual) {
+        data.individualConnections = data.individual;
+        delete data.individual;
+      }
+      if (data?.info) {
+        data.infoDocs = data.info;
+        delete data.info;
+      }
+
+      if (status === "add" && !params?.id) {
+        api
+          .post("/event", data)
+          .then(() => {
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully created" });
+          })
+          .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+    };
+
+    ///
+
+    const handleOnSubmitTechnology = (formData) => {
+      delete formData?.tabs;
+      delete formData?.steps;
+      delete formData?.required;
+
+      let data = {
+        ...formData,
+      };
+
+      transformFormData(data, formData, formSchema.schema.properties, true);
+
+      data.version = parseInt(formSchema.schema.version);
+
+      delete data?.S1;
+      delete data?.S2;
+      delete data?.S3;
+      delete data?.S4;
+      delete data?.S5;
+
+      data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
+
+      if (data?.yearFounded) {
+        const yearFounded = new Date(data.yearFounded);
+        data.yearFounded = yearFounded.getFullYear();
+      }
+
+      if (data?.title) {
+        data.name = data.title;
+        delete data.title;
+      }
+
+      if (data?.urls) {
+        data.urls = data.urls.map((x) => {
+          return {
+            url: x,
+            lang: "en",
+          };
+        });
+      }
+
+      data.tags =
+        formData.S4.S4_G3.tags &&
+        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+
+      if (data?.entity) {
+        data.entityConnections = data.entity;
+        delete data.entity;
+      }
+
+      if (data?.individual) {
+        data.individualConnections = data.individual;
+        delete data.individual;
+      }
+      if (data?.info) {
+        data.infoDocs = data.info;
+        delete data.info;
+      }
+
+      if (status === "add" && !params?.id) {
+        api
+          .post("/technology", data)
+          .then(() => {
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
               e.data = initialData;
@@ -252,8 +517,20 @@ const FlexibleForm = withRouter(
         });
         // enable btn submit
         requiredFilledIn.length === 0 &&
+          (initialFormData?.currentState?.data.S4[
+            "S4_G5"
+          ].individual[0].hasOwnProperty("role") &&
+            initialFormData?.currentState?.data.S4[
+              "S4_G5"
+            ].individual[0].hasOwnProperty("stakeholder")) === true &&
           setDisabledBtn({ disabled: false, type: "primary" });
         requiredFilledIn.length !== 0 &&
+          (initialFormData?.currentState?.data.S4[
+            "S4_G5"
+          ].individual[0].hasOwnProperty("role") &&
+            initialFormData?.currentState?.data.S4[
+              "S4_G5"
+            ].individual[0].hasOwnProperty("stakeholder")) === false &&
           setDisabledBtn({ disabled: true, type: "default" });
       },
       [initialFormData, formSchema, setDisabledBtn]
@@ -267,28 +544,6 @@ const FlexibleForm = withRouter(
       });
       const res = overideValidation(errors, dependValue);
       res.length === 0 && setHighlight(false);
-      if (res.length > 0) {
-        const descriptionList = res.map((r, index) => {
-          const { property, message } = r;
-          const tabSection = property
-            .replace(".", "")
-            .replace("['", "_")
-            .replace("']", "_")
-            .split("_")[0];
-          const tabSectionTitle = tabsData.find((x) => x.key === tabSection)
-            ?.title;
-          return (
-            <li key={`${property}-${index}`}>
-              {tabSectionTitle}:{" "}
-              <Typography.Text type="danger">{message}</Typography.Text>
-            </li>
-          );
-        });
-        notification.error({
-          message: "Error",
-          description: <ul>{descriptionList}</ul>,
-        });
-      }
       return res;
     };
 
@@ -311,6 +566,7 @@ const FlexibleForm = withRouter(
               handleTransformErrors(errors, dependValue)
             }
             showErrorList={false}
+            formContext={flexibleFormData}
           >
             <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
               Fire
