@@ -75,6 +75,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const btnSubmit = useRef();
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
+  const [capacityBuilding, setCapacityBuilding] = useState(true);
   const [mainType, setMainType] = useState("initiative");
   const [label, setLabel] = useState("");
   const [subType, setSubType] = useState("");
@@ -337,6 +338,15 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   };
 
   const handleMainContentType = (e) => {
+    setCapacityBuilding(false);
+    if (e.target.value === "capacity_building") {
+      setMainType(e.target.value);
+      const search = mainContentType.find(
+        (element) => element.code === e.target.value
+      ).childs;
+      setSubContentType(search);
+      return;
+    }
     setMainType(e.target.value);
     const search = mainContentType.find(
       (element) => element.code === e.target.value
@@ -352,10 +362,43 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   };
 
   const handleSubContentType = (e) => {
+    console.log(e.target.value);
     setSubType(e.target.value);
+    if (
+      mainType === "capacity_building" &&
+      (e.target.value === "Guidance Documents" ||
+        e.target.value === "Tools & toolkits" ||
+        e.target.value === "Courses & Trainings" ||
+        e.target.value === "Educational & Outreach resources" ||
+        e.target.value === "Case studies")
+    ) {
+      setLabel("Technical Resource");
+      setFormSchema({ schema: schema["technical"] });
+      setCapacityBuilding(true);
+      UIStore.update((event) => {
+        event.selectedMainContentType = "technical";
+      });
+    }
+    if (
+      mainType === "capacity_building" &&
+      e.target.value === "Financing Resources"
+    ) {
+      setLabel("Financing Resource");
+      setFormSchema({ schema: schema["financing"] });
+      setCapacityBuilding(true);
+      UIStore.update((event) => {
+        event.selectedMainContentType = "financing";
+      });
+    }
+    if (mainType === "capacity_building" && e.target.value === "Events") {
+      setLabel("Event");
+      setFormSchema({ schema: schema["event_flexible"] });
+      setCapacityBuilding(true);
+      UIStore.update((event) => {
+        event.selectedMainContentType = "event_flexible";
+      });
+    }
   };
-
-  // console.log(data?.required?.[data.tabs[0]]?.length || 0);
 
   return (
     <div id="flexible-forms">
@@ -605,6 +648,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       mainType={label}
                       owners={owners}
                       subContentType={subType}
+                      capacityBuilding={capacityBuilding}
                     />
                   </Row>
                 )}

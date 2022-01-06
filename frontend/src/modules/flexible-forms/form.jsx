@@ -40,6 +40,7 @@ const FlexibleForm = withRouter(
     mainType,
     owners,
     subContentType,
+    capacityBuilding,
     match: { params },
   }) => {
     const {
@@ -67,7 +68,7 @@ const FlexibleForm = withRouter(
       }
 
       if (mainType === "Event") {
-        handleOnSubmitEvent(formData);
+        handleOnSubmitEvent(formData, capacityBuilding);
         return false;
       }
 
@@ -85,6 +86,7 @@ const FlexibleForm = withRouter(
         ...formData,
         resourceType: mainType,
         subContentType: subContentType,
+        ...(capacityBuilding && { capacityBuilding: true }),
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);
@@ -291,6 +293,7 @@ const FlexibleForm = withRouter(
 
       let data = {
         ...formData,
+        ...(capacityBuilding && { capacityBuilding: true }),
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);
