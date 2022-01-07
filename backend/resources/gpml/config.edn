@@ -379,14 +379,12 @@
                                         ["/activity"
                                          [""
                                           {:get {:summary "Get the most recent activities"
-                                                 ;; TODO: add middleware for authentication
                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
                                                               #ig/ref :gpml.auth/auth-required]
                                                  :swagger {:tags ["recent activities"] :security [{:id_token []}]}
                                                  :responses {200 {:body #ig/ref :gpml.handler.activity/get-response}}
                                                  :handler #ig/ref :gpml.handler.activity/get}
                                            :post {:summary "Create a new activity"
-                                                  ;; TODO: add middleware for authentication
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                #ig/ref :gpml.auth/auth-required]
                                                   :swagger {:tags ["create activity"] :security [{:id_token []}]}
