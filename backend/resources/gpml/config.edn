@@ -521,7 +521,6 @@
   :gpml.handler.activity/post-params {}
   :gpml.handler.activity/post-response {}
 
-
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
   :duct.database/sql {:jdbc-url #duct/env "DATABASE_URL"}
