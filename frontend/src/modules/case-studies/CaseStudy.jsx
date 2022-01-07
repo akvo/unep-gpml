@@ -50,11 +50,14 @@ const CaseStudy = ({
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           display: "flex",
-          minHeight: "100vh",
+          height: 981,
+          borderBottom: "4px solid #18162F",
+          borderLeft: "4px solid #18162F",
+          borderTop: "4px solid #18162F",
         }}
       >
         <div className="p-4">
-          <Title level={2}>{name}</Title>
+          <Title>{name}</Title>
         </div>
       </Col>
       <Col
@@ -62,6 +65,10 @@ const CaseStudy = ({
         sm={24}
         style={{
           backgroundColor: bgImage.color,
+          borderBottom: "4px solid #18162F",
+          borderRight: "4px solid #18162F",
+          borderLeft: "1px solid #18162F",
+          borderTop: "4px solid #18162F",
         }}
       >
         <div className="p-4 content-text">
@@ -73,7 +80,7 @@ const CaseStudy = ({
               </Paragraph>
             </Col>
             <Col span={3}>
-              <img src={iconGlobe} style={{ width: "100%" }} />
+              <img src={iconGlobe} style={{ width: 47, height: 47 }} />
             </Col>
             <Col span={21} style={{ padding: 0 }}>
               <Text>{geo_coverage}</Text>
@@ -110,18 +117,6 @@ const CaseStudy = ({
                     );
                   })}
               </div>
-            </Col>
-            <Col span={24}>
-              <Button
-                type="link"
-                href={platform_links}
-                shape="round"
-                className="green-border"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Learn More
-              </Button>
             </Col>
           </Row>
         </div>

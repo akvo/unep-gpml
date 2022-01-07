@@ -8,9 +8,10 @@ $bg-events: #5f4373;
 .ant-page-header-heading-title > span.text-green {
   font-size: 24px;
 }
-.bg-dark-primary {
+.ui-header {
+  padding: 10px 10px 10px 50px;
   background-color: $bg-dark-primary;
-  opacity: 0.8;
+  border-bottom: 1px solid #fff;
 }
 .sidebar {
   background-color: $bg-dark-primary;
@@ -29,6 +30,7 @@ $bg-events: #5f4373;
     }
     &.active {
       background: rgba(5, 240, 129, 0.2);
+      border-left: 3px solid #07e982;
     }
     .item-menu {
       margin: auto;
@@ -216,7 +218,9 @@ $bg-events: #5f4373;
     }
   }
 }
-
+.text-right {
+  text-align: right;
+}
 /* Mobile */
 @media only screen and (max-width: 474px) {
   html {
