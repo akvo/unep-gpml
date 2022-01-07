@@ -1,20 +1,23 @@
 $green-primary: #4dffa5;
-.case-studies {
-  .ant-btn-link {
-    &.green-border {
-      border: 2px solid $green-primary;
-      box-sizing: border-box;
-      border-radius: 20.5px;
-      color: $green-primary !important;
-    }
+.ant-btn-link {
+  &.green-border {
+    border: 2px solid $green-primary;
+    color: $green-primary !important;
+    width: 154px;
+    height: 41px;
+    line-height: 35px;
   }
-  h2.ant-typography {
+}
+.case-studies {
+  h1.ant-typography {
     font-family: Open Sans;
     font-style: normal;
     font-weight: bold;
+    font-size: 48px;
+    line-height: 71px;
     text-transform: capitalize;
     color: #fff !important;
-    text-shadow: 1px 0 rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
   }
   .title {
     font-family: Open Sans;
@@ -101,6 +104,72 @@ $green-primary: #4dffa5;
         font-weight: bold;
         line-height: 60px;
       }
+    }
+  }
+}
+
+#case-study {
+  .ant-select {
+    width: 100%;
+    .ant-select-selector {
+      background: #fff;
+      box-shadow: 0px 10px 10px rgba(46, 213, 115, 0.15);
+      border-radius: 30px !important;
+    }
+  }
+  .ant-select-arrow {
+    top: 11px !important;
+    right: 24px !important;
+  }
+  .ant-btn {
+    &.btn-download {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      border-color: transparent !important;
+      color: #fff;
+      width: 190px;
+      height: 50px;
+      &:hover {
+        color: #40a9ff;
+        border-color: #40a9ff !important;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  //For Projectors or Higher Resolution Screens (Full HD)
+  #case-study {
+    .ui-container {
+      max-width: 85%;
+      margin: 0 auto;
+    }
+    .ant-layout-content {
+      background: #18162f;
+    }
+  }
+}
+@media screen and (min-width: 2560px) {
+  // For 2K, Quad HD, QHD Displays
+  #case-study {
+    .ui-container {
+      max-width: 65%;
+      margin: 0 auto;
+    }
+    .ant-layout-content {
+      background: #18162f;
+    }
+  }
+}
+@media screen and (min-width: 3840px) {
+  //For 4K Displays (Ultra HD)
+  #case-study {
+    .ui-container {
+      max-width: 55%;
+      margin: 0 auto;
+    }
+    .ant-layout-content {
+      background: #18162f;
     }
   }
 }

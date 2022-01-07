@@ -1,0 +1,30 @@
+#capacity-building {
+  background-color: #fff;
+}
+@media screen and (min-width: 1920px) {
+  //For Projectors or Higher Resolution Screens (Full HD)
+  #capacity-building {
+    .ui-container {
+      max-width: 85%;
+      margin: 0 auto;
+    }
+  }
+}
+@media screen and (min-width: 2560px) {
+  // For 2K, Quad HD, QHD Displays
+  #capacity-building {
+    .ui-container {
+      max-width: 65%;
+      margin: 0 auto;
+    }
+  }
+}
+@media screen and (min-width: 3840px) {
+  //For 4K Displays (Ultra HD)
+  #capacity-building {
+    .ui-container {
+      max-width: 55%;
+      margin: 0 auto;
+    }
+  }
+}
