@@ -162,22 +162,46 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       return (
         <div className="custom-step-title">
           <span>{parentTitle}</span>
-          <Button
-            type="ghost"
-            size="small"
-            shape="circle"
-            icon={
-              totalRequiredFields === 0 ? <CheckOutlined /> : <EditOutlined />
-            }
-            style={{
-              right: "0",
-              position: "absolute",
-              color: color,
-              borderColor: "#1CA585",
-              backgroundColor: background,
-              display: display,
-            }}
-          />
+          {parentTitle === "Basic info" ? (
+            <Button
+              type="ghost"
+              size="small"
+              shape="circle"
+              icon={
+                totalRequiredFields === 0 &&
+                data?.S4?.S4_G5.individual[0].hasOwnProperty("role") ? (
+                  <CheckOutlined />
+                ) : (
+                  <EditOutlined />
+                )
+              }
+              style={{
+                right: "0",
+                position: "absolute",
+                color: color,
+                borderColor: "#1CA585",
+                backgroundColor: background,
+                display: display,
+              }}
+            />
+          ) : (
+            <Button
+              type="ghost"
+              size="small"
+              shape="circle"
+              icon={
+                totalRequiredFields === 0 ? <CheckOutlined /> : <EditOutlined />
+              }
+              style={{
+                right: "0",
+                position: "absolute",
+                color: color,
+                borderColor: "#1CA585",
+                backgroundColor: background,
+                display: display,
+              }}
+            />
+          )}
         </div>
       );
     };
@@ -218,20 +242,51 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
         return (
           <div className="custom-child-title">
             <span>{title}</span>
-            <Button
-              type="ghost"
-              size="small"
-              shape="circle"
-              icon={requiredFields === 0 ? <CheckOutlined /> : <EditOutlined />}
-              style={{
-                right: "0",
-                position: "absolute",
-                color: color,
-                borderColor: "#255B87",
-                backgroundColor: background,
-                display: display,
-              }}
-            />
+            {title === "Stakeholders connections" ? (
+              <Button
+                type="ghost"
+                size="small"
+                shape="circle"
+                icon={
+                  data?.[section]?.S4_G5.individual[0].hasOwnProperty(
+                    "role"
+                  ) ? (
+                    <CheckOutlined />
+                  ) : (
+                    <EditOutlined />
+                  )
+                }
+                style={{
+                  right: "0",
+                  position: "absolute",
+                  color: data?.[section]?.S4_G5.individual[0].hasOwnProperty(
+                    "role"
+                  )
+                    ? "#255B87"
+                    : "#fff",
+                  borderColor: "#255B87",
+                  backgroundColor: background,
+                  display: display,
+                }}
+              />
+            ) : (
+              <Button
+                type="ghost"
+                size="small"
+                shape="circle"
+                icon={
+                  requiredFields === 0 ? <CheckOutlined /> : <EditOutlined />
+                }
+                style={{
+                  right: "0",
+                  position: "absolute",
+                  color: color,
+                  borderColor: "#255B87",
+                  backgroundColor: background,
+                  display: display,
+                }}
+              />
+            )}
           </div>
         );
       };
