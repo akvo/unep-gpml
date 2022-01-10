@@ -226,6 +226,8 @@
         border-radius: 5px;
         width: 100%;
         padding: 20px;
+        position: relative;
+        overflow: hidden;
         .ant-select-selector {
           background-color: #edf2f7;
           border: 2px solid transparent;
@@ -590,4 +592,78 @@
 .custom-step-title {
   display: flex;
   align-items: center;
+}
+
+.Overlay {
+  background-color: rgba(0, 0, 0, 0.55);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  display: none;
+  z-index: 5;
+}
+
+.Overlay.Show {
+  display: block;
+}
+
+.Modal {
+  position: absolute;
+  height: 100%;
+  right: -150vh;
+  background: #fff;
+  width: 400px;
+  box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.15);
+  top: 0;
+  padding: 10px 10px;
+  transition: all 0.3s ease-out;
+  z-index: 8;
+  .hide-button {
+    border: none;
+    background-color: transparent;
+    img {
+      width: 20px;
+      transform: rotate(180deg);
+    }
+    span {
+      color: #34a6ff;
+      margin-left: 5px;
+      font-weight: bold;
+    }
+  }
+}
+
+.Modal.Show {
+  right: 0;
+}
+
+.Close {
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  right: 10px;
+  background-color: transparent;
+  border: 0;
+  font-size: 18px;
+}
+
+.Alert {
+  position: fixed;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid transparent;
+  top: 0;
+  left: 0;
+  color: #fff;
+  background-image: linear-gradient(
+    90deg,
+    #ff9a8b 0%,
+    #ff6a88 55%,
+    #ff99ac 100%
+  );
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
 }

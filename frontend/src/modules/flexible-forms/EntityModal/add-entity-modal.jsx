@@ -143,7 +143,7 @@ const ModalAddEntity = ({ visible, close }) => {
   };
 
   const handleOnSubmit = ({ formData }) => {
-    let data = { ...formData, id: -1, stakeholder: "" };
+    let data = { ...formData, stakeholder: "", isMember: false };
     data = handleGeoCoverageValue(data, formData, countries);
 
     if (data.geoCoverageType === "transnational") {
