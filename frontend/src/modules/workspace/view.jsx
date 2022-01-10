@@ -18,10 +18,10 @@ const plans = [
 ];
 
 const sidebar = [
-  { id: 1, title: "Home", image: "" },
-  { id: 2, title: "Bookmarks", image: "" },
-  { id: 3, title: "Network", image: "" },
-  { id: 4, title: "Admin", image: "" },
+  { id: 1, title: "Home", url: "" },
+  { id: 2, title: "Bookmarks", url: "" },
+  { id: 3, title: "Network", url: "" },
+  { id: 4, title: "Admin", url: "" },
 ];
 
 const icons = [IconHome, IconBookmark, IconNetwork, IconAdmin];

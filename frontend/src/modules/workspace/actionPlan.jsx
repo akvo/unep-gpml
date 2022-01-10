@@ -28,6 +28,7 @@ const ActionPlan = ({ plans, classNames }) => {
               </li>
             ))}
           </ul>
+
           <article className="plan-content">
             <h3 className="plan-heading">Text to be confirmed</h3>
             <p className="plan-paragraph">{selectedStep.content}</p>
