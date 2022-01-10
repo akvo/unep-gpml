@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { Row, Col, Select, Button, Switch, Radio, Popover, Steps } from "antd";
+import { Row, Col, Button, Switch, Radio, Popover, Steps } from "antd";
 import {
   LeftOutlined,
   RightOutlined,
@@ -73,6 +73,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const { editId, data } = formData;
   const { status, id } = formEdit.flexible;
   const btnSubmit = useRef();
+  const [alert, setAlert] = useState("");
+  const [displayModal, setDisplayModal] = useState(false);
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
   const [capacityBuilding, setCapacityBuilding] = useState(true);
@@ -455,6 +457,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
   };
 
+  const onClose = () => {
+    setVisible(!visible);
+  };
+
   return (
     <div id="flexible-forms">
       <StickyBox style={{ zIndex: 10 }}>
@@ -589,9 +595,28 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                         <Button
                           icon={<img src={ExampleIcon} alt="Example button" />}
                           size="large"
+                          onClick={() => setDisplayModal(!displayModal)}
                         >
                           SHOW EXAMPLES
                         </Button>
+                      </div>
+                      <div>
+                        <div className={`Modal ${displayModal ? "Show" : ""}`}>
+                          <Button
+                            icon={
+                              <img src={ExampleIcon} alt="Example button" />
+                            }
+                            size="large"
+                            onClick={() => setDisplayModal(!displayModal)}
+                            className="hide-button"
+                          >
+                            HIDE EXAMPLES
+                          </Button>
+                        </div>
+                        <div
+                          className={`Overlay ${displayModal ? "Show" : ""}`}
+                          onClick={() => setDisplayModal(!displayModal)}
+                        />
                       </div>
                       <Radio.Group
                         className="ant-row"
