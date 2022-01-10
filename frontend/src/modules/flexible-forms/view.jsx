@@ -585,7 +585,14 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                   </Row>
                 ) : getTabStepIndex().tabIndex === 1 ? (
                   <Row>
-                    <div className="main-content">
+                    <div
+                      className="main-content"
+                      style={{
+                        position:
+                          getTabStepIndex().tabIndex === 1 && "relative",
+                        overflow: getTabStepIndex().tabIndex === 1 && "hidden",
+                      }}
+                    >
                       <div className="button-wrapper">
                         <h5>Pick the main content type</h5>
                         <Button
