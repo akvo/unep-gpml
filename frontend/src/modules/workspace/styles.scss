@@ -73,16 +73,13 @@
       opacity: 0.5;
     }
 
-   
-
     &:last-child {
       background-color: rgba(255, 255, 255, 0.1);
     }
 
     &.active {
-      // border-left: 3px solid $green01;
       &::before {
-        content: ' ';
+        content: " ";
         position: absolute;
         top: 0;
         left: 0;
@@ -103,6 +100,7 @@
     width: 100%;
     padding: 14px 10px 17px 8px;
     background-color: #255b87;
+    overflow: hidden;
 
     .create-action-plan {
       font-size: 22px;
@@ -138,7 +136,7 @@
       font-weight: bold;
       font-size: 22px;
       margin-bottom: 0;
-      @media (min-width: 800px) {
+      @media (min-width: 960px) {
         flex-wrap: nowrap;
       }
     }
@@ -149,40 +147,42 @@
       align-items: center;
       background-color: #d3dee7;
       border: 2px solid #ffffff;
-      padding-left: 27.5px;
+      border-right: 1px solid #ffffff;
+      padding-left: 57.5px;
       padding-top: 34px;
       width: 100%;
       padding-bottom: 31px;
       cursor: pointer;
+
       &::after,
       &::before {
         content: " ";
         height: 0;
         width: 0;
         position: absolute;
-        border-style: solid;
       }
 
       &::after {
-        right: -17px;
-        border-width: 37px 0 37px 17px;
-        border-color: transparent transparent transparent #d3dee7;
-        z-index: 10;
+        right: -30px;
+        border-top: 61px solid transparent;
+        border-left: 30px solid #d3dee7;
+        border-bottom: 61px solid transparent;
+        z-index: 2;
+        top: 0px;
       }
 
       &::before {
-        left: -2px;
-        border-width: 37px 0 37px 17px;
-        border-color: transparent transparent transparent #fff;
-        z-index: 0;
+        left: -1px;
+        border-top: 61px solid transparent;
+        border-left: 30px solid #fff;
+        border-bottom: 61px solid transparent;
+        z-index: 1;
+        top: 0px;
       }
 
-      &:first-child::before {
-        border-color: transparent;
-      }
-
+      &:first-child::before,
       &:last-child:after {
-        border-color: transparent;
+        border: 0;
       }
 
       &:first-child {
@@ -228,4 +228,16 @@
       line-height: 44px;
     }
   }
+}
+
+.arrow {
+  color: #d3dee7;
+}
+
+.arrow:hover {
+  color: blue;
+}
+
+.plan-list {
+  position: relative;
 }
