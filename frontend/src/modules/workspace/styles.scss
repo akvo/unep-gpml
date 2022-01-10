@@ -1,0 +1,231 @@
+@import "../../vars.scss";
+
+#workspace {
+  font-size: 24px;
+
+  .header-text {
+    font-size: 24px;
+    font-weight: 400;
+    .user-name {
+      font-weight: 700;
+    }
+  }
+
+  .section-download {
+    padding: 14px 17px 20.3px 17px;
+    .card {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 21px;
+      padding: 37px 36px 41px 36px;
+      border-radius: 10px;
+      background: url("../../images/workspace/dark-sea-bg.png") no-repeat bottom;
+
+      background-size: cover;
+
+      @media (min-width: 800px) {
+        flex-wrap: nowrap;
+      }
+    }
+
+    .download-guidance {
+      font-size: 34px;
+      line-height: 30px;
+      margin-bottom: 30px;
+    }
+
+    .download-link {
+      display: flex;
+      flex-direction: column;
+      padding-top: 63px;
+      width: 100%;
+      text-align: center;
+      background-color: rgba(53, 121, 152, 0.7);
+      border-radius: 22px;
+      max-width: 314px;
+      padding-bottom: 78px;
+      padding-left: 30px;
+      padding-right: 30px;
+      align-items: center;
+      .download-text {
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 20px;
+      }
+      img {
+        width: 100%;
+        max-width: 135.58px;
+        margin-bottom: 30px;
+      }
+    }
+  }
+
+  .item-sidebar {
+    position: relative;
+    p {
+      opacity: 0.5;
+      font-size: 12px;
+    }
+
+    img {
+      opacity: 0.5;
+    }
+
+   
+
+    &:last-child {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &.active {
+      // border-left: 3px solid $green01;
+      &::before {
+        content: ' ';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 100px;
+        background-color: $green01;
+      }
+      p {
+        opacity: 1;
+      }
+      img {
+        opacity: 1;
+      }
+    }
+  }
+
+  .action-plan {
+    width: 100%;
+    padding: 14px 10px 17px 8px;
+    background-color: #255b87;
+
+    .create-action-plan {
+      font-size: 22px;
+      padding-left: calc(25px - 8px);
+      line-height: 33px;
+    }
+
+    .container {
+      border-radius: 10px;
+      padding: 13px;
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .plan-content {
+      background-color: #ffffff;
+      padding-bottom: 78px;
+      padding-top: 55px;
+      padding-left: 36px;
+      padding-right: 27.24px;
+    }
+
+    .line {
+      background-color: #ffffff;
+      padding-bottom: 122px;
+      margin: 0;
+      max-height: 1px;
+      border-top: 1px solid rgba(124, 157, 183, 0.2);
+    }
+
+    .plan-list {
+      display: flex;
+      flex-wrap: wrap;
+      font-weight: bold;
+      font-size: 22px;
+      margin-bottom: 0;
+      @media (min-width: 800px) {
+        flex-wrap: nowrap;
+      }
+    }
+
+    .plan-list-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background-color: #d3dee7;
+      border: 2px solid #ffffff;
+      padding-left: 27.5px;
+      padding-top: 34px;
+      width: 100%;
+      padding-bottom: 31px;
+      cursor: pointer;
+      &::after,
+      &::before {
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        border-style: solid;
+      }
+
+      &::after {
+        right: -17px;
+        border-width: 37px 0 37px 17px;
+        border-color: transparent transparent transparent #d3dee7;
+        z-index: 10;
+      }
+
+      &::before {
+        left: -2px;
+        border-width: 37px 0 37px 17px;
+        border-color: transparent transparent transparent #fff;
+        z-index: 0;
+      }
+
+      &:first-child::before {
+        border-color: transparent;
+      }
+
+      &:last-child:after {
+        border-color: transparent;
+      }
+
+      &:first-child {
+        border-radius: 10px 0 0 10px;
+      }
+
+      &.active {
+        background-color: #ffffff;
+        &::after {
+          border-color: transparent transparent transparent #ffffff;
+        }
+      }
+
+      &:last-child {
+        border-radius: 0 10px 0 0;
+        &.active::after {
+          border-color: transparent;
+        }
+      }
+    }
+
+    .active .plan-number {
+      background-color: #d3dee7;
+    }
+
+    .plan-heading {
+      font-weight: bold;
+      font-size: 22px;
+      line-height: 28px;
+      color: #000000;
+    }
+
+    .plan-number {
+      width: 100%;
+      max-width: 51.34px;
+      max-height: 56px;
+      background-color: #e9eff3;
+      margin-right: 28.33px;
+      padding: 6px;
+      text-align: center;
+      border-radius: 50%;
+      font-size: 32px;
+      line-height: 44px;
+    }
+  }
+}
