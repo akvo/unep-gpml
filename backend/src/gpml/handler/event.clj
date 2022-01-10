@@ -96,8 +96,8 @@
   (->
    [:map
     [:title string?]
-    [:start_date string?]
-    [:end_date string?]
+    [:start_date {:optional true} string?]
+    [:end_date {:optional true} string?]
     [:description {:optional true} string?]
     [:photo {:optional true} string?]
     [:remarks {:optional true} string?]

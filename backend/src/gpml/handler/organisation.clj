@@ -8,12 +8,8 @@
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
-(defn create [conn {:keys [id] :as org}]
-  (let [org-id (:id (if (and id (= id -1))
-                      (db.organisation/new-organisation conn (-> org
-                                                               (assoc :is_member false)
-                                                               (dissoc :id)))
-                      (db.organisation/new-organisation conn (dissoc org :id))))
+(defn create [conn org]
+  (let [org-id (:id (db.organisation/new-organisation conn org))
         org-geo2 (handler.geo/get-geo-vector-v2 org-id org)
         org-geo (handler.geo/get-geo-vector org-id org)]
     (if (seq org-geo2)
@@ -81,6 +77,7 @@
   (into [:map
     [:name string?]
     [:url string?]
+    [:is_member boolean?]
     [:stakeholder string?]
     [:country int?]
          [:geo_coverage_type geo/coverage_type]]
