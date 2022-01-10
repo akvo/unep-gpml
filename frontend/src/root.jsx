@@ -47,6 +47,7 @@ import AboutUs from "./modules/about/about-us";
 import Glossary from "./modules/glossary/glossary";
 import Error from "./modules/error/error";
 import EntityFormView from "./modules/entity/view";
+import Workspace from "./modules/workspace/view";
 
 // Menu dropdown
 import AboutDropdownMenu from "./modules/dropdown-menu/about";
@@ -506,8 +507,9 @@ const Root = () => {
             render={(props) => <CapacityBuilding {...props} />}
           />
           <Route
-            path="/case-studies"
-            render={(props) => <CaseStudies {...props} />}
+            exact
+            path="/workspace"
+            render={(props) => <Workspace {...props} />}
           />
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
