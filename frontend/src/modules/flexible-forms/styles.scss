@@ -613,7 +613,7 @@
   position: absolute;
   height: 100%;
   right: -150vh;
-  background-color: #fff;
+  background: #fff;
   width: 400px;
   box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.15);
   top: 0;
@@ -622,6 +622,7 @@
   z-index: 8;
   .hide-button {
     border: none;
+    background-color: transparent;
     img {
       width: 20px;
       transform: rotate(180deg);

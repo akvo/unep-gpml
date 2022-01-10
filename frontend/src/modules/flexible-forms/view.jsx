@@ -457,10 +457,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
   };
 
-  const onClose = () => {
-    setVisible(!visible);
-  };
-
   return (
     <div id="flexible-forms">
       <StickyBox style={{ zIndex: 10 }}>
@@ -778,7 +774,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     <div className="center-content">
                       <p>Field to submit</p>
                       <h6>
-                        0 of{" "}
                         {data?.[data.tabs[0]]?.required?.[
                           Object.keys(data?.[data.tabs[0]]?.required)[
                             getTabStepIndex().stepIndex
@@ -803,10 +798,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       <LeftOutlined />
                       <p>Back</p>
                     </div>
-                    {/* <div className="center-content">
-                    <p>Field to submit</p>
-                    <h6>0 of 3</h6>
-                  </div> */}
                   </div>
                 )}
               </Col>

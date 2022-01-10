@@ -28,6 +28,7 @@ const initialData = {
     required: {},
   },
 };
+
 const initialFormData = new Store({
   data: initialData,
   editId: null,
