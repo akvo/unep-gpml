@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import { Carousel, PageHeader, Row, Col, List, Card, Button } from "antd";
-
 const ActionPlan = ({ plans, classNames }) => {
   const [activeStep, setActiveStep] = useState(0);
 
@@ -10,7 +8,7 @@ const ActionPlan = ({ plans, classNames }) => {
   return (
     <div className="action-plan">
       <h3 className="create-action-plan text-white">
-        Get Started: Create Your Action Plan
+        Get Started: Create and Manage Your Action Plan
       </h3>
       <div className="container">
         <div className="card">
@@ -29,10 +27,7 @@ const ActionPlan = ({ plans, classNames }) => {
             ))}
           </ul>
 
-          <article className="plan-content">
-            <h3 className="plan-heading">Text to be confirmed</h3>
-            <p className="plan-paragraph">{selectedStep.content}</p>
-          </article>
+          <article className="plan-content">{selectedStep.content}</article>
           <div className="line" />
         </div>
       </div>
