@@ -6,7 +6,6 @@ const initialData = {
   tabs: ["S1"],
   required: {
     S1: [],
-    // S2: [],
     S3: [],
     S4: [],
     S5: [],
@@ -15,10 +14,6 @@ const initialData = {
     steps: 0,
     required: {},
   },
-  // S2: {
-  //   steps: 0,
-  //   required: {},
-  // },
   S3: {
     steps: 0,
     required: {},
@@ -26,12 +21,14 @@ const initialData = {
   S4: {
     steps: 0,
     required: {},
+    S4_G5: { entity: [{}], individual: [{}] },
   },
   S5: {
     steps: 0,
     required: {},
   },
 };
+
 const initialFormData = new Store({
   data: initialData,
   editId: null,
@@ -55,45 +52,24 @@ const getSchema = ({
   currencies,
 }) => {
   const prop = cloneDeep(schema[selectedMainContentType].properties);
-  const orgs = [...organisations];
 
-  // prop.S2.properties["S2_G1_1.1"].enum = stakeholders?.map((it) => it.id);
-  // prop.S2.properties["S2_G1_1.1"].enumNames = stakeholders?.map(
-  //   (it) => it.firstName
-  // );
-
-  // country options
-  prop.S4.properties.S4_G2.properties["country"].enum = countries?.map(
-    (x) => x.id
-  );
-  prop.S4.properties.S4_G2.properties["country"].enumNames = countries?.map(
-    (x) => x.name
-  );
-
-  let otherArray = [
-    {
-      id: -1,
-      name: "Other",
-    },
-    {
-      id: -2,
-      name: "NA",
-    },
-  ];
-
-  let array = [...organisations, ...nonMemberOrganisations, ...otherArray];
-
-  prop.S4.properties.S4_G5.properties["orgName"].enum = array.map((x) => x.id);
-  prop.S4.properties.S4_G5.properties["orgName"].enumNames = array.map(
-    (x) => x.name
-  );
+  let array = [...organisations, ...nonMemberOrganisations];
 
   prop.S4.properties.S4_G5.properties[
-    "newCompanyHeadquarter"
-  ].enum = countries?.map((x) => x.id);
+    "entity"
+  ].items.properties.entity.enum = array.map((x) => x.id);
   prop.S4.properties.S4_G5.properties[
-    "newCompanyHeadquarter"
-  ].enumNames = countries?.map((x) => x.name);
+    "entity"
+  ].items.properties.entity.enumNames = array.map((x) => x.name);
+
+  prop.S4.properties.S4_G5.properties[
+    "individual"
+  ].items.properties.stakeholder.enum = stakeholders.map((x) => x.id);
+  prop.S4.properties.S4_G5.properties[
+    "individual"
+  ].items.properties.stakeholder.enumNames = stakeholders.map(
+    (x) => x.firstName + " " + x.lastName
+  );
 
   // geocoverage national options
   prop.S4.properties.S4_G2.properties[
@@ -117,7 +93,17 @@ const getSchema = ({
     "geoCoverageCountries"
   ].enumNames = countries?.map((x) => x.name);
 
-  if (selectedMainContentType === "technical") {
+  prop.S4.properties.S4_G2.properties[
+    "geoCoverageValueSubnational"
+  ].enum = countries?.map((x) => String(x.id));
+  prop.S4.properties.S4_G2.properties[
+    "geoCoverageValueSubnational"
+  ].enumNames = countries?.map((x) => x.name);
+
+  if (
+    selectedMainContentType === "technical" ||
+    selectedMainContentType === "action"
+  ) {
     const tagsPlusTopics = tags?.topics
       ? tags.technicalResourceType?.concat(tags.topics)
       : tags.technicalResourceType;
@@ -127,6 +113,48 @@ const getSchema = ({
     prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
       (x) => x.tag
     );
+  }
+
+  if (selectedMainContentType === "event_flexible") {
+    const tagsPlusTopics = tags?.topics
+      ? tags.events?.concat(tags.topics)
+      : tags.events;
+    prop.S4.properties.S4_G3.properties[
+      "tags"
+    ].enum = tagsPlusTopics?.map((x) => String(x.id));
+    prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
+      (x) => x.tag
+    );
+  }
+
+  if (selectedMainContentType === "technology") {
+    const tagsPlusTopics = tags?.topics
+      ? tags.technology?.concat(tags.topics)
+      : tags.technology;
+    prop.S4.properties.S4_G3.properties[
+      "tags"
+    ].enum = tagsPlusTopics?.map((x) => String(x.id));
+    prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
+      (x) => x.tag
+    );
+  }
+
+  if (selectedMainContentType === "policy") {
+    const tagsPlusTopics = tags?.topics
+      ? tags.policy?.concat(tags.topics)
+      : tags.policy;
+    prop.S4.properties.S4_G3.properties[
+      "tags"
+    ].enum = tagsPlusTopics?.map((x) => String(x.id));
+    prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
+      (x) => x.tag
+    );
+    prop.S5.properties.S5_G1.properties[
+      "implementingMea"
+    ].enum = meaOptions?.map((x) => x.id);
+    prop.S5.properties.S5_G1.properties[
+      "implementingMea"
+    ].enumNames = meaOptions?.map((x) => x.name);
   }
 
   if (selectedMainContentType === "financing") {
@@ -146,8 +174,6 @@ const getSchema = ({
     prop.S5.properties.value.properties[
       "valueCurrency"
     ].enumNames = currencies?.map((x) => x.label);
-
-    console.log(prop.S5.properties.value.properties["valueCurrency"]);
   }
 
   return {
@@ -165,19 +191,6 @@ const tabs = [
     desc: "",
     steps: [],
   },
-  // {
-  //   key: "S2",
-  //   title: "Submitter",
-  //   desc: "",
-  //   steps: [
-  //     {
-  //       group: "S1",
-  //       key: "S1-p1-personal-information",
-  //       title: "Personal Information",
-  //       desc: "",
-  //     },
-  //   ],
-  // },
   {
     key: "S3",
     title: "Content type",
@@ -186,13 +199,7 @@ const tabs = [
       {
         group: "S3",
         key: "S3-p1-main-content",
-        title: "Main Content",
-        desc: "",
-      },
-      {
-        group: "S3",
-        key: "S3-p2-sub-content",
-        title: "Sub Content",
+        title: "Main & Sub Content",
         desc: "",
       },
     ],

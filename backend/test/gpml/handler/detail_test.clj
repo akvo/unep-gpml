@@ -26,7 +26,8 @@
               :title "Mr."
               :first_name first_name
               :last_name last_name
-              :email email}
+              :email email
+              :idp_usernames ["auth0|123"]}
         sth (db.stakeholder/new-stakeholder db info)]
     (db.stakeholder/update-stakeholder-status db (assoc sth :review_status review_status))
     (db.stakeholder/update-stakeholder-role db (assoc sth :role role))

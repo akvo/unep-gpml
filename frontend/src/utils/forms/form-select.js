@@ -1,8 +1,10 @@
 /* eslint-disable no-else-return */
-import React from "react";
-
+import React, { useState } from "react";
 import { utils } from "@rjsf/core";
-import Select from "antd/lib/select";
+import { Select, Divider, Input } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+
+import ModalAddEntity from "../../modules/flexible-forms/EntityModal/add-entity-modal";
 
 const { asNumber, guessType } = utils;
 
@@ -62,39 +64,69 @@ const SelectWidget = ({
   const getPopupContainer = (node) => node.parentNode;
   const stringify = (currentValue) =>
     Array.isArray(currentValue) ? value.map(String) : String(value);
+
+  const showEntity = uiSchema["ui:options"]?.["showEntity"];
+
+  const [showModal, setShowModal] = useState(false);
+
   return (
-    <Select
-      allowClear={uiSchema?.["ui:allowClear"] ? true : false}
-      showSearch={uiSchema?.["ui:showSearch"] ? true : false}
-      filterOption={(input, option) =>
-        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
-        option.value === "-1"
-      }
-      autoFocus={autofocus}
-      disabled={disabled || (readonlyAsDisabled && readonly)}
-      getPopupContainer={getPopupContainer}
-      id={id}
-      mode={uiSchema?.["ui:mode"] !== undefined ? uiSchema["ui:mode"] : ""}
-      name={id}
-      onBlur={!readonly ? handleBlur : undefined}
-      onChange={!readonly ? handleChange : undefined}
-      onFocus={!readonly ? handleFocus : undefined}
-      placeholder={placeholder}
-      style={SELECT_STYLE}
-      value={typeof value !== "undefined" ? stringify(value) : undefined}
-      virtual={false}
-    >
-      {enumOptions &&
-        enumOptions.map(({ value: optionValue, label: optionLabel }, i) => (
-          <Select.Option
-            disabled={enumDisabled && enumDisabled.indexOf(optionValue) !== -1}
-            key={String(optionValue) + i.toString(36)}
-            value={String(optionValue)}
-          >
-            {optionLabel}
-          </Select.Option>
-        ))}
-    </Select>
+    <>
+      <Select
+        allowClear={uiSchema?.["ui:allowClear"] ? true : false}
+        showSearch={uiSchema?.["ui:showSearch"] ? true : false}
+        filterOption={(input, option) =>
+          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
+          option.value === "-1"
+        }
+        autoFocus={autofocus}
+        disabled={disabled || (readonlyAsDisabled && readonly)}
+        getPopupContainer={getPopupContainer}
+        id={id}
+        mode={uiSchema?.["ui:mode"] !== undefined ? uiSchema["ui:mode"] : ""}
+        name={id}
+        onBlur={!readonly ? handleBlur : undefined}
+        onChange={!readonly ? handleChange : undefined}
+        onFocus={!readonly ? handleFocus : undefined}
+        placeholder={placeholder}
+        style={SELECT_STYLE}
+        value={typeof value !== "undefined" ? stringify(value) : undefined}
+        virtual={false}
+        dropdownRender={(menu) => (
+          <div>
+            {menu}
+            {showEntity && (
+              <>
+                <Divider style={{ margin: "4px 0" }} />
+                <div
+                  style={{ display: "flex", flexWrap: "nowrap", padding: 8 }}
+                >
+                  <a onClick={() => setShowModal(!showModal)}>
+                    <PlusOutlined /> Add new entity
+                  </a>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      >
+        {enumOptions &&
+          enumOptions.map(({ value: optionValue, label: optionLabel }, i) => (
+            <Select.Option
+              disabled={
+                enumDisabled && enumDisabled.indexOf(optionValue) !== -1
+              }
+              key={String(optionValue) + i.toString(36)}
+              value={String(optionValue)}
+            >
+              {optionLabel}
+            </Select.Option>
+          ))}
+      </Select>
+      <ModalAddEntity
+        visible={showModal}
+        close={() => setShowModal(!showModal)}
+      />
+    </>
   );
 };
 

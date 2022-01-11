@@ -378,6 +378,19 @@
                                                  :handler #ig/ref :gpml.handler.detail/put}}]]]]
                               :logger #ig/ref :duct.logger/timbre}
 
+  ;; Consts
+
+  [:duct/const :gpml.config/mailjet] {:api-key #duct/env ["MAILJET_API_KEY" Str]
+                                      :secret-key #duct/env ["MAILJET_SECRET_KEY" Str]
+                                      :app-name #duct/env ["APP_NAME" Str]
+                                      :app-domain #duct/env ["APP_DOMAIN" Str]}
+
+  [:duct/const :gpml.config/auth0] {:domain #duct/env ["OIDC_ISSUER" Str]
+                                    :client-id #duct/env ["AUTH0_BACKEND_CLIENT_ID" Str]
+                                    :secret #duct/env ["AUTH0_BACKEND_SECRET" Str]}
+
+  ;; Handlers
+
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
 
   :gpml.handler.main/root {}
@@ -394,9 +407,7 @@
   :gpml.handler.archive/get {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.submission/get {:db #ig/ref :duct.database/sql
-                                :auth0 {:domain #duct/env "OIDC_ISSUER"
-                                        :client-id #duct/env "AUTH0_BACKEND_CLIENT_ID"
-                                        :secret #duct/env "AUTH0_BACKEND_SECRET"}}
+                                :auth0 #ig/ref :gpml.config/auth0}
   :gpml.handler.submission/get-detail {:db #ig/ref :duct.database/sql}
   :gpml.handler.submission/put {:db #ig/ref :duct.database/sql
                                 :mailjet-config #ig/ref :gpml.config/mailjet}
@@ -414,11 +425,6 @@
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.nav/get {:db #ig/ref :duct.database/sql}
-
-  [:duct/const :gpml.config/mailjet] {:api-key #duct/env "MAILJET_API_KEY"
-                                      :secret-key #duct/env "MAILJET_SECRET_KEY"
-                                      :app-name #duct/env "APP_NAME"
-                                      :app-domain #duct/env "APP_DOMAIN"}
 
   :gpml.handler.event/post {:db #ig/ref :duct.database/sql
                             :mailjet-config #ig/ref :gpml.config/mailjet}

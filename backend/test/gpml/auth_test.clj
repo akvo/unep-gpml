@@ -40,7 +40,8 @@
               :country nil
               :representation "test"
               :about "Lorem Ipsum"
-              :geo_coverage_type nil}
+              :geo_coverage_type nil
+              :idp_usernames ["auth0|123"]}
         sth (db.stakeholder/new-stakeholder db info)]
     (db.stakeholder/update-stakeholder-status db (assoc sth :review_status review_status))
     (db.stakeholder/update-stakeholder-role db (assoc sth :role role))

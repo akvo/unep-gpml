@@ -1,0 +1,15 @@
+ALTER TYPE resource_association ADD VALUE IF NOT EXISTS 'implementor';
+--;;
+ALTER TYPE resource_association ADD VALUE IF NOT EXISTS 'partner';
+--;;
+ALTER TYPE resource_association ADD VALUE IF NOT EXISTS 'donor';
+--;;
+ALTER TYPE technology_association ADD VALUE IF NOT EXISTS 'implementor';
+--;;
+ALTER TYPE technology_association ADD VALUE IF NOT EXISTS 'partner';
+--;;
+ALTER TYPE technology_association ADD VALUE IF NOT EXISTS 'donor';
+--;;
+ALTER TYPE project_association ADD VALUE IF NOT EXISTS 'partner';
+--;;
+ALTER TYPE project_association ADD VALUE IF NOT EXISTS 'donor';

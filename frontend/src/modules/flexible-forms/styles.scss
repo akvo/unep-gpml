@@ -123,14 +123,14 @@
     .ant-radio-wrapper {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       .optional-params {
         width: 45px;
         display: inline-block;
         color: #000;
       }
       & span {
-        color: #a5b0c9;
+        color: #384e85;
       }
     }
     .step-panel {
@@ -168,6 +168,9 @@
           opacity: 0.5;
           .ant-steps-item-content {
             min-height: auto;
+            .ant-steps-item-title {
+              width: 100%;
+            }
           }
           .ant-steps-item-tail {
             display: none;
@@ -199,6 +202,9 @@
     }
     .content-panel {
       padding: 13px 10px 0px 13px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       .getting-started-content {
         padding: 40px !important;
         h5 {
@@ -240,11 +246,12 @@
             box-shadow: none;
           }
           &.ant-radio-button-wrapper-checked {
-            border: 2px solid #34a6ff;
             border-radius: 10px;
             background: rgba(52, 166, 255, 0.1);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.25);
             .content-circle {
               background: #10f9b7;
+              border: 5px solid #fff;
             }
             h2 {
               font-weight: 700;
@@ -326,6 +333,42 @@
               margin-left: 5px;
               font-weight: bold;
             }
+          }
+        }
+        .collapse-wrapper {
+          .ant-collapse {
+            background: transparent;
+            border: none;
+            .ant-collapse-item {
+              margin-bottom: 10px;
+              border: 2px solid #edf2f7;
+              border-radius: 7px;
+              .ant-collapse-content {
+                border-top: 1px solid #edf2f7;
+              }
+              .ant-collapse-extra {
+                span {
+                  font-size: 20px;
+                }
+              }
+            }
+          }
+          .ant-form-item-label {
+            label {
+              font-size: 16px;
+              color: #000;
+              font-weight: 400;
+            }
+          }
+        }
+        .collapse-add-button {
+          width: 100%;
+          border: 1px dashed rgba(24, 22, 47, 0.1);
+          border-radius: 7px;
+          height: auto;
+          padding: 7px 15px;
+          span {
+            font-weight: 700;
           }
         }
       }
@@ -420,6 +463,57 @@
           }
         }
       }
+      .bottom-panel {
+        margin-top: 10px;
+        background: rgba(237, 242, 247, 0.35);
+        padding: 15px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .next-button {
+          display: flex;
+          align-items: center;
+          width: fit-content;
+          padding: 5px 10px;
+          border-radius: 20px;
+          border: 1px solid;
+          color: #34a6ff;
+          cursor: pointer;
+          p {
+            margin-bottom: 0px;
+            padding-right: 5px;
+          }
+        }
+        .back-button {
+          display: flex;
+          align-items: center;
+          width: fit-content;
+          padding: 5px 10px;
+          border-radius: 20px;
+          border: 1px solid;
+          color: #34a6ff;
+          cursor: pointer;
+          p {
+            margin-bottom: 0px;
+            padding-left: 5px;
+          }
+        }
+        .center-content {
+          margin-right: 40px;
+          margin-left: 40px;
+          p {
+            margin-bottom: 0px;
+            color: #3176ae;
+            font-weight: 400;
+          }
+          h6 {
+            text-align: center;
+            font-size: 18px;
+            color: #3176ae;
+            font-weight: 700;
+          }
+        }
+      }
     }
   }
   .ant-picker {
@@ -429,4 +523,145 @@
 .ant-popover {
   width: 300px;
   font-size: 12px;
+}
+.ant-row.ant-form-item.ant-form-item-has-success {
+  .ant-input,
+  .ant-input-number-input,
+  .ant-picker,
+  .ant-select-selector {
+    border: 2px #22ba9a solid !important;
+    border-radius: 2px;
+  }
+
+  .radio-highlight {
+    span.ant-radio {
+      border: 2px solid #22ba9a;
+      border-radius: 50%;
+    }
+  }
+}
+.checkbox-highlight {
+  span.ant-checkbox {
+    border: 2px solid #22ba9a;
+    border-radius: 2px;
+  }
+}
+
+// required
+.ant-row.ant-form-item.ant-form-item-has-error {
+  .radio-required {
+    span.ant-radio {
+      border: 1px solid red;
+      border-radius: 50%;
+    }
+  }
+}
+.checkbox-required {
+  span.ant-checkbox {
+    border: 1px solid red;
+    border-radius: 2px;
+  }
+}
+.ant-collapse-header {
+  display: flex;
+  width: 100%;
+  .collapse-heaeder {
+    color: #3176ae;
+    font-weight: 700;
+    text-transform: capitalize;
+  }
+  .collapse-subHeaeder {
+    text-transform: uppercase;
+    color: #384e85;
+    border: 1px solid #384e85;
+    box-sizing: border-box;
+    border-radius: 60px;
+    padding: 0px 10px;
+  }
+  .ant-collapse-extra {
+    display: flex;
+    float: none !important;
+    justify-content: space-between;
+    flex: 1;
+    padding-left: 35px;
+  }
+}
+.custom-child-title,
+.custom-step-title {
+  display: flex;
+  align-items: center;
+}
+
+.Overlay {
+  background-color: rgba(0, 0, 0, 0.55);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  display: none;
+  z-index: 5;
+}
+
+.Overlay.Show {
+  display: block;
+}
+
+.Modal {
+  position: absolute;
+  height: 100%;
+  right: -150vh;
+  background: #fff;
+  width: 400px;
+  box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.15);
+  top: 0;
+  padding: 10px 10px;
+  transition: all 0.3s ease-out;
+  z-index: 8;
+  .hide-button {
+    border: none;
+    background-color: transparent;
+    img {
+      width: 20px;
+      transform: rotate(180deg);
+    }
+    span {
+      color: #34a6ff;
+      margin-left: 5px;
+      font-weight: bold;
+    }
+  }
+}
+
+.Modal.Show {
+  right: 0;
+}
+
+.Close {
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  right: 10px;
+  background-color: transparent;
+  border: 0;
+  font-size: 18px;
+}
+
+.Alert {
+  position: fixed;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid transparent;
+  top: 0;
+  left: 0;
+  color: #fff;
+  background-image: linear-gradient(
+    90deg,
+    #ff9a8b 0%,
+    #ff6a88 55%,
+    #ff99ac 100%
+  );
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
 }

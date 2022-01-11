@@ -1,0 +1,2 @@
+ALTER TABLE invitation
+DROP CONSTRAINT invitation_email_key;

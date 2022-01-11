@@ -48,7 +48,8 @@
                                              :representation "test"
                                              :about "Lorem Ipsum"
                                              :geo_coverage_type nil
-                                             :role "USER"})]
+                                             :role "USER"
+                                             :idp_usernames ["auth0|123"]})]
     (db.stakeholder/update-stakeholder-status db (assoc sth :review_status "APPROVED"))))
 
 (defn- mock-post [email]

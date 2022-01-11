@@ -35,7 +35,8 @@
    :country 1
    :public_email false
    :public_database false
-   :cv picture})
+   :cv picture
+   :idp_usernames ["auth0|123"]})
 
 (defn get-user [conn email]
   (:id (db.stakeholder/stakeholder-by-email conn {:email email})))
@@ -74,7 +75,7 @@
                              :country (-> (:countries data) first :id)
                              :photo picture)
           resp (handler (-> (mock/request :post "/")
-                            (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
+                            (assoc :jwt-claims {:email "john@org" :picture "test.jpg" :sub "auth0|123"})
                             (assoc :body-params body-params)))]
       (is (= 201 (:status resp)))
       (is (= "John" (->(:body resp) :first_name)))
@@ -98,7 +99,8 @@
               :reviewed_by nil
               :review_status "SUBMITTED"
               :public_email false
-              :public_database false}
+              :public_database false
+              :idp_usernames ["auth0|123"]}
              (:body resp)))
       (is (= "/image/profile/1" (-> resp :body :photo))))))
 
@@ -119,7 +121,7 @@
                              :country (-> (:countries data) first :id)
                              :photo picture)
           resp (handler (-> (mock/request :post "/")
-                            (assoc :jwt-claims {:email "john@org" :picture "test.jpg"})
+                            (assoc :jwt-claims {:email "john@org" :picture "test.jpg" :sub "auth0|123"})
                             (assoc :body-params body-params)))]
       (is (= 201 (:status resp)))
       (is (= "John" (->(:body resp) :first_name)))
@@ -143,7 +145,8 @@
               :reviewed_by nil
               :review_status "SUBMITTED"
               :public_email false
-              :public_database false}
+              :public_database false
+              :idp_usernames ["auth0|123"]}
              (:body resp)))
       (is (= "/image/profile/1" (-> resp :body :photo))))))
 
@@ -224,7 +227,8 @@
               :reviewed_by nil
               :review_status "SUBMITTED"
               :public_email true
-              :public_database false}
+              :public_database false
+              :idp_usernames ["auth0|123"]}
              profile))))
 
 (deftest handler-put-test-but-the-pic-is-from-outside
@@ -272,7 +276,8 @@
               :cv nil
               :review_status "SUBMITTED"
               :public_email false
-              :public_database false}
+              :public_database false
+              :idp_usernames ["auth0|123"]}
              profile))))
 
 (deftest handler-get-test-has-profile
