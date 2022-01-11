@@ -21,11 +21,14 @@ import ExampleIcon from "../../images/examples.png";
 import InfoBlue from "../../images/i-blue.png";
 import FlexibleForm from "./form";
 import isEmpty from "lodash/isEmpty";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const { Step } = Steps;
 
 const FlexibleForms = ({ match: { params }, ...props }) => {
   const { tabs, getSchema, schema, initialData, initialFormData } = common;
+
+  const { loginWithPopup } = useAuth0();
 
   const storeData = UIStore.useState((s) => ({
     stakeholders: s.stakeholders?.stakeholders,
@@ -149,6 +152,14 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     params,
     isLoaded,
   ]);
+
+  // Todo ask to login if not login
+
+  // useEffect(() => {
+  //   if (Object.keys(profile).length === 0) {
+  //     loginWithPopup({ action: "login" });
+  //   }
+  // }, [profile, loginWithPopup, isLoaded]);
 
   const renderSteps = (parentTitle, section, steps, index) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
