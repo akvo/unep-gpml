@@ -120,6 +120,26 @@
       padding-top: 55px;
       padding-left: 36px;
       padding-right: 27.24px;
+      i {
+        display: block;
+        font-size: 22px;
+        margin-bottom: 16px;
+      }
+      ul {
+        list-style: disc;
+        padding-left: 32px;
+        ul {
+          list-style: square;
+        }
+        li {
+          margin-bottom: 16px;
+        }
+      }
+      h3 {
+        @media (min-width: 800px) {
+          font-size: 22px;
+        }
+      }
     }
 
     .line {
@@ -142,16 +162,14 @@
     }
 
     .plan-list-item {
-      position: relative;
+      width: 100%;
       display: flex;
       align-items: center;
+      position: relative;
       background-color: #d3dee7;
       border: 2px solid #ffffff;
       border-right: 1px solid #ffffff;
-      padding-left: 57.5px;
-      padding-top: 34px;
-      width: 100%;
-      padding-bottom: 31px;
+      padding: 34px 0 31px 57.5px;
       cursor: pointer;
 
       &::after,
@@ -228,16 +246,4 @@
       line-height: 44px;
     }
   }
-}
-
-.arrow {
-  color: #d3dee7;
-}
-
-.arrow:hover {
-  color: blue;
-}
-
-.plan-list {
-  position: relative;
 }
