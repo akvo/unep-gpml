@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { PageHeader, Row, Col, Button } from "antd";
+import { PageHeader, Row, Col } from "antd";
 import classNames from "classnames";
 import "./styles.scss";
 import ActionPlan from "./actionPlan";
@@ -18,14 +18,14 @@ const plans = [
     content: (
       <>
         <h3>Purpose</h3>
-        <p>
+        <p className='paragraph'>
           This phase concerns the development of the action plan with engagement
           of stakeholders, starting from data collection and setting targets to
           defining a strategic approach and designing the monitoring and review
           programme.
         </p>
         <h3>How the Digital Platform can support</h3>
-        <p>
+        <p className='paragraph'>
           The Digital Platform contains various guidance documents that can be
           used when creating an action plan, including the{" "}
           <a href="https://digital.gpmarinelitter.org/technical_resource/253">
@@ -104,7 +104,7 @@ const plans = [
     content: (
       <>
         <h3>Purpose</h3>
-        <p>
+        <p className='paragraph'>
           The Action Plan is implemented through selected implementation
           actions. Implementation is supported by cooperation and engagement of
           stakeholders, sharing of information, reporting of progress on
@@ -187,7 +187,7 @@ const plans = [
     content: (
       <>
         <h3>Purpose</h3>
-        <p>
+        <p className='paragraph'>
           At regular intervals, progress is reported on the implementation
           measures as well as the overall performance of the Action Plan with
           the purpose of tracking progress on implementation and effectiveness.
@@ -229,7 +229,7 @@ const plans = [
     content: (
       <>
         <h3>Purpose</h3>
-        <p>
+        <p className='paragraph'>
           Based on an agreed methodology for measuring the effectiveness of the
           implementation measures as well as the overall plan, the Action Plan
           is reviewed at regular intervals, thus ensuring that it is relevant
@@ -295,7 +295,7 @@ const Workspace = () => {
                     <h3 className="download-guidance text-white">
                       Download the Action Plan Workflow Guidance
                     </h3>
-                    <p>
+                    <p className='paragraph'>
                       This one-pager document outlines how the functionality of
                       the Global Partnership on Marine Litter (GPML) Digital
                       Platform supports the development of national marine
