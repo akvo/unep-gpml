@@ -52,7 +52,7 @@
       text-align: center;
       background-color: rgba(53, 121, 152, 0.7);
       border-radius: 22px;
-      padding: calc(63px / 2) calc(30px / 2) calc(78px / 2) calc(30px / 2);
+      padding: 63px 30px 78px 30px;
 
       .download-text {
         font-weight: 700;
@@ -121,7 +121,7 @@
 
     .plan-content {
       background-color: #ffffff;
-      padding: calc(55px / 2) calc(27.24px / 2) calc(78px / 2) calc(36px / 2);
+      padding: 55px 27.24px 78px 36px;
 
       i {
         display: block;
@@ -148,7 +148,7 @@
       background-color: #ffffff;
       border-top: 1px solid rgba(124, 157, 183, 0.2);
       border-radius: 0 0 10px 10px;
-      padding-bottom: calc(122px / 2);
+      padding-bottom: 122px;
     }
 
     .plan-list {
@@ -161,13 +161,15 @@
 
     .plan-list-item {
       width: 100%;
+      height: 122px;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       position: relative;
       background-color: $grey01;
       border: 2px solid #ffffff;
       border-right: 1px solid #ffffff;
-      padding: 17px 0 15.5px 28.175px;
+      padding: 0 0 0 57.5px;
       cursor: pointer;
 
       &::after,
@@ -179,19 +181,19 @@
       }
 
       &::after {
-        right: -15px;
-        border-top: 30.5px solid transparent;
-        border-left: 15px solid $grey01;
-        border-bottom: 30.5px solid transparent;
+        right: -30px;
+        border-top: 61px solid transparent;
+        border-left: 30px solid $grey01;
+        border-bottom: 61px solid transparent;
         z-index: 2;
         top: 0px;
       }
 
       &::before {
-        left: -0.5px;
-        border-top: 30.5px solid transparent;
-        border-left: 15px solid #fff;
-        border-bottom: 30.5px solid transparent;
+        left: -1px;
+        border-top: 61px solid transparent;
+        border-left: 30px solid #fff;
+        border-bottom: 61px solid transparent;
         z-index: 1;
         top: 0px;
       }
@@ -214,7 +216,7 @@
 
       &:last-child {
         border-radius: 0 10px 0 0;
-        padding-right: 15px;
+        padding-right: 30px;
         &.active::after {
           border-color: transparent;
         }
@@ -232,15 +234,15 @@
 
       .plan-number {
         width: 100%;
-        max-width: calc(51.34px / 2);
-        max-height: calc(56px / 2);
+        max-width: 51.34px;
+        max-height: 56px;
         background-color: $grey02;
-        margin-right: calc(28.33px / 2);
-        padding: 3px;
+        font-size: 2rem;
+        line-height: 44px;
         text-align: center;
         border-radius: 50%;
-        font-size: 2rem;
-        line-height: 22px;
+        padding: 6px;
+        margin-right: 28.33px;
       }
     }
   }
@@ -248,68 +250,9 @@
   // Desktop
 
   @media (min-width: 900px) {
-    .section-download {
-      .card {
-        flex-wrap: nowrap;
-        gap: 21px;
-        padding: 37px 36px 41px 36px;
-      }
-
-      .download-guidance {
-        line-height: 30px;
-        margin-bottom: 30px;
-      }
-
-      .download-link {
-        border-radius: 22px;
-        max-width: 314px;
-        padding: 63px 30px 78px 30px;
-      }
-    }
-
-    .plan-list,
-    .plan-content i,
-    .plan-content h3,
-    .plan-heading {
-      font-size: 22px;
-    }
-
-    .line {
-      padding-bottom: 122px;
-    }
-
-    .plan-content {
-      padding: 55px 27.24px 78px 36px;
-    }
-
-    .plan-list-item:last-child {
-      padding-right: 30px;
-    }
-  }
-
-  @media (min-width: 988px) {
+    .section-download .card,
     .action-plan .plan-list-item {
-      padding: 34px 0 31px 57.5px;
-      &::after {
-        right: -30px;
-        border-top: 61px solid transparent;
-        border-left: 30px solid $grey01;
-        border-bottom: 61px solid transparent;
-      }
-      &::before {
-        left: -1px;
-        border-top: 61px solid transparent;
-        border-left: 30px solid #fff;
-        border-bottom: 61px solid transparent;
-      }
-
-      .plan-number {
-        line-height: 44px;
-        padding: 6px;
-        max-width: 51.34px;
-        max-height: 56px;
-        margin-right: 28.33px;
-      }
+      flex-wrap: nowrap;
     }
   }
 }
