@@ -165,13 +165,8 @@ const ScrollToTop = () => {
 const { Header } = Layout;
 
 const Root = () => {
-  const {
-    isAuthenticated,
-    getIdTokenClaims,
-    loginWithPopup,
-    logout,
-    user,
-  } = useAuth0();
+  const { isAuthenticated, getIdTokenClaims, loginWithPopup, logout, user } =
+    useAuth0();
 
   const { profile, disclaimer, nav, tags } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -180,10 +175,8 @@ const Root = () => {
     tags: s.tags,
   }));
   const [signupModalVisible, setSignupModalVisible] = useState(false);
-  const [
-    stakeholderSignupModalVisible,
-    setStakeholderSignupModalVisible,
-  ] = useState(false);
+  const [stakeholderSignupModalVisible, setStakeholderSignupModalVisible] =
+    useState(false);
 
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [filters, setFilters] = useState(null);
@@ -359,6 +352,17 @@ const Root = () => {
             render={(props) => <Glossary {...props} />}
           />
           <Route
+            path="/knowledge-library"
+            render={(props) => (
+              <KnowledgeLibrary
+                {...props}
+                filters={filters}
+                setFilters={setFilters}
+                filterMenu={filterMenu}
+              />
+            )}
+          />
+          <Route
             path="/browse"
             render={(props) => (
               <Browse
@@ -509,10 +513,6 @@ const Root = () => {
           <Route
             path="/case-studies"
             render={(props) => <CaseStudies {...props} />}
-          />
-          <Route
-            path="/knowledge-library"
-            render={(props) => <KnowledgeLibrary {...props} />}
           />
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"

@@ -5,15 +5,24 @@
     border-radius: 30px;
   }
 
-  .site-drawer-render-in-current-wrapper {
-    position: relative;
+  .site-drawer-render-in-current-wrapper,
+  .resource-main-container {
     min-height: 70vh;
+  }
+
+  .site-drawer-render-in-current-wrapper {
+    position: absolute;
+    top: 0;
+    min-width: 100%;
     overflow: hidden;
-    text-align: center;
+  }
+
+  .resource-list-container {
     background: #edf2f7;
   }
 
   .resource-list-header {
+    background: #fff;
   }
 
   .resource-list {
