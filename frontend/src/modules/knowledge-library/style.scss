@@ -1,0 +1,56 @@
+@import "../../vars.scss";
+
+#knowledge-library {
+  span.ant-input-affix-wrapper.input-src {
+    border-radius: 30px;
+  }
+
+  .site-drawer-render-in-current-wrapper {
+    position: relative;
+    min-height: 70vh;
+    overflow: hidden;
+    text-align: center;
+    background: #edf2f7;
+  }
+
+  .resource-list-header {
+  }
+
+  .resource-list {
+    padding: 10px;
+
+    .resource-item {
+      border-radius: 8px;
+      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+      text-align: left;
+      color: $black;
+      .topic {
+        color: $green05;
+        font-size: 1rem;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+      .item-body {
+        margin-top: 5px;
+        .title,
+        .description {
+          font-size: 1rem;
+          font-weight: 400;
+        }
+        .description {
+          margin-top: 7px;
+        }
+      }
+      .item-footer {
+        margin-top: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .avatar-number {
+          color: $blue04;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}

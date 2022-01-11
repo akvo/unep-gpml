@@ -66,6 +66,7 @@ import CapacityBuilding from "./modules/capacity-building/view";
 // New Details Page
 import NewDetailsView from "./modules/detailsPage/view";
 import CaseStudies from "./modules/case-studies/view";
+import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 Promise.all([
   api.get("/tag"),
@@ -508,6 +509,10 @@ const Root = () => {
           <Route
             path="/case-studies"
             render={(props) => <CaseStudies {...props} />}
+          />
+          <Route
+            path="/knowledge-library"
+            render={(props) => <KnowledgeLibrary {...props} />}
           />
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"

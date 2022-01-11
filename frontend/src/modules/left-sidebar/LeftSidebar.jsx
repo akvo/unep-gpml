@@ -15,7 +15,7 @@ const LeftSidebar = ({ children, active = 1 }) => {
     {
       id: 1,
       title: "LIBRARY",
-      url: null,
+      url: "/knowledge-library",
     },
     {
       id: 2,
