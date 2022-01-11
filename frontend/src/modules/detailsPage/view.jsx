@@ -19,6 +19,11 @@ const { Title } = Typography;
 import StickyBox from "react-sticky-box";
 import ActionGreen from "../../images/action-green.png";
 import LeftImage from "../../images/sea-dark.jpg";
+import LocationImage from "../../images/location.svg";
+import TransnationalImage from "../../images/transnational.svg";
+import LanguageImage from "../../images/language.svg";
+import TagsImage from "../../images/tags.svg";
+import ViewsImage from "../../images/views.svg";
 import {
   DownloadOutlined,
   HeartOutlined,
@@ -71,7 +76,7 @@ const SharePanel = () => {
       </div>
       <div className="sticky-panel-item">
         <ShareAltOutlined />
-        <h2>Bookmark</h2>
+        <h2>Share</h2>
       </div>
       <div className="sticky-panel-item">
         <DeleteOutlined />
@@ -152,6 +157,17 @@ function DetailsView() {
         <div className="ui container">
           <Row gutter={[16, 16]}>
             <Col xs={6} lg={6}>
+              <div className="views-container">
+                <List itemLayout="horizontal">
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar src={ViewsImage} />}
+                      title={"123 views"}
+                    />
+                  </List.Item>
+                </List>
+              </div>
+
               <CardComponent
                 title="Location and Geo-coverage"
                 style={{
@@ -162,9 +178,7 @@ function DetailsView() {
                   <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
-                        avatar={
-                          <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        }
+                        avatar={<Avatar src={LocationImage} />}
                         title={
                           "Latvia, Poland, Germany, Sweden, Lithuania, Denmark, Russian Federation, Finland, Estonia"
                         }
@@ -172,17 +186,13 @@ function DetailsView() {
                     </List.Item>
                     <List.Item>
                       <List.Item.Meta
-                        avatar={
-                          <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        }
+                        avatar={<Avatar src={TransnationalImage} />}
                         title={"Transnational"}
                       />
                     </List.Item>
                     <List.Item>
                       <List.Item.Meta
-                        avatar={
-                          <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        }
+                        avatar={<Avatar src={LanguageImage} />}
                         title={"English"}
                       />
                     </List.Item>
@@ -200,9 +210,7 @@ function DetailsView() {
                   <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
-                        avatar={
-                          <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        }
+                        avatar={<Avatar src={TagsImage} />}
                         title={
                           "Action plan, macroplastics, microplastics, best practice, manual, mechanism, mechanism, state of knowledge, litter monitoring, prevention"
                         }
