@@ -27,6 +27,10 @@
 
   .resource-list {
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
 
     .resource-item {
       border-radius: 8px;
@@ -41,7 +45,10 @@
       }
       .item-body {
         margin-top: 5px;
-        .title,
+        .title {
+          font-size: 1.1rem;
+          font-weight: 600;
+        }
         .description {
           font-size: 1rem;
           font-weight: 400;

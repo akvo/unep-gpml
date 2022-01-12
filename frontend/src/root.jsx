@@ -165,8 +165,13 @@ const ScrollToTop = () => {
 const { Header } = Layout;
 
 const Root = () => {
-  const { isAuthenticated, getIdTokenClaims, loginWithPopup, logout, user } =
-    useAuth0();
+  const {
+    isAuthenticated,
+    getIdTokenClaims,
+    loginWithPopup,
+    logout,
+    user,
+  } = useAuth0();
 
   const { profile, disclaimer, nav, tags } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -175,8 +180,10 @@ const Root = () => {
     tags: s.tags,
   }));
   const [signupModalVisible, setSignupModalVisible] = useState(false);
-  const [stakeholderSignupModalVisible, setStakeholderSignupModalVisible] =
-    useState(false);
+  const [
+    stakeholderSignupModalVisible,
+    setStakeholderSignupModalVisible,
+  ] = useState(false);
 
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [filters, setFilters] = useState(null);

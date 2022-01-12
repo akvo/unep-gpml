@@ -195,6 +195,22 @@ const ResourceList = ({
     }
   };
 
+  // Choose topics to count, based on whether user is approved or not,
+  // and if any topic filters are active.
+  const topicsForTotal = (isApprovedUser
+    ? topicTypesApprovedUser
+    : topicTypes
+  ).map((t) => humps.decamelize(t));
+  const filteredTopics =
+    filters?.topic?.length > 0
+      ? filters?.topic?.filter((t) => topicsForTotal.indexOf(t) > -1)
+      : topicsForTotal;
+  const totalItems = filteredTopics.reduce(
+    (acc, topic) =>
+      acc + (countData?.find((it) => it.topic === topic)?.count || 0),
+    0
+  );
+
   return (
     <Row>
       <Col span={24}>
@@ -208,29 +224,58 @@ const ResourceList = ({
         />
       </Col>
       <Col span={24} className="resource-list">
-        <ResourceItem results={results} />
+        {!isLoaded() || loading ? (
+          <h2 className="loading">
+            <LoadingOutlined spin /> Loading
+          </h2>
+        ) : isLoaded() && !loading && !isEmpty(results) ? (
+          <ResourceItem results={results} />
+        ) : (
+          <h2 className="loading">There is no data to display</h2>
+        )}
+        <div className="page">
+          {!isEmpty(results) && (
+            <Pagination
+              defaultCurrent={1}
+              current={(filters?.offset || 0) / pageSize + 1}
+              pageSize={pageSize}
+              total={totalItems}
+              showSizeChanger={false}
+              onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
+            />
+          )}
+        </div>
       </Col>
     </Row>
   );
 };
 
 const ResourceItem = ({ results }) => {
-  if (isEmpty(results)) {
-    return <h1>No Data</h1>;
-  }
-  console.log(results);
   return results.map((result) => {
     const { id, type } = result;
+    const fullName = (data) =>
+      data.title
+        ? `${data.title} ${data.firstName} ${data.lastName}`
+        : `${data.firstName} ${data.lastName}`;
+    const title =
+      (type === "stakeholder" && fullName(result)) ||
+      result.title ||
+      result.name;
+    const description =
+      result.description ||
+      result.abstract ||
+      result.summary ||
+      result.about ||
+      result.remarks;
+    const linkTo = `/${type}/${id}`;
+
     return (
-      <Card key={`${type}-${id}`} keyclassName="resource-item">
-        <div className="topic">Technical Resource</div>
+      <Card key={`${type}-${id}`} className="resource-item">
+        <div className="topic">{topicNames(type)}</div>
         <div className="item-body">
-          <div className="title">
-            Legal limits on single-use plastics and microplastics{" "}
-          </div>
+          <div className="title">{title}</div>
           <div className="description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-            tempor ante ac leo cursus...
+            <TrimText text={description} max={125} />
           </div>
         </div>
         <div className="item-footer">
@@ -254,7 +299,7 @@ const ResourceItem = ({ results }) => {
             <span className="avatar-number">+42</span>
           </Space>
           <span className="read-more">
-            <Link to="#">
+            <Link to={linkTo}>
               Read more <ArrowRightOutlined />
             </Link>
           </span>
