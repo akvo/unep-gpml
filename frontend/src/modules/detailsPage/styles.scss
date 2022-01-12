@@ -89,7 +89,7 @@
       .ant-card-head {
         border: none;
         min-height: auto;
-        padding: 0px 40px;
+        padding: 0px 20px;
         .ant-card-head-title {
           padding-bottom: 0px;
           color: #1ca585;
@@ -98,7 +98,7 @@
         }
       }
       .ant-card-body {
-        padding: 24px 40px;
+        padding: 24px 10px;
         p {
           font-size: 16px;
         }
@@ -137,6 +137,9 @@
     .list {
       .ant-list-item {
         border-bottom: none;
+        display: flex;
+        padding-left: 10px;
+        padding-right: 10px;
         .ant-list-item-meta {
           align-items: center;
           .ant-avatar {
@@ -150,10 +153,95 @@
         }
       }
     }
+    .connection-list {
+      .ant-list {
+        &:first-child {
+          border: 1px solid #edf2f7;
+          border-radius: 5px;
+          margin-bottom: 10px;
+        }
+        &:last-child {
+          .count {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #34a6ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #34a6ff;
+          }
+          h4 {
+            color: #34a6ff;
+            font-weight: 700;
+          }
+        }
+      }
+      .ant-avatar-circle {
+        width: 50px !important;
+        height: 50px !important;
+      }
+      .ant-list-item-meta-title {
+        margin-bottom: 0px;
+        color: #181818;
+      }
+      .ant-list-item-meta-description {
+        color: rgba(37, 91, 135, 0.5);
+      }
+      .see-more-button {
+        color: #34a6ff;
+        font-weight: 700;
+        cursor: pointer;
+      }
+    }
+    .documents-list {
+      .ant-list-item {
+        h4 {
+          color: #34a6ff;
+          font-weight: 700;
+          border-bottom: 1px solid;
+          display: inline-block;
+        }
+      }
+    }
+    .related-content {
+      padding: 0px 10px;
+      .ant-col {
+        margin-bottom: 20px;
+      }
+      .ant-card-head {
+        padding: 0px 15px;
+        .ant-card-head-title {
+          font-size: 14px;
+        }
+      }
+      .ant-card-body {
+        padding: 0px 15px;
+        h4 {
+          font-size: 14px;
+          color: #18162f;
+          font-weight: normal;
+          margin-bottom: 5px;
+        }
+        p {
+          color: #374a59;
+          font-size: 14px;
+        }
+        .bottom-panel {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .read-more {
+            color: #34a6ff;
+          }
+        }
+      }
+    }
     .record-table {
+      padding: 0px 10px;
       .record-table-wrapper {
         display: flex;
-        padding: 6px 6px;
+        padding: 6px 10px;
         &:nth-of-type(odd) {
           background: #edf2f7;
         }

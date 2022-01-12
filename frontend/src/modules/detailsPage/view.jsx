@@ -1,19 +1,6 @@
 import React from "react";
 import "./styles.scss";
-import {
-  Row,
-  Col,
-  Select,
-  Button,
-  Switch,
-  Radio,
-  Popover,
-  Steps,
-  Typography,
-  Card,
-  List,
-  Avatar,
-} from "antd";
+import { Row, Col, Tooltip, Typography, Card, List, Avatar } from "antd";
 const { Title } = Typography;
 
 import StickyBox from "react-sticky-box";
@@ -24,12 +11,16 @@ import TransnationalImage from "../../images/transnational.svg";
 import LanguageImage from "../../images/language.svg";
 import TagsImage from "../../images/tags.svg";
 import ViewsImage from "../../images/views.svg";
+import AvatarImage from "../../images/avatar.jpg";
+import EntityImage from "../../images/entity.png";
 import {
   DownloadOutlined,
   HeartOutlined,
   ShareAltOutlined,
   DeleteOutlined,
   EditOutlined,
+  UserOutlined,
+  ArrowRightOutlined,
 } from "@ant-design/icons";
 
 const CardComponent = ({ title, style, children }) => {
@@ -224,7 +215,48 @@ function DetailsView() {
                 style={{
                   marginBottom: "30px",
                 }}
-              />
+              >
+                <div className="list connection-list">
+                  <List itemLayout="horizontal">
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<Avatar src={EntityImage} />}
+                        title={"Helcom"}
+                        description={"Entity"}
+                      />{" "}
+                      <div className="see-more-button">See More</div>
+                    </List.Item>
+                  </List>
+                  <List itemLayout="horizontal">
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<Avatar src={AvatarImage} />}
+                        title={"Bertrand Lacaze"}
+                        description={"Owner -  Helcom"}
+                      />
+                    </List.Item>
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<Avatar src={AvatarImage} />}
+                        title={"Bertrand Lacaze"}
+                        description={"Owner -  Helcom"}
+                      />
+                    </List.Item>
+                  </List>
+                  <List itemLayout="horizontal">
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={
+                          <>
+                            <div className="count">+72</div>
+                          </>
+                        }
+                        title={"Scroll to see more"}
+                      />
+                    </List.Item>
+                  </List>
+                </div>
+              </CardComponent>
             </Col>
             <Col xs={18} lg={18}>
               <TabComponent
@@ -271,13 +303,17 @@ function DetailsView() {
                   marginBottom: "30px",
                 }}
               >
-                <div className="list">
+                <div className="list documents-list">
                   <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
-                        avatar={
-                          <Avatar src="https://joeschmoe.io/api/v1/random" />
-                        }
+                        avatar={<Avatar src={TransnationalImage} />}
+                        title={"www.link.fi"}
+                      />
+                    </List.Item>
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<Avatar src={TransnationalImage} />}
                         title={"www.link.fi"}
                       />
                     </List.Item>
@@ -289,7 +325,162 @@ function DetailsView() {
                 style={{
                   marginBottom: "30px",
                 }}
-              />
+              >
+                <Row gutter={16} className="related-content">
+                  <Col span={12}>
+                    <Card title="INITIATIVE " bordered={false}>
+                      <h4>
+                        Legal limits on single-use plastics and microplastics{" "}
+                      </h4>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Donec tempor ante ac leo cursus, quis fringilla elit
+                        sagittis. Maecenas ac maximus massa...
+                      </p>
+                      <div className="bottom-panel">
+                        <div>
+                          <Avatar.Group
+                            maxCount={2}
+                            maxPopoverTrigger="click"
+                            size="large"
+                            maxStyle={{
+                              color: "#f56a00",
+                              backgroundColor: "#fde3cf",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <Avatar src={AvatarImage} />
+                            <Avatar src={AvatarImage} />
+                            <Tooltip title="Ant User" placement="top">
+                              <Avatar
+                                style={{ backgroundColor: "#87d068" }}
+                                icon={<UserOutlined />}
+                              />
+                            </Tooltip>
+                          </Avatar.Group>
+                        </div>
+                        <div className="read-more">
+                          Read More <ArrowRightOutlined />
+                        </div>
+                      </div>
+                    </Card>
+                  </Col>
+                  <Col span={12}>
+                    <Card title="INITIATIVE " bordered={false}>
+                      <h4>
+                        Legal limits on single-use plastics and microplastics{" "}
+                      </h4>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Donec tempor ante ac leo cursus, quis fringilla elit
+                        sagittis. Maecenas ac maximus massa...
+                      </p>
+                      <div className="bottom-panel">
+                        <div>
+                          <Avatar.Group
+                            maxCount={2}
+                            maxPopoverTrigger="click"
+                            size="large"
+                            maxStyle={{
+                              color: "#f56a00",
+                              backgroundColor: "#fde3cf",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <Avatar src={AvatarImage} />
+                            <Avatar src={AvatarImage} />
+                            <Tooltip title="Ant User" placement="top">
+                              <Avatar
+                                style={{ backgroundColor: "#87d068" }}
+                                icon={<UserOutlined />}
+                              />
+                            </Tooltip>
+                          </Avatar.Group>
+                        </div>
+                        <div className="read-more">
+                          Read More <ArrowRightOutlined />
+                        </div>
+                      </div>
+                    </Card>
+                  </Col>
+                  <Col span={12}>
+                    <Card title="INITIATIVE " bordered={false}>
+                      <h4>
+                        Legal limits on single-use plastics and microplastics{" "}
+                      </h4>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Donec tempor ante ac leo cursus, quis fringilla elit
+                        sagittis. Maecenas ac maximus massa...
+                      </p>
+                      <div className="bottom-panel">
+                        <div>
+                          <Avatar.Group
+                            maxCount={2}
+                            maxPopoverTrigger="click"
+                            size="large"
+                            maxStyle={{
+                              color: "#f56a00",
+                              backgroundColor: "#fde3cf",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <Avatar src={AvatarImage} />
+                            <Avatar src={AvatarImage} />
+                            <Tooltip title="Ant User" placement="top">
+                              <Avatar
+                                style={{ backgroundColor: "#87d068" }}
+                                icon={<UserOutlined />}
+                              />
+                            </Tooltip>
+                          </Avatar.Group>
+                        </div>
+                        <div className="read-more">
+                          Read More <ArrowRightOutlined />
+                        </div>
+                      </div>
+                    </Card>
+                  </Col>
+                  <Col span={12}>
+                    <Card title="INITIATIVE " bordered={false}>
+                      <h4>
+                        Legal limits on single-use plastics and microplastics{" "}
+                      </h4>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Donec tempor ante ac leo cursus, quis fringilla elit
+                        sagittis. Maecenas ac maximus massa...
+                      </p>
+                      <div className="bottom-panel">
+                        <div>
+                          <Avatar.Group
+                            maxCount={2}
+                            maxPopoverTrigger="click"
+                            size="large"
+                            maxStyle={{
+                              color: "#f56a00",
+                              backgroundColor: "#fde3cf",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <Avatar src={AvatarImage} />
+                            <Avatar src={AvatarImage} />
+                            <Tooltip title="Ant User" placement="top">
+                              <Avatar
+                                style={{ backgroundColor: "#87d068" }}
+                                icon={<UserOutlined />}
+                              />
+                            </Tooltip>
+                          </Avatar.Group>
+                        </div>
+                        <div className="read-more">
+                          Read More <ArrowRightOutlined />
+                        </div>
+                      </div>
+                    </Card>
+                  </Col>
+                </Row>
+              </CardComponent>
               <CardComponent
                 title="Reviews (0)"
                 style={{
