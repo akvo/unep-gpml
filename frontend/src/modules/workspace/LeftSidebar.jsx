@@ -13,9 +13,9 @@ const LeftSidebar = ({ active = 1 }) => {
   const [activeMenu, setActiveMenu] = useState(active);
   const sidebar = [
     { id: 1, title: "Home", url: "/workspace" },
-    { id: 2, title: "Bookmarks", url: "/workspace/bookmark" },
-    { id: 3, title: "Network", url: "/workspace/network" },
-    { id: 4, title: "Admin", url: "/workspace/admin" },
+    { id: 2, title: "Bookmarks", url: "" },
+    { id: 3, title: "Network", url: "" },
+    { id: 4, title: "Admin", url: "" },
   ];
 
   const icons = [IconHome, IconBookmark, IconNetwork, IconAdmin];
