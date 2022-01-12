@@ -231,4 +231,4 @@ const plans = [
   },
 ];
 
-export default plans
+export default plans;
