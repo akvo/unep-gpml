@@ -72,7 +72,7 @@ const plans = [
             services and expertise.
           </li>
           <li>
-            The <Link to="/learning">Capacity Building section</Link> contains
+            The <Link to="/learning">Capacity Building section</Link> contains{" "}
             <Link to="/learning">Courses & Trainings</Link> and{" "}
             <a href="https://digital.gpmarinelitter.org/browse?country=&transnational=&topic=event&tag=&q=&offset=0">
               Events
