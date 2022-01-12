@@ -4,7 +4,9 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import api from "../../utils/api";
 import { filterState } from "./common";
+import { UIStore } from "../../store";
 import { topicTypes, topicNames } from "../../utils/misc";
 import CountryTransnationalFilter from "./country-transnational-filter";
 import humps from "humps";
@@ -20,7 +22,16 @@ const FilterDrawer = ({
   const { resourceType } = filterState.useState((s) => ({
     resourceType: s.resourceType,
   }));
+  const { profile, countries, tags, transnationalOptions } = UIStore.useState(
+    (s) => ({
+      profile: s.profile,
+      countries: s.countries,
+      tags: s.tags,
+      transnationalOptions: s.transnationalOptions,
+    })
+  );
   const { isAuthenticated } = useAuth0();
+  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
   const handleChangeResourceType = (flag, type) => {
     const val = query[flag];
@@ -45,6 +56,80 @@ const FilterDrawer = ({
       e.resourceType = [];
     });
   };
+
+  const handleChangeLocationTab = (key) => {
+    const param = key === "country" ? "transnational" : "country";
+    updateQuery(param, []);
+  };
+
+  const handleChangeCountry = (val) => {
+    const selected = countries?.filter((x) => {
+      return val.includes(x.id);
+    });
+    updateQuery(
+      "country",
+      selected.map((x) => x.id)
+    );
+  };
+
+  const handleDeselectCountry = (val) => {
+    const diselected = countries?.find((x) => x.id === val);
+    const selected =
+      countries && query?.country
+        ? countries.filter(
+            (x) =>
+              query.country.includes(String(x.id)) && diselected.id !== x.id
+          )
+        : [];
+    updateQuery(
+      "country",
+      selected.map((x) => x.id)
+    );
+  };
+
+  const handleChangeMultiCountry = (val) => {
+    // Fetch transnational countries
+    val.forEach((id) => {
+      const check = multiCountryCountries.find((x) => x.id === id);
+      !check &&
+        api.get(`/country-group/${id}`).then((resp) => {
+          setMultiCountryCountries([
+            ...multiCountryCountries,
+            { id: id, countries: resp.data?.[0]?.countries },
+          ]);
+        });
+    });
+  };
+
+  const handleDeselectMultiCountry = (val) => {
+    const diselected = transnationalOptions?.find((x) => x.id === val);
+    const selected =
+      transnationalOptions && query?.transnational
+        ? transnationalOptions.filter(
+            (x) =>
+              query.transnational.includes(String(x.id)) &&
+              diselected.id !== x.id
+          )
+        : [];
+    updateQuery(
+      "transnational",
+      selected.map((x) => x.id)
+    );
+  };
+
+  const country =
+    countries && query?.country
+      ? countries
+          .filter((x) => query.country.includes(String(x.id)))
+          .map((x) => x.id)
+      : [];
+
+  const multiCountry =
+    transnationalOptions && query?.transnational
+      ? transnationalOptions
+          .filter((x) => query.transnational.includes(String(x.id)))
+          .map((x) => x.id)
+      : [];
 
   return (
     <div className="site-drawer-render-in-current-wrapper">
@@ -118,6 +203,21 @@ const FilterDrawer = ({
             <Space align="middle">
               <div className="filter-title">Location</div>
             </Space>
+            <div className="country-filter-tab-wrapper">
+              <CountryTransnationalFilter
+                handleChangeTab={handleChangeLocationTab}
+                country={country}
+                handleChangeCountry={handleChangeCountry}
+                handleDeselectCountry={handleDeselectCountry}
+                multiCountry={multiCountry}
+                handleChangeMultiCountry={handleChangeMultiCountry}
+                handleDeselectMultiCountry={handleDeselectMultiCountry}
+                multiCountryCountries={multiCountryCountries}
+                multiCountryLabelCustomIcon={true}
+                countrySelectMode="multiple"
+                multiCountrySelectMode="multiple"
+              />
+            </div>
           </Col>
         </Row>
       </Drawer>

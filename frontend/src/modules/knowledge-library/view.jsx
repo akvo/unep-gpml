@@ -38,7 +38,6 @@ const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
   const pageSize = 10;
   const [toggleButton, setToggleButton] = useState("list");
   const { innerWidth } = window;
-  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const [countData, setCountData] = useState([]);
 
   const getResults = () => {
