@@ -504,10 +504,10 @@ const detailOrganisation = [
     type: "array",
   },
   {
-    key: null,
+    key: "isMember",
     name: "GPML Member",
-    value: "Yes",
-    type: "static",
+    value: "isMember",
+    type: "name",
   },
 ];
 
