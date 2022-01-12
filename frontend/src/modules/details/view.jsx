@@ -92,9 +92,12 @@ const renderItemValues = (
       const showAllCountryList = false;
       const displayEntry =
         data[key] ||
+        data[key] === false ||
+        data[key] === true ||
         data[key] === 0 ||
         key === null ||
         (value === "geoCoverage" && data.geoCoverageType);
+      // console.log(displayEntry, "item");
 
       // Calculate country info to be displayed, based on geo coverage type
       let dataCountries = null;
@@ -156,6 +159,14 @@ const renderItemValues = (
               <div className="title">{name}</div>
               <div className="value">
                 {key === null && type === "static" && value}
+                {value === key &&
+                  type === "name" &&
+                  data[key] === false &&
+                  "No"}
+                {value === key &&
+                  type === "name" &&
+                  data[key] === true &&
+                  "Yes"}
                 {value === key &&
                   (type === "name" ||
                     type === "string" ||
