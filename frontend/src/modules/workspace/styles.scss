@@ -2,6 +2,25 @@
 
 $bg-dark-primary: #005b70;
 
+.btn-workspace {
+  display: flex;
+  align-items: center;
+  gap: 8.15px;
+  width: 100%;
+  max-width: max-content;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 20px;
+  color: #4dffa5;
+  background: rgba(77, 255, 165, 0.1);
+  border-radius: 5px;
+  border: none;
+  cursor: not-allowed;
+  svg {
+    font-size: 22px;
+  }
+}
+
 #workspace {
   // common style for the font-size
   .paragraph,
