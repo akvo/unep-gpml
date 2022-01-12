@@ -3,8 +3,10 @@ import { Row, Col, Space, Drawer, Checkbox, Tag, Card, Image } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
+import { useAuth0 } from "@auth0/auth0-react";
 import { filterState } from "./common";
 import { topicTypes, topicNames } from "../../utils/misc";
+import CountryTransnationalFilter from "./country-transnational-filter";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 
@@ -12,15 +14,16 @@ const FilterDrawer = ({
   filterVisible,
   setFilterVisible,
   countData,
-  value,
-  onChange,
+  query,
+  updateQuery,
 }) => {
   const { resourceType } = filterState.useState((s) => ({
     resourceType: s.resourceType,
   }));
+  const { isAuthenticated } = useAuth0();
 
   const handleChangeResourceType = (flag, type) => {
-    const val = value[flag];
+    const val = query[flag];
     let updateVal = [];
     if (topicTypes?.length === val.length) {
       updateVal = [type];
@@ -29,7 +32,7 @@ const FilterDrawer = ({
     } else {
       updateVal = [...val, type];
     }
-    onChange(flag, updateVal);
+    updateQuery(flag, updateVal);
     filterState.update((e) => {
       e.resourceType = updateVal;
     });
@@ -37,7 +40,7 @@ const FilterDrawer = ({
 
   const handleClearResourceType = () => {
     const val = topicTypes?.map((x) => humps.decamelize(x));
-    onChange("topic", val);
+    updateQuery("topic", val);
     filterState.update((e) => {
       e.resourceType = [];
     });
@@ -95,13 +98,21 @@ const FilterDrawer = ({
             </Row>
           </Col>
           {/* My Bookmarks */}
-          <Col span={24}>
-            <Space align="middle">
-              <Checkbox onChange={() => console.log("checkbox")}>
-                <span className="filter-title">My Bookmarks</span>
-              </Checkbox>
-            </Space>
-          </Col>
+          {isAuthenticated && (
+            <Col span={24}>
+              <Space align="middle">
+                <Checkbox
+                  className="my-favorites"
+                  checked={query?.favorites?.indexOf("true") > -1}
+                  onChange={({ target: { checked } }) =>
+                    updateQuery("favorites", checked)
+                  }
+                >
+                  My Bookmarks
+                </Checkbox>
+              </Space>
+            </Col>
+          )}
           {/* Location */}
           <Col span={24}>
             <Space align="middle">

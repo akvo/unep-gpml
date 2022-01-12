@@ -189,8 +189,8 @@ const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
             filterVisible={filterVisible}
             setFilterVisible={setFilterVisible}
             countData={countData}
-            value={query}
-            onChange={(flag, val) => updateQuery(flag, val)}
+            query={query}
+            updateQuery={(flag, val) => updateQuery(flag, val)}
           />
 
           <LeftSidebar active={1}>
