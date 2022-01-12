@@ -56,6 +56,7 @@ import DataHubDropdownMenu from "./modules/dropdown-menu/data-hub";
 import KnowledgeExchangeDropdownMenu from "./modules/dropdown-menu/knowledge-exchange";
 import ConnectStakeholdersDropdownMenu from "./modules/dropdown-menu/connect-stakeholders";
 import ResponsiveMenu from "./modules/dropdown-menu/responsive-menu";
+import WorkspaceButton from "./modules/dropdown-menu/WorkspaceButton";
 
 // Discourse Forum
 import DiscourseForum from "./modules/discourse-forum/discourse-forum";
@@ -66,7 +67,7 @@ import CapacityBuilding from "./modules/capacity-building/view";
 
 // New Details Page
 import NewDetailsView from "./modules/detailsPage/view";
-import WorkspaceButton from "./modules/workspace/WorkspaceButton";
+import AddContentButton from "./modules/workspace/AddContentButton";
 
 Promise.all([
   api.get("/tag"),
@@ -248,6 +249,7 @@ const Root = () => {
     <Router>
       <ScrollToTop />
       <div id="root">
+        <AddContentButton/>
         {storage.getCookie("showDisclaimer") !== "false" &&
           disclaimerContent?.[disclaimer] && (
             <div className="panel-disclaimer">
