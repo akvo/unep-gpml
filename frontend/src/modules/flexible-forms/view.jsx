@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { Row, Col, Select, Button, Switch, Radio, Popover, Steps } from "antd";
+import { Row, Col, Button, Switch, Radio, Popover, Steps } from "antd";
 import {
   LeftOutlined,
   RightOutlined,
@@ -73,8 +73,11 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const { editId, data } = formData;
   const { status, id } = formEdit.flexible;
   const btnSubmit = useRef();
+  const [alert, setAlert] = useState("");
+  const [displayModal, setDisplayModal] = useState(false);
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
+  const [capacityBuilding, setCapacityBuilding] = useState(true);
   const [mainType, setMainType] = useState("initiative");
   const [label, setLabel] = useState("");
   const [subType, setSubType] = useState("");
@@ -161,21 +164,46 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       return (
         <div className="custom-step-title">
           <span>{parentTitle}</span>
-          <Button
-            type="ghost"
-            size="small"
-            shape="circle"
-            icon={
-              totalRequiredFields === 0 ? <CheckOutlined /> : <EditOutlined />
-            }
-            style={{
-              right: "0",
-              position: "absolute",
-              color: color,
-              backgroundColor: background,
-              display: display,
-            }}
-          />
+          {parentTitle === "Basic info" ? (
+            <Button
+              type="ghost"
+              size="small"
+              shape="circle"
+              icon={
+                totalRequiredFields === 0 &&
+                data?.S4?.S4_G5.individual[0].hasOwnProperty("role") ? (
+                  <CheckOutlined />
+                ) : (
+                  <EditOutlined />
+                )
+              }
+              style={{
+                right: "0",
+                position: "absolute",
+                color: color,
+                borderColor: "#1CA585",
+                backgroundColor: background,
+                display: display,
+              }}
+            />
+          ) : (
+            <Button
+              type="ghost"
+              size="small"
+              shape="circle"
+              icon={
+                totalRequiredFields === 0 ? <CheckOutlined /> : <EditOutlined />
+              }
+              style={{
+                right: "0",
+                position: "absolute",
+                color: color,
+                borderColor: "#1CA585",
+                backgroundColor: background,
+                display: display,
+              }}
+            />
+          )}
         </div>
       );
     };
@@ -204,10 +232,70 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
     const childs = steps.map(({ group, key, title, desc }) => {
       const requiredFields = data?.[section]?.required?.[group]?.length || 0;
+      const customChildTitle = (status) => {
+        const color = requiredFields === 0 ? "#255B87" : "#fff";
+        const background = requiredFields === 0 ? "#fff" : "#fff";
+        const display =
+          status === "active"
+            ? "unset"
+            : requiredFields === 0
+            ? "unset"
+            : "none";
+        return (
+          <div className="custom-child-title">
+            <span>{title}</span>
+            {title === "Stakeholders connections" ? (
+              <Button
+                type="ghost"
+                size="small"
+                shape="circle"
+                icon={
+                  data?.[section]?.S4_G5.individual[0].hasOwnProperty(
+                    "role"
+                  ) ? (
+                    <CheckOutlined />
+                  ) : (
+                    <EditOutlined />
+                  )
+                }
+                style={{
+                  right: "0",
+                  position: "absolute",
+                  color: data?.[section]?.S4_G5.individual[0].hasOwnProperty(
+                    "role"
+                  )
+                    ? "#255B87"
+                    : "#fff",
+                  borderColor: "#255B87",
+                  backgroundColor: background,
+                  display: display,
+                }}
+              />
+            ) : (
+              <Button
+                type="ghost"
+                size="small"
+                shape="circle"
+                icon={
+                  requiredFields === 0 ? <CheckOutlined /> : <EditOutlined />
+                }
+                style={{
+                  right: "0",
+                  position: "absolute",
+                  color: color,
+                  borderColor: "#255B87",
+                  backgroundColor: background,
+                  display: display,
+                }}
+              />
+            )}
+          </div>
+        );
+      };
       return (
         <Step
           key={section + key}
-          title={`${title}`}
+          title={customChildTitle("active")}
           className={"child-item"}
           status={requiredFields === 0 ? "finish" : "process"}
         />
@@ -307,6 +395,15 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   };
 
   const handleMainContentType = (e) => {
+    setCapacityBuilding(false);
+    if (e.target.value === "capacity_building") {
+      setMainType(e.target.value);
+      const search = mainContentType.find(
+        (element) => element.code === e.target.value
+      ).childs;
+      setSubContentType(search);
+      return;
+    }
     setMainType(e.target.value);
     const search = mainContentType.find(
       (element) => element.code === e.target.value
@@ -322,10 +419,43 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   };
 
   const handleSubContentType = (e) => {
+    console.log(e.target.value);
     setSubType(e.target.value);
+    if (
+      mainType === "capacity_building" &&
+      (e.target.value === "Guidance Documents" ||
+        e.target.value === "Tools & toolkits" ||
+        e.target.value === "Courses & Trainings" ||
+        e.target.value === "Educational & Outreach resources" ||
+        e.target.value === "Case studies")
+    ) {
+      setLabel("Technical Resource");
+      setFormSchema({ schema: schema["technical"] });
+      setCapacityBuilding(true);
+      UIStore.update((event) => {
+        event.selectedMainContentType = "technical";
+      });
+    }
+    if (
+      mainType === "capacity_building" &&
+      e.target.value === "Financing Resources"
+    ) {
+      setLabel("Financing Resource");
+      setFormSchema({ schema: schema["financing"] });
+      setCapacityBuilding(true);
+      UIStore.update((event) => {
+        event.selectedMainContentType = "financing";
+      });
+    }
+    if (mainType === "capacity_building" && e.target.value === "Events") {
+      setLabel("Event");
+      setFormSchema({ schema: schema["event_flexible"] });
+      setCapacityBuilding(true);
+      UIStore.update((event) => {
+        event.selectedMainContentType = "event_flexible";
+      });
+    }
   };
-
-  // console.log(data?.required?.[data.tabs[0]]?.length || 0);
 
   return (
     <div id="flexible-forms">
@@ -455,15 +585,41 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                   </Row>
                 ) : getTabStepIndex().tabIndex === 1 ? (
                   <Row>
-                    <div className="main-content">
+                    <div
+                      className="main-content"
+                      style={{
+                        position:
+                          getTabStepIndex().tabIndex === 1 && "relative",
+                        overflow: getTabStepIndex().tabIndex === 1 && "hidden",
+                      }}
+                    >
                       <div className="button-wrapper">
                         <h5>Pick the main content type</h5>
                         <Button
                           icon={<img src={ExampleIcon} alt="Example button" />}
                           size="large"
+                          onClick={() => setDisplayModal(!displayModal)}
                         >
                           SHOW EXAMPLES
                         </Button>
+                      </div>
+                      <div>
+                        <div className={`Modal ${displayModal ? "Show" : ""}`}>
+                          <Button
+                            icon={
+                              <img src={ExampleIcon} alt="Example button" />
+                            }
+                            size="large"
+                            onClick={() => setDisplayModal(!displayModal)}
+                            className="hide-button"
+                          >
+                            HIDE EXAMPLES
+                          </Button>
+                        </div>
+                        <div
+                          className={`Overlay ${displayModal ? "Show" : ""}`}
+                          onClick={() => setDisplayModal(!displayModal)}
+                        />
                       </div>
                       <Radio.Group
                         className="ant-row"
@@ -575,6 +731,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       mainType={label}
                       owners={owners}
                       subContentType={subType}
+                      capacityBuilding={capacityBuilding}
                     />
                   </Row>
                 )}
@@ -624,7 +781,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     <div className="center-content">
                       <p>Field to submit</p>
                       <h6>
-                        0 of{" "}
                         {data?.[data.tabs[0]]?.required?.[
                           Object.keys(data?.[data.tabs[0]]?.required)[
                             getTabStepIndex().stepIndex
@@ -649,10 +805,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       <LeftOutlined />
                       <p>Back</p>
                     </div>
-                    {/* <div className="center-content">
-                    <p>Field to submit</p>
-                    <h6>0 of 3</h6>
-                  </div> */}
                   </div>
                 )}
               </Col>

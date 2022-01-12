@@ -28,6 +28,7 @@ const initialData = {
     required: {},
   },
 };
+
 const initialFormData = new Store({
   data: initialData,
   editId: null,
@@ -51,14 +52,8 @@ const getSchema = ({
   currencies,
 }) => {
   const prop = cloneDeep(schema[selectedMainContentType].properties);
-  let otherArray = [
-    {
-      id: -1,
-      name: "Other",
-    },
-  ];
 
-  let array = [...organisations, ...nonMemberOrganisations, ...otherArray];
+  let array = [...organisations, ...nonMemberOrganisations];
 
   prop.S4.properties.S4_G5.properties[
     "entity"
@@ -112,6 +107,30 @@ const getSchema = ({
     const tagsPlusTopics = tags?.topics
       ? tags.technicalResourceType?.concat(tags.topics)
       : tags.technicalResourceType;
+    prop.S4.properties.S4_G3.properties[
+      "tags"
+    ].enum = tagsPlusTopics?.map((x) => String(x.id));
+    prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
+      (x) => x.tag
+    );
+  }
+
+  if (selectedMainContentType === "event_flexible") {
+    const tagsPlusTopics = tags?.topics
+      ? tags.events?.concat(tags.topics)
+      : tags.events;
+    prop.S4.properties.S4_G3.properties[
+      "tags"
+    ].enum = tagsPlusTopics?.map((x) => String(x.id));
+    prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
+      (x) => x.tag
+    );
+  }
+
+  if (selectedMainContentType === "technology") {
+    const tagsPlusTopics = tags?.topics
+      ? tags.technology?.concat(tags.topics)
+      : tags.technology;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -180,13 +199,7 @@ const tabs = [
       {
         group: "S3",
         key: "S3-p1-main-content",
-        title: "Main Content",
-        desc: "",
-      },
-      {
-        group: "S3",
-        key: "S3-p2-sub-content",
-        title: "Sub Content",
+        title: "Main & Sub Content",
         desc: "",
       },
     ],

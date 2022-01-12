@@ -69,7 +69,7 @@
       (doseq [association (expand-entity-associations entity_connections event-id)]
         (db.favorite/new-organisation-association conn association)))
     (when (not-empty individual_connections)
-      (doseq [association (expand-individual-associations entity_connections event-id)]
+      (doseq [association (expand-individual-associations individual_connections event-id)]
         (db.favorite/new-association conn association)))
     (when (not-empty urls)
       (let [lang-urls (map #(vector event-id
@@ -96,8 +96,8 @@
   (->
    [:map
     [:title string?]
-    [:start_date string?]
-    [:end_date string?]
+    [:start_date {:optional true} string?]
+    [:end_date {:optional true} string?]
     [:description {:optional true} string?]
     [:photo {:optional true} string?]
     [:remarks {:optional true} string?]
@@ -109,6 +109,9 @@
     [:url {:optional true} string?]
     [:info_docs {:optional true} string?]
     [:sub_content_type {:optional true} string?]
+    [:capacity_building {:optional true} boolean?]
+    [:event_type {:optional true} string?]
+    [:recording {:optional true} string?]
     [:entity_connections {:optional true}
      [:vector {:optional true}
       [:map

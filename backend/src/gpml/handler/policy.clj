@@ -86,7 +86,7 @@
       (doseq [association (expand-entity-associations entity_connections policy-id)]
         (db.favorite/new-organisation-association conn association)))
     (when (not-empty individual_connections)
-      (doseq [association (expand-individual-associations entity_connections policy-id)]
+      (doseq [association (expand-individual-associations individual_connections policy-id)]
         (db.favorite/new-association conn association)))
     (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
@@ -114,24 +114,26 @@
   (->
    [:map
     [:title string?]
-    [:original_title string?]
+    [:original_title {:optional true} string?]
     [:abstract {:optional true} string?]
     [:data_source {:optional true} string?]
     [:type_of_law {:optional true}
      [:enum "Legislation", "Miscellaneous", "Regulation", "Constitution"]]
-    [:record_number string?]
-    [:first_publication_date string?]
-    [:latest_amendment_date string?]
-    [:status [:enum "Repealed", "In force", "Not yet in force"]]
-    [:country integer?]
+    [:record_number {:optional true} string?]
+    [:first_publication_date {:optional true} string?]
+    [:latest_amendment_date {:optional true} string?]
+    [:status {:optional true} [:enum "Repealed", "In force", "Not yet in force"]]
+    [:country {:optional true} integer?]
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
     [:image {:optional true} string?]
-    [:implementing_mea integer?]
+    [:implementing_mea {:optional true} integer?]
     [:tags {:optional true}
      [:vector {:optional true} integer?]]
     [:url {:optional true} string?]
+    [:info_docs {:optional true} string?]
+    [:sub_content_type {:optional true} string?]
     [:entity_connections {:optional true}
      [:vector {:optional true}
       [:map

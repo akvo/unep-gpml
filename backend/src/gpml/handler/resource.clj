@@ -1,14 +1,16 @@
 (ns gpml.handler.resource
   (:require [clojure.java.jdbc :as jdbc]
             [gpml.auth :as auth]
+            [gpml.db.activity :as db.activity]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
+            [gpml.handler.auth :as h.auth]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
-            [gpml.handler.auth :as h.auth]
+            [gpml.util :as util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -69,9 +71,6 @@
                                                   :topic-type "resource"
                                                   :stakeholder-id stakeholder-id
                                                   :roles ["owner"]})))
-    #_(when (not-empty organisation)
-      (db.resource/add-resource-organisations conn {:organisations
-                                                    (map #(vector resource-id %) organisation)}))
     (when (not-empty tags)
       (db.resource/add-resource-tags conn {:tags
                                            (map #(vector resource-id %) tags)}))
@@ -108,7 +107,13 @@
       (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
             resource-id (create-resource conn (assoc body-params
                                                      :created_by (:id user)
-                                                     :mailjet-config mailjet-config))]
+                                                     :mailjet-config mailjet-config))
+            activity {:id (util/uuid)
+                      :type "create_resource"
+                      :owner_id (:id user)
+                      :metadata {:resource_id resource-id
+                                 :resource_type (:resource_type body-params)}}]
+        (db.activity/create-activity conn activity)
         (resp/created (:referrer req) {:message "New resource created" :id resource-id})))))
 
 (defn or-and [resource_type validator]
@@ -134,7 +139,7 @@
               [:enum "global", "regional", "national", "transnational",
                "sub-national", "global with elements in specific areas"]]]
             handler.geo/params-payload)]
-          [:publish_year integer?]
+          [:publish_year {:optional true} integer?]
           [:summary {:optional true} string?]
           [:value {:optional true} integer?]
           [:value_currency {:optional true} string?]
@@ -154,6 +159,7 @@
               [:string {:min 1}]]]]]
           [:url {:optional true} string?]
           [:info_docs {:optional true} string?]
+          [:capacity_building {:optional true} boolean?]
           [:sub_content_type {:optional true} string?]
           [:entity_connections {:optional true}
            [:vector {:optional true}
@@ -168,15 +174,7 @@
           [:tags {:optional true}
            [:vector {:optional true} integer?]]
           auth/owners-schema]
-         handler.geo/params-payload)
-   [:fn {:error/message "value is required" :error/path [:value]}
-    (fn [{:keys [resource_type value]}] (or-and resource_type value))]
-   [:fn {:error/message "value_currency is required" :error/path [:value_currency]}
-    (fn [{:keys [resource_type value_currency]}] (or-and resource_type value_currency))]
-   [:fn {:error/message "valid_from is required" :error/path [:valid_from]}
-    (fn [{:keys [resource_type valid_from]}] (or-and resource_type valid_from))]
-   [:fn {:error/message "valid_to is required" :error/path [:valid_to]}
-    (fn [{:keys [resource_type valid_to]}] (or-and resource_type valid_to))]])
+         handler.geo/params-payload)])
 
 (defmethod ig/init-key :gpml.handler.resource/post-params [_ _]
   post-params)
