@@ -249,7 +249,7 @@ const Root = () => {
     <Router>
       <ScrollToTop />
       <div id="root">
-        <AddContentButton/>
+        <AddContentButton />
         {storage.getCookie("showDisclaimer") !== "false" &&
           disclaimerContent?.[disclaimer] && (
             <div className="panel-disclaimer">
