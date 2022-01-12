@@ -1,10 +1,12 @@
 (ns gpml.handler.favorite
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.data :as dt]
-            [clojure.string :as string]
+  (:require [clojure.data :as dt]
+            [clojure.java.jdbc :as jdbc]
             [clojure.set :as set]
+            [clojure.string :as string]
+            [gpml.db.activity :as db.activity]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.util :as util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -92,6 +94,10 @@
                                                 {:stakeholder stakeholder
                                                  :remarks nil}
                                                 association))))
+        (db.activity/create-activity (:spec db) {:id (util/uuid)
+                                                 :type "bookmark_resource"
+                                                 :owner_id stakeholder
+                                                 :metadata (select-keys body-params [:topic :topic_id])})
         (resp/response {:message "OK"}))
       (resp/bad-request {:message (format "User with email %s does not exist" (:email jwt-claims))}))))
 
