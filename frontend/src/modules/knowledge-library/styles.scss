@@ -27,6 +27,34 @@
       font-weight: 400;
       font-size: 16px;
     }
+
+    .filter-title {
+      color: #000;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+
+    .resource-type-card {
+      padding: 10px;
+      height: 120px;
+      text-align: center;
+      .ant-card-body {
+        padding: 0;
+      }
+
+      .topic-text,
+      .topic-count {
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+    }
+
+    .resource-type-card.active {
+      color: $blue06;
+      border-color: $blue06;
+      font-weight: 600;
+    }
   }
 
   .resource-list-container {

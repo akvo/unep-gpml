@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Row, Col, Space, Drawer, Checkbox, Tag, Card } from "antd";
+import { Row, Col, Space, Drawer, Checkbox, Tag, Card, Image } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 
 import { filterState } from "./common";
 import { topicTypes, topicNames } from "../../utils/misc";
@@ -20,13 +21,17 @@ const FilterDrawer = ({
 
   const handleChangeResourceType = (flag, type) => {
     const val = value[flag];
+    let updateVal = [];
     if (topicTypes?.length === val.length) {
-      onChange(flag, [type]);
+      updateVal = [type];
+    } else if (val.includes(type)) {
+      updateVal = val.filter((x) => x !== type);
     } else {
-      onChange(flag, [...val, type]);
+      updateVal = [...val, type];
     }
+    onChange(flag, updateVal);
     filterState.update((e) => {
-      e.resourceType = [...e.resourceType, type];
+      e.resourceType = updateVal;
     });
   };
 
@@ -52,7 +57,7 @@ const FilterDrawer = ({
         height="100%"
       >
         {/* Filter content */}
-        <Row type="flex">
+        <Row type="flex" gutter={[0, 24]}>
           {/* Resource type */}
           <Col span={24}>
             <Space align="middle">
@@ -74,9 +79,14 @@ const FilterDrawer = ({
                   <Col span={6} key={type}>
                     <Card
                       onClick={() => handleChangeResourceType("topic", topic)}
+                      className={classNames("resource-type-card", {
+                        active: resourceType?.includes(topic),
+                      })}
                     >
                       <Space direction="vertical" align="center">
-                        {topicNames(type)} {count}
+                        <Image />
+                        <div className="topic-text">{topicNames(type)}</div>
+                        <div className="topic-count">{count}</div>
                       </Space>
                     </Card>
                   </Col>
