@@ -5,7 +5,7 @@ import ActionPlan from "./ActionPlan";
 import LeftSidebar from "./LeftSidebar";
 import DownloadPdf from "../../images/workspace/download-pdf.svg";
 
-const Workspace = () => {
+const Workspace = ({ userName = "John Morizot" }) => {
   return (
     <div id="workspace">
       <Row type="flex" className="bg-dark-primary header-container">
@@ -13,7 +13,7 @@ const Workspace = () => {
           <PageHeader
             title={
               <span className="header-text text-white">
-                Welcome back, <b className="user-name">John Morizot</b>
+                Welcome back, <b className="user-name">{userName}</b>
               </span>
             }
           />
