@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Row,
   Col,
@@ -10,64 +10,30 @@ import {
   Tooltip,
   Pagination,
 } from "antd";
-import {
-  SearchOutlined,
-  UserOutlined,
-  ArrowRightOutlined,
-} from "@ant-design/icons";
-import StickyBox from "react-sticky-box";
-import { Link, useLocation, withRouter } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+import { UserOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
-import moment from "moment";
 
 import "./styles.scss";
 import { UIStore } from "../../store";
 import {
   topicTypes,
-  topicTypesIncludingOrg,
   topicTypesApprovedUser,
   topicNames,
-  resourceTypeToTopicType,
 } from "../../utils/misc";
-import api from "../../utils/api";
-import ModalWarningUser from "../../utils/modal-warning-user";
 import humps from "humps";
 import { TrimText } from "../../utils/string";
-// import MapLanding from "./map-landing";
-// import CountryTransnationalFilter from "./country-transnational-filter";
-import { redirectError } from "../error/error-util";
 import isEmpty from "lodash/isEmpty";
 
-// Global variabel
-let tmid;
-
-export const useQuery = () => {
-  const srcParams = new URLSearchParams(useLocation().search);
-  const ret = {
-    country: [],
-    transnational: [],
-    topic: [],
-    tag: [],
-    q: "",
-  };
-  for (var key of srcParams.keys()) {
-    ret[key] = srcParams
-      .get(key)
-      .split(",")
-      .filter((it) => it !== "");
-  }
-  return ret;
-};
-
 const ResourceList = ({
-  history,
   filters,
-  setFilters,
-  filterMenu,
   setListVisible,
+  countData,
+  updateQuery,
+  loading,
+  results = [],
+  pageSize,
 }) => {
-  const query = useQuery();
   const { profile, countries, tags, transnationalOptions } = UIStore.useState(
     (s) => ({
       profile: s.profile,
@@ -76,124 +42,12 @@ const ResourceList = ({
       transnationalOptions: s.transnationalOptions,
     })
   );
-  const [results, setResults] = useState([]);
-  const [countData, setCountData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [filterCountries, setFilterCountries] = useState([]);
-  const location = useLocation();
-  const [relations, setRelations] = useState([]);
-  const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
-  const [warningVisible, setWarningVisible] = useState(false);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
-  const pageSize = 10;
-  const [toggleButton, setToggleButton] = useState("list");
-  const { innerWidth } = window;
-  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
   const isLoaded = () =>
     Boolean(
       !isEmpty(countries) && !isEmpty(tags) && !isEmpty(transnationalOptions)
     );
-
-  const getResults = () => {
-    // NOTE: The url needs to be window.location.search because of how
-    // of how `history` and `location` are interacting!
-    const searchParms = new URLSearchParams(window.location.search);
-    searchParms.set("limit", pageSize);
-    const url = `/browse?${String(searchParms)}`;
-    api
-      .get(url)
-      .then((resp) => {
-        setResults(resp?.data?.results);
-        setCountData(resp?.data?.counts);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        redirectError(err, history);
-      });
-  };
-
-  useEffect(() => {
-    // setFilterCountries if user click from map to browse view
-    query?.country &&
-      query?.country.length > 0 &&
-      setFilterCountries(query.country);
-
-    // Manage filters display
-    !filters && setFilters(query);
-    if (filters) {
-      setFilters({ ...filters, topic: query.topic, tag: query.tag });
-      setFilterCountries(filters.country);
-    }
-
-    setLoading(true);
-    if (isLoading === false && !filters) {
-      setTimeout(getResults, 0);
-    }
-
-    if (isLoading === false && filters) {
-      const newParams = new URLSearchParams({
-        ...filters,
-        topic: query.topic,
-        tag: query.tag,
-      });
-      history.push(`/knowledge-library?${newParams.toString()}`);
-      clearTimeout(tmid);
-      tmid = setTimeout(getResults, 1000);
-    }
-    // NOTE: Since we are using `history` and `location`, the
-    // dependency needs to be []. Ignore the linter warning, because
-    // adding a dependency here on location makes the FE send multiple
-    // requests to the backend.
-  }, [isLoading]); // eslint-disable-line
-
-  useEffect(() => {
-    UIStore.update((e) => {
-      e.disclaimer = "browse";
-    });
-    if (profile.reviewStatus === "APPROVED") {
-      setTimeout(() => {
-        api.get("/favorite").then((resp) => {
-          setRelations(resp.data);
-        });
-      }, 100);
-    }
-  }, [profile]);
-
-  useEffect(() => {
-    if (isEmpty(filterMenu) && isEmpty(query?.topic)) {
-      updateQuery(
-        "topic",
-        topicTypes.map((x) => humps.decamelize(x))
-      );
-    }
-    if (!isEmpty(filterMenu)) {
-      updateQuery("topic", filterMenu);
-    }
-    // NOTE: this are triggered when user click a topic from navigation menu
-  }, [filterMenu]); // eslint-disable-line
-
-  const updateQuery = (param, value) => {
-    const topScroll = window.innerWidth < 640 ? 996 : 207;
-    window.scrollTo({
-      top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
-    });
-    setLoading(true);
-    const newQuery = { ...query };
-    newQuery[param] = value;
-    if (param !== "offset") {
-      newQuery["offset"] = 0;
-    }
-    setFilters(newQuery);
-    const newParams = new URLSearchParams(newQuery);
-    history.push(`/knowledge-library?${newParams.toString()}`);
-    clearTimeout(tmid);
-    tmid = setTimeout(getResults, 1000);
-    if (param === "country") {
-      setFilterCountries(value);
-    }
-  };
 
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.

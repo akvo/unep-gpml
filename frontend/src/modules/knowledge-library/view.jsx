@@ -1,16 +1,145 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Button, Input, Space, Tag, Select, Drawer } from "antd";
 import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
 
 import "./styles.scss";
+import { UIStore } from "../../store";
 import LeftSidebar from "../left-sidebar/LeftSidebar";
 import ResourceList from "./ResourceList";
+import FilterDrawer from "./FilterDrawer";
+import { useQuery } from "./common";
+import { useLocation } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import api from "../../utils/api";
+import { redirectError } from "../error/error-util";
+import isEmpty from "lodash/isEmpty";
+import { topicTypes } from "../../utils/misc";
+import humps from "humps";
 
 const { Option } = Select;
+// Global variabel
+let tmid;
 
 const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
+  const query = useQuery();
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
+
+  const { profile } = UIStore.useState((s) => ({
+    profile: s.profile,
+  }));
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filterCountries, setFilterCountries] = useState([]);
+  const location = useLocation();
+  const [relations, setRelations] = useState([]);
+  const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
+  const [warningVisible, setWarningVisible] = useState(false);
+  const pageSize = 10;
+  const [toggleButton, setToggleButton] = useState("list");
+  const { innerWidth } = window;
+  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
+  const [countData, setCountData] = useState([]);
+
+  const getResults = () => {
+    // NOTE: The url needs to be window.location.search because of how
+    // of how `history` and `location` are interacting!
+    const searchParms = new URLSearchParams(window.location.search);
+    searchParms.set("limit", pageSize);
+    const url = `/browse?${String(searchParms)}`;
+    api
+      .get(url)
+      .then((resp) => {
+        setResults(resp?.data?.results);
+        setCountData(resp?.data?.counts);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        redirectError(err, history);
+      });
+  };
+
+  useEffect(() => {
+    // setFilterCountries if user click from map to browse view
+    query?.country &&
+      query?.country.length > 0 &&
+      setFilterCountries(query.country);
+
+    // Manage filters display
+    !filters && setFilters(query);
+    if (filters) {
+      setFilters({ ...filters, topic: query.topic, tag: query.tag });
+      setFilterCountries(filters.country);
+    }
+
+    setLoading(true);
+    if (isLoading === false && !filters) {
+      setTimeout(getResults, 0);
+    }
+
+    if (isLoading === false && filters) {
+      const newParams = new URLSearchParams({
+        ...filters,
+        topic: query.topic,
+        tag: query.tag,
+      });
+      history.push(`/knowledge-library?${newParams.toString()}`);
+      clearTimeout(tmid);
+      tmid = setTimeout(getResults, 1000);
+    }
+    // NOTE: Since we are using `history` and `location`, the
+    // dependency needs to be []. Ignore the linter warning, because
+    // adding a dependency here on location makes the FE send multiple
+    // requests to the backend.
+  }, [isLoading]); // eslint-disable-line
+
+  useEffect(() => {
+    UIStore.update((e) => {
+      e.disclaimer = "browse";
+    });
+    if (profile.reviewStatus === "APPROVED") {
+      setTimeout(() => {
+        api.get("/favorite").then((resp) => {
+          setRelations(resp.data);
+        });
+      }, 100);
+    }
+  }, [profile]);
+
+  useEffect(() => {
+    if (isEmpty(filterMenu) && isEmpty(query?.topic)) {
+      updateQuery(
+        "topic",
+        topicTypes.map((x) => humps.decamelize(x))
+      );
+    }
+    if (!isEmpty(filterMenu)) {
+      updateQuery("topic", filterMenu);
+    }
+    // NOTE: this are triggered when user click a topic from navigation menu
+  }, [filterMenu]); // eslint-disable-line
+
+  const updateQuery = (param, value) => {
+    const topScroll = window.innerWidth < 640 ? 996 : 207;
+    window.scrollTo({
+      top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
+    });
+    setLoading(true);
+    const newQuery = { ...query };
+    newQuery[param] = value;
+    if (param !== "offset") {
+      newQuery["offset"] = 0;
+    }
+    setFilters(newQuery);
+    const newParams = new URLSearchParams(newQuery);
+    history.push(`/knowledge-library?${newParams.toString()}`);
+    clearTimeout(tmid);
+    tmid = setTimeout(getResults, 1000);
+    if (param === "country") {
+      setFilterCountries(value);
+    }
+  };
 
   return (
     <Row id="knowledge-library">
@@ -25,7 +154,7 @@ const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
                   <Space>
                     <Search />
                     <Button
-                      onClick={() => setFilterVisible(true)}
+                      onClick={() => setFilterVisible(!filterVisible)}
                       type="ghost"
                       shape="circle"
                       icon={<FilterOutlined />}
@@ -54,37 +183,47 @@ const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
       {/* Content */}
       <Col span={24}>
         <div className="ui-container">
+          {/* Filter Drawer */}
+          <FilterDrawer
+            filters={filters}
+            filterVisible={filterVisible}
+            setFilterVisible={setFilterVisible}
+            countData={countData}
+            value={query}
+            onChange={(flag, val) => updateQuery(flag, val)}
+          />
+
           <LeftSidebar active={1}>
             <Row className="resource-main-container">
-              {/* Filter Drawer */}
-              <div className="site-drawer-render-in-current-wrapper">
-                <Drawer
-                  title="Basic Drawer"
-                  placement="left"
-                  visible={filterVisible}
-                  getContainer={false}
-                  onClose={() => setFilterVisible(false)}
-                  style={{ position: "absolute" }}
-                >
-                  <p>Some contents...</p>
-                </Drawer>
-              </div>
-
               {/* Resource Main Content */}
               {listVisible && (
-                <Col span={8} className="resource-list-container">
+                <Col
+                  lg={10}
+                  md={9}
+                  sm={12}
+                  xs={24}
+                  className="resource-list-container"
+                >
                   {/* Resource List */}
                   <ResourceList
-                    history={history}
                     filters={filters}
-                    setFilters={setFilters}
-                    filterMenu={filterMenu}
                     setListVisible={setListVisible}
+                    countData={countData}
+                    updateQuery={updateQuery}
+                    loading={loading}
+                    results={results}
+                    pageSize={pageSize}
                   />
                 </Col>
               )}
               {/* Map/Topic View */}
-              <Col span={listVisible ? 16 : 24} align="center">
+              <Col
+                lg={listVisible ? 14 : 24}
+                md={listVisible ? 15 : 24}
+                sm={listVisible ? 12 : 24}
+                xs={24}
+                align="center"
+              >
                 Map here...
               </Col>
             </Row>

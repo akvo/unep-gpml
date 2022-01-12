@@ -1,0 +1,83 @@
+import React, { useState } from "react";
+import { Row, Col, Space, Drawer, Checkbox, Tag, Card } from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
+
+import { topicTypes, topicNames } from "../../utils/misc";
+import humps from "humps";
+
+const FilterDrawer = ({
+  filters,
+  filterVisible,
+  setFilterVisible,
+  countData,
+  value,
+  onChange,
+}) => {
+  const handleChange = (flag, type) => {
+    onChange(flag, [type]);
+    setFilterVisible(false);
+  };
+
+  return (
+    <div className="site-drawer-render-in-current-wrapper">
+      <Drawer
+        title="Choose your filters below"
+        placement="left"
+        visible={filterVisible}
+        getContainer={false}
+        onClose={() => setFilterVisible(false)}
+        closeIcon={<CloseCircleOutlined />}
+        style={{ position: "absolute" }}
+        width={500}
+        height="100%"
+      >
+        {/* Filter content */}
+        <Row type="flex">
+          {/* Resource type */}
+          <Col span={24}>
+            <Space align="middle">
+              <div className="filter-title">Resource type</div>
+              <Tag>All (default)</Tag>
+            </Space>
+            <Row type="flex" gutter={[12, 12]}>
+              {topicTypes.map((type) => {
+                const topic = humps.decamelize(type);
+                const count =
+                  countData?.find((it) => it.topic === topic)?.count || 0;
+                return (
+                  <Col span={6} key={type}>
+                    <Card onClick={() => handleChange("topic", topic)}>
+                      <Space direction="vertical" align="center">
+                        {topicNames(type)} {count}
+                        {/* <Checkbox
+                          checked={value.topic.indexOf(topic) !== -1}
+                          onChange={handleChange("topic", topic)}
+                        ></Checkbox> */}
+                      </Space>
+                    </Card>
+                  </Col>
+                );
+              })}
+            </Row>
+          </Col>
+          {/* My Bookmarks */}
+          <Col span={24}>
+            <Space align="middle">
+              <Checkbox onChange={() => console.log("checkbox")}>
+                <span className="filter-title">My Bookmarks</span>
+              </Checkbox>
+            </Space>
+          </Col>
+          {/* Location */}
+          <Col span={24}>
+            <Space align="middle">
+              <div className="filter-title">Location</div>
+            </Space>
+          </Col>
+        </Row>
+      </Drawer>
+    </div>
+  );
+};
+
+export default FilterDrawer;

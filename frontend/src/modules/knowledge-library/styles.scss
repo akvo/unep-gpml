@@ -8,6 +8,7 @@
   .site-drawer-render-in-current-wrapper,
   .resource-main-container {
     min-height: 70vh;
+    height: 100%;
   }
 
   .site-drawer-render-in-current-wrapper {
@@ -15,6 +16,19 @@
     top: 0;
     min-width: 100%;
     overflow: hidden;
+
+    .ant-drawer-header {
+      background: $blue05;
+    }
+
+    .ant-drawer-title,
+    .anticon svg {
+      color: #fff;
+      font-weight: 400;
+    }
+    .anticon svg {
+      font-size: 18px;
+    }
   }
 
   .resource-list-container {
