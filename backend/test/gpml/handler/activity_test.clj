@@ -11,5 +11,5 @@
   (let [system (ig/init fixtures/*system* [::sut/get-recent])
         handler (::sut/get-recent system)]
     (testing "Testing getting activities happy path"
-      (let [resp (handler (-> (mock/request :get "/recent")))]
+      (let [resp (handler (mock/request :get "/recent"))]
         (is (= 200 (:status resp)))))))
