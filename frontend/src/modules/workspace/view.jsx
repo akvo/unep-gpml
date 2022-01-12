@@ -5,7 +5,6 @@ import ActionPlan from "./ActionPlan";
 import LeftSidebar from "./LeftSidebar";
 import DownloadPdf from "../../images/workspace/download-pdf.svg";
 
-
 const Workspace = () => {
   return (
     <div id="workspace">
