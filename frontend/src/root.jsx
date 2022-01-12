@@ -65,6 +65,7 @@ import CapacityBuilding from "./modules/capacity-building/view";
 
 // New Details Page
 import NewDetailsView from "./modules/detailsPage/view";
+import CaseStudies from "./modules/case-studies/view";
 
 Promise.all([
   api.get("/tag"),
@@ -501,9 +502,12 @@ const Root = () => {
             render={(props) => <DiscourseForum />}
           />
           <Route
-            exact
             path="/capacity-building"
             render={(props) => <CapacityBuilding {...props} />}
+          />
+          <Route
+            path="/case-studies"
+            render={(props) => <CaseStudies {...props} />}
           />
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
