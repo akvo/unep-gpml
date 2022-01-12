@@ -2,8 +2,7 @@
   (:require [clojure.string :as str]
             [gpml.db.activity :as db.activity]
             [integrant.core :as ig]
-            [ring.util.response :as resp])
-  (:import [java.util UUID]))
+            [ring.util.response :as resp]))
 
 (def ^:const activity-types
   ["bookmark_resource" "create_resource"])
@@ -28,29 +27,7 @@
    [:owner_id pos-int?]
    [:metadata {:optional true} [:maybe map?]]])
 
-(defn create-activity
-  [db activity]
-  (let [activity (assoc activity :id (UUID/randomUUID))]
-    (db.activity/create-activity (:spec db) activity)))
-
-(defmethod ig/init-key :gpml.handler.activity/post
-  [_ {:keys [db]}]
-  (fn [{:keys [body-params headers]}]
-    (let [result (create-activity db body-params)]
-      (if (= result 1)
-        (resp/created (:referer headers) {:message "Activity created."})
-        (resp/status {:error "Could not create activity"} 500)))))
-
-(defmethod ig/init-key :gpml.handler.activity/post-params
-  [_ _]
-  new-activity-schema)
-
-(defmethod ig/init-key :gpml.handler.activity/post-response
-  [_ _]
-  [:map
-   [:message string?]])
-
-(defmethod ig/init-key :gpml.handler.activity/get
+(defmethod ig/init-key :gpml.handler.activity/get-recent
   [_ {:keys [db]}]
   (fn [_]
     (let [result (db.activity/get-recent-activities (:spec db))]
