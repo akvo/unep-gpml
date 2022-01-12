@@ -66,7 +66,7 @@ import CapacityBuilding from "./modules/capacity-building/view";
 
 // New Details Page
 import NewDetailsView from "./modules/detailsPage/view";
-import CaseStudies from "./modules/case-studies/view";
+import WorkspaceButton from "./modules/workspace/WorkspaceButton";
 
 Promise.all([
   api.get("/tag"),
@@ -263,6 +263,7 @@ const Root = () => {
                 <img src={logo} className="logo" alt="GPML" />
               </Link>
             </div>
+            <WorkspaceButton />
             <div className="menu-dropdown-container">
               <AboutDropdownMenu />
               <ExploreDropdownMenu topicsCount={topicsCount} />
