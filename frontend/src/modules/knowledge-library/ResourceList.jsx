@@ -120,7 +120,8 @@ const ResourceItem = ({ results }) => {
       result.abstract ||
       result.summary ||
       result.about ||
-      result.remarks;
+      result.remarks ||
+      "";
     const linkTo = `/${type}/${id}`;
 
     return (

@@ -2,20 +2,40 @@ import React, { useState } from "react";
 import { Row, Col, Space, Drawer, Checkbox, Tag, Card } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
+import { filterState } from "./common";
 import { topicTypes, topicNames } from "../../utils/misc";
 import humps from "humps";
+import isEmpty from "lodash/isEmpty";
 
 const FilterDrawer = ({
-  filters,
   filterVisible,
   setFilterVisible,
   countData,
   value,
   onChange,
 }) => {
-  const handleChange = (flag, type) => {
-    onChange(flag, [type]);
-    setFilterVisible(false);
+  const { resourceType } = filterState.useState((s) => ({
+    resourceType: s.resourceType,
+  }));
+
+  const handleChangeResourceType = (flag, type) => {
+    const val = value[flag];
+    if (topicTypes?.length === val.length) {
+      onChange(flag, [type]);
+    } else {
+      onChange(flag, [...val, type]);
+    }
+    filterState.update((e) => {
+      e.resourceType = [...e.resourceType, type];
+    });
+  };
+
+  const handleClearResourceType = () => {
+    const val = topicTypes?.map((x) => humps.decamelize(x));
+    onChange("topic", val);
+    filterState.update((e) => {
+      e.resourceType = [];
+    });
   };
 
   return (
@@ -26,7 +46,7 @@ const FilterDrawer = ({
         visible={filterVisible}
         getContainer={false}
         onClose={() => setFilterVisible(false)}
-        closeIcon={<CloseCircleOutlined />}
+        closeIcon={<CloseCircleOutlined className="drawer-close-icon" />}
         style={{ position: "absolute" }}
         width={500}
         height="100%"
@@ -37,7 +57,13 @@ const FilterDrawer = ({
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Resource type</div>
-              <Tag>All (default)</Tag>
+              {isEmpty(resourceType) ? (
+                <Tag>All (default)</Tag>
+              ) : (
+                <Tag closable={true} onClose={() => handleClearResourceType()}>
+                  Clear selection
+                </Tag>
+              )}
             </Space>
             <Row type="flex" gutter={[12, 12]}>
               {topicTypes.map((type) => {
@@ -46,13 +72,11 @@ const FilterDrawer = ({
                   countData?.find((it) => it.topic === topic)?.count || 0;
                 return (
                   <Col span={6} key={type}>
-                    <Card onClick={() => handleChange("topic", topic)}>
+                    <Card
+                      onClick={() => handleChangeResourceType("topic", topic)}
+                    >
                       <Space direction="vertical" align="center">
                         {topicNames(type)} {count}
-                        {/* <Checkbox
-                          checked={value.topic.indexOf(topic) !== -1}
-                          onChange={handleChange("topic", topic)}
-                        ></Checkbox> */}
                       </Space>
                     </Card>
                   </Col>
