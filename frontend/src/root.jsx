@@ -70,7 +70,6 @@ import NewDetailsView from "./modules/detailsPage/view";
 import AddContentButton from "./modules/workspace/AddContentButton";
 import CaseStudies from "./modules/case-studies/view";
 
-
 Promise.all([
   api.get("/tag"),
   api.get("/currency"),
@@ -513,15 +512,13 @@ const Root = () => {
           />
           <Route
             exact
-            render={(props) => <Workspace {...props} />}
             path="/case-studies"
             render={(props) => <CaseStudies {...props} />}
           />
           <Route
             exact
             render={(props) => <Workspace {...props} />}
-             path="/workspace"
-            render={(props) => <CaseStudies {...props} />}
+            path="/workspace"
           />
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
