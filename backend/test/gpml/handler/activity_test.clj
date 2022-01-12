@@ -1,10 +1,7 @@
 (ns gpml.handler.activity-test
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
             [gpml.handler.activity :as sut]
-            [gpml.handler.profile-test :as profile-test]
-            [gpml.util :as util]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
