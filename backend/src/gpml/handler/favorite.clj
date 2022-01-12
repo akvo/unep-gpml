@@ -94,10 +94,10 @@
                                                 {:stakeholder stakeholder
                                                  :remarks nil}
                                                 association))))
-        (db.activity/create-activity (:spec db) {:id (util/uuid)
-                                                 :type "bookmark_resource"
-                                                 :owner_id stakeholder
-                                                 :metadata (select-keys body-params [:topic :topic_id])})
+        (db.activity/create-activity db {:id (util/uuid)
+                                         :type "bookmark_resource"
+                                         :owner_id stakeholder
+                                         :metadata (select-keys body-params [:topic :topic_id])})
         (resp/response {:message "OK"}))
       (resp/bad-request {:message (format "User with email %s does not exist" (:email jwt-claims))}))))
 
