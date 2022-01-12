@@ -68,6 +68,7 @@ import CapacityBuilding from "./modules/capacity-building/view";
 // New Details Page
 import NewDetailsView from "./modules/detailsPage/view";
 import AddContentButton from "./modules/workspace/AddContentButton";
+import CaseStudies from "./modules/case-studies/view";
 
 Promise.all([
   api.get("/tag"),
@@ -511,8 +512,13 @@ const Root = () => {
           />
           <Route
             exact
-            path="/workspace"
+            path="/case-studies"
+            render={(props) => <CaseStudies {...props} />}
+          />
+          <Route
+            exact
             render={(props) => <Workspace {...props} />}
+            path="/workspace"
           />
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
