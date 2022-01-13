@@ -9,11 +9,13 @@ import {
   Card,
   Image,
   Select,
+  DatePicker,
 } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import moment from "moment";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
 import { topicTypes, topicNames } from "../../utils/misc";
@@ -30,19 +32,32 @@ const FilterDrawer = ({
   query,
   updateQuery,
 }) => {
-  const { profile, countries, tags, transnationalOptions, sectorOptions } =
-    UIStore.useState((s) => ({
-      profile: s.profile,
-      countries: s.countries,
-      tags: s.tags,
-      transnationalOptions: s.transnationalOptions,
-      sectorOptions: s.sectorOptions,
-    }));
+  const {
+    profile,
+    countries,
+    tags,
+    transnationalOptions,
+    sectorOptions,
+    geoCoverageTypeOptions,
+    languages,
+  } = UIStore.useState((s) => ({
+    profile: s.profile,
+    countries: s.countries,
+    tags: s.tags,
+    transnationalOptions: s.transnationalOptions,
+    sectorOptions: s.sectorOptions,
+    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
+    languages: s.languages,
+  }));
   const { isAuthenticated } = useAuth0();
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
   const isLoaded = () =>
-    !isEmpty(tags) && !isEmpty(countries) && !isEmpty(transnationalOptions);
+    !isEmpty(tags) &&
+    !isEmpty(countries) &&
+    !isEmpty(transnationalOptions) &&
+    !isEmpty(geoCoverageTypeOptions) &&
+    !isEmpty(languages);
 
   const handleChangeResourceType = (flag, type) => {
     const val = query[flag];
@@ -164,7 +179,7 @@ const FilterDrawer = ({
                 </Tag>
               )}
             </Space>
-            <Row type="flex" gutter={[12, 12]}>
+            <Row type="flex" gutter={[10, 10]}>
               {topicTypes.map((type) => {
                 const topic = humps.decamelize(type);
                 const count =
@@ -247,6 +262,94 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
+          {/* Goals */}
+          <MultipleSelectFilter
+            title="Goals"
+            options={[]}
+            value={query?.goal || []}
+            flag="goal"
+            query={query}
+            updateQuery={updateQuery}
+          />
+          {/* Representative group */}
+          <MultipleSelectFilter
+            title="Representative group"
+            options={[]}
+            value={query?.representativeGroup || []}
+            flag="representativeGroup"
+            query={query}
+            updateQuery={updateQuery}
+          />
+          {/* Geo-coverage */}
+          <MultipleSelectFilter
+            title="Geo-coverage"
+            options={
+              isLoaded()
+                ? geoCoverageTypeOptions?.map((x) => ({ value: x, label: x }))
+                : []
+            }
+            value={query?.geoCoverage || []}
+            flag="geoCoverage"
+            query={query}
+            updateQuery={updateQuery}
+          />
+          {/* Language */}
+          <MultipleSelectFilter
+            title="Language"
+            options={
+              isLoaded()
+                ? values(languages).map((x) => ({
+                    value: x.name,
+                    label: `${x.name} (${x.native})`,
+                  }))
+                : []
+            }
+            value={query?.language || []}
+            flag="language"
+            query={query}
+            updateQuery={updateQuery}
+          />
+          {/* Entities */}
+          <MultipleSelectFilter
+            title="Entities"
+            options={[]}
+            value={query?.entity || []}
+            flag="entity"
+            query={query}
+            updateQuery={updateQuery}
+          />
+          {/* Rating */}
+          <MultipleSelectFilter
+            title="Rating"
+            options={[]}
+            value={query?.rating || []}
+            flag="rating"
+            query={query}
+            updateQuery={updateQuery}
+          />
+          {/* Date Filter */}
+          <Col span={24}>
+            <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
+              {/* Start date */}
+              <DatePickerFilter
+                title="Start date"
+                value={query?.startDate}
+                flag="startDate"
+                query={query}
+                updateQuery={updateQuery}
+                span={12}
+              />
+              {/* End date */}
+              <DatePickerFilter
+                title="End date"
+                value={query?.endDate}
+                flag="endDate"
+                query={query}
+                updateQuery={updateQuery}
+                span={12}
+              />
+            </Row>
+          </Col>
         </Row>
       </Drawer>
     </div>
@@ -260,9 +363,10 @@ const MultipleSelectFilter = ({
   query,
   flag,
   updateQuery,
+  span = 24,
 }) => {
   return (
-    <Col span={24}>
+    <Col span={span}>
       <Space align="middle">
         <div className="filter-title">{title}</div>
       </Space>
@@ -285,6 +389,31 @@ const MultipleSelectFilter = ({
             )
           }
           virtual={false}
+        />
+      </div>
+    </Col>
+  );
+};
+
+const DatePickerFilter = ({
+  title,
+  value,
+  query,
+  flag,
+  updateQuery,
+  span = 24,
+}) => {
+  return (
+    <Col span={span}>
+      <Space align="middle">
+        <div className="filter-title">{title}</div>
+      </Space>
+      <div>
+        <DatePicker
+          value={!isEmpty(value) ? moment(value[0]) : ""}
+          onChange={(val) =>
+            updateQuery(flag, val ? moment(val).format("YYYY-MM-DD") : [])
+          }
         />
       </div>
     </Col>

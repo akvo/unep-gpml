@@ -8,6 +8,12 @@ const useQuery = () => {
     topic: [],
     tag: [],
     sector: [],
+    goal: [],
+    representativeGroup: [],
+    geoCoverage: [],
+    language: [],
+    entity: [],
+    rating: [],
     q: "",
   };
   for (var key of srcParams.keys()) {
