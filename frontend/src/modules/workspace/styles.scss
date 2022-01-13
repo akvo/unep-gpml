@@ -107,6 +107,7 @@ $bg-green-primary: #10f9b7;
 
   .header-container {
     border-bottom: 1px solid #ffff;
+    background-color: #005b70;
   }
 
   .header-text {
@@ -188,6 +189,7 @@ $bg-green-primary: #10f9b7;
 
       &.active {
         background: rgba(5, 240, 129, 0.2);
+        border: 0;
 
         img,
         p {
