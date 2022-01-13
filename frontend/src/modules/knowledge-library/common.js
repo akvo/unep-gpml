@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import { Store } from "pullstate";
 
 const useQuery = () => {
   const srcParams = new URLSearchParams(useLocation().search);
@@ -19,25 +18,4 @@ const useQuery = () => {
   return ret;
 };
 
-const filterState = new Store({
-  resourceType: [],
-  bookmark: [],
-  location: {
-    country: [],
-    multiCountry: [],
-  },
-  tags: [],
-  sectors: [],
-  goals: [],
-  representativeGroup: [],
-  geoCoverage: [],
-  language: [],
-  entities: [],
-  rating: [],
-  date: {
-    startDate: null,
-    endDate: null,
-  },
-});
-
-export { useQuery, filterState };
+export { useQuery };
