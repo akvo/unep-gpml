@@ -35,7 +35,7 @@ const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
-  const pageSize = 10;
+  const pageSize = 8;
   const [toggleButton, setToggleButton] = useState("list");
   const { innerWidth } = window;
   const [countData, setCountData] = useState([]);
@@ -107,12 +107,6 @@ const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
   }, [profile]);
 
   useEffect(() => {
-    if (isEmpty(filterMenu) && isEmpty(query?.topic)) {
-      updateQuery(
-        "topic",
-        topicTypes.map((x) => humps.decamelize(x))
-      );
-    }
     if (!isEmpty(filterMenu)) {
       updateQuery("topic", filterMenu);
     }

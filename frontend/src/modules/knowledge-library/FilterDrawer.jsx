@@ -5,7 +5,6 @@ import classNames from "classnames";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import api from "../../utils/api";
-import { filterState } from "./common";
 import { UIStore } from "../../store";
 import { topicTypes, topicNames } from "../../utils/misc";
 import CountryTransnationalFilter from "./country-transnational-filter";
@@ -19,9 +18,6 @@ const FilterDrawer = ({
   query,
   updateQuery,
 }) => {
-  const { resourceType } = filterState.useState((s) => ({
-    resourceType: s.resourceType,
-  }));
   const { profile, countries, tags, transnationalOptions } = UIStore.useState(
     (s) => ({
       profile: s.profile,
@@ -36,7 +32,7 @@ const FilterDrawer = ({
   const handleChangeResourceType = (flag, type) => {
     const val = query[flag];
     let updateVal = [];
-    if (topicTypes?.length === val.length) {
+    if (isEmpty(val)) {
       updateVal = [type];
     } else if (val.includes(type)) {
       updateVal = val.filter((x) => x !== type);
@@ -44,17 +40,6 @@ const FilterDrawer = ({
       updateVal = [...val, type];
     }
     updateQuery(flag, updateVal);
-    filterState.update((e) => {
-      e.resourceType = updateVal;
-    });
-  };
-
-  const handleClearResourceType = () => {
-    const val = topicTypes?.map((x) => humps.decamelize(x));
-    updateQuery("topic", val);
-    filterState.update((e) => {
-      e.resourceType = [];
-    });
   };
 
   const handleChangeLocationTab = (key) => {
@@ -150,10 +135,10 @@ const FilterDrawer = ({
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Resource type</div>
-              {isEmpty(resourceType) ? (
+              {isEmpty(query?.topic) ? (
                 <Tag>All (default)</Tag>
               ) : (
-                <Tag closable={true} onClose={() => handleClearResourceType()}>
+                <Tag closable={true} onClose={() => updateQuery("topic", [])}>
                   Clear selection
                 </Tag>
               )}
@@ -168,7 +153,7 @@ const FilterDrawer = ({
                     <Card
                       onClick={() => handleChangeResourceType("topic", topic)}
                       className={classNames("resource-type-card", {
-                        active: resourceType?.includes(topic),
+                        active: query?.topic?.includes(topic),
                       })}
                     >
                       <Space direction="vertical" align="center">
