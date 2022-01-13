@@ -1,0 +1,183 @@
+@import "../../vars.scss";
+
+#knowledge-library {
+  span.ant-input-affix-wrapper.input-src {
+    border-radius: 30px;
+  }
+
+  .site-drawer-render-in-current-wrapper,
+  .resource-main-container {
+    min-height: 100vh;
+    height: 100%;
+  }
+
+  .site-drawer-render-in-current-wrapper {
+    position: absolute;
+    top: 0;
+    min-width: 100%;
+    overflow: hidden;
+
+    .ant-drawer-header {
+      background: $blue05;
+    }
+
+    .ant-drawer-title,
+    .drawer-close-icon {
+      color: #fff;
+      font-weight: 400;
+      font-size: 16px;
+    }
+
+    .ant-select,
+    .ant-picker {
+      width: 100%;
+    }
+
+    .filter-title {
+      color: #000;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .resource-type-card {
+      cursor: pointer;
+      padding: 10px;
+      height: 120px;
+      text-align: center;
+      .ant-card-body {
+        padding: 0;
+      }
+
+      .topic-text,
+      .topic-count {
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+    }
+
+    .resource-type-card.active {
+      color: $blue06;
+      border-color: $blue06;
+      font-weight: 600;
+    }
+
+    .country-filter-tab-wrapper {
+      .country-filter-tab {
+        border: 1px solid #d7e6ee;
+        border-radius: 3px;
+        background-color: #fff;
+
+        .ant-select {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+      }
+
+      .country-filter-tab {
+        margin-bottom: 1.5rem;
+        .country-filter-tab-pane {
+          padding: 0.5rem 1rem;
+        }
+        .ant-tabs-nav-list {
+          justify-content: space-evenly;
+          width: 100%;
+          align-items: center;
+        }
+        .ant-tabs-tab:not(:last-of-type) {
+          margin-right: 0 !important;
+        }
+        .ant-tabs-tab {
+          width: 50%;
+          border-radius: 0;
+          border: none;
+          background: #dae9f1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .ant-tabs-tab-active {
+          background: #fff;
+          .ant-tabs-tab-btn {
+            font-weight: normal;
+          }
+        }
+        .ant-tabs-tab-btn {
+          color: #036799;
+        }
+        .ant-tabs-nav::before,
+        .ant-tabs-nav .ant-tabs-nav-wrap::before,
+        .ant-tabs-nav .ant-tabs-nav-wrap::after {
+          content: none !important;
+        }
+        // css for select suffix
+        .multi-country-info {
+          .ant-select-arrow {
+            right: 28px;
+            font-size: 14px;
+            top: 48%;
+            color: #036799;
+          }
+        }
+      }
+    }
+  }
+
+  .resource-list-container {
+    background: #edf2f7;
+  }
+
+  .resource-list-header {
+    background: #fff;
+  }
+
+  .resource-list {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+
+    .resource-item {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+      text-align: left;
+      color: $black;
+      .topic {
+        color: $green05;
+        font-size: 1rem;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+      .item-body {
+        margin-top: 5px;
+        .title {
+          font-size: 1.1rem;
+          font-weight: 600;
+        }
+        .description {
+          font-size: 1rem;
+          font-weight: 400;
+        }
+        .description {
+          margin-top: 7px;
+        }
+      }
+      .item-footer {
+        margin-top: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .avatar-number {
+          color: $blue04;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .page {
+      padding: 1rem 0;
+    }
+  }
+}

@@ -69,6 +69,7 @@ import CapacityBuilding from "./modules/capacity-building/view";
 import NewDetailsView from "./modules/detailsPage/view";
 import AddContentButton from "./modules/workspace/AddContentButton";
 import CaseStudies from "./modules/case-studies/view";
+import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 Promise.all([
   api.get("/tag"),
@@ -361,6 +362,23 @@ const Root = () => {
             exact
             path="/glossary"
             render={(props) => <Glossary {...props} />}
+          />
+          <Route
+            path="/knowledge-library"
+            render={(props) => (
+              <KnowledgeLibrary
+                {...{
+                  setWarningModalVisible,
+                  ...props,
+                }}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                filters={filters}
+                setFilters={setFilters}
+                filterMenu={filterMenu}
+              />
+            )}
           />
           <Route
             path="/browse"
