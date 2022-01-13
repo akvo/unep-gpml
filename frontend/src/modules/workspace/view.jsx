@@ -4,6 +4,7 @@ import "./styles.scss";
 import ActionPlan from "./ActionPlan";
 import LeftSidebar from "./LeftSidebar";
 import DownloadPdf from "../../images/workspace/download-pdf.svg";
+import AddContentButton from "./AddContentButton";
 
 const Workspace = ({ userName = "John Morizot" }) => {
   return (
@@ -51,6 +52,7 @@ const Workspace = ({ userName = "John Morizot" }) => {
           </Row>
         </Col>
       </Row>
+      <AddContentButton />
     </div>
   );
 };
