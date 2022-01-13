@@ -17,6 +17,7 @@ import { topicNames } from "../../utils/misc";
 import flatten from "lodash/flatten";
 import values from "lodash/values";
 import MapLanding from "./map-landing";
+import TopicView from "./TopicView";
 
 const { Option } = Select;
 // Global variabel
@@ -33,6 +34,7 @@ const KnowledgeLibrary = ({
   const query = useQuery();
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
+  const [view, setView] = useState("map");
 
   const {
     profile,
@@ -235,7 +237,7 @@ const KnowledgeLibrary = ({
             </Col>
             {/* Map/Topic view dropdown */}
             <Col lg={2} md={4} sm={6}>
-              <Select defaultValue={"map"}>
+              <Select value={view} onChange={(val) => setView(val)}>
                 <Option value="map">Map View</Option>
                 <Option value="topic">Topic View</Option>
               </Select>
@@ -279,6 +281,7 @@ const KnowledgeLibrary = ({
                     loading={loading}
                     results={results}
                     pageSize={pageSize}
+                    hideListButtonVisible={view === "map"}
                   />
                 </Col>
               )}
@@ -291,22 +294,26 @@ const KnowledgeLibrary = ({
                 align="center"
                 className="render-map-container"
               >
-                <MapLanding
-                  {...{
-                    setWarningModalVisible,
-                    setStakeholderSignupModalVisible,
-                    loginWithPopup,
-                    isAuthenticated,
-                    filters,
-                    setFilters,
-                    setToggleButton,
-                    updateQuery,
-                    multiCountryCountries,
-                    setMultiCountryCountries,
-                    setListVisible,
-                    listVisible,
-                  }}
-                />
+                {view === "map" ? (
+                  <MapLanding
+                    {...{
+                      setWarningModalVisible,
+                      setStakeholderSignupModalVisible,
+                      loginWithPopup,
+                      isAuthenticated,
+                      filters,
+                      setFilters,
+                      setToggleButton,
+                      updateQuery,
+                      multiCountryCountries,
+                      setMultiCountryCountries,
+                      setListVisible,
+                      listVisible,
+                    }}
+                  />
+                ) : (
+                  <TopicView />
+                )}
               </Col>
             </Row>
           </LeftSidebar>

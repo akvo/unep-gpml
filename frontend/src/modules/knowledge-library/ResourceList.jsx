@@ -10,7 +10,11 @@ import {
   Tooltip,
   Pagination,
 } from "antd";
-import { UserOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  ArrowRightOutlined,
+  ArrowLeftOutlined,
+} from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
 
@@ -33,6 +37,7 @@ const ResourceList = ({
   loading,
   results = [],
   pageSize,
+  hideListButtonVisible,
 }) => {
   const { profile, countries, tags, transnationalOptions } = UIStore.useState(
     (s) => ({
@@ -72,7 +77,8 @@ const ResourceList = ({
           className="resource-list-header"
           ghost={false}
           onBack={() => setListVisible(false)}
-          title="Hide List"
+          backIcon={hideListButtonVisible ? <ArrowLeftOutlined /> : ""}
+          title={hideListButtonVisible ? "Hide List" : ""}
           subTitle={`Showing ${
             totalItems > pageSize + filters?.offset
               ? pageSize + filters?.offset
