@@ -41,6 +41,12 @@
       background: #fff;
       border-radius: 10px;
       padding: 2px;
+      .ant-card-head {
+        padding: 0 40px !important;
+      }
+      .ant-card-body {
+        padding: 24px 40px !important;
+      }
     }
     .sticky-panel {
       display: flex;
