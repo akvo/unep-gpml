@@ -1,74 +1,78 @@
 import React from "react";
+import { withRouter } from "react-router";
 
-const AddContentButton = () => {
+const AddContentButton = withRouter(({ history }) => {
+  const path = history.location.pathname;
   return (
-    <div className="button-wrapper">
-      <div className="button-container">
-        <button className="default-button">
-          <svg
-            width="46"
-            height="44"
-            viewBox="0 0 46 44"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="19.0615"
-              y="1"
-              width="6.91343"
-              height="41.0944"
-              fill="currentColor"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-            <rect
-              x="1"
-              y="24.8118"
-              width="6.52901"
-              height="43.0363"
-              transform="rotate(-90 1 24.8118)"
-              fill="currentColor"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-          </svg>
-          <span>Add content</span>
-        </button>
+    path === "/workspace" && (
+      <div className="button-wrapper">
+        <div className="button-container">
+          <button className="default-button">
+            <svg
+              width="46"
+              height="44"
+              viewBox="0 0 46 44"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="19.0615"
+                y="1"
+                width="6.91343"
+                height="41.0944"
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              <rect
+                x="1"
+                y="24.8118"
+                width="6.52901"
+                height="43.0363"
+                transform="rotate(-90 1 24.8118)"
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+            </svg>
+            <span>Add content</span>
+          </button>
 
-        <button className="button-mask">
-          <svg
-            width="46"
-            height="44"
-            viewBox="0 0 46 44"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="19.0615"
-              y="1"
-              width="6.91343"
-              height="41.0944"
-              fill="currentColor"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-            <rect
-              x="1"
-              y="24.8118"
-              width="6.52901"
-              height="43.0363"
-              transform="rotate(-90 1 24.8118)"
-              fill="currentColor"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-          </svg>
+          <button className="button-mask">
+            <svg
+              width="46"
+              height="44"
+              viewBox="0 0 46 44"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="19.0615"
+                y="1"
+                width="6.91343"
+                height="41.0944"
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              <rect
+                x="1"
+                y="24.8118"
+                width="6.52901"
+                height="43.0363"
+                transform="rotate(-90 1 24.8118)"
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+            </svg>
 
-          <span>Add content</span>
-        </button>
+            <span>Add content</span>
+          </button>
+        </div>
       </div>
-    </div>
+    )
   );
-};
+});
 
 export default AddContentButton;
