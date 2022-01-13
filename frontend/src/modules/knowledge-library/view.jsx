@@ -293,6 +293,7 @@ const KnowledgeLibrary = ({
                 xs={24}
                 align="center"
                 className="render-map-container"
+                style={{ background: view === "topic" ? "#255B87" : "#fff" }}
               >
                 {view === "map" ? (
                   <MapLanding
