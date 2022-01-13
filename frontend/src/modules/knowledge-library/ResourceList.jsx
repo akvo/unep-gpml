@@ -51,8 +51,9 @@ const ResourceList = ({
 
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.
-  const topicsForTotal = (
-    isApprovedUser ? topicTypesApprovedUser : topicTypes
+  const topicsForTotal = (isApprovedUser
+    ? topicTypesApprovedUser
+    : topicTypes
   ).map((t) => humps.decamelize(t));
   const filteredTopics =
     filters?.topic?.length > 0
