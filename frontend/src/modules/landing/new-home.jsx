@@ -837,15 +837,18 @@ const calendarHeader = ({ value, onChange }) => {
 };
 
 const JoinGPMLButton = withRouter(({ history, loginWithPopup }) => {
+  const path = history.location.pathname;
   return (
-    <Button
-      type="primary"
-      onClick={() => {
-        history.push("/signup");
-      }}
-    >
-      Join GPML
-    </Button>
+    path !== "/workspace" && (
+      <Button
+        type="primary"
+        onClick={() => {
+          history.push("/signup");
+        }}
+      >
+        Join GPML
+      </Button>
+    )
   );
 });
 

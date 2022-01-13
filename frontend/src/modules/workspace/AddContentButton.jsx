@@ -2,7 +2,7 @@ import React from "react";
 
 const AddContentButton = () => {
   return (
-    <div className="button-wrapper">
+    <div className="workspace-button-wrapper">
       <div className="button-container">
         <button className="default-button">
           <svg
@@ -35,6 +35,7 @@ const AddContentButton = () => {
           <span>Add content</span>
         </button>
 
+        {/* Mask, only appear when hovered */}
         <button className="button-mask">
           <svg
             width="46"
@@ -63,7 +64,6 @@ const AddContentButton = () => {
               strokeWidth="2"
             />
           </svg>
-
           <span>Add content</span>
         </button>
       </div>

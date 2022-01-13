@@ -21,7 +21,7 @@ const LeftSidebar = ({ active = 1 }) => {
   const icons = [IconHome, IconBookmark, IconNetwork, IconAdmin];
 
   return (
-    <Col lg={3} md={3} xs={24} order={1} className="sidebar">
+    <Col lg={2} xs={24} order={1} className="sidebar">
       <Row type="flex" justify="center">
         {sidebar.map((s, sx) => (
           <Col
