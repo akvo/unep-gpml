@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Row, Col, Space, Drawer, Checkbox, Tag, Card, Image } from "antd";
+import {
+  Row,
+  Col,
+  Space,
+  Drawer,
+  Checkbox,
+  Tag,
+  Card,
+  Image,
+  Select,
+} from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
@@ -10,6 +20,8 @@ import { topicTypes, topicNames } from "../../utils/misc";
 import CountryTransnationalFilter from "./country-transnational-filter";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
+import values from "lodash/values";
+import flatten from "lodash/flatten";
 
 const FilterDrawer = ({
   filterVisible,
@@ -28,6 +40,9 @@ const FilterDrawer = ({
   );
   const { isAuthenticated } = useAuth0();
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
+
+  const isLoaded = () =>
+    !isEmpty(tags) && !isEmpty(countries) && !isEmpty(transnationalOptions);
 
   const handleChangeResourceType = (flag, type) => {
     const val = query[flag];
@@ -102,19 +117,25 @@ const FilterDrawer = ({
     );
   };
 
+  // this can be simplyfied like tags filter
   const country =
-    countries && query?.country
+    isLoaded() && query?.country
       ? countries
           .filter((x) => query.country.includes(String(x.id)))
           .map((x) => x.id)
       : [];
 
+  // this can be simplyfied like tags filter
   const multiCountry =
-    transnationalOptions && query?.transnational
+    isLoaded() && query?.transnational
       ? transnationalOptions
           .filter((x) => query.transnational.includes(String(x.id)))
           .map((x) => x.id)
       : [];
+
+  const tagOpts = isLoaded()
+    ? flatten(values(tags))?.map((it) => ({ value: it.id, label: it.tag }))
+    : [];
 
   return (
     <div className="site-drawer-render-in-current-wrapper">
@@ -201,6 +222,34 @@ const FilterDrawer = ({
                 multiCountryLabelCustomIcon={true}
                 countrySelectMode="multiple"
                 multiCountrySelectMode="multiple"
+              />
+            </div>
+          </Col>
+          {/* Tags */}
+          {/* Location */}
+          <Col span={24}>
+            <Space align="middle">
+              <div className="filter-title">Tags</div>
+            </Space>
+            <div>
+              <Select
+                showSearch
+                allowClear
+                mode="multiple"
+                placeholder="All (default)"
+                options={tagOpts || []}
+                filterOption={(input, option) =>
+                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                value={query?.tag?.map((x) => parseInt(x)) || []}
+                onChange={(val) => updateQuery("tag", val)}
+                onDeselect={(val) =>
+                  updateQuery(
+                    "tag",
+                    query?.tag?.filter((x) => x != val)
+                  )
+                }
+                virtual={false}
               />
             </div>
           </Col>
