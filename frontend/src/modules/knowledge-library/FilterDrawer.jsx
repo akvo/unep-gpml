@@ -74,35 +74,22 @@ const FilterDrawer = ({
 
   const handleChangeLocationTab = (key) => {
     const param = key === "country" ? "transnational" : "country";
-    updateQuery(param, []);
+    // updateQuery(param, []);
   };
 
   const handleChangeCountry = (val) => {
-    const selected = countries?.filter((x) => {
-      return val.includes(x.id);
-    });
-    updateQuery(
-      "country",
-      selected.map((x) => x.id)
-    );
+    updateQuery("country", query?.country ? [...query?.country, ...val] : val);
   };
 
   const handleDeselectCountry = (val) => {
-    const diselected = countries?.find((x) => x.id === val);
-    const selected =
-      countries && query?.country
-        ? countries.filter(
-            (x) =>
-              query.country.includes(String(x.id)) && diselected.id !== x.id
-          )
-        : [];
     updateQuery(
       "country",
-      selected.map((x) => x.id)
+      query?.country ? query?.country.filter((x) => x != val) : []
     );
   };
 
   const handleChangeMultiCountry = (val) => {
+    updateQuery("transnational", [...query?.transnational, ...val]);
     // Fetch transnational countries
     val.forEach((id) => {
       const check = multiCountryCountries.find((x) => x.id === id);
@@ -117,36 +104,11 @@ const FilterDrawer = ({
   };
 
   const handleDeselectMultiCountry = (val) => {
-    const diselected = transnationalOptions?.find((x) => x.id === val);
-    const selected =
-      transnationalOptions && query?.transnational
-        ? transnationalOptions.filter(
-            (x) =>
-              query.transnational.includes(String(x.id)) &&
-              diselected.id !== x.id
-          )
-        : [];
     updateQuery(
       "transnational",
-      selected.map((x) => x.id)
+      query?.transnational ? query?.transnational.filter((x) => x != val) : []
     );
   };
-
-  // this can be simplyfied like tags filter
-  const country =
-    isLoaded() && query?.country
-      ? countries
-          .filter((x) => query.country.includes(String(x.id)))
-          .map((x) => x.id)
-      : [];
-
-  // this can be simplyfied like tags filter
-  const multiCountry =
-    isLoaded() && query?.transnational
-      ? transnationalOptions
-          .filter((x) => query.transnational.includes(String(x.id)))
-          .map((x) => x.id)
-      : [];
 
   const tagOpts = isLoaded()
     ? flatten(values(tags))?.map((it) => ({ value: it.id, label: it.tag }))
@@ -227,10 +189,12 @@ const FilterDrawer = ({
             <div className="country-filter-tab-wrapper">
               <CountryTransnationalFilter
                 handleChangeTab={handleChangeLocationTab}
-                country={country}
+                country={query?.country?.map((x) => parseInt(x)) || []}
                 handleChangeCountry={handleChangeCountry}
                 handleDeselectCountry={handleDeselectCountry}
-                multiCountry={multiCountry}
+                multiCountry={
+                  query?.transnational?.map((x) => parseInt(x)) || []
+                }
                 handleChangeMultiCountry={handleChangeMultiCountry}
                 handleDeselectMultiCountry={handleDeselectMultiCountry}
                 multiCountryCountries={multiCountryCountries}
