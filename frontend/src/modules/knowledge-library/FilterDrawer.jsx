@@ -30,14 +30,14 @@ const FilterDrawer = ({
   query,
   updateQuery,
 }) => {
-  const { profile, countries, tags, transnationalOptions } = UIStore.useState(
-    (s) => ({
+  const { profile, countries, tags, transnationalOptions, sectorOptions } =
+    UIStore.useState((s) => ({
       profile: s.profile,
       countries: s.countries,
       tags: s.tags,
       transnationalOptions: s.transnationalOptions,
-    })
-  );
+      sectorOptions: s.sectorOptions,
+    }));
   const { isAuthenticated } = useAuth0();
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
@@ -226,7 +226,6 @@ const FilterDrawer = ({
             </div>
           </Col>
           {/* Tags */}
-          {/* Location */}
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Tags</div>
@@ -247,6 +246,37 @@ const FilterDrawer = ({
                   updateQuery(
                     "tag",
                     query?.tag?.filter((x) => x != val)
+                  )
+                }
+                virtual={false}
+              />
+            </div>
+          </Col>
+          {/* Sectors */}
+          <Col span={24}>
+            <Space align="middle">
+              <div className="filter-title">Sectors</div>
+            </Space>
+            <div>
+              <Select
+                showSearch
+                allowClear
+                mode="multiple"
+                placeholder="All (default)"
+                options={
+                  isLoaded()
+                    ? sectorOptions?.map((x) => ({ value: x, label: x }))
+                    : []
+                }
+                filterOption={(input, option) =>
+                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                value={query?.sector || []}
+                onChange={(val) => updateQuery("sector", val)}
+                onDeselect={(val) =>
+                  updateQuery(
+                    "sector",
+                    query?.sector?.filter((x) => x != val)
                   )
                 }
                 virtual={false}
