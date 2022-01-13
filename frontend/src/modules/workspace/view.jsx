@@ -1,24 +1,16 @@
 import React from "react";
-import { PageHeader, Row, Col } from "antd";
+import { Row, Col } from "antd";
 import "./styles.scss";
-import ActionPlan from "./ActionPlan";
+import Header from "./Header";
 import LeftSidebar from "./LeftSidebar";
+import ActionPlan from "./ActionPlan";
+
 import DownloadPdf from "../../images/workspace/download-pdf.svg";
 
-const Workspace = ({ userName = "John Morizot" }) => {
+const Workspace = () => {
   return (
     <div id="workspace">
-      <Row type="flex" className="bg-dark-primary header-container">
-        <Col>
-          <PageHeader
-            title={
-              <span className="header-text text-white">
-                Welcome back, <b className="user-name">{userName}</b>
-              </span>
-            }
-          />
-        </Col>
-      </Row>
+      <Header userName={"John Morizot"} />
       <Row type="flex">
         <LeftSidebar />
         <Col lg={21} md={21} xs={24} order={2}>
