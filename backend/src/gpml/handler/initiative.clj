@@ -29,8 +29,8 @@
 (defn expand-entity-associations
   [entity-connections resource-id]
   (vec (for [connection entity-connections]
-         {:column_name "project"
-          :topic "project"
+         {:column_name "initiative"
+          :topic "initiative"
           :topic_id resource-id
           :organisation (:entity connection)
           :association (:role connection)
@@ -39,8 +39,8 @@
 (defn expand-individual-associations
   [individual-connections resource-id]
   (vec (for [connection individual-connections]
-         {:column_name "project"
-          :topic "project"
+         {:column_name "initiative"
+          :topic "initiative"
           :topic_id resource-id
           :stakeholder (:stakeholder connection)
           :association (:role connection)
