@@ -234,32 +234,6 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-          {/* <Col span={24}>
-            <Space align="middle">
-              <div className="filter-title">Tags</div>
-            </Space>
-            <div>
-              <Select
-                showSearch
-                allowClear
-                mode="multiple"
-                placeholder="All (default)"
-                options={tagOpts || []}
-                filterOption={(input, option) =>
-                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-                value={query?.tag?.map((x) => parseInt(x)) || []}
-                onChange={(val) => updateQuery("tag", val)}
-                onDeselect={(val) =>
-                  updateQuery(
-                    "tag",
-                    query?.tag?.filter((x) => x != val)
-                  )
-                }
-                virtual={false}
-              />
-            </div>
-          </Col> */}
           {/* Sectors */}
           <MultipleSelectFilter
             title="Sectors"
@@ -273,36 +247,6 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-          {/* <Col span={24}>
-            <Space align="middle">
-              <div className="filter-title">Sectors</div>
-            </Space>
-            <div>
-              <Select
-                showSearch
-                allowClear
-                mode="multiple"
-                placeholder="All (default)"
-                options={
-                  isLoaded()
-                    ? sectorOptions?.map((x) => ({ value: x, label: x }))
-                    : []
-                }
-                filterOption={(input, option) =>
-                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-                value={query?.sector || []}
-                onChange={(val) => updateQuery("sector", val)}
-                onDeselect={(val) =>
-                  updateQuery(
-                    "sector",
-                    query?.sector?.filter((x) => x != val)
-                  )
-                }
-                virtual={false}
-              />
-            </div>
-          </Col> */}
         </Row>
       </Drawer>
     </div>
