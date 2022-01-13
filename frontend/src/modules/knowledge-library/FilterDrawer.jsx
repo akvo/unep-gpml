@@ -226,7 +226,15 @@ const FilterDrawer = ({
             </div>
           </Col>
           {/* Tags */}
-          <Col span={24}>
+          <MultipleSelectFilter
+            title="Tags"
+            options={tagOpts || []}
+            value={query?.tag?.map((x) => parseInt(x)) || []}
+            flag="tag"
+            query={query}
+            updateQuery={updateQuery}
+          />
+          {/* <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Tags</div>
             </Space>
@@ -251,9 +259,21 @@ const FilterDrawer = ({
                 virtual={false}
               />
             </div>
-          </Col>
+          </Col> */}
           {/* Sectors */}
-          <Col span={24}>
+          <MultipleSelectFilter
+            title="Sectors"
+            options={
+              isLoaded()
+                ? sectorOptions?.map((x) => ({ value: x, label: x }))
+                : []
+            }
+            value={query?.sector || []}
+            flag="sector"
+            query={query}
+            updateQuery={updateQuery}
+          />
+          {/* <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Sectors</div>
             </Space>
@@ -282,10 +302,48 @@ const FilterDrawer = ({
                 virtual={false}
               />
             </div>
-          </Col>
+          </Col> */}
         </Row>
       </Drawer>
     </div>
+  );
+};
+
+const MultipleSelectFilter = ({
+  title,
+  options,
+  value,
+  query,
+  flag,
+  updateQuery,
+}) => {
+  return (
+    <Col span={24}>
+      <Space align="middle">
+        <div className="filter-title">{title}</div>
+      </Space>
+      <div>
+        <Select
+          showSearch
+          allowClear
+          mode="multiple"
+          placeholder="All (default)"
+          options={options}
+          filterOption={(input, option) =>
+            option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          value={value}
+          onChange={(val) => updateQuery(flag, val)}
+          onDeselect={(val) =>
+            updateQuery(
+              flag,
+              query?.[flag]?.filter((x) => x != val)
+            )
+          }
+          virtual={false}
+        />
+      </div>
+    </Col>
   );
 };
 
