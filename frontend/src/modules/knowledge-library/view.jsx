@@ -16,12 +16,20 @@ import isEmpty from "lodash/isEmpty";
 import { topicNames } from "../../utils/misc";
 import flatten from "lodash/flatten";
 import values from "lodash/values";
+import MapLanding from "./map-landing";
 
 const { Option } = Select;
 // Global variabel
 let tmid;
 
-const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
+const KnowledgeLibrary = ({
+  history,
+  filters,
+  setFilters,
+  filterMenu,
+  setWarningModalVisible,
+  setStakeholderSignupModalVisible,
+}) => {
   const query = useQuery();
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
@@ -55,6 +63,7 @@ const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
   const [toggleButton, setToggleButton] = useState("list");
   const { innerWidth } = window;
   const [countData, setCountData] = useState([]);
+  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
@@ -246,6 +255,8 @@ const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
             countData={countData}
             query={query}
             updateQuery={(flag, val) => updateQuery(flag, val)}
+            multiCountryCountries={multiCountryCountries}
+            setMultiCountryCountries={setMultiCountryCountries}
           />
 
           <LeftSidebar active={1}>
@@ -278,8 +289,24 @@ const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
                 sm={listVisible ? 12 : 24}
                 xs={24}
                 align="center"
+                className="render-map-container"
               >
-                Map here...
+                <MapLanding
+                  {...{
+                    setWarningModalVisible,
+                    setStakeholderSignupModalVisible,
+                    loginWithPopup,
+                    isAuthenticated,
+                    filters,
+                    setFilters,
+                    setToggleButton,
+                    updateQuery,
+                    multiCountryCountries,
+                    setMultiCountryCountries,
+                    setListVisible,
+                    listVisible,
+                  }}
+                />
               </Col>
             </Row>
           </LeftSidebar>

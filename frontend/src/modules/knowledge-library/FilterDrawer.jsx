@@ -31,6 +31,8 @@ const FilterDrawer = ({
   countData,
   query,
   updateQuery,
+  multiCountryCountries,
+  setMultiCountryCountries,
 }) => {
   const {
     profile,
@@ -50,7 +52,6 @@ const FilterDrawer = ({
     languages: s.languages,
   }));
   const { isAuthenticated } = useAuth0();
-  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
   const isLoaded = () =>
     !isEmpty(tags) &&

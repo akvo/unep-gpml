@@ -362,7 +362,13 @@ const Root = () => {
             path="/knowledge-library"
             render={(props) => (
               <KnowledgeLibrary
-                {...props}
+                {...{
+                  setWarningModalVisible,
+                  ...props,
+                }}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
                 filters={filters}
                 setFilters={setFilters}
                 filterMenu={filterMenu}
