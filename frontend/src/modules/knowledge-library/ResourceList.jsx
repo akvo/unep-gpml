@@ -51,9 +51,8 @@ const ResourceList = ({
 
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.
-  const topicsForTotal = (isApprovedUser
-    ? topicTypesApprovedUser
-    : topicTypes
+  const topicsForTotal = (
+    isApprovedUser ? topicTypesApprovedUser : topicTypes
   ).map((t) => humps.decamelize(t));
   const filteredTopics =
     filters?.topic?.length > 0
@@ -73,7 +72,11 @@ const ResourceList = ({
           ghost={false}
           onBack={() => setListVisible(false)}
           title="Hide List"
-          subTitle="Showing 10 of 92 results"
+          subTitle={`Showing ${
+            totalItems > pageSize + filters?.offset
+              ? pageSize + filters?.offset
+              : totalItems
+          } of ${totalItems || 0} result${totalItems > 1 ? "s" : ""}`}
           extra={<Button>Sort By: A &gt; Z</Button>}
         />
       </Col>
