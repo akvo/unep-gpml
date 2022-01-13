@@ -105,6 +105,12 @@ $bg-green-primary: #10f9b7;
     font-size: 1.3rem;
   }
 
+  .header-container .ant-col {
+    width: 100%;
+    max-width: 1560px;
+    margin: auto;
+  }
+
   .header-container {
     border-bottom: 1px solid #ffff;
     background-color: #005b70;

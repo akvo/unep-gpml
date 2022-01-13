@@ -12,16 +12,18 @@ const Workspace = ({ userName = "John Morizot" }) => {
         <Col>
           <PageHeader
             title={
-              <span className="header-text text-white">
-                Welcome back, <b className="user-name">{userName}</b>
-              </span>
+              <div>
+                <span className="header-text text-white">
+                  Welcome back, <b className="user-name">{userName}</b>
+                </span>
+              </div>
             }
           />
         </Col>
       </Row>
-      <Row type="flex">
+      <Row type="flex" className="body-wrapper">
         <LeftSidebar />
-        <Col lg={21} md={21} xs={24} order={2}>
+        <Col lg={22} xs={24} order={2}>
           <Row>
             <Col span={24} style={{ position: "relative" }}>
               <div className="section-download text-white">
