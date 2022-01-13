@@ -7,7 +7,7 @@
 
   .site-drawer-render-in-current-wrapper,
   .resource-main-container {
-    min-height: 70vh;
+    min-height: 100vh;
     height: 100%;
   }
 
@@ -41,6 +41,7 @@
     }
 
     .resource-type-card {
+      cursor: pointer;
       padding: 10px;
       height: 120px;
       text-align: center;
@@ -173,6 +174,10 @@
           font-weight: 600;
         }
       }
+    }
+
+    .page {
+      // style for pagination here
     }
   }
 }

@@ -13,8 +13,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import api from "../../utils/api";
 import { redirectError } from "../error/error-util";
 import isEmpty from "lodash/isEmpty";
-import { topicTypes } from "../../utils/misc";
-import humps from "humps";
+import { topicNames } from "../../utils/misc";
+import flatten from "lodash/flatten";
+import values from "lodash/values";
 
 const { Option } = Select;
 // Global variabel
@@ -25,9 +26,24 @@ const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
 
-  const { profile } = UIStore.useState((s) => ({
+  const {
+    profile,
+    countries,
+    tags,
+    transnationalOptions,
+    sectorOptions,
+    geoCoverageTypeOptions,
+    languages,
+  } = UIStore.useState((s) => ({
     profile: s.profile,
+    countries: s.countries,
+    tags: s.tags,
+    transnationalOptions: s.transnationalOptions,
+    sectorOptions: s.sectorOptions,
+    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
+    languages: s.languages,
   }));
+
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
@@ -134,16 +150,65 @@ const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
     }
   };
 
+  // Here is the function to render filter tag
+  const renderFilterTag = () => {
+    const renderName = (key, value) => {
+      if (key === "topic") {
+        return topicNames(value);
+      }
+      if (key === "tag") {
+        const findTag = flatten(values(tags)).find((x) => x.id == value);
+        return findTag?.tag;
+      }
+      if (key === "country") {
+        const findCountry = countries.find((x) => x.id == value);
+        return findCountry?.name;
+      }
+      if (key === "transnational") {
+        const findTransnational = transnationalOptions.find(
+          (x) => x.id == value
+        );
+        return findTransnational?.name;
+      }
+    };
+    return Object.keys(query).map((key, index) => {
+      // don't render if key is limit and offset
+      if (key === "limit" || key === "offset" || key === "q") {
+        return;
+      }
+      return query?.[key]
+        ? query?.[key]?.map((x) => (
+            <Tag
+              closable
+              onClose={() =>
+                updateQuery(
+                  key,
+                  query?.[key]?.filter((v) => v !== x)
+                )
+              }
+            >
+              {renderName(key, x)}
+            </Tag>
+          ))
+        : "";
+    });
+  };
+
   return (
     <Row id="knowledge-library">
       {/* Header */}
       <Col span={24} className="ui-header">
         <div className="ui-container">
-          <Row type="flex" justify="space-between" align="middle">
+          <Row
+            type="flex"
+            justify="space-between"
+            align="middle"
+            gutter={[10, 10]}
+          >
             {/* Search input & filtered by list */}
-            <Col span={22}>
+            <Col lg={22} md={20} sm={18}>
               <Row type="flex" justify="space-between" align="middle">
-                <Col span={4}>
+                <Col lg={5} md={7} sm={9}>
                   <Space>
                     <Search />
                     <Button
@@ -154,16 +219,13 @@ const KnowledgeLibrary = ({ history, filters, setFilters, filterMenu }) => {
                     />
                   </Space>
                 </Col>
-                <Col span={20}>
-                  <Space direction="horizontal">
-                    <Tag closable>Initiative</Tag>
-                    <Tag closable>Italy</Tag>
-                  </Space>
+                <Col lg={19} md={17} sm={15}>
+                  <Space direction="horizontal">{renderFilterTag()}</Space>
                 </Col>
               </Row>
             </Col>
             {/* Map/Topic view dropdown */}
-            <Col span={2}>
+            <Col lg={2} md={4} sm={6}>
               <Select defaultValue={"map"}>
                 <Option value="map">Map View</Option>
                 <Option value="topic">Topic View</Option>
