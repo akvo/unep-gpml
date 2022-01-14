@@ -1,6 +1,20 @@
 #capacity-building {
   background-color: #fff;
+  .thumbnail {
+    img {
+      width: 100px;
+      height: 150px;
+      object-fit: cover;
+      object-position: 50% 0;
+      &.events {
+        width: 172px;
+        height: 114px;
+        object-position: 100% 0;
+      }
+    }
+  }
 }
+
 @media screen and (min-width: 1920px) {
   //For Projectors or Higher Resolution Screens (Full HD)
   #capacity-building {

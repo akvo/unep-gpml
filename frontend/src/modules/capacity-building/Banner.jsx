@@ -1,24 +1,28 @@
 import React from "react";
 import moment from "moment";
+import { TrimText } from "../../utils/string";
 
-const Banner = ({ title, category, date }) => (
+const Banner = ({ image, title, category, credit }) => (
   <div className="banner_info">
     <div className="banner_img">
-      <div className="photo_credit">
-        <div>
-          <span>Photo by Izdhaan Nizar</span>
+      <img src={image} alt={title || ""} style={{ width: "100%" }} />
+      {credit && (
+        <div className="photo_credit">
+          <div>
+            <span>{credit?.name ? `Photo by ${credit.name}` : ""}</span>
+          </div>
+          {credit?.date || ""}
         </div>
-        21 Jun 2021
-      </div>
+      )}
     </div>
     <div className="event_details">
       <span className="title">{category || "Webinar"}</span>
       <div className="site_title">
-        <h1>{title || ""}</h1>
+        <h1>
+          <TrimText text={title || ""} max={100} />
+        </h1>
       </div>
-      <div className="event_date">
-        {date || moment().format("DD MMMM YYYY")}
-      </div>
+      <div className="event_date">{moment().format("DD MMMM YYYY")}</div>
       <div className="location"></div>
     </div>
   </div>

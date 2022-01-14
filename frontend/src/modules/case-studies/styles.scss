@@ -104,6 +104,15 @@ $green-primary: #4dffa5;
         font-weight: bold;
         line-height: 60px;
       }
+      &.ant-avatar-image {
+        &:hover {
+          margin-left: 0px !important;
+          transition: all 0.3s;
+        }
+        img {
+          cursor: pointer;
+        }
+      }
     }
   }
 }
@@ -135,6 +144,9 @@ $green-primary: #4dffa5;
       }
     }
   }
+}
+.ml-1 {
+  margin-left: 1em;
 }
 
 @media screen and (min-width: 1920px) {
