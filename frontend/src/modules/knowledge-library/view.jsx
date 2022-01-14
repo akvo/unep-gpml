@@ -219,11 +219,16 @@ const KnowledgeLibrary = ({
             type="flex"
             justify="space-between"
             align="middle"
-            gutter={[10, 10]}
+            gutter={[12, 0]}
           >
             {/* Search input & filtered by list */}
             <Col lg={22} md={20} sm={18}>
-              <Row type="flex" justify="space-between" align="middle">
+              <Row
+                type="flex"
+                justify="space-between"
+                align="middle"
+                gutter={[12, 0]}
+              >
                 <Col lg={5} md={7} sm={9}>
                   <Space>
                     <Search />

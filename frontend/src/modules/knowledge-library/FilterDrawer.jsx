@@ -154,6 +154,7 @@ const FilterDrawer = ({
         style={{ position: "absolute" }}
         width={500}
         height="100%"
+        autoFocus={false}
       >
         {/* Filter content */}
         <Row type="flex" gutter={[0, 24]}>
