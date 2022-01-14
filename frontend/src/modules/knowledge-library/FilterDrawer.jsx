@@ -180,6 +180,32 @@ const FilterDrawer = ({
                   My Bookmarks
                 </Checkbox>
               </Space>
+              <Select
+                disabled={
+                  !isEmpty(query?.favorites)
+                    ? query.favorites[0] === "true"
+                      ? false
+                      : true
+                    : true
+                }
+                showSearch
+                allowClear
+                mode="multiple"
+                placeholder="My collections"
+                options={[]}
+                filterOption={(input, option) =>
+                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                value={[]}
+                onChange={(val) => updateQuery("collections", val)}
+                onDeselect={(val) =>
+                  updateQuery(
+                    "collections",
+                    query?.collections?.filter((x) => x != val)
+                  )
+                }
+                virtual={false}
+              />
             </Col>
           )}
           {/* Location */}
