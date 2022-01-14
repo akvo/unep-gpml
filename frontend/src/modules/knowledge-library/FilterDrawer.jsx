@@ -42,6 +42,7 @@ const FilterDrawer = ({
     sectorOptions,
     geoCoverageTypeOptions,
     languages,
+    representativeGroup,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -50,6 +51,7 @@ const FilterDrawer = ({
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     languages: s.languages,
+    representativeGroup: s.representativeGroup,
   }));
   const { isAuthenticated } = useAuth0();
 
@@ -58,6 +60,7 @@ const FilterDrawer = ({
     !isEmpty(countries) &&
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
+    !isEmpty(representativeGroup) &&
     !isEmpty(languages);
 
   const handleChangeResourceType = (flag, type) => {
@@ -111,8 +114,32 @@ const FilterDrawer = ({
     );
   };
 
+  // populate options for tags dropdown
   const tagOpts = isLoaded()
     ? flatten(values(tags))?.map((it) => ({ value: it.id, label: it.tag }))
+    : [];
+
+  // populate options for representative group options
+  const representativeOpts = isLoaded()
+    ? flatten(
+        representativeGroup?.map((x) => {
+          //  if child is an object
+          if (!Array.isArray(x?.childs) && x?.childs) {
+            return tags?.[x?.childs?.tags]?.map((it) => ({
+              value: it.id,
+              label: it.tag,
+            }));
+          }
+          // if child null
+          if (!x?.childs) {
+            return [{ value: x?.name, label: x?.name }];
+          }
+          return x?.childs?.map((x) => ({
+            value: x,
+            label: x,
+          }));
+        })
+      )
     : [];
 
   return (
@@ -289,8 +316,12 @@ const FilterDrawer = ({
           {/* Representative group */}
           <MultipleSelectFilter
             title="Representative group"
-            options={[]}
-            value={query?.representativeGroup || []}
+            options={representativeOpts}
+            value={
+              query?.representativeGroup?.map((x) =>
+                Number(x) ? parseInt(x) : x
+              ) || []
+            }
             flag="representativeGroup"
             query={query}
             updateQuery={updateQuery}

@@ -184,7 +184,12 @@ const KnowledgeLibrary = ({
     };
     return Object.keys(query).map((key, index) => {
       // don't render if key is limit and offset
-      if (key === "limit" || key === "offset" || key === "q") {
+      if (
+        key === "limit" ||
+        key === "offset" ||
+        key === "q" ||
+        key === "favorites"
+      ) {
         return;
       }
       return query?.[key]
