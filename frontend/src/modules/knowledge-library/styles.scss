@@ -11,59 +11,6 @@
     height: 100%;
   }
 
-  .ant-page-header-heading {
-    justify-content: unset;
-
-    & span {
-      font-size: 12px;
-    }
-
-    .ant-page-header-heading-title,
-    .ant-page-header-heading-sub-title {
-      width: 100%;
-      overflow: visible;
-    }
-
-    .ant-page-header-heading-sub-title {
-      margin-right: 33px;
-    }
-
-    .ant-page-header-heading-left {
-      flex-basis: 70%;
-    }
-
-    .ant-page-header-heading-extra {
-      border-left: 1px solid rgba(37, 91, 135, 0.17);
-    }
-
-    .ant-page-header-back {
-      margin-right: 10px;
-    }
-
-    .ant-page-header-heading-title {
-      color: #255b87;
-      text-align: left;
-    }
-
-    .result-number {
-      line-height: 16px;
-      color: #181818;
-    }
-
-    .hide-icon.show {
-      transform: rotate(180deg);
-    }
-
-    .sort-btn {
-      border: none;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      color: #255b87;
-      padding-left: 24px;
-    }
-  }
-
   .site-drawer-render-in-current-wrapper {
     position: absolute;
     top: 0;
@@ -182,6 +129,59 @@
 
   .resource-list-header {
     background: #fff;
+    justify-content: unset;
+
+    & span {
+      font-size: 12px;
+    }
+
+    .ant-page-header-heading-title,
+    .ant-page-header-heading-sub-title {
+      width: 100%;
+      overflow: visible;
+    }
+
+    .ant-page-header-heading-title,
+    .sort-btn {
+      color: #255b87;
+    }
+
+    .ant-page-header-heading-title {
+      text-align: left;
+    }
+
+    .ant-page-header-heading-sub-title {
+      margin-right: 33px;
+    }
+
+    .ant-page-header-heading-left {
+      flex-basis: 70%;
+    }
+
+    .ant-page-header-heading-extra {
+      border-left: 1px solid rgba(37, 91, 135, 0.17);
+    }
+
+    .ant-page-header-back {
+      margin-right: 10px;
+    }
+
+    .result-number {
+      line-height: 16px;
+      color: #181818;
+    }
+
+    .hide-icon.show {
+      transform: rotate(180deg);
+    }
+
+    .sort-btn {
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding-left: 24px;
+    }
   }
 
   .resource-list {
@@ -199,22 +199,33 @@
       color: $black;
       .topic {
         color: $green05;
-        font-size: 1rem;
+        font-size: 12px;
         text-transform: uppercase;
         font-weight: 700;
       }
       .item-body {
         margin-top: 5px;
-        .title {
-          font-size: 1.1rem;
-          font-weight: 600;
+
+        .title,
+        .description,
+        .read-more {
+          font-size: 14px;
         }
         .description {
-          font-size: 1rem;
           font-weight: 400;
+          color: #374a59;
         }
         .description {
           margin-top: 7px;
+        }
+
+        .read-more,
+        .avatar-number {
+          color: #34a6ff;
+        }
+
+        .avatar-number {
+          font-size: 13px;
         }
       }
       .item-footer {
@@ -228,7 +239,6 @@
         }
       }
     }
-
     .page {
       padding: 1rem 0;
     }
