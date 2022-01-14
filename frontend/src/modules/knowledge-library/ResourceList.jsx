@@ -81,7 +81,11 @@ const ResourceList = ({
           ghost={false}
           onBack={() => setListVisible(false)}
           backIcon={
-            hideListButtonVisible ? <img src={HideIcon} className='hide-icon hide' alt="hide-icon" /> : ""
+            hideListButtonVisible ? (
+              <img src={HideIcon} className="hide-icon hide" alt="hide-icon" />
+            ) : (
+              ""
+            )
           }
           title={
             hideListButtonVisible ? (

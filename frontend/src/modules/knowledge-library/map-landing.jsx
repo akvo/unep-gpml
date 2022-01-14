@@ -155,7 +155,11 @@ const MapLanding = ({
               className="resource-list-header"
               ghost={false}
               backIcon={
-                <img src={HideIcon} className="hide-icon show" alt="show-icon" />
+                <img
+                  src={HideIcon}
+                  className="hide-icon show"
+                  alt="show-icon"
+                />
               }
               onBack={() => setListVisible(true)}
               title="Show List"
