@@ -11,6 +11,59 @@
     height: 100%;
   }
 
+  .ant-page-header-heading {
+    justify-content: unset;
+
+    & span {
+      font-size: 12px;
+    }
+
+    .ant-page-header-heading-title,
+    .ant-page-header-heading-sub-title {
+      width: 100%;
+      overflow: visible;
+    }
+
+    .ant-page-header-heading-sub-title {
+      margin-right: 33px;
+    }
+
+    .ant-page-header-heading-left {
+      flex-basis: 70%;
+    }
+
+    .ant-page-header-heading-extra {
+      border-left: 1px solid rgba(37, 91, 135, 0.17);
+    }
+
+    .ant-page-header-back {
+      margin-right: 10px;
+    }
+
+    .ant-page-header-heading-title {
+      color: #255b87;
+      text-align: left;
+    }
+
+    .result-number {
+      line-height: 16px;
+      color: #181818;
+    }
+
+    .hide-icon.show {
+      transform: rotate(180deg);
+    }
+
+    .sort-btn {
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #255b87;
+      padding-left: 24px;
+    }
+  }
+
   .site-drawer-render-in-current-wrapper {
     position: absolute;
     top: 0;

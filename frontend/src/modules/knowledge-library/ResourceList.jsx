@@ -29,6 +29,9 @@ import humps from "humps";
 import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 
+import HideIcon from "../../images/knowledge-library/hide-icon.svg";
+import SortIcon from "../../images/knowledge-library/sort-icon.svg";
+
 const ResourceList = ({
   filters,
   setListVisible,
@@ -77,14 +80,34 @@ const ResourceList = ({
           className="resource-list-header"
           ghost={false}
           onBack={() => setListVisible(false)}
-          backIcon={hideListButtonVisible ? <ArrowLeftOutlined /> : ""}
-          title={hideListButtonVisible ? "Hide List" : ""}
-          subTitle={`Showing ${
-            totalItems > pageSize + filters?.offset
-              ? pageSize + filters?.offset
-              : totalItems
-          } of ${totalItems || 0} result${totalItems > 1 ? "s" : ""}`}
-          extra={<Button>Sort By: A &gt; Z</Button>}
+          backIcon={
+            hideListButtonVisible ? <img src={HideIcon} className='hide-icon hide' alt="hide-icon" /> : ""
+          }
+          title={
+            hideListButtonVisible ? (
+              <span className="hide-text">Hide List</span>
+            ) : (
+              ""
+            )
+          }
+          subTitle={
+            <span className="result-number">
+              Showing{" "}
+              {totalItems > pageSize + filters?.offset
+                ? pageSize + filters?.offset
+                : totalItems}{" "}
+              of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+            </span>
+          }
+          extra={
+            <Button className="sort-btn">
+              <img src={SortIcon} alt="sort-icon" />{" "}
+              <span>
+                Sort By:
+                <br /> <b>A&gt;Z</b>
+              </span>
+            </Button>
+          }
         />
       </Col>
       <Col span={24} className="resource-list">

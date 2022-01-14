@@ -1,7 +1,7 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
 import { Button, Switch, PageHeader } from "antd";
-import { LoadingOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import Maps from "./maps";
 import "./map-styles.scss";
@@ -11,6 +11,7 @@ import api from "../../utils/api";
 import isEmpty from "lodash/isEmpty";
 import sumBy from "lodash/sumBy";
 import CountryTransnationalFilter from "./country-transnational-filter";
+import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const MapLanding = ({
   history,
@@ -153,7 +154,9 @@ const MapLanding = ({
             <PageHeader
               className="resource-list-header"
               ghost={false}
-              backIcon={<ArrowRightOutlined />}
+              backIcon={
+                <img src={HideIcon} className="hide-icon show" alt="show-icon" />
+              }
               onBack={() => setListVisible(true)}
               title="Show List"
             />
