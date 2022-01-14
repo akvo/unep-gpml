@@ -55,9 +55,7 @@ $bg-events: #5f4373;
       float: right;
       width: 50%;
       height: 400px;
-      background-size: cover;
-      background-position: 0 0;
-      background-image: url("https://assets.unenvironment.org/styles/article_billboard_image/s3/events/2021-06/Aerial%20shore%20-%20Izdhaan%20Nizar%20-%20small.jpg?itok=2Pt8qNl3");
+      overflow: hidden;
     }
   }
   .event_details {

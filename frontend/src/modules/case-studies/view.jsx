@@ -48,33 +48,20 @@ const CaseStudies = () => {
               </Select>
             </Col>
             <Col lg={10} sm={12} xs={24} className="text-right">
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "end",
-                  gap: 16,
-                  alignItems: "center",
-                }}
+              <Button
+                href={datastudies[indexSlide].external_url}
+                type="link"
+                shape="round"
+                className="green-border"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <div>
-                  <Button
-                    href={datastudies[indexSlide].external_url}
-                    type="link"
-                    shape="round"
-                    className="green-border"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Learn More
-                  </Button>
-                </div>
-                <div>
-                  <Button className="btn-download">
-                    Download as pdf&nbsp;
-                    <DownloadOutlined />
-                  </Button>
-                </div>
-              </div>
+                Learn More
+              </Button>
+              <Button className="btn-download ml-1">
+                Download as pdf&nbsp;
+                <DownloadOutlined />
+              </Button>
             </Col>
           </Row>
         </div>
