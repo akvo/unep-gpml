@@ -186,6 +186,30 @@ const FilterDrawer = ({
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Location</div>
+              {!isEmpty(query?.country) ? (
+                <Tag
+                  closable
+                  onClose={() => {
+                    updateQuery("country", []);
+                  }}
+                >
+                  Clear Country Selection
+                </Tag>
+              ) : (
+                ""
+              )}
+              {!isEmpty(query?.transnational) ? (
+                <Tag
+                  closable
+                  onClose={() => {
+                    updateQuery("transnational", []);
+                  }}
+                >
+                  Clear Multi-Country Selection
+                </Tag>
+              ) : (
+                ""
+              )}
             </Space>
             <div className="country-filter-tab-wrapper">
               <CountryTransnationalFilter
@@ -339,6 +363,13 @@ const MultipleSelectFilter = ({
     <Col span={span}>
       <Space align="middle">
         <div className="filter-title">{title}</div>
+        {!isEmpty(query?.[flag]) ? (
+          <Tag closable onClose={() => updateQuery(flag, [])}>
+            Clear Selection
+          </Tag>
+        ) : (
+          ""
+        )}
       </Space>
       <div>
         <Select
@@ -378,6 +409,13 @@ const DatePickerFilter = ({
     <Col span={span}>
       <Space align="middle">
         <div className="filter-title">{title}</div>
+        {!isEmpty(query?.[flag]) ? (
+          <Tag closable onClose={() => updateQuery(flag, [])}>
+            Clear Selection
+          </Tag>
+        ) : (
+          ""
+        )}
       </Space>
       <div>
         <DatePicker
