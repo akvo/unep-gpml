@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Input, Space, Tag, Select, Drawer } from "antd";
-import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
+import { Row, Col, Button, Input, Space, Tag, Select } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+
+import ConfigIcon from "../../images/knowledge-library/config-icon.svg";
+import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
+import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
+import DownArrow from "../../images/knowledge-library/chevron-down.svg";
 
 import "./styles.scss";
 import { UIStore } from "../../store";
@@ -35,6 +40,20 @@ const KnowledgeLibrary = ({
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
   const [view, setView] = useState("map");
+
+  const selectionValue = (
+    <div className="selection-value">
+      <button className="select-button">
+        <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
+      </button>
+      <span className="label text-white">{`${view} view`}</span>
+      {view.toLowerCase().includes("map") ? (
+        <img src={GlobeOutlined} alt="globe-icon" />
+      ) : (
+        <img src={TooltipOutlined} alt="tooltip-icon" />
+      )}
+    </div>
+  );
 
   const {
     profile,
@@ -215,31 +234,42 @@ const KnowledgeLibrary = ({
             justify="space-between"
             align="middle"
             gutter={[10, 10]}
+            className="header-filter-option"
           >
             {/* Search input & filtered by list */}
             <Col lg={22} md={20} sm={18}>
               <Row type="flex" justify="space-between" align="middle">
-                <Col lg={5} md={7} sm={9}>
+                <Col lg={5} md={7} sm={9} className="search-box">
                   <Space>
                     <Search />
                     <Button
                       onClick={() => setFilterVisible(!filterVisible)}
                       type="ghost"
                       shape="circle"
-                      icon={<FilterOutlined />}
+                      icon={
+                        <img
+                          src={ConfigIcon}
+                          className="filter-icon"
+                          alt="config-icon"
+                        />
+                      }
                     />
                   </Space>
                 </Col>
-                <Col lg={19} md={17} sm={15}>
+                <Col lg={19} md={17} sm={15} className="filter-tag">
                   <Space direction="horizontal">{renderFilterTag()}</Space>
                 </Col>
               </Row>
             </Col>
             {/* Map/Topic view dropdown */}
-            <Col lg={2} md={4} sm={6}>
-              <Select value={view} onChange={(val) => setView(val)}>
+            <Col lg={2} md={4} sm={6} className="select-wrapper">
+              <Select
+                className="view-selection"
+                value={selectionValue}
+                onChange={(val) => setView(val)}
+              >
                 <Option value="map">Map View</Option>
-                <Option value="topic">Topic View</Option>
+                <Option value="topic">Topic View </Option>
               </Select>
             </Col>
           </Row>
@@ -334,7 +364,7 @@ const Search = () => {
     <div className="src">
       <Input
         className="input-src"
-        placeholder="Search"
+        placeholder="Search resources"
         suffix={
           <Button
             onClick={() => handleSearch(search)}

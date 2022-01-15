@@ -30,6 +30,10 @@
         margin-bottom: 10px;
       }
 
+      .resource-list-header {
+        background: #EDF2F7; 
+      }
+
       .country-filter-tab,
       .summary {
         border-radius: 5px;
@@ -39,7 +43,7 @@
 
       .country-filter-tab {
         margin-bottom: 1.5rem;
-        
+
         .ant-select-selection-placeholder,
         .ant-select-selection-item {
           text-align: left;

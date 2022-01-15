@@ -10,11 +10,7 @@ import {
   Tooltip,
   Pagination,
 } from "antd";
-import {
-  UserOutlined,
-  ArrowRightOutlined,
-  ArrowLeftOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
 
