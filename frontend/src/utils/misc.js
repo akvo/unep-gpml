@@ -1,5 +1,15 @@
 import humps from "humps";
 
+// Icons
+import CapacityBuildingIcon from "../images/knowledge-library/capacity-building.svg";
+import ActionSelectedIcon from "../images/knowledge-library/action-selected.svg";
+import EventFlexibleIcon from "../images/knowledge-library/event-flexible.svg";
+import InitiativeIcon from "../images/knowledge-library/initiative.svg";
+import FinancingIcon from "../images/knowledge-library/financing.svg";
+import PolicyIcon from "../images/knowledge-library/policy.svg";
+import TechnicalIcon from "../images/knowledge-library/technical.svg";
+import TechnologyIcon from "../images/knowledge-library/technology.svg";
+
 export const tTypes = [
   "project",
   "actionPlan",
@@ -42,6 +52,33 @@ export const topicNames = (topic) => {
     stakeholder: "Individual",
   };
   return names[humps.camelize(topic)];
+};
+
+export const topicIcons = (topic) => {
+  if (topic === "project") {
+    return InitiativeIcon;
+  }
+  if (topic === "actionPlan") {
+    return ActionSelectedIcon;
+  }
+  if (topic === "policy") {
+    return PolicyIcon;
+  }
+  if (topic === "technicalResource") {
+    return TechnicalIcon;
+  }
+  if (topic === "financingResource") {
+    return FinancingIcon;
+  }
+  if (topic === "event") {
+    return EventFlexibleIcon;
+  }
+  if (topic === "technology") {
+    return TechnologyIcon;
+  }
+  if (topic === "organisation") {
+    return CapacityBuildingIcon;
+  }
 };
 
 export const resourceSubTypes = new Set([

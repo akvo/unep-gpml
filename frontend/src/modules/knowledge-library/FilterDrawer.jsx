@@ -18,7 +18,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import moment from "moment";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
-import { topicTypes, topicNames } from "../../utils/misc";
+import { topicTypes, topicNames, topicIcons } from "../../utils/misc";
 import CountryTransnationalFilter from "./country-transnational-filter";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
@@ -133,11 +133,15 @@ const FilterDrawer = ({
           {/* Resource type */}
           <Col span={24}>
             <Space align="middle">
-              <div className="filter-title">Resource type</div>
+              <div className="filter-title">Resources type</div>
               {isEmpty(query?.topic) ? (
-                <Tag>All (default)</Tag>
+                <Tag className="resource-type">All (default)</Tag>
               ) : (
-                <Tag closable={true} onClose={() => updateQuery("topic", [])}>
+                <Tag
+                  className="clear-selection"
+                  closable={true}
+                  onClose={() => updateQuery("topic", [])}
+                >
                   Clear selection
                 </Tag>
               )}
@@ -156,7 +160,7 @@ const FilterDrawer = ({
                       })}
                     >
                       <Space direction="vertical" align="center">
-                        <Image />
+                        <Image src={topicIcons(type)} />
                         <div className="topic-text">{topicNames(type)}</div>
                         <div className="topic-count">{count}</div>
                       </Space>
@@ -336,7 +340,7 @@ const MultipleSelectFilter = ({
   span = 24,
 }) => {
   return (
-    <Col span={span}>
+    <Col span={span} className="multiselection-filter">
       <Space align="middle">
         <div className="filter-title">{title}</div>
       </Space>
@@ -375,12 +379,13 @@ const DatePickerFilter = ({
   startDate = null,
 }) => {
   return (
-    <Col span={span}>
+    <Col span={span} className="date-picker-container">
       <Space align="middle">
         <div className="filter-title">{title}</div>
       </Space>
       <div>
         <DatePicker
+          placeholder="dd.mm.yyyy"
           value={!isEmpty(value) ? moment(value[0]) : ""}
           onChange={(val) =>
             updateQuery(flag, val ? moment(val).format("YYYY-MM-DD") : [])
