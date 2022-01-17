@@ -378,7 +378,8 @@
                                                  :handler #ig/ref :gpml.handler.detail/put}}]]
                                         ["/list"
                                          ["/{topic-type}"
-                                          {:get {:middleware [#ig/ref :gpml.auth/auth-middleware]
+                                          {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required]
                                                  :summary "List all resources from a given topic"
                                                  :swagger {:tags ["resource list"]}
                                                  :parameters {:path [:map
