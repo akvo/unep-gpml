@@ -75,3 +75,24 @@ values :t*:geo RETURNING id;
 -- :name delete-initiative-geo-coverage :! :n
 -- :doc Remove specified countries or country groups from an initiative
 delete from initiative_geo_coverage where initiative=:id;
+
+-- :name entity-connections-by-id
+-- :doc Get entity connections by id
+select oi.id, oi.association as role, org.name as entity
+ from organisation_initiative oi
+ left join organisation org
+ on oi.organisation = org.id
+ where oi.initiative = :id
+
+-- :name stakeholder-connections-by-id
+-- :doc Get stakeholder connections by id
+select si.id, si.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder
+  from stakeholder_initiative si
+  left join stakeholder s
+  on si.stakeholder = s.id
+  where si.initiative = :id
+
+-- :name all-initiatives
+-- :doc List all initiatives
+select id, q2 as title
+  from initiative;

@@ -139,14 +139,14 @@
       [:map
        [:entity int?]
        [:role
-        [:enum "regulator" "implementor" "reviewer"
+        [:enum "regulator" "implementor" "reviewer" "owner"
          "interested in" "partner" "donor" "other"]]]]]
     [:individual_connections {:optional true}
      [:vector {:optional true}
       [:map
        [:stakeholder int?]
        [:role
-        [:enum "regulator" "implementor" "reviewer"
+        [:enum "regulator" "implementor" "reviewer" "owner"
          "interested in" "partner" "donor" "other"]]]]]
     [:urls {:optional true}
      [:vector {:optional true}

@@ -125,3 +125,24 @@ values :t*:geo RETURNING id;
 -- :doc Add language URLs to a policy
 insert into policy_language_url(policy, language, url)
 values :t*:urls RETURNING id;
+
+-- :name entity-connections-by-id
+-- :doc Get entity connections by id
+select orgpol.id, orgpol.association as role, org.name as entity
+ from organisation_policy orgpol
+ left join organisation org
+ on orgpol.organisation = org.id
+ where orgpol.policy = :id
+
+-- :name stakeholder-connections-by-id
+-- :doc Get stakeholder connections by id
+select sp.id, sp.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder
+  from stakeholder_policy sp
+  left join stakeholder s
+  on sp.stakeholder = s.id
+  where sp.policy = :id
+
+-- :name all-policies
+-- :doc List all policies
+select id, title
+  from policy;

@@ -47,6 +47,7 @@ import AboutUs from "./modules/about/about-us";
 import Glossary from "./modules/glossary/glossary";
 import Error from "./modules/error/error";
 import EntityFormView from "./modules/entity/view";
+import Workspace from "./modules/workspace/view";
 
 // Menu dropdown
 import AboutDropdownMenu from "./modules/dropdown-menu/about";
@@ -55,6 +56,7 @@ import DataHubDropdownMenu from "./modules/dropdown-menu/data-hub";
 import KnowledgeExchangeDropdownMenu from "./modules/dropdown-menu/knowledge-exchange";
 import ConnectStakeholdersDropdownMenu from "./modules/dropdown-menu/connect-stakeholders";
 import ResponsiveMenu from "./modules/dropdown-menu/responsive-menu";
+import WorkspaceButton from "./modules/dropdown-menu/WorkspaceButton";
 
 // Discourse Forum
 import DiscourseForum from "./modules/discourse-forum/discourse-forum";
@@ -262,6 +264,7 @@ const Root = () => {
                 <img src={logo} className="logo" alt="GPML" />
               </Link>
             </div>
+            <WorkspaceButton />
             <div className="menu-dropdown-container">
               <AboutDropdownMenu />
               <ExploreDropdownMenu topicsCount={topicsCount} />
@@ -506,8 +509,14 @@ const Root = () => {
             render={(props) => <CapacityBuilding {...props} />}
           />
           <Route
+            exact
             path="/case-studies"
             render={(props) => <CaseStudies {...props} />}
+          />
+          <Route
+            exact
+            render={(props) => <Workspace {...props} />}
+            path="/workspace"
           />
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"

@@ -11,15 +11,16 @@ import {
   Button,
 } from "antd";
 import { groupBy } from "lodash";
-import moment from "moment";
+import classNames from "classnames";
 
 const { Title } = Typography;
 
 import "./styles.scss";
 import { TrimText } from "../../utils/string";
 import Banner from "./Banner";
-import Thumbnail from "./Thumbnail";
 import capacities from "./json/capacity-building.json";
+import slides from "./json/slider.json";
+
 import SlidePrev from "../../images/capacity-building/slide-prev.svg";
 import SlideNext from "../../images/capacity-building/slide-next.svg";
 import LeftSidebar from "../left-sidebar/LeftSidebar";
@@ -34,22 +35,6 @@ const CapacityBuilding = () => {
   const next = () => {
     slider.current.next();
   };
-  const banners = [
-    {
-      uid: 1,
-      title:
-        "Third COBSEA Webinar on the Post-2020 Global Biodiversity Framework",
-      date: moment().format("DD MMMM YYYY"),
-      category: "Webinar",
-    },
-    {
-      uid: 2,
-      title:
-        "Troisième webinaire COBSEA sur le cadre mondial de la biodiversité post-2020",
-      date: moment().format("DD MMMM YYYY"),
-      category: "Webinar",
-    },
-  ];
   const groupCapacities = groupBy(capacities, "category");
 
   return (
@@ -73,7 +58,7 @@ const CapacityBuilding = () => {
             <Row>
               <Col span={24} style={{ position: "relative" }}>
                 <Carousel className="pm_event_banner" ref={slider}>
-                  {banners.map((b, bx) => (
+                  {slides.map((b, bx) => (
                     <Banner key={bx} {...b} />
                   ))}
                 </Carousel>
@@ -113,10 +98,6 @@ const CapacityBuilding = () => {
                         }}
                         dataSource={groupCapacities[g] || []}
                         renderItem={(item) => {
-                          const thumb =
-                            item.category_id === "events"
-                              ? { width: 172, height: 114 }
-                              : {};
                           return (
                             <List.Item>
                               <a
@@ -134,7 +115,15 @@ const CapacityBuilding = () => {
                                     bordered="false"
                                     hoverable
                                   >
-                                    <Thumbnail url={item.image} {...thumb} />
+                                    <div className="thumbnail">
+                                      <img
+                                        src={item.image}
+                                        alt={item.title}
+                                        className={classNames({
+                                          events: item.category_id === "events",
+                                        })}
+                                      />
+                                    </div>
                                   </Card.Grid>
                                   <Card.Grid
                                     className={`right ${item.category_id}`}
@@ -142,7 +131,7 @@ const CapacityBuilding = () => {
                                     hoverable={false}
                                   >
                                     <span className="title">
-                                      <TrimText text={item.title} max={95} />
+                                      <TrimText text={item.title} max={85} />
                                     </span>
                                     <span className="see-more">See more</span>
                                   </Card.Grid>
