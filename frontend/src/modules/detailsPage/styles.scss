@@ -211,6 +211,16 @@
         }
       }
     }
+    .tag-list {
+      h4 {
+        text-transform: capitalize;
+      }
+    }
+    .geo-coverage {
+      h4 {
+        text-transform: capitalize;
+      }
+    }
     .related-content {
       padding: 0px 10px;
       .ant-col {

@@ -256,7 +256,7 @@ const DetailsView = ({
                   marginBottom: "30px",
                 }}
               >
-                <div className="list">
+                <div className="list geo-coverage">
                   <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
@@ -269,7 +269,7 @@ const DetailsView = ({
                     <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar src={TransnationalImage} />}
-                        title={"Transnational"}
+                        title={data?.geoCoverageType}
                       />
                     </List.Item>
                     <List.Item>
@@ -288,14 +288,14 @@ const DetailsView = ({
                   marginBottom: "30px",
                 }}
               >
-                <div className="list">
+                <div className="list tag-list">
                   <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar src={TagsImage} />}
-                        title={
-                          "Action plan, macroplastics, microplastics, best practice, manual, mechanism, mechanism, state of knowledge, litter monitoring, prevention"
-                        }
+                        title={data?.tags
+                          .map((tag) => Object.values(tag)[0])
+                          .join(", ")}
                       />
                     </List.Item>
                   </List>
