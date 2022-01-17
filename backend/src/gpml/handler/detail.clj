@@ -1,12 +1,16 @@
 (ns gpml.handler.detail
-  (:require [gpml.constants :as constants]
+  (:require [clojure.java.jdbc :as jdbc]
+            [gpml.constants :as constants]
             [gpml.db.detail :as db.detail]
-            [gpml.db.project :as db.project]
-            [clojure.java.jdbc :as jdbc]
+            [gpml.db.event :as db.event]
             [gpml.db.initiative :as db.initiative]
-            [gpml.db.topic-stakeholder-auth :as db.topic-stakeholder-auth]
             [gpml.db.language :as db.language]
+            [gpml.db.policy :as db.policy]
+            [gpml.db.project :as db.project]
+            [gpml.db.resource :as db.resource]
             [gpml.db.submission :as db.submission]
+            [gpml.db.technology :as db.technology]
+            [gpml.db.topic-stakeholder-auth :as db.topic-stakeholder-auth]
             [gpml.handler.image :as handler.image]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.organisation :as handler.org]
@@ -258,20 +262,45 @@
 (defmulti extra-details (fn [topic-type _ _] topic-type) :default :nothing)
 
 (defmethod extra-details "project" [_ db project]
-  (if (> (:id project) 10000)
-    (db.initiative/initiative-detail-by-id db project)
-    (details-for-project db project)))
+  (merge
+    {:entity_connections (db.initiative/entity-connections-by-id db (select-keys project [:id]))
+     :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys project [:id]))}
+    (if (> (:id project) 10000)
+      (db.initiative/initiative-detail-by-id db project)
+      (details-for-project db project))))
 
 (defmethod extra-details "policy" [_ db policy]
-  (when-let [implementing-mea (:implementing_mea policy)]
-    {:implementing_mea (:name (db.country-group/country-group-by-id db {:id implementing-mea}))}))
+  (merge
+    {:entity_connections (db.policy/entity-connections-by-id db (select-keys policy [:id]))
+     :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys policy [:id]))}
+    (when-let [implementing-mea (:implementing_mea policy)]
+      {:implementing_mea (:name (db.country-group/country-group-by-id db {:id implementing-mea}))})))
 
 (defmethod extra-details "technology" [_ db technology]
-  (when-let [headquarters-country (:country technology)]
-    {:headquarters (gpml.db.country/country-by-id db {:id headquarters-country})}))
+  (merge
+    {:entity_connections (db.technology/entity-connections-by-id db (select-keys technology [:id]))
+     :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys technology [:id]))}
+    (when-let [headquarters-country (:country technology)]
+      {:headquarters (gpml.db.country/country-by-id db {:id headquarters-country})})))
 
 (defmethod extra-details "stakeholder" [_ db stakeholder]
     (:data (db.detail/get-stakeholder-tags db stakeholder)))
+
+(defmethod extra-details "technical_resource" [_ db resource]
+  {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
+   :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys resource [:id]))})
+
+(defmethod extra-details "financing_resource" [_ db resource]
+  {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
+   :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys resource [:id]))})
+
+(defmethod extra-details "action_plan" [_ db resource]
+  {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
+   :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys resource [:id]))})
+
+(defmethod extra-details "event" [_ db event]
+  {:entity_connections (db.event/entity-connections-by-id db (select-keys event [:id]))
+   :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys event [:id]))})
 
 (defmethod extra-details :nothing [_ _ _]
   nil)
