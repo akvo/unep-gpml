@@ -111,17 +111,17 @@ country_counts AS (
 ),
 totals AS (
     SELECT COUNT(*) as total, 'project' as data, 1 as o
-    FROM initiative where review_status = 'APPROVED'    
+    FROM initiative where review_status = 'APPROVED'
     UNION
     SELECT COUNT(*) as total, replace(lower(type),' ','_') as data, 2 as o
-    FROM resource WHERE type IS NOT NULL GROUP BY data
+    FROM resource WHERE review_status = 'APPROVED' AND type IS NOT NULL GROUP BY data
     UNION
     SELECT COUNT(*) as total, 'event' as data, 3 as o FROM event
     WHERE event.review_status = 'APPROVED'
     UNION
-    SELECT COUNT(*) as total, 'policy' as data, 4 as o FROM policy
+    SELECT COUNT(*) as total, 'policy' as data, 4 as o FROM policy WHERE review_status = 'APPROVED'
     UNION
-    SELECT COUNT(*) as total, 'technology' as data, 5 as o FROM technology
+    SELECT COUNT(*) as total, 'technology' as data, 5 as o FROM technology WHERE review_status = 'APPROVED'
     UNION
     SELECT COUNT(*) as total, 'organisation' as data, 6 as o FROM organisation WHERE review_status = 'APPROVED'
     UNION
