@@ -1,8 +1,14 @@
-import React from "react";
+import React, {
+  Fragment,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+} from "react";
 import "./styles.scss";
 import { Row, Col, Tooltip, Typography, Card, List, Avatar } from "antd";
 const { Title } = Typography;
-
+import { UIStore } from "../../store";
 import StickyBox from "react-sticky-box";
 import ActionGreen from "../../images/action-green.png";
 import LeftImage from "../../images/sea-dark.jpg";
@@ -21,7 +27,15 @@ import {
   EditOutlined,
   UserOutlined,
   ArrowRightOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import { withRouter, useHistory } from "react-router-dom";
+import uniqBy from "lodash/uniqBy";
+import isEmpty from "lodash/isEmpty";
+import { redirectError } from "../error/error-util";
+import api from "../../utils/api";
 
 const CardComponent = ({ title, style, children }) => {
   return (
@@ -33,7 +47,7 @@ const CardComponent = ({ title, style, children }) => {
   );
 };
 
-const TabComponent = ({ title, style, children }) => {
+const TabComponent = ({ title, style, children, getRef }) => {
   return (
     <div className="tab-wrapper" style={style}>
       <ul>
@@ -44,7 +58,7 @@ const TabComponent = ({ title, style, children }) => {
           <a href="#">Documents And Info</a>
         </li>
         <li>
-          <a href="#">Related Content</a>
+          <a onClick={() => getRef.current.scrollIntoView()}>Related Content</a>
         </li>
         <li>
           <a href="#">Reviews</a>
@@ -81,7 +95,86 @@ const SharePanel = () => {
   );
 };
 
-function DetailsView() {
+const DetailsView = ({
+  match: { params },
+  setStakeholderSignupModalVisible,
+  setFilterMenu,
+}) => {
+  const relatedContent = useRef(null);
+
+  const {
+    profile,
+    countries,
+    languages,
+    regionOptions,
+    meaOptions,
+    transnationalOptions,
+  } = UIStore.useState((s) => ({
+    profile: s.profile,
+    countries: s.countries,
+    languages: s.languages,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
+    transnationalOptions: s.transnationalOptions,
+  }));
+  const history = useHistory();
+  const [data, setData] = useState(null);
+  const [relations, setRelations] = useState([]);
+  const { isAuthenticated, loginWithPopup } = useAuth0();
+  const [warningVisible, setWarningVisible] = useState(false);
+
+  const isConnectStakeholders = ["organisation", "stakeholder"].includes(
+    params?.type
+  );
+  const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
+
+  const isLoaded = useCallback(
+    () =>
+      Boolean(
+        !isEmpty(countries) &&
+          (isConnectStakeholders ? !isEmpty(profile) : true)
+      ),
+    [countries, profile, isConnectStakeholders]
+  );
+
+  useEffect(() => {
+    isLoaded() &&
+      !data &&
+      params?.type &&
+      params?.id &&
+      api
+        .get(`/detail/${params.type}/${params.id}`)
+        .then((d) => {
+          setData(d.data);
+        })
+        .catch((err) => {
+          console.error(err);
+          redirectError(err, history);
+        });
+    if (isLoaded() && profile.reviewStatus === "APPROVED") {
+      setTimeout(() => {
+        api.get("/favorite").then((resp) => {
+          setRelations(resp.data);
+        });
+      }, 100);
+    }
+    UIStore.update((e) => {
+      e.disclaimer = null;
+    });
+    window.scrollTo({ top: 0 });
+  }, [params, profile, isLoaded, data, history]);
+
+  if (!data) {
+    return (
+      <div className="details-view">
+        <div className="loading">
+          <LoadingOutlined spin />
+          <i>Loading...</i>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div id="details">
       <div className="section-header">
@@ -91,10 +184,8 @@ function DetailsView() {
               <div className="header-wrapper">
                 <img src={ActionGreen} />
                 <div>
-                  <Title level={2}>ACTION PLAN</Title>
-                  <Title level={4}>
-                    Regional Action Plan for Marine Litter in the Baltic Sea{" "}
-                  </Title>
+                  <Title level={2}>{data?.type}</Title>
+                  <Title level={4}>{data?.title}</Title>
                 </div>
               </div>
             </Col>
@@ -263,6 +354,7 @@ function DetailsView() {
                 style={{
                   marginBottom: "30px",
                 }}
+                getRef={relatedContent}
               />
               <CardComponent
                 title="Record"
@@ -326,7 +418,11 @@ function DetailsView() {
                   marginBottom: "30px",
                 }}
               >
-                <Row gutter={16} className="related-content">
+                <Row
+                  gutter={16}
+                  className="related-content"
+                  ref={relatedContent}
+                >
                   <Col span={12}>
                     <Card title="INITIATIVE " bordered={false}>
                       <h4>
@@ -493,6 +589,6 @@ function DetailsView() {
       </div>
     </div>
   );
-}
+};
 
 export default DetailsView;

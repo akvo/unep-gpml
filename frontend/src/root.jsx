@@ -521,7 +521,7 @@ const Root = () => {
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event|organisation|stakeholder)/:id"
             render={(props) => (
-              <DetailsView
+              <NewDetailsView
                 {...props}
                 setStakeholderSignupModalVisible={
                   setStakeholderSignupModalVisible

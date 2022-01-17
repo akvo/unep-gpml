@@ -1,7 +1,7 @@
 #details {
   .section-header {
     background-color: #007090;
-    padding: 15px 0px;
+    padding: 20px 0px;
     width: 100%;
     .header-wrapper {
       display: flex;
@@ -20,6 +20,7 @@
         font-size: 30px;
         font-weight: 700;
         line-height: 25px;
+        text-transform: capitalize;
       }
       img {
         margin-right: 20px;
