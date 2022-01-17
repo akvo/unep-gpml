@@ -36,6 +36,7 @@ import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import api from "../../utils/api";
+import imageNotFound from "../../images/image-not-found.png";
 
 const CardComponent = ({ title, style, children }) => {
   return (
@@ -93,6 +94,58 @@ const SharePanel = () => {
       </div>
     </div>
   );
+};
+
+const renderBannerSection = (data) => {
+  if (
+    data.type === "Technical Resource" ||
+    data.type === "Policy" ||
+    data.type === "Action Plan"
+  ) {
+    return (
+      <>
+        <Col xs={6} lg={6}>
+          <div className="short-image">
+            <img
+              src={data.image ? data.image : imageNotFound}
+              className="resource-image"
+            />
+          </div>
+        </Col>
+        <Col xs={18} lg={18} style={{ display: "flex" }}>
+          <div className="banner-wrapper">
+            <CardComponent
+              title="Description"
+              style={{
+                height: "100%",
+                boxShadow: "none",
+                borderRadius: "none",
+              }}
+            >
+              <p>{data.summary}</p>
+            </CardComponent>
+            <SharePanel />
+          </div>
+        </Col>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Col xs={6} lg={24}>
+          <div className="banner-wrapper">
+            <div className="long-image">
+              <img
+                src={data.image ? data.image : imageNotFound}
+                className="resource-image"
+              />
+            </div>
+            <SharePanel />
+          </div>
+        </Col>
+      </>
+    );
+  }
 };
 
 const DetailsView = ({
@@ -195,43 +248,7 @@ const DetailsView = ({
 
       <div className="section-banner">
         <div className="ui container">
-          <Row gutter={[16, 16]}>
-            <Col xs={6} lg={6}>
-              <img src={LeftImage} className="resource-image" />
-            </Col>
-            <Col xs={18} lg={18} style={{ display: "flex" }}>
-              <div className="banner-wrapper">
-                <CardComponent
-                  title="Description"
-                  style={{
-                    height: "100%",
-                    boxShadow: "none",
-                    borderRadius: "none",
-                  }}
-                >
-                  <p>
-                    A healthy Baltic Sea environment with diverse biological
-                    components functioning in balance, resulting in a good
-                    ecological status and supporting a wide range of sustainable
-                    economic and social activities. Initially adopted in 2015,
-                    the plan has already led to significant progress on marine
-                    litter, including the development of a knowledge base and
-                    various HELCOM commitments to address marine litter in the
-                    Baltic Sea. In 2020, the revision of the HELCOM Regional
-                    Action Plan on Marine Litter (RAP ML) has started. As a
-                    first step, a thorough evaluation of the implementation of
-                    each of the regional and voluntary national actions has been
-                    initiated. The revision of the Action Plan is to be
-                    conducted simultaneously and in connection with the revision
-                    of the Baltic Sea Action Plan (BSAP), the RAP ML being one
-                    of the key supplementary documents of the updated BSAP. Both
-                    updates are to conclude in 2021.
-                  </p>
-                </CardComponent>
-                <SharePanel />
-              </div>
-            </Col>
-          </Row>
+          <Row gutter={[16, 16]}>{renderBannerSection(data, LeftImage)}</Row>
         </div>
       </div>
 

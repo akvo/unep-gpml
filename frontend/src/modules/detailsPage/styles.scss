@@ -41,12 +41,28 @@
       display: flex;
       background: #fff;
       border-radius: 10px;
-      padding: 2px;
       .ant-card-head {
         padding: 0 40px !important;
       }
       .ant-card-body {
         padding: 24px 40px !important;
+      }
+      .long-image {
+        max-height: 500px;
+        padding: 2px;
+        img {
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+    .short-image {
+      min-height: 500px;
+      height: 100%;
+      padding: 2px;
+      img {
+        height: 100%;
+        object-fit: cover;
       }
     }
     .sticky-panel {
@@ -54,7 +70,7 @@
       flex-direction: column;
       align-items: center;
       background-color: #255b87;
-      height: 100%;
+      margin: 2px;
       flex: 0 0 100px;
       border: 1px solid #d3dee7;
       box-sizing: border-box;
