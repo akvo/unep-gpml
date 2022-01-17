@@ -330,32 +330,31 @@ const DetailsView = ({
               >
                 <div className="list connection-list">
                   <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={EntityImage} />}
-                        title={"Helcom"}
-                        description={"Entity"}
-                      />{" "}
-                      <div className="see-more-button">See More</div>
-                    </List.Item>
+                    {data?.entityConnections.length > 0 &&
+                      data?.entityConnections.map((item) => (
+                        <List.Item>
+                          <List.Item.Meta
+                            avatar={<Avatar src={EntityImage} />}
+                            title={item.entity}
+                            description={"Entity"}
+                          />{" "}
+                          <div className="see-more-button">See More</div>
+                        </List.Item>
+                      ))}
                   </List>
                   <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={AvatarImage} />}
-                        title={"Bertrand Lacaze"}
-                        description={"Owner -  Helcom"}
-                      />
-                    </List.Item>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={AvatarImage} />}
-                        title={"Bertrand Lacaze"}
-                        description={"Owner -  Helcom"}
-                      />
-                    </List.Item>
+                    {data?.stakeholderConnections.length > 0 &&
+                      data?.stakeholderConnections.map((item) => (
+                        <List.Item>
+                          <List.Item.Meta
+                            avatar={<Avatar src={AvatarImage} />}
+                            title={item.stakeholder}
+                            description={item.role}
+                          />
+                        </List.Item>
+                      ))}
                   </List>
-                  <List itemLayout="horizontal">
+                  {/* <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
                         avatar={
@@ -366,7 +365,7 @@ const DetailsView = ({
                         title={"Scroll to see more"}
                       />
                     </List.Item>
-                  </List>
+                  </List> */}
                 </div>
               </CardComponent>
             </Col>
