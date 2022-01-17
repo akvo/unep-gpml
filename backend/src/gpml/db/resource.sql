@@ -162,3 +162,26 @@ select sr.id, sr.association as role, concat_ws(' ', s.first_name, s.last_name) 
   left join stakeholder s
   on sr.stakeholder = s.id
   where sr.resource = :id
+
+-- :name all-resources
+-- :doc List all resources
+select id, title
+  from resource;
+
+-- :name all-technical-resources
+-- :doc List all technical resources
+select id, title
+  from resource
+  where type = 'Technical Resource';
+
+-- :name all-financing-resources
+-- :doc List all financing resources
+select id, title
+  from resource
+  where type = 'Financing Resource';
+
+-- :name all-action-plans
+-- :doc List all action plans
+select id, title
+  from resource
+  where type = 'Action Plan';

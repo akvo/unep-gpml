@@ -151,3 +151,8 @@ select st.id, st.association as role, concat_ws(' ', s.first_name, s.last_name) 
   left join stakeholder s
   on st.stakeholder = s.id
   where st.technology = :id
+
+-- :name all-technologies
+-- :doc List all technologies
+select id, title
+  from technology;

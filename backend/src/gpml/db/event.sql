@@ -144,3 +144,8 @@ select se.id, se.association as role, concat_ws(' ', s.first_name, s.last_name) 
   left join stakeholder s
   on se.stakeholder = s.id
   where se.event = :id
+
+-- :name all-events
+-- :doc List all events
+select id, title
+  from event;

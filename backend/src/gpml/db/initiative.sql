@@ -91,3 +91,8 @@ select si.id, si.association as role, concat_ws(' ', s.first_name, s.last_name) 
   left join stakeholder s
   on si.stakeholder = s.id
   where si.initiative = :id
+
+-- :name all-initiatives
+-- :doc List all initiatives
+select id, q2 as title
+  from initiative;

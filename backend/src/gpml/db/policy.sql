@@ -141,3 +141,8 @@ select sp.id, sp.association as role, concat_ws(' ', s.first_name, s.last_name) 
   left join stakeholder s
   on sp.stakeholder = s.id
   where sp.policy = :id
+
+-- :name all-policies
+-- :doc List all policies
+select id, title
+  from policy;
