@@ -37,6 +37,13 @@ import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import api from "../../utils/api";
 import imageNotFound from "../../images/image-not-found.png";
+import {
+  typeOfActionKeys,
+  detailMaps,
+  infoMaps,
+  descriptionMaps,
+} from "./mapping";
+import moment from "moment";
 
 const CardComponent = ({ title, style, children }) => {
   return (
@@ -148,6 +155,187 @@ const renderBannerSection = (data) => {
       </>
     );
   }
+};
+
+const renderDetails = (
+  { countries, languages, regionOptions, meaOptions, transnationalOptions },
+  params,
+  data
+) => {
+  const details = detailMaps[params.type];
+  if (!details) {
+    return;
+  }
+  return (
+    <>
+      {renderItemValues(
+        {
+          countries,
+          languages,
+          regionOptions,
+          meaOptions,
+          transnationalOptions,
+        },
+        params,
+        details,
+        data
+      )}
+    </>
+  );
+};
+
+const renderItemValues = (
+  { countries, languages, regionOptions, meaOptions, transnationalOptions },
+  params,
+  mapping,
+  data
+) => {
+  let noData = false;
+  mapping &&
+    mapping.every((it) => {
+      const { key } = it;
+      if (data[key]) {
+        noData = false;
+        return false;
+      }
+      if (!data[key]) {
+        noData = true;
+        return true;
+      }
+      return true;
+    });
+
+  if (noData) {
+    return "There is no data to display";
+  }
+
+  if (countries.length === 0) {
+    return "";
+  }
+
+  return (
+    mapping &&
+    mapping.map((item, index) => {
+      const {
+        key,
+        name,
+        value,
+        type,
+        customValue,
+        arrayCustomValue,
+        currencyObject,
+      } = item;
+      // Set to true to display all country list for global
+      const showAllCountryList = false;
+      const displayEntry =
+        data[key] ||
+        data[key] === false ||
+        data[key] === true ||
+        data[key] === 0 ||
+        key === null;
+      // Calculate custom currency value to display
+      const [currency, amount, remarks] =
+        arrayCustomValue?.map((it) => data[it]) || [];
+
+      const customCurrency =
+        value === "custom" &&
+        type === "currency" &&
+        (remarks
+          ? currency
+            ? `${currency} ${amount} - ${remarks}`
+            : `${amount} - ${remarks}`
+          : currency
+          ? `${currency} ${amount}`
+          : `${amount}`);
+
+      return (
+        <Fragment key={`${params.type}-${name}`}>
+          {displayEntry && (
+            <div key={name + index} className="record-table-wrapper">
+              <div className="title">{name}</div>
+              <div className="value">
+                {key === null && type === "static" && value}
+                {value === key &&
+                  type === "name" &&
+                  data[key] === false &&
+                  "No"}
+                {value === key &&
+                  type === "name" &&
+                  data[key] === true &&
+                  "Yes"}
+                {value === key &&
+                  (type === "name" ||
+                    type === "string" ||
+                    type === "number" ||
+                    type === "object") &&
+                  (data[value].name || data[value])}
+                {value === key &&
+                  type === "array" &&
+                  data[key].map((x) => x.name).join(", ")}
+                {value === key &&
+                  type === "country" &&
+                  countries.find((it) => it.id === data[key]).name}
+                {value === "custom" &&
+                  type === "object" &&
+                  data[key][customValue]}
+                {value === "custom" &&
+                  type === "startEndDate" &&
+                  moment(data[arrayCustomValue[0]]).format("DD MMM YYYY") +
+                    " - " +
+                    moment(data[arrayCustomValue[1]]).format("DD MMM YYYY")}
+                {data[key] &&
+                  value === "isoCode" &&
+                  type === "array" &&
+                  uniqBy(data[key], "isoCode")
+                    .map((x, i) => languages[x.isoCode].name)
+                    .join(", ")}
+                {key === "tags" &&
+                  data[key] &&
+                  value === "join" &&
+                  type === "array" &&
+                  data[key].map((tag) => Object.values(tag)[0]).join(", ")}
+                {key !== "tags" &&
+                  params.type === "project" &&
+                  data[key] &&
+                  value === "join" &&
+                  type === "array" &&
+                  data[key].map((x) => x.name).join(", ")}
+                {key !== "tags" &&
+                  params.type !== "project" &&
+                  data[key] &&
+                  value === "join" &&
+                  type === "array" &&
+                  data[key].join(", ")}
+                {params.type === "project" &&
+                  value === "custom" &&
+                  type === "array" &&
+                  data[key][customValue] &&
+                  data[key][customValue].map((x) => x.name).join(", ")}
+                {params.type !== "project" &&
+                  value === "custom" &&
+                  type === "array" &&
+                  data[key][customValue] &&
+                  data[key][customValue].join(", ")}
+
+                {customCurrency}
+              </div>
+            </div>
+          )}
+        </Fragment>
+      );
+    })
+  );
+};
+
+const renderCountries = (data, countries, transnationalOptions) => {
+  let dataCountries = null;
+  const newArray = [...new Set([...countries, ...transnationalOptions])];
+  dataCountries = data["geoCoverageValues"]
+    ?.map((x) => {
+      return newArray.find((it) => it.id === x)?.name;
+    })
+    .join(", ");
+  return dataCountries;
 };
 
 const DetailsView = ({
@@ -279,14 +467,19 @@ const DetailsView = ({
               >
                 <div className="list geo-coverage">
                   <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={LocationImage} />}
-                        title={
-                          "Latvia, Poland, Germany, Sweden, Lithuania, Denmark, Russian Federation, Finland, Estonia"
-                        }
-                      />
-                    </List.Item>
+                    {data?.geoCoverageValues &&
+                      data?.geoCoverageValues.length > 0 && (
+                        <List.Item>
+                          <List.Item.Meta
+                            avatar={<Avatar src={LocationImage} />}
+                            title={renderCountries(
+                              data,
+                              countries,
+                              transnationalOptions
+                            )}
+                          />
+                        </List.Item>
+                      )}
                     <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar src={TransnationalImage} />}
@@ -376,18 +569,19 @@ const DetailsView = ({
                 }}
                 getRef={relatedContent}
               />
-              {(data.type !== "Technical Resource" ||
-                data.type !== "Policy" ||
-                data.type !== "Action Plan") && (
-                <CardComponent
-                  title="Description"
-                  style={{
-                    marginBottom: "30px",
-                  }}
-                >
-                  <p className="summary">{data?.summary}</p>
-                </CardComponent>
-              )}
+              {}
+              {data.type !== "Technical Resource" &&
+                data.type !== "Policy" &&
+                data.type !== "Action Plan" && (
+                  <CardComponent
+                    title="Description"
+                    style={{
+                      marginBottom: "30px",
+                    }}
+                  >
+                    <p className="summary">{data?.summary}</p>
+                  </CardComponent>
+                )}
 
               <CardComponent
                 title="Record"
@@ -396,30 +590,20 @@ const DetailsView = ({
                 }}
               >
                 <div className="record-table">
-                  <div className="record-table-wrapper">
-                    <div>Amount Invested</div>
-                    <div>USD 000</div>
-                  </div>
-                  <div className="record-table-wrapper">
-                    <div>In Kind Contributions</div>
-                    <div>USD 000</div>
-                  </div>
-                  <div className="record-table-wrapper">
-                    <div>Funding Type</div>
-                    <div>Not applicable</div>
-                  </div>
-                  <div className="record-table-wrapper">
-                    <div>Funding Name</div>
-                    <div>
-                      Financial Rules of the Helsinki Commission can be found
-                      here:
-                      https://helcom.fi/about-us/internal-rules/internal-rules/
-                    </div>
-                  </div>
-                  <div className="record-table-wrapper">
-                    <div>Focus Area:</div>
-                    <div>The Baltic Sea</div>
-                  </div>
+                  {countries &&
+                    renderDetails(
+                      {
+                        countries,
+                        languages,
+                        regionOptions,
+                        meaOptions,
+                        transnationalOptions,
+                      },
+                      params,
+                      data,
+                      profile,
+                      countries
+                    )}
                 </div>
               </CardComponent>
               <CardComponent

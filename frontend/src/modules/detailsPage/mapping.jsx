@@ -56,62 +56,20 @@ export const typeOfActionKeys = [
 
 const detailActionPlan = [
   {
-    key: "organisations",
-    name: "Organisation",
-    value: "organisations",
-    type: "array",
-  },
-  {
-    key: "country",
-    name: "Country of Origin",
-    value: "country",
-    type: "country",
-  },
-  {
-    key: "geoCoverageValues",
-    name: "Geo-Coverage",
-    value: "geoCoverage",
-    type: "array",
-  },
-  {
     key: "publishYear",
     name: "Year",
     value: "publishYear",
     type: "number",
   },
-  {
-    key: "languages",
-    name: "Languages",
-    value: "isoCode",
-    type: "array",
-  },
-  {
-    key: "tags",
-    name: "Tags",
-    value: "join",
-    type: "array",
-  },
 ];
 
 const detailFinancingResource = [
-  {
-    key: "organisations",
-    name: "Organisation",
-    value: "organisations",
-    type: "array",
-  },
   {
     key: "value",
     name: "Amount",
     value: "custom",
     arrayCustomValue: ["valueCurrency", "value", "valueRemarks"],
     type: "currency",
-  },
-  {
-    key: "geoCoverageValues",
-    name: "Geo-Coverage",
-    value: "geoCoverage",
-    type: "array",
   },
   {
     key: "validFrom",
@@ -130,24 +88,6 @@ const detailFinancingResource = [
     name: "Year",
     value: "publishYear",
     type: "number",
-  },
-  {
-    key: "languages",
-    name: "Languages",
-    value: "isoCode",
-    type: "array",
-  },
-  {
-    key: "country",
-    name: "Country of Origin",
-    value: "country",
-    type: "country",
-  },
-  {
-    key: "tags",
-    name: "Tags",
-    value: "join",
-    type: "array",
   },
 ];
 
