@@ -69,12 +69,14 @@ const TabComponent = ({ title, style, children, getRef }) => {
   );
 };
 
-const SharePanel = () => {
+const SharePanel = ({ data }) => {
   return (
     <div className="sticky-panel">
       <div className="sticky-panel-item">
-        <DownloadOutlined />
-        <h2>View</h2>
+        <a href={data?.url} target="_blank">
+          <DownloadOutlined />
+          <h2>View</h2>
+        </a>
       </div>
       <div className="sticky-panel-item">
         <HeartOutlined />
@@ -124,7 +126,7 @@ const renderBannerSection = (data) => {
             >
               <p>{data.summary}</p>
             </CardComponent>
-            <SharePanel />
+            <SharePanel data={data} />
           </div>
         </Col>
       </>
@@ -140,7 +142,7 @@ const renderBannerSection = (data) => {
                 className="resource-image"
               />
             </div>
-            <SharePanel />
+            <SharePanel data={data} />
           </div>
         </Col>
       </>
@@ -216,6 +218,8 @@ const DetailsView = ({
     });
     window.scrollTo({ top: 0 });
   }, [params, profile, isLoaded, data, history]);
+
+  console.log(data);
 
   if (!data) {
     return (
@@ -373,6 +377,19 @@ const DetailsView = ({
                 }}
                 getRef={relatedContent}
               />
+              {(data.type !== "Technical Resource" ||
+                data.type !== "Policy" ||
+                data.type !== "Action Plan") && (
+                <CardComponent
+                  title="Description"
+                  style={{
+                    marginBottom: "30px",
+                  }}
+                >
+                  <p className="summary">{data?.summary}</p>
+                </CardComponent>
+              )}
+
               <CardComponent
                 title="Record"
                 style={{

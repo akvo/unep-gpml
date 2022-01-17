@@ -86,6 +86,9 @@
         justify-content: center;
         display: flex;
         flex-direction: column;
+        a {
+          text-align: center;
+        }
         &:last-child {
           border-bottom: none;
           box-shadow: none;
@@ -104,6 +107,9 @@
     }
   }
   .card-wrapper {
+    .summary {
+      padding: 0 10px;
+    }
     .ant-card {
       padding: 10px 0px;
       height: 100%;
