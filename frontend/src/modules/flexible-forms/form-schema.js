@@ -105,7 +105,7 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnationalCity: {
-                title: "City",
+                title: "Subnational Area",
                 type: "string",
                 depend: {
                   id: "geoCoverageType",
@@ -353,7 +353,7 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnationalCity: {
-                title: "City",
+                title: "Subnational Area",
                 type: "string",
                 depend: {
                   id: "geoCoverageType",
@@ -620,7 +620,7 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnationalCity: {
-                title: "City",
+                title: "Subnational Area",
                 type: "string",
                 depend: {
                   id: "geoCoverageType",
@@ -917,7 +917,7 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnationalCity: {
-                title: "City",
+                title: "Subnational Area",
                 type: "string",
                 depend: {
                   id: "geoCoverageType",
@@ -1182,7 +1182,7 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnational: {
-                title: "Subnational",
+                title: "Subnational Area",
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
@@ -1433,7 +1433,7 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnationalCity: {
-                title: "City",
+                title: "Subnational Area",
                 type: "string",
                 depend: {
                   id: "geoCoverageType",
@@ -1691,7 +1691,7 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnationalCity: {
-                title: "City",
+                title: "Subnational Area",
                 type: "string",
                 depend: {
                   id: "geoCoverageType",

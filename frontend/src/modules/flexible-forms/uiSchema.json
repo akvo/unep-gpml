@@ -44,7 +44,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
@@ -206,7 +206,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
@@ -443,7 +443,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
@@ -698,7 +698,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
@@ -942,7 +942,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
@@ -1160,7 +1160,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
@@ -1388,7 +1388,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
