@@ -342,7 +342,7 @@ const MultipleSelectFilter = ({
   return (
     <Col span={span} className="multiselection-filter">
       <Space align="middle">
-        <div className="filter-title">{title}</div>
+        <div className="filter-title multiple-filter-title">{title}</div>
       </Space>
       <div>
         <Select
@@ -381,7 +381,7 @@ const DatePickerFilter = ({
   return (
     <Col span={span} className="date-picker-container">
       <Space align="middle">
-        <div className="filter-title">{title}</div>
+        <div className="filter-title multiple-filter-title">{title}</div>
       </Space>
       <div>
         <DatePicker
