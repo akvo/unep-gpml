@@ -45,9 +45,9 @@ import {
 } from "./mapping";
 import moment from "moment";
 
-const CardComponent = ({ title, style, children }) => {
+const CardComponent = ({ title, style, children, getRef }) => {
   return (
-    <div className="card-wrapper" style={style}>
+    <div className="card-wrapper" style={style} ref={getRef}>
       <Card title={title} bordered={false} style={style}>
         {children}
       </Card>
@@ -55,21 +55,32 @@ const CardComponent = ({ title, style, children }) => {
   );
 };
 
-const TabComponent = ({ title, style, children, getRef }) => {
+const TabComponent = ({
+  title,
+  style,
+  children,
+  relatedRef,
+  recordRef,
+  documentRef,
+}) => {
   return (
     <div className="tab-wrapper" style={style}>
       <ul>
         <li>
-          <a href="#">Record</a>
+          <a onClick={() => recordRef.current.scrollIntoView()}>Record</a>
         </li>
         <li>
-          <a href="#">Documents And Info</a>
+          <a onClick={() => documentRef.current.scrollIntoView()}>
+            Documents And Info
+          </a>
         </li>
         <li>
-          <a onClick={() => getRef.current.scrollIntoView()}>Related Content</a>
+          <a onClick={() => relatedRef.current.scrollIntoView()}>
+            Related Content
+          </a>
         </li>
         <li>
-          <a href="#">Reviews</a>
+          <a href="#">Comments</a>
         </li>
       </ul>
     </div>
@@ -344,6 +355,9 @@ const DetailsView = ({
   setFilterMenu,
 }) => {
   const relatedContent = useRef(null);
+  const record = useRef(null);
+  const document = useRef(null);
+  const reviews = useRef(null);
 
   const {
     profile,
@@ -504,14 +518,19 @@ const DetailsView = ({
               >
                 <div className="list tag-list">
                   <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={TagsImage} />}
-                        title={data?.tags
-                          .map((tag) => Object.values(tag)[0])
-                          .join(", ")}
-                      />
-                    </List.Item>
+                    {data?.tags && (
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={<Avatar src={TagsImage} />}
+                          title={
+                            data?.tags &&
+                            data?.tags
+                              .map((tag) => Object.values(tag)[0])
+                              .join(", ")
+                          }
+                        />
+                      </List.Item>
+                    )}
                   </List>
                 </div>
               </CardComponent>
@@ -567,9 +586,10 @@ const DetailsView = ({
                 style={{
                   marginBottom: "30px",
                 }}
-                getRef={relatedContent}
+                relatedRef={relatedContent}
+                recordRef={record}
+                documentRef={document}
               />
-              {}
               {data.type !== "Technical Resource" &&
                 data.type !== "Policy" &&
                 data.type !== "Action Plan" && (
@@ -588,6 +608,7 @@ const DetailsView = ({
                 style={{
                   marginBottom: "30px",
                 }}
+                getRef={record}
               >
                 <div className="record-table">
                   {countries &&
@@ -611,6 +632,7 @@ const DetailsView = ({
                 style={{
                   marginBottom: "30px",
                 }}
+                getRef={document}
               >
                 <div className="list documents-list">
                   <List itemLayout="horizontal">
@@ -634,12 +656,9 @@ const DetailsView = ({
                 style={{
                   marginBottom: "30px",
                 }}
+                getRef={relatedContent}
               >
-                <Row
-                  gutter={16}
-                  className="related-content"
-                  ref={relatedContent}
-                >
+                <Row gutter={16} className="related-content">
                   <Col span={12}>
                     <Card title="INITIATIVE " bordered={false}>
                       <h4>
@@ -795,7 +814,7 @@ const DetailsView = ({
                 </Row>
               </CardComponent>
               <CardComponent
-                title="Reviews (0)"
+                title="Comments (0)"
                 style={{
                   marginBottom: "30px",
                 }}
