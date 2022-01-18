@@ -646,22 +646,12 @@ const DetailsView = ({
                 }}
                 getRef={document}
               >
-                <div className="list documents-list">
-                  <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={TransnationalImage} />}
-                        title={"www.link.fi"}
-                      />
-                    </List.Item>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={TransnationalImage} />}
-                        title={"www.link.fi"}
-                      />
-                    </List.Item>
-                  </List>
-                </div>
+                {data?.infoDocs && (
+                  <div
+                    className="list documents-list"
+                    dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
+                  />
+                )}
               </CardComponent>
               <CardComponent
                 title="Related content (4)"
