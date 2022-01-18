@@ -430,7 +430,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   };
 
   const handleSubContentType = (e) => {
-    console.log(e.target.value);
     setSubType(e.target.value);
     if (
       mainType === "capacity_building" &&
@@ -683,8 +682,18 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     </div>
                     <div className="sub-content">
                       <div className="sub-content-top">
-                        <h5>Pick the sub-content type</h5>
-                        <span>Optional</span>
+                        <div className="sub-content-wrapper">
+                          <h5>Pick the sub-content type</h5>
+                          <span>Optional</span>
+                        </div>
+                        {subType && (
+                          <div
+                            className="clear-button"
+                            onClick={() => setSubType("")}
+                          >
+                            Clear Selection
+                          </div>
+                        )}
                       </div>
                       {subContentType.length > 0 ? (
                         <div className="sub-content-topics">

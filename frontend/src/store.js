@@ -11,15 +11,7 @@ const geoCoverageTypeOptions = [
 ];
 
 const entityRole = ["Owner", "Implementor", "Partner", "Donor"];
-const individualRole = [
-  "Owner",
-  "Resource Editor",
-  // "User",
-  // "Interested in",
-  // "Implementor",
-  // "Partner",
-  // "Donor or other",
-];
+const individualRole = ["Owner", "Resource Editor"];
 
 const sectorOptions = [
   "Government",
