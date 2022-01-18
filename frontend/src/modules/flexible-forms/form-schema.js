@@ -214,17 +214,6 @@ export const schema = {
                 title: "Info And Docs",
                 type: "string",
               },
-              urls: {
-                title:
-                  "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
-                type: "array",
-                items: {
-                  type: "string",
-                  string: true,
-                  format: "url",
-                },
-                add: "Add Link",
-              },
             },
           },
         },
@@ -456,17 +445,6 @@ export const schema = {
               info: {
                 title: "Info And Docs",
                 type: "string",
-              },
-              urls: {
-                title:
-                  "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
-                type: "array",
-                items: {
-                  type: "string",
-                  string: true,
-                  format: "url",
-                },
-                add: "Add Link",
               },
             },
           },
@@ -723,17 +701,6 @@ export const schema = {
               info: {
                 title: "Info And Docs",
                 type: "string",
-              },
-              urls: {
-                title:
-                  "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
-                type: "array",
-                items: {
-                  type: "string",
-                  string: true,
-                  format: "url",
-                },
-                add: "Add Link",
               },
             },
           },
@@ -1021,17 +988,6 @@ export const schema = {
                 title: "Info And Docs",
                 type: "string",
               },
-              urls: {
-                title:
-                  "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
-                type: "array",
-                items: {
-                  type: "string",
-                  string: true,
-                  format: "url",
-                },
-                add: "Add Link",
-              },
             },
           },
         },
@@ -1294,17 +1250,6 @@ export const schema = {
                 title: "Info And Docs",
                 type: "string",
               },
-              urls: {
-                title:
-                  "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
-                type: "array",
-                items: {
-                  type: "string",
-                  string: true,
-                  format: "url",
-                },
-                add: "Add Link",
-              },
             },
           },
         },
@@ -1536,17 +1481,6 @@ export const schema = {
               info: {
                 title: "Info And Docs",
                 type: "string",
-              },
-              urls: {
-                title:
-                  "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
-                type: "array",
-                items: {
-                  type: "string",
-                  string: true,
-                  format: "url",
-                },
-                add: "Add Link",
               },
             },
           },
@@ -1794,17 +1728,6 @@ export const schema = {
               info: {
                 title: "Info And Docs",
                 type: "string",
-              },
-              urls: {
-                title:
-                  "Links to further information (websites, reports etc). Please provide links, URL's, website links etc to documents about your initiative. We are interested in websites, reports, images, media articles etc.",
-                type: "array",
-                items: {
-                  type: "string",
-                  string: true,
-                  format: "url",
-                },
-                add: "Add Link",
               },
             },
           },

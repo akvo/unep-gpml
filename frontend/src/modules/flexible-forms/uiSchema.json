@@ -125,20 +125,6 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        },
-        "urls": {
-          "ui:options": {
-            "showToolbar": true,
-            "orderable": false
-          },
-          "items": {
-            "ui:placeholder": "Please copy and paste one link per box provided.",
-            "ui:widget": "uri",
-            "ui:addOnBefore": "https://",
-            "ui:options": {
-              "label": false
-            }
-          }
         }
       }
     },
@@ -287,20 +273,6 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        },
-        "urls": {
-          "ui:options": {
-            "showToolbar": true,
-            "orderable": false
-          },
-          "items": {
-            "ui:placeholder": "Please copy and paste one link per box provided.",
-            "ui:widget": "uri",
-            "ui:addOnBefore": "https://",
-            "ui:options": {
-              "label": false
-            }
-          }
         }
       }
     },
@@ -524,20 +496,6 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        },
-        "urls": {
-          "ui:options": {
-            "showToolbar": true,
-            "orderable": false
-          },
-          "items": {
-            "ui:placeholder": "Please copy and paste one link per box provided.",
-            "ui:widget": "uri",
-            "ui:addOnBefore": "https://",
-            "ui:options": {
-              "label": false
-            }
-          }
         }
       }
     },
@@ -779,20 +737,6 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        },
-        "urls": {
-          "ui:options": {
-            "showToolbar": true,
-            "orderable": false
-          },
-          "items": {
-            "ui:placeholder": "Please copy and paste one link per box provided.",
-            "ui:widget": "uri",
-            "ui:addOnBefore": "https://",
-            "ui:options": {
-              "label": false
-            }
-          }
         }
       }
     },
@@ -1023,20 +967,6 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        },
-        "urls": {
-          "ui:options": {
-            "showToolbar": true,
-            "orderable": false
-          },
-          "items": {
-            "ui:placeholder": "Please copy and paste one link per box provided.",
-            "ui:widget": "uri",
-            "ui:addOnBefore": "https://",
-            "ui:options": {
-              "label": false
-            }
-          }
         }
       }
     },
@@ -1241,20 +1171,6 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        },
-        "urls": {
-          "ui:options": {
-            "showToolbar": true,
-            "orderable": false
-          },
-          "items": {
-            "ui:placeholder": "Please copy and paste one link per box provided.",
-            "ui:widget": "uri",
-            "ui:addOnBefore": "https://",
-            "ui:options": {
-              "label": false
-            }
-          }
         }
       }
     },
@@ -1469,20 +1385,6 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        },
-        "urls": {
-          "ui:options": {
-            "showToolbar": true,
-            "orderable": false
-          },
-          "items": {
-            "ui:placeholder": "Please copy and paste one link per box provided.",
-            "ui:widget": "uri",
-            "ui:addOnBefore": "https://",
-            "ui:options": {
-              "label": false
-            }
-          }
         }
       }
     },
