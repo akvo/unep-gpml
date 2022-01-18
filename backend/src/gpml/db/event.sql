@@ -128,3 +128,24 @@ values(:image) returning id;
 
 -- :name dummy
 select count(*) from event where title like 'Dummy%';
+
+-- :name entity-connections-by-id
+-- :doc Get entity connections by id
+select oe.id, oe.association as role, org.name as entity
+ from organisation_event oe
+ left join organisation org
+ on oe.organisation = org.id
+ where oe.event = :id
+
+-- :name stakeholder-connections-by-id
+-- :doc Get stakeholder connections by id
+select se.id, se.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder
+  from stakeholder_event se
+  left join stakeholder s
+  on se.stakeholder = s.id
+  where se.event = :id
+
+-- :name all-events
+-- :doc List all events
+select id, title
+  from event;

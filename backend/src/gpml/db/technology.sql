@@ -135,3 +135,24 @@ update technology set
 --~ (when (contains? params :created_by) "created_by = :created_by,")
 modified = now()
 where id = :id;
+
+-- :name entity-connections-by-id
+-- :doc Get entity connections by id
+select ot.id, ot.association as role, org.name as entity
+ from organisation_technology ot
+ left join organisation org
+ on ot.organisation = org.id
+ where ot.technology = :id
+
+-- :name stakeholder-connections-by-id
+-- :doc Get stakeholder connections by id
+select st.id, st.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder
+  from stakeholder_technology st
+  left join stakeholder s
+  on st.stakeholder = s.id
+  where st.technology = :id
+
+-- :name all-technologies
+-- :doc List all technologies
+select id, title
+  from technology;

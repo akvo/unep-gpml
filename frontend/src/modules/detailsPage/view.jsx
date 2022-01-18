@@ -1,8 +1,14 @@
-import React from "react";
+import React, {
+  Fragment,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+} from "react";
 import "./styles.scss";
 import { Row, Col, Tooltip, Typography, Card, List, Avatar } from "antd";
 const { Title } = Typography;
-
+import { UIStore } from "../../store";
 import StickyBox from "react-sticky-box";
 import ActionGreen from "../../images/action-green.png";
 import LeftImage from "../../images/sea-dark.jpg";
@@ -21,7 +27,23 @@ import {
   EditOutlined,
   UserOutlined,
   ArrowRightOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import { withRouter, useHistory } from "react-router-dom";
+import uniqBy from "lodash/uniqBy";
+import isEmpty from "lodash/isEmpty";
+import { redirectError } from "../error/error-util";
+import api from "../../utils/api";
+import imageNotFound from "../../images/image-not-found.png";
+import {
+  typeOfActionKeys,
+  detailMaps,
+  infoMaps,
+  descriptionMaps,
+} from "./mapping";
+import moment from "moment";
 
 const CardComponent = ({ title, style, children }) => {
   return (
@@ -33,7 +55,7 @@ const CardComponent = ({ title, style, children }) => {
   );
 };
 
-const TabComponent = ({ title, style, children }) => {
+const TabComponent = ({ title, style, children, getRef }) => {
   return (
     <div className="tab-wrapper" style={style}>
       <ul>
@@ -44,7 +66,7 @@ const TabComponent = ({ title, style, children }) => {
           <a href="#">Documents And Info</a>
         </li>
         <li>
-          <a href="#">Related Content</a>
+          <a onClick={() => getRef.current.scrollIntoView()}>Related Content</a>
         </li>
         <li>
           <a href="#">Reviews</a>
@@ -54,12 +76,14 @@ const TabComponent = ({ title, style, children }) => {
   );
 };
 
-const SharePanel = () => {
+const SharePanel = ({ data }) => {
   return (
     <div className="sticky-panel">
       <div className="sticky-panel-item">
-        <DownloadOutlined />
-        <h2>View</h2>
+        <a href={data?.url} target="_blank">
+          <DownloadOutlined />
+          <h2>View</h2>
+        </a>
       </div>
       <div className="sticky-panel-item">
         <HeartOutlined />
@@ -81,7 +105,321 @@ const SharePanel = () => {
   );
 };
 
-function DetailsView() {
+const renderBannerSection = (data) => {
+  if (
+    data.type === "Technical Resource" ||
+    data.type === "Policy" ||
+    data.type === "Action Plan"
+  ) {
+    return (
+      <>
+        <Col xs={6} lg={6}>
+          <div className="short-image">
+            <img
+              src={data.image ? data.image : imageNotFound}
+              className="resource-image"
+            />
+          </div>
+        </Col>
+        <Col xs={18} lg={18} style={{ display: "flex" }}>
+          <div className="banner-wrapper">
+            <CardComponent
+              title="Description"
+              style={{
+                height: "100%",
+                boxShadow: "none",
+                borderRadius: "none",
+              }}
+            >
+              <p>{data.summary}</p>
+            </CardComponent>
+            <SharePanel data={data} />
+          </div>
+        </Col>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Col xs={6} lg={24}>
+          <div className="banner-wrapper">
+            <div className="long-image">
+              <img
+                src={data.image ? data.image : imageNotFound}
+                className="resource-image"
+              />
+            </div>
+            <SharePanel data={data} />
+          </div>
+        </Col>
+      </>
+    );
+  }
+};
+
+const renderDetails = (
+  { countries, languages, regionOptions, meaOptions, transnationalOptions },
+  params,
+  data
+) => {
+  const details = detailMaps[params.type];
+  if (!details) {
+    return;
+  }
+  return (
+    <>
+      {renderItemValues(
+        {
+          countries,
+          languages,
+          regionOptions,
+          meaOptions,
+          transnationalOptions,
+        },
+        params,
+        details,
+        data
+      )}
+    </>
+  );
+};
+
+const renderItemValues = (
+  { countries, languages, regionOptions, meaOptions, transnationalOptions },
+  params,
+  mapping,
+  data
+) => {
+  let noData = false;
+  mapping &&
+    mapping.every((it) => {
+      const { key } = it;
+      if (data[key]) {
+        noData = false;
+        return false;
+      }
+      if (!data[key]) {
+        noData = true;
+        return true;
+      }
+      return true;
+    });
+
+  if (noData) {
+    return "There is no data to display";
+  }
+
+  if (countries.length === 0) {
+    return "";
+  }
+
+  return (
+    mapping &&
+    mapping.map((item, index) => {
+      const {
+        key,
+        name,
+        value,
+        type,
+        customValue,
+        arrayCustomValue,
+        currencyObject,
+      } = item;
+      // Set to true to display all country list for global
+      const showAllCountryList = false;
+      const displayEntry =
+        data[key] ||
+        data[key] === false ||
+        data[key] === true ||
+        data[key] === 0 ||
+        key === null;
+      // Calculate custom currency value to display
+      const [currency, amount, remarks] =
+        arrayCustomValue?.map((it) => data[it]) || [];
+
+      const customCurrency =
+        value === "custom" &&
+        type === "currency" &&
+        (remarks
+          ? currency
+            ? `${currency} ${amount} - ${remarks}`
+            : `${amount} - ${remarks}`
+          : currency
+          ? `${currency} ${amount}`
+          : `${amount}`);
+
+      return (
+        <Fragment key={`${params.type}-${name}`}>
+          {displayEntry && (
+            <div key={name + index} className="record-table-wrapper">
+              <div className="title">{name}</div>
+              <div className="value">
+                {key === null && type === "static" && value}
+                {value === key &&
+                  type === "name" &&
+                  data[key] === false &&
+                  "No"}
+                {value === key &&
+                  type === "name" &&
+                  data[key] === true &&
+                  "Yes"}
+                {value === key &&
+                  (type === "name" ||
+                    type === "string" ||
+                    type === "number" ||
+                    type === "object") &&
+                  (data[value].name || data[value])}
+                {value === key &&
+                  type === "array" &&
+                  data[key].map((x) => x.name).join(", ")}
+                {value === key &&
+                  type === "country" &&
+                  countries.find((it) => it.id === data[key]).name}
+                {value === "custom" &&
+                  type === "object" &&
+                  data[key][customValue]}
+                {value === "custom" &&
+                  type === "startEndDate" &&
+                  moment(data[arrayCustomValue[0]]).format("DD MMM YYYY") +
+                    " - " +
+                    moment(data[arrayCustomValue[1]]).format("DD MMM YYYY")}
+                {data[key] &&
+                  value === "isoCode" &&
+                  type === "array" &&
+                  uniqBy(data[key], "isoCode")
+                    .map((x, i) => languages[x.isoCode].name)
+                    .join(", ")}
+                {key === "tags" &&
+                  data[key] &&
+                  value === "join" &&
+                  type === "array" &&
+                  data[key].map((tag) => Object.values(tag)[0]).join(", ")}
+                {key !== "tags" &&
+                  params.type === "project" &&
+                  data[key] &&
+                  value === "join" &&
+                  type === "array" &&
+                  data[key].map((x) => x.name).join(", ")}
+                {key !== "tags" &&
+                  params.type !== "project" &&
+                  data[key] &&
+                  value === "join" &&
+                  type === "array" &&
+                  data[key].join(", ")}
+                {params.type === "project" &&
+                  value === "custom" &&
+                  type === "array" &&
+                  data[key][customValue] &&
+                  data[key][customValue].map((x) => x.name).join(", ")}
+                {params.type !== "project" &&
+                  value === "custom" &&
+                  type === "array" &&
+                  data[key][customValue] &&
+                  data[key][customValue].join(", ")}
+
+                {customCurrency}
+              </div>
+            </div>
+          )}
+        </Fragment>
+      );
+    })
+  );
+};
+
+const renderCountries = (data, countries, transnationalOptions) => {
+  let dataCountries = null;
+  const newArray = [...new Set([...countries, ...transnationalOptions])];
+  dataCountries = data["geoCoverageValues"]
+    ?.map((x) => {
+      return newArray.find((it) => it.id === x)?.name;
+    })
+    .join(", ");
+  return dataCountries;
+};
+
+const DetailsView = ({
+  match: { params },
+  setStakeholderSignupModalVisible,
+  setFilterMenu,
+}) => {
+  const relatedContent = useRef(null);
+
+  const {
+    profile,
+    countries,
+    languages,
+    regionOptions,
+    meaOptions,
+    transnationalOptions,
+  } = UIStore.useState((s) => ({
+    profile: s.profile,
+    countries: s.countries,
+    languages: s.languages,
+    regionOptions: s.regionOptions,
+    meaOptions: s.meaOptions,
+    transnationalOptions: s.transnationalOptions,
+  }));
+  const history = useHistory();
+  const [data, setData] = useState(null);
+  const [relations, setRelations] = useState([]);
+  const { isAuthenticated, loginWithPopup } = useAuth0();
+  const [warningVisible, setWarningVisible] = useState(false);
+
+  const isConnectStakeholders = ["organisation", "stakeholder"].includes(
+    params?.type
+  );
+  const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
+
+  const isLoaded = useCallback(
+    () =>
+      Boolean(
+        !isEmpty(countries) &&
+          (isConnectStakeholders ? !isEmpty(profile) : true)
+      ),
+    [countries, profile, isConnectStakeholders]
+  );
+
+  useEffect(() => {
+    isLoaded() &&
+      !data &&
+      params?.type &&
+      params?.id &&
+      api
+        .get(`/detail/${params.type}/${params.id}`)
+        .then((d) => {
+          setData(d.data);
+        })
+        .catch((err) => {
+          console.error(err);
+          redirectError(err, history);
+        });
+    if (isLoaded() && profile.reviewStatus === "APPROVED") {
+      setTimeout(() => {
+        api.get("/favorite").then((resp) => {
+          setRelations(resp.data);
+        });
+      }, 100);
+    }
+    UIStore.update((e) => {
+      e.disclaimer = null;
+    });
+    window.scrollTo({ top: 0 });
+  }, [params, profile, isLoaded, data, history]);
+
+  console.log(data);
+
+  if (!data) {
+    return (
+      <div className="details-view">
+        <div className="loading">
+          <LoadingOutlined spin />
+          <i>Loading...</i>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div id="details">
       <div className="section-header">
@@ -91,10 +429,8 @@ function DetailsView() {
               <div className="header-wrapper">
                 <img src={ActionGreen} />
                 <div>
-                  <Title level={2}>ACTION PLAN</Title>
-                  <Title level={4}>
-                    Regional Action Plan for Marine Litter in the Baltic Sea{" "}
-                  </Title>
+                  <Title level={2}>{data?.type}</Title>
+                  <Title level={4}>{data?.title}</Title>
                 </div>
               </div>
             </Col>
@@ -104,43 +440,7 @@ function DetailsView() {
 
       <div className="section-banner">
         <div className="ui container">
-          <Row gutter={[16, 16]}>
-            <Col xs={6} lg={6}>
-              <img src={LeftImage} className="resource-image" />
-            </Col>
-            <Col xs={18} lg={18} style={{ display: "flex" }}>
-              <div className="banner-wrapper">
-                <CardComponent
-                  title="Description"
-                  style={{
-                    height: "100%",
-                    boxShadow: "none",
-                    borderRadius: "none",
-                  }}
-                >
-                  <p>
-                    A healthy Baltic Sea environment with diverse biological
-                    components functioning in balance, resulting in a good
-                    ecological status and supporting a wide range of sustainable
-                    economic and social activities. Initially adopted in 2015,
-                    the plan has already led to significant progress on marine
-                    litter, including the development of a knowledge base and
-                    various HELCOM commitments to address marine litter in the
-                    Baltic Sea. In 2020, the revision of the HELCOM Regional
-                    Action Plan on Marine Litter (RAP ML) has started. As a
-                    first step, a thorough evaluation of the implementation of
-                    each of the regional and voluntary national actions has been
-                    initiated. The revision of the Action Plan is to be
-                    conducted simultaneously and in connection with the revision
-                    of the Baltic Sea Action Plan (BSAP), the RAP ML being one
-                    of the key supplementary documents of the updated BSAP. Both
-                    updates are to conclude in 2021.
-                  </p>
-                </CardComponent>
-                <SharePanel />
-              </div>
-            </Col>
-          </Row>
+          <Row gutter={[16, 16]}>{renderBannerSection(data, LeftImage)}</Row>
         </div>
       </div>
 
@@ -165,20 +465,25 @@ function DetailsView() {
                   marginBottom: "30px",
                 }}
               >
-                <div className="list">
+                <div className="list geo-coverage">
                   <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={LocationImage} />}
-                        title={
-                          "Latvia, Poland, Germany, Sweden, Lithuania, Denmark, Russian Federation, Finland, Estonia"
-                        }
-                      />
-                    </List.Item>
+                    {data?.geoCoverageValues &&
+                      data?.geoCoverageValues.length > 0 && (
+                        <List.Item>
+                          <List.Item.Meta
+                            avatar={<Avatar src={LocationImage} />}
+                            title={renderCountries(
+                              data,
+                              countries,
+                              transnationalOptions
+                            )}
+                          />
+                        </List.Item>
+                      )}
                     <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar src={TransnationalImage} />}
-                        title={"Transnational"}
+                        title={data?.geoCoverageType}
                       />
                     </List.Item>
                     <List.Item>
@@ -197,14 +502,14 @@ function DetailsView() {
                   marginBottom: "30px",
                 }}
               >
-                <div className="list">
+                <div className="list tag-list">
                   <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar src={TagsImage} />}
-                        title={
-                          "Action plan, macroplastics, microplastics, best practice, manual, mechanism, mechanism, state of knowledge, litter monitoring, prevention"
-                        }
+                        title={data?.tags
+                          .map((tag) => Object.values(tag)[0])
+                          .join(", ")}
                       />
                     </List.Item>
                   </List>
@@ -218,32 +523,31 @@ function DetailsView() {
               >
                 <div className="list connection-list">
                   <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={EntityImage} />}
-                        title={"Helcom"}
-                        description={"Entity"}
-                      />{" "}
-                      <div className="see-more-button">See More</div>
-                    </List.Item>
+                    {data?.entityConnections.length > 0 &&
+                      data?.entityConnections.map((item) => (
+                        <List.Item>
+                          <List.Item.Meta
+                            avatar={<Avatar src={EntityImage} />}
+                            title={item.entity}
+                            description={"Entity"}
+                          />{" "}
+                          <div className="see-more-button">See More</div>
+                        </List.Item>
+                      ))}
                   </List>
                   <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={AvatarImage} />}
-                        title={"Bertrand Lacaze"}
-                        description={"Owner -  Helcom"}
-                      />
-                    </List.Item>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={AvatarImage} />}
-                        title={"Bertrand Lacaze"}
-                        description={"Owner -  Helcom"}
-                      />
-                    </List.Item>
+                    {data?.stakeholderConnections.length > 0 &&
+                      data?.stakeholderConnections.map((item) => (
+                        <List.Item>
+                          <List.Item.Meta
+                            avatar={<Avatar src={AvatarImage} />}
+                            title={item.stakeholder}
+                            description={item.role}
+                          />
+                        </List.Item>
+                      ))}
                   </List>
-                  <List itemLayout="horizontal">
+                  {/* <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
                         avatar={
@@ -254,7 +558,7 @@ function DetailsView() {
                         title={"Scroll to see more"}
                       />
                     </List.Item>
-                  </List>
+                  </List> */}
                 </div>
               </CardComponent>
             </Col>
@@ -263,7 +567,22 @@ function DetailsView() {
                 style={{
                   marginBottom: "30px",
                 }}
+                getRef={relatedContent}
               />
+              {}
+              {data.type !== "Technical Resource" &&
+                data.type !== "Policy" &&
+                data.type !== "Action Plan" && (
+                  <CardComponent
+                    title="Description"
+                    style={{
+                      marginBottom: "30px",
+                    }}
+                  >
+                    <p className="summary">{data?.summary}</p>
+                  </CardComponent>
+                )}
+
               <CardComponent
                 title="Record"
                 style={{
@@ -271,30 +590,20 @@ function DetailsView() {
                 }}
               >
                 <div className="record-table">
-                  <div className="record-table-wrapper">
-                    <div>Amount Invested</div>
-                    <div>USD 000</div>
-                  </div>
-                  <div className="record-table-wrapper">
-                    <div>In Kind Contributions</div>
-                    <div>USD 000</div>
-                  </div>
-                  <div className="record-table-wrapper">
-                    <div>Funding Type</div>
-                    <div>Not applicable</div>
-                  </div>
-                  <div className="record-table-wrapper">
-                    <div>Funding Name</div>
-                    <div>
-                      Financial Rules of the Helsinki Commission can be found
-                      here:
-                      https://helcom.fi/about-us/internal-rules/internal-rules/
-                    </div>
-                  </div>
-                  <div className="record-table-wrapper">
-                    <div>Focus Area:</div>
-                    <div>The Baltic Sea</div>
-                  </div>
+                  {countries &&
+                    renderDetails(
+                      {
+                        countries,
+                        languages,
+                        regionOptions,
+                        meaOptions,
+                        transnationalOptions,
+                      },
+                      params,
+                      data,
+                      profile,
+                      countries
+                    )}
                 </div>
               </CardComponent>
               <CardComponent
@@ -326,7 +635,11 @@ function DetailsView() {
                   marginBottom: "30px",
                 }}
               >
-                <Row gutter={16} className="related-content">
+                <Row
+                  gutter={16}
+                  className="related-content"
+                  ref={relatedContent}
+                >
                   <Col span={12}>
                     <Card title="INITIATIVE " bordered={false}>
                       <h4>
@@ -493,6 +806,6 @@ function DetailsView() {
       </div>
     </div>
   );
-}
+};
 
 export default DetailsView;
