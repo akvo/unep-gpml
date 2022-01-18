@@ -87,11 +87,11 @@ const TabComponent = ({
   );
 };
 
-const SharePanel = ({ data }) => {
+const SharePanel = ({ data, canDelete }) => {
   return (
     <div className="sticky-panel">
       <div className="sticky-panel-item">
-        <a href={data?.url} target="_blank">
+        <a href={`https://${data?.url}`} target="_blank">
           <DownloadOutlined />
           <h2>View</h2>
         </a>
@@ -104,10 +104,12 @@ const SharePanel = ({ data }) => {
         <ShareAltOutlined />
         <h2>Share</h2>
       </div>
-      <div className="sticky-panel-item">
-        <DeleteOutlined />
-        <h2>Delete</h2>
-      </div>
+      {canDelete() && (
+        <div className="sticky-panel-item">
+          <DeleteOutlined />
+          <h2>Delete</h2>
+        </div>
+      )}
       <div className="sticky-panel-item">
         <EditOutlined />
         <h2>Update</h2>
@@ -116,7 +118,12 @@ const SharePanel = ({ data }) => {
   );
 };
 
-const renderBannerSection = (data) => {
+const renderBannerSection = (data, LeftImage, profile, isAuthenticated) => {
+  const canDelete = () =>
+    isAuthenticated &&
+    profile.reviewStatus === "APPROVED" &&
+    profile.role === "ADMIN";
+
   if (
     data.type === "Technical Resource" ||
     data.type === "Policy" ||
@@ -144,7 +151,7 @@ const renderBannerSection = (data) => {
             >
               <p>{data.summary}</p>
             </CardComponent>
-            <SharePanel data={data} />
+            <SharePanel data={data} canDelete={canDelete} />
           </div>
         </Col>
       </>
@@ -160,7 +167,7 @@ const renderBannerSection = (data) => {
                 className="resource-image"
               />
             </div>
-            <SharePanel data={data} />
+            <SharePanel data={data} canDelete={canDelete} />
           </div>
         </Col>
       </>
@@ -385,6 +392,9 @@ const DetailsView = ({
   );
   const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
 
+  const allowBookmark =
+    params.type !== "stakeholder" || profile.id !== params.id;
+
   const isLoaded = useCallback(
     () =>
       Boolean(
@@ -454,7 +464,9 @@ const DetailsView = ({
 
       <div className="section-banner">
         <div className="ui container">
-          <Row gutter={[16, 16]}>{renderBannerSection(data, LeftImage)}</Row>
+          <Row gutter={[16, 16]}>
+            {renderBannerSection(data, LeftImage, profile, isAuthenticated)}
+          </Row>
         </div>
       </div>
 
