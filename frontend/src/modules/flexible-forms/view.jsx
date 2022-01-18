@@ -605,13 +605,13 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     >
                       <div className="button-wrapper">
                         <h5>Pick the main content type</h5>
-                        <Button
+                        {/* <Button
                           icon={<img src={ExampleIcon} alt="Example button" />}
                           size="large"
                           onClick={() => setDisplayModal(!displayModal)}
                         >
                           SHOW EXAMPLES
-                        </Button>
+                        </Button> */}
                       </div>
                       <div>
                         <div className={`Modal ${displayModal ? "Show" : ""}`}>

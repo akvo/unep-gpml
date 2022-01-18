@@ -80,7 +80,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
@@ -242,7 +242,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
@@ -479,7 +479,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
@@ -729,7 +729,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
@@ -973,7 +973,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
@@ -1191,7 +1191,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
@@ -1419,7 +1419,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
