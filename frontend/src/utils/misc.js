@@ -1,14 +1,14 @@
 import humps from "humps";
 
-// Icons
-import CapacityBuildingIcon from "../images/knowledge-library/capacity-building.svg";
-import ActionSelectedIcon from "../images/knowledge-library/action-selected.svg";
-import EventFlexibleIcon from "../images/knowledge-library/event-flexible.svg";
-import InitiativeIcon from "../images/knowledge-library/initiative.svg";
-import FinancingIcon from "../images/knowledge-library/financing.svg";
-import PolicyIcon from "../images/knowledge-library/policy.svg";
-import TechnicalIcon from "../images/knowledge-library/technical.svg";
-import TechnologyIcon from "../images/knowledge-library/technology.svg";
+// Impoer Icons as React component since the color of the icons changes when the card is selected
+import { ReactComponent as CapacityBuildingIcon } from "../images/knowledge-library/capacity-building.svg";
+import { ReactComponent as ActionSelectedIcon } from "../images/knowledge-library/action-selected.svg";
+import { ReactComponent as EventFlexibleIcon } from "../images/knowledge-library/event-flexible.svg";
+import { ReactComponent as InitiativeIcon } from "../images/knowledge-library/initiative.svg";
+import { ReactComponent as FinancingIcon } from "../images/knowledge-library/financing.svg";
+import { ReactComponent as PolicyIcon } from "../images/knowledge-library/policy.svg";
+import { ReactComponent as TechnicalIcon } from "../images/knowledge-library/technical.svg";
+import { ReactComponent as TechnologyIcon } from "../images/knowledge-library/technology.svg";
 
 export const tTypes = [
   "project",
@@ -56,28 +56,28 @@ export const topicNames = (topic) => {
 
 export const topicIcons = (topic) => {
   if (topic === "project") {
-    return InitiativeIcon;
+    return <InitiativeIcon width="53" height="53" />;
   }
   if (topic === "actionPlan") {
-    return ActionSelectedIcon;
+    return <ActionSelectedIcon width="53" height="53" />;
   }
   if (topic === "policy") {
-    return PolicyIcon;
+    return <PolicyIcon width="53" height="53" />;
   }
   if (topic === "technicalResource") {
-    return TechnicalIcon;
+    return <TechnicalIcon width="53" height="53" />;
   }
   if (topic === "financingResource") {
-    return FinancingIcon;
+    return <FinancingIcon width="53" height="53" />;
   }
   if (topic === "event") {
-    return EventFlexibleIcon;
+    return <EventFlexibleIcon width="53" height="53" />;
   }
   if (topic === "technology") {
-    return TechnologyIcon;
+    return <TechnologyIcon width="53" height="53" />;
   }
   if (topic === "organisation") {
-    return CapacityBuildingIcon;
+    return <CapacityBuildingIcon width="53" height="53" />;
   }
 };
 

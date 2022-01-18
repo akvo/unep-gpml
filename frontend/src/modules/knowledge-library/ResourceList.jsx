@@ -110,6 +110,7 @@ const ResourceList = ({
           }
         />
       </Col>
+
       <Col span={24} className="resource-list">
         {!isLoaded() || loading ? (
           <h2 className="loading">

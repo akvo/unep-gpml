@@ -160,7 +160,7 @@ const FilterDrawer = ({
                       })}
                     >
                       <Space direction="vertical" align="center">
-                        <Image src={topicIcons(type)} />
+                        {topicIcons(type)}
                         <div className="topic-text">{topicNames(type)}</div>
                         <div className="topic-count">{count}</div>
                       </Space>

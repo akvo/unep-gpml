@@ -235,8 +235,10 @@
     top: 10px;
     position: absolute;
     z-index: 999;
+    display: flex;
 
     button {
+      width: 35px;
       margin-left: 10px;
     }
   }
