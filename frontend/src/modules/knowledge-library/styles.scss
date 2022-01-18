@@ -258,6 +258,9 @@
       }
 
       .date-picker-container {
+        input {
+          font-style: italic;
+        }
         .ant-picker-suffix {
           background-image: url("../../images/knowledge-library/chevron-down-grey.svg");
           background-position-x: 100%;
@@ -266,6 +269,17 @@
           span {
             opacity: 0;
           }
+        }
+      }
+
+      .ant-select-selection-item-remove {
+        display: none;
+      }
+
+      .ant-select-selection-overflow {
+        padding-left: calc(44px - 9px);
+        .ant-select-selection-item {
+          background-color: transparent;
         }
       }
 
@@ -303,6 +317,12 @@
 
       .multiple-filter-title {
         margin-bottom: 0;
+      }
+      .multiselection-filter {
+        .ant-select-selection-item-content {
+          font-style: italic;
+          overflow: visible;
+        }
       }
 
       .resource-type {
