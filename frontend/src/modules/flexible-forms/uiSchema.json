@@ -310,13 +310,22 @@
     },
     "S5": {
       "classNames": "list-group",
-      "publishYear": {
-        "ui:widget": "date",
-        "ui:showSearch": true,
-        "ui:span": 12,
-        "ui:options": {
-          "mode": "year",
-          "disableDate": "future"
+      "dateOne": {
+        "firstPublicationDate": {
+          "ui:placeholder": "YYYY-MM-DD",
+          "ui:widget": "date",
+          "ui:span": 12,
+          "ui:options": {
+            "disableDate": "future"
+          }
+        },
+        "latestAmendmentDate": {
+          "ui:placeholder": "YYYY-MM-DD",
+          "ui:widget": "date",
+          "ui:span": 12,
+          "ui:options": {
+            "disableDate": "future"
+          }
         }
       },
       "date": {

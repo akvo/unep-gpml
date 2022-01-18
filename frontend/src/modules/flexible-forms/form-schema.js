@@ -491,9 +491,22 @@ export const schema = {
         },
         required: [],
         properties: {
-          publishYear: {
-            title: "Publication Year",
-            type: "string",
+          dateOne: {
+            type: "object",
+            title: "",
+            required: [],
+            properties: {
+              firstPublicationDate: {
+                title: "First Publication Date",
+                type: "string",
+                format: "date",
+              },
+              latestAmendmentDate: {
+                title: "Last Amendment Date",
+                type: "string",
+                format: "date",
+              },
+            },
           },
           date: {
             type: "object",
