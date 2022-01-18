@@ -41,6 +41,8 @@
       display: flex;
       background: #fff;
       border-radius: 10px;
+      width: 100%;
+      justify-content: space-between;
       .ant-card-head {
         padding: 0 40px !important;
       }
