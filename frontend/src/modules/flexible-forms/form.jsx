@@ -131,6 +131,17 @@ const FlexibleForm = withRouter(
           data.validFrom = data?.validFrom;
           data.validTo = "Ongoing";
         }
+
+        if (data.hasOwnProperty("firstPublicationDate")) {
+          data.firstPublicationDate = data.firstPublicationDate;
+        }
+
+        if (data.hasOwnProperty("latestAmendmentDate")) {
+          data.latestAmendmentDate = data.latestAmendmentDate;
+        }
+      } else {
+        delete data.firstPublicationDate;
+        delete data.latestAmendmentDate;
       }
 
       delete data.orgName;
@@ -183,6 +194,7 @@ const FlexibleForm = withRouter(
         data.infoDocs = data.info;
         delete data.info;
       }
+
       if (status === "add" && !params?.id) {
         api
           .post("/resource", data)
