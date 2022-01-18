@@ -56,7 +56,6 @@ export const schema = {
             required: [
               "geoCoverageType",
               "geoCoverageValueTransnational",
-              "geoCoverageCountries",
               "geoCoverageValueNational",
               "geoCoverageValueSubnational",
               "geoCoverageValueSubnationalCity",
@@ -305,7 +304,6 @@ export const schema = {
             required: [
               "geoCoverageType",
               "geoCoverageValueTransnational",
-              "geoCoverageCountries",
               "geoCoverageValueNational",
               "geoCoverageValueSubnational",
               "geoCoverageValueSubnationalCity",
@@ -565,7 +563,6 @@ export const schema = {
             required: [
               "geoCoverageType",
               "geoCoverageValueTransnational",
-              "geoCoverageCountries",
               "geoCoverageValueNational",
               "geoCoverageValueSubnational",
               "geoCoverageValueSubnationalCity",
@@ -856,7 +853,6 @@ export const schema = {
             required: [
               "geoCoverageType",
               "geoCoverageValueTransnational",
-              "geoCoverageCountries",
               "geoCoverageValueNational",
               "geoCoverageValueSubnational",
               "geoCoverageValueSubnationalCity",
@@ -1135,7 +1131,6 @@ export const schema = {
             required: [
               "geoCoverageType",
               "geoCoverageValueTransnational",
-              "geoCoverageCountries",
               "geoCoverageValueNational",
               "geoCoverageValueSubnational",
               "geoCoverageValueSubnationalCity",
@@ -1379,7 +1374,6 @@ export const schema = {
             required: [
               "geoCoverageType",
               "geoCoverageValueTransnational",
-              "geoCoverageCountries",
               "geoCoverageValueNational",
               "geoCoverageValueSubnational",
               "geoCoverageValueSubnationalCity",
@@ -1643,7 +1637,6 @@ export const schema = {
             required: [
               "geoCoverageType",
               "geoCoverageValueTransnational",
-              "geoCoverageCountries",
               "geoCoverageValueNational",
               "geoCoverageValueSubnational",
               "geoCoverageValueSubnationalCity",

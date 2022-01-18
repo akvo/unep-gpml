@@ -591,7 +591,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                         Make sure to browse around and leave a review under the
                         resources you enjoy the most!
                       </p>
-                      <p>To get started sign up or log in now.</p>
                     </div>
                   </Row>
                 ) : getTabStepIndex().tabIndex === 1 ? (
