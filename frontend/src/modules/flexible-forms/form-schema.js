@@ -139,11 +139,6 @@ export const schema = {
             required: [],
             properties: {
               image: {
-                title: "Image",
-                type: "string",
-                format: "data-url",
-              },
-              banner: {
                 title: "Banner",
                 type: "string",
                 format: "data-url",
