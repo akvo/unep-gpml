@@ -62,7 +62,7 @@
               :remarks remarks
               :created_by created_by
               :url url
-              :info-docs info_docs
+              :info_docs info_docs
               :sub_content_type sub_content_type}
         resource-id (:id (db.resource/new-resource conn data))]
     (when (not-empty owners)
