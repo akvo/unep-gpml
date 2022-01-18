@@ -588,6 +588,11 @@
           "ui:placeholder": "Choose the implementing MEA",
           "ui:widget": "select",
           "ui:showSearch": true
+        },
+        "topics": {
+          "ui:placeholder": "Choose topics",
+          "ui:widget": "select",
+          "ui:showSearch": true
         }
       }
     }

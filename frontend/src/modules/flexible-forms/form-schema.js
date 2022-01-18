@@ -803,6 +803,18 @@ export const schema = {
                 title: "Implementing MEA",
                 enum: [],
               },
+              topics: {
+                title: "Topics",
+                enum: [
+                  "Trade and Investment",
+                  "Chemicals and waste",
+                  "Biological diversity",
+                  "Marine and Freshwater",
+                  "Climate and Atmosphere",
+                  "Land and Agriculture",
+                  "Environmental Governance",
+                ],
+              },
             },
           },
         },
@@ -1039,7 +1051,7 @@ export const schema = {
         required: [],
         properties: {
           publishYear: {
-            title: "Year Founded",
+            title: "Year",
             type: "string",
           },
           value: {
