@@ -201,6 +201,14 @@
           border-radius: 5px;
           background-color: #edf2f7;
         }
+        .ant-checkbox-inner::after {
+          border: 2px solid #255b87;
+          border-top: 0;
+          border-left: 0;
+          width: 10px;
+          height: 15px;
+        }
+
         .ant-checkbox + span {
           font-size: 16px;
         }
