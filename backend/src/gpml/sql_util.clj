@@ -68,12 +68,11 @@
 
               :else value))))))
 
-
 (defn generate-filter-topic-snippet [params]
   (str/join
    " "
    (list
-    "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz, (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM v_topic t"
+    "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz, (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM cte_topic t"
     (when (and (:favorites params) (:user-id params) (:resource-types params))
       "JOIN v_stakeholder_association a ON a.stakeholder = :user-id AND a.id = (t.json->>'id')::int AND (a.topic = t.topic OR (a.topic = 'resource' AND t.topic IN (:v*:resource-types)))")
     (when (seq (:tag params))
@@ -85,7 +84,22 @@
     (when (seq (:geo-coverage params)) " AND t.geo_coverage IN (:v*:geo-coverage) ")
     (when (seq (:transnational params)) " AND t.json->>'geo_coverage_type'='transnational' AND t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:transnational)")
     ;; NOTE: Empty strings in the tags column cause problems with using json_array_elements
-     (when (seq (:tag params)) " AND t.json->>'tags' <> ''"))))
+    (when (seq (:tag params)) " AND t.json->>'tags' <> ''"))))
+
+(defn generate-get-topics [params]
+  (if (:count-only? params)
+    "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic"
+    (str/join
+     " "
+     (list
+      "SELECT * FROM cte_results"
+      (when (some? (:topic params))
+        "WHERE topic = ANY(ARRAY[:v*:topic]::VARCHAR[])")
+      "ORDER BY
+       (COALESCE(json->>'start_date', json->>'created'))::timestamptz DESC,
+       (json->>'id')::int DESC"
+      (format "LIMIT %s" (or (and (contains? params :limit) (:limit params)) 50))
+      (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))))))
 
 (comment
   (generate-jsonb {:q3 1 :q4 "300" :q5 nil :created_by "John" :version 1})
