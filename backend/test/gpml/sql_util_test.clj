@@ -7,14 +7,14 @@
   (testing "Testing filter-topic snippet with no params"
     (let [snippet (str/trim (util/generate-filter-topic-snippet nil))]
       (is (str/starts-with? snippet "SELECT DISTINCT ON"))
-      (is (str/includes? snippet "WHERE 1=1"))
+      (is (str/includes? snippet "WHERE t.json->>'review_status'='APPROVED'"))
       (is (not (str/includes? snippet "JOIN")))))
 
   (testing "Testing filter-topic snippet with favorites"
     (let [params {:favorites true :user-id 1 :resource-types []}
           snippet (str/trim (util/generate-filter-topic-snippet params))]
       (is (str/starts-with? snippet "SELECT DISTINCT ON"))
-      (is (str/includes? snippet "WHERE 1=1"))
+      (is (str/includes? snippet "WHERE t.json->>'review_status'='APPROVED'"))
       (is (str/includes? snippet "JOIN v_stakeholder_association"))))
 
   (testing "Testing filter-topic snippet with tags"
