@@ -173,7 +173,7 @@
     (testing "Landing counts match browse results"
       (let [counts (db.landing/map-counts db)
             afg 4 ;; country_id
-            browse (db.browse/filter-topic db {:topic #{"financing_resource"}
+            browse (db.browse/get-topics db {:topic #{"financing_resource"}
                                                :geo-coverage [afg]})]
         (is (= (->> counts
                     (filter #(= afg (:id %)))
