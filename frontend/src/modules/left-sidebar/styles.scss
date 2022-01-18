@@ -1,0 +1,343 @@
+$bg-dark-primary: #005b70;
+$bg-course-n-training: #1f213d;
+$bg-tools-n-resources: #6d3c3c;
+$bg-education-n-outreach: #2b4937;
+$bg-case-studies: #89662c;
+$bg-events: #5f4373;
+
+.ant-page-header-heading-title > span.text-green {
+  font-size: 24px;
+}
+.ui-header {
+  padding: 10px 10px 10px 50px;
+  background-color: $bg-dark-primary;
+  border-bottom: 1px solid #fff;
+}
+.sidebar {
+  background-color: $bg-dark-primary;
+  .item-sidebar {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    cursor: pointer;
+    padding: 10px 0;
+    p {
+      margin-top: 10px;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 12px;
+      color: #fff;
+    }
+    &.active {
+      background: rgba(5, 240, 129, 0.2);
+      border-left: 3px solid #07e982;
+    }
+    .item-menu {
+      margin: auto;
+      text-align: center;
+      &.disabled {
+        opacity: 0.5;
+        cursor: no-drop;
+      }
+    }
+  }
+}
+.pm_event_banner {
+  .banner_info {
+    overflow: auto;
+    width: 100%;
+    background-color: #00abf1;
+    padding-left: 5%;
+    position: relative;
+    .banner_img {
+      margin: 0;
+      padding: 0;
+      float: right;
+      width: 50%;
+      height: 400px;
+      overflow: hidden;
+    }
+  }
+  .event_details {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 45%;
+    color: #fff;
+    h1 {
+      color: #fff;
+    }
+    .title {
+      text-transform: uppercase;
+    }
+  }
+}
+.photo_credit {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 4;
+  background: rgba(51, 51, 51, 0.5);
+  padding: 5px;
+  color: #fff;
+  font-size: 0.7em;
+  font-style: italic;
+}
+.capacity-section {
+  min-height: 350px;
+  margin-bottom: 16px;
+  .section-content {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .card {
+    opacity: 0.9;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    color: #fff;
+    min-height: 200px;
+    .title {
+      font-family: Open Sans;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 25px;
+      text-transform: capitalize;
+    }
+    .ant-btn-link {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin: 10px 0;
+      font-weight: bold;
+      font-style: normal;
+      font-size: 14px !important;
+      color: #fff !important;
+    }
+    .left {
+      width: 30%;
+      &.events {
+        width: 50%;
+      }
+    }
+    .right {
+      width: 70%;
+      &.events {
+        width: 50%;
+      }
+    }
+  }
+  .ant-btn-ghost {
+    border: 2px solid #fff !important;
+    box-sizing: border-box;
+    border-radius: 60px;
+    color: #fff !important;
+  }
+}
+.ant-card-grid {
+  box-shadow: none !important;
+}
+.bg-color {
+  &.course-and-trainings {
+    background-color: $bg-course-n-training;
+  }
+  &.tools-and-resources {
+    background-color: $bg-tools-n-resources;
+  }
+  &.education-and-outreach {
+    background-color: $bg-education-n-outreach;
+  }
+  &.case-studies {
+    background-color: $bg-case-studies;
+  }
+  &.events {
+    background-color: $bg-events;
+  }
+}
+
+.bg-image {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  &.course-and-trainings {
+    background-image: url("../../images/capacity-building/course-n-training.png");
+  }
+  &.tools-and-resources {
+    background-image: url("../../images/capacity-building/tools-and-resources.png");
+  }
+  &.education-and-outreach {
+    background-image: url("../../images/capacity-building/education-and-outreach.png");
+  }
+  &.case-studies {
+    background-image: url("../../images/capacity-building/case-studies.png");
+  }
+  &.events {
+    background-image: url("../../images/capacity-building/events.png");
+  }
+}
+
+.ant-carousel {
+  .slick-dots {
+    li {
+      width: 17.84px !important;
+      button {
+        width: 17.84px !important;
+        height: 17.84px !important;
+        border-radius: 50% !important;
+        border: 3px solid #255b87;
+        box-sizing: border-box;
+        background-color: rgba($color: #fff, $alpha: 0);
+      }
+      &.slick-active {
+        button {
+          background-color: #255b87 !important;
+        }
+      }
+    }
+  }
+  .slick-dots-bottom {
+    bottom: -25px !important;
+  }
+}
+.carousel-control {
+  img {
+    position: absolute;
+    top: 45%;
+    z-index: 5;
+    width: 43px;
+    cursor: pointer;
+    &.carousel-next {
+      right: 0;
+    }
+    &.carousel-prev {
+      left: 0;
+    }
+  }
+}
+.text-right {
+  text-align: right;
+}
+/* Mobile */
+@media only screen and (max-width: 474px) {
+  html {
+    font-size: 13px;
+  }
+  .sidebar {
+    .item-sidebar {
+      font-size: 10px;
+    }
+  }
+  .pm_event_banner {
+    .event_details {
+      h1 {
+        font-size: 20px;
+        line-height: 30px;
+      }
+    }
+  }
+  .capacity-section {
+    .card {
+      .title {
+        font-size: 14px;
+      }
+      .left {
+        width: 40%;
+        &.events {
+          width: 100%;
+        }
+      }
+      .right {
+        width: 60%;
+        &.events {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .carousel-control {
+    .carousel-next {
+      width: 23px;
+    }
+    .carousel-prev {
+      width: 23px;
+    }
+  }
+}
+
+@media only screen and (min-width: 475px) and (max-width: 599px) {
+  html {
+    font-size: 14px;
+  }
+  .sidebar {
+    .item-sidebar {
+      font-size: 10px;
+    }
+  }
+  .pm_event_banner {
+    .event_details {
+      h1 {
+        font-size: 20px;
+        line-height: 30px;
+      }
+    }
+  }
+  .capacity-section {
+    .card {
+      .title {
+        font-size: 14px;
+      }
+      .left {
+        width: 40%;
+        &.events {
+          width: 100%;
+        }
+      }
+      .right {
+        width: 60%;
+        &.events {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  html {
+    font-size: 14px;
+  }
+  .sidebar {
+    .item-sidebar {
+      font-size: 12px;
+    }
+  }
+  .pm_event_banner {
+    .event_details {
+      h1 {
+        font-size: 24px;
+        line-height: 28px;
+      }
+    }
+  }
+  .capacity-section {
+    .card {
+      .title {
+        font-size: 14px;
+      }
+      .left {
+        width: 35%;
+        &.events {
+          width: 100%;
+        }
+      }
+      .right {
+        width: 65%;
+        &.events {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

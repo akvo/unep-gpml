@@ -1,14 +1,16 @@
 (ns gpml.handler.resource
   (:require [clojure.java.jdbc :as jdbc]
             [gpml.auth :as auth]
+            [gpml.db.activity :as db.activity]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
+            [gpml.handler.auth :as h.auth]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
-            [gpml.handler.auth :as h.auth]
+            [gpml.util :as util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -105,7 +107,13 @@
       (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
             resource-id (create-resource conn (assoc body-params
                                                      :created_by (:id user)
-                                                     :mailjet-config mailjet-config))]
+                                                     :mailjet-config mailjet-config))
+            activity {:id (util/uuid)
+                      :type "create_resource"
+                      :owner_id (:id user)
+                      :metadata {:resource_id resource-id
+                                 :resource_type (:resource_type body-params)}}]
+        (db.activity/create-activity conn activity)
         (resp/created (:referrer req) {:message "New resource created" :id resource-id})))))
 
 (defn or-and [resource_type validator]
@@ -152,6 +160,7 @@
           [:url {:optional true} string?]
           [:info_docs {:optional true} string?]
           [:capacity_building {:optional true} boolean?]
+          [:is_member {:optional true} boolean?]
           [:sub_content_type {:optional true} string?]
           [:entity_connections {:optional true}
            [:vector {:optional true}

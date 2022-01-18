@@ -375,7 +375,24 @@
                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                      [:topic-id int?]]
                                                               :body #ig/ref :gpml.handler.detail/put-params}
-                                                 :handler #ig/ref :gpml.handler.detail/put}}]]]]
+                                                 :handler #ig/ref :gpml.handler.detail/put}}]]
+                                        ["/list"
+                                         ["/{topic-type}"
+                                          {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required]
+                                                 :summary "List all resources from a given topic"
+                                                 :swagger {:tags ["resource list"]}
+                                                 :parameters {:path [:map
+                                                                     [:topic-type #ig/ref :gpml.handler.detail/topics]]}
+                                                 :handler #ig/ref :gpml.handler.list/get}}]]
+                                        ["/activity"
+                                         ["/recent"
+                                          {:get {:summary "Get the most recent activities"
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required]
+                                                 :swagger {:tags ["recent activities"] :security [{:id_token []}]}
+                                                 :responses {200 {:body #ig/ref :gpml.handler.activity/get-response}}
+                                                 :handler #ig/ref :gpml.handler.activity/get-recent}}]]]]
                               :logger #ig/ref :duct.logger/timbre}
 
   ;; Consts
@@ -497,6 +514,11 @@
                                :app-user-admin #duct/env "APP_USER_ADMIN"}
   :gpml.handler.detail/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.detail/put-params {}
+
+  :gpml.handler.list/get {:db #ig/ref :duct.database/sql}
+
+  :gpml.handler.activity/get-recent {:db #ig/ref :duct.database/sql}
+  :gpml.handler.activity/get-response {}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}

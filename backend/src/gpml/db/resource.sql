@@ -146,3 +146,42 @@ select * from resource_image where id = :id
 -- :doc Insert new resource image
 insert into resource_image (image)
 values(:image) returning id;
+
+-- :name entity-connections-by-id
+-- :doc Get entity connections by id
+select orgrsc.id, orgrsc.association as role, org.name as entity
+ from organisation_resource orgrsc
+ left join organisation org
+ on orgrsc.organisation = org.id
+ where orgrsc.resource = :id
+
+-- :name stakeholder-connections-by-id
+-- :doc Get stakeholder connections by id
+select sr.id, sr.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder
+  from stakeholder_resource sr
+  left join stakeholder s
+  on sr.stakeholder = s.id
+  where sr.resource = :id
+
+-- :name all-resources
+-- :doc List all resources
+select id, title
+  from resource;
+
+-- :name all-technical-resources
+-- :doc List all technical resources
+select id, title
+  from resource
+  where type = 'Technical Resource';
+
+-- :name all-financing-resources
+-- :doc List all financing resources
+select id, title
+  from resource
+  where type = 'Financing Resource';
+
+-- :name all-action-plans
+-- :doc List all action plans
+select id, title
+  from resource
+  where type = 'Action Plan';

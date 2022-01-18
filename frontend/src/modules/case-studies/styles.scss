@@ -1,0 +1,187 @@
+$green-primary: #4dffa5;
+.ant-btn-link {
+  &.green-border {
+    border: 2px solid $green-primary;
+    color: $green-primary !important;
+    width: 154px;
+    height: 41px;
+    line-height: 35px;
+  }
+}
+.case-studies {
+  h1.ant-typography {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 48px;
+    line-height: 71px;
+    text-transform: capitalize;
+    color: #fff !important;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+  }
+  .title {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 25px;
+    text-transform: capitalize;
+    color: $green-primary;
+  }
+  .p-4 {
+    padding: 4%;
+  }
+  .content-text {
+    .ant-typography {
+      font-family: Open Sans;
+      font-style: normal;
+      font-weight: normal;
+      text-align: justify;
+      text-transform: capitalize;
+      color: #fff !important;
+    }
+  }
+  /**
+  * Tag component
+  **/
+  .tags {
+    list-style: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+  .tags li {
+    float: left;
+  }
+  .tag-item {
+    background: #3176ae;
+    border-radius: 23px 5px 5px 23px;
+    color: #fff;
+    display: inline-block;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 20px 0 23px;
+    position: relative;
+    margin: 0 10px 10px 0;
+    text-decoration: none;
+    &::before {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+      content: "";
+      height: 6px;
+      left: 10px;
+      position: absolute;
+      width: 6px;
+      top: 10px;
+    }
+    &:hover {
+      background-color: crimson;
+      color: white;
+    }
+  }
+  /**
+  * / Tag component
+  **/
+
+  .avatars {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    .avatar {
+      position: relative;
+      overflow: hidden;
+      width: 60px;
+      height: 60px;
+      &:not(:last-child) {
+        margin-left: -30px;
+      }
+      &.green-border {
+        color: $green-primary;
+        border: 2px solid $green-primary;
+        border-radius: 50%;
+        margin-left: 30px;
+        text-align: center;
+        font-weight: bold;
+        line-height: 60px;
+      }
+      &.ant-avatar-image {
+        &:hover {
+          margin-left: 0px !important;
+          transition: all 0.3s;
+        }
+        img {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+#case-study {
+  .ant-select {
+    width: 100%;
+    .ant-select-selector {
+      background: #fff;
+      box-shadow: 0px 10px 10px rgba(46, 213, 115, 0.15);
+      border-radius: 30px !important;
+    }
+  }
+  .ant-select-arrow {
+    top: 11px !important;
+    right: 24px !important;
+  }
+  .ant-btn {
+    &.btn-download {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      border-color: transparent !important;
+      color: #fff;
+      width: 190px;
+      height: 50px;
+      &:hover {
+        color: #40a9ff;
+        border-color: #40a9ff !important;
+      }
+    }
+  }
+}
+.ml-1 {
+  margin-left: 1em;
+}
+
+@media screen and (min-width: 1920px) {
+  //For Projectors or Higher Resolution Screens (Full HD)
+  #case-study {
+    .ui-container {
+      max-width: 85%;
+      margin: 0 auto;
+    }
+    .ant-layout-content {
+      background: #18162f;
+    }
+  }
+}
+@media screen and (min-width: 2560px) {
+  // For 2K, Quad HD, QHD Displays
+  #case-study {
+    .ui-container {
+      max-width: 65%;
+      margin: 0 auto;
+    }
+    .ant-layout-content {
+      background: #18162f;
+    }
+  }
+}
+@media screen and (min-width: 3840px) {
+  //For 4K Displays (Ultra HD)
+  #case-study {
+    .ui-container {
+      max-width: 55%;
+      margin: 0 auto;
+    }
+    .ant-layout-content {
+      background: #18162f;
+    }
+  }
+}
