@@ -102,23 +102,23 @@
         (merge db-filter {:topic filtered-topics})))))
 
 (defn browse-response [query db approved? admin]
-  (let [modified-query (->> query
-                            (get-db-filter)
-                            (merge {:approved approved?
-                                    :admin admin})
-                            (modify-db-filter-topics))
-        modified-query (if (:geo-coverage modified-query)
-                         (let [transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-query))})
+  (let [modified-filters (->> query
+                              (get-db-filter)
+                              (merge {:approved approved?
+                                      :admin admin})
+                              (modify-db-filter-topics))
+        modified-filters (if (:geo-coverage modified-filters)
+                         (let [transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-filters))})
                                                   (map (comp str :id))
                                                   set)]
-                           (assoc modified-query :transnational transnational))
-                         modified-query)
-        results (->> modified-query
-                     (db.browse/filter-topic db)
+                           (assoc modified-filters :transnational transnational))
+                         modified-filters)
+        results (->> modified-filters
+                     (db.browse/get-topics db)
                      (map (fn [{:keys [json topic]}]
                             (assoc json :type topic))))
-        counts (->> modified-query
-                    (db.browse/topic-counts db)
+        counts (->> (assoc modified-filters :count-only? true)
+                    (db.browse/get-topics db)
                     (filter #(or approved?
                                  (not (contains? approved-user-topics (:topic %))))))]
     {:results results :counts counts}))
