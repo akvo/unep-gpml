@@ -103,6 +103,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   }, [props]);
 
   useEffect(() => {
+    const search = mainContentType.find((element) => element.code === mainType)
+      .childs;
+    setSubContentType(search);
+  }, [mainContentType, mainType]);
+
+  useEffect(() => {
     UIStore.update((e) => {
       e.highlight = highlight;
     });

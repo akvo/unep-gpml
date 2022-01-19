@@ -131,15 +131,78 @@
     "S5": {
       "classNames": "list-group",
       "S5_G1": {
-        "publishYear": {
-          "ui:widget": "date",
-          "ui:showSearch": true,
-          "ui:span": 12,
+        "S5_G1_4": {
+          "ui:widget": "checkboxes",
           "ui:options": {
-            "mode": "year",
-            "disableDate": "future"
+            "inline": true
           }
-        }
+        },
+        "S5_G1_4.1.1": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G1_4.1.2": {},
+        "S5_G1_4.2.1": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G1_4.2.2": {},
+        "S5_G1_4.3.1": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G1_4.3.2": {},
+        "S5_G1_4.4.1": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G1_4.4.2": {},
+        "S5_G1_4.4.3": {
+          "ui:placeholder": "Please, indicate the name of the programme/protocol (e.g. OSPAR, CSIRO, NOAA, Beach watch, EU-MSFD, Ocean Conservancy...etc.) and if different programmes/protocols were used to monitor near ocean surfaces, water column, seafloor, shoreline, Biota, air monitoring.",
+          "ui:widget": "textarea"
+        },
+        "S5_G1_4.4.4": {
+          "ui:placeholder": "If the monitoring data is available on request, please provide information on how to access the data.",
+          "ui:widget": "textarea"
+        },
+        "S5_G1_4.4.5": {
+          "ui:options": {
+            "showToolbar": true,
+            "orderable": false
+          },
+          "items": {
+            "ui:placeholder": "Please copy and paste one link per box provided.",
+            "ui:widget": "uri",
+            "ui:addOnBefore": "https://",
+            "ui:options": {
+              "label": false
+            }
+          }
+        },
+        "ui:order": [
+          "S5_G1_2",
+          "S5_G1_3",
+          "S5_G1_4",
+          "S5_G1_4.1.1",
+          "S5_G1_4.1.2",
+          "S5_G1_4.2.1",
+          "S5_G1_4.2.2",
+          "S5_G1_4.3.1",
+          "S5_G1_4.3.2",
+          "S5_G1_4.4.1",
+          "S5_G1_4.4.2",
+          "S5_G1_4.4.3",
+          "S5_G1_4.4.4",
+          "S5_G1_4.4.5"
+        ]
       }
     }
   },

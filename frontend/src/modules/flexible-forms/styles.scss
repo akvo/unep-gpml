@@ -532,6 +532,15 @@
   .ant-picker {
     background: #edf2f7;
   }
+  .ant-form-item {
+    .ant-checkbox-wrapper {
+      display: flex;
+      align-items: center;
+    }
+    .ant-checkbox-group {
+      margin-top: 10px;
+    }
+  }
 }
 .ant-popover {
   width: 300px;
