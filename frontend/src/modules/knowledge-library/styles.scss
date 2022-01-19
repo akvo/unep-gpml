@@ -193,7 +193,8 @@
         background: $blue05;
       }
 
-      .my-favorites {
+      .favorites-checkbox {
+        margin-bottom: 21px;
         .ant-checkbox-inner {
           width: 26px;
           height: 26px;
@@ -201,17 +202,23 @@
           border-radius: 5px;
           background-color: #edf2f7;
         }
+
+        .ant-checkbox-checked .ant-checkbox-inner {
+          background-color: #1890ff;
+        }
+
         .ant-checkbox-inner::after {
-          border: 2px solid #255b87;
-          border-top: 0;
-          border-left: 0;
-          width: 10px;
-          height: 15px;
+          left: 35%;
         }
 
         .ant-checkbox + span {
           font-size: 16px;
         }
+      }
+
+      .collection-selector .ant-select-selector {
+        background-image: url("../../images/knowledge-library/collection-icon.svg"),
+          url("../../images/knowledge-library/chevron-down-grey.svg");
       }
 
       .ant-drawer-content {
@@ -236,6 +243,7 @@
         width: 100%;
       }
 
+      .ant-select-selection-placeholder,
       .date-picker-container .ant-picker ::placeholder,
       .country-filter-tab .ant-select-selection-placeholder,
       .multiselection-filter .ant-select-selection-placeholder {
@@ -268,6 +276,9 @@
       .date-picker-container {
         input {
           font-style: italic;
+        }
+        .ant-row {
+          align-items: flex-end;
         }
         .ant-picker-suffix {
           background-image: url("../../images/knowledge-library/chevron-down-grey.svg");
@@ -323,9 +334,15 @@
         margin-bottom: 16px;
       }
 
+      .multiselection-filter .ant-space-item,
+      .date-picker-container .ant-space-item {
+        align-self: center;
+      }
+
       .multiple-filter-title {
         margin-bottom: 0;
       }
+
       .multiselection-filter {
         .ant-select-selection-item-content {
           font-style: italic;
@@ -356,9 +373,11 @@
       .clear-selection {
         flex-direction: row-reverse;
         align-items: center;
+        align-self: baseline;
         color: $blue04;
         border: 1px solid $blue04;
         border-radius: 20px;
+        margin-bottom: 8px;
         .anticon-close {
           color: $blue04;
           font-weight: 700;
@@ -389,12 +408,25 @@
               }
             }
 
+            .policy .cls-2,
+            .technology .cls-4 {
+              stroke-width: 2px;
+            }
+
             .policy .cls-3,
             .initiative .cls-3 {
               fill: none;
             }
 
             .policy {
+              .cls-2 {
+                fill: currentColor;
+              }
+              .cls-3 {
+                fill: none;
+                stroke: currentColor;
+              }
+
               .cls-4 {
                 fill: white;
               }
@@ -409,7 +441,10 @@
             .action-plan {
               .cls-2 {
                 fill: currentColor;
-                stroke-width: 0px;
+              }
+              .cls-1,
+              .cls-2 {
+                stroke-width: 0;
               }
             }
           }

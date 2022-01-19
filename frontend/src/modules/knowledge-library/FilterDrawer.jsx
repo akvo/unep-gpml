@@ -203,7 +203,7 @@ const FilterDrawer = ({
             <Col span={24}>
               <Space align="middle">
                 <Checkbox
-                  className="my-favorites"
+                  className="favorites-checkbox"
                   checked={query?.favorites?.indexOf("true") > -1}
                   onChange={({ target: { checked } }) =>
                     updateQuery("favorites", checked)
@@ -213,6 +213,7 @@ const FilterDrawer = ({
                 </Checkbox>
               </Space>
               <Select
+                className="collection-selector"
                 disabled={
                   !isEmpty(query?.favorites)
                     ? query.favorites[0] === "true"
@@ -246,6 +247,7 @@ const FilterDrawer = ({
               <div className="filter-title">Location</div>
               {!isEmpty(query?.country) ? (
                 <Tag
+                className="clear-selection"
                   closable
                   onClose={() => {
                     updateQuery("country", []);
@@ -258,6 +260,7 @@ const FilterDrawer = ({
               )}
               {!isEmpty(query?.transnational) ? (
                 <Tag
+                className="clear-selection"
                   closable
                   onClose={() => {
                     updateQuery("transnational", []);
@@ -379,7 +382,7 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
           {/* Date Filter */}
-          <Col span={24}>
+          <Col span={24} className="date-picker-container">
             <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
               {/* Start date */}
               <DatePickerFilter
@@ -426,7 +429,11 @@ const MultipleSelectFilter = ({
       <Space align="middle">
         <div className="filter-title multiple-filter-title">{title}</div>
         {!isEmpty(query?.[flag]) ? (
-          <Tag closable onClose={() => updateQuery(flag, [])}>
+          <Tag
+            className="clear-selection"
+            closable
+            onClose={() => updateQuery(flag, [])}
+          >
             Clear Selection
           </Tag>
         ) : (
@@ -468,11 +475,15 @@ const DatePickerFilter = ({
   startDate = null,
 }) => {
   return (
-    <Col span={span} className="date-picker-container">
+    <Col span={span}>
       <Space align="middle">
         <div className="filter-title multiple-filter-title">{title}</div>
         {!isEmpty(query?.[flag]) ? (
-          <Tag closable onClose={() => updateQuery(flag, [])}>
+          <Tag
+            className="clear-selection"
+            closable
+            onClose={() => updateQuery(flag, [])}
+          >
             Clear Selection
           </Tag>
         ) : (
