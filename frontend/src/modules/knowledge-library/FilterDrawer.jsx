@@ -7,7 +7,6 @@ import {
   Checkbox,
   Tag,
   Card,
-  Image,
   Select,
   DatePicker,
 } from "antd";

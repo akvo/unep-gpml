@@ -10,9 +10,12 @@ import {
   Tooltip,
   Pagination,
 } from "antd";
-import { UserOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  ArrowRightOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { LoadingOutlined } from "@ant-design/icons";
 
 import "./styles.scss";
 import { UIStore } from "../../store";
@@ -68,6 +71,8 @@ const ResourceList = ({
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
   );
+
+  const allTopicCount = countData.reduce((acc, topic) => acc + topic.count, 0);
 
   return (
     <Row>
@@ -132,6 +137,12 @@ const ResourceList = ({
               onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
             />
           )}
+          <div className="result-number">
+            {totalItems > pageSize + filters?.offset
+              ? pageSize + filters?.offset
+              : totalItems}{" "}
+            of {allTopicCount || 0} result{allTopicCount > 1 ? "s" : ""}
+          </div>
         </div>
       </Col>
     </Row>
