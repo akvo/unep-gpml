@@ -246,7 +246,7 @@ const FilterDrawer = ({
               <div className="filter-title">Location</div>
               {!isEmpty(query?.country) ? (
                 <Tag
-                className="clear-selection"
+                  className="clear-selection"
                   closable
                   onClose={() => {
                     updateQuery("country", []);
@@ -259,7 +259,7 @@ const FilterDrawer = ({
               )}
               {!isEmpty(query?.transnational) ? (
                 <Tag
-                className="clear-selection"
+                  className="clear-selection"
                   closable
                   onClose={() => {
                     updateQuery("transnational", []);
