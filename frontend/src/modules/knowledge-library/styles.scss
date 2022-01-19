@@ -408,9 +408,9 @@
               }
             }
 
-            .policy .cls-2,
+            .policy .cls-1,
             .technology .cls-4 {
-              stroke-width: 2px;
+              stroke-width: 0;
             }
 
             .policy .cls-3,
@@ -421,6 +421,7 @@
             .policy {
               .cls-2 {
                 fill: currentColor;
+                stroke-width: 2px;
               }
               .cls-3 {
                 fill: none;
@@ -429,6 +430,7 @@
 
               .cls-4 {
                 fill: white;
+                stroke-width: 4px;
               }
             }
 
