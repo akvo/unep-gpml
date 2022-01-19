@@ -2,14 +2,24 @@
 
 #map-landing {
   position: relative;
+  height: 100%;
+
+  .landing-container.map-container > div {
+    height: 100% !important;
+  }
 
   .landing-container.map-container {
+    height: 100%;
     position: relative;
-    padding-top: 40px;
+    padding-top: 0;
     padding-bottom: 40px;
     background-color: #eaf6fd !important;
     border-bottom: none !important;
     z-index: 1;
+
+    svg {
+      height: 100% !important;
+    }
 
     h2.loading {
       color: #036799;
