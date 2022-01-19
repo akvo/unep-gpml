@@ -187,6 +187,106 @@
             }
           }
         },
+        "S5_G2_5": {
+          "ui:widget": "select",
+          "ui:placeholder": "Select",
+          "ui:allowClear": true
+        },
+        "S5_G2_6": {},
+        "S5_G2_8": {
+          "ui:widget": "select",
+          "ui:placeholder": "Select",
+          "ui:allowClear": true
+        },
+        "S5_G2_9": {},
+        "S5_G2_10": {
+          "ui:widget": "select",
+          "ui:placeholder": "Select",
+          "ui:allowClear": true
+        },
+        "S5_G2_11": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_12": {
+          "ui:widget": "textarea"
+        },
+        "S5_G2_13": {
+          "ui:widget": "textarea"
+        },
+        "S5_G3_14": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G3_15": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G3_26": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G3_27": {},
+        "S5_G3_28": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G3_29": {},
+        "S5_G3_30": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G3_31": {},
+        "S5_G4_33": {
+          "ui:placeholder": "Please estimate e.g., 20 retailers, 150 schools"
+        },
+        "S5_G4_34": {
+          "ui:placeholder": "Please estimate the total number of individuals engaged"
+        },
+        "S5_G5_35": {
+          "ui:widget": "select",
+          "ui:placeholder": "Select",
+          "ui:allowClear": true
+        },
+        "S5_G5_35.1": {},
+        "S5_G5_36": {
+          "ui:placeholder": "Please give us an estimate if you are unsure and only submit numbers, e.g., 5,000 should be entered as 5000."
+        },
+        "S5_G5_36.1": {
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "S5_G5_37": {
+          "ui:placeholder": "Please tell us the equivalent amount and only submit numbers, e.g., 5,000 should be entered as 5000."
+        },
+        "S5_G5_37.1": {
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "S5_G6_38": {
+          "ui:widget": "select",
+          "ui:placeholder": "Select",
+          "ui:allowClear": true
+        },
+        "S5_G6_39": {},
+        "S5_G7_41": {
+          "ui:widget": "select",
+          "ui:placeholder": "Select",
+          "ui:allowClear": true
+        },
+        "S5_G7_42": {},
         "ui:order": [
           "S5_G1_2",
           "S5_G1_3",
@@ -201,7 +301,35 @@
           "S5_G1_4.4.2",
           "S5_G1_4.4.3",
           "S5_G1_4.4.4",
-          "S5_G1_4.4.5"
+          "S5_G1_4.4.5",
+          "S5_G2_5",
+          "S5_G2_6",
+          "S5_G2_8",
+          "S5_G2_9",
+          "S5_G2_10",
+          "S5_G2_11",
+          "S5_G2_12",
+          "S5_G2_13",
+          "S5_G3_14",
+          "S5_G3_15",
+          "S5_G3_26",
+          "S5_G3_27",
+          "S5_G3_28",
+          "S5_G3_29",
+          "S5_G3_30",
+          "S5_G3_31",
+          "S5_G4_33",
+          "S5_G4_34",
+          "S5_G5_35",
+          "S5_G5_35.1",
+          "S5_G5_36",
+          "S5_G5_36.1",
+          "S5_G5_37",
+          "S5_G5_37.1",
+          "S5_G6_38",
+          "S5_G6_39",
+          "S5_G7_41",
+          "S5_G7_42"
         ]
       }
     }

@@ -82,9 +82,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const [highlight, setHighlight] = useState(false);
   const [capacityBuilding, setCapacityBuilding] = useState(true);
   const [mainType, setMainType] = useState("initiative");
-  const [label, setLabel] = useState("");
+  const [label, setLabel] = useState("Initiative");
   const [subType, setSubType] = useState("");
-  const [manageResource, setManageResource] = useState("");
   const [owners, setOwners] = useState([]);
   const [subContentType, setSubContentType] = useState([]);
   const [disabledBtn, setDisabledBtn] = useState({
