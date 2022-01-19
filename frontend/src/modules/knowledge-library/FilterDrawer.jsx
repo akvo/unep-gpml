@@ -42,6 +42,7 @@ const FilterDrawer = ({
     sectorOptions,
     geoCoverageTypeOptions,
     languages,
+    representativeGroup,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -50,6 +51,7 @@ const FilterDrawer = ({
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     languages: s.languages,
+    representativeGroup: s.representativeGroup,
   }));
   const { isAuthenticated } = useAuth0();
 
@@ -58,6 +60,7 @@ const FilterDrawer = ({
     !isEmpty(countries) &&
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
+    !isEmpty(representativeGroup) &&
     !isEmpty(languages);
 
   const handleChangeResourceType = (flag, type) => {
@@ -111,8 +114,32 @@ const FilterDrawer = ({
     );
   };
 
+  // populate options for tags dropdown
   const tagOpts = isLoaded()
     ? flatten(values(tags))?.map((it) => ({ value: it.id, label: it.tag }))
+    : [];
+
+  // populate options for representative group options
+  const representativeOpts = isLoaded()
+    ? flatten(
+        representativeGroup?.map((x) => {
+          //  if child is an object
+          if (!Array.isArray(x?.childs) && x?.childs) {
+            return tags?.[x?.childs?.tags]?.map((it) => ({
+              value: it.id,
+              label: it.tag,
+            }));
+          }
+          // if child null
+          if (!x?.childs) {
+            return [{ value: x?.name, label: x?.name }];
+          }
+          return x?.childs?.map((x) => ({
+            value: x,
+            label: x,
+          }));
+        })
+      )
     : [];
 
   return (
@@ -127,6 +154,7 @@ const FilterDrawer = ({
         style={{ position: "absolute" }}
         width={500}
         height="100%"
+        autoFocus={false}
       >
         {/* Filter content */}
         <Row type="flex" gutter={[0, 24]}>
@@ -184,12 +212,62 @@ const FilterDrawer = ({
                   My Bookmarks
                 </Checkbox>
               </Space>
+              <Select
+                disabled={
+                  !isEmpty(query?.favorites)
+                    ? query.favorites[0] === "true"
+                      ? false
+                      : true
+                    : true
+                }
+                showSearch
+                allowClear
+                mode="multiple"
+                placeholder="My collections"
+                options={[]}
+                filterOption={(input, option) =>
+                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                value={[]}
+                onChange={(val) => updateQuery("collections", val)}
+                onDeselect={(val) =>
+                  updateQuery(
+                    "collections",
+                    query?.collections?.filter((x) => x != val)
+                  )
+                }
+                virtual={false}
+              />
             </Col>
           )}
           {/* Location */}
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Location</div>
+              {!isEmpty(query?.country) ? (
+                <Tag
+                  closable
+                  onClose={() => {
+                    updateQuery("country", []);
+                  }}
+                >
+                  Clear Country Selection
+                </Tag>
+              ) : (
+                ""
+              )}
+              {!isEmpty(query?.transnational) ? (
+                <Tag
+                  closable
+                  onClose={() => {
+                    updateQuery("transnational", []);
+                  }}
+                >
+                  Clear Multi-Country Selection
+                </Tag>
+              ) : (
+                ""
+              )}
             </Space>
             <div className="country-filter-tab-wrapper">
               <CountryTransnationalFilter
@@ -243,8 +321,12 @@ const FilterDrawer = ({
           {/* Representative group */}
           <MultipleSelectFilter
             title="Representative group"
-            options={[]}
-            value={query?.representativeGroup || []}
+            options={representativeOpts}
+            value={
+              query?.representativeGroup?.map((x) =>
+                Number(x) ? parseInt(x) : x
+              ) || []
+            }
             flag="representativeGroup"
             query={query}
             updateQuery={updateQuery}
@@ -343,6 +425,13 @@ const MultipleSelectFilter = ({
     <Col span={span} className="multiselection-filter">
       <Space align="middle">
         <div className="filter-title multiple-filter-title">{title}</div>
+        {!isEmpty(query?.[flag]) ? (
+          <Tag closable onClose={() => updateQuery(flag, [])}>
+            Clear Selection
+          </Tag>
+        ) : (
+          ""
+        )}
       </Space>
       <div>
         <Select
@@ -382,6 +471,13 @@ const DatePickerFilter = ({
     <Col span={span} className="date-picker-container">
       <Space align="middle">
         <div className="filter-title multiple-filter-title">{title}</div>
+        {!isEmpty(query?.[flag]) ? (
+          <Tag closable onClose={() => updateQuery(flag, [])}>
+            Clear Selection
+          </Tag>
+        ) : (
+          ""
+        )}
       </Space>
       <div>
         <DatePicker
