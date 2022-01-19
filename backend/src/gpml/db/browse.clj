@@ -3,6 +3,7 @@
             [hugsql.core :as hugsql]))
 
 (def ^:const generic-cte-opts
+  "Common set of options for all CTE generation functions."
   {:tables ["event" "technology" "policy" "initiative" "resource" "stakeholder" "organisation"]
    :search-text-fields {"event" ["title" "description" "remarks"]
                         "technology" ["name"]
@@ -11,6 +12,167 @@
                         "resource" ["title" "summary" "remarks"]
                         "stakeholder" ["first_name" "last_name" "about"]
                         "organisation" ["name" "program" "contribution" "expertise"]}})
+
+;;======================= Data queries =================================
+(def ^:const ^:private generic-topic-data-languages-query
+  "LEFT JOIN (
+       SELECT elu.%s,
+              json_agg(json_build_object('url', elu.url, 'iso_code', l.iso_code)) AS languages
+       FROM
+            %s_language_url elu
+            JOIN language l ON elu.language = l.id
+       GROUP BY
+            elu.%s
+   ) lang ON e.id = lang.%s")
+
+(def ^:const ^:private generic-topic-data-tags-query
+  "LEFT JOIN (
+       SELECT
+           et.%s,
+           json_agg(json_build_object(t.id, t.tag)) AS tags
+       FROM
+            %s_tag et
+            JOIN tag t ON et.tag = t.id
+       GROUP BY
+           et.%s
+   ) tag ON e.id = tag.%s")
+
+(def ^:const ^:private initiative-topic-data-tags-query
+  "LEFT JOIN (
+       SELECT
+           i.id,
+           json_agg(tag_text.*) AS tags
+       FROM
+           initiative i
+           JOIN LATERAL jsonb_array_elements(i.q32) tag_elements(value) ON true
+           JOIN LATERAL jsonb_each_text(tag_elements.value) tag_text(key, value) ON true
+       GROUP BY
+           i.id
+   ) tag ON e.id = tag.id")
+
+(def ^:const ^:private generic-topic-data-geo-coverage-values-query
+  "LEFT JOIN (
+       SELECT
+           eg.%s,
+           json_agg(COALESCE(eg.country_group, 0)) FILTER (WHERE (eg.country_group IS NOT NULL)) AS geo_coverage_country_groups,
+           json_agg(COALESCE(eg.country, 0)) FILTER (WHERE (eg.country IS NOT NULL)) AS geo_coverage_countries,
+           json_agg(COALESCE(eg.country, eg.country_group, 0)) AS geo_coverage_values
+       FROM
+           %s_geo_coverage eg
+       GROUP BY
+           eg.%s
+   ) geo ON e.id = geo.%s")
+
+(def ^:const ^:private organisation-topic-data-geo-coverage-values-query
+  "LEFT JOIN (
+       SELECT
+           og.organisation,
+           json_agg(COALESCE(c.iso_code, (cg.name)::bpchar)) AS geo_coverage_values
+       FROM
+            organisation_geo_coverage og
+            LEFT JOIN country c ON og.country = c.id
+            LEFT JOIN country_group cg ON og.country_group = cg.id
+    GROUP BY
+        og.organisation) geo ON e.id = geo.organisation")
+
+(def ^:const ^:private resource-topic-data-organisations-query
+  "LEFT JOIN (
+        SELECT
+            ro.resource,
+            json_agg(json_build_object('id', o.id, 'name', o.name)) AS organisations
+        FROM
+            resource_organisation ro
+            LEFT JOIN organisation o ON ro.organisation = o.id
+    GROUP BY
+        ro.resource
+   ) orgs ON e.id = orgs.resource")
+
+(def ^:const ^:private stakeholder-topic-data-organisation-query
+  "LEFT JOIN organisation o ON e.affiliation = o.id")
+
+(def ^:const ^:private generic-topic-data-select-clause
+  "SELECT
+       e.*,
+       geo.geo_coverage_values,
+       geo.geo_coverage_country_groups,
+       geo.geo_coverage_countries,
+       lang.languages,
+       tag.tags")
+
+(def ^:const ^:private initiative-topic-data-select-clause
+  "SELECT
+       e.id,
+       NULL::text AS uuid,
+       NULL::text AS phase,
+       e.q36 AS funds,
+       e.q37 AS contribution,
+       e.created,
+       e.modified,
+       btrim((e.q2)::text, '\"'::text) AS title,
+       jsonb_object_keys(e.q24) AS geo_coverage_type,
+       btrim((e.q3)::text, '\"'::text) AS summary,
+       e.reviewed_at,
+       e.reviewed_by,
+       e.review_status,
+       e.url AS initiative_url,
+       e.info_docs,
+       e.sub_content_type,
+       btrim((e.q41_1)::text, '\"'::text) AS url,
+       NULL::text AS image,
+       tag.tags,
+       geo.geo_coverage_values,
+       geo.geo_coverage_country_groups,
+       geo.geo_coverage_countries")
+
+(def ^:const ^:private stakeholder-topic-data-select-clause
+  "SELECT
+       e.id,
+       e.picture,
+       e.title,
+       e.first_name,
+       e.last_name,
+       CASE WHEN (e.public_email = TRUE) THEN
+           e.email
+       ELSE
+           ''::text
+       END AS email,
+       e.linked_in,
+       e.twitter,
+       e.url,
+       e.representation,
+       e.about,
+       e.geo_coverage_type,
+       e.created,
+       e.modified,
+       e.reviewed_at,
+       e.role,
+       e.cv,
+       e.reviewed_by,
+       e.review_status,
+       e.public_email,
+       e.country,
+       e.organisation_role,
+       geo.geo_coverage_values,
+       row_to_json(o.*) AS affiliation,
+       tag.tags,
+       geo.geo_coverage_country_groups,
+       geo.geo_coverage_countries")
+
+(def ^:const ^:private organisation-topic-data-select-clause
+  "SELECT
+       e.*,
+       geo.geo_coverage_values")
+
+(def ^:const ^:private resource-topic-data-organisations-field
+  "orgs.organisations")
+
+(def ^:const ^:private generic-topic-data-from-clause
+  "FROM
+      %s e")
+
+(def ^:const ^:private generic-topic-data-order-by-clause
+  "ORDER BY
+       e.created")
 
 ;;======================= Geo Coverage queries =================================
 (def ^:const ^:private initiative-topic-geo-coverage-where-cond
@@ -114,6 +276,52 @@
     ")"]))
 
 ;;======================= Core functions to generate topic CTEs ================
+(defn generate-topic-data-ctes
+  "Generates CTEs SQL statements for query topic data for every content
+  table.
+
+  NOTE: there are a lot of assumptions in this function due to the
+  fact that not all data queries have the same structure.
+
+  TODO: needs revision."
+  [_params opts]
+  (reduce (fn [ctes entity-name]
+            (let [cte-name (str "cte_" entity-name "_data")
+                  lang-query (format-query generic-topic-data-languages-query (repeat 4 entity-name))
+                  tags-query (format-query generic-topic-data-tags-query (repeat 4 entity-name))
+                  geo-coverage-values-query (format-query generic-topic-data-geo-coverage-values-query (repeat 4 entity-name))
+                  select-clause generic-topic-data-select-clause
+                  from-clause generic-topic-data-from-clause
+                  order-by-clause generic-topic-data-order-by-clause
+                  query-statements (case entity-name
+                                     "resource" [select-clause (str ", " resource-topic-data-organisations-field)
+                                                 from-clause lang-query tags-query
+                                                 geo-coverage-values-query resource-topic-data-organisations-query
+                                                 order-by-clause]
+
+                                     "initiative" [initiative-topic-data-select-clause
+                                                   from-clause initiative-topic-data-tags-query
+                                                   geo-coverage-values-query order-by-clause]
+
+                                     "stakeholder" [stakeholder-topic-data-select-clause from-clause
+                                                    tags-query geo-coverage-values-query
+                                                    stakeholder-topic-data-organisation-query
+                                                    order-by-clause]
+
+                                     "organisation" [organisation-topic-data-select-clause
+                                                     from-clause organisation-topic-data-geo-coverage-values-query
+                                                     order-by-clause]
+
+                                     [select-clause from-clause lang-query tags-query
+                                      geo-coverage-values-query order-by-clause])
+                  query (str/join " " query-statements)
+                  ctes (str ctes (generate-cte cte-name query [entity-name]))]
+              (if (= (last (:tables opts)) entity-name)
+                ctes
+                (str ctes ","))))
+          ""
+          (:tables opts)))
+
 (defn generate-topic-geo-coverage-ctes
   "Generates CTEs SQL statements for querying geo coverage information
   for every content table.
