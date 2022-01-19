@@ -14,7 +14,7 @@
 
 ;;======================= Geo Coverage queries =================================
 (def ^:const ^:private initiative-topic-geo-coverage-where-cond
-  "Initiative `WHERE` condition is an special case since the
+  "Initiative `WHERE` condition is a special case since the
   `geo_coverage_type` is within a form answer."
   "e.q24->>'global'::text IS NULL")
 
@@ -89,6 +89,8 @@
   FROM
       cte_%s cte")
 
+;;======================= Utility functions =================================
+;; These functions can probably go to sql_util.clj and util.clj namespaces.
 (defn format-query
   "Formats `query`'s placeholders with `params`."
   [query params]
@@ -111,8 +113,13 @@
         (remove-newlines))
     ")"]))
 
+;;======================= Core functions to generate topic CTEs ================
 (defn generate-topic-geo-coverage-ctes
-  "FIXME: add docstring"
+  "Generates CTEs SQL statements for querying geo coverage information
+  for every content table.
+
+  There is one exception to the generic query that is considered, when
+  the content table is `initiative` the `WHERE` condition changes."
   [_params opts]
   (reduce (fn [ctes entity-name]
             (let [cte-name (str "cte_" entity-name "_geo")
@@ -134,7 +141,15 @@
           (:tables opts)))
 
 (defn generate-tsvector-str
-  "FIXME: add docstring"
+  "Generates SQL statements to concatenate the values of the columns
+  specified in `search-text-fields` vector. It is meant to be used
+  with `tsvector` to generate search strings for full text search.
+
+  There is one exception to the generic query that is considered, when
+  the content table is `initiative` the concatenation SQL statement
+  changes because `initiative` table uses JSONB objects to store part
+  of content (because of forms) and so the treament is slightly
+  different."
   [entity-name search-text-fields]
   (reduce (fn [acc search-text-field]
             (let [query (if (= "initiative" entity-name)
@@ -149,7 +164,14 @@
           search-text-fields))
 
 (defn generate-topic-search-text-ctes
-  "FIXME: add docstring"
+  "Generates CTEs SQL statements for querying searchable text from every
+  content table. Every CTE query requires a collection of fields to
+  build the `search_text`. See `generic-cte-opts` for reference on
+  used fields for every content table.
+
+  There is one exception to the generic query that is considered, when
+  the content table is `organisation` a `WHERE` condition is
+  added. See `organisation-topic-search-text-where-cond`."
   [_params opts]
   (reduce (fn [ctes entity-name]
             (let [cte-name (str "cte_" entity-name "_search_text")
@@ -169,7 +191,15 @@
           (:tables opts)))
 
 (defn generate-topic-ctes
-  "Generate the individual topics CTEs for every content table."
+  "Generates CTEs SQL statements for querying topic information.
+
+  There are two exceptions to the generic query that are
+  considered. First, when the content table is `initiative` the
+  `topic-name` is changed to `project` to not break the API for
+  callers. Second, when the content table is `resource` the
+  `topic-name-query` changes because `resource` table contains three
+  types of resources and we should use their names instead of the
+  table `entity-name`."
   [_params opts]
   (reduce (fn [ctes entity-name]
             (let [cte-name (str "cte_" entity-name)
