@@ -6,6 +6,7 @@ import ConfigIcon from "../../images/knowledge-library/config-icon.svg";
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
 import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
 import DownArrow from "../../images/knowledge-library/chevron-down.svg";
+import AddIcon from "../../images/knowledge-library/add-icon.svg";
 
 import "./styles.scss";
 import { UIStore } from "../../store";
@@ -348,7 +349,12 @@ const KnowledgeLibrary = ({
                     }}
                   />
                 ) : (
-                  <TopicView />
+                  <>
+                    <TopicView />
+                    <Button className="add-button">
+                      <img src={AddIcon} alt="add-icon" />
+                    </Button>
+                  </>
                 )}
               </Col>
             </Row>

@@ -1,6 +1,8 @@
 @import "../../vars.scss";
 
 #knowledge-library {
+  position: relative;
+
   .ant-btn-icon-only {
     width: 100%;
     max-width: 35px;
@@ -728,6 +730,27 @@
         border: none;
         background-color: transparent;
       }
+    }
+  }
+
+  .add-button {
+    width: 100%;
+    height: auto;
+    max-width: 143px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    z-index: 2;
+    left: calc(100% - 143px - 9px);
+    bottom: 6px;
+    padding: 36px;
+    background-color: #10f9b7;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px #000000;
+    img {
+      width: 100%;
+      max-width: 72.21px;
     }
   }
 }
