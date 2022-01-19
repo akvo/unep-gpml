@@ -1,6 +1,7 @@
 -- :name get-topics :? :*
 -- :doc Gets the list of topics. If count-only? parameter is provided, the query will only group and count the topics.
--- :require [gpml.sql-util]
+/* :require [gpml.sql-util]
+            [gpml.db.browse] */
 WITH cte_event_data AS (
     SELECT
         e.id,
@@ -54,41 +55,6 @@ WITH cte_event_data AS (
         eg.event) geo ON ((e.id = geo.event)))
 ORDER BY
     e.created
-),
-cte_event_geo AS (
-    SELECT
-        e.id,
-        COALESCE(cgc.country, egc.country) AS geo_coverage
-FROM ((public.event e
-        LEFT JOIN public.event_geo_coverage egc ON ((e.id = egc.event)))
-        LEFT JOIN public.country_group_country cgc ON ((cgc.country_group = egc.country_group)))
-    WHERE (e.geo_coverage_type <> 'global'::public.geo_coverage_type)
-UNION ALL
-SELECT
-    e.id,
-    0 AS geo_coverage
-FROM
-    public.event e
-    WHERE (e.geo_coverage_type = 'global'::public.geo_coverage_type)
-),
-cte_event_search_text AS (
-    SELECT
-        event.id,
-        to_tsvector('english'::regconfig, ((((COALESCE(event.title, ''::text) || ' '::text) || COALESCE(event.description, ''::text)) || ''::text) || COALESCE(event.remarks, ''::text))) AS search_text
-    FROM
-        public.event
-    ORDER BY
-        event.created
-),
-cte_event AS (
-    SELECT
-        'event'::text AS topic,
-        geo.geo_coverage,
-        st.search_text,
-        row_to_json(e.*) AS json
-    FROM ((cte_event_data e
-        LEFT JOIN cte_event_geo geo ON ((e.id = geo.id)))
-        LEFT JOIN cte_event_search_text st ON ((e.id = st.id)))
 ),
 cte_technology_data AS (
     SELECT
@@ -146,41 +112,6 @@ GROUP BY
     tg.technology) geo ON ((t.id = geo.technology)))
 ORDER BY
     t.created
-),
-cte_technology_geo AS (
-    SELECT
-        t.id,
-        COALESCE(cgc.country, tgc.country) AS geo_coverage
-    FROM ((public.technology t
-        LEFT JOIN public.technology_geo_coverage tgc ON ((t.id = tgc.technology)))
-        LEFT JOIN public.country_group_country cgc ON ((cgc.country_group = tgc.country_group)))
-    WHERE (t.geo_coverage_type <> 'global'::public.geo_coverage_type)
-UNION ALL
-SELECT
-    t.id,
-    0 AS geo_coverage
-FROM
-    public.technology t
-    WHERE (t.geo_coverage_type = 'global'::public.geo_coverage_type)
-),
-cte_technology_search_text AS (
-    SELECT
-        technology.id,
-        to_tsvector('english'::regconfig, COALESCE(technology.name, ''::text)) AS search_text
-    FROM
-        public.technology
-    ORDER BY
-        technology.created
-),
-cte_technology AS (
-    SELECT
-        'technology'::text AS topic,
-        geo.geo_coverage,
-        st.search_text,
-        row_to_json(t.*) AS json
-    FROM ((cte_technology_data t
-        LEFT JOIN cte_technology_geo geo ON ((t.id = geo.id)))
-        LEFT JOIN cte_technology_search_text st ON ((t.id = st.id)))
 ),
 cte_policy_data AS (
     SELECT
@@ -241,41 +172,6 @@ GROUP BY
     pg.policy) geo ON ((p.id = geo.policy)))
 ORDER BY
     p.created
-),
-cte_policy_geo AS (
-    SELECT
-        p.id,
-        COALESCE(cgc.country, pgc.country) AS geo_coverage
-    FROM ((public.policy p
-        LEFT JOIN public.policy_geo_coverage pgc ON ((p.id = pgc.policy)))
-        LEFT JOIN public.country_group_country cgc ON ((cgc.country_group = pgc.country_group)))
-    WHERE (p.geo_coverage_type <> 'global'::public.geo_coverage_type)
-UNION ALL
-SELECT
-    p.id,
-    0 AS geo_coverage
-FROM
-    public.policy p
-    WHERE (p.geo_coverage_type = 'global'::public.geo_coverage_type)
-),
-cte_policy_search_text AS (
-    SELECT
-        policy.id,
-        to_tsvector('english'::regconfig, ((((((COALESCE(policy.title, ''::text) || ' '::text) || COALESCE(policy.original_title, ''::text)) || ''::text) || COALESCE(policy.abstract, ''::text)) || ' '::text) || COALESCE(policy.remarks, ''::text))) AS search_text
-    FROM
-        public.policy
-    ORDER BY
-        policy.created
-),
-cte_policy AS (
-    SELECT
-        'policy'::text AS topic,
-        geo.geo_coverage,
-        st.search_text,
-        row_to_json(p.*) AS json
-    FROM ((cte_policy_data p
-        LEFT JOIN cte_policy_geo geo ON ((p.id = geo.id)))
-        LEFT JOIN cte_policy_search_text st ON ((p.id = st.id)))
 ),
 cte_resource_data AS (
     SELECT
@@ -348,41 +244,6 @@ GROUP BY
 ORDER BY
     r.created
 ),
-cte_resource_geo AS (
-    SELECT
-        r.id,
-        COALESCE(cgc.country, rgc.country) AS geo_coverage
-    FROM ((public.resource r
-        LEFT JOIN public.resource_geo_coverage rgc ON ((r.id = rgc.resource)))
-        LEFT JOIN public.country_group_country cgc ON ((cgc.country_group = rgc.country_group)))
-    WHERE (r.geo_coverage_type <> 'global'::public.geo_coverage_type)
-UNION ALL
-SELECT
-    r.id,
-    0 AS geo_coverage
-FROM
-    public.resource r
-    WHERE (r.geo_coverage_type = 'global'::public.geo_coverage_type)
-),
-cte_resource_search_text AS (
-    SELECT
-        resource.id,
-        to_tsvector('english'::regconfig, ((((COALESCE(resource.title, ''::text) || ' '::text) || COALESCE(resource.summary, ''::text)) || ' '::text) || COALESCE(resource.remarks, ''::text))) AS search_text
-    FROM
-        public.resource
-    ORDER BY
-        resource.created
-),
-cte_resource AS (
-    SELECT
-        replace(lower(r.type), ' '::text, '_'::text) AS topic,
-        geo.geo_coverage,
-        st.search_text,
-        row_to_json(r.*) AS json
-    FROM ((cte_resource_data r
-        LEFT JOIN cte_resource_geo geo ON ((r.id = geo.id)))
-        LEFT JOIN cte_resource_search_text st ON ((r.id = st.id)))
-),
 cte_initiative_data AS (
     SELECT
         i.id,
@@ -421,41 +282,6 @@ cte_initiative_data AS (
         ig.initiative) geo ON ((i.id = geo.initiative)))
 ORDER BY
     i.created
-),
-cte_initiative_geo AS (
-    SELECT
-        i.id,
-        COALESCE(cgc.country, igc.country) AS geo_coverage
-    FROM ((public.initiative i
-        LEFT JOIN public.initiative_geo_coverage igc ON ((i.id = igc.initiative)))
-        LEFT JOIN public.country_group_country cgc ON ((cgc.country_group = igc.country_group)))
-    WHERE ((i.q24 ->> 'global'::text) IS NULL)
-UNION ALL
-SELECT
-    i.id,
-    0 AS geo_coverage
-FROM
-    public.initiative i
-    WHERE ((i.q24 ->> 'global'::text) IS NOT NULL)
-),
-cte_initiative_search_text AS (
-    SELECT
-        i.id,
-        to_tsvector('english'::regconfig, ((COALESCE(btrim((i.q2)::text, '"'::text), ''::text) || ' '::text) || COALESCE(btrim((i.q3)::text, '"'::text), ''::text))) AS search_text
-    FROM
-        public.initiative i
-    ORDER BY
-        i.created
-),
-cte_initiative AS (
-    SELECT
-        'project'::text AS topic,
-        geo.geo_coverage,
-        st.search_text,
-        row_to_json(i.*) AS json
-    FROM ((cte_initiative_data i
-        LEFT JOIN cte_initiative_geo geo ON ((i.id = geo.id)))
-        LEFT JOIN cte_initiative_search_text st ON ((i.id = st.id)))
 ),
 cte_stakeholder_data AS (
     SELECT
@@ -513,41 +339,6 @@ cte_stakeholder_data AS (
 ORDER BY
     s.created
 ),
-cte_stakeholder_geo AS (
-    SELECT
-        s.id,
-        COALESCE(cgc.country, sgc.country) AS geo_coverage
-    FROM ((public.stakeholder s
-        LEFT JOIN public.stakeholder_geo_coverage sgc ON ((s.id = sgc.stakeholder)))
-        LEFT JOIN public.country_group_country cgc ON ((cgc.country_group = sgc.country_group)))
-    WHERE (s.geo_coverage_type <> 'global'::public.geo_coverage_type)
-UNION ALL
-SELECT
-    s.id,
-    0 AS geo_coverage
-FROM
-    public.stakeholder s
-    WHERE (s.geo_coverage_type = 'global'::public.geo_coverage_type)
-),
-cte_stakeholder_search_text AS (
-    SELECT
-        stakeholder.id,
-        to_tsvector('english'::regconfig, ((((COALESCE(stakeholder.first_name, ''::text) || ' '::text) || COALESCE(stakeholder.last_name, ''::text)) || ' '::text) || (COALESCE(stakeholder.about, ''::text) || ' '::text))) AS search_text
-    FROM
-        public.stakeholder
-    ORDER BY
-        stakeholder.created
-),
-cte_stakeholder AS (
-    SELECT
-        'stakeholder'::text AS topic,
-        geo.geo_coverage,
-        st.search_text,
-        row_to_json(s.*) AS json
-    FROM ((cte_stakeholder_data s
-        LEFT JOIN cte_stakeholder_geo geo ON ((s.id = geo.id)))
-        LEFT JOIN cte_stakeholder_search_text st ON ((s.id = st.id)))
-),
 cte_organisation_data AS (
     SELECT
         o.id,
@@ -575,97 +366,14 @@ cte_organisation_data AS (
     GROUP BY
         og.organisation) geo ON ((o.id = geo.organisation)))
 ),
-cte_organisation_geo AS (
-    SELECT
-        o.id,
-        COALESCE(cgc.country, ogc.country) AS geo_coverage
-    FROM ((public.organisation o
-        LEFT JOIN public.organisation_geo_coverage ogc ON ((o.id = ogc.organisation)))
-        LEFT JOIN public.country_group_country cgc ON ((cgc.country_group = ogc.country_group)))
-    WHERE (o.geo_coverage_type <> 'global'::public.geo_coverage_type)
-UNION ALL
-SELECT
-    o.id,
-    0 AS geo_coverage
-FROM
-    public.organisation o
-    WHERE (o.geo_coverage_type = 'global'::public.geo_coverage_type)
-),
-cte_organisation_search_text AS (
-    SELECT
-        organisation.id,
-        to_tsvector('english'::regconfig, ((((((COALESCE(organisation.name, ''::text) || ' '::text) || COALESCE(organisation.program, ''::text)) || ''::text) || COALESCE(organisation.contribution, ''::text)) || ''::text) || COALESCE(organisation.expertise, ''::text))) AS search_text
-    FROM
-        public.organisation
-    WHERE (organisation.review_status = 'APPROVED'::public.review_status)
-),
-cte_organisation AS (
-    SELECT
-        'organisation'::text AS topic,
-        geo.geo_coverage,
-        ot.search_text,
-        row_to_json(o.*) AS json
-    FROM ((cte_organisation_data o
-        LEFT JOIN cte_organisation_geo geo ON ((o.id = geo.id)))
-        LEFT JOIN cte_organisation_search_text ot ON ((o.id = ot.id)))
-),
-cte_topic AS (
-    SELECT
-        cte_event.topic,
-        cte_event.geo_coverage,
-        cte_event.search_text,
-        cte_event.json
-    FROM
-        cte_event
-UNION ALL
-SELECT
-    cte_policy.topic,
-    cte_policy.geo_coverage,
-    cte_policy.search_text,
-    cte_policy.json
-FROM
-    cte_policy
-UNION ALL
-SELECT
-    cte_resource.topic,
-    cte_resource.geo_coverage,
-    cte_resource.search_text,
-    cte_resource.json
-FROM
-    cte_resource
-UNION ALL
-SELECT
-    cte_technology.topic,
-    cte_technology.geo_coverage,
-    cte_technology.search_text,
-    cte_technology.json
-FROM
-    cte_technology
-UNION ALL
-SELECT
-    cte_initiative.topic,
-    cte_initiative.geo_coverage,
-    cte_initiative.search_text,
-    cte_initiative.json
-FROM
-    cte_initiative
-UNION ALL
-SELECT
-    cte_stakeholder.topic,
-    cte_stakeholder.geo_coverage,
-    cte_stakeholder.search_text,
-    cte_stakeholder.json
-FROM
-    cte_stakeholder
-UNION ALL
-SELECT
-    cte_organisation.topic,
-    cte_organisation.geo_coverage,
-    cte_organisation.search_text,
-    cte_organisation.json
-FROM
-    cte_organisation
-),
+--~ (#'gpml.db.browse/generate-topic-geo-coverage-ctes {} gpml.db.browse/generic-cte-opts)
+,
+--~ (#'gpml.db.browse/generate-topic-search-text-ctes {} gpml.db.browse/generic-cte-opts)
+,
+--~ (#'gpml.db.browse/generate-topic-ctes {} gpml.db.browse/generic-cte-opts)
+,
+--~ (#'gpml.db.browse/generate-topic-cte {} gpml.db.browse/generic-cte-opts)
+,
 cte_results AS (
 --~ (#'gpml.sql-util/generate-filter-topic-snippet params)
 )
