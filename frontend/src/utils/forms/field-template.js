@@ -44,6 +44,8 @@ const FieldTemplate = ({
     return <div className="field-hidden">{children}</div>;
   }
 
+  const subTitle = schema?.subTitle;
+
   const renderFieldErrors = () =>
     [...new Set(rawErrors)].map((error) => (
       <div key={`field-${id}-error-${error}`}>{error}</div>
@@ -95,36 +97,39 @@ const FieldTemplate = ({
       {id === "root" ? (
         children
       ) : (
-        <Form.Item
-          colon={colon}
-          // extra={!!rawDescription && description}
-          // hasFeedback={schema.type !== "array" && schema.type !== "object"}
-          help={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
-          htmlFor={id}
-          label={handleCustomLabel()}
-          labelCol={labelCol}
-          // required={required}
-          style={wrapperStyle}
-          validateStatus={
-            (!!rawErrors && required) ||
-            (!!rawErrors && !required) ||
-            (!!rawErrors &&
-              required &&
-              schema.type !== "array" &&
-              schema.type !== "object")
-              ? "error"
-              : highlight &&
+        <>
+          {subTitle && <h4 style={{ marginBottom: 0 }}>{subTitle}</h4>}
+          <Form.Item
+            colon={colon}
+            // extra={!!rawDescription && description}
+            // hasFeedback={schema.type !== "array" && schema.type !== "object"}
+            help={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
+            htmlFor={id}
+            label={handleCustomLabel()}
+            labelCol={labelCol}
+            // required={required}
+            style={wrapperStyle}
+            validateStatus={
+              (!!rawErrors && required) ||
+              (!!rawErrors && !required) ||
+              (!!rawErrors &&
                 required &&
                 schema.type !== "array" &&
-                schema.type !== "object" &&
-                !!rawErrors === false
-              ? "success"
-              : undefined
-          }
-          wrapperCol={wrapperCol}
-        >
-          {children}
-        </Form.Item>
+                schema.type !== "object")
+                ? "error"
+                : highlight &&
+                  required &&
+                  schema.type !== "array" &&
+                  schema.type !== "object" &&
+                  !!rawErrors === false
+                ? "success"
+                : undefined
+            }
+            wrapperCol={wrapperCol}
+          >
+            {children}
+          </Form.Item>
+        </>
       )}
     </WrapIfAdditional>
   );

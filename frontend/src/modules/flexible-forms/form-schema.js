@@ -547,6 +547,7 @@ export const schema = {
                 },
               },
               S5_G2_5: {
+                subTitle: "Reporting and Measuring Progress",
                 title: "Do you report and measure the initiative progress?",
                 type: "string",
                 dependency: [
@@ -644,6 +645,7 @@ export const schema = {
                 type: "string",
               },
               S5_G3_14: {
+                subTitle: "Drivers and Barriers",
                 title:
                   "Please, indicate which DRIVERS apply to this initiative? (Please tick ALL that apply).",
                 type: "array",
@@ -746,6 +748,7 @@ export const schema = {
                 uniqueItems: true,
               },
               S5_G3_26: {
+                subTitle: "Initiative Scope & Target",
                 title:
                   "Lifecycle. Which specific part of the lifecycle/plastic supply chain is your initiative targeting? (Please tick ALL that apply).",
                 type: "array",
@@ -894,6 +897,7 @@ export const schema = {
                 },
               },
               S5_G4_33: {
+                subTitle: "Total Stakeholders Engaged",
                 title:
                   "How many different groups and organisations have you engaged with in total?",
                 type: "number",
@@ -903,6 +907,7 @@ export const schema = {
                 type: "number",
               },
               S5_G5_35: {
+                subTitle: "Funding",
                 title: "What funding sources did you use?",
                 type: "string",
                 dependency: [
@@ -962,6 +967,7 @@ export const schema = {
                 enumNames: [],
               },
               S5_G6_38: {
+                subTitle: "Duration",
                 title: "Is your initiative a one-off activity or ongoing?",
                 type: "string",
                 dependency: [
@@ -989,6 +995,7 @@ export const schema = {
                 },
               },
               S5_G7_41: {
+                subTitle: "Contact Info",
                 title: "Where can users best contact you to learn more?",
                 type: "string",
                 enum: ["41-0", "41-1", "41-2", "41-3", "41-4", "41-5"],
