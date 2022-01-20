@@ -1,8 +1,8 @@
 (ns gpml.handler.browse
   (:require [clojure.string :as str]
             [gpml.constants :refer [topics resource-types approved-user-topics]]
-            [gpml.db.browse :as db.browse]
             [gpml.db.country-group :as db.country-group]
+            [gpml.db.topic :as db.topic]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -114,11 +114,11 @@
                            (assoc modified-filters :transnational transnational))
                          modified-filters)
         results (->> modified-filters
-                     (db.browse/get-topics db)
+                     (db.topic/get-topics db)
                      (map (fn [{:keys [json topic]}]
                             (assoc json :type topic))))
         counts (->> (assoc modified-filters :count-only? true)
-                    (db.browse/get-topics db)
+                    (db.topic/get-topics db)
                     (filter #(or approved?
                                  (not (contains? approved-user-topics (:topic %))))))]
     {:results results :counts counts}))

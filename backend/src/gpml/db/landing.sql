@@ -1,9 +1,13 @@
 -- :name map-counts
 -- :doc Get counts of resources
+-- :require [gpml.db.topic]
 SELECT mc.geo AS id, json_object_agg(COALESCE(mc.topic, 'project'), mc.count) AS counts
 FROM (
     SELECT vt.geo_coverage AS geo, topic, count(topic)
-    FROM v_topic vt
+    FROM (
+    --~ (#'gpml.db.topic/generate-topic-query {} gpml.db.topic/generic-cte-opts)
+    SELECT * FROM cte_topic
+    ) vt
     WHERE vt.geo_coverage is NOT NULL
     AND ((vt.json->>'geo_coverage_type' = 'transnational') OR (vt.json->>'geo_coverage_type' = 'national') OR (vt.json->>'geo_coverage_type' = 'sub-national')
          OR (vt.json->>'geo_coverage_type' = 'regional'))
