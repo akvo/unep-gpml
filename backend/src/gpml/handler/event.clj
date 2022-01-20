@@ -54,7 +54,7 @@
               :country country
               :owners owners
               :created_by created_by
-              :info-docs info_docs
+              :info_docs info_docs
               :sub_content_type sub_content_type}
         event-id (->> data (db.event/new-event conn) :id)]
     (when (not-empty tags)

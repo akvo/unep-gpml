@@ -39,7 +39,7 @@
                                   geo_coverage_value implementing_mea
                                   geo_coverage_countries geo_coverage_country_groups
                                   tags urls created_by image
-                                  owners
+                                  owners info_docs
                                   attachments remarks mailjet-config
                                   entity_connections individual_connections]}]
   (let [data {:title title
@@ -54,6 +54,7 @@
               :latest_amendment_date latest_amendment_date
               :status status
               :owners owners
+              :info_docs info_docs
               :image (handler.image/assoc-image conn image "policy")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value

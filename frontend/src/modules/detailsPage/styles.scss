@@ -52,6 +52,7 @@
       .long-image {
         max-height: 500px;
         padding: 2px;
+        width: 100%;
         img {
           height: 100%;
           object-fit: cover;
@@ -140,7 +141,7 @@
     background: #edf2f7;
     padding: 30px 0px;
     .tab-wrapper {
-      background: #d3dee7;
+      background: #007090;
       border-radius: 5px;
       padding: 10px 0px;
       ul {
@@ -158,7 +159,7 @@
             border-right: none;
           }
           a {
-            color: #2d6796;
+            color: #ffffff;
             font-weight: bold;
             font-size: 18px;
           }
@@ -227,6 +228,7 @@
       }
     }
     .documents-list {
+      padding: 0 10px;
       .ant-list-item {
         h4 {
           color: #34a6ff;
