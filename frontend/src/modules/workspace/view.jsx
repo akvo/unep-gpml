@@ -8,12 +8,16 @@ import ActionPlan from "./ActionPlan";
 import DownloadPdf from "../../images/workspace/download-pdf.svg";
 
 const Workspace = ({ profile }) => {
+  const userName =
+    profile?.firstName !== undefined &&
+    profile?.lastName !== undefined &&
+    `${profile.firstName} ${profile.lastName}`;
   return (
     <div id="workspace">
-      <Header userName={`${profile.firstName} ${profile.lastName}`} />
+      <Header userName={userName} />
       <Row type="flex">
         <LeftSidebar />
-        <Col lg={21} md={21} xs={24} order={2}>
+        <Col lg={22} md={21} xs={24} order={2}>
           <Row>
             <Col span={24} style={{ position: "relative" }}>
               <div className="section-download text-white">
