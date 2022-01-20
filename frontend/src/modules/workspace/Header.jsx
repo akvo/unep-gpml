@@ -8,7 +8,11 @@ const Header = ({ userName }) => {
         <PageHeader
           title={
             <span className="header-text text-white">
-              Welcome back, <b className="user-name">{userName}</b>
+              {userName !== false && (
+                <>
+                  Welcome back, <b className="user-name">{userName}</b>
+                </>
+              )}
             </span>
           }
         />
