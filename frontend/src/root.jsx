@@ -69,6 +69,9 @@ import CapacityBuilding from "./modules/capacity-building/view";
 import NewDetailsView from "./modules/detailsPage/view";
 import CaseStudies from "./modules/case-studies/view";
 
+// Buttons
+import AddContentButton from "./modules/add-content-button/AddContentButton";
+
 Promise.all([
   api.get("/tag"),
   api.get("/currency"),
@@ -514,11 +517,13 @@ const Root = () => {
             path="/case-studies"
             render={(props) => <CaseStudies {...props} />}
           />
-          <Route
-            exact
-            render={(props) => <Workspace {...props} profile={profile} />}
-            path="/workspace"
-          />
+          {isAuthenticated && (
+            <Route
+              exact
+              render={(props) => <Workspace {...props} profile={profile} />}
+              path="/workspace"
+            />
+          )}
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event)/:id"
             render={(props) => (
@@ -554,6 +559,7 @@ const Root = () => {
           </Route>
           <Route component={(props) => <Error {...props} status={404} />} />
         </Switch>
+        {isAuthenticated && <AddContentButton />}
         <Footer
           setStakeholderSignupModalVisible={setStakeholderSignupModalVisible}
           setWarningModalVisible={setWarningModalVisible}

@@ -12,6 +12,7 @@ const Workspace = ({ profile }) => {
     profile?.firstName !== undefined &&
     profile?.lastName !== undefined &&
     `${profile.firstName} ${profile.lastName}`;
+
   return (
     <div id="workspace">
       <Header userName={userName} />
