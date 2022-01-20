@@ -7,7 +7,7 @@
             [gpml.db.favorite :as db.favorite]
             [gpml.fixtures :as fixtures]
             [gpml.test-util :as test-util]
-            [gpml.db.browse-test :as db.browse-test]
+            [gpml.db.topic-test :as db.topic-test]
             [gpml.seeder.main :as seeder]
             [integrant.core :as ig]
             [malli.core :as malli]
@@ -119,7 +119,7 @@
         handler (::browse/get system)
         limit 50 ;; set in browse.sql
         email "mail@org.com"
-        profile-data (db.browse-test/make-profile "John" "Doe" email)
+        profile-data (db.topic-test/make-profile "John" "Doe" email)
         _ (seeder/seed db {:country? true :technology? true})
         ;; Create a stakeholder
         sth (db.stakeholder/new-stakeholder db profile-data)
