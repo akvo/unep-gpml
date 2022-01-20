@@ -104,9 +104,12 @@ const getSchema = ({
     selectedMainContentType === "technical" ||
     selectedMainContentType === "action"
   ) {
+    let array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat();
     const tagsPlusTopics = tags?.topics
       ? tags.technicalResourceType?.concat(tags.topics)
-      : tags.technicalResourceType;
+      : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -116,9 +119,27 @@ const getSchema = ({
   }
 
   if (selectedMainContentType === "event_flexible") {
+    let array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat();
     const tagsPlusTopics = tags?.topics
       ? tags.events?.concat(tags.topics)
-      : tags.events;
+      : array;
+    prop.S4.properties.S4_G3.properties[
+      "tags"
+    ].enum = tagsPlusTopics?.map((x) => String(x.id));
+    prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
+      (x) => x.tag
+    );
+  }
+
+  if (selectedMainContentType === "initiative") {
+    let array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat();
+    const tagsPlusTopics = tags?.topics
+      ? tags.events?.concat(tags.topics)
+      : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -128,9 +149,12 @@ const getSchema = ({
   }
 
   if (selectedMainContentType === "technology") {
+    let array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat();
     const tagsPlusTopics = tags?.topics
       ? tags.technology?.concat(tags.topics)
-      : tags.technology;
+      : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -140,9 +164,12 @@ const getSchema = ({
   }
 
   if (selectedMainContentType === "policy") {
+    let array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat();
     const tagsPlusTopics = tags?.topics
       ? tags.policy?.concat(tags.topics)
-      : tags.policy;
+      : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));

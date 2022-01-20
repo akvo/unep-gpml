@@ -44,7 +44,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
@@ -69,10 +69,6 @@
           "ui:options": { "accept": "image/*" },
           "ui:widget": "file"
         },
-        "banner": {
-          "ui:options": { "accept": "image/*" },
-          "ui:widget": "file"
-        },
         "ui:order": ["image", "banner"]
       },
       "S4_G5": {
@@ -80,7 +76,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
@@ -129,8 +125,55 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
+        }
+      }
+    },
+    "S5": {
+      "classNames": "list-group",
+      "S5_G1": {
+        "S5_G1_4": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
         },
-        "urls": {
+        "S5_G1_4.1.1": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G1_4.1.2": {},
+        "S5_G1_4.2.1": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G1_4.2.2": {},
+        "S5_G1_4.3.1": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G1_4.3.2": {},
+        "S5_G1_4.4.1": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G1_4.4.2": {},
+        "S5_G1_4.4.3": {
+          "ui:placeholder": "Please, indicate the name of the programme/protocol (e.g. OSPAR, CSIRO, NOAA, Beach watch, EU-MSFD, Ocean Conservancy...etc.) and if different programmes/protocols were used to monitor near ocean surfaces, water column, seafloor, shoreline, Biota, air monitoring.",
+          "ui:widget": "textarea"
+        },
+        "S5_G1_4.4.4": {
+          "ui:placeholder": "If the monitoring data is available on request, please provide information on how to access the data.",
+          "ui:widget": "textarea"
+        },
+        "S5_G1_4.4.5": {
           "ui:options": {
             "showToolbar": true,
             "orderable": false
@@ -143,21 +186,151 @@
               "label": false
             }
           }
-        }
-      }
-    },
-    "S5": {
-      "classNames": "list-group",
-      "S5_G1": {
-        "publishYear": {
-          "ui:widget": "date",
-          "ui:showSearch": true,
-          "ui:span": 12,
+        },
+        "S5_G2_5": {
+          "ui:widget": "select",
+          "ui:placeholder": "Select",
+          "ui:allowClear": true
+        },
+        "S5_G2_6": {},
+        "S5_G2_8": {
+          "ui:widget": "select",
+          "ui:placeholder": "Select",
+          "ui:allowClear": true
+        },
+        "S5_G2_9": {},
+        "S5_G2_10": {
+          "ui:widget": "select",
+          "ui:placeholder": "Select",
+          "ui:allowClear": true
+        },
+        "S5_G2_11": {
+          "ui:widget": "checkboxes",
           "ui:options": {
-            "mode": "year",
-            "disableDate": "future"
+            "inline": true
           }
-        }
+        },
+        "S5_G2_12": {
+          "ui:widget": "textarea"
+        },
+        "S5_G2_13": {
+          "ui:widget": "textarea"
+        },
+        "S5_G3_14": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G3_15": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G3_26": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G3_27": {},
+        "S5_G3_28": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G3_29": {},
+        "S5_G3_30": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G3_31": {},
+        "S5_G4_33": {
+          "ui:placeholder": "Please estimate e.g., 20 retailers, 150 schools"
+        },
+        "S5_G4_34": {
+          "ui:placeholder": "Please estimate the total number of individuals engaged"
+        },
+        "S5_G5_35": {
+          "ui:widget": "select",
+          "ui:placeholder": "Select",
+          "ui:allowClear": true
+        },
+        "S5_G5_35.1": {},
+        "S5_G5_36": {
+          "ui:placeholder": "Please give us an estimate if you are unsure and only submit numbers, e.g., 5,000 should be entered as 5000."
+        },
+        "S5_G5_36.1": {
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "S5_G5_37": {
+          "ui:placeholder": "Please tell us the equivalent amount and only submit numbers, e.g., 5,000 should be entered as 5000."
+        },
+        "S5_G5_37.1": {
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "S5_G6_38": {
+          "ui:widget": "select",
+          "ui:placeholder": "Select",
+          "ui:allowClear": true
+        },
+        "S5_G6_39": {},
+        "S5_G7_41": {
+          "ui:widget": "select",
+          "ui:placeholder": "Select",
+          "ui:allowClear": true
+        },
+        "S5_G7_42": {},
+        "ui:order": [
+          "S5_G1_2",
+          "S5_G1_3",
+          "S5_G1_4",
+          "S5_G1_4.1.1",
+          "S5_G1_4.1.2",
+          "S5_G1_4.2.1",
+          "S5_G1_4.2.2",
+          "S5_G1_4.3.1",
+          "S5_G1_4.3.2",
+          "S5_G1_4.4.1",
+          "S5_G1_4.4.2",
+          "S5_G1_4.4.3",
+          "S5_G1_4.4.4",
+          "S5_G1_4.4.5",
+          "S5_G2_5",
+          "S5_G2_6",
+          "S5_G2_8",
+          "S5_G2_9",
+          "S5_G2_10",
+          "S5_G2_11",
+          "S5_G2_12",
+          "S5_G2_13",
+          "S5_G3_14",
+          "S5_G3_15",
+          "S5_G3_26",
+          "S5_G3_27",
+          "S5_G3_28",
+          "S5_G3_29",
+          "S5_G3_30",
+          "S5_G3_31",
+          "S5_G4_33",
+          "S5_G4_34",
+          "S5_G5_35",
+          "S5_G5_35.1",
+          "S5_G5_36",
+          "S5_G5_36.1",
+          "S5_G5_37",
+          "S5_G5_37.1",
+          "S5_G6_38",
+          "S5_G6_39",
+          "S5_G7_41",
+          "S5_G7_42"
+        ]
       }
     }
   },
@@ -206,7 +379,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
@@ -242,7 +415,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
@@ -291,32 +464,27 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        },
-        "urls": {
-          "ui:options": {
-            "showToolbar": true,
-            "orderable": false
-          },
-          "items": {
-            "ui:placeholder": "Please copy and paste one link per box provided.",
-            "ui:widget": "uri",
-            "ui:addOnBefore": "https://",
-            "ui:options": {
-              "label": false
-            }
-          }
         }
       }
     },
     "S5": {
       "classNames": "list-group",
-      "publishYear": {
-        "ui:widget": "date",
-        "ui:showSearch": true,
-        "ui:span": 12,
-        "ui:options": {
-          "mode": "year",
-          "disableDate": "future"
+      "dateOne": {
+        "firstPublicationDate": {
+          "ui:placeholder": "YYYY-MM-DD",
+          "ui:widget": "date",
+          "ui:span": 12,
+          "ui:options": {
+            "disableDate": "future"
+          }
+        },
+        "latestAmendmentDate": {
+          "ui:placeholder": "YYYY-MM-DD",
+          "ui:widget": "date",
+          "ui:span": 12,
+          "ui:options": {
+            "disableDate": "future"
+          }
         }
       },
       "date": {
@@ -434,7 +602,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
@@ -470,7 +638,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
@@ -519,20 +687,6 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        },
-        "urls": {
-          "ui:options": {
-            "showToolbar": true,
-            "orderable": false
-          },
-          "items": {
-            "ui:placeholder": "Please copy and paste one link per box provided.",
-            "ui:widget": "uri",
-            "ui:addOnBefore": "https://",
-            "ui:options": {
-              "label": false
-            }
-          }
         }
       }
     },
@@ -577,6 +731,11 @@
         },
         "implementingMea": {
           "ui:placeholder": "Choose the implementing MEA",
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "topics": {
+          "ui:placeholder": "Choose topics",
           "ui:widget": "select",
           "ui:showSearch": true
         }
@@ -684,7 +843,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
@@ -720,7 +879,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
@@ -769,20 +928,6 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        },
-        "urls": {
-          "ui:options": {
-            "showToolbar": true,
-            "orderable": false
-          },
-          "items": {
-            "ui:placeholder": "Please copy and paste one link per box provided.",
-            "ui:widget": "uri",
-            "ui:addOnBefore": "https://",
-            "ui:options": {
-              "label": false
-            }
-          }
         }
       }
     },
@@ -928,7 +1073,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
@@ -964,7 +1109,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
@@ -1013,20 +1158,6 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        },
-        "urls": {
-          "ui:options": {
-            "showToolbar": true,
-            "orderable": false
-          },
-          "items": {
-            "ui:placeholder": "Please copy and paste one link per box provided.",
-            "ui:widget": "uri",
-            "ui:addOnBefore": "https://",
-            "ui:options": {
-              "label": false
-            }
-          }
         }
       }
     },
@@ -1146,7 +1277,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
@@ -1182,7 +1313,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
@@ -1231,20 +1362,6 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        },
-        "urls": {
-          "ui:options": {
-            "showToolbar": true,
-            "orderable": false
-          },
-          "items": {
-            "ui:placeholder": "Please copy and paste one link per box provided.",
-            "ui:widget": "uri",
-            "ui:addOnBefore": "https://",
-            "ui:options": {
-              "label": false
-            }
-          }
         }
       }
     },
@@ -1374,7 +1491,7 @@
           "ui:showSearch": true
         },
         "geoCoverageValueSubnationalCity": {
-          "ui:placeholder": "City"
+          "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
           "geoCoverageType",
@@ -1410,7 +1527,7 @@
           "ui:options": {
             "orderable": false,
             "collapsible": true,
-            "addItemText": "Connect an other entity"
+            "addItemText": "Connect another entity"
           },
           "ui:group": "border",
           "items": {
@@ -1459,20 +1576,6 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        },
-        "urls": {
-          "ui:options": {
-            "showToolbar": true,
-            "orderable": false
-          },
-          "items": {
-            "ui:placeholder": "Please copy and paste one link per box provided.",
-            "ui:widget": "uri",
-            "ui:addOnBefore": "https://",
-            "ui:options": {
-              "label": false
-            }
-          }
         }
       }
     },
