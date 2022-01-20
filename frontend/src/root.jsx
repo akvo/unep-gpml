@@ -180,6 +180,7 @@ const Root = () => {
     nav: s.nav,
     tags: s.tags,
   }));
+
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [
     stakeholderSignupModalVisible,
@@ -515,7 +516,7 @@ const Root = () => {
           />
           <Route
             exact
-            render={(props) => <Workspace {...props} />}
+            render={(props) => <Workspace {...props} profile={profile} />}
             path="/workspace"
           />
           <Route

@@ -7,10 +7,10 @@ import ActionPlan from "./ActionPlan";
 
 import DownloadPdf from "../../images/workspace/download-pdf.svg";
 
-const Workspace = () => {
+const Workspace = ({ profile }) => {
   return (
     <div id="workspace">
-      <Header userName={"John Morizot"} />
+      <Header userName={`${profile.firstName} ${profile.lastName}`} />
       <Row type="flex">
         <LeftSidebar />
         <Col lg={21} md={21} xs={24} order={2}>
