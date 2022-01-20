@@ -267,7 +267,7 @@ const Root = () => {
                 <img src={logo} className="logo" alt="GPML" />
               </Link>
             </div>
-            <WorkspaceButton />
+            {isAuthenticated && <WorkspaceButton />}
             <div className="menu-dropdown-container">
               <AboutDropdownMenu />
               <ExploreDropdownMenu topicsCount={topicsCount} />
