@@ -2,6 +2,16 @@
   (:require [clojure.string :as str]
             [hugsql.core :as hugsql]))
 
+;; FIXME: for some reason unknown to clj-kondo give 'unresolved var'
+;; warnings about the hugSQL functions. It only happens if there are
+;; other functions defined in the same namespace where
+;; husql/def-db-fns is run.
+;;
+;; Lucas Sousa 2022-01-20
+(declare get-topics)
+
+(hugsql/def-db-fns "gpml/db/topic.sql")
+
 (def ^:const generic-cte-opts
   "Common set of options for all CTE generation functions."
   {:tables ["event" "technology" "policy" "initiative" "resource" "stakeholder" "organisation"]
@@ -495,5 +505,3 @@
     (when (seq (:transnational params)) " AND t.json->>'geo_coverage_type'='transnational' AND t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:transnational)")
     ;; NOTE: Empty strings in the tags column cause problems with using json_array_elements
     (when (seq (:tag params)) " AND t.json->>'tags' <> ''"))))
-
-(hugsql/def-db-fns "gpml/db/topic.sql")
