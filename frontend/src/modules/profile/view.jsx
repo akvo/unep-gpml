@@ -1,6 +1,7 @@
 import { UIStore } from "../../store";
 import { Button, notification, Avatar, Menu, Row, Col } from "antd";
 import React, { useRef, useState, useEffect } from "react";
+import { Route, Switch, useHistory } from "react-router-dom";
 import StickyBox from "react-sticky-box";
 import api from "../../utils/api";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -26,8 +27,10 @@ import {
 } from "@ant-design/icons";
 
 const userRoles = new Set(roles);
+
 const reviewerRoles = new Set(["REVIEWER", "ADMIN"]);
 const adminRoles = new Set(["ADMIN"]);
+
 const menuItems = [
   {
     key: "personal-details",
@@ -64,6 +67,31 @@ const menuItems = [
 const ProfileView = ({ ...props }) => {
   const { isAuthenticated, loginWithPopup } = useAuth0();
 
+  const history = useHistory();
+  const path = history.location.pathname;
+
+  const pathname = {
+    personalDetails: "/profile",
+    favourites: "/profile/my-favourites",
+    network: "/profile/my-network",
+    reviewSection: "/profile/review-section",
+    adminSection: "/profile/admin-section",
+  };
+
+  const activeMenu = () => {
+    if (path === pathname.favourites) {
+      return "my-favourites";
+    } else if (path === pathname.network) {
+      return "my-network";
+    } else if (path === pathname.reviewSection) {
+      return "review-section";
+    } else if (path === pathname.adminSection) {
+      return "admin-section";
+    } else {
+      return "personal-details";
+    }
+  };
+
   const {
     countries,
     tags,
@@ -91,7 +119,8 @@ const ProfileView = ({ ...props }) => {
 
   const handleSubmitRef = useRef();
   const [saving, setSaving] = useState(false);
-  const [menu, setMenu] = useState("personal-details");
+  const [menu, setMenu] = useState(activeMenu());
+
   const [reviewItems, setReviewItems] = useState({
     reviews: [],
     limit: 10,
@@ -230,8 +259,29 @@ const ProfileView = ({ ...props }) => {
       });
   };
 
-  const handleOnClickMenu = (params) => {
-    setMenu(params);
+  const handleOnClickMenu = (menuKey) => {
+    history.push(getMenuRoute(menuKey));
+    setMenu(menuKey);
+  };
+
+  const getMenuRoute = (menuKey) => {
+    switch (menuKey) {
+      case "my-favourites":
+        return "/profile/my-favourites";
+        break;
+      case "my-network":
+        return "/profile/my-network";
+        break;
+      case "review-section":
+        return "/profile/review-section";
+        break;
+      case "admin-section":
+        return "/profile/admin-section";
+        break;
+      default:
+        return "/profile";
+        break;
+    }
   };
 
   const renderMenuItem = (profile) => {
@@ -343,7 +393,7 @@ const ProfileView = ({ ...props }) => {
                   )}
                   <Menu
                     className="menu-content-wrapper"
-                    defaultSelectedKeys={["personal-details"]}
+                    defaultSelectedKeys={menu}
                   >
                     {renderMenuItem(profile)}
                   </Menu>
@@ -356,47 +406,58 @@ const ProfileView = ({ ...props }) => {
                 lg={18}
                 className={menu !== "admin-section" ? "content-wrapper" : ""}
               >
-                {menu === "personal-details" && (
-                  <div>
-                    <SignupForm
-                      onSubmit={onSubmit}
-                      handleSubmitRef={(ref) => {
-                        handleSubmitRef.current = ref;
-                      }}
-                      initialValues={profile}
-                      isModal={false}
-                    />
-                    <Button
-                      loading={saving}
-                      type="ghost"
-                      className="black"
-                      onClick={(ev) => {
-                        handleSubmitRef.current(ev);
-                      }}
-                    >
-                      Update
-                    </Button>
-                  </div>
-                )}
-                {menu === "review-section" &&
-                  reviewerRoles.has(profile?.role) && (
-                    <ReviewSection
-                      reviewItems={reviewItems}
-                      setReviewItems={setReviewItems}
-                      reviewedItems={reviewedItems}
-                      setReviewedItems={setReviewedItems}
-                    />
-                  )}
-                {menu === "admin-section" && adminRoles.has(profile?.role) && (
-                  <AdminSection
-                    stakeholdersData={stakeholdersData}
-                    setStakeholdersData={setStakeholdersData}
-                    resourcesData={resourcesData}
-                    setResourcesData={setResourcesData}
-                    entitiesData={entitiesData}
-                    setEntitiesData={setEntitiesData}
-                  />
-                )}
+                <Switch>
+                  <Route exact path={"/profile"}>
+                    <div>
+                      <SignupForm
+                        onSubmit={onSubmit}
+                        handleSubmitRef={(ref) => {
+                          handleSubmitRef.current = ref;
+                        }}
+                        initialValues={profile}
+                        isModal={false}
+                      />
+                      <Button
+                        loading={saving}
+                        type="ghost"
+                        className="black"
+                        onClick={(ev) => {
+                          handleSubmitRef.current(ev);
+                        }}
+                      >
+                        Update
+                      </Button>
+                    </div>
+                  </Route>
+                  <Route exact path="/profile/my-favourites">
+                    <div />
+                  </Route>
+                  <Route exact path="/profile/my-network">
+                    <div />
+                  </Route>
+                  <Route exact path="/profile/review-section">
+                    {reviewerRoles.has(profile?.role) && (
+                      <ReviewSection
+                        reviewItems={reviewItems}
+                        setReviewItems={setReviewItems}
+                        reviewedItems={reviewedItems}
+                        setReviewedItems={setReviewedItems}
+                      />
+                    )}
+                  </Route>
+                  <Route exact path="/profile/admin-section">
+                    {adminRoles.has(profile?.role) && (
+                      <AdminSection
+                        stakeholdersData={stakeholdersData}
+                        setStakeholdersData={setStakeholdersData}
+                        resourcesData={resourcesData}
+                        setResourcesData={setResourcesData}
+                        entitiesData={entitiesData}
+                        setEntitiesData={setEntitiesData}
+                      />
+                    )}
+                  </Route>
+                </Switch>
               </Col>
             </Row>
           )}
