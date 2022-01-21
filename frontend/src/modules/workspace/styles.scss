@@ -109,6 +109,7 @@ $bg-green-primary: #10f9b7;
       display: flex;
       cursor: pointer;
       padding: 0;
+
       p {
         margin-top: 10px;
         text-transform: uppercase;
@@ -122,8 +123,17 @@ $bg-green-primary: #10f9b7;
         opacity: 0.5;
       }
 
-      &:last-child {
+      &:last-child,
+      &.active.disabled {
         background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      &.disabled {
+        cursor: no-drop;
+        img,
+        p {
+          opacity: 0.5;
+        }
       }
 
       &.active {
@@ -144,11 +154,17 @@ $bg-green-primary: #10f9b7;
           height: 100px;
           background-color: $green01;
         }
+
+        &.disabled::before {
+          display: none;
+        }
       }
+
       .item-menu {
         width: 100%;
         align-self: center;
         text-align: center;
+        padding: 13.5px 0 13.5px 0;
       }
     }
   }
