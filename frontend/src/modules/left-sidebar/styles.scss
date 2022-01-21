@@ -9,7 +9,7 @@ $bg-events: #5f4373;
   font-size: 24px;
 }
 .ui-header {
-  padding: 10px 10px 10px 50px;
+  padding: 16px 16px 0px 16px;
   background-color: $bg-dark-primary;
   border-bottom: 1px solid #fff;
 }
@@ -240,6 +240,22 @@ $bg-events: #5f4373;
   text-transform: uppercase;
 }
 /* Mobile */
+@media (min-width: 481px) and (max-width: 767px) {
+  // ##Screen = B/w 481px to 767px
+  .ui-header {
+    .text-right {
+      display: flex;
+    }
+  }
+}
+@media (min-width: 320px) and (max-width: 480px) {
+  // ##Screen = B/w 320px to 479px
+  .ui-header {
+    .text-right {
+      display: flex;
+    }
+  }
+}
 @media only screen and (max-width: 474px) {
   html {
     font-size: 13px;
