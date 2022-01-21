@@ -42,6 +42,10 @@ $bg-green-primary: #10f9b7;
       border: 3px solid #ffffff;
     }
 
+    .button-mask span {
+      display: none;
+    }
+
     .button-mask,
     .button-container:hover .button-mask {
       -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -49,6 +53,7 @@ $bg-green-primary: #10f9b7;
     }
 
     .button-mask {
+      max-width: 85px;
       position: absolute;
       top: 0;
       left: 0;
@@ -67,5 +72,15 @@ $bg-green-primary: #10f9b7;
   svg {
     width: 100%;
     max-width: 45px;
+  }
+}
+
+.workspace-button-wrapper:hover {
+  .button-mask {
+    max-width: 305px;
+  }
+
+  .button-mask span {
+    display: block;
   }
 }
