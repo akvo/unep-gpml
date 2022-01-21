@@ -1,18 +1,20 @@
 import React from "react";
 import { sample } from "lodash";
 import { Row, Col, Typography, Tooltip, Button, Avatar } from "antd";
+
+import datastakeholders from "./json/stakeholders.json";
 import iconGlobe from "../../images/case-studies/globe-outline.svg";
+import { titleCase, TrimText } from "../../utils/string";
 
 const { Title, Paragraph, Text } = Typography;
 
 const CaseStudy = ({
-  name,
-  challenge_and_solution,
-  geo_coverage,
   tags,
+  title,
+  geo_coverage,
+  challenge_and_solution,
   stakeholders_involved,
-  platform_links,
-  external_url,
+  platform_link,
 }) => {
   const bgImage = sample([
     {
@@ -40,6 +42,7 @@ const CaseStudy = ({
     typeof stakeholders_involved === "string"
       ? stakeholders_involved.split(",")
       : stakeholders_involved;
+  const tagItems = typeof tags === "string" ? tags.split(",") : tags;
   return (
     <Row className="case-studies-page">
       <Col
@@ -50,14 +53,14 @@ const CaseStudy = ({
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           display: "flex",
-          height: 981,
+          height: "auto",
           borderBottom: "4px solid #18162F",
           borderLeft: "4px solid #18162F",
           borderTop: "4px solid #18162F",
         }}
       >
         <div className="p-4">
-          <Title>{name}</Title>
+          <Title>{title}</Title>
         </div>
       </Col>
       <Col
@@ -74,9 +77,9 @@ const CaseStudy = ({
         <div className="p-4 content-text">
           <Row type="flex" justify="start" align="middle" gutter={[16, 16]}>
             <Col span={24}>
-              <h4 className="title">Challenge &and; Solution</h4>
-              <Paragraph ellipsis={{ rows: 20 }}>
-                {challenge_and_solution || ""}
+              <h4 className="title">Challenge & Solution</h4>
+              <Paragraph>
+                <TrimText text={challenge_and_solution} max={600} />
               </Paragraph>
             </Col>
             <Col span={3}>
@@ -88,11 +91,16 @@ const CaseStudy = ({
             <Col span={24}>
               <h4 className="title">Tags</h4>
               <ul className="tags">
-                {Object?.values(tags)?.map((t, tx) => (
-                  <li className="tag-item" key={tx}>
-                    {t}
-                  </li>
-                ))}
+                {Object?.values(tagItems)
+                  ?.filter((tag, tx) => tx <= 7)
+                  ?.map((tag, tx) => (
+                    <li className="tag-item" key={tx}>
+                      {tag.length > 5 ? titleCase(tag) : tag}
+                    </li>
+                  ))}
+                {tagItems.length > 7 && tagItems.length - 7 > 1 && (
+                  <li className="tag-item">{`${tagItems.length - 7} mores`}</li>
+                )}
               </ul>
             </Col>
             <Col span={24}>
@@ -106,10 +114,16 @@ const CaseStudy = ({
                 {Object?.values(stakeholders)
                   ?.filter((sk, sx) => sx < 4)
                   ?.map((sk, sx) => {
-                    const avatar = sample([
+                    let avatar = sample([
                       "https://ik.imagekit.io/8bnvluby33xpi/avatar-placeholder?updatedAt=1640774297572&tr=w-1080,h-1080,fo-auto",
                       "https://ik.imagekit.io/8bnvluby33xpi/image_64_iWwgh-iQU.png?updatedAt=1640774243901&tr=w-1080,h-1080,fo-auto",
                     ]);
+                    const findSk = datastakeholders.find(
+                      (ds) => sk.trim() === ds.name
+                    );
+                    if (findSk) {
+                      avatar = findSk.image;
+                    }
                     return (
                       <Tooltip className="avatar" title={sk} key={sx}>
                         <Avatar src={avatar} />
