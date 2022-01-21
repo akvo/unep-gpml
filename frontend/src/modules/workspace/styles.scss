@@ -233,18 +233,18 @@ $bg-green-primary: #10f9b7;
 
       &::after {
         right: -30px;
-        border-top: 61px solid transparent;
+        border-top: 59px solid transparent;
         border-left: 30px solid $grey01;
-        border-bottom: 61px solid transparent;
+        border-bottom: 59px solid transparent;
         z-index: 2;
         top: 0px;
       }
 
       &::before {
         left: -1px;
-        border-top: 61px solid transparent;
+        border-top: 59px solid transparent;
         border-left: 30px solid #fff;
-        border-bottom: 61px solid transparent;
+        border-bottom: 59px solid transparent;
         z-index: 1;
         top: 0px;
       }
