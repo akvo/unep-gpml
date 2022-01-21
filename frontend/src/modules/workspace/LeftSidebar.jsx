@@ -8,7 +8,6 @@ import IconHome from "../../images/workspace/home-icon.svg";
 import IconAdmin from "../../images/workspace/admin-icon.svg";
 
 const LeftSidebar = ({ active = 1, profile }) => {
-  console.log(profile);
   const [activeMenu, setActiveMenu] = useState(active);
   const sidebar = [
     { id: 1, title: "Home", url: "/workspace" },
@@ -30,10 +29,16 @@ const LeftSidebar = ({ active = 1, profile }) => {
             lg={24}
             md={24}
             xs={6}
-            className={classNames("item-sidebar", {
-              active: activeMenu === s.id,
-            })}
-            onClick={() => setActiveMenu(s.id)}
+            className={
+              s.url
+                ? classNames("item-sidebar", {
+                    active: activeMenu === s.id,
+                  })
+                : `${classNames("item-sidebar", {
+                    active: activeMenu === s.id,
+                  })} disabled`
+            }
+            onClick={() => s.url && setActiveMenu(s.id)}
           >
             {s.url ? (
               <Link
@@ -45,7 +50,7 @@ const LeftSidebar = ({ active = 1, profile }) => {
                 <p>{s.title}</p>
               </Link>
             ) : (
-              <div className="item-menu">
+              <div className="item-menu ">
                 <img src={icons[sx] || IconHome} alt={s.title} />
                 <p>{s.title}</p>
               </div>
