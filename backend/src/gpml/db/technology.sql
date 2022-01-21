@@ -162,3 +162,10 @@ select st.id, st.association as role, concat_ws(' ', s.first_name, s.last_name) 
 -- :doc List all technologies
 select id, title
   from technology;
+
+-- :name related-content-by-id
+-- :doc Get related content by id
+select tech.id, tech.name as title from technology t
+  left join technology tech
+  on tech.id = ANY(t.related_content)
+  where t.id = :id

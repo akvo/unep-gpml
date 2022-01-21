@@ -150,3 +150,11 @@ select sp.id, sp.association as role, concat_ws(' ', s.first_name, s.last_name) 
 -- :doc List all policies
 select id, title
   from policy;
+
+-- :name related-content-by-id
+-- :doc Get related content by id
+select pol.id, pol.title from policy p
+  left join policy pol
+  on pol.id = ANY(p.related_content)
+  where p.id = :id
+
