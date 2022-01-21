@@ -7,11 +7,16 @@ import { Row, Col } from "antd";
 import IconHome from "../../images/workspace/home-icon.svg";
 import IconAdmin from "../../images/workspace/admin-icon.svg";
 
-const LeftSidebar = ({ active = 1 }) => {
+const LeftSidebar = ({ active = 1, profile }) => {
+  console.log(profile);
   const [activeMenu, setActiveMenu] = useState(active);
   const sidebar = [
     { id: 1, title: "Home", url: "/workspace" },
-    { id: 4, title: "Admin", url: "" },
+    {
+      id: 4,
+      title: "Admin",
+      url: profile.role !== "USER" ? "/profile/admin-section" : "",
+    },
   ];
 
   const icons = [IconHome, IconAdmin];

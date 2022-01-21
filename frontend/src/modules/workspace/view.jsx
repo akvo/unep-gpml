@@ -17,8 +17,8 @@ const Workspace = ({ profile }) => {
     <div id="workspace">
       <Header userName={userName} />
       <Row type="flex">
-        <LeftSidebar />
-        <Col lg={22} md={21} xs={24} order={2}>
+        <LeftSidebar profile={profile} />
+        <Col lg={22} md={24} xs={24} order={2}>
           <Row>
             <Col span={24} style={{ position: "relative" }}>
               <div className="section-download text-white">
