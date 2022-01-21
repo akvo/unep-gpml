@@ -21,6 +21,9 @@ insert into resource(
 --~ (when (contains? params :url) ", url")
 --~ (when (contains? params :info_docs) ", info_docs")
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
+--~ (when (contains? params :first_publication_date) ", first_publication_date")
+--~ (when (contains? params :latest_amendment_date) ", latest_amendment_date")
+--~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :capacity_building) ", capacity_building")
 )
 values(
@@ -44,6 +47,9 @@ values(
 --~ (when (contains? params :url) ", :url")
 --~ (when (contains? params :info_docs) ", :info_docs")
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
+--~ (when (contains? params :first_publication_date) ", :first_publication_date")
+--~ (when (contains? params :latest_amendment_date) ", :latest_amendment_date")
+--~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :capacity_building) ", :capacity_building")
 )
 returning id;
