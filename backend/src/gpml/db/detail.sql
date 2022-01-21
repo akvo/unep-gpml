@@ -2,7 +2,10 @@
 -- :doc Get details about a particular topic
 SELECT json::jsonb,
 COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners
-FROM v_topic_all t
+ FROM (
+    --~ (#'gpml.db.topic/generate-topic-query {} gpml.db.topic/generic-cte-opts)
+    SELECT * FROM cte_topic
+    ) t
    left join topic_stakeholder_auth authz ON authz.topic_type::text=t.topic AND authz.topic_id=(t.json->>'id')::int
  WHERE topic = :topic-type
    AND (json->>'id')::int = :topic-id

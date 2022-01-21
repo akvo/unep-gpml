@@ -78,6 +78,7 @@
        e.url AS initiative_url,
        e.info_docs,
        e.sub_content_type,
+       e.related_content,
        btrim((e.q41_1)::text, '\"'::text) AS url,
        NULL::text AS image,
        tag.tags,

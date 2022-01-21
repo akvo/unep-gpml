@@ -22,6 +22,8 @@ insert into policy(
 --~ (when (contains? params :created_by) ", created_by")
 --~ (when (contains? params :info_docs) ", info_docs")
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
+--~ (when (contains? params :topics) ", topics")
+--~ (when (contains? params :related_content) ", related_content")
 )
 values(
     :title,
@@ -45,6 +47,8 @@ values(
 --~ (when (contains? params :created_by) ", :created_by")
 --~ (when (contains? params :info_docs) ", :info_docs")
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
+--~ (when (contains? params :topics) ", :topics")
+--~ (when (contains? params :related_content) ", :related_content")
 )
 returning id;
 
