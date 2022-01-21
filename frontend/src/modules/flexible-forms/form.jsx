@@ -67,6 +67,11 @@ const FlexibleForm = withRouter(
         return false;
       }
 
+      if (mainType === "Initiative") {
+        handleOnSubmitInitiative(formData);
+        return false;
+      }
+
       if (mainType === "Event") {
         handleOnSubmitEvent(formData, capacityBuilding);
         return false;
@@ -200,6 +205,70 @@ const FlexibleForm = withRouter(
           .post("/resource", data)
           .then(() => {
             // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully created" });
+          })
+          .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+    };
+
+    ///
+
+    const handleOnSubmitInitiative = (formData) => {
+      let data = {};
+      transformFormData(data, formData, formSchema.schema.properties);
+      data.version = parseInt(formSchema.schema.version);
+
+      data.tags =
+        formData.S4.S4_G3.tags &&
+        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+
+      delete data.qtags;
+
+      data.url = data.qurl;
+      delete data.qurl;
+
+      if (data?.qinfo) {
+        data.infoDocs = data.qinfo;
+        delete data.qinfo;
+      }
+
+      if (data?.qentity) {
+        data.entityConnections = data.qentity;
+        delete data.qentity;
+      }
+
+      if (data?.qindividual) {
+        data.individualConnections = data.qindividual;
+        delete data.qindividual;
+      }
+
+      data.q2 = data.qtitle;
+      delete data.qtitle;
+
+      data.q3 = data.qsummary;
+      delete data.qsummary;
+
+      data.q24 = data.qgeoCoverageType;
+      delete data.qgeoCoverageType;
+
+      data.subContentType = subContentType;
+
+      console.log(data);
+
+      if (status === "add" && !params?.id) {
+        api
+          .postRaw("/initiative", data)
+          .then(() => {
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
               e.data = initialData;
