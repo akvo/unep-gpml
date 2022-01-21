@@ -517,13 +517,15 @@ const Root = () => {
             path="/case-studies"
             render={(props) => <CaseStudies {...props} />}
           />
-          {isAuthenticated && (
-            <Route
-              exact
-              render={(props) => <Workspace {...props} profile={profile} />}
-              path="/workspace"
-            />
-          )}
+
+          <Route
+            exact
+            render={(props) =>
+              isAuthenticated && <Workspace {...props} profile={profile} />
+            }
+            path="/workspace"
+          />
+
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event)/:id"
             render={(props) => (
