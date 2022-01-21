@@ -151,3 +151,10 @@ select se.id, se.association as role, concat_ws(' ', s.first_name, s.last_name) 
 -- :doc List all events
 select id, title
   from event;
+
+-- :name related-content-by-id
+-- :doc Get related content by id
+select ev.id, ev.title from event e
+  left join event ev
+  on ev.id = any(e.related_content)
+where e.id = :id
