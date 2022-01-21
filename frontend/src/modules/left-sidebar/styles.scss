@@ -35,10 +35,24 @@ $bg-events: #5f4373;
     .item-menu {
       margin: auto;
       text-align: center;
+      font-size: 0.85rem;
       &.disabled {
         opacity: 0.5;
         cursor: no-drop;
       }
+      img {
+        width: 21px;
+        height: 21px;
+      }
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      right: 25%;
+      bottom: 0;
+      height: 1px;
+      width: 50%;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     }
   }
 }
@@ -65,12 +79,16 @@ $bg-events: #5f4373;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
     width: 45%;
-    color: #fff;
-    h1 {
-      color: #fff;
+    .ant-typography {
+      color: #fff !important;
+      &.label {
+        font-size: 16px;
+        font-weight: 600;
+      }
     }
-    .title {
-      text-transform: uppercase;
+    h1.ant-typography,
+    h2.ant-typography {
+      font-weight: 800 !important;
     }
   }
 }
@@ -105,16 +123,9 @@ $bg-events: #5f4373;
       font-size: 18px;
       line-height: 25px;
       text-transform: capitalize;
-    }
-    .ant-btn-link {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      margin: 10px 0;
-      font-weight: bold;
-      font-style: normal;
-      font-size: 14px !important;
-      color: #fff !important;
+      &.small {
+        font-size: 14px;
+      }
     }
     .left {
       width: 30%;
@@ -127,6 +138,12 @@ $bg-events: #5f4373;
       &.events {
         width: 50%;
       }
+    }
+    .see-more {
+      position: absolute;
+      bottom: 15px;
+      right: 20px;
+      font-weight: 600;
     }
   }
   .ant-btn-ghost {
@@ -219,6 +236,9 @@ $bg-events: #5f4373;
 .text-right {
   text-align: right;
 }
+.text-upper {
+  text-transform: uppercase;
+}
 /* Mobile */
 @media only screen and (max-width: 474px) {
   html {
@@ -231,7 +251,7 @@ $bg-events: #5f4373;
   }
   .pm_event_banner {
     .event_details {
-      h1 {
+      .site_title {
         font-size: 20px;
         line-height: 30px;
       }
@@ -277,7 +297,7 @@ $bg-events: #5f4373;
   }
   .pm_event_banner {
     .event_details {
-      h1 {
+      .site_title {
         font-size: 20px;
         line-height: 30px;
       }
@@ -315,7 +335,7 @@ $bg-events: #5f4373;
   }
   .pm_event_banner {
     .event_details {
-      h1 {
+      .site_title {
         font-size: 24px;
         line-height: 28px;
       }

@@ -41,7 +41,7 @@ const CaseStudy = ({
       ? stakeholders_involved.split(",")
       : stakeholders_involved;
   return (
-    <Row className="case-studies">
+    <Row className="case-studies-page">
       <Col
         lg={14}
         sm={24}
@@ -74,7 +74,7 @@ const CaseStudy = ({
         <div className="p-4 content-text">
           <Row type="flex" justify="start" align="middle" gutter={[16, 16]}>
             <Col span={24}>
-              <h4 className="title">Challenge & Solution</h4>
+              <h4 className="title">Challenge &and; Solution</h4>
               <Paragraph ellipsis={{ rows: 20 }}>
                 {challenge_and_solution || ""}
               </Paragraph>

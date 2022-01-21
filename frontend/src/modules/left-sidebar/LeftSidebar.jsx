@@ -23,11 +23,6 @@ const LeftSidebar = ({ children, active = 1 }) => {
       url: "/capacity-building",
     },
     {
-      id: 3,
-      title: "EXCHANGE",
-      url: null,
-    },
-    {
       id: 4,
       title: "Case studies",
       url: "/case-studies",
