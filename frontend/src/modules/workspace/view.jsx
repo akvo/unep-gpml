@@ -35,7 +35,10 @@ const Workspace = ({ profile }) => {
                       different phases of the Action Plan Creation Workflow.
                     </p>
                   </article>
-                  <a href="#" className="download-link">
+                  <a
+                    href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
+                    className="download-link"
+                  >
                     <img src={DownloadPdf} alt="download-pdf-document" />
                     <span className="download-text text-white">Download</span>
                   </a>
