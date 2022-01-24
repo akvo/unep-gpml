@@ -161,12 +161,12 @@ const FlexibleForm = withRouter(
       }
 
       if (data.geoCoverageType === "transnational") {
-        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational.map(
-          (x) => parseInt(x)
-        );
-        data.geoCoverageCountries =
-          data.geoCoverageCountries &&
-          data.geoCoverageCountries.map((x) => parseInt(x));
+        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+          : [];
+        data.geoCoverageCountries = data.geoCoverageCountries
+          ? data.geoCoverageCountries.map((x) => parseInt(x))
+          : [];
         delete data.geoCoverageValueTransnational;
       }
 
@@ -306,6 +306,24 @@ const FlexibleForm = withRouter(
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
+      if (data.geoCoverageType === "transnational") {
+        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+          : [];
+        data.geoCoverageCountries = data.geoCoverageCountries
+          ? data.geoCoverageCountries.map((x) => parseInt(x))
+          : [];
+        delete data.geoCoverageValueTransnational;
+      }
+
+      if (data.geoCoverageType === "national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
+        ];
+
+        delete data.geoCoverageValueNational;
+      }
+
       if (data?.urls) {
         data.urls = data.urls.map((x) => {
           return {
@@ -389,6 +407,24 @@ const FlexibleForm = withRouter(
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
+      if (data.geoCoverageType === "transnational") {
+        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+          : [];
+        data.geoCoverageCountries = data.geoCoverageCountries
+          ? data.geoCoverageCountries.map((x) => parseInt(x))
+          : [];
+        delete data.geoCoverageValueTransnational;
+      }
+
+      if (data.geoCoverageType === "national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
+        ];
+
+        delete data.geoCoverageValueNational;
+      }
+
       if (data?.urls) {
         data.urls = data.urls.map((x) => {
           return {
@@ -467,6 +503,24 @@ const FlexibleForm = withRouter(
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
+      if (data.geoCoverageType === "transnational") {
+        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+          : [];
+        data.geoCoverageCountries = data.geoCoverageCountries
+          ? data.geoCoverageCountries.map((x) => parseInt(x))
+          : [];
+        delete data.geoCoverageValueTransnational;
+      }
+
+      if (data.geoCoverageType === "national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
+        ];
+
+        delete data.geoCoverageValueNational;
+      }
+
       if (data?.yearFounded) {
         const yearFounded = new Date(data.yearFounded);
         data.yearFounded = yearFounded.getFullYear();
@@ -532,6 +586,59 @@ const FlexibleForm = withRouter(
             ...formData,
           };
         });
+
+        let updatedFormDataSchema = {};
+
+        if (
+          formData?.S4.S4_G2.geoCoverageType === "transnational" &&
+          formData?.S4.S4_G2.geoCoverageValueTransnational
+        ) {
+          let result = formSchema.schema.properties.S4.properties.S4_G2.required.filter(
+            (value) => value !== "geoCoverageCountries"
+          );
+          updatedFormDataSchema = {
+            ...formSchema.schema,
+            properties: {
+              ...formSchema.schema.properties,
+              S4: {
+                ...formSchema.schema.properties.S4,
+                properties: {
+                  ...formSchema.schema.properties.S4.properties,
+                  S4_G2: {
+                    ...formSchema.schema.properties.S4.properties.S4_G2,
+                    required: result,
+                  },
+                },
+              },
+            },
+          };
+        } else if (
+          formData?.S4.S4_G2.geoCoverageType === "transnational" &&
+          formData?.S4.S4_G2.geoCoverageCountries
+        ) {
+          let result = formSchema.schema.properties.S4.properties.S4_G2.required.filter(
+            (value) => value !== "geoCoverageValueTransnational"
+          );
+          updatedFormDataSchema = {
+            ...formSchema.schema,
+            properties: {
+              ...formSchema.schema.properties,
+              S4: {
+                ...formSchema.schema.properties.S4,
+                properties: {
+                  ...formSchema.schema.properties.S4.properties,
+                  S4_G2: {
+                    ...formSchema.schema.properties.S4.properties.S4_G2,
+                    required: result,
+                  },
+                },
+              },
+            },
+          };
+        } else {
+          updatedFormDataSchema = formSchema.schema;
+        }
+
         // to overide validation
         let dependFields = [];
         let requiredFields = [];
@@ -539,7 +646,7 @@ const FlexibleForm = withRouter(
         collectDependSchemaRefactor(
           dependFields,
           formData,
-          formSchema.schema,
+          updatedFormDataSchema,
           requiredFields
         );
         setDependValue(dependFields);
