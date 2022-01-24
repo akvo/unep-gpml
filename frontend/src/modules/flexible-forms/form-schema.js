@@ -1009,7 +1009,7 @@ export const schema = {
                   "Other",
                 ],
               },
-              S5_G7_42: {
+              "S5_G7_41.1": {
                 title: "Please provide the details",
                 type: "string",
                 string: true,

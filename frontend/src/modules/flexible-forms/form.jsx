@@ -586,7 +586,6 @@ const FlexibleForm = withRouter(
             ...formData,
           };
         });
-
         let updatedFormDataSchema = {};
 
         if (
@@ -649,6 +648,7 @@ const FlexibleForm = withRouter(
           updatedFormDataSchema,
           requiredFields
         );
+
         setDependValue(dependFields);
         const requiredFilledIn = checkRequiredFieldFilledIn(
           formData,
@@ -657,6 +657,7 @@ const FlexibleForm = withRouter(
         );
         let sectionRequiredFields = {};
         let groupRequiredFields = {};
+
         requiredFields.forEach(({ group, key, required }) => {
           let index = group ? group : key;
           let filterRequired = required.filter((r) =>
@@ -735,6 +736,28 @@ const FlexibleForm = withRouter(
       });
       const res = overideValidation(errors, dependValue);
       res.length === 0 && setHighlight(false);
+      if (res.length > 0) {
+        const descriptionList = res.map((r, index) => {
+          const { property, message } = r;
+          const tabSection = property
+            .replace(".", "")
+            .replace("['", "_")
+            .replace("']", "_")
+            .split("_")[0];
+          const tabSectionTitle = tabsData.find((x) => x.key === tabSection)
+            ?.title;
+          return (
+            <li key={`${property}-${index}`}>
+              {tabSectionTitle}:{" "}
+              <Typography.Text type="danger">{message}</Typography.Text>
+            </li>
+          );
+        });
+        notification.error({
+          message: "Error",
+          description: <ul>{descriptionList}</ul>,
+        });
+      }
       return res;
     };
 
