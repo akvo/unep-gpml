@@ -1,7 +1,7 @@
 #stakeholder-detail {
   padding-bottom: 40px;
   min-height: calc(100vh - 145px);
-  background: #fff;
+  background: #edf2f7;
   background-size: cover;
   background-position-y: top;
 
@@ -37,6 +37,7 @@
           margin-bottom: 0px;
           color: #ffffff;
           font-size: 30px;
+          line-height: 45px;
         }
         p {
           display: flex;
@@ -70,11 +71,12 @@
           }
         }
         .ant-card-body {
-          padding: 24px 10px;
+          padding: 24px 10px 0px 10px;
           p {
             font-size: 16px;
           }
           .list {
+            margin-top: -20px;
             .ant-list-item {
               border-bottom: none;
               display: flex;
@@ -100,6 +102,15 @@
                     object-fit: contain;
                   }
                 }
+                .ant-list-item-meta-avatar {
+                  span {
+                    width: 55px;
+                    font-size: 35px;
+                  }
+                  svg {
+                    color: #004b7f;
+                  }
+                }
                 h4 {
                   margin-bottom: 0px;
                 }
@@ -107,6 +118,216 @@
             }
           }
         }
+      }
+    }
+    .description-container {
+      background: #fff;
+      border-radius: 10px;
+      width: 100%;
+      .description-wrapper {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        .card-wrapper {
+          margin-bottom: 0px;
+        }
+        .ant-card-body {
+          padding: 24px 10px 0px 10px;
+        }
+        .sticky-panel {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          background-color: #255b87;
+          margin: 2px;
+          flex: 0 0 100px;
+          border: 1px solid #d3dee7;
+          box-sizing: border-box;
+          border-radius: 0px 10px 10px 0px;
+          padding: 20px 0px;
+          .sticky-panel-item {
+            border-bottom: 1px solid #094271;
+            box-shadow: 0px 1px 0px #3872a0;
+            width: 100%;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            a {
+              text-align: center;
+            }
+            &:last-child {
+              // border-bottom: none;
+              // box-shadow: none;
+            }
+            span {
+              font-size: 30px;
+              color: #ffffff;
+            }
+            h2 {
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              margin-bottom: 0px;
+            }
+          }
+        }
+        p {
+          padding: 0 20px;
+        }
+        .exta-info {
+          margin-top: 40px;
+          .ant-card-body {
+            padding: 0px 10px;
+          }
+          .ant-list {
+            padding: 0 10px;
+            .ant-list-item {
+              border-bottom: none;
+              padding-bottom: 0px;
+            }
+          }
+          .card-wrapper {
+            height: 100%;
+          }
+          .litter-button {
+            border: 1px solid #ffb800;
+            box-sizing: border-box;
+            border-radius: 10px;
+            display: block;
+            padding: 10px 0px;
+            margin: 10px 12px;
+            cursor: pointer;
+            width: 250px;
+            text-align: center;
+            p {
+              display: flex;
+              align-items: center;
+              color: #ffb800;
+              padding: 0 10px;
+              margin-bottom: 0px;
+              justify-content: center;
+              span {
+                margin-right: 10px;
+                line-height: 0px;
+                img {
+                  width: 25px;
+                }
+              }
+            }
+          }
+          .knowledge-button {
+            border: 1px solid #000;
+            box-sizing: border-box;
+            border-radius: 10px;
+            display: block;
+            padding: 10px 0px;
+            margin: 10px 12px;
+            cursor: pointer;
+            width: 250px;
+            text-align: center;
+            p {
+              margin-bottom: 0px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .slider-card {
+    display: flex;
+    background: #ffffff;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    .image-holder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(211, 222, 231, 0.2);
+      flex: 0 0 80px;
+      box-sizing: border-box;
+      padding: 20px 0px;
+      justify-content: center;
+      img {
+        width: 30px;
+      }
+    }
+    .description-holder {
+      padding: 15px;
+      width: 100%;
+      h4 {
+        color: #1ca585;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 0px;
+      }
+      h6 {
+        font-size: 14px;
+        color: #18162f;
+        font-weight: normal;
+        margin-bottom: 2px;
+      }
+      p {
+        font-size: 14px;
+        color: #374a59;
+        margin-bottom: 0px;
+        font-weight: normal;
+      }
+      .connection-wrapper {
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .read-more {
+          color: #34a6ff;
+        }
+      }
+    }
+  }
+  .pagination-wrapper {
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &.with-notes {
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .ant-pagination-item-link,
+    .ant-pagination-item,
+    .ant-pagination-item-active {
+      border-color: transparent;
+      border-radius: 5px;
+    }
+    .ant-pagination-item-link {
+      background: #fff;
+      span.anticon {
+        color: #255b87;
+        font-size: 0.85rem;
+      }
+    }
+    .ant-pagination-item {
+      background: rgba(37, 91, 135, 0.1);
+      a {
+        color: #255b87;
+      }
+    }
+    .ant-pagination-item-active {
+      background: rgba(37, 91, 135, 0.8);
+      a {
+        color: #fff;
+      }
+    }
+    .ant-pagination-item-ellipsis {
+      color: #255b87;
+    }
+    .ant-pagination-options {
+      .ant-select-selector {
+        background: rgba(37, 91, 135, 0.1);
+        border-color: transparent;
+        border-radius: 5px;
+        color: #255b87;
       }
     }
   }
