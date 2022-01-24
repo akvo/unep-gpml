@@ -16,7 +16,7 @@ import classNames from "classnames";
 const { Title } = Typography;
 
 import "./styles.scss";
-import { TrimText } from "../../utils/string";
+import { titleCase } from "../../utils/string";
 import Banner from "./Banner";
 import capacities from "./json/capacity-building.json";
 import slides from "./json/slider.json";
@@ -82,8 +82,17 @@ const CapacityBuilding = () => {
                     key={gx}
                   >
                     <PageHeader
-                      title={<span className="text-green">{g}</span>}
-                      extra={<Button type="ghost">See all &gt;</Button>}
+                      title={<span className="text-green text-upper">{g}</span>}
+                      extra={
+                        <Button
+                          href="/browse"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          type="ghost"
+                        >
+                          See all &gt;
+                        </Button>
+                      }
                     />
                     <div className="section-content">
                       <List
@@ -107,12 +116,11 @@ const CapacityBuilding = () => {
                               >
                                 <Card
                                   className={`card bg-color ${item.category_id}`}
-                                  bordered="false"
+                                  bordered={false}
                                   hoverable
                                 >
                                   <Card.Grid
                                     className={`left ${item.category_id}`}
-                                    bordered="false"
                                     hoverable
                                   >
                                     <div className="thumbnail">
@@ -127,11 +135,14 @@ const CapacityBuilding = () => {
                                   </Card.Grid>
                                   <Card.Grid
                                     className={`right ${item.category_id}`}
-                                    bordered="false"
                                     hoverable={false}
                                   >
-                                    <span className="title">
-                                      <TrimText text={item.title} max={85} />
+                                    <span
+                                      className={classNames("title", {
+                                        small: item.title.length > 100,
+                                      })}
+                                    >
+                                      {titleCase(item.title)}
                                     </span>
                                     <span className="see-more">See more</span>
                                   </Card.Grid>

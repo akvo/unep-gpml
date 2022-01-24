@@ -1,37 +1,52 @@
 [
   {
-    "uid": 1,
-    "title": "Massive Online Open Course on Marine Litter",
-    "image": "https://ik.imagekit.io/8bnvluby33xpi/slides/1_Lb0BbYuvF-l.png?ik-sdk-version=javascript-1.4.3&updatedAt=1642082883408",
-    "category": "Webinar",
-    "platform_link": "https://digital.gpmarinelitter.org/technical_resource/149"
+    "id": 149,
+    "title": "Massive Open Online Course (MOOC) on Marine Litter ",
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/resource-21258c97-28ec-4b37-bc22-a38f6cf293ec-uploaded.jpeg",
+    "category": "Technical Resource",
+    "platformLink": "https://digital.gpmarinelitter.org/technical_resource/149",
+    "created": "2021-04-26T11:21:40.368688+00:00",
+    "endDate": null,
+    "startDate": null
   },
   {
-    "uid": 2,
+    "id": 10043,
     "title": "7th International Marine Debris Conference (7IMDC)",
-    "image": "https://ik.imagekit.io/8bnvluby33xpi/slides/2_8wKzZ4BG9.png?ik-sdk-version=javascript-1.4.3&updatedAt=1642082871920",
-    "category": "Webinar",
-    "platform_link": "https://digital.gpmarinelitter.org/technical_resource/149"
+    "image": "https://digital.gpmarinelitter.org/image/event/54",
+    "category": "EVENT",
+    "platformLink": "https://digital.gpmarinelitter.org/event/10043",
+    "created": "2021-11-10T09:13:13.299187+00:00",
+    "endDate": "2022-09-23T09:10:14+00:00",
+    "startDate": "2022-09-18T09:10:14+00:00"
   },
   {
-    "uid": 3,
+    "id": 10502,
     "title": "CounterMEASURE: Generating and disseminating knowledge about plastic pollution in Asian rivers and informing policies, alliances and financial mechanisms",
     "image": "https://ik.imagekit.io/8bnvluby33xpi/slides/3_NHc9Lks-De.png?ik-sdk-version=javascript-1.4.3&updatedAt=1642082864976",
-    "category": "Webinar",
-    "platform_link": "https://digital.gpmarinelitter.org/technical_resource/149"
+    "category": "Initiative",
+    "platformLink": "https://digital.gpmarinelitter.org/project/10502",
+    "created": "2021-12-06T13:34:35.71367+00:00",
+    "endDate": null,
+    "startDate": null
   },
   {
-    "uid": 4,
-    "title": "CleanSeas",
+    "id": 10004,
+    "title": "Clean Seas",
     "image": "https://ik.imagekit.io/8bnvluby33xpi/slides/4_0jU9PTnGJwG.png?ik-sdk-version=javascript-1.4.3&updatedAt=1642082669904",
-    "category": "Webinar",
-    "platform_link": "https://digital.gpmarinelitter.org/technical_resource/149"
+    "category": "Initiative",
+    "platformLink": "https://digital.gpmarinelitter.org/project/10004",
+    "created": "2021-08-27T06:40:28.351818+00:00",
+    "endDate": null,
+    "startDate": null
   },
   {
-    "uid": 5,
-    "title": "UNEP Assessment",
-    "image": "https://ik.imagekit.io/8bnvluby33xpi/slides/5_Ku6El7ElC.png?ik-sdk-version=javascript-1.4.3&updatedAt=1642082877461",
-    "category": "Webinar",
-    "platform_link": "https://digital.gpmarinelitter.org/technical_resource/149"
+    "id": 10224,
+    "title": "From Pollution to Solution: a global assessment of marine litter and plastic pollution",
+    "image": "https://storage.googleapis.com/akvo-unep-gpml/images/resource-60e72053-a730-4726-9b6e-baad64ac7797-uploaded.png",
+    "category": "Technical Resource",
+    "platformLink": "https://digital.gpmarinelitter.org/technical_resource/10224",
+    "created": "2021-12-06T08:39:59.058002+00:00",
+    "endDate": null,
+    "startDate": null
   }
 ]

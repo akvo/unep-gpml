@@ -48,6 +48,8 @@ import Glossary from "./modules/glossary/glossary";
 import Error from "./modules/error/error";
 import EntityFormView from "./modules/entity/view";
 import Workspace from "./modules/workspace/view";
+import EventPage from "./modules/event-page/view";
+import StakeholderDetail from "./modules/stakeholder-detail/view";
 
 // Menu dropdown
 import AboutDropdownMenu from "./modules/dropdown-menu/about";
@@ -517,6 +519,16 @@ const Root = () => {
             exact
             render={(props) => <Workspace {...props} />}
             path="/workspace"
+          />
+          <Route
+            exact
+            render={(props) => <EventPage {...props} />}
+            path="/events"
+          />
+          <Route
+            exact
+            render={(props) => <StakeholderDetail {...props} />}
+            path="/stakeholder-detail"
           />
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event)/:id"
