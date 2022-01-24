@@ -243,12 +243,12 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.qentity) {
-        data.entityConnections = data.qentity;
+        data.entity_connections = data.qentity;
         delete data.qentity;
       }
 
       if (data?.qindividual) {
-        data.individualConnections = data.qindividual;
+        data.individual_connections = data.qindividual;
         delete data.qindividual;
       }
 
@@ -261,7 +261,7 @@ const FlexibleForm = withRouter(
       data.q24 = data.qgeoCoverageType;
       delete data.qgeoCoverageType;
 
-      data.subContentType = subContentType;
+      data.sub_content_type = subContentType;
 
       console.log(data);
 
