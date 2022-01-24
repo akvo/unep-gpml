@@ -82,9 +82,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const [highlight, setHighlight] = useState(false);
   const [capacityBuilding, setCapacityBuilding] = useState(true);
   const [mainType, setMainType] = useState("initiative");
-  const [label, setLabel] = useState("");
+  const [label, setLabel] = useState("Initiative");
   const [subType, setSubType] = useState("");
-  const [manageResource, setManageResource] = useState("");
   const [owners, setOwners] = useState([]);
   const [subContentType, setSubContentType] = useState([]);
   const [disabledBtn, setDisabledBtn] = useState({
@@ -101,6 +100,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       e.disclaimer = null;
     });
   }, [props]);
+
+  useEffect(() => {
+    const search = mainContentType.find((element) => element.code === mainType)
+      .childs;
+    setSubContentType(search);
+  }, [mainContentType, mainType]);
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -430,7 +435,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   };
 
   const handleSubContentType = (e) => {
-    console.log(e.target.value);
     setSubType(e.target.value);
     if (
       mainType === "capacity_building" &&
@@ -591,7 +595,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                         Make sure to browse around and leave a review under the
                         resources you enjoy the most!
                       </p>
-                      <p>To get started sign up or log in now.</p>
                     </div>
                   </Row>
                 ) : getTabStepIndex().tabIndex === 1 ? (
@@ -606,13 +609,13 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     >
                       <div className="button-wrapper">
                         <h5>Pick the main content type</h5>
-                        <Button
+                        {/* <Button
                           icon={<img src={ExampleIcon} alt="Example button" />}
                           size="large"
                           onClick={() => setDisplayModal(!displayModal)}
                         >
                           SHOW EXAMPLES
-                        </Button>
+                        </Button> */}
                       </div>
                       <div>
                         <div className={`Modal ${displayModal ? "Show" : ""}`}>
@@ -684,8 +687,18 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     </div>
                     <div className="sub-content">
                       <div className="sub-content-top">
-                        <h5>Pick the sub-content type</h5>
-                        <span>Optional</span>
+                        <div className="sub-content-wrapper">
+                          <h5>Pick the sub-content type</h5>
+                          <span>Optional</span>
+                        </div>
+                        {subType && (
+                          <div
+                            className="clear-button"
+                            onClick={() => setSubType("")}
+                          >
+                            Clear Selection
+                          </div>
+                        )}
                       </div>
                       {subContentType.length > 0 ? (
                         <div className="sub-content-topics">

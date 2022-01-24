@@ -104,9 +104,10 @@ const getSchema = ({
     selectedMainContentType === "technical" ||
     selectedMainContentType === "action"
   ) {
-    const tagsPlusTopics = tags?.topics
-      ? tags.technicalResourceType?.concat(tags.topics)
-      : tags.technicalResourceType;
+    let array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat();
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -116,9 +117,23 @@ const getSchema = ({
   }
 
   if (selectedMainContentType === "event_flexible") {
-    const tagsPlusTopics = tags?.topics
-      ? tags.events?.concat(tags.topics)
-      : tags.events;
+    let array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat();
+    const tagsPlusTopics = tags?.topics ? array : array;
+    prop.S4.properties.S4_G3.properties[
+      "tags"
+    ].enum = tagsPlusTopics?.map((x) => String(x.id));
+    prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
+      (x) => x.tag
+    );
+  }
+
+  if (selectedMainContentType === "initiative") {
+    let array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat();
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -128,9 +143,10 @@ const getSchema = ({
   }
 
   if (selectedMainContentType === "technology") {
-    const tagsPlusTopics = tags?.topics
-      ? tags.technology?.concat(tags.topics)
-      : tags.technology;
+    let array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat();
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -140,9 +156,10 @@ const getSchema = ({
   }
 
   if (selectedMainContentType === "policy") {
-    const tagsPlusTopics = tags?.topics
-      ? tags.policy?.concat(tags.topics)
-      : tags.policy;
+    let array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat();
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -158,9 +175,10 @@ const getSchema = ({
   }
 
   if (selectedMainContentType === "financing") {
-    const tagsPlusTopics = tags?.topics
-      ? tags.financingMechanism?.concat(tags.topics)
-      : tags.financingMechanism;
+    let array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat();
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));

@@ -1,30 +1,19 @@
 import React from "react";
-import { PageHeader, Row, Col } from "antd";
+import { Row, Col } from "antd";
 import "./styles.scss";
-import ActionPlan from "./ActionPlan";
+import Header from "./Header";
 import LeftSidebar from "./LeftSidebar";
-import DownloadPdf from "../../images/workspace/download-pdf.svg";
-import AddContentButton from "./AddContentButton";
+import ActionPlan from "./ActionPlan";
 
-const Workspace = ({ userName = "John Morizot" }) => {
+import DownloadPdf from "../../images/workspace/download-pdf.svg";
+
+const Workspace = () => {
   return (
     <div id="workspace">
-      <Row type="flex" className="bg-dark-primary header-container">
-        <Col>
-          <PageHeader
-            title={
-              <div>
-                <span className="header-text text-white">
-                  Welcome back, <b className="user-name">{userName}</b>
-                </span>
-              </div>
-            }
-          />
-        </Col>
-      </Row>
-      <Row type="flex" className="body-wrapper">
+      <Header userName={"John Morizot"} />
+      <Row type="flex">
         <LeftSidebar />
-        <Col lg={22} xs={24} order={2}>
+        <Col lg={21} md={21} xs={24} order={2}>
           <Row>
             <Col span={24} style={{ position: "relative" }}>
               <div className="section-download text-white">
@@ -52,7 +41,6 @@ const Workspace = ({ userName = "John Morizot" }) => {
           </Row>
         </Col>
       </Row>
-      <AddContentButton />
     </div>
   );
 };

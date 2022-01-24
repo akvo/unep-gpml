@@ -45,9 +45,9 @@ import {
 } from "./mapping";
 import moment from "moment";
 
-const CardComponent = ({ title, style, children }) => {
+const CardComponent = ({ title, style, children, getRef }) => {
   return (
-    <div className="card-wrapper" style={style}>
+    <div className="card-wrapper" style={style} ref={getRef}>
       <Card title={title} bordered={false} style={style}>
         {children}
       </Card>
@@ -55,32 +55,43 @@ const CardComponent = ({ title, style, children }) => {
   );
 };
 
-const TabComponent = ({ title, style, children, getRef }) => {
+const TabComponent = ({
+  title,
+  style,
+  children,
+  relatedRef,
+  recordRef,
+  documentRef,
+}) => {
   return (
     <div className="tab-wrapper" style={style}>
       <ul>
         <li>
-          <a href="#">Record</a>
+          <a onClick={() => recordRef.current.scrollIntoView()}>Record</a>
         </li>
         <li>
-          <a href="#">Documents And Info</a>
+          <a onClick={() => documentRef.current.scrollIntoView()}>
+            Documents And Info
+          </a>
         </li>
         <li>
-          <a onClick={() => getRef.current.scrollIntoView()}>Related Content</a>
+          <a onClick={() => relatedRef.current.scrollIntoView()}>
+            Related Content
+          </a>
         </li>
         <li>
-          <a href="#">Reviews</a>
+          <a href="#">Comments</a>
         </li>
       </ul>
     </div>
   );
 };
 
-const SharePanel = ({ data }) => {
+const SharePanel = ({ data, canDelete }) => {
   return (
     <div className="sticky-panel">
       <div className="sticky-panel-item">
-        <a href={data?.url} target="_blank">
+        <a href={`https://${data?.url}`} target="_blank">
           <DownloadOutlined />
           <h2>View</h2>
         </a>
@@ -93,10 +104,12 @@ const SharePanel = ({ data }) => {
         <ShareAltOutlined />
         <h2>Share</h2>
       </div>
-      <div className="sticky-panel-item">
-        <DeleteOutlined />
-        <h2>Delete</h2>
-      </div>
+      {canDelete() && (
+        <div className="sticky-panel-item">
+          <DeleteOutlined />
+          <h2>Delete</h2>
+        </div>
+      )}
       <div className="sticky-panel-item">
         <EditOutlined />
         <h2>Update</h2>
@@ -105,7 +118,12 @@ const SharePanel = ({ data }) => {
   );
 };
 
-const renderBannerSection = (data) => {
+const renderBannerSection = (data, LeftImage, profile, isAuthenticated) => {
+  const canDelete = () =>
+    isAuthenticated &&
+    profile.reviewStatus === "APPROVED" &&
+    profile.role === "ADMIN";
+
   if (
     data.type === "Technical Resource" ||
     data.type === "Policy" ||
@@ -133,7 +151,7 @@ const renderBannerSection = (data) => {
             >
               <p>{data.summary}</p>
             </CardComponent>
-            <SharePanel data={data} />
+            <SharePanel data={data} canDelete={canDelete} />
           </div>
         </Col>
       </>
@@ -149,7 +167,7 @@ const renderBannerSection = (data) => {
                 className="resource-image"
               />
             </div>
-            <SharePanel data={data} />
+            <SharePanel data={data} canDelete={canDelete} />
           </div>
         </Col>
       </>
@@ -344,6 +362,9 @@ const DetailsView = ({
   setFilterMenu,
 }) => {
   const relatedContent = useRef(null);
+  const record = useRef(null);
+  const document = useRef(null);
+  const reviews = useRef(null);
 
   const {
     profile,
@@ -370,6 +391,9 @@ const DetailsView = ({
     params?.type
   );
   const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
+
+  const allowBookmark =
+    params.type !== "stakeholder" || profile.id !== params.id;
 
   const isLoaded = useCallback(
     () =>
@@ -440,7 +464,9 @@ const DetailsView = ({
 
       <div className="section-banner">
         <div className="ui container">
-          <Row gutter={[16, 16]}>{renderBannerSection(data, LeftImage)}</Row>
+          <Row gutter={[16, 16]}>
+            {renderBannerSection(data, LeftImage, profile, isAuthenticated)}
+          </Row>
         </div>
       </div>
 
@@ -504,14 +530,19 @@ const DetailsView = ({
               >
                 <div className="list tag-list">
                   <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={TagsImage} />}
-                        title={data?.tags
-                          .map((tag) => Object.values(tag)[0])
-                          .join(", ")}
-                      />
-                    </List.Item>
+                    {data?.tags && (
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={<Avatar src={TagsImage} />}
+                          title={
+                            data?.tags &&
+                            data?.tags
+                              .map((tag) => Object.values(tag)[0])
+                              .join(", ")
+                          }
+                        />
+                      </List.Item>
+                    )}
                   </List>
                 </div>
               </CardComponent>
@@ -567,9 +598,10 @@ const DetailsView = ({
                 style={{
                   marginBottom: "30px",
                 }}
-                getRef={relatedContent}
+                relatedRef={relatedContent}
+                recordRef={record}
+                documentRef={document}
               />
-              {}
               {data.type !== "Technical Resource" &&
                 data.type !== "Policy" &&
                 data.type !== "Action Plan" && (
@@ -588,6 +620,7 @@ const DetailsView = ({
                 style={{
                   marginBottom: "30px",
                 }}
+                getRef={record}
               >
                 <div className="record-table">
                   {countries &&
@@ -611,35 +644,23 @@ const DetailsView = ({
                 style={{
                   marginBottom: "30px",
                 }}
+                getRef={document}
               >
-                <div className="list documents-list">
-                  <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={TransnationalImage} />}
-                        title={"www.link.fi"}
-                      />
-                    </List.Item>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={TransnationalImage} />}
-                        title={"www.link.fi"}
-                      />
-                    </List.Item>
-                  </List>
-                </div>
+                {data?.infoDocs && (
+                  <div
+                    className="list documents-list"
+                    dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
+                  />
+                )}
               </CardComponent>
               <CardComponent
                 title="Related content (4)"
                 style={{
                   marginBottom: "30px",
                 }}
+                getRef={relatedContent}
               >
-                <Row
-                  gutter={16}
-                  className="related-content"
-                  ref={relatedContent}
-                >
+                <Row gutter={16} className="related-content">
                   <Col span={12}>
                     <Card title="INITIATIVE " bordered={false}>
                       <h4>
@@ -795,7 +816,7 @@ const DetailsView = ({
                 </Row>
               </CardComponent>
               <CardComponent
-                title="Reviews (0)"
+                title="Comments (0)"
                 style={{
                   marginBottom: "30px",
                 }}

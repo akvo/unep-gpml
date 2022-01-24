@@ -384,6 +384,17 @@
         .sub-content-top {
           display: flex;
           align-items: center;
+          width: 100%;
+          justify-content: space-between;
+          .clear-button {
+            color: #34a6ff;
+            text-decoration: underline;
+            cursor: pointer;
+          }
+          .sub-content-wrapper {
+            display: flex;
+            align-items: center;
+          }
           h5 {
             color: #255b87;
             font-size: 18px;
@@ -391,8 +402,10 @@
             margin-bottom: 0px;
           }
           span {
-            color: rgba(56, 78, 133, 0.6);
-            font-size: 12px;
+            color: rgb(194, 194, 194);
+            font-style: italic;
+            font-weight: normal;
+            font-size: 16px;
             margin-left: 20px;
           }
         }
@@ -518,6 +531,15 @@
   }
   .ant-picker {
     background: #edf2f7;
+  }
+  .ant-form-item {
+    .ant-checkbox-wrapper {
+      display: flex;
+      align-items: center;
+    }
+    .ant-checkbox-group {
+      margin-top: 10px;
+    }
   }
 }
 .ant-popover {

@@ -8,7 +8,8 @@ $green-primary: #4dffa5;
     line-height: 35px;
   }
 }
-.case-studies {
+.case-studies-page {
+  height: calc(100vh - 160px);
   h1.ant-typography {
     font-family: Open Sans;
     font-style: normal;
@@ -76,7 +77,6 @@ $green-primary: #4dffa5;
       top: 10px;
     }
     &:hover {
-      background-color: crimson;
       color: white;
     }
   }
@@ -149,6 +149,19 @@ $green-primary: #4dffa5;
   margin-left: 1em;
 }
 
+@media (min-width: 481px) and (max-width: 767px) {
+  // ##Screen = B/w 481px to 767px
+  .case-studies-page {
+    height: 100%;
+  }
+}
+@media (min-width: 320px) and (max-width: 480px) {
+  // ##Screen = B/w 320px to 479px
+  .case-studies-page {
+    height: 100%;
+  }
+}
+
 @media screen and (min-width: 1920px) {
   //For Projectors or Higher Resolution Screens (Full HD)
   #case-study {
@@ -172,6 +185,9 @@ $green-primary: #4dffa5;
       background: #18162f;
     }
   }
+  .case-studies-page {
+    max-height: 996px;
+  }
 }
 @media screen and (min-width: 3840px) {
   //For 4K Displays (Ultra HD)
@@ -183,5 +199,8 @@ $green-primary: #4dffa5;
     .ant-layout-content {
       background: #18162f;
     }
+  }
+  .case-studies-page {
+    max-height: 996px;
   }
 }
