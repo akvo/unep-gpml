@@ -96,3 +96,15 @@ select si.id, si.association as role, concat_ws(' ', s.first_name, s.last_name) 
 -- :doc List all initiatives
 select id, q2 as title
   from initiative;
+
+-- :name add-initiative-tags :<! :1
+-- :doc add initiative tags
+insert into initiative_tag(initiative, tag)
+values :t*:tags RETURNING id;
+
+-- :name related-content-by-id
+-- :doc Get related content by id
+select init.id, init.q2 as title from initiative i
+  left join initiative init
+  on init.id = ANY(i.related_content)
+  where i.id = :id

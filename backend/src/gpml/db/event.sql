@@ -16,6 +16,7 @@ insert into event(
 --~ (when (contains? params :url) ", url")
 --~ (when (contains? params :info_docs) ", info_docs")
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
+--~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :capacity_building) ", capacity_building")
 --~ (when (contains? params :event_type) ", event_type")
 --~ (when (contains? params :recording) ", recording")
@@ -35,7 +36,8 @@ values(
 --~ (when (contains? params :created_by) ", :created_by")
 --~ (when (contains? params :url) ", :url")
 --~ (when (contains? params :info_docs) ", :info_docs")
---~ (when (contains? params :url) ", :sub_content_type")
+--~ (when (contains? params :sub_content_type) ", :sub_content_type")
+--~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :capacity_building) ", :capacity_building")
 --~ (when (contains? params :event_type) ", :event_type")
 --~ (when (contains? params :recording) ", :recording")
@@ -149,3 +151,10 @@ select se.id, se.association as role, concat_ws(' ', s.first_name, s.last_name) 
 -- :doc List all events
 select id, title
   from event;
+
+-- :name related-content-by-id
+-- :doc Get related content by id
+select ev.id, ev.title from event e
+  left join event ev
+  on ev.id = any(e.related_content)
+where e.id = :id

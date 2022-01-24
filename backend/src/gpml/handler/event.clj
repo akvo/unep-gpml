@@ -37,7 +37,7 @@
                                  country city geo_coverage_value photo
                                  geo_coverage_countries geo_coverage_country_groups
                                  created_by mailjet-config owners url
-                                 info_docs sub_content_type
+                                 info_docs sub_content_type related_content
                                  entity_connections individual_connections]}]
   (let [data {:title title
               :start_date start_date
@@ -54,8 +54,9 @@
               :country country
               :owners owners
               :created_by created_by
-              :info-docs info_docs
-              :sub_content_type sub_content_type}
+              :info_docs info_docs
+              :sub_content_type sub_content_type
+              :related_content related_content}
         event-id (->> data (db.event/new-event conn) :id)]
     (when (not-empty tags)
       (db.event/add-event-tags conn {:tags (map #(vector event-id %) tags)}))
@@ -109,6 +110,8 @@
     [:url {:optional true} string?]
     [:info_docs {:optional true} string?]
     [:sub_content_type {:optional true} string?]
+    [:related_content {:optional true}
+     [:vector {:optional true} integer?]]
     [:capacity_building {:optional true} boolean?]
     [:event_type {:optional true} string?]
     [:recording {:optional true} string?]

@@ -7,7 +7,7 @@
             [gpml.db.landing :as db.landing]
             [gpml.db.resource :as db.resource]
             [gpml.db.event :as db.event]
-            [gpml.db.browse :as db.browse]
+            [gpml.db.topic :as db.topic]
             [gpml.fixtures :as fixtures]
             [gpml.seeder.main :as seeder]
             [integrant.core :as ig]))
@@ -173,7 +173,7 @@
     (testing "Landing counts match browse results"
       (let [counts (db.landing/map-counts db)
             afg 4 ;; country_id
-            browse (db.browse/filter-topic db {:topic #{"financing_resource"}
+            browse (db.topic/get-topics db {:topic #{"financing_resource"}
                                                :geo-coverage [afg]})]
         (is (= (->> counts
                     (filter #(= afg (:id %)))

@@ -37,7 +37,8 @@
                                       year_founded email country
                                       geo_coverage_type geo_coverage_value
                                       geo_coverage_countries geo_coverage_country_groups
-                                      tags url urls created_by image owners
+                                      tags url urls created_by image owners info_docs
+                                      sub_content_type related_content
                                       logo attachments remarks mailjet-config
                                       entity_connections individual_connections]}]
   (let [data {:name name
@@ -58,6 +59,9 @@
               :attachments attachments
               :created_by created_by
               :owners owners
+              :info_docs info_docs
+              :sub_content_type sub_content_type
+              :related_content related_content
               :review_status "SUBMITTED"}
         technology-id (->> data (db.technology/new-technology conn) :id)]
     (when (not-empty owners)
@@ -125,6 +129,8 @@
      [:vector {:optional true} integer?]]
     [:url {:optional true} string?]
     [:info_docs {:optional true} string?]
+    [:related_content {:optional true}
+     [:vector {:optional true} integer?]]
     [:sub_content_type {:optional true} string?]
     [:entity_connections {:optional true}
      [:vector {:optional true}

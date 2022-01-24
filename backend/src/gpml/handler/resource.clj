@@ -41,7 +41,8 @@
                                     geo_coverage_countries geo_coverage_country_groups
                                     attachments country urls tags remarks
                                     created_by url mailjet-config owners
-                                    info_docs sub_content_type
+                                    info_docs sub_content_type related_content
+                                    first_publication_date latest_amendment_date
                                     entity_connections individual_connections]}]
   (let [data {:type resource_type
               :title title
@@ -62,8 +63,11 @@
               :remarks remarks
               :created_by created_by
               :url url
-              :info-docs info_docs
-              :sub_content_type sub_content_type}
+              :info_docs info_docs
+              :sub_content_type sub_content_type
+              :related_content related_content
+              :first_publication_date first_publication_date
+              :latest_amendment_date latest_amendment_date}
         resource-id (:id (db.resource/new-resource conn data))]
     (when (not-empty owners)
       (doseq [stakeholder-id owners]
@@ -162,14 +166,18 @@
           [:capacity_building {:optional true} boolean?]
           [:is_member {:optional true} boolean?]
           [:sub_content_type {:optional true} string?]
+          [:related_content {:optional true}
+           [:vector {:optional true} integer?]]
+          [:first_publication_date {:optional true} string?]
+          [:latest_amendment_date {:optional true} string?]
           [:entity_connections {:optional true}
            [:vector {:optional true}
-            [:map
+            [:map {:optional true}
              [:role string?]
              [:entity int?]]]]
           [:individual_connections {:optional true}
            [:vector {:optional true}
-            [:map
+            [:map {:optional true}
              [:role string?]
              [:stakeholder int?]]]]
           [:tags {:optional true}

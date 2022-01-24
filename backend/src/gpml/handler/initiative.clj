@@ -52,8 +52,10 @@
           user (db.stakeholder/stakeholder-by-email conn jwt-claims)
           data (assoc body-params :created_by (:id user))
           initiative-id (jdbc/with-db-transaction [tx-conn conn]
-                          (let [initiative-id (db.initiative/new-initiative tx-conn (dissoc data :owners))
-                                {:keys [owners entity_connections individual_connections]} data]
+                          (let [initiative-id (db.initiative/new-initiative
+                                                tx-conn
+                                                (dissoc data :owners :entity_connections :individual_connections :tags))
+                                {:keys [owners tags entity_connections individual_connections]} data]
                             (add-geo-initiative tx-conn (:id initiative-id) (extract-geo-data data))
                             (when (not-empty owners)
                               (doseq [stakeholder-id owners]
@@ -67,6 +69,9 @@
                             (when (not-empty individual_connections)
                               (doseq [association (expand-individual-associations entity_connections initiative-id)]
                                 (db.favorite/new-association conn association)))
+                            (when (not-empty tags)
+                              (db.initiative/add-initiative-tags conn {:tags
+                                                                   (map #(vector initiative-id %) tags)}))
                             initiative-id))]
       (email/notify-admins-pending-approval
        conn

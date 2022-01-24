@@ -17,6 +17,9 @@ insert into technology(
     logo
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :created_by) ", created_by")
+--~ (when (contains? params :info_docs) ", info_docs")
+--~ (when (contains? params :sub_content_type) ", sub_content_type")
+--~ (when (contains? params :related_content) ", related_content")
 )
 values(
     :name,
@@ -35,6 +38,9 @@ values(
     :logo
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :created_by) ", :created_by")
+--~ (when (contains? params :info_docs) ", :info_docs")
+--~ (when (contains? params :sub_content_type) ", :sub_content_type")
+--~ (when (contains? params :related_content) ", :related_content")
 )
 returning id;
 
@@ -156,3 +162,10 @@ select st.id, st.association as role, concat_ws(' ', s.first_name, s.last_name) 
 -- :doc List all technologies
 select id, title
   from technology;
+
+-- :name related-content-by-id
+-- :doc Get related content by id
+select tech.id, tech.name as title from technology t
+  left join technology tech
+  on tech.id = ANY(t.related_content)
+  where t.id = :id
