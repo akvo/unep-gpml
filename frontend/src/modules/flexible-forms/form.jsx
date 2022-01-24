@@ -164,9 +164,9 @@ const FlexibleForm = withRouter(
         data.geoCoverageCountryGroups = data.geoCoverageValueTransnational.map(
           (x) => parseInt(x)
         );
-        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
-          parseInt(x)
-        );
+        data.geoCoverageCountries =
+          data.geoCoverageCountries &&
+          data.geoCoverageCountries.map((x) => parseInt(x));
         delete data.geoCoverageValueTransnational;
       }
 
