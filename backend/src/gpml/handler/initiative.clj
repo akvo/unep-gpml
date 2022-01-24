@@ -53,7 +53,7 @@
     (add-geo-initiative conn initiative-id (extract-geo-data data))
     (when (not-empty owners)
       (doseq [stakeholder-id owners]
-        (h.auth/grant-topic-to-stakeholder! conn {:topic-id (:id initiative-id)
+        (h.auth/grant-topic-to-stakeholder! conn {:topic-id initiative-id
                                                   :topic-type "initiative"
                                                   :stakeholder-id stakeholder-id
                                                   :roles ["owner"]})))
