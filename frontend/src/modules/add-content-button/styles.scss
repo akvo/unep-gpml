@@ -10,77 +10,35 @@ $bg-green-primary: #10f9b7;
   bottom: 150px;
   right: 19px;
   width: 100%;
-  max-width: 305px;
-  .button-container {
-    position: relative;
+  max-width: max-content;
+  display: block;
 
-    border-radius: 90px;
-    width: 100%;
+  .add-button {
+    height: auto;
+    color: #fff;
+    max-width: 143px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    z-index: 2;
+    left: calc(100% - 143px - 9px);
+    bottom: 6px;
+    padding: 36px;
+    background-color: $bg-green-primary;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px #000000;
+    svg rect {
+      stroke: currentColor;
+    }
+  }
+
+  &:hover {
     max-width: 305px;
-    .button-mask,
-    .default-button {
-      cursor: pointer;
-      width: 100%;
+    .add-button {
       max-width: 305px;
-      font-weight: bold;
-      font-size: 22px;
-      line-height: 20px;
-      padding-left: 24px;
-      padding-top: 18px;
-      padding-right: 43px;
-      padding-bottom: 18px;
-      border-radius: 90px;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
-
-    .default-button {
-      color: $bg-dark-secondary;
-      background-color: $bg-green-primary;
-      border: 3px solid #ffffff;
-    }
-
-    .button-mask span {
-      display: none;
-    }
-
-    .button-mask,
-    .button-container:hover .button-mask {
-      -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    }
-
-    .button-mask {
-      max-width: 85px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      color: $bg-green-primary;
-      background-color: $bg-dark-secondary;
-      border: 3px solid $bg-green-primary;
-    }
-
-    &:hover .button-mask {
-      opacity: 1;
-      transform: translate(5px, 4px);
-    }
-  }
-
-  svg {
-    width: 100%;
-    max-width: 45px;
   }
 }
 
-.workspace-button-wrapper:hover {
-  .button-mask {
-    max-width: 305px;
-  }
 
-  .button-mask span {
-    display: block;
-  }
-}
