@@ -107,9 +107,7 @@ const getSchema = ({
     let array = Object.keys(tags)
       .map((k) => tags[k])
       .flat();
-    const tagsPlusTopics = tags?.topics
-      ? tags.technicalResourceType?.concat(tags.topics)
-      : array;
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -122,9 +120,7 @@ const getSchema = ({
     let array = Object.keys(tags)
       .map((k) => tags[k])
       .flat();
-    const tagsPlusTopics = tags?.topics
-      ? tags.events?.concat(tags.topics)
-      : array;
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -137,9 +133,7 @@ const getSchema = ({
     let array = Object.keys(tags)
       .map((k) => tags[k])
       .flat();
-    const tagsPlusTopics = tags?.topics
-      ? tags.events?.concat(tags.topics)
-      : array;
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -152,9 +146,7 @@ const getSchema = ({
     let array = Object.keys(tags)
       .map((k) => tags[k])
       .flat();
-    const tagsPlusTopics = tags?.topics
-      ? tags.technology?.concat(tags.topics)
-      : array;
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -167,9 +159,7 @@ const getSchema = ({
     let array = Object.keys(tags)
       .map((k) => tags[k])
       .flat();
-    const tagsPlusTopics = tags?.topics
-      ? tags.policy?.concat(tags.topics)
-      : array;
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -185,9 +175,10 @@ const getSchema = ({
   }
 
   if (selectedMainContentType === "financing") {
-    const tagsPlusTopics = tags?.topics
-      ? tags.financingMechanism?.concat(tags.topics)
-      : tags.financingMechanism;
+    let array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat();
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
