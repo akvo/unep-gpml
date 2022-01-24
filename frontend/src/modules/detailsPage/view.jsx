@@ -444,6 +444,8 @@ const DetailsView = ({
     );
   }
 
+  console.log(data?.tags);
+
   return (
     <div id="details">
       <div className="section-header">
@@ -535,10 +537,12 @@ const DetailsView = ({
                         <List.Item.Meta
                           avatar={<Avatar src={TagsImage} />}
                           title={
-                            data?.tags &&
-                            data?.tags
-                              .map((tag) => Object.values(tag)[0])
-                              .join(", ")
+                            <ul>
+                              {data?.tags &&
+                                data?.tags.map((tag) => (
+                                  <li>{Object.values(tag)[0]}</li>
+                                ))}
+                            </ul>
                           }
                         />
                       </List.Item>
