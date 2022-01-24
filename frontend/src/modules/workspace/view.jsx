@@ -37,6 +37,7 @@ const Workspace = ({ profile }) => {
                   </article>
                   <a
                     href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
+                    target="_blank"
                     className="download-link"
                   >
                     <img src={DownloadPdf} alt="download-pdf-document" />
