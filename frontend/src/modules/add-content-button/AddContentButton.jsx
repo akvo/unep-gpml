@@ -7,7 +7,7 @@ const AddContentButton = () => {
   return (
     <div className="workspace-button-wrapper">
       <Button className="add-button">
-        <AddIcon />
+        <AddIcon /> <span className="button-text">Add content</span>
       </Button>
     </div>
   );
