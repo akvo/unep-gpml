@@ -5,7 +5,10 @@ ALTER TABLE organisation_initiative
 DROP COLUMN association cascade;
 --;;
 ALTER TABLE organisation_initiative
-ADD COLUMN association initiative_association;
+ADD COLUMN association initiative_association NOT NULL;
+--;;
+ALTER TABLE organisation_initiative
+ADD CONSTRAINT organisation_initiative_association_key UNIQUE (organisation, initiative, association);
 --;;
 ALTER TABLE stakeholder_initiative
 DROP COLUMN association cascade;
