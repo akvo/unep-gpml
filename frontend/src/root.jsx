@@ -67,7 +67,6 @@ import CapacityBuilding from "./modules/capacity-building/view";
 
 // New Details Page
 import NewDetailsView from "./modules/detailsPage/view";
-import AddContentButton from "./modules/workspace/AddContentButton";
 import CaseStudies from "./modules/case-studies/view";
 import KnowledgeLibrary from "./modules/knowledge-library/view";
 
@@ -251,7 +250,6 @@ const Root = () => {
     <Router>
       <ScrollToTop />
       <div id="root">
-        <AddContentButton />
         {storage.getCookie("showDisclaimer") !== "false" &&
           disclaimerContent?.[disclaimer] && (
             <div className="panel-disclaimer">
