@@ -28,6 +28,7 @@ import {
   UserOutlined,
   ArrowRightOutlined,
   LoadingOutlined,
+  EyeOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -92,7 +93,7 @@ const SharePanel = ({ data, canDelete }) => {
     <div className="sticky-panel">
       <div className="sticky-panel-item">
         <a href={`https://${data?.url}`} target="_blank">
-          <DownloadOutlined />
+          <EyeOutlined />
           <h2>View</h2>
         </a>
       </div>
@@ -444,6 +445,8 @@ const DetailsView = ({
     );
   }
 
+  console.log(data?.tags);
+
   return (
     <div id="details">
       <div className="section-header">
@@ -535,10 +538,12 @@ const DetailsView = ({
                         <List.Item.Meta
                           avatar={<Avatar src={TagsImage} />}
                           title={
-                            data?.tags &&
-                            data?.tags
-                              .map((tag) => Object.values(tag)[0])
-                              .join(", ")
+                            <ul>
+                              {data?.tags &&
+                                data?.tags.map((tag) => (
+                                  <li>{Object.values(tag)[0]}</li>
+                                ))}
+                            </ul>
                           }
                         />
                       </List.Item>

@@ -1787,10 +1787,6 @@ export const schema = {
         },
         required: [],
         properties: {
-          publishYear: {
-            title: "Year",
-            type: "string",
-          },
           value: {
             type: "object",
             title: "",
@@ -2302,11 +2298,6 @@ export const schema = {
           eventType: {
             title: "Event Type",
             enum: ["Online", "In Person", "Hybrid"],
-          },
-          recording: {
-            title: "URL",
-            type: "string",
-            format: "url",
           },
         },
       },
