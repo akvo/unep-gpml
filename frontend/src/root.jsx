@@ -73,6 +73,7 @@ import CaseStudies from "./modules/case-studies/view";
 
 // Buttons
 import AddContentButton from "./modules/add-content-button/AddContentButton";
+import StakeholderOverview from "./modules/stakeholder-overview/view";
 
 Promise.all([
   api.get("/tag"),
@@ -537,6 +538,11 @@ const Root = () => {
             exact
             render={(props) => <StakeholderDetail {...props} />}
             path="/stakeholder-detail"
+          />
+          <Route
+            exact
+            render={(props) => <StakeholderOverview {...props} />}
+            path="/stakeholder-overview"
           />
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event)/:id"
