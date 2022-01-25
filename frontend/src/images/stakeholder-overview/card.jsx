@@ -36,8 +36,8 @@ const ProfileCard = () => {
 
           <ul className="social-media-list">
             <li className="list-item">
-              <a href="" className="social-media-link linkdin">
-                Linkdin
+              <a href="" className="social-media-link linkedin">
+                Linkedin
               </a>
             </li>
             <li className="list-item">

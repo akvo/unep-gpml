@@ -148,8 +148,7 @@ const FilterDrawer = ({
             <Row type="flex" gutter={[10, 10]}>
               {topicTypes.map((type) => {
                 const topic = humps.decamelize(type);
-                const count =
-                  countData?.find((it) => it.topic === topic)?.count || 0;
+
                 return (
                   <Col span={6} key={type}>
                     <Card
@@ -160,7 +159,6 @@ const FilterDrawer = ({
                     >
                       <Space direction="vertical" align="center">
                         <div className="topic-text">{topicNames(type)}</div>
-                        <div className="topic-count">{count}</div>
                       </Space>
                     </Card>
                   </Col>
@@ -190,10 +188,10 @@ const FilterDrawer = ({
               <p className="specificity-title">For individuals</p>
               <Col span={6}>
                 <Card
-                // onClick={() => handleChangeResourceType("topic", topic)}
-                className={classNames("resource-type-card", {
-                  active: query?.topic?.includes(topic),
-                })}
+                  // onClick={() => handleChangeResourceType("topic", topic)}
+                  className={classNames("resource-type-card", {
+                    active: query?.topic?.includes(topic),
+                  })}
                 >
                   <Space direction="vertical" align="center">
                     <Badge />

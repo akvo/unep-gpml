@@ -9,7 +9,7 @@ import DownArrow from "../../images/knowledge-library/chevron-down.svg";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 
 const Header = ({ filterVisible, setFilterVisible }) => {
-  const [view, setView] = useState("map");
+  const [view, setView] = useState("list");
 
   const selectionValue = (
     <div className="selection-value">
@@ -17,7 +17,7 @@ const Header = ({ filterVisible, setFilterVisible }) => {
         <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
       </button>
       <span className="label text-white">{`${view} view`}</span>
-      {view.toLowerCase().includes("map") ? (
+      {view.toLowerCase().includes("list") ? (
         <img src={GlobeOutlined} alt="globe-icon" />
       ) : (
         <img src={TooltipOutlined} alt="tooltip-icon" />
@@ -68,7 +68,7 @@ const Header = ({ filterVisible, setFilterVisible }) => {
               value={selectionValue}
               onChange={(val) => setView(val)}
             >
-              <Select.Option value="map">Map View</Select.Option>
+              <Select.Option value="list">List View</Select.Option>
               <Select.Option value="topic">Topic View </Select.Option>
             </Select>
           </Col>
