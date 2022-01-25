@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Row, Col, Space, Drawer, Tag, Card, Select, DatePicker } from "antd";
+import {
+  Row,
+  Col,
+  Space,
+  Drawer,
+  Tag,
+  Card,
+  Select,
+  DatePicker,
+  Button,
+} from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
@@ -18,6 +28,8 @@ import { ReactComponent as AchievementIcon } from "../../images/stakeholder-over
 import { ReactComponent as AgreementIcon } from "../../images/stakeholder-overview/agreement-icon.svg";
 import { ReactComponent as GPMLLogo } from "../../images/stakeholder-overview/gpml-logo.svg";
 import { ReactComponent as Badge } from "../../images/stakeholder-overview/badge-outlined.svg";
+import { ReactComponent as CommunityIcon } from "../../images/stakeholder-overview/community-outlined.svg";
+import { ReactComponent as UnionIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
 const FilterDrawer = ({
   filterVisible,
@@ -146,24 +158,38 @@ const FilterDrawer = ({
             </Space>
 
             <Row type="flex" gutter={[10, 10]}>
-              {topicTypes.map((type) => {
-                const topic = humps.decamelize(type);
+              {/* {topicTypes.map((type) => {
+                const topic = humps.decamelize(type); */}
 
-                return (
-                  <Col span={6} key={type}>
-                    <Card
-                      onClick={() => handleChangeResourceType("topic", topic)}
-                      className={classNames("resource-type-card", {
-                        active: query?.topic?.includes(topic),
-                      })}
-                    >
-                      <Space direction="vertical" align="center">
-                        <div className="topic-text">{topicNames(type)}</div>
-                      </Space>
-                    </Card>
-                  </Col>
-                );
-              })}
+              {/* return ( */}
+              <Col span={6}>
+                <Card
+                  onClick={() => handleChangeResourceType("topic", "")}
+                  className={classNames("resource-type-card", {
+                    active: query?.topic?.includes(""),
+                  })}
+                >
+                  <Space direction="vertical" align="center">
+                    <UnionIcon />
+                    <div className="topic-text">Individuals</div>
+                  </Space>
+                </Card>
+              </Col>
+              {/* );
+              })} */}
+              <Col span={6}>
+                <Card
+                  onClick={() => handleChangeResourceType("topic", "")}
+                  className={classNames("resource-type-card", {
+                    active: query?.topic?.includes(""),
+                  })}
+                >
+                  <Space direction="vertical" align="center">
+                    <CommunityIcon />
+                    <div className="topic-text">Entities</div>
+                  </Space>
+                </Card>
+              </Col>
             </Row>
           </Col>
 
@@ -310,6 +336,12 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
+          <Col className='drawer-button-wrapper'>
+            <Button className="show-stakeholder-btn">
+              Show stakeholders (87)
+            </Button>
+            <Button className="clear-all-btn">Clear all</Button>
+          </Col>
         </Row>
       </Drawer>
     </div>
