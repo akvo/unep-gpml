@@ -2303,11 +2303,6 @@ export const schema = {
             title: "Event Type",
             enum: ["Online", "In Person", "Hybrid"],
           },
-          recording: {
-            title: "URL",
-            type: "string",
-            format: "url",
-          },
         },
       },
     },

@@ -1382,11 +1382,6 @@
       "eventType": {
         "ui:placeholder": "Choose event type",
         "ui:widget": "select"
-      },
-      "recording": {
-        "ui:addOnBefore": "https://",
-        "ui:widget": "URLWidget",
-        "ui:placeholder": "Url"
       }
     }
   },
