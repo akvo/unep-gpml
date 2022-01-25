@@ -266,6 +266,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                 size="small"
                 shape="circle"
                 icon={
+                  data?.[section]?.S4_G5.individual &&
                   data?.[section]?.S4_G5.individual[0].hasOwnProperty(
                     "role"
                   ) ? (
@@ -277,11 +278,11 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                 style={{
                   right: "0",
                   position: "absolute",
-                  color: data?.[section]?.S4_G5.individual[0].hasOwnProperty(
-                    "role"
-                  )
-                    ? "#255B87"
-                    : "#fff",
+                  color:
+                    data?.[section]?.S4_G5.individual &&
+                    data?.[section]?.S4_G5.individual[0].hasOwnProperty("role")
+                      ? "#255B87"
+                      : "#fff",
                   borderColor: "#255B87",
                   backgroundColor: background,
                   display: display,

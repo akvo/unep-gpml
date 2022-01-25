@@ -91,7 +91,8 @@ const NormalArrayFieldTemplate = ({
                     <Panel
                       header={
                         <div className="collapse-heaeder">
-                          {formContext?.data.S4["S4_G5"][label].length > 0 &&
+                          {formContext?.data.S4["S4_G5"][label] &&
+                          formContext?.data.S4["S4_G5"][label].length > 0 &&
                           formContext?.data.S4["S4_G5"][label][
                             index
                           ]?.hasOwnProperty("role")
@@ -116,7 +117,8 @@ const NormalArrayFieldTemplate = ({
                       key={index}
                       extra={
                         <>
-                          {formContext?.data.S4["S4_G5"][label].length > 0 &&
+                          {formContext?.data.S4["S4_G5"][label] &&
+                            formContext?.data.S4["S4_G5"][label].length > 0 &&
                             formContext?.data.S4["S4_G5"][label][
                               index
                             ]?.hasOwnProperty("role") && (
