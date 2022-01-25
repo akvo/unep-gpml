@@ -933,15 +933,6 @@
     },
     "S5": {
       "classNames": "list-group",
-      "publishYear": {
-        "ui:widget": "date",
-        "ui:showSearch": true,
-        "ui:span": 17,
-        "ui:options": {
-          "mode": "year",
-          "disableDate": "future"
-        }
-      },
       "value": {
         "ui:group": "border",
         "valueAmount": {
