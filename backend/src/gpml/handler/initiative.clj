@@ -61,7 +61,7 @@
       (doseq [association (expand-entity-associations entity_connections initiative-id)]
         (db.favorite/new-organisation-association conn association)))
     (when (not-empty individual_connections)
-      (doseq [association (expand-individual-associations entity_connections initiative-id)]
+      (doseq [association (expand-individual-associations individual_connections initiative-id)]
         (db.favorite/new-association conn association)))
     (when (not-empty tags)
       (db.initiative/add-initiative-tags conn {:tags (map #(vector initiative-id %) tags)}))

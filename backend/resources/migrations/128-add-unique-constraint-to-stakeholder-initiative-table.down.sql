@@ -1,0 +1,2 @@
+ALTER TABLE stakeholder_initiative
+DROP CONSTRAINT stakeholder_initiative_association_key;
