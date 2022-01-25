@@ -13,7 +13,7 @@ import LeftSidebar from "../left-sidebar/LeftSidebar";
 import ResourceList from "./ResourceList";
 import FilterDrawer from "./FilterDrawer";
 import { useQuery } from "./common";
-import { useLocation } from "react-router-dom";
+import { useLocation, withRouter } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import api from "../../utils/api";
 import { redirectError } from "../error/error-util";
@@ -361,10 +361,12 @@ const KnowledgeLibrary = ({
   );
 };
 
-const Search = () => {
+const Search = withRouter(({ history }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
-    console.log(src);
+    if (src) {
+      history.push(`/browse/?q=${src.trim()}`);
+    }
   };
 
   return (
@@ -386,6 +388,6 @@ const Search = () => {
       />
     </div>
   );
-};
+});
 
 export default KnowledgeLibrary;
