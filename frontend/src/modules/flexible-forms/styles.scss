@@ -463,7 +463,9 @@
             &.selected {
               background: rgba(52, 166, 255, 0.1);
               border: 2px solid #34a6ff;
-
+              color: #181818;
+              font-weight: 600;
+              line-height: 18px;
               .info-icon-wrapper {
                 background: #fff;
               }
