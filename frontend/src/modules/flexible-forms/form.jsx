@@ -263,7 +263,14 @@ const FlexibleForm = withRouter(
 
       data.sub_content_type = subContentType;
 
-      console.log(data);
+      if (data.q24.hasOwnProperty("transnational")) {
+        data.q24_2 = data.q24_4;
+        data.q24_4 = data.q24_3;
+        data.q24_3 = null;
+      }
+      if (data.q24.hasOwnProperty("national")) {
+        data.q24_2 = [data.q24_2];
+      }
 
       if (status === "add" && !params?.id) {
         api
