@@ -77,6 +77,16 @@ export const relationsByTopicType = {
   organisation: ["interested in", "other"],
 };
 
+export const entityName = (entity) => {
+  const names = {
+    partner: "Sponsors",
+    owner: "GPML Members",
+    implementor: "Center of excellence",
+    donor: "Partners",
+  };
+  return names[humps.camelize(entity)];
+};
+
 export const userRoles = ["USER", "REVIEWER", "ADMIN"];
 
 export const reviewStatusUIText = {
