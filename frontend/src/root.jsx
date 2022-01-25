@@ -70,6 +70,7 @@ import CapacityBuilding from "./modules/capacity-building/view";
 // New Details Page
 import NewDetailsView from "./modules/detailsPage/view";
 import CaseStudies from "./modules/case-studies/view";
+import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 // Buttons
 import AddContentButton from "./modules/add-content-button/AddContentButton";
@@ -365,6 +366,23 @@ const Root = () => {
             exact
             path="/glossary"
             render={(props) => <Glossary {...props} />}
+          />
+          <Route
+            path="/knowledge-library"
+            render={(props) => (
+              <KnowledgeLibrary
+                {...{
+                  setWarningModalVisible,
+                  ...props,
+                }}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                filters={filters}
+                setFilters={setFilters}
+                filterMenu={filterMenu}
+              />
+            )}
           />
           <Route
             path="/browse"
