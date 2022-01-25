@@ -158,3 +158,10 @@ select ev.id, ev.title from event e
   left join event ev
   on ev.id = any(e.related_content)
 where e.id = :id
+
+-- :name tags-by-id
+-- :doc Get tags by id
+select t.id, t.tag from event_tag et
+  left join tag t
+  on et.tag = t.id
+  where et.event = :id

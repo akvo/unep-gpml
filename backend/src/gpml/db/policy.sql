@@ -158,3 +158,10 @@ select pol.id, pol.title from policy p
   on pol.id = ANY(p.related_content)
   where p.id = :id
 
+-- :name tags-by-id
+-- :doc Get tags by id
+select t.id, t.tag from policy_tag pt
+  left join tag t
+  on pt.tag = t.id
+  where pt.policy = :id
+
