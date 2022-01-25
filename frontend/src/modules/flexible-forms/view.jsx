@@ -478,8 +478,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
   };
 
-  console.log(subContentType);
-
   return (
     <div id="flexible-forms">
       <StickyBox style={{ zIndex: 10 }}>

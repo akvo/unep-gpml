@@ -55,9 +55,9 @@ export const schema = {
             },
             required: [
               "geoCoverageType",
-              "geoCoverageValueTransnational",
-              "geoCoverageCountries",
-              "geoCoverageValueNational",
+              "S4_G2_24.3",
+              "S4_G2_24.3",
+              "S4_G2_24.2",
               "geoCoverageValueSubnational",
               "geoCoverageValueSubnationalCity",
             ],
@@ -73,25 +73,31 @@ export const schema = {
                   "Subnational",
                 ],
               },
-              geoCoverageValueTransnational: {
+              "S4_G2_24.3": {
                 title: "GEO COVERAGE (Transnational)",
+                type: "string",
                 enum: [],
+                enumNames: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["transnational"],
                 },
               },
-              geoCoverageCountries: {
+              "S4_G2_24.4": {
                 title: "GEO COVERAGE (Countries)",
+                type: "string",
                 enum: [],
+                enumNames: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["transnational"],
                 },
               },
-              geoCoverageValueNational: {
+              "S4_G2_24.2": {
                 title: "National",
+                type: "string",
                 enum: [],
+                enumNames: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["national"],
@@ -99,6 +105,7 @@ export const schema = {
               },
               geoCoverageValueSubnational: {
                 title: "Subnational",
+                type: "string",
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
