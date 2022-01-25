@@ -80,6 +80,7 @@
                                                     :mailjet-config mailjet-config))]
         (resp/created (:referrer req) {:message "New initiative created" :id initiative-id})))))
 
+
 (defmethod ig/init-key :gpml.handler.initiative/get [_ {:keys [db]}]
   (fn [{{{:keys [id]} :path} :parameters}]
     (let [conn (:spec db)

@@ -7,13 +7,18 @@ import ActionPlan from "./ActionPlan";
 
 import DownloadPdf from "../../images/workspace/download-pdf.svg";
 
-const Workspace = () => {
+const Workspace = ({ profile }) => {
+  const userName =
+    profile?.firstName !== undefined &&
+    profile?.lastName !== undefined &&
+    `${profile.firstName} ${profile.lastName}`;
+
   return (
     <div id="workspace">
-      <Header userName={"John Morizot"} />
+      <Header userName={userName} />
       <Row type="flex">
-        <LeftSidebar />
-        <Col lg={21} md={21} xs={24} order={2}>
+        <LeftSidebar profile={profile} />
+        <Col lg={22} md={24} xs={24} order={2}>
           <Row>
             <Col span={24} style={{ position: "relative" }}>
               <div className="section-download text-white">
@@ -30,7 +35,11 @@ const Workspace = () => {
                       different phases of the Action Plan Creation Workflow.
                     </p>
                   </article>
-                  <a href="#" className="download-link">
+                  <a
+                    href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
+                    target="_blank"
+                    className="download-link"
+                  >
                     <img src={DownloadPdf} alt="download-pdf-document" />
                     <span className="download-text text-white">Download</span>
                   </a>

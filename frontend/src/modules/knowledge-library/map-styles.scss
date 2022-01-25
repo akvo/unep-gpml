@@ -2,14 +2,24 @@
 
 #map-landing {
   position: relative;
+  height: 100%;
+
+  .landing-container.map-container > div {
+    height: 100% !important;
+  }
 
   .landing-container.map-container {
+    height: 100%;
     position: relative;
-    padding-top: 40px;
+    padding-top: 0;
     padding-bottom: 40px;
     background-color: #eaf6fd !important;
     border-bottom: none !important;
     z-index: 1;
+
+    svg {
+      height: 100% !important;
+    }
 
     h2.loading {
       color: #036799;
@@ -21,17 +31,13 @@
 
     .map-overlay {
       position: absolute;
-      z-index: 10;
-      left: 60px;
-      top: 40px;
+      z-index: 1;
+      left: 0 !important;
+      top: 0 !important;
 
       .ant-select {
         width: 100%;
         margin-bottom: 10px;
-      }
-
-      .resource-list-header {
-        background: #edf2f7;
       }
 
       .country-filter-tab,
@@ -43,12 +49,6 @@
 
       .country-filter-tab {
         margin-bottom: 1.5rem;
-
-        .ant-select-selection-placeholder,
-        .ant-select-selection-item {
-          text-align: left;
-        }
-
         .country-filter-tab-pane {
           padding: 0.5rem 1rem;
         }
@@ -103,7 +103,6 @@
           color: #036799;
           font-size: 13px;
           font-weight: 600;
-          text-align: left;
           line-height: 30px;
           padding: 0 10px 2px;
         }
@@ -162,7 +161,6 @@
               max-width: 315px;
               padding-right: 5px;
               color: #036799;
-              text-align: left;
             }
 
             &:not(:last-child) {
@@ -206,7 +204,6 @@
               color: $primaryColor;
               font-weight: 700;
               text-transform: capitalize;
-              text-align: left;
             }
 
             span {
@@ -245,10 +242,13 @@
   }
 
   .map-buttons {
+    top: 10px;
     position: absolute;
     z-index: 999;
+    display: flex;
 
     button {
+      width: 35px;
       margin-left: 10px;
     }
   }
