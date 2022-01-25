@@ -89,6 +89,12 @@
         justify-content: center;
         display: flex;
         flex-direction: column;
+
+        &:first-child {
+          span {
+            color: #1ca585;
+          }
+        }
         a {
           text-align: center;
         }
