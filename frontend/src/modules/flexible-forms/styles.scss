@@ -434,8 +434,13 @@
             border-radius: 13px;
             border: 2px solid #10f9b7;
             height: auto;
-            padding: 10px 10px;
+            padding: 10px 8px;
             margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            line-height: 18px;
             span {
               &:nth-child(2) {
                 display: flex;
@@ -455,7 +460,7 @@
               justify-content: center;
               border-radius: 50%;
             }
-            &.ant-radio-button-wrapper-checked {
+            &.selected {
               background: rgba(52, 166, 255, 0.1);
               border: 2px solid #34a6ff;
 

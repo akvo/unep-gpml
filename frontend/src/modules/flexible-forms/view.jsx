@@ -436,14 +436,14 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   };
 
   const handleSubContentType = (e) => {
-    setSubType(e.target.value);
+    setSubType(e);
     if (
       mainType === "capacity_building" &&
-      (e.target.value === "Guidance Documents" ||
-        e.target.value === "Tools & toolkits" ||
-        e.target.value === "Courses & Trainings" ||
-        e.target.value === "Educational & Outreach resources" ||
-        e.target.value === "Case studies")
+      (e === "Guidance Documents" ||
+        e === "Tools & toolkits" ||
+        e === "Courses & Trainings" ||
+        e === "Educational & Outreach resources" ||
+        e === "Case studies")
     ) {
       setLabel("Technical Resource");
       setFormSchema({ schema: schema["technical"] });
@@ -452,10 +452,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
         event.selectedMainContentType = "technical";
       });
     }
-    if (
-      mainType === "capacity_building" &&
-      e.target.value === "Financing Resources"
-    ) {
+    if (mainType === "capacity_building" && e === "Financing Resources") {
       setLabel("Financing Resource");
       setFormSchema({ schema: schema["financing"] });
       setCapacityBuilding(true);
@@ -463,7 +460,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
         event.selectedMainContentType = "financing";
       });
     }
-    if (mainType === "capacity_building" && e.target.value === "Events") {
+    if (mainType === "capacity_building" && e === "Events") {
       setLabel("Event");
       setFormSchema({ schema: schema["event_flexible"] });
       setCapacityBuilding(true);
@@ -471,7 +468,17 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
         event.selectedMainContentType = "event_flexible";
       });
     }
+    if (mainType === "capacity_building" && e === "Initiatives") {
+      setLabel("Initiatives");
+      setFormSchema({ schema: schema["initiative"] });
+      setCapacityBuilding(true);
+      UIStore.update((event) => {
+        event.selectedMainContentType = "initiative";
+      });
+    }
   };
+
+  console.log(subContentType);
 
   return (
     <div id="flexible-forms">
@@ -692,22 +699,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                           <h5>Pick the sub-content type</h5>
                           <span>Optional</span>
                         </div>
-                        {subType && (
-                          <div
-                            className="clear-button"
-                            onClick={() => setSubType("")}
-                          >
-                            Clear Selection
-                          </div>
-                        )}
                       </div>
                       {subContentType.length > 0 ? (
                         <div className="sub-content-topics">
-                          <Radio.Group
-                            className="ant-row"
-                            onChange={handleSubContentType}
-                            value={subType}
-                          >
+                          <div className="ant-row" value={subType}>
                             {subContentType.map((item, index) => (
                               <Col
                                 className="gutter-row"
@@ -715,10 +710,18 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                                 lg={6}
                                 key={index}
                               >
-                                <Radio.Button
-                                  id={item}
-                                  value={item.title}
+                                <div
+                                  className={`ant-radio-button-wrapper ${
+                                    item.title === subType ? "selected" : ""
+                                  }`}
                                   key={index}
+                                  onClick={() => {
+                                    if (item.title === subType) {
+                                      setSubType("");
+                                    } else {
+                                      handleSubContentType(item.title);
+                                    }
+                                  }}
                                 >
                                   {item.title}
                                   <Popover content={item.des}>
@@ -726,10 +729,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                                       <img src={InfoBlue} />
                                     </div>
                                   </Popover>
-                                </Radio.Button>
+                                </div>
                               </Col>
                             ))}
-                          </Radio.Group>
+                          </div>
                         </div>
                       ) : (
                         <div className="before-selection">
