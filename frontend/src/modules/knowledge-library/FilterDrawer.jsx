@@ -64,7 +64,9 @@ const FilterDrawer = ({
 
   const handleChangeResourceType = (flag, type) => {
     const val = query[flag];
+
     let updateVal = [];
+
     if (isEmpty(val)) {
       updateVal = [type];
     } else if (val.includes(type)) {
@@ -168,6 +170,7 @@ const FilterDrawer = ({
                   className="clear-selection"
                   closable={true}
                   onClick={() => updateQuery("topic", [])}
+                  onClose={() => updateQuery("topic", [])}
                 >
                   Clear selection
                 </Tag>
@@ -251,6 +254,7 @@ const FilterDrawer = ({
                   onClick={() => {
                     updateQuery("country", []);
                   }}
+                  onClose={() => updateQuery("country", [])}
                 >
                   Clear Country Selection
                 </Tag>
@@ -264,6 +268,7 @@ const FilterDrawer = ({
                   onClick={() => {
                     updateQuery("transnational", []);
                   }}
+                  onClose={() => updateQuery("transnational", [])}
                 >
                   Clear Multi-Country Selection
                 </Tag>
@@ -432,6 +437,7 @@ const MultipleSelectFilter = ({
             className="clear-selection"
             closable
             onClick={() => updateQuery(flag, [])}
+            onClose={() => updateQuery(flag, [])}
           >
             Clear Selection
           </Tag>
@@ -482,6 +488,7 @@ const DatePickerFilter = ({
             className="clear-selection"
             closable
             onClick={() => updateQuery(flag, [])}
+            onClose={() => updateQuery(flag, [])}
           >
             Clear Selection
           </Tag>
