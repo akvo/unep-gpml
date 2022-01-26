@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -49,6 +49,9 @@ const ResourceList = ({
       transnationalOptions: s.transnationalOptions,
     })
   );
+
+  const [allResults, setAllResults] = useState([]);
+
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
 
   const isLoaded = () =>
@@ -73,6 +76,17 @@ const ResourceList = ({
   );
 
   const allTopicCount = countData.reduce((acc, topic) => acc + topic.count, 0);
+
+  const sortResults = () => {
+    const sortedResult = results.sort((result1, result2) =>
+      result1.title.localeCompare(result2.title)
+    );
+    setAllResults(sortedResult);
+  };
+
+  useEffect(() => {
+    setAllResults([...results]);
+  }, [results]);
 
   return (
     <Row>
@@ -105,7 +119,7 @@ const ResourceList = ({
             </span>
           }
           extra={
-            <Button className="sort-btn">
+            <Button className="sort-btn" onClick={sortResults}>
               <img src={SortIcon} alt="sort-icon" />{" "}
               <span>
                 Sort By:
@@ -121,13 +135,13 @@ const ResourceList = ({
           <h2 className="loading">
             <LoadingOutlined spin /> Loading
           </h2>
-        ) : isLoaded() && !loading && !isEmpty(results) ? (
-          <ResourceItem results={results} />
+        ) : isLoaded() && !loading && !isEmpty(allResults) ? (
+          <ResourceItem results={allResults} />
         ) : (
           <h2 className="loading">There is no data to display</h2>
         )}
         <div className="page">
-          {!isEmpty(results) && (
+          {!isEmpty(allResults) && (
             <Pagination
               defaultCurrent={1}
               current={(filters?.offset || 0) / pageSize + 1}
