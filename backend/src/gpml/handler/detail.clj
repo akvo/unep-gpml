@@ -266,7 +266,8 @@
     {:entity_connections (db.initiative/entity-connections-by-id db (select-keys project [:id]))
      :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys project [:id]))
      :related_content (db.initiative/related-content-by-id db (select-keys project [:id]))
-     :tags (db.initiative/tags-by-id db (select-keys project [:id]))}
+     :tags (db.initiative/tags-by-id db (select-keys project [:id]))
+     :type "Initiative"}
     (if (> (:id project) 10000)
       (db.initiative/initiative-detail-by-id db project)
       (details-for-project db project))))
