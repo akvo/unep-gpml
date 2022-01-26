@@ -30,18 +30,15 @@ const LeftSidebar = ({ children, active = 1 }) => {
   ];
   const icons = [IconLibrary, IconLearning, IconExchange, IconCaseStudies];
   return (
-    <Row type="flex">
-      <Col lg={2} xs={24} order={1} className="sidebar">
-        <Row type="flex" justify="center">
+    <div id="siteWrapper">
+      <aside id="mainNavigation">
+        <ul className="sidebar">
           {sidebar.map((s, sx) => (
-            <Col
-              key={sx}
-              lg={24}
-              md={24}
-              xs={6}
+            <li
               className={classNames("item-sidebar", {
                 active: activeMenu === s.id,
               })}
+              key={sx}
             >
               {s.url ? (
                 <Link
@@ -58,14 +55,44 @@ const LeftSidebar = ({ children, active = 1 }) => {
                   <p>{s.title}</p>
                 </div>
               )}
-            </Col>
+            </li>
           ))}
-        </Row>
-      </Col>
-      <Col lg={22} xs={24} order={2}>
-        {children}
-      </Col>
-    </Row>
+        </ul>
+      </aside>
+      <div id="appWrapper">
+        <div id="appInnerWrapper">
+          <div id="bodyContent">
+            <ul className="ant-row ant-row-center sidebar-mobile">
+              {sidebar.map((s, sx) => (
+                <li
+                  className={classNames("ant-col ant-col-8 item-sidebar", {
+                    active: activeMenu === s.id,
+                  })}
+                  key={sx}
+                >
+                  {s.url ? (
+                    <Link
+                      to={s.url}
+                      className="item-menu"
+                      onClick={() => setActiveMenu(s.id)}
+                    >
+                      <img src={icons[sx] || IconLibrary} alt={s.title} />
+                      <p>{s.title}</p>
+                    </Link>
+                  ) : (
+                    <div className="ant-col ant-col-8 item-menu disabled">
+                      <img src={icons[sx] || IconLibrary} alt={s.title} />
+                      <p>{s.title}</p>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

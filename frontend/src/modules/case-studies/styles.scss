@@ -148,7 +148,21 @@ $green-primary: #4dffa5;
 .ml-1 {
   margin-left: 1em;
 }
-
+.carousel-control {
+  img {
+    position: absolute;
+    top: 45%;
+    z-index: 5;
+    width: 43px;
+    cursor: pointer;
+    &.carousel-next {
+      right: 0;
+    }
+    &.carousel-prev {
+      left: 0;
+    }
+  }
+}
 @media (min-width: 481px) and (max-width: 767px) {
   // ##Screen = B/w 481px to 767px
   .case-studies-page {
