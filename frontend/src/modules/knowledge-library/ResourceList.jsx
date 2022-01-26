@@ -51,6 +51,7 @@ const ResourceList = ({
   );
 
   const [allResults, setAllResults] = useState([]);
+  const [isAscending, setIsAscending] = useState(false);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
 
@@ -78,10 +79,18 @@ const ResourceList = ({
   const allTopicCount = countData.reduce((acc, topic) => acc + topic.count, 0);
 
   const sortResults = () => {
-    const sortedResult = results.sort((result1, result2) =>
-      result1.title.localeCompare(result2.title)
-    );
-    setAllResults(sortedResult);
+    if (!isAscending) {
+      const sortedResult = results.sort((result1, result2) =>
+        result1.title.localeCompare(result2.title)
+      );
+      setAllResults(sortedResult);
+    } else {
+      const originalOrder = results.sort((result1, result2) =>
+        result2.title.localeCompare(result1.title)
+      );
+      setAllResults([...results]);
+    }
+    setIsAscending(!isAscending);
   };
 
   useEffect(() => {
@@ -123,7 +132,7 @@ const ResourceList = ({
               <img src={SortIcon} alt="sort-icon" />{" "}
               <span>
                 Sort By:
-                <br /> <b>A&gt;Z</b>
+                <br /> {!isAscending ? <b>A&gt;Z</b> : <b>Z&gt;A</b>}
               </span>
             </Button>
           }
