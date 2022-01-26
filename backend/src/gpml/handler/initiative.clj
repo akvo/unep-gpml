@@ -48,10 +48,10 @@
           :remarks nil})))
 
 (defn create-initiative [conn {:keys [mailjet-config tags owners
-                                      entity_connections individual_connections image] :as initiative}]
+                                      entity_connections individual_connections qimage] :as initiative}]
   (let [data (-> initiative
                (dissoc :tags :owners :mailjet-config :entity_connections :individual_connections)
-               (assoc :image (handler.image/assoc-image conn image "initiative")))
+               (assoc :qimage (handler.image/assoc-image conn qimage "initiative")))
         initiative-id (:id (db.initiative/new-initiative conn data))]
     (add-geo-initiative conn initiative-id (extract-geo-data data))
     (when (not-empty owners)
