@@ -5,20 +5,20 @@ import { Row, Col } from "antd";
 
 // Icons
 import IconHome from "../../images/workspace/home-icon.svg";
-import IconBookmark from "../../images/workspace/bookmark-icon.svg";
-import IconNetwork from "../../images/workspace/network-icon.svg";
 import IconAdmin from "../../images/workspace/admin-icon.svg";
 
-const LeftSidebar = ({ active = 1 }) => {
+const LeftSidebar = ({ active = 1, profile }) => {
   const [activeMenu, setActiveMenu] = useState(active);
   const sidebar = [
     { id: 1, title: "Home", url: "/workspace" },
-    { id: 2, title: "Bookmarks", url: "" },
-    { id: 3, title: "Network", url: "" },
-    { id: 4, title: "Admin", url: "" },
+    {
+      id: 4,
+      title: "Admin",
+      url: profile.role !== "USER" ? "/profile/admin-section" : "",
+    },
   ];
 
-  const icons = [IconHome, IconBookmark, IconNetwork, IconAdmin];
+  const icons = [IconHome, IconAdmin];
 
   return (
     <Col lg={2} xs={24} order={1} className="sidebar">
@@ -29,10 +29,16 @@ const LeftSidebar = ({ active = 1 }) => {
             lg={24}
             md={24}
             xs={6}
-            className={classNames("item-sidebar", {
-              active: activeMenu === s.id,
-            })}
-            onClick={() => setActiveMenu(s.id)}
+            className={
+              s.url
+                ? classNames("item-sidebar", {
+                    active: activeMenu === s.id,
+                  })
+                : `${classNames("item-sidebar", {
+                    active: activeMenu === s.id,
+                  })} disabled`
+            }
+            onClick={() => s.url && setActiveMenu(s.id)}
           >
             {s.url ? (
               <Link
@@ -44,7 +50,7 @@ const LeftSidebar = ({ active = 1 }) => {
                 <p>{s.title}</p>
               </Link>
             ) : (
-              <div className="item-menu">
+              <div className="item-menu ">
                 <img src={icons[sx] || IconHome} alt={s.title} />
                 <p>{s.title}</p>
               </div>

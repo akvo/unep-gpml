@@ -109,6 +109,7 @@ $bg-green-primary: #10f9b7;
       display: flex;
       cursor: pointer;
       padding: 0;
+
       p {
         margin-top: 10px;
         text-transform: uppercase;
@@ -122,8 +123,17 @@ $bg-green-primary: #10f9b7;
         opacity: 0.5;
       }
 
-      &:last-child {
+      &:last-child,
+      &.active.disabled {
         background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      &.disabled {
+        cursor: no-drop;
+        img,
+        p {
+          opacity: 0.5;
+        }
       }
 
       &.active {
@@ -144,11 +154,17 @@ $bg-green-primary: #10f9b7;
           height: 100px;
           background-color: $green01;
         }
+
+        &.disabled::before {
+          display: none;
+        }
       }
+
       .item-menu {
         width: 100%;
         align-self: center;
         text-align: center;
+        padding: 13.5px 0 13.5px 0;
       }
     }
   }
@@ -233,18 +249,18 @@ $bg-green-primary: #10f9b7;
 
       &::after {
         right: -30px;
-        border-top: 61px solid transparent;
+        border-top: 59px solid transparent;
         border-left: 30px solid $grey01;
-        border-bottom: 61px solid transparent;
+        border-bottom: 59px solid transparent;
         z-index: 2;
         top: 0px;
       }
 
       &::before {
         left: -1px;
-        border-top: 61px solid transparent;
+        border-top: 59px solid transparent;
         border-left: 30px solid #fff;
-        border-bottom: 61px solid transparent;
+        border-bottom: 59px solid transparent;
         z-index: 1;
         top: 0px;
       }
@@ -295,72 +311,6 @@ $bg-green-primary: #10f9b7;
         padding: 6px;
         margin-right: 28.33px;
       }
-    }
-  }
-
-  .workspace-button-wrapper {
-    position: absolute;
-    z-index: 3;
-    bottom: 150px;
-    right: 19px;
-    width: 100%;
-    max-width: 305px;
-    .button-container {
-      position: relative;
-
-      border-radius: 90px;
-      width: 100%;
-      max-width: 305px;
-      .button-mask,
-      .default-button {
-        cursor: pointer;
-        width: 100%;
-        max-width: 305px;
-        font-weight: bold;
-        font-size: 22px;
-        line-height: 20px;
-        padding-left: 24px;
-        padding-top: 18px;
-        padding-right: 43px;
-        padding-bottom: 18px;
-        border-radius: 90px;
-        text-transform: uppercase;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .default-button {
-        color: $bg-dark-secondary;
-        background-color: $bg-green-primary;
-        border: 3px solid #ffffff;
-      }
-
-      .button-mask,
-      .button-container:hover .button-mask {
-        -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-      }
-
-      .button-mask {
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0;
-        color: $bg-green-primary;
-        background-color: $bg-dark-secondary;
-        border: 3px solid $bg-green-primary;
-      }
-
-      &:hover .button-mask {
-        opacity: 1;
-        transform: translate(5px, 4px);
-      }
-    }
-
-    svg {
-      width: 100%;
-      max-width: 45px;
     }
   }
 

@@ -172,14 +172,16 @@
           [:latest_amendment_date {:optional true} string?]
           [:entity_connections {:optional true}
            [:vector {:optional true}
-            [:map {:optional true}
-             [:role string?]
-             [:entity int?]]]]
+            [:map
+             [:entity int?]
+             [:role
+              [:enum "owner" "implementor" "partner" "donor"]]]]]
           [:individual_connections {:optional true}
            [:vector {:optional true}
-            [:map {:optional true}
-             [:role string?]
-             [:stakeholder int?]]]]
+            [:map
+             [:stakeholder int?]
+             [:role
+              [:enum "owner" "resource_editor"]]]]]
           [:tags {:optional true}
            [:vector {:optional true} integer?]]
           auth/owners-schema]

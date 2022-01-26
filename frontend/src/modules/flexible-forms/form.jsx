@@ -38,7 +38,6 @@ const FlexibleForm = withRouter(
     hideEntityPersonalDetail,
     tabsData,
     mainType,
-    owners,
     subContentType,
     capacityBuilding,
     match: { params },
@@ -64,6 +63,11 @@ const FlexibleForm = withRouter(
     const handleOnSubmit = ({ formData }) => {
       if (mainType === "Policy") {
         handleOnSubmitPolicy(formData);
+        return false;
+      }
+
+      if (mainType === "Initiative") {
+        handleOnSubmitInitiative(formData);
         return false;
       }
 
@@ -156,12 +160,12 @@ const FlexibleForm = withRouter(
       }
 
       if (data.geoCoverageType === "transnational") {
-        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational.map(
-          (x) => parseInt(x)
-        );
-        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
-          parseInt(x)
-        );
+        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+          : [];
+        data.geoCoverageCountries = data.geoCoverageCountries
+          ? data.geoCoverageCountries.map((x) => parseInt(x))
+          : [];
         delete data.geoCoverageValueTransnational;
       }
 
@@ -216,6 +220,97 @@ const FlexibleForm = withRouter(
       }
     };
 
+    ///
+
+    const handleOnSubmitInitiative = (formData) => {
+      delete formData?.tabs;
+      delete formData?.steps;
+      delete formData?.required;
+
+      let data = {
+        ...formData,
+        ...(capacityBuilding && { capacityBuilding: true }),
+      };
+
+      transformFormData(data, formData, formSchema.schema.properties);
+
+      data.version = parseInt(formSchema.schema.version);
+
+      delete data?.S1;
+      delete data?.S2;
+      delete data?.S3;
+      delete data?.S4;
+      delete data?.S5;
+
+      data.tags =
+        formData.S4.S4_G3.tags &&
+        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+
+      delete data.qtags;
+
+      data.url = data.qurl;
+      delete data.qurl;
+
+      if (data?.qinfo) {
+        data.info_docs = data.qinfo;
+        delete data.qinfo;
+      }
+
+      if (data?.qentity) {
+        data.entity_connections = data.qentity;
+        delete data.qentity;
+      }
+
+      if (data?.qindividual) {
+        data.individual_connections = data.qindividual;
+        delete data.qindividual;
+      }
+
+      data.q2 = data.qtitle;
+      delete data.qtitle;
+
+      data.q3 = data.qsummary;
+      delete data.qsummary;
+
+      data.q24 = data.qgeoCoverageType;
+      delete data.qgeoCoverageType;
+
+      data.sub_content_type = subContentType;
+
+      if (data.q24.hasOwnProperty("transnational")) {
+        data.q24_2 = data.q24_4;
+        data.q24_4 = data.q24_3;
+        data.q24_3 = null;
+      }
+      if (data.q24.hasOwnProperty("national")) {
+        data.q24_2 = [data.q24_2];
+      }
+
+      if (data?.qimage) {
+        data.image = data.qimage;
+        delete data.qimage;
+      }
+
+      if (status === "add" && !params?.id) {
+        api
+          .postRaw("/initiative", data)
+          .then(() => {
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully created" });
+          })
+          .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+    };
+
     const handleOnSubmitPolicy = (formData) => {
       delete formData?.tabs;
       delete formData?.steps;
@@ -223,6 +318,7 @@ const FlexibleForm = withRouter(
 
       let data = {
         ...formData,
+        ...(capacityBuilding && { capacityBuilding: true }),
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);
@@ -236,6 +332,24 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
+
+      if (data.geoCoverageType === "transnational") {
+        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+          : [];
+        data.geoCoverageCountries = data.geoCoverageCountries
+          ? data.geoCoverageCountries.map((x) => parseInt(x))
+          : [];
+        delete data.geoCoverageValueTransnational;
+      }
+
+      if (data.geoCoverageType === "national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
+        ];
+
+        delete data.geoCoverageValueNational;
+      }
 
       if (data?.urls) {
         data.urls = data.urls.map((x) => {
@@ -320,6 +434,24 @@ const FlexibleForm = withRouter(
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
+      if (data.geoCoverageType === "transnational") {
+        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+          : [];
+        data.geoCoverageCountries = data.geoCoverageCountries
+          ? data.geoCoverageCountries.map((x) => parseInt(x))
+          : [];
+        delete data.geoCoverageValueTransnational;
+      }
+
+      if (data.geoCoverageType === "national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
+        ];
+
+        delete data.geoCoverageValueNational;
+      }
+
       if (data?.urls) {
         data.urls = data.urls.map((x) => {
           return {
@@ -398,6 +530,24 @@ const FlexibleForm = withRouter(
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
+      if (data.geoCoverageType === "transnational") {
+        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+          : [];
+        data.geoCoverageCountries = data.geoCoverageCountries
+          ? data.geoCoverageCountries.map((x) => parseInt(x))
+          : [];
+        delete data.geoCoverageValueTransnational;
+      }
+
+      if (data.geoCoverageType === "national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
+        ];
+
+        delete data.geoCoverageValueNational;
+      }
+
       if (data?.yearFounded) {
         const yearFounded = new Date(data.yearFounded);
         data.yearFounded = yearFounded.getFullYear();
@@ -463,6 +613,58 @@ const FlexibleForm = withRouter(
             ...formData,
           };
         });
+        let updatedFormDataSchema = {};
+
+        if (
+          formData?.S4.S4_G2.geoCoverageType === "transnational" &&
+          formData?.S4.S4_G2.geoCoverageValueTransnational
+        ) {
+          let result = formSchema.schema.properties.S4.properties.S4_G2.required.filter(
+            (value) => value !== "geoCoverageCountries"
+          );
+          updatedFormDataSchema = {
+            ...formSchema.schema,
+            properties: {
+              ...formSchema.schema.properties,
+              S4: {
+                ...formSchema.schema.properties.S4,
+                properties: {
+                  ...formSchema.schema.properties.S4.properties,
+                  S4_G2: {
+                    ...formSchema.schema.properties.S4.properties.S4_G2,
+                    required: result,
+                  },
+                },
+              },
+            },
+          };
+        } else if (
+          formData?.S4.S4_G2.geoCoverageType === "transnational" &&
+          formData?.S4.S4_G2.geoCoverageCountries
+        ) {
+          let result = formSchema.schema.properties.S4.properties.S4_G2.required.filter(
+            (value) => value !== "geoCoverageValueTransnational"
+          );
+          updatedFormDataSchema = {
+            ...formSchema.schema,
+            properties: {
+              ...formSchema.schema.properties,
+              S4: {
+                ...formSchema.schema.properties.S4,
+                properties: {
+                  ...formSchema.schema.properties.S4.properties,
+                  S4_G2: {
+                    ...formSchema.schema.properties.S4.properties.S4_G2,
+                    required: result,
+                  },
+                },
+              },
+            },
+          };
+        } else {
+          updatedFormDataSchema = formSchema.schema;
+        }
+
         // to overide validation
         let dependFields = [];
         let requiredFields = [];
@@ -470,9 +672,10 @@ const FlexibleForm = withRouter(
         collectDependSchemaRefactor(
           dependFields,
           formData,
-          formSchema.schema,
+          updatedFormDataSchema,
           requiredFields
         );
+
         setDependValue(dependFields);
         const requiredFilledIn = checkRequiredFieldFilledIn(
           formData,
@@ -481,6 +684,7 @@ const FlexibleForm = withRouter(
         );
         let sectionRequiredFields = {};
         let groupRequiredFields = {};
+
         requiredFields.forEach(({ group, key, required }) => {
           let index = group ? group : key;
           let filterRequired = required.filter((r) =>
@@ -540,9 +744,10 @@ const FlexibleForm = withRouter(
             ].individual[0].hasOwnProperty("stakeholder")) === true &&
           setDisabledBtn({ disabled: false, type: "primary" });
         requiredFilledIn.length !== 0 &&
-          (initialFormData?.currentState?.data.S4[
-            "S4_G5"
-          ].individual[0].hasOwnProperty("role") &&
+          (initialFormData?.currentState?.data.S4["S4_G5"].individual &&
+            initialFormData?.currentState?.data.S4[
+              "S4_G5"
+            ].individual[0].hasOwnProperty("role") &&
             initialFormData?.currentState?.data.S4[
               "S4_G5"
             ].individual[0].hasOwnProperty("stakeholder")) === false &&
@@ -559,6 +764,28 @@ const FlexibleForm = withRouter(
       });
       const res = overideValidation(errors, dependValue);
       res.length === 0 && setHighlight(false);
+      if (res.length > 0) {
+        const descriptionList = res.map((r, index) => {
+          const { property, message } = r;
+          const tabSection = property
+            .replace(".", "")
+            .replace("['", "_")
+            .replace("']", "_")
+            .split("_")[0];
+          const tabSectionTitle = tabsData.find((x) => x.key === tabSection)
+            ?.title;
+          return (
+            <li key={`${property}-${index}`}>
+              {tabSectionTitle}:{" "}
+              <Typography.Text type="danger">{message}</Typography.Text>
+            </li>
+          );
+        });
+        notification.error({
+          message: "Error",
+          description: <ul>{descriptionList}</ul>,
+        });
+      }
       return res;
     };
 

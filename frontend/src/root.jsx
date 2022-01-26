@@ -48,6 +48,8 @@ import Glossary from "./modules/glossary/glossary";
 import Error from "./modules/error/error";
 import EntityFormView from "./modules/entity/view";
 import Workspace from "./modules/workspace/view";
+import EventPage from "./modules/event-page/view";
+import StakeholderDetail from "./modules/stakeholder-detail/view";
 
 // Menu dropdown
 import AboutDropdownMenu from "./modules/dropdown-menu/about";
@@ -68,6 +70,10 @@ import CapacityBuilding from "./modules/capacity-building/view";
 // New Details Page
 import NewDetailsView from "./modules/detailsPage/view";
 import CaseStudies from "./modules/case-studies/view";
+import KnowledgeLibrary from "./modules/knowledge-library/view";
+
+// Buttons
+import AddContentButton from "./modules/add-content-button/AddContentButton";
 
 Promise.all([
   api.get("/tag"),
@@ -180,6 +186,7 @@ const Root = () => {
     nav: s.nav,
     tags: s.tags,
   }));
+
   const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [
     stakeholderSignupModalVisible,
@@ -264,7 +271,7 @@ const Root = () => {
                 <img src={logo} className="logo" alt="GPML" />
               </Link>
             </div>
-            <WorkspaceButton />
+            {isAuthenticated && <WorkspaceButton />}
             <div className="menu-dropdown-container">
               <AboutDropdownMenu />
               <ExploreDropdownMenu topicsCount={topicsCount} />
@@ -359,6 +366,23 @@ const Root = () => {
             exact
             path="/glossary"
             render={(props) => <Glossary {...props} />}
+          />
+          <Route
+            path="/knowledge-library"
+            render={(props) => (
+              <KnowledgeLibrary
+                {...{
+                  setWarningModalVisible,
+                  ...props,
+                }}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                filters={filters}
+                setFilters={setFilters}
+                filterMenu={filterMenu}
+              />
+            )}
           />
           <Route
             path="/browse"
@@ -513,10 +537,24 @@ const Root = () => {
             path="/case-studies"
             render={(props) => <CaseStudies {...props} />}
           />
+
           <Route
             exact
-            render={(props) => <Workspace {...props} />}
+            render={(props) =>
+              isAuthenticated && <Workspace {...props} profile={profile} />
+            }
             path="/workspace"
+          />
+
+          <Route
+            exact
+            render={(props) => <EventPage {...props} />}
+            path="/events"
+          />
+          <Route
+            exact
+            render={(props) => <StakeholderDetail {...props} />}
+            path="/stakeholder-detail"
           />
           <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event)/:id"
@@ -553,6 +591,7 @@ const Root = () => {
           </Route>
           <Route component={(props) => <Error {...props} status={404} />} />
         </Switch>
+        {isAuthenticated && <AddContentButton />}
         <Footer
           setStakeholderSignupModalVisible={setStakeholderSignupModalVisible}
           setWarningModalVisible={setWarningModalVisible}

@@ -30,6 +30,10 @@
         margin-bottom: 10px;
       }
 
+      .resource-list-header {
+        background: #edf2f7;
+      }
+
       .country-filter-tab,
       .summary {
         border-radius: 5px;
@@ -39,6 +43,12 @@
 
       .country-filter-tab {
         margin-bottom: 1.5rem;
+
+        .ant-select-selection-placeholder,
+        .ant-select-selection-item {
+          text-align: left;
+        }
+
         .country-filter-tab-pane {
           padding: 0.5rem 1rem;
         }
@@ -93,6 +103,7 @@
           color: #036799;
           font-size: 13px;
           font-weight: 600;
+          text-align: left;
           line-height: 30px;
           padding: 0 10px 2px;
         }
@@ -151,6 +162,7 @@
               max-width: 315px;
               padding-right: 5px;
               color: #036799;
+              text-align: left;
             }
 
             &:not(:last-child) {
@@ -194,6 +206,7 @@
               color: $primaryColor;
               font-weight: 700;
               text-transform: capitalize;
+              text-align: left;
             }
 
             span {
