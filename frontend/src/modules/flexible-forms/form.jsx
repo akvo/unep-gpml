@@ -286,11 +286,6 @@ const FlexibleForm = withRouter(
         data.q24_2 = [data.q24_2];
       }
 
-      if (data?.qimage) {
-        data.image = data.qimage;
-        delete data.qimage;
-      }
-
       if (status === "add" && !params?.id) {
         api
           .postRaw("/initiative", data)
