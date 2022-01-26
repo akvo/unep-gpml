@@ -47,6 +47,11 @@
       }
     }
 
+
+    .result-box {
+      cursor: pointer;
+    }
+
     .ant-row.ant-row-space-between.ant-row-middle {
       gap: 8px;
       margin: 0 !important;
@@ -379,6 +384,7 @@
         border: 1px solid $blue04;
         border-radius: 20px;
         margin-bottom: 8px;
+        cursor: pointer;
         .anticon-close {
           color: $blue04;
           font-weight: 700;
