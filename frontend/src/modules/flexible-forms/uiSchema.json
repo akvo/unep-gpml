@@ -125,6 +125,22 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
+        },
+        "related": {
+          "ui:options": {
+            "orderable": false,
+            "addItemText": "Add Item"
+          },
+          "ui:group": "border",
+          "items": {
+            "item": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an resource",
+              "ui:span": 24,
+              "ui:allowClear": true
+            }
+          }
         }
       }
     },
@@ -464,6 +480,22 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
+        },
+        "related": {
+          "ui:options": {
+            "orderable": false,
+            "addItemText": "Add Item"
+          },
+          "ui:group": "border",
+          "items": {
+            "item": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an resource",
+              "ui:span": 24,
+              "ui:allowClear": true
+            }
+          }
         }
       }
     },
@@ -687,6 +719,22 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
+        },
+        "related": {
+          "ui:options": {
+            "orderable": false,
+            "addItemText": "Add Item"
+          },
+          "ui:group": "border",
+          "items": {
+            "item": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an resource",
+              "ui:span": 24,
+              "ui:allowClear": true
+            }
+          }
         }
       }
     },
@@ -928,6 +976,22 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
+        },
+        "related": {
+          "ui:options": {
+            "orderable": false,
+            "addItemText": "Add Item"
+          },
+          "ui:group": "border",
+          "items": {
+            "item": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an resource",
+              "ui:span": 24,
+              "ui:allowClear": true
+            }
+          }
         }
       }
     },
@@ -1149,6 +1213,22 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
+        },
+        "related": {
+          "ui:options": {
+            "orderable": false,
+            "addItemText": "Add Item"
+          },
+          "ui:group": "border",
+          "items": {
+            "item": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an resource",
+              "ui:span": 24,
+              "ui:allowClear": true
+            }
+          }
         }
       }
     },
@@ -1353,6 +1433,22 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
+        },
+        "related": {
+          "ui:options": {
+            "orderable": false,
+            "addItemText": "Add Item"
+          },
+          "ui:group": "border",
+          "items": {
+            "item": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an resource",
+              "ui:span": 24,
+              "ui:allowClear": true
+            }
+          }
         }
       }
     },
@@ -1562,6 +1658,22 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
+        },
+        "related": {
+          "ui:options": {
+            "orderable": false,
+            "addItemText": "Add Item"
+          },
+          "ui:group": "border",
+          "items": {
+            "item": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an resource",
+              "ui:span": 24,
+              "ui:allowClear": true
+            }
+          }
         }
       }
     },

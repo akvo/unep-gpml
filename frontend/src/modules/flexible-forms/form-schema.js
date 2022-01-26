@@ -226,6 +226,21 @@ export const schema = {
                 title: "Info And Docs",
                 type: "string",
               },
+              related: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  properties: {
+                    item: {
+                      title: "Related Resource",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
+                },
+              },
             },
           },
         },
@@ -1245,6 +1260,21 @@ export const schema = {
                 title: "Info And Docs",
                 type: "string",
               },
+              related: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  properties: {
+                    item: {
+                      title: "Related Resource",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
+                },
+              },
             },
           },
         },
@@ -1505,6 +1535,21 @@ export const schema = {
               info: {
                 title: "Info And Docs",
                 type: "string",
+              },
+              related: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  properties: {
+                    item: {
+                      title: "Related Resource",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
+                },
               },
             },
           },
@@ -1797,6 +1842,21 @@ export const schema = {
                 title: "Info And Docs",
                 type: "string",
               },
+              related: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  properties: {
+                    item: {
+                      title: "Related Resource",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
+                },
+              },
             },
           },
         },
@@ -2060,6 +2120,21 @@ export const schema = {
                 title: "Info And Docs",
                 type: "string",
               },
+              related: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  properties: {
+                    item: {
+                      title: "Related Resource",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
+                },
+              },
             },
           },
         },
@@ -2296,6 +2371,21 @@ export const schema = {
               info: {
                 title: "Info And Docs",
                 type: "string",
+              },
+              related: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  properties: {
+                    item: {
+                      title: "Related Resource",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
+                },
               },
             },
           },
@@ -2543,6 +2633,21 @@ export const schema = {
               info: {
                 title: "Info And Docs",
                 type: "string",
+              },
+              related: {
+                title: "",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  properties: {
+                    item: {
+                      title: "Related Resource",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
+                },
               },
             },
           },
