@@ -167,7 +167,7 @@ const FilterDrawer = ({
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClose={() => updateQuery("topic", [])}
+                  onClick={() => updateQuery("topic", [])}
                 >
                   Clear selection
                 </Tag>
@@ -248,7 +248,7 @@ const FilterDrawer = ({
                 <Tag
                   className="clear-selection"
                   closable
-                  onClose={() => {
+                  onClick={() => {
                     updateQuery("country", []);
                   }}
                 >
@@ -261,7 +261,7 @@ const FilterDrawer = ({
                 <Tag
                   className="clear-selection"
                   closable
-                  onClose={() => {
+                  onClick={() => {
                     updateQuery("transnational", []);
                   }}
                 >
@@ -431,7 +431,7 @@ const MultipleSelectFilter = ({
           <Tag
             className="clear-selection"
             closable
-            onClose={() => updateQuery(flag, [])}
+            onClick={() => updateQuery(flag, [])}
           >
             Clear Selection
           </Tag>
@@ -481,7 +481,7 @@ const DatePickerFilter = ({
           <Tag
             className="clear-selection"
             closable
-            onClose={() => updateQuery(flag, [])}
+            onClick={() => updateQuery(flag, [])}
           >
             Clear Selection
           </Tag>

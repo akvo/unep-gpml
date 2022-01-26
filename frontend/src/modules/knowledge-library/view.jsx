@@ -214,8 +214,9 @@ const KnowledgeLibrary = ({
       return query?.[key]
         ? query?.[key]?.map((x) => (
             <Tag
+            className='result-box'
               closable
-              onClose={() =>
+              onClick={() =>
                 updateQuery(
                   key,
                   query?.[key]?.filter((v) => v !== x)
