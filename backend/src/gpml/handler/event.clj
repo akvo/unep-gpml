@@ -120,17 +120,13 @@
       [:map
        [:entity int?]
        [:role
-        [:enum "resource person" "organiser" "participant"
-         "sponsor" "host" "interested in" "implementor"
-         "partner" "donor" "other"]]]]]
+        [:enum "owner" "implementor" "partner" "donor"]]]]]
     [:individual_connections {:optional true}
      [:vector {:optional true}
       [:map
        [:stakeholder int?]
        [:role
-        [:enum "resource person" "organiser" "participant"
-         "sponsor" "host" "interested in" "implementor"
-         "partner" "donor" "other"]]]]]
+        [:enum "resource_editor" "owner"]]]]]
     [:urls {:optional true}
      [:vector {:optional true}
       [:map
