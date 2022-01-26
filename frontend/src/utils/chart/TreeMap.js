@@ -1,3 +1,4 @@
+import { reduceRight } from "lodash";
 import {
   Easing,
   backgroundColor,
@@ -9,7 +10,7 @@ import {
 const TreeMap = (data, extra, selected) => {
   const { blue, yellow, white } = singleColor;
   const itemStyle = {
-    borderColor: white,
+    borderColor: "#255B87",
     borderWidth: 2,
   };
   let rich = {
@@ -86,6 +87,11 @@ const TreeMap = (data, extra, selected) => {
         colorMappingBy: "index",
         breadcrumb: false,
         squareRatio: 0.5 * (0.5 + Math.sqrt(5)),
+        itemStyle: {
+          borderColor: "#255B87",
+          borderWidth: 4,
+          gapWidth: 4,
+        },
         label: {
           formatter: function (params) {
             const value = params.data.count;

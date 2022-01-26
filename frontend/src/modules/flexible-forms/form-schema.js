@@ -55,9 +55,9 @@ export const schema = {
             },
             required: [
               "geoCoverageType",
-              "geoCoverageValueTransnational",
-              "geoCoverageCountries",
-              "geoCoverageValueNational",
+              "S4_G2_24.3",
+              "S4_G2_24.3",
+              "S4_G2_24.2",
               "geoCoverageValueSubnational",
               "geoCoverageValueSubnationalCity",
             ],
@@ -73,25 +73,31 @@ export const schema = {
                   "Subnational",
                 ],
               },
-              geoCoverageValueTransnational: {
+              "S4_G2_24.3": {
                 title: "GEO COVERAGE (Transnational)",
+                type: "string",
                 enum: [],
+                enumNames: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["transnational"],
                 },
               },
-              geoCoverageCountries: {
+              "S4_G2_24.4": {
                 title: "GEO COVERAGE (Countries)",
+                type: "string",
                 enum: [],
+                enumNames: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["transnational"],
                 },
               },
-              geoCoverageValueNational: {
+              "S4_G2_24.2": {
                 title: "National",
+                type: "string",
                 enum: [],
+                enumNames: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["national"],
@@ -99,6 +105,7 @@ export const schema = {
               },
               geoCoverageValueSubnational: {
                 title: "Subnational",
+                type: "string",
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
@@ -190,7 +197,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
@@ -1205,7 +1216,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
@@ -1462,7 +1477,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
@@ -1476,7 +1495,7 @@ export const schema = {
             },
           },
           S4_G6: {
-            title: "Related Resources",
+            title: "",
             type: "object",
             depend: {
               id: "steps",
@@ -1749,7 +1768,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
@@ -1763,7 +1786,7 @@ export const schema = {
             },
           },
           S4_G6: {
-            title: "Related Resources",
+            title: "",
             type: "object",
             depend: {
               id: "steps",
@@ -1787,10 +1810,6 @@ export const schema = {
         },
         required: [],
         properties: {
-          publishYear: {
-            title: "Year",
-            type: "string",
-          },
           value: {
             type: "object",
             title: "",
@@ -2012,7 +2031,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
@@ -2026,7 +2049,7 @@ export const schema = {
             },
           },
           S4_G6: {
-            title: "Related Resources",
+            title: "",
             type: "object",
             depend: {
               id: "steps",
@@ -2245,7 +2268,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
@@ -2259,7 +2286,7 @@ export const schema = {
             },
           },
           S4_G6: {
-            title: "Related Resources",
+            title: "",
             type: "object",
             depend: {
               id: "steps",
@@ -2302,11 +2329,6 @@ export const schema = {
           eventType: {
             title: "Event Type",
             enum: ["Online", "In Person", "Hybrid"],
-          },
-          recording: {
-            title: "URL",
-            type: "string",
-            format: "url",
           },
         },
       },
@@ -2493,7 +2515,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
@@ -2507,7 +2533,7 @@ export const schema = {
             },
           },
           S4_G6: {
-            title: "Related Resources",
+            title: "",
             type: "object",
             depend: {
               id: "steps",

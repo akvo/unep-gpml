@@ -147,15 +147,13 @@
       [:map
        [:entity int?]
        [:role
-        [:enum "regulator" "implementor" "reviewer" "owner"
-         "interested in" "partner" "donor" "other"]]]]]
+        [:enum "implementor" "owner" "partner" "donor"]]]]]
     [:individual_connections {:optional true}
      [:vector {:optional true}
       [:map
        [:stakeholder int?]
        [:role
-        [:enum "regulator" "implementor" "reviewer" "owner"
-         "interested in" "partner" "donor" "other"]]]]]
+        [:enum "owner" "resource_editor"]]]]]
     [:urls {:optional true}
      [:vector {:optional true}
       [:map [:lang string?] [:url [:string {:min 1}]]]]]

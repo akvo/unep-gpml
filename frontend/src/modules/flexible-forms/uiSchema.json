@@ -21,19 +21,19 @@
         "geoCoverageType": {
           "ui:widget": "radio"
         },
-        "geoCoverageValueTransnational": {
+        "S4_G2_24.3": {
           "ui:placeholder": "Geo-coverage",
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple"
         },
-        "geoCoverageCountries": {
+        "S4_G2_24.4": {
           "ui:placeholder": "Geo-coverage (Country)",
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple"
         },
-        "geoCoverageValueNational": {
+        "S4_G2_24.2": {
           "ui:placeholder": "Select a country",
           "ui:widget": "select",
           "ui:showSearch": true
@@ -48,9 +48,9 @@
         },
         "ui:order": [
           "geoCoverageType",
-          "geoCoverageValueTransnational",
-          "geoCoverageCountries",
-          "geoCoverageValueNational",
+          "S4_G2_24.3",
+          "S4_G2_24.4",
+          "S4_G2_24.2",
           "geoCoverageValueSubnational",
           "geoCoverageValueSubnationalCity"
         ]
@@ -933,15 +933,6 @@
     },
     "S5": {
       "classNames": "list-group",
-      "publishYear": {
-        "ui:widget": "date",
-        "ui:showSearch": true,
-        "ui:span": 17,
-        "ui:options": {
-          "mode": "year",
-          "disableDate": "future"
-        }
-      },
       "value": {
         "ui:group": "border",
         "valueAmount": {
@@ -1382,11 +1373,6 @@
       "eventType": {
         "ui:placeholder": "Choose event type",
         "ui:widget": "select"
-      },
-      "recording": {
-        "ui:addOnBefore": "https://",
-        "ui:widget": "URLWidget",
-        "ui:placeholder": "Url"
       }
     }
   },
