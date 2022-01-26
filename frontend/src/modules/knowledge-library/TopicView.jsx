@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Chart from "../../utils/chart";
 import { popularTopics } from "../landing/new-home-static-content";
@@ -10,7 +10,18 @@ const sortPopularTopic = orderBy(
   ["desc", "desc"]
 );
 
-const TopicView = () => {
+const TopicView = ({ updateQuery }) => {
+  const defTopic = sortPopularTopic[0]?.topic?.toLocaleLowerCase();
+
+  const [selectedTopic, setSelectedTopic] = useState(defTopic);
+
+  const isMobileScreen = innerWidth <= 991;
+
+  const handlePopularTopicChartClick = (params) => {
+    const { name, tag } = params?.data;
+    !isMobileScreen && setSelectedTopic(name.toLowerCase());
+    updateQuery("tag", [tag]);
+  };
   return (
     <div className="chart-wrapper">
       <Chart
@@ -29,8 +40,9 @@ const TopicView = () => {
           };
         })}
         onEvents={{
-          click: (e) => console.log(e),
+          click: (e) => handlePopularTopicChartClick(e),
         }}
+        selected={selectedTopic}
       />
     </div>
   );

@@ -79,14 +79,13 @@ const ResourceList = ({
   const allTopicCount = countData.reduce((acc, topic) => acc + topic.count, 0);
 
   const sortResults = () => {
-    console.log("sorted", results);
     if (!isAscending) {
-      const sortAscending = [...results].sort((result1, result2) =>
+      const sortAscending = allResults.sort((result1, result2) =>
         result1?.title.localeCompare(result2.title)
       );
       setAllResults(sortAscending);
     } else {
-      const sortDescending = [...results].sort((result1, result2) =>
+      const sortDescending = allResults.sort((result1, result2) =>
         result2?.title.localeCompare(result1.title)
       );
       setAllResults(sortDescending);

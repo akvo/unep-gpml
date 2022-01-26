@@ -156,6 +156,7 @@ const KnowledgeLibrary = ({
     if (!isEmpty(filterMenu)) {
       updateQuery("topic", filterMenu);
     }
+
     // NOTE: this are triggered when user click a topic from navigation menu
   }, [filterMenu]); // eslint-disable-line
 
@@ -214,7 +215,7 @@ const KnowledgeLibrary = ({
       return query?.[key]
         ? query?.[key]?.map((x) => (
             <Tag
-            className='result-box'
+              className="result-box"
               closable
               onClick={() =>
                 updateQuery(
@@ -350,7 +351,7 @@ const KnowledgeLibrary = ({
                   />
                 ) : (
                   <>
-                    <TopicView />
+                    <TopicView updateQuery={updateQuery} />
                   </>
                 )}
               </Col>
