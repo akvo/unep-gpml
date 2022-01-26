@@ -79,16 +79,17 @@ const ResourceList = ({
   const allTopicCount = countData.reduce((acc, topic) => acc + topic.count, 0);
 
   const sortResults = () => {
+    console.log("sorted", results);
     if (!isAscending) {
-      const sortedResult = results.sort((result1, result2) =>
-        result1.title.localeCompare(result2.title)
+      const sortAscending = [...results].sort((result1, result2) =>
+        result1?.title.localeCompare(result2.title)
       );
-      setAllResults(sortedResult);
+      setAllResults(sortAscending);
     } else {
-      const originalOrder = results.sort((result1, result2) =>
-        result2.title.localeCompare(result1.title)
+      const sortDescending = [...results].sort((result1, result2) =>
+        result2?.title.localeCompare(result1.title)
       );
-      setAllResults([...results]);
+      setAllResults(sortDescending);
     }
     setIsAscending(!isAscending);
   };
