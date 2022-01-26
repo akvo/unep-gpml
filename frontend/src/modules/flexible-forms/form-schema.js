@@ -1495,7 +1495,7 @@ export const schema = {
             },
           },
           S4_G6: {
-            title: "Related Resources",
+            title: "",
             type: "object",
             depend: {
               id: "steps",
@@ -1786,7 +1786,7 @@ export const schema = {
             },
           },
           S4_G6: {
-            title: "Related Resources",
+            title: "",
             type: "object",
             depend: {
               id: "steps",
@@ -2049,7 +2049,7 @@ export const schema = {
             },
           },
           S4_G6: {
-            title: "Related Resources",
+            title: "",
             type: "object",
             depend: {
               id: "steps",
@@ -2286,7 +2286,7 @@ export const schema = {
             },
           },
           S4_G6: {
-            title: "Related Resources",
+            title: "",
             type: "object",
             depend: {
               id: "steps",
@@ -2533,7 +2533,7 @@ export const schema = {
             },
           },
           S4_G6: {
-            title: "Related Resources",
+            title: "",
             type: "object",
             depend: {
               id: "steps",

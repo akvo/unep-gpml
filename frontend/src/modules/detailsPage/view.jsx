@@ -445,8 +445,6 @@ const DetailsView = ({
     );
   }
 
-  console.log(data?.tags);
-
   return (
     <div id="details">
       <div className="section-header">
@@ -540,9 +538,7 @@ const DetailsView = ({
                           title={
                             <ul>
                               {data?.tags &&
-                                data?.tags.map((tag) => (
-                                  <li>{Object.values(tag)[0]}</li>
-                                ))}
+                                data?.tags.map((tag) => <li>{tag.tag}</li>)}
                             </ul>
                           }
                         />
@@ -820,12 +816,12 @@ const DetailsView = ({
                   </Col>
                 </Row>
               </CardComponent>
-              <CardComponent
+              {/* <CardComponent
                 title="Comments (0)"
                 style={{
                   marginBottom: "30px",
                 }}
-              />
+              /> */}
             </Col>
           </Row>
         </div>
