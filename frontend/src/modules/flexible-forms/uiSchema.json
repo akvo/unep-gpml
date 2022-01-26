@@ -127,21 +127,12 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:options": {
-            "orderable": false,
-            "addItemText": "Add Item"
-          },
-          "ui:group": "border",
-          "items": {
-            "item": {
-              "ui:showSearch": true,
-              "ui:widget": "select",
-              "ui:placeholder": "Select an resource",
-              "ui:span": 24,
-              "ui:allowClear": true
-            }
-          }
-        }
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -482,21 +473,12 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:options": {
-            "orderable": false,
-            "addItemText": "Add Item"
-          },
-          "ui:group": "border",
-          "items": {
-            "item": {
-              "ui:showSearch": true,
-              "ui:widget": "select",
-              "ui:placeholder": "Select an resource",
-              "ui:span": 24,
-              "ui:allowClear": true
-            }
-          }
-        }
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -721,21 +703,12 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:options": {
-            "orderable": false,
-            "addItemText": "Add Item"
-          },
-          "ui:group": "border",
-          "items": {
-            "item": {
-              "ui:showSearch": true,
-              "ui:widget": "select",
-              "ui:placeholder": "Select an resource",
-              "ui:span": 24,
-              "ui:allowClear": true
-            }
-          }
-        }
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -978,21 +951,12 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:options": {
-            "orderable": false,
-            "addItemText": "Add Item"
-          },
-          "ui:group": "border",
-          "items": {
-            "item": {
-              "ui:showSearch": true,
-              "ui:widget": "select",
-              "ui:placeholder": "Select an resource",
-              "ui:span": 24,
-              "ui:allowClear": true
-            }
-          }
-        }
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -1215,21 +1179,12 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:options": {
-            "orderable": false,
-            "addItemText": "Add Item"
-          },
-          "ui:group": "border",
-          "items": {
-            "item": {
-              "ui:showSearch": true,
-              "ui:widget": "select",
-              "ui:placeholder": "Select an resource",
-              "ui:span": 24,
-              "ui:allowClear": true
-            }
-          }
-        }
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -1435,21 +1390,12 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:options": {
-            "orderable": false,
-            "addItemText": "Add Item"
-          },
-          "ui:group": "border",
-          "items": {
-            "item": {
-              "ui:showSearch": true,
-              "ui:widget": "select",
-              "ui:placeholder": "Select an resource",
-              "ui:span": 24,
-              "ui:allowClear": true
-            }
-          }
-        }
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -1660,21 +1606,12 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:options": {
-            "orderable": false,
-            "addItemText": "Add Item"
-          },
-          "ui:group": "border",
-          "items": {
-            "item": {
-              "ui:showSearch": true,
-              "ui:widget": "select",
-              "ui:placeholder": "Select an resource",
-              "ui:span": 24,
-              "ui:allowClear": true
-            }
-          }
-        }
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {

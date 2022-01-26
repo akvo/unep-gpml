@@ -200,7 +200,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.related) {
-        data.relatedContent = data?.related.map((x) => x.item);
+        data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
       }
 
@@ -292,7 +292,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.related) {
-        data.related_content = data?.related.map((x) => x.item);
+        data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
       }
 
@@ -396,7 +396,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.related) {
-        data.relatedContent = data?.related.map((x) => x.item);
+        data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
       }
 
@@ -498,7 +498,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.related) {
-        data.relatedContent = data?.related.map((x) => x.item);
+        data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
       }
 
@@ -601,7 +601,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.related) {
-        data.relatedContent = data?.related.map((x) => x.item);
+        data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
       }
 

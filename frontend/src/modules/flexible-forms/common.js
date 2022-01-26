@@ -75,11 +75,11 @@ const getSchema = ({
   // Related Resource
   prop.S4.properties.S4_G6.properties[
     "related"
-  ].items.properties.item.enum = relatedResource.map((x) => x.id);
+  ].enum = relatedResource.map((x) => String(x.id));
 
   prop.S4.properties.S4_G6.properties[
     "related"
-  ].items.properties.item.enumNames = relatedResource.map((x) => x.title);
+  ].enumNames = relatedResource.map((x) => x.title);
 
   // Related Resource
 

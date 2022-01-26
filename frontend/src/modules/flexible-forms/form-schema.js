@@ -227,19 +227,9 @@ export const schema = {
                 type: "string",
               },
               related: {
-                title: "",
-                type: "array",
-                items: {
-                  title: "",
-                  type: "object",
-                  properties: {
-                    item: {
-                      title: "Related Resource",
-                      enum: [],
-                      enumNames: [],
-                    },
-                  },
-                },
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
               },
             },
           },
@@ -1261,19 +1251,9 @@ export const schema = {
                 type: "string",
               },
               related: {
-                title: "",
-                type: "array",
-                items: {
-                  title: "",
-                  type: "object",
-                  properties: {
-                    item: {
-                      title: "Related Resource",
-                      enum: [],
-                      enumNames: [],
-                    },
-                  },
-                },
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
               },
             },
           },
@@ -1537,19 +1517,9 @@ export const schema = {
                 type: "string",
               },
               related: {
-                title: "",
-                type: "array",
-                items: {
-                  title: "",
-                  type: "object",
-                  properties: {
-                    item: {
-                      title: "Related Resource",
-                      enum: [],
-                      enumNames: [],
-                    },
-                  },
-                },
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
               },
             },
           },
@@ -1843,19 +1813,9 @@ export const schema = {
                 type: "string",
               },
               related: {
-                title: "",
-                type: "array",
-                items: {
-                  title: "",
-                  type: "object",
-                  properties: {
-                    item: {
-                      title: "Related Resource",
-                      enum: [],
-                      enumNames: [],
-                    },
-                  },
-                },
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
               },
             },
           },
@@ -2121,19 +2081,9 @@ export const schema = {
                 type: "string",
               },
               related: {
-                title: "",
-                type: "array",
-                items: {
-                  title: "",
-                  type: "object",
-                  properties: {
-                    item: {
-                      title: "Related Resource",
-                      enum: [],
-                      enumNames: [],
-                    },
-                  },
-                },
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
               },
             },
           },
@@ -2373,19 +2323,9 @@ export const schema = {
                 type: "string",
               },
               related: {
-                title: "",
-                type: "array",
-                items: {
-                  title: "",
-                  type: "object",
-                  properties: {
-                    item: {
-                      title: "Related Resource",
-                      enum: [],
-                      enumNames: [],
-                    },
-                  },
-                },
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
               },
             },
           },
@@ -2635,19 +2575,9 @@ export const schema = {
                 type: "string",
               },
               related: {
-                title: "",
-                type: "array",
-                items: {
-                  title: "",
-                  type: "object",
-                  properties: {
-                    item: {
-                      title: "Related Resource",
-                      enum: [],
-                      enumNames: [],
-                    },
-                  },
-                },
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
               },
             },
           },
