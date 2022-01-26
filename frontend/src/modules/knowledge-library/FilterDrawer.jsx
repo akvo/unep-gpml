@@ -211,7 +211,7 @@ const FilterDrawer = ({
                   My Bookmarks
                 </Checkbox>
               </Space>
-              <Select
+              {/* <Select
                 className="collection-selector"
                 disabled={
                   !isEmpty(query?.favorites)
@@ -237,7 +237,7 @@ const FilterDrawer = ({
                   )
                 }
                 virtual={false}
-              />
+              /> */}
             </Col>
           )}
           {/* Location */}
