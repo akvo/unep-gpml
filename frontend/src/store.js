@@ -361,6 +361,7 @@ const UIStore = new Store({
   tags: {},
   countries: [],
   currencies: [],
+  relatedResource: [],
   profile: {},
   organisations: [],
   nonMemberOrganisations: [],
