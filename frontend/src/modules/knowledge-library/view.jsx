@@ -184,12 +184,14 @@ const KnowledgeLibrary = ({
   // Here is the function to render filter tag
   const renderFilterTag = () => {
     const renderName = (key, value) => {
+      console.log(key, value);
       if (key === "topic") {
         return topicNames(value);
       }
       if (key === "tag") {
         const findTag = flatten(values(tags)).find((x) => x.id == value);
-        return findTag?.tag;
+
+        return findTag ? findTag?.tag : value;
       }
       if (key === "country") {
         const findCountry = countries.find((x) => x.id == value);
@@ -218,6 +220,12 @@ const KnowledgeLibrary = ({
               className="result-box"
               closable
               onClick={() =>
+                updateQuery(
+                  key,
+                  query?.[key]?.filter((v) => v !== x)
+                )
+              }
+              onClose={() =>
                 updateQuery(
                   key,
                   query?.[key]?.filter((v) => v !== x)
