@@ -108,3 +108,10 @@ select init.id, init.q2 as title from initiative i
   left join initiative init
   on init.id = ANY(i.related_content)
   where i.id = :id
+
+-- :name tags-by-id
+-- :doc Get tags by id
+select t.id, t.tag from initiative_tag it
+  left join tag t
+  on it.tag = t.id
+  where it.initiative = :id

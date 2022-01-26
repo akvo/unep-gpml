@@ -265,7 +265,8 @@
   (merge
     {:entity_connections (db.initiative/entity-connections-by-id db (select-keys project [:id]))
      :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys project [:id]))
-     :related_content (db.initiative/related-content-by-id db (select-keys project [:id]))}
+     :related_content (db.initiative/related-content-by-id db (select-keys project [:id]))
+     :tags (db.initiative/tags-by-id db (select-keys project [:id]))}
     (if (> (:id project) 10000)
       (db.initiative/initiative-detail-by-id db project)
       (details-for-project db project))))
@@ -274,7 +275,8 @@
   (merge
     {:entity_connections (db.policy/entity-connections-by-id db (select-keys policy [:id]))
      :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys policy [:id]))
-     :related_content (db.policy/related-content-by-id db (select-keys policy [:id]))}
+     :related_content (db.policy/related-content-by-id db (select-keys policy [:id]))
+     :tags (db.policy/tags-by-id db (select-keys policy [:id]))}
     (when-let [implementing-mea (:implementing_mea policy)]
       {:implementing_mea (:name (db.country-group/country-group-by-id db {:id implementing-mea}))})))
 
@@ -282,7 +284,8 @@
   (merge
     {:entity_connections (db.technology/entity-connections-by-id db (select-keys technology [:id]))
      :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys technology [:id]))
-     :related_content (db.technology/related-content-by-id db (select-keys technology [:id]))}
+     :related_content (db.technology/related-content-by-id db (select-keys technology [:id]))
+     :tags (db.technology/tags-by-id db (select-keys technology [:id]))}
     (when-let [headquarters-country (:country technology)]
       {:headquarters (gpml.db.country/country-by-id db {:id headquarters-country})})))
 
@@ -292,22 +295,26 @@
 (defmethod extra-details "technical_resource" [_ db resource]
   {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
    :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys resource [:id]))
-   :related_content (db.resource/related-content-by-id db (select-keys resource [:id]))})
+   :related_content (db.resource/related-content-by-id db (select-keys resource [:id]))
+   :tags (db.resource/tags-by-id db (select-keys resource [:id]))})
 
 (defmethod extra-details "financing_resource" [_ db resource]
   {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
    :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys resource [:id]))
-   :related_content (db.resource/related-content-by-id db (select-keys resource [:id]))})
+   :related_content (db.resource/related-content-by-id db (select-keys resource [:id]))
+   :tags (db.resource/tags-by-id db (select-keys resource [:id]))})
 
 (defmethod extra-details "action_plan" [_ db resource]
   {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
    :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys resource [:id]))
-   :related_content (db.resource/related-content-by-id db (select-keys resource [:id]))})
+   :related_content (db.resource/related-content-by-id db (select-keys resource [:id]))
+   :tags (db.resource/tags-by-id db (select-keys resource [:id]))})
 
 (defmethod extra-details "event" [_ db event]
   {:entity_connections (db.event/entity-connections-by-id db (select-keys event [:id]))
    :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys event [:id]))
-   :related_content (db.event/related-content-by-id db (select-keys event [:id]))})
+   :related_content (db.event/related-content-by-id db (select-keys event [:id]))
+   :tags (db.event/tags-by-id db (select-keys event [:id]))})
 
 (defmethod extra-details :nothing [_ _ _]
   nil)
@@ -432,7 +439,7 @@
       (if authorized?
         (if-let [data (db.detail/get-detail conn path)]
           (resp/response (merge
-                           (adapt (merge (:json (dissoc data :related_content)) (extra-details topic conn (:json data))))
+                           (adapt (merge (:json (dissoc data :related_content :tags)) (extra-details topic conn (:json data))))
                            {:owners (:owners data)}))
           util/not-found)
         util/unauthorized))))
