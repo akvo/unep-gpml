@@ -38,7 +38,6 @@ const FlexibleForm = withRouter(
     hideEntityPersonalDetail,
     tabsData,
     mainType,
-    owners,
     subContentType,
     capacityBuilding,
     match: { params },
@@ -224,9 +223,24 @@ const FlexibleForm = withRouter(
     ///
 
     const handleOnSubmitInitiative = (formData) => {
-      let data = {};
+      delete formData?.tabs;
+      delete formData?.steps;
+      delete formData?.required;
+
+      let data = {
+        ...formData,
+        ...(capacityBuilding && { capacityBuilding: true }),
+      };
+
       transformFormData(data, formData, formSchema.schema.properties);
+
       data.version = parseInt(formSchema.schema.version);
+
+      delete data?.S1;
+      delete data?.S2;
+      delete data?.S3;
+      delete data?.S4;
+      delete data?.S5;
 
       data.tags =
         formData.S4.S4_G3.tags &&
@@ -238,7 +252,7 @@ const FlexibleForm = withRouter(
       delete data.qurl;
 
       if (data?.qinfo) {
-        data.infoDocs = data.qinfo;
+        data.info_docs = data.qinfo;
         delete data.qinfo;
       }
 
@@ -272,6 +286,11 @@ const FlexibleForm = withRouter(
         data.q24_2 = [data.q24_2];
       }
 
+      if (data?.qimage) {
+        data.image = data.qimage;
+        delete data.qimage;
+      }
+
       if (status === "add" && !params?.id) {
         api
           .postRaw("/initiative", data)
@@ -299,6 +318,7 @@ const FlexibleForm = withRouter(
 
       let data = {
         ...formData,
+        ...(capacityBuilding && { capacityBuilding: true }),
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);

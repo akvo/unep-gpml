@@ -197,7 +197,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
@@ -1212,7 +1216,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
@@ -1469,7 +1477,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
@@ -1756,7 +1768,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
@@ -2015,7 +2031,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
@@ -2248,7 +2268,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
@@ -2491,7 +2515,11 @@ export const schema = {
                   properties: {
                     role: {
                       title: "User role",
-                      enum: individualRoleOptions.map((x) => x.toLowerCase()),
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {

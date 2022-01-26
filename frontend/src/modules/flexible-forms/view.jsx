@@ -80,11 +80,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const [displayModal, setDisplayModal] = useState(false);
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
-  const [capacityBuilding, setCapacityBuilding] = useState(true);
+  const [capacityBuilding, setCapacityBuilding] = useState(false);
   const [mainType, setMainType] = useState("initiative");
   const [label, setLabel] = useState("Initiative");
   const [subType, setSubType] = useState("");
-  const [owners, setOwners] = useState([]);
   const [subContentType, setSubContentType] = useState([]);
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
@@ -755,7 +754,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       setDisabledBtn={setDisabledBtn}
                       tabsData={tabsData}
                       mainType={label}
-                      owners={owners}
                       subContentType={subType}
                       capacityBuilding={capacityBuilding}
                     />
