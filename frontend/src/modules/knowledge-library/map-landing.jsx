@@ -103,10 +103,6 @@ const MapLanding = ({
     });
   }, []);
 
-  useEffect(() => {
-    filters && setFilters(null);
-  }, [filters, setFilters]);
-
   const countryObj = country && countries.find((it) => it.id === country);
   const selectedCountry =
     countries && country
