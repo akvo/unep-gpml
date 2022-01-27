@@ -41,20 +41,6 @@
           :association (:role connection)
           :remarks nil})))
 
-(def fe-payload {:resource_type "Technical Resource",
-                  :sub_content_type "",
-                  :title "techres1",
-                  :summary "adsf",
-                  :url "techres1.com",
-                  :geo_coverage_type "transnational",
-                  :tags [163],
-                  :version 2,
-                  :entity_connections [{:role "owner", :entity 1000}],
-                  :individual_connections [{:role "owner", :stakeholder 10004}]
-                 ;:geo_coverage_countries [157]
-                 ; :geo_coverage_country_groups [4 1098]
-                  :related_content  [8 10 12]})
-
 (defn create-resource [conn {:keys [resource_type title publish_year
                                     summary value value_currency
                                     value_remarks valid_from valid_to image
