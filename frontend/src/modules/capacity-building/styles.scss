@@ -41,6 +41,16 @@
       -ms-transform: translateY(-50%);
       transform: translateY(-50%);
       width: 45%;
+      .event_date {
+        .ant-typography {
+          display: none;
+        }
+          &.EVENT {
+            .ant-typography {
+              display: inline-block;
+          }
+        }
+      }
       .ant-typography {
         color: #fff !important;
         &.label {

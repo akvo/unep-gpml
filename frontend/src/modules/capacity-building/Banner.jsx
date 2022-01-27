@@ -33,7 +33,7 @@ const Banner = ({
         <div className="site_title">
           <Title level={title.length <= 70 ? 1 : 2}>{title}</Title>
         </div>
-        <div className="event_date">
+        <div className={`event_date ${ category }`}>
           <Text className="label">
             {moment(startDate || created).format("DD MMMM YYYY")}
           </Text>
