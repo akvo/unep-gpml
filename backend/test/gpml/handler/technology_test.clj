@@ -17,8 +17,8 @@
    :development_stage "Scale up"
    :organisation_type "Established Company"
    :specifications_provided false
-   ;:geo_coverage_type "regional"
-   ;:geo_coverage_value (mapv :id (:country_groups data))
+   :geo_coverage_type "regional"
+   :geo_coverage_value (mapv :id (:country_groups data))
    :urls [{:lang "id" :url "https://www.test.org"}]
    :url "https://akvo.org"
    :attachments nil
