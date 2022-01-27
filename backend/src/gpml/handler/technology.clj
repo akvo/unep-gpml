@@ -88,7 +88,7 @@
                                          :id)
                                     (:url %)) urls)]
         (db.technology/add-technology-language-urls conn {:urls lang-urls})))
-    #_(if (or (not-empty geo_coverage_country_groups)
+    (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 technology-id data)]
         (db.technology/add-technology-geo conn {:geo geo-data}))
