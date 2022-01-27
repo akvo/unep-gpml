@@ -432,8 +432,6 @@ const DetailsView = ({
     window.scrollTo({ top: 0 });
   }, [params, profile, isLoaded, data, history]);
 
-  console.log(data);
-
   if (!data) {
     return (
       <div className="details-view">
@@ -513,12 +511,12 @@ const DetailsView = ({
                         title={data?.geoCoverageType}
                       />
                     </List.Item>
-                    <List.Item>
+                    {/* <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar src={LanguageImage} />}
                         title={"English"}
                       />
-                    </List.Item>
+                    </List.Item> */}
                   </List>
                 </div>
               </CardComponent>
@@ -538,7 +536,9 @@ const DetailsView = ({
                           title={
                             <ul>
                               {data?.tags &&
-                                data?.tags.map((tag) => <li>{tag.tag}</li>)}
+                                data?.tags.map((tag) => (
+                                  <li key={tag.tag}>{tag.tag}</li>
+                                ))}
                             </ul>
                           }
                         />
