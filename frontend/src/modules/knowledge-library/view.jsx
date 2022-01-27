@@ -167,6 +167,7 @@ const KnowledgeLibrary = ({
     });
     setLoading(true);
     const newQuery = { ...query };
+
     newQuery[param] = value;
     if (param !== "offset") {
       newQuery["offset"] = 0;
@@ -184,7 +185,6 @@ const KnowledgeLibrary = ({
   // Here is the function to render filter tag
   const renderFilterTag = () => {
     const renderName = (key, value) => {
-      console.log(key, value);
       if (key === "topic") {
         return topicNames(value);
       }

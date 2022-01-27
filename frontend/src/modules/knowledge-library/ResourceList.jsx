@@ -30,6 +30,7 @@ import isEmpty from "lodash/isEmpty";
 
 import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 import SortIcon from "../../images/knowledge-library/sort-icon.svg";
+import { result } from "lodash";
 
 const ResourceList = ({
   filters,
@@ -80,21 +81,31 @@ const ResourceList = ({
 
   const sortResults = () => {
     if (!isAscending) {
-      const sortAscending = allResults.sort((result1, result2) =>
-        result1?.title.localeCompare(result2.title)
-      );
+      const sortAscending = allResults.sort((result1, result2) => {
+        if (result1?.title) {
+          return result1.title.localeCompare(result2.title);
+        } else {
+          return result1?.name?.localeCompare(result2?.name);
+        }
+      });
       setAllResults(sortAscending);
     } else {
-      const sortDescending = allResults.sort((result1, result2) =>
-        result2?.title.localeCompare(result1.title)
-      );
+      const sortDescending = allResults.sort((result1, result2) => {
+        if (result2?.title) {
+          return result2.title.localeCompare(result1.title);
+        } else {
+          return result2?.name?.localeCompare(result1?.name);
+        }
+      });
       setAllResults(sortDescending);
     }
     setIsAscending(!isAscending);
   };
 
   useEffect(() => {
-    setAllResults([...results]);
+    setAllResults(
+      [...results].sort((a, b) => Date.parse(b.created) - Date.parse(a.created))
+    );
   }, [results]);
 
   return (
