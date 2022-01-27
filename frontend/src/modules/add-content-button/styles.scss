@@ -6,16 +6,16 @@ $bg-green-primary: #10f9b7;
 
 .workspace-button-wrapper {
   position: fixed;
-  z-index: 3;
-  bottom: 150px;
-  right: 0;
+  z-index: 10;
+  bottom: 5px;
+  right: -75px;
   width: 100%;
   display: block;
 
   .add-button {
-    height: auto;
+    height: 65px;
     color: #fff;
-    max-width: 85px;
+    max-width: 65px;
     display: flex;
     align-items: center;
     position: absolute;
@@ -32,12 +32,13 @@ $bg-green-primary: #10f9b7;
       color: #255b87;
       padding-left: 33px;
       opacity: 0;
-      font-size: 22px;
+      font-size: 18px;
       font-weight: 700;
       text-transform: uppercase;
     }
     svg {
-      min-width: 45px;
+      min-width: 25px;
+      max-width: 25px;
       rect {
         stroke: currentColor;
       }
@@ -47,8 +48,8 @@ $bg-green-primary: #10f9b7;
   &:hover {
     max-width: 305px;
     .add-button {
-      padding: 18px 43px 18px 24px;
-      transform: translateX(-179px - 19px);
+      padding: 18px 33px 18px 14px;
+      transform: translateX(-170px);
       max-width: 305px;
       border: 3px solid #ffffff;
       box-sizing: border-box;

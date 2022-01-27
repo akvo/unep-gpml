@@ -1,5 +1,7 @@
+@import "../../vars.scss";
+
 #capacity-building {
-  background-color: #fff;
+  background-color: #edf2f7;
   .thumbnail {
     img {
       width: 100px;
@@ -13,8 +15,251 @@
       }
     }
   }
+  .ant-page-header-heading-title > span.text-green {
+    font-size: 24px;
+  }
+  .pm_event_banner {
+    .banner_info {
+      overflow: auto;
+      width: 100%;
+      background-color: #00abf1;
+      padding-left: 5%;
+      position: relative;
+      .banner_img {
+        margin: 0;
+        padding: 0;
+        float: right;
+        width: 50%;
+        height: 400px;
+        overflow: hidden;
+      }
+    }
+    .event_details {
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      width: 45%;
+      .event_date {
+        .ant-typography {
+          display: none;
+        }
+        &.EVENT {
+          .ant-typography {
+            display: inline-block;
+          }
+        }
+      }
+      .ant-typography {
+        color: #fff !important;
+        &.label {
+          font-size: 16px;
+          font-weight: 600;
+        }
+      }
+      h1.ant-typography,
+      h2.ant-typography {
+        font-weight: 800 !important;
+      }
+    }
+  }
+  .photo_credit {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 4;
+    background: rgba(51, 51, 51, 0.5);
+    padding: 5px;
+    color: #fff;
+    font-size: 0.7em;
+    font-style: italic;
+  }
+  .capacity-section {
+    min-height: 350px;
+    margin-bottom: 16px;
+    .section-content {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .card {
+      opacity: 0.9;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 10px;
+      color: #fff;
+      min-height: 200px;
+      .title {
+        font-family: Open Sans;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 25px;
+        text-transform: capitalize;
+        &.small {
+          font-size: 14px;
+        }
+      }
+      .left {
+        width: 30%;
+        &.events {
+          width: 50%;
+        }
+      }
+      .right {
+        width: 70%;
+        &.events {
+          width: 50%;
+        }
+      }
+      .see-more {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        font-weight: 600;
+      }
+    }
+    .ant-btn-ghost {
+      border: 2px solid #fff !important;
+      box-sizing: border-box;
+      border-radius: 60px;
+      color: #fff !important;
+    }
+  }
+  .ant-card-grid {
+    box-shadow: none !important;
+  }
+  .bg-color {
+    &.course-and-trainings {
+      background-color: $bg-course-n-training;
+    }
+    &.tools-and-resources {
+      background-color: $bg-tools-n-resources;
+    }
+    &.education-and-outreach {
+      background-color: $bg-education-n-outreach;
+    }
+    &.case-studies {
+      background-color: $bg-case-studies;
+    }
+    &.events {
+      background-color: $bg-events;
+    }
+  }
+
+  .bg-image {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    &.course-and-trainings {
+      background-image: url("../../images/capacity-building/course-n-training.png");
+    }
+    &.tools-and-resources {
+      background-image: url("../../images/capacity-building/tools-and-resources.png");
+    }
+    &.education-and-outreach {
+      background-image: url("../../images/capacity-building/education-and-outreach.png");
+    }
+    &.case-studies {
+      background-image: url("../../images/capacity-building/case-studies.png");
+    }
+    &.events {
+      background-image: url("../../images/capacity-building/events.png");
+    }
+  }
+
+  .ant-carousel {
+    .slick-dots {
+      li {
+        width: 17.84px !important;
+        button {
+          width: 17.84px !important;
+          height: 17.84px !important;
+          border-radius: 50% !important;
+          border: 3px solid #255b87;
+          box-sizing: border-box;
+          background-color: rgba($color: #fff, $alpha: 0);
+        }
+        &.slick-active {
+          button {
+            background-color: #255b87 !important;
+          }
+        }
+      }
+    }
+    .slick-dots-bottom {
+      bottom: -25px !important;
+    }
+  }
+  .carousel-control {
+    img {
+      position: absolute;
+      top: 45%;
+      z-index: 5;
+      width: 43px;
+      cursor: pointer;
+      &.carousel-next {
+        right: 0;
+      }
+      &.carousel-prev {
+        left: 0;
+      }
+    }
+  }
+}
+/* (320x480) iPhone (Original, 3G, 3GS) */
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  /* insert styles here */
+  .pm_event_banner {
+    .banner_info {
+      .banner_img {
+        height: 100% !important;
+      }
+    }
+    .event_details {
+      .ant-typography {
+        &.label {
+          font-size: 12px !important;
+          font-weight: 500 !important;
+        }
+      }
+      .site_title {
+        h1.ant-typography {
+          font-size: 18px !important;
+          font-weight: 400 !important;
+        }
+        h2.ant-typography {
+          font-size: 12px !important;
+        }
+      }
+    }
+  }
+}
+/* Tab */
+@media only screen and (min-width: 475px) and (max-width: 768px) {
+  .pm_event_banner {
+    .event_details {
+      .site_title {
+        h2.ant-typography {
+          font-size: 22px !important;
+        }
+      }
+    }
+  }
 }
 
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .pm_event_banner {
+    .event_details {
+      .site_title {
+        h2.ant-typography {
+          font-size: 24px !important;
+        }
+      }
+    }
+  }
+}
+
+/* Desktop */
 @media screen and (min-width: 1920px) {
   //For Projectors or Higher Resolution Screens (Full HD)
   #capacity-building {

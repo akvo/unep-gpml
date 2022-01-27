@@ -199,6 +199,11 @@ const FlexibleForm = withRouter(
         delete data.info;
       }
 
+      if (data?.related) {
+        data.relatedContent = data?.related.map((x) => parseInt(x));
+        delete data.related;
+      }
+
       if (status === "add" && !params?.id) {
         api
           .post("/resource", data)
@@ -286,9 +291,9 @@ const FlexibleForm = withRouter(
         data.q24_2 = [data.q24_2];
       }
 
-      if (data?.qimage) {
-        data.image = data.qimage;
-        delete data.qimage;
+      if (data?.related) {
+        data.relatedContent = data?.related.map((x) => parseInt(x));
+        delete data.related;
       }
 
       if (status === "add" && !params?.id) {
@@ -390,6 +395,11 @@ const FlexibleForm = withRouter(
         delete data.info;
       }
 
+      if (data?.related) {
+        data.relatedContent = data?.related.map((x) => parseInt(x));
+        delete data.related;
+      }
+
       if (status === "add" && !params?.id) {
         api
           .post("/policy", data)
@@ -485,6 +495,11 @@ const FlexibleForm = withRouter(
       if (data?.info) {
         data.infoDocs = data.info;
         delete data.info;
+      }
+
+      if (data?.related) {
+        data.relatedContent = data?.related.map((x) => parseInt(x));
+        delete data.related;
       }
 
       if (status === "add" && !params?.id) {
@@ -583,6 +598,11 @@ const FlexibleForm = withRouter(
       if (data?.info) {
         data.infoDocs = data.info;
         delete data.info;
+      }
+
+      if (data?.related) {
+        data.relatedContent = data?.related.map((x) => parseInt(x));
+        delete data.related;
       }
 
       if (status === "add" && !params?.id) {

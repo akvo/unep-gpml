@@ -22,6 +22,7 @@ import InfoBlue from "../../images/i-blue.png";
 import FlexibleForm from "./form";
 import isEmpty from "lodash/isEmpty";
 import { useAuth0 } from "@auth0/auth0-react";
+import api from "../../utils/api";
 
 const { Step } = Steps;
 
@@ -48,6 +49,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     formEdit: s.formEdit,
     selectedMainContentType: s.selectedMainContentType,
     currencies: s.currencies,
+    relatedResource: s.relatedResource,
   }));
 
   const {
@@ -68,6 +70,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     profile,
     selectedMainContentType,
     currencies,
+    relatedResource,
   } = storeData;
 
   const tabsData = tabs;
@@ -93,25 +96,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const [formSchema, setFormSchema] = useState({
     schema: schema[selectedMainContentType],
   });
-
-  useEffect(() => {
-    UIStore.update((e) => {
-      e.disclaimer = null;
-    });
-  }, [props]);
-
-  useEffect(() => {
-    const search = mainContentType.find((element) => element.code === mainType)
-      .childs;
-    setSubContentType(search);
-  }, [mainContentType, mainType]);
-
-  useEffect(() => {
-    UIStore.update((e) => {
-      e.highlight = highlight;
-    });
-    setFormSchema({ schema: schema[selectedMainContentType] });
-  }, [schema, highlight, selectedMainContentType]);
 
   const isLoaded = useCallback(() => {
     return Boolean(
@@ -140,6 +124,64 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     stakeholders,
     representativeGroup,
   ]);
+
+  const getResourceByType = (type) => {
+    let t = "";
+    switch (type) {
+      case "action":
+        t = "action_plan";
+        break;
+      case "event_flexible":
+        t = "event";
+        break;
+      case "initiative":
+        t = "project";
+        break;
+      case "policy":
+        t = "policy";
+        break;
+      case "financing":
+        t = "financing_resource";
+        break;
+      case "technical":
+        t = "technical_resource";
+        break;
+      case "technology":
+        t = "technology";
+        break;
+    }
+
+    api.get(`/list/${t}`).then((res) => {
+      UIStore.update((e) => {
+        e.relatedResource = res.data;
+      });
+    });
+  };
+
+  useEffect(() => {
+    if (mainType && isLoaded()) {
+      getResourceByType(mainType);
+    }
+  }, [mainType, isLoaded]);
+
+  useEffect(() => {
+    UIStore.update((e) => {
+      e.disclaimer = null;
+    });
+  }, [props]);
+
+  useEffect(() => {
+    const search = mainContentType.find((element) => element.code === mainType)
+      .childs;
+    setSubContentType(search);
+  }, [mainContentType, mainType]);
+
+  useEffect(() => {
+    UIStore.update((e) => {
+      e.highlight = highlight;
+    });
+    setFormSchema({ schema: schema[selectedMainContentType] });
+  }, [schema, highlight, selectedMainContentType]);
 
   useEffect(() => {
     if (isLoaded()) {
@@ -581,7 +623,14 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                         Learn more about each category and sub-categories
                         definitions in the “Content Type” section of this form.
                         A quick summary sheet with categories and sub-categories
-                        can be downloaded <a href="#">here</a>.
+                        can be downloaded{" "}
+                        <a
+                          href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37512/Categories%20and%20Sub%20Categories%20for%20the%20forms.pdf?sequence=3&isAllowed=y"
+                          target="_blank"
+                        >
+                          here
+                        </a>
+                        .
                       </p>
                       <p>
                         Once submitted resources go through a review process

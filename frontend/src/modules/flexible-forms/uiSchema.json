@@ -125,7 +125,14 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -464,7 +471,14 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -687,7 +701,14 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -928,7 +949,14 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -1149,7 +1177,14 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -1353,7 +1388,14 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -1562,7 +1604,14 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {

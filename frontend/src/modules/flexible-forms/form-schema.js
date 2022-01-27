@@ -226,6 +226,11 @@ export const schema = {
                 title: "Info And Docs",
                 type: "string",
               },
+              related: {
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
+              },
             },
           },
         },
@@ -1245,6 +1250,11 @@ export const schema = {
                 title: "Info And Docs",
                 type: "string",
               },
+              related: {
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
+              },
             },
           },
         },
@@ -1505,6 +1515,11 @@ export const schema = {
               info: {
                 title: "Info And Docs",
                 type: "string",
+              },
+              related: {
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
               },
             },
           },
@@ -1797,6 +1812,11 @@ export const schema = {
                 title: "Info And Docs",
                 type: "string",
               },
+              related: {
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
+              },
             },
           },
         },
@@ -2060,6 +2080,11 @@ export const schema = {
                 title: "Info And Docs",
                 type: "string",
               },
+              related: {
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
+              },
             },
           },
         },
@@ -2296,6 +2321,11 @@ export const schema = {
               info: {
                 title: "Info And Docs",
                 type: "string",
+              },
+              related: {
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
               },
             },
           },
@@ -2543,6 +2573,11 @@ export const schema = {
               info: {
                 title: "Info And Docs",
                 type: "string",
+              },
+              related: {
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
               },
             },
           },
