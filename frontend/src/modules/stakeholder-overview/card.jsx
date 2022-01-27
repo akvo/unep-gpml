@@ -9,14 +9,17 @@ import badge from "../../images/stakeholder-overview/badge.svg";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 
 const ProfileCard = ({ profile }) => {
-  const { entityRoleOptions, countries } = UIStore.useState((s) => ({
-    entityRoleOptions: s.entityRoleOptions,
-    countries: s.countries,
-    tags: s.tags,
-    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    languages: s.languages,
-    seeking: s.seeking,
-  }));
+  const { entityRoleOptions, countries, stakeholders } = UIStore.useState(
+    (s) => ({
+      entityRoleOptions: s.entityRoleOptions,
+      countries: s.countries,
+      tags: s.tags,
+      geoCoverageTypeOptions: s.geoCoverageTypeOptions,
+      languages: s.languages,
+      seeking: s.seeking,
+      stakeholders: s.stakeholders,
+    })
+  );
 
   const country = countries.find((country) => country.id === profile.country);
 
@@ -30,16 +33,16 @@ const ProfileCard = ({ profile }) => {
         <div className="image-wrapper">
           <img
             className="profile-image"
-            src={profile.photo}
-            alt={`${profile.firstName} ${profile.lastName}`}
+            src={profile.picture || profile.logo}
+            alt=""
           />
         </div>
         <div className="profile-details-container">
           <ul className="profile-detail-list">
             <li className="list-item">
               <h4 className="person-name">
-                <div>{profile.firstName}</div>
-                <div>{profile.lastName}</div>
+                <div>{profile.first_name}</div>
+                <div>{profile.last_name}</div>
               </h4>
             </li>
             <li className="list-item">
@@ -54,16 +57,20 @@ const ProfileCard = ({ profile }) => {
           </ul>
 
           <ul className="social-media-list">
-            <li className="list-item">
-              <a href="" className="social-media-link linkedin">
-                Linkedin
-              </a>
-            </li>
-            <li className="list-item">
-              <a href="" className="social-media-link twitter">
-                Twitter
-              </a>
-            </li>
+            {profile.linked_in && (
+              <li className="list-item">
+                <a href="" className="social-media-link linkedin">
+                  Linkedin
+                </a>
+              </li>
+            )}
+            {profile.twitter && (
+              <li className="list-item">
+                <a href="" className="social-media-link twitter">
+                  Twitter
+                </a>
+              </li>
+            )}
           </ul>
         </div>
       </Row>
