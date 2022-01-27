@@ -10,16 +10,10 @@
             [gpml.handler.auth :as h.auth]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
+            [gpml.pg-util :as pg-util]
             [gpml.util :as util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
-
-(deftype JDBCArray [elements type-name]
-  jdbc/ISQLParameter
-  (set-parameter [_ stmt ix]
-    (let [as-array (into-array Object elements)
-          jdbc-array (.createArrayOf (.getConnection stmt) type-name as-array)]
-      (.setArray stmt ix jdbc-array))))
 
 (defn expand-entity-associations
   [entity-connections resource-id]
@@ -72,7 +66,7 @@
               :url url
               :info_docs info_docs
               :sub_content_type sub_content_type
-              :related_content (->JDBCArray related_content "integer")
+              :related_content (pg-util/->JDBCArray related_content "integer")
               :first_publication_date first_publication_date
               :latest_amendment_date latest_amendment_date}
         resource-id (:id (db.resource/new-resource conn data))]

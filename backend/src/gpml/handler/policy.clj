@@ -1,23 +1,17 @@
 (ns gpml.handler.policy
   (:require [clojure.java.jdbc :as jdbc]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.image :as handler.image]
+            [gpml.auth :as auth]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.db.policy :as db.policy]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
-            [integrant.core :as ig]
             [gpml.handler.auth :as h.auth]
-            [gpml.auth :as auth]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.image :as handler.image]
+            [gpml.pg-util :as pg-util]
+            [integrant.core :as ig]
             [ring.util.response :as resp]))
-
-(deftype JDBCArray [elements type-name]
-  jdbc/ISQLParameter
-  (set-parameter [_ stmt ix]
-    (let [as-array (into-array Object elements)
-          jdbc-array (.createArrayOf (.getConnection stmt) type-name as-array)]
-      (.setArray stmt ix jdbc-array))))
 
 (defn expand-entity-associations
   [entity-connections resource-id]
@@ -63,8 +57,8 @@
               :owners owners
               :info_docs info_docs
               :sub_content_type sub_content_type
-              :related_content (->JDBCArray related_content "integer")
-              :topics (->JDBCArray topics "text")
+              :related_content (pg-util/->JDBCArray related_content "integer")
+              :topics (pg-util/->JDBCArray topics "text")
               :image (handler.image/assoc-image conn image "policy")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
