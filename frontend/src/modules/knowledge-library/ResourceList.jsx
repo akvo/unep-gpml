@@ -208,41 +208,42 @@ const ResourceItem = ({ results }) => {
     const linkTo = `/${type}/${id}`;
 
     return (
-      <Card key={`${type}-${id}`} className="resource-item">
-        <div className="topic">{topicNames(type)}</div>
-        <div className="item-body">
-          <div className="title">{title}</div>
-          <div className="description">
-            <TrimText text={description} max={125} />
+      <Link key={`${type}-${id}`} to={linkTo}>
+        <Card className="resource-item">
+          <div className="topic">{topicNames(type)}</div>
+          <div className="item-body">
+            <div className="title">{title}</div>
+            <div className="description">
+              <TrimText text={description} max={125} />
+            </div>
           </div>
-        </div>
-        <div className="item-footer">
-          <Space size={5}>
-            <Avatar.Group
-              maxCount={3}
-              maxStyle={{
-                color: "#f56a00",
-                backgroundColor: "#fde3cf",
-              }}
-            >
-              {["a", "b"].map((b, i) => (
-                <Tooltip key={`avatar-${i}`} title={b} placement="top">
-                  <Avatar
-                    style={{ backgroundColor: "#FFB800" }}
-                    icon={<UserOutlined />}
-                  />
-                </Tooltip>
-              ))}
-            </Avatar.Group>{" "}
-            <span className="avatar-number">+42</span>
-          </Space>
-          <span className="read-more">
-            <Link to={linkTo}>
-              Read more <ArrowRightOutlined />
-            </Link>
-          </span>
-        </div>
-      </Card>
+          <div className="item-footer">
+            <Space size={5}>
+              <Avatar.Group
+                maxCount={3}
+                maxStyle={{
+                  color: "#f56a00",
+                  backgroundColor: "#fde3cf",
+                }}
+              >
+                {["a", "b"].map((b, i) => (
+                  <Tooltip key={`avatar-${i}`} title={b} placement="top">
+                    <Avatar
+                      style={{ backgroundColor: "#FFB800" }}
+                      icon={<UserOutlined />}
+                    />
+                  </Tooltip>
+                ))}
+              </Avatar.Group>{" "}
+              <span className="avatar-number">+42</span>
+            </Space>
+            <span className="read-more">
+              Read more
+              <ArrowRightOutlined />
+            </span>
+          </div>
+        </Card>
+      </Link>
     );
   });
 };

@@ -634,6 +634,7 @@
         text-transform: uppercase;
         font-weight: 700;
       }
+
       .item-body {
         margin-top: 5px;
 
@@ -664,8 +665,14 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        .read-more {
+          font-size: 14px;
+        }
+        .read-more,
         .avatar-number {
           color: $blue04;
+        }
+        .avatar-number {
           font-weight: 600;
         }
       }
