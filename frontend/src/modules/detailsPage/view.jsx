@@ -432,8 +432,6 @@ const DetailsView = ({
     window.scrollTo({ top: 0 });
   }, [params, profile, isLoaded, data, history]);
 
-  console.log(data);
-
   if (!data) {
     return (
       <div className="details-view">
@@ -513,12 +511,12 @@ const DetailsView = ({
                         title={data?.geoCoverageType}
                       />
                     </List.Item>
-                    <List.Item>
+                    {/* <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar src={LanguageImage} />}
                         title={"English"}
                       />
-                    </List.Item>
+                    </List.Item> */}
                   </List>
                 </div>
               </CardComponent>
@@ -538,7 +536,9 @@ const DetailsView = ({
                           title={
                             <ul>
                               {data?.tags &&
-                                data?.tags.map((tag) => <li>{tag.tag}</li>)}
+                                data?.tags.map((tag) => (
+                                  <li key={tag.tag}>{tag.tag}</li>
+                                ))}
                             </ul>
                           }
                         />
@@ -655,166 +655,60 @@ const DetailsView = ({
                 )}
               </CardComponent>
               <CardComponent
-                title="Related content (4)"
+                title={`Related content (${
+                  data?.relatedContent && data?.relatedContent.length
+                })`}
                 style={{
                   marginBottom: "30px",
                 }}
                 getRef={relatedContent}
               >
-                <Row gutter={16} className="related-content">
-                  <Col span={12}>
-                    <Card title="INITIATIVE " bordered={false}>
-                      <h4>
-                        Legal limits on single-use plastics and microplastics{" "}
-                      </h4>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Donec tempor ante ac leo cursus, quis fringilla elit
-                        sagittis. Maecenas ac maximus massa...
-                      </p>
-                      <div className="bottom-panel">
-                        <div>
-                          <Avatar.Group
-                            maxCount={2}
-                            maxPopoverTrigger="click"
-                            size="large"
-                            maxStyle={{
-                              color: "#f56a00",
-                              backgroundColor: "#fde3cf",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <Avatar src={AvatarImage} />
-                            <Avatar src={AvatarImage} />
-                            <Tooltip title="Ant User" placement="top">
-                              <Avatar
-                                style={{ backgroundColor: "#87d068" }}
-                                icon={<UserOutlined />}
-                              />
-                            </Tooltip>
-                          </Avatar.Group>
-                        </div>
-                        <div className="read-more">
-                          Read More <ArrowRightOutlined />
-                        </div>
-                      </div>
-                    </Card>
-                  </Col>
-                  <Col span={12}>
-                    <Card title="INITIATIVE " bordered={false}>
-                      <h4>
-                        Legal limits on single-use plastics and microplastics{" "}
-                      </h4>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Donec tempor ante ac leo cursus, quis fringilla elit
-                        sagittis. Maecenas ac maximus massa...
-                      </p>
-                      <div className="bottom-panel">
-                        <div>
-                          <Avatar.Group
-                            maxCount={2}
-                            maxPopoverTrigger="click"
-                            size="large"
-                            maxStyle={{
-                              color: "#f56a00",
-                              backgroundColor: "#fde3cf",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <Avatar src={AvatarImage} />
-                            <Avatar src={AvatarImage} />
-                            <Tooltip title="Ant User" placement="top">
-                              <Avatar
-                                style={{ backgroundColor: "#87d068" }}
-                                icon={<UserOutlined />}
-                              />
-                            </Tooltip>
-                          </Avatar.Group>
-                        </div>
-                        <div className="read-more">
-                          Read More <ArrowRightOutlined />
-                        </div>
-                      </div>
-                    </Card>
-                  </Col>
-                  <Col span={12}>
-                    <Card title="INITIATIVE " bordered={false}>
-                      <h4>
-                        Legal limits on single-use plastics and microplastics{" "}
-                      </h4>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Donec tempor ante ac leo cursus, quis fringilla elit
-                        sagittis. Maecenas ac maximus massa...
-                      </p>
-                      <div className="bottom-panel">
-                        <div>
-                          <Avatar.Group
-                            maxCount={2}
-                            maxPopoverTrigger="click"
-                            size="large"
-                            maxStyle={{
-                              color: "#f56a00",
-                              backgroundColor: "#fde3cf",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <Avatar src={AvatarImage} />
-                            <Avatar src={AvatarImage} />
-                            <Tooltip title="Ant User" placement="top">
-                              <Avatar
-                                style={{ backgroundColor: "#87d068" }}
-                                icon={<UserOutlined />}
-                              />
-                            </Tooltip>
-                          </Avatar.Group>
-                        </div>
-                        <div className="read-more">
-                          Read More <ArrowRightOutlined />
-                        </div>
-                      </div>
-                    </Card>
-                  </Col>
-                  <Col span={12}>
-                    <Card title="INITIATIVE " bordered={false}>
-                      <h4>
-                        Legal limits on single-use plastics and microplastics{" "}
-                      </h4>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Donec tempor ante ac leo cursus, quis fringilla elit
-                        sagittis. Maecenas ac maximus massa...
-                      </p>
-                      <div className="bottom-panel">
-                        <div>
-                          <Avatar.Group
-                            maxCount={2}
-                            maxPopoverTrigger="click"
-                            size="large"
-                            maxStyle={{
-                              color: "#f56a00",
-                              backgroundColor: "#fde3cf",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <Avatar src={AvatarImage} />
-                            <Avatar src={AvatarImage} />
-                            <Tooltip title="Ant User" placement="top">
-                              <Avatar
-                                style={{ backgroundColor: "#87d068" }}
-                                icon={<UserOutlined />}
-                              />
-                            </Tooltip>
-                          </Avatar.Group>
-                        </div>
-                        <div className="read-more">
-                          Read More <ArrowRightOutlined />
-                        </div>
-                      </div>
-                    </Card>
-                  </Col>
-                </Row>
+                {data?.relatedContent.length > 0 && (
+                  <Row gutter={16} className="related-content">
+                    {data?.relatedContent.map((item) => (
+                      <Col span={12}>
+                        <Card
+                          title={data?.type ? data.type : ""}
+                          bordered={false}
+                        >
+                          <h4>{item.title}</h4>
+                          {/* <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Donec tempor ante ac leo cursus, quis
+                            fringilla elit sagittis. Maecenas ac maximus
+                            massa...
+                          </p>
+                          <div className="bottom-panel">
+                            <div>
+                              <Avatar.Group
+                                maxCount={2}
+                                maxPopoverTrigger="click"
+                                size="large"
+                                maxStyle={{
+                                  color: "#f56a00",
+                                  backgroundColor: "#fde3cf",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <Avatar src={AvatarImage} />
+                                <Avatar src={AvatarImage} />
+                                <Tooltip title="Ant User" placement="top">
+                                  <Avatar
+                                    style={{ backgroundColor: "#87d068" }}
+                                    icon={<UserOutlined />}
+                                  />
+                                </Tooltip>
+                              </Avatar.Group>
+                            </div>
+                            <div className="read-more">
+                              Read More <ArrowRightOutlined />
+                            </div>
+                          </div> */}
+                        </Card>
+                      </Col>
+                    ))}
+                  </Row>
+                )}
               </CardComponent>
               {/* <CardComponent
                 title="Comments (0)"
