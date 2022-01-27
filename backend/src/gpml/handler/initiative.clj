@@ -10,6 +10,13 @@
             [gpml.handler.image :as handler.image]
             [ring.util.response :as resp]))
 
+(deftype JDBCArray [elements type-name]
+  jdbc/ISQLParameter
+  (set-parameter [_ stmt ix]
+    (let [as-array (into-array Object elements)
+          jdbc-array (.createArrayOf (.getConnection stmt) type-name as-array)]
+      (.setArray stmt ix jdbc-array))))
+
 (defn- add-geo-initiative [conn initiative-id {:keys [geo_coverage_country_groups geo_coverage_countries] :as data}]
   (when (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
@@ -47,11 +54,12 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn create-initiative [conn {:keys [mailjet-config tags owners
+(defn create-initiative [conn {:keys [mailjet-config tags owners related_content
                                       entity_connections individual_connections qimage] :as initiative}]
   (let [data (-> initiative
-               (dissoc :tags :owners :mailjet-config :entity_connections :individual_connections)
-               (assoc :qimage (handler.image/assoc-image conn qimage "initiative")))
+               (dissoc :tags :owners :mailjet-config :entity_connections :individual_connections :related_content)
+               (assoc :qimage (handler.image/assoc-image conn qimage "initiative")
+                      :related_content (->JDBCArray related_content "integer")))
         initiative-id (:id (db.initiative/new-initiative conn data))]
     (add-geo-initiative conn initiative-id (extract-geo-data data))
     (when (not-empty owners)
