@@ -367,15 +367,6 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-          {/* Entities */}
-          <MultipleSelectFilter
-            title="Entities"
-            options={[]}
-            value={query?.entity || []}
-            flag="entity"
-            query={query}
-            updateQuery={updateQuery}
-          />
           {/* Rating */}
           <MultipleSelectFilter
             title="Rating"
