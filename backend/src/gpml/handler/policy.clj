@@ -42,9 +42,9 @@
 (defn create-policy [conn {:keys [title original_title abstract url
                                   data_source type_of_law record_number
                                   first_publication_date latest_amendment_date
-                                  status country geo_coverage_type
-                                  geo_coverage_value implementing_mea
-                                  geo_coverage_countries geo_coverage_country_groups
+                                  status country #_geo_coverage_type
+                                  #_geo_coverage_value implementing_mea
+                                  #_geo_coverage_countries #_geo_coverage_country_groups
                                   tags urls created_by image
                                   owners info_docs sub_content_type related_content topics
                                   attachments remarks mailjet-config
@@ -99,7 +99,7 @@
     (when (not-empty individual_connections)
       (doseq [association (expand-individual-associations individual_connections policy-id)]
         (db.favorite/new-association conn association)))
-    (if (or (not-empty geo_coverage_country_groups)
+    #_(if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 policy-id data)]
         (db.policy/add-policy-geo conn {:geo geo-data}))
