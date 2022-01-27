@@ -41,11 +41,25 @@
           :association (:role connection)
           :remarks nil})))
 
+(def fe-payload {:resource_type "Technical Resource",
+                  :sub_content_type "",
+                  :title "techres1",
+                  :summary "adsf",
+                  :url "techres1.com",
+                  :geo_coverage_type "transnational",
+                  :tags [163],
+                  :version 2,
+                  :entity_connections [{:role "owner", :entity 1000}],
+                  :individual_connections [{:role "owner", :stakeholder 10004}]
+                 ;:geo_coverage_countries [157]
+                 ; :geo_coverage_country_groups [4 1098]
+                  :related_content  [8 10 12]})
+
 (defn create-resource [conn {:keys [resource_type title publish_year
                                     summary value value_currency
                                     value_remarks valid_from valid_to image
-                                    geo_coverage_type geo_coverage_value
-                                    geo_coverage_countries geo_coverage_country_groups
+                                    #_geo_coverage_type #_geo_coverage_value
+                                    #_geo_coverage_countries #_geo_coverage_country_groups
                                     attachments country urls tags remarks
                                     created_by url mailjet-config owners
                                     info_docs sub_content_type related_content
@@ -99,7 +113,7 @@
                                          :id)
                                     (:url %)) urls)]
         (db.resource/add-resource-language-urls conn {:urls lang-urls})))
-    (if (or (not-empty geo_coverage_country_groups)
+    #_(if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 resource-id data)]
         (db.resource/add-resource-geo conn {:geo geo-data}))

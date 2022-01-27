@@ -42,8 +42,8 @@
 (defn create-technology [conn {:keys [name organisation_type
                                       development_stage specifications_provided
                                       year_founded email country
-                                      geo_coverage_type geo_coverage_value
-                                      geo_coverage_countries geo_coverage_country_groups
+                                      #_geo_coverage_type #_geo_coverage_value
+                                      #_geo_coverage_countries #_geo_coverage_country_groups
                                       tags url urls created_by image owners info_docs
                                       sub_content_type related_content
                                       logo attachments remarks mailjet-config
@@ -94,7 +94,7 @@
                                          :id)
                                     (:url %)) urls)]
         (db.technology/add-technology-language-urls conn {:urls lang-urls})))
-    (if (or (not-empty geo_coverage_country_groups)
+    #_(if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 technology-id data)]
         (db.technology/add-technology-geo conn {:geo geo-data}))
