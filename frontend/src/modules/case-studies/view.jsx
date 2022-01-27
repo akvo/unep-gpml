@@ -50,18 +50,16 @@ const CaseStudies = () => {
               </Select>
             </Col>
             <Col lg={18} md={24} className="text-right">
-              {datastudies[indexSlide].platform_link && (
-                <Button
-                  href={datastudies[indexSlide].platform_link}
-                  type="link"
-                  shape="round"
-                  className="green-border"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Learn More
-                </Button>
-              )}
+              <Button
+                href={datastudies[indexSlide].platform_link || "#"}
+                type="link"
+                shape="round"
+                className="green-border"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Learn More
+              </Button>
               <Button className="btn-download ml-1">
                 Download as pdf&nbsp;
                 <DownloadOutlined />
