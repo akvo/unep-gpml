@@ -6,15 +6,11 @@ import ProfileCard from "./card";
 import Header from "./header";
 import FilterDrawer from "./filterDrawer";
 import { UIStore } from "../../store";
+import { profiles } from "./profiles";
 
 const StakeholderOverview = () => {
   const [filterVisible, setFilterVisible] = useState(false);
-  const {
-    entityRoleOptions,
-    countries,
-    geoCoverageTypeOptions,
-    languages,
-  } = UIStore.useState((s) => ({
+  const { entityRoleOptions } = UIStore.useState((s) => ({
     entityRoleOptions: s.entityRoleOptions,
     countries: s.countries,
     tags: s.tags,
@@ -22,7 +18,7 @@ const StakeholderOverview = () => {
     languages: s.languages,
   }));
 
-console.log(UIStore.currentState);
+ 
 
   return (
     <div id="suggested-profiles">
@@ -33,15 +29,9 @@ console.log(UIStore.currentState);
       <Row type="flex" className="body-wrapper">
         {/* Filter Drawer */}
         <FilterDrawer
-          // filters={filters}
           entities={entityRoleOptions}
           filterVisible={filterVisible}
           setFilterVisible={setFilterVisible}
-          // countData={countData}
-          // query={query}
-          // updateQuery={(flag, val) => updateQuery(flag, val)}
-          // multiCountryCountries={multiCountryCountries}
-          // setMultiCountryCountries={setMultiCountryCountries}
         />
 
         <LeftSidebar />
@@ -49,17 +39,16 @@ console.log(UIStore.currentState);
           <Col className="card-container green">
             <h3 className="title text-white">Suggested profiles</h3>
             <Row>
-              <ProfileCard />
+              {profiles.map((profile) => (
+                <ProfileCard key={profile.id} profile={profile} />
+              ))}
             </Row>
           </Col>
           <Col className="all-profiles">
             <Row type="flex">
-              <ProfileCard />
-              <ProfileCard />
-              <ProfileCard />
-              <ProfileCard />
-              <ProfileCard />
-              <ProfileCard />
+              {profiles.map((profile) => (
+                <ProfileCard key={profile.id} profile={profile} />
+              ))}
             </Row>
             <div className="page">
               <Pagination
