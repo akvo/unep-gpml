@@ -42,8 +42,8 @@
 (defn create-technology [conn {:keys [name organisation_type
                                       development_stage specifications_provided
                                       year_founded email country
-                                      #_geo_coverage_type #_geo_coverage_value
-                                      #_geo_coverage_countries #_geo_coverage_country_groups
+                                      geo_coverage_type geo_coverage_value
+                                      geo_coverage_countries geo_coverage_country_groups
                                       tags url urls created_by image owners info_docs
                                       sub_content_type related_content
                                       logo attachments remarks mailjet-config
@@ -58,10 +58,10 @@
               :country country
               :image (handler.image/assoc-image conn image "technology")
               :logo (handler.image/assoc-image conn logo "technology")
-              ;:geo_coverage_type geo_coverage_type
-              ;:geo_coverage_value geo_coverage_value
-              ;:geo_coverage_countries geo_coverage_countries
-              ;:geo_coverage_country_groups geo_coverage_country_groups
+              :geo_coverage_type geo_coverage_type
+              :geo_coverage_value geo_coverage_value
+              :geo_coverage_countries geo_coverage_countries
+              :geo_coverage_country_groups geo_coverage_country_groups
               :remarks remarks
               :attachments attachments
               :created_by created_by

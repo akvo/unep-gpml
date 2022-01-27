@@ -44,8 +44,8 @@
 (defn create-resource [conn {:keys [resource_type title publish_year
                                     summary value value_currency
                                     value_remarks valid_from valid_to image
-                                    #_geo_coverage_type #_geo_coverage_value
-                                    #_geo_coverage_countries #_geo_coverage_country_groups
+                                    geo_coverage_type geo_coverage_value
+                                    geo_coverage_countries geo_coverage_country_groups
                                     attachments country urls tags remarks
                                     created_by url mailjet-config owners
                                     info_docs sub_content_type related_content
@@ -61,10 +61,10 @@
               :valid_from valid_from
               :valid_to valid_to
               :image (handler.image/assoc-image conn image "resource")
-              ;:geo_coverage_type geo_coverage_type
-              ;:geo_coverage_value geo_coverage_value
-              ;:geo_coverage_countries geo_coverage_countries
-              ;:geo_coverage_country_groups geo_coverage_country_groups
+              :geo_coverage_type geo_coverage_type
+              :geo_coverage_value geo_coverage_value
+              :geo_coverage_countries geo_coverage_countries
+              :geo_coverage_country_groups geo_coverage_country_groups
               :country country
               :attachments attachments
               :remarks remarks
@@ -99,7 +99,7 @@
                                          :id)
                                     (:url %)) urls)]
         (db.resource/add-resource-language-urls conn {:urls lang-urls})))
-    #_(if (or (not-empty geo_coverage_country_groups)
+    (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 resource-id data)]
         (db.resource/add-resource-geo conn {:geo geo-data}))

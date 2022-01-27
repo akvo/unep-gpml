@@ -17,7 +17,7 @@
           jdbc-array (.createArrayOf (.getConnection stmt) type-name as-array)]
       (.setArray stmt ix jdbc-array))))
 
-#_(defn- add-geo-initiative [conn initiative-id {:keys [geo_coverage_country_groups geo_coverage_countries] :as data}]
+(defn- add-geo-initiative [conn initiative-id {:keys [geo_coverage_country_groups geo_coverage_countries] :as data}]
   (when (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
     (let [geo-data (handler.geo/get-geo-vector-v2 initiative-id data)]
@@ -57,12 +57,11 @@
 (defn create-initiative [conn {:keys [mailjet-config tags owners related_content
                                       entity_connections individual_connections qimage] :as initiative}]
   (let [data (-> initiative
-               (dissoc :tags :owners :mailjet-config :entity_connections :individual_connections :related_content
-                 :geo_coverage_country_groups :geo_coverage_countries :geo_coverage_type :geo_coverage_value)
+               (dissoc :tags :owners :mailjet-config :entity_connections :individual_connections :related_content)
                (assoc :qimage (handler.image/assoc-image conn qimage "initiative")
                       :related_content (->JDBCArray related_content "integer")))
         initiative-id (:id (db.initiative/new-initiative conn data))]
-    #_(add-geo-initiative conn initiative-id (extract-geo-data data))
+    (add-geo-initiative conn initiative-id (extract-geo-data data))
     (when (not-empty owners)
       (doseq [stakeholder-id owners]
         (h.auth/grant-topic-to-stakeholder! conn {:topic-id initiative-id

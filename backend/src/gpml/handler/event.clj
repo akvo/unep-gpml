@@ -40,9 +40,9 @@
           :remarks nil})))
 
 (defn create-event [conn {:keys [tags urls title start_date end_date
-                                 description remarks #_geo_coverage_type
-                                 country city #_geo_coverage_value photo
-                                 #_geo_coverage_countries #_geo_coverage_country_groups
+                                 description remarks geo_coverage_type
+                                 country city geo_coverage_value photo
+                                 geo_coverage_countries geo_coverage_country_groups
                                  created_by mailjet-config owners url
                                  info_docs sub_content_type related_content
                                  entity_connections individual_connections]}]
@@ -52,10 +52,10 @@
               :description (or description "")
               :remarks remarks
               :image (handler.image/assoc-image conn photo "event")
-              ;:geo_coverage_type geo_coverage_type
-              ;:geo_coverage_value geo_coverage_value
-              ;:geo_coverage_countries geo_coverage_countries
-              ;:geo_coverage_country_groups geo_coverage_country_groups
+              :geo_coverage_type geo_coverage_type
+              :geo_coverage_value geo_coverage_value
+              :geo_coverage_countries geo_coverage_countries
+              :geo_coverage_country_groups geo_coverage_country_groups
               :city city
               :url url
               :country country
@@ -87,7 +87,7 @@
                                          :id)
                                     (:url %)) urls)]
         (db.event/add-event-language-urls conn {:urls lang-urls})))
-    #_(if (or (not-empty geo_coverage_country_groups)
+    (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 event-id data)]
         (db.event/add-event-geo-coverage conn {:geo geo-data}))

@@ -27,10 +27,8 @@
    :value_remarks "Value Remarks"
    :valid_from "2018"
    :valid_to "Ongoing"
-   ;:geo_coverage_type "regional"
-   ;:geo_coverage_value (mapv :id (:country_groups data))
-   ;:geo_coverage_countries [157]
-   ;:geo_coverage_country_groups [3 1098]
+   :geo_coverage_type "regional"
+   :geo_coverage_value (mapv :id (:country_groups data))
    :image image
    :remarks nil
    :urls [{:lang "id" :url "https://www.test.org"}]
