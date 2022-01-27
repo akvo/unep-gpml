@@ -298,9 +298,9 @@ const FlexibleForm = withRouter(
         data.q24_2 = [data.q24_2];
       }
 
-      if (data?.related) {
-        data.relatedContent = data?.related.map((x) => parseInt(x));
-        delete data.related;
+      if (data?.qrelated) {
+        data.related_content = data?.qrelated.map((x) => parseInt(x));
+        delete data.qrelated;
       }
 
       if (status === "add" && !params?.id) {
