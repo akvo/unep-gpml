@@ -14,6 +14,13 @@
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
+(deftype JDBCArray [elements type-name]
+  jdbc/ISQLParameter
+  (set-parameter [_ stmt ix]
+    (let [as-array (into-array Object elements)
+          jdbc-array (.createArrayOf (.getConnection stmt) type-name as-array)]
+      (.setArray stmt ix jdbc-array))))
+
 (defn expand-entity-associations
   [entity-connections resource-id]
   (vec (for [connection entity-connections]
@@ -54,10 +61,10 @@
               :valid_from valid_from
               :valid_to valid_to
               :image (handler.image/assoc-image conn image "resource")
-              :geo_coverage_type geo_coverage_type
-              :geo_coverage_value geo_coverage_value
-              :geo_coverage_countries geo_coverage_countries
-              :geo_coverage_country_groups geo_coverage_country_groups
+              ;:geo_coverage_type geo_coverage_type
+              ;:geo_coverage_value geo_coverage_value
+              ;:geo_coverage_countries geo_coverage_countries
+              ;:geo_coverage_country_groups geo_coverage_country_groups
               :country country
               :attachments attachments
               :remarks remarks
@@ -65,7 +72,7 @@
               :url url
               :info_docs info_docs
               :sub_content_type sub_content_type
-              :related_content related_content
+              :related_content (->JDBCArray related_content "integer")
               :first_publication_date first_publication_date
               :latest_amendment_date latest_amendment_date}
         resource-id (:id (db.resource/new-resource conn data))]

@@ -12,6 +12,13 @@
             [gpml.auth :as auth]
             [ring.util.response :as resp]))
 
+(deftype JDBCArray [elements type-name]
+  jdbc/ISQLParameter
+  (set-parameter [_ stmt ix]
+    (let [as-array (into-array Object elements)
+          jdbc-array (.createArrayOf (.getConnection stmt) type-name as-array)]
+      (.setArray stmt ix jdbc-array))))
+
 (defn expand-entity-associations
   [entity-connections resource-id]
   (vec (for [connection entity-connections]
@@ -56,13 +63,13 @@
               :owners owners
               :info_docs info_docs
               :sub_content_type sub_content_type
-              :related_content related_content
-              :topics topics
+              :related_content (->JDBCArray related_content "integer")
+              :topics (->JDBCArray topics "text")
               :image (handler.image/assoc-image conn image "policy")
-              :geo_coverage_type geo_coverage_type
-              :geo_coverage_value geo_coverage_value
-              :geo_coverage_countries geo_coverage_countries
-              :geo_coverage_country_groups geo_coverage_country_groups
+              ;:geo_coverage_type geo_coverage_type
+              ;:geo_coverage_value geo_coverage_value
+              ;:geo_coverage_countries geo_coverage_countries
+              ;:geo_coverage_country_groups geo_coverage_country_groups
               :implementing_mea implementing_mea
               :attachments attachments
               :remarks remarks

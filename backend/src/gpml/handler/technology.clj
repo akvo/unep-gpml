@@ -12,6 +12,13 @@
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
+(deftype JDBCArray [elements type-name]
+  jdbc/ISQLParameter
+  (set-parameter [_ stmt ix]
+    (let [as-array (into-array Object elements)
+          jdbc-array (.createArrayOf (.getConnection stmt) type-name as-array)]
+      (.setArray stmt ix jdbc-array))))
+
 (defn expand-entity-associations
   [entity-connections resource-id]
   (vec (for [connection entity-connections]
@@ -51,17 +58,17 @@
               :country country
               :image (handler.image/assoc-image conn image "technology")
               :logo (handler.image/assoc-image conn logo "technology")
-              :geo_coverage_type geo_coverage_type
-              :geo_coverage_value geo_coverage_value
-              :geo_coverage_countries geo_coverage_countries
-              :geo_coverage_country_groups geo_coverage_country_groups
+              ;:geo_coverage_type geo_coverage_type
+              ;:geo_coverage_value geo_coverage_value
+              ;:geo_coverage_countries geo_coverage_countries
+              ;:geo_coverage_country_groups geo_coverage_country_groups
               :remarks remarks
               :attachments attachments
               :created_by created_by
               :owners owners
               :info_docs info_docs
               :sub_content_type sub_content_type
-              :related_content related_content
+              :related_content (->JDBCArray related_content "integer")
               :review_status "SUBMITTED"}
         technology-id (->> data (db.technology/new-technology conn) :id)]
     (when (not-empty owners)

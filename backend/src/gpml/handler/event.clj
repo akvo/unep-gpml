@@ -12,6 +12,13 @@
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
+(deftype JDBCArray [elements type-name]
+  jdbc/ISQLParameter
+  (set-parameter [_ stmt ix]
+    (let [as-array (into-array Object elements)
+          jdbc-array (.createArrayOf (.getConnection stmt) type-name as-array)]
+      (.setArray stmt ix jdbc-array))))
+
 (defn expand-entity-associations
   [entity-connections resource-id]
   (vec (for [connection entity-connections]
@@ -45,10 +52,10 @@
               :description (or description "")
               :remarks remarks
               :image (handler.image/assoc-image conn photo "event")
-              :geo_coverage_type geo_coverage_type
-              :geo_coverage_value geo_coverage_value
-              :geo_coverage_countries geo_coverage_countries
-              :geo_coverage_country_groups geo_coverage_country_groups
+              ;:geo_coverage_type geo_coverage_type
+              ;:geo_coverage_value geo_coverage_value
+              ;:geo_coverage_countries geo_coverage_countries
+              ;:geo_coverage_country_groups geo_coverage_country_groups
               :city city
               :url url
               :country country
@@ -56,7 +63,7 @@
               :created_by created_by
               :info_docs info_docs
               :sub_content_type sub_content_type
-              :related_content related_content}
+              :related_content (->JDBCArray related_content "integer")}
         event-id (->> data (db.event/new-event conn) :id)]
     (when (not-empty tags)
       (db.event/add-event-tags conn {:tags (map #(vector event-id %) tags)}))
