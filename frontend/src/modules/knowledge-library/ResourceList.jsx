@@ -30,7 +30,6 @@ import isEmpty from "lodash/isEmpty";
 
 import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 import SortIcon from "../../images/knowledge-library/sort-icon.svg";
-import { result } from "lodash";
 
 const ResourceList = ({
   filters,
@@ -52,7 +51,7 @@ const ResourceList = ({
   );
 
   const [allResults, setAllResults] = useState([]);
-  const [isAscending, setIsAscending] = useState(false);
+  const [isAscending, setIsAscending] = useState(null);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
 
@@ -143,7 +142,12 @@ const ResourceList = ({
               <img src={SortIcon} alt="sort-icon" />{" "}
               <span>
                 Sort By:
-                <br /> {!isAscending ? <b>A&gt;Z</b> : <b>Z&gt;A</b>}
+                <br />{" "}
+                {isAscending || isAscending === null ? (
+                  <b>A&gt;Z</b>
+                ) : (
+                  <b>Z&gt;A</b>
+                )}
               </span>
             </Button>
           }
