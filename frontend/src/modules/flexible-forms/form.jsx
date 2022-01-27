@@ -160,13 +160,20 @@ const FlexibleForm = withRouter(
       }
 
       if (data.geoCoverageType === "transnational") {
-        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
-          : [];
-        data.geoCoverageCountries = data.geoCoverageCountries
-          ? data.geoCoverageCountries.map((x) => parseInt(x))
-          : [];
-        delete data.geoCoverageValueTransnational;
+        if (
+          data.geoCoverageValueTransnational &&
+          data.geoCoverageValueTransnational.length > 0
+        ) {
+          data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            : [];
+          delete data.geoCoverageValueTransnational;
+        }
+        if (data.geoCoverageCountries && data.geoCoverageCountries.length > 0) {
+          data.geoCoverageCountries = data.geoCoverageCountries
+            ? data.geoCoverageCountries.map((x) => parseInt(x))
+            : [];
+        }
       }
 
       if (data.geoCoverageType === "national") {
@@ -339,13 +346,20 @@ const FlexibleForm = withRouter(
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
       if (data.geoCoverageType === "transnational") {
-        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
-          : [];
-        data.geoCoverageCountries = data.geoCoverageCountries
-          ? data.geoCoverageCountries.map((x) => parseInt(x))
-          : [];
-        delete data.geoCoverageValueTransnational;
+        if (
+          data.geoCoverageValueTransnational &&
+          data.geoCoverageValueTransnational.length > 0
+        ) {
+          data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            : [];
+          delete data.geoCoverageValueTransnational;
+        }
+        if (data.geoCoverageCountries && data.geoCoverageCountries.length > 0) {
+          data.geoCoverageCountries = data.geoCoverageCountries
+            ? data.geoCoverageCountries.map((x) => parseInt(x))
+            : [];
+        }
       }
 
       if (data.geoCoverageType === "national") {
@@ -445,13 +459,20 @@ const FlexibleForm = withRouter(
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
       if (data.geoCoverageType === "transnational") {
-        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
-          : [];
-        data.geoCoverageCountries = data.geoCoverageCountries
-          ? data.geoCoverageCountries.map((x) => parseInt(x))
-          : [];
-        delete data.geoCoverageValueTransnational;
+        if (
+          data.geoCoverageValueTransnational &&
+          data.geoCoverageValueTransnational.length > 0
+        ) {
+          data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            : [];
+          delete data.geoCoverageValueTransnational;
+        }
+        if (data.geoCoverageCountries && data.geoCoverageCountries.length > 0) {
+          data.geoCoverageCountries = data.geoCoverageCountries
+            ? data.geoCoverageCountries.map((x) => parseInt(x))
+            : [];
+        }
       }
 
       if (data.geoCoverageType === "national") {
@@ -546,13 +567,20 @@ const FlexibleForm = withRouter(
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
       if (data.geoCoverageType === "transnational") {
-        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
-          : [];
-        data.geoCoverageCountries = data.geoCoverageCountries
-          ? data.geoCoverageCountries.map((x) => parseInt(x))
-          : [];
-        delete data.geoCoverageValueTransnational;
+        if (
+          data.geoCoverageValueTransnational &&
+          data.geoCoverageValueTransnational.length > 0
+        ) {
+          data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            : [];
+          delete data.geoCoverageValueTransnational;
+        }
+        if (data.geoCoverageCountries && data.geoCoverageCountries.length > 0) {
+          data.geoCoverageCountries = data.geoCoverageCountries
+            ? data.geoCoverageCountries.map((x) => parseInt(x))
+            : [];
+        }
       }
 
       if (data.geoCoverageType === "national") {
@@ -562,7 +590,6 @@ const FlexibleForm = withRouter(
 
         delete data.geoCoverageValueNational;
       }
-
       if (data?.yearFounded) {
         const yearFounded = new Date(data.yearFounded);
         data.yearFounded = yearFounded.getFullYear();
