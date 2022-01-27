@@ -1,23 +1,17 @@
 (ns gpml.handler.event
   (:require [clojure.java.jdbc :as jdbc]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.image :as handler.image]
+            [gpml.auth :as auth]
+            [gpml.email-util :as email]
             [gpml.db.event :as db.event]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
-            [gpml.handler.auth :as h.auth]
             [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.email-util :as email]
-            [gpml.auth :as auth]
+            [gpml.handler.auth :as h.auth]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.image :as handler.image]
+            [gpml.pg-util :as pg-util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
-
-(deftype JDBCArray [elements type-name]
-  jdbc/ISQLParameter
-  (set-parameter [_ stmt ix]
-    (let [as-array (into-array Object elements)
-          jdbc-array (.createArrayOf (.getConnection stmt) type-name as-array)]
-      (.setArray stmt ix jdbc-array))))
 
 (defn expand-entity-associations
   [entity-connections resource-id]
@@ -63,7 +57,7 @@
               :created_by created_by
               :info_docs info_docs
               :sub_content_type sub_content_type
-              :related_content (->JDBCArray related_content "integer")}
+              :related_content (pg-util/->JDBCArray related_content "integer")}
         event-id (->> data (db.event/new-event conn) :id)]
     (when (not-empty tags)
       (db.event/add-event-tags conn {:tags (map #(vector event-id %) tags)}))
