@@ -208,7 +208,7 @@ const ResourceItem = ({ results }) => {
     const linkTo = `/${type}/${id}`;
 
     return (
-      <Link key={`${type}-${id}`} to={linkTo}>
+      <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
         <Card className="resource-item">
           <div className="topic">{topicNames(type)}</div>
           <div className="item-body">

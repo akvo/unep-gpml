@@ -621,59 +621,62 @@
     flex-direction: column;
     gap: 10px;
     align-items: center;
-
-    .resource-item {
+    .resource-item-wrapper {
       width: 100%;
-      border-radius: 8px;
-      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
-      text-align: left;
-      color: $black;
-      .topic {
-        color: $green05;
-        font-size: 12px;
-        text-transform: uppercase;
-        font-weight: 700;
-      }
 
-      .item-body {
-        margin-top: 5px;
-
-        .title,
-        .description,
-        .read-more {
-          font-size: 14px;
-        }
-        .description {
-          font-weight: 400;
-          color: $blue11;
-        }
-        .description {
-          margin-top: 7px;
+      .resource-item {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+        text-align: left;
+        color: $black;
+        .topic {
+          color: $green05;
+          font-size: 12px;
+          text-transform: uppercase;
+          font-weight: 700;
         }
 
-        .read-more,
-        .avatar-number {
-          color: $blue04;
-        }
+        .item-body {
+          margin-top: 5px;
 
-        .avatar-number {
-          font-size: 13px;
+          .title,
+          .description,
+          .read-more {
+            font-size: 14px;
+          }
+          .description {
+            font-weight: 400;
+            color: $blue11;
+          }
+          .description {
+            margin-top: 7px;
+          }
+
+          .read-more,
+          .avatar-number {
+            color: $blue04;
+          }
+
+          .avatar-number {
+            font-size: 13px;
+          }
         }
-      }
-      .item-footer {
-        margin-top: 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .read-more {
-          font-size: 14px;
-        }
-        .read-more,
-        .avatar-number {
-          color: $blue04;
-        }
-        .avatar-number {
-          font-weight: 600;
+        .item-footer {
+          margin-top: 14px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .read-more {
+            font-size: 14px;
+          }
+          .read-more,
+          .avatar-number {
+            color: $blue04;
+          }
+          .avatar-number {
+            font-weight: 600;
+          }
         }
       }
     }
