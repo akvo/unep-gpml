@@ -375,6 +375,14 @@ h4 {
       .ant-btn.ant-btn-primary.ant-input-search-button {
         border-radius: 0;
       }
+
+      &.toggle-icon {
+        justify-content: end;
+        button {
+          width: 32px;
+          height: 32px;
+        }
+      }
     }
 
     nav {
