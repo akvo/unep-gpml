@@ -190,10 +190,10 @@ const FilterDrawer = ({
               <p className="specificity-title">For individuals</p>
               <Col span={6}>
                 <Card
-                // onClick={() => handleChangeResourceType("topic", topic)}
-                className={classNames("resource-type-card", {
-                  active: query?.topic?.includes(topic),
-                })}
+                  // onClick={() => handleChangeResourceType("topic", topic)}
+                  className={classNames("resource-type-card", {
+                    active: query?.topic?.includes(topic),
+                  })}
                 >
                   <Space direction="vertical" align="center">
                     <Badge />

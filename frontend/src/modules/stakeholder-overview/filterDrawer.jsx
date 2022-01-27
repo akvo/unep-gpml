@@ -336,7 +336,7 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-          <Col className='drawer-button-wrapper'>
+          <Col className="drawer-button-wrapper">
             <Button className="show-stakeholder-btn">
               Show stakeholders (87)
             </Button>

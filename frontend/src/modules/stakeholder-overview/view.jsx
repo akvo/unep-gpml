@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Pagination } from "antd";
 import "./styles.scss";
 import LeftSidebar from "./leftSidebar";
@@ -7,18 +7,44 @@ import Header from "./header";
 import FilterDrawer from "./filterDrawer";
 import { UIStore } from "../../store";
 import { profiles } from "./profiles";
+import api from "../../utils/api";
 
 const StakeholderOverview = () => {
   const [filterVisible, setFilterVisible] = useState(false);
-  const { entityRoleOptions } = UIStore.useState((s) => ({
+  const [results, setResults] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const pageSize = 10;
+  const { entityRoleOptions, stakeholders } = UIStore.useState((s) => ({
     entityRoleOptions: s.entityRoleOptions,
     countries: s.countries,
     tags: s.tags,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     languages: s.languages,
+    stakeholders: s.stakeholders,
   }));
 
- 
+  const getResults = () => {
+    // NOTE: The url needs to be window.location.search because of how
+    // of how `history` and `location` are interacting!
+    const searchParms = new URLSearchParams(window.location.search);
+    searchParms.set("limit", pageSize);
+    const url = `/browse?${String(searchParms)}`;
+    api
+      .get(url)
+      .then((resp) => {
+        setResults(resp?.data?.results);
+
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  useEffect(() => {
+    getResults();
+    console.log(results);
+  }, []);
 
   return (
     <div id="suggested-profiles">

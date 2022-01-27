@@ -22,7 +22,7 @@ const SuggestedProfiles = () => {
     languages: s.languages,
   }));
 
-console.log(UIStore.currentState);
+  console.log(UIStore.currentState);
 
   return (
     <div id="suggested-profiles">
