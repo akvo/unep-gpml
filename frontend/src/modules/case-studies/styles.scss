@@ -9,7 +9,7 @@ $green-primary: #4dffa5;
   }
 }
 .case-studies-page {
-  height: calc(100vh - 160px);
+  height: calc(100vh - 130px);
   h1.ant-typography {
     font-family: Open Sans;
     font-style: normal;
@@ -40,6 +40,8 @@ $green-primary: #4dffa5;
       text-align: justify;
       text-transform: capitalize;
       color: #fff !important;
+      font-size: 14px !important;
+      line-height: 18px !important;
     }
   }
   /**
@@ -143,6 +145,9 @@ $green-primary: #4dffa5;
         border-color: #40a9ff !important;
       }
     }
+  }
+  #siteWrapper {
+    height: calc(100vh - 130px) !important;
   }
 }
 .ml-1 {
