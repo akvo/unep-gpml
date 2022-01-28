@@ -54,6 +54,11 @@ import {
   descriptionMaps,
 } from "./mapping";
 import moment from "moment";
+import {
+  topicNames,
+  resourceTypeToTopicType,
+  relationsByTopicType,
+} from "../../utils/misc";
 
 const CardComponent = ({ title, style, children, getRef }) => {
   return (
@@ -577,7 +582,7 @@ const DetailsView = ({
               <div className="header-wrapper">
                 <img src={ActionGreen} />
                 <div>
-                  <Title level={2}>{data?.type}</Title>
+                  <Title level={2}>{topicNames(params?.type)}</Title>
                   <Title level={4}>{data?.title}</Title>
                 </div>
               </div>
