@@ -204,6 +204,9 @@
       gap: 34px;
       flex-wrap: wrap;
     }
+    .ant-card-body {
+      min-height: 271px;
+    }
   }
 
   .card-container {
@@ -218,6 +221,17 @@
     .ant-row {
       gap: 34px;
       flex-wrap: wrap;
+    }
+    .profile-card {
+      .ant-card-body {
+        display: flex;
+        flex-direction: column;
+        min-height: 321px;
+        .person-role {
+          max-height: fit-content;
+          margin-top: auto;
+        }
+      }
     }
   }
 
