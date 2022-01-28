@@ -97,8 +97,9 @@ const TabComponent = ({
   );
 };
 
-const SharePanel = ({ data, canDelete, topic }) => {
+const SharePanel = ({ data, canDelete, topic, handleEditBtn }) => {
   const { type, id } = topic;
+
   return (
     <div className="sticky-panel">
       <div className="sticky-panel-item">
@@ -150,7 +151,7 @@ const SharePanel = ({ data, canDelete, topic }) => {
           <h2>Delete</h2>
         </div>
       )}
-      <div className="sticky-panel-item">
+      <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
         <EditOutlined />
         <h2>Update</h2>
       </div>
@@ -163,7 +164,8 @@ const renderBannerSection = (
   LeftImage,
   profile,
   isAuthenticated,
-  params
+  params,
+  handleEditBtn
 ) => {
   const canDelete = () =>
     isAuthenticated &&
@@ -201,6 +203,7 @@ const renderBannerSection = (
               data={data}
               canDelete={canDelete}
               topic={{ ...data, ...params }}
+              handleEditBtn={handleEditBtn}
             />
           </div>
         </Col>
@@ -221,6 +224,7 @@ const renderBannerSection = (
               data={data}
               canDelete={canDelete}
               topic={{ ...data, ...params }}
+              handleEditBtn={handleEditBtn}
             />
           </div>
         </Col>
@@ -485,6 +489,59 @@ const DetailsView = ({
     window.scrollTo({ top: 0 });
   }, [params, profile, isLoaded, data, history]);
 
+  const handleEditBtn = () => {
+    let form = null;
+    let link = null;
+    switch (params.type) {
+      case "project":
+        form = "initiative";
+        link = "edit-initiative";
+        break;
+      case "action_plan":
+        form = "actionPlan";
+        link = "edit-action-plan";
+        break;
+      case "policy":
+        form = "policy";
+        link = "edit-policy";
+        break;
+      case "technical_resource":
+        form = "technicalResource";
+        link = "edit-technical-resource";
+        break;
+      case "financing_resource":
+        form = "financingResource";
+        link = "edit-financing-resource";
+        break;
+      case "technology":
+        form = "technology";
+        link = "edit-technology";
+        break;
+      case "event":
+        form = "event";
+        link = "edit-event";
+        break;
+      default:
+        form = "entity";
+        link = "edit-entity";
+        break;
+    }
+    UIStore.update((e) => {
+      e.formEdit = {
+        ...e.formEdit,
+        [form]: {
+          status: "edit",
+          id: params.id,
+        },
+      };
+      e.formStep = {
+        ...e.formStep,
+        [form]: 1,
+      };
+    });
+    history.push(`/${link}/${params.id}`);
+  };
+
   if (!data) {
     return (
       <div className="details-view">
@@ -522,7 +579,8 @@ const DetailsView = ({
               LeftImage,
               profile,
               isAuthenticated,
-              params
+              params,
+              handleEditBtn
             )}
           </Row>
         </div>
