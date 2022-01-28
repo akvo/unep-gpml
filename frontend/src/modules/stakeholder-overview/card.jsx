@@ -9,21 +9,13 @@ import badge from "../../images/stakeholder-overview/badge.svg";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 
 const ProfileCard = ({ profile }) => {
-  const { entityRoleOptions, countries, stakeholders } = UIStore.useState(
-    (s) => ({
-      entityRoleOptions: s.entityRoleOptions,
-      countries: s.countries,
-      tags: s.tags,
-      geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-      languages: s.languages,
-      seeking: s.seeking,
-      stakeholders: s.stakeholders,
-    })
-  );
+  const { countries } = UIStore.useState((s) => ({
+    countries: s.countries,
+  }));
 
   const country = countries.find((country) => country.id === profile.country);
 
-  console.log(UIStore.currentState);
+  // console.log(UIStore.currentState);
   return (
     <Card className="profile-card">
       <div className="profile-icon-container">

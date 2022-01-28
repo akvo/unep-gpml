@@ -8,7 +8,12 @@ import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg
 import DownArrow from "../../images/knowledge-library/chevron-down.svg";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 
-const Header = ({ filterVisible, setFilterVisible }) => {
+const Header = ({
+  filterVisible,
+  setFilterVisible,
+  sortPeople,
+  isAscending,
+}) => {
   const [view, setView] = useState("list");
 
   const selectionValue = (
@@ -72,11 +77,16 @@ const Header = ({ filterVisible, setFilterVisible }) => {
               <Select.Option value="topic">Topic View </Select.Option>
             </Select>
           </Col>
-          <Button className="sort-btn">
+          <Button className="sort-btn" onClick={sortPeople}>
             <SortIcon />{" "}
             <span>
               Sort By:
-              <br /> <b>A&gt;Z</b>
+              <br />{" "}
+              {isAscending || isAscending === null ? (
+                <b>A&gt;Z</b>
+              ) : (
+                <b>Z&gt;A</b>
+              )}
             </span>
           </Button>
         </Row>
