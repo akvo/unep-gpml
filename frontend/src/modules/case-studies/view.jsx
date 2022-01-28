@@ -75,6 +75,7 @@ const CaseStudies = () => {
               dots={false}
               ref={slider}
               afterChange={(index) => setIndexSlide(index)}
+              effect="fade"
             >
               {datastudies?.map((c, cx) => (
                 <CaseStudy {...c} key={cx} />
