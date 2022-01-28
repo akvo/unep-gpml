@@ -6,7 +6,16 @@ import React, {
   useRef,
 } from "react";
 import "./styles.scss";
-import { Row, Col, Tooltip, Typography, Card, List, Avatar } from "antd";
+import {
+  Row,
+  Col,
+  Modal,
+  Typography,
+  Card,
+  List,
+  Avatar,
+  notification,
+} from "antd";
 const { Title } = Typography;
 import { UIStore } from "../../store";
 import StickyBox from "react-sticky-box";
@@ -88,7 +97,8 @@ const TabComponent = ({
   );
 };
 
-const SharePanel = ({ data, canDelete }) => {
+const SharePanel = ({ data, canDelete, topic }) => {
+  const { type, id } = topic;
   return (
     <div className="sticky-panel">
       <div className="sticky-panel-item">
@@ -106,7 +116,36 @@ const SharePanel = ({ data, canDelete }) => {
         <h2>Share</h2>
       </div>
       {canDelete() && (
-        <div className="sticky-panel-item">
+        <div
+          className="sticky-panel-item"
+          onClick={() => {
+            Modal.error({
+              className: "popup-delete",
+              centered: true,
+              closable: true,
+              icon: <DeleteOutlined />,
+              title: "Are you sure you want to delete this resource?",
+              content: "Please be aware this action cannot be undone.",
+              okText: "Delete",
+              okType: "danger",
+              onOk() {
+                return api
+                  .delete(`/detail/${type}/${id}`)
+                  .then((res) => {
+                    notification.success({
+                      message: "Resource deleted successfully",
+                    });
+                  })
+                  .catch((err) => {
+                    console.error(err);
+                    notification.error({
+                      message: "Oops, something went wrong",
+                    });
+                  });
+              },
+            });
+          }}
+        >
           <DeleteOutlined />
           <h2>Delete</h2>
         </div>
@@ -119,7 +158,13 @@ const SharePanel = ({ data, canDelete }) => {
   );
 };
 
-const renderBannerSection = (data, LeftImage, profile, isAuthenticated) => {
+const renderBannerSection = (
+  data,
+  LeftImage,
+  profile,
+  isAuthenticated,
+  params
+) => {
   const canDelete = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
@@ -152,7 +197,11 @@ const renderBannerSection = (data, LeftImage, profile, isAuthenticated) => {
             >
               <p>{data.summary}</p>
             </CardComponent>
-            <SharePanel data={data} canDelete={canDelete} />
+            <SharePanel
+              data={data}
+              canDelete={canDelete}
+              topic={{ ...data, ...params }}
+            />
           </div>
         </Col>
       </>
@@ -168,7 +217,11 @@ const renderBannerSection = (data, LeftImage, profile, isAuthenticated) => {
                 className="resource-image"
               />
             </div>
-            <SharePanel data={data} canDelete={canDelete} />
+            <SharePanel
+              data={data}
+              canDelete={canDelete}
+              topic={{ ...data, ...params }}
+            />
           </div>
         </Col>
       </>
@@ -464,7 +517,13 @@ const DetailsView = ({
       <div className="section-banner">
         <div className="ui container">
           <Row gutter={[16, 16]}>
-            {renderBannerSection(data, LeftImage, profile, isAuthenticated)}
+            {renderBannerSection(
+              data,
+              LeftImage,
+              profile,
+              isAuthenticated,
+              params
+            )}
           </Row>
         </div>
       </div>
