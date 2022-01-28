@@ -57,7 +57,11 @@ const CaseStudy = ({
           <Row gutter={[8, 8]}>
             <Col>
               <h4 className="title">Challenge & Solution</h4>
-              <Paragraph>{challenge_and_solution}</Paragraph>
+              <Paragraph>
+                <div
+                  dangerouslySetInnerHTML={{ __html: challenge_and_solution }}
+                />
+              </Paragraph>
             </Col>
             <Col>
               <div style={{ display: "flex", gap: 5, height: 32 }}>
