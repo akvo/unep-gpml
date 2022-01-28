@@ -37,8 +37,6 @@ h4 {
   display: block;
   width: calc(100% - 117px);
   flex: 1;
-  height: 100%;
-  min-height: 100vh;
   top: 0;
   right: 0;
   bottom: 0;
@@ -50,7 +48,6 @@ h4 {
   flex-direction: row;
   flex-wrap: nowrap;
   width: 100%;
-  min-height: 100vh;
   position: relative;
   align-items: stretch;
 }

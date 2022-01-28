@@ -54,18 +54,26 @@ const CaseStudy = ({
         }}
       >
         <div className="p-4 content-text">
-          <Row type="flex" justify="start" align="middle" gutter={[16, 16]}>
-            <Col span={24}>
+          <Row gutter={[8, 8]}>
+            <Col>
               <h4 className="title">Challenge & Solution</h4>
-              <Paragraph>{challenge_and_solution}</Paragraph>
+              <Paragraph>
+                <div
+                  dangerouslySetInnerHTML={{ __html: challenge_and_solution }}
+                />
+              </Paragraph>
             </Col>
-            <Col span={3}>
-              <img src={iconGlobe} style={{ width: 47, height: 47 }} />
+            <Col>
+              <div style={{ display: "flex", gap: 5, height: 32 }}>
+                <div style={{ margin: "auto" }}>
+                  <img src={iconGlobe} style={{ width: 32, height: 32 }} />
+                </div>
+                <div style={{ margin: "auto" }}>
+                  <Text>{geo_coverage}</Text>
+                </div>
+              </div>
             </Col>
-            <Col span={21} style={{ padding: 0 }}>
-              <Text>{geo_coverage}</Text>
-            </Col>
-            <Col span={24}>
+            <Col>
               <h4 className="title">Tags</h4>
               <ul className="tags">
                 {Object?.values(tagItems)
@@ -80,7 +88,7 @@ const CaseStudy = ({
                 )}
               </ul>
             </Col>
-            <Col span={24}>
+            <Col>
               <h4 className="title">Connections</h4>
               <div className="avatars">
                 {stakeholders.length > 4 && (
