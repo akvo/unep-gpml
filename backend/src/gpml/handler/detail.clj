@@ -262,11 +262,11 @@
 (defmulti extra-details (fn [topic-type _ _] topic-type) :default :nothing)
 
 (defn expand-related-project-content [db project]
-  (let [related_content (db.event/related-content-by-id db (select-keys project [:id]))]
+  (let [related_content (db.initiative/related-content-by-id db (select-keys project [:id]))]
     (for [item related_content]
       (merge item
-        {:entity_connections (db.event/entity-connections-by-id db (select-keys item [:id]))
-         :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys item [:id]))}))))
+        {:entity_connections (db.initiative/entity-connections-by-id db (select-keys item [:id]))
+         :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
 (defmethod extra-details "project" [_ db project]
   (merge
@@ -280,11 +280,11 @@
       (details-for-project db project))))
 
 (defn expand-related-policy-content [db policy]
-  (let [related_content (db.event/related-content-by-id db (select-keys policy [:id]))]
+  (let [related_content (db.policy/related-content-by-id db (select-keys policy [:id]))]
     (for [item related_content]
       (merge item
-        {:entity_connections (db.event/entity-connections-by-id db (select-keys item [:id]))
-         :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys item [:id]))}))))
+        {:entity_connections (db.policy/entity-connections-by-id db (select-keys item [:id]))
+         :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
 (defmethod extra-details "policy" [_ db policy]
   (merge
@@ -297,17 +297,17 @@
       {:implementing_mea (:name (db.country-group/country-group-by-id db {:id implementing-mea}))})))
 
 (defn expand-related-technology-content [db technology]
-  (let [related_content (db.event/related-content-by-id db (select-keys technology [:id]))]
+  (let [related_content (db.technology/related-content-by-id db (select-keys technology [:id]))]
     (for [item related_content]
       (merge item
-        {:entity_connections (db.event/entity-connections-by-id db (select-keys item [:id]))
-         :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys item [:id]))}))))
+        {:entity_connections (db.technology/entity-connections-by-id db (select-keys item [:id]))
+         :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
 (defmethod extra-details "technology" [_ db technology]
   (merge
     {:entity_connections (db.technology/entity-connections-by-id db (select-keys technology [:id]))
      :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys technology [:id]))
-     :related_content (db.technology/related-content-by-id db (select-keys technology [:id]))
+     :related_content (expand-related-technology-content db technology)
      :tags (db.technology/tags-by-id db (select-keys technology [:id]))
      :type "Technology"}
     (when-let [headquarters-country (:country technology)]
@@ -317,11 +317,11 @@
     (:data (db.detail/get-stakeholder-tags db stakeholder)))
 
 (defn expand-related-resource-content [db resource]
-  (let [related_content (db.event/related-content-by-id db (select-keys resource [:id]))]
+  (let [related_content (db.resource/related-content-by-id db (select-keys resource [:id]))]
     (for [item related_content]
       (merge item
-        {:entity_connections (db.event/entity-connections-by-id db (select-keys item [:id]))
-         :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys item [:id]))}))))
+        {:entity_connections (db.resource/entity-connections-by-id db (select-keys item [:id]))
+         :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
 (defmethod extra-details "technical_resource" [_ db resource]
   {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
