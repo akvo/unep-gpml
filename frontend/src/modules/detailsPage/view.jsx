@@ -97,7 +97,7 @@ const TabComponent = ({
   );
 };
 
-const SharePanel = ({ data, canDelete, topic, handleEditBtn }) => {
+const SharePanel = ({ data, canDelete, topic, handleEditBtn, canEdit }) => {
   const { type, id } = topic;
 
   return (
@@ -151,10 +151,12 @@ const SharePanel = ({ data, canDelete, topic, handleEditBtn }) => {
           <h2>Delete</h2>
         </div>
       )}
-      <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
-        <EditOutlined />
-        <h2>Update</h2>
-      </div>
+      {canEdit() && (
+        <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
+          <EditOutlined />
+          <h2>Update</h2>
+        </div>
+      )}
     </div>
   );
 };
@@ -167,6 +169,17 @@ const renderBannerSection = (
   params,
   handleEditBtn
 ) => {
+  const noEditTopics = new Set(["stakeholder"]);
+
+  const canEdit = () =>
+    isAuthenticated &&
+    profile.reviewStatus === "APPROVED" &&
+    (profile.role === "ADMIN" ||
+      profile.id === params.createdBy ||
+      data.owners.includes(profile.id)) &&
+    ((params.type !== "project" && !noEditTopics.has(params.type)) ||
+      (params.type === "project" && params.id > 10000));
+
   const canDelete = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
@@ -204,6 +217,7 @@ const renderBannerSection = (
               canDelete={canDelete}
               topic={{ ...data, ...params }}
               handleEditBtn={handleEditBtn}
+              canEdit={canEdit}
             />
           </div>
         </Col>
@@ -225,6 +239,7 @@ const renderBannerSection = (
               canDelete={canDelete}
               topic={{ ...data, ...params }}
               handleEditBtn={handleEditBtn}
+              canEdit={canEdit}
             />
           </div>
         </Col>
