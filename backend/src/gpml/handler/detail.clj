@@ -277,7 +277,8 @@
     {:entity_connections (db.policy/entity-connections-by-id db (select-keys policy [:id]))
      :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys policy [:id]))
      :related_content (db.policy/related-content-by-id db (select-keys policy [:id]))
-     :tags (db.policy/tags-by-id db (select-keys policy [:id]))}
+     :tags (db.policy/tags-by-id db (select-keys policy [:id]))
+     :type "Policy"}
     (when-let [implementing-mea (:implementing_mea policy)]
       {:implementing_mea (:name (db.country-group/country-group-by-id db {:id implementing-mea}))})))
 
@@ -286,7 +287,8 @@
     {:entity_connections (db.technology/entity-connections-by-id db (select-keys technology [:id]))
      :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys technology [:id]))
      :related_content (db.technology/related-content-by-id db (select-keys technology [:id]))
-     :tags (db.technology/tags-by-id db (select-keys technology [:id]))}
+     :tags (db.technology/tags-by-id db (select-keys technology [:id]))
+     :type "Technology"}
     (when-let [headquarters-country (:country technology)]
       {:headquarters (gpml.db.country/country-by-id db {:id headquarters-country})})))
 
@@ -315,7 +317,8 @@
   {:entity_connections (db.event/entity-connections-by-id db (select-keys event [:id]))
    :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys event [:id]))
    :related_content (db.event/related-content-by-id db (select-keys event [:id]))
-   :tags (db.event/tags-by-id db (select-keys event [:id]))})
+   :tags (db.event/tags-by-id db (select-keys event [:id]))
+   :type "Event"})
 
 (defmethod extra-details :nothing [_ _ _]
   nil)
