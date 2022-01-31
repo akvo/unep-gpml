@@ -253,6 +253,11 @@
         width: 100%;
       }
 
+      .image-wrapper {
+        display: flex;
+        align-items: center;
+      }
+
       .profile-image {
         max-width: 216px;
         border-radius: 50%;
@@ -689,6 +694,7 @@
         border: 1px solid $blue04;
         border-radius: 20px;
         margin-bottom: 8px;
+        cursor: pointer;
         .anticon-close {
           color: $blue04;
           font-weight: 700;
