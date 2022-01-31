@@ -15,6 +15,7 @@ const useQuery = () => {
     rating: [],
     q: "",
   };
+
   for (var key of srcParams.keys()) {
     ret[key] = srcParams
       .get(key)

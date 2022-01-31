@@ -143,13 +143,14 @@ const FilterDrawer = ({
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Network type</div>
-              {isEmpty(query?.topic) ? (
+              {isEmpty(query?.entity) ? (
                 <Tag className="selection-card-type">All (default)</Tag>
               ) : (
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClose={() => updateQuery("topic", [])}
+                  onClose={() => updateQuery("entity", [])}
+                  onClick={() => updateQuery("entity", [])}
                 >
                   Clear selection
                 </Tag>
@@ -163,9 +164,9 @@ const FilterDrawer = ({
               {/* return ( */}
               <Col span={6}>
                 <Card
-                  onClick={() => handleChangeType("topic", "")}
+                  onClick={() => handleChangeType("entity", "")}
                   className={classNames("drawer-card", {
-                    active: query?.topic?.includes(""),
+                    active: query?.entity?.includes(""),
                   })}
                 >
                   <Space direction="vertical" align="center">
@@ -178,9 +179,9 @@ const FilterDrawer = ({
               })} */}
               <Col span={6}>
                 <Card
-                  onClick={() => handleChangeType("topic", "")}
+                  onClick={() => handleChangeType("entity", "")}
                   className={classNames("drawer-card", {
-                    active: query?.topic?.includes(""),
+                    active: query?.entity?.includes(""),
                   })}
                 >
                   <Space direction="vertical" align="center">
@@ -196,13 +197,14 @@ const FilterDrawer = ({
           <Col span={24} className="specificity-card">
             <Space align="middle">
               <div className="filter-title">Specificity</div>
-              {isEmpty(query?.topic) ? (
+              {isEmpty(query?.entity) ? (
                 <Tag className="selection-card-type">All (default)</Tag>
               ) : (
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClose={() => updateQuery("topic", [])}
+                  onClose={() => updateQuery("entity", [])}
+                  onClick={() => updateQuery("entity", [])}
                 >
                   Clear selection
                 </Tag>
@@ -213,9 +215,9 @@ const FilterDrawer = ({
               <p className="specificity-title">For individuals</p>
               <Col span={6}>
                 <Card
-                  // onClick={() => handleChangeType("topic", topic)}
+                  // onClick={() => handleChangeType("entity", topic)}
                   className={classNames("drawer-card", {
-                    active: query?.topic?.includes(topic),
+                    active: query?.entity?.includes(""),
                   })}
                 >
                   <Space direction="vertical" align="center">
@@ -233,13 +235,12 @@ const FilterDrawer = ({
               <p className="specificity-title">For entities</p>
               {entities.map((entity) => {
                 const name = humps.decamelize(entity);
-                console.log(query.entity);
                 return (
                   <Col span={6} key={entity}>
                     <Card
-                      onClick={() => handleChangeType("topic", [])}
+                      onClick={() => handleChangeType("entity", entity)}
                       className={classNames("drawer-card", {
-                        active: query?.entity?.includes(name),
+                        active: query?.entity?.includes(entity),
                       })}
                     >
                       <Space direction="vertical" align="center">
@@ -365,6 +366,7 @@ const MultipleSelectFilter = ({
             className="clear-selection"
             closable
             onClose={() => updateQuery(flag, [])}
+            onClick={() => updateQuery("entity", [])}
           >
             Clear Selection
           </Tag>
@@ -415,6 +417,7 @@ const DatePickerFilter = ({
             className="clear-selection"
             closable
             onClose={() => updateQuery(flag, [])}
+            onClick={() => updateQuery("entity", [])}
           >
             Clear Selection
           </Tag>

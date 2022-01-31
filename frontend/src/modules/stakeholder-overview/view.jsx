@@ -15,7 +15,7 @@ import { suggestedProfiles } from "./suggested-profile";
 
 let tmid;
 
-const StakeholderOverview = ({ filters, setFilters, history }) => {
+const StakeholderOverview = ({ history }) => {
   const [filterVisible, setFilterVisible] = useState(false);
   const query = useQuery();
   const { isLoading } = useAuth0();
@@ -23,9 +23,8 @@ const StakeholderOverview = ({ filters, setFilters, history }) => {
   const [results, setResults] = useState([]);
   const [test, setTest] = useState([]);
   const [isAscending, setIsAscending] = useState(null);
-
+  const [filters, setFilters] = useState(null);
   const pageSize = 10;
-  const [filterCountries, setFilterCountries] = useState([]);
 
   const { entityRoleOptions, stakeholders } = UIStore.useState((s) => ({
     entityRoleOptions: s.entityRoleOptions,
@@ -109,6 +108,7 @@ const StakeholderOverview = ({ filters, setFilters, history }) => {
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
     history.push(`/stakeholder-overview?${newParams.toString()}`);
+    console.log(history);
     clearTimeout(tmid);
     tmid = setTimeout(getResults, 1000);
   };
