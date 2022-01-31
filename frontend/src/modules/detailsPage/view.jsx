@@ -809,12 +809,7 @@ const DetailsView = ({
                           bordered={false}
                         >
                           <h4>{item.title}</h4>
-                          {/* <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Donec tempor ante ac leo cursus, quis
-                            fringilla elit sagittis. Maecenas ac maximus
-                            massa...
-                          </p>*/}
+                          <p>{item.description}</p>
                           <div className="bottom-panel">
                             <div>
                               <Avatar.Group
@@ -826,7 +821,7 @@ const DetailsView = ({
                                   cursor: "pointer",
                                 }}
                               >
-                                {item?.stakeholderConnections.map(
+                                {item?.stakeholderConnections?.map(
                                   (connection, index) => (
                                     <Avatar src={AvatarImage} />
                                   )
