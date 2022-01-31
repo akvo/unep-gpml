@@ -12,6 +12,7 @@ const CaseStudy = ({
   tags,
   title,
   image,
+  platform_link,
   background_color,
   geo_coverage,
   challenge_and_solution,
@@ -64,7 +65,7 @@ const CaseStudy = ({
               </Paragraph>
             </Col>
             <Col>
-              <div style={{ display: "flex", gap: 5, height: 32 }}>
+              <div style={{ display: "flex", gap: 5, minHeight: 32 }}>
                 <div style={{ margin: "auto" }}>
                   <img src={iconGlobe} style={{ width: 32, height: 32 }} />
                 </div>
@@ -116,6 +117,21 @@ const CaseStudy = ({
                     );
                   })}
               </div>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: 16 }}>
+            <Col>
+              <Button
+                href={platform_link || "#"}
+                type="link"
+                shape="round"
+                className="green-border"
+                target="_blank"
+                rel="noopener noreferrer"
+                size="small"
+              >
+                Learn More
+              </Button>
             </Col>
           </Row>
         </div>
