@@ -917,7 +917,7 @@ export const schema = {
                 subTitle: "Total Stakeholders Engaged",
                 title:
                   "How many different groups and organisations have you engaged with in total?",
-                type: "number",
+                type: "string",
               },
               S5_G4_34: {
                 title: "How many stakeholders have you engaged in total?",
@@ -933,23 +933,13 @@ export const schema = {
                     questions: ["S5_G5_35.1"],
                   },
                 ],
-                enum: [
-                  "35-0",
-                  "35-1",
-                  "35-2",
-                  "35-3",
-                  "35-4",
-                  "35-5",
-                  "35-6",
-                  "35-7",
-                ],
+                enum: ["35-0", "35-1", "35-2", "35-3", "35-4", "35-6", "35-7"],
                 enumNames: [
                   "Crowdfunded",
                   "Voluntary donations",
                   "Public Financing",
                   "Private Sector",
                   "Mixed",
-                  "All of the above",
                   "Not applicable",
                   "Other",
                 ],
