@@ -814,12 +814,11 @@ const DetailsView = ({
                             elit. Donec tempor ante ac leo cursus, quis
                             fringilla elit sagittis. Maecenas ac maximus
                             massa...
-                          </p>
+                          </p>*/}
                           <div className="bottom-panel">
                             <div>
                               <Avatar.Group
                                 maxCount={2}
-                                maxPopoverTrigger="click"
                                 size="large"
                                 maxStyle={{
                                   color: "#f56a00",
@@ -827,20 +826,17 @@ const DetailsView = ({
                                   cursor: "pointer",
                                 }}
                               >
-                                <Avatar src={AvatarImage} />
-                                <Avatar src={AvatarImage} />
-                                <Tooltip title="Ant User" placement="top">
-                                  <Avatar
-                                    style={{ backgroundColor: "#87d068" }}
-                                    icon={<UserOutlined />}
-                                  />
-                                </Tooltip>
+                                {item?.stakeholderConnections.map(
+                                  (connection, index) => (
+                                    <Avatar src={AvatarImage} />
+                                  )
+                                )}
                               </Avatar.Group>
                             </div>
                             <div className="read-more">
                               Read More <ArrowRightOutlined />
                             </div>
-                          </div> */}
+                          </div>
                         </Card>
                       </Col>
                     ))}
