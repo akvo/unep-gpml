@@ -803,7 +803,7 @@ const DetailsView = ({
                       data?.stakeholderConnections.map((item) => (
                         <List.Item>
                           <List.Item.Meta
-                            avatar={<Avatar src={AvatarImage} />}
+                            avatar={<Avatar src={item.image} />}
                             title={item.stakeholder}
                             description={item.role}
                           />
@@ -917,7 +917,7 @@ const DetailsView = ({
                               >
                                 {item?.stakeholderConnections?.map(
                                   (connection, index) => (
-                                    <Avatar src={AvatarImage} />
+                                    <Avatar src={connection.image} />
                                   )
                                 )}
                               </Avatar.Group>
