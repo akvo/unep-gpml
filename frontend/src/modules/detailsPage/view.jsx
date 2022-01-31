@@ -15,6 +15,8 @@ import {
   List,
   Avatar,
   notification,
+  Dropdown,
+  Checkbox,
 } from "antd";
 const { Title } = Typography;
 import { UIStore } from "../../store";
@@ -102,8 +104,31 @@ const TabComponent = ({
   );
 };
 
-const SharePanel = ({ data, canDelete, topic, handleEditBtn, canEdit }) => {
+const SharePanel = ({
+  data,
+  canDelete,
+  topic,
+  handleEditBtn,
+  canEdit,
+  relation,
+  handleRelationChange,
+  allowBookmark,
+}) => {
   const { type, id } = topic;
+
+  const handleChangeRelation = (relationType) => ({ target: { checked } }) => {
+    let association = relation ? [...relation.association] : [];
+    if (checked) {
+      association = [...association, relationType];
+    } else {
+      association = association.filter((it) => it !== relationType);
+    }
+    handleRelationChange({
+      topicId: parseInt(topic.id),
+      association,
+      topic: resourceTypeToTopicType(topic.type),
+    });
+  };
 
   return (
     <div className="sticky-panel">
@@ -113,10 +138,34 @@ const SharePanel = ({ data, canDelete, topic, handleEditBtn, canEdit }) => {
           <h2>View</h2>
         </a>
       </div>
-      <div className="sticky-panel-item">
-        <HeartOutlined />
-        <h2>Bookmark</h2>
-      </div>
+      <Dropdown
+        overlay={
+          <ul className="relations-dropdown">
+            {relationsByTopicType[resourceTypeToTopicType(topic.type)].map(
+              (relationType) => (
+                <li key={`${relationType}`}>
+                  <Checkbox
+                    checked={
+                      relation &&
+                      relation.association &&
+                      relation.association.indexOf(relationType) !== -1
+                    }
+                    onChange={handleChangeRelation(relationType)}
+                  >
+                    {relationType}
+                  </Checkbox>
+                </li>
+              )
+            )}
+          </ul>
+        }
+        trigger={["click"]}
+      >
+        <div className="sticky-panel-item">
+          <HeartOutlined />
+          <h2>Bookmark</h2>
+        </div>
+      </Dropdown>
       <div className="sticky-panel-item">
         <ShareAltOutlined />
         <h2>Share</h2>
@@ -172,7 +221,10 @@ const renderBannerSection = (
   profile,
   isAuthenticated,
   params,
-  handleEditBtn
+  handleEditBtn,
+  allowBookmark,
+  relation,
+  handleRelationChange
 ) => {
   const noEditTopics = new Set(["stakeholder"]);
 
@@ -223,6 +275,9 @@ const renderBannerSection = (
               topic={{ ...data, ...params }}
               handleEditBtn={handleEditBtn}
               canEdit={canEdit}
+              relation={relation}
+              handleRelationChange={handleRelationChange}
+              allowBookmark={allowBookmark}
             />
           </div>
         </Col>
@@ -245,6 +300,9 @@ const renderBannerSection = (
               topic={{ ...data, ...params }}
               handleEditBtn={handleEditBtn}
               canEdit={canEdit}
+              relation={relation}
+              handleRelationChange={handleRelationChange}
+              allowBookmark={allowBookmark}
             />
           </div>
         </Col>
@@ -465,6 +523,12 @@ const DetailsView = ({
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
 
+  const relation = relations.find(
+    (it) =>
+      it.topicId === parseInt(params.id) &&
+      it.topic === resourceTypeToTopicType(params.type)
+  );
+
   const isConnectStakeholders = ["organisation", "stakeholder"].includes(
     params?.type
   );
@@ -481,6 +545,34 @@ const DetailsView = ({
       ),
     [countries, profile, isConnectStakeholders]
   );
+
+  const handleRelationChange = (relation) => {
+    if (!isAuthenticated) {
+      loginWithPopup();
+    }
+    if (profile.reviewStatus === "SUBMITTED") {
+      setWarningVisible(true);
+    }
+    if (isAuthenticated && profile.reviewStatus === undefined) {
+      setStakeholderSignupModalVisible(true);
+    }
+    if (profile.reviewStatus === "APPROVED") {
+      api.post("/favorite", relation).then((res) => {
+        const relationIndex = relations.findIndex(
+          (it) => it.topicId === relation.topicId
+        );
+        if (relationIndex !== -1) {
+          setRelations([
+            ...relations.slice(0, relationIndex),
+            relation,
+            ...relations.slice(relationIndex + 1),
+          ]);
+        } else {
+          setRelations([...relations, relation]);
+        }
+      });
+    }
+  };
 
   useEffect(() => {
     isLoaded() &&
@@ -600,7 +692,9 @@ const DetailsView = ({
               profile,
               isAuthenticated,
               params,
-              handleEditBtn
+              handleEditBtn,
+              allowBookmark,
+              { ...{ handleRelationChange, relation } }
             )}
           </Row>
         </div>
