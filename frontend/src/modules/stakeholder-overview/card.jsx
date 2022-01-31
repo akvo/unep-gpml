@@ -33,12 +33,20 @@ const ProfileCard = ({ profile }) => {
           <ul className="profile-detail-list">
             <li className="list-item">
               <h4 className="person-name">
-                <div>{profile.first_name}</div>
-                <div>{profile.last_name}</div>
+                {profile.first_name ? (
+                  <>
+                    <div>{profile.first_name}</div>
+                    <div>{profile.last_name}</div>
+                  </>
+                ) : (
+                  <div>{profile.name}</div>
+                )}
               </h4>
             </li>
             <li className="list-item">
-              <span className="location">{country?.name}</span>
+              <span className={country?.name && "location"}>
+                {country?.name}
+              </span>
             </li>
             <li className="list-item">
               <span className="entity-name">Entity Name</span>

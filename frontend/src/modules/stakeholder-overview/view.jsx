@@ -11,6 +11,7 @@ import { UIStore } from "../../store";
 import { profiles } from "./profiles";
 import api from "../../utils/api";
 import { redirectError } from "../error/error-util";
+import { suggestedProfiles } from "./suggested-profile";
 
 let tmid;
 
@@ -135,7 +136,7 @@ const StakeholderOverview = ({ filters, setFilters, history }) => {
           <Col className="card-container green">
             <h3 className="title text-white">Suggested profiles</h3>
             <Row>
-              {results.map((profile) => (
+              {suggestedProfiles.map((profile) => (
                 <ProfileCard key={profile.id} profile={profile} />
               ))}
             </Row>
