@@ -17,7 +17,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import moment from "moment";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
-import { topicTypes, topicNames } from "../../utils/misc";
 import { entityName } from "../../utils/misc";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
@@ -234,13 +233,13 @@ const FilterDrawer = ({
               <p className="specificity-title">For entities</p>
               {entities.map((entity) => {
                 const name = humps.decamelize(entity);
-                console.log(query?.name);
+                console.log(query.entity);
                 return (
                   <Col span={6} key={entity}>
                     <Card
                       onClick={() => handleChangeType("topic", [])}
                       className={classNames("drawer-card", {
-                        active: query?.name?.includes(name),
+                        active: query?.entity?.includes(name),
                       })}
                     >
                       <Space direction="vertical" align="center">

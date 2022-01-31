@@ -560,6 +560,8 @@ const Root = () => {
           <Route
             exact
             render={(props) => <StakeholderOverview {...props} />}
+            filters={filters}
+            setFilters={setFilters}
             path="/stakeholder-overview"
           />
           <Route
