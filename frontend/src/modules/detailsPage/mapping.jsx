@@ -111,12 +111,6 @@ const detailEvent = [
     value: "isoCode",
     type: "array",
   },
-  {
-    key: "tags",
-    name: "Tags",
-    value: "join",
-    type: "array",
-  },
 ];
 
 const detailTechnology = [
@@ -154,12 +148,6 @@ const detailTechnology = [
     key: "languages",
     name: "Languages",
     value: "isoCode",
-    type: "array",
-  },
-  {
-    key: "tags",
-    name: "Tags",
-    value: "join",
     type: "array",
   },
   // email
@@ -225,12 +213,6 @@ const detailPolicy = [
     key: "languages",
     name: "Languages",
     value: "isoCode",
-    type: "array",
-  },
-  {
-    key: "tags",
-    name: "Tags",
-    value: "join",
     type: "array",
   },
 ];
