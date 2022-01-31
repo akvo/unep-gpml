@@ -36,7 +36,7 @@ $green-primary: #4dffa5;
     }
   }
   .case-studies-page {
-    height: calc(100vh - 178px);
+    min-height: 100vh;
     h1.ant-typography,
     h2.ant-typography {
       font-family: Open Sans;
@@ -66,7 +66,6 @@ $green-primary: #4dffa5;
         font-style: normal;
         font-weight: normal;
         text-align: justify;
-        text-transform: capitalize;
         color: #fff !important;
         font-size: 14px !important;
         line-height: 18px !important;
@@ -145,9 +144,6 @@ $green-primary: #4dffa5;
       }
     }
   }
-  #siteWrapper {
-    height: calc(100vh - 172px) !important;
-  }
   #appWrapper {
     background-color: #18162f;
   }
@@ -171,15 +167,6 @@ $green-primary: #4dffa5;
   }
 }
 
-@media (min-width: 320px) and (max-width: 480px) {
-  // ##Screen = B/w 320px to 479px
-  #case-study {
-    #siteWrapper {
-      height: calc(100vh + 310px) !important;
-    }
-  }
-}
-
 @media screen and (min-width: 1920px) {
   //For Projectors or Higher Resolution Screens (Full HD)
   #case-study {
@@ -190,12 +177,6 @@ $green-primary: #4dffa5;
     .ant-layout-content {
       background: #18162f;
     }
-    #siteWrapper {
-      height: calc(100vh - 460px) !important;
-    }
-  }
-  .case-studies-page {
-    height: calc(100vh - 460px) !important;
   }
   .carousel-control {
     img {
@@ -213,12 +194,6 @@ $green-primary: #4dffa5;
     .ant-layout-content {
       background: #18162f;
     }
-    .case-studies-page {
-      height: calc(100vh - 460px) !important;
-    }
-    #siteWrapper {
-      height: calc(100vh - 460px) !important;
-    }
   }
 }
 @media screen and (min-width: 3840px) {
@@ -232,7 +207,6 @@ $green-primary: #4dffa5;
       background: #18162f;
     }
     .case-studies-page {
-      height: calc(100vh - 660px) !important;
       .title {
         font-size: 36px !important;
         line-height: 42px !important;
@@ -243,9 +217,6 @@ $green-primary: #4dffa5;
           line-height: 32px !important;
         }
       }
-    }
-    #siteWrapper {
-      height: calc(100vh - 660px) !important;
     }
   }
 }
