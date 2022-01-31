@@ -113,7 +113,7 @@
 (def post-params
   (into [:map
     [:name string?]
-    [:year_founded integer?]
+    [:year_founded {:optional true} integer?]
     [:organisation_type {:optional true}
      [:enum "Established Company", "Research Lab", "Academic Institution",
       "Startup", "Non-Profit Org", "Partnerships"]]
