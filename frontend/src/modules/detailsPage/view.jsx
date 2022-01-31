@@ -17,6 +17,9 @@ import {
   notification,
   Dropdown,
   Checkbox,
+  Popover,
+  Input,
+  Button,
 } from "antd";
 const { Title } = Typography;
 import { UIStore } from "../../store";
@@ -113,6 +116,8 @@ const SharePanel = ({
   relation,
   handleRelationChange,
   allowBookmark,
+  visible,
+  handleVisible,
 }) => {
   const { type, id } = topic;
 
@@ -128,6 +133,10 @@ const SharePanel = ({
       association,
       topic: resourceTypeToTopicType(topic.type),
     });
+  };
+
+  const handleVisibleChange = () => {
+    handleVisible();
   };
 
   return (
@@ -173,10 +182,47 @@ const SharePanel = ({
           <h2>Bookmark</h2>
         </div>
       </Dropdown>
-      <div className="sticky-panel-item">
-        <ShareAltOutlined />
-        <h2>Share</h2>
-      </div>
+      <Popover
+        overlayStyle={{
+          width: "22vw",
+        }}
+        content={
+          <Input.Group compact>
+            <Input
+              style={{ width: "calc(100% - 20%)" }}
+              defaultValue={`${
+                data?.url && data?.url.includes("https://")
+                  ? data?.url
+                  : "https://" + data?.url
+              }`}
+              disabled
+            />
+            <Button
+              style={{ width: "20%" }}
+              type="primary"
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  data?.url && data?.url.includes("https://")
+                    ? data?.url
+                    : "https://" + data?.url
+                );
+                handleVisibleChange();
+              }}
+            >
+              Copy
+            </Button>
+          </Input.Group>
+        }
+        trigger="click"
+        visible={visible}
+        onVisibleChange={handleVisibleChange}
+        placement="left"
+      >
+        <div className="sticky-panel-item" onClick={handleVisibleChange}>
+          <ShareAltOutlined />
+          <h2>Share</h2>
+        </div>
+      </Popover>
       {canDelete() && (
         <div
           className="sticky-panel-item"
@@ -230,6 +276,8 @@ const renderBannerSection = (
   params,
   handleEditBtn,
   allowBookmark,
+  visible,
+  handleVisible,
   relation,
   handleRelationChange
 ) => {
@@ -285,6 +333,8 @@ const renderBannerSection = (
               relation={relation}
               handleRelationChange={handleRelationChange}
               allowBookmark={allowBookmark}
+              visible={visible}
+              handleVisible={handleVisible}
             />
           </div>
         </Col>
@@ -310,6 +360,8 @@ const renderBannerSection = (
               relation={relation}
               handleRelationChange={handleRelationChange}
               allowBookmark={allowBookmark}
+              visible={visible}
+              handleVisible={handleVisible}
             />
           </div>
         </Col>
@@ -529,6 +581,7 @@ const DetailsView = ({
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const relation = relations.find(
     (it) =>
@@ -661,6 +714,10 @@ const DetailsView = ({
     history.push(`/${link}/${params.id}`);
   };
 
+  const handleVisible = () => {
+    setVisible(!visible);
+  };
+
   if (!data) {
     return (
       <div className="details-view">
@@ -701,6 +758,8 @@ const DetailsView = ({
               params,
               handleEditBtn,
               allowBookmark,
+              visible,
+              handleVisible,
               { ...{ handleRelationChange, relation } }
             )}
           </Row>
