@@ -94,9 +94,9 @@ const TabComponent = ({
             Related Content
           </a>
         </li>
-        <li>
+        {/* <li>
           <a href="#">Comments</a>
-        </li>
+        </li> */}
       </ul>
     </div>
   );
