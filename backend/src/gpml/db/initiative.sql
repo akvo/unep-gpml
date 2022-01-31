@@ -78,7 +78,7 @@ delete from initiative_geo_coverage where initiative=:id;
 
 -- :name entity-connections-by-id
 -- :doc Get entity connections by id
-select oi.id, oi.association as role, org.name as entity
+select oi.id, oi.association as role, org.name as entity, org.logo as image
  from organisation_initiative oi
  left join organisation org
  on oi.organisation = org.id
@@ -86,7 +86,7 @@ select oi.id, oi.association as role, org.name as entity
 
 -- :name stakeholder-connections-by-id
 -- :doc Get stakeholder connections by id
-select si.id, si.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder
+select si.id, si.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder, s.picture as image
   from stakeholder_initiative si
   left join stakeholder s
   on si.stakeholder = s.id
