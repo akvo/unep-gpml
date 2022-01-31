@@ -1,6 +1,6 @@
 @import "../../vars.scss";
 
-#suggested-profiles {
+#stakeholder-overview {
   padding: 0;
 
   .ant-btn-icon-only {
@@ -511,7 +511,7 @@
         margin-bottom: calc(8px - 5px);
         text-transform: uppercase;
       }
-      .resource-type-card {
+      .drawer-card {
         background-color: inherit;
       }
     }
@@ -661,12 +661,12 @@
         }
       }
 
-      .resource-type {
+      .selection-card-type {
         border: none;
         color: $blue06;
       }
 
-      .resource-type,
+      .selection-card-type,
       .clear-selection {
         display: block;
         line-height: 30px;
@@ -676,7 +676,7 @@
       }
 
       .clear-selection,
-      .resource-type-card {
+      .drawer-card {
         display: flex;
         justify-content: center;
       }
@@ -696,7 +696,7 @@
         }
       }
 
-      .resource-type-card {
+      .drawer-card {
         color: $grey03;
         font-weight: 700;
         align-items: flex-end;
@@ -728,7 +728,7 @@
         }
       }
 
-      .resource-type-card.active {
+      .drawer-card.active {
         color: $blue06;
         border-color: $blue06;
         font-weight: 600;

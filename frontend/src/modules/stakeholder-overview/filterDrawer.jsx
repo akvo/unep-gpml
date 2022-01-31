@@ -68,7 +68,7 @@ const FilterDrawer = ({
     !isEmpty(representativeGroup) &&
     !isEmpty(languages);
 
-  const handleChangeResourceType = (flag, type) => {
+  const handleChangeType = (flag, type) => {
     const val = query[flag];
     let updateVal = [];
     if (isEmpty(val)) {
@@ -145,7 +145,7 @@ const FilterDrawer = ({
             <Space align="middle">
               <div className="filter-title">Network type</div>
               {isEmpty(query?.topic) ? (
-                <Tag className="resource-type">All (default)</Tag>
+                <Tag className="selection-card-type">All (default)</Tag>
               ) : (
                 <Tag
                   className="clear-selection"
@@ -164,8 +164,8 @@ const FilterDrawer = ({
               {/* return ( */}
               <Col span={6}>
                 <Card
-                  onClick={() => handleChangeResourceType("topic", "")}
-                  className={classNames("resource-type-card", {
+                  onClick={() => handleChangeType("topic", "")}
+                  className={classNames("drawer-card", {
                     active: query?.topic?.includes(""),
                   })}
                 >
@@ -179,8 +179,8 @@ const FilterDrawer = ({
               })} */}
               <Col span={6}>
                 <Card
-                  onClick={() => handleChangeResourceType("topic", "")}
-                  className={classNames("resource-type-card", {
+                  onClick={() => handleChangeType("topic", "")}
+                  className={classNames("drawer-card", {
                     active: query?.topic?.includes(""),
                   })}
                 >
@@ -198,7 +198,7 @@ const FilterDrawer = ({
             <Space align="middle">
               <div className="filter-title">Specificity</div>
               {isEmpty(query?.topic) ? (
-                <Tag className="resource-type">All (default)</Tag>
+                <Tag className="selection-card-type">All (default)</Tag>
               ) : (
                 <Tag
                   className="clear-selection"
@@ -214,8 +214,8 @@ const FilterDrawer = ({
               <p className="specificity-title">For individuals</p>
               <Col span={6}>
                 <Card
-                  // onClick={() => handleChangeResourceType("topic", topic)}
-                  className={classNames("resource-type-card", {
+                  // onClick={() => handleChangeType("topic", topic)}
+                  className={classNames("drawer-card", {
                     active: query?.topic?.includes(topic),
                   })}
                 >
@@ -234,13 +234,13 @@ const FilterDrawer = ({
               <p className="specificity-title">For entities</p>
               {entities.map((entity) => {
                 const name = humps.decamelize(entity);
-
+                console.log(query?.name);
                 return (
                   <Col span={6} key={entity}>
                     <Card
-                      // onClick={() => handleChangeResourceType("topic", topic)}
-                      className={classNames("resource-type-card", {
-                        active: query?.topic?.includes(name),
+                      onClick={() => handleChangeType("topic", [])}
+                      className={classNames("drawer-card", {
+                        active: query?.name?.includes(name),
                       })}
                     >
                       <Space direction="vertical" align="center">

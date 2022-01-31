@@ -5,12 +5,14 @@ import LeftSidebar from "./leftSidebar";
 import ProfileCard from "./card";
 import Header from "./header";
 import FilterDrawer from "./filterDrawer";
+import { useQuery } from "./common";
 import { UIStore } from "../../store";
 import { profiles } from "./profiles";
 import api from "../../utils/api";
 
 const StakeholderOverview = () => {
   const [filterVisible, setFilterVisible] = useState(false);
+  const query = useQuery();
   const [results, setResults] = useState([]);
   const [isAscending, setIsAscending] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -72,7 +74,7 @@ const StakeholderOverview = () => {
   // }, []);
 
   return (
-    <div id="suggested-profiles">
+    <div id="stakeholder-overview">
       <Header
         filterVisible={filterVisible}
         isAscending={isAscending}
@@ -82,6 +84,7 @@ const StakeholderOverview = () => {
       <Row type="flex" className="body-wrapper">
         {/* Filter Drawer */}
         <FilterDrawer
+        query={query}
           entities={entityRoleOptions}
           filterVisible={filterVisible}
           setFilterVisible={setFilterVisible}
