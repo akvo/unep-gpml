@@ -414,6 +414,11 @@ const FlexibleForm = withRouter(
         delete data.related;
       }
 
+      if (data?.summary) {
+        data.abstract = data?.summary;
+        delete data.summary;
+      }
+
       if (status === "add" && !params?.id) {
         api
           .post("/policy", data)
@@ -630,6 +635,11 @@ const FlexibleForm = withRouter(
       if (data?.related) {
         data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
+      }
+
+      if (data?.summary) {
+        data.remarks = data?.summary;
+        delete data.summary;
       }
 
       if (status === "add" && !params?.id) {
