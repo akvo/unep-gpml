@@ -12,8 +12,8 @@ const LeftSidebar = ({ active = 1 }) => {
   const [activeMenu, setActiveMenu] = useState(active);
   const sidebar = [
     { id: 1, title: "Events", url: "" },
-    { id: 2, title: "Forum", url: "" },
-    { id: 3, title: "Community", url: null },
+    { id: 2, title: "Community", url: null },
+    { id: 3, title: "Forum", url: "" },
   ];
 
   const icons = [IconEvent, IconForum, IconCommunity];
