@@ -13,10 +13,10 @@ const LeftSidebar = ({ active = 1 }) => {
   const sidebar = [
     { id: 1, title: "Events", url: "" },
     { id: 2, title: "Community", url: null },
-    { id: 3, title: "Forum", url: "" },
+    { id: 3, title: "Forums", url: "" },
   ];
 
-  const icons = [IconEvent, IconForum, IconCommunity];
+  const icons = [IconEvent, IconCommunity, IconForum];
 
   return (
     <Col lg={2} xs={24} order={1} className="sidebar">
