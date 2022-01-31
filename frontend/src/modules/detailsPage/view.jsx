@@ -133,7 +133,14 @@ const SharePanel = ({
   return (
     <div className="sticky-panel">
       <div className="sticky-panel-item">
-        <a href={`https://${data?.url}`} target="_blank">
+        <a
+          href={`${
+            data?.url && data?.url.includes("https://")
+              ? data?.url
+              : "https://" + data?.url
+          }`}
+          target="_blank"
+        >
           <EyeOutlined />
           <h2>View</h2>
         </a>
