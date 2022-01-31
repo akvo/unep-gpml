@@ -154,7 +154,7 @@ select id, title
 
 -- :name related-content-by-id
 -- :doc Get related content by id
-select ev.id, ev.title from event e
+select ev.id, ev.title, ev.description from event e
   left join event ev
   on ev.id = any(e.related_content)
 where e.id = :id
