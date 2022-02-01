@@ -282,7 +282,6 @@ const renderBannerSection = (
   handleRelationChange
 ) => {
   const noEditTopics = new Set(["stakeholder"]);
-
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
@@ -330,8 +329,8 @@ const renderBannerSection = (
               topic={{ ...data, ...params }}
               handleEditBtn={handleEditBtn}
               canEdit={canEdit}
-              relation={relation}
-              handleRelationChange={handleRelationChange}
+              relation={relation.relation}
+              handleRelationChange={relation.handleRelationChange}
               allowBookmark={allowBookmark}
               visible={visible}
               handleVisible={handleVisible}
@@ -357,8 +356,8 @@ const renderBannerSection = (
               topic={{ ...data, ...params }}
               handleEditBtn={handleEditBtn}
               canEdit={canEdit}
-              relation={relation}
-              handleRelationChange={handleRelationChange}
+              relation={relation.relation}
+              handleRelationChange={relation.handleRelationChange}
               allowBookmark={allowBookmark}
               visible={visible}
               handleVisible={handleVisible}

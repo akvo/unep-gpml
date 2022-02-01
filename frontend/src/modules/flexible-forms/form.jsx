@@ -281,11 +281,6 @@ const FlexibleForm = withRouter(
       data.q2 = data.qtitle;
       delete data.qtitle;
 
-      if (data?.q41_1) {
-        data.q41_url = data?.q41_1;
-        delete data.q41_1;
-      }
-
       data.q3 = data.qsummary;
       delete data.qsummary;
 
