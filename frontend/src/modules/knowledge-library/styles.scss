@@ -549,6 +549,8 @@
 
   .resource-list-container {
     background: $grey05;
+    position: absolute;
+    z-index: 3;
   }
 
   .resource-list-header {

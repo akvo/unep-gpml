@@ -27,6 +27,7 @@ const MapLanding = ({
   setMultiCountryCountries,
   setListVisible,
   listVisible,
+  contentHeight,
 }) => {
   const {
     profile,
@@ -139,7 +140,10 @@ const MapLanding = ({
 
   return (
     <div id="map-landing">
-      <div className="landing-container map-container">
+      <div
+        className="landing-container map-container"
+        style={{ height: `${contentHeight}px` }}
+      >
         {!isLoaded() && (
           <h2 className="loading">
             <LoadingOutlined spin /> Loading
