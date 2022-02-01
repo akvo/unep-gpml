@@ -403,6 +403,7 @@ const KnowledgeLibrary = ({
                       listVisible,
                       contentHeight,
                     }}
+                    isDisplayedList={listVisible}
                   />
                 ) : (
                   <>
