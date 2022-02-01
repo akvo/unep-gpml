@@ -49,12 +49,10 @@
 
     .map-overlay {
       position: absolute;
-      // position: unset !important;
-      // width: 100%;
-      // max-width: 726.25px;
       z-index: 1;
       left: 0 !important;
       top: 0 !important;
+      background-color: #eaf6fd;
 
       .ant-select {
         width: 100%;
