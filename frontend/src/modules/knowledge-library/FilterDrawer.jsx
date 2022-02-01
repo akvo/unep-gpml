@@ -304,7 +304,7 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
           {/* Sectors */}
-          <MultipleSelectFilter
+          {/* <MultipleSelectFilter
             title="Sectors"
             options={
               isLoaded()
@@ -315,16 +315,16 @@ const FilterDrawer = ({
             flag="sector"
             query={query}
             updateQuery={updateQuery}
-          />
+          /> */}
           {/* Goals */}
-          <MultipleSelectFilter
+          {/* <MultipleSelectFilter
             title="Goals"
             options={[]}
             value={query?.goal || []}
             flag="goal"
             query={query}
             updateQuery={updateQuery}
-          />
+          /> */}
           {/* Representative group */}
           <MultipleSelectFilter
             title="Representative group"
@@ -338,21 +338,9 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-          {/* Geo-coverage */}
-          <MultipleSelectFilter
-            title="Geo-coverage"
-            options={
-              isLoaded()
-                ? geoCoverageTypeOptions?.map((x) => ({ value: x, label: x }))
-                : []
-            }
-            value={query?.geoCoverage || []}
-            flag="geoCoverage"
-            query={query}
-            updateQuery={updateQuery}
-          />
+
           {/* Language */}
-          <MultipleSelectFilter
+          {/* <MultipleSelectFilter
             title="Language"
             options={
               isLoaded()
@@ -366,16 +354,16 @@ const FilterDrawer = ({
             flag="language"
             query={query}
             updateQuery={updateQuery}
-          />
+          /> */}
           {/* Rating */}
-          <MultipleSelectFilter
+          {/* <MultipleSelectFilter
             title="Rating"
             options={[]}
             value={query?.rating || []}
             flag="rating"
             query={query}
             updateQuery={updateQuery}
-          />
+          /> */}
           {/* Date Filter */}
           <Col span={24} className="date-picker-container">
             <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
