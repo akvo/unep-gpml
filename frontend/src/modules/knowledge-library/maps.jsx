@@ -253,7 +253,10 @@ const Maps = ({
             type="secondary"
             icon={<FullscreenOutlined />}
             onClick={() => {
-              setPosition({ coordinates: [0, 0], zoom: 1 });
+              setPosition({
+                coordinates: [21.30462749563163, 14.25593529250931],
+                zoom: 1.92,
+              });
             }}
           />
         </Tooltip>
