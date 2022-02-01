@@ -58,7 +58,7 @@ const MapLanding = ({
   const clickCountry = (name) => {
     setToggleButton("list");
     updateQuery("country", name);
-    history.push(`/browse?country=${name}`);
+    history.push(`?country=${name}`);
   };
 
   const handleSummaryClick = (topic) => {
