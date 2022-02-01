@@ -49,7 +49,8 @@ const ToolTipContent = ({ data, geo }) => {
   );
 };
 
-const Legend = ({ data, setFilterColor, selected }) => {
+const Legend = ({ data, setFilterColor, selected, isDisplayedList }) => {
+  console.log(isDisplayedList);
   data = Array.from(new Set(data.map((x) => Math.floor(x))));
   data = data.filter((x) => x !== 0);
   const range = data.map((x, i) => (
@@ -78,7 +79,14 @@ const Legend = ({ data, setFilterColor, selected }) => {
   ));
   if (data.length) {
     return (
-      <div className="legends">
+      <div
+        className="legends"
+        style={
+          isDisplayedList
+            ? { left: "calc(50% - calc(104px - 30px) )" }
+            : { left: "17px" }
+        }
+      >
         {[
           <div
             key={"legend-0"}
@@ -141,6 +149,7 @@ const Maps = ({
   country,
   multiCountries,
   listVisible,
+  isDisplayedList,
 }) => {
   const mapMaxZoom = 10;
   const [selected, setSelected] = useState(null);
@@ -212,6 +221,7 @@ const Maps = ({
         data={colorScale.thresholds()}
         setFilterColor={setFilterColor}
         selected={filterColor}
+        isDisplayedList={isDisplayedList}
       />
       <div
         className="map-buttons"
