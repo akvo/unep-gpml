@@ -64,7 +64,9 @@ const FilterDrawer = ({
 
   const handleChangeResourceType = (flag, type) => {
     const val = query[flag];
+
     let updateVal = [];
+
     if (isEmpty(val)) {
       updateVal = [type];
     } else if (val.includes(type)) {
@@ -167,6 +169,7 @@ const FilterDrawer = ({
                 <Tag
                   className="clear-selection"
                   closable={true}
+                  onClick={() => updateQuery("topic", [])}
                   onClose={() => updateQuery("topic", [])}
                 >
                   Clear selection
@@ -211,7 +214,7 @@ const FilterDrawer = ({
                   My Bookmarks
                 </Checkbox>
               </Space>
-              <Select
+              {/* <Select
                 className="collection-selector"
                 disabled={
                   !isEmpty(query?.favorites)
@@ -237,7 +240,7 @@ const FilterDrawer = ({
                   )
                 }
                 virtual={false}
-              />
+              /> */}
             </Col>
           )}
           {/* Location */}
@@ -248,9 +251,10 @@ const FilterDrawer = ({
                 <Tag
                   className="clear-selection"
                   closable
-                  onClose={() => {
+                  onClick={() => {
                     updateQuery("country", []);
                   }}
+                  onClose={() => updateQuery("country", [])}
                 >
                   Clear Country Selection
                 </Tag>
@@ -261,9 +265,10 @@ const FilterDrawer = ({
                 <Tag
                   className="clear-selection"
                   closable
-                  onClose={() => {
+                  onClick={() => {
                     updateQuery("transnational", []);
                   }}
+                  onClose={() => updateQuery("transnational", [])}
                 >
                   Clear Multi-Country Selection
                 </Tag>
@@ -362,15 +367,6 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-          {/* Entities */}
-          <MultipleSelectFilter
-            title="Entities"
-            options={[]}
-            value={query?.entity || []}
-            flag="entity"
-            query={query}
-            updateQuery={updateQuery}
-          />
           {/* Rating */}
           <MultipleSelectFilter
             title="Rating"
@@ -431,6 +427,7 @@ const MultipleSelectFilter = ({
           <Tag
             className="clear-selection"
             closable
+            onClick={() => updateQuery(flag, [])}
             onClose={() => updateQuery(flag, [])}
           >
             Clear Selection
@@ -481,6 +478,7 @@ const DatePickerFilter = ({
           <Tag
             className="clear-selection"
             closable
+            onClick={() => updateQuery(flag, [])}
             onClose={() => updateQuery(flag, [])}
           >
             Clear Selection
