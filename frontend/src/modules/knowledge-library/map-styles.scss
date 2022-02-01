@@ -1,15 +1,29 @@
 @import "../../vars.scss";
 
+.render-map-container {
+  max-width: 100%;
+  margin-left: auto;
+
+  @media (min-width: 576px) {
+    max-width: 100% !important;
+  }
+
+  @media (min-width: 768px) {
+    max-width: 100% !important;
+  }
+
+  @media (min-width: 992px) {
+    max-width: 100% !important;
+  }
+}
+
 #map-landing {
   position: relative;
   height: 100%;
 
-  .landing-container.map-container > div {
-    height: 100% !important;
-  }
-
   .landing-container.map-container {
-    height: 100%;
+    display: flex;
+
     position: relative;
     padding-top: 0;
     padding-bottom: 40px;
@@ -19,6 +33,10 @@
 
     svg {
       height: 100% !important;
+    }
+
+    .rsm-svg {
+      width: 100vw;
     }
 
     h2.loading {
@@ -31,6 +49,9 @@
 
     .map-overlay {
       position: absolute;
+      // position: unset !important;
+      // width: 100%;
+      // max-width: 726.25px;
       z-index: 1;
       left: 0 !important;
       top: 0 !important;
@@ -246,6 +267,7 @@
     position: absolute;
     z-index: 999;
     display: flex;
+    left: 44% !important;
 
     button {
       width: 35px;
