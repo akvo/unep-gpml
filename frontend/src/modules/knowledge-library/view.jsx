@@ -380,7 +380,7 @@ const KnowledgeLibrary = ({
                 sm={listVisible ? 12 : 24}
                 xs={24}
                 align="center"
-                className="render-map-container"
+                className="render-map-container map-main-wrapper"
                 style={{
                   background: view === "topic" ? "#255B87" : "#fff",
                   height: `${contentHeight}px`,
