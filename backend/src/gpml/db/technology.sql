@@ -144,7 +144,7 @@ where id = :id;
 
 -- :name entity-connections-by-id
 -- :doc Get entity connections by id
-select ot.id, ot.association as role, org.name as entity
+select ot.id, ot.association as role, org.name as entity, org.logo as image
  from organisation_technology ot
  left join organisation org
  on ot.organisation = org.id
@@ -152,7 +152,7 @@ select ot.id, ot.association as role, org.name as entity
 
 -- :name stakeholder-connections-by-id
 -- :doc Get stakeholder connections by id
-select st.id, st.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder
+select st.id, st.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder, s.picture as image
   from stakeholder_technology st
   left join stakeholder s
   on st.stakeholder = s.id
@@ -165,7 +165,7 @@ select id, title
 
 -- :name related-content-by-id
 -- :doc Get related content by id
-select tech.id, tech.name as title from technology t
+select tech.id, tech.name as title, tech.remarks as description from technology t
   left join technology tech
   on tech.id = ANY(t.related_content)
   where t.id = :id

@@ -6,7 +6,21 @@ import React, {
   useRef,
 } from "react";
 import "./styles.scss";
-import { Row, Col, Tooltip, Typography, Card, List, Avatar } from "antd";
+import {
+  Row,
+  Col,
+  Modal,
+  Typography,
+  Card,
+  List,
+  Avatar,
+  notification,
+  Dropdown,
+  Checkbox,
+  Popover,
+  Input,
+  Button,
+} from "antd";
 const { Title } = Typography;
 import { UIStore } from "../../store";
 import StickyBox from "react-sticky-box";
@@ -45,6 +59,11 @@ import {
   descriptionMaps,
 } from "./mapping";
 import moment from "moment";
+import {
+  topicNames,
+  resourceTypeToTopicType,
+  relationsByTopicType,
+} from "../../utils/misc";
 
 const CardComponent = ({ title, style, children, getRef }) => {
   return (
@@ -80,46 +99,199 @@ const TabComponent = ({
             Related Content
           </a>
         </li>
-        <li>
+        {/* <li>
           <a href="#">Comments</a>
-        </li>
+        </li> */}
       </ul>
     </div>
   );
 };
 
-const SharePanel = ({ data, canDelete }) => {
+const SharePanel = ({
+  data,
+  canDelete,
+  topic,
+  handleEditBtn,
+  canEdit,
+  relation,
+  handleRelationChange,
+  allowBookmark,
+  visible,
+  handleVisible,
+}) => {
+  const { type, id } = topic;
+
+  const handleChangeRelation = (relationType) => ({ target: { checked } }) => {
+    let association = relation ? [...relation.association] : [];
+    if (checked) {
+      association = [...association, relationType];
+    } else {
+      association = association.filter((it) => it !== relationType);
+    }
+    handleRelationChange({
+      topicId: parseInt(topic.id),
+      association,
+      topic: resourceTypeToTopicType(topic.type),
+    });
+  };
+
+  const handleVisibleChange = () => {
+    handleVisible();
+  };
+
   return (
     <div className="sticky-panel">
       <div className="sticky-panel-item">
-        <a href={`https://${data?.url}`} target="_blank">
+        <a
+          href={`${
+            data?.url && data?.url.includes("https://")
+              ? data?.url
+              : "https://" + data?.url
+          }`}
+          target="_blank"
+        >
           <EyeOutlined />
           <h2>View</h2>
         </a>
       </div>
-      <div className="sticky-panel-item">
-        <HeartOutlined />
-        <h2>Bookmark</h2>
-      </div>
-      <div className="sticky-panel-item">
-        <ShareAltOutlined />
-        <h2>Share</h2>
-      </div>
-      {canDelete() && (
+      <Dropdown
+        overlay={
+          <ul className="relations-dropdown">
+            {relationsByTopicType[resourceTypeToTopicType(topic.type)].map(
+              (relationType) => (
+                <li key={`${relationType}`}>
+                  <Checkbox
+                    checked={
+                      relation &&
+                      relation.association &&
+                      relation.association.indexOf(relationType) !== -1
+                    }
+                    onChange={handleChangeRelation(relationType)}
+                  >
+                    {relationType}
+                  </Checkbox>
+                </li>
+              )
+            )}
+          </ul>
+        }
+        trigger={["click"]}
+      >
         <div className="sticky-panel-item">
+          <HeartOutlined />
+          <h2>Bookmark</h2>
+        </div>
+      </Dropdown>
+      <Popover
+        overlayStyle={{
+          width: "22vw",
+        }}
+        content={
+          <Input.Group compact>
+            <Input
+              style={{ width: "calc(100% - 20%)" }}
+              defaultValue={`${
+                data?.url && data?.url.includes("https://")
+                  ? data?.url
+                  : "https://" + data?.url
+              }`}
+              disabled
+            />
+            <Button
+              style={{ width: "20%" }}
+              type="primary"
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  data?.url && data?.url.includes("https://")
+                    ? data?.url
+                    : "https://" + data?.url
+                );
+                handleVisibleChange();
+              }}
+            >
+              Copy
+            </Button>
+          </Input.Group>
+        }
+        trigger="click"
+        visible={visible}
+        onVisibleChange={handleVisibleChange}
+        placement="left"
+      >
+        <div className="sticky-panel-item" onClick={handleVisibleChange}>
+          <ShareAltOutlined />
+          <h2>Share</h2>
+        </div>
+      </Popover>
+      {canDelete() && (
+        <div
+          className="sticky-panel-item"
+          onClick={() => {
+            Modal.error({
+              className: "popup-delete",
+              centered: true,
+              closable: true,
+              icon: <DeleteOutlined />,
+              title: "Are you sure you want to delete this resource?",
+              content: "Please be aware this action cannot be undone.",
+              okText: "Delete",
+              okType: "danger",
+              onOk() {
+                return api
+                  .delete(`/detail/${type}/${id}`)
+                  .then((res) => {
+                    notification.success({
+                      message: "Resource deleted successfully",
+                    });
+                  })
+                  .catch((err) => {
+                    console.error(err);
+                    notification.error({
+                      message: "Oops, something went wrong",
+                    });
+                  });
+              },
+            });
+          }}
+        >
           <DeleteOutlined />
           <h2>Delete</h2>
         </div>
       )}
-      <div className="sticky-panel-item">
-        <EditOutlined />
-        <h2>Update</h2>
-      </div>
+      {canEdit() && (
+        <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
+          <EditOutlined />
+          <h2>Update</h2>
+        </div>
+      )}
     </div>
   );
 };
 
-const renderBannerSection = (data, LeftImage, profile, isAuthenticated) => {
+const renderBannerSection = (
+  data,
+  LeftImage,
+  profile,
+  isAuthenticated,
+  params,
+  handleEditBtn,
+  allowBookmark,
+  visible,
+  handleVisible,
+  relation,
+  handleRelationChange
+) => {
+  const noEditTopics = new Set(["stakeholder"]);
+
+  const canEdit = () =>
+    isAuthenticated &&
+    profile.reviewStatus === "APPROVED" &&
+    (profile.role === "ADMIN" ||
+      profile.id === params.createdBy ||
+      data.owners.includes(profile.id)) &&
+    ((params.type !== "project" && !noEditTopics.has(params.type)) ||
+      (params.type === "project" && params.id > 10000));
+
   const canDelete = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
@@ -152,7 +324,18 @@ const renderBannerSection = (data, LeftImage, profile, isAuthenticated) => {
             >
               <p>{data.summary}</p>
             </CardComponent>
-            <SharePanel data={data} canDelete={canDelete} />
+            <SharePanel
+              data={data}
+              canDelete={canDelete}
+              topic={{ ...data, ...params }}
+              handleEditBtn={handleEditBtn}
+              canEdit={canEdit}
+              relation={relation}
+              handleRelationChange={handleRelationChange}
+              allowBookmark={allowBookmark}
+              visible={visible}
+              handleVisible={handleVisible}
+            />
           </div>
         </Col>
       </>
@@ -168,7 +351,18 @@ const renderBannerSection = (data, LeftImage, profile, isAuthenticated) => {
                 className="resource-image"
               />
             </div>
-            <SharePanel data={data} canDelete={canDelete} />
+            <SharePanel
+              data={data}
+              canDelete={canDelete}
+              topic={{ ...data, ...params }}
+              handleEditBtn={handleEditBtn}
+              canEdit={canEdit}
+              relation={relation}
+              handleRelationChange={handleRelationChange}
+              allowBookmark={allowBookmark}
+              visible={visible}
+              handleVisible={handleVisible}
+            />
           </div>
         </Col>
       </>
@@ -387,6 +581,13 @@ const DetailsView = ({
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const relation = relations.find(
+    (it) =>
+      it.topicId === parseInt(params.id) &&
+      it.topic === resourceTypeToTopicType(params.type)
+  );
 
   const isConnectStakeholders = ["organisation", "stakeholder"].includes(
     params?.type
@@ -404,6 +605,34 @@ const DetailsView = ({
       ),
     [countries, profile, isConnectStakeholders]
   );
+
+  const handleRelationChange = (relation) => {
+    if (!isAuthenticated) {
+      loginWithPopup();
+    }
+    if (profile.reviewStatus === "SUBMITTED") {
+      setWarningVisible(true);
+    }
+    if (isAuthenticated && profile.reviewStatus === undefined) {
+      setStakeholderSignupModalVisible(true);
+    }
+    if (profile.reviewStatus === "APPROVED") {
+      api.post("/favorite", relation).then((res) => {
+        const relationIndex = relations.findIndex(
+          (it) => it.topicId === relation.topicId
+        );
+        if (relationIndex !== -1) {
+          setRelations([
+            ...relations.slice(0, relationIndex),
+            relation,
+            ...relations.slice(relationIndex + 1),
+          ]);
+        } else {
+          setRelations([...relations, relation]);
+        }
+      });
+    }
+  };
 
   useEffect(() => {
     isLoaded() &&
@@ -432,7 +661,62 @@ const DetailsView = ({
     window.scrollTo({ top: 0 });
   }, [params, profile, isLoaded, data, history]);
 
-  console.log(data);
+  const handleEditBtn = () => {
+    let form = null;
+    let link = null;
+    switch (params.type) {
+      case "project":
+        form = "initiative";
+        link = "edit-initiative";
+        break;
+      case "action_plan":
+        form = "actionPlan";
+        link = "edit-action-plan";
+        break;
+      case "policy":
+        form = "policy";
+        link = "edit-policy";
+        break;
+      case "technical_resource":
+        form = "technicalResource";
+        link = "edit-technical-resource";
+        break;
+      case "financing_resource":
+        form = "financingResource";
+        link = "edit-financing-resource";
+        break;
+      case "technology":
+        form = "technology";
+        link = "edit-technology";
+        break;
+      case "event":
+        form = "event";
+        link = "edit-event";
+        break;
+      default:
+        form = "entity";
+        link = "edit-entity";
+        break;
+    }
+    UIStore.update((e) => {
+      e.formEdit = {
+        ...e.formEdit,
+        [form]: {
+          status: "edit",
+          id: params.id,
+        },
+      };
+      e.formStep = {
+        ...e.formStep,
+        [form]: 1,
+      };
+    });
+    history.push(`/${link}/${params.id}`);
+  };
+
+  const handleVisible = () => {
+    setVisible(!visible);
+  };
 
   if (!data) {
     return (
@@ -454,7 +738,7 @@ const DetailsView = ({
               <div className="header-wrapper">
                 <img src={ActionGreen} />
                 <div>
-                  <Title level={2}>{data?.type}</Title>
+                  <Title level={2}>{topicNames(params?.type)}</Title>
                   <Title level={4}>{data?.title}</Title>
                 </div>
               </div>
@@ -466,7 +750,18 @@ const DetailsView = ({
       <div className="section-banner">
         <div className="ui container">
           <Row gutter={[16, 16]}>
-            {renderBannerSection(data, LeftImage, profile, isAuthenticated)}
+            {renderBannerSection(
+              data,
+              LeftImage,
+              profile,
+              isAuthenticated,
+              params,
+              handleEditBtn,
+              allowBookmark,
+              visible,
+              handleVisible,
+              { ...{ handleRelationChange, relation } }
+            )}
           </Row>
         </div>
       </div>
@@ -513,12 +808,12 @@ const DetailsView = ({
                         title={data?.geoCoverageType}
                       />
                     </List.Item>
-                    <List.Item>
+                    {/* <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar src={LanguageImage} />}
                         title={"English"}
                       />
-                    </List.Item>
+                    </List.Item> */}
                   </List>
                 </div>
               </CardComponent>
@@ -538,7 +833,9 @@ const DetailsView = ({
                           title={
                             <ul>
                               {data?.tags &&
-                                data?.tags.map((tag) => <li>{tag.tag}</li>)}
+                                data?.tags.map((tag) => (
+                                  <li key={tag.tag}>{tag.tag}</li>
+                                ))}
                             </ul>
                           }
                         />
@@ -572,7 +869,7 @@ const DetailsView = ({
                       data?.stakeholderConnections.map((item) => (
                         <List.Item>
                           <List.Item.Meta
-                            avatar={<Avatar src={AvatarImage} />}
+                            avatar={<Avatar src={item.image} />}
                             title={item.stakeholder}
                             description={item.role}
                           />
@@ -655,166 +952,51 @@ const DetailsView = ({
                 )}
               </CardComponent>
               <CardComponent
-                title="Related content (4)"
+                title={`Related content (${
+                  data?.relatedContent && data?.relatedContent.length
+                })`}
                 style={{
                   marginBottom: "30px",
                 }}
                 getRef={relatedContent}
               >
-                <Row gutter={16} className="related-content">
-                  <Col span={12}>
-                    <Card title="INITIATIVE " bordered={false}>
-                      <h4>
-                        Legal limits on single-use plastics and microplastics{" "}
-                      </h4>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Donec tempor ante ac leo cursus, quis fringilla elit
-                        sagittis. Maecenas ac maximus massa...
-                      </p>
-                      <div className="bottom-panel">
-                        <div>
-                          <Avatar.Group
-                            maxCount={2}
-                            maxPopoverTrigger="click"
-                            size="large"
-                            maxStyle={{
-                              color: "#f56a00",
-                              backgroundColor: "#fde3cf",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <Avatar src={AvatarImage} />
-                            <Avatar src={AvatarImage} />
-                            <Tooltip title="Ant User" placement="top">
-                              <Avatar
-                                style={{ backgroundColor: "#87d068" }}
-                                icon={<UserOutlined />}
-                              />
-                            </Tooltip>
-                          </Avatar.Group>
-                        </div>
-                        <div className="read-more">
-                          Read More <ArrowRightOutlined />
-                        </div>
-                      </div>
-                    </Card>
-                  </Col>
-                  <Col span={12}>
-                    <Card title="INITIATIVE " bordered={false}>
-                      <h4>
-                        Legal limits on single-use plastics and microplastics{" "}
-                      </h4>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Donec tempor ante ac leo cursus, quis fringilla elit
-                        sagittis. Maecenas ac maximus massa...
-                      </p>
-                      <div className="bottom-panel">
-                        <div>
-                          <Avatar.Group
-                            maxCount={2}
-                            maxPopoverTrigger="click"
-                            size="large"
-                            maxStyle={{
-                              color: "#f56a00",
-                              backgroundColor: "#fde3cf",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <Avatar src={AvatarImage} />
-                            <Avatar src={AvatarImage} />
-                            <Tooltip title="Ant User" placement="top">
-                              <Avatar
-                                style={{ backgroundColor: "#87d068" }}
-                                icon={<UserOutlined />}
-                              />
-                            </Tooltip>
-                          </Avatar.Group>
-                        </div>
-                        <div className="read-more">
-                          Read More <ArrowRightOutlined />
-                        </div>
-                      </div>
-                    </Card>
-                  </Col>
-                  <Col span={12}>
-                    <Card title="INITIATIVE " bordered={false}>
-                      <h4>
-                        Legal limits on single-use plastics and microplastics{" "}
-                      </h4>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Donec tempor ante ac leo cursus, quis fringilla elit
-                        sagittis. Maecenas ac maximus massa...
-                      </p>
-                      <div className="bottom-panel">
-                        <div>
-                          <Avatar.Group
-                            maxCount={2}
-                            maxPopoverTrigger="click"
-                            size="large"
-                            maxStyle={{
-                              color: "#f56a00",
-                              backgroundColor: "#fde3cf",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <Avatar src={AvatarImage} />
-                            <Avatar src={AvatarImage} />
-                            <Tooltip title="Ant User" placement="top">
-                              <Avatar
-                                style={{ backgroundColor: "#87d068" }}
-                                icon={<UserOutlined />}
-                              />
-                            </Tooltip>
-                          </Avatar.Group>
-                        </div>
-                        <div className="read-more">
-                          Read More <ArrowRightOutlined />
-                        </div>
-                      </div>
-                    </Card>
-                  </Col>
-                  <Col span={12}>
-                    <Card title="INITIATIVE " bordered={false}>
-                      <h4>
-                        Legal limits on single-use plastics and microplastics{" "}
-                      </h4>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Donec tempor ante ac leo cursus, quis fringilla elit
-                        sagittis. Maecenas ac maximus massa...
-                      </p>
-                      <div className="bottom-panel">
-                        <div>
-                          <Avatar.Group
-                            maxCount={2}
-                            maxPopoverTrigger="click"
-                            size="large"
-                            maxStyle={{
-                              color: "#f56a00",
-                              backgroundColor: "#fde3cf",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <Avatar src={AvatarImage} />
-                            <Avatar src={AvatarImage} />
-                            <Tooltip title="Ant User" placement="top">
-                              <Avatar
-                                style={{ backgroundColor: "#87d068" }}
-                                icon={<UserOutlined />}
-                              />
-                            </Tooltip>
-                          </Avatar.Group>
-                        </div>
-                        <div className="read-more">
-                          Read More <ArrowRightOutlined />
-                        </div>
-                      </div>
-                    </Card>
-                  </Col>
-                </Row>
+                {data?.relatedContent.length > 0 && (
+                  <Row gutter={16} className="related-content">
+                    {data?.relatedContent.map((item) => (
+                      <Col span={12}>
+                        <Card
+                          title={data?.type ? data.type : ""}
+                          bordered={false}
+                        >
+                          <h4>{item.title}</h4>
+                          <p>{item.description}</p>
+                          <div className="bottom-panel">
+                            <div>
+                              <Avatar.Group
+                                maxCount={2}
+                                size="large"
+                                maxStyle={{
+                                  color: "#f56a00",
+                                  backgroundColor: "#fde3cf",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                {item?.stakeholderConnections?.map(
+                                  (connection, index) => (
+                                    <Avatar src={connection.image} />
+                                  )
+                                )}
+                              </Avatar.Group>
+                            </div>
+                            <div className="read-more">
+                              Read More <ArrowRightOutlined />
+                            </div>
+                          </div>
+                        </Card>
+                      </Col>
+                    ))}
+                  </Row>
+                )}
               </CardComponent>
               {/* <CardComponent
                 title="Comments (0)"
