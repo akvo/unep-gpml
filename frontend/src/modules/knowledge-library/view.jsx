@@ -123,11 +123,11 @@ const KnowledgeLibrary = ({
   }
 
   useEffect(() => {
-    setContentHeight(listHeight);
+    setTimeout(() => {
+      setContentHeight(listHeight);
+    }, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listHeight, useWindowDimensions().width, results]);
-
-  console.log(window);
+  }, [listHeight, useWindowDimensions().width, results.length]);
 
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
