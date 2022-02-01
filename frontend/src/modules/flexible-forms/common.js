@@ -127,6 +127,14 @@ const getSchema = ({
     prop.S5.properties.S5_G1.properties[
       "S5_G5_37.1"
     ].enumNames = currencies?.map((x) => x.label);
+
+    // MEA options
+    prop.S5.properties.S5_G1.properties[
+      "S5_G2_7.2"
+    ].items.enum = meaOptions?.map((x) => String(x.id));
+    prop.S5.properties.S5_G1.properties[
+      "S5_G2_7.2"
+    ].items.enumNames = meaOptions?.map((x) => x.name);
   } else {
     // geocoverage national options
     prop.S4.properties.S4_G2.properties[
