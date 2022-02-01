@@ -125,7 +125,7 @@ const KnowledgeLibrary = ({
   useEffect(() => {
     setTimeout(() => {
       setContentHeight(listHeight);
-    }, 1000);
+    }, 500);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listHeight, useWindowDimensions().width, results.length]);
 
