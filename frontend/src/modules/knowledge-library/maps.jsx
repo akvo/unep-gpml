@@ -50,7 +50,6 @@ const ToolTipContent = ({ data, geo }) => {
 };
 
 const Legend = ({ data, setFilterColor, selected, isDisplayedList }) => {
-  console.log(isDisplayedList);
   data = Array.from(new Set(data.map((x) => Math.floor(x))));
   data = data.filter((x) => x !== 0);
   const range = data.map((x, i) => (
