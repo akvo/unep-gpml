@@ -21,12 +21,15 @@
 #map-landing {
   position: relative;
   height: 100%;
-  min-height: 1384px;
+  overflow: hidden;
+
+  .landing-container.map-container > div {
+    height: unset !important;
+  }
 
   .landing-container.map-container {
     display: flex;
     position: relative;
-    min-height: 1384px;
     padding-top: 0;
     padding-bottom: 40px;
     background-color: #eaf6fd !important;
@@ -278,7 +281,7 @@
 
   .legends {
     position: absolute;
-    bottom: 23.2%;
+    bottom: 20%;
     z-index: 999;
     left: 20px;
     border: 2px solid #daeaf1;
