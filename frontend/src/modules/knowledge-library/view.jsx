@@ -62,6 +62,7 @@ const KnowledgeLibrary = ({
     transnationalOptions,
     sectorOptions,
     geoCoverageTypeOptions,
+    representativeGroup,
     languages,
   } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -71,6 +72,7 @@ const KnowledgeLibrary = ({
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     languages: s.languages,
+    representativeGroup: s.sectorOptions,
   }));
 
   const [results, setResults] = useState([]);
@@ -204,6 +206,7 @@ const KnowledgeLibrary = ({
   }, [filterMenu]); // eslint-disable-line
 
   const updateQuery = (param, value) => {
+    console.log(param, value);
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
       top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
@@ -245,6 +248,12 @@ const KnowledgeLibrary = ({
           (x) => x.id == value
         );
         return findTransnational?.name;
+      }
+      if (key === "representativeGroup") {
+        const representativeGroups = representativeGroup.find(
+          (x) => x == value
+        );
+        return representativeGroups;
       }
     };
     return Object.keys(query).map((key, index) => {
