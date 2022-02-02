@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Button, Carousel, Row, Col, Layout, Select } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 
@@ -15,6 +15,7 @@ const { Header, Content } = Layout;
 
 const CaseStudies = () => {
   const [indexSlide, setIndexSlide] = useState(0);
+  const caseStudyReff = useRef();
 
   const slider = useRef();
   const prev = () => {
@@ -27,8 +28,15 @@ const CaseStudies = () => {
     setIndexSlide(index);
     slider.current.goTo(index);
   };
+
+  useEffect(() => {
+    window.scrollTo({
+      behavior: "smooth",
+      top: caseStudyReff.current.offsetTop,
+    });
+  }, []);
   return (
-    <Row id="case-study">
+    <Row id="case-study" ref={caseStudyReff}>
       <Col span={24} className="ui-header">
         <div className="ui-container">
           <Row gutter={[8, 16]}>
@@ -50,18 +58,16 @@ const CaseStudies = () => {
               </Select>
             </Col>
             <Col lg={18} md={24} className="text-right">
-              {datastudies[indexSlide].platform_link && (
-                <Button
-                  href={datastudies[indexSlide].platform_link}
-                  type="link"
-                  shape="round"
-                  className="green-border"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Learn More
-                </Button>
-              )}
+              <Button
+                href={datastudies[indexSlide].platform_link || "#"}
+                type="link"
+                shape="round"
+                className="green-border"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Learn More
+              </Button>
               <Button className="btn-download ml-1">
                 Download as pdf&nbsp;
                 <DownloadOutlined />
@@ -77,6 +83,7 @@ const CaseStudies = () => {
               dots={false}
               ref={slider}
               afterChange={(index) => setIndexSlide(index)}
+              effect="fade"
             >
               {datastudies?.map((c, cx) => (
                 <CaseStudy {...c} key={cx} />

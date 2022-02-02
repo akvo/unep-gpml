@@ -156,6 +156,7 @@ const KnowledgeLibrary = ({
     if (!isEmpty(filterMenu)) {
       updateQuery("topic", filterMenu);
     }
+
     // NOTE: this are triggered when user click a topic from navigation menu
   }, [filterMenu]); // eslint-disable-line
 
@@ -166,6 +167,7 @@ const KnowledgeLibrary = ({
     });
     setLoading(true);
     const newQuery = { ...query };
+
     newQuery[param] = value;
     if (param !== "offset") {
       newQuery["offset"] = 0;
@@ -188,7 +190,8 @@ const KnowledgeLibrary = ({
       }
       if (key === "tag") {
         const findTag = flatten(values(tags)).find((x) => x.id == value);
-        return findTag?.tag;
+
+        return findTag ? findTag?.tag : value;
       }
       if (key === "country") {
         const findCountry = countries.find((x) => x.id == value);
@@ -214,7 +217,14 @@ const KnowledgeLibrary = ({
       return query?.[key]
         ? query?.[key]?.map((x) => (
             <Tag
+              className="result-box"
               closable
+              onClick={() =>
+                updateQuery(
+                  key,
+                  query?.[key]?.filter((v) => v !== x)
+                )
+              }
               onClose={() =>
                 updateQuery(
                   key,
@@ -349,7 +359,7 @@ const KnowledgeLibrary = ({
                   />
                 ) : (
                   <>
-                    <TopicView />
+                    <TopicView updateQuery={updateQuery} />
                   </>
                 )}
               </Col>

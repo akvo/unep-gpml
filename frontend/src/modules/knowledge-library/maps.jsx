@@ -147,9 +147,10 @@ const Maps = ({
   const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
   const [position, setPosition] = useState({
-    coordinates: [8.7832, 34.5085],
-    zoom: 3,
+    coordinates: [149.78195366903324, -35.0818484659539],
+    zoom: 1,
   });
+
   const [scale, setScale] = useState(100);
   const [mapPos, setMapPos] = useState({
     left: 0,

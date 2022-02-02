@@ -8,6 +8,77 @@ const {
 
 import { newGeoCoverageFormat } from "../../utils/geo";
 
+const sdgsOptions = [
+  {
+    goal: 1,
+    name: "No Poverty",
+  },
+  {
+    goal: 2,
+    name: "Zero Hunger",
+  },
+  {
+    goal: 3,
+    name: "Good Health and Well-being",
+  },
+  {
+    goal: 4,
+    name: "Quality Education",
+  },
+  {
+    goal: 5,
+    name: "Gender Equality",
+  },
+  {
+    goal: 6,
+    name: "Clean Water and Sanitation",
+  },
+  {
+    goal: 7,
+    name: "Affordable and Clean Energy",
+  },
+  {
+    goal: 8,
+    name: "Decent Jobs and Economic Growth",
+  },
+  {
+    goal: 9,
+    name: "Industry, Innovation and Infrastructure",
+  },
+  {
+    goal: 10,
+    name: "Reduced Inequalities",
+  },
+  {
+    goal: 11,
+    name: "Sustainable Cities and Communities",
+  },
+  {
+    goal: 12,
+    name: "Responsible Consumption and Production",
+  },
+  {
+    goal: 13,
+    name: "Climate Action",
+  },
+  {
+    goal: 14,
+    name: "Life Below Water",
+  },
+  {
+    goal: 15,
+    name: "Life on Land",
+  },
+  {
+    goal: 16,
+    name: "Peace and Justice - Strong Institutions",
+  },
+  {
+    goal: 17,
+    name: "Partnerships for the Goals",
+  },
+];
+
 export const schema = {
   initiative: {
     type: "object",
@@ -592,6 +663,112 @@ export const schema = {
                   value: ["5-6"],
                 },
               },
+              S5_G2_7: {
+                title:
+                  "If yes, who do you report to? (Please tick ALL that apply):",
+                type: "array",
+                dependency: [
+                  {
+                    value: ["7-0"],
+                    questions: ["S5_G2_7.1.0"],
+                  },
+                  {
+                    value: ["7-1"],
+                    questions: ["S5_G2_7.1.1"],
+                  },
+                  {
+                    value: ["7-2"],
+                    questions: ["S5_G2_7.1.2"],
+                  },
+                  {
+                    value: ["7-3"],
+                    questions: ["S5_G2_7.2"],
+                  },
+                  {
+                    value: ["7-4"],
+                    questions: ["S5_G2_7.3"],
+                  },
+                ],
+                depend: {
+                  id: "S5_G2_5",
+                  value: ["5-0", "5-1"],
+                },
+                items: {
+                  enum: ["7-0", "7-1", "7-2", "7-3", "7-4"],
+                  enumNames: [
+                    "Global Sustainable Development Goals (SDGs)",
+                    "Regional Sustainable Development Goals (SDGs)",
+                    "National Sustainable Development Goals (SDGs)",
+                    "Multilateral Environmental Agreements (MEAs)",
+                    "Other",
+                  ],
+                },
+                uniqueItems: true,
+              },
+              "S5_G2_7.1.0": {
+                title:
+                  "Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):",
+                type: "array",
+                depend: {
+                  id: "S5_G2_7",
+                  value: ["7-0"],
+                },
+                items: {
+                  enum: sdgsOptions.map((x) => x.goal),
+                  enumNames: sdgsOptions.map((x) => x.name),
+                },
+                uniqueItems: true,
+              },
+              "S5_G2_7.1.1": {
+                title:
+                  "Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):",
+                type: "array",
+                depend: {
+                  id: "S5_G2_7",
+                  value: ["7-0"],
+                },
+                items: {
+                  enum: sdgsOptions.map((x) => x.goal),
+                  enumNames: sdgsOptions.map((x) => x.name),
+                },
+                uniqueItems: true,
+              },
+              "S5_G2_7.1.2": {
+                title:
+                  "Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):",
+                type: "array",
+                depend: {
+                  id: "S5_G2_7",
+                  value: ["7-0"],
+                },
+                items: {
+                  enum: sdgsOptions.map((x) => x.goal),
+                  enumNames: sdgsOptions.map((x) => x.name),
+                },
+                uniqueItems: true,
+              },
+              "S5_G2_7.2": {
+                title:
+                  "Which Multilateral Environmental Agreements (MEAs) does your initiative apply to? (Please tick ALL that apply):",
+                type: "array",
+                depend: {
+                  id: "S5_G2_7",
+                  value: ["7-3"],
+                },
+                items: {
+                  enum: [],
+                  enumNames: [],
+                },
+                uniqueItems: true,
+              },
+              "S5_G2_7.3": {
+                title: 'If you selected "Other", please specify.',
+                type: "string",
+                depend: {
+                  id: "S5_G2_7",
+                  value: ["7-4"],
+                },
+              },
               S5_G2_8: {
                 title:
                   "Are the actual outcomes and impacts of the initiative evaluated?",
@@ -917,7 +1094,7 @@ export const schema = {
                 subTitle: "Total Stakeholders Engaged",
                 title:
                   "How many different groups and organisations have you engaged with in total?",
-                type: "number",
+                type: "string",
               },
               S5_G4_34: {
                 title: "How many stakeholders have you engaged in total?",
@@ -933,23 +1110,13 @@ export const schema = {
                     questions: ["S5_G5_35.1"],
                   },
                 ],
-                enum: [
-                  "35-0",
-                  "35-1",
-                  "35-2",
-                  "35-3",
-                  "35-4",
-                  "35-5",
-                  "35-6",
-                  "35-7",
-                ],
+                enum: ["35-0", "35-1", "35-2", "35-3", "35-4", "35-6", "35-7"],
                 enumNames: [
                   "Crowdfunded",
                   "Voluntary donations",
                   "Public Financing",
                   "Private Sector",
                   "Mixed",
-                  "All of the above",
                   "Not applicable",
                   "Other",
                 ],

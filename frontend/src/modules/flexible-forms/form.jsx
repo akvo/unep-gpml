@@ -385,6 +385,7 @@ const FlexibleForm = withRouter(
 
       if (data.hasOwnProperty("firstPublicationDate")) {
         data.firstPublicationDate = data.firstPublicationDate;
+        data.latestAmendmentDate = "Ongoing";
       }
 
       if (data.hasOwnProperty("latestAmendmentDate")) {
@@ -412,6 +413,11 @@ const FlexibleForm = withRouter(
       if (data?.related) {
         data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
+      }
+
+      if (data?.summary) {
+        data.abstract = data?.summary;
+        delete data.summary;
       }
 
       if (status === "add" && !params?.id) {
@@ -630,6 +636,11 @@ const FlexibleForm = withRouter(
       if (data?.related) {
         data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
+      }
+
+      if (data?.summary) {
+        data.remarks = data?.summary;
+        delete data.summary;
       }
 
       if (status === "add" && !params?.id) {

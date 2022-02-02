@@ -667,29 +667,41 @@ const renderDropdownMenu = (
 
 const Search = withRouter(({ history }) => {
   const [search, setSearch] = useState("");
+  const [isShownForm, setIsShownForm] = useState(false);
   const handleSearch = (src) => {
     if (src) {
       history.push(`/browse/?q=${src.trim()}`);
     }
+    setIsShownForm(!isShownForm);
   };
 
   return (
-    <div className="src">
-      <Input
-        className="input-src"
-        placeholder="Search"
-        suffix={
-          <Button
-            onClick={() => handleSearch(search)}
-            type="primary"
-            shape="circle"
-            size="small"
-            icon={<SearchOutlined />}
-          />
-        }
-        onPressEnter={(e) => handleSearch(e.target.value)}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+    <div className={isShownForm ? "src" : "src toggle-icon"}>
+      {!isShownForm ? (
+        <Button
+          onClick={() => setIsShownForm(!isShownForm)}
+          type="primary"
+          shape="circle"
+          size="small"
+          icon={<SearchOutlined />}
+        />
+      ) : (
+        <Input
+          className="input-src"
+          placeholder="Search"
+          suffix={
+            <Button
+              onClick={() => handleSearch(search)}
+              type="primary"
+              shape="circle"
+              size="small"
+              icon={<SearchOutlined />}
+            />
+          }
+          onPressEnter={(e) => handleSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      )}
     </div>
   );
 });

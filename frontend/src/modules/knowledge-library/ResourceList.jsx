@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -49,6 +49,10 @@ const ResourceList = ({
       transnationalOptions: s.transnationalOptions,
     })
   );
+
+  const [allResults, setAllResults] = useState([]);
+  const [isAscending, setIsAscending] = useState(null);
+
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
 
   const isLoaded = () =>
@@ -73,6 +77,35 @@ const ResourceList = ({
   );
 
   const allTopicCount = countData.reduce((acc, topic) => acc + topic.count, 0);
+
+  const sortResults = () => {
+    if (!isAscending) {
+      const sortAscending = allResults.sort((result1, result2) => {
+        if (result1?.title) {
+          return result1.title.localeCompare(result2.title);
+        } else {
+          return result1?.name?.localeCompare(result2?.name);
+        }
+      });
+      setAllResults(sortAscending);
+    } else {
+      const sortDescending = allResults.sort((result1, result2) => {
+        if (result2?.title) {
+          return result2.title.localeCompare(result1.title);
+        } else {
+          return result2?.name?.localeCompare(result1?.name);
+        }
+      });
+      setAllResults(sortDescending);
+    }
+    setIsAscending(!isAscending);
+  };
+
+  useEffect(() => {
+    setAllResults(
+      [...results].sort((a, b) => Date.parse(b.created) - Date.parse(a.created))
+    );
+  }, [results]);
 
   return (
     <Row>
@@ -105,11 +138,16 @@ const ResourceList = ({
             </span>
           }
           extra={
-            <Button className="sort-btn">
+            <Button className="sort-btn" onClick={sortResults}>
               <img src={SortIcon} alt="sort-icon" />{" "}
               <span>
                 Sort By:
-                <br /> <b>A&gt;Z</b>
+                <br />{" "}
+                {isAscending || isAscending === null ? (
+                  <b>A&gt;Z</b>
+                ) : (
+                  <b>Z&gt;A</b>
+                )}
               </span>
             </Button>
           }
@@ -121,13 +159,13 @@ const ResourceList = ({
           <h2 className="loading">
             <LoadingOutlined spin /> Loading
           </h2>
-        ) : isLoaded() && !loading && !isEmpty(results) ? (
-          <ResourceItem results={results} />
+        ) : isLoaded() && !loading && !isEmpty(allResults) ? (
+          <ResourceItem results={allResults} />
         ) : (
           <h2 className="loading">There is no data to display</h2>
         )}
         <div className="page">
-          {!isEmpty(results) && (
+          {!isEmpty(allResults) && (
             <Pagination
               defaultCurrent={1}
               current={(filters?.offset || 0) / pageSize + 1}
@@ -170,41 +208,42 @@ const ResourceItem = ({ results }) => {
     const linkTo = `/${type}/${id}`;
 
     return (
-      <Card key={`${type}-${id}`} className="resource-item">
-        <div className="topic">{topicNames(type)}</div>
-        <div className="item-body">
-          <div className="title">{title}</div>
-          <div className="description">
-            <TrimText text={description} max={125} />
+      <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
+        <Card className="resource-item">
+          <div className="topic">{topicNames(type)}</div>
+          <div className="item-body">
+            <div className="title">{title}</div>
+            <div className="description">
+              <TrimText text={description} max={125} />
+            </div>
           </div>
-        </div>
-        <div className="item-footer">
-          <Space size={5}>
-            <Avatar.Group
-              maxCount={3}
-              maxStyle={{
-                color: "#f56a00",
-                backgroundColor: "#fde3cf",
-              }}
-            >
-              {["a", "b"].map((b, i) => (
-                <Tooltip key={`avatar-${i}`} title={b} placement="top">
-                  <Avatar
-                    style={{ backgroundColor: "#FFB800" }}
-                    icon={<UserOutlined />}
-                  />
-                </Tooltip>
-              ))}
-            </Avatar.Group>{" "}
-            <span className="avatar-number">+42</span>
-          </Space>
-          <span className="read-more">
-            <Link to={linkTo}>
-              Read more <ArrowRightOutlined />
-            </Link>
-          </span>
-        </div>
-      </Card>
+          <div className="item-footer">
+            <Space size={5}>
+              <Avatar.Group
+                maxCount={3}
+                maxStyle={{
+                  color: "#f56a00",
+                  backgroundColor: "#fde3cf",
+                }}
+              >
+                {["a", "b"].map((b, i) => (
+                  <Tooltip key={`avatar-${i}`} title={b} placement="top">
+                    <Avatar
+                      style={{ backgroundColor: "#FFB800" }}
+                      icon={<UserOutlined />}
+                    />
+                  </Tooltip>
+                ))}
+              </Avatar.Group>{" "}
+              <span className="avatar-number">+42</span>
+            </Space>
+            <span className="read-more">
+              Read more
+              <ArrowRightOutlined />
+            </span>
+          </div>
+        </Card>
+      </Link>
     );
   });
 };
