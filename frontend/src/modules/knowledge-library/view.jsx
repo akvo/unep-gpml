@@ -299,7 +299,7 @@ const KnowledgeLibrary = ({
               <Row type="flex" justify="space-between" align="middle">
                 <Col lg={5} md={7} sm={9} className="search-box">
                   <Space>
-                    <Search />
+                    <Search updateQuery={updateQuery} />
                     <Button
                       onClick={() => setFilterVisible(!filterVisible)}
                       type="ghost"
@@ -419,11 +419,12 @@ const KnowledgeLibrary = ({
   );
 };
 
-const Search = withRouter(({ history }) => {
+const Search = withRouter(({ history, updateQuery }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
     if (src) {
-      history.push(`/browse/?q=${src.trim()}`);
+      history.push(`?q=${src.trim()}`);
+      updateQuery("q", src.trim());
     }
   };
 
