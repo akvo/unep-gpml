@@ -156,13 +156,10 @@ const Maps = ({
   const [content, setContent] = useState("");
 
   const [position, setPosition] = useState({
-    coordinates: [23.365698124111542, -27.08001969416178],
+    coordinates: [22.67867259239698, -30.400635141897148],
     zoom: 1.92,
   });
 
-  console.log(position.coordinates);
-
-  const [scale, setScale] = useState(100);
   const [mapPos, setMapPos] = useState({
     left: 0,
     right: 0,
@@ -229,7 +226,7 @@ const Maps = ({
             icon={<ZoomOutOutlined />}
             onClick={() => {
               position.zoom > 1 &&
-                setPosition({ ...position, zoom: position.zoom - 0.5 });
+                setPosition({ coordinates: [0, 0], zoom: position.zoom - 0.5 });
             }}
             disabled={position.zoom <= 1}
           />
@@ -250,7 +247,7 @@ const Maps = ({
             icon={<FullscreenOutlined />}
             onClick={() => {
               setPosition({
-                coordinates: [23.365698124111542, -27.08001969416178],
+                coordinates: [22.67867259239698, -30.400635141897148],
                 zoom: 1.92,
               });
             }}

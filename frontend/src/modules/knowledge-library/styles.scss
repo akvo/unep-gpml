@@ -1,4 +1,10 @@
 @import "../../vars.scss";
+.multiselection-filter {
+  .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
+    margin-top: 30px;
+    top: 990px !important;
+  }
+}
 
 #knowledge-library {
   position: relative;
@@ -21,11 +27,19 @@
     }
 
     .filter-tag {
+      .ant-space {
+        flex-wrap: wrap;
+        gap: 8px;
+        .ant-space-item {
+          margin-right: 0 !important;
+        }
+      }
       .ant-tag {
         display: flex;
         flex-direction: row-reverse;
         align-items: center;
         justify-content: space-between;
+
         color: #ffffff;
         font-weight: 700;
         padding: 5px 11px 5px 11px;
@@ -550,15 +564,13 @@
   }
 
   .resource-list-container {
-    background-color: rgba(237, 242, 247, 0.3);
     position: absolute;
     z-index: 3;
     min-height: 1384px;
-    max-width: 541px;
+    max-width: 510px;
   }
 
   .resource-list-header {
-    background-color: rgba(255, 255, 255, 0.3);
     justify-content: unset;
 
     & span {
@@ -637,7 +649,7 @@
         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
         text-align: left;
         color: $black;
-        background-color: rgba(255, 255, 255, 0.3);
+
         .topic {
           color: $green05;
           font-size: 12px;
