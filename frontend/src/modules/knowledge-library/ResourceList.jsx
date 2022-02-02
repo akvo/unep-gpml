@@ -78,6 +78,12 @@ const ResourceList = ({
 
   const allTopicCount = countData.reduce((acc, topic) => acc + topic.count, 0);
 
+  const itemCount = loading
+    ? 0
+    : filters?.offset !== undefined
+    ? totalItems
+    : pageSize;
+
   const sortResults = () => {
     if (!isAscending) {
       const sortAscending = allResults.sort((result1, result2) => {
@@ -128,12 +134,13 @@ const ResourceList = ({
               ""
             )
           }
+          const
           subTitle={
             <span className="result-number">
               Showing{" "}
               {totalItems > pageSize + filters?.offset
-                ? pageSize + filters?.offset
-                : totalItems}{" "}
+                ? pageSize + Number(filters?.offset)
+                : itemCount}{" "}
               of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
             </span>
           }
@@ -177,8 +184,8 @@ const ResourceList = ({
           )}
           <div className="result-number">
             {totalItems > pageSize + filters?.offset
-              ? pageSize + filters?.offset
-              : totalItems}{" "}
+              ? pageSize + Number(filters?.offset)
+              : itemCount}{" "}
             of {allTopicCount || 0} result{allTopicCount > 1 ? "s" : ""}
           </div>
         </div>
