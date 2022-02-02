@@ -134,19 +134,21 @@ const StakeholderOverview = ({ history }) => {
         <LeftSidebar />
         <Col lg={22} xs={24} order={2}>
           <Col className="card-container green">
-            <h3 className="title text-white">Suggested profiles</h3>
-            <Row>
+            <h3 className="title text-white ui container">
+              Suggested profiles
+            </h3>
+            <div class="card-wrapper ui container">
               {suggestedProfiles.map((profile) => (
                 <ProfileCard key={profile.id} profile={profile} />
               ))}
-            </Row>
+            </div>
           </Col>
           <Col className="all-profiles">
-            <Row type="flex">
+            <div class="card-wrapper ui container">
               {results.map((profile) => (
                 <ProfileCard key={profile.id} profile={profile} />
               ))}
-            </Row>
+            </div>
             <div className="page">
               <Pagination
                 defaultCurrent={1}

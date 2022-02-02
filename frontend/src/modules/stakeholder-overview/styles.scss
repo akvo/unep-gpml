@@ -196,14 +196,19 @@
   }
 
   .all-profiles {
-    padding: 26.79px 41.79px 34.66px 28px;
+    padding: 26.79px 0 34.66px 0;
     .person-role {
       display: none;
     }
-    .ant-row {
-      gap: 34px;
-      flex-wrap: wrap;
-    }
+    // .card-wrapper {
+    //   display: grid;
+    //   grid-template-columns: repeat(1, 1fr);
+    //   column-gap: 34px;
+    //   row-gap: 34px;
+    //   max-width: fit-content;
+    //   margin: auto;
+    // }
+
     .ant-card-body {
       min-height: 271px;
     }
@@ -214,14 +219,12 @@
     .title {
       font-size: 22px;
       text-transform: uppercase;
+      margin-bottom: 13px;
     }
     &.green {
       background-color: #45bea5;
     }
-    .ant-row {
-      gap: 34px;
-      flex-wrap: wrap;
-    }
+
     .profile-card {
       .ant-card-body {
         display: flex;
@@ -767,6 +770,36 @@
       .clear-all-btn {
         border: 0;
       }
+    }
+  }
+
+  .card-wrapper {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    column-gap: 34px;
+    row-gap: 34px;
+    max-width: fit-content;
+    margin: auto;
+  }
+
+  @media (min-width: 700px) {
+    .card-wrapper {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1300px) {
+    .profile-card {
+      max-width: 100%;
+    }
+    .card-wrapper,
+    .title {
+      max-width: 1440px;
+      margin: auto;
+    }
+
+    .card-wrapper {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 }
