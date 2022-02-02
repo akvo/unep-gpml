@@ -156,7 +156,7 @@ const Maps = ({
   const [content, setContent] = useState("");
 
   const [position, setPosition] = useState({
-    coordinates: [21.30462749563163, 14.25593529250931],
+    coordinates: [23.480198401621458, -27.30902770751132],
     zoom: 1.92,
   });
 

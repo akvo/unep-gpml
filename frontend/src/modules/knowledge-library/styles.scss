@@ -175,6 +175,10 @@
     border-radius: 30px;
   }
 
+  .resource-main-container {
+    background-color: rgb(37, 91, 135);
+  }
+
   .site-drawer-render-in-current-wrapper,
   .resource-main-container {
     height: 100%;
@@ -550,6 +554,7 @@
     background: $grey05;
     position: absolute;
     z-index: 3;
+    min-height: 1384px;
   }
 
   .resource-list-header {
@@ -745,5 +750,8 @@
         background-color: transparent;
       }
     }
+  }
+  .echarts-for-react.popular-topic-chart {
+    height: 1000% !important;
   }
 }
