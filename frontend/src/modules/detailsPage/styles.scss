@@ -19,7 +19,7 @@
         color: #fff;
         font-size: 30px;
         font-weight: 700;
-        line-height: 25px;
+        line-height: 30px;
         text-transform: capitalize;
       }
       img {
@@ -63,9 +63,13 @@
       min-height: 500px;
       height: 100%;
       padding: 2px;
+      position: relative;
+      padding-top: 100%;
       img {
         height: 100%;
-        object-fit: cover;
+        object-fit: fill;
+        position: absolute;
+        top: 0;
       }
     }
     .sticky-panel {
@@ -355,6 +359,71 @@
         }
         .ant-list-item-meta-title {
           margin-bottom: 0px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  #details {
+    .section-header {
+      padding: 10px 0px;
+      .header-wrapper {
+        h4 {
+          font-size: 18px;
+          line-height: 22px;
+        }
+        img {
+          width: 30px;
+        }
+      }
+    }
+    .section-banner {
+      .short-image {
+        min-height: 380px;
+        img {
+          height: 100%;
+          object-fit: fill;
+          position: absolute;
+          top: 0;
+        }
+      }
+
+      .sticky-panel {
+        .sticky-panel-item {
+          span {
+            font-size: 24px;
+          }
+          h2 {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+    .card-wrapper {
+      .ant-card {
+        .ant-card-body {
+          p {
+            font-size: 14px;
+          }
+        }
+        .ant-card-head {
+          .ant-card-head-title {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+
+    .section-info {
+      .tab-wrapper {
+        ul {
+          li {
+            a {
+              font-size: 16px;
+            }
+          }
         }
       }
     }

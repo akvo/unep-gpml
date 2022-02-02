@@ -385,6 +385,7 @@ const FlexibleForm = withRouter(
 
       if (data.hasOwnProperty("firstPublicationDate")) {
         data.firstPublicationDate = data.firstPublicationDate;
+        data.latestAmendmentDate = "Ongoing";
       }
 
       if (data.hasOwnProperty("latestAmendmentDate")) {

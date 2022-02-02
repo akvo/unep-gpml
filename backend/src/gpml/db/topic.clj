@@ -87,6 +87,16 @@
        geo.geo_coverage_country_groups,
        geo.geo_coverage_countries")
 
+(def ^:const ^:private policy-topic-data-select-clause
+  "SELECT
+       e.abstract AS summary,
+       e.*,
+       geo.geo_coverage_values,
+       geo.geo_coverage_country_groups,
+       geo.geo_coverage_countries,
+       lang.languages,
+       tag.tags")
+
 (def ^:const ^:private stakeholder-topic-data-select-clause
   "SELECT
        e.id,
@@ -361,6 +371,10 @@
                            "organisation" [organisation-topic-data-select-clause
                                            from-clause organisation-topic-data-geo-coverage-values-query
                                            order-by-clause]
+
+                           "policy" [policy-topic-data-select-clause
+                                     from-clause lang-query tags-query
+                                     geo-coverage-values-query order-by-clause]
 
                            [select-clause from-clause lang-query tags-query
                             geo-coverage-values-query order-by-clause])]
