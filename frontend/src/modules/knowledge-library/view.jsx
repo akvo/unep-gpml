@@ -367,10 +367,21 @@ const KnowledgeLibrary = ({
                   md={9}
                   sm={12}
                   xs={24}
+                  style={
+                    view === "map"
+                      ? {
+                          backgroundColor: "rgba(237, 242, 247, 0.3)",
+                        }
+                      : {
+                          backgroundColor: "rgba(237, 242, 247, 1)",
+                          position: "unset",
+                        }
+                  }
                   className="resource-list-container"
                 >
                   {/* Resource List */}
                   <ResourceList
+                    view={view}
                     filters={filters}
                     setListVisible={setListVisible}
                     countData={countData}

@@ -1,9 +1,8 @@
 @import "../../vars.scss";
 
 .map-main-wrapper {
-  min-height: 1384px;
   max-width: 100%;
-  margin-left: auto;
+  height: unset !important;
 
   @media (min-width: 576px) {
     max-width: 100% !important;
