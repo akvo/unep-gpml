@@ -551,7 +551,7 @@
   }
 
   .resource-list-container {
-    background: $grey05;
+    background-color: rgba(237, 242, 247, 0.3);
     position: absolute;
     z-index: 3;
     min-height: 1384px;
@@ -559,7 +559,7 @@
   }
 
   .resource-list-header {
-    background: #fff;
+    background-color: rgba(255, 255, 255, 0.3);
     justify-content: unset;
 
     & span {
@@ -580,6 +580,7 @@
     .ant-page-header-heading-title,
     .sort-btn {
       color: $blue06;
+      background-color: transparent;
     }
 
     .ant-page-header-heading-title {
@@ -637,6 +638,7 @@
         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
         text-align: left;
         color: $black;
+        background-color: rgba(255, 255, 255, 0.3);
         .topic {
           color: $green05;
           font-size: 12px;
