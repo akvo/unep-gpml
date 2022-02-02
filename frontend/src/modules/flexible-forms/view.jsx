@@ -539,6 +539,64 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
         event.selectedMainContentType = "initiative";
       });
     }
+    if (mainType === "initiative") {
+      if (e === "Working with people") {
+        initialFormData.update((e) => {
+          e.data = {
+            ...e.data,
+            S5: {
+              ...e.data.S5,
+              S5_G1: {
+                ...e.data.S4.S5_G1,
+                S5_G1_4: ["4-1"],
+              },
+            },
+          };
+        });
+      }
+      if (e === "Legislation, standards, rules") {
+        initialFormData.update((e) => {
+          e.data = {
+            ...e.data,
+            S5: {
+              ...e.data.S5,
+              S5_G1: {
+                ...e.data.S4.S5_G1,
+                S5_G1_4: ["4-0"],
+              },
+            },
+          };
+        });
+      }
+      if (e === "Technology and Processes") {
+        initialFormData.update((e) => {
+          e.data = {
+            ...e.data,
+            S5: {
+              ...e.data.S5,
+              S5_G1: {
+                ...e.data.S4.S5_G1,
+                S5_G1_4: ["4-2"],
+              },
+            },
+          };
+        });
+      }
+      if (e === "Monitoring and Analysis") {
+        initialFormData.update((e) => {
+          e.data = {
+            ...e.data,
+            S5: {
+              ...e.data.S5,
+              S5_G1: {
+                ...e.data.S4.S5_G1,
+                S5_G1_4: ["4-3"],
+              },
+            },
+          };
+        });
+      }
+    }
   };
 
   return (
