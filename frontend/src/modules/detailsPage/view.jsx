@@ -483,6 +483,9 @@ const renderItemValues = (
                     type === "object") &&
                   (data[value].name || data[value])}
                 {value === key &&
+                  type === "date" &&
+                  moment(data[key]).format("DD MMM YYYY")}
+                {value === key &&
                   type === "array" &&
                   data[key].map((x) => x.name).join(", ")}
                 {value === key &&
