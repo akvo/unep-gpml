@@ -140,6 +140,7 @@ const StakeholderDetail = () => {
               <div className="description-container">
                 <div className="description-wrapper">
                   <CardComponent
+                    title={"Bio"}
                     style={{
                       height: "100%",
                       boxShadow: "none",
@@ -161,7 +162,12 @@ const StakeholderDetail = () => {
                     <div className="exta-info">
                       <Row gutter={[16, 16]}>
                         <Col xs={12} lg={12}>
-                          <CardComponent title={"Seeking"}>
+                          <CardComponent>
+                            <div class="ant-card-head-wrapper">
+                              <div class="ant-card-head-title">
+                                Seeking <span>(9 Keywords)</span>
+                              </div>
+                            </div>
                             <List>
                               <List.Item>
                                 <Typography.Text>
@@ -196,18 +202,22 @@ const StakeholderDetail = () => {
                           </CardComponent>
                         </Col>
                         <Col xs={12} lg={12}>
-                          <CardComponent title={"Offering"}>
-                            <div className="litter-button">
-                              <p>
-                                <span>
-                                  <img src={StakeholderRating} />
-                                </span>
-                                Expert: Marine Litter
-                              </p>
+                          <CardComponent>
+                            <div class="ant-card-head-wrapper">
+                              <div class="ant-card-head-title">
+                                Offering <span>(2 Keywords)</span>
+                              </div>
                             </div>
-                            <div className="knowledge-button">
-                              <p>Knowledge Management</p>
-                            </div>
+                            <List>
+                              <List.Item>
+                                <Typography.Text>Marine Litter</Typography.Text>
+                              </List.Item>
+                              <List.Item>
+                                <Typography.Text>
+                                  Knowledge Management
+                                </Typography.Text>
+                              </List.Item>
+                            </List>
                           </CardComponent>
                         </Col>
                       </Row>
@@ -220,7 +230,7 @@ const StakeholderDetail = () => {
           </Row>
           <div>
             <CardComponent
-              title={"Own resources"}
+              title={"Owned resources"}
               style={{
                 height: "100%",
                 boxShadow: "none",

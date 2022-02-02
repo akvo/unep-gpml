@@ -128,6 +128,11 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 20px;
+        & > .card-wrapper {
+          .ant-card-head-title {
+            padding-left: 10px;
+          }
+        }
         .card-wrapper {
           margin-bottom: 0px;
         }
@@ -183,13 +188,48 @@
           }
           .ant-list {
             padding: 0 10px;
+            .ant-spin-container {
+              margin-top: 10px;
+            }
             .ant-list-item {
               border-bottom: none;
-              padding-bottom: 0px;
+              background: #d3dee7;
+              border-radius: 23px 5px 5px 23px;
+              color: #255b87;
+              display: inline-block;
+              padding: 5px 20px 5px 30px;
+              position: relative;
+              margin: 0 10px 10px 0;
+              text-decoration: none;
+              &::before {
+                background: #fff;
+                border-radius: 10px;
+                box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+                content: "";
+                position: absolute;
+                height: 12px;
+                width: 12px;
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+              }
             }
           }
           .card-wrapper {
             height: 100%;
+            .ant-card-head-wrapper {
+              .ant-card-head-title {
+                padding-bottom: 0px;
+                color: #09689a;
+                font-size: 18px;
+                font-weight: bold;
+                span {
+                  font-size: 10px;
+                  font-weight: normal;
+                  color: #1ca585;
+                }
+              }
+            }
           }
           .litter-button {
             border: 1px solid #ffb800;
