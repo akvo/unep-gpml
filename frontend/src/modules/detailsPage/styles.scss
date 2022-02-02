@@ -19,7 +19,7 @@
         color: #fff;
         font-size: 30px;
         font-weight: 700;
-        line-height: 25px;
+        line-height: 30px;
         text-transform: capitalize;
       }
       img {
@@ -355,6 +355,19 @@
         }
         .ant-list-item-meta-title {
           margin-bottom: 0px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  #details {
+    .section-header {
+      .header-wrapper {
+        h4 {
+          font-size: 18px;
+          line-height: 22px;
         }
       }
     }
