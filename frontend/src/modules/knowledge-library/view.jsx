@@ -206,7 +206,6 @@ const KnowledgeLibrary = ({
   }, [filterMenu]); // eslint-disable-line
 
   const updateQuery = (param, value) => {
-    console.log(param, value);
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
       top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
@@ -254,6 +253,12 @@ const KnowledgeLibrary = ({
           (x) => x == value
         );
         return representativeGroups;
+      }
+      if (key === "startDate") {
+        return `Start date ${query.startDate}`;
+      }
+      if (key === "endDate") {
+        return `End date ${query.endDate}`;
       }
     };
     return Object.keys(query).map((key, index) => {
