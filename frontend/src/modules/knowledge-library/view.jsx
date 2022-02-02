@@ -425,6 +425,8 @@ const Search = withRouter(({ history, updateQuery }) => {
     if (src) {
       history.push(`?q=${src.trim()}`);
       updateQuery("q", src.trim());
+    } else {
+      updateQuery("q", "");
     }
   };
 
