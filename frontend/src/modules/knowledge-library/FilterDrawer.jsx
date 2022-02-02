@@ -50,7 +50,7 @@ const FilterDrawer = ({
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     languages: s.languages,
-    representativeGroup: s.representativeGroup,
+    representativeGroup: s.sectorOptions,
   }));
   const { isAuthenticated } = useAuth0();
 
@@ -214,33 +214,6 @@ const FilterDrawer = ({
                   My Bookmarks
                 </Checkbox>
               </Space>
-              {/* <Select
-                className="collection-selector"
-                disabled={
-                  !isEmpty(query?.favorites)
-                    ? query.favorites[0] === "true"
-                      ? false
-                      : true
-                    : true
-                }
-                showSearch
-                allowClear
-                mode="multiple"
-                placeholder="My collections"
-                options={[]}
-                filterOption={(input, option) =>
-                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-                value={[]}
-                onChange={(val) => updateQuery("collections", val)}
-                onDeselect={(val) =>
-                  updateQuery(
-                    "collections",
-                    query?.collections?.filter((x) => x != val)
-                  )
-                }
-                virtual={false}
-              /> */}
             </Col>
           )}
           {/* Location */}
@@ -303,67 +276,18 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-          {/* Sectors */}
-          {/* <MultipleSelectFilter
-            title="Sectors"
-            options={
-              isLoaded()
-                ? sectorOptions?.map((x) => ({ value: x, label: x }))
-                : []
-            }
-            value={query?.sector || []}
-            flag="sector"
-            query={query}
-            updateQuery={updateQuery}
-          /> */}
-          {/* Goals */}
-          {/* <MultipleSelectFilter
-            title="Goals"
-            options={[]}
-            value={query?.goal || []}
-            flag="goal"
-            query={query}
-            updateQuery={updateQuery}
-          /> */}
-          {/* Representative group */}
           <MultipleSelectFilter
             title="Representative group"
-            options={representativeOpts}
-            value={
-              query?.representativeGroup?.map((x) =>
-                Number(x) ? parseInt(x) : x
-              ) || []
+            options={
+              isLoaded()
+                ? representativeGroup?.map((x) => ({ value: x, label: x }))
+                : []
             }
+            value={query?.representativeGroup || []}
             flag="representativeGroup"
             query={query}
             updateQuery={updateQuery}
           />
-
-          {/* Language */}
-          {/* <MultipleSelectFilter
-            title="Language"
-            options={
-              isLoaded()
-                ? values(languages).map((x) => ({
-                    value: x.name,
-                    label: `${x.name} (${x.native})`,
-                  }))
-                : []
-            }
-            value={query?.language || []}
-            flag="language"
-            query={query}
-            updateQuery={updateQuery}
-          /> */}
-          {/* Rating */}
-          {/* <MultipleSelectFilter
-            title="Rating"
-            options={[]}
-            value={query?.rating || []}
-            flag="rating"
-            query={query}
-            updateQuery={updateQuery}
-          /> */}
           {/* Date Filter */}
           <Col span={24} className="date-picker-container">
             <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
