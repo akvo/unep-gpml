@@ -226,7 +226,7 @@ const Maps = ({
             icon={<ZoomOutOutlined />}
             onClick={() => {
               position.zoom > 1 &&
-                setPosition({ coordinates: [0, 0], zoom: position.zoom - 0.5 });
+                setPosition({ ...position, zoom: position.zoom - 0.5 });
             }}
             disabled={position.zoom <= 1}
           />
