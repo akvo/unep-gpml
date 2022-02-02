@@ -795,7 +795,8 @@
         "topics": {
           "ui:placeholder": "Choose topics",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
         }
       }
     }
