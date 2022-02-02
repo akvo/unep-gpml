@@ -21,6 +21,7 @@
   position: relative;
   height: 100%;
   overflow: hidden;
+  background-color: #eaf6fd;
 
   .landing-container.map-container > div {
     height: unset !important;
@@ -31,7 +32,7 @@
     position: relative;
     padding-top: 0;
     padding-bottom: 0;
-    background-color: #eaf6fd !important;
+
     border-bottom: none !important;
     z-index: 1;
 
@@ -280,7 +281,7 @@
 
   .legends {
     position: absolute;
-    bottom: 20%;
+    bottom: 0;
     z-index: 999;
     left: 20px;
     border: 2px solid #daeaf1;
