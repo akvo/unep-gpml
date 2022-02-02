@@ -197,7 +197,28 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     editId,
     params,
     isLoaded,
+    profile,
   ]);
+
+  useEffect(() => {
+    if (isLoaded()) {
+      initialFormData.update((e) => {
+        e.data = {
+          ...e.data,
+          S4: {
+            ...e.data.S4,
+            S4_G5: {
+              ...e.data.S4.S4_G5,
+              individual: [
+                { role: "owner", stakeholder: profile.id },
+                ...e.data.S4.S4_G5.individual,
+              ],
+            },
+          },
+        };
+      });
+    }
+  }, [initialFormData, isLoaded, profile]);
 
   // Todo ask to login if not login
 
@@ -228,6 +249,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
               shape="circle"
               icon={
                 totalRequiredFields === 0 &&
+                data?.S4?.S4_G5.individual.length > 0 &&
                 data?.S4?.S4_G5.individual[0].hasOwnProperty("role") ? (
                   <CheckOutlined />
                 ) : (
@@ -307,7 +329,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                 size="small"
                 shape="circle"
                 icon={
-                  data?.[section]?.S4_G5.individual &&
+                  data?.[section]?.S4_G5.individual.length > 0 &&
                   data?.[section]?.S4_G5.individual[0].hasOwnProperty(
                     "role"
                   ) ? (

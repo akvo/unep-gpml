@@ -21,7 +21,7 @@ const initialData = {
   S4: {
     steps: 0,
     required: {},
-    S4_G5: { entity: [{}], individual: [{}] },
+    S4_G5: { entity: [{}], individual: [] },
   },
   S5: {
     steps: 0,
