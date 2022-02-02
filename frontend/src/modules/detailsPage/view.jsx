@@ -308,6 +308,7 @@ const renderBannerSection = (
             <img
               src={data.image ? data.image : imageNotFound}
               className="resource-image"
+              style={{ objectFit: data.image ? "fill" : "cover" }}
             />
           </div>
         </Col>
