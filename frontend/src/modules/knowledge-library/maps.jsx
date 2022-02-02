@@ -180,8 +180,6 @@ const Maps = ({
     }
   };
 
-  // window.addEventListener("resize", handleResize);
-
   useEffect(() => {
     handleResize();
   }, [data]);
@@ -209,10 +207,7 @@ const Maps = ({
     <div
       style={{
         overflow: "hidden",
-        // position: "relative",
         width: "auto",
-        // marginRight: `${mapPos.right}px`,
-        // marginLeft: `${mapPos.left}px`,
         height: `${mapPos.height}px`,
       }}
     >
@@ -253,7 +248,7 @@ const Maps = ({
             icon={<FullscreenOutlined />}
             onClick={() => {
               setPosition({
-                coordinates: [21.30462749563163, 14.25593529250931],
+                coordinates: [23.480198401621458, -27.30902770751132],
                 zoom: 1.92,
               });
             }}
@@ -263,9 +258,6 @@ const Maps = ({
       <ComposableMap
         data-tip=""
         projection="geoEquirectangular"
-        // projectionConfig={{ scale: scale }}
-        // width={mapPos.width}
-        // height={mapPos.height}
         style={{ height: "auto" }}
       >
         <ZoomableGroup
