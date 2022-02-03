@@ -319,7 +319,10 @@ const Maps = ({
                   );
                 }
                 const selectionCondition = () => {
-                  if (typeof isFilteredCountry === "string" || typeof isFilteredCountry === "number") {
+                  if (
+                    typeof isFilteredCountry === "string" ||
+                    typeof isFilteredCountry === "number"
+                  ) {
                     return isFilteredCountry == geo.properties.M49Code;
                   } else {
                     if (isFilteredCountry.length === 1) {
