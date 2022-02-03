@@ -16,6 +16,26 @@ import { suggestedProfiles } from "./suggested-profile";
 let tmid;
 
 const StakeholderOverview = ({ history }) => {
+  const {
+    profile,
+    countries,
+    tags,
+    transnationalOptions,
+    sectorOptions,
+    geoCoverageTypeOptions,
+    representativeGroup,
+    languages,
+  } = UIStore.useState((s) => ({
+    profile: s.profile,
+    countries: s.countries,
+    tags: s.tags,
+    transnationalOptions: s.transnationalOptions,
+    sectorOptions: s.sectorOptions,
+    geoCoverageTypeOptions: s.sectorOptions,
+    languages: s.languages,
+    representativeGroup: s.sectorOptions,
+  }));
+
   const [filterVisible, setFilterVisible] = useState(false);
   const query = useQuery();
   const { isLoading } = useAuth0();

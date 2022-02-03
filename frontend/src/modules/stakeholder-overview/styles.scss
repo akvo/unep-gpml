@@ -564,7 +564,6 @@
       }
 
       .ant-select-selection-placeholder,
-      .date-picker-container .ant-picker ::placeholder,
       .country-filter-tab .ant-select-selection-placeholder,
       .multiselection-filter .ant-select-selection-placeholder {
         font-size: 16px;
@@ -572,15 +571,12 @@
         padding-left: calc(44px - 9px);
       }
 
-      .date-picker-container .ant-picker ::placeholder,
       .multiselection-filter .ant-select-selection-placeholder {
         font-style: italic;
         font-weight: 700;
       }
 
-      .ant-select-selector,
-      .date-picker-container .ant-picker {
-        height: 34px;
+      .ant-select-selector {
         background: $grey05;
         border: 0;
         border-radius: 5px;

@@ -55,9 +55,24 @@ const FilterDrawer = ({
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     languages: s.languages,
-    representativeGroup: s.representativeGroup,
+    representativeGroup: s.sectorOptions,
   }));
   const { isAuthenticated } = useAuth0();
+  /* {
+tags: {},
+
+
+  entityRoleOptions: entityRole,
+  individualRoleOptions: individualRole,
+  regionOptions: [],
+  meaOptions: [],
+  transnationalOptions: [],
+  organisationType: sectorOptions,
+
+  representativeGroup: representativeGroup,
+  mainContentType: mainContentType,
+ }*/
+  console.log(geoCoverageTypeOptions);
 
   const isLoaded = () =>
     !isEmpty(tags) &&
@@ -263,19 +278,21 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
+
           {/* Location */}
           <MultipleSelectFilter
             title="Location"
             options={
               isLoaded()
-                ? sectorOptions?.map((x) => ({ value: x, label: x }))
+                ? countries?.map((x) => ({ value: x.name, label: x.name }))
                 : []
             }
-            value={query?.sector || []}
+            value={query?.country || []}
             flag="location"
             query={query}
             updateQuery={updateQuery}
           />
+
           {/* Goals */}
           <MultipleSelectFilter
             title="Goals"
@@ -285,57 +302,55 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
+
           {/*Expertise to offer*/}
           <MultipleSelectFilter
             title="What expertises are they offering?"
-            options={representativeOpts}
-            value={
-              query?.representativeGroup?.map((x) =>
-                Number(x) ? parseInt(x) : x
-              ) || []
-            }
+            options={[]}
+            value={""}
             flag="expertiseToOffer"
             query={query}
             updateQuery={updateQuery}
           />
+
           {/* Expertise they seek */}
           <MultipleSelectFilter
             title="What expertises are they seeking?"
+            options={[]}
+            value={""}
+            flag="exertiseTheySeek"
+            query={query}
+            updateQuery={updateQuery}
+          />
+
+          {/* Representative group */}
+          <MultipleSelectFilter
+            title="Representative group"
+            options={
+              isLoaded()
+                ? representativeGroup?.map((x) => ({ value: x, label: x }))
+                : []
+            }
+            value={query?.representativeGroup || []}
+            flag="representativeGroup"
+            query={query}
+            updateQuery={updateQuery}
+          />
+
+          {/*Geo-coverage*/}
+          <MultipleSelectFilter
+            title="Geo-coverage"
             options={
               isLoaded()
                 ? geoCoverageTypeOptions?.map((x) => ({ value: x, label: x }))
                 : []
             }
             value={query?.geoCoverage || []}
-            flag="exertiseTheySeek"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          {/* Representative group */}
-          <MultipleSelectFilter
-            title="Representative group"
-            options={
-              isLoaded()
-                ? values(languages).map((x) => ({
-                    value: x.name,
-                    label: `${x.name} (${x.native})`,
-                  }))
-                : []
-            }
-            value={query?.language || []}
-            flag="representativeGroup"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          {/*Geo-coverage*/}
-          <MultipleSelectFilter
-            title="Geo-coverage"
-            options={[]}
-            value={query?.entity || []}
             flag="geoCoverage"
             query={query}
             updateQuery={updateQuery}
           />
+
           <Col className="drawer-button-wrapper">
             <Button className="show-stakeholder-btn">
               Show stakeholders (87)
@@ -366,7 +381,7 @@ const MultipleSelectFilter = ({
             className="clear-selection"
             closable
             onClose={() => updateQuery(flag, [])}
-            onClick={() => updateQuery("entity", [])}
+            onClick={() => updateQuery(flag, [])}
           >
             Clear Selection
           </Tag>
@@ -393,52 +408,6 @@ const MultipleSelectFilter = ({
             )
           }
           virtual={false}
-        />
-      </div>
-    </Col>
-  );
-};
-
-const DatePickerFilter = ({
-  title,
-  value,
-  query,
-  flag,
-  updateQuery,
-  span = 24,
-  startDate = null,
-}) => {
-  return (
-    <Col span={span}>
-      <Space align="middle">
-        <div className="filter-title multiple-filter-title">{title}</div>
-        {!isEmpty(query?.[flag]) ? (
-          <Tag
-            className="clear-selection"
-            closable
-            onClose={() => updateQuery(flag, [])}
-            onClick={() => updateQuery("entity", [])}
-          >
-            Clear Selection
-          </Tag>
-        ) : (
-          ""
-        )}
-      </Space>
-      <div>
-        <DatePicker
-          placeholder="dd.mm.yyyy"
-          value={!isEmpty(value) ? moment(value[0]) : ""}
-          onChange={(val) =>
-            updateQuery(flag, val ? moment(val).format("YYYY-MM-DD") : [])
-          }
-          disabledDate={(current) => {
-            // Can not select days past start date
-            if (startDate) {
-              return current < startDate;
-            }
-            return null;
-          }}
         />
       </div>
     </Col>
