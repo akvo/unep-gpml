@@ -149,6 +149,7 @@ const Maps = ({
   multiCountries,
   listVisible,
   isDisplayedList,
+  isFilteredCountry,
 }) => {
   const mapMaxZoom = 10;
   const [selected, setSelected] = useState(null);
@@ -159,9 +160,6 @@ const Maps = ({
     coordinates: [19.61207312038216, -28.27144841349558],
     zoom: 0.91,
   });
-
-  console.log(position.zoom);
-  console.log(position.coordinates);
 
   const [mapPos, setMapPos] = useState({
     left: 0,
@@ -320,6 +318,21 @@ const Maps = ({
                     />
                   );
                 }
+                const selectionCondition = () => {
+                  if (typeof isFilteredCountry === "string" || typeof isFilteredCountry === "number") {
+                    return isFilteredCountry == geo.properties.M49Code;
+                  } else {
+                    if (isFilteredCountry.length === 1) {
+                      return isFilteredCountry == geo.properties.M49Code;
+                    }
+                    if (isFilteredCountry.length > 1) {
+                      return isFilteredCountry.includes(
+                        Number(geo.properties.M49Code)
+                      );
+                    }
+                  }
+                };
+
                 return (
                   <Fragment key={`${geo.rsmKey}-geo-fragment`}>
                     {pattern}
@@ -341,6 +354,10 @@ const Maps = ({
                           ? "#84b4cc"
                           : selected
                           ? geo.properties.MAP_COLOR === selected
+                            ? "#84b4cc"
+                            : fillColor(curr ? curr[topic] : 0)
+                          : fillColor(curr ? curr[topic] : 0)
+                          ? selectionCondition()
                             ? "#84b4cc"
                             : fillColor(curr ? curr[topic] : 0)
                           : fillColor(curr ? curr[topic] : 0)

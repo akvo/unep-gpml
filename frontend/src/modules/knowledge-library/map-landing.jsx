@@ -29,6 +29,7 @@ const MapLanding = ({
   listVisible,
   contentHeight,
   isDisplayedList,
+  isFilteredCountry,
 }) => {
   const {
     profile,
@@ -186,6 +187,7 @@ const MapLanding = ({
           </div>
         )}
         <Maps
+          isFilteredCountry={isFilteredCountry}
           isDisplayedList={isDisplayedList}
           listVisible={listVisible}
           data={landing?.map || []}

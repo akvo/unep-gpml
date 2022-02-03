@@ -669,8 +669,13 @@ const Search = withRouter(({ history }) => {
   const [search, setSearch] = useState("");
   const [isShownForm, setIsShownForm] = useState(false);
   const handleSearch = (src) => {
+    const path = history.location.pathname;
     if (src) {
-      history.push(`/browse/?q=${src.trim()}`);
+      if (path.includes("/knowledge-library")) {
+        history.push(`?q=${src.trim()}`);
+      } else {
+        history.push(`/browse/?q=${src.trim()}`);
+      }
     }
     setIsShownForm(!isShownForm);
   };
@@ -699,7 +704,7 @@ const Search = withRouter(({ history }) => {
             />
           }
           onPressEnter={(e) => handleSearch(e.target.value)}
-          onChange={(e) => setSearch(e.target.value)}
+          onSubmit={(e) => setSearch(e.target.value)}
         />
       )}
     </div>

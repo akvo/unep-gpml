@@ -428,6 +428,7 @@ const KnowledgeLibrary = ({
                       listVisible,
                       contentHeight,
                     }}
+                    isFilteredCountry={filterCountries}
                     isDisplayedList={listVisible}
                   />
                 ) : (
