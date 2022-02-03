@@ -19,22 +19,11 @@ let tmid;
 
 const StakeholderOverview = ({ history }) => {
   const {
-    profile,
     countries,
-    tags,
-    transnationalOptions,
-    sectorOptions,
-    geoCoverageTypeOptions,
+
     representativeGroup,
-    languages,
   } = UIStore.useState((s) => ({
-    profile: s.profile,
     countries: s.countries,
-    tags: s.tags,
-    transnationalOptions: s.transnationalOptions,
-    sectorOptions: s.sectorOptions,
-    geoCoverageTypeOptions: s.sectorOptions,
-    languages: s.languages,
     representativeGroup: s.sectorOptions,
   }));
 
@@ -46,7 +35,7 @@ const StakeholderOverview = ({ history }) => {
   const [test, setTest] = useState([]);
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
-  const pageSize = 10;
+  const pageSize = 12;
 
   const { entityRoleOptions, stakeholders } = UIStore.useState((s) => ({
     entityRoleOptions: s.entityRoleOptions,
@@ -82,8 +71,6 @@ const StakeholderOverview = ({ history }) => {
   };
 
   const getResults = () => {
-    // NOTE: The url needs to be window.location.search because of how
-    // of how `history` and `location` are interacting!
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
     const url = `stakeholder`;
@@ -91,7 +78,7 @@ const StakeholderOverview = ({ history }) => {
     api
       .get(url)
       .then((resp) => {
-        setTest(resp?.data.stakeholders);
+        setTest(resp?.data);
 
         setLoading(false);
       })
@@ -100,6 +87,8 @@ const StakeholderOverview = ({ history }) => {
         redirectError(err, history);
       });
   };
+
+  console.log(test);
 
   useEffect(() => {
     setLoading(true);
@@ -212,14 +201,14 @@ const StakeholderOverview = ({ history }) => {
             <h3 className="title text-white ui container">
               Suggested profiles
             </h3>
-            <div class="card-wrapper ui container">
+            <div className="card-wrapper ui container">
               {suggestedProfiles.map((profile) => (
                 <ProfileCard key={profile.id} profile={profile} />
               ))}
             </div>
           </Col>
           <Col className="all-profiles">
-            <div class="card-wrapper ui container">
+            <div className="card-wrapper ui container">
               {results.map((profile) => (
                 <ProfileCard key={profile.id} profile={profile} />
               ))}

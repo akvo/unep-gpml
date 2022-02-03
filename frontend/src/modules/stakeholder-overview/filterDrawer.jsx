@@ -14,8 +14,6 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import moment from "moment";
-import api from "../../utils/api";
 import { UIStore } from "../../store";
 import { entityName } from "../../utils/misc";
 import humps from "humps";
@@ -33,7 +31,6 @@ import { ReactComponent as UnionIcon } from "../../images/stakeholder-overview/u
 const FilterDrawer = ({
   filterVisible,
   setFilterVisible,
-  countData,
   entities,
   query,
   updateQuery,
@@ -41,45 +38,26 @@ const FilterDrawer = ({
   const {
     profile,
     countries,
-    tags,
     transnationalOptions,
-    sectorOptions,
     geoCoverageTypeOptions,
-    languages,
     representativeGroup,
+    mainContentType,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
-    tags: s.tags,
     transnationalOptions: s.transnationalOptions,
-    sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    languages: s.languages,
+    mainContentType: s.mainContentType,
     representativeGroup: s.sectorOptions,
   }));
+
   const { isAuthenticated } = useAuth0();
-  /* {
-tags: {},
-
-
-  entityRoleOptions: entityRole,
-  individualRoleOptions: individualRole,
-  regionOptions: [],
-  meaOptions: [],
-  transnationalOptions: [],
-  organisationType: sectorOptions,
-
-  representativeGroup: representativeGroup,
-  mainContentType: mainContentType,
- }*/
 
   const isLoaded = () =>
-    !isEmpty(tags) &&
     !isEmpty(countries) &&
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
-    !isEmpty(representativeGroup) &&
-    !isEmpty(languages);
+    !isEmpty(representativeGroup);
 
   const handleChangeType = (flag, type) => {
     const val = query[flag];
@@ -93,34 +71,6 @@ tags: {},
     }
     updateQuery(flag, updateVal);
   };
-
-  // populate options for tags dropdown
-  const tagOpts = isLoaded()
-    ? flatten(values(tags))?.map((it) => ({ value: it.id, label: it.tag }))
-    : [];
-
-  // populate options for representative group options
-  const representativeOpts = isLoaded()
-    ? flatten(
-        representativeGroup?.map((x) => {
-          //  if child is an object
-          if (!Array.isArray(x?.childs) && x?.childs) {
-            return tags?.[x?.childs?.tags]?.map((it) => ({
-              value: it.id,
-              label: it.tag,
-            }));
-          }
-          // if child null
-          if (!x?.childs) {
-            return [{ value: x?.name, label: x?.name }];
-          }
-          return x?.childs?.map((x) => ({
-            value: x,
-            label: x,
-          }));
-        })
-      )
-    : [];
 
   const entityIcon = (name) => {
     if (name.toLowerCase() === "owner") {
@@ -153,7 +103,6 @@ tags: {},
       >
         {/* Filter content */}
         <Row type="flex" gutter={[0, 24]}>
-          {/* Resource type */}
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Network type</div>
@@ -172,10 +121,6 @@ tags: {},
             </Space>
 
             <Row type="flex" gutter={[10, 10]}>
-              {/* {topicTypes.map((type) => {
-                const topic = humps.decamelize(type); */}
-
-              {/* return ( */}
               <Col span={6}>
                 <Card
                   onClick={() => handleChangeType("entity", "")}
@@ -189,8 +134,7 @@ tags: {},
                   </Space>
                 </Card>
               </Col>
-              {/* );
-              })} */}
+
               <Col span={6}>
                 <Card
                   onClick={() => handleChangeType("entity", "")}
@@ -229,7 +173,6 @@ tags: {},
               <p className="specificity-title">For individuals</p>
               <Col span={6}>
                 <Card
-                  // onClick={() => handleChangeType("entity", topic)}
                   className={classNames("drawer-card", {
                     active: query?.entity?.includes(""),
                   })}
@@ -319,7 +262,7 @@ tags: {},
           <MultipleSelectFilter
             title="What expertises are they offering?"
             options={[]}
-            value={""}
+            value={[]}
             flag="expertiseToOffer"
             query={query}
             updateQuery={updateQuery}
@@ -329,7 +272,7 @@ tags: {},
           <MultipleSelectFilter
             title="What expertises are they seeking?"
             options={[]}
-            value={""}
+            value={[]}
             flag="exertiseTheySeek"
             query={query}
             updateQuery={updateQuery}
