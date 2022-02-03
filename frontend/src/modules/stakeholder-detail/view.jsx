@@ -200,42 +200,44 @@ const StakeholderDetail = ({
                   </List>
                 </div>
               </CardComponent>
-              <CardComponent title="Contact info">
-                <div className="list social-list">
-                  <List itemLayout="horizontal">
-                    {data?.linkedIn && (
-                      <List.Item className="location">
-                        <List.Item.Meta
-                          avatar={<LinkedinOutlined />}
-                          title={data?.linkedIn}
-                        />
-                      </List.Item>
-                    )}
-                    {data?.twitter && (
-                      <List.Item className="location">
-                        <List.Item.Meta
-                          avatar={<TwitterOutlined />}
-                          title={data?.twitter}
-                        />
-                      </List.Item>
-                    )}
-                    {/* <List.Item className="location">
+              {(data?.linkedIn || data?.twitter || data?.email) && (
+                <CardComponent title="Contact info">
+                  <div className="list social-list">
+                    <List itemLayout="horizontal">
+                      {data?.linkedIn && (
+                        <List.Item className="location">
+                          <List.Item.Meta
+                            avatar={<LinkedinOutlined />}
+                            title={data?.linkedIn}
+                          />
+                        </List.Item>
+                      )}
+                      {data?.twitter && (
+                        <List.Item className="location">
+                          <List.Item.Meta
+                            avatar={<TwitterOutlined />}
+                            title={data?.twitter}
+                          />
+                        </List.Item>
+                      )}
+                      {/* <List.Item className="location">
                       <List.Item.Meta
                         avatar={<FilePdfOutlined />}
                         title="Link to CV"
                       />
                     </List.Item> */}
-                    {data?.email && (
-                      <List.Item className="location">
-                        <List.Item.Meta
-                          avatar={<MailOutlined />}
-                          title={data?.email}
-                        />
-                      </List.Item>
-                    )}
-                  </List>
-                </div>
-              </CardComponent>
+                      {data?.email && (
+                        <List.Item className="location">
+                          <List.Item.Meta
+                            avatar={<MailOutlined />}
+                            title={data?.email}
+                          />
+                        </List.Item>
+                      )}
+                    </List>
+                  </div>
+                </CardComponent>
+              )}
             </Col>
             <Col xs={18} lg={18}>
               <div className="description-container">
