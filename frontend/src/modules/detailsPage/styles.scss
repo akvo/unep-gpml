@@ -200,7 +200,6 @@
             overflow: initial;
             img {
               object-fit: contain;
-              border-radius: 50%;
             }
           }
         }
@@ -233,6 +232,9 @@
       .ant-avatar-circle {
         width: 50px !important;
         height: 50px !important;
+        img {
+          border-radius: 50%;
+        }
       }
       .ant-list-item-meta-title {
         margin-bottom: 0px;
