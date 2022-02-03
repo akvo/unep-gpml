@@ -69,7 +69,13 @@
               :remarks remarks
               :created_by created_by
               :review_status "SUBMITTED"}
-        policy-id (->> data (db.policy/new-policy conn) :id)]
+        policy-id (->> data (db.policy/new-policy conn) :id)
+        individual_connections (conj individual_connections {:stakeholder created_by
+                                                             :role "owner"})
+        owners (distinct (remove nil? (flatten (conj owners
+                                                 (map #(when (= (:role %) "owner")
+                                                         (:stakeholder %))
+                                                   individual_connections)))))]
     (when (not-empty tags)
       (db.policy/add-policy-tags
         conn {:tags (map #(vector policy-id %) tags)}))
@@ -81,18 +87,16 @@
                                          :id)
                                     (:url %)) urls)]
         (db.policy/add-policy-language-urls conn {:urls lang-urls})))
-    (when (not-empty owners)
-      (doseq [stakeholder-id owners]
-        (h.auth/grant-topic-to-stakeholder! conn {:topic-id policy-id
-                                                  :topic-type "policy"
-                                                  :stakeholder-id stakeholder-id
-                                                  :roles ["owner"]})))
+    (doseq [stakeholder-id owners]
+      (h.auth/grant-topic-to-stakeholder! conn {:topic-id policy-id
+                                                :topic-type "policy"
+                                                :stakeholder-id stakeholder-id
+                                                :roles ["owner"]}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections policy-id)]
         (db.favorite/new-organisation-association conn association)))
-    (when (not-empty individual_connections)
-      (doseq [association (expand-individual-associations individual_connections policy-id)]
-        (db.favorite/new-association conn association)))
+    (doseq [association (expand-individual-associations individual_connections policy-id)]
+      (db.favorite/new-association conn association))
     (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 policy-id data)]
