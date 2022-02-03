@@ -55,14 +55,14 @@ const ProfileCard = ({ profile }) => {
               )}
             </li>
             <ul className="icons-list">
-              <li className="list-item">
-                <Badge />
-              </li>
               {profile.is_member && (
                 <li className="list-item">
                   <GPMLlogo />
                 </li>
               )}
+              <li className="list-item">
+                <Badge />
+              </li>
             </ul>
           </ul>
 
