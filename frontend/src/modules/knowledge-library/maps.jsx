@@ -49,7 +49,7 @@ const ToolTipContent = ({ data, geo }) => {
   );
 };
 
-const Legend = ({ data, setFilterColor, selected }) => {
+const Legend = ({ data, setFilterColor, selected, isDisplayedList }) => {
   data = Array.from(new Set(data.map((x) => Math.floor(x))));
   data = data.filter((x) => x !== 0);
   const range = data.map((x, i) => (
@@ -78,7 +78,14 @@ const Legend = ({ data, setFilterColor, selected }) => {
   ));
   if (data.length) {
     return (
-      <div className="legends">
+      <div
+        className="legends"
+        style={
+          isDisplayedList
+            ? { left: "calc(50% - calc(104px - 30px) )" }
+            : { left: "17px" }
+        }
+      >
         {[
           <div
             key={"legend-0"}
@@ -141,16 +148,18 @@ const Maps = ({
   country,
   multiCountries,
   listVisible,
+  isDisplayedList,
 }) => {
   const mapMaxZoom = 10;
   const [selected, setSelected] = useState(null);
   const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
+
   const [position, setPosition] = useState({
-    coordinates: [8.7832, 34.5085],
-    zoom: 3,
+    coordinates: [20.328981779556504, 18.565684316767914],
+    zoom: 1.92,
   });
-  const [scale, setScale] = useState(100);
+
   const [mapPos, setMapPos] = useState({
     left: 0,
     right: 0,
@@ -169,8 +178,6 @@ const Maps = ({
       });
     }
   };
-
-  // window.addEventListener("resize", handleResize);
 
   useEffect(() => {
     handleResize();
@@ -199,10 +206,7 @@ const Maps = ({
     <div
       style={{
         overflow: "hidden",
-        // position: "relative",
         width: "auto",
-        // marginRight: `${mapPos.right}px`,
-        // marginLeft: `${mapPos.left}px`,
         height: `${mapPos.height}px`,
       }}
     >
@@ -210,6 +214,7 @@ const Maps = ({
         data={colorScale.thresholds()}
         setFilterColor={setFilterColor}
         selected={filterColor}
+        isDisplayedList={isDisplayedList}
       />
       <div
         className="map-buttons"
@@ -241,7 +246,10 @@ const Maps = ({
             type="secondary"
             icon={<FullscreenOutlined />}
             onClick={() => {
-              setPosition({ coordinates: [0, 0], zoom: 1 });
+              setPosition({
+                coordinates: [20.328981779556504, 18.565684316767914],
+                zoom: 1.92,
+              });
             }}
           />
         </Tooltip>
@@ -249,9 +257,6 @@ const Maps = ({
       <ComposableMap
         data-tip=""
         projection="geoEquirectangular"
-        // projectionConfig={{ scale: scale }}
-        // width={mapPos.width}
-        // height={mapPos.height}
         style={{ height: "auto" }}
       >
         <ZoomableGroup

@@ -50,7 +50,7 @@ const FilterDrawer = ({
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     languages: s.languages,
-    representativeGroup: s.representativeGroup,
+    representativeGroup: s.sectorOptions,
   }));
   const { isAuthenticated } = useAuth0();
 
@@ -64,7 +64,9 @@ const FilterDrawer = ({
 
   const handleChangeResourceType = (flag, type) => {
     const val = query[flag];
+
     let updateVal = [];
+
     if (isEmpty(val)) {
       updateVal = [type];
     } else if (val.includes(type)) {
@@ -167,6 +169,7 @@ const FilterDrawer = ({
                 <Tag
                   className="clear-selection"
                   closable={true}
+                  onClick={() => updateQuery("topic", [])}
                   onClose={() => updateQuery("topic", [])}
                 >
                   Clear selection
@@ -211,33 +214,6 @@ const FilterDrawer = ({
                   My Bookmarks
                 </Checkbox>
               </Space>
-              <Select
-                className="collection-selector"
-                disabled={
-                  !isEmpty(query?.favorites)
-                    ? query.favorites[0] === "true"
-                      ? false
-                      : true
-                    : true
-                }
-                showSearch
-                allowClear
-                mode="multiple"
-                placeholder="My collections"
-                options={[]}
-                filterOption={(input, option) =>
-                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-                value={[]}
-                onChange={(val) => updateQuery("collections", val)}
-                onDeselect={(val) =>
-                  updateQuery(
-                    "collections",
-                    query?.collections?.filter((x) => x != val)
-                  )
-                }
-                virtual={false}
-              />
             </Col>
           )}
           {/* Location */}
@@ -248,9 +224,10 @@ const FilterDrawer = ({
                 <Tag
                   className="clear-selection"
                   closable
-                  onClose={() => {
+                  onClick={() => {
                     updateQuery("country", []);
                   }}
+                  onClose={() => updateQuery("country", [])}
                 >
                   Clear Country Selection
                 </Tag>
@@ -261,9 +238,10 @@ const FilterDrawer = ({
                 <Tag
                   className="clear-selection"
                   closable
-                  onClose={() => {
+                  onClick={() => {
                     updateQuery("transnational", []);
                   }}
+                  onClose={() => updateQuery("transnational", [])}
                 >
                   Clear Multi-Country Selection
                 </Tag>
@@ -298,85 +276,15 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-          {/* Sectors */}
-          <MultipleSelectFilter
-            title="Sectors"
-            options={
-              isLoaded()
-                ? sectorOptions?.map((x) => ({ value: x, label: x }))
-                : []
-            }
-            value={query?.sector || []}
-            flag="sector"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          {/* Goals */}
-          <MultipleSelectFilter
-            title="Goals"
-            options={[]}
-            value={query?.goal || []}
-            flag="goal"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          {/* Representative group */}
           <MultipleSelectFilter
             title="Representative group"
-            options={representativeOpts}
-            value={
-              query?.representativeGroup?.map((x) =>
-                Number(x) ? parseInt(x) : x
-              ) || []
+            options={
+              isLoaded()
+                ? representativeGroup?.map((x) => ({ value: x, label: x }))
+                : []
             }
+            value={query?.representativeGroup || []}
             flag="representativeGroup"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          {/* Geo-coverage */}
-          <MultipleSelectFilter
-            title="Geo-coverage"
-            options={
-              isLoaded()
-                ? geoCoverageTypeOptions?.map((x) => ({ value: x, label: x }))
-                : []
-            }
-            value={query?.geoCoverage || []}
-            flag="geoCoverage"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          {/* Language */}
-          <MultipleSelectFilter
-            title="Language"
-            options={
-              isLoaded()
-                ? values(languages).map((x) => ({
-                    value: x.name,
-                    label: `${x.name} (${x.native})`,
-                  }))
-                : []
-            }
-            value={query?.language || []}
-            flag="language"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          {/* Entities */}
-          <MultipleSelectFilter
-            title="Entities"
-            options={[]}
-            value={query?.entity || []}
-            flag="entity"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          {/* Rating */}
-          <MultipleSelectFilter
-            title="Rating"
-            options={[]}
-            value={query?.rating || []}
-            flag="rating"
             query={query}
             updateQuery={updateQuery}
           />
@@ -431,6 +339,7 @@ const MultipleSelectFilter = ({
           <Tag
             className="clear-selection"
             closable
+            onClick={() => updateQuery(flag, [])}
             onClose={() => updateQuery(flag, [])}
           >
             Clear Selection
@@ -481,6 +390,7 @@ const DatePickerFilter = ({
           <Tag
             className="clear-selection"
             closable
+            onClick={() => updateQuery(flag, [])}
             onClose={() => updateQuery(flag, [])}
           >
             Clear Selection

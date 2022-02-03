@@ -90,26 +90,11 @@ export const resourceTypeToTopicType = (type) =>
   resourceSubTypes.has(type) ? "resource" : type;
 
 export const relationsByTopicType = {
-  resource: ["owner", "reviewer", "user", "interested in", "other"],
-  technology: ["owner", "user", "reviewer", "interested in", "other"],
-  event: [
-    "resource person",
-    "organiser",
-    "participant",
-    "sponsor",
-    "host",
-    "interested in",
-    "other",
-  ],
-  project: [
-    "owner",
-    "implementor",
-    "reviewer",
-    "user",
-    "interested in",
-    "other",
-  ],
-  policy: ["regulator", "implementor", "reviewer", "interested in", "other"],
+  resource: ["interested in"],
+  technology: ["interested in"],
+  event: ["interested in"],
+  project: ["interested in"],
+  policy: ["interested in"],
   stakeholder: ["interested in", "other"],
   organisation: ["interested in", "other"],
 };

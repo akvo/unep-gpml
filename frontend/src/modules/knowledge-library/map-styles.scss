@@ -1,24 +1,47 @@
 @import "../../vars.scss";
 
+.map-main-wrapper {
+  max-width: 100%;
+  height: unset !important;
+
+  @media (min-width: 576px) {
+    max-width: 100% !important;
+  }
+
+  @media (min-width: 768px) {
+    max-width: 100% !important;
+  }
+
+  @media (min-width: 992px) {
+    max-width: 100% !important;
+  }
+}
+
 #map-landing {
   position: relative;
   height: 100%;
+  overflow: hidden;
+  background-color: #eaf6fd;
 
   .landing-container.map-container > div {
-    height: 100% !important;
+    height: unset !important;
   }
 
   .landing-container.map-container {
-    height: 100%;
+    display: flex;
     position: relative;
     padding-top: 0;
-    padding-bottom: 40px;
-    background-color: #eaf6fd !important;
+    padding-bottom: 0;
+
     border-bottom: none !important;
     z-index: 1;
 
     svg {
       height: 100% !important;
+    }
+
+    .rsm-svg {
+      width: 100vw;
     }
 
     h2.loading {
@@ -34,6 +57,8 @@
       z-index: 1;
       left: 0 !important;
       top: 0 !important;
+      background-color: #eaf6fd;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 
       .ant-select {
         width: 100%;
@@ -246,6 +271,7 @@
     position: absolute;
     z-index: 999;
     display: flex;
+    left: 44% !important;
 
     button {
       width: 35px;
@@ -255,7 +281,7 @@
 
   .legends {
     position: absolute;
-    bottom: 10px;
+    bottom: 0;
     z-index: 999;
     left: 20px;
     border: 2px solid #daeaf1;

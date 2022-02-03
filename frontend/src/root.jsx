@@ -565,6 +565,18 @@ const Root = () => {
             path="/stakeholder-overview"
           />
           <Route
+            path="/:type(stakeholder)/:id"
+            render={(props) => (
+              <StakeholderDetail
+                {...props}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                setFilterMenu={setFilterMenu}
+              />
+            )}
+          />
+          <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event)/:id"
             render={(props) => (
               <NewDetailsView
@@ -577,7 +589,7 @@ const Root = () => {
             )}
           />
           <Route
-            path="/:type(organisation|stakeholder)/:id"
+            path="/:type(organisation)/:id"
             render={(props) => (
               <DetailsView
                 {...props}

@@ -197,7 +197,28 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     editId,
     params,
     isLoaded,
+    profile,
   ]);
+
+  useEffect(() => {
+    if (isLoaded()) {
+      initialFormData.update((e) => {
+        e.data = {
+          ...e.data,
+          S4: {
+            ...e.data.S4,
+            S4_G5: {
+              ...e.data.S4.S4_G5,
+              individual: [
+                { role: "owner", stakeholder: profile.id },
+                ...e.data.S4.S4_G5.individual,
+              ],
+            },
+          },
+        };
+      });
+    }
+  }, [initialFormData, isLoaded, profile]);
 
   // Todo ask to login if not login
 
@@ -228,6 +249,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
               shape="circle"
               icon={
                 totalRequiredFields === 0 &&
+                data?.S4?.S4_G5.individual.length > 0 &&
                 data?.S4?.S4_G5.individual[0].hasOwnProperty("role") ? (
                   <CheckOutlined />
                 ) : (
@@ -307,7 +329,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                 size="small"
                 shape="circle"
                 icon={
-                  data?.[section]?.S4_G5.individual &&
+                  data?.[section]?.S4_G5.individual.length > 0 &&
                   data?.[section]?.S4_G5.individual[0].hasOwnProperty(
                     "role"
                   ) ? (
@@ -516,6 +538,64 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       UIStore.update((event) => {
         event.selectedMainContentType = "initiative";
       });
+    }
+    if (mainType === "initiative") {
+      if (e === "Working with people") {
+        initialFormData.update((e) => {
+          e.data = {
+            ...e.data,
+            S5: {
+              ...e.data.S5,
+              S5_G1: {
+                ...e.data.S4.S5_G1,
+                S5_G1_4: ["4-1"],
+              },
+            },
+          };
+        });
+      }
+      if (e === "Legislation, standards, rules") {
+        initialFormData.update((e) => {
+          e.data = {
+            ...e.data,
+            S5: {
+              ...e.data.S5,
+              S5_G1: {
+                ...e.data.S4.S5_G1,
+                S5_G1_4: ["4-0"],
+              },
+            },
+          };
+        });
+      }
+      if (e === "Technology and Processes") {
+        initialFormData.update((e) => {
+          e.data = {
+            ...e.data,
+            S5: {
+              ...e.data.S5,
+              S5_G1: {
+                ...e.data.S4.S5_G1,
+                S5_G1_4: ["4-2"],
+              },
+            },
+          };
+        });
+      }
+      if (e === "Monitoring and Analysis") {
+        initialFormData.update((e) => {
+          e.data = {
+            ...e.data,
+            S5: {
+              ...e.data.S5,
+              S5_G1: {
+                ...e.data.S4.S5_G1,
+                S5_G1_4: ["4-3"],
+              },
+            },
+          };
+        });
+      }
     }
   };
 

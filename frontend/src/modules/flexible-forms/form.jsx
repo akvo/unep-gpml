@@ -160,13 +160,20 @@ const FlexibleForm = withRouter(
       }
 
       if (data.geoCoverageType === "transnational") {
-        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
-          : [];
-        data.geoCoverageCountries = data.geoCoverageCountries
-          ? data.geoCoverageCountries.map((x) => parseInt(x))
-          : [];
-        delete data.geoCoverageValueTransnational;
+        if (
+          data.geoCoverageValueTransnational &&
+          data.geoCoverageValueTransnational.length > 0
+        ) {
+          data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            : [];
+          delete data.geoCoverageValueTransnational;
+        }
+        if (data.geoCoverageCountries && data.geoCoverageCountries.length > 0) {
+          data.geoCoverageCountries = data.geoCoverageCountries
+            ? data.geoCoverageCountries.map((x) => parseInt(x))
+            : [];
+        }
       }
 
       if (data.geoCoverageType === "national") {
@@ -187,7 +194,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.entity) {
-        data.entityConnections = data.entity;
+        data.entityConnections = data.entity[0].hasOwnProperty("row")
+          ? data.entity
+          : [];
         delete data.entity;
       }
       if (data?.individual) {
@@ -262,7 +271,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.qentity) {
-        data.entity_connections = data.qentity;
+        data.entity_connections = data.qentity[0].hasOwnProperty("row")
+          ? data.qentity
+          : [];
         delete data.qentity;
       }
 
@@ -291,9 +302,9 @@ const FlexibleForm = withRouter(
         data.q24_2 = [data.q24_2];
       }
 
-      if (data?.related) {
-        data.relatedContent = data?.related.map((x) => parseInt(x));
-        delete data.related;
+      if (data?.qrelated) {
+        data.related_content = data?.qrelated.map((x) => parseInt(x));
+        delete data.qrelated;
       }
 
       if (status === "add" && !params?.id) {
@@ -339,13 +350,20 @@ const FlexibleForm = withRouter(
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
       if (data.geoCoverageType === "transnational") {
-        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
-          : [];
-        data.geoCoverageCountries = data.geoCoverageCountries
-          ? data.geoCoverageCountries.map((x) => parseInt(x))
-          : [];
-        delete data.geoCoverageValueTransnational;
+        if (
+          data.geoCoverageValueTransnational &&
+          data.geoCoverageValueTransnational.length > 0
+        ) {
+          data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            : [];
+          delete data.geoCoverageValueTransnational;
+        }
+        if (data.geoCoverageCountries && data.geoCoverageCountries.length > 0) {
+          data.geoCoverageCountries = data.geoCoverageCountries
+            ? data.geoCoverageCountries.map((x) => parseInt(x))
+            : [];
+        }
       }
 
       if (data.geoCoverageType === "national") {
@@ -371,6 +389,7 @@ const FlexibleForm = withRouter(
 
       if (data.hasOwnProperty("firstPublicationDate")) {
         data.firstPublicationDate = data.firstPublicationDate;
+        data.latestAmendmentDate = "Ongoing";
       }
 
       if (data.hasOwnProperty("latestAmendmentDate")) {
@@ -382,7 +401,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.entity) {
-        data.entityConnections = data.entity;
+        data.entityConnections = data.entity[0].hasOwnProperty("row")
+          ? data.entity
+          : [];
         delete data.entity;
       }
 
@@ -398,6 +419,11 @@ const FlexibleForm = withRouter(
       if (data?.related) {
         data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
+      }
+
+      if (data?.summary) {
+        data.abstract = data?.summary;
+        delete data.summary;
       }
 
       if (status === "add" && !params?.id) {
@@ -445,13 +471,20 @@ const FlexibleForm = withRouter(
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
       if (data.geoCoverageType === "transnational") {
-        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
-          : [];
-        data.geoCoverageCountries = data.geoCoverageCountries
-          ? data.geoCoverageCountries.map((x) => parseInt(x))
-          : [];
-        delete data.geoCoverageValueTransnational;
+        if (
+          data.geoCoverageValueTransnational &&
+          data.geoCoverageValueTransnational.length > 0
+        ) {
+          data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            : [];
+          delete data.geoCoverageValueTransnational;
+        }
+        if (data.geoCoverageCountries && data.geoCoverageCountries.length > 0) {
+          data.geoCoverageCountries = data.geoCoverageCountries
+            ? data.geoCoverageCountries.map((x) => parseInt(x))
+            : [];
+        }
       }
 
       if (data.geoCoverageType === "national") {
@@ -484,7 +517,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.entity) {
-        data.entityConnections = data.entity;
+        data.entityConnections = data.entity[0].hasOwnProperty("row")
+          ? data.entity
+          : [];
         delete data.entity;
       }
 
@@ -546,13 +581,20 @@ const FlexibleForm = withRouter(
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
       if (data.geoCoverageType === "transnational") {
-        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
-          : [];
-        data.geoCoverageCountries = data.geoCoverageCountries
-          ? data.geoCoverageCountries.map((x) => parseInt(x))
-          : [];
-        delete data.geoCoverageValueTransnational;
+        if (
+          data.geoCoverageValueTransnational &&
+          data.geoCoverageValueTransnational.length > 0
+        ) {
+          data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            : [];
+          delete data.geoCoverageValueTransnational;
+        }
+        if (data.geoCoverageCountries && data.geoCoverageCountries.length > 0) {
+          data.geoCoverageCountries = data.geoCoverageCountries
+            ? data.geoCoverageCountries.map((x) => parseInt(x))
+            : [];
+        }
       }
 
       if (data.geoCoverageType === "national") {
@@ -562,7 +604,6 @@ const FlexibleForm = withRouter(
 
         delete data.geoCoverageValueNational;
       }
-
       if (data?.yearFounded) {
         const yearFounded = new Date(data.yearFounded);
         data.yearFounded = yearFounded.getFullYear();
@@ -587,7 +628,9 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags.map((x) => parseInt(x));
 
       if (data?.entity) {
-        data.entityConnections = data.entity;
+        data.entityConnections = data.entity[0].hasOwnProperty("row")
+          ? data.entity
+          : [];
         delete data.entity;
       }
 
@@ -603,6 +646,11 @@ const FlexibleForm = withRouter(
       if (data?.related) {
         data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
+      }
+
+      if (data?.summary) {
+        data.remarks = data?.summary;
+        delete data.summary;
       }
 
       if (status === "add" && !params?.id) {
@@ -633,6 +681,7 @@ const FlexibleForm = withRouter(
             ...formData,
           };
         });
+
         let updatedFormDataSchema = {};
 
         if (
@@ -775,7 +824,6 @@ const FlexibleForm = withRouter(
       },
       [initialFormData, formSchema, setDisabledBtn]
     );
-
     const handleTransformErrors = (errors, dependValue) => {
       // custom errors handle
       [".S4", ".S5"].forEach((x) => {
