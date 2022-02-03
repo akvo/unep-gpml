@@ -61,9 +61,7 @@ const Header = ({
                 </Space>
               </Col>
               <Col lg={19} md={17} sm={15} className="filter-tag">
-                <Space direction="horizontal">
-                  {renderFilterTag()}
-                </Space>
+                <Space direction="horizontal">{renderFilterTag()}</Space>
               </Col>
             </Row>
           </Col>

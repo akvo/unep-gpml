@@ -54,7 +54,7 @@ const ProfileCard = ({ profile }) => {
                 <span className="entity-name">Entity Name</span>
               )}
             </li>
-            <ul className='icons-list'>
+            <ul className="icons-list">
               <li className="list-item">
                 <Badge />
               </li>
