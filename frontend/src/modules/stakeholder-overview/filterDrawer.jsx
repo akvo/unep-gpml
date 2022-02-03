@@ -158,7 +158,7 @@ tags: {},
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Network type</div>
-              {isEmpty(query?.entity) ? (
+              {isEmpty("") ? (
                 <Tag className="selection-card-type">All (default)</Tag>
               ) : (
                 <Tag
@@ -212,7 +212,7 @@ tags: {},
           <Col span={24} className="specificity-card">
             <Space align="middle">
               <div className="filter-title">Specificity</div>
-              {isEmpty(query?.entity) ? (
+              {isEmpty("") ? (
                 <Tag className="selection-card-type">All (default)</Tag>
               ) : (
                 <Tag
@@ -246,6 +246,19 @@ tags: {},
 
           {/* For entities */}
           <Col span={24} className="specificity-card">
+            <Space align="middle">
+              {!isEmpty(query?.entity) && (
+                <Tag
+                  className="clear-selection"
+                  closable={true}
+                  onClose={() => updateQuery("entity", [])}
+                  onClick={() => updateQuery("entity", [])}
+                >
+                  Clear selection
+                </Tag>
+              )}
+            </Space>
+
             <Row type="flex" gutter={[10, 10]}>
               <p className="specificity-title">For entities</p>
               {entities.map((entity) => {
