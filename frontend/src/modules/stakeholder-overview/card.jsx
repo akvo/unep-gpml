@@ -5,8 +5,9 @@ import { UIStore } from "../../store";
 
 import firstPic from "../../images/stakeholder-overview/first-avatar.jpg";
 import secondPic from "../../images/stakeholder-overview/second-avatar.jpg";
-import badge from "../../images/stakeholder-overview/badge.svg";
+import { ReactComponent as Badge } from "../../images/stakeholder-overview/badge.svg";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
+import { ReactComponent as GPMLlogo } from "../../images/stakeholder-overview/gpml-logo.svg";
 
 const ProfileCard = ({ profile }) => {
   const { countries } = UIStore.useState((s) => ({
@@ -49,11 +50,20 @@ const ProfileCard = ({ profile }) => {
               </span>
             </li>
             <li className="list-item">
-              <span className="entity-name">Entity Name</span>
+              {profile.entity_name && (
+                <span className="entity-name">Entity Name</span>
+              )}
             </li>
-            <li className="list-item">
-              <img className="badge" src={badge} alt="" />
-            </li>
+            <ul className='icons-list'>
+              <li className="list-item">
+                <Badge />
+              </li>
+              {profile.is_member && (
+                <li className="list-item">
+                  <GPMLlogo />
+                </li>
+              )}
+            </ul>
           </ul>
 
           <ul className="social-media-list">
