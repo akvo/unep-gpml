@@ -845,11 +845,19 @@ const DetailsView = ({
                       data?.entityConnections.map((item) => (
                         <List.Item>
                           <List.Item.Meta
-                            avatar={<Avatar src={EntityImage} />}
+                            avatar={
+                              <Avatar
+                                src={
+                                  item?.image
+                                    ? item.image
+                                    : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
+                                }
+                              />
+                            }
                             title={item.entity}
                             description={"Entity"}
                           />{" "}
-                          <div className="see-more-button">See More</div>
+                          {/* <div className="see-more-button">See More</div> */}
                         </List.Item>
                       ))}
                   </List>
