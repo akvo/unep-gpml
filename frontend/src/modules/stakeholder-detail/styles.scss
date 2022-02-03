@@ -23,6 +23,11 @@
       display: flex;
       align-items: center;
       .topbar-image-holder {
+        background-image: url("../../images/stakeholder/individual-icn.svg");
+        background-repeat: no-repeat;
+        padding-left: 40px;
+        background-position: top left;
+        background-size: 30%;
         img {
           width: 155px;
           height: 155px;
