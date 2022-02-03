@@ -138,12 +138,7 @@
     "S5": {
       "classNames": "list-group",
       "S5_G1": {
-        "S5_G1_4": {
-          "ui:widget": "checkboxes",
-          "ui:options": {
-            "inline": true
-          }
-        },
+        "S5_G1_4": {},
         "S5_G1_4.1.1": {
           "ui:widget": "checkboxes",
           "ui:options": {
@@ -200,6 +195,37 @@
           "ui:allowClear": true
         },
         "S5_G2_6": {},
+        "S5_G2_7": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.1.0": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.1.1": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.1.2": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.2": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.3": {},
         "S5_G2_8": {
           "ui:widget": "select",
           "ui:placeholder": "Select",
@@ -311,6 +337,12 @@
           "S5_G1_4.4.5",
           "S5_G2_5",
           "S5_G2_6",
+          "S5_G2_7",
+          "S5_G2_7.1.0",
+          "S5_G2_7.1.1",
+          "S5_G2_7.1.2",
+          "S5_G2_7.2",
+          "S5_G2_7.3",
           "S5_G2_8",
           "S5_G2_9",
           "S5_G2_10",
@@ -758,7 +790,8 @@
         "topics": {
           "ui:placeholder": "Choose topics",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
         }
       }
     }

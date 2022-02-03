@@ -11,33 +11,13 @@ const { Title, Paragraph, Text } = Typography;
 const CaseStudy = ({
   tags,
   title,
+  image,
+  platform_link,
+  background_color,
   geo_coverage,
   challenge_and_solution,
   stakeholders_involved,
-  platform_link,
 }) => {
-  const bgImage = sample([
-    {
-      image:
-        "https://ik.imagekit.io/8bnvluby33xpi/image_174_hwzBFxgH3.png?updatedAt=1640774260036&tr=w-1080,h-1080,fo-auto",
-      color: "rgba(26, 109, 141, 0.94)",
-    },
-    {
-      image:
-        "https://ik.imagekit.io/8bnvluby33xpi/image_197_2iX7wzNv7.png?updatedAt=1640774277606&tr=w-1080,h-1080,fo-auto",
-      color: "rgba(131, 77, 52, 1)",
-    },
-    {
-      image:
-        "https://ik.imagekit.io/8bnvluby33xpi/kecilin_image_205_n2Z31FNhx.png?updatedAt=1640779952315&tr=w-1080,h-1080,fo-auto",
-      color: "rgba(110, 115, 129, 1)",
-    },
-    {
-      image:
-        "https://ik.imagekit.io/8bnvluby33xpi/kecilin_image_209_IkhxOhYwA.png?updatedAt=1640779899519&tr=w-1080,h-1080,fo-auto",
-      color: "rgba(126, 143, 103, 1)",
-    },
-  ]);
   const stakeholders =
     typeof stakeholders_involved === "string"
       ? stakeholders_involved.split(",")
@@ -49,7 +29,7 @@ const CaseStudy = ({
         lg={14}
         sm={24}
         style={{
-          backgroundImage: `url(${bgImage.image})`,
+          backgroundImage: `url(${image})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           display: "flex",
@@ -67,7 +47,7 @@ const CaseStudy = ({
         lg={10}
         sm={24}
         style={{
-          backgroundColor: bgImage.color,
+          backgroundColor: background_color,
           borderBottom: "4px solid #18162F",
           borderRight: "4px solid #18162F",
           borderLeft: "1px solid #18162F",
@@ -75,20 +55,26 @@ const CaseStudy = ({
         }}
       >
         <div className="p-4 content-text">
-          <Row type="flex" justify="start" align="middle" gutter={[16, 16]}>
-            <Col span={24}>
+          <Row gutter={[8, 8]}>
+            <Col>
               <h4 className="title">Challenge & Solution</h4>
               <Paragraph>
-                <TrimText text={challenge_and_solution} max={600} />
+                <div
+                  dangerouslySetInnerHTML={{ __html: challenge_and_solution }}
+                />
               </Paragraph>
             </Col>
-            <Col span={3}>
-              <img src={iconGlobe} style={{ width: 47, height: 47 }} />
+            <Col>
+              <div style={{ display: "flex", gap: 5, minHeight: 32 }}>
+                <div style={{ margin: "auto" }}>
+                  <img src={iconGlobe} style={{ width: 32, height: 32 }} />
+                </div>
+                <div style={{ margin: "auto" }}>
+                  <Text>{geo_coverage}</Text>
+                </div>
+              </div>
             </Col>
-            <Col span={21} style={{ padding: 0 }}>
-              <Text>{geo_coverage}</Text>
-            </Col>
-            <Col span={24}>
+            <Col>
               <h4 className="title">Tags</h4>
               <ul className="tags">
                 {Object?.values(tagItems)
@@ -103,7 +89,7 @@ const CaseStudy = ({
                 )}
               </ul>
             </Col>
-            <Col span={24}>
+            <Col>
               <h4 className="title">Connections</h4>
               <div className="avatars">
                 {stakeholders.length > 4 && (
@@ -131,6 +117,21 @@ const CaseStudy = ({
                     );
                   })}
               </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Button
+                href={platform_link || "#"}
+                type="link"
+                shape="round"
+                className="green-border"
+                target="_blank"
+                rel="noopener noreferrer"
+                size="small"
+              >
+                Learn More
+              </Button>
             </Col>
           </Row>
         </div>

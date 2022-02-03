@@ -1,14 +1,15 @@
 (ns gpml.handler.technology
   (:require [clojure.java.jdbc :as jdbc]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.image :as handler.image]
+            [gpml.auth :as auth]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.db.technology :as db.technology]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
             [gpml.handler.auth :as h.auth]
-            [gpml.auth :as auth]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.image :as handler.image]
+            [gpml.pg-util :as pg-util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -61,7 +62,7 @@
               :owners owners
               :info_docs info_docs
               :sub_content_type sub_content_type
-              :related_content related_content
+              :related_content (pg-util/->JDBCArray related_content "integer")
               :review_status "SUBMITTED"}
         technology-id (->> data (db.technology/new-technology conn) :id)]
     (when (not-empty owners)
@@ -112,7 +113,7 @@
 (def post-params
   (into [:map
     [:name string?]
-    [:year_founded integer?]
+    [:year_founded {:optional true} integer?]
     [:organisation_type {:optional true}
      [:enum "Established Company", "Research Lab", "Academic Institution",
       "Startup", "Non-Profit Org", "Partnerships"]]

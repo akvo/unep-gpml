@@ -27,6 +27,8 @@ const MapLanding = ({
   setMultiCountryCountries,
   setListVisible,
   listVisible,
+  contentHeight,
+  isDisplayedList,
 }) => {
   const {
     profile,
@@ -56,7 +58,7 @@ const MapLanding = ({
   const clickCountry = (name) => {
     setToggleButton("list");
     updateQuery("country", name);
-    history.push(`/browse?country=${name}`);
+    history.push(`?country=${name}`);
   };
 
   const handleSummaryClick = (topic) => {
@@ -103,10 +105,6 @@ const MapLanding = ({
     });
   }, []);
 
-  useEffect(() => {
-    filters && setFilters(null);
-  }, [filters, setFilters]);
-
   const countryObj = country && countries.find((it) => it.id === country);
   const selectedCountry =
     countries && country
@@ -142,7 +140,7 @@ const MapLanding = ({
   });
 
   return (
-    <div id="map-landing">
+    <div id="map-landing" style={{ height: `${contentHeight}px` }}>
       <div className="landing-container map-container">
         {!isLoaded() && (
           <h2 className="loading">
@@ -188,6 +186,7 @@ const MapLanding = ({
           </div>
         )}
         <Maps
+          isDisplayedList={isDisplayedList}
           listVisible={listVisible}
           data={landing?.map || []}
           clickEvents={clickCountry}

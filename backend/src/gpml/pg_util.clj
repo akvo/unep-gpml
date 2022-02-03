@@ -22,6 +22,13 @@
       "jsonb" (parse-json v)
       v)))
 
+(deftype JDBCArray [elements type-name]
+  jdbc/ISQLParameter
+  (set-parameter [_ stmt ix]
+    (let [as-array (into-array Object elements)
+          jdbc-array (.createArrayOf (.getConnection stmt) type-name as-array)]
+      (.setArray stmt ix jdbc-array))))
+
 (extend-protocol jdbc/IResultSetReadColumn
   PGobject
   (result-set-read-column [value _ _]

@@ -1,4 +1,10 @@
 @import "../../vars.scss";
+.multiselection-filter {
+  .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
+    margin-top: 30px;
+    top: 990px !important;
+  }
+}
 
 #knowledge-library {
   position: relative;
@@ -21,11 +27,19 @@
     }
 
     .filter-tag {
+      .ant-space {
+        flex-wrap: wrap;
+        gap: 8px;
+        .ant-space-item {
+          margin-right: 0 !important;
+        }
+      }
       .ant-tag {
         display: flex;
         flex-direction: row-reverse;
         align-items: center;
         justify-content: space-between;
+
         color: #ffffff;
         font-weight: 700;
         padding: 5px 11px 5px 11px;
@@ -45,6 +59,10 @@
           opacity: 0;
         }
       }
+    }
+
+    .result-box {
+      cursor: pointer;
     }
 
     .ant-row.ant-row-space-between.ant-row-middle {
@@ -171,9 +189,12 @@
     border-radius: 30px;
   }
 
+  .resource-main-container {
+    background-color: rgb(37, 91, 135);
+  }
+
   .site-drawer-render-in-current-wrapper,
   .resource-main-container {
-    min-height: 100vh;
     height: 100%;
   }
 
@@ -189,6 +210,7 @@
 
     .ant-drawer-content-wrapper {
       box-shadow: none;
+      height: fit-content;
 
       .ant-drawer-header {
         background: $blue05;
@@ -261,7 +283,6 @@
 
       .ant-select-selector,
       .date-picker-container .ant-picker {
-        height: 34px;
         background: $grey05;
         border: 0;
         border-radius: 5px;
@@ -379,6 +400,7 @@
         border: 1px solid $blue04;
         border-radius: 20px;
         margin-bottom: 8px;
+        cursor: pointer;
         .anticon-close {
           color: $blue04;
           font-weight: 700;
@@ -543,11 +565,13 @@
   }
 
   .resource-list-container {
-    background: $grey05;
+    position: absolute;
+    z-index: 3;
+    min-height: 1384px;
+    max-width: 510px;
   }
 
   .resource-list-header {
-    background: #fff;
     justify-content: unset;
 
     & span {
@@ -568,6 +592,7 @@
     .ant-page-header-heading-title,
     .sort-btn {
       color: $blue06;
+      background-color: transparent;
     }
 
     .ant-page-header-heading-title {
@@ -616,52 +641,63 @@
     flex-direction: column;
     gap: 10px;
     align-items: center;
-
-    .resource-item {
+    .resource-item-wrapper {
       width: 100%;
-      border-radius: 8px;
-      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
-      text-align: left;
-      color: $black;
-      .topic {
-        color: $green05;
-        font-size: 12px;
-        text-transform: uppercase;
-        font-weight: 700;
-      }
-      .item-body {
-        margin-top: 5px;
 
-        .title,
-        .description,
-        .read-more {
-          font-size: 14px;
-        }
-        .description {
-          font-weight: 400;
-          color: $blue11;
-        }
-        .description {
-          margin-top: 7px;
+      .resource-item {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+        text-align: left;
+        color: $black;
+
+        .topic {
+          color: $green05;
+          font-size: 12px;
+          text-transform: uppercase;
+          font-weight: 700;
         }
 
-        .read-more,
-        .avatar-number {
-          color: $blue04;
-        }
+        .item-body {
+          margin-top: 5px;
 
-        .avatar-number {
-          font-size: 13px;
+          .title,
+          .description,
+          .read-more {
+            font-size: 14px;
+          }
+          .description {
+            font-weight: 400;
+            color: $blue11;
+          }
+          .description {
+            margin-top: 7px;
+          }
+
+          .read-more,
+          .avatar-number {
+            color: $blue04;
+          }
+
+          .avatar-number {
+            font-size: 13px;
+          }
         }
-      }
-      .item-footer {
-        margin-top: 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .avatar-number {
-          color: $blue04;
-          font-weight: 600;
+        .item-footer {
+          margin-top: 14px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .read-more {
+            font-size: 14px;
+          }
+          .read-more,
+          .avatar-number {
+            color: $blue04;
+          }
+          .avatar-number {
+            font-weight: 600;
+          }
         }
       }
     }
@@ -729,5 +765,8 @@
         background-color: transparent;
       }
     }
+  }
+  .echarts-for-react.popular-topic-chart {
+    height: 1000% !important;
   }
 }

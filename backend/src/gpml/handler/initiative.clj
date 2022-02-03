@@ -1,6 +1,5 @@
 (ns gpml.handler.initiative
   (:require [clojure.java.jdbc :as jdbc]
-            [integrant.core :as ig]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.stakeholder :as db.stakeholder]
@@ -8,6 +7,8 @@
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
+            [gpml.pg-util :as pg-util]
+            [integrant.core :as ig]
             [ring.util.response :as resp]))
 
 (defn- add-geo-initiative [conn initiative-id {:keys [geo_coverage_country_groups geo_coverage_countries] :as data}]
@@ -47,11 +48,12 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn create-initiative [conn {:keys [mailjet-config tags owners
+(defn create-initiative [conn {:keys [mailjet-config tags owners related_content
                                       entity_connections individual_connections qimage] :as initiative}]
   (let [data (-> initiative
-               (dissoc :tags :owners :mailjet-config :entity_connections :individual_connections)
-               (assoc :qimage (handler.image/assoc-image conn qimage "initiative")))
+               (dissoc :tags :owners :mailjet-config :entity_connections :individual_connections :related_content)
+               (assoc :qimage (handler.image/assoc-image conn qimage "initiative")
+                      :related_content (pg-util/->JDBCArray related_content "integer")))
         initiative-id (:id (db.initiative/new-initiative conn data))]
     (add-geo-initiative conn initiative-id (extract-geo-data data))
     (when (not-empty owners)

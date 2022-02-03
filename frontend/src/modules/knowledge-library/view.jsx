@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { Row, Col, Button, Input, Space, Tag, Select } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 
@@ -62,6 +62,7 @@ const KnowledgeLibrary = ({
     transnationalOptions,
     sectorOptions,
     geoCoverageTypeOptions,
+    representativeGroup,
     languages,
   } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -71,6 +72,7 @@ const KnowledgeLibrary = ({
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     languages: s.languages,
+    representativeGroup: s.sectorOptions,
   }));
 
   const [results, setResults] = useState([]);
@@ -80,11 +82,54 @@ const KnowledgeLibrary = ({
   const [relations, setRelations] = useState([]);
   const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
-  const pageSize = 10;
+  const pageSize = 8;
   const [toggleButton, setToggleButton] = useState("list");
   const { innerWidth } = window;
   const [countData, setCountData] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
+
+  // Matches the height of the map or topics to the list height
+  const listHeight = document.querySelector(".resource-list-container")
+    ?.clientHeight;
+
+  const [contentHeight, setContentHeight] = useState(listHeight);
+
+  function useWindowDimensions() {
+    const hasWindow = typeof window !== "undefined";
+    function getWindowDimensions() {
+      const width = hasWindow ? window.innerWidth : null;
+      const height = hasWindow ? window.innerHeight : null;
+      return {
+        width,
+        height,
+      };
+    }
+
+    const [windowDimensions, setWindowDimensions] = useState(
+      getWindowDimensions()
+    );
+
+    useEffect(() => {
+      if (hasWindow) {
+        function handleResize() {
+          setWindowDimensions(getWindowDimensions());
+        }
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [hasWindow]);
+
+    return windowDimensions;
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      setContentHeight(listHeight);
+    }, 500);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listHeight, useWindowDimensions().width, results.length]);
 
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
@@ -156,6 +201,7 @@ const KnowledgeLibrary = ({
     if (!isEmpty(filterMenu)) {
       updateQuery("topic", filterMenu);
     }
+
     // NOTE: this are triggered when user click a topic from navigation menu
   }, [filterMenu]); // eslint-disable-line
 
@@ -166,6 +212,7 @@ const KnowledgeLibrary = ({
     });
     setLoading(true);
     const newQuery = { ...query };
+
     newQuery[param] = value;
     if (param !== "offset") {
       newQuery["offset"] = 0;
@@ -188,7 +235,8 @@ const KnowledgeLibrary = ({
       }
       if (key === "tag") {
         const findTag = flatten(values(tags)).find((x) => x.id == value);
-        return findTag?.tag;
+
+        return findTag ? findTag?.tag : value;
       }
       if (key === "country") {
         const findCountry = countries.find((x) => x.id == value);
@@ -199,6 +247,18 @@ const KnowledgeLibrary = ({
           (x) => x.id == value
         );
         return findTransnational?.name;
+      }
+      if (key === "representativeGroup") {
+        const representativeGroups = representativeGroup.find(
+          (x) => x == value
+        );
+        return representativeGroups;
+      }
+      if (key === "startDate") {
+        return `Start date ${query.startDate}`;
+      }
+      if (key === "endDate") {
+        return `End date ${query.endDate}`;
       }
     };
     return Object.keys(query).map((key, index) => {
@@ -214,7 +274,14 @@ const KnowledgeLibrary = ({
       return query?.[key]
         ? query?.[key]?.map((x) => (
             <Tag
+              className="result-box"
               closable
+              onClick={() =>
+                updateQuery(
+                  key,
+                  query?.[key]?.filter((v) => v !== x)
+                )
+              }
               onClose={() =>
                 updateQuery(
                   key,
@@ -246,7 +313,7 @@ const KnowledgeLibrary = ({
               <Row type="flex" justify="space-between" align="middle">
                 <Col lg={5} md={7} sm={9} className="search-box">
                   <Space>
-                    <Search />
+                    <Search updateQuery={updateQuery} />
                     <Button
                       onClick={() => setFilterVisible(!filterVisible)}
                       type="ghost"
@@ -305,10 +372,21 @@ const KnowledgeLibrary = ({
                   md={9}
                   sm={12}
                   xs={24}
+                  style={
+                    view === "map"
+                      ? {
+                          backgroundColor: "rgba(237, 242, 247, 0.3)",
+                        }
+                      : {
+                          backgroundColor: "rgba(237, 242, 247, 1)",
+                          position: "unset",
+                        }
+                  }
                   className="resource-list-container"
                 >
                   {/* Resource List */}
                   <ResourceList
+                    view={view}
                     filters={filters}
                     setListVisible={setListVisible}
                     countData={countData}
@@ -327,8 +405,11 @@ const KnowledgeLibrary = ({
                 sm={listVisible ? 12 : 24}
                 xs={24}
                 align="center"
-                className="render-map-container"
-                style={{ background: view === "topic" ? "#255B87" : "#fff" }}
+                className="render-map-container map-main-wrapper"
+                style={{
+                  background: view === "topic" ? "#255B87" : "#fff",
+                  height: `${contentHeight}px`,
+                }}
               >
                 {view === "map" ? (
                   <MapLanding
@@ -345,11 +426,13 @@ const KnowledgeLibrary = ({
                       setMultiCountryCountries,
                       setListVisible,
                       listVisible,
+                      contentHeight,
                     }}
+                    isDisplayedList={listVisible}
                   />
                 ) : (
                   <>
-                    <TopicView />
+                    <TopicView updateQuery={updateQuery} />
                   </>
                 )}
               </Col>
@@ -361,11 +444,14 @@ const KnowledgeLibrary = ({
   );
 };
 
-const Search = withRouter(({ history }) => {
+const Search = withRouter(({ history, updateQuery }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
     if (src) {
-      history.push(`/browse/?q=${src.trim()}`);
+      history.push(`?q=${src.trim()}`);
+      updateQuery("q", src.trim());
+    } else {
+      updateQuery("q", "");
     }
   };
 
