@@ -652,6 +652,11 @@
         text-align: left;
         color: $black;
 
+        .ant-card-body {
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
+
         .topic {
           color: $green05;
           font-size: 12px;
@@ -668,10 +673,9 @@
             font-size: 14px;
           }
           .description {
+            display: none;
             font-weight: 400;
             color: $blue11;
-          }
-          .description {
             margin-top: 7px;
           }
 
