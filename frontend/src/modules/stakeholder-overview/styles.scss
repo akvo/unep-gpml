@@ -23,6 +23,14 @@
     }
 
     .filter-tag {
+      .ant-space {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .ant-space-item {
+        margin-right: 0 !important;
+        cursor: pointer;
+      }
       .ant-tag {
         display: flex;
         flex-direction: row-reverse;
@@ -35,6 +43,7 @@
         border-radius: 17.5px;
         background-color: transparent;
         margin-right: 0;
+
         .ant-tag-close-icon {
           display: block;
           margin-left: 0;
