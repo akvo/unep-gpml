@@ -19,7 +19,7 @@
         color: #fff;
         font-size: 30px;
         font-weight: 700;
-        line-height: 25px;
+        line-height: 30px;
         text-transform: capitalize;
       }
       img {
@@ -63,9 +63,13 @@
       min-height: 500px;
       height: 100%;
       padding: 2px;
+      position: relative;
+      padding-top: 100%;
       img {
         height: 100%;
-        object-fit: cover;
+        object-fit: fill;
+        position: absolute;
+        top: 0;
       }
     }
     .sticky-panel {
@@ -74,11 +78,10 @@
       align-items: center;
       background-color: #255b87;
       margin: 2px;
-      flex: 0 0 100px;
+      flex: 0 0 110px;
       border: 1px solid #d3dee7;
       box-sizing: border-box;
       border-radius: 0px 10px 10px 0px;
-      padding: 0px 5px;
       .sticky-panel-item {
         border-bottom: 1px solid #094271;
         box-shadow: 0px 1px 0px #3872a0;
@@ -89,12 +92,28 @@
         justify-content: center;
         display: flex;
         flex-direction: column;
+
+        &:first-child {
+          background-color: #05f081;
+          border-radius: 0px 8px 0px 0px;
+          span {
+            color: #255b87;
+          }
+          h2 {
+            color: #255b87;
+          }
+        }
         a {
           text-align: center;
         }
         &:last-child {
           border-bottom: none;
           box-shadow: none;
+          background-color: #236b8c;
+          border-radius: 0px 0px 10px 0px;
+        }
+        &:nth-last-child(2) {
+          background-color: #236b8c;
         }
         span {
           font-size: 30px;
@@ -105,6 +124,7 @@
           font-weight: 400;
           color: #ffffff;
           margin-bottom: 0px;
+          text-transform: uppercase;
         }
       }
     }
@@ -180,6 +200,7 @@
             overflow: initial;
             img {
               object-fit: contain;
+              border-radius: 50%;
             }
           }
         }
@@ -242,6 +263,34 @@
       h4 {
         text-transform: capitalize;
       }
+      ul {
+        list-style: none;
+        margin: 0;
+        overflow: hidden;
+        padding: 0;
+        li {
+          background: #d3dee7;
+          border-radius: 23px 5px 5px 23px;
+          color: #255b87;
+          display: inline-block;
+          padding: 5px 20px 5px 30px;
+          position: relative;
+          margin: 0 10px 10px 0;
+          text-decoration: none;
+          &::before {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+            content: "";
+            position: absolute;
+            height: 12px;
+            width: 12px;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        }
+      }
     }
     .geo-coverage {
       h4 {
@@ -277,6 +326,7 @@
           justify-content: space-between;
           .read-more {
             color: #34a6ff;
+            cursor: pointer;
           }
         }
       }
@@ -309,6 +359,71 @@
         }
         .ant-list-item-meta-title {
           margin-bottom: 0px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  #details {
+    .section-header {
+      padding: 10px 0px;
+      .header-wrapper {
+        h4 {
+          font-size: 18px;
+          line-height: 22px;
+        }
+        img {
+          width: 30px;
+        }
+      }
+    }
+    .section-banner {
+      .short-image {
+        min-height: 380px;
+        img {
+          height: 100%;
+          object-fit: fill;
+          position: absolute;
+          top: 0;
+        }
+      }
+
+      .sticky-panel {
+        .sticky-panel-item {
+          span {
+            font-size: 24px;
+          }
+          h2 {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+    .card-wrapper {
+      .ant-card {
+        .ant-card-body {
+          p {
+            font-size: 14px;
+          }
+        }
+        .ant-card-head {
+          .ant-card-head-title {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+
+    .section-info {
+      .tab-wrapper {
+        ul {
+          li {
+            a {
+              font-size: 16px;
+            }
+          }
         }
       }
     }

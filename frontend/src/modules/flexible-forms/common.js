@@ -21,7 +21,7 @@ const initialData = {
   S4: {
     steps: 0,
     required: {},
-    S4_G5: { entity: [{}], individual: [{}] },
+    S4_G5: { entity: [{}], individual: [] },
   },
   S5: {
     steps: 0,
@@ -50,6 +50,7 @@ const getSchema = ({
   nonMemberOrganisations,
   selectedMainContentType,
   currencies,
+  relatedResource,
 }) => {
   const prop = cloneDeep(schema[selectedMainContentType].properties);
 
@@ -71,34 +72,100 @@ const getSchema = ({
     (x) => x.firstName + " " + x.lastName
   );
 
-  // geocoverage national options
-  prop.S4.properties.S4_G2.properties[
-    "geoCoverageValueNational"
-  ].enum = countries?.map((x) => String(x.id));
-  prop.S4.properties.S4_G2.properties[
-    "geoCoverageValueNational"
-  ].enumNames = countries?.map((x) => x.name);
-  // geocoverage transnational options
-  prop.S4.properties.S4_G2.properties[
-    "geoCoverageValueTransnational"
-  ].enum = transnationalOptions?.map((x) => String(x.id));
-  prop.S4.properties.S4_G2.properties[
-    "geoCoverageValueTransnational"
-  ].enumNames = transnationalOptions?.map((x) => x.name);
+  // Related Resource
+  prop.S4.properties.S4_G6.properties[
+    "related"
+  ].enum = relatedResource.map((x) => String(x.id));
 
-  prop.S4.properties.S4_G2.properties[
-    "geoCoverageCountries"
-  ].enum = countries?.map((x) => String(x.id));
-  prop.S4.properties.S4_G2.properties[
-    "geoCoverageCountries"
-  ].enumNames = countries?.map((x) => x.name);
+  prop.S4.properties.S4_G6.properties[
+    "related"
+  ].enumNames = relatedResource.map((x) => x.title);
 
-  prop.S4.properties.S4_G2.properties[
-    "geoCoverageValueSubnational"
-  ].enum = countries?.map((x) => String(x.id));
-  prop.S4.properties.S4_G2.properties[
-    "geoCoverageValueSubnational"
-  ].enumNames = countries?.map((x) => x.name);
+  // Related Resource
+
+  if (selectedMainContentType === "initiative") {
+    // geocoverage national options
+    prop.S4.properties.S4_G2.properties[
+      "S4_G2_24.2"
+    ].enum = countries?.map((x) => String(x.id));
+    prop.S4.properties.S4_G2.properties[
+      "S4_G2_24.2"
+    ].enumNames = countries?.map((x) => x.name);
+
+    // geocoverage transnational options
+    prop.S4.properties.S4_G2.properties[
+      "S4_G2_24.3"
+    ].enum = transnationalOptions?.map((x) => String(x.id));
+    prop.S4.properties.S4_G2.properties[
+      "S4_G2_24.3"
+    ].enumNames = transnationalOptions?.map((x) => x.name);
+
+    prop.S4.properties.S4_G2.properties[
+      "S4_G2_24.4"
+    ].enum = countries?.map((x) => String(x.id));
+    prop.S4.properties.S4_G2.properties[
+      "S4_G2_24.4"
+    ].enumNames = countries?.map((x) => x.name);
+
+    prop.S4.properties.S4_G2.properties[
+      "geoCoverageValueSubnational"
+    ].enum = countries?.map((x) => String(x.id));
+    prop.S4.properties.S4_G2.properties[
+      "geoCoverageValueSubnational"
+    ].enumNames = countries?.map((x) => x.name);
+
+    prop.S5.properties.S5_G1.properties["S5_G5_36.1"].enum = currencies?.map(
+      (x) => x.value
+    );
+    prop.S5.properties.S5_G1.properties[
+      "S5_G5_36.1"
+    ].enumNames = currencies?.map((x) => x.label);
+
+    prop.S5.properties.S5_G1.properties["S5_G5_37.1"].enum = currencies?.map(
+      (x) => x.value
+    );
+    prop.S5.properties.S5_G1.properties[
+      "S5_G5_37.1"
+    ].enumNames = currencies?.map((x) => x.label);
+
+    // MEA options
+    prop.S5.properties.S5_G1.properties[
+      "S5_G2_7.2"
+    ].items.enum = meaOptions?.map((x) => String(x.id));
+    prop.S5.properties.S5_G1.properties[
+      "S5_G2_7.2"
+    ].items.enumNames = meaOptions?.map((x) => x.name);
+  } else {
+    // geocoverage national options
+    prop.S4.properties.S4_G2.properties[
+      "geoCoverageValueNational"
+    ].enum = countries?.map((x) => String(x.id));
+    prop.S4.properties.S4_G2.properties[
+      "geoCoverageValueNational"
+    ].enumNames = countries?.map((x) => x.name);
+
+    // geocoverage transnational options
+    prop.S4.properties.S4_G2.properties[
+      "geoCoverageValueTransnational"
+    ].enum = transnationalOptions?.map((x) => String(x.id));
+    prop.S4.properties.S4_G2.properties[
+      "geoCoverageValueTransnational"
+    ].enumNames = transnationalOptions?.map((x) => x.name);
+
+    prop.S4.properties.S4_G2.properties[
+      "geoCoverageCountries"
+    ].enum = countries?.map((x) => String(x.id));
+    prop.S4.properties.S4_G2.properties[
+      "geoCoverageCountries"
+    ].enumNames = countries?.map((x) => x.name);
+
+    prop.S4.properties.S4_G2.properties[
+      "geoCoverageValueSubnational"
+    ].enum = countries?.map((x) => String(x.id));
+    prop.S4.properties.S4_G2.properties[
+      "geoCoverageValueSubnational"
+    ].enumNames = countries?.map((x) => x.name);
+  }
 
   if (
     selectedMainContentType === "technical" ||
@@ -107,9 +174,7 @@ const getSchema = ({
     let array = Object.keys(tags)
       .map((k) => tags[k])
       .flat();
-    const tagsPlusTopics = tags?.topics
-      ? tags.technicalResourceType?.concat(tags.topics)
-      : array;
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -122,9 +187,7 @@ const getSchema = ({
     let array = Object.keys(tags)
       .map((k) => tags[k])
       .flat();
-    const tagsPlusTopics = tags?.topics
-      ? tags.events?.concat(tags.topics)
-      : array;
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -137,9 +200,7 @@ const getSchema = ({
     let array = Object.keys(tags)
       .map((k) => tags[k])
       .flat();
-    const tagsPlusTopics = tags?.topics
-      ? tags.events?.concat(tags.topics)
-      : array;
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -152,9 +213,7 @@ const getSchema = ({
     let array = Object.keys(tags)
       .map((k) => tags[k])
       .flat();
-    const tagsPlusTopics = tags?.topics
-      ? tags.technology?.concat(tags.topics)
-      : array;
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -167,9 +226,7 @@ const getSchema = ({
     let array = Object.keys(tags)
       .map((k) => tags[k])
       .flat();
-    const tagsPlusTopics = tags?.topics
-      ? tags.policy?.concat(tags.topics)
-      : array;
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));
@@ -185,9 +242,10 @@ const getSchema = ({
   }
 
   if (selectedMainContentType === "financing") {
-    const tagsPlusTopics = tags?.topics
-      ? tags.financingMechanism?.concat(tags.topics)
-      : tags.financingMechanism;
+    let array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat();
+    const tagsPlusTopics = tags?.topics ? array : array;
     prop.S4.properties.S4_G3.properties[
       "tags"
     ].enum = tagsPlusTopics?.map((x) => String(x.id));

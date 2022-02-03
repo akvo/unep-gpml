@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Button, Carousel, Row, Col, Layout, Select } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 
@@ -9,11 +9,13 @@ import LeftSidebar from "../left-sidebar/LeftSidebar";
 import SlidePrev from "../../images/capacity-building/slide-prev.svg";
 import SlideNext from "../../images/capacity-building/slide-next.svg";
 import DropdownIcon from "../../images/case-studies/ic_dropdown.svg";
+import { titleCase } from "../../utils/string";
 
 const { Header, Content } = Layout;
 
 const CaseStudies = () => {
   const [indexSlide, setIndexSlide] = useState(0);
+  const caseStudyReff = useRef();
 
   const slider = useRef();
   const prev = () => {
@@ -26,12 +28,19 @@ const CaseStudies = () => {
     setIndexSlide(index);
     slider.current.goTo(index);
   };
+
+  useEffect(() => {
+    window.scrollTo({
+      behavior: "smooth",
+      top: caseStudyReff.current.offsetTop,
+    });
+  }, []);
   return (
-    <Row id="case-study">
+    <Row id="case-study" ref={caseStudyReff}>
       <Col span={24} className="ui-header">
         <div className="ui-container">
-          <Row type="flex" justify="space-between" align="middle">
-            <Col lg={5} sm={12} xs={24}>
+          <Row gutter={[8, 16]}>
+            <Col lg={6} md={24}>
               <Select
                 defaultValue={0}
                 onChange={(value) => goTo(value)}
@@ -39,17 +48,18 @@ const CaseStudies = () => {
                   <img src={DropdownIcon} style={{ width: 30, height: 30 }} />
                 }
                 size="large"
+                value={indexSlide}
               >
                 {datastudies.map((c, cx) => (
-                  <Select.Option key={cx} value={cx}>{`Case Study ${
-                    cx + 1
-                  }`}</Select.Option>
+                  <Select.Option key={cx} value={cx}>
+                    {titleCase(c.title)}
+                  </Select.Option>
                 ))}
               </Select>
             </Col>
-            <Col lg={10} sm={12} xs={24} className="text-right">
+            <Col lg={18} md={24} className="text-right">
               <Button
-                href={datastudies[indexSlide].external_url}
+                href={datastudies[indexSlide].platform_link || "#"}
                 type="link"
                 shape="round"
                 className="green-border"
@@ -69,7 +79,12 @@ const CaseStudies = () => {
       <Col span={24}>
         <div className="ui-container">
           <LeftSidebar active={4}>
-            <Carousel dots={false} ref={slider}>
+            <Carousel
+              dots={false}
+              ref={slider}
+              afterChange={(index) => setIndexSlide(index)}
+              effect="fade"
+            >
               {datastudies?.map((c, cx) => (
                 <CaseStudy {...c} key={cx} />
               ))}

@@ -148,11 +148,12 @@ export const overideValidation = (errors, dependValue) => {
       x.name !== "type" &&
       !dependValue.includes(x.property)
   );
+
   // check for nested dependencies validation
   let tmp = [];
   overide.forEach((x) => {
-    const check = dependValue.forEach((y) => {
-      if (x.property.includes(y)) {
+    dependValue.forEach((y) => {
+      if (x.property.includes(y) && !x.property.includes(".S4.S4_G1.url")) {
         tmp.push(x);
       }
     });

@@ -21,6 +21,9 @@ insert into resource(
 --~ (when (contains? params :url) ", url")
 --~ (when (contains? params :info_docs) ", info_docs")
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
+--~ (when (contains? params :first_publication_date) ", first_publication_date")
+--~ (when (contains? params :latest_amendment_date) ", latest_amendment_date")
+--~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :capacity_building) ", capacity_building")
 )
 values(
@@ -44,6 +47,9 @@ values(
 --~ (when (contains? params :url) ", :url")
 --~ (when (contains? params :info_docs) ", :info_docs")
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
+--~ (when (contains? params :first_publication_date) ", :first_publication_date")
+--~ (when (contains? params :latest_amendment_date) ", :latest_amendment_date")
+--~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :capacity_building) ", :capacity_building")
 )
 returning id;
@@ -149,7 +155,7 @@ values(:image) returning id;
 
 -- :name entity-connections-by-id
 -- :doc Get entity connections by id
-select orgrsc.id, orgrsc.association as role, org.name as entity
+select orgrsc.id, orgrsc.association as role, org.name as entity, org.logo as image
  from organisation_resource orgrsc
  left join organisation org
  on orgrsc.organisation = org.id
@@ -157,7 +163,7 @@ select orgrsc.id, orgrsc.association as role, org.name as entity
 
 -- :name stakeholder-connections-by-id
 -- :doc Get stakeholder connections by id
-select sr.id, sr.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder
+select sr.id, sr.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder, s.picture as image
   from stakeholder_resource sr
   left join stakeholder s
   on sr.stakeholder = s.id
@@ -185,3 +191,17 @@ select id, title
 select id, title
   from resource
   where type = 'Action Plan';
+
+-- :name related-content-by-id
+-- :doc Get related content by id
+select res.id, res.title, res.summary as description from resource r
+  left join resource res
+  on res.id = ANY(r.related_content)
+  where r.id = :id
+
+-- :name tags-by-id
+-- :doc Get tags by id
+select t.id, t.tag from resource_tag rt
+  left join tag t
+  on rt.tag = t.id
+  where rt.resource = :id

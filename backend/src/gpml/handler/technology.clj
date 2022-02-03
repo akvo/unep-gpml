@@ -1,14 +1,15 @@
 (ns gpml.handler.technology
   (:require [clojure.java.jdbc :as jdbc]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.image :as handler.image]
+            [gpml.auth :as auth]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.db.technology :as db.technology]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
             [gpml.handler.auth :as h.auth]
-            [gpml.auth :as auth]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.image :as handler.image]
+            [gpml.pg-util :as pg-util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -38,6 +39,7 @@
                                       geo_coverage_type geo_coverage_value
                                       geo_coverage_countries geo_coverage_country_groups
                                       tags url urls created_by image owners info_docs
+                                      sub_content_type related_content
                                       logo attachments remarks mailjet-config
                                       entity_connections individual_connections]}]
   (let [data {:name name
@@ -59,6 +61,8 @@
               :created_by created_by
               :owners owners
               :info_docs info_docs
+              :sub_content_type sub_content_type
+              :related_content (pg-util/->JDBCArray related_content "integer")
               :review_status "SUBMITTED"}
         technology-id (->> data (db.technology/new-technology conn) :id)]
     (when (not-empty owners)
@@ -109,7 +113,7 @@
 (def post-params
   (into [:map
     [:name string?]
-    [:year_founded integer?]
+    [:year_founded {:optional true} integer?]
     [:organisation_type {:optional true}
      [:enum "Established Company", "Research Lab", "Academic Institution",
       "Startup", "Non-Profit Org", "Partnerships"]]
@@ -126,21 +130,21 @@
      [:vector {:optional true} integer?]]
     [:url {:optional true} string?]
     [:info_docs {:optional true} string?]
+    [:related_content {:optional true}
+     [:vector {:optional true} integer?]]
     [:sub_content_type {:optional true} string?]
     [:entity_connections {:optional true}
      [:vector {:optional true}
       [:map
        [:entity int?]
        [:role
-        [:enum "owner" "user" "reviewer" "interested in"
-         "implementor" "partner" "donor" "other"]]]]]
+        [:enum "owner" "implementor" "partner" "donor"]]]]]
     [:individual_connections {:optional true}
       [:vector {:optional true}
        [:map
         [:stakeholder int?]
         [:role
-         [:enum "owner" "user" "reviewer" "interested in"
-          "implementor" "partner" "donor" "other"]]]]]
+         [:enum "owner" "resource_editor"]]]]]
     [:urls {:optional true}
      [:vector {:optional true}
       [:map [:lang string?] [:url [:string {:min 1}]]]]]

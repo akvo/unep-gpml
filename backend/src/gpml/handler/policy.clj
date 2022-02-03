@@ -1,15 +1,16 @@
 (ns gpml.handler.policy
   (:require [clojure.java.jdbc :as jdbc]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.image :as handler.image]
+            [gpml.auth :as auth]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.db.policy :as db.policy]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
-            [integrant.core :as ig]
             [gpml.handler.auth :as h.auth]
-            [gpml.auth :as auth]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.image :as handler.image]
+            [gpml.pg-util :as pg-util]
+            [integrant.core :as ig]
             [ring.util.response :as resp]))
 
 (defn expand-entity-associations
@@ -39,7 +40,7 @@
                                   geo_coverage_value implementing_mea
                                   geo_coverage_countries geo_coverage_country_groups
                                   tags urls created_by image
-                                  owners info_docs
+                                  owners info_docs sub_content_type related_content topics
                                   attachments remarks mailjet-config
                                   entity_connections individual_connections]}]
   (let [data {:title title
@@ -55,6 +56,9 @@
               :status status
               :owners owners
               :info_docs info_docs
+              :sub_content_type sub_content_type
+              :related_content (pg-util/->JDBCArray related_content "integer")
+              :topics (pg-util/->JDBCArray topics "text")
               :image (handler.image/assoc-image conn image "policy")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
@@ -135,20 +139,22 @@
     [:url {:optional true} string?]
     [:info_docs {:optional true} string?]
     [:sub_content_type {:optional true} string?]
+    [:related_content {:optional true}
+     [:vector {:optional true} integer?]]
+    [:topics {:optional true}
+     [:vector {:optional true} string?]]
     [:entity_connections {:optional true}
      [:vector {:optional true}
       [:map
        [:entity int?]
        [:role
-        [:enum "regulator" "implementor" "reviewer" "owner"
-         "interested in" "partner" "donor" "other"]]]]]
+        [:enum "implementor" "owner" "partner" "donor"]]]]]
     [:individual_connections {:optional true}
      [:vector {:optional true}
       [:map
        [:stakeholder int?]
        [:role
-        [:enum "regulator" "implementor" "reviewer" "owner"
-         "interested in" "partner" "donor" "other"]]]]]
+        [:enum "owner" "resource_editor"]]]]]
     [:urls {:optional true}
      [:vector {:optional true}
       [:map [:lang string?] [:url [:string {:min 1}]]]]]

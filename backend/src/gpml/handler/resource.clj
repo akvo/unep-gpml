@@ -10,6 +10,7 @@
             [gpml.handler.auth :as h.auth]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
+            [gpml.pg-util :as pg-util]
             [gpml.util :as util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
@@ -41,7 +42,8 @@
                                     geo_coverage_countries geo_coverage_country_groups
                                     attachments country urls tags remarks
                                     created_by url mailjet-config owners
-                                    info_docs sub_content_type
+                                    info_docs sub_content_type related_content
+                                    first_publication_date latest_amendment_date
                                     entity_connections individual_connections]}]
   (let [data {:type resource_type
               :title title
@@ -63,7 +65,10 @@
               :created_by created_by
               :url url
               :info_docs info_docs
-              :sub_content_type sub_content_type}
+              :sub_content_type sub_content_type
+              :related_content (pg-util/->JDBCArray related_content "integer")
+              :first_publication_date first_publication_date
+              :latest_amendment_date latest_amendment_date}
         resource-id (:id (db.resource/new-resource conn data))]
     (when (not-empty owners)
       (doseq [stakeholder-id owners]
@@ -162,16 +167,22 @@
           [:capacity_building {:optional true} boolean?]
           [:is_member {:optional true} boolean?]
           [:sub_content_type {:optional true} string?]
+          [:related_content {:optional true}
+           [:vector {:optional true} integer?]]
+          [:first_publication_date {:optional true} string?]
+          [:latest_amendment_date {:optional true} string?]
           [:entity_connections {:optional true}
            [:vector {:optional true}
             [:map
-             [:role string?]
-             [:entity int?]]]]
+             [:entity int?]
+             [:role
+              [:enum "owner" "implementor" "partner" "donor"]]]]]
           [:individual_connections {:optional true}
            [:vector {:optional true}
             [:map
-             [:role string?]
-             [:stakeholder int?]]]]
+             [:stakeholder int?]
+             [:role
+              [:enum "owner" "resource_editor"]]]]]
           [:tags {:optional true}
            [:vector {:optional true} integer?]]
           auth/owners-schema]

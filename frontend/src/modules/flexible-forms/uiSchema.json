@@ -21,19 +21,19 @@
         "geoCoverageType": {
           "ui:widget": "radio"
         },
-        "geoCoverageValueTransnational": {
+        "S4_G2_24.3": {
           "ui:placeholder": "Geo-coverage",
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple"
         },
-        "geoCoverageCountries": {
+        "S4_G2_24.4": {
           "ui:placeholder": "Geo-coverage (Country)",
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple"
         },
-        "geoCoverageValueNational": {
+        "S4_G2_24.2": {
           "ui:placeholder": "Select a country",
           "ui:widget": "select",
           "ui:showSearch": true
@@ -48,9 +48,9 @@
         },
         "ui:order": [
           "geoCoverageType",
-          "geoCoverageValueTransnational",
-          "geoCoverageCountries",
-          "geoCoverageValueNational",
+          "S4_G2_24.3",
+          "S4_G2_24.4",
+          "S4_G2_24.2",
           "geoCoverageValueSubnational",
           "geoCoverageValueSubnationalCity"
         ]
@@ -125,18 +125,20 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
       "classNames": "list-group",
       "S5_G1": {
-        "S5_G1_4": {
-          "ui:widget": "checkboxes",
-          "ui:options": {
-            "inline": true
-          }
-        },
+        "S5_G1_4": {},
         "S5_G1_4.1.1": {
           "ui:widget": "checkboxes",
           "ui:options": {
@@ -193,6 +195,37 @@
           "ui:allowClear": true
         },
         "S5_G2_6": {},
+        "S5_G2_7": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.1.0": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.1.1": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.1.2": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.2": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.3": {},
         "S5_G2_8": {
           "ui:widget": "select",
           "ui:placeholder": "Select",
@@ -286,7 +319,7 @@
           "ui:placeholder": "Select",
           "ui:allowClear": true
         },
-        "S5_G7_42": {},
+        "S5_G7_41.1": {},
         "ui:order": [
           "S5_G1_2",
           "S5_G1_3",
@@ -304,6 +337,12 @@
           "S5_G1_4.4.5",
           "S5_G2_5",
           "S5_G2_6",
+          "S5_G2_7",
+          "S5_G2_7.1.0",
+          "S5_G2_7.1.1",
+          "S5_G2_7.1.2",
+          "S5_G2_7.2",
+          "S5_G2_7.3",
           "S5_G2_8",
           "S5_G2_9",
           "S5_G2_10",
@@ -329,7 +368,7 @@
           "S5_G6_38",
           "S5_G6_39",
           "S5_G7_41",
-          "S5_G7_42"
+          "S5_G7_41.1"
         ]
       }
     }
@@ -464,7 +503,14 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -687,7 +733,14 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -737,7 +790,8 @@
         "topics": {
           "ui:placeholder": "Choose topics",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
         }
       }
     }
@@ -928,20 +982,18 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
       "classNames": "list-group",
-      "publishYear": {
-        "ui:widget": "date",
-        "ui:showSearch": true,
-        "ui:span": 17,
-        "ui:options": {
-          "mode": "year",
-          "disableDate": "future"
-        }
-      },
       "value": {
         "ui:group": "border",
         "valueAmount": {
@@ -1158,7 +1210,14 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -1362,7 +1421,14 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
@@ -1382,11 +1448,6 @@
       "eventType": {
         "ui:placeholder": "Choose event type",
         "ui:widget": "select"
-      },
-      "recording": {
-        "ui:addOnBefore": "https://",
-        "ui:widget": "URLWidget",
-        "ui:placeholder": "Url"
       }
     }
   },
@@ -1576,7 +1637,14 @@
         "classNames": "list-group-item",
         "info": {
           "ui:widget": "RichWidget"
-        }
+        },
+        "related": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Select a resource"
+        },
+        "ui:order": ["info", "related"]
       }
     },
     "S5": {
