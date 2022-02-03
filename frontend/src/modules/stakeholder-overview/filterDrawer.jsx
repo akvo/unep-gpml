@@ -72,7 +72,6 @@ tags: {},
   representativeGroup: representativeGroup,
   mainContentType: mainContentType,
  }*/
-  console.log(geoCoverageTypeOptions);
 
   const isLoaded = () =>
     !isEmpty(tags) &&
@@ -285,8 +284,8 @@ tags: {},
           {/* Affiliation */}
           <MultipleSelectFilter
             title="Affiliation"
-            options={tagOpts || []}
-            value={query?.tag?.map((x) => parseInt(x)) || []}
+            options={[]}
+            value={[]}
             flag="affiliation"
             query={query}
             updateQuery={updateQuery}

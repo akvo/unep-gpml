@@ -116,10 +116,10 @@ export const relationsByTopicType = {
 
 export const entityName = (entity) => {
   const names = {
-    partner: "Sponsors",
+    partner: "Partner",
     owner: "GPML Members",
     implementor: "Center of excellence",
-    donor: "Partners",
+    donor: "Sponsor",
   };
   return names[humps.camelize(entity)];
 };

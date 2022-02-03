@@ -11,6 +11,7 @@ import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-
 const Header = ({
   filterVisible,
   setFilterVisible,
+  renderFilterTag,
   sortPeople,
   isAscending,
 }) => {
@@ -61,7 +62,7 @@ const Header = ({
               </Col>
               <Col lg={19} md={17} sm={15} className="filter-tag">
                 <Space direction="horizontal">
-                  {/* {renderFilterTag()} */}
+                  {renderFilterTag()}
                 </Space>
               </Col>
             </Row>

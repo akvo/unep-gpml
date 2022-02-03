@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Pagination } from "antd";
+import { Row, Col, Pagination, Tag } from "antd";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./styles.scss";
 import LeftSidebar from "./leftSidebar";
@@ -8,10 +8,12 @@ import Header from "./header";
 import FilterDrawer from "./filterDrawer";
 import { useQuery } from "./common";
 import { UIStore } from "../../store";
+import humps from "humps";
 import { profiles } from "./profiles";
 import api from "../../utils/api";
 import { redirectError } from "../error/error-util";
 import { suggestedProfiles } from "./suggested-profile";
+import { entityName } from "../../utils/misc";
 
 let tmid;
 
@@ -100,9 +102,6 @@ const StakeholderOverview = ({ history }) => {
   };
 
   useEffect(() => {
-    console.log(isLoading);
-    console.log(tmid, "TMID");
-    console.log(filters);
     setLoading(true);
     if (isLoading === false && !filters) {
       setTimeout(getResults, 0);
@@ -128,9 +127,64 @@ const StakeholderOverview = ({ history }) => {
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
     history.push(`/stakeholder-overview?${newParams.toString()}`);
-    console.log(history);
     clearTimeout(tmid);
     tmid = setTimeout(getResults, 1000);
+  };
+
+  // Here is the function to render filter tag
+  const renderFilterTag = () => {
+    const renderName = (key, value) => {
+      if (key === "entity") {
+        const findEntity = entityRoleOptions.find((x) => x == value);
+        const name = humps.decamelize(findEntity);
+        return entityName(name);
+      }
+
+      if (key === "country") {
+        const findCountry = countries.find((x) => x.id == value);
+        return findCountry?.name;
+      }
+
+      if (key === "representativeGroup") {
+        const representativeGroups = representativeGroup.find(
+          (x) => x == value
+        );
+        return representativeGroups;
+      }
+    };
+    return Object.keys(query).map((key, index) => {
+      // don't render if key is limit and offset
+      if (
+        key === "limit" ||
+        key === "offset" ||
+        key === "q" ||
+        key === "favorites"
+      ) {
+        return;
+      }
+      return query?.[key]
+        ? query?.[key]?.map((x) => (
+            <Tag
+              className="result-box"
+              closable
+              onClick={() =>
+                updateQuery(
+                  key,
+                  query?.[key]?.filter((v) => v !== x)
+                )
+              }
+              onClose={() =>
+                updateQuery(
+                  key,
+                  query?.[key]?.filter((v) => v !== x)
+                )
+              }
+            >
+              {renderName(key, x)}
+            </Tag>
+          ))
+        : "";
+    });
   };
 
   return (
@@ -139,6 +193,7 @@ const StakeholderOverview = ({ history }) => {
         filterVisible={filterVisible}
         isAscending={isAscending}
         setFilterVisible={setFilterVisible}
+        renderFilterTag={renderFilterTag}
         sortPeople={sortPeople}
       />
       <Row type="flex" className="body-wrapper">
