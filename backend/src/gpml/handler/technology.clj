@@ -64,19 +64,23 @@
               :sub_content_type sub_content_type
               :related_content (pg-util/->JDBCArray related_content "integer")
               :review_status "SUBMITTED"}
-        technology-id (->> data (db.technology/new-technology conn) :id)]
-    (when (not-empty owners)
-      (doseq [stakeholder-id owners]
-        (h.auth/grant-topic-to-stakeholder! conn {:topic-id technology-id
-                                                  :topic-type "technology"
-                                                  :stakeholder-id stakeholder-id
-                                                  :roles ["owner"]})))
+        technology-id (->> data (db.technology/new-technology conn) :id)
+        individual_connections (conj individual_connections {:stakeholder created_by
+                                                             :role "owner"})
+        owners (distinct (remove nil? (flatten (conj owners
+                                                 (map #(when (= (:role %) "owner")
+                                                         (:stakeholder %))
+                                                   individual_connections)))))]
+    (doseq [stakeholder-id owners]
+      (h.auth/grant-topic-to-stakeholder! conn {:topic-id technology-id
+                                                :topic-type "technology"
+                                                :stakeholder-id stakeholder-id
+                                                :roles ["owner"]}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections technology-id)]
         (db.favorite/new-organisation-association conn association)))
-    (when (not-empty individual_connections)
-      (doseq [association (expand-individual-associations entity_connections technology-id)]
-        (db.favorite/new-association conn association)))
+    (doseq [association (expand-individual-associations individual_connections technology-id)]
+      (db.favorite/new-association conn association))
     (when (not-empty tags)
       (db.technology/add-technology-tags
         conn {:tags (map #(vector technology-id %) tags)}))

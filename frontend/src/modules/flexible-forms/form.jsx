@@ -194,7 +194,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.entity) {
-        data.entityConnections = data.entity;
+        data.entityConnections = data.entity[0].hasOwnProperty("row")
+          ? data.entity
+          : [];
         delete data.entity;
       }
       if (data?.individual) {
@@ -269,7 +271,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.qentity) {
-        data.entity_connections = data.qentity;
+        data.entity_connections = data.qentity[0].hasOwnProperty("row")
+          ? data.qentity
+          : [];
         delete data.qentity;
       }
 
@@ -397,7 +401,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.entity) {
-        data.entityConnections = data.entity;
+        data.entityConnections = data.entity[0].hasOwnProperty("row")
+          ? data.entity
+          : [];
         delete data.entity;
       }
 
@@ -511,7 +517,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.entity) {
-        data.entityConnections = data.entity;
+        data.entityConnections = data.entity[0].hasOwnProperty("row")
+          ? data.entity
+          : [];
         delete data.entity;
       }
 
@@ -620,7 +628,9 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags.map((x) => parseInt(x));
 
       if (data?.entity) {
-        data.entityConnections = data.entity;
+        data.entityConnections = data.entity[0].hasOwnProperty("row")
+          ? data.entity
+          : [];
         delete data.entity;
       }
 
@@ -671,6 +681,7 @@ const FlexibleForm = withRouter(
             ...formData,
           };
         });
+
         let updatedFormDataSchema = {};
 
         if (
@@ -813,7 +824,6 @@ const FlexibleForm = withRouter(
       },
       [initialFormData, formSchema, setDisabledBtn]
     );
-
     const handleTransformErrors = (errors, dependValue) => {
       // custom errors handle
       [".S4", ".S5"].forEach((x) => {

@@ -58,21 +58,25 @@
               :info_docs info_docs
               :sub_content_type sub_content_type
               :related_content (pg-util/->JDBCArray related_content "integer")}
-        event-id (->> data (db.event/new-event conn) :id)]
+        event-id (->> data (db.event/new-event conn) :id)
+        individual_connections (conj individual_connections {:stakeholder created_by
+                                                             :role "owner"})
+        owners (distinct (remove nil? (flatten (conj owners
+                                                 (map #(when (= (:role %) "owner")
+                                                         (:stakeholder %))
+                                                   individual_connections)))))]
     (when (not-empty tags)
       (db.event/add-event-tags conn {:tags (map #(vector event-id %) tags)}))
-    (when (not-empty owners)
-      (doseq [stakeholder-id owners]
-        (h.auth/grant-topic-to-stakeholder! conn {:topic-id event-id
-                                                  :topic-type "event"
-                                                  :stakeholder-id stakeholder-id
-                                                  :roles ["owner"]})))
+    (doseq [stakeholder-id owners]
+      (h.auth/grant-topic-to-stakeholder! conn {:topic-id event-id
+                                                :topic-type "event"
+                                                :stakeholder-id stakeholder-id
+                                                :roles ["owner"]}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections event-id)]
         (db.favorite/new-organisation-association conn association)))
-    (when (not-empty individual_connections)
-      (doseq [association (expand-individual-associations individual_connections event-id)]
-        (db.favorite/new-association conn association)))
+    (doseq [association (expand-individual-associations individual_connections event-id)]
+      (db.favorite/new-association conn association))
     (when (not-empty urls)
       (let [lang-urls (map #(vector event-id
                                     (->> % :lang
