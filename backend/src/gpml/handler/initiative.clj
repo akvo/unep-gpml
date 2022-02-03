@@ -48,26 +48,30 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn create-initiative [conn {:keys [mailjet-config tags owners related_content
+(defn create-initiative [conn {:keys [mailjet-config tags owners related_content created_by
                                       entity_connections individual_connections qimage] :as initiative}]
   (let [data (-> initiative
                (dissoc :tags :owners :mailjet-config :entity_connections :individual_connections :related_content)
                (assoc :qimage (handler.image/assoc-image conn qimage "initiative")
                       :related_content (pg-util/->JDBCArray related_content "integer")))
-        initiative-id (:id (db.initiative/new-initiative conn data))]
+        initiative-id (:id (db.initiative/new-initiative conn data))
+        individual_connections (conj individual_connections {:stakeholder created_by
+                                                             :role "owner"})
+        owners (distinct (remove nil? (flatten (conj owners
+                                                 (map #(when (= (:role %) "owner")
+                                                         (:stakeholder %))
+                                                   individual_connections)))))]
     (add-geo-initiative conn initiative-id (extract-geo-data data))
-    (when (not-empty owners)
-      (doseq [stakeholder-id owners]
-        (h.auth/grant-topic-to-stakeholder! conn {:topic-id initiative-id
-                                                  :topic-type "initiative"
-                                                  :stakeholder-id stakeholder-id
-                                                  :roles ["owner"]})))
+    (doseq [stakeholder-id owners]
+      (h.auth/grant-topic-to-stakeholder! conn {:topic-id initiative-id
+                                                :topic-type "initiative"
+                                                :stakeholder-id stakeholder-id
+                                                :roles ["owner"]}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections initiative-id)]
         (db.favorite/new-organisation-association conn association)))
-    (when (not-empty individual_connections)
-      (doseq [association (expand-individual-associations individual_connections initiative-id)]
-        (db.favorite/new-association conn association)))
+    (doseq [association (expand-individual-associations individual_connections initiative-id)]
+      (db.favorite/new-association conn association))
     (when (not-empty tags)
       (db.initiative/add-initiative-tags conn {:tags (map #(vector initiative-id %) tags)}))
     (email/notify-admins-pending-approval
