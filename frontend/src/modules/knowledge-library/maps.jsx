@@ -229,7 +229,13 @@ const Maps = ({
             icon={<ZoomOutOutlined />}
             onClick={() => {
               position.zoom > 1 &&
-                setPosition({ ...position, zoom: position.zoom - 0.5 });
+                setPosition({
+                  coordinates: [
+                    position.coordinates[0],
+                    position.coordinates[1] - 10,
+                  ],
+                  zoom: position.zoom - 0.5,
+                });
             }}
             disabled={position.zoom <= 1}
           />
@@ -240,7 +246,13 @@ const Maps = ({
             type="secondary"
             icon={<ZoomInOutlined />}
             onClick={() => {
-              setPosition({ ...position, zoom: position.zoom + 0.5 });
+              setPosition({
+                coordinates: [
+                  position.coordinates[0],
+                  position.coordinates[1] + 10,
+                ],
+                zoom: position.zoom + 0.5,
+              });
             }}
           />
         </Tooltip>
