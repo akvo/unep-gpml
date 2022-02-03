@@ -119,7 +119,7 @@ const CaseStudy = ({
               </div>
             </Col>
           </Row>
-          <Row style={{ marginTop: 16 }}>
+          <Row>
             <Col>
               <Button
                 href={platform_link || "#"}
