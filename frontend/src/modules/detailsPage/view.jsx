@@ -43,6 +43,7 @@ import {
   ArrowRightOutlined,
   LoadingOutlined,
   EyeOutlined,
+  HeartFilled,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -121,9 +122,9 @@ const SharePanel = ({
 }) => {
   const { type, id } = topic;
 
-  const handleChangeRelation = (relationType) => ({ target: { checked } }) => {
+  const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
-    if (checked) {
+    if (!association.includes(relationType)) {
       association = [...association, relationType];
     } else {
       association = association.filter((it) => it !== relationType);
@@ -154,34 +155,20 @@ const SharePanel = ({
           <h2>View</h2>
         </a>
       </div>
-      <Dropdown
-        overlay={
-          <ul className="relations-dropdown">
-            {relationsByTopicType[resourceTypeToTopicType(topic.type)].map(
-              (relationType) => (
-                <li key={`${relationType}`}>
-                  <Checkbox
-                    checked={
-                      relation &&
-                      relation.association &&
-                      relation.association.indexOf(relationType) !== -1
-                    }
-                    onChange={handleChangeRelation(relationType)}
-                  >
-                    {relationType}
-                  </Checkbox>
-                </li>
-              )
-            )}
-          </ul>
-        }
-        trigger={["click"]}
+
+      <div
+        className="sticky-panel-item"
+        onClick={() => handleChangeRelation("interested in")}
       >
-        <div className="sticky-panel-item">
+        {relation &&
+        relation.association &&
+        relation.association.indexOf("interested in") !== -1 ? (
+          <HeartFilled />
+        ) : (
           <HeartOutlined />
-          <h2>Bookmark</h2>
-        </div>
-      </Dropdown>
+        )}
+        <h2>Bookmark</h2>
+      </div>
       <Popover
         overlayStyle={{
           width: "22vw",
@@ -308,7 +295,6 @@ const renderBannerSection = (
             <img
               src={data.image ? data.image : imageNotFound}
               className="resource-image"
-              style={{ objectFit: data.image ? "fill" : "cover" }}
             />
           </div>
         </Col>
@@ -972,7 +958,7 @@ const DetailsView = ({
                           bordered={false}
                         >
                           <h4>{item.title}</h4>
-                          <p>{item.description}</p>
+                          {/* <p>{item.description}</p> */}
                           <div className="bottom-panel">
                             <div>
                               <Avatar.Group

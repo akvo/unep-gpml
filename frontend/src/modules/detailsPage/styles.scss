@@ -67,7 +67,7 @@
       padding-top: 100%;
       img {
         height: 100%;
-        object-fit: fill;
+        object-fit: cover;
         position: absolute;
         top: 0;
       }
@@ -324,6 +324,7 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
+          margin-top: 10px;
           .read-more {
             color: #34a6ff;
             cursor: pointer;
