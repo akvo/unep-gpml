@@ -408,7 +408,7 @@ const KnowledgeLibrary = ({
                 className="render-map-container map-main-wrapper"
                 style={{
                   background: view === "topic" ? "#255B87" : "#fff",
-                  height: `${contentHeight}px`,
+                  // height: `${contentHeight}px`,
                 }}
               >
                 {view === "map" ? (

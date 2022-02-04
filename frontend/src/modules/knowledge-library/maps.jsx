@@ -157,7 +157,7 @@ const Maps = ({
   const [content, setContent] = useState("");
 
   const [position, setPosition] = useState({
-    coordinates: [20.190615912003892, -52.28113630782354],
+    coordinates: [20.19061591200387, -48.02461070936383],
     zoom: 0.76,
   });
 
@@ -260,7 +260,7 @@ const Maps = ({
             icon={<FullscreenOutlined />}
             onClick={() => {
               setPosition({
-                coordinates: [20.190615912003892, -52.28113630782354],
+                coordinates: [20.19061591200387, -48.02461070936383],
                 zoom: 0.76,
               });
             }}

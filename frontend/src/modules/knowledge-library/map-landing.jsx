@@ -141,7 +141,9 @@ const MapLanding = ({
   });
 
   return (
-    <div id="map-landing" style={{ height: `${contentHeight}px` }}>
+    <div id="map-landing" 
+    // style={{ height: `${contentHeight}px` }}
+    >
       <div className="landing-container map-container">
         {!isLoaded() && (
           <h2 className="loading">
