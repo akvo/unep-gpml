@@ -28,7 +28,12 @@
   }
 
   .landing-container.map-container > div {
-    height: 800px !important;
+    height: 700px !important;
+    width: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    align-content: center;
+    padding-bottom: 26px;
   }
 
   .landing-container.map-container {
@@ -280,12 +285,10 @@
   }
 
   .legends {
-    position: absolute;
-    bottom: 0;
-    z-index: 999;
-    left: 20px;
+    position: unset;
     border: 2px solid #daeaf1;
     line-height: 10px;
+    align-self: center;
 
     .legend {
       cursor: pointer;

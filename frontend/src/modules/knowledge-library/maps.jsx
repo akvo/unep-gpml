@@ -157,9 +157,11 @@ const Maps = ({
   const [content, setContent] = useState("");
 
   const [position, setPosition] = useState({
-    coordinates: [20.19061591200387, -48.02461070936383],
-    zoom: 0.76,
+    coordinates: [17.425563686742798, 4.731435586529677],
+    zoom: 1.20,
   });
+
+  console.log(position.coordinates);
 
   const [mapPos, setMapPos] = useState({
     left: 0,
@@ -226,16 +228,16 @@ const Maps = ({
             type="secondary"
             icon={<ZoomOutOutlined />}
             onClick={() => {
-              position.zoom > 1 &&
+              position.zoom > 1.20 &&
                 setPosition({
                   coordinates: [
                     position.coordinates[0],
-                    position.coordinates[1] - 10,
+                    position.coordinates[1] - 5,
                   ],
-                  zoom: position.zoom - 0.5,
+                  zoom: position.zoom - 0.3,
                 });
             }}
-            disabled={position.zoom <= 1}
+            disabled={position.zoom <= 1.20}
           />
         </Tooltip>
         <Tooltip title="zoom in">
@@ -247,9 +249,9 @@ const Maps = ({
               setPosition({
                 coordinates: [
                   position.coordinates[0],
-                  position.coordinates[1] + 10,
+                  position.coordinates[1] + 5,
                 ],
-                zoom: position.zoom + 0.5,
+                zoom: position.zoom + 0.3,
               });
             }}
           />
@@ -260,8 +262,8 @@ const Maps = ({
             icon={<FullscreenOutlined />}
             onClick={() => {
               setPosition({
-                coordinates: [20.19061591200387, -48.02461070936383],
-                zoom: 0.76,
+                coordinates: [17.425563686742798, 4.731435586529677],
+                zoom: 1.20,
               });
             }}
           />

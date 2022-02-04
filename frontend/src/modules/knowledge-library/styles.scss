@@ -8,6 +8,11 @@
 
 #knowledge-library {
   position: relative;
+
+  .sidebar-mobile {
+    margin-bottom: 0;
+  }
+
   .ant-btn-icon-only {
     width: 100%;
     max-width: 35px;
@@ -194,8 +199,7 @@
     background-color: rgb(37, 91, 135);
   }
 
-  .site-drawer-render-in-current-wrapper,
-  .resource-main-container {
+  .site-drawer-render-in-current-wrapper {
     height: 100%;
   }
 
@@ -643,7 +647,6 @@
     flex-direction: column;
     gap: 10px;
     height: 436px;
-    // overflow-y: auto;
     align-items: center;
     min-width: 300px;
     .resource-item-wrapper {
