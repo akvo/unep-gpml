@@ -74,6 +74,7 @@ import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 // Buttons
 import AddContentButton from "./modules/add-content-button/AddContentButton";
+import { useQuery } from "./modules/knowledge-library/common";
 
 Promise.all([
   api.get("/tag"),
@@ -668,13 +669,15 @@ const renderDropdownMenu = (
 const Search = withRouter(({ history }) => {
   const [search, setSearch] = useState("");
   const [isShownForm, setIsShownForm] = useState(false);
+
   const handleSearch = (src) => {
     const path = history.location.pathname;
     if (src) {
       if (path.includes("/knowledge-library")) {
+        setIsShownForm(false);
         history.push(`?q=${src.trim()}`);
       } else {
-        history.push(`/browse/?q=${src.trim()}`);
+        history.push(`/knowledge-library/?q=${src.trim()}`);
       }
     }
     setIsShownForm(!isShownForm);
