@@ -345,7 +345,8 @@ const Maps = ({
                           : isCountrySelected
                           ? "#84b4cc"
                           : selected
-                          ? geo.properties.MAP_COLOR === selected
+                          ? geo.properties.MAP_COLOR === selected ||
+                            selectionCondition()
                             ? "#84b4cc"
                             : fillColor(curr ? curr[topic] : 0)
                           : fillColor(curr ? curr[topic] : 0)
