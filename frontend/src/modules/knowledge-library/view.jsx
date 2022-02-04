@@ -88,48 +88,7 @@ const KnowledgeLibrary = ({
   const [countData, setCountData] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
-  // Matches the height of the map or topics to the list height
-  const listHeight = document.querySelector(".resource-list-container")
-    ?.clientHeight;
 
-  const [contentHeight, setContentHeight] = useState(listHeight);
-
-  function useWindowDimensions() {
-    const hasWindow = typeof window !== "undefined";
-    function getWindowDimensions() {
-      const width = hasWindow ? window.innerWidth : null;
-      const height = hasWindow ? window.innerHeight : null;
-      return {
-        width,
-        height,
-      };
-    }
-
-    const [windowDimensions, setWindowDimensions] = useState(
-      getWindowDimensions()
-    );
-
-    useEffect(() => {
-      if (hasWindow) {
-        function handleResize() {
-          setWindowDimensions(getWindowDimensions());
-        }
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [hasWindow]);
-
-    return windowDimensions;
-  }
-
-  useEffect(() => {
-    setTimeout(() => {
-      setContentHeight(listHeight);
-    }, 500);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listHeight, useWindowDimensions().width, results.length]);
 
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
@@ -408,7 +367,7 @@ const KnowledgeLibrary = ({
                 className="render-map-container map-main-wrapper"
                 style={{
                   background: view === "topic" ? "#255B87" : "#fff",
-                  // height: `${contentHeight}px`,
+          
                 }}
               >
                 {view === "map" ? (
@@ -426,7 +385,7 @@ const KnowledgeLibrary = ({
                       setMultiCountryCountries,
                       setListVisible,
                       listVisible,
-                      contentHeight,
+                 
                     }}
                     isFilteredCountry={filterCountries}
                     isDisplayedList={listVisible}

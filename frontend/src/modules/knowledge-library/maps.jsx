@@ -78,14 +78,7 @@ const Legend = ({ data, setFilterColor, selected, isDisplayedList }) => {
   ));
   if (data.length) {
     return (
-      <div
-        className="legends"
-        style={
-          isDisplayedList
-            ? { left: "calc(50% - calc(104px - 30px) )" }
-            : { left: "17px" }
-        }
-      >
+      <div className="legends">
         {[
           <div
             key={"legend-0"}
@@ -157,9 +150,11 @@ const Maps = ({
   const [content, setContent] = useState("");
 
   const [position, setPosition] = useState({
-    coordinates: [17.425563686742798, 4.731435586529677],
-    zoom: 1.2000000000000013,
+    coordinates: [18.297325014768123, 2.4067378816508587],
+    zoom: 1.1500000000000013,
   });
+
+  console.log(position.coordinates);
 
   const [mapPos, setMapPos] = useState({
     left: 0,
@@ -226,13 +221,13 @@ const Maps = ({
             type="secondary"
             icon={<ZoomOutOutlined />}
             onClick={() => {
-              position.zoom > 1.2000000000000013 &&
+              position.zoom > 1.1500000000000013 &&
                 setPosition({
                   ...position,
                   zoom: position.zoom - 0.3,
                 });
             }}
-            disabled={position.zoom <= 1.2000000000000013}
+            disabled={position.zoom <= 1.1500000000000013}
           />
         </Tooltip>
         <Tooltip title="zoom in">
@@ -254,8 +249,8 @@ const Maps = ({
             icon={<FullscreenOutlined />}
             onClick={() => {
               setPosition({
-                coordinates: [17.425563686742798, 4.731435586529677],
-                zoom: 1.2000000000000013,
+                coordinates: [18.297325014768123, 2.4067378816508587],
+                zoom: 1.1500000000000013,
               });
             }}
           />

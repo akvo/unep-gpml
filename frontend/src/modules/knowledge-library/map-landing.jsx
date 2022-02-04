@@ -19,15 +19,13 @@ const MapLanding = ({
   setWarningModalVisible,
   isAuthenticated,
   loginWithPopup,
-  filters,
-  setFilters,
   setToggleButton,
   updateQuery,
   multiCountryCountries,
   setMultiCountryCountries,
   setListVisible,
   listVisible,
-  contentHeight,
+
   isDisplayedList,
   isFilteredCountry,
 }) => {
@@ -141,12 +139,10 @@ const MapLanding = ({
   });
 
   return (
-    <div id="map-landing" 
-    // style={{ height: `${contentHeight}px` }}
-    >
+    <div id="map-landing">
       <div className="landing-container map-container">
         {!isLoaded() && (
-          <h2 className="loading">
+          <h2 className="loading" id="map-loader">
             <LoadingOutlined spin /> Loading
           </h2>
         )}
