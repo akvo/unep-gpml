@@ -166,17 +166,18 @@ const ResourceList = ({
           }
         />
       </Col>
-
-      <Col span={24} className="resource-list">
-        {!isLoaded() || loading ? (
-          <h2 className="loading">
-            <LoadingOutlined spin /> Loading
-          </h2>
-        ) : isLoaded() && !loading && !isEmpty(allResults) ? (
-          <ResourceItem view={view} results={allResults} />
-        ) : (
-          <h2 className="loading">There is no data to display</h2>
-        )}
+      <div>
+        <Col span={24} className="resource-list">
+          {!isLoaded() || loading ? (
+            <h2 className="loading">
+              <LoadingOutlined spin /> Loading
+            </h2>
+          ) : isLoaded() && !loading && !isEmpty(allResults) ? (
+            <ResourceItem view={view} results={allResults} />
+          ) : (
+            <h2 className="loading">There is no data to display</h2>
+          )}
+        </Col>
         <div className="page">
           {!isEmpty(allResults) && (
             <Pagination
@@ -195,7 +196,7 @@ const ResourceList = ({
             of {allTopicCount || 0} result{allTopicCount > 1 ? "s" : ""}
           </div>
         </div>
-      </Col>
+      </div>
     </Row>
   );
 };
