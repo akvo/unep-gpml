@@ -228,7 +228,10 @@ const ResourceItem = ({ results, view }) => {
       result.remarks ||
       "";
     const linkTo = `/${type}/${id}`;
-
+    const stakeholders = result?.stakeholder_connections;
+    if (result?.stakeholder_connections) {
+      stakeholders.length = 3;
+    }
     return (
       <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
         <Card
@@ -255,16 +258,37 @@ const ResourceItem = ({ results, view }) => {
                   backgroundColor: "#fde3cf",
                 }}
               >
-                {["a", "b"].map((b, i) => (
-                  <Tooltip key={`avatar-${i}`} title={b} placement="top">
-                    <Avatar
-                      style={{ backgroundColor: "#FFB800" }}
-                      icon={<UserOutlined />}
-                    />
-                  </Tooltip>
-                ))}
-              </Avatar.Group>{" "}
-              <span className="avatar-number">+42</span>
+                {result?.stakeholder_connections
+                  ? stakeholders.map((stakeholder) => (
+                      <Tooltip
+                        key={stakeholder.id}
+                        title={`${stakeholder?.first_name} ${stakeholder?.last_name}`}
+                        placement="top"
+                      >
+                        <Avatar
+                          style={{ backgroundColor: "#FFB800" }}
+                          icon={<img src={stakeholder?.picture} />}
+                        />
+                      </Tooltip>
+                    ))
+                  : ["a"].map((b, i) => (
+                      <Tooltip
+                        key={`avatar-${i}`}
+                        title={<UserOutlined />}
+                        placement="top"
+                      >
+                        <Avatar
+                          style={{ backgroundColor: "#FFB800" }}
+                          icon={<UserOutlined />}
+                        />
+                      </Tooltip>
+                    ))}
+              </Avatar.Group>
+              <span className="avatar-number">
+                {result.stakeholder_connections
+                  ? `${result.stakeholder_connections?.length - 1}+`
+                  : ""}
+              </span>
             </Space>
             <span className="read-more">
               Read more
