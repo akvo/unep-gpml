@@ -23,13 +23,7 @@ const ConnectStakeholdersDropdownMenu = withRouter(
 
     const handleOnClickNeedAuth = (topic) => {
       {
-        profile?.reviewStatus === "APPROVED"
-          ? redirectPage(topic)
-          : Object.keys(profile).length > 1
-          ? setWarningModalVisible(true)
-          : isAuthenticated
-          ? setStakeholderSignupModalVisible(true)
-          : loginWithPopup();
+        redirectPage(topic);
       }
     };
 
