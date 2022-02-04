@@ -23,6 +23,14 @@
   overflow: hidden;
   background-color: #eaf6fd;
 
+  #map-loader {
+    position: absolute;
+    left: 50%;
+    top: calc(50% + calc(16px / 2));
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
   .render-map-container {
     background-color: #eaf6fd;
   }
@@ -33,7 +41,7 @@
     display: flex;
     flex-direction: column-reverse;
     align-content: center;
-    padding-bottom: 26px;
+    padding-bottom: 13px;
   }
 
   .landing-container.map-container {
@@ -59,6 +67,8 @@
 
     .map-overlay {
       position: absolute;
+      display: flex;
+      flex-direction: column;
       z-index: 1;
       left: 0 !important;
       top: 0 !important;
@@ -285,7 +295,9 @@
   }
 
   .legends {
-    position: unset;
+    position: absolute;
+    bottom: 33px;
+    left: calc(50% - (484px / 2));
     border: 2px solid #daeaf1;
     line-height: 10px;
     align-self: center;
