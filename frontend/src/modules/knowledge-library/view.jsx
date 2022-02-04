@@ -88,8 +88,6 @@ const KnowledgeLibrary = ({
   const [countData, setCountData] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
-
-
   const getResults = () => {
     // NOTE: The url needs to be window.location.search because of how
     // of how `history` and `location` are interacting!
@@ -367,7 +365,6 @@ const KnowledgeLibrary = ({
                 className="render-map-container map-main-wrapper"
                 style={{
                   background: view === "topic" ? "#255B87" : "#fff",
-          
                 }}
               >
                 {view === "map" ? (
@@ -385,7 +382,6 @@ const KnowledgeLibrary = ({
                       setMultiCountryCountries,
                       setListVisible,
                       listVisible,
-                 
                     }}
                     isFilteredCountry={filterCountries}
                     isDisplayedList={listVisible}
