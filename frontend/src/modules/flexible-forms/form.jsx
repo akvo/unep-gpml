@@ -184,6 +184,14 @@ const FlexibleForm = withRouter(
         delete data.geoCoverageValueNational;
       }
 
+      if (data.geoCoverageType === "sub-national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
+        ];
+
+        delete data.geoCoverageValueSubnational;
+      }
+
       if (data?.urls) {
         data.urls = data.urls.map((x) => {
           return {
@@ -212,6 +220,8 @@ const FlexibleForm = withRouter(
         data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
       }
+
+      console.log(data);
 
       if (status === "add" && !params?.id) {
         api
@@ -302,6 +312,12 @@ const FlexibleForm = withRouter(
         data.q24_2 = [data.q24_2];
       }
 
+      if (data.q24.hasOwnProperty("sub-national")) {
+        data.q24_2 = [data.qgeoCoverageValueSubnational];
+        delete data.qgeoCoverageValueSubnational;
+        delete data.qgeoCoverageValueSubnationalCity;
+      }
+
       if (data?.qrelated) {
         data.related_content = data?.qrelated.map((x) => parseInt(x));
         delete data.qrelated;
@@ -372,6 +388,14 @@ const FlexibleForm = withRouter(
         ];
 
         delete data.geoCoverageValueNational;
+      }
+
+      if (data.geoCoverageType === "sub-national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
+        ];
+
+        delete data.geoCoverageValueSubnational;
       }
 
       if (data?.urls) {
@@ -495,6 +519,14 @@ const FlexibleForm = withRouter(
         delete data.geoCoverageValueNational;
       }
 
+      if (data.geoCoverageType === "sub-national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
+        ];
+
+        delete data.geoCoverageValueSubnational;
+      }
+
       if (data?.urls) {
         data.urls = data.urls.map((x) => {
           return {
@@ -604,6 +636,15 @@ const FlexibleForm = withRouter(
 
         delete data.geoCoverageValueNational;
       }
+
+      if (data.geoCoverageType === "sub-national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
+        ];
+
+        delete data.geoCoverageValueSubnational;
+      }
+
       if (data?.yearFounded) {
         const yearFounded = new Date(data.yearFounded);
         data.yearFounded = yearFounded.getFullYear();
