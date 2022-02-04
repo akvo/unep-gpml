@@ -167,7 +167,15 @@ const ResourceList = ({
         />
       </Col>
       <div>
-        <Col span={24} className="resource-list">
+        <Col
+          span={24}
+          className="resource-list"
+          style={
+            isLoaded() &&
+            !loading &&
+            !isEmpty(allResults) && { overflowY: "auto" }
+          }
+        >
           {!isLoaded() || loading ? (
             <h2 className="loading">
               <LoadingOutlined spin /> Loading
