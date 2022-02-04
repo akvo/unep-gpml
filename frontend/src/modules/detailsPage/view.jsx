@@ -530,8 +530,12 @@ const renderItemValues = (
 };
 
 const renderCountries = (data, countries, transnationalOptions) => {
+  console.log(data, "ss");
   let dataCountries = null;
-  const newArray = [...new Set([...transnationalOptions])];
+  const newArray =
+    data.geoCoverageType === "national"
+      ? [...new Set([...countries, ...transnationalOptions])]
+      : [...new Set([...transnationalOptions])];
   dataCountries = data["geoCoverageValues"]
     ?.map((x) => {
       return newArray.find((it) => it.id === x)?.name;
