@@ -145,16 +145,15 @@ const Maps = ({
   isFilteredCountry,
 }) => {
   const mapMaxZoom = 10;
+  const mapMinZoom = 1.1500000000000013;
   const [selected, setSelected] = useState(null);
   const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
 
   const [position, setPosition] = useState({
     coordinates: [18.297325014768123, 2.4067378816508587],
-    zoom: 1.1500000000000013,
+    zoom: mapMinZoom,
   });
-
-  console.log(position.coordinates);
 
   const [mapPos, setMapPos] = useState({
     left: 0,
@@ -221,13 +220,13 @@ const Maps = ({
             type="secondary"
             icon={<ZoomOutOutlined />}
             onClick={() => {
-              position.zoom > 1.1500000000000013 &&
+              position.zoom > mapMinZoom &&
                 setPosition({
                   ...position,
                   zoom: position.zoom - 0.3,
                 });
             }}
-            disabled={position.zoom <= 1.1500000000000013}
+            disabled={position.zoom <= mapMinZoom}
           />
         </Tooltip>
         <Tooltip title="zoom in">
@@ -250,7 +249,7 @@ const Maps = ({
             onClick={() => {
               setPosition({
                 coordinates: [18.297325014768123, 2.4067378816508587],
-                zoom: 1.1500000000000013,
+                zoom: mapMinZoom,
               });
             }}
           />
@@ -262,6 +261,7 @@ const Maps = ({
         style={{ height: "auto" }}
       >
         <ZoomableGroup
+          minZoom={mapMinZoom}
           maxZoom={mapMaxZoom}
           zoom={position.zoom}
           center={position.coordinates}
