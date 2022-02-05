@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Row, Col, Card } from "antd";
+import { Link } from "react-router-dom";
 
 import { UIStore } from "../../store";
 
@@ -18,43 +19,44 @@ const ProfileCard = ({ profile }) => {
 
   // console.log(UIStore.currentState);
   return (
-    <Card className="profile-card">
-      <div className="profile-icon-container">
-        <img src={unionIcon} alt="union-icon" />
-      </div>
-      <Row type="flex" className="profile-details">
-        <div className="image-wrapper">
-          <img
-            className="profile-image"
-            src={profile.picture || profile.logo}
-            alt=""
-          />
+    <Link to="/stakeholder-overview">
+      <Card className="profile-card">
+        <div className="profile-icon-container">
+          <img src={unionIcon} alt="union-icon" />
         </div>
-        <div className="profile-details-container">
-          <ul className="profile-detail-list">
-            <li className="list-item">
-              <h4 className="person-name">
-                {profile.first_name ? (
-                  <>
-                    <div>{profile.first_name}</div>
-                    <div>{profile.last_name}</div>
-                  </>
-                ) : (
-                  <div>{profile.name}</div>
+        <Row type="flex" className="profile-details">
+          <div className="image-wrapper">
+            <img
+              className="profile-image"
+              src={profile.picture || profile.logo}
+              alt=""
+            />
+          </div>
+          <div className="profile-details-container">
+            <ul className="profile-detail-list">
+              <li className="list-item">
+                <h4 className="person-name">
+                  {profile.first_name ? (
+                    <>
+                      <div>{profile.first_name}</div>
+                      <div>{profile.last_name}</div>
+                    </>
+                  ) : (
+                    <div>{profile.name}</div>
+                  )}
+                </h4>
+              </li>
+              <li className="list-item">
+                <span className={country?.name && "location"}>
+                  {country?.name}
+                </span>
+              </li>
+              <li className="list-item">
+                {profile.entity_name && (
+                  <span className="entity-name">Entity Name</span>
                 )}
-              </h4>
-            </li>
-            <li className="list-item">
-              <span className={country?.name && "location"}>
-                {country?.name}
-              </span>
-            </li>
-            <li className="list-item">
-              {profile.entity_name && (
-                <span className="entity-name">Entity Name</span>
-              )}
-            </li>
-            {/* <ul className="icons-list" >
+              </li>
+              {/* <ul className="icons-list" >
               <li className="list-item">
                 <Badge />
               </li>
@@ -64,32 +66,33 @@ const ProfileCard = ({ profile }) => {
                 </li>
               )}
             </ul> */}
-          </ul>
+            </ul>
 
-          <ul className="social-media-list">
-            {profile.linked_in && (
-              <li className="list-item">
-                <a href="" className="social-media-link linkedin">
-                  Linkedin
-                </a>
-              </li>
-            )}
-            {profile.twitter && (
-              <li className="list-item">
-                <a href="" className="social-media-link twitter">
-                  Twitter
-                </a>
-              </li>
-            )}
-          </ul>
+            <ul className="social-media-list">
+              {profile.linked_in && (
+                <li className="list-item">
+                  <a href="" className="social-media-link linkedin">
+                    Linkedin
+                  </a>
+                </li>
+              )}
+              {profile.twitter && (
+                <li className="list-item">
+                  <a href="" className="social-media-link twitter">
+                    Twitter
+                  </a>
+                </li>
+              )}
+            </ul>
+          </div>
+        </Row>
+
+        <div className="person-role">
+          <p className="seeking-text">Seeking:</p>
+          <p className="role-name">marine biologists</p>
         </div>
-      </Row>
-
-      <div className="person-role">
-        <p className="seeking-text">Seeking:</p>
-        <p className="role-name">marine biologists</p>
-      </div>
-    </Card>
+      </Card>
+    </Link>
   );
 };
 
