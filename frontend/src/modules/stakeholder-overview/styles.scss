@@ -209,10 +209,6 @@
     .person-role {
       display: none;
     }
-
-    .ant-card-body {
-      min-height: 271px;
-    }
   }
 
   .card-container {
@@ -243,7 +239,8 @@
       .ant-card-body {
         display: flex;
         flex-direction: column;
-        min-height: 321px;
+        // min-height: 321px;
+        min-height: 250px;
         .person-role {
           max-height: fit-content;
           margin-top: auto;
@@ -264,8 +261,9 @@
     }
 
     .profile-details {
-      padding: 23px 16px 11px 25px;
+      padding: 16px 16px 11px 16px;
       flex-wrap: nowrap;
+      min-height: 175px;
       img {
         width: 100%;
       }
@@ -276,7 +274,8 @@
       }
 
       .profile-image {
-        max-width: 216px;
+        // max-width: 216px;
+        max-width: 150px;
         border-radius: 50%;
         margin-right: 16.51px;
       }
@@ -361,12 +360,14 @@
       padding: 6px 0 0 8.43px;
       img {
         position: absolute;
+        max-width: 58px;
       }
     }
 
     .person-role {
       width: calc(100% - 6px);
-      padding: 8px 21px 8px 21px;
+      // padding: 8px 21px 8px 21px;
+      padding: 8px 10.5px 8px 10.5px;
       background: rgba(37, 91, 135, 0.24);
       border-radius: 0px 0px 12px 12px;
       margin: 0 6px 3px 2px;
@@ -800,7 +801,7 @@
 
   @media (min-width: 1300px) {
     .profile-card {
-      max-width: 100%;
+      max-width: 330px;
     }
     .card-wrapper,
     .title {
