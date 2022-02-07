@@ -27,6 +27,7 @@ import api from "../../utils/api";
 import { revertFormData } from "../../utils/forms";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
+import RichTextEditor from "react-rte";
 
 const { Step } = Steps;
 
@@ -210,10 +211,42 @@ const formDataMapping = [
   {
     key: "infoDocs",
     name: "infoDocs",
-    type: "array",
+    type: "string",
     section: "S4",
     group: "S4_G6",
     question: "info",
+  },
+  {
+    key: "publishYear",
+    name: "publishYear",
+    group: "S5_G1",
+    type: "year",
+    section: "S5",
+    question: "publishYear",
+  },
+  {
+    key: "value",
+    name: "value",
+    group: "value",
+    type: "integer",
+    section: "S5",
+    question: "valueAmount",
+  },
+  {
+    key: "valueCurrency",
+    name: "valueCurrency",
+    group: "value",
+    type: "string",
+    section: "S5",
+    question: "valueCurrency",
+  },
+  {
+    key: "valueRemarks",
+    name: "valueRemarks",
+    group: "value",
+    type: "string",
+    section: "S5",
+    question: "valueRemark",
   },
 ];
 
@@ -363,8 +396,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       res = value ? value.map((x) => x.id) : "";
     }
 
+    if (name === "infoDocs") {
+      res = value ? value : "";
+    }
+
     if (name === "relatedContent") {
-      res = value ? value.map((x) => x.id) : "";
+      res = value && value[0].id !== null ? value.map((x) => x.id) : "";
     }
 
     if (name === "stakeholderConnections") {
@@ -389,6 +426,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       } else {
         res = value ? moment(value).format("YYYY-MM-DD") : "";
       }
+    }
+
+    if (type === "integer") {
+      res = parseInt(value);
     }
 
     // Geo Transnational handle
