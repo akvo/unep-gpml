@@ -1,10 +1,9 @@
 import React from "react";
-import { sample } from "lodash";
 import { Row, Col, Typography, Tooltip, Button, Avatar } from "antd";
 
 import datastakeholders from "./json/stakeholders.json";
 import iconGlobe from "../../images/case-studies/globe-outline.svg";
-import { titleCase, TrimText } from "../../utils/string";
+import { titleCase } from "../../utils/string";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -100,16 +99,12 @@ const CaseStudy = ({
                 {Object?.values(stakeholders)
                   ?.filter((sk, sx) => sx < 4)
                   ?.map((sk, sx) => {
-                    let avatar = sample([
-                      "https://ik.imagekit.io/8bnvluby33xpi/avatar-placeholder?updatedAt=1640774297572&tr=w-1080,h-1080,fo-auto",
-                      "https://ik.imagekit.io/8bnvluby33xpi/image_64_iWwgh-iQU.png?updatedAt=1640774243901&tr=w-1080,h-1080,fo-auto",
-                    ]);
-                    const findSk = datastakeholders.find(
-                      (ds) => sk.trim() === ds.name
+                    const findSk = datastakeholders.find((ds) =>
+                      sk?.toLowerCase()?.includes(ds?.name?.toLowerCase())
                     );
-                    if (findSk) {
-                      avatar = findSk.image;
-                    }
+                    const avatar = findSk
+                      ? findSk.image
+                      : "https://ik.imagekit.io/8bnvluby33xpi/avatar-placeholder?updatedAt=1640774297572&tr=w-1080,h-1080,fo-auto";
                     return (
                       <Tooltip className="avatar" title={sk} key={sx}>
                         <Avatar src={avatar} />
