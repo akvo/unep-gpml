@@ -459,7 +459,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-action-plan/:id"
-            render={(props) => <AddActionPlan {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -469,7 +469,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-financing-resource/:id"
-            render={(props) => <AddFinancingResource {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -479,7 +479,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-technical-resource/:id"
-            render={(props) => <AddTechnicalResource {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route

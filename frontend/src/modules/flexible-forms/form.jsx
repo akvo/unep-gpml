@@ -40,6 +40,7 @@ const FlexibleForm = withRouter(
     mainType,
     subContentType,
     capacityBuilding,
+    type,
     match: { params },
   }) => {
     const {
@@ -138,6 +139,7 @@ const FlexibleForm = withRouter(
 
         if (data.hasOwnProperty("firstPublicationDate")) {
           data.firstPublicationDate = data.firstPublicationDate;
+          data.latestAmendmentDate = data.latestAmendmentDate || "Ongoing";
         }
 
         if (data.hasOwnProperty("latestAmendmentDate")) {
@@ -177,19 +179,15 @@ const FlexibleForm = withRouter(
       }
 
       if (data.geoCoverageType === "national") {
-        data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
-        ];
-
-        delete data.geoCoverageValueNational;
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
       }
 
       if (data.geoCoverageType === "sub-national") {
-        data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
-        ];
-
-        delete data.geoCoverageValueSubnational;
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
       }
 
       if (data?.urls) {
@@ -221,8 +219,6 @@ const FlexibleForm = withRouter(
         delete data.related;
       }
 
-      console.log(data);
-
       if (status === "add" && !params?.id) {
         api
           .post("/resource", data)
@@ -236,6 +232,30 @@ const FlexibleForm = withRouter(
             notification.success({ message: "Resource successfully created" });
           })
           .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+      if (status === "edit" || params?.id) {
+        api
+          .put(`/detail/${type}/${id || params?.id}`, data)
+          .then(() => {
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully updated" });
+            history.push(`/${type}/${id || params?.id}`);
+          })
+          .catch(() => {
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            history.push(`/${type}/${id || params?.id}`);
             notification.error({ message: "An error occured" });
           })
           .finally(() => {
@@ -383,19 +403,15 @@ const FlexibleForm = withRouter(
       }
 
       if (data.geoCoverageType === "national") {
-        data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
-        ];
-
-        delete data.geoCoverageValueNational;
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
       }
 
       if (data.geoCoverageType === "sub-national") {
-        data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
-        ];
-
-        delete data.geoCoverageValueSubnational;
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
       }
 
       if (data?.urls) {
@@ -512,19 +528,15 @@ const FlexibleForm = withRouter(
       }
 
       if (data.geoCoverageType === "national") {
-        data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
-        ];
-
-        delete data.geoCoverageValueNational;
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
       }
 
       if (data.geoCoverageType === "sub-national") {
-        data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
-        ];
-
-        delete data.geoCoverageValueSubnational;
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
       }
 
       if (data?.urls) {
@@ -630,19 +642,15 @@ const FlexibleForm = withRouter(
       }
 
       if (data.geoCoverageType === "national") {
-        data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
-        ];
-
-        delete data.geoCoverageValueNational;
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
       }
 
       if (data.geoCoverageType === "sub-national") {
-        data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
-        ];
-
-        delete data.geoCoverageValueSubnational;
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
       }
 
       if (data?.yearFounded) {
