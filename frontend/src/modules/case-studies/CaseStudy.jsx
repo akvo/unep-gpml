@@ -84,9 +84,9 @@ const CaseStudy = ({
                       {tag.length > 5 ? titleCase(tag) : tag}
                     </li>
                   ))}
-                {tagItems.length > 7 && tagItems.length - 7 > 1 && (
+                {/* {tagItems.length > 7 && tagItems.length - 7 > 1 && (
                   <li className="tag-item">{`${tagItems.length - 7} mores`}</li>
-                )}
+                )} */}
               </ul>
             </Col>
             <Col>
@@ -94,7 +94,7 @@ const CaseStudy = ({
               <div className="avatars">
                 {stakeholders.length > 4 && (
                   <div className="avatar green-border">
-                    {stakeholders.length - 4}+
+                    + {stakeholders.length - 4}
                   </div>
                 )}
                 {Object?.values(stakeholders)
