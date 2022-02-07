@@ -152,7 +152,7 @@ const FilterDrawer = ({
           </Col>
 
           {/* Specificity */}
-          <Col span={24} className="specificity-card">
+          {/* <Col span={24} className="specificity-card">
             <Space align="middle">
               <div className="filter-title">Specificity</div>
               {isEmpty("") ? (
@@ -184,7 +184,7 @@ const FilterDrawer = ({
                 </Card>
               </Col>
             </Row>
-          </Col>
+          </Col> */}
 
           {/* For entities */}
           <Col span={24} className="specificity-card">
@@ -234,6 +234,20 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
 
+          {/*Geo-coverage*/}
+          <MultipleSelectFilter
+            title="Geo-coverage"
+            options={
+              isLoaded()
+                ? geoCoverageTypeOptions?.map((x) => ({ value: x, label: x }))
+                : []
+            }
+            value={query?.geoCoverage || []}
+            flag="geoCoverage"
+            query={query}
+            updateQuery={updateQuery}
+          />
+
           {/* Location */}
           <MultipleSelectFilter
             title="Location"
@@ -249,14 +263,14 @@ const FilterDrawer = ({
           />
 
           {/* Goals */}
-          <MultipleSelectFilter
+          {/* <MultipleSelectFilter
             title="Goals"
             options={[]}
             value={query?.goal || []}
             flag="goal"
             query={query}
             updateQuery={updateQuery}
-          />
+          /> */}
 
           {/*Expertise to offer*/}
           <MultipleSelectFilter
@@ -288,20 +302,6 @@ const FilterDrawer = ({
             }
             value={query?.representativeGroup || []}
             flag="representativeGroup"
-            query={query}
-            updateQuery={updateQuery}
-          />
-
-          {/*Geo-coverage*/}
-          <MultipleSelectFilter
-            title="Geo-coverage"
-            options={
-              isLoaded()
-                ? geoCoverageTypeOptions?.map((x) => ({ value: x, label: x }))
-                : []
-            }
-            value={query?.geoCoverage || []}
-            flag="geoCoverage"
             query={query}
             updateQuery={updateQuery}
           />
