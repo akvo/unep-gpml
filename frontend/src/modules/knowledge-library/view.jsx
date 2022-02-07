@@ -2,7 +2,7 @@ import React, { useState, useLayoutEffect, useEffect } from "react";
 import { Row, Col, Button, Input, Space, Tag, Select } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 
-import ConfigIcon from "../../images/knowledge-library/config-icon.svg";
+import FilterIcon from "../../images/knowledge-library/filter-icon.svg";
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
 import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
 import DownArrow from "../../images/knowledge-library/chevron-down.svg";
@@ -320,7 +320,7 @@ const KnowledgeLibrary = ({
                       shape="circle"
                       icon={
                         <img
-                          src={ConfigIcon}
+                          src={FilterIcon}
                           className="filter-icon"
                           alt="config-icon"
                         />
