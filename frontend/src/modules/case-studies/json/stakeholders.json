@@ -78,5 +78,41 @@
   {
     "name": "Florida State University",
     "image": "https://imageio.forbes.com/specials-images/imageserve/559ac975e4b05c2c3431af7e/0x0.jpg?format=jpg&crop=416,416,x0,y0,safe&fit=crop"
+  },
+  {
+    "name": "CEJAD",
+    "image": "https://cejadkenya.org/wp-content/uploads/2021/05/200.png"
+  },
+  {
+    "name": "Alliance to End Plastic Waste",
+    "image": "https://www.packagingstrategies.com/ext/resources/2019-Postings/Packager-News/alliance-for-web.jpg?1547650963"
+  },
+  {
+    "name": "Saahas NGO and Waste Warriors Society",
+    "image": "https://csrbox.org/organization/org_logo/1565068500Saahas%20NGO%20new%20logo_jpg.jpg"
+  },
+  {
+    "name": "Asase Foundation",
+    "image": "https://i0.wp.com/asasegh.com/wp-content/uploads/2018/09/cropped-asase-logo2.jpg?fit=9999%2C4088&ssl=1"
+  },
+  {
+    "name": "GEF",
+    "image": "https://www.thegef.org/sites/default/files/news_0.jpg"
+  },
+  {
+    "name": "government of Tuvalu",
+    "image": "https://ae01.alicdn.com/kf/HTB1GzHjdi6guuRkSmLyq6AulFXas/YJZT-13-1CM-13-8CM-Car-Accessories-Tuvalu-Shield-Coat-Of-Arms-Car-Sticker-PVC-Decal.jpg"
+  },
+  {
+    "name": "SPREP",
+    "image": "https://pipap.sprep.org/sites/default/files/sprep_16.jpeg"
+  },
+  {
+    "name": "government of New Zealand",
+    "image": "https://thumbor.forbes.com/thumbor/338x309/http://b-i.forbesimg.com/reuvencohen/files/2013/05/government_new_zealand11.jpg"
+  },
+  {
+    "name": "WRAP",
+    "image": "https://i0.wp.com/bioplasticsnews.com/wp-content/uploads/2020/02/wrap-uk-bioplastics.png?fit=900%2C500&ssl=1"
   }
 ]
