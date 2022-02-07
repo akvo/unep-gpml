@@ -260,6 +260,7 @@ const Root = () => {
     })();
   }, [getIdTokenClaims, isAuthenticated]);
 
+  // Here we retrieve the resources data
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
