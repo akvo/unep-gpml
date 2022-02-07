@@ -3,6 +3,7 @@
             [gpml.constants :as constants]
             [gpml.db.detail :as db.detail]
             [gpml.db.event :as db.event]
+            [gpml.db.favorite :as db.favorite]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.language :as db.language]
             [gpml.db.policy :as db.policy]
@@ -563,6 +564,34 @@
 (defn update-resource-logo [conn image image-type resource-id]
   (-update-resource-picture conn image image-type resource-id true))
 
+(defn expand-entity-associations
+  [entity-connections table resource-id]
+  (vec (for [connection entity-connections]
+         {:column_name table
+          :topic table
+          :topic_id resource-id
+          :organisation (:entity connection)
+          :association (:role connection)
+          :remarks nil})))
+
+(defn expand-individual-associations
+  [individual-connections table resource-id]
+  (vec (for [connection individual-connections]
+         {:column_name table
+          :topic table
+          :topic_id resource-id
+          :stakeholder (:stakeholder connection)
+          :association (:role connection)
+          :remarks nil})))
+
+(defn update-resource-entity-connections [conn entity_connections table resource-id]
+  (doseq [association (expand-entity-associations entity_connections table resource-id)]
+    (db.favorite/new-organisation-association conn association)))
+
+(defn update-resource-individual-connections [conn individual_connections table resource-id]
+  (doseq [association (expand-individual-associations individual_connections table resource-id)]
+    (db.favorite/new-association conn association)))
+
 (defn update-resource [conn topic-type id updates]
   (let [table (cond
                 (contains? constants/resource-types topic-type) "resource"
@@ -572,6 +601,8 @@
                               :image :photo :logo
                               :geo_coverage_country_groups
                               :geo_coverage_countries
+                              :entity_connections
+                              :individual_connections
                               ;; NOTE: we ignore resource_type since
                               ;; we don't expect it to change!
                               :resource_type)
@@ -596,6 +627,10 @@
     (update-resource-geo-coverage-values conn table id updates)
     (when (contains? #{"resource"} table)
       (update-resource-organisation conn table id org-id))
+    (when (contains? updates :entity_connections)
+      (update-resource-entity-connections conn (:entity_connections updates) table id))
+    (when (contains? updates :individual_connections)
+      (update-resource-individual-connections conn (:individual_connections updates) table id))
     status))
 
 (defn update-initiative [conn id data]
