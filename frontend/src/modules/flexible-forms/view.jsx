@@ -405,9 +405,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
 
     if (name === "stakeholderConnections") {
-      res = value
-        ? value.map((x) => ({ role: x.role, stakeholder: x.stakeholderId }))
-        : "";
+      res =
+        value.length > 0
+          ? value.map((x) => ({ role: x.role, stakeholder: x.stakeholderId }))
+          : [{}];
     }
 
     if (name === "entityConnections") {
