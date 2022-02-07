@@ -144,8 +144,8 @@ const Maps = ({
   isDisplayedList,
   isFilteredCountry,
 }) => {
-  const mapMaxZoom = 10;
-  const mapMinZoom = 1.1500000000000013;
+  const mapMaxZoom = 9.2;
+  const mapMinZoom = 1.1500000000000024;
   const [selected, setSelected] = useState(null);
   const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
