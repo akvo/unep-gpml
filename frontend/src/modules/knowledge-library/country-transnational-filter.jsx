@@ -167,7 +167,7 @@ const MultiCountryInfo = ({ multiCountryCountries, data }) => {
                 key={`popover-${name}-${id}`}
                 className="popover-content-item"
               >
-                {name}
+                <b>{name}</b>
                 <ResourcesInfo data={curr} />
               </div>
             );
