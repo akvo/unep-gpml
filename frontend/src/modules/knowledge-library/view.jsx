@@ -352,17 +352,18 @@ const KnowledgeLibrary = ({
       <Col span={24}>
         <div className="ui-container">
           {/* Filter Drawer */}
-          <FilterDrawer
-            filters={filters}
-            filterVisible={filterVisible}
-            setFilterVisible={setFilterVisible}
-            countData={countData}
-            query={query}
-            updateQuery={(flag, val) => updateQuery(flag, val)}
-            multiCountryCountries={multiCountryCountries}
-            setMultiCountryCountries={setMultiCountryCountries}
-          />
-
+          {filterVisible && (
+            <FilterDrawer
+              filters={filters}
+              filterVisible={filterVisible}
+              setFilterVisible={setFilterVisible}
+              countData={countData}
+              query={query}
+              updateQuery={(flag, val) => updateQuery(flag, val)}
+              multiCountryCountries={multiCountryCountries}
+              setMultiCountryCountries={setMultiCountryCountries}
+            />
+          )}
           <LeftSidebar active={1}>
             <Row className="resource-main-container">
               {/* Resource Main Content */}
