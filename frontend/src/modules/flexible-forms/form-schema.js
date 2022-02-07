@@ -1323,7 +1323,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  required: [],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -2153,7 +2153,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  required: [],
                   properties: {
                     role: {
                       title: "Entity role",

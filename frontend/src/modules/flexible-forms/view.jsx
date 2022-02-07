@@ -438,7 +438,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
 
     if (type === "integer") {
-      res = parseInt(value);
+      res = value !== "Not  Specified" ? parseInt(value) : value;
     }
 
     // Geo Transnational handle
@@ -473,6 +473,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     if (type === "item-array" && isObject && isArray) {
       res = value;
     }
+    console.log(name);
     console.log(res);
     return res;
   };
