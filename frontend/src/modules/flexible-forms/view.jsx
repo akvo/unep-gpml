@@ -406,7 +406,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
     if (name === "stakeholderConnections") {
       res = value
-        ? value.map((x) => ({ role: x.role, stakeholder: x.id }))
+        ? value.map((x) => ({ role: x.role, stakeholder: x.stakeholderId }))
         : "";
     }
 

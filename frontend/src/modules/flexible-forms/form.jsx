@@ -239,6 +239,7 @@ const FlexibleForm = withRouter(
           });
       }
       if (status === "edit" || params?.id) {
+        delete data.version;
         api
           .put(`/detail/${type}/${id || params?.id}`, data)
           .then(() => {
