@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Button, Input, Space, Tag, Select } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 
@@ -12,11 +12,11 @@ import { UIStore } from "../../store";
 import LeftSidebar from "../left-sidebar/LeftSidebar";
 import ResourceList from "./ResourceList";
 import FilterDrawer from "./FilterDrawer";
-import { useQuery } from "./common";
-import { useLocation, withRouter } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+
+import { withRouter } from "react-router-dom";
+
 import api from "../../utils/api";
-import { redirectError } from "../error/error-util";
+
 import isEmpty from "lodash/isEmpty";
 import { topicNames } from "../../utils/misc";
 import flatten from "lodash/flatten";
@@ -35,8 +35,23 @@ const KnowledgeLibrary = ({
   filterMenu,
   setWarningModalVisible,
   setStakeholderSignupModalVisible,
+  updateQuery,
+  getResults,
+  query,
+  results,
+  loading,
+  setLoading,
+  filterCountries,
+  setFilterCountries,
+  setRelations,
+  isAuthenticated,
+  loginWithPopup,
+  isLoading,
+  pageSize,
+  countData,
+  multiCountryCountries,
+  setMultiCountryCountries,
 }) => {
-  const query = useQuery();
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
   const [view, setView] = useState("map");
@@ -75,37 +90,8 @@ const KnowledgeLibrary = ({
     representativeGroup: s.sectorOptions,
   }));
 
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [filterCountries, setFilterCountries] = useState([]);
-  const location = useLocation();
-  const [relations, setRelations] = useState([]);
-  const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
-  const [warningVisible, setWarningVisible] = useState(false);
-  const pageSize = 8;
   const [toggleButton, setToggleButton] = useState("list");
   const { innerWidth } = window;
-  const [countData, setCountData] = useState([]);
-  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
-
-  const getResults = () => {
-    // NOTE: The url needs to be window.location.search because of how
-    // of how `history` and `location` are interacting!
-    const searchParms = new URLSearchParams(window.location.search);
-    searchParms.set("limit", pageSize);
-    const url = `/browse?${String(searchParms)}`;
-    api
-      .get(url)
-      .then((resp) => {
-        setResults(resp?.data?.results);
-        setCountData(resp?.data?.counts);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        redirectError(err, history);
-      });
-  };
 
   useEffect(() => {
     // setFilterCountries if user click from map to browse view
@@ -152,6 +138,7 @@ const KnowledgeLibrary = ({
         });
       }, 100);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
   useEffect(() => {
@@ -161,28 +148,6 @@ const KnowledgeLibrary = ({
 
     // NOTE: this are triggered when user click a topic from navigation menu
   }, [filterMenu]); // eslint-disable-line
-
-  const updateQuery = (param, value) => {
-    const topScroll = window.innerWidth < 640 ? 996 : 207;
-    window.scrollTo({
-      top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
-    });
-    setLoading(true);
-    const newQuery = { ...query };
-
-    newQuery[param] = value;
-    if (param !== "offset") {
-      newQuery["offset"] = 0;
-    }
-    setFilters(newQuery);
-    const newParams = new URLSearchParams(newQuery);
-    history.push(`/knowledge-library?${newParams.toString()}`);
-    clearTimeout(tmid);
-    tmid = setTimeout(getResults, 1000);
-    if (param === "country") {
-      setFilterCountries(value);
-    }
-  };
 
   // Here is the function to render filter tag
   const renderFilterTag = () => {

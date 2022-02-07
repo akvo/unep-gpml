@@ -7,6 +7,7 @@ import {
   Switch,
   withRouter,
   useLocation,
+  useHistory,
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown, Layout } from "antd";
@@ -29,6 +30,7 @@ import tmpLogo from "./images/GPML-temporary-logo-horiz.jpg";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
 import { updateStatusProfile, isRegistered } from "./utils/profile";
+import { useQuery } from "./modules/knowledge-library/common";
 import { storage } from "./utils/storage";
 import { UIStore } from "./store.js";
 import ProfileView from "./modules/profile/view";
@@ -74,6 +76,9 @@ import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 // Buttons
 import AddContentButton from "./modules/add-content-button/AddContentButton";
+import { redirectError } from "./modules/error/error-util";
+
+let tmid;
 
 Promise.all([
   api.get("/tag"),
@@ -180,6 +185,9 @@ const Root = () => {
     user,
   } = useAuth0();
 
+  const query = useQuery();
+  const history = useHistory();
+
   const { profile, disclaimer, nav, tags } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
@@ -252,8 +260,60 @@ const Root = () => {
     })();
   }, [getIdTokenClaims, isAuthenticated]);
 
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filterCountries, setFilterCountries] = useState([]);
+  const location = useLocation();
+  const [relations, setRelations] = useState([]);
+  const { isLoading } = useAuth0();
+  const [warningVisible, setWarningVisible] = useState(false);
+  const pageSize = 8;
+  const [countData, setCountData] = useState([]);
+  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
+
+  const getResults = () => {
+    // NOTE: The url needs to be window.location.search because of how
+    // of how `history` and `location` are interacting!
+    const searchParms = new URLSearchParams(window.location.search);
+    searchParms.set("limit", pageSize);
+    const url = `/browse?${String(searchParms)}`;
+    api
+      .get(url)
+      .then((resp) => {
+        setResults(resp?.data?.results);
+        setCountData(resp?.data?.counts);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        redirectError(err, history);
+      });
+  };
+
+  const updateQuery = (param, value) => {
+    const topScroll = window.innerWidth < 640 ? 996 : 207;
+    window.scrollTo({
+      top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
+    });
+    setLoading(true);
+    const newQuery = { ...query };
+
+    newQuery[param] = value;
+    if (param !== "offset") {
+      newQuery["offset"] = 0;
+    }
+    setFilters(newQuery);
+    const newParams = new URLSearchParams(newQuery);
+    history.push(`/knowledge-library?${newParams.toString()}`);
+    clearTimeout(tmid);
+    tmid = setTimeout(getResults, 1000);
+    if (param === "country") {
+      setFilterCountries(value);
+    }
+  };
+
   return (
-    <Router>
+    <>
       <ScrollToTop />
       <div id="root">
         {storage.getCookie("showDisclaimer") !== "false" &&
@@ -295,7 +355,7 @@ const Root = () => {
             <Switch>
               <Route path="/browse" />
               <Route>
-                <Search />
+                <Search updateQuery={updateQuery} />
               </Route>
             </Switch>
             <div className="rightside">
@@ -372,6 +432,28 @@ const Root = () => {
             render={(props) => (
               <KnowledgeLibrary
                 {...{
+                  updateQuery,
+                  getResults,
+                  query,
+                  results,
+                  setResults,
+                  loading,
+                  setLoading,
+                  filterCountries,
+                  setFilterCountries,
+                  location,
+                  relations,
+                  setRelations,
+                  isAuthenticated,
+                  loginWithPopup,
+                  isLoading,
+                  warningVisible,
+                  setWarningVisible,
+                  pageSize,
+                  countData,
+                  setCountData,
+                  multiCountryCountries,
+                  setMultiCountryCountries,
                   setWarningModalVisible,
                   ...props,
                 }}
@@ -620,7 +702,7 @@ const Root = () => {
         resources={resourceCounts}
         stakeholderCounts={stakeholderCounts}
       />
-    </Router>
+    </>
   );
 };
 
@@ -665,19 +747,18 @@ const renderDropdownMenu = (
   );
 };
 
-const Search = withRouter(({ history }) => {
+const Search = withRouter(({ history, updateQuery }) => {
   const [search, setSearch] = useState("");
   const [isShownForm, setIsShownForm] = useState(false);
 
   const handleSearch = (src) => {
     const path = history.location.pathname;
     if (src) {
-      if (path.includes("/knowledge-library")) {
-        setIsShownForm(false);
-        history.push(`?q=${src.trim()}`);
-      } else {
-        history.push(`/knowledge-library/?q=${src.trim()}`);
-      }
+      setIsShownForm(false);
+      history.push(`/knowledge-library?q=${src.trim()}`);
+      updateQuery("q", src.trim());
+    } else {
+      updateQuery("q", src.trim());
     }
     setIsShownForm(!isShownForm);
   };
