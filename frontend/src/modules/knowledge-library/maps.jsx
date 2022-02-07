@@ -308,20 +308,17 @@ const Maps = ({
                   );
                 }
                 const selectionCondition = () => {
+                  const mapProps = Number(geo.properties.M49Code);
                   if (
                     typeof isFilteredCountry === "string" ||
                     typeof isFilteredCountry === "number"
                   ) {
-                    return isFilteredCountry == geo.properties.M49Code;
+                    return Number(isFilteredCountry) === Number(mapProps);
                   } else {
-                    if (isFilteredCountry.length === 1) {
-                      return isFilteredCountry == geo.properties.M49Code;
-                    }
-                    if (isFilteredCountry.length > 1) {
-                      return isFilteredCountry.includes(
-                        Number(geo.properties.M49Code)
-                      );
-                    }
+                    const countryToFilter = isFilteredCountry.map((it) =>
+                      Number(it)
+                    );
+                    return countryToFilter.includes(mapProps);
                   }
                 };
 
