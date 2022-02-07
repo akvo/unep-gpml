@@ -203,22 +203,24 @@ const FilterDrawer = ({
 
             <Row type="flex" gutter={[10, 10]}>
               <p className="specificity-title">For entities</p>
-              {entities.map((entity) => {
+              {[entities[0]].map((entity) => {
                 const name = humps.decamelize(entity);
                 return (
-                  <Col span={6} key={entity}>
-                    <Card
-                      onClick={() => handleChangeType("entity", entity)}
-                      className={classNames("drawer-card", {
-                        active: query?.entity?.includes(entity),
-                      })}
-                    >
-                      <Space direction="vertical" align="center">
-                        {entityIcon(name)}
-                        <div className="topic-text">{entityName(name)}</div>
-                      </Space>
-                    </Card>
-                  </Col>
+                  name && (
+                    <Col span={6} key={entity}>
+                      <Card
+                        onClick={() => handleChangeType("entity", entity)}
+                        className={classNames("drawer-card", {
+                          active: query?.entity?.includes(entity),
+                        })}
+                      >
+                        <Space direction="vertical" align="center">
+                          {entityIcon(name)}
+                          <div className="topic-text">{entityName(name)}</div>
+                        </Space>
+                      </Card>
+                    </Col>
+                  )
                 );
               })}
             </Row>

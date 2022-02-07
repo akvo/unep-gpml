@@ -15,7 +15,7 @@ const Header = ({
   sortPeople,
   isAscending,
 }) => {
-  const [view, setView] = useState("list");
+  const [view, setView] = useState("map");
 
   const selectionValue = (
     <div className="selection-value">
@@ -23,7 +23,7 @@ const Header = ({
         <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
       </button>
       <span className="label text-white">{`${view} view`}</span>
-      {view.toLowerCase().includes("list") ? (
+      {view.toLowerCase().includes("map") ? (
         <img src={GlobeOutlined} alt="globe-icon" />
       ) : (
         <img src={TooltipOutlined} alt="tooltip-icon" />
@@ -72,8 +72,8 @@ const Header = ({
               value={selectionValue}
               onChange={(val) => setView(val)}
             >
-              <Select.Option value="list">List View</Select.Option>
-              <Select.Option value="topic">Topic View </Select.Option>
+              <Select.Option value="list">Map View</Select.Option>
+              {/* <Select.Option value="topic">Topic View </Select.Option> */}
             </Select>
           </Col>
           <Button className="sort-btn" onClick={sortPeople}>
