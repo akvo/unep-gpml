@@ -40,6 +40,7 @@ const ResourceList = ({
   results = [],
   pageSize,
   hideListButtonVisible,
+  view,
 }) => {
   const { profile, countries, tags, transnationalOptions } = UIStore.useState(
     (s) => ({
@@ -78,6 +79,12 @@ const ResourceList = ({
 
   const allTopicCount = countData.reduce((acc, topic) => acc + topic.count, 0);
 
+  const itemCount = loading
+    ? 0
+    : filters?.offset !== undefined
+    ? totalItems
+    : pageSize;
+
   const sortResults = () => {
     if (!isAscending) {
       const sortAscending = allResults.sort((result1, result2) => {
@@ -113,6 +120,11 @@ const ResourceList = ({
         <PageHeader
           className="resource-list-header"
           ghost={false}
+          style={
+            view === "map"
+              ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
+              : { backgroundColor: "rgba(255, 255, 255, 1)" }
+          }
           onBack={() => setListVisible(false)}
           backIcon={
             hideListButtonVisible ? (
@@ -128,12 +140,13 @@ const ResourceList = ({
               ""
             )
           }
+          const
           subTitle={
             <span className="result-number">
               Showing{" "}
               {totalItems > pageSize + filters?.offset
-                ? pageSize + filters?.offset
-                : totalItems}{" "}
+                ? pageSize + Number(filters?.offset)
+                : itemCount}{" "}
               of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
             </span>
           }
@@ -160,7 +173,7 @@ const ResourceList = ({
             <LoadingOutlined spin /> Loading
           </h2>
         ) : isLoaded() && !loading && !isEmpty(allResults) ? (
-          <ResourceItem results={allResults} />
+          <ResourceItem view={view} results={allResults} />
         ) : (
           <h2 className="loading">There is no data to display</h2>
         )}
@@ -177,8 +190,8 @@ const ResourceList = ({
           )}
           <div className="result-number">
             {totalItems > pageSize + filters?.offset
-              ? pageSize + filters?.offset
-              : totalItems}{" "}
+              ? pageSize + Number(filters?.offset)
+              : itemCount}{" "}
             of {allTopicCount || 0} result{allTopicCount > 1 ? "s" : ""}
           </div>
         </div>
@@ -187,7 +200,7 @@ const ResourceList = ({
   );
 };
 
-const ResourceItem = ({ results }) => {
+const ResourceItem = ({ results, view }) => {
   return results.map((result) => {
     const { id, type } = result;
     const fullName = (data) =>
@@ -209,7 +222,14 @@ const ResourceItem = ({ results }) => {
 
     return (
       <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
-        <Card className="resource-item">
+        <Card
+          className="resource-item"
+          style={
+            view === "map"
+              ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
+              : { backgroundColor: "rgba(255, 255, 255, 1)" }
+          }
+        >
           <div className="topic">{topicNames(type)}</div>
           <div className="item-body">
             <div className="title">{title}</div>

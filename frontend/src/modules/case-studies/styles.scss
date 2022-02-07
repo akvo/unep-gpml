@@ -36,14 +36,14 @@ $green-primary: #4dffa5;
     }
   }
   .case-studies-page {
-    min-height: 100vh;
+    height: 800px;
     h1.ant-typography,
     h2.ant-typography {
       font-family: Open Sans;
       font-style: normal;
       font-weight: 600;
-      font-size: 48px;
-      line-height: 71px;
+      font-size: 42px;
+      line-height: 62px;
       text-transform: capitalize;
       color: #fff !important;
       text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
@@ -144,8 +144,11 @@ $green-primary: #4dffa5;
       }
     }
   }
-  #appWrapper {
-    background-color: #18162f;
+  #siteWrapper {
+    height: 800px;
+    #appWrapper {
+      background-color: #18162f;
+    }
   }
 }
 .ml-1 {
@@ -167,6 +170,105 @@ $green-primary: #4dffa5;
   }
 }
 
+/* Mobile Devices */
+@media screen and (max-width: 280px) {
+  #case-study {
+    .case-studies-page {
+      height: 100%;
+    }
+    #siteWrapper {
+      min-height: 1440px;
+    }
+  }
+}
+@media screen and (min-width: 300px) and (max-width: 760px) {
+  #case-study {
+    .case-studies-page {
+      height: 100%;
+    }
+    #siteWrapper {
+      min-height: 1280px;
+    }
+  }
+}
+/* Tablet */
+@media screen and (min-width: 768px) and (max-width: 912px) {
+  #case-study {
+    .case-studies-page,
+    #siteWrapper {
+      height: 912px;
+    }
+  }
+}
+/* (1366x768) WXGA Display */
+@media screen and (max-width: 1366px) {
+  /* insert styles here */
+  #case-study {
+    .case-studies-page {
+      h1.ant-typography,
+      h2.ant-typography {
+        font-weight: 600;
+        font-size: 40px;
+        line-height: 60px;
+      }
+      .content-text {
+        .ant-typography {
+          font-size: 12px;
+          line-height: 14px;
+        }
+      }
+    }
+  }
+}
+
+/* (1280x1024) SXGA Display */
+@media screen and (max-width: 1280px) {
+  /* insert styles here */
+  #case-study {
+    .case-studies-page {
+      h1.ant-typography,
+      h2.ant-typography {
+        font-weight: 600;
+        font-size: 38px;
+        line-height: 58px;
+      }
+      .content-text {
+        .title {
+          font-size: 16px;
+        }
+        .ant-typography {
+          font-size: 14px;
+          line-height: 17px;
+        }
+      }
+    }
+  }
+}
+/* (1440x900) WXGA+ Display */
+@media only screen and (min-width: 1440px) and (max-width: 1080px) {
+  /* insert styles here */
+  #case-study {
+    .case-studies-page {
+      h1.ant-typography,
+      h2.ant-typography {
+        font-weight: 600 !important;
+        font-size: 40px !important;
+        line-height: 60px !important;
+      }
+      .title {
+        font-size: 20px;
+        line-height: 30px;
+      }
+      .content-text {
+        .ant-typography {
+          font-size: 16px !important;
+          line-height: 20px !important;
+        }
+      }
+    }
+  }
+}
+
 @media screen and (min-width: 1920px) {
   //For Projectors or Higher Resolution Screens (Full HD)
   #case-study {
@@ -174,8 +276,17 @@ $green-primary: #4dffa5;
       max-width: 85%;
       margin: 0 auto;
     }
-    .ant-layout-content {
-      background: #18162f;
+    .case-studies-page {
+      .title {
+        font-size: 22px;
+        line-height: 32px;
+      }
+      .content-text {
+        .ant-typography {
+          font-size: 16px !important;
+          line-height: 22px !important;
+        }
+      }
     }
   }
   .carousel-control {
@@ -191,8 +302,37 @@ $green-primary: #4dffa5;
       max-width: 65%;
       margin: 0 auto;
     }
+    .case-studies-page {
+      h1.ant-typography,
+      h2.ant-typography {
+        font-weight: 600;
+        font-size: 48px;
+        line-height: 70px;
+      }
+      .content-text {
+        .ant-typography {
+          font-size: 18px !important;
+          line-height: 24px !important;
+        }
+      }
+      .tags {
+        .tag-item {
+          height: 42px;
+          font-size: 18px !important;
+          line-height: 38px !important;
+          &::before {
+            border-radius: 10px;
+            top: 45%;
+          }
+        }
+      }
+    }
     .ant-layout-content {
       background: #18162f;
+    }
+    .case-studies-page,
+    #siteWrapper {
+      min-height: 1080px;
     }
   }
 }
@@ -207,8 +347,14 @@ $green-primary: #4dffa5;
       background: #18162f;
     }
     .case-studies-page {
+      h1.ant-typography,
+      h2.ant-typography {
+        font-weight: 600 !important;
+        font-size: 60px !important;
+        line-height: 80px !important;
+      }
       .title {
-        font-size: 36px !important;
+        font-size: 32px !important;
         line-height: 42px !important;
       }
       .content-text {
@@ -217,6 +363,20 @@ $green-primary: #4dffa5;
           line-height: 32px !important;
         }
       }
+      .tags {
+        .tag-item {
+          height: 50px;
+          font-size: 22px !important;
+          line-height: 50px !important;
+          &::before {
+            top: 45%;
+          }
+        }
+      }
+    }
+    .case-studies-page,
+    #siteWrapper {
+      min-height: 1280px;
     }
   }
 }

@@ -190,6 +190,14 @@ const FlexibleForm = withRouter(
         );
       }
 
+      if (data.geoCoverageType === "sub-national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
+        ];
+
+        delete data.geoCoverageValueSubnational;
+      }
+
       if (data?.urls) {
         data.urls = data.urls.map((x) => {
           return {
@@ -218,6 +226,8 @@ const FlexibleForm = withRouter(
         data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
       }
+
+      console.log(data);
 
       if (status === "add" && !params?.id) {
         api
@@ -415,6 +425,14 @@ const FlexibleForm = withRouter(
         );
       }
 
+      if (data.geoCoverageType === "sub-national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
+        ];
+
+        delete data.geoCoverageValueSubnational;
+      }
+
       if (data?.urls) {
         data.urls = data.urls.map((x) => {
           return {
@@ -538,6 +556,14 @@ const FlexibleForm = withRouter(
         data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
           parseInt(x)
         );
+      }
+
+      if (data.geoCoverageType === "sub-national") {
+        data.geoCoverageCountries = [
+          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
+        ];
+
+        delete data.geoCoverageValueSubnational;
       }
 
       if (data?.urls) {

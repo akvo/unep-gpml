@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import {
-  Row,
-  Col,
-  Space,
-  Drawer,
-  Checkbox,
-  Tag,
-  Card,
-  Select,
-  DatePicker,
-} from "antd";
+import { Row, Col, Space, Drawer, Tag, Card, Select, DatePicker } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
@@ -17,21 +7,25 @@ import { useAuth0 } from "@auth0/auth0-react";
 import moment from "moment";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
-import { topicTypes, topicNames, topicIcons } from "../../utils/misc";
-import CountryTransnationalFilter from "./country-transnational-filter";
+import { topicTypes, topicNames } from "../../utils/misc";
+import { entityName } from "../../utils/misc";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 import values from "lodash/values";
 import flatten from "lodash/flatten";
+import { ReactComponent as BusinessIcon } from "../../images/suggested-profiles/business-icon.svg";
+import { ReactComponent as AchievementIcon } from "../../images/suggested-profiles/medal-icon.svg";
+import { ReactComponent as AgreementIcon } from "../../images/suggested-profiles/agreement-icon.svg";
+import { ReactComponent as GPMLLogo } from "../../images/suggested-profiles/gpml-logo.svg";
+import { ReactComponent as Badge } from "../../images/suggested-profiles/badge-outlined.svg";
 
 const FilterDrawer = ({
   filterVisible,
   setFilterVisible,
   countData,
+  entities,
   query,
   updateQuery,
-  multiCountryCountries,
-  setMultiCountryCountries,
 }) => {
   const {
     profile,
@@ -50,7 +44,7 @@ const FilterDrawer = ({
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     languages: s.languages,
-    representativeGroup: s.sectorOptions,
+    representativeGroup: s.representativeGroup,
   }));
   const { isAuthenticated } = useAuth0();
 
@@ -64,9 +58,7 @@ const FilterDrawer = ({
 
   const handleChangeResourceType = (flag, type) => {
     const val = query[flag];
-
     let updateVal = [];
-
     if (isEmpty(val)) {
       updateVal = [type];
     } else if (val.includes(type)) {
@@ -75,44 +67,6 @@ const FilterDrawer = ({
       updateVal = [...val, type];
     }
     updateQuery(flag, updateVal);
-  };
-
-  const handleChangeLocationTab = (key) => {
-    const param = key === "country" ? "transnational" : "country";
-    // updateQuery(param, []);
-  };
-
-  const handleChangeCountry = (val) => {
-    updateQuery("country", query?.country ? [...query?.country, ...val] : val);
-  };
-
-  const handleDeselectCountry = (val) => {
-    updateQuery(
-      "country",
-      query?.country ? query?.country.filter((x) => x != val) : []
-    );
-  };
-
-  const handleChangeMultiCountry = (val) => {
-    updateQuery("transnational", [...query?.transnational, ...val]);
-    // Fetch transnational countries
-    val.forEach((id) => {
-      const check = multiCountryCountries.find((x) => x.id === id);
-      !check &&
-        api.get(`/country-group/${id}`).then((resp) => {
-          setMultiCountryCountries([
-            ...multiCountryCountries,
-            { id: id, countries: resp.data?.[0]?.countries },
-          ]);
-        });
-    });
-  };
-
-  const handleDeselectMultiCountry = (val) => {
-    updateQuery(
-      "transnational",
-      query?.transnational ? query?.transnational.filter((x) => x != val) : []
-    );
   };
 
   // populate options for tags dropdown
@@ -143,6 +97,21 @@ const FilterDrawer = ({
       )
     : [];
 
+  const entityIcon = (name) => {
+    if (name.toLowerCase() === "owner") {
+      return <GPMLLogo />;
+    }
+    if (name.toLowerCase() === "implementor") {
+      return <AchievementIcon />;
+    }
+    if (name.toLowerCase() === "partner") {
+      return <AgreementIcon />;
+    }
+    if (name.toLowerCase() === "donor") {
+      return <BusinessIcon />;
+    }
+  };
+
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
@@ -162,20 +131,20 @@ const FilterDrawer = ({
           {/* Resource type */}
           <Col span={24}>
             <Space align="middle">
-              <div className="filter-title">Resources type</div>
+              <div className="filter-title">Network type</div>
               {isEmpty(query?.topic) ? (
                 <Tag className="resource-type">All (default)</Tag>
               ) : (
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClick={() => updateQuery("topic", [])}
                   onClose={() => updateQuery("topic", [])}
                 >
                   Clear selection
                 </Tag>
               )}
             </Space>
+
             <Row type="flex" gutter={[10, 10]}>
               {topicTypes.map((type) => {
                 const topic = humps.decamelize(type);
@@ -190,7 +159,6 @@ const FilterDrawer = ({
                       })}
                     >
                       <Space direction="vertical" align="center">
-                        {topicIcons(type)}
                         <div className="topic-text">{topicNames(type)}</div>
                         <div className="topic-count">{count}</div>
                       </Space>
@@ -200,122 +168,150 @@ const FilterDrawer = ({
               })}
             </Row>
           </Col>
-          {/* My Bookmarks */}
-          {isAuthenticated && (
-            <Col span={24}>
-              <Space align="middle">
-                <Checkbox
-                  className="favorites-checkbox"
-                  checked={query?.favorites?.indexOf("true") > -1}
-                  onChange={({ target: { checked } }) =>
-                    updateQuery("favorites", checked)
-                  }
-                >
-                  My Bookmarks
-                </Checkbox>
-              </Space>
-            </Col>
-          )}
-          {/* Location */}
-          <Col span={24}>
+
+          {/* Specificity */}
+          <Col span={24} className="specificity-card">
             <Space align="middle">
-              <div className="filter-title">Location</div>
-              {!isEmpty(query?.country) ? (
+              <div className="filter-title">Specificity</div>
+              {isEmpty(query?.topic) ? (
+                <Tag className="resource-type">All (default)</Tag>
+              ) : (
                 <Tag
                   className="clear-selection"
-                  closable
-                  onClick={() => {
-                    updateQuery("country", []);
-                  }}
-                  onClose={() => updateQuery("country", [])}
+                  closable={true}
+                  onClose={() => updateQuery("topic", [])}
                 >
-                  Clear Country Selection
+                  Clear selection
                 </Tag>
-              ) : (
-                ""
-              )}
-              {!isEmpty(query?.transnational) ? (
-                <Tag
-                  className="clear-selection"
-                  closable
-                  onClick={() => {
-                    updateQuery("transnational", []);
-                  }}
-                  onClose={() => updateQuery("transnational", [])}
-                >
-                  Clear Multi-Country Selection
-                </Tag>
-              ) : (
-                ""
               )}
             </Space>
-            <div className="country-filter-tab-wrapper">
-              <CountryTransnationalFilter
-                handleChangeTab={handleChangeLocationTab}
-                country={query?.country?.map((x) => parseInt(x)) || []}
-                handleChangeCountry={handleChangeCountry}
-                handleDeselectCountry={handleDeselectCountry}
-                multiCountry={
-                  query?.transnational?.map((x) => parseInt(x)) || []
-                }
-                handleChangeMultiCountry={handleChangeMultiCountry}
-                handleDeselectMultiCountry={handleDeselectMultiCountry}
-                multiCountryCountries={multiCountryCountries}
-                multiCountryLabelCustomIcon={true}
-                countrySelectMode="multiple"
-                multiCountrySelectMode="multiple"
-              />
-            </div>
+
+            <Row type="flex" gutter={[10, 10]}>
+              <p className="specificity-title">For individuals</p>
+              <Col span={6}>
+                <Card
+                  // onClick={() => handleChangeResourceType("topic", topic)}
+                  className={classNames("resource-type-card", {
+                    active: query?.topic?.includes(topic),
+                  })}
+                >
+                  <Space direction="vertical" align="center">
+                    <Badge />
+                    <div className="topic-text">Experts</div>
+                  </Space>
+                </Card>
+              </Col>
+            </Row>
           </Col>
-          {/* Tags */}
+
+          {/* For entities */}
+          <Col span={24} className="specificity-card">
+            <Row type="flex" gutter={[10, 10]}>
+              <p className="specificity-title">For entities</p>
+              {entities.map((entity) => {
+                const name = humps.decamelize(entity);
+
+                return (
+                  <Col span={6} key={entity}>
+                    <Card
+                      // onClick={() => handleChangeResourceType("topic", topic)}
+                      className={classNames("resource-type-card", {
+                        active: query?.topic?.includes(name),
+                      })}
+                    >
+                      <Space direction="vertical" align="center">
+                        {entityIcon(name)}
+                        <div className="topic-text">{entityName(name)}</div>
+                      </Space>
+                    </Card>
+                  </Col>
+                );
+              })}
+            </Row>
+          </Col>
+
+          {/* Affiliation */}
           <MultipleSelectFilter
-            title="Tags"
+            title="Affiliation"
             options={tagOpts || []}
             value={query?.tag?.map((x) => parseInt(x)) || []}
-            flag="tag"
+            flag="affiliation"
             query={query}
             updateQuery={updateQuery}
           />
+          {/* Location */}
+          <MultipleSelectFilter
+            title="Location"
+            options={
+              isLoaded()
+                ? sectorOptions?.map((x) => ({ value: x, label: x }))
+                : []
+            }
+            value={query?.sector || []}
+            flag="location"
+            query={query}
+            updateQuery={updateQuery}
+          />
+          {/* Goals */}
+          <MultipleSelectFilter
+            title="Goals"
+            options={[]}
+            value={query?.goal || []}
+            flag="goal"
+            query={query}
+            updateQuery={updateQuery}
+          />
+          {/*Expertise to offer*/}
+          <MultipleSelectFilter
+            title="What expertises are they offering?"
+            options={representativeOpts}
+            value={
+              query?.representativeGroup?.map((x) =>
+                Number(x) ? parseInt(x) : x
+              ) || []
+            }
+            flag="expertiseToOffer"
+            query={query}
+            updateQuery={updateQuery}
+          />
+          {/* Expertise they seek */}
+          <MultipleSelectFilter
+            title="What expertises are they seeking?"
+            options={
+              isLoaded()
+                ? geoCoverageTypeOptions?.map((x) => ({ value: x, label: x }))
+                : []
+            }
+            value={query?.geoCoverage || []}
+            flag="exertiseTheySeek"
+            query={query}
+            updateQuery={updateQuery}
+          />
+          {/* Representative group */}
           <MultipleSelectFilter
             title="Representative group"
             options={
               isLoaded()
-                ? representativeGroup?.map((x) => ({ value: x, label: x }))
+                ? values(languages).map((x) => ({
+                    value: x.name,
+                    label: `${x.name} (${x.native})`,
+                  }))
                 : []
             }
-            value={query?.representativeGroup || []}
+            value={query?.language || []}
             flag="representativeGroup"
             query={query}
             updateQuery={updateQuery}
           />
-          {/* Date Filter */}
-          <Col span={24} className="date-picker-container">
-            <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
-              {/* Start date */}
-              <DatePickerFilter
-                title="Start date"
-                value={query?.startDate}
-                flag="startDate"
-                query={query}
-                updateQuery={updateQuery}
-                span={12}
-              />
-              {/* End date */}
-              <DatePickerFilter
-                title="End date"
-                value={query?.endDate}
-                flag="endDate"
-                query={query}
-                updateQuery={updateQuery}
-                span={12}
-                startDate={
-                  !isEmpty(query?.startDate)
-                    ? moment(query?.startDate[0])
-                    : null
-                }
-              />
-            </Row>
-          </Col>
+          {/*Geo-coverage*/}
+          <MultipleSelectFilter
+            title="Geo-coverage"
+            options={[]}
+            value={query?.entity || []}
+            flag="geoCoverage"
+            query={query}
+            updateQuery={updateQuery}
+          />
         </Row>
       </Drawer>
     </div>
@@ -339,7 +335,6 @@ const MultipleSelectFilter = ({
           <Tag
             className="clear-selection"
             closable
-            onClick={() => updateQuery(flag, [])}
             onClose={() => updateQuery(flag, [])}
           >
             Clear Selection
@@ -390,7 +385,6 @@ const DatePickerFilter = ({
           <Tag
             className="clear-selection"
             closable
-            onClick={() => updateQuery(flag, [])}
             onClose={() => updateQuery(flag, [])}
           >
             Clear Selection
