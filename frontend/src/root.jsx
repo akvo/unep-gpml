@@ -30,6 +30,7 @@ import tmpLogo from "./images/GPML-temporary-logo-horiz.jpg";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
 import { updateStatusProfile, isRegistered } from "./utils/profile";
+import { redirectError } from "./modules/error/error-util";
 import { useQuery } from "./modules/knowledge-library/common";
 import { storage } from "./utils/storage";
 import { UIStore } from "./store.js";
@@ -76,7 +77,6 @@ import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 // Buttons
 import AddContentButton from "./modules/add-content-button/AddContentButton";
-import { redirectError } from "./modules/error/error-util";
 
 let tmid;
 
