@@ -74,7 +74,6 @@ import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 // Buttons
 import AddContentButton from "./modules/add-content-button/AddContentButton";
-import { useQuery } from "./modules/knowledge-library/common";
 
 Promise.all([
   api.get("/tag"),
