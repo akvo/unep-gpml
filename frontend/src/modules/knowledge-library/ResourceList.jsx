@@ -258,8 +258,9 @@ const ResourceItem = ({ results, view }) => {
                   backgroundColor: "#fde3cf",
                 }}
               >
-                {result?.stakeholder_connections
-                  ? stakeholders.map((stakeholder) => (
+                {
+                  result?.stakeholder_connections &&
+                    stakeholders.map((stakeholder) => (
                       <Tooltip
                         key={stakeholder.id}
                         title={`${stakeholder?.first_name} ${stakeholder?.last_name}`}
@@ -271,18 +272,19 @@ const ResourceItem = ({ results, view }) => {
                         />
                       </Tooltip>
                     ))
-                  : ["a"].map((b, i) => (
-                      <Tooltip
-                        key={`avatar-${i}`}
-                        title={<UserOutlined />}
-                        placement="top"
-                      >
-                        <Avatar
-                          style={{ backgroundColor: "#FFB800" }}
-                          icon={<UserOutlined />}
-                        />
-                      </Tooltip>
-                    ))}
+                  // : ["a"].map((b, i) => (
+                  //     <Tooltip
+                  //       key={`avatar-${i}`}
+                  //       title={<UserOutlined />}
+                  //       placement="top"
+                  //     >
+                  //       <Avatar
+                  //         style={{ backgroundColor: "#FFB800" }}
+                  //         icon={<UserOutlined />}
+                  //       />
+                  //     </Tooltip>
+                  //   ))
+                }
               </Avatar.Group>
               <span className="avatar-number">
                 {result.stakeholder_connections
