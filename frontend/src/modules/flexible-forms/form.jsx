@@ -111,7 +111,7 @@ const FlexibleForm = withRouter(
         }
         if (data.hasOwnProperty("validFrom")) {
           data.validFrom = data?.validFrom;
-          data.validTo = "Ongoing";
+          data.validTo = data.validTo || "Ongoing";
         }
         if (data.hasOwnProperty("validTo")) {
           data.validTo = data?.validTo;
@@ -133,7 +133,7 @@ const FlexibleForm = withRouter(
         }
         if (data.hasOwnProperty("validFrom")) {
           data.validFrom = data?.validFrom;
-          data.validTo = "Ongoing";
+          data.validTo = data.validTo || "Ongoing";
         }
 
         if (data.hasOwnProperty("firstPublicationDate")) {
@@ -413,7 +413,7 @@ const FlexibleForm = withRouter(
 
       if (data.hasOwnProperty("firstPublicationDate")) {
         data.firstPublicationDate = data.firstPublicationDate;
-        data.latestAmendmentDate = "Ongoing";
+        data.latestAmendmentDate = data.latestAmendmentDate || "Ongoing";
       }
 
       if (data.hasOwnProperty("latestAmendmentDate")) {
