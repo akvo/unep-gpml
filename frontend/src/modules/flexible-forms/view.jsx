@@ -248,6 +248,14 @@ const formDataMapping = [
     section: "S5",
     question: "valueRemark",
   },
+  {
+    key: "image",
+    name: "image",
+    type: "image",
+    section: "S4",
+    group: "S4_G4",
+    question: "image",
+  },
 ];
 
 const FlexibleForms = ({ match: { params }, ...props }) => {
