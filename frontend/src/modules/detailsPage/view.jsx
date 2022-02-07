@@ -910,7 +910,11 @@ const DetailsView = ({
                       marginBottom: "30px",
                     }}
                   >
-                    <p className="summary">{data?.summary}</p>
+                    <p className="summary">
+                      {params?.type !== "technology"
+                        ? data?.summary
+                        : data?.remarks}
+                    </p>
                   </CardComponent>
                 )}
 
