@@ -147,6 +147,8 @@ const SharePanel = ({
           href={`${
             data?.url && data?.url.includes("https://")
               ? data?.url
+              : data.languages
+              ? data?.languages[0].url
               : "https://" + data?.url
           }`}
           target="_blank"
@@ -180,6 +182,8 @@ const SharePanel = ({
               defaultValue={`${
                 data?.url && data?.url.includes("https://")
                   ? data?.url
+                  : data.languages
+                  ? data?.languages[0].url
                   : "https://" + data?.url
               }`}
               disabled
@@ -190,7 +194,9 @@ const SharePanel = ({
               onClick={() => {
                 navigator.clipboard.writeText(
                   data?.url && data?.url.includes("https://")
-                    ? data?.url
+                    ? data?.languages
+                      ? data?.languages[0].url
+                      : data?.url
                     : "https://" + data?.url
                 );
                 handleVisibleChange();
@@ -531,7 +537,7 @@ const renderItemValues = (
 
 const renderCountries = (data, countries, transnationalOptions) => {
   let dataCountries = null;
-  const newArray = [...new Set([...transnationalOptions])];
+  const newArray = [...new Set([...transnationalOptions, ...countries])];
   dataCountries = data["geoCoverageValues"]
     ?.map((x) => {
       return newArray.find((it) => it.id === x)?.name;
