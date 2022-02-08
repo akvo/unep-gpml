@@ -20,9 +20,14 @@ import isEmpty from "lodash/isEmpty";
 let tmid;
 
 const StakeholderOverview = ({ history }) => {
-  const { countries, representativeGroup } = UIStore.useState((s) => ({
+  const {
+    countries,
+    representativeGroup,
+    geoCoverageTypeOptions,
+  } = UIStore.useState((s) => ({
     countries: s.countries,
     representativeGroup: s.sectorOptions,
+    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
   }));
 
   const [filterVisible, setFilterVisible] = useState(false);
@@ -132,9 +137,17 @@ const StakeholderOverview = ({ history }) => {
         return entityName(name);
       }
 
-      if (key === "country") {
-        const findCountry = countries.find((x) => x.id == value);
+      if (key === "location") {
+        const findCountry = countries.find((x) => x.name == value);
         return findCountry?.name;
+      }
+
+      if (key === "geoCoverage") {
+        const findGeoCoverage = geoCoverageTypeOptions?.find((x) => ({
+          value: x,
+          label: x,
+        }));
+        return findGeoCoverage;
       }
 
       if (key === "representativeGroup") {

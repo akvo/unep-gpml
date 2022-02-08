@@ -1,15 +1,5 @@
-import React, { useState } from "react";
-import {
-  Row,
-  Col,
-  Space,
-  Drawer,
-  Tag,
-  Card,
-  Select,
-  DatePicker,
-  Button,
-} from "antd";
+import React from "react";
+import { Row, Col, Space, Drawer, Tag, Card, Select, Button } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
@@ -18,13 +8,12 @@ import { UIStore } from "../../store";
 import { entityName } from "../../utils/misc";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
-import values from "lodash/values";
-import flatten from "lodash/flatten";
+
 import { ReactComponent as BusinessIcon } from "../../images/stakeholder-overview/business-icon.svg";
 import { ReactComponent as AchievementIcon } from "../../images/stakeholder-overview/medal-icon.svg";
 import { ReactComponent as AgreementIcon } from "../../images/stakeholder-overview/agreement-icon.svg";
 import { ReactComponent as GPMLLogo } from "../../images/stakeholder-overview/gpml-logo.svg";
-import { ReactComponent as Badge } from "../../images/stakeholder-overview/badge-outlined.svg";
+
 import { ReactComponent as CommunityIcon } from "../../images/stakeholder-overview/community-outlined.svg";
 import { ReactComponent as UnionIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
@@ -36,12 +25,10 @@ const FilterDrawer = ({
   updateQuery,
 }) => {
   const {
-    profile,
     countries,
     transnationalOptions,
     geoCoverageTypeOptions,
     representativeGroup,
-    mainContentType,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -50,8 +37,6 @@ const FilterDrawer = ({
     mainContentType: s.mainContentType,
     representativeGroup: s.sectorOptions,
   }));
-
-  const { isAuthenticated } = useAuth0();
 
   const isLoaded = () =>
     !isEmpty(countries) &&
