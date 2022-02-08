@@ -5,8 +5,8 @@ import { Button } from "antd";
 
 const KnowledgeExchangeDropdownMenu = () => {
   return (
-    <Link to="/knowledge-library">
-      <Button type="link" className="menu-btn nav-link">
+    <Link to="/knowledge-library" className="menu-btn nav-link menu-dropdown">
+      <Button type="link" className="menu-btn nav-link menu-dropdown">
         Knowledge Exchange
       </Button>
     </Link>
