@@ -206,7 +206,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.entity) {
-        data.entityConnections = data.entity[0].hasOwnProperty("row")
+        data.entityConnections = data.entity[0].hasOwnProperty("role")
           ? data.entity
           : [];
         delete data.entity;
