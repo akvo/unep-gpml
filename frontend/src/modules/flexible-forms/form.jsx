@@ -182,6 +182,7 @@ const FlexibleForm = withRouter(
         data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
           parseInt(x)
         );
+        delete data.geoCoverageValueTransnational;
       }
 
       if (data.geoCoverageType === "sub-national") {
@@ -227,8 +228,6 @@ const FlexibleForm = withRouter(
         data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
       }
-
-      console.log(data);
 
       if (status === "add" && !params?.id) {
         api
