@@ -25,7 +25,8 @@
             [gpml.db.country-group :as db.country-group]
             [gpml.handler.util :as util]
             [gpml.model.topic :as model.topic]
-            [clojure.string :as string]))
+            [clojure.string :as string]
+            [gpml.pg-util :as pg-util]))
 
 (defn other-or-name [action]
   (when-let [actual-name (or
@@ -596,16 +597,18 @@
   (let [table (cond
                 (contains? constants/resource-types topic-type) "resource"
                 :else topic-type)
-        table-columns (dissoc updates
-                              :tags :urls :geo_coverage_value :org
-                              :image :photo :logo
-                              :geo_coverage_country_groups
-                              :geo_coverage_countries
-                              :entity_connections
-                              :individual_connections
-                              ;; NOTE: we ignore resource_type since
-                              ;; we don't expect it to change!
-                              :resource_type)
+        table-columns (-> updates
+                        (dissoc
+                          :tags :urls :geo_coverage_value :org
+                          :image :photo :logo
+                          :geo_coverage_country_groups
+                          :geo_coverage_countries
+                          :entity_connections
+                          :individual_connections
+                          ;; NOTE: we ignore resource_type since
+                          ;; we don't expect it to change!
+                          :resource_type)
+                        (assoc :related_content (pg-util/->JDBCArray (:related_content updates) "integer")))
         tags (:tags updates)
         urls (:urls updates)
         params {:table table :id id :updates table-columns}
