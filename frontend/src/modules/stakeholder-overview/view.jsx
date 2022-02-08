@@ -38,6 +38,8 @@ const StakeholderOverview = ({ history }) => {
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
   const pageSize = 12;
+  const { innerWidth } = window;
+  const [resultCount, setResultCount] = useState(0);
 
   const { entityRoleOptions, stakeholders } = UIStore.useState((s) => ({
     entityRoleOptions: s.entityRoleOptions,
@@ -69,26 +71,25 @@ const StakeholderOverview = ({ history }) => {
   };
 
   const getResults = () => {
-    const searchParms = new URLSearchParams({
-      limit: 100,
-      tag: "",
-      offset: pageSize,
-    });
+    const searchParms = new URLSearchParams(window.location.search);
+    searchParms.set("limit", pageSize);
     const url = `/browse?${String(searchParms)}`;
     api
       .get(url)
       .then((resp) => {
         console.log(resp);
         setResults(resp?.data?.results);
+       
+          const organisationType= resp?.data?.counts?.find(count => count.topic === "organisation")
+          setResultCount(organisationType.count);
+    
       })
       .catch((err) => {
         console.error(err);
         redirectError(err, history);
       });
   };
-
-  console.log(test, "DATA");
-
+console.log(resultCount);
   useEffect(() => {
     setLoading(true);
     if (isLoading === false && !filters) {
@@ -227,7 +228,7 @@ const StakeholderOverview = ({ history }) => {
                   defaultCurrent={1}
                   current={(filters?.offset || 0) / pageSize + 1}
                   pageSize={pageSize}
-                  total={results.length}
+                  total={resultCount}
                   showSizeChanger={false}
                   onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
                 />
