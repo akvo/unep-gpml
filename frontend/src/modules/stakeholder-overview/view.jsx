@@ -79,17 +79,18 @@ const StakeholderOverview = ({ history }) => {
       .then((resp) => {
         console.log(resp);
         setResults(resp?.data?.results);
-       
-          const organisationType= resp?.data?.counts?.find(count => count.topic === "organisation")
-          setResultCount(organisationType.count);
-    
+
+        const organisationType = resp?.data?.counts?.find(
+          (count) => count.topic === "organisation"
+        );
+        setResultCount(organisationType.count);
       })
       .catch((err) => {
         console.error(err);
         redirectError(err, history);
       });
   };
-console.log(resultCount);
+  console.log(resultCount);
   useEffect(() => {
     setLoading(true);
     if (isLoading === false && !filters) {
@@ -186,6 +187,7 @@ console.log(resultCount);
         setFilterVisible={setFilterVisible}
         renderFilterTag={renderFilterTag}
         sortPeople={sortPeople}
+        updateQuery={updateQuery}
       />
       <Row type="flex" className="body-wrapper">
         {/* Filter Drawer */}

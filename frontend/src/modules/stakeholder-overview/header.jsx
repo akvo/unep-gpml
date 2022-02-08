@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Row, Col, Space, Button, Select, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import { withRouter } from "react-router-dom";
 
 import ConfigIcon from "../../images/knowledge-library/config-icon.svg";
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
@@ -14,6 +15,7 @@ const Header = ({
   renderFilterTag,
   sortPeople,
   isAscending,
+  updateQuery,
 }) => {
   const [view, setView] = useState("map");
 
@@ -45,7 +47,7 @@ const Header = ({
             <Row type="flex" justify="space-between" align="middle">
               <Col lg={5} md={7} sm={9} className="search-box">
                 <Space>
-                  <Search />
+                  <Search updateQuery={updateQuery} />
                   <Button
                     onClick={() => setFilterVisible(!filterVisible)}
                     type="ghost"
@@ -94,10 +96,15 @@ const Header = ({
   );
 };
 
-const Search = () => {
+const Search = withRouter(({ history, updateQuery }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
-    console.log(src);
+    if (src) {
+      history.push(`?q=${src.trim()}`);
+      updateQuery("q", src.trim());
+    } else {
+      updateQuery("q", "");
+    }
   };
 
   return (
@@ -119,6 +126,6 @@ const Search = () => {
       />
     </div>
   );
-};
+});
 
 export default Header;
