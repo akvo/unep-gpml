@@ -68,16 +68,16 @@ const Header = ({
             </Row>
           </Col>
           {/* Map/Topic view dropdown */}
-          <Col lg={2} md={4} sm={6} className="select-wrapper">
+          {/* <Col lg={2} md={4} sm={6} className="select-wrapper">
             <Select
               className="view-selection"
               value={selectionValue}
               onChange={(val) => setView(val)}
             >
               <Select.Option value="list">Map View</Select.Option>
-              {/* <Select.Option value="topic">Topic View </Select.Option> */}
+              <Select.Option value="topic">Topic View </Select.Option>
             </Select>
-          </Col>
+          </Col> */}
           <Button className="sort-btn" onClick={sortPeople}>
             <SortIcon />{" "}
             <span>

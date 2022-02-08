@@ -20,11 +20,7 @@ import isEmpty from "lodash/isEmpty";
 let tmid;
 
 const StakeholderOverview = ({ history }) => {
-  const {
-    countries,
-
-    representativeGroup,
-  } = UIStore.useState((s) => ({
+  const { countries, representativeGroup } = UIStore.useState((s) => ({
     countries: s.countries,
     representativeGroup: s.sectorOptions,
   }));
@@ -37,10 +33,9 @@ const StakeholderOverview = ({ history }) => {
   const [test, setTest] = useState([]);
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
-  const pageSize = 12;
+  const pageSize = 10;
   const { innerWidth } = window;
   const [resultCount, setResultCount] = useState(0);
-
   const { entityRoleOptions, stakeholders } = UIStore.useState((s) => ({
     entityRoleOptions: s.entityRoleOptions,
     countries: s.countries,
@@ -70,15 +65,18 @@ const StakeholderOverview = ({ history }) => {
     setIsAscending(!isAscending);
   };
 
-  const getResults = () => {
+  const getOrganisation = () => {
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
-    const url = `/browse?${String(searchParms)}`;
+    const url = `/browse?topic=organisation%2Cstakeholder&${String(
+      searchParms
+    )}`;
     api
       .get(url)
       .then((resp) => {
-        console.log(resp);
-        setResults(resp?.data?.results);
+        const result = resp?.data?.results;
+
+        setResults([...result, stakeholders.stakeholders].flat());
 
         const organisationType = resp?.data?.counts?.find(
           (count) => count.topic === "organisation"
@@ -90,7 +88,11 @@ const StakeholderOverview = ({ history }) => {
         redirectError(err, history);
       });
   };
-  console.log(resultCount);
+
+  const getResults = () => {
+    getOrganisation();
+  };
+
   useEffect(() => {
     setLoading(true);
     if (isLoading === false && !filters) {
