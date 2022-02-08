@@ -71,16 +71,17 @@ const StakeholderOverview = ({ history }) => {
   };
 
   const getResults = () => {
-    const searchParms = new URLSearchParams(window.location.search);
-    searchParms.set("limit", pageSize);
-    const url = `stakeholder`;
-
+    const searchParms = new URLSearchParams({
+      limit: 20,
+      tag: "",
+      offset: 20,
+    });
+    const url = `/browse?${String(searchParms)}`;
     api
       .get(url)
       .then((resp) => {
-        setTest(resp?.data);
-
-        setLoading(false);
+        console.log(resp);
+        setResults(resp?.data?.results);
       })
       .catch((err) => {
         console.error(err);
@@ -88,7 +89,25 @@ const StakeholderOverview = ({ history }) => {
       });
   };
 
-  console.log(test);
+  // const getResults = () => {
+  //   const searchParms = new URLSearchParams(window.location.search);
+  //   searchParms.set("limit", pageSize);
+  //   const url = `https://unep-gpml.akvotest.org/api/stakeholder`;
+
+  //   api
+  //     .get(url)
+  //     .then((resp) => {
+  //       setTest(resp?.data);
+
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //       redirectError(err, history);
+  //     });
+  // };
+
+  console.log(test, "DATA");
 
   useEffect(() => {
     setLoading(true);
