@@ -70,8 +70,9 @@ const plans = [
             services and expertise.
           </li>
           <li>
-            The <Link to="/learning">Capacity Building section</Link> contains{" "}
-            <Link to="/learning">Courses & Trainings</Link> and{" "}
+            The <Link to="/capacity-building">Capacity Building section</Link>{" "}
+            contains <Link to="/capacity-building">Courses & Trainings</Link>{" "}
+            and{" "}
             <Link href="/knowledge-library?country=&transnational=&topic=event&tag=&q=&offset=0">
               Events
             </Link>
