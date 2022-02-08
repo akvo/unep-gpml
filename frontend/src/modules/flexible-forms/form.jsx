@@ -192,14 +192,6 @@ const FlexibleForm = withRouter(
         delete data.geoCoverageValueTransnational;
       }
 
-      if (data.geoCoverageType === "sub-national") {
-        data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
-        ];
-
-        delete data.geoCoverageValueSubnational;
-      }
-
       if (data?.urls) {
         data.urls = data.urls.map((x) => {
           return {
