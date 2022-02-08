@@ -73,7 +73,7 @@ const plans = [
             The <Link to="/capacity-building">Capacity Building section</Link>{" "}
             contains <Link to="/capacity-building">Courses & Trainings</Link>{" "}
             and{" "}
-            <Link href="/knowledge-library?country=&transnational=&topic=event&tag=&q=&offset=0">
+            <Link to="/knowledge-library?country=&transnational=&topic=event&tag=&q=&offset=0">
               Events
             </Link>
             , such as the{" "}
