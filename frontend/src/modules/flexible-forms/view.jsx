@@ -27,8 +27,7 @@ import api from "../../utils/api";
 import { revertFormData } from "../../utils/forms";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
-import RichTextEditor from "react-rte";
-
+import { Link } from "react-router-dom";
 const { Step } = Steps;
 
 const getType = (type) => {
@@ -1084,9 +1083,9 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       </p>
                       <p>
                         You can access existing content via the{" "}
-                        <a href="https://digital.gpmarinelitter.org/browse?country=&transnational=&topic=project%2Caction_plan%2Cpolicy%2Ctechnical_resource%2Cfinancing_resource%2Cevent%2Ctechnology&tag=&q=&offset=0">
+                        <Link to="/knowledge-library">
                           Knowledge Exchange Library.
-                        </a>
+                        </Link>
                         Make sure to browse around and leave a review under the
                         resources you enjoy the most!
                       </p>
