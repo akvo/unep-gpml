@@ -609,8 +609,8 @@
                           ;; we don't expect it to change!
                           :resource_type)
                         (assoc :related_content (pg-util/->JDBCArray (:related_content updates) "integer")))
-        tags (:tags updates)
-        urls (:urls updates)
+        tags (remove nil? (:tags updates))
+        urls (remove nil? (:urls updates))
         params {:table table :id id :updates table-columns}
         status (db.detail/update-resource-table conn params)
         org (:org updates)
@@ -625,7 +625,8 @@
       (update-resource-image conn (:photo updates) table id))
     (when (contains? updates :logo)
       (update-resource-logo conn (:logo updates) table id))
-    (update-resource-tags conn table id tags)
+    (when-not (empty? tags)
+      (update-resource-tags conn table id tags))
     (update-resource-language-urls conn table id urls)
     (update-resource-geo-coverage-values conn table id updates)
     (when (contains? #{"resource"} table)
