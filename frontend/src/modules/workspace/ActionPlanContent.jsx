@@ -27,17 +27,17 @@ const plans = [
         <ul>
           <li>
             The repository of{" "}
-            <a href="https://digital.gpmarinelitter.org/browse?country=&transnational=&topic=action_plan&tag=&q=&offset=0">
+            <Link to="/knowledge-library?country=&transnational=&topic=action_plan&tag=&q=&offset=0">
               Action Plans
-            </a>{" "}
+            </Link>{" "}
             and{" "}
-            <a href="https://digital.gpmarinelitter.org/browse?country=&transnational=&topic=policy&tag=&q=&offset=0">
+            <Link to="/knowledge-library?country=&transnational=&topic=policy&tag=&q=&offset=0">
               Policies
-            </a>{" "}
+            </Link>{" "}
             can be used to identify relevant examples of action plans and
             policies at the transnational and national level. Some of those are
             described in more detail as{" "}
-            <Link to="case-studies">Case Studies</Link>.
+            <Link to="/case-studies">Case Studies</Link>.
           </li>
           <li>
             The Digital Platform also contains various resources that can
@@ -46,9 +46,9 @@ const plans = [
             <a href="https://datahub.gpmarinelitter.org/">Data Hub</a> provides
             statistics of urban waste generated and mismanaged plastic waste at
             the country level. The repository of Monitoring & Analysis{" "}
-            <a href="https://digital.gpmarinelitter.org/browse?country=&transnational=&topic=project&tag=&q=&offset=0">
+            <Link to="/knowledge-library?country=&transnational=&topic=project&tag=&q=&offset=0">
               Initiatives
-            </a>{" "}
+            </Link>{" "}
             can be helpful in identifying relevant data.
           </li>
           <li>
@@ -60,23 +60,22 @@ const plans = [
             <a href="https://digital.gpmarinelitter.org/technical_resource/138">
               ISWA plastic pollution calculator
             </a>{" "}
-            , can be found under <Link to="/learning">Tools & Toolkits</Link>.
+            , can be found under{" "}
+            <Link to="/capacity-building">Tools & Toolkits</Link>.
           </li>
           <li>
-            The{" "}
-            <a href="https://digital.gpmarinelitter.org/stakeholders?country=&transnational=&topic=organisation%2Cstakeholder&tag=&q=&offset=0">
-              Connect Stakeholders
-            </a>{" "}
+            The <Link to="/stakeholder-overview">Connect Stakeholders</Link>{" "}
             component can be used to identify and map stakeholders, as well as
             to identify organizations and experts that can provide specific
             services and expertise.
           </li>
           <li>
-            The <Link to="/learning">Capacity Building section</Link> contains{" "}
-            <Link to="/learning">Courses & Trainings</Link> and{" "}
-            <a href="https://digital.gpmarinelitter.org/browse?country=&transnational=&topic=event&tag=&q=&offset=0">
+            The <Link to="/capacity-building">Capacity Building section</Link>{" "}
+            contains <Link to="/capacity-building">Courses & Trainings</Link>{" "}
+            and{" "}
+            <Link to="/knowledge-library?country=&transnational=&topic=event&tag=&q=&offset=0">
               Events
-            </a>
+            </Link>
             , such as the{" "}
             <a href="https://digital.gpmarinelitter.org/technical_resource/149">
               MOOC on Marine Litter
@@ -106,7 +105,7 @@ const plans = [
         <ul>
           <li>
             Guidance on implementation actions can be found in various{" "}
-            <Link to="/learning">Guidance Documents</Link>. The{" "}
+            <Link to="/capacity-building">Guidance Documents</Link>. The{" "}
             <Link to="/case-studies">Belize and PAME case study</Link> provide
             examples of different types of implementation actions that are being
             applied as part of a national and Regional Action Plan respectively.
