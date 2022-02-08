@@ -71,7 +71,7 @@ const StakeholderOverview = ({ history }) => {
     setIsAscending(!isAscending);
   };
 
-  const getOrganisation = () => {
+  const getResults = () => {
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
     const url = `/browse?topic=organisation%2Cstakeholder&${String(
@@ -95,12 +95,7 @@ const StakeholderOverview = ({ history }) => {
       });
   };
 
-  const getResults = () => {
-    getOrganisation();
-  };
-
   useEffect(() => {
-    setLoading(true);
     if (isLoading === false && !filters) {
       setTimeout(getResults, 0);
     }
@@ -209,7 +204,7 @@ const StakeholderOverview = ({ history }) => {
 
         <LeftSidebar />
         <Col lg={22} xs={24} order={2}>
-          <Col className="card-container green">
+          {/* <Col className="card-container green">
             <h3 className="title text-white ui container">
               Suggested profiles
             </h3>
@@ -218,14 +213,15 @@ const StakeholderOverview = ({ history }) => {
                 <ProfileCard key={profile.id} profile={profile} />
               ))}
             </div>
-          </Col>
+          </Col> */}
           <Col className="all-profiles">
             {!isLoaded() ? (
               <h2 className="loading" id="stakeholder-loading">
                 <LoadingOutlined spin /> Loading
               </h2>
             ) : (
-              isLoaded() && (
+              isLoaded() &&
+              !isEmpty(results) && (
                 <div className="card-wrapper ui container">
                   {results.map((profile) => (
                     <ProfileCard key={profile.id} profile={profile} />

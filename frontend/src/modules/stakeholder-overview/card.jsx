@@ -20,6 +20,7 @@ const ProfileCard = ({ profile }) => {
 
   return (
     <Link
+    className='card-wrapper-link'
       to={
         profile.type === "organisation"
           ? `/organisation/${profile?.id}`
@@ -83,16 +84,16 @@ const ProfileCard = ({ profile }) => {
             <ul className="social-media-list">
               {profile.linked_in && (
                 <li className="list-item">
-                  <a href="" className="social-media-link linkedin">
+                  <div role='link' href='' className="social-media-link linkedin">
                     Linkedin
-                  </a>
+                  </div>
                 </li>
               )}
               {profile.twitter && (
                 <li className="list-item">
-                  <a href="" className="social-media-link twitter">
+                  <div role='link' href="" className="social-media-link twitter">
                     Twitter
-                  </a>
+                  </div>
                 </li>
               )}
             </ul>

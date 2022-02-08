@@ -277,6 +277,8 @@
         width: 100%;
         max-width: 150px;
         max-height: 150px;
+        min-width: 150px;
+        min-height: 150px;
         overflow: hidden;
         margin-right: 16.51px;
       }
@@ -801,6 +803,12 @@
     padding-top: calc(476px / 2);
   }
 
+  .card-wrapper-link {
+    width: 100%;
+    max-width: 343px;
+    margin: auto;
+  }
+
   .card-wrapper {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
@@ -828,6 +836,21 @@
 
     .card-wrapper {
       grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1400px) {
+    .profile-card {
+      max-width: 100%;
+    }
+    .card-wrapper,
+    .title {
+      max-width: 1440px;
+      margin: auto;
+    }
+
+    .card-wrapper {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 }
