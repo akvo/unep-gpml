@@ -565,7 +565,8 @@ export const ourCommunity = [
       "The platform makes it easier to discover stakeholders, events and experts in specific regions and fields.",
     image: "https://digital.gpmarinelitter.org/image/profile/30",
     name: "Fadilah Ali",
-    role: "CEO - OceanHero.today",
+    role:
+      "Assistant Executive Director - Gulf and Caribbean Fisheries Institute",
   },
   {
     id: 10089,
