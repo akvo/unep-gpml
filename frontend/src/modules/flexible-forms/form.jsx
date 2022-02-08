@@ -226,6 +226,16 @@ const FlexibleForm = withRouter(
       }
 
       if (status === "add" && !params?.id) {
+        data?.image && data?.image === "" && delete data.image;
+      }
+
+      if (status === "edit" || params?.id) {
+        data?.image &&
+          data?.image.match(customFormats.url) &&
+          delete data.image;
+      }
+
+      if (status === "add" && !params?.id) {
         api
           .post("/resource", data)
           .then(() => {
