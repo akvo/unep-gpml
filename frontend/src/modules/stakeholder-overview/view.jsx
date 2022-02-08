@@ -48,16 +48,22 @@ const StakeholderOverview = ({ history }) => {
   const sortPeople = () => {
     const sortByName = results.sort((a, b) => {
       if (!isAscending) {
-        if (a.first_name) {
-          return a.first_name.localeCompare(b.first_name);
+        if (a.firstName) {
+          return (
+            a.firstName.localeCompare(b.firstName) ||
+            a.firstName.localeCompare(a.name)
+          );
         } else {
-          return a.name.localeCompare(b.first_name);
+          return a.name.localeCompare(b.firstName);
         }
       } else {
-        if (b.first_name) {
-          return b.first_name.localeCompare(a.first_name);
+        if (b.firstName) {
+          return (
+            b.firstName.localeCompare(a.firstName) ||
+            b.firstName.localeCompare(b.name)
+          );
         } else {
-          return b.name.localeCompare(a.first_name);
+          return b.name.localeCompare(a.firstName);
         }
       }
     });
@@ -76,7 +82,7 @@ const StakeholderOverview = ({ history }) => {
       .then((resp) => {
         const result = resp?.data?.results;
 
-        setResults([...result, stakeholders.stakeholders].flat());
+        setResults([...result]);
 
         const organisationType = resp?.data?.counts?.find(
           (count) => count.topic === "organisation"
@@ -214,18 +220,20 @@ const StakeholderOverview = ({ history }) => {
             </div>
           </Col>
           <Col className="all-profiles">
-            <div className="card-wrapper ui container">
-              {!isLoaded() ? (
-                <h2 className="loading">
-                  <LoadingOutlined spin /> Loading
-                </h2>
-              ) : (
-                isLoaded() &&
-                results.map((profile) => (
-                  <ProfileCard key={profile.id} profile={profile} />
-                ))
-              )}
-            </div>
+            {!isLoaded() ? (
+              <h2 className="loading" id="stakeholder-loading">
+                <LoadingOutlined spin /> Loading
+              </h2>
+            ) : (
+              isLoaded() && (
+                <div className="card-wrapper ui container">
+                  {results.map((profile) => (
+                    <ProfileCard key={profile.id} profile={profile} />
+                  ))}
+                </div>
+              )
+            )}
+
             <div className="page">
               {!isEmpty(results) && (
                 <Pagination
