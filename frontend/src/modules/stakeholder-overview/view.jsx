@@ -70,9 +70,9 @@ const StakeholderOverview = ({ history }) => {
 
   const getResults = () => {
     const searchParms = new URLSearchParams({
-      limit: 20,
+      limit: 100,
       tag: "",
-      offset: 20,
+      offset: pageSize,
     });
     const url = `/browse?${String(searchParms)}`;
     api
@@ -86,24 +86,6 @@ const StakeholderOverview = ({ history }) => {
         redirectError(err, history);
       });
   };
-
-  // const getResults = () => {
-  //   const searchParms = new URLSearchParams(window.location.search);
-  //   searchParms.set("limit", pageSize);
-  //   const url = `https://unep-gpml.akvotest.org/api/stakeholder`;
-
-  //   api
-  //     .get(url)
-  //     .then((resp) => {
-  //       setTest(resp?.data);
-
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //       redirectError(err, history);
-  //     });
-  // };
 
   console.log(test, "DATA");
 
@@ -240,14 +222,16 @@ const StakeholderOverview = ({ history }) => {
               )}
             </div>
             <div className="page">
-              <Pagination
-                defaultCurrent={1}
-                current={1}
-                pageSize={3}
-                total={4}
-                showSizeChanger={false}
-                onChange={() => null}
-              />
+              {!isEmpty(results) && (
+                <Pagination
+                  defaultCurrent={1}
+                  current={(filters?.offset || 0) / pageSize + 1}
+                  pageSize={pageSize}
+                  total={results.length}
+                  showSizeChanger={false}
+                  onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
+                />
+              )}
             </div>
           </Col>
         </Col>
