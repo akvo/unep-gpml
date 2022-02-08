@@ -43,6 +43,7 @@ import {
   ArrowRightOutlined,
   LoadingOutlined,
   EyeOutlined,
+  HeartFilled,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -121,9 +122,9 @@ const SharePanel = ({
 }) => {
   const { type, id } = topic;
 
-  const handleChangeRelation = (relationType) => ({ target: { checked } }) => {
+  const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
-    if (checked) {
+    if (!association.includes(relationType)) {
       association = [...association, relationType];
     } else {
       association = association.filter((it) => it !== relationType);
@@ -154,34 +155,20 @@ const SharePanel = ({
           <h2>View</h2>
         </a>
       </div>
-      <Dropdown
-        overlay={
-          <ul className="relations-dropdown">
-            {relationsByTopicType[resourceTypeToTopicType(topic.type)].map(
-              (relationType) => (
-                <li key={`${relationType}`}>
-                  <Checkbox
-                    checked={
-                      relation &&
-                      relation.association &&
-                      relation.association.indexOf(relationType) !== -1
-                    }
-                    onChange={handleChangeRelation(relationType)}
-                  >
-                    {relationType}
-                  </Checkbox>
-                </li>
-              )
-            )}
-          </ul>
-        }
-        trigger={["click"]}
+
+      <div
+        className="sticky-panel-item"
+        onClick={() => handleChangeRelation("interested in")}
       >
-        <div className="sticky-panel-item">
+        {relation &&
+        relation.association &&
+        relation.association.indexOf("interested in") !== -1 ? (
+          <HeartFilled />
+        ) : (
           <HeartOutlined />
-          <h2>Bookmark</h2>
-        </div>
-      </Dropdown>
+        )}
+        <h2>Bookmark</h2>
+      </div>
       <Popover
         overlayStyle={{
           width: "22vw",
@@ -308,7 +295,6 @@ const renderBannerSection = (
             <img
               src={data.image ? data.image : imageNotFound}
               className="resource-image"
-              style={{ objectFit: data.image ? "fill" : "cover" }}
             />
           </div>
         </Col>
@@ -666,55 +652,68 @@ const DetailsView = ({
 
   const handleEditBtn = () => {
     let form = null;
+    let type = null;
     let link = null;
     switch (params.type) {
       case "project":
         form = "initiative";
         link = "edit-initiative";
+        type = "initiative";
         break;
       case "action_plan":
         form = "actionPlan";
         link = "edit-action-plan";
+        type = "action_plan";
         break;
       case "policy":
         form = "policy";
         link = "edit-policy";
+        type = "policy";
         break;
       case "technical_resource":
         form = "technicalResource";
         link = "edit-technical-resource";
+        type = "technical_resource";
         break;
       case "financing_resource":
         form = "financingResource";
         link = "edit-financing-resource";
+        type = "financing_resource";
         break;
       case "technology":
         form = "technology";
         link = "edit-technology";
+        type = "technology";
         break;
       case "event":
         form = "event";
         link = "edit-event";
+        type = "event";
         break;
       default:
         form = "entity";
         link = "edit-entity";
+        type = "initiative";
         break;
     }
     UIStore.update((e) => {
       e.formEdit = {
         ...e.formEdit,
-        [form]: {
+        flexible: {
           status: "edit",
           id: params.id,
         },
       };
       e.formStep = {
         ...e.formStep,
-        [form]: 1,
+        flexible: 1,
       };
     });
-    history.push(`/${link}/${params.id}`);
+
+    history.push({
+      pathname: `/${link}/${params.id}`,
+      state: { type: type },
+    });
   };
 
   const handleVisible = () => {
@@ -859,11 +858,19 @@ const DetailsView = ({
                       data?.entityConnections.map((item) => (
                         <List.Item>
                           <List.Item.Meta
-                            avatar={<Avatar src={EntityImage} />}
+                            avatar={
+                              <Avatar
+                                src={
+                                  item?.image
+                                    ? item.image
+                                    : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
+                                }
+                              />
+                            }
                             title={item.entity}
                             description={"Entity"}
                           />{" "}
-                          <div className="see-more-button">See More</div>
+                          {/* <div className="see-more-button">See More</div> */}
                         </List.Item>
                       ))}
                   </List>
@@ -972,7 +979,7 @@ const DetailsView = ({
                           bordered={false}
                         >
                           <h4>{item.title}</h4>
-                          <p>{item.description}</p>
+                          {/* <p>{item.description}</p> */}
                           <div className="bottom-panel">
                             <div>
                               <Avatar.Group

@@ -77,6 +77,7 @@ import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 // Buttons
 import AddContentButton from "./modules/add-content-button/AddContentButton";
+import StakeholderOverview from "./modules/stakeholder-overview/view";
 
 let tmid;
 
@@ -542,7 +543,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-action-plan/:id"
-            render={(props) => <AddActionPlan {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -552,7 +553,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-financing-resource/:id"
-            render={(props) => <AddFinancingResource {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -562,7 +563,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-technical-resource/:id"
-            render={(props) => <AddTechnicalResource {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -640,6 +641,25 @@ const Root = () => {
             path="/stakeholder-detail"
           />
           <Route
+            exact
+            render={(props) => <StakeholderOverview {...props} />}
+            filters={filters}
+            setFilters={setFilters}
+            path="/stakeholder-overview"
+          />
+          <Route
+            path="/:type(stakeholder)/:id"
+            render={(props) => (
+              <StakeholderDetail
+                {...props}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                setFilterMenu={setFilterMenu}
+              />
+            )}
+          />
+          <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event)/:id"
             render={(props) => (
               <NewDetailsView
@@ -652,7 +672,7 @@ const Root = () => {
             )}
           />
           <Route
-            path="/:type(organisation|stakeholder)/:id"
+            path="/:type(organisation)/:id"
             render={(props) => (
               <DetailsView
                 {...props}

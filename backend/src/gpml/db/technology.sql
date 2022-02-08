@@ -144,7 +144,7 @@ where id = :id;
 
 -- :name entity-connections-by-id
 -- :doc Get entity connections by id
-select ot.id, ot.association as role, org.name as entity, org.logo as image
+select ot.id, ot.association as role, org.id as entity_id, org.name as entity, org.logo as image
  from organisation_technology ot
  left join organisation org
  on ot.organisation = org.id
@@ -152,7 +152,7 @@ select ot.id, ot.association as role, org.name as entity, org.logo as image
 
 -- :name stakeholder-connections-by-id
 -- :doc Get stakeholder connections by id
-select st.id, st.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder, s.picture as image
+select st.id, st.association as role, s.id as stakeholder_id, concat_ws(' ', s.first_name, s.last_name) as stakeholder, s.picture as image
   from stakeholder_technology st
   left join stakeholder s
   on st.stakeholder = s.id

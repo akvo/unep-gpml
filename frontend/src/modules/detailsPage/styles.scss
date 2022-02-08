@@ -67,7 +67,7 @@
       padding-top: 100%;
       img {
         height: 100%;
-        object-fit: fill;
+        object-fit: cover;
         position: absolute;
         top: 0;
       }
@@ -200,7 +200,6 @@
             overflow: initial;
             img {
               object-fit: contain;
-              border-radius: 50%;
             }
           }
         }
@@ -233,6 +232,9 @@
       .ant-avatar-circle {
         width: 50px !important;
         height: 50px !important;
+        img {
+          border-radius: 50%;
+        }
       }
       .ant-list-item-meta-title {
         margin-bottom: 0px;
@@ -324,6 +326,7 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
+          margin-top: 10px;
           .read-more {
             color: #34a6ff;
             cursor: pointer;

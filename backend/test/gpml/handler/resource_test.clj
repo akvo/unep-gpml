@@ -81,7 +81,7 @@
                                                       :country (-> (:countries data) second :id)})))))
           resource-one (db.resource/resource-by-id db (:body resp-one))
           resource-two (db.resource/resource-by-id db (:body resp-two))]
-      (is (empty? (db.ts-auth/get-auth-by-topic db {:topic-id (:id resource-one) :topic-type "resource"})))
+      (is (not-empty (db.ts-auth/get-auth-by-topic db {:topic-id (:id resource-one) :topic-type "resource"})))
       (is (= (:id user) (:stakeholder (first (db.ts-auth/get-auth-by-topic db {:topic-id (:id resource-two) :topic-type "resource"})))))
       (is (= 201 (:status resp-one)))
       (let [image-one (:image resource-one)]
