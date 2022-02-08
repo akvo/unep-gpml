@@ -72,7 +72,7 @@ const plans = [
           <li>
             The <Link to="/capacity-building">Capacity Building section</Link>{" "}
             contains <Link to="/capacity-building">Courses & Trainings</Link>{" "}
-            and <Link to="/events">Events</Link>, such as the{" "}
+            and <Link to="/capacity-building">Events</Link>, such as the{" "}
             <a href="https://digital.gpmarinelitter.org/technical_resource/149">
               MOOC on Marine Litter
             </a>{" "}
