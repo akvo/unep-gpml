@@ -72,11 +72,7 @@ const plans = [
           <li>
             The <Link to="/capacity-building">Capacity Building section</Link>{" "}
             contains <Link to="/capacity-building">Courses & Trainings</Link>{" "}
-            and{" "}
-            <Link to="/events">
-              Events
-            </Link>
-            , such as the{" "}
+            and <Link to="/events">Events</Link>, such as the{" "}
             <a href="https://digital.gpmarinelitter.org/technical_resource/149">
               MOOC on Marine Litter
             </a>{" "}
@@ -105,11 +101,13 @@ const plans = [
         <ul>
           <li>
             Guidance on implementation actions can be found in various{" "}
-            <Link to="/capacity-building">Guidance Documents</Link>. The{" "}
-            <Link to="/case-studies">Belize and PAME case study</Link> provide
-            examples of different types of implementation actions that are being
-            applied as part of a national and Regional Action Plan respectively.
-            Other examples include:
+            <a href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y">
+              Guidance Documents
+            </a>
+            . The <Link to="/case-studies">Belize and PAME case study</Link>{" "}
+            provide examples of different types of implementation actions that
+            are being applied as part of a national and Regional Action Plan
+            respectively. Other examples include:
           </li>
           <i>Regional action plans</i>
           <ul>
