@@ -240,7 +240,7 @@
       .ant-card-body {
         display: flex;
         flex-direction: column;
-        // min-height: 321px;
+
         min-height: 250px;
         .person-role {
           max-height: fit-content;
@@ -255,8 +255,7 @@
     height: fit-content;
     max-width: 345px;
     border-radius: 10px;
-    // margin: 0 34.12px 21.47px 0;
-    // margin: 26px 34.12px 21.47px 29.12px;
+
     span {
       display: block;
     }

@@ -30,19 +30,18 @@ const StakeholderOverview = ({ history }) => {
   const { isLoading } = useAuth0();
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
-  const [test, setTest] = useState([]);
+
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
   const pageSize = 10;
   const { innerWidth } = window;
   const [resultCount, setResultCount] = useState(0);
-  const { entityRoleOptions, stakeholders } = UIStore.useState((s) => ({
+  const { entityRoleOptions } = UIStore.useState((s) => ({
     entityRoleOptions: s.entityRoleOptions,
     countries: s.countries,
     tags: s.tags,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     languages: s.languages,
-    stakeholders: s.stakeholders,
   }));
 
   const sortPeople = () => {

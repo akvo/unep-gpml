@@ -1,15 +1,10 @@
-import React, { useState } from "react";
-import { Row, Col, Card } from "antd";
+import React from "react";
+import { Row, Card } from "antd";
 import { Link } from "react-router-dom";
 
 import { UIStore } from "../../store";
-
-import firstPic from "../../images/stakeholder-overview/first-avatar.jpg";
-import secondPic from "../../images/stakeholder-overview/second-avatar.jpg";
-import { ReactComponent as Badge } from "../../images/stakeholder-overview/badge.svg";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 import communityIcon from "../../images/stakeholder-overview/union-2-icon.svg";
-import { ReactComponent as GPMLlogo } from "../../images/stakeholder-overview/gpml-logo.svg";
 
 const ProfileCard = ({ profile }) => {
   const { countries } = UIStore.useState((s) => ({
@@ -20,7 +15,7 @@ const ProfileCard = ({ profile }) => {
 
   return (
     <Link
-    className='card-wrapper-link'
+      className="card-wrapper-link"
       to={
         profile.type === "organisation"
           ? `/organisation/${profile?.id}`
@@ -69,29 +64,27 @@ const ProfileCard = ({ profile }) => {
                   <span className="entity-name">Entity Name</span>
                 )}
               </li>
-              {/* <ul className="icons-list" >
-              <li className="list-item">
-                <Badge />
-              </li>
-              {profile.is_member && (
-                <li className="list-item">
-                  <GPMLlogo />
-                </li>
-              )}
-            </ul> */}
             </ul>
 
             <ul className="social-media-list">
-              {profile.linked_in && (
+              {profile.linkedIn && (
                 <li className="list-item">
-                  <div role='link' href='' className="social-media-link linkedin">
+                  <div
+                    role="link"
+                    data-href={profile.linkedIn}
+                    className="social-media-link linkedin"
+                  >
                     Linkedin
                   </div>
                 </li>
               )}
               {profile.twitter && (
                 <li className="list-item">
-                  <div role='link' href="" className="social-media-link twitter">
+                  <div
+                    role="link"
+                    data-href={profile.twitter}
+                    className="social-media-link twitter"
+                  >
                     Twitter
                   </div>
                 </li>
