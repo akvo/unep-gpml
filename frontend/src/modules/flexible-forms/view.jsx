@@ -405,7 +405,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     if (name === "entityConnections") {
       res =
         value.length > 0
-          ? value.map((x) => ({ role: x.role, entity: x.id }))
+          ? value.map((x) => ({ role: x.role, entity: x.entity_id }))
           : [{}];
     }
 
