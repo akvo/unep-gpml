@@ -1402,15 +1402,9 @@ export const schema = {
             title: "",
             required: [],
             properties: {
-              firstPublicationDate: {
-                title: "First Publication Date",
+              publishYear: {
+                title: "Publication Year",
                 type: "string",
-                format: "date",
-              },
-              latestAmendmentDate: {
-                title: "Last Amendment Date",
-                type: "string",
-                format: "date",
               },
             },
           },
@@ -2226,13 +2220,13 @@ export const schema = {
           value: ["S5"],
         },
         properties: {
-          S5_G1: {
-            title: "",
+          dateOne: {
             type: "object",
+            title: "",
             required: [],
             properties: {
               publishYear: {
-                title: "PUBLICATION YEAR",
+                title: "Publication Year",
                 type: "string",
               },
             },

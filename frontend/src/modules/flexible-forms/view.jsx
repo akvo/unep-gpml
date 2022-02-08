@@ -185,22 +185,6 @@ const formDataMapping = [
     question: "validTo",
   },
   {
-    key: "firstPublicationDate",
-    name: "firstPublicationDate",
-    type: "date",
-    section: "S5",
-    group: "dateOne",
-    question: "firstPublicationDate",
-  },
-  {
-    key: "latestAmendmentDate",
-    name: "latestAmendmentDate",
-    type: "date",
-    section: "S5",
-    group: "dateOne",
-    question: "latestAmendmentDate",
-  },
-  {
     key: "relatedContent",
     name: "relatedContent",
     type: "array",
@@ -219,8 +203,8 @@ const formDataMapping = [
   {
     key: "publishYear",
     name: "publishYear",
-    group: "S5_G1",
     type: "year",
+    group: "dateOne",
     section: "S5",
     question: "publishYear",
   },
@@ -435,6 +419,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       } else {
         res = value ? moment(value).format("YYYY-MM-DD") : "";
       }
+    }
+
+    if (name === "publishYear") {
+      res = moment(value, "YYYY").format("YYYY-MM-DD");
     }
 
     if (type === "integer") {
