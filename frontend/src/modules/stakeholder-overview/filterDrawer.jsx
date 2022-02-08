@@ -1,15 +1,5 @@
-import React, { useState } from "react";
-import {
-  Row,
-  Col,
-  Space,
-  Drawer,
-  Tag,
-  Card,
-  Select,
-  DatePicker,
-  Button,
-} from "antd";
+import React from "react";
+import { Row, Col, Space, Drawer, Tag, Card, Select, Button } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
@@ -18,13 +8,12 @@ import { UIStore } from "../../store";
 import { entityName } from "../../utils/misc";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
-import values from "lodash/values";
-import flatten from "lodash/flatten";
+
 import { ReactComponent as BusinessIcon } from "../../images/stakeholder-overview/business-icon.svg";
 import { ReactComponent as AchievementIcon } from "../../images/stakeholder-overview/medal-icon.svg";
 import { ReactComponent as AgreementIcon } from "../../images/stakeholder-overview/agreement-icon.svg";
 import { ReactComponent as GPMLLogo } from "../../images/stakeholder-overview/gpml-logo.svg";
-import { ReactComponent as Badge } from "../../images/stakeholder-overview/badge-outlined.svg";
+
 import { ReactComponent as CommunityIcon } from "../../images/stakeholder-overview/community-outlined.svg";
 import { ReactComponent as UnionIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
@@ -36,12 +25,10 @@ const FilterDrawer = ({
   updateQuery,
 }) => {
   const {
-    profile,
     countries,
     transnationalOptions,
     geoCoverageTypeOptions,
     representativeGroup,
-    mainContentType,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -50,8 +37,6 @@ const FilterDrawer = ({
     mainContentType: s.mainContentType,
     representativeGroup: s.sectorOptions,
   }));
-
-  const { isAuthenticated } = useAuth0();
 
   const isLoaded = () =>
     !isEmpty(countries) &&
@@ -152,7 +137,7 @@ const FilterDrawer = ({
           </Col>
 
           {/* Specificity */}
-          <Col span={24} className="specificity-card">
+          {/* <Col span={24} className="specificity-card">
             <Space align="middle">
               <div className="filter-title">Specificity</div>
               {isEmpty("") ? (
@@ -184,7 +169,7 @@ const FilterDrawer = ({
                 </Card>
               </Col>
             </Row>
-          </Col>
+          </Col> */}
 
           {/* For entities */}
           <Col span={24} className="specificity-card">
@@ -203,22 +188,24 @@ const FilterDrawer = ({
 
             <Row type="flex" gutter={[10, 10]}>
               <p className="specificity-title">For entities</p>
-              {entities.map((entity) => {
+              {[entities[0]].map((entity) => {
                 const name = humps.decamelize(entity);
                 return (
-                  <Col span={6} key={entity}>
-                    <Card
-                      onClick={() => handleChangeType("entity", entity)}
-                      className={classNames("drawer-card", {
-                        active: query?.entity?.includes(entity),
-                      })}
-                    >
-                      <Space direction="vertical" align="center">
-                        {entityIcon(name)}
-                        <div className="topic-text">{entityName(name)}</div>
-                      </Space>
-                    </Card>
-                  </Col>
+                  name && (
+                    <Col span={6} key={entity}>
+                      <Card
+                        onClick={() => handleChangeType("entity", entity)}
+                        className={classNames("drawer-card", {
+                          active: query?.entity?.includes(entity),
+                        })}
+                      >
+                        <Space direction="vertical" align="center">
+                          {entityIcon(name)}
+                          <div className="topic-text">{entityName(name)}</div>
+                        </Space>
+                      </Card>
+                    </Col>
+                  )
                 );
               })}
             </Row>
@@ -230,6 +217,20 @@ const FilterDrawer = ({
             options={[]}
             value={[]}
             flag="affiliation"
+            query={query}
+            updateQuery={updateQuery}
+          />
+
+          {/*Geo-coverage*/}
+          <MultipleSelectFilter
+            title="Geo-coverage"
+            options={
+              isLoaded()
+                ? geoCoverageTypeOptions?.map((x) => ({ value: x, label: x }))
+                : []
+            }
+            value={query?.geoCoverage || []}
+            flag="geoCoverage"
             query={query}
             updateQuery={updateQuery}
           />
@@ -249,14 +250,14 @@ const FilterDrawer = ({
           />
 
           {/* Goals */}
-          <MultipleSelectFilter
+          {/* <MultipleSelectFilter
             title="Goals"
             options={[]}
             value={query?.goal || []}
             flag="goal"
             query={query}
             updateQuery={updateQuery}
-          />
+          /> */}
 
           {/*Expertise to offer*/}
           <MultipleSelectFilter
@@ -288,20 +289,6 @@ const FilterDrawer = ({
             }
             value={query?.representativeGroup || []}
             flag="representativeGroup"
-            query={query}
-            updateQuery={updateQuery}
-          />
-
-          {/*Geo-coverage*/}
-          <MultipleSelectFilter
-            title="Geo-coverage"
-            options={
-              isLoaded()
-                ? geoCoverageTypeOptions?.map((x) => ({ value: x, label: x }))
-                : []
-            }
-            value={query?.geoCoverage || []}
-            flag="geoCoverage"
             query={query}
             updateQuery={updateQuery}
           />

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Pagination, Tag } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./styles.scss";
 import LeftSidebar from "./leftSidebar";
@@ -9,22 +10,24 @@ import FilterDrawer from "./filterDrawer";
 import { useQuery } from "./common";
 import { UIStore } from "../../store";
 import humps from "humps";
-import { profiles } from "./profiles";
+
 import api from "../../utils/api";
 import { redirectError } from "../error/error-util";
 import { suggestedProfiles } from "./suggested-profile";
 import { entityName } from "../../utils/misc";
+import isEmpty from "lodash/isEmpty";
 
 let tmid;
 
 const StakeholderOverview = ({ history }) => {
   const {
     countries,
-
     representativeGroup,
+    geoCoverageTypeOptions,
   } = UIStore.useState((s) => ({
     countries: s.countries,
     representativeGroup: s.sectorOptions,
+    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
   }));
 
   const [filterVisible, setFilterVisible] = useState(false);
@@ -32,37 +35,39 @@ const StakeholderOverview = ({ history }) => {
   const { isLoading } = useAuth0();
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
-  const [test, setTest] = useState([]);
+
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
-  const pageSize = 12;
-
-  const { entityRoleOptions, stakeholders } = UIStore.useState((s) => ({
+  const pageSize = 10;
+  const { innerWidth } = window;
+  const [resultCount, setResultCount] = useState(0);
+  const { entityRoleOptions } = UIStore.useState((s) => ({
     entityRoleOptions: s.entityRoleOptions,
     countries: s.countries,
     tags: s.tags,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     languages: s.languages,
-    stakeholders: s.stakeholders,
   }));
-
-  useState(() => {
-    setResults([...profiles]);
-  }, []);
 
   const sortPeople = () => {
     const sortByName = results.sort((a, b) => {
       if (!isAscending) {
-        if (a.first_name) {
-          return a.first_name.localeCompare(b.first_name);
+        if (a.firstName) {
+          return (
+            a.firstName.localeCompare(b.firstName) ||
+            a.firstName.localeCompare(a.name)
+          );
         } else {
-          return a.name.localeCompare(b.first_name);
+          return a.name.localeCompare(b.firstName);
         }
       } else {
-        if (b.first_name) {
-          return b.first_name.localeCompare(a.first_name);
+        if (b.firstName) {
+          return (
+            b.firstName.localeCompare(a.firstName) ||
+            b.firstName.localeCompare(b.name)
+          );
         } else {
-          return b.name.localeCompare(a.first_name);
+          return b.name.localeCompare(a.firstName);
         }
       }
     });
@@ -73,14 +78,20 @@ const StakeholderOverview = ({ history }) => {
   const getResults = () => {
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
-    const url = `stakeholder`;
-
+    const url = `/browse?topic=organisation%2Cstakeholder&${String(
+      searchParms
+    )}`;
     api
       .get(url)
       .then((resp) => {
-        setTest(resp?.data);
+        const result = resp?.data?.results;
 
-        setLoading(false);
+        setResults([...result]);
+
+        const organisationType = resp?.data?.counts?.find(
+          (count) => count.topic === "organisation"
+        );
+        setResultCount(organisationType.count);
       })
       .catch((err) => {
         console.error(err);
@@ -88,10 +99,7 @@ const StakeholderOverview = ({ history }) => {
       });
   };
 
-  console.log(test);
-
   useEffect(() => {
-    setLoading(true);
     if (isLoading === false && !filters) {
       setTimeout(getResults, 0);
     }
@@ -129,9 +137,17 @@ const StakeholderOverview = ({ history }) => {
         return entityName(name);
       }
 
-      if (key === "country") {
-        const findCountry = countries.find((x) => x.id == value);
+      if (key === "location") {
+        const findCountry = countries.find((x) => x.name == value);
         return findCountry?.name;
+      }
+
+      if (key === "geoCoverage") {
+        const findGeoCoverage = geoCoverageTypeOptions?.find((x) => ({
+          value: x,
+          label: x,
+        }));
+        return findGeoCoverage;
       }
 
       if (key === "representativeGroup") {
@@ -176,6 +192,8 @@ const StakeholderOverview = ({ history }) => {
     });
   };
 
+  const isLoaded = () => Boolean(!isEmpty(results));
+
   return (
     <div id="stakeholder-overview">
       <Header
@@ -184,6 +202,7 @@ const StakeholderOverview = ({ history }) => {
         setFilterVisible={setFilterVisible}
         renderFilterTag={renderFilterTag}
         sortPeople={sortPeople}
+        updateQuery={updateQuery}
       />
       <Row type="flex" className="body-wrapper">
         {/* Filter Drawer */}
@@ -197,7 +216,7 @@ const StakeholderOverview = ({ history }) => {
 
         <LeftSidebar />
         <Col lg={22} xs={24} order={2}>
-          <Col className="card-container green">
+          {/* <Col className="card-container green">
             <h3 className="title text-white ui container">
               Suggested profiles
             </h3>
@@ -206,22 +225,34 @@ const StakeholderOverview = ({ history }) => {
                 <ProfileCard key={profile.id} profile={profile} />
               ))}
             </div>
-          </Col>
+          </Col> */}
           <Col className="all-profiles">
-            <div className="card-wrapper ui container">
-              {results.map((profile) => (
-                <ProfileCard key={profile.id} profile={profile} />
-              ))}
-            </div>
+            {!isLoaded() ? (
+              <h2 className="loading" id="stakeholder-loading">
+                <LoadingOutlined spin /> Loading
+              </h2>
+            ) : (
+              isLoaded() &&
+              !isEmpty(results) && (
+                <div className="card-wrapper ui container">
+                  {results.map((profile) => (
+                    <ProfileCard key={profile.id} profile={profile} />
+                  ))}
+                </div>
+              )
+            )}
+
             <div className="page">
-              <Pagination
-                defaultCurrent={1}
-                current={1}
-                pageSize={3}
-                total={4}
-                showSizeChanger={false}
-                onChange={() => null}
-              />
+              {!isEmpty(results) && (
+                <Pagination
+                  defaultCurrent={1}
+                  current={(filters?.offset || 0) / pageSize + 1}
+                  pageSize={pageSize}
+                  total={resultCount}
+                  showSizeChanger={false}
+                  onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
+                />
+              )}
             </div>
           </Col>
         </Col>

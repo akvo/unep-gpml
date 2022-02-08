@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Row, Col, Space, Button, Select, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import { withRouter } from "react-router-dom";
 
 import FilterIcon from "../../images/knowledge-library/filter-icon.svg";
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
@@ -14,8 +15,9 @@ const Header = ({
   renderFilterTag,
   sortPeople,
   isAscending,
+  updateQuery,
 }) => {
-  const [view, setView] = useState("list");
+  const [view, setView] = useState("map");
 
   const selectionValue = (
     <div className="selection-value">
@@ -23,7 +25,7 @@ const Header = ({
         <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
       </button>
       <span className="label text-white">{`${view} view`}</span>
-      {view.toLowerCase().includes("list") ? (
+      {view.toLowerCase().includes("map") ? (
         <img src={GlobeOutlined} alt="globe-icon" />
       ) : (
         <img src={TooltipOutlined} alt="tooltip-icon" />
@@ -45,7 +47,7 @@ const Header = ({
             <Row type="flex" justify="space-between" align="middle">
               <Col lg={5} md={7} sm={9} className="search-box">
                 <Space>
-                  <Search />
+                  <Search updateQuery={updateQuery} />
                   <Button
                     onClick={() => setFilterVisible(!filterVisible)}
                     type="ghost"
@@ -66,16 +68,16 @@ const Header = ({
             </Row>
           </Col>
           {/* Map/Topic view dropdown */}
-          <Col lg={2} md={4} sm={6} className="select-wrapper">
+          {/* <Col lg={2} md={4} sm={6} className="select-wrapper">
             <Select
               className="view-selection"
               value={selectionValue}
               onChange={(val) => setView(val)}
             >
-              <Select.Option value="list">List View</Select.Option>
+              <Select.Option value="list">Map View</Select.Option>
               <Select.Option value="topic">Topic View </Select.Option>
             </Select>
-          </Col>
+          </Col> */}
           <Button className="sort-btn" onClick={sortPeople}>
             <SortIcon />{" "}
             <span>
@@ -94,10 +96,15 @@ const Header = ({
   );
 };
 
-const Search = () => {
+const Search = withRouter(({ history, updateQuery }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
-    console.log(src);
+    if (src) {
+      history.push(`?q=${src.trim()}`);
+      updateQuery("q", src.trim());
+    } else {
+      updateQuery("q", "");
+    }
   };
 
   return (
@@ -119,6 +126,6 @@ const Search = () => {
       />
     </div>
   );
-};
+});
 
 export default Header;

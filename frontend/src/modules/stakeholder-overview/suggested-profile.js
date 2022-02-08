@@ -87,6 +87,7 @@ export const suggestedProfiles = [
     country: null,
     activity_term: null,
     offering: "knowledge management",
+    type: "organisation",
   },
   {
     role: "ADMIN",

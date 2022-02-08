@@ -12,7 +12,7 @@ const LeftSidebar = ({ active = 2 }) => {
   const [activeMenu, setActiveMenu] = useState(active);
   const sidebar = [
     { id: 1, title: "Events", url: "/events" },
-    { id: 2, title: "Community", url: "stakeholder-overview" },
+    { id: 2, title: "Community", url: "/stakeholder-overview" },
     { id: 3, title: "Forums", url: null },
   ];
 
@@ -43,6 +43,7 @@ const LeftSidebar = ({ active = 2 }) => {
               </Link>
             ) : s.title.toLowerCase() === "forums" ? (
               <a
+                href="#"
                 href="https://communities.gpmarinelitter.org/"
                 className="item-menu"
               >
