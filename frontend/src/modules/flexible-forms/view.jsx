@@ -405,7 +405,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     if (name === "entityConnections") {
       res =
         value.length > 0
-          ? value.map((x) => ({ role: x.role, entity: x.entity_id }))
+          ? value.map((x) => ({ role: x.role, entity: x.entityId }))
           : [{}];
     }
 
@@ -510,6 +510,24 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
         ).type;
       });
       api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
+        let newData = [];
+        if (d.data.organisations) {
+          newData = d.data.organisations.map((item) => {
+            return {
+              role: "owner",
+              entityId: item.id,
+            };
+          });
+        }
+        d.data = {
+          ...d.data,
+          url:
+            d.data.languages && d.data.languages.length > 0
+              ? d.data.languages[0].url
+              : d.data.url,
+          entityConnections: [...d.data.entityConnections, ...newData],
+        };
+
         initialFormData.update((e) => {
           e.data = revertFormData(d.data);
         });
@@ -690,9 +708,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                 shape="circle"
                 icon={
                   data?.[section]?.S4_G5.individual.length > 0 &&
-                  data?.[section]?.S4_G5.individual[0].hasOwnProperty(
+                  (data?.[section]?.S4_G5.individual[0].hasOwnProperty(
                     "role"
-                  ) ? (
+                  ) ||
+                    data?.[section]?.S4_G5.entity[0].hasOwnProperty("role")) ? (
                     <CheckOutlined />
                   ) : (
                     <EditOutlined />
@@ -703,7 +722,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                   position: "absolute",
                   color:
                     data?.[section]?.S4_G5.individual &&
-                    data?.[section]?.S4_G5.individual[0].hasOwnProperty("role")
+                    (data?.[section]?.S4_G5.individual[0].hasOwnProperty(
+                      "role"
+                    ) ||
+                      data?.[section]?.S4_G5.entity[0].hasOwnProperty("role"))
                       ? "#255B87"
                       : "#fff",
                   borderColor: "#255B87",

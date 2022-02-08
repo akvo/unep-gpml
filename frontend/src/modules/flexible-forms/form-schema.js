@@ -1313,7 +1313,7 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["individual"],
+            required: [],
             properties: {
               entity: {
                 title: "Entity connection",
@@ -1869,7 +1869,7 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["individual"],
+            required: [],
             properties: {
               entity: {
                 title: "Entity connection",
@@ -2137,7 +2137,7 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["individual"],
+            required: [],
             properties: {
               entity: {
                 title: "Entity connection",

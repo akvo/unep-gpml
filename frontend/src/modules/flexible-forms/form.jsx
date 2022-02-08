@@ -211,10 +211,14 @@ const FlexibleForm = withRouter(
           : [];
         delete data.entity;
       }
+
       if (data?.individual) {
-        data.individualConnections = data.individual;
+        data.individualConnections = data.individual[0].hasOwnProperty("role")
+          ? data.individual
+          : [];
         delete data.individual;
       }
+
       if (data?.info) {
         data.infoDocs = data.info;
         delete data.info;
@@ -318,7 +322,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.qentity) {
-        data.entity_connections = data.qentity[0].hasOwnProperty("row")
+        data.entity_connections = data.qentity[0].hasOwnProperty("role")
           ? data.qentity
           : [];
         delete data.qentity;
@@ -466,7 +470,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.entity) {
-        data.entityConnections = data.entity[0].hasOwnProperty("row")
+        data.entityConnections = data.entity[0].hasOwnProperty("role")
           ? data.entity
           : [];
         delete data.entity;
@@ -594,7 +598,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.entity) {
-        data.entityConnections = data.entity[0].hasOwnProperty("row")
+        data.entityConnections = data.entity[0].hasOwnProperty("role")
           ? data.entity
           : [];
         delete data.entity;
@@ -710,16 +714,19 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags.map((x) => parseInt(x));
 
       if (data?.entity) {
-        data.entityConnections = data.entity[0].hasOwnProperty("row")
+        data.entityConnections = data.entity[0].hasOwnProperty("role")
           ? data.entity
           : [];
         delete data.entity;
       }
 
       if (data?.individual) {
-        data.individualConnections = data.individual;
+        data.individualConnections = data.individual[0].hasOwnProperty("role")
+          ? data.individual
+          : [];
         delete data.individual;
       }
+
       if (data?.info) {
         data.infoDocs = data.info;
         delete data.info;
@@ -887,21 +894,32 @@ const FlexibleForm = withRouter(
         });
         // enable btn submit
         requiredFilledIn.length === 0 &&
-          (initialFormData?.currentState?.data.S4[
+          ((initialFormData?.currentState?.data.S4[
             "S4_G5"
           ].individual[0].hasOwnProperty("role") &&
             initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].individual[0].hasOwnProperty("stakeholder")) === true &&
+            ].individual[0].hasOwnProperty("stakeholder")) ||
+            (initialFormData?.currentState?.data.S4[
+              "S4_G5"
+            ].entity[0].hasOwnProperty("role") &&
+              initialFormData?.currentState?.data.S4[
+                "S4_G5"
+              ].entity[0].hasOwnProperty("entity"))) === true &&
           setDisabledBtn({ disabled: false, type: "primary" });
         requiredFilledIn.length !== 0 &&
-          (initialFormData?.currentState?.data.S4["S4_G5"].individual &&
+          ((initialFormData?.currentState?.data.S4[
+            "S4_G5"
+          ].individual[0].hasOwnProperty("role") &&
             initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].individual[0].hasOwnProperty("role") &&
-            initialFormData?.currentState?.data.S4[
+            ].individual[0].hasOwnProperty("stakeholder")) ||
+            (initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].individual[0].hasOwnProperty("stakeholder")) === false &&
+            ].entity[0].hasOwnProperty("role") &&
+              initialFormData?.currentState?.data.S4[
+                "S4_G5"
+              ].entity[0].hasOwnProperty("entity"))) === true &&
           setDisabledBtn({ disabled: true, type: "default" });
       },
       [initialFormData, formSchema, setDisabledBtn]
