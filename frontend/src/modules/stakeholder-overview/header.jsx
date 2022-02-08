@@ -3,7 +3,7 @@ import { Row, Col, Space, Button, Select, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 
-import ConfigIcon from "../../images/knowledge-library/config-icon.svg";
+import FilterIcon from "../../images/knowledge-library/filter-icon.svg";
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
 import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
 import DownArrow from "../../images/knowledge-library/chevron-down.svg";
@@ -54,7 +54,7 @@ const Header = ({
                     shape="circle"
                     icon={
                       <img
-                        src={ConfigIcon}
+                        src={FilterIcon}
                         className="filter-icon"
                         alt="config-icon"
                       />

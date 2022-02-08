@@ -652,55 +652,68 @@ const DetailsView = ({
 
   const handleEditBtn = () => {
     let form = null;
+    let type = null;
     let link = null;
     switch (params.type) {
       case "project":
         form = "initiative";
         link = "edit-initiative";
+        type = "initiative";
         break;
       case "action_plan":
         form = "actionPlan";
         link = "edit-action-plan";
+        type = "action_plan";
         break;
       case "policy":
         form = "policy";
         link = "edit-policy";
+        type = "policy";
         break;
       case "technical_resource":
         form = "technicalResource";
         link = "edit-technical-resource";
+        type = "technical_resource";
         break;
       case "financing_resource":
         form = "financingResource";
         link = "edit-financing-resource";
+        type = "financing_resource";
         break;
       case "technology":
         form = "technology";
         link = "edit-technology";
+        type = "technology";
         break;
       case "event":
         form = "event";
         link = "edit-event";
+        type = "event";
         break;
       default:
         form = "entity";
         link = "edit-entity";
+        type = "initiative";
         break;
     }
     UIStore.update((e) => {
       e.formEdit = {
         ...e.formEdit,
-        [form]: {
+        flexible: {
           status: "edit",
           id: params.id,
         },
       };
       e.formStep = {
         ...e.formStep,
-        [form]: 1,
+        flexible: 1,
       };
     });
-    history.push(`/${link}/${params.id}`);
+
+    history.push({
+      pathname: `/${link}/${params.id}`,
+      state: { type: type },
+    });
   };
 
   const handleVisible = () => {

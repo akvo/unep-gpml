@@ -36,7 +36,7 @@ $green-primary: #4dffa5;
     }
   }
   .case-studies-page {
-    min-height: 100vh;
+    height: 800px;
     h1.ant-typography,
     h2.ant-typography {
       font-family: Open Sans;
@@ -144,8 +144,11 @@ $green-primary: #4dffa5;
       }
     }
   }
-  #appWrapper {
-    background-color: #18162f;
+  #siteWrapper {
+    height: 800px;
+    #appWrapper {
+      background-color: #18162f;
+    }
   }
 }
 .ml-1 {
@@ -167,6 +170,36 @@ $green-primary: #4dffa5;
   }
 }
 
+/* Mobile Devices */
+@media screen and (max-width: 280px) {
+  #case-study {
+    .case-studies-page {
+      height: 100%;
+    }
+    #siteWrapper {
+      min-height: 1440px;
+    }
+  }
+}
+@media screen and (min-width: 300px) and (max-width: 760px) {
+  #case-study {
+    .case-studies-page {
+      height: 100%;
+    }
+    #siteWrapper {
+      min-height: 1280px;
+    }
+  }
+}
+/* Tablet */
+@media screen and (min-width: 768px) and (max-width: 912px) {
+  #case-study {
+    .case-studies-page,
+    #siteWrapper {
+      height: 912px;
+    }
+  }
+}
 /* (1366x768) WXGA Display */
 @media screen and (max-width: 1366px) {
   /* insert styles here */
@@ -297,6 +330,10 @@ $green-primary: #4dffa5;
     .ant-layout-content {
       background: #18162f;
     }
+    .case-studies-page,
+    #siteWrapper {
+      min-height: 1080px;
+    }
   }
 }
 @media screen and (min-width: 3840px) {
@@ -336,6 +373,10 @@ $green-primary: #4dffa5;
           }
         }
       }
+    }
+    .case-studies-page,
+    #siteWrapper {
+      min-height: 1280px;
     }
   }
 }

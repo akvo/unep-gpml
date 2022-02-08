@@ -61,6 +61,18 @@ const detailActionPlan = [
     value: "publishYear",
     type: "number",
   },
+  {
+    key: "validFrom",
+    name: "Valid From",
+    value: "validFrom",
+    type: "string",
+  },
+  {
+    key: "validTo",
+    name: "Valid Until",
+    value: "validTo",
+    type: "string",
+  },
 ];
 
 const detailFinancingResource = [
