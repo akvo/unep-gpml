@@ -74,7 +74,7 @@ import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 // Buttons
 import AddContentButton from "./modules/add-content-button/AddContentButton";
-import rStakeholderOveview from "./modules/stakeholder-overview/view";
+import StakeholderOverview from "./modules/stakeholder-overview/view";
 
 Promise.all([
   api.get("/tag"),
