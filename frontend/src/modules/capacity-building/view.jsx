@@ -53,7 +53,7 @@ const CapacityBuilding = () => {
         </div>
       </Col>
       <Col span={24}>
-        <div className="ui-container">
+        <div className="">
           <LeftSidebar active={2}>
             <Row>
               <Col span={24} style={{ position: "relative" }}>
