@@ -18,7 +18,6 @@ const ProfileCard = ({ profile }) => {
 
   const country = countries.find((country) => country.id === profile.country);
 
-  // console.log(UIStore.currentState);
   return (
     // <Link to="/stakeholder-overview">
 
@@ -31,13 +30,15 @@ const ProfileCard = ({ profile }) => {
         )}
       </div>
       <Row type="flex" className="profile-details">
-        <div className="image-wrapper">
-          <img
-            className="profile-image"
-            src={profile.picture || profile.logo}
-            alt=""
-          />
-        </div>
+        {profile.type === "organisation" ? (
+          <div className="image-wrapper organisation-image">
+            <img className="profile-image" src={profile.logo} alt="" />
+          </div>
+        ) : (
+          <div className="image-wrapper">
+            <img className="profile-image" src={profile.picture} alt="" />
+          </div>
+        )}
         <div className="profile-details-container">
           <ul className="profile-detail-list">
             <li className="list-item">

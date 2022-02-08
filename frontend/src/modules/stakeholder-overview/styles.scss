@@ -271,13 +271,21 @@
       .image-wrapper {
         display: flex;
         align-items: center;
+
+        border-radius: 50%;
+        width: 100%;
+        max-width: 150px;
+        max-height: 150px;
+        overflow: hidden;
+        margin-right: 16.51px;
+      }
+
+      .organisation-image {
+        border: 1px solid;
       }
 
       .profile-image {
-        // max-width: 216px;
         max-width: 150px;
-        border-radius: 50%;
-        margin-right: 16.51px;
       }
 
       .profile-details-container {

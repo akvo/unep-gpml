@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Pagination, Tag } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./styles.scss";
 import LeftSidebar from "./leftSidebar";
@@ -9,11 +10,12 @@ import FilterDrawer from "./filterDrawer";
 import { useQuery } from "./common";
 import { UIStore } from "../../store";
 import humps from "humps";
-import { profiles } from "./profiles";
+
 import api from "../../utils/api";
 import { redirectError } from "../error/error-util";
 import { suggestedProfiles } from "./suggested-profile";
 import { entityName } from "../../utils/misc";
+import isEmpty from "lodash/isEmpty";
 
 let tmid;
 
@@ -45,10 +47,6 @@ const StakeholderOverview = ({ history }) => {
     languages: s.languages,
     stakeholders: s.stakeholders,
   }));
-
-  useState(() => {
-    setResults([...profiles]);
-  }, []);
 
   const sortPeople = () => {
     const sortByName = results.sort((a, b) => {
@@ -195,6 +193,8 @@ const StakeholderOverview = ({ history }) => {
     });
   };
 
+  const isLoaded = () => Boolean(!isEmpty(results));
+
   return (
     <div id="stakeholder-overview">
       <Header
@@ -228,9 +228,16 @@ const StakeholderOverview = ({ history }) => {
           </Col>
           <Col className="all-profiles">
             <div className="card-wrapper ui container">
-              {results.map((profile) => (
-                <ProfileCard key={profile.id} profile={profile} />
-              ))}
+              {!isLoaded() ? (
+                <h2 className="loading">
+                  <LoadingOutlined spin /> Loading
+                </h2>
+              ) : (
+                isLoaded() &&
+                results.map((profile) => (
+                  <ProfileCard key={profile.id} profile={profile} />
+                ))
+              )}
             </div>
             <div className="page">
               <Pagination
