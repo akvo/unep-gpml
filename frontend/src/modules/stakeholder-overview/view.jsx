@@ -26,12 +26,16 @@ const StakeholderOverview = ({ history }) => {
     geoCoverageTypeOptions,
     stakeholders,
     organisations,
+    seeking,
+    offering,
   } = UIStore.useState((s) => ({
     countries: s.countries,
     representativeGroup: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     stakeholders: s.stakeholders,
     organisations: s.organisations,
+    seeking: s.tags.seeking,
+    offering: s.tags.offering,
   }));
 
   const [filterVisible, setFilterVisible] = useState(false);
@@ -76,9 +80,7 @@ const StakeholderOverview = ({ history }) => {
   const getResults = () => {
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
-    const url = `/browse?topic=organisation%2Cstakeholder&${String(
-      searchParms
-    )}`;
+    const url = `/browse?${String(searchParms)}`;
     api
       .get(url)
       .then((resp) => {
@@ -158,6 +160,15 @@ const StakeholderOverview = ({ history }) => {
           (x) => x == value
         );
         return representativeGroups;
+      }
+
+      if (key === "seeking") {
+        const findSeeking = seeking.find((seek) => seek?.id == value);
+        return findSeeking?.tag;
+      }
+      if (key === "offering") {
+        const findOffering = offering.find((offer) => offer?.id == value);
+        return findOffering?.tag;
       }
     };
     return Object.keys(query).map((key, index) => {

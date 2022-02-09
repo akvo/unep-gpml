@@ -4,14 +4,16 @@ const useQuery = () => {
   const srcParams = new URLSearchParams(useLocation().search);
   const ret = {
     country: [],
-    topic: ["organisation"],
-    transnational: [],
+    topic: [],
+    // transnational: [],
     tag: [],
     representativeGroup: [],
     geoCoverage: [],
-    language: [],
+    // language: [],
     entity: [],
-    rating: [],
+    // rating: [],
+    seeking: [],
+    offering: [],
     q: "",
   };
 

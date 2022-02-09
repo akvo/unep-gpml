@@ -272,7 +272,7 @@ const FilterDrawer = ({
                 : []
             }
             value={[]}
-            flag="expertiseToOffer"
+            flag="offering"
             query={query}
             updateQuery={updateQuery}
           />
@@ -286,7 +286,7 @@ const FilterDrawer = ({
                 : []
             }
             value={[]}
-            flag="exertiseTheySeek"
+            flag="seeking"
             query={query}
             updateQuery={updateQuery}
           />
