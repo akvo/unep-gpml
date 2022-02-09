@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { UIStore } from "../../store";
-import { entityName } from "../../utils/misc";
+import { entityName, networkNames, networkTypes } from "../../utils/misc";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 
@@ -76,6 +76,15 @@ const FilterDrawer = ({
     }
   };
 
+  const networkIcon = (name) => {
+    if (name.toLowerCase() === "stakeholder") {
+      return <UnionIcon />;
+    }
+    if (name.toLowerCase() === "organisation") {
+      return <CommunityIcon />;
+    }
+  };
+
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
@@ -101,8 +110,8 @@ const FilterDrawer = ({
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClose={() => updateQuery("entity", [])}
-                  onClick={() => updateQuery("entity", [])}
+                  onClose={() => updateQuery("topic", [])}
+                  onClick={() => updateQuery("topic", [])}
                 >
                   Clear selection
                 </Tag>
@@ -110,33 +119,23 @@ const FilterDrawer = ({
             </Space>
 
             <Row type="flex" gutter={[10, 10]}>
-              <Col span={6}>
-                <Card
-                  onClick={() => handleChangeType("entity", "")}
-                  className={classNames("drawer-card", {
-                    active: query?.entity?.includes(""),
-                  })}
-                >
-                  <Space direction="vertical" align="center">
-                    <UnionIcon />
-                    <div className="topic-text">Individuals</div>
-                  </Space>
-                </Card>
-              </Col>
-
-              <Col span={6}>
-                <Card
-                  onClick={() => handleChangeType("entity", "")}
-                  className={classNames("drawer-card", {
-                    active: query?.entity?.includes(""),
-                  })}
-                >
-                  <Space direction="vertical" align="center">
-                    <CommunityIcon />
-                    <div className="topic-text">Entities</div>
-                  </Space>
-                </Card>
-              </Col>
+              {networkTypes.map((type) => {
+                return (
+                  <Col span={6} key={type}>
+                    <Card
+                      onClick={() => handleChangeType("topic", type)}
+                      className={classNames("drawer-card", {
+                        active: query?.topic?.includes(type),
+                      })}
+                    >
+                      <Space direction="vertical" align="center">
+                        {networkIcon(type)}
+                        <div className="topic-text">{networkNames(type)}</div>
+                      </Space>
+                    </Card>
+                  </Col>
+                );
+              })}
             </Row>
           </Col>
 

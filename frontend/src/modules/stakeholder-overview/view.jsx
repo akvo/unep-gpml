@@ -227,6 +227,7 @@ const StakeholderOverview = ({ history }) => {
           entities={entityRoleOptions}
           filterVisible={filterVisible}
           setFilterVisible={setFilterVisible}
+          
         />
 
         <LeftSidebar />
