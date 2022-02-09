@@ -184,7 +184,7 @@ const plans = [
         <ul>
           <li>
             Guidance documents for monitoring and assessment, including the{" "}
-            <a hreef="https://digital.gpmarinelitter.org/technical_resource/10024">
+            <a href="https://digital.gpmarinelitter.org/technical_resource/10024">
               GESAMP Guidelines for the Monitoring and Assessment of Plastic
               Litter in the Ocean
             </a>{" "}
