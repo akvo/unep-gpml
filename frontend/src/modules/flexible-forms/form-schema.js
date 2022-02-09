@@ -1219,7 +1219,7 @@ export const schema = {
               "geoCoverageCountries",
               // "geoCoverageValueNational",
               // "geoCoverageValueSubnational",
-              "geoCoverageValueSubnationalCity",
+              // "geoCoverageValueSubnationalCity",
             ],
             properties: {
               geoCoverageType: {
@@ -1775,7 +1775,7 @@ export const schema = {
               "geoCoverageCountries",
               // "geoCoverageValueNational",
               // "geoCoverageValueSubnational",
-              "geoCoverageValueSubnationalCity",
+              // "geoCoverageValueSubnationalCity",
             ],
             properties: {
               geoCoverageType: {
@@ -2043,7 +2043,7 @@ export const schema = {
               "geoCoverageCountries",
               // "geoCoverageValueNational",
               // "geoCoverageValueSubnational",
-              "geoCoverageValueSubnationalCity",
+              // "geoCoverageValueSubnationalCity",
             ],
             properties: {
               geoCoverageType: {
