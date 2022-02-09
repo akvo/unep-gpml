@@ -193,13 +193,14 @@ const FilterDrawer = ({
               <p className="specificity-title">For entities</p>
               {[entities[0]].map((entity) => {
                 const name = humps.decamelize(entity);
+
                 return (
                   name && (
                     <Col span={6} key={entity}>
                       <Card
-                        onClick={() => handleChangeType("entity", entity)}
+                        onClick={() => handleChangeType("role", true)}
                         className={classNames("drawer-card", {
-                          active: query?.entity?.includes(entity),
+                          active: !query?.isMember,
                         })}
                       >
                         <Space direction="vertical" align="center">

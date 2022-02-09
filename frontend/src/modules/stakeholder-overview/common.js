@@ -5,16 +5,15 @@ const useQuery = () => {
   const ret = {
     country: [],
     topic: [],
-    // transnational: [],
+
     tag: [],
     representativeGroup: [],
     geoCoverage: [],
-    // language: [],
-    entity: [],
-    // rating: [],
+
     seeking: [],
     offering: [],
     q: "",
+    is_member: [],
   };
 
   for (var key of srcParams.keys()) {

@@ -85,6 +85,7 @@ const StakeholderOverview = ({ history }) => {
       .get(url)
       .then((resp) => {
         const result = resp?.data?.results;
+        console.log(result);
 
         setResults(
           [...result].sort(
