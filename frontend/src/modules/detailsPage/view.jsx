@@ -844,9 +844,9 @@ const DetailsView = ({
                 }}
               >
                 <div className="list connection-list">
-                  <List itemLayout="horizontal">
-                    {data?.entityConnections.length > 0 &&
-                      data?.entityConnections.map((item) => (
+                  {data?.entityConnections.length > 0 && (
+                    <List itemLayout="horizontal">
+                      {data?.entityConnections.map((item) => (
                         <List.Item>
                           <List.Item.Meta
                             avatar={
@@ -864,10 +864,11 @@ const DetailsView = ({
                           {/* <div className="see-more-button">See More</div> */}
                         </List.Item>
                       ))}
-                  </List>
-                  <List itemLayout="horizontal">
-                    {data?.stakeholderConnections.length > 0 &&
-                      data?.stakeholderConnections.map((item) => (
+                    </List>
+                  )}
+                  {data?.stakeholderConnections.length > 0 && (
+                    <List itemLayout="horizontal">
+                      {data?.stakeholderConnections.map((item) => (
                         <List.Item>
                           <List.Item.Meta
                             avatar={<Avatar src={item.image} />}
@@ -876,7 +877,8 @@ const DetailsView = ({
                           />
                         </List.Item>
                       ))}
-                  </List>
+                    </List>
+                  )}
                   {/* <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
