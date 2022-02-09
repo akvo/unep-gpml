@@ -24,10 +24,14 @@ const StakeholderOverview = ({ history }) => {
     countries,
     representativeGroup,
     geoCoverageTypeOptions,
+    stakeholders,
+    organisations,
   } = UIStore.useState((s) => ({
     countries: s.countries,
     representativeGroup: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
+    stakeholders: s.stakeholders,
+    organisations: s.organisations,
   }));
 
   const [filterVisible, setFilterVisible] = useState(false);
@@ -92,6 +96,7 @@ const StakeholderOverview = ({ history }) => {
           (count) => count.topic === "organisation"
         );
         setResultCount(organisationType.count);
+        setLoading(false);
       })
       .catch((err) => {
         console.error(err);
@@ -125,7 +130,7 @@ const StakeholderOverview = ({ history }) => {
     const newParams = new URLSearchParams(newQuery);
     history.push(`/stakeholder-overview?${newParams.toString()}`);
     clearTimeout(tmid);
-    tmid = setTimeout(getResults, 1000);
+    tmid = setTimeout(getResults(newQuery), 1000);
   };
 
   // Here is the function to render filter tag
@@ -192,7 +197,9 @@ const StakeholderOverview = ({ history }) => {
     });
   };
 
-  const isLoaded = () => Boolean(!isEmpty(results));
+  const isLoaded = () =>
+    Boolean(!isEmpty(stakeholders) && !isEmpty(organisations));
+  console.log(results, isLoaded(), loading, isLoading);
 
   return (
     <div id="stakeholder-overview">
@@ -227,19 +234,18 @@ const StakeholderOverview = ({ history }) => {
             </div>
           </Col> */}
           <Col className="all-profiles">
-            {!isLoaded() ? (
+            {!isLoaded() || loading ? (
               <h2 className="loading" id="stakeholder-loading">
                 <LoadingOutlined spin /> Loading
               </h2>
+            ) : isLoaded() && !loading && !isEmpty(results) ? (
+              <div className="card-wrapper ui container">
+                {results.map((profile) => (
+                  <ProfileCard key={profile.id} profile={profile} />
+                ))}
+              </div>
             ) : (
-              isLoaded() &&
-              !isEmpty(results) && (
-                <div className="card-wrapper ui container">
-                  {results.map((profile) => (
-                    <ProfileCard key={profile.id} profile={profile} />
-                  ))}
-                </div>
-              )
+              <h2 className="loading">There is no data to display</h2>
             )}
 
             <div className="page">
