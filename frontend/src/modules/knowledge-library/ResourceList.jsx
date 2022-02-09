@@ -201,7 +201,7 @@ const ResourceList = ({
             {totalItems > pageSize + filters?.offset
               ? pageSize + Number(filters?.offset)
               : itemCount}{" "}
-            of {allTopicCount || 0} result{allTopicCount > 1 ? "s" : ""}
+            of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
           </div>
         </div>
       </div>
