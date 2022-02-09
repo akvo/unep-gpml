@@ -34,12 +34,12 @@ export const topicTypes = [
 
 export const networkTypes = ["organisation", "stakeholder"];
 
-export const networkNames = (topic) => {
+export const networkNames = (network) => {
   const names = {
     organisation: "Entity",
     stakeholder: "Individual",
   };
-  return names[humps.camelize(topic)];
+  return names[humps.camelize(network)];
 };
 
 export const topicTypesIncludingOrg = topicTypes.concat(["organisation"]);

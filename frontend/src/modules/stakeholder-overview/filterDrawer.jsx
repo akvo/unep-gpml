@@ -41,7 +41,7 @@ const FilterDrawer = ({
     seeking: s.tags.seeking,
     offering: s.tags.offering,
   }));
-  console.log(seeking);
+
   const isLoaded = () =>
     !isEmpty(countries) &&
     !isEmpty(transnationalOptions) &&

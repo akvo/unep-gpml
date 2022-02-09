@@ -142,6 +142,10 @@ const StakeholderOverview = ({ history }) => {
         return entityName(name);
       }
 
+      if (key === "topic") {
+        return value === "stakeholder" ? "Individual" : "Entity";
+      }
+
       if (key === "location") {
         const findCountry = countries.find((x) => x.name == value);
         return findCountry?.name;
@@ -227,7 +231,6 @@ const StakeholderOverview = ({ history }) => {
           entities={entityRoleOptions}
           filterVisible={filterVisible}
           setFilterVisible={setFilterVisible}
-          
         />
 
         <LeftSidebar />
