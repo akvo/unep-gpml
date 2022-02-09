@@ -6,13 +6,14 @@ const useQuery = () => {
     country: [],
     transnational: [],
     tag: [],
-    sector: [],
-    goal: [],
+    // sector: [],
+    // goal: [],
     representativeGroup: [],
     geoCoverage: [],
     language: [],
     entity: [],
-    rating: [],
+    // rating: [],
+    organisation: [],
     q: "",
   };
 

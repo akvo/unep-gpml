@@ -24,10 +24,16 @@ const StakeholderOverview = ({ history }) => {
     countries,
     representativeGroup,
     geoCoverageTypeOptions,
+    affiliation,
+    offering,
+    seeking,
   } = UIStore.useState((s) => ({
     countries: s.countries,
     representativeGroup: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
+    affiliation: s.organisations,
+    offering: s.tags.offering,
+    seeking: s.tags.seeking,
   }));
 
   const [filterVisible, setFilterVisible] = useState(false);
@@ -91,7 +97,10 @@ const StakeholderOverview = ({ history }) => {
         const organisationType = resp?.data?.counts?.find(
           (count) => count.topic === "organisation"
         );
-        setResultCount(organisationType.count);
+        const stakeholderType = resp?.data?.counts?.find(
+          (count) => count.topic === "stakeholder"
+        );
+        setResultCount(organisationType.count + stakeholderType.count);
       })
       .catch((err) => {
         console.error(err);
@@ -156,6 +165,18 @@ const StakeholderOverview = ({ history }) => {
         );
         return representativeGroups;
       }
+      if (key === "organisation") {
+        const org = affiliation.find((x) => x?.name == value);
+        return org?.name;
+      }
+      if (key === "seeking") {
+        const expertiseToOffer = seeking.find((x) => x?.tag == value);
+        return expertiseToOffer?.tag;
+      }
+      if (key === "offering") {
+        const expertiseToSeek = offering.find((x) => x?.tag == value);
+        return expertiseToSeek?.tag;
+      }
     };
     return Object.keys(query).map((key, index) => {
       // don't render if key is limit and offset
@@ -212,6 +233,7 @@ const StakeholderOverview = ({ history }) => {
           entities={entityRoleOptions}
           filterVisible={filterVisible}
           setFilterVisible={setFilterVisible}
+          stakeholder={resultCount}
         />
 
         <LeftSidebar />
