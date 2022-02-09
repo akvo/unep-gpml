@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { UIStore } from "../../store";
 import React, {
   useEffect,
@@ -23,11 +24,232 @@ import FlexibleForm from "./form";
 import isEmpty from "lodash/isEmpty";
 import { useAuth0 } from "@auth0/auth0-react";
 import api from "../../utils/api";
-
+import { revertFormData } from "../../utils/forms";
+import { useLocation } from "react-router-dom";
+import moment from "moment";
+import { Link } from "react-router-dom";
 const { Step } = Steps;
 
+const getType = (type) => {
+  let t = "";
+  switch (type) {
+    case "action":
+      t = "action_plan";
+      break;
+    case "event_flexible":
+      t = "event";
+      break;
+    case "initiative":
+      t = "project";
+      break;
+    case "policy":
+      t = "policy";
+      break;
+    case "financing":
+      t = "financing_resource";
+      break;
+    case "technical":
+      t = "technical_resource";
+      break;
+    case "technology":
+      t = "technology";
+      break;
+  }
+  return t;
+};
+
+const getTypeByResource = (type) => {
+  let t = "";
+  let name = "";
+  switch (type) {
+    case "action_plan":
+      t = "action";
+      name = "Action Plan";
+      break;
+    case "event":
+      t = "eventevent_flexible";
+      name = "Event";
+      break;
+    case "project":
+      t = "initiative";
+      name = "Initiative";
+      break;
+    case "policy":
+      t = "policy";
+      name = "Policy";
+      break;
+    case "financing_resource":
+      t = "financing";
+      name = "Financing Resource";
+      break;
+    case "technical_resource":
+      t = "technical";
+      name = "Technical Resource";
+      break;
+    case "technology":
+      t = "technology";
+      name = "Technology";
+      break;
+  }
+  return { type: t, name: name };
+};
+
+const formDataMapping = [
+  {
+    key: "title",
+    name: "title",
+    type: "string",
+    question: "title",
+    section: "S4",
+    group: "S4_G1",
+  },
+  {
+    key: "summary",
+    name: "summary",
+    type: "string",
+    question: "summary",
+    section: "S4",
+    group: "S4_G1",
+  },
+  {
+    key: "url",
+    name: "url",
+    type: "string",
+    question: "url",
+    section: "S4",
+    group: "S4_G1",
+  },
+  {
+    key: "geoCoverageType",
+    name: "geoCoverageType",
+    type: "string",
+    question: "geoCoverageType",
+    section: "S4",
+    group: "S4_G2",
+  },
+  {
+    key: "geoCoverageCountries",
+    name: "geoCoverageCountries",
+    question: "geoCoverageCountries",
+    type: "array",
+    section: "S4",
+    group: "S4_G2",
+  },
+  {
+    key: "geoCoverageCountryGroups",
+    name: "geoCoverageCountryGroups",
+    question: "geoCoverageValueTransnational",
+    type: "array",
+    section: "S4",
+    group: "S4_G2",
+  },
+  {
+    key: "tags",
+    name: "tags",
+    question: "tags",
+    type: "array",
+    section: "S4",
+    group: "S4_G3",
+  },
+  {
+    key: "stakeholderConnections",
+    name: "stakeholderConnections",
+    question: "individual",
+    type: "array",
+    section: "S4",
+    group: "S4_G5",
+  },
+  {
+    key: "entityConnections",
+    name: "entityConnections",
+    question: "entity",
+    type: "array",
+    section: "S4",
+    group: "S4_G5",
+  },
+  {
+    key: "validFrom",
+    name: "validFrom",
+    type: "date",
+    section: "S5",
+    group: "date",
+    question: "validFrom",
+  },
+  {
+    key: "validTo",
+    name: "validTo",
+    type: "date",
+    section: "S5",
+    group: "date",
+    question: "validTo",
+  },
+  {
+    key: "relatedContent",
+    name: "relatedContent",
+    type: "array",
+    section: "S4",
+    group: "S4_G6",
+    question: "related",
+  },
+  {
+    key: "infoDocs",
+    name: "infoDocs",
+    type: "string",
+    section: "S4",
+    group: "S4_G6",
+    question: "info",
+  },
+  {
+    key: "publishYear",
+    name: "publishYear",
+    type: "year",
+    group: "dateOne",
+    section: "S5",
+    question: "publishYear",
+  },
+  {
+    key: "value",
+    name: "value",
+    group: "value",
+    type: "integer",
+    section: "S5",
+    question: "valueAmount",
+  },
+  {
+    key: "valueCurrency",
+    name: "valueCurrency",
+    group: "value",
+    type: "string",
+    section: "S5",
+    question: "valueCurrency",
+  },
+  {
+    key: "valueRemarks",
+    name: "valueRemarks",
+    group: "value",
+    type: "string",
+    section: "S5",
+    question: "valueRemark",
+  },
+  {
+    key: "image",
+    name: "image",
+    type: "image",
+    section: "S4",
+    group: "S4_G4",
+    question: "image",
+  },
+];
+
 const FlexibleForms = ({ match: { params }, ...props }) => {
-  const { tabs, getSchema, schema, initialData, initialFormData } = common;
+  const {
+    tabs,
+    getSchema,
+    schema,
+    initialData,
+    initialFormData,
+    initialDataEdit,
+  } = common;
 
   const { loginWithPopup } = useAuth0();
 
@@ -74,7 +296,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   } = storeData;
 
   const tabsData = tabs;
-
+  const state = useLocation();
   const formData = initialFormData.useState();
   const { editId, data } = formData;
   const { status, id } = formEdit.flexible;
@@ -126,30 +348,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   ]);
 
   const getResourceByType = (type) => {
-    let t = "";
-    switch (type) {
-      case "action":
-        t = "action_plan";
-        break;
-      case "event_flexible":
-        t = "event";
-        break;
-      case "initiative":
-        t = "project";
-        break;
-      case "policy":
-        t = "policy";
-        break;
-      case "financing":
-        t = "financing_resource";
-        break;
-      case "technical":
-        t = "technical_resource";
-        break;
-      case "technology":
-        t = "technology";
-        break;
-    }
+    const t = getType(type);
 
     api.get(`/list/${t}`).then((res) => {
       UIStore.update((e) => {
@@ -164,9 +363,188 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
   }, [mainType, isLoaded]);
 
+  const getRevertValue = (type, value, name) => {
+    let res = value;
+    const isObject = typeof value === "object";
+    const isArray = Array.isArray(value);
+    if (type === "number") {
+      res = Number(value);
+    }
+    if (type === "option" && isObject && !isArray) {
+      res = Object.keys(value)[0];
+      // case for geocoveragetype
+      if (name === "q24") {
+        res = Object.values(value)?.[0]?.toLowerCase();
+      }
+      res = isNaN(Number(res)) ? res : Number(res);
+      // case for currency code
+      if (name === "q36_1" || name === "q37_1") {
+        res = res.split("_").join("");
+        res = String(res).toUpperCase();
+      }
+    }
+    if (name === "tags") {
+      res = value ? value.map((x) => x.id) : "";
+    }
+
+    if (name === "infoDocs") {
+      res = value ? value : "";
+    }
+
+    if (name === "relatedContent") {
+      res = value && value[0].id !== null ? value.map((x) => x.id) : "";
+    }
+
+    if (name === "stakeholderConnections") {
+      res =
+        value.length > 0
+          ? value.map((x) => ({ role: x.role, stakeholder: x.stakeholderId }))
+          : [{}];
+    }
+
+    if (name === "entityConnections") {
+      res =
+        value.length > 0
+          ? value.map((x) => ({ role: x.role, entity: x.entityId }))
+          : [{}];
+    }
+
+    if (type === "date") {
+      if (name === "validTo" || name === "firstPublicationDate") {
+        res =
+          !value || value === "Ongoing"
+            ? ""
+            : moment(value).format("YYYY-MM-DD");
+      } else {
+        res = value ? moment(value).format("YYYY-MM-DD") : "";
+      }
+    }
+
+    if (name === "publishYear") {
+      res = moment(value, "YYYY").format("YYYY-MM-DD");
+    }
+
+    if (type === "integer") {
+      res = value !== "Not  Specified" ? parseInt(value) : value;
+    }
+
+    // Geo Transnational handle
+    // case for transnational geo value
+    if (type === "option" && isArray && name === "q24_4") {
+      const transnationalValue = isArray
+        ? value.map((item) => {
+            const enumKey = Object.keys(item)[0];
+            return enumKey;
+          })
+        : Object.keys(value);
+      res = transnationalValue.map((x) => parseInt(x));
+    }
+    if (type === "option" && isArray && name === "q24_2") {
+      const transnationalValue = isArray
+        ? value.map((item) => {
+            const enumKey = Object.keys(item)[0];
+            return enumKey;
+          })
+        : Object.keys(value);
+      res = transnationalValue.map((x) => parseInt(x));
+    }
+    // EOL Geo Transnational handle
+
+    if (type === "multiple-option" && isObject && isArray) {
+      res = value.map((item) => {
+        const enumKey =
+          typeof item === "object" ? Object.keys(item)?.[0] : item;
+        return enumKey;
+      });
+    }
+    if (type === "item-array" && isObject && isArray) {
+      res = value;
+    }
+    console.log(name);
+    console.log(res);
+    return res;
+  };
+
+  const revertFormData = (data) => {
+    let formData = initialDataEdit;
+    formDataMapping.forEach((item) => {
+      const { name, section, group, question, type } = item;
+
+      const value = data?.[name];
+      if (!group && value && value !== "Ongoing") {
+        formData = {
+          ...formData,
+          [section]: {
+            ...formData[section],
+            [question]: getRevertValue(type, value, name),
+          },
+        };
+      }
+      if (group && value && value !== "Ongoing") {
+        formData = {
+          ...formData,
+          [section]: {
+            ...formData[section],
+            [group]: {
+              ...formData[section][group],
+              [question]: getRevertValue(type, value, name),
+            },
+          },
+        };
+      }
+    });
+    return formData;
+  };
+
+  useEffect(() => {
+    if (status === "edit") {
+      const dataId = Number(params?.id || id);
+      setMainType(getTypeByResource(state?.state.type).type);
+      setLabel(getTypeByResource(state?.state.type).name);
+      setFormSchema({
+        schema: schema[getTypeByResource(state?.state.type).type],
+      });
+      UIStore.update((event) => {
+        event.selectedMainContentType = getTypeByResource(
+          state?.state.type
+        ).type;
+      });
+      api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
+        let newData = [];
+        if (d.data.organisations) {
+          newData = d.data.organisations.map((item) => {
+            return {
+              role: "owner",
+              entityId: item.id,
+            };
+          });
+        }
+        d.data = {
+          ...d.data,
+          url:
+            d.data.languages && d.data.languages.length > 0
+              ? d.data.languages[0].url
+              : d.data.url,
+          entityConnections: [...d.data.entityConnections, ...newData],
+        };
+
+        initialFormData.update((e) => {
+          e.data = revertFormData(d.data);
+        });
+      });
+    }
+  }, [status, schema, initialFormData, state]);
+
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = null;
+      e.formEdit = {
+        ...e.formEdit,
+        flexible: {
+          status: "add",
+          id: null,
+        },
+      };
     });
   }, [props]);
 
@@ -330,9 +708,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                 shape="circle"
                 icon={
                   data?.[section]?.S4_G5.individual.length > 0 &&
-                  data?.[section]?.S4_G5.individual[0].hasOwnProperty(
+                  (data?.[section]?.S4_G5.individual[0].hasOwnProperty(
                     "role"
-                  ) ? (
+                  ) ||
+                    data?.[section]?.S4_G5.entity[0].hasOwnProperty("role")) ? (
                     <CheckOutlined />
                   ) : (
                     <EditOutlined />
@@ -343,7 +722,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                   position: "absolute",
                   color:
                     data?.[section]?.S4_G5.individual &&
-                    data?.[section]?.S4_G5.individual[0].hasOwnProperty("role")
+                    (data?.[section]?.S4_G5.individual[0].hasOwnProperty(
+                      "role"
+                    ) ||
+                      data?.[section]?.S4_G5.entity[0].hasOwnProperty("role"))
                       ? "#255B87"
                       : "#fff",
                   borderColor: "#255B87",
@@ -723,9 +1105,9 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       </p>
                       <p>
                         You can access existing content via the{" "}
-                        <a href="https://digital.gpmarinelitter.org/browse?country=&transnational=&topic=project%2Caction_plan%2Cpolicy%2Ctechnical_resource%2Cfinancing_resource%2Cevent%2Ctechnology&tag=&q=&offset=0">
+                        <Link to="/knowledge-library">
                           Knowledge Exchange Library.
-                        </a>
+                        </Link>
                         Make sure to browse around and leave a review under the
                         resources you enjoy the most!
                       </p>
@@ -885,6 +1267,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       mainType={label}
                       subContentType={subType}
                       capacityBuilding={capacityBuilding}
+                      type={state && state?.state ? state?.state.type : ""}
                     />
                   </Row>
                 )}

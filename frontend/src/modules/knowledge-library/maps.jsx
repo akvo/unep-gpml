@@ -49,7 +49,7 @@ const ToolTipContent = ({ data, geo }) => {
   );
 };
 
-const Legend = ({ data, setFilterColor, selected }) => {
+const Legend = ({ data, setFilterColor, selected, isDisplayedList }) => {
   data = Array.from(new Set(data.map((x) => Math.floor(x))));
   data = data.filter((x) => x !== 0);
   const range = data.map((x, i) => (
@@ -141,17 +141,20 @@ const Maps = ({
   country,
   multiCountries,
   listVisible,
+  isDisplayedList,
+  isFilteredCountry,
 }) => {
-  const mapMaxZoom = 10;
+  const mapMaxZoom = 9.2;
+  const mapMinZoom = 1.1500000000000024;
   const [selected, setSelected] = useState(null);
   const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
+
   const [position, setPosition] = useState({
-    coordinates: [149.78195366903324, -35.0818484659539],
-    zoom: 1,
+    coordinates: [18.297325014768123, 2.4067378816508587],
+    zoom: mapMinZoom,
   });
 
-  const [scale, setScale] = useState(100);
   const [mapPos, setMapPos] = useState({
     left: 0,
     right: 0,
@@ -170,8 +173,6 @@ const Maps = ({
       });
     }
   };
-
-  // window.addEventListener("resize", handleResize);
 
   useEffect(() => {
     handleResize();
@@ -200,10 +201,7 @@ const Maps = ({
     <div
       style={{
         overflow: "hidden",
-        // position: "relative",
         width: "auto",
-        // marginRight: `${mapPos.right}px`,
-        // marginLeft: `${mapPos.left}px`,
         height: `${mapPos.height}px`,
       }}
     >
@@ -211,6 +209,7 @@ const Maps = ({
         data={colorScale.thresholds()}
         setFilterColor={setFilterColor}
         selected={filterColor}
+        isDisplayedList={isDisplayedList}
       />
       <div
         className="map-buttons"
@@ -221,10 +220,13 @@ const Maps = ({
             type="secondary"
             icon={<ZoomOutOutlined />}
             onClick={() => {
-              position.zoom > 1 &&
-                setPosition({ ...position, zoom: position.zoom - 0.5 });
+              position.zoom > mapMinZoom &&
+                setPosition({
+                  ...position,
+                  zoom: position.zoom - 0.3,
+                });
             }}
-            disabled={position.zoom <= 1}
+            disabled={position.zoom <= mapMinZoom}
           />
         </Tooltip>
         <Tooltip title="zoom in">
@@ -233,7 +235,10 @@ const Maps = ({
             type="secondary"
             icon={<ZoomInOutlined />}
             onClick={() => {
-              setPosition({ ...position, zoom: position.zoom + 0.5 });
+              setPosition({
+                ...position,
+                zoom: position.zoom + 0.3,
+              });
             }}
           />
         </Tooltip>
@@ -242,7 +247,10 @@ const Maps = ({
             type="secondary"
             icon={<FullscreenOutlined />}
             onClick={() => {
-              setPosition({ coordinates: [0, 0], zoom: 1 });
+              setPosition({
+                coordinates: [18.297325014768123, 2.4067378816508587],
+                zoom: mapMinZoom,
+              });
             }}
           />
         </Tooltip>
@@ -250,12 +258,10 @@ const Maps = ({
       <ComposableMap
         data-tip=""
         projection="geoEquirectangular"
-        // projectionConfig={{ scale: scale }}
-        // width={mapPos.width}
-        // height={mapPos.height}
         style={{ height: "auto" }}
       >
         <ZoomableGroup
+          minZoom={mapMinZoom}
           maxZoom={mapMaxZoom}
           zoom={position.zoom}
           center={position.coordinates}
@@ -301,6 +307,21 @@ const Maps = ({
                     />
                   );
                 }
+                const selectionCondition = () => {
+                  const mapProps = Number(geo.properties.M49Code);
+                  if (
+                    typeof isFilteredCountry === "string" ||
+                    typeof isFilteredCountry === "number"
+                  ) {
+                    return Number(isFilteredCountry) === Number(mapProps);
+                  } else {
+                    const countryToFilter = isFilteredCountry.map((it) =>
+                      Number(it)
+                    );
+                    return countryToFilter.includes(mapProps);
+                  }
+                };
+
                 return (
                   <Fragment key={`${geo.rsmKey}-geo-fragment`}>
                     {pattern}
@@ -321,7 +342,12 @@ const Maps = ({
                           : isCountrySelected
                           ? "#84b4cc"
                           : selected
-                          ? geo.properties.MAP_COLOR === selected
+                          ? geo.properties.MAP_COLOR === selected ||
+                            selectionCondition()
+                            ? "#84b4cc"
+                            : fillColor(curr ? curr[topic] : 0)
+                          : fillColor(curr ? curr[topic] : 0)
+                          ? selectionCondition()
                             ? "#84b4cc"
                             : fillColor(curr ? curr[topic] : 0)
                           : fillColor(curr ? curr[topic] : 0)

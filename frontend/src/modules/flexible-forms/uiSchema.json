@@ -516,19 +516,12 @@
     "S5": {
       "classNames": "list-group",
       "dateOne": {
-        "firstPublicationDate": {
-          "ui:placeholder": "YYYY-MM-DD",
+        "publishYear": {
           "ui:widget": "date",
+          "ui:showSearch": true,
           "ui:span": 12,
           "ui:options": {
-            "disableDate": "future"
-          }
-        },
-        "latestAmendmentDate": {
-          "ui:placeholder": "YYYY-MM-DD",
-          "ui:widget": "date",
-          "ui:span": 12,
-          "ui:options": {
+            "mode": "year",
             "disableDate": "future"
           }
         }
@@ -1222,7 +1215,7 @@
     },
     "S5": {
       "classNames": "list-group",
-      "S5_G1": {
+      "dateOne": {
         "publishYear": {
           "ui:widget": "date",
           "ui:showSearch": true,

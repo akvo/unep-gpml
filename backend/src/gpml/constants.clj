@@ -1,7 +1,7 @@
 (ns gpml.constants)
 
 (def resource-types #{"financing_resource" "technical_resource" "action_plan"})
-(def approved-user-topics #{"organisation" "stakeholder"})
+(def approved-user-topics #{"stakeholder"})
 (def topics
   (vec
    (sort

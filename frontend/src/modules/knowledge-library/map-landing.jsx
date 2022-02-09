@@ -19,14 +19,15 @@ const MapLanding = ({
   setWarningModalVisible,
   isAuthenticated,
   loginWithPopup,
-  filters,
-  setFilters,
   setToggleButton,
   updateQuery,
   multiCountryCountries,
   setMultiCountryCountries,
   setListVisible,
   listVisible,
+
+  isDisplayedList,
+  isFilteredCountry,
 }) => {
   const {
     profile,
@@ -56,7 +57,7 @@ const MapLanding = ({
   const clickCountry = (name) => {
     setToggleButton("list");
     updateQuery("country", name);
-    history.push(`/browse?country=${name}`);
+    history.push(`?country=${name}`);
   };
 
   const handleSummaryClick = (topic) => {
@@ -141,7 +142,7 @@ const MapLanding = ({
     <div id="map-landing">
       <div className="landing-container map-container">
         {!isLoaded() && (
-          <h2 className="loading">
+          <h2 className="loading" id="map-loader">
             <LoadingOutlined spin /> Loading
           </h2>
         )}
@@ -184,6 +185,8 @@ const MapLanding = ({
           </div>
         )}
         <Maps
+          isFilteredCountry={isFilteredCountry}
+          isDisplayedList={isDisplayedList}
           listVisible={listVisible}
           data={landing?.map || []}
           clickEvents={clickCountry}

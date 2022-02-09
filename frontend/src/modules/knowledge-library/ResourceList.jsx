@@ -40,6 +40,7 @@ const ResourceList = ({
   results = [],
   pageSize,
   hideListButtonVisible,
+  view,
 }) => {
   const { profile, countries, tags, transnationalOptions } = UIStore.useState(
     (s) => ({
@@ -69,7 +70,9 @@ const ResourceList = ({
   const filteredTopics =
     filters?.topic?.length > 0
       ? filters?.topic?.filter((t) => topicsForTotal.indexOf(t) > -1)
-      : topicsForTotal;
+      : topicsForTotal.filter(
+          (t) => t !== "organisation" && t !== "stakeholder"
+        );
   const totalItems = filteredTopics.reduce(
     (acc, topic) =>
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
@@ -77,6 +80,12 @@ const ResourceList = ({
   );
 
   const allTopicCount = countData.reduce((acc, topic) => acc + topic.count, 0);
+
+  const itemCount = loading
+    ? 0
+    : filters?.offset !== undefined
+    ? totalItems
+    : pageSize;
 
   const sortResults = () => {
     if (!isAscending) {
@@ -113,6 +122,11 @@ const ResourceList = ({
         <PageHeader
           className="resource-list-header"
           ghost={false}
+          style={
+            view === "map"
+              ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
+              : { backgroundColor: "rgba(255, 255, 255, 1)" }
+          }
           onBack={() => setListVisible(false)}
           backIcon={
             hideListButtonVisible ? (
@@ -128,12 +142,13 @@ const ResourceList = ({
               ""
             )
           }
+          const
           subTitle={
             <span className="result-number">
               Showing{" "}
               {totalItems > pageSize + filters?.offset
-                ? pageSize + filters?.offset
-                : totalItems}{" "}
+                ? pageSize + Number(filters?.offset)
+                : itemCount}{" "}
               of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
             </span>
           }
@@ -153,17 +168,26 @@ const ResourceList = ({
           }
         />
       </Col>
-
-      <Col span={24} className="resource-list">
-        {!isLoaded() || loading ? (
-          <h2 className="loading">
-            <LoadingOutlined spin /> Loading
-          </h2>
-        ) : isLoaded() && !loading && !isEmpty(allResults) ? (
-          <ResourceItem results={allResults} />
-        ) : (
-          <h2 className="loading">There is no data to display</h2>
-        )}
+      <div>
+        <Col
+          span={24}
+          className="resource-list"
+          style={
+            isLoaded() &&
+            !loading &&
+            !isEmpty(allResults) && { overflowY: "auto" }
+          }
+        >
+          {!isLoaded() || loading ? (
+            <h2 className="loading">
+              <LoadingOutlined spin /> Loading
+            </h2>
+          ) : isLoaded() && !loading && !isEmpty(allResults) ? (
+            <ResourceItem view={view} results={allResults} />
+          ) : (
+            <h2 className="loading">There is no data to display</h2>
+          )}
+        </Col>
         <div className="page">
           {!isEmpty(allResults) && (
             <Pagination
@@ -177,17 +201,17 @@ const ResourceList = ({
           )}
           <div className="result-number">
             {totalItems > pageSize + filters?.offset
-              ? pageSize + filters?.offset
-              : totalItems}{" "}
-            of {allTopicCount || 0} result{allTopicCount > 1 ? "s" : ""}
+              ? pageSize + Number(filters?.offset)
+              : itemCount}{" "}
+            of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
           </div>
         </div>
-      </Col>
+      </div>
     </Row>
   );
 };
 
-const ResourceItem = ({ results }) => {
+const ResourceItem = ({ results, view }) => {
   return results.map((result) => {
     const { id, type } = result;
     const fullName = (data) =>
@@ -206,10 +230,20 @@ const ResourceItem = ({ results }) => {
       result.remarks ||
       "";
     const linkTo = `/${type}/${id}`;
-
+    const stakeholders = result?.stakeholder_connections;
+    if (result?.stakeholder_connections) {
+      stakeholders.length = 3;
+    }
     return (
       <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
-        <Card className="resource-item">
+        <Card
+          className="resource-item"
+          style={
+            view === "map"
+              ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
+              : { backgroundColor: "rgba(255, 255, 255, 1)" }
+          }
+        >
           <div className="topic">{topicNames(type)}</div>
           <div className="item-body">
             <div className="title">{title}</div>
@@ -226,16 +260,39 @@ const ResourceItem = ({ results }) => {
                   backgroundColor: "#fde3cf",
                 }}
               >
-                {["a", "b"].map((b, i) => (
-                  <Tooltip key={`avatar-${i}`} title={b} placement="top">
-                    <Avatar
-                      style={{ backgroundColor: "#FFB800" }}
-                      icon={<UserOutlined />}
-                    />
-                  </Tooltip>
-                ))}
-              </Avatar.Group>{" "}
-              <span className="avatar-number">+42</span>
+                {
+                  result?.stakeholder_connections &&
+                    stakeholders.map((stakeholder) => (
+                      <Tooltip
+                        key={stakeholder.id}
+                        title={`${stakeholder?.first_name} ${stakeholder?.last_name}`}
+                        placement="top"
+                      >
+                        <Avatar
+                          style={{ backgroundColor: "#FFB800" }}
+                          icon={<img src={stakeholder?.picture} />}
+                        />
+                      </Tooltip>
+                    ))
+                  // : ["a"].map((b, i) => (
+                  //     <Tooltip
+                  //       key={`avatar-${i}`}
+                  //       title={<UserOutlined />}
+                  //       placement="top"
+                  //     >
+                  //       <Avatar
+                  //         style={{ backgroundColor: "#FFB800" }}
+                  //         icon={<UserOutlined />}
+                  //       />
+                  //     </Tooltip>
+                  //   ))
+                }
+              </Avatar.Group>
+              <span className="avatar-number">
+                {result.stakeholder_connections
+                  ? `${result.stakeholder_connections?.length - 1}+`
+                  : ""}
+              </span>
             </Space>
             <span className="read-more">
               Read more

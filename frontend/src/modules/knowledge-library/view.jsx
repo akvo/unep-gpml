@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Button, Input, Space, Tag, Select } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 
-import ConfigIcon from "../../images/knowledge-library/config-icon.svg";
+import FilterIcon from "../../images/knowledge-library/filter-icon.svg";
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
 import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
 import DownArrow from "../../images/knowledge-library/chevron-down.svg";
@@ -12,17 +12,19 @@ import { UIStore } from "../../store";
 import LeftSidebar from "../left-sidebar/LeftSidebar";
 import ResourceList from "./ResourceList";
 import FilterDrawer from "./FilterDrawer";
-import { useQuery } from "./common";
-import { useLocation, withRouter } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+
+import { withRouter } from "react-router-dom";
+
 import api from "../../utils/api";
-import { redirectError } from "../error/error-util";
+
 import isEmpty from "lodash/isEmpty";
 import { topicNames } from "../../utils/misc";
 import flatten from "lodash/flatten";
 import values from "lodash/values";
 import MapLanding from "./map-landing";
 import TopicView from "./TopicView";
+
+import { redirectError } from "../error/error-util";
 
 const { Option } = Select;
 // Global variabel
@@ -35,8 +37,17 @@ const KnowledgeLibrary = ({
   filterMenu,
   setWarningModalVisible,
   setStakeholderSignupModalVisible,
+  query,
+  filterCountries,
+  setFilterCountries,
+  setRelations,
+  isAuthenticated,
+  loginWithPopup,
+  isLoading,
+  pageSize,
+  multiCountryCountries,
+  setMultiCountryCountries,
 }) => {
-  const query = useQuery();
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
   const [view, setView] = useState("map");
@@ -62,6 +73,7 @@ const KnowledgeLibrary = ({
     transnationalOptions,
     sectorOptions,
     geoCoverageTypeOptions,
+    representativeGroup,
     languages,
   } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -71,26 +83,31 @@ const KnowledgeLibrary = ({
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     languages: s.languages,
+    representativeGroup: s.sectorOptions,
   }));
 
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [filterCountries, setFilterCountries] = useState([]);
-  const location = useLocation();
-  const [relations, setRelations] = useState([]);
-  const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
-  const [warningVisible, setWarningVisible] = useState(false);
-  const pageSize = 10;
   const [toggleButton, setToggleButton] = useState("list");
   const { innerWidth } = window;
-  const [countData, setCountData] = useState([]);
-  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
-  const getResults = () => {
-    // NOTE: The url needs to be window.location.search because of how
-    // of how `history` and `location` are interacting!
+  const [results, setResults] = useState([]);
+  const [countData, setCountData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const getResults = (query) => {
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
+    const topic = [
+      "action_plan",
+      "project",
+      "policy",
+      "technical_resource",
+      "technology",
+      "event",
+      "financing_resource",
+    ];
+    if (query.topic.length === 0) {
+      searchParms.set("topic", topic);
+    }
     const url = `/browse?${String(searchParms)}`;
     api
       .get(url)
@@ -103,6 +120,27 @@ const KnowledgeLibrary = ({
         console.error(err);
         redirectError(err, history);
       });
+  };
+
+  const updateQuery = (param, value) => {
+    const topScroll = window.innerWidth < 640 ? 996 : 207;
+    window.scrollTo({
+      top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
+    });
+    setLoading(true);
+    const newQuery = { ...query };
+    newQuery[param] = value;
+    if (param !== "offset") {
+      newQuery["offset"] = 0;
+    }
+    setFilters(newQuery);
+    const newParams = new URLSearchParams(newQuery);
+    history.push(`/knowledge-library?${newParams.toString()}`);
+    clearTimeout(tmid);
+    tmid = setTimeout(getResults(newQuery), 1000);
+    if (param === "country") {
+      setFilterCountries(value);
+    }
   };
 
   useEffect(() => {
@@ -120,7 +158,7 @@ const KnowledgeLibrary = ({
 
     setLoading(true);
     if (isLoading === false && !filters) {
-      setTimeout(getResults, 0);
+      setTimeout(getResults(query), 0);
     }
 
     if (isLoading === false && filters) {
@@ -131,7 +169,7 @@ const KnowledgeLibrary = ({
       });
       history.push(`/knowledge-library?${newParams.toString()}`);
       clearTimeout(tmid);
-      tmid = setTimeout(getResults, 1000);
+      tmid = setTimeout(getResults(query), 1000);
     }
     // NOTE: Since we are using `history` and `location`, the
     // dependency needs to be []. Ignore the linter warning, because
@@ -150,6 +188,7 @@ const KnowledgeLibrary = ({
         });
       }, 100);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
   useEffect(() => {
@@ -159,28 +198,6 @@ const KnowledgeLibrary = ({
 
     // NOTE: this are triggered when user click a topic from navigation menu
   }, [filterMenu]); // eslint-disable-line
-
-  const updateQuery = (param, value) => {
-    const topScroll = window.innerWidth < 640 ? 996 : 207;
-    window.scrollTo({
-      top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
-    });
-    setLoading(true);
-    const newQuery = { ...query };
-
-    newQuery[param] = value;
-    if (param !== "offset") {
-      newQuery["offset"] = 0;
-    }
-    setFilters(newQuery);
-    const newParams = new URLSearchParams(newQuery);
-    history.push(`/knowledge-library?${newParams.toString()}`);
-    clearTimeout(tmid);
-    tmid = setTimeout(getResults, 1000);
-    if (param === "country") {
-      setFilterCountries(value);
-    }
-  };
 
   // Here is the function to render filter tag
   const renderFilterTag = () => {
@@ -202,6 +219,18 @@ const KnowledgeLibrary = ({
           (x) => x.id == value
         );
         return findTransnational?.name;
+      }
+      if (key === "representativeGroup") {
+        const representativeGroups = representativeGroup.find(
+          (x) => x == value
+        );
+        return representativeGroups;
+      }
+      if (key === "startDate") {
+        return `Start date ${query.startDate}`;
+      }
+      if (key === "endDate") {
+        return `End date ${query.endDate}`;
       }
     };
     return Object.keys(query).map((key, index) => {
@@ -256,14 +285,14 @@ const KnowledgeLibrary = ({
               <Row type="flex" justify="space-between" align="middle">
                 <Col lg={5} md={7} sm={9} className="search-box">
                   <Space>
-                    <Search />
+                    <Search updateQuery={updateQuery} />
                     <Button
                       onClick={() => setFilterVisible(!filterVisible)}
                       type="ghost"
                       shape="circle"
                       icon={
                         <img
-                          src={ConfigIcon}
+                          src={FilterIcon}
                           className="filter-icon"
                           alt="config-icon"
                         />
@@ -295,17 +324,18 @@ const KnowledgeLibrary = ({
       <Col span={24}>
         <div className="ui-container">
           {/* Filter Drawer */}
-          <FilterDrawer
-            filters={filters}
-            filterVisible={filterVisible}
-            setFilterVisible={setFilterVisible}
-            countData={countData}
-            query={query}
-            updateQuery={(flag, val) => updateQuery(flag, val)}
-            multiCountryCountries={multiCountryCountries}
-            setMultiCountryCountries={setMultiCountryCountries}
-          />
-
+          {filterVisible && (
+            <FilterDrawer
+              filters={filters}
+              filterVisible={filterVisible}
+              setFilterVisible={setFilterVisible}
+              countData={countData}
+              query={query}
+              updateQuery={(flag, val) => updateQuery(flag, val)}
+              multiCountryCountries={multiCountryCountries}
+              setMultiCountryCountries={setMultiCountryCountries}
+            />
+          )}
           <LeftSidebar active={1}>
             <Row className="resource-main-container">
               {/* Resource Main Content */}
@@ -315,10 +345,21 @@ const KnowledgeLibrary = ({
                   md={9}
                   sm={12}
                   xs={24}
+                  style={
+                    view === "map"
+                      ? {
+                          backgroundColor: "rgba(237, 242, 247, 0.3)",
+                        }
+                      : {
+                          backgroundColor: "rgba(237, 242, 247, 1)",
+                          position: "unset",
+                        }
+                  }
                   className="resource-list-container"
                 >
                   {/* Resource List */}
                   <ResourceList
+                    view={view}
                     filters={filters}
                     setListVisible={setListVisible}
                     countData={countData}
@@ -337,8 +378,10 @@ const KnowledgeLibrary = ({
                 sm={listVisible ? 12 : 24}
                 xs={24}
                 align="center"
-                className="render-map-container"
-                style={{ background: view === "topic" ? "#255B87" : "#fff" }}
+                className="render-map-container map-main-wrapper"
+                style={{
+                  background: view === "topic" ? "#255B87" : "#fff",
+                }}
               >
                 {view === "map" ? (
                   <MapLanding
@@ -356,6 +399,8 @@ const KnowledgeLibrary = ({
                       setListVisible,
                       listVisible,
                     }}
+                    isFilteredCountry={filterCountries}
+                    isDisplayedList={listVisible}
                   />
                 ) : (
                   <>
@@ -371,11 +416,14 @@ const KnowledgeLibrary = ({
   );
 };
 
-const Search = withRouter(({ history }) => {
+const Search = withRouter(({ history, updateQuery }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
     if (src) {
-      history.push(`/browse/?q=${src.trim()}`);
+      history.push(`?q=${src.trim()}`);
+      updateQuery("q", src.trim());
+    } else {
+      updateQuery("q", "");
     }
   };
 
