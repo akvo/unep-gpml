@@ -29,6 +29,8 @@ const FilterDrawer = ({
     transnationalOptions,
     geoCoverageTypeOptions,
     representativeGroup,
+    seeking,
+    offering,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -36,8 +38,10 @@ const FilterDrawer = ({
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     mainContentType: s.mainContentType,
     representativeGroup: s.sectorOptions,
+    seeking: s.tags.seeking,
+    offering: s.tags.offering,
   }));
-
+  console.log(seeking);
   const isLoaded = () =>
     !isEmpty(countries) &&
     !isEmpty(transnationalOptions) &&
@@ -262,7 +266,11 @@ const FilterDrawer = ({
           {/*Expertise to offer*/}
           <MultipleSelectFilter
             title="What expertises are they offering?"
-            options={[]}
+            options={
+              isLoaded()
+                ? offering?.map((x) => ({ value: x.id, label: x.tag }))
+                : []
+            }
             value={[]}
             flag="expertiseToOffer"
             query={query}
@@ -272,7 +280,11 @@ const FilterDrawer = ({
           {/* Expertise they seek */}
           <MultipleSelectFilter
             title="What expertises are they seeking?"
-            options={[]}
+            options={
+              isLoaded()
+                ? seeking?.map((x) => ({ value: x.id, label: x.tag }))
+                : []
+            }
             value={[]}
             flag="exertiseTheySeek"
             query={query}
