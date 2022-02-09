@@ -57,21 +57,15 @@ const StakeholderOverview = ({ history }) => {
     const sortByName = results.sort((a, b) => {
       if (!isAscending) {
         if (a.firstName) {
-          return (
-            a.firstName.localeCompare(b.firstName) ||
-            a.firstName.localeCompare(a.name)
-          );
+          return a.firstName.localeCompare(b.firstName);
         } else {
-          return a.name.localeCompare(b.firstName);
+          return a.name.localeCompare(b.name);
         }
       } else {
         if (b.firstName) {
-          return (
-            b.firstName.localeCompare(a.firstName) ||
-            b.firstName.localeCompare(b.name)
-          );
+          return b.firstName.localeCompare(a.firstName);
         } else {
-          return b.name.localeCompare(a.firstName);
+          return b.name.localeCompare(a.name);
         }
       }
     });
@@ -90,7 +84,11 @@ const StakeholderOverview = ({ history }) => {
       .then((resp) => {
         const result = resp?.data?.results;
 
-        setResults([...result]);
+        setResults(
+          [...result].sort(
+            (a, b) => Date.parse(b.created) - Date.parse(a.created)
+          )
+        );
 
         const organisationType = resp?.data?.counts?.find(
           (count) => count.topic === "organisation"
@@ -199,7 +197,6 @@ const StakeholderOverview = ({ history }) => {
 
   const isLoaded = () =>
     Boolean(!isEmpty(stakeholders) && !isEmpty(organisations));
-  console.log(results, isLoaded(), loading, isLoading);
 
   return (
     <div id="stakeholder-overview">
