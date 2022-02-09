@@ -70,7 +70,9 @@ const ResourceList = ({
   const filteredTopics =
     filters?.topic?.length > 0
       ? filters?.topic?.filter((t) => topicsForTotal.indexOf(t) > -1)
-      : topicsForTotal;
+      : topicsForTotal.filter(
+          (t) => t !== "organisation" && t !== "stakeholder"
+        );
   const totalItems = filteredTopics.reduce(
     (acc, topic) =>
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
