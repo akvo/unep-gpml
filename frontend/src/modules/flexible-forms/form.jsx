@@ -59,6 +59,7 @@ const FlexibleForm = withRouter(
     const flexibleFormData = initialFormData.useState();
 
     const [dependValue, setDependValue] = useState([]);
+    const [schema, setSchema] = useState(formSchema.schema);
     const [editCheck, setEditCheck] = useState(true);
 
     const handleOnSubmit = ({ formData }) => {
@@ -823,6 +824,8 @@ const FlexibleForm = withRouter(
           updatedFormDataSchema = formSchema.schema;
         }
 
+        setSchema(updatedFormDataSchema);
+
         // to overide validation
         let dependFields = [];
         let requiredFields = [];
@@ -962,7 +965,7 @@ const FlexibleForm = withRouter(
         <>
           <Form
             idPrefix="flexibleForm"
-            schema={formSchema.schema}
+            schema={schema}
             uiSchema={uiSchema[selectedMainContentType]}
             formData={flexibleFormData.data}
             onChange={(e) => handleFormOnChange(e)}
