@@ -1011,9 +1011,11 @@ const DetailsView = ({
                                 )}
                               </Avatar.Group>
                             </div>
-                            <div className="read-more">
-                              Read More <ArrowRightOutlined />
-                            </div>
+                            <a href={`/${params.type}/${item.id}`}>
+                              <div className="read-more">
+                                Read More <ArrowRightOutlined />
+                              </div>
+                            </a>
                           </div>
                         </Card>
                       </Col>
