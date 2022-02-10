@@ -779,7 +779,7 @@ const DetailsView = ({
         <div className="ui container">
           <Row gutter={[16, 16]}>
             <Col xs={6} lg={6}>
-              <div className="views-container">
+              {/* <div className="views-container">
                 <List itemLayout="horizontal">
                   <List.Item>
                     <List.Item.Meta
@@ -788,7 +788,7 @@ const DetailsView = ({
                     />
                   </List.Item>
                 </List>
-              </div>
+              </div> */}
 
               <CardComponent
                 title="Location and Geo-coverage"
