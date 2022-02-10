@@ -44,7 +44,8 @@ const FilterDrawer = ({
     offering: s.tags.offering,
   }));
 
-  console.log(UIStore.currentState);
+  // console.log(UIStore.currentState);
+  console.log(query);
 
   const isLoaded = () =>
     !isEmpty(countries) &&
@@ -89,6 +90,16 @@ const FilterDrawer = ({
       return <CommunityIcon />;
     }
   };
+
+  const filterQueries = [
+    "country",
+    "topic",
+    "representativeGroup",
+    "geoCoverage",
+    "seeking",
+    "offering",
+    "affiliation",
+  ];
 
   return (
     <div className="site-drawer-render-in-current-wrapper">
@@ -318,7 +329,27 @@ const FilterDrawer = ({
             <Button className="show-stakeholder-btn">
               Show stakeholders (87)
             </Button>
-            <Button className="clear-all-btn">Clear all</Button>
+            <Button
+              className="clear-all-btn"
+              onClose={() => {
+                let filter = null;
+                for (let i = 0; filterQueries.length > i; i++) {
+                  filter = updateQuery(filterQueries[i], []);
+                }
+                return filter;
+              }}
+              onClick={() => {
+                let filter = null;
+                console.log(query, "query");
+
+                for (let i = 0; filterQueries.length > i; i++) {
+                  filter = updateQuery(filterQueries[i], []);
+                }
+                return filter;
+              }}
+            >
+              Clear all
+            </Button>
           </Col>
         </Row>
       </Drawer>
