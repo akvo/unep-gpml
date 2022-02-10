@@ -143,7 +143,9 @@ const StakeholderOverview = ({ history }) => {
   const renderFilterTag = () => {
     const renderName = (key, value) => {
       if (key === "affiliation") {
-        const findOrganisation= organisations.find((organisation) => organisation?.id == value);
+        const findOrganisation = organisations.find(
+          (organisation) => organisation?.id == value
+        );
         return findOrganisation?.name;
       }
       if (key === "is_member") {
