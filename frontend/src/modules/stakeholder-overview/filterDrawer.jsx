@@ -50,6 +50,7 @@ const FilterDrawer = ({
 
   const handleChangeType = (flag, type) => {
     const val = query[flag];
+
     let updateVal = [];
     if (isEmpty(val)) {
       updateVal = [type];
@@ -198,9 +199,9 @@ const FilterDrawer = ({
                   name && (
                     <Col span={6} key={entity}>
                       <Card
-                        onClick={() => handleChangeType("role", true)}
+                        onClick={() => handleChangeType("is_member", entity)}
                         className={classNames("drawer-card", {
-                          active: !query?.isMember,
+                          active: query?.is_member.length > 0,
                         })}
                       >
                         <Space direction="vertical" align="center">
@@ -244,11 +245,12 @@ const FilterDrawer = ({
             title="Location"
             options={
               isLoaded()
-                ? countries?.map((x) => ({ value: x.name, label: x.name }))
+                ? countries?.map((x) => ({ value: x.id, label: x.name }))
                 : []
             }
-            value={query?.country || []}
-            flag="location"
+            value={query?.country?.map((x) => parseInt(x)) || []}
+            flag="country"
+            onChange={handleChangeType}
             query={query}
             updateQuery={updateQuery}
           />
