@@ -480,7 +480,9 @@
       (if authorized?
         (if-let [data (db.detail/get-detail conn path)]
           (resp/response (merge
-                           (adapt (merge (dissoc (:json data) :related_content :tags :abstract) (extra-details topic conn (:json data))))
+                           (adapt (merge
+                                    (dissoc (:json data) :related_content :tags :abstract :description)
+                                    (extra-details topic conn (:json data))))
                            {:owners (:owners data)}))
           util/not-found)
         util/unauthorized))))
