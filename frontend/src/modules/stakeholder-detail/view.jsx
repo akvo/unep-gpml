@@ -192,7 +192,15 @@ const StakeholderDetail = ({
                     </List.Item>
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar src={EntityImage} />}
+                        avatar={
+                          <Avatar
+                            src={
+                              data?.affiliation?.logo
+                                ? data?.affiliation?.logo
+                                : `https://ui-avatars.com/api/?size=480&name=${data?.affiliation?.name}`
+                            }
+                          />
+                        }
                         title={data?.affiliation?.name}
                         description={"Entity"}
                       />
