@@ -78,14 +78,17 @@ const StakeholderOverview = ({ history }) => {
   };
 
   const getResults = () => {
+    const topic = ["stakeholder", "organisation"];
+
     const searchParms = new URLSearchParams(window.location.search);
-    searchParms.set("limit", pageSize);
+    if (query.topic.length === 0) {
+      searchParms.set("topic", topic, "limit", pageSize);
+    }
     const url = `/browse?${String(searchParms)}`;
     api
       .get(url)
       .then((resp) => {
         const result = resp?.data?.results;
-        console.log(result);
 
         setResults(
           [...result].sort(
@@ -94,9 +97,9 @@ const StakeholderOverview = ({ history }) => {
         );
 
         const organisationType = resp?.data?.counts?.find(
-          (count) => count.topic === "organisation"
+          (count) => count?.topic === "organisation"
         );
-        setResultCount(organisationType.count);
+        setResultCount(organisationType?.count);
         setLoading(false);
       })
       .catch((err) => {
@@ -117,6 +120,7 @@ const StakeholderOverview = ({ history }) => {
   }, [isLoading]); // eslint-disable-line
 
   const updateQuery = (param, value) => {
+    console.log(param, value);
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
       top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
@@ -137,7 +141,7 @@ const StakeholderOverview = ({ history }) => {
   // Here is the function to render filter tag
   const renderFilterTag = () => {
     const renderName = (key, value) => {
-      if (key === "entity") {
+      if (key === "is_member") {
         const findEntity = entityRoleOptions.find((x) => x == value);
         const name = humps.decamelize(findEntity);
         return entityName(name);
@@ -147,8 +151,8 @@ const StakeholderOverview = ({ history }) => {
         return value === "stakeholder" ? "Individual" : "Entity";
       }
 
-      if (key === "location") {
-        const findCountry = countries.find((x) => x.name == value);
+      if (key === "country") {
+        const findCountry = countries.find((x) => x.id == value);
         return findCountry?.name;
       }
 
