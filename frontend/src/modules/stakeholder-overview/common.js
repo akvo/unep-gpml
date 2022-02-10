@@ -12,6 +12,7 @@ const useQuery = () => {
     offering: [],
     q: "",
     is_member: [],
+    role:[],
   };
 
   for (var key of srcParams.keys()) {
