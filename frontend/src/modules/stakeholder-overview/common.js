@@ -5,11 +5,9 @@ const useQuery = () => {
   const ret = {
     country: [],
     topic: [],
-
     tag: [],
     representativeGroup: [],
     geoCoverage: [],
-
     seeking: [],
     offering: [],
     q: "",
