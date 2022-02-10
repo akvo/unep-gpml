@@ -10,9 +10,10 @@ const useQuery = () => {
     geoCoverage: [],
     seeking: [],
     offering: [],
+    affiliation: [],
     q: "",
     is_member: [],
-    role:[],
+    role: [],
   };
 
   for (var key of srcParams.keys()) {

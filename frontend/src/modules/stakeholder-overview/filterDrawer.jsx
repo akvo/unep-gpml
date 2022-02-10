@@ -29,6 +29,7 @@ const FilterDrawer = ({
     transnationalOptions,
     geoCoverageTypeOptions,
     representativeGroup,
+    organisations,
     seeking,
     offering,
   } = UIStore.useState((s) => ({
@@ -38,9 +39,12 @@ const FilterDrawer = ({
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     mainContentType: s.mainContentType,
     representativeGroup: s.sectorOptions,
+    organisations: s.organisations,
     seeking: s.tags.seeking,
     offering: s.tags.offering,
   }));
+
+  console.log(UIStore.currentState);
 
   const isLoaded = () =>
     !isEmpty(countries) &&
@@ -219,8 +223,12 @@ const FilterDrawer = ({
           {/* Affiliation */}
           <MultipleSelectFilter
             title="Affiliation"
-            options={[]}
-            value={[]}
+            options={
+              isLoaded()
+                ? organisations?.map((x) => ({ value: x.id, label: x.name }))
+                : []
+            }
+            value={query?.affiliation?.map((x) => parseInt(x)) || []}
             flag="affiliation"
             query={query}
             updateQuery={updateQuery}

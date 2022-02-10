@@ -142,6 +142,10 @@ const StakeholderOverview = ({ history }) => {
   // Here is the function to render filter tag
   const renderFilterTag = () => {
     const renderName = (key, value) => {
+      if (key === "affiliation") {
+        const findOrganisation= organisations.find((organisation) => organisation?.id == value);
+        return findOrganisation?.name;
+      }
       if (key === "is_member") {
         const findEntity = entityRoleOptions.find((x) => x == value);
         const name = humps.decamelize(findEntity);
