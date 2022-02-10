@@ -645,6 +645,10 @@
                  (let [status (db.detail/update-initiative conn-tx params)]
                    (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
                    status))]
+    (when (contains? data :entity_connections)
+      (update-resource-entity-connections conn (:entity_connections data) "initiative" id))
+    (when (contains? data :individual_connections)
+      (update-resource-individual-connections conn (:individual_connections data) "initiative" id))
     status))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]
