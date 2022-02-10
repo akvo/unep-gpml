@@ -250,7 +250,6 @@ const FilterDrawer = ({
             }
             value={query?.country?.map((x) => parseInt(x)) || []}
             flag="country"
-            onChange={handleChangeType}
             query={query}
             updateQuery={updateQuery}
           />
@@ -273,7 +272,7 @@ const FilterDrawer = ({
                 ? offering?.map((x) => ({ value: x.id, label: x.tag }))
                 : []
             }
-            value={[]}
+            value={query?.offering?.map((x) => parseInt(x)) || []}
             flag="offering"
             query={query}
             updateQuery={updateQuery}
@@ -287,7 +286,7 @@ const FilterDrawer = ({
                 ? seeking?.map((x) => ({ value: x.id, label: x.tag }))
                 : []
             }
-            value={[]}
+            value={query?.seeking?.map((x) => parseInt(x)) || []}
             flag="seeking"
             query={query}
             updateQuery={updateQuery}
