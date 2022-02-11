@@ -34,16 +34,30 @@ const unsettledTerritoryIsoCode = [
 const higlightColor = "#84b4cc";
 
 const ToolTipContent = ({ data, geo }) => {
+  const dataToDisplay = {
+    initiative: data.initiative,
+    actionPlan: data.actionPlan,
+    policy: data.policy,
+    technicalResource: data.technicalResource,
+    financingResource: data.financingResource,
+    event: data.event,
+    technology: data.technology,
+  };
+
   return (
     <div key={`${geo.ISO3CD}-tooltip`} className="map-tooltip">
       <h3>{geo.MAP_LABEL}</h3>
       <ul>
-        {tTypes.map((topic) => (
-          <li key={topic}>
-            <span>{topicNames(topic)}</span>
-            <b>{data?.[topic] ? data[topic] : 0}</b>
-          </li>
-        ))}
+        {tTypes.map(
+          (topic) =>
+            topic !== "organisation" &&
+            topic !== "stakeholder" && (
+              <li key={topic}>
+                <span>{topicNames(topic)}</span>
+                <b>{dataToDisplay?.[topic] ? dataToDisplay[topic] : 0}</b>
+              </li>
+            )
+        )}
       </ul>
     </div>
   );

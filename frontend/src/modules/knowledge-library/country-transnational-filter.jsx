@@ -3,6 +3,7 @@ import React from "react";
 import { Select, Tabs, Popover } from "antd";
 import { DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import isEmpty from "lodash/isEmpty";
+import { topicNames, tTypes } from "../../utils/misc";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -123,27 +124,27 @@ const CountryTransnationalFilter = ({
 };
 
 const ResourcesInfo = (data) => {
-  const resource = data?.data;
+  const dataToDisplay = {
+    initiative: data.initiative,
+    actionPlan: data.actionPlan,
+    policy: data.policy,
+    technicalResource: data.technicalResource,
+    financingResource: data.financingResource,
+    event: data.event,
+    technology: data.technology,
+  };
   return (
     <ul className="info-resources">
-      <li>
-        Action plan: <b>{resource?.actionPlan}</b>
-      </li>
-      <li>
-        Event: <b>{resource?.event}</b>
-      </li>
-      <li>
-        Financing resource: <b>{resource?.financingResource}</b>
-      </li>
-      <li>
-        Policy: <b>{resource?.policy}</b>
-      </li>
-      <li>
-        Project: <b>{resource?.project}</b>
-      </li>
-      <li>
-        Technical Resource: <b>{resource?.technicalResource}</b>
-      </li>
+      {tTypes.map(
+        (topic) =>
+          topic !== "organisation" &&
+          topic !== "stakeholder" && (
+            <li key={topic}>
+              <span>{topicNames(topic)}</span>:{" "}
+              <b>{dataToDisplay?.[topic] ? dataToDisplay[topic] : 0}</b>
+            </li>
+          )
+      )}
     </ul>
   );
 };
