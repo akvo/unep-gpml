@@ -117,29 +117,17 @@ const FilterDrawer = ({
 
   // populate options for tags dropdown
   const tagOpts = isLoaded()
-    ? flatten(values(tags))?.map((it) => ({ value: it.id, label: it.tag }))
+    ? flatten(values(tags))
+        ?.map((it) => ({ value: it.id, label: it.tag }))
+        ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
     : [];
 
   // populate options for representative group options
   const representativeOpts = isLoaded()
     ? flatten(
-        representativeGroup?.map((x) => {
-          //  if child is an object
-          if (!Array.isArray(x?.childs) && x?.childs) {
-            return tags?.[x?.childs?.tags]?.map((it) => ({
-              value: it.id,
-              label: it.tag,
-            }));
-          }
-          // if child null
-          if (!x?.childs) {
-            return [{ value: x?.name, label: x?.name }];
-          }
-          return x?.childs?.map((x) => ({
-            value: x,
-            label: x,
-          }));
-        })
+        [...representativeGroup]?.sort((repG1, repG2) =>
+          repG1?.localeCompare(repG2)
+        )
       )
     : [];
 
@@ -280,7 +268,7 @@ const FilterDrawer = ({
             title="Representative group"
             options={
               isLoaded()
-                ? representativeGroup?.map((x) => ({ value: x, label: x }))
+                ? representativeOpts?.map((x) => ({ value: x, label: x }))
                 : []
             }
             value={query?.representativeGroup || []}
