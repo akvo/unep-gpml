@@ -118,7 +118,7 @@ const FilterDrawer = ({
   // populate options for tags dropdown
   const tagOpts = isLoaded()
     ? flatten(values(tags))
-        ?.map((it) => ({ value: it.id, label: it.tag }))
+        ?.map((it) => ({ value: it.tag, label: it.tag }))
         ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
     : [];
 
