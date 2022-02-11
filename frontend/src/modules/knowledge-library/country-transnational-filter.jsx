@@ -127,28 +127,22 @@ const ResourcesInfo = (data) => {
   return (
     <ul className="info-resources">
       <li>
-        actionPlan: <b>{resource?.actionPlan}</b>
+        Action plan: <b>{resource?.actionPlan}</b>
       </li>
       <li>
-        event: <b>{resource?.event}</b>
+        Event: <b>{resource?.event}</b>
       </li>
       <li>
-        financingResource: <b>{resource?.financingResource}</b>
+        Financing resource: <b>{resource?.financingResource}</b>
       </li>
       <li>
-        organisation: <b>{resource?.organisation}</b>
+        Policy: <b>{resource?.policy}</b>
       </li>
       <li>
-        policy: <b>{resource?.policy}</b>
+        Project: <b>{resource?.project}</b>
       </li>
       <li>
-        project: <b>{resource?.project}</b>
-      </li>
-      <li>
-        stakeholder: <b>{resource?.stakeholder}</b>
-      </li>
-      <li>
-        technicalResource: <b>{resource?.technicalResource}</b>
+        Technical Resource: <b>{resource?.technicalResource}</b>
       </li>
     </ul>
   );
