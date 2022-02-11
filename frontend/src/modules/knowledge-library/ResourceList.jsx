@@ -42,15 +42,21 @@ const ResourceList = ({
   hideListButtonVisible,
   view,
 }) => {
-  const { profile, countries, tags, transnationalOptions } = UIStore.useState(
-    (s) => ({
-      profile: s.profile,
-      countries: s.countries,
-      tags: s.tags,
-      transnationalOptions: s.transnationalOptions,
-    })
-  );
+  const {
+    profile,
+    countries,
+    tags,
+    transnationalOptions,
+    stakeholders,
+  } = UIStore.useState((s) => ({
+    profile: s.profile,
+    countries: s.countries,
+    tags: s.tags,
+    transnationalOptions: s.transnationalOptions,
+    stakeholders: s.stakeholders,
+  }));
 
+  console.log(stakeholders);
   const [allResults, setAllResults] = useState([]);
   const [isAscending, setIsAscending] = useState(null);
 
@@ -184,7 +190,11 @@ const ResourceList = ({
               <LoadingOutlined spin /> Loading
             </h2>
           ) : isLoaded() && !loading && !isEmpty(allResults) ? (
-            <ResourceItem view={view} results={allResults} />
+            <ResourceItem
+              view={view}
+              results={allResults}
+              stakeholders={stakeholders}
+            />
           ) : (
             <h2 className="loading">There is no data to display</h2>
           )}
@@ -212,7 +222,7 @@ const ResourceList = ({
   );
 };
 
-const ResourceItem = ({ results, view }) => {
+const ResourceItem = ({ results, view, stakeholders }) => {
   return results.map((result) => {
     const { id, type } = result;
     const fullName = (data) =>
@@ -231,10 +241,17 @@ const ResourceItem = ({ results, view }) => {
       result.remarks ||
       "";
     const linkTo = `/${type}/${id}`;
-    const stakeholders = result?.stakeholderConnections;
-    if (result?.stakeholderConnections) {
-      stakeholders.length = 3;
-    }
+    const stakeholdersConnectionList = result?.stakeholderConnections;
+    const stakeholderCount = result?.stakeholderConnections?.length;
+
+    const getStakeholderCount = () => {
+      if (stakeholderCount > 3) {
+        return `${stakeholderCount - 3}+`;
+      } else {
+        return;
+      }
+    };
+
     return (
       <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
         <Card
@@ -255,46 +272,44 @@ const ResourceItem = ({ results, view }) => {
           <div className="item-footer">
             <Space size={5}>
               <Avatar.Group
+                className="avatar-group"
                 maxCount={3}
                 maxStyle={{
                   color: "#f56a00",
                   backgroundColor: "#fde3cf",
                 }}
               >
-                {
-                  result?.stakeholderConnections &&
-                    stakeholders.map((stakeholder) => (
+                {result?.stakeholderConnections &&
+                  stakeholdersConnectionList.map((stakeholder) => {
+                    const findStakeholder = stakeholders.stakeholders.find(
+                      (pers) => pers.id === stakeholder?.stakeholderId
+                    );
+
+                    return (
                       <Tooltip
                         key={stakeholder.id}
-                        title={`${stakeholder?.first_name} ${stakeholder?.last_name}`}
+                        title={`${findStakeholder?.firstName} ${findStakeholder?.lastName}`}
                         placement="top"
                       >
-                        <Avatar
-                          style={{ backgroundColor: "#FFB800" }}
-                          icon={<img src={stakeholder?.picture} />}
-                        />
+                        <Link
+                          to={`/stakeholder/${findStakeholder?.id}`}
+                          className="stakeholder-connection-avatar"
+                        >
+                          <Avatar
+                            style={{ backgroundColor: "#FFB800" }}
+                            icon={<img src={stakeholder?.image} />}
+                          />
+                        </Link>
                       </Tooltip>
-                    ))
-                  // : ["a"].map((b, i) => (
-                  //     <Tooltip
-                  //       key={`avatar-${i}`}
-                  //       title={<UserOutlined />}
-                  //       placement="top"
-                  //     >
-                  //       <Avatar
-                  //         style={{ backgroundColor: "#FFB800" }}
-                  //         icon={<UserOutlined />}
-                  //       />
-                  //     </Tooltip>
-                  //   ))
-                }
+                    );
+                  })}
               </Avatar.Group>
-              <span className="avatar-number">
-                {result.stakeholder_connections
-                  ? `${result.stakeholder_connections?.length - 1}+`
-                  : ""}
-              </span>
             </Space>
+            <span className="avatar-number">
+              {result.stakeholderConnections.length !== 0 &&
+                result.stakeholderConnections !== null &&
+                getStakeholderCount()}
+            </span>
             <span className="read-more">
               Read more
               <ArrowRightOutlined />
