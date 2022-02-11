@@ -143,10 +143,10 @@ const KnowledgeLibrary = ({
         return representativeGroups;
       }
       if (key === "startDate") {
-        return `Start date ${query.startDate}`;
+        return `Start date ${value}`;
       }
-      if (key === "endDate") {
-        return `End date ${query.endDate}`;
+      if (key === "end-date") {
+        return `EndDate ${value}`;
       }
     };
     return Object.keys(query).map((key, index) => {
