@@ -80,6 +80,7 @@ const ResourceList = ({
   );
 
   const allTopicCount = countData.reduce((acc, topic) => acc + topic.count, 0);
+  console.log(totalItems, "Existing resources");
 
   const itemCount = loading
     ? 0
@@ -230,8 +231,8 @@ const ResourceItem = ({ results, view }) => {
       result.remarks ||
       "";
     const linkTo = `/${type}/${id}`;
-    const stakeholders = result?.stakeholder_connections;
-    if (result?.stakeholder_connections) {
+    const stakeholders = result?.stakeholderConnections;
+    if (result?.stakeholderConnections) {
       stakeholders.length = 3;
     }
     return (
@@ -261,7 +262,7 @@ const ResourceItem = ({ results, view }) => {
                 }}
               >
                 {
-                  result?.stakeholder_connections &&
+                  result?.stakeholderConnections &&
                     stakeholders.map((stakeholder) => (
                       <Tooltip
                         key={stakeholder.id}
