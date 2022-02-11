@@ -54,6 +54,8 @@ const FilterDrawer = ({
   }));
   const { isAuthenticated } = useAuth0();
 
+  // console.log(UIStore.currentState, representativeGroup);
+  console.log(query?.representativeGroup);
   const isLoaded = () =>
     !isEmpty(tags) &&
     !isEmpty(countries) &&
@@ -125,9 +127,9 @@ const FilterDrawer = ({
   // populate options for representative group options
   const representativeOpts = isLoaded()
     ? flatten(
-        [...representativeGroup]?.sort((repG1, repG2) =>
-          repG1?.localeCompare(repG2)
-        )
+        [...representativeGroup]
+          ?.map((x) => x)
+          ?.sort((repG1, repG2) => repG1?.localeCompare(repG2))
       )
     : [];
 
@@ -259,7 +261,7 @@ const FilterDrawer = ({
           <MultipleSelectFilter
             title="Tags"
             options={tagOpts || []}
-            value={query?.tag?.map((x) => parseInt(x)) || []}
+            value={query?.tag?.map((x) => x) || []}
             flag="tag"
             query={query}
             updateQuery={updateQuery}
@@ -281,18 +283,9 @@ const FilterDrawer = ({
             <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
               {/* Start date */}
               <DatePickerFilter
-                title="Start date"
+                title="StartDate"
                 value={query?.startDate}
                 flag="startDate"
-                query={query}
-                updateQuery={updateQuery}
-                span={12}
-              />
-              {/* End date */}
-              <DatePickerFilter
-                title="End date"
-                value={query?.endDate}
-                flag="endDate"
                 query={query}
                 updateQuery={updateQuery}
                 span={12}
@@ -300,6 +293,18 @@ const FilterDrawer = ({
                   !isEmpty(query?.startDate)
                     ? moment(query?.startDate[0])
                     : null
+                }
+              />
+              {/* End date */}
+              <DatePickerFilter
+                title="End date"
+                value={query?.endDate}
+                flag="end-date"
+                query={query}
+                updateQuery={updateQuery}
+                span={12}
+                startDate={
+                  !isEmpty(query?.endDate) ? moment(query?.endDate[0]) : null
                 }
               />
             </Row>
