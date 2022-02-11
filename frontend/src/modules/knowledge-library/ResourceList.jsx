@@ -56,7 +56,6 @@ const ResourceList = ({
     stakeholders: s.stakeholders,
   }));
 
-  console.log(stakeholders);
   const [allResults, setAllResults] = useState([]);
   const [isAscending, setIsAscending] = useState(null);
 
@@ -84,9 +83,6 @@ const ResourceList = ({
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
   );
-
-  const allTopicCount = countData.reduce((acc, topic) => acc + topic.count, 0);
-  console.log(totalItems, "Existing resources");
 
   const itemCount = loading
     ? 0
@@ -252,6 +248,18 @@ const ResourceItem = ({ results, view, stakeholders }) => {
       }
     };
 
+    const stakeholderToDisplay = () => {
+      if (stakeholderCount > 3) {
+        return [
+          stakeholdersConnectionList[0],
+          stakeholdersConnectionList[1],
+          stakeholdersConnectionList[2],
+        ];
+      } else {
+        return stakeholdersConnectionList;
+      }
+    };
+
     return (
       <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
         <Card
@@ -280,14 +288,14 @@ const ResourceItem = ({ results, view, stakeholders }) => {
                 }}
               >
                 {result?.stakeholderConnections &&
-                  stakeholdersConnectionList.map((stakeholder) => {
+                  stakeholderToDisplay().map((stakeholder) => {
                     const findStakeholder = stakeholders.stakeholders.find(
                       (pers) => pers.id === stakeholder?.stakeholderId
                     );
 
                     return (
                       <Tooltip
-                        key={stakeholder.id}
+                        key={stakeholder?.id}
                         title={`${findStakeholder?.firstName} ${findStakeholder?.lastName}`}
                         placement="top"
                       >
