@@ -104,6 +104,12 @@ const FilterDrawer = ({
           ]);
         });
     });
+
+    // const values = multiCountryCountries
+    //   ?.map((country) => country?.countries.map((country) => country.id))
+    //   .join(",");
+
+    // updateQuery("country", values);
   };
 
   const handleDeselectMultiCountry = (val) => {
