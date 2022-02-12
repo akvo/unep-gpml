@@ -125,18 +125,19 @@ const CountryTransnationalFilter = ({
 
 const ResourcesInfo = (data) => {
   const dataToDisplay = {
-    initiative: data.initiative,
-    actionPlan: data.actionPlan,
-    policy: data.policy,
-    technicalResource: data.technicalResource,
-    financingResource: data.financingResource,
-    event: data.event,
-    technology: data.technology,
+    initiative: data?.data?.initiative,
+    actionPlan: data?.data?.actionPlan,
+    policy: data?.data?.policy,
+    technicalResource: data?.data?.technicalResource,
+    financingResource: data?.data?.financingResource,
+    event: data?.data?.event,
+    technology: data?.data?.technology,
   };
+
   return (
     <ul className="info-resources">
-      {tTypes.map(
-        (topic) =>
+      {tTypes.map((topic) => {
+        return (
           topic !== "organisation" &&
           topic !== "stakeholder" && (
             <li key={topic}>
@@ -144,7 +145,8 @@ const ResourcesInfo = (data) => {
               <b>{dataToDisplay?.[topic] ? dataToDisplay[topic] : 0}</b>
             </li>
           )
-      )}
+        );
+      })}
     </ul>
   );
 };
