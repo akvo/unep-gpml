@@ -15,6 +15,7 @@ import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const MapLanding = ({
   history,
+  query,
   counts,
   setStakeholderSignupModalVisible,
   setWarningModalVisible,
@@ -56,12 +57,19 @@ const MapLanding = ({
 
   const clickCountry = (name) => {
     setToggleButton("list");
-    updateQuery("country", name);
-    history.push(`?country=${name}`);
+    const val = query["country"];
+    let updateVal = [];
+    if (isEmpty(val)) {
+      updateVal = [name];
+    } else if (val.includes(name)) {
+      updateVal = val.filter((x) => x !== name);
+    } else {
+      updateVal = [...val, name];
+    }
+    updateQuery("country", updateVal);
   };
 
   const handleSummaryClick = (topic) => {
-    // setCounts(topic);
     counts = topic;
   };
 
