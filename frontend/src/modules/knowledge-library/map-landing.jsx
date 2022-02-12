@@ -17,6 +17,7 @@ const MapLanding = ({
   history,
   query,
   counts,
+  setCounts,
   setStakeholderSignupModalVisible,
   setWarningModalVisible,
   isAuthenticated,
@@ -70,7 +71,9 @@ const MapLanding = ({
   };
 
   const handleSummaryClick = (topic) => {
+    console.log(topic);
     counts = topic;
+    setCounts(topic)
   };
 
   const handleSeeAllStakeholderClick = () => {
