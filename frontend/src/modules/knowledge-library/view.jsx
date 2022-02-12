@@ -315,6 +315,7 @@ const KnowledgeLibrary = ({
                     {...{
                       countData,
                       counts,
+                      query,
                       setWarningModalVisible,
                       setStakeholderSignupModalVisible,
                       loginWithPopup,
