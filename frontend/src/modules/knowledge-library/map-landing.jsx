@@ -15,6 +15,7 @@ import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const MapLanding = ({
   history,
+  counts,
   setStakeholderSignupModalVisible,
   setWarningModalVisible,
   isAuthenticated,
@@ -25,7 +26,6 @@ const MapLanding = ({
   setMultiCountryCountries,
   setListVisible,
   listVisible,
-
   isDisplayedList,
   isFilteredCountry,
 }) => {
@@ -43,7 +43,7 @@ const MapLanding = ({
     transnationalOptions: s.transnationalOptions,
   }));
   const [country, setCountry] = useState(null);
-  const [counts, setCounts] = useState("project");
+
   const [multiCountry, setMultiCountry] = useState(null);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
@@ -61,7 +61,8 @@ const MapLanding = ({
   };
 
   const handleSummaryClick = (topic) => {
-    setCounts(topic);
+    // setCounts(topic);
+    counts = topic;
   };
 
   const handleSeeAllStakeholderClick = () => {

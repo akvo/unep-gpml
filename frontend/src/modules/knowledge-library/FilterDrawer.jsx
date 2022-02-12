@@ -34,11 +34,9 @@ const FilterDrawer = ({
   setMultiCountryCountries,
 }) => {
   const {
-    profile,
     countries,
     tags,
     transnationalOptions,
-    sectorOptions,
     geoCoverageTypeOptions,
     languages,
     representativeGroup,
@@ -54,8 +52,6 @@ const FilterDrawer = ({
   }));
   const { isAuthenticated } = useAuth0();
 
-  // console.log(UIStore.currentState, representativeGroup);
-  console.log(query?.representativeGroup);
   const isLoaded = () =>
     !isEmpty(tags) &&
     !isEmpty(countries) &&
