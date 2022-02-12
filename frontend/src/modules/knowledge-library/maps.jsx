@@ -35,13 +35,13 @@ const higlightColor = "#84b4cc";
 
 const ToolTipContent = ({ data, geo }) => {
   const dataToDisplay = {
-    initiative: data.initiative,
-    actionPlan: data.actionPlan,
-    policy: data.policy,
-    technicalResource: data.technicalResource,
-    financingResource: data.financingResource,
-    event: data.event,
-    technology: data.technology,
+    initiative: data?.initiative,
+    actionPlan: data?.actionPlan,
+    policy: data?.policy,
+    technicalResource: data?.technicalResource,
+    financingResource: data?.financingResource,
+    event: data?.event,
+    technology: data?.technology,
   };
 
   return (
