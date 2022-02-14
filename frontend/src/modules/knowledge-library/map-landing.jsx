@@ -16,18 +16,20 @@ import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 const MapLanding = ({
   history,
   query,
-  setStakeholderSignupModalVisible,
-  setWarningModalVisible,
-  isAuthenticated,
   loginWithPopup,
-  setToggleButton,
-  updateQuery,
+  isAuthenticated,
   multiCountryCountries,
-  setMultiCountryCountries,
-  setListVisible,
   listVisible,
   isDisplayedList,
   isFilteredCountry,
+
+  //Functions
+  updateQuery,
+  setListVisible,
+  setToggleButton,
+  setMultiCountryCountries,
+  setWarningModalVisible,
+  setStakeholderSignupModalVisible,
 }) => {
   const {
     profile,
