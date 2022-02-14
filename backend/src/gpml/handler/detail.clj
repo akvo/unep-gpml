@@ -608,7 +608,8 @@
                           ;; NOTE: we ignore resource_type since
                           ;; we don't expect it to change!
                           :resource_type)
-                        (assoc :related_content (pg-util/->JDBCArray (:related_content updates) "integer")))
+                        (assoc :related_content (pg-util/->JDBCArray (:related_content updates) "integer")
+                               :topics (pg-util/->JDBCArray (:topics updates) "text")))
         tags (remove nil? (:tags updates))
         urls (remove nil? (:urls updates))
         params {:table table :id id :updates table-columns}
