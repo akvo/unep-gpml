@@ -1640,22 +1640,20 @@
     },
     "S5": {
       "classNames": "list-group",
-      "S5_G1": {
-        "yearFounded": {
-          "ui:widget": "date",
-          "ui:showSearch": true,
-          "ui:span": 12,
-          "ui:options": {
-            "mode": "year",
-            "disableDate": "future"
-          }
-        },
-        "organisationType": {
-          "ui:span": 12,
-          "ui:placeholder": "Choose the organisation type",
-          "ui:widget": "select",
-          "ui:showSearch": true
+      "yearFounded": {
+        "ui:widget": "date",
+        "ui:showSearch": true,
+        "ui:span": 12,
+        "ui:options": {
+          "mode": "year",
+          "disableDate": "future"
         }
+      },
+      "organisationType": {
+        "ui:span": 12,
+        "ui:placeholder": "Choose the organisation type",
+        "ui:widget": "select",
+        "ui:showSearch": true
       }
     }
   }

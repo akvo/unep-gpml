@@ -748,7 +748,9 @@ const DetailsView = ({
                 <img src={ActionGreen} />
                 <div>
                   <Title level={2}>{topicNames(params?.type)}</Title>
-                  <Title level={4}>{data?.title}</Title>
+                  <Title level={4}>
+                    {params?.type !== "technology" ? data?.title : data?.name}
+                  </Title>
                 </div>
               </div>
             </Col>
