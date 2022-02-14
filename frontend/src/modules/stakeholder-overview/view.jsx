@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Pagination, Tag } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, WarningOutlined } from "@ant-design/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./styles.scss";
 import LeftSidebar from "./leftSidebar";
@@ -21,6 +21,7 @@ let tmid;
 
 const StakeholderOverview = ({ history }) => {
   const {
+    profile,
     countries,
     representativeGroup,
     geoCoverageTypeOptions,
@@ -29,6 +30,7 @@ const StakeholderOverview = ({ history }) => {
     seeking,
     offering,
   } = UIStore.useState((s) => ({
+    profile: s.profile,
     countries: s.countries,
     representativeGroup: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
@@ -37,10 +39,15 @@ const StakeholderOverview = ({ history }) => {
     seeking: s.tags.seeking,
     offering: s.tags.offering,
   }));
+  const { isAuthenticated, isLoading } = useAuth0();
+  const isApprovedUser = profile?.reviewStatus === "APPROVED";
+  const hasProfile = profile?.reviewStatus;
+
+  const isValidUser = isAuthenticated && isApprovedUser && hasProfile;
 
   const [filterVisible, setFilterVisible] = useState(false);
   const query = useQuery();
-  const { isLoading } = useAuth0();
+
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
 
@@ -227,27 +234,29 @@ const StakeholderOverview = ({ history }) => {
 
   return (
     <div id="stakeholder-overview">
-      <Header
-        filterVisible={filterVisible}
-        isAscending={isAscending}
-        setFilterVisible={setFilterVisible}
-        renderFilterTag={renderFilterTag}
-        sortPeople={sortPeople}
-        updateQuery={updateQuery}
-      />
-      <Row type="flex" className="body-wrapper">
-        {/* Filter Drawer */}
-        <FilterDrawer
-          query={query}
-          updateQuery={updateQuery}
-          entities={entityRoleOptions}
-          filterVisible={filterVisible}
-          setFilterVisible={setFilterVisible}
-        />
+      {isValidUser ? (
+        <>
+          <Header
+            filterVisible={filterVisible}
+            isAscending={isAscending}
+            setFilterVisible={setFilterVisible}
+            renderFilterTag={renderFilterTag}
+            sortPeople={sortPeople}
+            updateQuery={updateQuery}
+          />
+          <Row type="flex" className="body-wrapper">
+            {/* Filter Drawer */}
+            <FilterDrawer
+              query={query}
+              updateQuery={updateQuery}
+              entities={entityRoleOptions}
+              filterVisible={filterVisible}
+              setFilterVisible={setFilterVisible}
+            />
 
-        <LeftSidebar />
-        <Col lg={22} xs={24} order={2}>
-          {/* <Col className="card-container green">
+            <LeftSidebar />
+            <Col lg={22} xs={24} order={2}>
+              {/* <Col className="card-container green">
             <h3 className="title text-white ui container">
               Suggested profiles
             </h3>
@@ -257,36 +266,48 @@ const StakeholderOverview = ({ history }) => {
               ))}
             </div>
           </Col> */}
-          <Col className="all-profiles">
-            {!isLoaded() || loading ? (
-              <h2 className="loading" id="stakeholder-loading">
-                <LoadingOutlined spin /> Loading
-              </h2>
-            ) : isLoaded() && !loading && !isEmpty(results) ? (
-              <div className="card-wrapper ui container">
-                {results.map((profile) => (
-                  <ProfileCard key={profile.id} profile={profile} />
-                ))}
-              </div>
-            ) : (
-              <h2 className="loading">There is no data to display</h2>
-            )}
+              <Col className="all-profiles">
+                {!isLoaded() || loading ? (
+                  <h2 className="loading" id="stakeholder-loading">
+                    <LoadingOutlined spin /> Loading
+                  </h2>
+                ) : isLoaded() && !loading && !isEmpty(results) ? (
+                  <div className="card-wrapper ui container">
+                    {results.map((profile) => (
+                      <ProfileCard key={profile.id} profile={profile} />
+                    ))}
+                  </div>
+                ) : (
+                  <h2 className="loading">There is no data to display</h2>
+                )}
 
-            <div className="page">
-              {!isEmpty(results) && (
-                <Pagination
-                  defaultCurrent={1}
-                  current={(filters?.offset || 0) / pageSize + 1}
-                  pageSize={pageSize}
-                  total={resultCount}
-                  showSizeChanger={false}
-                  onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
-                />
-              )}
-            </div>
-          </Col>
-        </Col>
-      </Row>
+                <div className="page">
+                  {!isEmpty(results) && (
+                    <Pagination
+                      defaultCurrent={1}
+                      current={(filters?.offset || 0) / pageSize + 1}
+                      pageSize={pageSize}
+                      total={resultCount}
+                      showSizeChanger={false}
+                      onChange={(n, size) =>
+                        updateQuery("offset", (n - 1) * size)
+                      }
+                    />
+                  )}
+                </div>
+              </Col>
+            </Col>
+          </Row>
+        </>
+      ) : (
+        <div className="warning">
+          <WarningOutlined style={{ fontSize: "48px", color: "#ffb800" }} />
+          <div>
+            Please register as a user for the GPML Digital Platform to be able
+            to access this page
+          </div>
+        </div>
+      )}
     </div>
   );
 };
