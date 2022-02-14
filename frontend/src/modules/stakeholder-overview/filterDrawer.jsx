@@ -23,12 +23,16 @@ const FilterDrawer = ({
   entities,
   query,
   updateQuery,
+  stakeholder,
 }) => {
   const {
     countries,
     transnationalOptions,
     geoCoverageTypeOptions,
     representativeGroup,
+    affiliations,
+    offering,
+    seeking,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -36,6 +40,9 @@ const FilterDrawer = ({
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     mainContentType: s.mainContentType,
     representativeGroup: s.sectorOptions,
+    affiliations: s.organisations,
+    offering: s.tags.offering,
+    seeking: s.tags.seeking,
   }));
 
   const isLoaded = () =>
@@ -214,9 +221,16 @@ const FilterDrawer = ({
           {/* Affiliation */}
           <MultipleSelectFilter
             title="Affiliation"
-            options={[]}
-            value={[]}
-            flag="affiliation"
+            options={
+              isLoaded()
+                ? affiliations?.map((org) => ({
+                    value: org?.name,
+                    label: org.name,
+                  }))
+                : []
+            }
+            value={query?.organisation || []}
+            flag="organisation"
             query={query}
             updateQuery={updateQuery}
           />
@@ -262,9 +276,16 @@ const FilterDrawer = ({
           {/*Expertise to offer*/}
           <MultipleSelectFilter
             title="What expertises are they offering?"
-            options={[]}
-            value={[]}
-            flag="expertiseToOffer"
+            options={
+              isLoaded()
+                ? offering?.map((offer) => ({
+                    value: offer?.tag,
+                    label: offer.tag,
+                  }))
+                : []
+            }
+            value={query?.tag || []}
+            flag="offering"
             query={query}
             updateQuery={updateQuery}
           />
@@ -272,9 +293,16 @@ const FilterDrawer = ({
           {/* Expertise they seek */}
           <MultipleSelectFilter
             title="What expertises are they seeking?"
-            options={[]}
-            value={[]}
-            flag="exertiseTheySeek"
+            options={
+              isLoaded()
+                ? seeking?.map((seek) => ({
+                    value: seek?.tag,
+                    label: seek.tag,
+                  }))
+                : []
+            }
+            value={query?.tag || []}
+            flag="seeking"
             query={query}
             updateQuery={updateQuery}
           />
@@ -294,8 +322,12 @@ const FilterDrawer = ({
           />
 
           <Col className="drawer-button-wrapper">
-            <Button className="show-stakeholder-btn">
-              Show stakeholders (87)
+            <Button
+              className="show-stakeholder-btn"
+              onClose={() => setFilterVisible(false)}
+              onClick={() => setFilterVisible(false)}
+            >
+              Show stakeholders ({stakeholder})
             </Button>
             <Button className="clear-all-btn">Clear all</Button>
           </Col>
