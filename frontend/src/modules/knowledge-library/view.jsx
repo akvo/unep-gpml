@@ -55,7 +55,6 @@ const KnowledgeLibrary = ({
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
   const [view, setView] = useState("map");
-  const [counts, setCounts] = useState("project");
 
   const selectionValue = (
     <div className="selection-value">
@@ -120,17 +119,6 @@ const KnowledgeLibrary = ({
   const renderFilterTag = () => {
     const renderName = (key, value) => {
       if (key === "topic") {
-        setTimeout(() => {
-          if (value === "financing_resource") {
-            setCounts("financingResource");
-          } else if (value === "action_plan") {
-            setCounts("actionPlan");
-          } else if (value === "technical_resource") {
-            setCounts("technicalResource");
-          } else {
-            setCounts(value);
-          }
-        }, 1000);
         return topicNames(value);
       }
       if (key === "tag") {
@@ -315,8 +303,6 @@ const KnowledgeLibrary = ({
                   <MapLanding
                     {...{
                       countData,
-                      counts,
-                      setCounts,
                       query,
                       setWarningModalVisible,
                       setStakeholderSignupModalVisible,
