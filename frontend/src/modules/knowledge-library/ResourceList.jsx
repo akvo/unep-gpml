@@ -304,15 +304,14 @@ const ResourceItem = ({ results, view, stakeholders }) => {
                         title={`${findStakeholder?.firstName} ${findStakeholder?.lastName}`}
                         placement="top"
                       >
-                        <NavLink
-                          to={`/stakeholder/${findStakeholder?.id}`}
-                          className="stakeholder-connection-avatar"
-                        >
-                          <Avatar
-                            style={{ backgroundColor: "#FFB800" }}
-                            icon={<img src={stakeholder?.image} />}
-                          />
-                        </NavLink>
+                        <object className="stakeholder-connection-avatar">
+                          <Link to={`/stakeholder/${findStakeholder?.id}`}>
+                            <Avatar
+                              style={{ backgroundColor: "#FFB800" }}
+                              icon={<img src={stakeholder?.image} />}
+                            />
+                          </Link>
+                        </object>
                       </Tooltip>
                     );
                   })}
