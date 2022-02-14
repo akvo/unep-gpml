@@ -280,3 +280,45 @@ select id, first_name, last_name, email from stakeholder
 select id, first_name, last_name, email, role from stakeholder
  where (role = 'ADMIN' OR role = 'REVIEWER')
    and review_status = 'APPROVED';
+
+-- :name get-suggested-stakeholders :?
+-- :doc Get stakeholder based on matching seeking, offerings and location
+WITH suggested_stakeholders AS (
+    SELECT
+        *
+    FROM
+        stakeholder s
+        JOIN stakeholder_tag st ON s.id = st.stakeholder
+        JOIN tag t ON st.tag = t.id
+        JOIN tag_category tg ON t.tag_category = tg.id
+    WHERE
+        t.tag IN (:v*:offering-seekings)
+    UNION
+    SELECT
+        *
+    FROM
+        stakeholder s
+        JOIN stakeholder_tag st ON s.id = st.stakeholder
+        JOIN tag t ON st.tag = t.id
+        JOIN tag_category tg ON t.tag_category = tg.id
+    WHERE
+        t.tag IN (:v*:seeking-offerings))
+SELECT
+    *
+FROM
+    suggested_stakeholders
+LIMIT :limit
+OFFSET :offset
+
+-- :name get-recent-active-stakeholders :? :*
+-- :doc Get stakeholders based on the most recent activites
+SELECT
+    DISTINCT ON (s.id)
+    s.*
+FROM
+    stakeholder s
+    JOIN activity a ON s.id = a.owner_id
+ORDER BY
+    s.id,
+    a.created_at DESC
+LIMIT :limit;
