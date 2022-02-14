@@ -2706,28 +2706,22 @@ export const schema = {
           id: "tabs",
           value: ["S5"],
         },
+        required: [],
         properties: {
-          S5_G1: {
-            title: "",
-            type: "object",
-            required: [],
-            properties: {
-              yearFounded: {
-                title: "Year Founded",
-                type: "string",
-              },
-              organisationType: {
-                title: "ORGANISATION TYPE",
-                enum: [
-                  "Established Company",
-                  "Research Lab",
-                  "Academic Institution",
-                  "Startup",
-                  "Non-Profit Org",
-                  "Partnerships",
-                ],
-              },
-            },
+          yearFounded: {
+            title: "Year Founded",
+            type: "string",
+          },
+          organisationType: {
+            title: "ORGANISATION TYPE",
+            enum: [
+              "Established Company",
+              "Research Lab",
+              "Academic Institution",
+              "Startup",
+              "Non-Profit Org",
+              "Partnerships",
+            ],
           },
         },
       },

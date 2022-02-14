@@ -335,6 +335,22 @@ const formDataMapping = [
     section: "S5",
     question: "eventType",
   },
+  {
+    key: "yearFounded",
+    name: "yearFounded",
+    group: null,
+    type: "year",
+    section: "S5",
+    question: "yearFounded",
+  },
+  {
+    key: "organisationType",
+    name: "organisationType",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "organisationType",
+  },
 ];
 
 const FlexibleForms = ({ match: { params }, ...props }) => {
