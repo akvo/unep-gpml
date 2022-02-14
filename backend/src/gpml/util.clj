@@ -18,3 +18,8 @@
        (UUID/fromString uuid))
      (catch Exception _
        nil))))
+
+(defn update-if-exists [map key update-fn & args]
+  (if (get map key)
+    (apply update map key update-fn args)
+    map))
