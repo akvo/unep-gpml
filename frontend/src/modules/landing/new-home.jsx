@@ -207,8 +207,8 @@ const Landing = withRouter(
           <div className="landing-banner">
             <div className="ui container">
               <h1>
-                Welcome to the Global Partnership on Marine Litter Digital
-                Platform!
+                Welcome to the Digital Platform on Marine Litter and Plastic
+                Pollution!
               </h1>
               <h2>Inform. Connect. Inspire.</h2>
               <div className="body-text">
