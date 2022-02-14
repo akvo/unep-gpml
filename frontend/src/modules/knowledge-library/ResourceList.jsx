@@ -10,12 +10,8 @@ import {
   Tooltip,
   Pagination,
 } from "antd";
-import {
-  UserOutlined,
-  ArrowRightOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
+import { NavLink, Link } from "react-router-dom";
 
 import "./styles.scss";
 import { UIStore } from "../../store";
@@ -28,19 +24,20 @@ import humps from "humps";
 import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 
+// Icons
 import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 import SortIcon from "../../images/knowledge-library/sort-icon.svg";
 
 const ResourceList = ({
-  filters,
-  setListVisible,
-  countData,
-  updateQuery,
-  loading,
+  view,
   results = [],
+  countData,
+  filters,
+  loading,
   pageSize,
   hideListButtonVisible,
-  view,
+  updateQuery,
+  setListVisible,
 }) => {
   const {
     profile,
@@ -299,7 +296,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
                         title={`${findStakeholder?.firstName} ${findStakeholder?.lastName}`}
                         placement="top"
                       >
-                        <Link
+                        <NavLink
                           to={`/stakeholder/${findStakeholder?.id}`}
                           className="stakeholder-connection-avatar"
                         >
@@ -307,7 +304,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
                             style={{ backgroundColor: "#FFB800" }}
                             icon={<img src={stakeholder?.image} />}
                           />
-                        </Link>
+                        </NavLink>
                       </Tooltip>
                     );
                   })}
