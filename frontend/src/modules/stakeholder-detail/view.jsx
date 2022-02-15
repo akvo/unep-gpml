@@ -192,8 +192,20 @@ const StakeholderDetail = ({
                     </List.Item>
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar src={EntityImage} />}
-                        title={data?.affiliation?.name}
+                        avatar={
+                          <Avatar
+                            src={
+                              data?.affiliation?.logo
+                                ? data?.affiliation?.logo
+                                : `https://ui-avatars.com/api/?size=480&name=${data?.affiliation?.name}`
+                            }
+                          />
+                        }
+                        title={
+                          <Link to={`/organisation/${data?.affiliation?.id}`}>
+                            {data?.affiliation?.name}
+                          </Link>
+                        }
                         description={"Entity"}
                       />
                     </List.Item>
@@ -207,7 +219,18 @@ const StakeholderDetail = ({
                       <List.Item className="location">
                         <List.Item.Meta
                           avatar={<LinkedinOutlined />}
-                          title={data?.linkedIn}
+                          title={
+                            <a
+                              href={
+                                data?.linkedIn.includes("https://")
+                                  ? data?.linkedIn
+                                  : "https://" + data?.linkedIn
+                              }
+                              target="_blank"
+                            >
+                              {data?.linkedIn}
+                            </a>
+                          }
                         />
                       </List.Item>
                     )}
@@ -215,7 +238,18 @@ const StakeholderDetail = ({
                       <List.Item className="location">
                         <List.Item.Meta
                           avatar={<TwitterOutlined />}
-                          title={data?.twitter}
+                          title={
+                            <a
+                              href={
+                                data?.twitter.includes("https://")
+                                  ? data?.twitter
+                                  : "https://" + data?.twitter
+                              }
+                              target="_blank"
+                            >
+                              {data?.twitter}
+                            </a>
+                          }
                         />
                       </List.Item>
                     )}
@@ -229,7 +263,11 @@ const StakeholderDetail = ({
                       <List.Item className="location">
                         <List.Item.Meta
                           avatar={<MailOutlined />}
-                          title={data?.email}
+                          title={
+                            <a href={`mailto:${data?.email}`} target="_blank">
+                              {data?.email}
+                            </a>
+                          }
                         />
                       </List.Item>
                     )}
