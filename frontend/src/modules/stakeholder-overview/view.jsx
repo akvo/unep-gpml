@@ -37,7 +37,7 @@ const StakeholderOverview = ({ history }) => {
     organisations: s.organisations,
     seeking: s.tags.seeking,
     offering: s.tags.offering,
-    stakeholders: s.stakeholders.stakeholders,
+    stakeholders: s.stakeholders?.stakeholders,
   }));
   const { isAuthenticated, isLoading } = useAuth0();
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
@@ -68,13 +68,19 @@ const StakeholderOverview = ({ history }) => {
     const sortByName = results.sort((a, b) => {
       if (!isAscending) {
         if (a.firstName) {
-          return a.firstName.localeCompare(b.firstName);
+          return (
+            a.firstName.localeCompare(b.firstName) &&
+            a.firstName.localeCompare(b.name)
+          );
         } else {
           return a.name.localeCompare(b.name);
         }
       } else {
         if (b.firstName) {
-          return b.firstName.localeCompare(a.firstName);
+          return (
+            b.firstName.localeCompare(a.firstName) &&
+            b.firstName.localeCompare(a.name)
+          );
         } else {
           return b.name.localeCompare(a.name);
         }
@@ -251,7 +257,6 @@ const StakeholderOverview = ({ history }) => {
               entities={entityRoleOptions}
               filterVisible={filterVisible}
               setFilterVisible={setFilterVisible}
-              stakeholders={stakeholders}
             />
 
             <LeftSidebar />

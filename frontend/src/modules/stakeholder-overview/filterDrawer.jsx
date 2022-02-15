@@ -22,7 +22,6 @@ const FilterDrawer = ({
   entities,
   query,
   updateQuery,
-  stakeholders,
 }) => {
   const {
     countries,
@@ -30,6 +29,7 @@ const FilterDrawer = ({
     geoCoverageTypeOptions,
     representativeGroup,
     organisations,
+    stakeholders,
     seeking,
     offering,
   } = UIStore.useState((s) => ({
@@ -39,6 +39,7 @@ const FilterDrawer = ({
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     mainContentType: s.mainContentType,
     representativeGroup: s.sectorOptions,
+    stakeholders: s.stakeholders?.stakeholders,
     organisations: s.organisations,
     seeking: s.tags.seeking,
     offering: s.tags.offering,
