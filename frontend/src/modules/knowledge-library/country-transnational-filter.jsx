@@ -20,15 +20,19 @@ const CountryTransnationalFilter = ({
   countrySelectMode,
   multiCountrySelectMode,
 }) => {
-  const { countries, transnationalOptions } = UIStore.useState((s) => ({
-    countries: s.countries,
-    transnationalOptions: s.transnationalOptions,
-  }));
+  const { countries, transnationalOptions, landing } = UIStore.useState(
+    (s) => ({
+      countries: s.countries,
+      transnationalOptions: s.transnationalOptions,
+      landing: s.landing,
+    })
+  );
 
   const isLoaded = () => !isEmpty(countries) && !isEmpty(transnationalOptions);
 
   const countryOpts = isLoaded()
     ? countries
+        .filter((country) => country.description === "Member State")
         .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
     : [];
@@ -103,6 +107,7 @@ const CountryTransnationalFilter = ({
                 {multiCountryLabelCustomIcon &&
                   multiCountry.includes(value) && (
                     <MultiCountryInfo
+                      data={landing}
                       multiCountryCountries={
                         multiCountryCountries.find((x) => x.id === value)
                           ?.countries
@@ -118,16 +123,56 @@ const CountryTransnationalFilter = ({
   );
 };
 
-const MultiCountryInfo = ({ multiCountryCountries }) => {
+const ResourcesInfo = (data) => {
+  const resource = data?.data;
+  return (
+    <ul className="info-resources">
+      <li>
+        actionPlan: <b>{resource?.actionPlan}</b>
+      </li>
+      <li>
+        event: <b>{resource?.event}</b>
+      </li>
+      <li>
+        financingResource: <b>{resource?.financingResource}</b>
+      </li>
+      <li>
+        organisation: <b>{resource?.organisation}</b>
+      </li>
+      <li>
+        policy: <b>{resource?.policy}</b>
+      </li>
+      <li>
+        project: <b>{resource?.project}</b>
+      </li>
+      <li>
+        stakeholder: <b>{resource?.stakeholder}</b>
+      </li>
+      <li>
+        technicalResource: <b>{resource?.technicalResource}</b>
+      </li>
+    </ul>
+  );
+};
+
+const MultiCountryInfo = ({ multiCountryCountries, data }) => {
   const renderContent = () => {
     return (
       <div className="popover-content-wrapper">
         {multiCountryCountries &&
-          multiCountryCountries.map(({ id, name }) => (
-            <div key={`popover-${name}-${id}`} className="popover-content-item">
-              {name}
-            </div>
-          ))}
+          multiCountryCountries.map(({ id, name }) => {
+            const curr = data?.map?.find((i) => i?.countryId === id);
+
+            return (
+              <div
+                key={`popover-${name}-${id}`}
+                className="popover-content-item"
+              >
+                <b>{name}</b>
+                <ResourcesInfo data={curr} />
+              </div>
+            );
+          })}
       </div>
     );
   };

@@ -95,6 +95,7 @@ const ModalAddEntity = ({ visible, close }) => {
     schema: schema,
     loading: true,
   });
+  const [schemaState, setSchema] = useState(formSchema.schema);
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
     type: "default",
@@ -147,14 +148,34 @@ const ModalAddEntity = ({ visible, close }) => {
     data = handleGeoCoverageValue(data, formData, countries);
 
     if (data.geoCoverageType === "transnational") {
-      data.geoCoverageCountryGroups = data.geoCoverageValue;
-      data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
-        parseInt(x)
-      );
+      if (
+        data.geoCoverageValueTransnational &&
+        data.geoCoverageValueTransnational.length > 0
+      ) {
+        data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+          ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+          : [];
+        delete data.geoCoverageValueTransnational;
+      }
+      if (data.geoCoverageCountries && data.geoCoverageCountries.length > 0) {
+        data.geoCoverageCountries = data.geoCoverageCountries
+          ? data.geoCoverageCountries.map((x) => parseInt(x))
+          : [];
+      }
     }
 
     if (data.geoCoverageType === "national") {
-      data.geoCoverageCountries = data.geoCoverageValue;
+      data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+        parseInt(x)
+      );
+      delete data.geoCoverageValueTransnational;
+    }
+
+    if (data.geoCoverageType === "sub-national") {
+      data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+        parseInt(x)
+      );
+      delete data.geoCoverageValueTransnational;
     }
 
     delete data.geoCoverageValue;
@@ -204,13 +225,44 @@ const ModalAddEntity = ({ visible, close }) => {
     entityData.update((e) => {
       e.data = formData;
     });
+
+    let updatedFormDataSchema = {};
+
+    if (
+      formData?.geoCoverageType === "transnational" &&
+      formData?.geoCoverageValueTransnational
+    ) {
+      let result = formSchema.schema.required.filter(
+        (value) => value !== "geoCoverageCountries"
+      );
+      updatedFormDataSchema = {
+        ...formSchema.schema,
+        required: result,
+      };
+    } else if (
+      formData?.geoCoverageType === "transnational" &&
+      formData?.geoCoverageCountries
+    ) {
+      let result = formSchema.schema.required.filter(
+        (value) => value !== "geoCoverageValueTransnational"
+      );
+      updatedFormDataSchema = {
+        ...formSchema.schema,
+        required: result,
+      };
+    } else {
+      updatedFormDataSchema = formSchema.schema;
+    }
+
+    setSchema(updatedFormDataSchema);
+
     // to overide validation
     let dependFields = [];
     let requiredFields = [];
     collectDependSchema(
       dependFields,
       formData,
-      formSchema.schema,
+      updatedFormDataSchema,
       requiredFields
     );
     setDependValue(dependFields);
@@ -256,7 +308,7 @@ const ModalAddEntity = ({ visible, close }) => {
       <div className="add-entity-modal">
         <Form
           idPrefix="action-plan"
-          schema={formSchema.schema}
+          schema={schemaState}
           uiSchema={uiSchema}
           formData={data}
           onChange={(e) => handleFormOnChange(e)}

@@ -29,6 +29,33 @@ const initialData = {
   },
 };
 
+const initialDataEdit = {
+  tabs: ["S1"],
+  required: {
+    S1: [],
+    S3: [],
+    S4: [],
+    S5: [],
+  },
+  S1: {
+    steps: 0,
+    required: {},
+  },
+  S3: {
+    steps: 0,
+    required: {},
+  },
+  S4: {
+    steps: 0,
+    required: {},
+    S4_G5: { entity: [{}], individual: [{}] },
+  },
+  S5: {
+    steps: 0,
+    required: {},
+  },
+};
+
 const initialFormData = new Store({
   data: initialData,
   editId: null,
@@ -137,12 +164,12 @@ const getSchema = ({
     ].items.enumNames = meaOptions?.map((x) => x.name);
   } else {
     // geocoverage national options
-    prop.S4.properties.S4_G2.properties[
-      "geoCoverageValueNational"
-    ].enum = countries?.map((x) => String(x.id));
-    prop.S4.properties.S4_G2.properties[
-      "geoCoverageValueNational"
-    ].enumNames = countries?.map((x) => x.name);
+    // prop.S4.properties.S4_G2.properties[
+    //   "geoCoverageValueNational"
+    // ].enum = countries?.map((x) => String(x.id));
+    // prop.S4.properties.S4_G2.properties[
+    //   "geoCoverageValueNational"
+    // ].enumNames = countries?.map((x) => x.name);
 
     // geocoverage transnational options
     prop.S4.properties.S4_G2.properties[
@@ -159,12 +186,12 @@ const getSchema = ({
       "geoCoverageCountries"
     ].enumNames = countries?.map((x) => x.name);
 
-    prop.S4.properties.S4_G2.properties[
-      "geoCoverageValueSubnational"
-    ].enum = countries?.map((x) => String(x.id));
-    prop.S4.properties.S4_G2.properties[
-      "geoCoverageValueSubnational"
-    ].enumNames = countries?.map((x) => x.name);
+    // prop.S4.properties.S4_G2.properties[
+    //   "geoCoverageValueSubnational"
+    // ].enum = countries?.map((x) => String(x.id));
+    // prop.S4.properties.S4_G2.properties[
+    //   "geoCoverageValueSubnational"
+    // ].enumNames = countries?.map((x) => x.name);
   }
 
   if (
@@ -233,12 +260,10 @@ const getSchema = ({
     prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
       (x) => x.tag
     );
-    prop.S5.properties.S5_G1.properties[
-      "implementingMea"
-    ].enum = meaOptions?.map((x) => x.id);
-    prop.S5.properties.S5_G1.properties[
-      "implementingMea"
-    ].enumNames = meaOptions?.map((x) => x.name);
+    prop.S5.properties["implementingMea"].enum = meaOptions?.map((x) => x.id);
+    prop.S5.properties["implementingMea"].enumNames = meaOptions?.map(
+      (x) => x.name
+    );
   }
 
   if (selectedMainContentType === "financing") {
@@ -346,4 +371,5 @@ export default {
   getSchema,
   tabs,
   schema,
+  initialDataEdit,
 };

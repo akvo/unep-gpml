@@ -155,7 +155,7 @@ values(:image) returning id;
 
 -- :name entity-connections-by-id
 -- :doc Get entity connections by id
-select orgrsc.id, orgrsc.association as role, org.name as entity, org.logo as image
+select orgrsc.id, orgrsc.association as role, org.id as entity_id, org.name as entity, org.logo as image
  from organisation_resource orgrsc
  left join organisation org
  on orgrsc.organisation = org.id
@@ -163,7 +163,7 @@ select orgrsc.id, orgrsc.association as role, org.name as entity, org.logo as im
 
 -- :name stakeholder-connections-by-id
 -- :doc Get stakeholder connections by id
-select sr.id, sr.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder, s.picture as image
+select sr.id, sr.association as role, s.id as stakeholder_id, concat_ws(' ', s.first_name, s.last_name) as stakeholder, s.picture as image
   from stakeholder_resource sr
   left join stakeholder s
   on sr.stakeholder = s.id

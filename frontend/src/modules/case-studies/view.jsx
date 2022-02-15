@@ -77,7 +77,7 @@ const CaseStudies = () => {
         </div>
       </Col>
       <Col span={24}>
-        <div className="ui-container">
+        <div className="">
           <LeftSidebar active={4}>
             <Carousel
               dots={false}

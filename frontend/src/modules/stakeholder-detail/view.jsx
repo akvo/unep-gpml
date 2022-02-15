@@ -159,6 +159,15 @@ const StakeholderDetail = ({
                 <div className="topbar-wrapper">
                   <div className="topbar-image-holder">
                     <img src={data?.picture} />
+                    <div className="topbar-entity-image-holder">
+                      <img
+                        src={
+                          data?.affiliation?.logo
+                            ? data?.affiliation?.logo
+                            : `https://ui-avatars.com/api/?background=random&size=480&name=${data?.affiliation?.name}`
+                        }
+                      />
+                    </div>
                   </div>
                   <div className="topbar-title-holder">
                     <h1>{data?.firstName + " " + data?.lastName}</h1>
@@ -201,51 +210,79 @@ const StakeholderDetail = ({
                             }
                           />
                         }
-                        title={data?.affiliation?.name}
+                        title={
+                          <Link to={`/organisation/${data?.affiliation?.id}`}>
+                            {data?.affiliation?.name}
+                          </Link>
+                        }
                         description={"Entity"}
                       />
                     </List.Item>
                   </List>
                 </div>
               </CardComponent>
-              {(data?.linkedIn || data?.twitter || data?.email) && (
-                <CardComponent title="Contact info">
-                  <div className="list social-list">
-                    <List itemLayout="horizontal">
-                      {data?.linkedIn && (
-                        <List.Item className="location">
-                          <List.Item.Meta
-                            avatar={<LinkedinOutlined />}
-                            title={data?.linkedIn}
-                          />
-                        </List.Item>
-                      )}
-                      {data?.twitter && (
-                        <List.Item className="location">
-                          <List.Item.Meta
-                            avatar={<TwitterOutlined />}
-                            title={data?.twitter}
-                          />
-                        </List.Item>
-                      )}
-                      {/* <List.Item className="location">
+              <CardComponent title="Contact info">
+                <div className="list social-list">
+                  <List itemLayout="horizontal">
+                    {data?.linkedIn && (
+                      <List.Item className="location">
+                        <List.Item.Meta
+                          avatar={<LinkedinOutlined />}
+                          title={
+                            <a
+                              href={
+                                data?.linkedIn.includes("https://")
+                                  ? data?.linkedIn
+                                  : "https://" + data?.linkedIn
+                              }
+                              target="_blank"
+                            >
+                              {data?.linkedIn}
+                            </a>
+                          }
+                        />
+                      </List.Item>
+                    )}
+                    {data?.twitter && (
+                      <List.Item className="location">
+                        <List.Item.Meta
+                          avatar={<TwitterOutlined />}
+                          title={
+                            <a
+                              href={
+                                data?.twitter.includes("https://")
+                                  ? data?.twitter
+                                  : "https://" + data?.twitter
+                              }
+                              target="_blank"
+                            >
+                              {data?.twitter}
+                            </a>
+                          }
+                        />
+                      </List.Item>
+                    )}
+                    {/* <List.Item className="location">
                       <List.Item.Meta
                         avatar={<FilePdfOutlined />}
                         title="Link to CV"
                       />
                     </List.Item> */}
-                      {data?.email && (
-                        <List.Item className="location">
-                          <List.Item.Meta
-                            avatar={<MailOutlined />}
-                            title={data?.email}
-                          />
-                        </List.Item>
-                      )}
-                    </List>
-                  </div>
-                </CardComponent>
-              )}
+                    {data?.email && (
+                      <List.Item className="location">
+                        <List.Item.Meta
+                          avatar={<MailOutlined />}
+                          title={
+                            <a href={`mailto:${data?.email}`} target="_blank">
+                              {data?.email}
+                            </a>
+                          }
+                        />
+                      </List.Item>
+                    )}
+                  </List>
+                </div>
+              </CardComponent>
             </Col>
             <Col xs={18} lg={18}>
               <div className="description-container">
