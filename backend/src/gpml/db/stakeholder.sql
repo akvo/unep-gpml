@@ -293,6 +293,7 @@ WITH suggested_stakeholders AS (
         JOIN tag_category tg ON t.tag_category = tg.id
     WHERE
         t.tag IN (:v*:offering-seekings)
+        AND s.id != :stakeholder-id
     UNION
     SELECT
         *
@@ -302,7 +303,8 @@ WITH suggested_stakeholders AS (
         JOIN tag t ON st.tag = t.id
         JOIN tag_category tg ON t.tag_category = tg.id
     WHERE
-        t.tag IN (:v*:seeking-offerings))
+        t.tag IN (:v*:seeking-offerings)
+        AND s.id != :stakeholder-id)
 SELECT
     *
 FROM
@@ -318,6 +320,7 @@ SELECT
 FROM
     stakeholder s
     JOIN activity a ON s.id = a.owner_id
+    WHERE s.id != :stakeholder-id
 ORDER BY
     s.id,
     a.created_at DESC
