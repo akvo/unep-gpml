@@ -159,6 +159,15 @@ const StakeholderDetail = ({
                 <div className="topbar-wrapper">
                   <div className="topbar-image-holder">
                     <img src={data?.picture} />
+                    <div className="topbar-entity-image-holder">
+                      <img
+                        src={
+                          data?.affiliation?.logo
+                            ? data?.affiliation?.logo
+                            : `https://ui-avatars.com/api/?background=random&size=480&name=${data?.affiliation?.name}`
+                        }
+                      />
+                    </div>
                   </div>
                   <div className="topbar-title-holder">
                     <h1>{data?.firstName + " " + data?.lastName}</h1>
