@@ -50,6 +50,7 @@ const StakeholderOverview = ({ history }) => {
 
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
+  const [suggestedProfiles, setSuggestedProfiles] = useState([]);
 
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -90,6 +91,19 @@ const StakeholderOverview = ({ history }) => {
     setIsAscending(!isAscending);
   };
 
+  const getSuggestedProfiles = () => {
+    const url = `/profile/suggested`;
+    api
+      .get(url)
+      .then((resp) => {
+        setSuggestedProfiles(resp?.data?.suggestedProfiles);
+      })
+      .catch((err) => {
+        console.error(err);
+        redirectError(err, history);
+      });
+  };
+
   const getResults = (query) => {
     const topic = ["stakeholder", "organisation"];
 
@@ -123,6 +137,7 @@ const StakeholderOverview = ({ history }) => {
   };
 
   useEffect(() => {
+    getSuggestedProfiles();
     if (isLoading === false && !filters) {
       setTimeout(getResults(query), 0);
     }
@@ -261,16 +276,16 @@ const StakeholderOverview = ({ history }) => {
 
             <LeftSidebar />
             <Col lg={22} xs={24} order={2}>
-              {/* <Col className="card-container green">
-            <h3 className="title text-white ui container">
-              Suggested profiles
-            </h3>
-            <div className="card-wrapper ui container">
-              {suggestedProfiles.map((profile) => (
-                <ProfileCard key={profile.id} profile={profile} />
-              ))}
-            </div>
-          </Col> */}
+              <Col className="card-container green">
+                <h3 className="title text-white ui container">
+                  Suggested profiles
+                </h3>
+                <div className="card-wrapper ui container">
+                  {suggestedProfiles.map((profile) => (
+                    <ProfileCard key={profile?.id} profile={profile} />
+                  ))}
+                </div>
+              </Col>
               <Col className="all-profiles">
                 {!isLoaded() || loading ? (
                   <h2 className="loading" id="stakeholder-loading">
@@ -279,7 +294,7 @@ const StakeholderOverview = ({ history }) => {
                 ) : isLoaded() && !loading && !isEmpty(results) ? (
                   <div className="card-wrapper ui container">
                     {results.map((profile) => (
-                      <ProfileCard key={profile.id} profile={profile} />
+                      <ProfileCard key={profile?.id} profile={profile} />
                     ))}
                   </div>
                 ) : (
