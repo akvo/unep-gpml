@@ -83,7 +83,7 @@ const FilterDrawer = ({
   };
 
   const handleChangeCountry = (val) => {
-    updateQuery("country", query?.country ? [...query?.country, ...val] : val);
+    updateQuery("country", query?.country && val);
   };
 
   const handleDeselectCountry = (val) => {

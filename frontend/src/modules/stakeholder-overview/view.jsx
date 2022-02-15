@@ -53,7 +53,7 @@ const StakeholderOverview = ({ history }) => {
 
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
-  const pageSize = 12;
+  const pageSize = 8;
   const { innerWidth } = window;
   const [resultCount, setResultCount] = useState(0);
   const { entityRoleOptions } = UIStore.useState((s) => ({
@@ -95,7 +95,7 @@ const StakeholderOverview = ({ history }) => {
 
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
-    if (query?.topic?.length === 0) {
+    if (query.topic.length === 0) {
       searchParms.set("topic", topic);
     }
     const url = `/browse?${String(searchParms)}`;

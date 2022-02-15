@@ -206,17 +206,14 @@
 
   .all-profiles {
     padding: 26.79px 0 34.66px 0;
+
     .person-role {
       display: none;
-    }
-
-    .ant-card-body {
-      min-height: 271px;
     }
   }
 
   .card-container {
-    padding: 16px 20.52px 34px 34px;
+    padding: 16px 0px 34px 0px;
     .title {
       font-size: 22px;
       text-transform: uppercase;
@@ -243,7 +240,8 @@
       .ant-card-body {
         display: flex;
         flex-direction: column;
-        min-height: 321px;
+
+        min-height: 250px;
         .person-role {
           max-height: fit-content;
           margin-top: auto;
@@ -255,17 +253,17 @@
   .profile-card {
     width: 100%;
     height: fit-content;
-    max-width: 431px;
+    max-width: 345px;
     border-radius: 10px;
-    // margin: 0 34.12px 21.47px 0;
-    // margin: 26px 34.12px 21.47px 29.12px;
+
     span {
       display: block;
     }
 
     .profile-details {
-      padding: 23px 16px 11px 25px;
+      padding: 16px 16px 11px 16px;
       flex-wrap: nowrap;
+      min-height: 175px;
       img {
         width: 100%;
       }
@@ -273,12 +271,23 @@
       .image-wrapper {
         display: flex;
         align-items: center;
+
+        border-radius: 50%;
+        width: 100%;
+        max-width: 150px;
+        max-height: 150px;
+        min-width: 150px;
+        min-height: 150px;
+        overflow: hidden;
+        margin-right: 16.51px;
+      }
+
+      .organisation-image {
+        border: 1px solid;
       }
 
       .profile-image {
-        max-width: 216px;
-        border-radius: 50%;
-        margin-right: 16.51px;
+        max-width: 150px;
       }
 
       .profile-details-container {
@@ -361,12 +370,14 @@
       padding: 6px 0 0 8.43px;
       img {
         position: absolute;
+        max-width: 58px;
       }
     }
 
     .person-role {
       width: calc(100% - 6px);
-      padding: 8px 21px 8px 21px;
+      // padding: 8px 21px 8px 21px;
+      padding: 8px 10.5px 8px 10.5px;
       background: rgba(37, 91, 135, 0.24);
       border-radius: 0px 0px 12px 12px;
       margin: 0 6px 3px 2px;
@@ -388,7 +399,7 @@
     background-color: $bg-dark-primary;
     .item-sidebar {
       width: 100%;
-      height: 100px;
+      height: 118px;
       display: flex;
       cursor: pointer;
       padding: 0;
@@ -419,7 +430,7 @@
           top: 0;
           left: 0;
           width: 3px;
-          height: 100px;
+          height: 118px;
           background-color: $green01;
         }
       }
@@ -783,6 +794,20 @@
     }
   }
 
+  #stakeholder-loading {
+    max-width: max-content;
+    text-align: center;
+    margin: auto;
+    padding-bottom: calc(476px / 2);
+    padding-top: calc(476px / 2);
+  }
+
+  .card-wrapper-link {
+    width: 100%;
+    max-width: 343px;
+    margin: auto;
+  }
+
   .card-wrapper {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
@@ -790,6 +815,16 @@
     row-gap: 34px;
     max-width: fit-content;
     margin: auto;
+  }
+
+  .warning {
+    padding: 48px 32px;
+
+    text-align: center;
+
+    svg {
+      margin-bottom: 24px;
+    }
   }
 
   @media (min-width: 700px) {
@@ -810,6 +845,21 @@
 
     .card-wrapper {
       grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1400px) {
+    .profile-card {
+      max-width: 100%;
+    }
+    .card-wrapper,
+    .title {
+      max-width: 1440px;
+      margin: auto;
+    }
+
+    .card-wrapper {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 }

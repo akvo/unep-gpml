@@ -152,7 +152,7 @@ export const transformFormData = (data, formData, schema, not_q_prefixed) => {
             schema[key].enumNames.length > 0
           ) {
             // geotype value handle
-            if (qKey === "24" || qKey === "geoCoverageType") {
+            if (qKey === "24") {
               const geoTypeValue = formData[key].toLowerCase();
               if (geoTypeValue === "global") {
                 data["q24_1"] = null;

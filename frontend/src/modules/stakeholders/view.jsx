@@ -77,7 +77,11 @@ const Stakeholders = ({
     }
 
     setLoading(true);
-    if (!isEmpty(profile) && isAuthenticated) {
+    if (
+      !isEmpty(profile) &&
+      isAuthenticated &&
+      query.topic.includes("stakeholder")
+    ) {
       if (isApprovedUser) {
         if (isLoading === false && !filters) {
           setTimeout(getResults, 0);
@@ -98,6 +102,20 @@ const Stakeholders = ({
       } else {
         setLoading(false);
         history.push("/signup");
+      }
+    } else if (query.topic.includes("organisation")) {
+      if (isLoading === false && !filters) {
+        setTimeout(getResults, 0);
+      }
+
+      if (isLoading === false && filters) {
+        const newParams = new URLSearchParams({
+          ...filters,
+          topic: query.topic,
+        });
+        history.push(`/stakeholders?${newParams.toString()}`);
+        clearTimeout(tmid);
+        tmid = setTimeout(getResults, 1000);
       }
     } else {
       setLoading(false);
@@ -187,6 +205,8 @@ const Stakeholders = ({
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.
   const topicsForTotal = (isApprovedUser
+    ? topicTypesApprovedUser
+    : query.topic.includes("organisation")
     ? topicTypesApprovedUser
     : topicTypes
   ).map((t) => humps.decamelize(t));
@@ -310,6 +330,23 @@ const Stakeholders = ({
               </h2>
             )}
             {isValidUser &&
+              !loading &&
+              results.map((result) => (
+                <Result
+                  key={`${result.type}-${result.id}`}
+                  {...{ result, handleRelationChange, relations, profile }}
+                />
+              ))}
+            {isValidUser &&
+              query.topic.includes("stakeholder") &&
+              !loading &&
+              results.map((result) => (
+                <Result
+                  key={`${result.type}-${result.id}`}
+                  {...{ result, handleRelationChange, relations, profile }}
+                />
+              ))}
+            {query.topic.includes("organisation") &&
               !loading &&
               results.map((result) => (
                 <Result

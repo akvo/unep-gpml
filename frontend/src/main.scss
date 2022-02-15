@@ -295,6 +295,15 @@ h4 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .menu-dropdown {
+      .ant-btn-link {
+        color: #fff;
+        font-weight: 500;
+        &:hover {
+          color: #4dffa5;
+        }
+      }
+    }
   }
 
   .menu-btn {
