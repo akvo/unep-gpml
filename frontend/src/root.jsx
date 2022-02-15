@@ -616,7 +616,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-initiative/:id"
-            render={(props) => <AddInitiative {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route

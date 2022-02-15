@@ -536,7 +536,6 @@ const renderItemValues = (
 };
 
 const renderCountries = (data, countries, transnationalOptions) => {
-  console.log(data, "ss");
   let dataCountries = null;
   const newArray = [...new Set([...transnationalOptions, ...countries])];
   dataCountries = data["geoCoverageValues"]
@@ -876,7 +875,11 @@ const DetailsView = ({
                                 }
                               />
                             }
-                            title={item.entity}
+                            title={
+                              <Link to={`/organisation/${item.entityId}`}>
+                                {item.entity}
+                              </Link>
+                            }
                             description={"Entity"}
                           />{" "}
                           {/* <div className="see-more-button">See More</div> */}
@@ -890,7 +893,11 @@ const DetailsView = ({
                         <List.Item>
                           <List.Item.Meta
                             avatar={<Avatar src={item.image} />}
-                            title={item.stakeholder}
+                            title={
+                              <Link to={`/stakeholder/${item.stakeholderId}`}>
+                                {item.stakeholder}
+                              </Link>
+                            }
                             description={item.role}
                           />
                         </List.Item>
