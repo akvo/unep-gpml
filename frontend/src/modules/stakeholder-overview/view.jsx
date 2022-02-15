@@ -280,11 +280,20 @@ const StakeholderOverview = ({ history }) => {
                 <h3 className="title text-white ui container">
                   Suggested profiles
                 </h3>
-                <div className="card-wrapper ui container">
-                  {suggestedProfiles.map((profile) => (
-                    <ProfileCard key={profile?.id} profile={profile} />
-                  ))}
-                </div>
+
+                {!isLoaded() || loading ? (
+                  <h2 className="loading" id="stakeholder-loading">
+                    <LoadingOutlined spin /> Loading
+                  </h2>
+                ) : isLoaded() && !loading && !isEmpty(results) ? (
+                  <div className="card-wrapper ui container">
+                    {suggestedProfiles.map((profile) => (
+                      <ProfileCard key={profile?.id} profile={profile} />
+                    ))}
+                  </div>
+                ) : (
+                  <h2 className="loading">There is no data to display</h2>
+                )}
               </Col>
               <Col className="all-profiles">
                 {!isLoaded() || loading ? (
