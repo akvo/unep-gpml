@@ -3,17 +3,17 @@ import { useLocation } from "react-router-dom";
 const useQuery = () => {
   const srcParams = new URLSearchParams(useLocation().search);
   const ret = {
-    country: [],
     topic: [],
+    country: [],
     tag: [],
     representativeGroup: [],
     geoCoverage: [],
     seeking: [],
     offering: [],
     affiliation: [],
-    q: "",
     is_member: [],
     role: [],
+    q: "",
   };
 
   for (var key of srcParams.keys()) {

@@ -13,7 +13,6 @@ import humps from "humps";
 
 import api from "../../utils/api";
 import { redirectError } from "../error/error-util";
-import { suggestedProfiles } from "./suggested-profile";
 import { entityName } from "../../utils/misc";
 import isEmpty from "lodash/isEmpty";
 
@@ -84,7 +83,7 @@ const StakeholderOverview = ({ history }) => {
     setIsAscending(!isAscending);
   };
 
-  const getResults = () => {
+  const getResults = (query) => {
     const topic = ["stakeholder", "organisation"];
 
     const searchParms = new URLSearchParams(window.location.search);
@@ -118,17 +117,16 @@ const StakeholderOverview = ({ history }) => {
 
   useEffect(() => {
     if (isLoading === false && !filters) {
-      setTimeout(getResults, 0);
+      setTimeout(getResults(query), 0);
     }
 
     if (isLoading === false && filters) {
       clearTimeout(tmid);
-      tmid = setTimeout(getResults, 1000);
+      tmid = setTimeout(getResults(query), 1000);
     }
   }, [isLoading]); // eslint-disable-line
 
   const updateQuery = (param, value) => {
-    console.log(param, value);
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
       top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,

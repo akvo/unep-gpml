@@ -3,7 +3,6 @@ import { Row, Col, Space, Drawer, Tag, Card, Select, Button } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
-import { useAuth0 } from "@auth0/auth0-react";
 import { UIStore } from "../../store";
 import { entityName, networkNames, networkTypes } from "../../utils/misc";
 import humps from "humps";
@@ -43,9 +42,6 @@ const FilterDrawer = ({
     seeking: s.tags.seeking,
     offering: s.tags.offering,
   }));
-
-  // console.log(UIStore.currentState);
-  console.log(query);
 
   const isLoaded = () =>
     !isEmpty(countries) &&
@@ -340,7 +336,6 @@ const FilterDrawer = ({
               }}
               onClick={() => {
                 let filter = null;
-                console.log(query, "query");
 
                 for (let i = 0; filterQueries.length > i; i++) {
                   filter = updateQuery(filterQueries[i], []);
