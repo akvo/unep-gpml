@@ -67,7 +67,7 @@ const getTypeByResource = (type) => {
       name = "Action Plan";
       break;
     case "event":
-      t = "eventevent_flexible";
+      t = "event_flexible";
       name = "Event";
       break;
     case "project":
@@ -238,6 +238,118 @@ const formDataMapping = [
     section: "S4",
     group: "S4_G4",
     question: "image",
+  },
+  {
+    key: "originalTitle",
+    name: "originalTitle",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "originalTitle",
+  },
+  {
+    key: "dataSource",
+    name: "dataSource",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "dataSource",
+  },
+  {
+    key: "typeOfLaw",
+    name: "typeOfLaw",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "typeOfLaw",
+  },
+  {
+    key: "recordNumber",
+    name: "recordNumber",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "recordNumber",
+  },
+  {
+    key: "implementingMea",
+    name: "implementingMea",
+    group: null,
+    type: "integer",
+    section: "S5",
+    question: "implementingMea",
+  },
+  {
+    key: "status",
+    name: "status",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "status",
+  },
+  {
+    key: "topics",
+    name: "topics",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "topics",
+  },
+  {
+    key: "firstPublicationDate",
+    name: "firstPublicationDate",
+    group: "date",
+    type: "date",
+    section: "S5",
+    question: "firstPublicationDate",
+  },
+  {
+    key: "latestAmendmentDate",
+    name: "latestAmendmentDate",
+    group: "date",
+    type: "date",
+    section: "S5",
+    question: "latestAmendmentDate",
+  },
+  {
+    key: "startDate",
+    name: "startDate",
+    group: "date",
+    type: "date",
+    section: "S5",
+    question: "startDate",
+  },
+  {
+    key: "endDate",
+    name: "endDate",
+    group: "date",
+    type: "date",
+    section: "S5",
+    question: "endDate",
+  },
+  {
+    key: "eventType",
+    name: "eventType",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "eventType",
+  },
+  {
+    key: "yearFounded",
+    name: "yearFounded",
+    group: null,
+    type: "year",
+    section: "S5",
+    question: "yearFounded",
+  },
+  {
+    key: "organisationType",
+    name: "organisationType",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "organisationType",
   },
 ];
 
@@ -426,6 +538,13 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
     if (type === "integer") {
       res = value !== "Not  Specified" ? parseInt(value) : value;
+    }
+
+    if (name === "implementingMea") {
+      const mea = meaOptions.find(
+        (x) => x.name.toLowerCase() === value.toLowerCase()
+      );
+      res = mea ? mea.id : null;
     }
 
     // Geo Transnational handle

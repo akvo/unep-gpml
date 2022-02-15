@@ -480,7 +480,9 @@
       (if authorized?
         (if-let [data (db.detail/get-detail conn path)]
           (resp/response (merge
-                           (adapt (merge (dissoc (:json data) :related_content :tags :abstract) (extra-details topic conn (:json data))))
+                           (adapt (merge
+                                    (dissoc (:json data) :related_content :tags :abstract :description)
+                                    (extra-details topic conn (:json data))))
                            {:owners (:owners data)}))
           util/not-found)
         util/unauthorized))))
@@ -608,7 +610,9 @@
                           ;; NOTE: we ignore resource_type since
                           ;; we don't expect it to change!
                           :resource_type)
-                        (assoc :related_content (pg-util/->JDBCArray (:related_content updates) "integer")))
+                        (assoc :related_content (pg-util/->JDBCArray (:related_content updates) "integer"))
+                        (merge (when (:topics updates)
+                                 {:topics (pg-util/->JDBCArray (:topics updates) "text")})))
         tags (remove nil? (:tags updates))
         urls (remove nil? (:urls updates))
         params {:table table :id id :updates table-columns}
@@ -643,6 +647,10 @@
                  (let [status (db.detail/update-initiative conn-tx params)]
                    (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
                    status))]
+    (when (contains? data :entity_connections)
+      (update-resource-entity-connections conn (:entity_connections data) "initiative" id))
+    (when (contains? data :individual_connections)
+      (update-resource-individual-connections conn (:individual_connections data) "initiative" id))
     status))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]

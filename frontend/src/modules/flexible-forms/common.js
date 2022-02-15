@@ -260,12 +260,10 @@ const getSchema = ({
     prop.S4.properties.S4_G3.properties["tags"].enumNames = tagsPlusTopics?.map(
       (x) => x.tag
     );
-    prop.S5.properties.S5_G1.properties[
-      "implementingMea"
-    ].enum = meaOptions?.map((x) => x.id);
-    prop.S5.properties.S5_G1.properties[
-      "implementingMea"
-    ].enumNames = meaOptions?.map((x) => x.name);
+    prop.S5.properties["implementingMea"].enum = meaOptions?.map((x) => x.id);
+    prop.S5.properties["implementingMea"].enumNames = meaOptions?.map(
+      (x) => x.name
+    );
   }
 
   if (selectedMainContentType === "financing") {

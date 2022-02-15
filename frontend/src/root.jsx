@@ -553,7 +553,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-event/:id"
-            render={(props) => <AddEvent {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -563,7 +563,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-technology/:id"
-            render={(props) => <AddTechnology {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -573,7 +573,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-policy/:id"
-            render={(props) => <AddPolicy {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route

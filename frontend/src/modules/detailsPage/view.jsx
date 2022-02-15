@@ -748,7 +748,9 @@ const DetailsView = ({
                 <img src={ActionGreen} />
                 <div>
                   <Title level={2}>{topicNames(params?.type)}</Title>
-                  <Title level={4}>{data?.title}</Title>
+                  <Title level={4}>
+                    {params?.type !== "technology" ? data?.title : data?.name}
+                  </Title>
                 </div>
               </div>
             </Col>
@@ -779,7 +781,7 @@ const DetailsView = ({
         <div className="ui container">
           <Row gutter={[16, 16]}>
             <Col xs={6} lg={6}>
-              <div className="views-container">
+              {/* <div className="views-container">
                 <List itemLayout="horizontal">
                   <List.Item>
                     <List.Item.Meta
@@ -788,7 +790,7 @@ const DetailsView = ({
                     />
                   </List.Item>
                 </List>
-              </div>
+              </div> */}
 
               <CardComponent
                 title="Location and Geo-coverage"
@@ -1011,9 +1013,11 @@ const DetailsView = ({
                                 )}
                               </Avatar.Group>
                             </div>
-                            <div className="read-more">
-                              Read More <ArrowRightOutlined />
-                            </div>
+                            <a href={`/${params.type}/${item.id}`}>
+                              <div className="read-more">
+                                Read More <ArrowRightOutlined />
+                              </div>
+                            </a>
                           </div>
                         </Card>
                       </Col>

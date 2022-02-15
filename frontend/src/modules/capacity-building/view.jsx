@@ -11,12 +11,11 @@ import {
   Button,
 } from "antd";
 import { groupBy } from "lodash";
-import classNames from "classnames";
 
 const { Title } = Typography;
 
 import "./styles.scss";
-import { titleCase } from "../../utils/string";
+
 import Banner from "./Banner";
 import capacities from "./json/capacity-building.json";
 import slides from "./json/slider.json";
@@ -24,8 +23,7 @@ import slides from "./json/slider.json";
 import SlidePrev from "../../images/capacity-building/slide-prev.svg";
 import SlideNext from "../../images/capacity-building/slide-next.svg";
 import LeftSidebar from "../left-sidebar/LeftSidebar";
-
-const { Content, Header } = Layout;
+import { CapacityCard } from "./CapacityCard";
 
 const CapacityBuilding = () => {
   const slider = useRef();
@@ -53,7 +51,7 @@ const CapacityBuilding = () => {
         </div>
       </Col>
       <Col span={24}>
-        <div className="">
+        <div className="ui-container">
           <LeftSidebar active={2}>
             <Row>
               <Col span={24} style={{ position: "relative" }}>
@@ -101,7 +99,7 @@ const CapacityBuilding = () => {
                           xs: 1,
                           sm: 1,
                           md: 1,
-                          lg: 3,
+                          lg: 2,
                           xl: 3,
                           xxl: 3,
                         }}
@@ -114,39 +112,7 @@ const CapacityBuilding = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                <Card
-                                  className={`card bg-color ${item.category_id}`}
-                                  bordered={false}
-                                  hoverable
-                                >
-                                  <Card.Grid
-                                    className={`left ${item.category_id}`}
-                                    hoverable
-                                  >
-                                    <div className="thumbnail">
-                                      <img
-                                        src={item.image}
-                                        alt={item.title}
-                                        className={classNames({
-                                          events: item.category_id === "events",
-                                        })}
-                                      />
-                                    </div>
-                                  </Card.Grid>
-                                  <Card.Grid
-                                    className={`right ${item.category_id}`}
-                                    hoverable={false}
-                                  >
-                                    <span
-                                      className={classNames("title", {
-                                        small: item.title.length > 100,
-                                      })}
-                                    >
-                                      {titleCase(item.title)}
-                                    </span>
-                                    <span className="see-more">See more</span>
-                                  </Card.Grid>
-                                </Card>
+                                <CapacityCard {...item} />
                               </a>
                             </List.Item>
                           );

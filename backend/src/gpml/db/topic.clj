@@ -97,6 +97,16 @@
        lang.languages,
        tag.tags")
 
+(def ^:const ^:private event-topic-data-select-clause
+  "SELECT
+       e.description AS summary,
+       e.*,
+       geo.geo_coverage_values,
+       geo.geo_coverage_country_groups,
+       geo.geo_coverage_countries,
+       lang.languages,
+       tag.tags")
+
 (def ^:const ^:private stakeholder-topic-data-select-clause
   "SELECT
        e.id,
@@ -375,6 +385,10 @@
                            "policy" [policy-topic-data-select-clause
                                      from-clause lang-query tags-query
                                      geo-coverage-values-query order-by-clause]
+
+                           "event" [event-topic-data-select-clause
+                                    from-clause lang-query tags-query
+                                    geo-coverage-values-query order-by-clause]
 
                            [select-clause from-clause lang-query tags-query
                             geo-coverage-values-query order-by-clause])]
