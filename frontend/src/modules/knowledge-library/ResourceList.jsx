@@ -227,9 +227,9 @@ const ResourceItem = ({ results, view, stakeholders }) => {
   return results.map((result) => {
     const { id, type } = result;
     const fullName = (data) =>
-      data.title
-        ? `${data.title} ${data.firstName} ${data.lastName}`
-        : `${data.firstName} ${data.lastName}`;
+      data?.title
+        ? `${data?.title} ${data?.firstName} ${data?.lastName}`
+        : `${data?.firstName} ${data?.lastName}`;
     const title =
       (type === "stakeholder" && fullName(result)) ||
       result.title ||
@@ -294,7 +294,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
               >
                 {result?.stakeholderConnections &&
                   stakeholderToDisplay().map((stakeholder) => {
-                    const findStakeholder = stakeholders.stakeholders.find(
+                    const findStakeholder = stakeholders?.stakeholders?.find(
                       (pers) => pers.id === stakeholder?.stakeholderId
                     );
 
@@ -318,8 +318,8 @@ const ResourceItem = ({ results, view, stakeholders }) => {
               </Avatar.Group>
             </Space>
             <span className="avatar-number">
-              {result.stakeholderConnections.length !== 0 &&
-                result.stakeholderConnections !== null &&
+              {result?.stakeholderConnections?.length !== 0 &&
+                result?.stakeholderConnections !== null &&
                 getStakeholderCount()}
             </span>
             <span className="read-more">

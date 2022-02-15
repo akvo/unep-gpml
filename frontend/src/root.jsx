@@ -347,7 +347,9 @@ const Root = () => {
         topic: query.topic,
         tag: query.tag,
       });
-      history.push(`/knowledge-library?${newParams.toString()}`);
+      if (history.location.pathname === "/knowledge-library") {
+        history.push(`/knowledge-library?${newParams.toString()}`);
+      }
       clearTimeout(tmid);
       tmid = setTimeout(getResults(query), 1000);
     }
@@ -473,6 +475,7 @@ const Root = () => {
             render={(props) => <Glossary {...props} />}
           />
           <Route
+            exact
             path="/knowledge-library"
             render={(props) => (
               <KnowledgeLibrary
