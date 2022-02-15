@@ -383,6 +383,31 @@ const FlexibleForm = withRouter(
             setSending(false);
           });
       }
+      if (status === "edit" || params?.id) {
+        delete data.version;
+        api
+          .put(`/detail/project/${id || params?.id}`, data)
+          .then(() => {
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully updated" });
+            history.push(`/project/${id || params?.id}`);
+          })
+          .catch(() => {
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            history.push(`/project/${id || params?.id}`);
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
     };
 
     const handleOnSubmitPolicy = (formData) => {

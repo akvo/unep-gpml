@@ -536,7 +536,6 @@ const renderItemValues = (
 };
 
 const renderCountries = (data, countries, transnationalOptions) => {
-  console.log(data, "ss");
   let dataCountries = null;
   const newArray = [...new Set([...transnationalOptions, ...countries])];
   dataCountries = data["geoCoverageValues"]

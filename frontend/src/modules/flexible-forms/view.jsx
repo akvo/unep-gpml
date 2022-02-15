@@ -24,7 +24,6 @@ import FlexibleForm from "./form";
 import isEmpty from "lodash/isEmpty";
 import { useAuth0 } from "@auth0/auth0-react";
 import api from "../../utils/api";
-import { revertFormData } from "../../utils/forms";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -70,7 +69,7 @@ const getTypeByResource = (type) => {
       t = "event_flexible";
       name = "Event";
       break;
-    case "project":
+    case "initiative":
       t = "initiative";
       name = "Initiative";
       break;
@@ -351,6 +350,41 @@ const formDataMapping = [
     section: "S5",
     question: "organisationType",
   },
+  {
+    name: "q24_3",
+    group: "S4_G2",
+    type: "option",
+    section: "S4",
+    question: "S4_G2_24.4",
+  },
+  {
+    name: "q24_4",
+    group: "S4_G2",
+    type: "option",
+    section: "S4",
+    question: "S4_G2_24.3",
+  },
+  {
+    name: "q24",
+    section: "S4",
+    group: "S4_G2",
+    question: "geoCoverageType",
+    type: "option",
+  },
+  {
+    name: "q2",
+    section: "S4",
+    group: "S4_G1",
+    question: "title",
+    type: "string",
+  },
+  {
+    name: "q3",
+    section: "S4",
+    group: "S4_G1",
+    question: "summary",
+    type: "string",
+  },
 ];
 
 const FlexibleForms = ({ match: { params }, ...props }) => {
@@ -461,7 +495,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
   const getResourceByType = (type) => {
     const t = getType(type);
-
     api.get(`/list/${t}`).then((res) => {
       UIStore.update((e) => {
         e.relatedResource = res.data;
@@ -549,6 +582,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
     // Geo Transnational handle
     // case for transnational geo value
+
     if (type === "option" && isArray && name === "q24_4") {
       const transnationalValue = isArray
         ? value.map((item) => {
@@ -579,8 +613,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     if (type === "item-array" && isObject && isArray) {
       res = value;
     }
-    console.log(name);
-    console.log(res);
     return res;
   };
 
@@ -588,7 +620,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     let formData = initialDataEdit;
     formDataMapping.forEach((item) => {
       const { name, section, group, question, type } = item;
-
       const value = data?.[name];
       if (!group && value && value !== "Ongoing") {
         formData = {
@@ -628,29 +659,55 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           state?.state.type
         ).type;
       });
-      api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
-        let newData = [];
-        if (d.data.organisations) {
-          newData = d.data.organisations.map((item) => {
-            return {
-              role: "owner",
-              entityId: item.id,
-            };
-          });
-        }
-        d.data = {
-          ...d.data,
-          url:
-            d.data.languages && d.data.languages.length > 0
-              ? d.data.languages[0].url
-              : d.data.url,
-          entityConnections: [...d.data.entityConnections, ...newData],
-        };
 
-        initialFormData.update((e) => {
-          e.data = revertFormData(d.data);
+      if (state?.state.type === "initiative") {
+        api.getRaw(`/initiative/${dataId}`).then((d) => {
+          // let newData = [];
+          // if (d.data.organisations) {
+          //   newData = d.data.organisations.map((item) => {
+          //     return {
+          //       role: "owner",
+          //       entityId: item.id,
+          //     };
+          //   });
+          // }
+          // d.data = {
+          //   ...d.data,
+          //   url:
+          //     d.data.languages && d.data.languages.length > 0
+          //       ? d.data.languages[0].url
+          //       : d.data.url,
+          //   entityConnections: [...d.data.entityConnections, ...newData],
+          // };
+          initialFormData.update((e) => {
+            e.data = revertFormData(JSON.parse(d.data));
+          });
         });
-      });
+      } else {
+        api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
+          let newData = [];
+          if (d.data.organisations) {
+            newData = d.data.organisations.map((item) => {
+              return {
+                role: "owner",
+                entityId: item.id,
+              };
+            });
+          }
+          d.data = {
+            ...d.data,
+            url:
+              d.data.languages && d.data.languages.length > 0
+                ? d.data.languages[0].url
+                : d.data.url,
+            entityConnections: [...d.data.entityConnections, ...newData],
+          };
+
+          initialFormData.update((e) => {
+            e.data = revertFormData(d.data);
+          });
+        });
+      }
     }
   }, [status, schema, initialFormData, state]);
 
