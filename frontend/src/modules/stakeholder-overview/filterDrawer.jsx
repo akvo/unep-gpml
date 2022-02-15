@@ -22,6 +22,7 @@ const FilterDrawer = ({
   entities,
   query,
   updateQuery,
+  stakeholders,
 }) => {
   const {
     countries,
@@ -322,8 +323,11 @@ const FilterDrawer = ({
           />
 
           <Col className="drawer-button-wrapper">
-            <Button className="show-stakeholder-btn">
-              Show stakeholders (87)
+            <Button
+              className="show-stakeholder-btn"
+              onClick={() => handleChangeType("topic", "stakeholder")}
+            >
+              Show stakeholders ({stakeholders?.length})
             </Button>
             <Button
               className="clear-all-btn"

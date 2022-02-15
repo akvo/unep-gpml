@@ -37,6 +37,7 @@ const StakeholderOverview = ({ history }) => {
     organisations: s.organisations,
     seeking: s.tags.seeking,
     offering: s.tags.offering,
+    stakeholders: s.stakeholders.stakeholders,
   }));
   const { isAuthenticated, isLoading } = useAuth0();
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
@@ -250,6 +251,7 @@ const StakeholderOverview = ({ history }) => {
               entities={entityRoleOptions}
               filterVisible={filterVisible}
               setFilterVisible={setFilterVisible}
+              stakeholders={stakeholders}
             />
 
             <LeftSidebar />
