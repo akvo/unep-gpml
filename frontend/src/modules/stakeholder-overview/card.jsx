@@ -6,7 +6,7 @@ import { UIStore } from "../../store";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 import communityIcon from "../../images/stakeholder-overview/union-2-icon.svg";
 
-const ProfileCard = ({ profile }) => {
+const ProfileCard = ({ profile, isValidUser }) => {
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }));
@@ -17,9 +17,11 @@ const ProfileCard = ({ profile }) => {
     <Link
       className="card-wrapper-link"
       to={
-        profile.type === "organisation"
-          ? `/organisation/${profile?.id}`
-          : `/stakeholder/${profile?.id}`
+        isValidUser
+          ? profile.type === "organisation"
+            ? `/organisation/${profile?.id}`
+            : `/stakeholder/${profile?.id}`
+          : "/stakeholder-overview"
       }
     >
       <Card className="profile-card">

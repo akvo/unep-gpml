@@ -1,5 +1,9 @@
 @import "../../vars.scss";
 
+.blur {
+  filter: blur(3px);
+}
+
 #stakeholder-overview {
   padding: 0;
 

@@ -137,14 +137,15 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   };
 
   useEffect(() => {
-    getSuggestedProfiles();
     if (isLoading === false && !filters) {
       setTimeout(getResults(query), 0);
+      setTimeout(getSuggestedProfiles(), 0);
     }
 
     if (isLoading === false && filters) {
       clearTimeout(tmid);
       tmid = setTimeout(getResults(query), 1000);
+      tmid = setTimeout(getSuggestedProfiles(), 1000);
     }
   }, [isLoading]); // eslint-disable-line
 
@@ -254,8 +255,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
   return (
     <div id="stakeholder-overview">
-      {isValidUser ? (
-        <>
+      {!isValidUser && <UnathenticatedPage loginWithPopup={loginWithPopup} />}
+      <div className={isValidUser ? "" : "blur"}>
+        {isValidUser && (
           <Header
             filterVisible={filterVisible}
             isAscending={isAscending}
@@ -264,18 +266,20 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             sortPeople={sortPeople}
             updateQuery={updateQuery}
           />
-          <Row type="flex" className="body-wrapper">
-            {/* Filter Drawer */}
-            <FilterDrawer
-              query={query}
-              updateQuery={updateQuery}
-              entities={entityRoleOptions}
-              filterVisible={filterVisible}
-              setFilterVisible={setFilterVisible}
-            />
+        )}
+        <Row type="flex" className="body-wrapper">
+          {/* Filter Drawer */}
+          <FilterDrawer
+            query={query}
+            updateQuery={updateQuery}
+            entities={entityRoleOptions}
+            filterVisible={filterVisible}
+            setFilterVisible={setFilterVisible}
+          />
 
-            <LeftSidebar />
-            <Col lg={22} xs={24} order={2}>
+          <LeftSidebar />
+          <Col lg={22} xs={24} order={2}>
+            {isValidUser && (
               <Col className="card-container green">
                 <h3 className="title text-white ui container">
                   Suggested profiles
@@ -288,49 +292,55 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                 ) : isLoaded() && !loading && !isEmpty(results) ? (
                   <div className="card-wrapper ui container">
                     {suggestedProfiles.map((profile) => (
-                      <ProfileCard key={profile?.id} profile={profile} />
+                      <ProfileCard
+                        key={profile?.id}
+                        profile={profile}
+                        isValidUser={isValidUser}
+                      />
                     ))}
                   </div>
                 ) : (
                   <h2 className="loading">There is no data to display</h2>
                 )}
               </Col>
-              <Col className="all-profiles">
-                {!isLoaded() || loading ? (
-                  <h2 className="loading" id="stakeholder-loading">
-                    <LoadingOutlined spin /> Loading
-                  </h2>
-                ) : isLoaded() && !loading && !isEmpty(results) ? (
-                  <div className="card-wrapper ui container">
-                    {results.map((profile) => (
-                      <ProfileCard key={profile?.id} profile={profile} />
-                    ))}
-                  </div>
-                ) : (
-                  <h2 className="loading">There is no data to display</h2>
-                )}
-
-                <div className="page">
-                  {!isEmpty(results) && (
-                    <Pagination
-                      defaultCurrent={1}
-                      current={(filters?.offset || 0) / pageSize + 1}
-                      pageSize={pageSize}
-                      total={resultCount}
-                      showSizeChanger={false}
-                      onChange={(n, size) =>
-                        updateQuery("offset", (n - 1) * size)
-                      }
+            )}
+            <Col className="all-profiles">
+              {!isLoaded() || loading ? (
+                <h2 className="loading" id="stakeholder-loading">
+                  <LoadingOutlined spin /> Loading
+                </h2>
+              ) : isLoaded() && !loading && !isEmpty(results) ? (
+                <div className="card-wrapper ui container">
+                  {results.map((profile) => (
+                    <ProfileCard
+                      key={profile?.id}
+                      profile={profile}
+                      isValidUser={isValidUser}
                     />
-                  )}
+                  ))}
                 </div>
-              </Col>
+              ) : (
+                <h2 className="loading">There is no data to display</h2>
+              )}
+
+              <div className="page">
+                {!isEmpty(results) && isValidUser && (
+                  <Pagination
+                    defaultCurrent={1}
+                    current={(filters?.offset || 0) / pageSize + 1}
+                    pageSize={pageSize}
+                    total={resultCount}
+                    showSizeChanger={false}
+                    onChange={(n, size) =>
+                      updateQuery("offset", (n - 1) * size)
+                    }
+                  />
+                )}
+              </div>
             </Col>
-          </Row>
-        </>
-      ) : (
-        <UnathenticatedPage loginWithPopup={loginWithPopup} />
-      )}
+          </Col>
+        </Row>
+      </div>
     </div>
   );
 };
