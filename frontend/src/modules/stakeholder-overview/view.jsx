@@ -100,7 +100,6 @@ const StakeholderOverview = ({ history }) => {
       })
       .catch((err) => {
         console.error(err);
-        redirectError(err, history);
       });
   };
 
