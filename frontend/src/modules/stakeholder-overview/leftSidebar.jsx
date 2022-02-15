@@ -8,7 +8,7 @@ import IconEvent from "../../images/events/event-icon.svg";
 import IconForum from "../../images/events/forum-icon.svg";
 import IconCommunity from "../../images/events/community-icon.svg";
 
-const LeftSidebar = ({ active = 2 }) => {
+const LeftSidebar = ({ active = 2, isValidUser }) => {
   const [activeMenu, setActiveMenu] = useState(active);
   const sidebar = [
     { id: 1, title: "Events", url: "/events" },
@@ -34,7 +34,7 @@ const LeftSidebar = ({ active = 2 }) => {
           >
             {s.url ? (
               <Link
-                to={s.url}
+                to={isValidUser && s.url}
                 className="item-menu"
                 onClick={() => setActiveMenu(s.id)}
               >

@@ -277,7 +277,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             setFilterVisible={setFilterVisible}
           />
 
-          <LeftSidebar />
+          <LeftSidebar isValidUser={isValidUser} />
           <Col lg={22} xs={24} order={2}>
             {isValidUser && (
               <Col className="card-container green">
