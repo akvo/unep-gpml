@@ -15,10 +15,11 @@ import api from "../../utils/api";
 import { redirectError } from "../error/error-util";
 import { entityName } from "../../utils/misc";
 import isEmpty from "lodash/isEmpty";
+import UnathenticatedPage from "./unathenticatedPage";
 
 let tmid;
 
-const StakeholderOverview = ({ history }) => {
+const StakeholderOverview = ({ history, loginWithPopup }) => {
   const {
     profile,
     countries,
@@ -328,13 +329,7 @@ const StakeholderOverview = ({ history }) => {
           </Row>
         </>
       ) : (
-        <div className="warning">
-          <WarningOutlined style={{ fontSize: "48px", color: "#ffb800" }} />
-          <div>
-            Please register as a user for the GPML Digital Platform to be able
-            to access this page
-          </div>
-        </div>
+        <UnathenticatedPage loginWithPopup={loginWithPopup} />
       )}
     </div>
   );

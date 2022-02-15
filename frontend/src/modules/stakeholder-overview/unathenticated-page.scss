@@ -1,0 +1,32 @@
+.unathenticated-page {
+  // filter: blur(1px);
+  margin-right: auto;
+  margin-left: auto;
+  padding: 32px 32px;
+  .heading {
+    color: #00585f;
+    font-size: 22px;
+  }
+  p {
+    font-size: 15px;
+    color: #09689a;
+    margin-bottom: 15px;
+  }
+  a {
+    color: #00585f;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  .image {
+    width: 20px;
+  }
+  .login-button {
+    display: block;
+    max-width: max-content;
+    padding: 7px;
+    background-color: #00585f;
+    span {
+      color: #ffff;
+    }
+  }
+}
