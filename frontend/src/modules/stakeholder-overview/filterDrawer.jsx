@@ -100,6 +100,11 @@ const FilterDrawer = ({
     "affiliation",
   ];
 
+  const countryOpts = countries
+    .filter((country) => country.description === "Member State")
+    .map((it) => ({ value: it.id, label: it.name }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
@@ -261,11 +266,7 @@ const FilterDrawer = ({
           {/* Location */}
           <MultipleSelectFilter
             title="Location"
-            options={
-              isLoaded()
-                ? countries?.map((x) => ({ value: x.id, label: x.name }))
-                : []
-            }
+            options={countryOpts}
             value={query?.country?.map((x) => parseInt(x)) || []}
             flag="country"
             query={query}
