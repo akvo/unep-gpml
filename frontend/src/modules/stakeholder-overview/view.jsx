@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Pagination, Tag } from "antd";
-import { LoadingOutlined, WarningOutlined } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import "./styles.scss";
-import LeftSidebar from "./leftSidebar";
-import ProfileCard from "./card";
-import Header from "./header";
-import FilterDrawer from "./filterDrawer";
-import { useQuery } from "./common";
-import { UIStore } from "../../store";
-import humps from "humps";
 
+import "./styles.scss";
+
+import { UIStore } from "../../store";
+import { useQuery } from "./common";
+import humps from "humps";
 import api from "../../utils/api";
 import { redirectError } from "../error/error-util";
 import { entityName } from "../../utils/misc";
 import isEmpty from "lodash/isEmpty";
 import UnathenticatedPage from "./unathenticatedPage";
+
+// Components
+import LeftSidebar from "./leftSidebar";
+import ProfileCard from "./card";
+import Header from "./header";
+import FilterDrawer from "./filterDrawer";
 
 let tmid;
 
@@ -82,6 +85,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         }
       }
     });
+
     setSuggestedProfiles(sortSuggestedProfiles);
     const sortByName = results.sort((a, b) => {
       if (!isAscending) {
@@ -336,7 +340,8 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
           <LeftSidebar isValidUser={isValidUser} />
           <Col lg={22} xs={24} order={2}>
-            {isValidUser && (
+            {/* Suggested profiles */}
+            {isValidUser && !isEmpty(suggestedProfiles) && (
               <Col className="card-container green">
                 <h3 className="title text-white ui container">
                   Suggested profiles
@@ -361,6 +366,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                 )}
               </Col>
             )}
+            {/* All profiles */}
             <Col className="all-profiles">
               {!isLoaded() || loading ? (
                 <h2 className="loading" id="stakeholder-loading">
@@ -387,7 +393,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
               ) : (
                 <h2 className="loading">There is no data to display</h2>
               )}
-
+              {/* Pagination */}
               <div className="page">
                 {!isEmpty(results) && isValidUser && (
                   <Pagination
