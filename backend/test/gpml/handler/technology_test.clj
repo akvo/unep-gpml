@@ -72,6 +72,7 @@
                     :id 10001
                     :image nil
                     :logo nil
+                    :owners [(:id user)]
                     :created_by 10001) technology-one))
       (is (= (assoc (new-technology data)
                     :id 10002

@@ -34,11 +34,9 @@ const FilterDrawer = ({
   setMultiCountryCountries,
 }) => {
   const {
-    profile,
     countries,
     tags,
     transnationalOptions,
-    sectorOptions,
     geoCoverageTypeOptions,
     languages,
     representativeGroup,
@@ -83,7 +81,7 @@ const FilterDrawer = ({
   };
 
   const handleChangeCountry = (val) => {
-    updateQuery("country", query?.country ? [...query?.country, ...val] : val);
+    updateQuery("country", query?.country && val);
   };
 
   const handleDeselectCountry = (val) => {
@@ -106,6 +104,12 @@ const FilterDrawer = ({
           ]);
         });
     });
+
+    // const values = multiCountryCountries
+    //   ?.map((country) => country?.countries.map((country) => country.id))
+    //   .join(",");
+
+    // updateQuery("country", values);
   };
 
   const handleDeselectMultiCountry = (val) => {
@@ -117,29 +121,17 @@ const FilterDrawer = ({
 
   // populate options for tags dropdown
   const tagOpts = isLoaded()
-    ? flatten(values(tags))?.map((it) => ({ value: it.id, label: it.tag }))
+    ? flatten(values(tags))
+        ?.map((it) => ({ value: it.tag, label: it.tag }))
+        ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
     : [];
 
   // populate options for representative group options
   const representativeOpts = isLoaded()
     ? flatten(
-        representativeGroup?.map((x) => {
-          //  if child is an object
-          if (!Array.isArray(x?.childs) && x?.childs) {
-            return tags?.[x?.childs?.tags]?.map((it) => ({
-              value: it.id,
-              label: it.tag,
-            }));
-          }
-          // if child null
-          if (!x?.childs) {
-            return [{ value: x?.name, label: x?.name }];
-          }
-          return x?.childs?.map((x) => ({
-            value: x,
-            label: x,
-          }));
-        })
+        [...representativeGroup]
+          ?.map((x) => x)
+          ?.sort((repG1, repG2) => repG1?.localeCompare(repG2))
       )
     : [];
 
@@ -271,7 +263,7 @@ const FilterDrawer = ({
           <MultipleSelectFilter
             title="Tags"
             options={tagOpts || []}
-            value={query?.tag?.map((x) => parseInt(x)) || []}
+            value={query?.tag?.map((x) => x) || []}
             flag="tag"
             query={query}
             updateQuery={updateQuery}
@@ -280,7 +272,7 @@ const FilterDrawer = ({
             title="Representative group"
             options={
               isLoaded()
-                ? representativeGroup?.map((x) => ({ value: x, label: x }))
+                ? representativeOpts?.map((x) => ({ value: x, label: x }))
                 : []
             }
             value={query?.representativeGroup || []}
@@ -293,18 +285,9 @@ const FilterDrawer = ({
             <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
               {/* Start date */}
               <DatePickerFilter
-                title="Start date"
+                title="StartDate"
                 value={query?.startDate}
                 flag="startDate"
-                query={query}
-                updateQuery={updateQuery}
-                span={12}
-              />
-              {/* End date */}
-              <DatePickerFilter
-                title="End date"
-                value={query?.endDate}
-                flag="endDate"
                 query={query}
                 updateQuery={updateQuery}
                 span={12}
@@ -312,6 +295,18 @@ const FilterDrawer = ({
                   !isEmpty(query?.startDate)
                     ? moment(query?.startDate[0])
                     : null
+                }
+              />
+              {/* End date */}
+              <DatePickerFilter
+                title="End date"
+                value={query?.endDate}
+                flag="end-date"
+                query={query}
+                updateQuery={updateQuery}
+                span={12}
+                startDate={
+                  !isEmpty(query?.endDate) ? moment(query?.endDate[0]) : null
                 }
               />
             </Row>

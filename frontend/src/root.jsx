@@ -7,6 +7,7 @@ import {
   Switch,
   withRouter,
   useLocation,
+  useHistory,
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown, Layout } from "antd";
@@ -29,6 +30,8 @@ import tmpLogo from "./images/GPML-temporary-logo-horiz.jpg";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
 import { updateStatusProfile, isRegistered } from "./utils/profile";
+import { redirectError } from "./modules/error/error-util";
+import { useQuery } from "./modules/knowledge-library/common";
 import { storage } from "./utils/storage";
 import { UIStore } from "./store.js";
 import ProfileView from "./modules/profile/view";
@@ -74,6 +77,9 @@ import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 // Buttons
 import AddContentButton from "./modules/add-content-button/AddContentButton";
+import StakeholderOverview from "./modules/stakeholder-overview/view";
+
+let tmid;
 
 Promise.all([
   api.get("/tag"),
@@ -180,6 +186,9 @@ const Root = () => {
     user,
   } = useAuth0();
 
+  const query = useQuery();
+  const history = useHistory();
+
   const { profile, disclaimer, nav, tags } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
@@ -252,8 +261,106 @@ const Root = () => {
     })();
   }, [getIdTokenClaims, isAuthenticated]);
 
+  // Here we retrieve the resources data
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filterCountries, setFilterCountries] = useState([]);
+  const location = useLocation();
+  const [relations, setRelations] = useState([]);
+  const { isLoading } = useAuth0();
+  const [warningVisible, setWarningVisible] = useState(false);
+  const pageSize = 8;
+  const [countData, setCountData] = useState([]);
+  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
+
+  const getResults = (query) => {
+    const searchParms = new URLSearchParams(window.location.search);
+    searchParms.set("limit", pageSize);
+    const topic = [
+      "action_plan",
+      "project",
+      "policy",
+      "technical_resource",
+      "technology",
+      "event",
+      "financing_resource",
+    ];
+    if (query.topic.length === 0) {
+      searchParms.set("topic", topic);
+    }
+    const url = `/browse?${String(searchParms)}`;
+    api
+      .get(url)
+      .then((resp) => {
+        setResults(resp?.data?.results);
+        setCountData(resp?.data?.counts);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        redirectError(err, history);
+      });
+  };
+
+  const updateQuery = (param, value) => {
+    const topScroll = window.innerWidth < 640 ? 996 : 207;
+    window.scrollTo({
+      top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
+    });
+    setLoading(true);
+    const newQuery = { ...query };
+    newQuery[param] = value;
+    if (param !== "offset") {
+      newQuery["offset"] = 0;
+    }
+    setFilters(newQuery);
+    const newParams = new URLSearchParams(newQuery);
+    history.push(`/knowledge-library?${newParams.toString()}`);
+    clearTimeout(tmid);
+    tmid = setTimeout(getResults(newQuery), 1000);
+    if (param === "country") {
+      setFilterCountries(value);
+    }
+  };
+
+  useEffect(() => {
+    // setFilterCountries if user click from map to browse view
+    query?.country &&
+      query?.country.length > 0 &&
+      setFilterCountries(query.country);
+
+    // Manage filters display
+    !filters && setFilters(query);
+    if (filters) {
+      setFilters({ ...filters, topic: query.topic, tag: query.tag });
+      setFilterCountries(filters.country);
+    }
+
+    setLoading(true);
+    if (isLoading === false && !filters) {
+      setTimeout(getResults(query), 0);
+    }
+
+    if (isLoading === false && filters) {
+      const newParams = new URLSearchParams({
+        ...filters,
+        topic: query.topic,
+        tag: query.tag,
+      });
+      if (history.location.pathname === "/knowledge-library") {
+        history.push(`/knowledge-library?${newParams.toString()}`);
+      }
+      clearTimeout(tmid);
+      tmid = setTimeout(getResults(query), 1000);
+    }
+    // NOTE: Since we are using `history` and `location`, the
+    // dependency needs to be []. Ignore the linter warning, because
+    // adding a dependency here on location makes the FE send multiple
+    // requests to the backend.
+  }, [isLoading]); // eslint-disable-line
+
   return (
-    <Router>
+    <>
       <ScrollToTop />
       <div id="root">
         {storage.getCookie("showDisclaimer") !== "false" &&
@@ -295,7 +402,7 @@ const Root = () => {
             <Switch>
               <Route path="/browse" />
               <Route>
-                <Search />
+                <Search updateQuery={updateQuery} />
               </Route>
             </Switch>
             <div className="rightside">
@@ -368,11 +475,31 @@ const Root = () => {
             render={(props) => <Glossary {...props} />}
           />
           <Route
+            exact
             path="/knowledge-library"
             render={(props) => (
               <KnowledgeLibrary
                 {...{
+                  history,
+                  query,
+                  results,
+                  countData,
+                  pageSize,
+                  loading,
+                  filters,
+                  filterMenu,
+                  filterCountries,
+                  isAuthenticated,
+                  loginWithPopup,
+                  multiCountryCountries,
+
+                  //Functions
+                  updateQuery,
+                  setFilters,
+                  setRelations,
+                  setMultiCountryCountries,
                   setWarningModalVisible,
+                  setStakeholderSignupModalVisible,
                   ...props,
                 }}
                 setStakeholderSignupModalVisible={
@@ -429,7 +556,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-event/:id"
-            render={(props) => <AddEvent {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -439,7 +566,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-technology/:id"
-            render={(props) => <AddTechnology {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -449,7 +576,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-policy/:id"
-            render={(props) => <AddPolicy {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -459,7 +586,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-action-plan/:id"
-            render={(props) => <AddActionPlan {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -469,7 +596,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-financing-resource/:id"
-            render={(props) => <AddFinancingResource {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -479,7 +606,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-technical-resource/:id"
-            render={(props) => <AddTechnicalResource {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -489,7 +616,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-initiative/:id"
-            render={(props) => <AddInitiative {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -557,6 +684,25 @@ const Root = () => {
             path="/stakeholder-detail"
           />
           <Route
+            exact
+            render={(props) => <StakeholderOverview {...props} />}
+            filters={filters}
+            setFilters={setFilters}
+            path="/stakeholder-overview"
+          />
+          <Route
+            path="/:type(stakeholder)/:id"
+            render={(props) => (
+              <StakeholderDetail
+                {...props}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                setFilterMenu={setFilterMenu}
+              />
+            )}
+          />
+          <Route
             path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event)/:id"
             render={(props) => (
               <NewDetailsView
@@ -569,7 +715,7 @@ const Root = () => {
             )}
           />
           <Route
-            path="/:type(organisation|stakeholder)/:id"
+            path="/:type(organisation)/:id"
             render={(props) => (
               <DetailsView
                 {...props}
@@ -620,7 +766,7 @@ const Root = () => {
         resources={resourceCounts}
         stakeholderCounts={stakeholderCounts}
       />
-    </Router>
+    </>
   );
 };
 
@@ -665,12 +811,18 @@ const renderDropdownMenu = (
   );
 };
 
-const Search = withRouter(({ history }) => {
+const Search = withRouter(({ history, updateQuery }) => {
   const [search, setSearch] = useState("");
   const [isShownForm, setIsShownForm] = useState(false);
+
   const handleSearch = (src) => {
+    const path = history.location.pathname;
     if (src) {
-      history.push(`/browse/?q=${src.trim()}`);
+      setIsShownForm(false);
+      history.push(`/knowledge-library?q=${src.trim()}`);
+      updateQuery("q", src.trim());
+    } else {
+      updateQuery("q", src.trim());
     }
     setIsShownForm(!isShownForm);
   };
@@ -699,7 +851,7 @@ const Search = withRouter(({ history }) => {
             />
           }
           onPressEnter={(e) => handleSearch(e.target.value)}
-          onChange={(e) => setSearch(e.target.value)}
+          onSubmit={(e) => setSearch(e.target.value)}
         />
       )}
     </div>
@@ -756,159 +908,11 @@ const AddButton = withRouter(
             {!profile?.org && (
               <JoinGPMLButton loginWithPopup={loginWithPopup} />
             )}
-            <Dropdown
-              overlayClassName="add-dropdown-wrapper"
-              overlay={
-                <Menu className="add-dropdown">
-                  <Menu.Item
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          initiative: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          initiative: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                      history.push("/add-initiative");
-                    }}
-                  >
-                    Initiative
-                  </Menu.Item>
-                  <Menu.Item
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          actionPlan: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          actionPlan: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                      history.push("/add-action-plan");
-                    }}
-                  >
-                    Action Plan
-                  </Menu.Item>
-                  <Menu.Item
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          policy: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          policy: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                      history.push("/add-policy");
-                    }}
-                  >
-                    Policy
-                  </Menu.Item>
-                  <Menu.Item
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          technicalResource: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          technicalResource: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                      history.push("/add-technical-resource");
-                    }}
-                  >
-                    Technical Resource
-                  </Menu.Item>
-                  <Menu.Item
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          financingResource: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          financingResource: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                      history.push("/add-financing-resource");
-                    }}
-                  >
-                    Financing Resource
-                  </Menu.Item>
-                  <Menu.Item
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          event: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          event: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                      history.push("/add-event");
-                    }}
-                  >
-                    Event
-                  </Menu.Item>
-                  <Menu.Item
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          technology: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          technology: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                      history.push("/add-technology");
-                    }}
-                  >
-                    Technology
-                  </Menu.Item>
-                </Menu>
-              }
-              trigger={["click"]}
-              placement="bottomRight"
-            >
+            <Link to="/flexible-forms">
               <Button type="primary" placement="bottomRight">
                 Add Content
               </Button>
-            </Dropdown>
+            </Link>
           </>
         );
       }

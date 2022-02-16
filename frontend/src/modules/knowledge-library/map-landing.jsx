@@ -15,20 +15,21 @@ import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const MapLanding = ({
   history,
-  setStakeholderSignupModalVisible,
-  setWarningModalVisible,
-  isAuthenticated,
+  query,
   loginWithPopup,
-  filters,
-  setFilters,
-  setToggleButton,
-  updateQuery,
+  isAuthenticated,
   multiCountryCountries,
-  setMultiCountryCountries,
-  setListVisible,
   listVisible,
-  contentHeight,
   isDisplayedList,
+  isFilteredCountry,
+
+  //Functions
+  updateQuery,
+  setListVisible,
+  setToggleButton,
+  setMultiCountryCountries,
+  setWarningModalVisible,
+  setStakeholderSignupModalVisible,
 }) => {
   const {
     profile,
@@ -57,8 +58,16 @@ const MapLanding = ({
 
   const clickCountry = (name) => {
     setToggleButton("list");
-    updateQuery("country", name);
-    history.push(`?country=${name}`);
+    const val = query["country"];
+    let updateVal = [];
+    if (isEmpty(val)) {
+      updateVal = [name];
+    } else if (val.includes(name)) {
+      updateVal = val.filter((x) => x !== name);
+    } else {
+      updateVal = [...val, name];
+    }
+    updateQuery("country", updateVal);
   };
 
   const handleSummaryClick = (topic) => {
@@ -143,7 +152,7 @@ const MapLanding = ({
     <div id="map-landing" style={{ height: `${contentHeight}px` }}>
       <div className="landing-container map-container">
         {!isLoaded() && (
-          <h2 className="loading">
+          <h2 className="loading" id="map-loader">
             <LoadingOutlined spin /> Loading
           </h2>
         )}
@@ -186,6 +195,7 @@ const MapLanding = ({
           </div>
         )}
         <Maps
+          isFilteredCountry={isFilteredCountry}
           isDisplayedList={isDisplayedList}
           listVisible={listVisible}
           data={landing?.map || []}

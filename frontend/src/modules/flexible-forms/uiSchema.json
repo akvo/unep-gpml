@@ -138,12 +138,7 @@
     "S5": {
       "classNames": "list-group",
       "S5_G1": {
-        "S5_G1_4": {
-          "ui:widget": "checkboxes",
-          "ui:options": {
-            "inline": true
-          }
-        },
+        "S5_G1_4": {},
         "S5_G1_4.1.1": {
           "ui:widget": "checkboxes",
           "ui:options": {
@@ -200,6 +195,37 @@
           "ui:allowClear": true
         },
         "S5_G2_6": {},
+        "S5_G2_7": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.1.0": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.1.1": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.1.2": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.2": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "S5_G2_7.3": {},
         "S5_G2_8": {
           "ui:widget": "select",
           "ui:placeholder": "Select",
@@ -311,6 +337,12 @@
           "S5_G1_4.4.5",
           "S5_G2_5",
           "S5_G2_6",
+          "S5_G2_7",
+          "S5_G2_7.1.0",
+          "S5_G2_7.1.1",
+          "S5_G2_7.1.2",
+          "S5_G2_7.2",
+          "S5_G2_7.3",
           "S5_G2_8",
           "S5_G2_9",
           "S5_G2_10",
@@ -484,19 +516,12 @@
     "S5": {
       "classNames": "list-group",
       "dateOne": {
-        "firstPublicationDate": {
-          "ui:placeholder": "YYYY-MM-DD",
+        "publishYear": {
           "ui:widget": "date",
+          "ui:showSearch": true,
           "ui:span": 12,
           "ui:options": {
-            "disableDate": "future"
-          }
-        },
-        "latestAmendmentDate": {
-          "ui:placeholder": "YYYY-MM-DD",
-          "ui:widget": "date",
-          "ui:span": 12,
-          "ui:options": {
+            "mode": "year",
             "disableDate": "future"
           }
         }
@@ -713,53 +738,52 @@
     },
     "S5": {
       "classNames": "list-group",
-      "S5_G1": {
-        "originalTitle": {
-          "ui:placeholder": "Type in the policy original title"
-        },
-        "dataSource": {
-          "ui:placeholder": "Type in the data source, e.g. FAOLEX, InforMEA, Other (please specify)."
-        },
-        "typeOfLaw": {
-          "ui:placeholder": "Choose the type of law",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
-        "recordNumber": {
-          "ui:placeholder": "Type in the record number"
-        },
-        "date": {
-          "firstPublicationDate": {
-            "ui:placeholder": "YYYY-MM-DD",
-            "ui:widget": "date",
-            "ui:span": 12,
-            "ui:options": {
-              "disableDate": "future"
-            }
-          },
-          "latestAmendmentDate": {
-            "ui:placeholder": "YYYY-MM-DD",
-            "ui:widget": "date",
-            "ui:span": 12,
-            "ui:options": {
-              "disableDate": "future"
-            }
+      "originalTitle": {
+        "ui:placeholder": "Type in the policy original title"
+      },
+      "dataSource": {
+        "ui:placeholder": "Type in the data source, e.g. FAOLEX, InforMEA, Other (please specify)."
+      },
+      "typeOfLaw": {
+        "ui:placeholder": "Choose the type of law",
+        "ui:widget": "select",
+        "ui:showSearch": true
+      },
+      "recordNumber": {
+        "ui:placeholder": "Type in the record number"
+      },
+      "date": {
+        "firstPublicationDate": {
+          "ui:placeholder": "YYYY-MM-DD",
+          "ui:widget": "date",
+          "ui:span": 12,
+          "ui:options": {
+            "disableDate": "future"
           }
         },
-        "status": {
-          "ui:placeholder": "Choose the policy status",
-          "ui:widget": "select"
-        },
-        "implementingMea": {
-          "ui:placeholder": "Choose the implementing MEA",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
-        "topics": {
-          "ui:placeholder": "Choose topics",
-          "ui:widget": "select",
-          "ui:showSearch": true
+        "latestAmendmentDate": {
+          "ui:placeholder": "YYYY-MM-DD",
+          "ui:widget": "date",
+          "ui:span": 12,
+          "ui:options": {
+            "disableDate": "future"
+          }
         }
+      },
+      "status": {
+        "ui:placeholder": "Choose the policy status",
+        "ui:widget": "select"
+      },
+      "implementingMea": {
+        "ui:placeholder": "Choose the implementing MEA",
+        "ui:widget": "select",
+        "ui:showSearch": true
+      },
+      "topics": {
+        "ui:placeholder": "Choose topics",
+        "ui:widget": "select",
+        "ui:showSearch": true,
+        "ui:mode": "multiple"
       }
     }
   },
@@ -1189,7 +1213,7 @@
     },
     "S5": {
       "classNames": "list-group",
-      "S5_G1": {
+      "dateOne": {
         "publishYear": {
           "ui:widget": "date",
           "ui:showSearch": true,
@@ -1616,22 +1640,20 @@
     },
     "S5": {
       "classNames": "list-group",
-      "S5_G1": {
-        "yearFounded": {
-          "ui:widget": "date",
-          "ui:showSearch": true,
-          "ui:span": 12,
-          "ui:options": {
-            "mode": "year",
-            "disableDate": "future"
-          }
-        },
-        "organisationType": {
-          "ui:span": 12,
-          "ui:placeholder": "Choose the organisation type",
-          "ui:widget": "select",
-          "ui:showSearch": true
+      "yearFounded": {
+        "ui:widget": "date",
+        "ui:showSearch": true,
+        "ui:span": 12,
+        "ui:options": {
+          "mode": "year",
+          "disableDate": "future"
         }
+      },
+      "organisationType": {
+        "ui:span": 12,
+        "ui:placeholder": "Choose the organisation type",
+        "ui:widget": "select",
+        "ui:showSearch": true
       }
     }
   }

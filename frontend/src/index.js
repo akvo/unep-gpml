@@ -10,6 +10,15 @@ import { StateProvider } from "./store.js";
 import api from "./utils/api";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Link,
+  Switch,
+  withRouter,
+  useLocation,
+} from "react-router-dom";
 
 // HACK to reuse the same Sentry DSN & environment values as the backend
 const { environment, dsn } = window.__ENV__.sentry;
@@ -34,7 +43,9 @@ ReactDOM.render(
     clientId={window.__ENV__.auth0.clientId}
     redirectUri={window.location.origin}
   >
-    <Root />
+    <Router>
+      <Root />
+    </Router>
   </Auth0Provider>,
   document.getElementById("root")
 );

@@ -40,6 +40,7 @@ const FlexibleForm = withRouter(
     mainType,
     subContentType,
     capacityBuilding,
+    type,
     match: { params },
   }) => {
     const {
@@ -58,6 +59,7 @@ const FlexibleForm = withRouter(
     const flexibleFormData = initialFormData.useState();
 
     const [dependValue, setDependValue] = useState([]);
+    const [schema, setSchema] = useState(formSchema.schema);
     const [editCheck, setEditCheck] = useState(true);
 
     const handleOnSubmit = ({ formData }) => {
@@ -111,7 +113,7 @@ const FlexibleForm = withRouter(
         }
         if (data.hasOwnProperty("validFrom")) {
           data.validFrom = data?.validFrom;
-          data.validTo = "Ongoing";
+          data.validTo = data.validTo || "Ongoing";
         }
         if (data.hasOwnProperty("validTo")) {
           data.validTo = data?.validTo;
@@ -133,11 +135,12 @@ const FlexibleForm = withRouter(
         }
         if (data.hasOwnProperty("validFrom")) {
           data.validFrom = data?.validFrom;
-          data.validTo = "Ongoing";
+          data.validTo = data.validTo || "Ongoing";
         }
 
         if (data.hasOwnProperty("firstPublicationDate")) {
           data.firstPublicationDate = data.firstPublicationDate;
+          data.latestAmendmentDate = data.latestAmendmentDate || "Ongoing";
         }
 
         if (data.hasOwnProperty("latestAmendmentDate")) {
@@ -177,11 +180,21 @@ const FlexibleForm = withRouter(
       }
 
       if (data.geoCoverageType === "national") {
-        data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
-        ];
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
+        delete data.geoCoverageValueTransnational;
+      }
 
-        delete data.geoCoverageValueNational;
+      if (data.geoCoverageType === "sub-national") {
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
+        delete data.geoCoverageValueTransnational;
+      }
+
+      if (data.geoCoverageType === "global") {
+        delete data.geoCoverageValueTransnational;
       }
 
       if (data?.urls) {
@@ -194,13 +207,19 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.entity) {
-        data.entityConnections = data.entity;
+        data.entityConnections = data.entity[0].hasOwnProperty("role")
+          ? data.entity
+          : [];
         delete data.entity;
       }
+
       if (data?.individual) {
-        data.individualConnections = data.individual;
+        data.individualConnections = data.individual[0].hasOwnProperty("role")
+          ? data.individual
+          : [];
         delete data.individual;
       }
+
       if (data?.info) {
         data.infoDocs = data.info;
         delete data.info;
@@ -209,6 +228,16 @@ const FlexibleForm = withRouter(
       if (data?.related) {
         data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
+      }
+
+      if (status === "add" && !params?.id) {
+        data?.image && data?.image === "" && delete data.image;
+      }
+
+      if (status === "edit" || params?.id) {
+        data?.image &&
+          data?.image.match(customFormats.url) &&
+          delete data.image;
       }
 
       if (status === "add" && !params?.id) {
@@ -224,6 +253,31 @@ const FlexibleForm = withRouter(
             notification.success({ message: "Resource successfully created" });
           })
           .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+      if (status === "edit" || params?.id) {
+        delete data.version;
+        api
+          .put(`/detail/${type}/${id || params?.id}`, data)
+          .then(() => {
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully updated" });
+            history.push(`/${type}/${id || params?.id}`);
+          })
+          .catch(() => {
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            history.push(`/${type}/${id || params?.id}`);
             notification.error({ message: "An error occured" });
           })
           .finally(() => {
@@ -269,7 +323,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.qentity) {
-        data.entity_connections = data.qentity;
+        data.entity_connections = data.qentity[0].hasOwnProperty("role")
+          ? data.qentity
+          : [];
         delete data.qentity;
       }
 
@@ -298,6 +354,12 @@ const FlexibleForm = withRouter(
         data.q24_2 = [data.q24_2];
       }
 
+      if (data.q24.hasOwnProperty("sub-national")) {
+        data.q24_2 = [data.qgeoCoverageValueSubnational];
+        delete data.qgeoCoverageValueSubnational;
+        delete data.qgeoCoverageValueSubnationalCity;
+      }
+
       if (data?.qrelated) {
         data.related_content = data?.qrelated.map((x) => parseInt(x));
         delete data.qrelated;
@@ -321,6 +383,31 @@ const FlexibleForm = withRouter(
             setSending(false);
           });
       }
+      if (status === "edit" || params?.id) {
+        delete data.version;
+        api
+          .put(`/detail/project/${id || params?.id}`, data)
+          .then(() => {
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully updated" });
+            history.push(`/project/${id || params?.id}`);
+          })
+          .catch(() => {
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            history.push(`/project/${id || params?.id}`);
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
     };
 
     const handleOnSubmitPolicy = (formData) => {
@@ -332,8 +419,9 @@ const FlexibleForm = withRouter(
         ...formData,
         ...(capacityBuilding && { capacityBuilding: true }),
       };
-
+      console.log(formData);
       transformFormData(data, formData, formSchema.schema.properties, true);
+      console.log(data);
 
       data.version = parseInt(formSchema.schema.version);
 
@@ -363,11 +451,23 @@ const FlexibleForm = withRouter(
       }
 
       if (data.geoCoverageType === "national") {
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
+      }
+
+      if (data.geoCoverageType === "sub-national") {
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
+      }
+
+      if (data.geoCoverageType === "sub-national") {
         data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
+          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
         ];
 
-        delete data.geoCoverageValueNational;
+        delete data.geoCoverageValueSubnational;
       }
 
       if (data?.urls) {
@@ -385,6 +485,7 @@ const FlexibleForm = withRouter(
 
       if (data.hasOwnProperty("firstPublicationDate")) {
         data.firstPublicationDate = data.firstPublicationDate;
+        data.latestAmendmentDate = data.latestAmendmentDate || "Ongoing";
       }
 
       if (data.hasOwnProperty("latestAmendmentDate")) {
@@ -396,7 +497,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.entity) {
-        data.entityConnections = data.entity;
+        data.entityConnections = data.entity[0].hasOwnProperty("role")
+          ? data.entity
+          : [];
         delete data.entity;
       }
 
@@ -414,6 +517,21 @@ const FlexibleForm = withRouter(
         delete data.related;
       }
 
+      if (data?.summary) {
+        data.abstract = data?.summary;
+        delete data.summary;
+      }
+
+      if (status === "add" && !params?.id) {
+        data?.image && data?.image === "" && delete data.image;
+      }
+
+      if (status === "edit" || params?.id) {
+        data?.image &&
+          data?.image.match(customFormats.url) &&
+          delete data.image;
+      }
+
       if (status === "add" && !params?.id) {
         api
           .post("/policy", data)
@@ -426,6 +544,31 @@ const FlexibleForm = withRouter(
             notification.success({ message: "Resource successfully created" });
           })
           .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+      if (status === "edit" || params?.id) {
+        delete data.version;
+        api
+          .put(`/detail/${type}/${id || params?.id}`, data)
+          .then(() => {
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully updated" });
+            history.push(`/${type}/${id || params?.id}`);
+          })
+          .catch(() => {
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            history.push(`/${type}/${id || params?.id}`);
             notification.error({ message: "An error occured" });
           })
           .finally(() => {
@@ -476,11 +619,23 @@ const FlexibleForm = withRouter(
       }
 
       if (data.geoCoverageType === "national") {
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
+      }
+
+      if (data.geoCoverageType === "sub-national") {
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
+      }
+
+      if (data.geoCoverageType === "sub-national") {
         data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
+          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
         ];
 
-        delete data.geoCoverageValueNational;
+        delete data.geoCoverageValueSubnational;
       }
 
       if (data?.urls) {
@@ -505,7 +660,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.entity) {
-        data.entityConnections = data.entity;
+        data.entityConnections = data.entity[0].hasOwnProperty("role")
+          ? data.entity
+          : [];
         delete data.entity;
       }
 
@@ -523,6 +680,11 @@ const FlexibleForm = withRouter(
         delete data.related;
       }
 
+      if (data?.summary) {
+        data.description = data?.summary;
+        delete data.summary;
+      }
+
       if (status === "add" && !params?.id) {
         api
           .post("/event", data)
@@ -535,6 +697,31 @@ const FlexibleForm = withRouter(
             notification.success({ message: "Resource successfully created" });
           })
           .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+      if (status === "edit" || params?.id) {
+        delete data.version;
+        api
+          .put(`/detail/${type}/${id || params?.id}`, data)
+          .then(() => {
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully updated" });
+            history.push(`/${type}/${id || params?.id}`);
+          })
+          .catch(() => {
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            history.push(`/${type}/${id || params?.id}`);
             notification.error({ message: "An error occured" });
           })
           .finally(() => {
@@ -584,12 +771,17 @@ const FlexibleForm = withRouter(
       }
 
       if (data.geoCoverageType === "national") {
-        data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueNational)[0]),
-        ];
-
-        delete data.geoCoverageValueNational;
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
       }
+
+      if (data.geoCoverageType === "sub-national") {
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
+      }
+
       if (data?.yearFounded) {
         const yearFounded = new Date(data.yearFounded);
         data.yearFounded = yearFounded.getFullYear();
@@ -614,14 +806,19 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags.map((x) => parseInt(x));
 
       if (data?.entity) {
-        data.entityConnections = data.entity;
+        data.entityConnections = data.entity[0].hasOwnProperty("role")
+          ? data.entity
+          : [];
         delete data.entity;
       }
 
       if (data?.individual) {
-        data.individualConnections = data.individual;
+        data.individualConnections = data.individual[0].hasOwnProperty("role")
+          ? data.individual
+          : [];
         delete data.individual;
       }
+
       if (data?.info) {
         data.infoDocs = data.info;
         delete data.info;
@@ -630,6 +827,11 @@ const FlexibleForm = withRouter(
       if (data?.related) {
         data.relatedContent = data?.related.map((x) => parseInt(x));
         delete data.related;
+      }
+
+      if (data?.summary) {
+        data.remarks = data?.summary;
+        delete data.summary;
       }
 
       if (status === "add" && !params?.id) {
@@ -650,6 +852,31 @@ const FlexibleForm = withRouter(
             setSending(false);
           });
       }
+      if (status === "edit" || params?.id) {
+        delete data.version;
+        api
+          .put(`/detail/${type}/${id || params?.id}`, data)
+          .then(() => {
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully updated" });
+            history.push(`/${type}/${id || params?.id}`);
+          })
+          .catch(() => {
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            history.push(`/${type}/${id || params?.id}`);
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
     };
 
     const handleFormOnChange = useCallback(
@@ -660,6 +887,7 @@ const FlexibleForm = withRouter(
             ...formData,
           };
         });
+
         let updatedFormDataSchema = {};
 
         if (
@@ -711,6 +939,8 @@ const FlexibleForm = withRouter(
         } else {
           updatedFormDataSchema = formSchema.schema;
         }
+
+        setSchema(updatedFormDataSchema);
 
         // to overide validation
         let dependFields = [];
@@ -783,26 +1013,36 @@ const FlexibleForm = withRouter(
         });
         // enable btn submit
         requiredFilledIn.length === 0 &&
-          (initialFormData?.currentState?.data.S4[
+          ((initialFormData?.currentState?.data.S4[
             "S4_G5"
           ].individual[0].hasOwnProperty("role") &&
             initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].individual[0].hasOwnProperty("stakeholder")) === true &&
+            ].individual[0].hasOwnProperty("stakeholder")) ||
+            (initialFormData?.currentState?.data.S4[
+              "S4_G5"
+            ].entity[0].hasOwnProperty("role") &&
+              initialFormData?.currentState?.data.S4[
+                "S4_G5"
+              ].entity[0].hasOwnProperty("entity"))) === true &&
           setDisabledBtn({ disabled: false, type: "primary" });
         requiredFilledIn.length !== 0 &&
-          (initialFormData?.currentState?.data.S4["S4_G5"].individual &&
+          ((initialFormData?.currentState?.data.S4[
+            "S4_G5"
+          ].individual[0].hasOwnProperty("role") &&
             initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].individual[0].hasOwnProperty("role") &&
-            initialFormData?.currentState?.data.S4[
+            ].individual[0].hasOwnProperty("stakeholder")) ||
+            (initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].individual[0].hasOwnProperty("stakeholder")) === false &&
+            ].entity[0].hasOwnProperty("role") &&
+              initialFormData?.currentState?.data.S4[
+                "S4_G5"
+              ].entity[0].hasOwnProperty("entity"))) === true &&
           setDisabledBtn({ disabled: true, type: "default" });
       },
       [initialFormData, formSchema, setDisabledBtn]
     );
-
     const handleTransformErrors = (errors, dependValue) => {
       // custom errors handle
       [".S4", ".S5"].forEach((x) => {
@@ -841,7 +1081,7 @@ const FlexibleForm = withRouter(
         <>
           <Form
             idPrefix="flexibleForm"
-            schema={formSchema.schema}
+            schema={schema}
             uiSchema={uiSchema[selectedMainContentType]}
             formData={flexibleFormData.data}
             onChange={(e) => handleFormOnChange(e)}

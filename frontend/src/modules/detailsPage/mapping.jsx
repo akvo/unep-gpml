@@ -61,6 +61,18 @@ const detailActionPlan = [
     value: "publishYear",
     type: "number",
   },
+  {
+    key: "validFrom",
+    name: "Valid From",
+    value: "validFrom",
+    type: "string",
+  },
+  {
+    key: "validTo",
+    name: "Valid Until",
+    value: "validTo",
+    type: "string",
+  },
 ];
 
 const detailFinancingResource = [
@@ -100,12 +112,6 @@ const detailEvent = [
     type: "startEndDate",
   },
   {
-    key: "geoCoverageValues",
-    name: "Geo-Coverage",
-    value: "geoCoverage",
-    type: "array",
-  },
-  {
     key: "languages",
     name: "Languages",
     value: "isoCode",
@@ -114,12 +120,6 @@ const detailEvent = [
 ];
 
 const detailTechnology = [
-  {
-    key: "geoCoverageValues",
-    name: "Geo-Coverage",
-    value: "geoCoverage",
-    type: "array",
-  },
   {
     key: "organisationType",
     name: "Organisation Type",
@@ -165,13 +165,7 @@ const detailPolicy = [
     key: "status",
     name: "Status",
     value: "status",
-    type: "text",
-  },
-  {
-    key: "geoCoverageValues",
-    name: "Geo-Coverage",
-    value: "geoCoverage",
-    type: "array",
+    type: "name",
   },
   {
     key: "typeOfLaw",
@@ -222,12 +216,6 @@ const detailProject = [
     key: "organisation",
     name: "Organisation",
     value: "join",
-    type: "array",
-  },
-  {
-    key: "geoCoverageValues",
-    name: "Geo-Coverage",
-    value: "geoCoverage",
     type: "array",
   },
   {

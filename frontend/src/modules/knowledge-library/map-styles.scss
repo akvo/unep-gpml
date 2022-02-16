@@ -19,12 +19,29 @@
 
 #map-landing {
   position: relative;
-  height: 100%;
+  height: 700px;
   overflow: hidden;
   background-color: #eaf6fd;
 
+  #map-loader {
+    position: absolute;
+    left: 50%;
+    top: calc(50% + calc(16px / 2));
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .render-map-container {
+    background-color: #eaf6fd;
+  }
+
   .landing-container.map-container > div {
-    height: unset !important;
+    height: 700px !important;
+    width: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    align-content: center;
+    padding-bottom: 13px;
   }
 
   .landing-container.map-container {
@@ -36,8 +53,8 @@
     border-bottom: none !important;
     z-index: 1;
 
-    svg {
-      height: 100% !important;
+    .rsm-svg {
+      width: 100vw;
     }
 
     .rsm-svg {
@@ -54,6 +71,8 @@
 
     .map-overlay {
       position: absolute;
+      display: flex;
+      flex-direction: column;
       z-index: 1;
       left: 0 !important;
       top: 0 !important;
@@ -281,11 +300,11 @@
 
   .legends {
     position: absolute;
-    bottom: 0;
-    z-index: 999;
-    left: 20px;
+    bottom: 120px;
+    left: calc(50% - (484px / 2));
     border: 2px solid #daeaf1;
     line-height: 10px;
+    align-self: center;
 
     .legend {
       cursor: pointer;

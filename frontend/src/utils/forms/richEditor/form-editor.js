@@ -37,7 +37,7 @@ const RichWidget = ({
   const highlight = UIStore.useState((s) => s.highlight);
 
   const [editorValue, setEditorValue] = useState(
-    RichTextEditor.createValueFromString("", "html")
+    RichTextEditor.createValueFromString(value ? value : "", "html")
   );
 
   const toolbarConfig = {

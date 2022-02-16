@@ -75,17 +75,37 @@
        e.reviewed_at,
        e.reviewed_by,
        e.review_status,
-       e.url AS initiative_url,
+       e.url,
        e.info_docs,
        e.sub_content_type,
        e.related_content,
        e.qimage,
-       btrim((e.q41_1)::text, '\"'::text) AS url,
+       btrim((e.q41_1)::text, '\"'::text) AS q41_1_url,
        NULL::text AS image,
        tag.tags,
        geo.geo_coverage_values,
        geo.geo_coverage_country_groups,
        geo.geo_coverage_countries")
+
+(def ^:const ^:private policy-topic-data-select-clause
+  "SELECT
+       e.abstract AS summary,
+       e.*,
+       geo.geo_coverage_values,
+       geo.geo_coverage_country_groups,
+       geo.geo_coverage_countries,
+       lang.languages,
+       tag.tags")
+
+(def ^:const ^:private event-topic-data-select-clause
+  "SELECT
+       e.description AS summary,
+       e.*,
+       geo.geo_coverage_values,
+       geo.geo_coverage_country_groups,
+       geo.geo_coverage_countries,
+       lang.languages,
+       tag.tags")
 
 (def ^:const ^:private stakeholder-topic-data-select-clause
   "SELECT
@@ -361,6 +381,14 @@
                            "organisation" [organisation-topic-data-select-clause
                                            from-clause organisation-topic-data-geo-coverage-values-query
                                            order-by-clause]
+
+                           "policy" [policy-topic-data-select-clause
+                                     from-clause lang-query tags-query
+                                     geo-coverage-values-query order-by-clause]
+
+                           "event" [event-topic-data-select-clause
+                                    from-clause lang-query tags-query
+                                    geo-coverage-values-query order-by-clause]
 
                            [select-clause from-clause lang-query tags-query
                             geo-coverage-values-query order-by-clause])]

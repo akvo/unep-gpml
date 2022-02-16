@@ -98,7 +98,7 @@
             :search-text "eco"
             :geo-coverage #{"253"}
             :topic #{"project" "event" "technology" "financing_resource"
-                     "technical_resource" "action_plan" "policy"}})))
+                     "technical_resource" "action_plan" "policy" "organisation"}})))
 
   (testing "Topics for approved users unchanged"
     (is (= (browse/modify-db-filter-topics
