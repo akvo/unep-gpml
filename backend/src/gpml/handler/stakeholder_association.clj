@@ -1,7 +1,5 @@
 (ns gpml.handler.stakeholder-association
-  (:require [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.stakeholder-association :as db.stakeholder-association]
-            [gpml.util :as util]
+  (:require [gpml.db.stakeholder-association :as db.stakeholder-association]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
