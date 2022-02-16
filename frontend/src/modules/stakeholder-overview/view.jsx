@@ -287,11 +287,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                   Suggested profiles
                 </h3>
 
-                {!isLoaded() || loading || isEmpty(suggestedProfiles) ? (
+                {isEmpty(suggestedProfiles) ? (
                   <h2 className="loading" id="stakeholder-loading">
                     <LoadingOutlined spin /> Loading
                   </h2>
-                ) : isLoaded() && !loading && !isEmpty(suggestedProfiles) ? (
+                ) : !isEmpty(suggestedProfiles) ? (
                   <div className="card-wrapper ui container">
                     {suggestedProfiles.map((profile) => (
                       <ProfileCard
