@@ -140,16 +140,33 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       .then((resp) => {
         const result = resp?.data?.results;
 
+        const organisationType = resp?.data?.counts?.find(
+          (count) => count?.topic === "organisation"
+        );
+        const stakeholderType = resp?.data?.counts?.find(
+          (count) => count?.topic === "stakeholder"
+        );
         setResults(
           [...result].sort(
             (a, b) => Date.parse(b.created) - Date.parse(a.created)
           )
         );
+        if (
+          query?.topic.length === 1 &&
+          query?.topic.includes("organisation")
+        ) {
+          setResultCount(organisationType?.count);
+        } else if (
+          query?.topic.length === 1 &&
+          query?.topic.includes("stakeholder")
+        ) {
+          setResultCount(stakeholderType?.count);
+        } else if (query?.topic.length === 0) {
+          setResultCount(organisationType?.count + stakeholderType?.count);
+        } else {
+          setResultCount(organisationType?.count + stakeholderType?.count);
+        }
 
-        const organisationType = resp?.data?.counts?.find(
-          (count) => count?.topic === "organisation"
-        );
-        setResultCount(organisationType?.count);
         setLoading(false);
       })
       .catch((err) => {
