@@ -29,7 +29,7 @@
           associated-topics-count
           (db.stakeholder-association/get-stakeholder-associated-topics (:spec db)
                                                                         (merge common-params {:count-only? true}))]
-      (resp/response {:associated-topics (map :json associated-topics)
+      (resp/response {:associated_topics (map :json associated-topics)
                       :count (-> associated-topics-count first :count)}))))
 
 (defmethod ig/init-key ::get-associated-topics-params [_ _]
