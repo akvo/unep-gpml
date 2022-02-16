@@ -111,17 +111,14 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     api
       .get(url)
       .then((resp) => {
-        const sortSuggestedProfile = [...resp?.data?.suggestedProfiles]
-          .sort((a, b) => Date.parse(b.created) - Date.parse(a.created))
-          .sort((a, b) => {
-            if (a.type === "stakeholder" && b.type === "organisation") {
-              return -1;
-            } else if (b.type === "stakeholder" && a.type === "organisation") {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
+        const sortSuggestedProfile = [...resp?.data?.suggestedProfiles].sort(
+          (a, b) =>
+            Date.parse(b?.created) -
+            Date.parse(a?.created).sort((a, b) =>
+              b?.type.localeCompare(a?.type)
+            )
+        );
+
         setSuggestedProfiles(sortSuggestedProfile);
       })
       .catch((err) => {
@@ -151,19 +148,8 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         );
         setResults(
           [...result]
-            .sort((a, b) => Date.parse(b.created) - Date.parse(a.created))
-            .sort((a, b) => {
-              if (a.type === "stakeholder" && b.type === "organisation") {
-                return -1;
-              } else if (
-                b.type === "stakeholder" &&
-                a.type === "organisation"
-              ) {
-                return 1;
-              } else {
-                return 0;
-              }
-            })
+            .sort((a, b) => Date.parse(b?.created) - Date.parse(a?.created))
+            .sort((a, b) => b?.type.localeCompare(a?.type))
         );
         if (
           query?.topic.length === 1 &&
