@@ -377,6 +377,12 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                     }
                   />
                 )}
+                <div className="result-number">
+                  {resultCount > pageSize + Number(filters?.offset)
+                    ? pageSize + Number(filters?.offset)
+                    : resultCount}{" "}
+                  of {resultCount || 0} result{resultCount > 1 ? "s" : ""}
+                </div>
               </div>
             </Col>
           </Col>
