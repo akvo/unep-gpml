@@ -67,6 +67,28 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   }));
 
   const sortPeople = () => {
+    const sortSuggestedProfiles = suggestedProfiles.sort((a, b) => {
+      if (!isAscending) {
+        if (a.firstName) {
+          return (
+            a.firstName.localeCompare(b.firstName) &&
+            a.firstName.localeCompare(b.name)
+          );
+        } else {
+          return a.name.localeCompare(b.name);
+        }
+      } else {
+        if (b.firstName) {
+          return (
+            b.firstName.localeCompare(a.firstName) &&
+            b.firstName.localeCompare(a.name)
+          );
+        } else {
+          return b.name.localeCompare(a.name);
+        }
+      }
+    });
+    setSuggestedProfiles(sortSuggestedProfiles);
     const sortByName = results.sort((a, b) => {
       if (!isAscending) {
         if (a.firstName) {
