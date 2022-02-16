@@ -467,7 +467,9 @@ const Root = () => {
           <Route
             exact
             path="/about-us"
-            render={(props) => <AboutUs {...props} />}
+            render={(props) => (
+              <AboutUs {...props} countData={countData} filters={filters} />
+            )}
           />
           <Route
             exact

@@ -16,7 +16,7 @@ import { UIStore } from "../../store";
 import { topicTypes } from "../../utils/misc";
 import sumBy from "lodash/sumBy";
 import isEmpty from "lodash/isEmpty";
-
+import humps from "humps";
 const summary = [
   {
     name: "GPML Community",
@@ -38,13 +38,28 @@ const summary = [
   },
 ];
 
-const AboutUs = (countData) => {
+const AboutUs = (countData, filters) => {
   const nav = UIStore.useState((s) => s.nav);
-  console.log(countData);
+
+  const topicsForTotal = topicTypes.map((t) => humps.decamelize(t));
+
+  const filteredTopics =
+    filters?.topic?.length > 0
+      ? filters?.topic?.filter((t) => topicsForTotal.indexOf(t) > -1)
+      : topicsForTotal.filter(
+          (t) => t !== "organisation" && t !== "stakeholder"
+        );
+  const totalItems = filteredTopics.reduce(
+    (acc, topic) =>
+      acc +
+      (countData?.countData?.find((it) => it.topic === topic)?.count || 0),
+    0
+  );
+
   return (
     <div id="about-us">
       {renderSectionIssue()}
-      {renderSectionSummary(nav)}
+      {renderSectionSummary(nav, totalItems)}
       {renderSectionMission()}
       {renderSectionInfo()}
       {renderSectionTimelineAndRoadmap()}
@@ -104,37 +119,44 @@ const renderSectionIssue = () => {
   );
 };
 
-const renderSectionSummary = (nav) => {
+const renderSectionSummary = (nav, totalItems) => {
   const renderSummary = (nav) => {
     const isLoaded = () => Boolean(!isEmpty(nav));
-    return summary.map((x, i) => {
-      const { name, value, startValue } = x;
-      const navData =
-        isLoaded() &&
-        nav?.resourceCounts
-          ?.filter((x) => value.includes(Object.keys(x)[0]))
-          .map((x) => {
-            return {
-              name: Object.keys(x)[0],
-              count: x[Object.keys(x)[0]],
-            };
-          });
-      const total = sumBy(navData, "count");
 
-      return (
-        <div className="item" key={`summary-${i}`}>
-          <div className="item-name text-green">{name}</div>
-          <div className="item-value text-white">
-            {isLoaded() ? total || startValue : 0}
+    return summary
+      .filter((sum) => sum?.name?.toLowerCase() !== "resources")
+      .map((x, i) => {
+        const { name, value, startValue } = x;
+        const navData =
+          isLoaded() &&
+          nav?.resourceCounts
+            ?.filter((x) => value.includes(Object.keys(x)[0]))
+            .map((x) => {
+              return {
+                name: Object.keys(x)[0],
+                count: x[Object.keys(x)[0]],
+              };
+            });
+        const total = sumBy(navData, "count");
+
+        return (
+          <div className="item" key={`summary-${i}`}>
+            <div className="item-name text-green">{name}</div>
+            <div className="item-value text-white">
+              {isLoaded() ? total || startValue : 0}
+            </div>
           </div>
-        </div>
-      );
-    });
+        );
+      });
   };
   return (
     <div className="section-container section-summary-container">
       <div className="ui container section-summary-wrapper">
         {renderSummary(nav)}
+        <div className="item">
+          <div className="item-name text-green">Resources</div>
+          <div className="item-value text-white">{totalItems}</div>
+        </div>
       </div>
     </div>
   );
