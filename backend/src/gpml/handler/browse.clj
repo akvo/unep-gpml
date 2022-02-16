@@ -136,17 +136,43 @@
     result))
 
 (defn browse-response [query db approved? admin]
-  (let [modified-filters (->> query
-                              (get-db-filter)
-                              (merge {:approved approved?
-                                      :admin admin})
-                              (modify-db-filter-topics))
-        modified-filters (if (:geo-coverage modified-filters)
-                         (let [transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-filters))})
-                                                  (map (comp str :id))
-                                                  set)]
-                           (assoc modified-filters :transnational transnational))
-                         modified-filters)
+  (let [{:keys [geo-coverage transnational] :as modified-filters} (->> query
+                                                                    (get-db-filter)
+                                                                    (merge {:approved approved?
+                                                                            :admin admin})
+                                                                    (modify-db-filter-topics))
+        modified-filters (cond
+                           (and (seq geo-coverage) (seq transnational))
+                           (let [country-group-countries (flatten
+                                                           (conj
+                                                             (map #(db.country-group/get-country-group-countries
+                                                                     db {:id (Integer/parseInt %)})
+                                                               (:transnational modified-filters))))
+                                 geo-coverage-countries (map (comp str :id) country-group-countries)
+                                 geo-coverage (map str geo-coverage)
+                                 transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-filters))})
+                                                     (map (comp str :id))
+                                                     set)]
+                             (assoc modified-filters :geo-coverage-countries (set (concat geo-coverage-countries geo-coverage))
+                                                     :transnational transnational))
+
+                           (seq geo-coverage)
+                           (let [transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-filters))})
+                                                 (map (comp str :id))
+                                                 set)]
+                             (assoc modified-filters :transnational transnational))
+
+                           (seq transnational)
+                           (let [country-group-countries (flatten
+                                                           (conj
+                                                             (map #(db.country-group/get-country-group-countries
+                                                                     db {:id (Integer/parseInt %)})
+                                                               (:transnational modified-filters))))
+                                 geo-coverage-countries (map (comp str :id) country-group-countries)]
+                             (assoc modified-filters :geo-coverage-countries (set geo-coverage-countries)))
+
+                           :else
+                           modified-filters)
         results (->> modified-filters
                      (db.topic/get-topics db)
                      (map (fn [{:keys [json topic]}]

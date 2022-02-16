@@ -165,6 +165,9 @@
 
       )))
 
+(defn get-country-group-ids [db country-id]
+  (db.country-group/get-country-groups-by-country db {:id country-id}))
+
 (deftest landing-counts
   (let [db-key :duct.database.sql/hikaricp
         system (ig/init fixtures/*system* [db-key])
@@ -172,11 +175,13 @@
     (seeder/seed db {:country? true :resource? true})
     (testing "Landing counts match browse results"
       (let [counts (db.landing/map-counts db)
-            afg 4 ;; country_id
+            country-id 4
+            transnationals (set (map str (get-country-group-ids db country-id)))
             browse (db.topic/get-topics db {:topic #{"financing_resource"}
-                                               :geo-coverage [afg]})]
+                                            :geo-coverage [country-id]
+                                            :transnational transnationals})]
         (is (= (->> counts
-                    (filter #(= afg (:id %)))
+                    (filter #(= country-id (:id %)))
                     first
                     :counts
                     :financing_resource)
