@@ -305,7 +305,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
                         placement="top"
                       >
                         <object className="stakeholder-connection-avatar">
-                          <Link to={`/stakeholder/${findStakeholder?.id}`}>
+                          <Link to={linkTo}>
                             <Avatar
                               style={{ backgroundColor: "#FFB800" }}
                               icon={<img src={stakeholder?.image} />}
