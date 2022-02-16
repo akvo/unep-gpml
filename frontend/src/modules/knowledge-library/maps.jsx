@@ -202,13 +202,29 @@ const Maps = ({
   const domain = data.reduce(
     (acc, curr) => {
       const v = curr[topic];
+      console.log(curr);
       const [min, max] = acc;
+      console.log(min, max, "MIN MAX");
       return [min, v > max ? v : max];
     },
     [0, 0]
   );
+  // const domain = data.map((item) => {
+  //   const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
+  //   return sumValues({
+  //     actionPlan: item.actionPlan,
+  //     event: item.event,
+  //     financingResource: item.financingResource,
+  //     policy: item.policy,
+  //     project: item.project,
+  //     technicalResource: item.technicalResource,
+  //     technology: item.technology,
+  //   });
+  // });
+  // console.log(domain, data, allTopicCount);
 
   const colorScale = scaleQuantize().domain(domain).range(colorRange);
+
 
   const fillColor = (v) => {
     const color = v === 0 ? "#fff" : colorScale(v);

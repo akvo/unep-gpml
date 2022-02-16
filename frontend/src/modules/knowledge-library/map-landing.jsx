@@ -45,7 +45,7 @@ const MapLanding = ({
     transnationalOptions: s.transnationalOptions,
   }));
   const [country, setCountry] = useState(null);
-  const [counts, setCounts] = useState("project");
+  const [counts, setCounts] = useState("policy");
   const [multiCountry, setMultiCountry] = useState(null);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
