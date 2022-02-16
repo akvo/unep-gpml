@@ -89,12 +89,24 @@
                                                     :mailjet-config mailjet-config))]
         (resp/created (:referrer req) {:message "New initiative created" :id initiative-id})))))
 
+(defn expand-related-initiative-content [db initiative-id]
+  (let [related_content (db.initiative/related-content-by-id db {:id initiative-id})]
+    (for [item related_content]
+      (merge item
+        {:entity_connections (db.initiative/entity-connections-by-id db (select-keys item [:id]))
+         :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
 (defmethod ig/init-key :gpml.handler.initiative/get [_ {:keys [db]}]
   (fn [{{{:keys [id]} :path} :parameters}]
     (let [conn (:spec db)
-          data (db.initiative/initiative-by-id conn {:id id})]
-      (resp/response data))))
+          data (db.initiative/initiative-by-id conn {:id id})
+          extra-details (merge {:entity_connections (db.initiative/entity-connections-by-id conn {:id id})
+                                :stakeholder_connections (db.initiative/stakeholder-connections-by-id conn {:id id})
+                                :tags (db.initiative/tags-by-id conn {:id id})
+                                :type "Initiative"}
+                          (when-not (empty? (:related_content data))
+                            {:related_content (expand-related-initiative-content conn id)}))]
+      (resp/response (merge data extra-details)))))
 
 (defmethod ig/init-key :gpml.handler.initiative/post-params [_ _]
   [:map [:version integer?]])

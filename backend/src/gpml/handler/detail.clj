@@ -643,11 +643,18 @@
 
 (defn update-initiative [conn id data]
   (let [params (merge {:id id} data)
+        tags (remove nil? (:tags data))
         status (jdbc/with-db-transaction [conn-tx conn]
-                 (let [status (db.detail/update-initiative conn-tx (assoc params
-                                                                     :related_content (pg-util/->JDBCArray (:related_content data) "integer")))]
+                 (let [status (db.detail/update-initiative conn-tx (-> params
+                                                                     (assoc :related_content (pg-util/->JDBCArray (:related_content data) "integer"))
+                                                                     (dissoc :tags :entity_connections :individual_connections :urls :org :geo_coverage_countries
+                                                                       :geo_coverage_country_groups :qimage)))]
                    (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
                    status))]
+    (when (contains? data :qimage)
+      (update-resource-image conn (:qimage data) "initiative" id))
+    (when-not (empty? tags)
+      (update-resource-tags conn "initiative" id tags))
     (when (contains? data :entity_connections)
       (update-resource-entity-connections conn (:entity_connections data) "initiative" id))
     (when (contains? data :individual_connections)
