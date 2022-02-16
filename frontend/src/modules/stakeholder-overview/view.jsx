@@ -139,15 +139,17 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   useEffect(() => {
     if (isLoading === false && !filters) {
       setTimeout(getResults(query), 0);
-      setTimeout(getSuggestedProfiles(), 0);
     }
 
     if (isLoading === false && filters) {
       clearTimeout(tmid);
       tmid = setTimeout(getResults(query), 1000);
-      tmid = setTimeout(getSuggestedProfiles(), 1000);
     }
   }, [isLoading]); // eslint-disable-line
+
+  useEffect(() => {
+    getSuggestedProfiles();
+  }, [isValidUser]);
 
   const updateQuery = (param, value) => {
     const topScroll = window.innerWidth < 640 ? 996 : 207;
@@ -285,11 +287,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                   Suggested profiles
                 </h3>
 
-                {!isLoaded() || loading ? (
+                {!isLoaded() || loading || isEmpty(suggestedProfiles) ? (
                   <h2 className="loading" id="stakeholder-loading">
                     <LoadingOutlined spin /> Loading
                   </h2>
-                ) : isLoaded() && !loading && !isEmpty(results) ? (
+                ) : isLoaded() && !loading && !isEmpty(suggestedProfiles) ? (
                   <div className="card-wrapper ui container">
                     {suggestedProfiles.map((profile) => (
                       <ProfileCard
