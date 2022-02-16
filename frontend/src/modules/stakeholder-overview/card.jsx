@@ -7,11 +7,18 @@ import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 import communityIcon from "../../images/stakeholder-overview/union-2-icon.svg";
 
 const ProfileCard = ({ profile, isValidUser }) => {
-  const { countries } = UIStore.useState((s) => ({
+  const { countries, seeking } = UIStore.useState((s) => ({
     countries: s.countries,
+    seeking: s?.tags?.seeking,
   }));
 
   const country = countries.find((country) => country.id === profile.country);
+
+  const findSeeking =
+    profile.type !== "organisation" &&
+    seeking?.filter((seek) => {
+      return profile?.seeking?.includes(seek?.id);
+    });
 
   return (
     <Link
@@ -98,7 +105,9 @@ const ProfileCard = ({ profile, isValidUser }) => {
 
         <div className="person-role">
           <p className="seeking-text">Seeking:</p>
-          <p className="role-name">marine biologists</p>
+          <p className="role-name">
+            {findSeeking && findSeeking.length !== 0 && findSeeking[0].tag}
+          </p>
         </div>
       </Card>
     </Link>

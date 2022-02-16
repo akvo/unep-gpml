@@ -145,7 +145,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       clearTimeout(tmid);
       tmid = setTimeout(getResults(query), 1000);
     }
-  }, [isLoading]); // eslint-disable-line
+  }, [isLoading, isValidUser]); // eslint-disable-line
 
   useEffect(() => {
     getSuggestedProfiles();
