@@ -169,16 +169,16 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
           query?.topic.length === 1 &&
           query?.topic.includes("organisation")
         ) {
-          setResultCount(organisationType?.count);
+          setResultCount(organisationType?.count || 0);
         } else if (
           query?.topic.length === 1 &&
           query?.topic.includes("stakeholder")
         ) {
           setResultCount(stakeholderType?.count);
         } else if (query?.topic.length === 0) {
-          setResultCount(organisationType?.count + stakeholderType?.count);
+          setResultCount(organisationType?.count + stakeholderType?.count || 0);
         } else {
-          setResultCount(organisationType?.count + stakeholderType?.count);
+          setResultCount(organisationType?.count + stakeholderType?.count || 0);
         }
 
         setLoading(false);

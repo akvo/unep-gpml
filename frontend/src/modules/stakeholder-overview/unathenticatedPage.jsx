@@ -20,7 +20,7 @@ const UnathenticatedPage = ({ loginWithPopup }) => {
         Digital Platform (if you don't have one yet)
       </p>
       <p>
-        <Link to="/signup">https://digital.gpmarinelitter.org/signup</Link>
+        <a to="/signup">https://digital.gpmarinelitter.org/signup</a>
       </p>
       <p>
         {" "}

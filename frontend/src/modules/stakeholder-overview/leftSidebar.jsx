@@ -34,7 +34,7 @@ const LeftSidebar = ({ active = 2, isValidUser }) => {
           >
             {s.url ? (
               <Link
-                to={isValidUser && s.url}
+                to={isValidUser ? s.url : "/stakeholder-overview"}
                 className="item-menu"
                 onClick={() => setActiveMenu(s.id)}
               >
