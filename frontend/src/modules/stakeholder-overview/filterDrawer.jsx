@@ -98,6 +98,7 @@ const FilterDrawer = ({
     "seeking",
     "offering",
     "affiliation",
+    "is_member",
   ];
 
   const countryOpts = countries
@@ -334,20 +335,13 @@ const FilterDrawer = ({
             </Button>
             <Button
               className="clear-all-btn"
-              onClose={() => {
-                let filter = null;
-                for (let i = 0; filterQueries.length > i; i++) {
-                  filter = updateQuery(filterQueries[i], []);
-                }
-                return filter;
-              }}
               onClick={() => {
-                let filter = null;
+                const paramValueArr = filterQueries.map((query) => ({
+                  param: query,
+                  value: [],
+                }));
 
-                for (let i = 0; filterQueries.length > i; i++) {
-                  filter = updateQuery(filterQueries[i], []);
-                }
-                return filter;
+                updateQuery(null, null, paramValueArr);
               }}
             >
               Clear all

@@ -194,16 +194,26 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     }, 1000);
   }, [isValidUser]);
 
-  const updateQuery = (param, value) => {
+  const updateQuery = (param, value, paramValueArr) => {
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
       top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
     });
     setLoading(true);
     const newQuery = { ...query };
-    newQuery[param] = value;
-    if (param !== "offset") {
-      newQuery["offset"] = 0;
+    if (paramValueArr) {
+      paramValueArr.forEach((pv) => {
+        const { param, value } = pv;
+        newQuery[param] = value;
+        if (param !== "offset") {
+          newQuery["offset"] = 0;
+        }
+      });
+    } else {
+      newQuery[param] = value;
+      if (param !== "offset") {
+        newQuery["offset"] = 0;
+      }
     }
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
