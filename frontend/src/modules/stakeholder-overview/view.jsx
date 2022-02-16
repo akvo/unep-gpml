@@ -107,7 +107,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   };
 
   const getSuggestedProfiles = () => {
-    const url = `/profile/suggested`;
+    const url = `/profile/suggested?limit=4`;
     api
       .get(url)
       .then((resp) => {
