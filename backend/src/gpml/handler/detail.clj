@@ -644,7 +644,8 @@
 (defn update-initiative [conn id data]
   (let [params (merge {:id id} data)
         status (jdbc/with-db-transaction [conn-tx conn]
-                 (let [status (db.detail/update-initiative conn-tx params)]
+                 (let [status (db.detail/update-initiative conn-tx (assoc params
+                                                                     :related_content (pg-util/->JDBCArray (:related_content data) "integer")))]
                    (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
                    status))]
     (when (contains? data :entity_connections)
