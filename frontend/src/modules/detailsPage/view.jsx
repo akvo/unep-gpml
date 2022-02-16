@@ -339,7 +339,13 @@ const renderBannerSection = (
           <div className="banner-wrapper">
             <div className="long-image">
               <img
-                src={data.image ? data.image : imageNotFound}
+                src={
+                  data.image
+                    ? data.image
+                      ? data.image
+                      : data.qimage
+                    : imageNotFound
+                }
                 className="resource-image"
               />
             </div>
