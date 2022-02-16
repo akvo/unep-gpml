@@ -407,6 +407,13 @@ const formDataMapping = [
     question: "S5_G1_4.1.1",
     type: "multiple-option",
   },
+  {
+    name: "q5",
+    section: "S5",
+    group: "S5_G1",
+    question: "S5_G2_5",
+    type: "option",
+  },
 ];
 
 const FlexibleForms = ({ match: { params }, ...props }) => {
@@ -1324,7 +1331,16 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                         include Action Plans, Initiatives, Technical resources,
                         Financing resources, Policies, Events, and Technologies.
                         Learn more about each category and sub-categories
-                        definitions in the “Content Type” section of this form
+                        definitions in the “Content Type” section of this form.
+                        A quick summary sheet with categories and sub-categories
+                        can be downloaded{" "}
+                        <a
+                          href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37512/Categories%20and%20Sub%20Categories%20for%20the%20forms.pdf?sequence=3&isAllowed=y"
+                          target="_blank"
+                        >
+                          here
+                        </a>
+                        .
                       </p>
                       <p>
                         Once submitted resources go through a review process

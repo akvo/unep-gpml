@@ -116,12 +116,14 @@ const ObjectFieldTemplate = ({
       });
     }
 
-    if (formData?.[element.name]) {
-      // remove value when no answer for array type question
-      Array.isArray(formData?.[element.name]) &&
-        formData?.[element.name]?.length === 0 &&
-        delete formData?.[element.name];
-    }
+    // if (formData?.[element.name]) {
+    //   if (!formData?.[element.name].hasOwnProperty("tags")) {
+    //     // remove value when no answer for array type question
+    //     Array.isArray(formData?.[element.name]) &&
+    //       formData?.[element.name]?.length === 0 &&
+    //       delete formData?.[element.name];
+    //   }
+    // }
 
     // ## Check for dependency, hide or show question
     const dependentSchema = findSchemaDepend(element);
