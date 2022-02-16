@@ -614,7 +614,6 @@
                         (merge (when (:topics updates)
                                  {:topics (pg-util/->JDBCArray (:topics updates) "text")})))
         tags (remove nil? (:tags updates))
-        urls (remove nil? (:urls updates))
         params {:table table :id id :updates table-columns}
         status (db.detail/update-resource-table conn params)
         org (:org updates)
@@ -631,7 +630,6 @@
       (update-resource-logo conn (:logo updates) table id))
     (when-not (empty? tags)
       (update-resource-tags conn table id tags))
-    (update-resource-language-urls conn table id urls)
     (update-resource-geo-coverage-values conn table id updates)
     (when (contains? #{"resource"} table)
       (update-resource-organisation conn table id org-id))
