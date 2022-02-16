@@ -112,11 +112,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       .get(url)
       .then((resp) => {
         const sortSuggestedProfile = [...resp?.data?.suggestedProfiles].sort(
-          (a, b) =>
-            Date.parse(b?.created) -
-            Date.parse(a?.created).sort((a, b) =>
-              b?.type.localeCompare(a?.type)
-            )
+          (a, b) => Date.parse(b?.created) - Date.parse(a?.created)
         );
 
         setSuggestedProfiles(sortSuggestedProfile);
@@ -193,7 +189,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   }, [isLoading, isValidUser]); // eslint-disable-line
 
   useEffect(() => {
-    getSuggestedProfiles();
+    setTimeout(() => {
+      getSuggestedProfiles();
+    }, 1000);
   }, [isValidUser]);
 
   const updateQuery = (param, value) => {
