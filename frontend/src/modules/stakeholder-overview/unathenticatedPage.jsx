@@ -1,6 +1,7 @@
 import React from "react";
 import { UserOutlined } from "@ant-design/icons";
 import "./unathenticated-page.scss";
+import { Link } from "react-router-dom";
 
 const UnathenticatedPage = ({ loginWithPopup }) => {
   return (
@@ -19,9 +20,7 @@ const UnathenticatedPage = ({ loginWithPopup }) => {
         Digital Platform (if you don't have one yet)
       </p>
       <p>
-        <a href="https://digital.gpmarinelitter.org/signup">
-          https://digital.gpmarinelitter.org/signup
-        </a>
+        <Link to="/signup">https://digital.gpmarinelitter.org/signup</Link>
       </p>
       <p>
         {" "}
