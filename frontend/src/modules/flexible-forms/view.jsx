@@ -385,6 +385,28 @@ const formDataMapping = [
     question: "summary",
     type: "string",
   },
+  {
+    name: "tags",
+    section: "S4",
+    group: "S4_G3",
+    question: "tags",
+    type: "array",
+  },
+  {
+    key: "stakeholder_connections",
+    name: "stakeholder_connections",
+    question: "individual",
+    type: "array",
+    section: "S4",
+    group: "S4_G5",
+  },
+  {
+    name: "q4_1_1",
+    section: "S5",
+    group: "S5_G1",
+    question: "S5_G1_4.1.1",
+    type: "multiple-option",
+  },
 ];
 
 const FlexibleForms = ({ match: { params }, ...props }) => {
@@ -546,11 +568,23 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           ? value.map((x) => ({ role: x.role, stakeholder: x.stakeholderId }))
           : [{}];
     }
+    if (name === "stakeholder_connections") {
+      res =
+        value.length > 0
+          ? value.map((x) => ({ role: x.role, stakeholder: x.stakeholder_id }))
+          : [{}];
+    }
 
     if (name === "entityConnections") {
       res =
         value.length > 0
           ? value.map((x) => ({ role: x.role, entity: x.entityId }))
+          : [{}];
+    }
+    if (name === "entity_connections") {
+      res =
+        value.length > 0
+          ? value.map((x) => ({ role: x.role, entity: x.entity_id }))
           : [{}];
     }
 
@@ -590,7 +624,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
             return enumKey;
           })
         : Object.keys(value);
-      res = transnationalValue.map((x) => parseInt(x));
+      res = transnationalValue.map((x) => x);
     }
     if (type === "option" && isArray && name === "q24_2") {
       const transnationalValue = isArray
@@ -599,7 +633,16 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
             return enumKey;
           })
         : Object.keys(value);
-      res = transnationalValue.map((x) => parseInt(x));
+      res = transnationalValue.map((x) => x);
+    }
+    if (type === "option" && isArray && name === "q24_3") {
+      const transnationalValue = isArray
+        ? value.map((item) => {
+            const enumKey = Object.keys(item)[0];
+            return enumKey;
+          })
+        : Object.keys(value);
+      res = transnationalValue.map((x) => x);
     }
     // EOL Geo Transnational handle
 
@@ -613,6 +656,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     if (type === "item-array" && isObject && isArray) {
       res = value;
     }
+    console.log(name);
+    console.log(value);
     return res;
   };
 
@@ -677,7 +722,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           //     d.data.languages && d.data.languages.length > 0
           //       ? d.data.languages[0].url
           //       : d.data.url,
-          //   entityConnections: [...d.data.entityConnections, ...newData],
+          //   entity_connections: [...d.data.entity_connections, ...newData],
           // };
           initialFormData.update((e) => {
             e.data = revertFormData(JSON.parse(d.data));
@@ -1106,7 +1151,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
               ...e.data.S5,
               S5_G1: {
                 ...e.data.S4.S5_G1,
-                S5_G1_4: ["4-1"],
+                S5_G1_4: [
+                  {
+                    "4-1":
+                      "WORKING WITH PEOPLE (encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes).",
+                  },
+                ],
               },
             },
           };
@@ -1120,7 +1170,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
               ...e.data.S5,
               S5_G1: {
                 ...e.data.S4.S5_G1,
-                S5_G1_4: ["4-0"],
+                S5_G1_4: [
+                  {
+                    "4-0":
+                      "LEGISLATION, STANDARDS, RULES (e.g., agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments).",
+                  },
+                ],
               },
             },
           };
@@ -1134,7 +1189,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
               ...e.data.S5,
               S5_G1: {
                 ...e.data.S4.S5_G1,
-                S5_G1_4: ["4-2"],
+                S5_G1_4: [
+                  {
+                    "4-2":
+                      "TECHNOLOGY and PROCESSES (new technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning).",
+                  },
+                ],
               },
             },
           };
@@ -1148,7 +1208,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
               ...e.data.S5,
               S5_G1: {
                 ...e.data.S4.S5_G1,
-                S5_G1_4: ["4-3"],
+                S5_G1_4: [
+                  {
+                    "4-3":
+                      "MONITORING and ANALYSIS (collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis).",
+                  },
+                ],
               },
             },
           };
