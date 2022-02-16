@@ -1259,16 +1259,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                         include Action Plans, Initiatives, Technical resources,
                         Financing resources, Policies, Events, and Technologies.
                         Learn more about each category and sub-categories
-                        definitions in the “Content Type” section of this form.
-                        A quick summary sheet with categories and sub-categories
-                        can be downloaded{" "}
-                        <a
-                          href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37512/Categories%20and%20Sub%20Categories%20for%20the%20forms.pdf?sequence=3&isAllowed=y"
-                          target="_blank"
-                        >
-                          here
-                        </a>
-                        .
+                        definitions in the “Content Type” section of this form
                       </p>
                       <p>
                         Once submitted resources go through a review process
