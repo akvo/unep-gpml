@@ -79,7 +79,7 @@ const renderSectionIssue = () => {
             The Issue: Marine Litter & Plastic Pollution
           </h2>
           <p className="txt-emphasis text-white">
-            Marine plastic pollution is one of the biggest environmental
+            Marine liter and plastic pollution is one of the biggest environmental
             problems we face. Managing the problem requires urgent cooperation.
             Find out more below.
           </p>
