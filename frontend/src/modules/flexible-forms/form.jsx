@@ -59,6 +59,7 @@ const FlexibleForm = withRouter(
     const flexibleFormData = initialFormData.useState();
 
     const [dependValue, setDependValue] = useState([]);
+    const [schema, setSchema] = useState(formSchema.schema);
     const [editCheck, setEditCheck] = useState(true);
 
     const handleOnSubmit = ({ formData }) => {
@@ -382,6 +383,31 @@ const FlexibleForm = withRouter(
             setSending(false);
           });
       }
+      if (status === "edit" || params?.id) {
+        delete data.version;
+        api
+          .put(`/detail/project/${id || params?.id}`, data)
+          .then(() => {
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully updated" });
+            history.push(`/project/${id || params?.id}`);
+          })
+          .catch(() => {
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            history.push(`/project/${id || params?.id}`);
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
     };
 
     const handleOnSubmitPolicy = (formData) => {
@@ -393,8 +419,9 @@ const FlexibleForm = withRouter(
         ...formData,
         ...(capacityBuilding && { capacityBuilding: true }),
       };
-
+      console.log(formData);
       transformFormData(data, formData, formSchema.schema.properties, true);
+      console.log(data);
 
       data.version = parseInt(formSchema.schema.version);
 
@@ -496,6 +523,16 @@ const FlexibleForm = withRouter(
       }
 
       if (status === "add" && !params?.id) {
+        data?.image && data?.image === "" && delete data.image;
+      }
+
+      if (status === "edit" || params?.id) {
+        data?.image &&
+          data?.image.match(customFormats.url) &&
+          delete data.image;
+      }
+
+      if (status === "add" && !params?.id) {
         api
           .post("/policy", data)
           .then(() => {
@@ -507,6 +544,31 @@ const FlexibleForm = withRouter(
             notification.success({ message: "Resource successfully created" });
           })
           .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+      if (status === "edit" || params?.id) {
+        delete data.version;
+        api
+          .put(`/detail/${type}/${id || params?.id}`, data)
+          .then(() => {
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully updated" });
+            history.push(`/${type}/${id || params?.id}`);
+          })
+          .catch(() => {
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            history.push(`/${type}/${id || params?.id}`);
             notification.error({ message: "An error occured" });
           })
           .finally(() => {
@@ -618,6 +680,11 @@ const FlexibleForm = withRouter(
         delete data.related;
       }
 
+      if (data?.summary) {
+        data.description = data?.summary;
+        delete data.summary;
+      }
+
       if (status === "add" && !params?.id) {
         api
           .post("/event", data)
@@ -630,6 +697,31 @@ const FlexibleForm = withRouter(
             notification.success({ message: "Resource successfully created" });
           })
           .catch(() => {
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+      if (status === "edit" || params?.id) {
+        delete data.version;
+        api
+          .put(`/detail/${type}/${id || params?.id}`, data)
+          .then(() => {
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully updated" });
+            history.push(`/${type}/${id || params?.id}`);
+          })
+          .catch(() => {
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            history.push(`/${type}/${id || params?.id}`);
             notification.error({ message: "An error occured" });
           })
           .finally(() => {
@@ -760,6 +852,31 @@ const FlexibleForm = withRouter(
             setSending(false);
           });
       }
+      if (status === "edit" || params?.id) {
+        delete data.version;
+        api
+          .put(`/detail/${type}/${id || params?.id}`, data)
+          .then(() => {
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully updated" });
+            history.push(`/${type}/${id || params?.id}`);
+          })
+          .catch(() => {
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            history.push(`/${type}/${id || params?.id}`);
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
     };
 
     const handleFormOnChange = useCallback(
@@ -822,6 +939,8 @@ const FlexibleForm = withRouter(
         } else {
           updatedFormDataSchema = formSchema.schema;
         }
+
+        setSchema(updatedFormDataSchema);
 
         // to overide validation
         let dependFields = [];
@@ -962,7 +1081,7 @@ const FlexibleForm = withRouter(
         <>
           <Form
             idPrefix="flexibleForm"
-            schema={formSchema.schema}
+            schema={schema}
             uiSchema={uiSchema[selectedMainContentType]}
             formData={flexibleFormData.data}
             onChange={(e) => handleFormOnChange(e)}

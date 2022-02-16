@@ -273,11 +273,21 @@ const Root = () => {
   const [countData, setCountData] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
-  const getResults = () => {
-    // NOTE: The url needs to be window.location.search because of how
-    // of how `history` and `location` are interacting!
+  const getResults = (query) => {
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
+    const topic = [
+      "action_plan",
+      "project",
+      "policy",
+      "technical_resource",
+      "technology",
+      "event",
+      "financing_resource",
+    ];
+    if (query.topic.length === 0) {
+      searchParms.set("topic", topic);
+    }
     const url = `/browse?${String(searchParms)}`;
     api
       .get(url)
@@ -299,7 +309,6 @@ const Root = () => {
     });
     setLoading(true);
     const newQuery = { ...query };
-
     newQuery[param] = value;
     if (param !== "offset") {
       newQuery["offset"] = 0;
@@ -308,11 +317,47 @@ const Root = () => {
     const newParams = new URLSearchParams(newQuery);
     history.push(`/knowledge-library?${newParams.toString()}`);
     clearTimeout(tmid);
-    tmid = setTimeout(getResults, 1000);
+    tmid = setTimeout(getResults(newQuery), 1000);
     if (param === "country") {
       setFilterCountries(value);
     }
   };
+
+  useEffect(() => {
+    // setFilterCountries if user click from map to browse view
+    query?.country &&
+      query?.country.length > 0 &&
+      setFilterCountries(query.country);
+
+    // Manage filters display
+    !filters && setFilters(query);
+    if (filters) {
+      setFilters({ ...filters, topic: query.topic, tag: query.tag });
+      setFilterCountries(filters.country);
+    }
+
+    setLoading(true);
+    if (isLoading === false && !filters) {
+      setTimeout(getResults(query), 0);
+    }
+
+    if (isLoading === false && filters) {
+      const newParams = new URLSearchParams({
+        ...filters,
+        topic: query.topic,
+        tag: query.tag,
+      });
+      if (history.location.pathname === "/knowledge-library") {
+        history.push(`/knowledge-library?${newParams.toString()}`);
+      }
+      clearTimeout(tmid);
+      tmid = setTimeout(getResults(query), 1000);
+    }
+    // NOTE: Since we are using `history` and `location`, the
+    // dependency needs to be []. Ignore the linter warning, because
+    // adding a dependency here on location makes the FE send multiple
+    // requests to the backend.
+  }, [isLoading]); // eslint-disable-line
 
   return (
     <>
@@ -430,33 +475,31 @@ const Root = () => {
             render={(props) => <Glossary {...props} />}
           />
           <Route
+            exact
             path="/knowledge-library"
             render={(props) => (
               <KnowledgeLibrary
                 {...{
-                  updateQuery,
-                  getResults,
+                  history,
                   query,
                   results,
-                  setResults,
+                  countData,
+                  pageSize,
                   loading,
-                  setLoading,
+                  filters,
+                  filterMenu,
                   filterCountries,
-                  setFilterCountries,
-                  location,
-                  relations,
-                  setRelations,
                   isAuthenticated,
                   loginWithPopup,
-                  isLoading,
-                  warningVisible,
-                  setWarningVisible,
-                  pageSize,
-                  countData,
-                  setCountData,
                   multiCountryCountries,
+
+                  //Functions
+                  updateQuery,
+                  setFilters,
+                  setRelations,
                   setMultiCountryCountries,
                   setWarningModalVisible,
+                  setStakeholderSignupModalVisible,
                   ...props,
                 }}
                 setStakeholderSignupModalVisible={
@@ -513,7 +556,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-event/:id"
-            render={(props) => <AddEvent {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -523,7 +566,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-technology/:id"
-            render={(props) => <AddTechnology {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -533,7 +576,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-policy/:id"
-            render={(props) => <AddPolicy {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route
@@ -573,7 +616,7 @@ const Root = () => {
           <Route
             exact
             path="/edit-initiative/:id"
-            render={(props) => <AddInitiative {...props} />}
+            render={(props) => <FlexibleForms {...props} />}
           />
 
           <Route

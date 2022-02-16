@@ -3,6 +3,7 @@ import React from "react";
 import { Select, Tabs, Popover } from "antd";
 import { DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import isEmpty from "lodash/isEmpty";
+import { topicNames, tTypes } from "../../utils/misc";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -32,6 +33,7 @@ const CountryTransnationalFilter = ({
 
   const countryOpts = isLoaded()
     ? countries
+        .filter((country) => country.description === "Member State")
         .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
     : [];
@@ -123,33 +125,29 @@ const CountryTransnationalFilter = ({
 };
 
 const ResourcesInfo = (data) => {
-  const resource = data?.data;
+  const dataToDisplay = {
+    initiative: data?.data?.initiative,
+    actionPlan: data?.data?.actionPlan,
+    policy: data?.data?.policy,
+    technicalResource: data?.data?.technicalResource,
+    financingResource: data?.data?.financingResource,
+    event: data?.data?.event,
+    technology: data?.data?.technology,
+  };
+
   return (
     <ul className="info-resources">
-      <li>
-        actionPlan: <b>{resource?.actionPlan}</b>
-      </li>
-      <li>
-        event: <b>{resource?.event}</b>
-      </li>
-      <li>
-        financingResource: <b>{resource?.financingResource}</b>
-      </li>
-      <li>
-        organisation: <b>{resource?.organisation}</b>
-      </li>
-      <li>
-        policy: <b>{resource?.policy}</b>
-      </li>
-      <li>
-        project: <b>{resource?.project}</b>
-      </li>
-      <li>
-        stakeholder: <b>{resource?.stakeholder}</b>
-      </li>
-      <li>
-        technicalResource: <b>{resource?.technicalResource}</b>
-      </li>
+      {tTypes.map((topic) => {
+        return (
+          topic !== "organisation" &&
+          topic !== "stakeholder" && (
+            <li key={topic}>
+              <span>{topicNames(topic)}</span>:{" "}
+              <b>{dataToDisplay?.[topic] ? dataToDisplay[topic] : 0}</b>
+            </li>
+          )
+        );
+      })}
     </ul>
   );
 };

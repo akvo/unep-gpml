@@ -224,8 +224,10 @@
             color: #34a6ff;
           }
           h4 {
-            color: #34a6ff;
-            font-weight: 700;
+            a {
+              color: #34a6ff;
+              font-weight: 700;
+            }
           }
         }
       }

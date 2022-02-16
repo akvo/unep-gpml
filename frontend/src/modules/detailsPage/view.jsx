@@ -747,7 +747,9 @@ const DetailsView = ({
                 <img src={ActionGreen} />
                 <div>
                   <Title level={2}>{topicNames(params?.type)}</Title>
-                  <Title level={4}>{data?.title}</Title>
+                  <Title level={4}>
+                    {params?.type !== "technology" ? data?.title : data?.name}
+                  </Title>
                 </div>
               </div>
             </Col>
@@ -778,7 +780,7 @@ const DetailsView = ({
         <div className="ui container">
           <Row gutter={[16, 16]}>
             <Col xs={6} lg={6}>
-              <div className="views-container">
+              {/* <div className="views-container">
                 <List itemLayout="horizontal">
                   <List.Item>
                     <List.Item.Meta
@@ -787,7 +789,7 @@ const DetailsView = ({
                     />
                   </List.Item>
                 </List>
-              </div>
+              </div> */}
 
               <CardComponent
                 title="Location and Geo-coverage"
@@ -859,9 +861,9 @@ const DetailsView = ({
                 }}
               >
                 <div className="list connection-list">
-                  <List itemLayout="horizontal">
-                    {data?.entityConnections.length > 0 &&
-                      data?.entityConnections.map((item) => (
+                  {data?.entityConnections.length > 0 && (
+                    <List itemLayout="horizontal">
+                      {data?.entityConnections.map((item) => (
                         <List.Item>
                           <List.Item.Meta
                             avatar={
@@ -873,25 +875,35 @@ const DetailsView = ({
                                 }
                               />
                             }
-                            title={item.entity}
+                            title={
+                              <Link to={`/organisation/${item.entityId}`}>
+                                {item.entity}
+                              </Link>
+                            }
                             description={"Entity"}
                           />{" "}
                           {/* <div className="see-more-button">See More</div> */}
                         </List.Item>
                       ))}
-                  </List>
-                  <List itemLayout="horizontal">
-                    {data?.stakeholderConnections.length > 0 &&
-                      data?.stakeholderConnections.map((item) => (
+                    </List>
+                  )}
+                  {data?.stakeholderConnections.length > 0 && (
+                    <List itemLayout="horizontal">
+                      {data?.stakeholderConnections.map((item) => (
                         <List.Item>
                           <List.Item.Meta
                             avatar={<Avatar src={item.image} />}
-                            title={item.stakeholder}
+                            title={
+                              <Link to={`/stakeholder/${item.stakeholderId}`}>
+                                {item.stakeholder}
+                              </Link>
+                            }
                             description={item.role}
                           />
                         </List.Item>
                       ))}
-                  </List>
+                    </List>
+                  )}
                   {/* <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
@@ -925,7 +937,11 @@ const DetailsView = ({
                       marginBottom: "30px",
                     }}
                   >
-                    <p className="summary">{data?.summary}</p>
+                    <p className="summary">
+                      {params?.type !== "technology"
+                        ? data?.summary
+                        : data?.remarks}
+                    </p>
                   </CardComponent>
                 )}
 
@@ -1004,9 +1020,11 @@ const DetailsView = ({
                                 )}
                               </Avatar.Group>
                             </div>
-                            <div className="read-more">
-                              Read More <ArrowRightOutlined />
-                            </div>
+                            <a href={`/${params.type}/${item.id}`}>
+                              <div className="read-more">
+                                Read More <ArrowRightOutlined />
+                              </div>
+                            </a>
                           </div>
                         </Card>
                       </Col>

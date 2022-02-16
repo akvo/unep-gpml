@@ -24,7 +24,6 @@ import FlexibleForm from "./form";
 import isEmpty from "lodash/isEmpty";
 import { useAuth0 } from "@auth0/auth0-react";
 import api from "../../utils/api";
-import { revertFormData } from "../../utils/forms";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -67,10 +66,10 @@ const getTypeByResource = (type) => {
       name = "Action Plan";
       break;
     case "event":
-      t = "eventevent_flexible";
+      t = "event_flexible";
       name = "Event";
       break;
-    case "project":
+    case "initiative":
       t = "initiative";
       name = "Initiative";
       break;
@@ -239,6 +238,153 @@ const formDataMapping = [
     group: "S4_G4",
     question: "image",
   },
+  {
+    key: "originalTitle",
+    name: "originalTitle",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "originalTitle",
+  },
+  {
+    key: "dataSource",
+    name: "dataSource",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "dataSource",
+  },
+  {
+    key: "typeOfLaw",
+    name: "typeOfLaw",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "typeOfLaw",
+  },
+  {
+    key: "recordNumber",
+    name: "recordNumber",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "recordNumber",
+  },
+  {
+    key: "implementingMea",
+    name: "implementingMea",
+    group: null,
+    type: "integer",
+    section: "S5",
+    question: "implementingMea",
+  },
+  {
+    key: "status",
+    name: "status",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "status",
+  },
+  {
+    key: "topics",
+    name: "topics",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "topics",
+  },
+  {
+    key: "firstPublicationDate",
+    name: "firstPublicationDate",
+    group: "date",
+    type: "date",
+    section: "S5",
+    question: "firstPublicationDate",
+  },
+  {
+    key: "latestAmendmentDate",
+    name: "latestAmendmentDate",
+    group: "date",
+    type: "date",
+    section: "S5",
+    question: "latestAmendmentDate",
+  },
+  {
+    key: "startDate",
+    name: "startDate",
+    group: "date",
+    type: "date",
+    section: "S5",
+    question: "startDate",
+  },
+  {
+    key: "endDate",
+    name: "endDate",
+    group: "date",
+    type: "date",
+    section: "S5",
+    question: "endDate",
+  },
+  {
+    key: "eventType",
+    name: "eventType",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "eventType",
+  },
+  {
+    key: "yearFounded",
+    name: "yearFounded",
+    group: null,
+    type: "year",
+    section: "S5",
+    question: "yearFounded",
+  },
+  {
+    key: "organisationType",
+    name: "organisationType",
+    group: null,
+    type: "string",
+    section: "S5",
+    question: "organisationType",
+  },
+  {
+    name: "q24_3",
+    group: "S4_G2",
+    type: "option",
+    section: "S4",
+    question: "S4_G2_24.4",
+  },
+  {
+    name: "q24_4",
+    group: "S4_G2",
+    type: "option",
+    section: "S4",
+    question: "S4_G2_24.3",
+  },
+  {
+    name: "q24",
+    section: "S4",
+    group: "S4_G2",
+    question: "geoCoverageType",
+    type: "option",
+  },
+  {
+    name: "q2",
+    section: "S4",
+    group: "S4_G1",
+    question: "title",
+    type: "string",
+  },
+  {
+    name: "q3",
+    section: "S4",
+    group: "S4_G1",
+    question: "summary",
+    type: "string",
+  },
 ];
 
 const FlexibleForms = ({ match: { params }, ...props }) => {
@@ -349,7 +495,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
   const getResourceByType = (type) => {
     const t = getType(type);
-
     api.get(`/list/${t}`).then((res) => {
       UIStore.update((e) => {
         e.relatedResource = res.data;
@@ -428,8 +573,16 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       res = value !== "Not  Specified" ? parseInt(value) : value;
     }
 
+    if (name === "implementingMea") {
+      const mea = meaOptions.find(
+        (x) => x.name.toLowerCase() === value.toLowerCase()
+      );
+      res = mea ? mea.id : null;
+    }
+
     // Geo Transnational handle
     // case for transnational geo value
+
     if (type === "option" && isArray && name === "q24_4") {
       const transnationalValue = isArray
         ? value.map((item) => {
@@ -460,8 +613,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     if (type === "item-array" && isObject && isArray) {
       res = value;
     }
-    console.log(name);
-    console.log(res);
     return res;
   };
 
@@ -469,7 +620,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     let formData = initialDataEdit;
     formDataMapping.forEach((item) => {
       const { name, section, group, question, type } = item;
-
       const value = data?.[name];
       if (!group && value && value !== "Ongoing") {
         formData = {
@@ -509,29 +659,55 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           state?.state.type
         ).type;
       });
-      api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
-        let newData = [];
-        if (d.data.organisations) {
-          newData = d.data.organisations.map((item) => {
-            return {
-              role: "owner",
-              entityId: item.id,
-            };
-          });
-        }
-        d.data = {
-          ...d.data,
-          url:
-            d.data.languages && d.data.languages.length > 0
-              ? d.data.languages[0].url
-              : d.data.url,
-          entityConnections: [...d.data.entityConnections, ...newData],
-        };
 
-        initialFormData.update((e) => {
-          e.data = revertFormData(d.data);
+      if (state?.state.type === "initiative") {
+        api.getRaw(`/initiative/${dataId}`).then((d) => {
+          // let newData = [];
+          // if (d.data.organisations) {
+          //   newData = d.data.organisations.map((item) => {
+          //     return {
+          //       role: "owner",
+          //       entityId: item.id,
+          //     };
+          //   });
+          // }
+          // d.data = {
+          //   ...d.data,
+          //   url:
+          //     d.data.languages && d.data.languages.length > 0
+          //       ? d.data.languages[0].url
+          //       : d.data.url,
+          //   entityConnections: [...d.data.entityConnections, ...newData],
+          // };
+          initialFormData.update((e) => {
+            e.data = revertFormData(JSON.parse(d.data));
+          });
         });
-      });
+      } else {
+        api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
+          let newData = [];
+          if (d.data.organisations) {
+            newData = d.data.organisations.map((item) => {
+              return {
+                role: "owner",
+                entityId: item.id,
+              };
+            });
+          }
+          d.data = {
+            ...d.data,
+            url:
+              d.data.languages && d.data.languages.length > 0
+                ? d.data.languages[0].url
+                : d.data.url,
+            entityConnections: [...d.data.entityConnections, ...newData],
+          };
+
+          initialFormData.update((e) => {
+            e.data = revertFormData(d.data);
+          });
+        });
+      }
     }
   }, [status, schema, initialFormData, state]);
 

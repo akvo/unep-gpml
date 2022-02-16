@@ -22,6 +22,7 @@ const FilterDrawer = ({
   entities,
   query,
   updateQuery,
+  stakeholder,
 }) => {
   const {
     countries,

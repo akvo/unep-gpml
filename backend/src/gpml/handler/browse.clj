@@ -2,6 +2,11 @@
   (:require [clojure.string :as str]
             [gpml.constants :refer [topics resource-types approved-user-topics]]
             [gpml.db.country-group :as db.country-group]
+            [gpml.db.event :as db.event]
+            [gpml.db.initiative :as db.initiative]
+            [gpml.db.policy :as db.policy]
+            [gpml.db.resource :as db.resource]
+            [gpml.db.technology :as db.technology]
             [gpml.db.topic :as db.topic]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
@@ -101,6 +106,35 @@
             filtered-topics (set (maybe-filter-private-topics t approved?))]
         (merge db-filter {:topic filtered-topics})))))
 
+(defn- result->result-with-connections [db {:keys [type] :as result}]
+  (case type
+    (or "technical_resource" "financing_resource" "action_plan")
+    (merge result
+      {:entity_connections (db.resource/entity-connections-by-id db (select-keys result [:id]))
+       :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys result [:id]))})
+
+    "event"
+    (merge result
+      {:entity_connections (db.event/entity-connections-by-id db (select-keys result [:id]))
+       :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys result [:id]))})
+
+    "project"
+    (merge result
+      {:entity_connections (db.initiative/entity-connections-by-id db (select-keys result [:id]))
+       :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys result [:id]))})
+
+    "policy"
+    (merge result
+      {:entity_connections (db.policy/entity-connections-by-id db (select-keys result [:id]))
+       :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys result [:id]))})
+
+    "technology"
+    (merge result
+      {:entity_connections (db.technology/entity-connections-by-id db (select-keys result [:id]))
+       :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys result [:id]))})
+
+    result))
+
 (defn browse-response [query db approved? admin]
   (let [modified-filters (->> query
                               (get-db-filter)
@@ -121,7 +155,8 @@
                     (db.topic/get-topics db)
                     (filter #(or approved?
                                  (not (contains? approved-user-topics (:topic %))))))]
-    {:results results :counts counts}))
+    {:results (map #(result->result-with-connections db %) results)
+     :counts counts}))
 
 (defmethod ig/init-key :gpml.handler.browse/get [_ {:keys [db]}]
   (fn [{{:keys [query]} :parameters
