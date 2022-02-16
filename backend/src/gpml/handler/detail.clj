@@ -614,6 +614,7 @@
                         (merge (when (:topics updates)
                                  {:topics (pg-util/->JDBCArray (:topics updates) "text")})))
         tags (remove nil? (:tags updates))
+        urls (remove nil? (:urls updates))
         params {:table table :id id :updates table-columns}
         status (db.detail/update-resource-table conn params)
         org (:org updates)
@@ -630,6 +631,7 @@
       (update-resource-logo conn (:logo updates) table id))
     (when-not (empty? tags)
       (update-resource-tags conn table id tags))
+    (update-resource-language-urls conn table id urls)
     (update-resource-geo-coverage-values conn table id updates)
     (when (contains? #{"resource"} table)
       (update-resource-organisation conn table id org-id))
@@ -642,7 +644,6 @@
 (defn update-initiative [conn id data]
   (let [params (merge {:id id} data)
         tags (remove nil? (:tags data))
-        urls (remove nil? (:urls data))
         status (jdbc/with-db-transaction [conn-tx conn]
                  (let [status (db.detail/update-initiative
                                 conn-tx
@@ -654,7 +655,6 @@
       (update-resource-image conn (:qimage data) "initiative" id))
     (when-not (empty? tags)
       (update-resource-tags conn "initiative" id tags))
-    (update-resource-language-urls conn "initiative" id urls)
     (when (contains? data :entity_connections)
       (update-resource-entity-connections conn (:entity_connections data) "initiative" id))
     (when (contains? data :individual_connections)
