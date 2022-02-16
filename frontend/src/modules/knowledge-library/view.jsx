@@ -53,7 +53,7 @@ const KnowledgeLibrary = ({
   setStakeholderSignupModalVisible,
 }) => {
   const [filterVisible, setFilterVisible] = useState(false);
-  const [listVisible, setListVisible] = useState(true);
+  // const [listVisible, setListVisible] = useState(true);
   const [view, setView] = useState("map");
 
   const selectionValue = (
@@ -255,7 +255,7 @@ const KnowledgeLibrary = ({
           <LeftSidebar active={1}>
             <Row className="resource-main-container">
               {/* Resource Main Content */}
-              {listVisible && (
+              {/* {listVisible && ( */}
                 <Col
                   lg={10}
                   md={9}
@@ -277,7 +277,7 @@ const KnowledgeLibrary = ({
                   <ResourceList
                     view={view}
                     filters={filters}
-                    setListVisible={setListVisible}
+                    // setListVisible={setListVisible}
                     countData={countData}
                     updateQuery={updateQuery}
                     loading={loading}
@@ -286,12 +286,15 @@ const KnowledgeLibrary = ({
                     hideListButtonVisible={view === "map"}
                   />
                 </Col>
-              )}
+              {/* // )} */}
               {/* Map/Topic View */}
               <Col
-                lg={listVisible ? 14 : 24}
-                md={listVisible ? 15 : 24}
-                sm={listVisible ? 12 : 24}
+                // lg={listVisible ? 14 : 24}
+                // md={listVisible ? 15 : 24}
+                // sm={listVisible ? 12 : 24}
+                lg={14}
+                md={15}
+                sm={12}
                 xs={24}
                 align="center"
                 className="render-map-container map-main-wrapper"
@@ -314,11 +317,11 @@ const KnowledgeLibrary = ({
                       updateQuery,
                       multiCountryCountries,
                       setMultiCountryCountries,
-                      setListVisible,
-                      listVisible,
+                      // setListVisible,
+                      // listVisible,
                     }}
                     isFilteredCountry={filterCountries}
-                    isDisplayedList={listVisible}
+                    // isDisplayedList={listVisible}
                   />
                 ) : (
                   <>

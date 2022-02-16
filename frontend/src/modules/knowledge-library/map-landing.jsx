@@ -25,7 +25,7 @@ const MapLanding = ({
 
   //Functions
   updateQuery,
-  setListVisible,
+  // setListVisible,
   setToggleButton,
   setMultiCountryCountries,
   setWarningModalVisible,
@@ -156,7 +156,7 @@ const MapLanding = ({
             <LoadingOutlined spin /> Loading
           </h2>
         )}
-        {isLoaded() && !listVisible && (
+        {/* {isLoaded() && !listVisible && (
           <div className="map-overlay">
             <PageHeader
               className="resource-list-header"
@@ -193,7 +193,7 @@ const MapLanding = ({
               updateQuery={updateQuery}
             />
           </div>
-        )}
+        )} */}
         <Maps
           isFilteredCountry={isFilteredCountry}
           isDisplayedList={isDisplayedList}
