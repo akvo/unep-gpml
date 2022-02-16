@@ -209,10 +209,18 @@
   }
 
   .all-profiles {
-    padding: 26.79px 0 34.66px 0;
+    padding-bottom: 34.66px;
 
     .person-role {
       display: none;
+    }
+    .result-number {
+      padding-top: 16px;
+      padding-bottom: 16px;
+      max-width: max-content;
+      margin: auto;
+      font-size: 12px;
+      text-align: center;
     }
   }
 

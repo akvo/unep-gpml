@@ -185,6 +185,12 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       });
   };
 
+  const itemCount = loading
+    ? 0
+    : filters?.offset !== undefined
+    ? resultCount
+    : pageSize;
+
   useEffect(() => {
     if (isLoading === false && !filters) {
       setTimeout(getResults(query), 0);
@@ -361,15 +367,23 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                   <LoadingOutlined spin /> Loading
                 </h2>
               ) : isLoaded() && !loading && !isEmpty(results) ? (
-                <div className="card-wrapper ui container">
-                  {results.map((profile) => (
-                    <ProfileCard
-                      key={profile?.id}
-                      profile={profile}
-                      isValidUser={isValidUser}
-                    />
-                  ))}
-                </div>
+                <>
+                  <div className="result-number">
+                    {resultCount > pageSize + Number(filters?.offset)
+                      ? pageSize + Number(filters?.offset)
+                      : itemCount}{" "}
+                    of {resultCount || 0} result{resultCount > 1 ? "s" : ""}
+                  </div>
+                  <div className="card-wrapper ui container">
+                    {results.map((profile) => (
+                      <ProfileCard
+                        key={profile?.id}
+                        profile={profile}
+                        isValidUser={isValidUser}
+                      />
+                    ))}
+                  </div>
+                </>
               ) : (
                 <h2 className="loading">There is no data to display</h2>
               )}
@@ -387,12 +401,6 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                     }
                   />
                 )}
-                <div className="result-number">
-                  {resultCount > pageSize + Number(filters?.offset)
-                    ? pageSize + Number(filters?.offset)
-                    : resultCount}{" "}
-                  of {resultCount || 0} result{resultCount > 1 ? "s" : ""}
-                </div>
               </div>
             </Col>
           </Col>
