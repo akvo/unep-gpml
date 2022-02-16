@@ -5,14 +5,8 @@ import "./unathenticated-page.scss";
 const UnathenticatedPage = ({ loginWithPopup }) => {
   return (
     <div className="unathenticated-page">
-      <h2 className="heading">
-        Welcome to GPML Digital Platform - Communities
-      </h2>
-
       <p>
-        You can now connect with other members of the GPML Digital Platform
-        using communities forums. Here you can exchange feedback and learn from
-        other GPML members.
+        You can now connect with other members of the GPML Digital Platform.
       </p>
       <p>Get started now!</p>
       <p>
@@ -22,7 +16,7 @@ const UnathenticatedPage = ({ loginWithPopup }) => {
           alt="check"
         />{" "}
         First, create an individual account by directly signing up to the GPML
-        Digital Platform (if you don?t have one yet)
+        Digital Platform (if you don't have one yet)
       </p>
       <p>
         <a href="https://digital.gpmarinelitter.org/signup">
