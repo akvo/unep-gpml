@@ -564,6 +564,16 @@
 (defn update-resource-image [conn image image-type resource-id]
   (-update-resource-picture conn image image-type resource-id false))
 
+(defn -update-initiative-picture [conn image image-type initiative-id]
+  (let [url (handler.image/assoc-image conn image image-type)]
+    (when-not (and image (= image url))
+      (db.detail/update-resource-table
+        conn
+        {:table image-type :id initiative-id :updates {:qimage url}}))))
+
+(defn update-initiative-image [conn image image-type initiative-id]
+  (-update-initiative-picture conn image image-type initiative-id))
+
 (defn update-resource-logo [conn image image-type resource-id]
   (-update-resource-picture conn image image-type resource-id true))
 
@@ -652,7 +662,7 @@
                    (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
                    status))]
     (when (contains? data :qimage)
-      (update-resource-image conn (:qimage data) "initiative" id))
+      (update-initiative-image conn (:qimage data) "initiative" id))
     (when-not (empty? tags)
       (update-resource-tags conn "initiative" id tags))
     (when (contains? data :entity_connections)
