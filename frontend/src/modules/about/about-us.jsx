@@ -38,9 +38,9 @@ const summary = [
   },
 ];
 
-const AboutUs = () => {
+const AboutUs = (countData) => {
   const nav = UIStore.useState((s) => s.nav);
-
+  console.log(countData);
   return (
     <div id="about-us">
       {renderSectionIssue()}
