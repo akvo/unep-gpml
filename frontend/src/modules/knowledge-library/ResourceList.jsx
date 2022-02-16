@@ -10,12 +10,8 @@ import {
   Tooltip,
   Pagination,
 } from "antd";
-import {
-  UserOutlined,
-  ArrowRightOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
+import { NavLink, Link } from "react-router-dom";
 
 import "./styles.scss";
 import { UIStore } from "../../store";
@@ -28,28 +24,34 @@ import humps from "humps";
 import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 
+// Icons
 import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 import SortIcon from "../../images/knowledge-library/sort-icon.svg";
 
 const ResourceList = ({
-  filters,
-  setListVisible,
-  countData,
-  updateQuery,
-  loading,
+  view,
   results = [],
+  countData,
+  filters,
+  loading,
   pageSize,
   hideListButtonVisible,
-  view,
+  updateQuery,
+  setListVisible,
 }) => {
-  const { profile, countries, tags, transnationalOptions } = UIStore.useState(
-    (s) => ({
-      profile: s.profile,
-      countries: s.countries,
-      tags: s.tags,
-      transnationalOptions: s.transnationalOptions,
-    })
-  );
+  const {
+    profile,
+    countries,
+    tags,
+    transnationalOptions,
+    stakeholders,
+  } = UIStore.useState((s) => ({
+    profile: s.profile,
+    countries: s.countries,
+    tags: s.tags,
+    transnationalOptions: s.transnationalOptions,
+    stakeholders: s.stakeholders,
+  }));
 
   const [allResults, setAllResults] = useState([]);
   const [isAscending, setIsAscending] = useState(null);
@@ -79,8 +81,6 @@ const ResourceList = ({
     0
   );
 
-  const allTopicCount = countData.reduce((acc, topic) => acc + topic.count, 0);
-
   const itemCount = loading
     ? 0
     : filters?.offset !== undefined
@@ -91,18 +91,26 @@ const ResourceList = ({
     if (!isAscending) {
       const sortAscending = allResults.sort((result1, result2) => {
         if (result1?.title) {
-          return result1.title.localeCompare(result2.title);
+          return result1.title.localeCompare(result2.title, "en", {
+            numeric: true,
+          });
         } else {
-          return result1?.name?.localeCompare(result2?.name);
+          return result1?.name?.localeCompare(result2?.name, "en", {
+            numeric: true,
+          });
         }
       });
       setAllResults(sortAscending);
     } else {
       const sortDescending = allResults.sort((result1, result2) => {
         if (result2?.title) {
-          return result2.title.localeCompare(result1.title);
+          return result2.title.localeCompare(result1.title, "en", {
+            numeric: true,
+          });
         } else {
-          return result2?.name?.localeCompare(result1?.name);
+          return result2?.name?.localeCompare(result1?.name, "en", {
+            numeric: true,
+          });
         }
       });
       setAllResults(sortDescending);
@@ -183,7 +191,11 @@ const ResourceList = ({
               <LoadingOutlined spin /> Loading
             </h2>
           ) : isLoaded() && !loading && !isEmpty(allResults) ? (
-            <ResourceItem view={view} results={allResults} />
+            <ResourceItem
+              view={view}
+              results={allResults}
+              stakeholders={stakeholders}
+            />
           ) : (
             <h2 className="loading">There is no data to display</h2>
           )}
@@ -211,13 +223,13 @@ const ResourceList = ({
   );
 };
 
-const ResourceItem = ({ results, view }) => {
+const ResourceItem = ({ results, view, stakeholders }) => {
   return results.map((result) => {
     const { id, type } = result;
     const fullName = (data) =>
-      data.title
-        ? `${data.title} ${data.firstName} ${data.lastName}`
-        : `${data.firstName} ${data.lastName}`;
+      data?.title
+        ? `${data?.title} ${data?.firstName} ${data?.lastName}`
+        : `${data?.firstName} ${data?.lastName}`;
     const title =
       (type === "stakeholder" && fullName(result)) ||
       result.title ||
@@ -230,10 +242,29 @@ const ResourceItem = ({ results, view }) => {
       result.remarks ||
       "";
     const linkTo = `/${type}/${id}`;
-    const stakeholders = result?.stakeholder_connections;
-    if (result?.stakeholder_connections) {
-      stakeholders.length = 3;
-    }
+    const stakeholdersConnectionList = result?.stakeholderConnections;
+    const stakeholderCount = result?.stakeholderConnections?.length;
+
+    const getStakeholderCount = () => {
+      if (stakeholderCount > 3) {
+        return `${stakeholderCount - 3}+`;
+      } else {
+        return;
+      }
+    };
+
+    const stakeholderToDisplay = () => {
+      if (stakeholderCount > 3) {
+        return [
+          stakeholdersConnectionList[0],
+          stakeholdersConnectionList[1],
+          stakeholdersConnectionList[2],
+        ];
+      } else {
+        return stakeholdersConnectionList;
+      }
+    };
+
     return (
       <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
         <Card
@@ -254,46 +285,43 @@ const ResourceItem = ({ results, view }) => {
           <div className="item-footer">
             <Space size={5}>
               <Avatar.Group
+                className="avatar-group"
                 maxCount={3}
                 maxStyle={{
                   color: "#f56a00",
                   backgroundColor: "#fde3cf",
                 }}
               >
-                {
-                  result?.stakeholder_connections &&
-                    stakeholders.map((stakeholder) => (
+                {result?.stakeholderConnections &&
+                  stakeholderToDisplay().map((stakeholder) => {
+                    const findStakeholder = stakeholders?.stakeholders?.find(
+                      (pers) => pers.id === stakeholder?.stakeholderId
+                    );
+
+                    return (
                       <Tooltip
-                        key={stakeholder.id}
-                        title={`${stakeholder?.first_name} ${stakeholder?.last_name}`}
+                        key={stakeholder?.id}
+                        title={`${findStakeholder?.firstName} ${findStakeholder?.lastName}`}
                         placement="top"
                       >
-                        <Avatar
-                          style={{ backgroundColor: "#FFB800" }}
-                          icon={<img src={stakeholder?.picture} />}
-                        />
+                        <object className="stakeholder-connection-avatar">
+                          <Link to={`/stakeholder/${findStakeholder?.id}`}>
+                            <Avatar
+                              style={{ backgroundColor: "#FFB800" }}
+                              icon={<img src={stakeholder?.image} />}
+                            />
+                          </Link>
+                        </object>
                       </Tooltip>
-                    ))
-                  // : ["a"].map((b, i) => (
-                  //     <Tooltip
-                  //       key={`avatar-${i}`}
-                  //       title={<UserOutlined />}
-                  //       placement="top"
-                  //     >
-                  //       <Avatar
-                  //         style={{ backgroundColor: "#FFB800" }}
-                  //         icon={<UserOutlined />}
-                  //       />
-                  //     </Tooltip>
-                  //   ))
-                }
+                    );
+                  })}
               </Avatar.Group>
-              <span className="avatar-number">
-                {result.stakeholder_connections
-                  ? `${result.stakeholder_connections?.length - 1}+`
-                  : ""}
-              </span>
             </Space>
+            <span className="avatar-number">
+              {result?.stakeholderConnections?.length !== 0 &&
+                result?.stakeholderConnections !== null &&
+                getStakeholderCount()}
+            </span>
             <span className="read-more">
               Read more
               <ArrowRightOutlined />

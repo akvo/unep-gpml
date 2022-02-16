@@ -10,11 +10,11 @@ import DownArrow from "../../images/knowledge-library/chevron-down.svg";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 
 const Header = ({
+  isAscending,
   filterVisible,
   setFilterVisible,
   renderFilterTag,
   sortPeople,
-  isAscending,
   updateQuery,
 }) => {
   const [view, setView] = useState("map");

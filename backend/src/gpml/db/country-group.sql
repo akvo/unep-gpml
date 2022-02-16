@@ -52,10 +52,14 @@ select * from country_group where id = :id
 insert into country_group_country (country_group, country)
 values(:country_group, :country)
 
-
-
 -- :name get-country-groups-by-country :? :*
 -- :doc get country groups by country-id
 select country_group.id, country_group.name from country_group
 left join country_group_country on country_group_country.country_group= country_group.id
 where country_group_country.country= :id
+
+-- :name get-country-group-countries :? :*
+-- :doc get country group countries by country group id
+select cgc.country as id from country_group_country cgc
+left join country_group cg on cgc.country_group = cg.id
+where cg.id = :id

@@ -2,6 +2,7 @@
   (:require [clojure.string :as str]
             [clojure.test :refer [deftest testing is use-fixtures]]
             [gpml.db.country :as db.country]
+            [gpml.db.country-group :as db.country-group]
             [gpml.db.event :as db.event]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.topic :as db.topic]
@@ -46,6 +47,9 @@
        (db.country/country-by-codes db)
        (map :id)))
 
+(defn get-country-group-ids [db country-id]
+  (db.country-group/get-country-groups-by-country db {:id country-id}))
+
 (deftest topic-filtering
   (let [db (test-util/db-test-conn)
         _ (seeder/seed db {:country? true
@@ -66,7 +70,10 @@
         (is (= 20 (count results1)))
         (is (= (nth results1 0) (nth results 10)))))
     (testing "Filtering by geo coverage"
-      (is (not-empty (db.topic/get-topics db {:geo-coverage (get-country-id db ["IND"])}))))
+      (let [country-id (get-country-id db ["IND"])
+            transnationals (set (map str (get-country-group-ids db (first country-id))))]
+        (is (not-empty (db.topic/get-topics db {:geo-coverage country-id
+                                                :transnational transnationals})))))
     (testing "Filtering by topic"
       (is (empty? (db.topic/get-topics db {:topic #{"policy"}}))))
     (testing "Filtering of unapproved events"
@@ -87,9 +94,12 @@
                        (db.event/update-event-status db (merge event-id {:review_status "APPROVED"}))
                        (db.topic/get-topics db {:topic #{"event"}})))))
     (testing "Combination of 3 filters"
-      (is (not-empty (db.topic/get-topics db {:search-text "barrier"
-                                               :geo-coverage (get-country-id db ["IND"])
-                                               :topic #{"policy" "technology"}}))))))
+      (let [country-id (get-country-id db ["IND"])
+            transnationals (set (map str (get-country-group-ids db (first country-id))))]
+        (is (not-empty (db.topic/get-topics db {:search-text "barrier"
+                                                :geo-coverage country-id
+                                                :transnational transnationals
+                                                :topic #{"policy" "technology"}})))))))
 
 (deftest test-generate-filter-topic-snippet
   (testing "Testing filter-topic snippet with no params"
@@ -116,7 +126,7 @@
     (let [params {:geo-coverage "global"}
           snippet (str/trim (db.topic/generate-filter-topic-snippet params))]
       (is (str/starts-with? snippet "SELECT DISTINCT ON"))
-      (is (str/includes? snippet "AND t.geo_coverage"))
+      (is (str/includes? snippet "AND (t.geo_coverage"))
       (is (not (str/includes? snippet "JOIN")))))
 
   (testing "Testing filter-topic snippet with search-text"

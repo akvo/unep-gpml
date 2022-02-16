@@ -2,15 +2,17 @@
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
             [gpml.auth0-util :as auth0]
-            [gpml.email-util :as email]
-            [gpml.handler.util :as util]
-            [gpml.geo-util :as geo]
             [gpml.constants :as constants]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.organisation :as handler.org]
-            [gpml.handler.image :as handler.image]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.email-util :as email]
+            [gpml.geo-util :as geo]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.image :as handler.image]
+            [gpml.handler.organisation :as handler.org]
+            [gpml.handler.tag :as handler.tag]
+            [gpml.handler.util :as handler.util]
+            [gpml.util :as util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -30,7 +32,7 @@
                            params (assoc query :email-like search :roles roles)
                            stakeholders (db.stakeholder/list-stakeholder-paginated (:spec db) params)
                            count (:count (db.stakeholder/count-stakeholder (:spec db) params))
-                           pages (util/page-count count limit)]
+                           pages (handler.util/page-count count limit)]
                        ;; FIXME: The response is differently shaped
                        ;; for ADMINS and other users. This should be
                        ;; changed once the work on the other branches
@@ -83,7 +85,7 @@
    :public_database   public_database
    :affiliation       (or affiliation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation))})
 
-(defn- remap-profile
+(defn- create-profile
   [{:keys [id photo about
            title first_name role
            non_member_organisation
@@ -132,23 +134,26 @@
                                      profiles)]
     (resp/response profiles-with-verified-flag)))
 
+(defn get-stakeholder-profile [db stakeholder]
+  (let [conn (:spec db)
+        tags (db.stakeholder/stakeholder-tags conn stakeholder)
+        org (db.organisation/organisation-by-id conn {:id (:affiliation stakeholder)})
+        geo-type (:geo_coverage_type stakeholder)
+        geo-value (db.stakeholder/get-stakeholder-geo conn stakeholder)
+        geo (cond
+              (contains? #{"regional" "global with elements in specific areas"} geo-type)
+              (mapv :country_group geo-value)
+              (contains? #{"national" "transnational" "sub-national"} geo-type)
+              (mapv :country geo-value))
+        profile (create-profile stakeholder tags geo org)]
+    (if (-> profile :org :is_member)
+      (assoc profile :affiliation (-> profile :org :id) :non_member_organisation nil)
+      (assoc profile :non_member_organisation (-> profile :org :id) :affiliation nil))))
+
 (defmethod ig/init-key :gpml.handler.stakeholder/profile [_ {:keys [db]}]
   (fn [{:keys [jwt-claims]}]
-    (if-let [profile (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
-      (let [conn (:spec db)
-            tags (db.stakeholder/stakeholder-tags conn profile)
-            org (db.organisation/organisation-by-id conn {:id (:affiliation profile)})
-            geo-type (:geo_coverage_type profile)
-            geo-value (db.stakeholder/get-stakeholder-geo conn profile)
-            geo (cond
-                  (contains? #{"regional" "global with elements in specific areas"} geo-type)
-                  (mapv :country_group geo-value)
-                  (contains? #{"national" "transnational" "sub-national"} geo-type)
-                  (mapv :country geo-value))
-            profile (remap-profile profile tags geo org)]
-        (resp/response (if (-> profile :org :is_member)
-                         (assoc profile :affiliation (-> profile :org :id) :non_member_organisation nil)
-                         (assoc profile :non_member_organisation (-> profile :org :id) :affiliation nil))))
+    (if-let [stakeholder (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
+      (resp/response (get-stakeholder-profile db stakeholder))
       (resp/response {}))))
 
 (defn- make-affiliation [db mailjet-config org]
@@ -262,25 +267,63 @@
               (db.stakeholder/add-stakeholder-geo tx {:geo geo-data}))))
         (resp/status 204)))))
 
+(def ^:const suggested-profiles-per-page 5)
+
+(defn api-suggested-profiles-opts->suggested-profiles-opts
+  [suggested-profiles-opts]
+  (util/update-if-exists suggested-profiles-opts :page #(Integer/parseInt %)))
+
+(defmethod ig/init-key ::suggested-profiles
+  [_ {:keys [db]}]
+  (fn [{:keys [jwt-claims parameters]}]
+    (if-let [stakeholder (db.stakeholder/stakeholder-by-email (:spec db) {:email (:email jwt-claims)})]
+      (let [{page :page} (api-suggested-profiles-opts->suggested-profiles-opts (:query parameters))
+            tags (db.stakeholder/stakeholder-tags (:spec db) stakeholder)
+            offerings-ids (->> tags (filter #(= (:category %) "offering")) first :tags)
+            seekings-ids (->> tags (filter #(= (:category %) "seeking")) first :tags)
+            {:keys [offering-seekings seeking-offerings]}
+            (handler.tag/get-offerings-seekings-matches db offerings-ids seekings-ids)
+            stakeholders (db.stakeholder/get-suggested-stakeholders (:spec db) {:offering-seekings offering-seekings
+                                                                                :seeking-offerings seeking-offerings
+                                                                                :stakeholder-id (:id stakeholder)
+                                                                                :offset (* suggested-profiles-per-page page)
+                                                                                :limit suggested-profiles-per-page})]
+        (cond
+          (and (seq stakeholders) (= (count stakeholders) suggested-profiles-per-page))
+          (resp/response {:suggested_profiles (map #(get-stakeholder-profile db %) stakeholders)})
+
+          (not (seq stakeholders))
+          (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders (:spec db)
+                                                                                                  {:limit suggested-profiles-per-page
+                                                                                                   :stakeholder-id (:id stakeholder)})
+                                                   (map #(get-stakeholder-profile db %)))})
+
+          :else
+          (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders (:spec db)
+                                                                                                  {:limit (- suggested-profiles-per-page (count stakeholders))
+                                                                                                   :stakeholder-id (:id stakeholder)})
+                                                   (apply conj stakeholders)
+                                                   (map #(get-stakeholder-profile db %))
+                                                   (distinct))})))
+      (resp/response {}))))
+
 (def org-schema
   (into [:map
-    [:authorize_submission {:optional true} true?] ;; TODO keep optional until we align with PUT
-    [:id {:optional true} int?]
-    [:name {:optional true} string?]
-    [:url {:optional true} string?]
-    [:type {:optional true} string?] ;;representative_group
-    [:representative_group_government {:optional true} string?]
-    [:representative_group_private_sector {:optional true} string?]
-    [:representative_group_academia_research {:optional true} string?]
-    [:representative_group_civil_society {:optional true} string?]
-    [:representative_group_other {:optional true} string?]
-    [:subnational_area {:optional true} string?]
-    [:country {:optional true} int?]
-    [:expertise {:optional true}
-     [:vector {:min 1 :error/message "Need at least one value for expertise"} int?]]
-    [:geo_coverage_type {:optional true} geo/coverage_type]
-
-         ]
+         [:authorize_submission {:optional true} true?] ;; TODO keep optional until we align with PUT
+         [:id {:optional true} int?]
+         [:name {:optional true} string?]
+         [:url {:optional true} string?]
+         [:type {:optional true} string?] ;;representative_group
+         [:representative_group_government {:optional true} string?]
+         [:representative_group_private_sector {:optional true} string?]
+         [:representative_group_academia_research {:optional true} string?]
+         [:representative_group_civil_society {:optional true} string?]
+         [:representative_group_other {:optional true} string?]
+         [:subnational_area {:optional true} string?]
+         [:country {:optional true} int?]
+         [:expertise {:optional true}
+          [:vector {:min 1 :error/message "Need at least one value for expertise"} int?]]
+         [:geo_coverage_type {:optional true} geo/coverage_type]]
         handler.geo/params-payload))
 
 (def new-org-schema
@@ -289,9 +332,15 @@
     [:geo_coverage_type {:optional true} geo/coverage_type]
     [:country {:optional true} int?]
     [:subnational_area_only {:optional true} string?]
-    [:name {:optional true} string?]
-    ]
+    [:name {:optional true} string?]]
    handler.geo/params-payload))
+
+(defmethod ig/init-key ::suggested-profiles-params
+  [_ _]
+  {:query [:map
+           [:page {:optional true
+                   :default "0"}
+            string?]]})
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post-params [_ _]
   [:map

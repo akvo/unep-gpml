@@ -32,21 +32,25 @@ let tmid;
 
 const KnowledgeLibrary = ({
   history,
-  filters,
-  setFilters,
-  filterMenu,
-  setWarningModalVisible,
-  setStakeholderSignupModalVisible,
   query,
+  results,
+  countData,
+  pageSize,
+  loading,
+  filters,
+  filterMenu,
   filterCountries,
-  setFilterCountries,
-  setRelations,
   isAuthenticated,
   loginWithPopup,
-  isLoading,
-  pageSize,
   multiCountryCountries,
+
+  //Functions
+  updateQuery,
+  setFilters,
+  setRelations,
   setMultiCountryCountries,
+  setWarningModalVisible,
+  setStakeholderSignupModalVisible,
 }) => {
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
@@ -88,94 +92,6 @@ const KnowledgeLibrary = ({
 
   const [toggleButton, setToggleButton] = useState("list");
   const { innerWidth } = window;
-
-  const [results, setResults] = useState([]);
-  const [countData, setCountData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const getResults = (query) => {
-    const searchParms = new URLSearchParams(window.location.search);
-    searchParms.set("limit", pageSize);
-    const topic = [
-      "action_plan",
-      "project",
-      "policy",
-      "technical_resource",
-      "technology",
-      "event",
-      "financing_resource",
-    ];
-    if (query.topic.length === 0) {
-      searchParms.set("topic", topic);
-    }
-    const url = `/browse?${String(searchParms)}`;
-    api
-      .get(url)
-      .then((resp) => {
-        setResults(resp?.data?.results);
-        setCountData(resp?.data?.counts);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        redirectError(err, history);
-      });
-  };
-
-  const updateQuery = (param, value) => {
-    const topScroll = window.innerWidth < 640 ? 996 : 207;
-    window.scrollTo({
-      top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
-    });
-    setLoading(true);
-    const newQuery = { ...query };
-    newQuery[param] = value;
-    if (param !== "offset") {
-      newQuery["offset"] = 0;
-    }
-    setFilters(newQuery);
-    const newParams = new URLSearchParams(newQuery);
-    history.push(`/knowledge-library?${newParams.toString()}`);
-    clearTimeout(tmid);
-    tmid = setTimeout(getResults(newQuery), 1000);
-    if (param === "country") {
-      setFilterCountries(value);
-    }
-  };
-
-  useEffect(() => {
-    // setFilterCountries if user click from map to browse view
-    query?.country &&
-      query?.country.length > 0 &&
-      setFilterCountries(query.country);
-
-    // Manage filters display
-    !filters && setFilters(query);
-    if (filters) {
-      setFilters({ ...filters, topic: query.topic, tag: query.tag });
-      setFilterCountries(filters.country);
-    }
-
-    setLoading(true);
-    if (isLoading === false && !filters) {
-      setTimeout(getResults(query), 0);
-    }
-
-    if (isLoading === false && filters) {
-      const newParams = new URLSearchParams({
-        ...filters,
-        topic: query.topic,
-        tag: query.tag,
-      });
-      history.push(`/knowledge-library?${newParams.toString()}`);
-      clearTimeout(tmid);
-      tmid = setTimeout(getResults(query), 1000);
-    }
-    // NOTE: Since we are using `history` and `location`, the
-    // dependency needs to be []. Ignore the linter warning, because
-    // adding a dependency here on location makes the FE send multiple
-    // requests to the backend.
-  }, [isLoading]); // eslint-disable-line
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -227,10 +143,10 @@ const KnowledgeLibrary = ({
         return representativeGroups;
       }
       if (key === "startDate") {
-        return `Start date ${query.startDate}`;
+        return `Start date ${value}`;
       }
-      if (key === "endDate") {
-        return `End date ${query.endDate}`;
+      if (key === "end-date") {
+        return `EndDate ${value}`;
       }
     };
     return Object.keys(query).map((key, index) => {
@@ -386,6 +302,8 @@ const KnowledgeLibrary = ({
                 {view === "map" ? (
                   <MapLanding
                     {...{
+                      countData,
+                      query,
                       setWarningModalVisible,
                       setStakeholderSignupModalVisible,
                       loginWithPopup,

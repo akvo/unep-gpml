@@ -697,6 +697,7 @@
 
           .avatar-number {
             font-size: 13px;
+            margin-left: 13px;
           }
         }
         .item-footer {
@@ -716,6 +717,24 @@
           }
         }
       }
+    }
+  }
+
+  .avatar-group {
+    position: relative;
+    display: block;
+    height: 30px;
+    .stakeholder-connection-avatar {
+      position: absolute;
+    }
+    .stakeholder-connection-avatar:nth-of-type(1) {
+      left: 0;
+    }
+    .stakeholder-connection-avatar:nth-of-type(2) {
+      left: 22px;
+    }
+    .stakeholder-connection-avatar:nth-of-type(3) {
+      left: 44px;
     }
   }
 
