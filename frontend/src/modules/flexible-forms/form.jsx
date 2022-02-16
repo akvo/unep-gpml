@@ -386,7 +386,7 @@ const FlexibleForm = withRouter(
       if (status === "edit" || params?.id) {
         delete data.version;
         api
-          .put(`/detail/project/${id || params?.id}`, data)
+          .putRaw(`/detail/project/${id || params?.id}`, data)
           .then(() => {
             // scroll top
             window.scrollTo({ top: 0 });
@@ -686,6 +686,16 @@ const FlexibleForm = withRouter(
       }
 
       if (status === "add" && !params?.id) {
+        data?.image && data?.image === "" && delete data.image;
+      }
+
+      if (status === "edit" || params?.id) {
+        data?.image &&
+          data?.image.match(customFormats.url) &&
+          delete data.image;
+      }
+
+      if (status === "add" && !params?.id) {
         api
           .post("/event", data)
           .then(() => {
@@ -832,6 +842,16 @@ const FlexibleForm = withRouter(
       if (data?.summary) {
         data.remarks = data?.summary;
         delete data.summary;
+      }
+
+      if (status === "add" && !params?.id) {
+        data?.image && data?.image === "" && delete data.image;
+      }
+
+      if (status === "edit" || params?.id) {
+        data?.image &&
+          data?.image.match(customFormats.url) &&
+          delete data.image;
       }
 
       if (status === "add" && !params?.id) {
