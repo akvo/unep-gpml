@@ -15,6 +15,7 @@ import {
 } from "@ant-design/icons";
 import { PatternLines } from "@vx/pattern";
 import { topicNames, tTypes } from "../../utils/misc";
+import { curr } from "./utils";
 
 const geoUrl = "/unep-gpml.topo.json";
 const lineBoundaries = "/new_country_line_boundaries.geojson";
@@ -94,11 +95,7 @@ const Legend = ({ data, setFilterColor, selected, isDisplayedList }) => {
     return (
       <div
         className="legends"
-        style={
-          isDisplayedList
-            ? { left: "calc(50% - calc(104px - 30px) )" }
-            : { left: "17px" }
-        }
+        style={{ left: "calc(50% - calc(104px - 30px) )" }}
       >
         {[
           <div
@@ -201,30 +198,24 @@ const Maps = ({
 
   const domain = data.reduce(
     (acc, curr) => {
-      const v = curr[topic];
-      console.log(curr);
+      const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
+      // const v = curr[topic];
+      const v = sumValues({
+        actionPlan: curr.actionPlan,
+        event: curr.event,
+        financingResource: curr.financingResource,
+        policy: curr.policy,
+        project: curr.project,
+        technicalResource: curr.technicalResource,
+        technology: curr.technology,
+      });
       const [min, max] = acc;
-      console.log(min, max, "MIN MAX");
       return [min, v > max ? v : max];
     },
     [0, 0]
   );
-  // const domain = data.map((item) => {
-  //   const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
-  //   return sumValues({
-  //     actionPlan: item.actionPlan,
-  //     event: item.event,
-  //     financingResource: item.financingResource,
-  //     policy: item.policy,
-  //     project: item.project,
-  //     technicalResource: item.technicalResource,
-  //     technology: item.technology,
-  //   });
-  // });
-  // console.log(domain, data, allTopicCount);
 
   const colorScale = scaleQuantize().domain(domain).range(colorRange);
-
 
   const fillColor = (v) => {
     const color = v === 0 ? "#fff" : colorScale(v);
@@ -309,9 +300,12 @@ const Maps = ({
           <Geographies key="map-geo" geography={geoUrl}>
             {({ geographies }) =>
               geographies.map((geo) => {
-                const curr = data.find(
+                const findData = data.find(
                   (i) => i.countryId === Number(geo.properties.M49Code)
                 );
+
+                // const v = curr[topic];
+
                 const isLake = typeof geo.properties?.ISO3CD === "undefined";
                 const isUnsettled = unsettledTerritoryIsoCode.includes(
                   geo.properties.MAP_COLOR
@@ -338,7 +332,8 @@ const Maps = ({
                           ? "#84b4cc"
                           : geo.properties.MAP_COLOR === selected
                           ? "#84b4cc"
-                          : fillColor(curr ? curr[topic] : 0)
+                          : fillColor(curr() ? curr() : 0)
+                        // : fillColor(curr ? curr[topic] : 0)
                       }
                       orientation={["diagonal"]}
                     />
@@ -382,19 +377,32 @@ const Maps = ({
                           ? geo.properties.MAP_COLOR === selected ||
                             selectionCondition()
                             ? "#84b4cc"
-                            : fillColor(curr ? curr[topic] : 0)
-                          : fillColor(curr ? curr[topic] : 0)
+                            : fillColor(
+                                curr(topic, findData)
+                                  ? curr(topic, findData)
+                                  : 0
+                              )
+                          : fillColor(
+                              curr(topic, findData) ? curr(topic, findData) : 0
+                            )
                           ? selectionCondition()
                             ? "#84b4cc"
-                            : fillColor(curr ? curr[topic] : 0)
-                          : fillColor(curr ? curr[topic] : 0)
+                            : fillColor(
+                                curr(topic, findData)
+                                  ? curr(topic, findData)
+                                  : 0
+                              )
+                          : fillColor(curr(topic, findData) ? curr() : 0)
                       }
                       onMouseEnter={() => {
                         const { MAP_LABEL, MAP_COLOR } = geo.properties;
                         if (!isLake && MAP_LABEL !== null) {
                           setSelected(MAP_COLOR);
                           setContent(
-                            <ToolTipContent data={curr} geo={geo.properties} />
+                            <ToolTipContent
+                              data={findData}
+                              geo={geo.properties}
+                            />
                           );
                         }
                       }}

@@ -256,36 +256,36 @@ const KnowledgeLibrary = ({
             <Row className="resource-main-container">
               {/* Resource Main Content */}
               {/* {listVisible && ( */}
-                <Col
-                  lg={10}
-                  md={9}
-                  sm={12}
-                  xs={24}
-                  style={
-                    view === "map"
-                      ? {
-                          backgroundColor: "rgba(237, 242, 247, 0.3)",
-                        }
-                      : {
-                          backgroundColor: "rgba(237, 242, 247, 1)",
-                          position: "unset",
-                        }
-                  }
-                  className="resource-list-container"
-                >
-                  {/* Resource List */}
-                  <ResourceList
-                    view={view}
-                    filters={filters}
-                    // setListVisible={setListVisible}
-                    countData={countData}
-                    updateQuery={updateQuery}
-                    loading={loading}
-                    results={results}
-                    pageSize={pageSize}
-                    hideListButtonVisible={view === "map"}
-                  />
-                </Col>
+              <Col
+                lg={10}
+                md={9}
+                sm={12}
+                xs={24}
+                style={
+                  view === "map"
+                    ? {
+                        backgroundColor: "rgba(237, 242, 247, 0.3)",
+                      }
+                    : {
+                        backgroundColor: "rgba(237, 242, 247, 1)",
+                        position: "unset",
+                      }
+                }
+                className="resource-list-container"
+              >
+                {/* Resource List */}
+                <ResourceList
+                  view={view}
+                  filters={filters}
+                  // setListVisible={setListVisible}
+                  countData={countData}
+                  updateQuery={updateQuery}
+                  loading={loading}
+                  results={results}
+                  pageSize={pageSize}
+                  hideListButtonVisible={view === "map"}
+                />
+              </Col>
               {/* // )} */}
               {/* Map/Topic View */}
               <Col

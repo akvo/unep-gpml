@@ -45,7 +45,7 @@ const MapLanding = ({
     transnationalOptions: s.transnationalOptions,
   }));
   const [country, setCountry] = useState(null);
-  const [counts, setCounts] = useState("policy");
+  const [counts, setCounts] = useState("project");
   const [multiCountry, setMultiCountry] = useState(null);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
@@ -200,7 +200,7 @@ const MapLanding = ({
           listVisible={listVisible}
           data={landing?.map || []}
           clickEvents={clickCountry}
-          topic={counts}
+          topic={query?.topic}
           country={countries.find((x) => x.id === country)}
           multiCountries={
             multiCountry &&
