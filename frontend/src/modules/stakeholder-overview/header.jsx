@@ -16,19 +16,19 @@ const Header = ({
   renderFilterTag,
   sortPeople,
   updateQuery,
+  view,
+  setView,
 }) => {
-  const [view, setView] = useState("map");
-
   const selectionValue = (
     <div className="selection-value">
       <button className="select-button">
         <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
       </button>
       <span className="label text-white">{`${view} view`}</span>
-      {view.toLowerCase().includes("map") ? (
-        <img src={GlobeOutlined} alt="globe-icon" />
-      ) : (
+      {view?.toLowerCase().includes("list") ? (
         <img src={TooltipOutlined} alt="tooltip-icon" />
+      ) : (
+        <img src={GlobeOutlined} alt="globe-icon" />
       )}
     </div>
   );
@@ -68,16 +68,16 @@ const Header = ({
             </Row>
           </Col>
           {/* Map/Topic view dropdown */}
-          {/* <Col lg={2} md={4} sm={6} className="select-wrapper">
+          <Col lg={2} md={4} sm={6} className="select-wrapper">
             <Select
               className="view-selection"
               value={selectionValue}
               onChange={(val) => setView(val)}
             >
-              <Select.Option value="list">Map View</Select.Option>
-              <Select.Option value="topic">Topic View </Select.Option>
+              <Select.Option value="map">Map View</Select.Option>
+              <Select.Option value="list">List View </Select.Option>
             </Select>
-          </Col> */}
+          </Col>
           <Button className="sort-btn" onClick={sortPeople}>
             <SortIcon />{" "}
             <span>
