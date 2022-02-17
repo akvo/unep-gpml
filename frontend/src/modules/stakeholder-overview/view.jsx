@@ -347,13 +347,16 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                   </h2>
                 ) : !isEmpty(suggestedProfiles) ? (
                   <div className="card-wrapper ui container">
-                    {suggestedProfiles.map((profile) => (
-                      <ProfileCard
-                        key={profile?.id}
-                        profile={profile}
-                        isValidUser={isValidUser}
-                      />
-                    ))}
+                    {suggestedProfiles.length > 0 &&
+                      suggestedProfiles
+                        .slice(0, 4)
+                        .map((profile) => (
+                          <ProfileCard
+                            key={profile?.id}
+                            profile={profile}
+                            isValidUser={isValidUser}
+                          />
+                        ))}
                   </div>
                 ) : (
                   <h2 className="loading">There is no data to display</h2>

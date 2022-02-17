@@ -42,11 +42,27 @@ const ProfileCard = ({ profile, isValidUser }) => {
         <Row type="flex" className="profile-details">
           {profile.type === "organisation" ? (
             <div className="image-wrapper organisation-image">
-              <img className="profile-image" src={profile.logo} alt="" />
+              <img
+                className="profile-image"
+                src={
+                  profile.logo
+                    ? profile.logo
+                    : `https://ui-avatars.com/api/?size=480&name=${profile.name}`
+                }
+                alt=""
+              />
             </div>
           ) : (
             <div className="image-wrapper">
-              <img className="profile-image" src={profile.picture} alt="" />
+              <img
+                className="profile-image"
+                src={
+                  profile.picture
+                    ? profile.picture
+                    : `https://ui-avatars.com/api/?size=480&name=${profile.firstName}`
+                }
+                alt=""
+              />
             </div>
           )}
           <div className="profile-details-container">
