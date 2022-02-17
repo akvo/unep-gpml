@@ -51,7 +51,7 @@ const CapacityBuilding = () => {
         </div>
       </Col>
       <Col span={24}>
-        <div className="ui-container">
+        <div className="">
           <LeftSidebar active={2}>
             <Row>
               <Col span={24} style={{ position: "relative" }}>
@@ -83,7 +83,7 @@ const CapacityBuilding = () => {
                       title={<span className="text-green text-upper">{g}</span>}
                       extra={
                         <Button
-                          href="/browse"
+                          href="/knowledge-library"
                           target="_blank"
                           rel="noopener noreferrer"
                           type="ghost"
