@@ -32,27 +32,9 @@ export const curr = (topic, findData) => {
 
   if (topic?.length === 1) {
     if (topic?.length === 1) {
-      if (topic.includes("project")) {
-        return sumValues({ project: findData?.project });
-      }
-      if (topic.includes("event")) {
-        return sumValues({ event: findData?.event });
-      }
-      if (topic.includes("policy")) {
-        return sumValues({ policy: findData?.policy });
-      }
-      if (topic.includes("action_plan")) {
-        return sumValues({ actionPlan: findData?.actionPlan });
-      }
-      if (topic.includes("financing_resource")) {
-        return sumValues({ financingResource: findData?.financingResource });
-      }
-      if (topic.includes("technology")) {
-        return sumValues({ technology: findData?.technology });
-      }
-      if (topic.includes("technical_resource")) {
-        return sumValues({ technicalResource: findData?.technicalResource });
-      }
+      return sumValues({
+        [property[0]]: findData?.[property[0]],
+      });
     }
   } else if (topic?.length === 2) {
     return sumValues({
