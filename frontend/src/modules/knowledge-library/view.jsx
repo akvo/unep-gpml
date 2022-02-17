@@ -24,10 +24,8 @@ import values from "lodash/values";
 import MapLanding from "./map-landing";
 import TopicView from "./TopicView";
 
-import { redirectError } from "../error/error-util";
-
 const { Option } = Select;
-// Global variabel
+// Global variable
 let tmid;
 
 const KnowledgeLibrary = ({
@@ -53,7 +51,6 @@ const KnowledgeLibrary = ({
   setStakeholderSignupModalVisible,
 }) => {
   const [filterVisible, setFilterVisible] = useState(false);
-  // const [listVisible, setListVisible] = useState(true);
   const [view, setView] = useState("map");
 
   const selectionValue = (
@@ -75,10 +72,8 @@ const KnowledgeLibrary = ({
     countries,
     tags,
     transnationalOptions,
-    sectorOptions,
-    geoCoverageTypeOptions,
+
     representativeGroup,
-    languages,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -91,7 +86,6 @@ const KnowledgeLibrary = ({
   }));
 
   const [toggleButton, setToggleButton] = useState("list");
-  const { innerWidth } = window;
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -255,7 +249,6 @@ const KnowledgeLibrary = ({
           <LeftSidebar active={1}>
             <Row className="resource-main-container">
               {/* Resource Main Content */}
-              {/* {listVisible && ( */}
               <Col
                 lg={10}
                 md={9}
@@ -277,7 +270,6 @@ const KnowledgeLibrary = ({
                 <ResourceList
                   view={view}
                   filters={filters}
-                  // setListVisible={setListVisible}
                   countData={countData}
                   updateQuery={updateQuery}
                   loading={loading}
@@ -286,12 +278,8 @@ const KnowledgeLibrary = ({
                   hideListButtonVisible={view === "map"}
                 />
               </Col>
-              {/* // )} */}
-              {/* Map/Topic View */}
+
               <Col
-                // lg={listVisible ? 14 : 24}
-                // md={listVisible ? 15 : 24}
-                // sm={listVisible ? 12 : 24}
                 lg={14}
                 md={15}
                 sm={12}

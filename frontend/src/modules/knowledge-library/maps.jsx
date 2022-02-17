@@ -20,7 +20,7 @@ import { curr } from "./utils";
 const geoUrl = "/unep-gpml.topo.json";
 const lineBoundaries = "/new_country_line_boundaries.geojson";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
-const { innerWidth, innerHeight } = window;
+const { innerHeight } = window;
 const unsettledTerritoryIsoCode = [
   "xJL",
   "xAB",
@@ -64,7 +64,7 @@ const ToolTipContent = ({ data, geo }) => {
   );
 };
 
-const Legend = ({ data, setFilterColor, selected, isDisplayedList }) => {
+const Legend = ({ data, setFilterColor, selected }) => {
   data = Array.from(new Set(data.map((x) => Math.floor(x))));
   data = data.filter((x) => x !== 0);
   const range = data.map((x, i) => (
@@ -199,7 +199,6 @@ const Maps = ({
   const domain = data.reduce(
     (acc, curr) => {
       const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
-      // const v = curr[topic];
       const v = sumValues({
         actionPlan: curr.actionPlan,
         event: curr.event,
@@ -304,8 +303,6 @@ const Maps = ({
                   (i) => i.countryId === Number(geo.properties.M49Code)
                 );
 
-                // const v = curr[topic];
-
                 const isLake = typeof geo.properties?.ISO3CD === "undefined";
                 const isUnsettled = unsettledTerritoryIsoCode.includes(
                   geo.properties.MAP_COLOR
@@ -333,7 +330,6 @@ const Maps = ({
                           : geo.properties.MAP_COLOR === selected
                           ? "#84b4cc"
                           : fillColor(curr() ? curr() : 0)
-                        // : fillColor(curr ? curr[topic] : 0)
                       }
                       orientation={["diagonal"]}
                     />
