@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { Row, Col, Button, Input, Space, Tag, Select } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 
@@ -53,7 +53,7 @@ const KnowledgeLibrary = ({
   setStakeholderSignupModalVisible,
 }) => {
   const [filterVisible, setFilterVisible] = useState(false);
-  const [listVisible, setListVisible] = useState(true);
+  // const [listVisible, setListVisible] = useState(true);
   const [view, setView] = useState("map");
 
   const selectionValue = (
@@ -255,43 +255,46 @@ const KnowledgeLibrary = ({
           <LeftSidebar active={1}>
             <Row className="resource-main-container">
               {/* Resource Main Content */}
-              {listVisible && (
-                <Col
-                  lg={10}
-                  md={9}
-                  sm={12}
-                  xs={24}
-                  style={
-                    view === "map"
-                      ? {
-                          backgroundColor: "rgba(237, 242, 247, 0.3)",
-                        }
-                      : {
-                          backgroundColor: "rgba(237, 242, 247, 1)",
-                          position: "unset",
-                        }
-                  }
-                  className="resource-list-container"
-                >
-                  {/* Resource List */}
-                  <ResourceList
-                    view={view}
-                    filters={filters}
-                    setListVisible={setListVisible}
-                    countData={countData}
-                    updateQuery={updateQuery}
-                    loading={loading}
-                    results={results}
-                    pageSize={pageSize}
-                    hideListButtonVisible={view === "map"}
-                  />
-                </Col>
-              )}
+              {/* {listVisible && ( */}
+              <Col
+                lg={10}
+                md={9}
+                sm={12}
+                xs={24}
+                style={
+                  view === "map"
+                    ? {
+                        backgroundColor: "rgba(237, 242, 247, 0.3)",
+                      }
+                    : {
+                        backgroundColor: "rgba(237, 242, 247, 1)",
+                        position: "unset",
+                      }
+                }
+                className="resource-list-container"
+              >
+                {/* Resource List */}
+                <ResourceList
+                  view={view}
+                  filters={filters}
+                  // setListVisible={setListVisible}
+                  countData={countData}
+                  updateQuery={updateQuery}
+                  loading={loading}
+                  results={results}
+                  pageSize={pageSize}
+                  hideListButtonVisible={view === "map"}
+                />
+              </Col>
+              {/* // )} */}
               {/* Map/Topic View */}
               <Col
-                lg={listVisible ? 14 : 24}
-                md={listVisible ? 15 : 24}
-                sm={listVisible ? 12 : 24}
+                // lg={listVisible ? 14 : 24}
+                // md={listVisible ? 15 : 24}
+                // sm={listVisible ? 12 : 24}
+                lg={14}
+                md={15}
+                sm={12}
                 xs={24}
                 align="center"
                 className="render-map-container map-main-wrapper"
@@ -314,11 +317,11 @@ const KnowledgeLibrary = ({
                       updateQuery,
                       multiCountryCountries,
                       setMultiCountryCountries,
-                      setListVisible,
-                      listVisible,
+                      // setListVisible,
+                      // listVisible,
                     }}
                     isFilteredCountry={filterCountries}
-                    isDisplayedList={listVisible}
+                    // isDisplayedList={listVisible}
                   />
                 ) : (
                   <>
