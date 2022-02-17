@@ -342,8 +342,8 @@ const renderBannerSection = (
                 src={
                   data.image
                     ? data.image
-                      ? data.image
-                      : data.qimage
+                    : data.qimage
+                    ? data.qimage
                     : imageNotFound
                 }
                 className="resource-image"
