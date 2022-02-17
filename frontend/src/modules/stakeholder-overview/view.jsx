@@ -310,7 +310,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     Boolean(!isEmpty(stakeholders) && !isEmpty(organisations));
 
   return (
-    <div id="stakeholder-overview">
+    <div id="stakeholder-overview" className="stakeholder-overview">
       {!isValidUser && <UnathenticatedPage loginWithPopup={loginWithPopup} />}
       <div className={isValidUser ? "" : "blur"}>
         {isValidUser && (
