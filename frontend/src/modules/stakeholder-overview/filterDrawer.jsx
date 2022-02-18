@@ -23,6 +23,7 @@ const FilterDrawer = ({
   query,
   updateQuery,
   stakeholder,
+  entityCount,
 }) => {
   const {
     countries,
@@ -33,6 +34,7 @@ const FilterDrawer = ({
     stakeholders,
     seeking,
     offering,
+
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -152,6 +154,11 @@ const FilterDrawer = ({
                       <Space direction="vertical" align="center">
                         {networkIcon(type)}
                         <div className="topic-text">{networkNames(type)}</div>
+                        <div className="topic-text topic-counts">
+                          {type === "organisation"
+                            ? entityCount
+                            : stakeholders?.length}
+                        </div>
                       </Space>
                     </Card>
                   </Col>

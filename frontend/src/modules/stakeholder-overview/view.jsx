@@ -56,6 +56,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
+  const [entityCount, setEntityCount] = useState(0);
 
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -140,6 +141,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         const organisationType = resp?.data?.counts?.find(
           (count) => count?.topic === "organisation"
         );
+
         const stakeholderType = resp?.data?.counts?.find(
           (count) => count?.topic === "stakeholder"
         );
@@ -148,6 +150,8 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             .sort((a, b) => Date.parse(b?.created) - Date.parse(a?.created))
             .sort((a, b) => b?.type.localeCompare(a?.type))
         );
+
+        setEntityCount(organisationType?.count);
         if (
           query?.topic.length === 1 &&
           query?.topic.includes("organisation")
@@ -333,6 +337,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             entities={entityRoleOptions}
             filterVisible={filterVisible}
             setFilterVisible={setFilterVisible}
+            entityCount={entityCount}
           />
 
           <LeftSidebar isValidUser={isValidUser} />
