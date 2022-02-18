@@ -2,15 +2,16 @@ import React from "react";
 import Maps from "../map/Map";
 import { UIStore } from "../../store";
 import { useQuery } from "./common";
+import { isEmpty } from "lodash";
 
 const MapView = () => {
-  const { landing, countries } = UIStore.useState((s) => ({
+  const { landing } = UIStore.useState((s) => ({
     landing: s.landing,
     countries: s.countries,
   }));
   const query = useQuery();
   const box = document.getElementsByClassName("stakeholder-overview");
-
+  const isLoaded = () => !isEmpty(landing?.map);
   return (
     <Maps
       box={box}
@@ -20,10 +21,10 @@ const MapView = () => {
       listVisible={[]}
       isDisplayedList={[]}
       isFilteredCountry={[]}
-      curr={() => null}
       dataToDisplay={[]}
       data={landing?.map || []}
       topic={query?.topic}
+      isLoaded={isLoaded}
     />
   );
 };

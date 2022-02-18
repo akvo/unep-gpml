@@ -34,7 +34,6 @@ const FilterDrawer = ({
     stakeholders,
     seeking,
     offering,
-
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,

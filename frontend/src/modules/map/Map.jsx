@@ -12,6 +12,7 @@ import {
   ZoomInOutlined,
   ZoomOutOutlined,
   FullscreenOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 import { PatternLines } from "@vx/pattern";
 import { topicNames, tTypes } from "../../utils/misc";
@@ -181,6 +182,7 @@ const Maps = ({
   data,
   topic,
   clickEvents,
+  isLoaded,
   country,
   multiCountries,
   listVisible,

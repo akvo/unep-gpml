@@ -1,6 +1,5 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
-import { LoadingOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 import Maps from "../map/Map";
 import api from "../../utils/api";
@@ -63,36 +62,28 @@ const MapLanding = ({
   }, []);
 
   return (
-    <div id="map-landing">
-      <div className="landing-container map-container">
-        {!isLoaded() && (
-          <h2 className="loading" id="map-loader">
-            <LoadingOutlined spin /> Loading
-          </h2>
-        )}
-        <Maps
-          box={box}
-          isFilteredCountry={isFilteredCountry}
-          isDisplayedList={isDisplayedList}
-          listVisible={listVisible}
-          data={landing?.map || []}
-          clickEvents={clickCountry}
-          topic={query?.topic}
-          country={countries.find((x) => x.id === country)}
-          multiCountries={
-            multiCountry &&
-            !isEmpty(multiCountryCountries) &&
-            multiCountryCountries.find((x) => x.id === multiCountry)
-              ? multiCountryCountries
-                  .find((x) => x.id === multiCountry)
-                  ?.countries.map((country) =>
-                    countries.find((x) => x.id === country.id)
-                  )
-              : []
-          }
-        />
-      </div>
-    </div>
+    <Maps
+      box={box}
+      isLoaded={isLoaded}
+      isFilteredCountry={isFilteredCountry}
+      isDisplayedList={isDisplayedList}
+      listVisible={listVisible}
+      data={landing?.map || []}
+      clickEvents={clickCountry}
+      topic={query?.topic}
+      country={countries.find((x) => x.id === country)}
+      multiCountries={
+        multiCountry &&
+        !isEmpty(multiCountryCountries) &&
+        multiCountryCountries.find((x) => x.id === multiCountry)
+          ? multiCountryCountries
+              .find((x) => x.id === multiCountry)
+              ?.countries.map((country) =>
+                countries.find((x) => x.id === country.id)
+              )
+          : []
+      }
+    />
   );
 };
 
