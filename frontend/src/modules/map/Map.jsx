@@ -15,7 +15,7 @@ import {
 } from "@ant-design/icons";
 import { PatternLines } from "@vx/pattern";
 import { topicNames, tTypes } from "../../utils/misc";
-// import { curr } from "./utils";
+import { curr } from "./utils";
 import "../knowledge-library/map-styles.scss";
 import { useHistory } from "react-router-dom";
 const geoUrl = "/unep-gpml.topo.json";
@@ -176,7 +176,6 @@ const Maps = ({
   isDisplayedList,
   isFilteredCountry,
   box,
-  curr,
 }) => {
   const history = useHistory();
   const path = history?.location?.pathname;
@@ -199,7 +198,6 @@ const Maps = ({
   });
 
   const handleResize = () => {
-    // const box = document.getElementsByClassName("resource-list-container");
     if (box.length) {
       setMapPos({
         left: 0,
@@ -221,22 +219,23 @@ const Maps = ({
       const values = () => {
         if (path === "/knowledge-library") {
           return sumValues({
-            actionPlan: curr.actionPlan,
-            event: curr.event,
-            financingResource: curr.financingResource,
-            policy: curr.policy,
-            project: curr.project,
-            technicalResource: curr.technicalResource,
-            technology: curr.technology,
+            actionPlan: curr?.actionPlan,
+            event: curr?.event,
+            financingResource: curr?.financingResource,
+            policy: curr?.policy,
+            project: curr?.project,
+            technicalResource: curr?.technicalResource,
+            technology: curr?.technology,
           });
         }
         if (path === "/stakeholder-overview") {
           return sumValues({
-            stakeholder: curr.stakeholder,
-            organisation: curr.organisation,
+            organisation: curr?.organisation,
+            stakeholder: curr?.stakeholder,
           });
         }
       };
+
       const [min, max] = acc;
       return [min, values() > max ? values() : max];
     },
@@ -358,7 +357,11 @@ const Maps = ({
                           ? "#84b4cc"
                           : geo.properties.MAP_COLOR === selected
                           ? "#84b4cc"
-                          : fillColor(curr() ? curr() : 0)
+                          : fillColor(
+                              curr(topic, findData, path)
+                                ? curr(topic, findData, path)
+                                : 0
+                            )
                       }
                       orientation={["diagonal"]}
                     />
@@ -403,21 +406,27 @@ const Maps = ({
                             selectionCondition()
                             ? "#84b4cc"
                             : fillColor(
-                                curr(topic, findData)
-                                  ? curr(topic, findData)
+                                curr(topic, findData, path)
+                                  ? curr(topic, findData, path)
                                   : 0
                               )
                           : fillColor(
-                              curr(topic, findData) ? curr(topic, findData) : 0
+                              curr(topic, findData, path)
+                                ? curr(topic, findData, path)
+                                : 0
                             )
                           ? selectionCondition()
                             ? "#84b4cc"
                             : fillColor(
-                                curr(topic, findData)
-                                  ? curr(topic, findData)
+                                curr(topic, findData, path)
+                                  ? curr(topic, findData, path)
                                   : 0
                               )
-                          : fillColor(curr(topic, findData) ? curr() : 0)
+                          : fillColor(
+                              curr(topic, findData, path)
+                                ? curr(topic, findData, path)
+                                : 0
+                            )
                       }
                       onMouseEnter={() => {
                         const { MAP_LABEL, MAP_COLOR } = geo.properties;
