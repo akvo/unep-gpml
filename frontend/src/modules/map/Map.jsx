@@ -36,7 +36,6 @@ const unsettledTerritoryIsoCode = [
 const higlightColor = "#84b4cc";
 
 const ToolTipContent = ({ data, geo, path }) => {
-  console.log(data?.stakeholder, data?.organisation);
   const dataToDisplay = () => {
     if (path === "/knowledge-library") {
       return {
@@ -111,10 +110,7 @@ const Legend = ({ data, setFilterColor, selected }) => {
   ));
   if (data.length) {
     return (
-      <div
-        className="legends"
-        style={{ left: "calc(50% - calc(104px - 30px) )" }}
-      >
+      <div className="legends">
         {[
           <div
             key={"legend-0"}
@@ -180,12 +176,10 @@ const Maps = ({
   isDisplayedList,
   isFilteredCountry,
   box,
-  // needed props
-  values,
   curr,
 }) => {
   const history = useHistory();
-  console.log(history);
+  const path = history?.location?.pathname;
   const mapMaxZoom = 9.2;
   const mapMinZoom = 1.1500000000000024;
   const [selected, setSelected] = useState(null);
@@ -218,23 +212,33 @@ const Maps = ({
 
   useEffect(() => {
     handleResize();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const domain = data.reduce(
     (acc, curr) => {
       const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
-      // const v = curr[topic];
-      // const values = sumValues({
-      //   actionPlan: curr.actionPlan,
-      //   event: curr.event,
-      //   financingResource: curr.financingResource,
-      //   policy: curr.policy,
-      //   project: curr.project,
-      //   technicalResource: curr.technicalResource,
-      //   technology: curr.technology,
-      // });
+      const values = () => {
+        if (path === "/knowledge-library") {
+          return sumValues({
+            actionPlan: curr.actionPlan,
+            event: curr.event,
+            financingResource: curr.financingResource,
+            policy: curr.policy,
+            project: curr.project,
+            technicalResource: curr.technicalResource,
+            technology: curr.technology,
+          });
+        }
+        if (path === "/stakeholder-overview") {
+          return sumValues({
+            stakeholder: curr.stakeholder,
+            organisation: curr.organisation,
+          });
+        }
+      };
       const [min, max] = acc;
-      return [min, values > max ? values : max];
+      return [min, values() > max ? values() : max];
     },
     [0, 0]
   );
@@ -327,8 +331,6 @@ const Maps = ({
                 const findData = data.find(
                   (i) => i.countryId === Number(geo.properties.M49Code)
                 );
-                console.log(findData, "FIND");
-                // const v = curr[topic];
 
                 const isLake = typeof geo.properties?.ISO3CD === "undefined";
                 const isUnsettled = unsettledTerritoryIsoCode.includes(
@@ -357,7 +359,6 @@ const Maps = ({
                           : geo.properties.MAP_COLOR === selected
                           ? "#84b4cc"
                           : fillColor(curr() ? curr() : 0)
-                        // : fillColor(curr ? curr[topic] : 0)
                       }
                       orientation={["diagonal"]}
                     />
@@ -426,7 +427,7 @@ const Maps = ({
                             <ToolTipContent
                               data={findData}
                               geo={geo.properties}
-                              path={history?.location?.pathname}
+                              path={path}
                             />
                           );
                         }
