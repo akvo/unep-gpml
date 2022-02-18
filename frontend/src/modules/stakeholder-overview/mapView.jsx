@@ -1,13 +1,37 @@
 import React from "react";
 import Maps from "../map/Map";
+import { tTypes, topicNames } from "../../utils/misc";
+import { UIStore } from "../../store";
 
 const MapView = () => {
+  const { landing, nav } = UIStore.useState((s) => ({
+    landing: s?.landing,
+    nav: s?.nav,
+  }));
   const box = document.getElementsByClassName("stakeholder-overview");
-  console.log(box.length);
+console.log(landing, UIStore);
+  const contentToDisplay = (dataToDisplay) => {
+    return tTypes.map(
+      (topic) =>
+        topic !== "project" &&
+        topic !== "policy" &&
+        topic !== "actionPlan" &&
+        topic !== "financingResource" &&
+        topic !== "technicalResource" &&
+        topic !== "technology" &&
+        topic !== "event" && (
+          <li key={topic}>
+            <span>{topicNames(topic)}</span>
+            <b>{dataToDisplay?.[topic] ? dataToDisplay[topic] : 0}</b>
+          </li>
+        )
+    );
+  };
   return (
     <div id="map-landing">
       <Maps
         box={box}
+        // data={landing?.map}
         data={[]}
         topic={[]}
         clickEvents={() => null}
@@ -20,7 +44,7 @@ const MapView = () => {
         values={[]}
         curr={() => null}
         dataToDisplay={[]}
-        contentToDisplay={() => "NOTHING FOR NOW"}
+        contentToDisplay={contentToDisplay}
       />
     </div>
   );
