@@ -270,11 +270,13 @@
         {:entity_connections (db.initiative/entity-connections-by-id db (select-keys item [:id]))
          :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
-(defmethod extra-details "project" [_ db project]
+(defmethod extra-details "project" [_ db {:keys [related_content] :as project}]
   (merge
     {:entity_connections (db.initiative/entity-connections-by-id db (select-keys project [:id]))
      :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys project [:id]))
-     :related_content (expand-related-project-content db project)
+     :related_content (if (seq related_content)
+                        (expand-related-project-content db project)
+                        [])
      :tags (db.initiative/tags-by-id db (select-keys project [:id]))
      :type "Initiative"}
     (if (> (:id project) 10000)
@@ -288,11 +290,13 @@
         {:entity_connections (db.policy/entity-connections-by-id db (select-keys item [:id]))
          :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
-(defmethod extra-details "policy" [_ db policy]
+(defmethod extra-details "policy" [_ db {:keys [related_content] :as policy}]
   (merge
     {:entity_connections (db.policy/entity-connections-by-id db (select-keys policy [:id]))
      :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys policy [:id]))
-     :related_content (expand-related-policy-content db policy)
+     :related_content (if (seq related_content)
+                        (expand-related-policy-content db policy)
+                        [])
      :tags (db.policy/tags-by-id db (select-keys policy [:id]))
      :type "Policy"}
     (when-let [implementing-mea (:implementing_mea policy)]
@@ -305,11 +309,13 @@
         {:entity_connections (db.technology/entity-connections-by-id db (select-keys item [:id]))
          :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
-(defmethod extra-details "technology" [_ db technology]
+(defmethod extra-details "technology" [_ db {:keys [related_content] :as technology}]
   (merge
     {:entity_connections (db.technology/entity-connections-by-id db (select-keys technology [:id]))
      :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys technology [:id]))
-     :related_content (expand-related-technology-content db technology)
+     :related_content (if (seq related_content)
+                        (expand-related-technology-content db technology)
+                        [])
      :tags (db.technology/tags-by-id db (select-keys technology [:id]))
      :type "Technology"}
     (when-let [headquarters-country (:country technology)]
@@ -325,22 +331,28 @@
         {:entity_connections (db.resource/entity-connections-by-id db (select-keys item [:id]))
          :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
-(defmethod extra-details "technical_resource" [_ db resource]
+(defmethod extra-details "technical_resource" [_ db {:keys [related_content] :as resource}]
   {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
    :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys resource [:id]))
-   :related_content (expand-related-resource-content db resource)
+   :related_content (if (seq related_content)
+                      (expand-related-resource-content db resource)
+                      [])
    :tags (db.resource/tags-by-id db (select-keys resource [:id]))})
 
-(defmethod extra-details "financing_resource" [_ db resource]
+(defmethod extra-details "financing_resource" [_ db {:keys [related_content] :as resource}]
   {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
    :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys resource [:id]))
-   :related_content (expand-related-resource-content db resource)
+   :related_content (if (seq related_content)
+                      (expand-related-resource-content db resource)
+                      [])
    :tags (db.resource/tags-by-id db (select-keys resource [:id]))})
 
-(defmethod extra-details "action_plan" [_ db resource]
+(defmethod extra-details "action_plan" [_ db {:keys [related_content] :as resource}]
   {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
    :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys resource [:id]))
-   :related_content (expand-related-resource-content db resource)
+   :related_content (if (seq related_content)
+                      (expand-related-resource-content db resource)
+                      [])
    :tags (db.resource/tags-by-id db (select-keys resource [:id]))})
 
 (defn expand-related-entity-content [db event]
@@ -350,10 +362,12 @@
         {:entity_connections (db.event/entity-connections-by-id db (select-keys item [:id]))
          :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
-(defmethod extra-details "event" [_ db event]
+(defmethod extra-details "event" [_ db {:keys [related_content] :as event}]
   {:entity_connections (db.event/entity-connections-by-id db (select-keys event [:id]))
    :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys event [:id]))
-   :related_content (expand-related-entity-content db event)
+   :related_content (if (seq related_content)
+                      (expand-related-entity-content db event)
+                      [])
    :tags (db.event/tags-by-id db (select-keys event [:id]))
    :type "Event"})
 
