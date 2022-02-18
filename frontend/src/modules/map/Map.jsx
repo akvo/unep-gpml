@@ -17,6 +17,7 @@ import { PatternLines } from "@vx/pattern";
 import { topicNames, tTypes } from "../../utils/misc";
 // import { curr } from "./utils";
 import "../knowledge-library/map-styles.scss";
+import { useHistory } from "react-router-dom";
 const geoUrl = "/unep-gpml.topo.json";
 const lineBoundaries = "/new_country_line_boundaries.geojson";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
@@ -34,24 +35,49 @@ const unsettledTerritoryIsoCode = [
 
 const higlightColor = "#84b4cc";
 
-// const contentToDisplay = (dataToDisplay) => {
-//   return tTypes.map(
-//     (topic) =>
-//       topic !== "organisation" &&
-//       topic !== "stakeholder" && (
-//         <li key={topic}>
-//           <span>{topicNames(topic)}</span>
-//           <b>{dataToDisplay?.[topic] ? dataToDisplay[topic] : 0}</b>
-//         </li>
-//       )
-//   );
-// };
+const ToolTipContent = ({ data, geo, path }) => {
+  console.log(data?.stakeholder, data?.organisation);
+  const dataToDisplay = () => {
+    if (path === "/knowledge-library") {
+      return {
+        initiative: data?.initiative,
+        actionPlan: data?.actionPlan,
+        policy: data?.policy,
+        technicalResource: data?.technicalResource,
+        financingResource: data?.financingResource,
+        event: data?.event,
+        technology: data?.technology,
+      };
+    }
+    if (path === "/stakeholder-overview") {
+      return {
+        organisation: data?.organisation,
+        stakeholder: data?.stakeholder,
+      };
+    }
+  };
 
-const ToolTipContent = ({ geo, contentToDisplay }) => {
   return (
     <div key={`${geo.ISO3CD}-tooltip`} className="map-tooltip">
       <h3>{geo.MAP_LABEL}</h3>
-      <ul>{contentToDisplay()}</ul>
+      <ul>
+        {tTypes.map((topic) =>
+          path === "knowledge-library"
+            ? topic !== "organisation" && topic !== "stakeholder"
+            : topic !== "project" &&
+              topic !== "policy" &&
+              topic !== "actionPlan" &&
+              topic !== "financingResource" &&
+              topic !== "technicalResource" &&
+              topic !== "technology" &&
+              topic !== "event" && (
+                <li key={topic}>
+                  <span>{topicNames(topic)}</span>
+                  <b>{dataToDisplay()?.[topic] ? dataToDisplay()[topic] : 0}</b>
+                </li>
+              )
+        )}
+      </ul>
     </div>
   );
 };
@@ -157,9 +183,9 @@ const Maps = ({
   // needed props
   values,
   curr,
-  dataToDisplay,
-  contentToDisplay,
 }) => {
+  const history = useHistory();
+  console.log(history);
   const mapMaxZoom = 9.2;
   const mapMinZoom = 1.1500000000000024;
   const [selected, setSelected] = useState(null);
@@ -301,7 +327,7 @@ const Maps = ({
                 const findData = data.find(
                   (i) => i.countryId === Number(geo.properties.M49Code)
                 );
-
+                console.log(findData, "FIND");
                 // const v = curr[topic];
 
                 const isLake = typeof geo.properties?.ISO3CD === "undefined";
@@ -400,7 +426,7 @@ const Maps = ({
                             <ToolTipContent
                               data={findData}
                               geo={geo.properties}
-                              contentToDisplay={contentToDisplay}
+                              path={history?.location?.pathname}
                             />
                           );
                         }

@@ -2,15 +2,29 @@ import React from "react";
 import Maps from "../map/Map";
 import { tTypes, topicNames } from "../../utils/misc";
 import { UIStore } from "../../store";
-
+import isEmpty from "lodash/isEmpty";
+import { useQuery } from "./common";
 const MapView = () => {
-  const { landing, nav } = UIStore.useState((s) => ({
-    landing: s?.landing,
-    nav: s?.nav,
+  const { landing, countries } = UIStore.useState((s) => ({
+    landing: s.landing,
+    countries: s.countries,
   }));
+  const query = useQuery();
   const box = document.getElementsByClassName("stakeholder-overview");
-console.log(landing, UIStore);
-  const contentToDisplay = (dataToDisplay) => {
+  const isLoaded = () => !isEmpty(landing?.map);
+
+  const contentToDisplay = (data) => {
+    
+    const dataToDisplay = {
+      initiative: data?.initiative,
+      actionPlan: data?.actionPlan,
+      policy: data?.policy,
+      technicalResource: data?.technicalResource,
+      financingResource: data?.financingResource,
+      event: data?.event,
+      technology: data?.technology,
+    };
+
     return tTypes.map(
       (topic) =>
         topic !== "project" &&
@@ -31,9 +45,8 @@ console.log(landing, UIStore);
     <div id="map-landing">
       <Maps
         box={box}
-        // data={landing?.map}
-        data={[]}
-        topic={[]}
+        // data={!isLoaded() ? landing?.map : []}
+        // topic={[]}
         clickEvents={() => null}
         country={[]}
         multiCountries={[]}
@@ -44,7 +57,14 @@ console.log(landing, UIStore);
         values={[]}
         curr={() => null}
         dataToDisplay={[]}
-        contentToDisplay={contentToDisplay}
+ 
+        // isFilteredCountry={isFilteredCountry}
+        // isDisplayedList={isDisplayedList}
+        // listVisible={listVisible}
+        data={landing?.map || []}
+        // clickEvents={clickCountry}
+        topic={query?.topic}
+        // country={countries.find((x) => x.id === country)}
       />
     </div>
   );
