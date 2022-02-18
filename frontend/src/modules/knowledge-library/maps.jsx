@@ -64,7 +64,7 @@ const ToolTipContent = ({ data, geo }) => {
   );
 };
 
-const Legend = ({ data, setFilterColor, selected, isDisplayedList }) => {
+const Legend = ({ data, setFilterColor, selected }) => {
   data = Array.from(new Set(data.map((x) => Math.floor(x))));
   data = data.filter((x) => x !== 0);
   const range = data.map((x, i) => (
@@ -332,7 +332,9 @@ const Maps = ({
                           ? "#84b4cc"
                           : geo.properties.MAP_COLOR === selected
                           ? "#84b4cc"
-                          : fillColor(curr() ? curr() : 0)
+                          : fillColor(
+                              curr(topic, findData) ? curr(topic, findData) : 0
+                            )
                         // : fillColor(curr ? curr[topic] : 0)
                       }
                       orientation={["diagonal"]}
@@ -392,7 +394,9 @@ const Maps = ({
                                   ? curr(topic, findData)
                                   : 0
                               )
-                          : fillColor(curr(topic, findData) ? curr() : 0)
+                          : fillColor(
+                              curr(topic, findData) ? curr(topic, findData) : 0
+                            )
                       }
                       onMouseEnter={() => {
                         const { MAP_LABEL, MAP_COLOR } = geo.properties;

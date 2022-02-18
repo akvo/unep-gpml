@@ -16,7 +16,8 @@ import {
 import { PatternLines } from "@vx/pattern";
 import { topicNames, tTypes } from "../../utils/misc";
 import { curr } from "./utils";
-import "../knowledge-library/map-styles.scss";
+
+import "./map-styles.scss";
 import { useHistory } from "react-router-dom";
 const geoUrl = "/unep-gpml.topo.json";
 const lineBoundaries = "/new_country_line_boundaries.geojson";
@@ -39,7 +40,7 @@ const ToolTipContent = ({ data, geo, path }) => {
   const dataToDisplay = () => {
     if (path === "/knowledge-library") {
       return {
-        initiative: data?.initiative,
+        initiative: data?.project,
         actionPlan: data?.actionPlan,
         policy: data?.policy,
         technicalResource: data?.technicalResource,
@@ -47,8 +48,7 @@ const ToolTipContent = ({ data, geo, path }) => {
         event: data?.event,
         technology: data?.technology,
       };
-    }
-    if (path === "/stakeholder-overview") {
+    } else {
       return {
         organisation: data?.organisation,
         stakeholder: data?.stakeholder,
@@ -60,22 +60,32 @@ const ToolTipContent = ({ data, geo, path }) => {
     <div key={`${geo.ISO3CD}-tooltip`} className="map-tooltip">
       <h3>{geo.MAP_LABEL}</h3>
       <ul>
-        {tTypes.map((topic) =>
-          path === "knowledge-library"
-            ? topic !== "organisation" && topic !== "stakeholder"
-            : topic !== "project" &&
-              topic !== "policy" &&
-              topic !== "actionPlan" &&
-              topic !== "financingResource" &&
-              topic !== "technicalResource" &&
-              topic !== "technology" &&
-              topic !== "event" && (
-                <li key={topic}>
-                  <span>{topicNames(topic)}</span>
-                  <b>{dataToDisplay()?.[topic] ? dataToDisplay()[topic] : 0}</b>
-                </li>
-              )
-        )}
+        {tTypes.map((topic) => {
+          const dataToDisplayPerPath = () => {
+            if (path === "/knowledge-library") {
+              return topic !== "organisation" && topic !== "stakeholder";
+            } else {
+              return (
+                topic !== "project" &&
+                topic !== "policy" &&
+                topic !== "actionPlan" &&
+                topic !== "financingResource" &&
+                topic !== "technicalResource" &&
+                topic !== "technology" &&
+                topic !== "event"
+              );
+            }
+          };
+
+          return (
+            dataToDisplayPerPath() && (
+              <li key={topic}>
+                <span>{topicNames(topic)}</span>
+                <b>{dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}</b>
+              </li>
+            )
+          );
+        })}
       </ul>
     </div>
   );
@@ -167,6 +177,7 @@ const Legend = ({ data, setFilterColor, selected }) => {
 };
 
 const Maps = ({
+  box,
   data,
   topic,
   clickEvents,
@@ -175,7 +186,6 @@ const Maps = ({
   listVisible,
   isDisplayedList,
   isFilteredCountry,
-  box,
 }) => {
   const history = useHistory();
   const path = history?.location?.pathname;
@@ -253,245 +263,255 @@ const Maps = ({
   };
 
   return (
-    <div
-      style={{
-        overflow: "hidden",
-        width: "auto",
-        height: `${mapPos.height}px`,
-      }}
-    >
-      <Legend
-        data={colorScale.thresholds()}
-        setFilterColor={setFilterColor}
-        selected={filterColor}
-        isDisplayedList={isDisplayedList}
-      />
-      <div
-        className="map-buttons"
-        style={{ left: listVisible ? "10px" : "330px" }}
-      >
-        <Tooltip title="zoom out">
-          <Button
-            type="secondary"
-            icon={<ZoomOutOutlined />}
-            onClick={() => {
-              position.zoom > mapMinZoom &&
-                setPosition({
-                  ...position,
-                  zoom: position.zoom - 0.3,
-                });
-            }}
-            disabled={position.zoom <= mapMinZoom}
-          />
-        </Tooltip>
-        <Tooltip title="zoom in">
-          <Button
-            disabled={position.zoom >= mapMaxZoom}
-            type="secondary"
-            icon={<ZoomInOutlined />}
-            onClick={() => {
-              setPosition({
-                ...position,
-                zoom: position.zoom + 0.3,
-              });
-            }}
-          />
-        </Tooltip>
-        <Tooltip title="reset zoom">
-          <Button
-            type="secondary"
-            icon={<FullscreenOutlined />}
-            onClick={() => {
-              setPosition({
-                coordinates: [18.297325014768123, 2.4067378816508587],
-                zoom: mapMinZoom,
-              });
-            }}
-          />
-        </Tooltip>
-      </div>
-      <ComposableMap
-        data-tip=""
-        projection="geoEquirectangular"
-        style={{ height: "auto" }}
-      >
-        <ZoomableGroup
-          minZoom={mapMinZoom}
-          maxZoom={mapMaxZoom}
-          zoom={position.zoom}
-          center={position.coordinates}
-          onMoveEnd={(x) => {
-            setPosition(x);
+    <div id="map-landing">
+      <div className="landing-container map-container">
+        {!isLoaded() && (
+          <h2 className="loading" id="map-loader">
+            <LoadingOutlined spin /> Loading
+          </h2>
+        )}
+        <div
+          style={{
+            overflow: "hidden",
+            width: "auto",
+            height: `${mapPos.height}px`,
           }}
         >
-          <Geographies key="map-geo" geography={geoUrl}>
-            {({ geographies }) =>
-              geographies.map((geo) => {
-                const findData = data.find(
-                  (i) => i.countryId === Number(geo.properties.M49Code)
-                );
-
-                const isLake = typeof geo.properties?.ISO3CD === "undefined";
-                const isUnsettled = unsettledTerritoryIsoCode.includes(
-                  geo.properties.MAP_COLOR
-                );
-                const isPattern = geo.properties.MAP_COLOR === "xAC";
-                const isCountrySelected =
-                  country?.isoCode === geo.properties.MAP_COLOR ||
-                  multiCountries
-                    .map((x) => x.isoCode)
-                    .includes(geo.properties.MAP_COLOR);
-
-                let pattern = "";
-                if (geo.properties.MAP_COLOR === "CHN") {
-                  pattern = (
-                    <PatternLines
-                      key={`${geo.rsmKey}-pattern`}
-                      id="lines"
-                      height={2.5}
-                      width={2.5}
-                      stroke="#cecece"
-                      strokeWidth={0.8}
-                      background={
-                        isCountrySelected
-                          ? "#84b4cc"
-                          : geo.properties.MAP_COLOR === selected
-                          ? "#84b4cc"
-                          : fillColor(
-                              curr(topic, findData, path)
-                                ? curr(topic, findData, path)
-                                : 0
-                            )
-                      }
-                      orientation={["diagonal"]}
-                    />
-                  );
-                }
-                const selectionCondition = () => {
-                  const mapProps = Number(geo.properties.M49Code);
-                  if (
-                    typeof isFilteredCountry === "string" ||
-                    typeof isFilteredCountry === "number"
-                  ) {
-                    return Number(isFilteredCountry) === Number(mapProps);
-                  } else {
-                    const countryToFilter = isFilteredCountry.map((it) =>
-                      Number(it)
+          <Legend
+            data={colorScale.thresholds()}
+            setFilterColor={setFilterColor}
+            selected={filterColor}
+            isDisplayedList={isDisplayedList}
+          />
+          <div
+            className="map-buttons"
+            style={{ left: listVisible ? "10px" : "330px" }}
+          >
+            <Tooltip title="zoom out">
+              <Button
+                type="secondary"
+                icon={<ZoomOutOutlined />}
+                onClick={() => {
+                  position.zoom > mapMinZoom &&
+                    setPosition({
+                      ...position,
+                      zoom: position.zoom - 0.3,
+                    });
+                }}
+                disabled={position.zoom <= mapMinZoom}
+              />
+            </Tooltip>
+            <Tooltip title="zoom in">
+              <Button
+                disabled={position.zoom >= mapMaxZoom}
+                type="secondary"
+                icon={<ZoomInOutlined />}
+                onClick={() => {
+                  setPosition({
+                    ...position,
+                    zoom: position.zoom + 0.3,
+                  });
+                }}
+              />
+            </Tooltip>
+            <Tooltip title="reset zoom">
+              <Button
+                type="secondary"
+                icon={<FullscreenOutlined />}
+                onClick={() => {
+                  setPosition({
+                    coordinates: [18.297325014768123, 2.4067378816508587],
+                    zoom: mapMinZoom,
+                  });
+                }}
+              />
+            </Tooltip>
+          </div>
+          <ComposableMap
+            data-tip=""
+            projection="geoEquirectangular"
+            style={{ height: "auto" }}
+          >
+            <ZoomableGroup
+              minZoom={mapMinZoom}
+              maxZoom={mapMaxZoom}
+              zoom={position.zoom}
+              center={position.coordinates}
+              onMoveEnd={(x) => {
+                setPosition(x);
+              }}
+            >
+              <Geographies key="map-geo" geography={geoUrl}>
+                {({ geographies }) =>
+                  geographies.map((geo) => {
+                    const findData = data.find(
+                      (i) => i.countryId === Number(geo.properties.M49Code)
                     );
-                    return countryToFilter.includes(mapProps);
-                  }
-                };
 
-                return (
-                  <Fragment key={`${geo.rsmKey}-geo-fragment`}>
-                    {pattern}
-                    <Geography
-                      key={geo.rsmKey}
-                      geography={geo}
-                      stroke="#79B0CC"
-                      strokeWidth="0.2"
-                      strokeOpacity="0.8"
-                      cursor={!isLake ? "pointer" : ""}
-                      fill={
-                        isLake
-                          ? "#eaf6fd"
-                          : isUnsettled && !isPattern
-                          ? "#cecece"
-                          : isPattern
-                          ? "url(#lines)"
-                          : isCountrySelected
-                          ? "#84b4cc"
-                          : selected
-                          ? geo.properties.MAP_COLOR === selected ||
-                            selectionCondition()
-                            ? "#84b4cc"
-                            : fillColor(
-                                curr(topic, findData, path)
-                                  ? curr(topic, findData, path)
-                                  : 0
-                              )
-                          : fillColor(
-                              curr(topic, findData, path)
-                                ? curr(topic, findData, path)
-                                : 0
-                            )
-                          ? selectionCondition()
-                            ? "#84b4cc"
-                            : fillColor(
-                                curr(topic, findData, path)
-                                  ? curr(topic, findData, path)
-                                  : 0
-                              )
-                          : fillColor(
-                              curr(topic, findData, path)
-                                ? curr(topic, findData, path)
-                                : 0
-                            )
+                    const isLake =
+                      typeof geo.properties?.ISO3CD === "undefined";
+                    const isUnsettled = unsettledTerritoryIsoCode.includes(
+                      geo.properties.MAP_COLOR
+                    );
+                    const isPattern = geo.properties.MAP_COLOR === "xAC";
+                    const isCountrySelected =
+                      country?.isoCode === geo.properties.MAP_COLOR ||
+                      multiCountries
+                        .map((x) => x.isoCode)
+                        .includes(geo.properties.MAP_COLOR);
+
+                    let pattern = "";
+                    if (geo.properties.MAP_COLOR === "CHN") {
+                      pattern = (
+                        <PatternLines
+                          key={`${geo.rsmKey}-pattern`}
+                          id="lines"
+                          height={2.5}
+                          width={2.5}
+                          stroke="#cecece"
+                          strokeWidth={0.8}
+                          background={
+                            isCountrySelected
+                              ? "#84b4cc"
+                              : geo.properties.MAP_COLOR === selected
+                              ? "#84b4cc"
+                              : fillColor(
+                                  curr(topic, findData, path)
+                                    ? curr(topic, findData, path)
+                                    : 0
+                                )
+                          }
+                          orientation={["diagonal"]}
+                        />
+                      );
+                    }
+                    const selectionCondition = () => {
+                      const mapProps = Number(geo.properties.M49Code);
+                      if (
+                        typeof isFilteredCountry === "string" ||
+                        typeof isFilteredCountry === "number"
+                      ) {
+                        return Number(isFilteredCountry) === Number(mapProps);
+                      } else {
+                        const countryToFilter = isFilteredCountry.map((it) =>
+                          Number(it)
+                        );
+                        return countryToFilter.includes(mapProps);
                       }
-                      onMouseEnter={() => {
-                        const { MAP_LABEL, MAP_COLOR } = geo.properties;
-                        if (!isLake && MAP_LABEL !== null) {
-                          setSelected(MAP_COLOR);
-                          setContent(
-                            <ToolTipContent
-                              data={findData}
-                              geo={geo.properties}
-                              path={path}
-                            />
-                          );
-                        }
-                      }}
-                      onMouseLeave={() => {
-                        setContent("");
-                        setSelected(null);
-                      }}
-                      onClick={() => {
-                        !isLake &&
-                          !isUnsettled &&
-                          clickEvents(geo.properties.M49Code);
-                      }}
-                    />
-                  </Fragment>
-                );
-              })
-            }
-          </Geographies>
-          <Geographies key="map-line" geography={lineBoundaries}>
-            {({ geographies }) =>
-              geographies.map((geo) => {
-                const isDashed =
-                  geo.properties?.Type &&
-                  geo.properties?.Type.toLowerCase().includes("dashed");
-                const isDotted =
-                  geo.properties?.Type &&
-                  geo.properties?.Type.toLowerCase().includes("dotted");
-                const isContinuous =
-                  geo.properties?.ISO3CD &&
-                  geo.properties?.ISO3CD === "EGY_SDN";
+                    };
 
-                return (
-                  <Geography
-                    key={`${geo.rsmKey}-line`}
-                    geography={geo}
-                    stroke={isDashed || isDotted ? "#3080a8" : "#79B0CC"}
-                    strokeDasharray={
-                      isDashed ? "0.5" : isDotted ? "0.2" : "none"
-                    }
-                    strokeWidth={isDashed ? "0.3" : "0.2"}
-                    strokeOpacity={
-                      isDashed || isDotted || isContinuous ? "1" : "0.2"
-                    }
-                    fill="none"
-                  />
-                );
-              })
-            }
-          </Geographies>
-        </ZoomableGroup>
-      </ComposableMap>
-      <ReactTooltip type="light" className="opaque">
-        {content}
-      </ReactTooltip>
+                    return (
+                      <Fragment key={`${geo.rsmKey}-geo-fragment`}>
+                        {pattern}
+                        <Geography
+                          key={geo.rsmKey}
+                          geography={geo}
+                          stroke="#79B0CC"
+                          strokeWidth="0.2"
+                          strokeOpacity="0.8"
+                          cursor={!isLake ? "pointer" : ""}
+                          fill={
+                            isLake
+                              ? "#eaf6fd"
+                              : isUnsettled && !isPattern
+                              ? "#cecece"
+                              : isPattern
+                              ? "url(#lines)"
+                              : isCountrySelected
+                              ? "#84b4cc"
+                              : selected
+                              ? geo.properties.MAP_COLOR === selected ||
+                                selectionCondition()
+                                ? "#84b4cc"
+                                : fillColor(
+                                    curr(topic, findData, path)
+                                      ? curr(topic, findData, path)
+                                      : 0
+                                  )
+                              : fillColor(
+                                  curr(topic, findData, path)
+                                    ? curr(topic, findData, path)
+                                    : 0
+                                )
+                              ? selectionCondition()
+                                ? "#84b4cc"
+                                : fillColor(
+                                    curr(topic, findData, path)
+                                      ? curr(topic, findData, path)
+                                      : 0
+                                  )
+                              : fillColor(
+                                  curr(topic, findData, path)
+                                    ? curr(topic, findData, path)
+                                    : 0
+                                )
+                          }
+                          onMouseEnter={() => {
+                            const { MAP_LABEL, MAP_COLOR } = geo.properties;
+                            if (!isLake && MAP_LABEL !== null) {
+                              setSelected(MAP_COLOR);
+                              setContent(
+                                <ToolTipContent
+                                  data={findData}
+                                  geo={geo.properties}
+                                  path={path}
+                                />
+                              );
+                            }
+                          }}
+                          onMouseLeave={() => {
+                            setContent("");
+                            setSelected(null);
+                          }}
+                          onClick={() => {
+                            !isLake &&
+                              !isUnsettled &&
+                              clickEvents(geo.properties.M49Code);
+                          }}
+                        />
+                      </Fragment>
+                    );
+                  })
+                }
+              </Geographies>
+              <Geographies key="map-line" geography={lineBoundaries}>
+                {({ geographies }) =>
+                  geographies.map((geo) => {
+                    const isDashed =
+                      geo.properties?.Type &&
+                      geo.properties?.Type.toLowerCase().includes("dashed");
+                    const isDotted =
+                      geo.properties?.Type &&
+                      geo.properties?.Type.toLowerCase().includes("dotted");
+                    const isContinuous =
+                      geo.properties?.ISO3CD &&
+                      geo.properties?.ISO3CD === "EGY_SDN";
+
+                    return (
+                      <Geography
+                        key={`${geo.rsmKey}-line`}
+                        geography={geo}
+                        stroke={isDashed || isDotted ? "#3080a8" : "#79B0CC"}
+                        strokeDasharray={
+                          isDashed ? "0.5" : isDotted ? "0.2" : "none"
+                        }
+                        strokeWidth={isDashed ? "0.3" : "0.2"}
+                        strokeOpacity={
+                          isDashed || isDotted || isContinuous ? "1" : "0.2"
+                        }
+                        fill="none"
+                      />
+                    );
+                  })
+                }
+              </Geographies>
+            </ZoomableGroup>
+          </ComposableMap>
+          <ReactTooltip type="light" className="opaque">
+            {content}
+          </ReactTooltip>
+        </div>
+      </div>
     </div>
   );
 };
