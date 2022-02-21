@@ -76,33 +76,34 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const sortPeople = () => {
     const sortSuggestedProfiles = suggestedProfiles.sort((a, b) => {
       if (!isAscending) {
-        if (a.firstName) {
-          return a.firstName.localeCompare(b.firstName);
+        if (a?.firstName) {
+          return a?.firstName?.trim().localeCompare(b?.firstName?.trim());
         } else {
-          return a.name.localeCompare(b.name);
+          return a?.name?.trim().localeCompare(b?.name?.trim());
         }
       } else {
-        if (b.firstName) {
-          return b.firstName.localeCompare(a.firstName);
+        if (b?.firstName) {
+          return b?.firstName?.trim().localeCompare(a?.firstName?.trim());
         } else {
-          return b.name.localeCompare(a.name);
+          return b?.name?.trim().localeCompare(a?.name?.trim());
         }
       }
     });
 
     setSuggestedProfiles(sortSuggestedProfiles);
+
     const sortByName = results.sort((a, b) => {
       if (!isAscending) {
-        if (a.firstName) {
-          return a.firstName.localeCompare(b.firstName);
+        if (a?.firstName) {
+          return a?.firstName?.trim().localeCompare(b?.firstName?.trim());
         } else {
-          return a.name.localeCompare(b.name);
+          return a?.name?.trim().localeCompare(b?.name?.trim());
         }
       } else {
-        if (b.firstName) {
-          return b.firstName.localeCompare(a.firstName);
+        if (b?.firstName) {
+          return b?.firstName?.trim().localeCompare(a?.firstName?.trim());
         } else {
-          return b.name.localeCompare(a.name);
+          return b?.name?.trim().localeCompare(a?.name?.trim());
         }
       }
     });
