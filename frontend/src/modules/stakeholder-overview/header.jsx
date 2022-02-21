@@ -78,18 +78,20 @@ const Header = ({
               <Select.Option value="list">List View </Select.Option>
             </Select>
           </Col>
-          <Button className="sort-btn" onClick={sortPeople}>
-            <SortIcon />{" "}
-            <span>
-              Sort By:
-              <br />{" "}
-              {isAscending || isAscending === null ? (
-                <b>A&gt;Z</b>
-              ) : (
-                <b>Z&gt;A</b>
-              )}
-            </span>
-          </Button>
+          {view === "list" && (
+            <Button className="sort-btn" onClick={sortPeople}>
+              <SortIcon />{" "}
+              <span>
+                Sort By:
+                <br />{" "}
+                {isAscending || isAscending === null ? (
+                  <b>A&gt;Z</b>
+                ) : (
+                  <b>Z&gt;A</b>
+                )}
+              </span>
+            </Button>
+          )}
         </Row>
       </div>
     </Col>
