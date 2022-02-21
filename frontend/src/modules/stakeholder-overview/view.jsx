@@ -44,6 +44,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     offering: s.tags.offering,
     stakeholders: s.stakeholders?.stakeholders,
   }));
+  const [filterCountries, setFilterCountries] = useState([]);
 
   const { isAuthenticated, isLoading } = useAuth0();
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
@@ -195,9 +196,22 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   }, [isLoading, isValidUser]); // eslint-disable-line
 
   useEffect(() => {
+    // setFilterCountries if user click from map to browse view
+    query?.country &&
+      query?.country.length > 0 &&
+      setFilterCountries(query.country);
+
+    // Manage filters display
+    !filters && setFilters(query);
+    if (filters) {
+      setFilters({ ...filters, topic: query.topic, tag: query.tag });
+      setFilterCountries(filters.country);
+    }
+
     setTimeout(() => {
       getSuggestedProfiles();
     }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValidUser]);
 
   const updateQuery = (param, value, paramValueArr) => {
@@ -226,6 +240,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     history.push(`/stakeholder-overview?${newParams.toString()}`);
     clearTimeout(tmid);
     tmid = setTimeout(getResults(newQuery), 1000);
+    if (param === "country") {
+      setFilterCountries(value);
+    }
   };
 
   // Here is the function to render filter tag
@@ -323,8 +340,8 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             view={view}
             setView={setView}
             filterVisible={filterVisible}
-            isAscending={isAscending}
             setFilterVisible={setFilterVisible}
+            isAscending={isAscending}
             renderFilterTag={renderFilterTag}
             sortPeople={sortPeople}
             updateQuery={updateQuery}
@@ -419,7 +436,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                 </Col>
               </>
             ) : (
-              <MapView updateQuery={updateQuery} />
+              <MapView
+                updateQuery={updateQuery}
+                isFilteredCountry={filterCountries}
+              />
             )}
           </Col>
         </Row>

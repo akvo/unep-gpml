@@ -335,7 +335,6 @@ const Maps = ({
                           : fillColor(
                               curr(topic, findData) ? curr(topic, findData) : 0
                             )
-                        // : fillColor(curr ? curr[topic] : 0)
                       }
                       orientation={["diagonal"]}
                     />

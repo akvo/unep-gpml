@@ -686,10 +686,13 @@ const Root = () => {
           <Route
             exact
             render={(props) => (
-              <StakeholderOverview {...props} loginWithPopup={loginWithPopup} />
+              <StakeholderOverview
+                {...props}
+                loginWithPopup={loginWithPopup}
+                filters={filters}
+                setFilters={setFilters}
+              />
             )}
-            filters={filters}
-            setFilters={setFilters}
             path="/stakeholder-overview"
           />
           <Route
