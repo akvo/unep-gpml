@@ -26,6 +26,7 @@ import isEmpty from "lodash/isEmpty";
 
 // Icons
 import SortIcon from "../../images/knowledge-library/sort-icon.svg";
+import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const ResourceList = ({
   view,
@@ -35,7 +36,8 @@ const ResourceList = ({
   loading,
   pageSize,
   updateQuery,
-  // setListVisible,
+  hideListButtonVisible,
+  setListVisible,
 }) => {
   const {
     profile,
@@ -132,6 +134,21 @@ const ResourceList = ({
             view === "map"
               ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
               : { backgroundColor: "rgba(255, 255, 255, 1)" }
+          }
+          onBack={() => setListVisible(false)}
+          backIcon={
+            hideListButtonVisible ? (
+              <img src={HideIcon} className="hide-icon hide" alt="hide-icon" />
+            ) : (
+              ""
+            )
+          }
+          title={
+            hideListButtonVisible ? (
+              <span className="hide-text">Hide List</span>
+            ) : (
+              ""
+            )
           }
           const
           subTitle={

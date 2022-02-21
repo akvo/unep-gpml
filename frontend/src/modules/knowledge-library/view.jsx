@@ -51,6 +51,7 @@ const KnowledgeLibrary = ({
   setStakeholderSignupModalVisible,
 }) => {
   const [filterVisible, setFilterVisible] = useState(false);
+  const [listVisible, setListVisible] = useState(true);
   const [view, setView] = useState("map");
 
   const selectionValue = (
@@ -249,36 +250,39 @@ const KnowledgeLibrary = ({
           <LeftSidebar active={1}>
             <Row className="resource-main-container">
               {/* Resource Main Content */}
-              <Col
-                lg={10}
-                md={9}
-                sm={12}
-                xs={24}
-                style={
-                  view === "map"
-                    ? {
-                        backgroundColor: "rgba(237, 242, 247, 0.3)",
-                      }
-                    : {
-                        backgroundColor: "rgba(237, 242, 247, 1)",
-                        position: "unset",
-                      }
-                }
-                className="resource-list-container"
-              >
-                {/* Resource List */}
-                <ResourceList
-                  view={view}
-                  filters={filters}
-                  countData={countData}
-                  updateQuery={updateQuery}
-                  loading={loading}
-                  results={results}
-                  pageSize={pageSize}
-                  hideListButtonVisible={view === "map"}
-                />
-              </Col>
-
+              {listVisible && (
+                <Col
+                  lg={10}
+                  md={9}
+                  sm={12}
+                  xs={24}
+                  style={
+                    view === "map"
+                      ? {
+                          backgroundColor: "rgba(237, 242, 247, 0.3)",
+                        }
+                      : {
+                          backgroundColor: "rgba(237, 242, 247, 1)",
+                          position: "unset",
+                        }
+                  }
+                  className="resource-list-container"
+                >
+                  {/* Resource List */}
+                  <ResourceList
+                    view={view}
+                    filters={filters}
+                    countData={countData}
+                    updateQuery={updateQuery}
+                    loading={loading}
+                    results={results}
+                    pageSize={pageSize}
+                    hideListButtonVisible={view === "map"}
+                    listVisible={listVisible}
+                    setListVisible={setListVisible}
+                  />
+                </Col>
+              )}
               <Col
                 lg={14}
                 md={15}
@@ -305,11 +309,10 @@ const KnowledgeLibrary = ({
                       updateQuery,
                       multiCountryCountries,
                       setMultiCountryCountries,
-                      // setListVisible,
-                      // listVisible,
+                      setListVisible,
                     }}
                     isFilteredCountry={filterCountries}
-                    // isDisplayedList={listVisible}
+                    isDisplayedList={listVisible}
                   />
                 ) : (
                   <>

@@ -1,5 +1,6 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
+import { PageHeader } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 import Maps from "./maps";
@@ -7,6 +8,7 @@ import "./map-styles.scss";
 
 import api from "../../utils/api";
 import isEmpty from "lodash/isEmpty";
+import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const MapLanding = ({
   query,
@@ -16,6 +18,7 @@ const MapLanding = ({
   isFilteredCountry,
   updateQuery,
   setToggleButton,
+  setListVisible,
 }) => {
   const { countries, landing, transnationalOptions } = UIStore.useState(
     (s) => ({
@@ -63,6 +66,23 @@ const MapLanding = ({
           <h2 className="loading" id="map-loader">
             <LoadingOutlined spin /> Loading
           </h2>
+        )}
+        {!isDisplayedList && (
+          <div className="map-overlay">
+            <PageHeader
+              className="resource-list-header show-list"
+              ghost={false}
+              backIcon={
+                <img
+                  src={HideIcon}
+                  className="hide-icon show"
+                  alt="show-icon"
+                />
+              }
+              onBack={() => setListVisible(true)}
+              title="Show List"
+            />
+          </div>
         )}
         <Maps
           isFilteredCountry={isFilteredCountry}
