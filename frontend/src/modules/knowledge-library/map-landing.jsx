@@ -15,19 +15,21 @@ import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const MapLanding = ({
   history,
-  setStakeholderSignupModalVisible,
-  setWarningModalVisible,
-  isAuthenticated,
+  query,
   loginWithPopup,
-  setToggleButton,
-  updateQuery,
+  isAuthenticated,
   multiCountryCountries,
-  setMultiCountryCountries,
-  setListVisible,
   listVisible,
-
   isDisplayedList,
   isFilteredCountry,
+
+  //Functions
+  updateQuery,
+  // setListVisible,
+  setToggleButton,
+  setMultiCountryCountries,
+  setWarningModalVisible,
+  setStakeholderSignupModalVisible,
 }) => {
   const {
     profile,
@@ -56,8 +58,16 @@ const MapLanding = ({
 
   const clickCountry = (name) => {
     setToggleButton("list");
-    updateQuery("country", name);
-    history.push(`?country=${name}`);
+    const val = query["country"];
+    let updateVal = [];
+    if (isEmpty(val)) {
+      updateVal = [name];
+    } else if (val.includes(name)) {
+      updateVal = val.filter((x) => x !== name);
+    } else {
+      updateVal = [...val, name];
+    }
+    updateQuery("country", updateVal);
   };
 
   const handleSummaryClick = (topic) => {
@@ -146,7 +156,7 @@ const MapLanding = ({
             <LoadingOutlined spin /> Loading
           </h2>
         )}
-        {isLoaded() && !listVisible && (
+        {/* {isLoaded() && !listVisible && (
           <div className="map-overlay">
             <PageHeader
               className="resource-list-header"
@@ -183,14 +193,14 @@ const MapLanding = ({
               updateQuery={updateQuery}
             />
           </div>
-        )}
+        )} */}
         <Maps
           isFilteredCountry={isFilteredCountry}
           isDisplayedList={isDisplayedList}
           listVisible={listVisible}
           data={landing?.map || []}
           clickEvents={clickCountry}
-          topic={counts}
+          topic={query?.topic}
           country={countries.find((x) => x.id === country)}
           multiCountries={
             multiCountry &&

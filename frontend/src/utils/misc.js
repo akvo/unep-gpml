@@ -32,6 +32,16 @@ export const topicTypes = [
   "technology",
 ];
 
+export const networkTypes = ["organisation", "stakeholder"];
+
+export const networkNames = (network) => {
+  const names = {
+    organisation: "Entity",
+    stakeholder: "Individual",
+  };
+  return names[humps.camelize(network)];
+};
+
 export const topicTypesIncludingOrg = topicTypes.concat(["organisation"]);
 
 export const topicTypesApprovedUser = topicTypes.concat([

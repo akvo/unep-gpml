@@ -240,7 +240,13 @@
                                            :put {:summary "Update authenticated profile information"
                                                  :swagger {:tags ["profile"]
                                                            :security [{:id_token []}]}
-                                                 :handler #ig/ref :gpml.handler.stakeholder/put}}]]
+                                                 :handler #ig/ref :gpml.handler.stakeholder/put}}]
+                                         ["/suggested"
+                                          {:get {:summary "Get suggested profiles for a give stakeholder profile seekings, offerings and location"
+                                                 :swagger {:tags ["profile"]
+                                                           :security [{:id_token []}]}
+                                                 :parameters #ig/ref :gpml.handler.stakeholder/suggested-profiles-params
+                                                 :handler #ig/ref :gpml.handler.stakeholder/suggested-profiles}}]]
                                         ["/currency"
                                          {:get {:summary "List of currency"
                                                 :swagger {:tags ["currency"]}
@@ -484,6 +490,8 @@
   :gpml.handler.stakeholder/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder-association/get-associated-topics {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder-association/get-associated-topics-params {}
+  :gpml.handler.stakeholder/suggested-profiles {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/suggested-profiles-params {}
   :gpml.handler.currency/all {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.tag/by-topic {:db #ig/ref :duct.database/sql}

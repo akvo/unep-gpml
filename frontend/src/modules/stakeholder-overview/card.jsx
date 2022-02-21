@@ -6,20 +6,29 @@ import { UIStore } from "../../store";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 import communityIcon from "../../images/stakeholder-overview/union-2-icon.svg";
 
-const ProfileCard = ({ profile }) => {
-  const { countries } = UIStore.useState((s) => ({
+const ProfileCard = ({ profile, isValidUser }) => {
+  const { countries, seeking } = UIStore.useState((s) => ({
     countries: s.countries,
+    seeking: s?.tags?.seeking,
   }));
 
   const country = countries.find((country) => country.id === profile.country);
+
+  const findSeeking =
+    profile.type !== "organisation" &&
+    seeking?.filter((seek) => {
+      return profile?.seeking?.includes(seek?.id);
+    });
 
   return (
     <Link
       className="card-wrapper-link"
       to={
-        profile.type === "organisation"
-          ? `/organisation/${profile?.id}`
-          : `/stakeholder/${profile?.id}`
+        isValidUser
+          ? profile.type === "organisation"
+            ? `/organisation/${profile?.id}`
+            : `/stakeholder/${profile?.id}`
+          : "/stakeholder-overview"
       }
     >
       <Card className="profile-card">
@@ -33,11 +42,27 @@ const ProfileCard = ({ profile }) => {
         <Row type="flex" className="profile-details">
           {profile.type === "organisation" ? (
             <div className="image-wrapper organisation-image">
-              <img className="profile-image" src={profile.logo} alt="" />
+              <img
+                className="profile-image"
+                src={
+                  profile.logo
+                    ? profile.logo
+                    : `https://ui-avatars.com/api/?size=480&name=${profile.name}`
+                }
+                alt=""
+              />
             </div>
           ) : (
             <div className="image-wrapper">
-              <img className="profile-image" src={profile.picture} alt="" />
+              <img
+                className="profile-image"
+                src={
+                  profile.picture
+                    ? profile.picture
+                    : `https://ui-avatars.com/api/?size=480&name=${profile.firstName}`
+                }
+                alt=""
+              />
             </div>
           )}
           <div className="profile-details-container">
@@ -89,13 +114,16 @@ const ProfileCard = ({ profile }) => {
                   </div>
                 </li>
               )}
+              <li className="list-item"></li>
             </ul>
           </div>
         </Row>
 
         <div className="person-role">
           <p className="seeking-text">Seeking:</p>
-          <p className="role-name">marine biologists</p>
+          <p className="role-name">
+            {findSeeking && findSeeking.length !== 0 && findSeeking[0].tag}
+          </p>
         </div>
       </Card>
     </Link>
