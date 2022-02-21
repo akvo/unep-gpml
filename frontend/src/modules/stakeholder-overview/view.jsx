@@ -73,6 +73,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     languages: s.languages,
   }));
 
+  if (suggestedProfiles.length > 4) {
+    suggestedProfiles.length = 4;
+  }
+
   const sortPeople = () => {
     const sortSuggestedProfiles = suggestedProfiles.sort((a, b) => {
       if (!isAscending) {
