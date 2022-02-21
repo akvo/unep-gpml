@@ -93,10 +93,7 @@ const Legend = ({ data, setFilterColor, selected }) => {
   ));
   if (data.length) {
     return (
-      <div
-        className="legends"
-        style={{ left: "calc(50% - calc(104px - 30px) )" }}
-      >
+      <div className="legends">
         {[
           <div
             key={"legend-0"}
