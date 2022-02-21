@@ -524,6 +524,11 @@
   }
 
   // Drawer
+
+  .ant-row.body-wrapper {
+    position: relative;
+  }
+
   span.ant-input-affix-wrapper.input-src {
     border-radius: 30px;
   }
@@ -569,7 +574,6 @@
 
     .ant-drawer-content-wrapper {
       box-shadow: none;
-      height: max-content;
 
       .ant-drawer-header {
         background: $blue05;
