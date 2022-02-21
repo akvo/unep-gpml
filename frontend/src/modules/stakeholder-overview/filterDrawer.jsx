@@ -22,7 +22,6 @@ const FilterDrawer = ({
   entities,
   query,
   updateQuery,
-  stakeholder,
   entityCount,
 }) => {
   const {
@@ -333,23 +332,6 @@ const FilterDrawer = ({
           />
 
           <Col className="drawer-button-wrapper">
-            <Button
-              className={
-                (isEmpty(query?.topic) &&
-                  !query?.topic?.includes("stakeholder")) ||
-                query?.topic?.includes("organisation")
-                  ? `show-stakeholder-btn disabled`
-                  : `show-stakeholder-btn`
-              }
-              onClick={() =>
-                !isEmpty(query?.topic) &&
-                query?.topic?.includes("stakeholder") &&
-                !query?.topic?.includes("organisation") &&
-                setFilterVisible(false)
-              }
-            >
-              Show stakeholders ({stakeholders?.length})
-            </Button>
             <Button
               className="clear-all-btn"
               onClick={() => {

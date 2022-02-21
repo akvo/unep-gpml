@@ -786,7 +786,6 @@
         margin: auto;
       }
 
-      .show-stakeholder-btn,
       .clear-all-btn {
         width: 100%;
         height: unset;
@@ -799,15 +798,6 @@
         span {
           display: block;
         }
-      }
-
-      .show-stakeholder-btn {
-        border: 2px solid #34a6ff;
-      }
-
-      .show-stakeholder-btn.disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
       }
 
       .clear-all-btn {
