@@ -26,7 +26,8 @@
             [gpml.handler.util :as util]
             [gpml.model.topic :as model.topic]
             [clojure.string :as string]
-            [gpml.pg-util :as pg-util]))
+            [gpml.pg-util :as pg-util]
+            [clojure.set :as set]))
 
 (defn other-or-name [action]
   (when-let [actual-name (or
@@ -636,7 +637,8 @@
                           :resource_type)
                         (assoc :related_content (pg-util/->JDBCArray (:related_content updates) "integer"))
                         (merge (when (:topics updates)
-                                 {:topics (pg-util/->JDBCArray (:topics updates) "text")})))
+                                 {:topics (pg-util/->JDBCArray (:topics updates) "text")}))
+                        (set/rename-keys {:geo_coverage_value_subnational_city :subnational_city}))
         tags (remove nil? (:tags updates))
         urls (remove nil? (:urls updates))
         params {:table table :id id :updates table-columns}

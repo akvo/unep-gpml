@@ -81,6 +81,7 @@
        e.related_content,
        e.qimage,
        btrim((e.q41_1)::text, '\"'::text) AS q41_1_url,
+       e.q24_subnational_city,
        NULL::text AS image,
        tag.tags,
        geo.geo_coverage_values,

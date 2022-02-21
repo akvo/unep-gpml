@@ -37,6 +37,7 @@
                                  description remarks geo_coverage_type
                                  country city geo_coverage_value photo
                                  geo_coverage_countries geo_coverage_country_groups
+                                 geo_coverage_value_subnational_city
                                  created_by mailjet-config owners url
                                  info_docs sub_content_type related_content
                                  entity_connections individual_connections]}]
@@ -50,6 +51,7 @@
               :geo_coverage_value geo_coverage_value
               :geo_coverage_countries geo_coverage_countries
               :geo_coverage_country_groups geo_coverage_country_groups
+              :subnational_city geo_coverage_value_subnational_city
               :city city
               :url url
               :country country
@@ -110,6 +112,7 @@
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
+    [:geo_coverage_value_subnational_city string?]
     [:country {:optional true} integer?]
     [:city {:optional true} string?]
     [:url {:optional true} string?]
