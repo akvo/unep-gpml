@@ -91,8 +91,11 @@ const StakeholderDetail = ({
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const [ownedResources, setOwnedResources] = useState([]);
+  const [bookedResources, setBookedResources] = useState([]);
   const [ownedResourcesCount, setOwnedResourcesCount] = useState(0);
+  const [bookedResourcesCount, setBookedResourcesCount] = useState(0);
   const [ownedResourcesPage, setOwnedResourcesPage] = useState(0);
+  const [bookedResourcesPage, setBookedResourcesPage] = useState(0);
 
   const relation = relations.find(
     (it) =>
@@ -114,25 +117,53 @@ const StakeholderDetail = ({
     [countries, profile, isConnectStakeholders]
   );
 
-  const getOwnedResources = useCallback(() => {
-    const searchParms = new URLSearchParams();
-    searchParms.set("limit", 3);
-    searchParms.set("page", ownedResourcesPage);
-    searchParms.set("association", "owner");
-    const url = `/stakeholder/${params.id}/associated-topics?${String(
-      searchParms
-    )}`;
-    api
-      .get(url)
-      .then((d) => {
-        setOwnedResources(d.data.associatedTopics);
-        setOwnedResourcesCount(d.data.count);
-      })
-      .catch((err) => {
-        console.error(err);
-        redirectError(err, history);
-      });
-  }, [params, history, ownedResourcesPage]);
+  const getOwnedResources = useCallback(
+    (n) => {
+      setOwnedResourcesPage(n);
+      const searchParms = new URLSearchParams();
+      searchParms.set("limit", 3);
+      searchParms.set("page", n);
+      searchParms.set("association", "owner");
+      const url = `/stakeholder/${params.id}/associated-topics?${String(
+        searchParms
+      )}`;
+      api
+        .get(url)
+        .then((d) => {
+          setOwnedResources(d.data.associatedTopics);
+          setOwnedResourcesCount(d.data.count);
+        })
+        .catch((err) => {
+          console.error(err);
+          redirectError(err, history);
+        });
+    },
+    [params, history]
+  );
+
+  const getBookedResources = useCallback(
+    (n) => {
+      setBookedResourcesPage(n);
+      const searchParms = new URLSearchParams();
+      searchParms.set("limit", 3);
+      searchParms.set("page", n);
+      searchParms.set("association", "interested in");
+      const url = `/stakeholder/${params.id}/associated-topics?${String(
+        searchParms
+      )}`;
+      api
+        .get(url)
+        .then((d) => {
+          setBookedResources(d.data.associatedTopics);
+          setBookedResourcesCount(d.data.count);
+        })
+        .catch((err) => {
+          console.error(err);
+          redirectError(err, history);
+        });
+    },
+    [params, history]
+  );
 
   useEffect(() => {
     isLoaded() &&
@@ -143,7 +174,8 @@ const StakeholderDetail = ({
         .get(`/detail/${params.type}/${params.id}`)
         .then((d) => {
           setData(d.data);
-          getOwnedResources();
+          getOwnedResources(0);
+          getBookedResources(0);
         })
         .catch((err) => {
           console.error(err);
@@ -188,7 +220,7 @@ const StakeholderDetail = ({
                         src={
                           data?.affiliation?.logo
                             ? data?.affiliation?.logo
-                            : `https://ui-avatars.com/api/?background=random&size=480&name=${data?.affiliation?.name}`
+                            : `https://ui-avatars.com/api/?background=0D8ABC&size=480&name=${data?.affiliation?.name}`
                         }
                       />
                     </div>
@@ -417,9 +449,11 @@ const StakeholderDetail = ({
                                   />
                                 </Tooltip>
                               </Avatar.Group>
-                              <div className="read-more">
-                                Read More <ArrowRightOutlined />
-                              </div>
+                              <a href={`/${params.type}/${item.id}`}>
+                                <div className="read-more">
+                                  Read More <ArrowRightOutlined />
+                                </div>
+                              </a>
                             </div>
                           </div>
                         </div>
@@ -432,166 +466,78 @@ const StakeholderDetail = ({
                       current={ownedResourcesPage + 1}
                       pageSize={3}
                       total={ownedResourcesCount || 0}
-                      onChange={(n, size) => setOwnedResourcesPage(n - 1)}
+                      onChange={(n, size) => getOwnedResources(n - 1)}
                     />
                   </div>
                 </div>
               </CardComponent>
             )}
           </div>
-          {/* <div>
-            <CardComponent
-              title={"Bookmarked resources"}
-              style={{
-                height: "100%",
-                boxShadow: "none",
-                borderRadius: "none",
-              }}
-            >
-              <div style={{ padding: "0 10px" }}>
-                <Row gutter={[16, 16]}>
-                  <Col xs={6} lg={8}>
-                    <div className="slider-card">
-                      <div className="image-holder">
-                        <img src={ResourceImage} />
-                      </div>
-                      <div className="description-holder">
-                        <div>
-                          <h4>TECHNICAL RESOURCE</h4>
-                          <h6>
-                            Legal limits on single-use plastics and
-                            microplastics
-                          </h6>
-                          <p>
-                            Donec sed odio operae, eu vulputate felis rhoncus.
-                          </p>
-                        </div>
-                        <div className="connection-wrapper">
-                          <Avatar.Group
-                            maxCount={2}
-                            maxPopoverTrigger="click"
-                            size="large"
-                            maxStyle={{
-                              color: "#f56a00",
-                              backgroundColor: "#fde3cf",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <Avatar src={AvatarImage} />
-                            <Avatar src={AvatarImage} />
-                            <Tooltip title="Ant User" placement="top">
-                              <Avatar
-                                style={{ backgroundColor: "#87d068" }}
-                                icon={<UserOutlined />}
-                              />
-                            </Tooltip>
-                          </Avatar.Group>
-                          <div className="read-more">
-                            Read More <ArrowRightOutlined />
+          <div>
+            {bookedResources.length > 0 && (
+              <CardComponent
+                title={"Bookmarked resources"}
+                style={{
+                  height: "100%",
+                  boxShadow: "none",
+                  borderRadius: "none",
+                }}
+              >
+                <div style={{ padding: "0 10px" }}>
+                  <Row gutter={[16, 16]}>
+                    {bookedResources.map((item) => (
+                      <Col xs={6} lg={8}>
+                        <div className="slider-card">
+                          <div className="image-holder">
+                            <img src={ResourceImage} />
+                          </div>
+                          <div className="description-holder">
+                            <div>
+                              <h4>{item.type}</h4>
+                              <h6>{item.title}</h6>
+                            </div>
+                            <div className="connection-wrapper">
+                              <Avatar.Group
+                                maxCount={2}
+                                maxPopoverTrigger="click"
+                                size="large"
+                                maxStyle={{
+                                  color: "#f56a00",
+                                  backgroundColor: "#fde3cf",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <Avatar src={AvatarImage} />
+                                <Avatar src={AvatarImage} />
+                                <Tooltip title="Ant User" placement="top">
+                                  <Avatar
+                                    style={{ backgroundColor: "#87d068" }}
+                                    icon={<UserOutlined />}
+                                  />
+                                </Tooltip>
+                              </Avatar.Group>
+                              <div className="read-more">
+                                Read More <ArrowRightOutlined />
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </Col>
-                  <Col xs={6} lg={8}>
-                    <div className="slider-card">
-                      <div className="image-holder">
-                        <img src={ResourceImage} />
-                      </div>
-                      <div className="description-holder">
-                        <div>
-                          <h4>TECHNICAL RESOURCE</h4>
-                          <h6>
-                            Legal limits on single-use plastics and
-                            microplastics
-                          </h6>
-                          <p>
-                            Donec sed odio operae, eu vulputate felis rhoncus.
-                          </p>
-                        </div>
-                        <div className="connection-wrapper">
-                          <Avatar.Group
-                            maxCount={2}
-                            maxPopoverTrigger="click"
-                            size="large"
-                            maxStyle={{
-                              color: "#f56a00",
-                              backgroundColor: "#fde3cf",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <Avatar src={AvatarImage} />
-                            <Avatar src={AvatarImage} />
-                            <Tooltip title="Ant User" placement="top">
-                              <Avatar
-                                style={{ backgroundColor: "#87d068" }}
-                                icon={<UserOutlined />}
-                              />
-                            </Tooltip>
-                          </Avatar.Group>
-                          <div className="read-more">
-                            Read More <ArrowRightOutlined />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Col>
-                  <Col xs={6} lg={8}>
-                    <div className="slider-card">
-                      <div className="image-holder">
-                        <img src={ResourceImage} />
-                      </div>
-                      <div className="description-holder">
-                        <div>
-                          <h4>TECHNICAL RESOURCE</h4>
-                          <h6>
-                            Legal limits on single-use plastics and
-                            microplastics
-                          </h6>
-                          <p>
-                            Donec sed odio operae, eu vulputate felis rhoncus.
-                          </p>
-                        </div>
-                        <div className="connection-wrapper">
-                          <Avatar.Group
-                            maxCount={2}
-                            maxPopoverTrigger="click"
-                            size="large"
-                            maxStyle={{
-                              color: "#f56a00",
-                              backgroundColor: "#fde3cf",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <Avatar src={AvatarImage} />
-                            <Avatar src={AvatarImage} />
-                            <Tooltip title="Ant User" placement="top">
-                              <Avatar
-                                style={{ backgroundColor: "#87d068" }}
-                                icon={<UserOutlined />}
-                              />
-                            </Tooltip>
-                          </Avatar.Group>
-                          <div className="read-more">
-                            Read More <ArrowRightOutlined />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-                <div className="pagination-wrapper">
-                  <Pagination
-                    defaultCurrent={1}
-                    onChange={() => console.log("s")}
-                    current={1}
-                    pageSize={10}
-                    total={20}
-                  />
+                      </Col>
+                    ))}
+                  </Row>
+                  <div className="pagination-wrapper">
+                    <Pagination
+                      defaultCurrent={1}
+                      current={bookedResourcesPage + 1}
+                      pageSize={3}
+                      total={bookedResourcesCount || 0}
+                      onChange={(n, size) => getBookedResources(n - 1)}
+                    />
+                  </div>
                 </div>
-              </div>
-            </CardComponent>
-          </div> */}
+              </CardComponent>
+            )}
+          </div>
         </div>
       </div>
     </div>
