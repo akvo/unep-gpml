@@ -805,6 +805,11 @@
         border: 2px solid #34a6ff;
       }
 
+      .show-stakeholder-btn.disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+
       .clear-all-btn {
         border: 0;
       }

@@ -47,7 +47,7 @@ const Header = ({
             <Row type="flex" justify="space-between" align="middle">
               <Col lg={5} md={7} sm={9} className="search-box">
                 <Space>
-                  <Search updateQuery={updateQuery} />
+                  <Search updateQuery={updateQuery} setView={setView} />
                   <Button
                     onClick={() => setFilterVisible(!filterVisible)}
                     type="ghost"
@@ -98,9 +98,10 @@ const Header = ({
   );
 };
 
-const Search = withRouter(({ history, updateQuery }) => {
+const Search = withRouter(({ history, updateQuery, setView }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
+    setView("list");
     if (src) {
       history.push(`?q=${src.trim()}`);
       updateQuery("q", src.trim());
