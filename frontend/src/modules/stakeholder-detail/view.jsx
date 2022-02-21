@@ -44,6 +44,34 @@ import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 
+const getType = (type) => {
+  let t = "";
+  switch (type) {
+    case "Action Plan":
+      t = "action_plan";
+      break;
+    case "Event":
+      t = "event";
+      break;
+    case "initiative":
+      t = "project";
+      break;
+    case "Policy":
+      t = "policy";
+      break;
+    case "Financing Resource":
+      t = "financing_resource";
+      break;
+    case "Technical Resource":
+      t = "technical_resource";
+      break;
+    case "Technology":
+      t = "technology";
+      break;
+  }
+  return t;
+};
+
 const CardComponent = ({ title, style, children, getRef }) => {
   return (
     <div className="card-wrapper" style={style} ref={getRef}>
@@ -192,7 +220,15 @@ const StakeholderDetail = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [params, profile, isLoaded, data, history, getOwnedResources]);
+  }, [
+    params,
+    profile,
+    isLoaded,
+    data,
+    history,
+    getOwnedResources,
+    getBookedResources,
+  ]);
 
   if (!data) {
     return (
@@ -449,11 +485,11 @@ const StakeholderDetail = ({
                                   />
                                 </Tooltip>
                               </Avatar.Group>
-                              <a href={`/${params.type}/${item.id}`}>
+                              <Link to={`/${getType(item.type)}/${item.id}`}>
                                 <div className="read-more">
                                   Read More <ArrowRightOutlined />
                                 </div>
-                              </a>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -516,9 +552,11 @@ const StakeholderDetail = ({
                                   />
                                 </Tooltip>
                               </Avatar.Group>
-                              <div className="read-more">
-                                Read More <ArrowRightOutlined />
-                              </div>
+                              <Link to={`/${getType(item.type)}/${item.id}`}>
+                                <div className="read-more">
+                                  Read More <ArrowRightOutlined />
+                                </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
