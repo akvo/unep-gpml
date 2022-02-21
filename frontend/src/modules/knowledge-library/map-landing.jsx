@@ -17,17 +17,15 @@ const MapLanding = ({
   updateQuery,
   setToggleButton,
 }) => {
-  const {
-    countries,
-    landing,
-    transnationalOptions,
-  } = UIStore.useState((s) => ({
-    profile: s.profile,
-    countries: s.countries,
-    landing: s.landing,
-    nav: s.nav,
-    transnationalOptions: s.transnationalOptions,
-  }));
+  const { countries, landing, transnationalOptions } = UIStore.useState(
+    (s) => ({
+      profile: s.profile,
+      countries: s.countries,
+      landing: s.landing,
+      nav: s.nav,
+      transnationalOptions: s.transnationalOptions,
+    })
+  );
   const [country, setCountry] = useState(null);
 
   const [multiCountry, setMultiCountry] = useState(null);
