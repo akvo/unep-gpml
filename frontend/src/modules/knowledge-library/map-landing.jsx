@@ -20,7 +20,6 @@ const MapLanding = ({
   const {
     countries,
     landing,
-
     transnationalOptions,
   } = UIStore.useState((s) => ({
     profile: s.profile,

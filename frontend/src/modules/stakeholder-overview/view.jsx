@@ -419,7 +419,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                 </Col>
               </>
             ) : (
-              <MapView />
+              <MapView updateQuery={updateQuery} />
             )}
           </Col>
         </Row>

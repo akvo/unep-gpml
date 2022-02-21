@@ -53,7 +53,6 @@ const KnowledgeLibrary = ({
   setStakeholderSignupModalVisible,
 }) => {
   const [filterVisible, setFilterVisible] = useState(false);
-  // const [listVisible, setListVisible] = useState(true);
   const [view, setView] = useState("map");
 
   const selectionValue = (
