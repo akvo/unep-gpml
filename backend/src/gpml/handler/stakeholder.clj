@@ -86,7 +86,7 @@
    :affiliation       (or affiliation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation))})
 
 (defn- create-profile
-  [{:keys [id photo about
+  [{:keys [id photo picture about
            title first_name role
            non_member_organisation
            last_name idp_usernames
@@ -107,6 +107,7 @@
    :linked_in linked_in
    :twitter twitter
    :photo photo
+   :picture picture
    :cv cv
    :country country
    :representation representation

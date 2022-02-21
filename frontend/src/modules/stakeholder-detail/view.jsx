@@ -350,7 +350,7 @@ const StakeholderDetail = ({
               </div>
             </Col>
           </Row>
-          <div>
+          {/* <div>
             <CardComponent
               title={"Owned resources"}
               style={{
@@ -502,8 +502,8 @@ const StakeholderDetail = ({
                 </div>
               </div>
             </CardComponent>
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <CardComponent
               title={"Bookmarked resources"}
               style={{
@@ -655,7 +655,7 @@ const StakeholderDetail = ({
                 </div>
               </div>
             </CardComponent>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

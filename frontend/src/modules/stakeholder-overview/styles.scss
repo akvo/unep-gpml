@@ -300,6 +300,8 @@
 
       .profile-image {
         max-width: 150px;
+        height: 150px;
+        object-fit: cover;
       }
 
       .profile-details-container {
@@ -522,13 +524,17 @@
   }
 
   // Drawer
+
+  .ant-row.body-wrapper {
+    position: relative;
+  }
+
   span.ant-input-affix-wrapper.input-src {
     border-radius: 30px;
   }
 
   .site-drawer-render-in-current-wrapper,
   .resource-main-container {
-    min-height: 100vh;
     height: 100%;
   }
 
@@ -567,7 +573,6 @@
 
     .ant-drawer-content-wrapper {
       box-shadow: none;
-      height: max-content;
 
       .ant-drawer-header {
         background: $blue05;
@@ -781,7 +786,6 @@
         margin: auto;
       }
 
-      .show-stakeholder-btn,
       .clear-all-btn {
         width: 100%;
         height: unset;
@@ -794,10 +798,6 @@
         span {
           display: block;
         }
-      }
-
-      .show-stakeholder-btn {
-        border: 2px solid #34a6ff;
       }
 
       .clear-all-btn {

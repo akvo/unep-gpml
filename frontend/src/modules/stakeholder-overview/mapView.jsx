@@ -1,43 +1,22 @@
+import React, { useEffect, useState } from "react";
 import { UIStore } from "../../store";
-import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
-import Maps from "../map/Map";
+import { useQuery } from "./common";
+import { isEmpty } from "lodash";
 import api from "../../utils/api";
-import isEmpty from "lodash/isEmpty";
+import Maps from "../map/Map";
 
-const MapLanding = ({
-  history,
-  query,
-  multiCountryCountries,
-  listVisible,
-  isDisplayedList,
-  isFilteredCountry,
-
-  //Functions
-  updateQuery,
-  setToggleButton,
-}) => {
-  const { countries, landing, transnationalOptions } = UIStore.useState(
-    (s) => ({
-      profile: s.profile,
-      countries: s.countries,
-      landing: s.landing,
-      nav: s.nav,
-      transnationalOptions: s.transnationalOptions,
-    })
-  );
+const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
+  const { landing, countries } = UIStore.useState((s) => ({
+    landing: s.landing,
+    countries: s.countries,
+  }));
+  const query = useQuery();
+  const box = document.getElementsByClassName("stakeholder-overview");
+  const isLoaded = () => !isEmpty(landing?.map);
+  const [multiCountry, setMultiCountry] = useState(null);
   const [country, setCountry] = useState(null);
 
-  const [multiCountry, setMultiCountry] = useState(null);
-
-  const box = document.getElementsByClassName("resource-list-container");
-  const isLoaded = () =>
-    !isEmpty(countries) &&
-    !isEmpty(landing?.map) &&
-    !isEmpty(transnationalOptions);
-
   const clickCountry = (name) => {
-    setToggleButton("list");
     const val = query["country"];
     let updateVal = [];
     if (isEmpty(val)) {
@@ -61,13 +40,14 @@ const MapLanding = ({
   return (
     <Maps
       box={box}
-      isLoaded={isLoaded}
-      isFilteredCountry={isFilteredCountry}
-      isDisplayedList={isDisplayedList}
-      listVisible={listVisible}
-      data={landing?.map || []}
       clickEvents={clickCountry}
+      listVisible={[]}
+      isDisplayedList={[]}
+      isFilteredCountry={isFilteredCountry}
+      dataToDisplay={[]}
+      data={landing?.map || []}
       topic={query?.topic}
+      isLoaded={isLoaded}
       country={countries.find((x) => x.id === country)}
       multiCountries={
         multiCountry &&
@@ -84,4 +64,4 @@ const MapLanding = ({
   );
 };
 
-export default withRouter(MapLanding);
+export default MapView;

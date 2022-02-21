@@ -22,7 +22,7 @@ const FilterDrawer = ({
   entities,
   query,
   updateQuery,
-  stakeholder,
+  entityCount,
 }) => {
   const {
     countries,
@@ -125,7 +125,7 @@ const FilterDrawer = ({
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Network type</div>
-              {isEmpty("") ? (
+              {isEmpty(query?.topic) ? (
                 <Tag className="selection-card-type">All (default)</Tag>
               ) : (
                 <Tag
@@ -152,6 +152,11 @@ const FilterDrawer = ({
                       <Space direction="vertical" align="center">
                         {networkIcon(type)}
                         <div className="topic-text">{networkNames(type)}</div>
+                        <div className="topic-text topic-counts">
+                          {type === "organisation"
+                            ? entityCount
+                            : stakeholders?.length}
+                        </div>
                       </Space>
                     </Card>
                   </Col>
@@ -327,12 +332,6 @@ const FilterDrawer = ({
           />
 
           <Col className="drawer-button-wrapper">
-            <Button
-              className="show-stakeholder-btn"
-              onClick={() => handleChangeType("topic", "stakeholder")}
-            >
-              Show stakeholders ({stakeholders?.length})
-            </Button>
             <Button
               className="clear-all-btn"
               onClick={() => {

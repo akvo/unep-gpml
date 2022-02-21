@@ -68,10 +68,16 @@ const CaseStudies = () => {
               >
                 Learn More
               </Button>
-              <Button className="btn-download ml-1">
-                Download as pdf&nbsp;
-                <DownloadOutlined />
-              </Button>
+              <a
+                href={
+                  "https://wedocs.unep.org/bitstream/handle/20.500.11822/38223/Case-studies.pdf?sequence=1&isAllowed=y"
+                }
+              >
+                <Button className="btn-download ml-1">
+                  Download as pdf&nbsp;
+                  <DownloadOutlined />
+                </Button>
+              </a>
             </Col>
           </Row>
         </div>

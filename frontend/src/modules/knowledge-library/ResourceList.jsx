@@ -37,7 +37,7 @@ const ResourceList = ({
   pageSize,
   hideListButtonVisible,
   updateQuery,
-  setListVisible,
+  // setListVisible,
 }) => {
   const {
     profile,
@@ -135,21 +135,21 @@ const ResourceList = ({
               ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
               : { backgroundColor: "rgba(255, 255, 255, 1)" }
           }
-          onBack={() => setListVisible(false)}
-          backIcon={
-            hideListButtonVisible ? (
-              <img src={HideIcon} className="hide-icon hide" alt="hide-icon" />
-            ) : (
-              ""
-            )
-          }
-          title={
-            hideListButtonVisible ? (
-              <span className="hide-text">Hide List</span>
-            ) : (
-              ""
-            )
-          }
+          // onBack={() => setListVisible(false)}
+          // backIcon={
+          //   hideListButtonVisible ? (
+          //     <img src={HideIcon} className="hide-icon hide" alt="hide-icon" />
+          //   ) : (
+          //     ""
+          //   )
+          // }
+          // title={
+          //   hideListButtonVisible ? (
+          //     <span className="hide-text">Hide List</span>
+          //   ) : (
+          //     ""
+          //   )
+          // }
           const
           subTitle={
             <span className="result-number">
@@ -305,7 +305,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
                         placement="top"
                       >
                         <object className="stakeholder-connection-avatar">
-                          <Link to={`/stakeholder/${findStakeholder?.id}`}>
+                          <Link to={linkTo}>
                             <Avatar
                               style={{ backgroundColor: "#FFB800" }}
                               icon={<img src={stakeholder?.image} />}
