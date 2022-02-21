@@ -34,11 +34,9 @@ const FilterDrawer = ({
     seeking,
     offering,
   } = UIStore.useState((s) => ({
-    profile: s.profile,
     countries: s.countries,
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    mainContentType: s.mainContentType,
     representativeGroup: s.sectorOptions,
     stakeholders: s.stakeholders?.stakeholders,
     organisations: s.organisations,
@@ -51,20 +49,6 @@ const FilterDrawer = ({
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
     !isEmpty(representativeGroup);
-
-  const handleChangeType = (flag, type) => {
-    const val = query[flag];
-
-    let updateVal = [];
-    if (isEmpty(val)) {
-      updateVal = [type];
-    } else if (val.includes(type)) {
-      updateVal = val.filter((x) => x !== type);
-    } else {
-      updateVal = [...val, type];
-    }
-    updateQuery(flag, updateVal);
-  };
 
   const entityIcon = (name) => {
     if (name.toLowerCase() === "owner") {
@@ -100,6 +84,20 @@ const FilterDrawer = ({
     "affiliation",
     "is_member",
   ];
+
+  const handleChangeType = (flag, type) => {
+    const val = query[flag];
+
+    let updateVal = [];
+    if (isEmpty(val)) {
+      updateVal = [type];
+    } else if (val.includes(type)) {
+      updateVal = val.filter((x) => x !== type);
+    } else {
+      updateVal = [...val, type];
+    }
+    updateQuery(flag, updateVal);
+  };
 
   const countryOpts = countries
     .filter((country) => country.description === "Member State")

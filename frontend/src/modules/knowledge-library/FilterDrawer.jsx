@@ -17,12 +17,22 @@ import { useAuth0 } from "@auth0/auth0-react";
 import moment from "moment";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
-import { topicTypes, topicNames, topicIcons } from "../../utils/misc";
+import { topicTypes, topicNames } from "../../utils/misc";
 import CountryTransnationalFilter from "./country-transnational-filter";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 import values from "lodash/values";
 import flatten from "lodash/flatten";
+
+// Import Icons as React component since the color of the icons changes when the card is selected
+import { ReactComponent as CapacityBuildingIcon } from "../../images/knowledge-library/capacity-building.svg";
+import { ReactComponent as ActionSelectedIcon } from "../../images/knowledge-library/action-selected.svg";
+import { ReactComponent as EventFlexibleIcon } from "../../images/knowledge-library/event-flexible.svg";
+import { ReactComponent as InitiativeIcon } from "../../images/knowledge-library/initiative.svg";
+import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/financing.svg";
+import { ReactComponent as PolicyIcon } from "../../images/knowledge-library/policy.svg";
+import { ReactComponent as TechnicalIcon } from "../../images/knowledge-library/technical.svg";
+import { ReactComponent as TechnologyIcon } from "../../images/knowledge-library/technology.svg";
 
 const FilterDrawer = ({
   filterVisible,
@@ -59,6 +69,33 @@ const FilterDrawer = ({
     !isEmpty(geoCoverageTypeOptions) &&
     !isEmpty(representativeGroup) &&
     !isEmpty(languages);
+
+  const topicIcons = (topic) => {
+    if (topic === "project") {
+      return <InitiativeIcon width="53" height="53" />;
+    }
+    if (topic === "actionPlan") {
+      return <ActionSelectedIcon width="53" height="53" />;
+    }
+    if (topic === "policy") {
+      return <PolicyIcon width="53" height="53" />;
+    }
+    if (topic === "technicalResource") {
+      return <TechnicalIcon width="53" height="53" />;
+    }
+    if (topic === "financingResource") {
+      return <FinancingIcon width="53" height="53" />;
+    }
+    if (topic === "event") {
+      return <EventFlexibleIcon width="53" height="53" />;
+    }
+    if (topic === "technology") {
+      return <TechnologyIcon width="53" height="53" />;
+    }
+    if (topic === "organisation") {
+      return <CapacityBuildingIcon width="53" height="53" />;
+    }
+  };
 
   const handleChangeResourceType = (flag, type) => {
     const val = query[flag];
