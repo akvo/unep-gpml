@@ -542,7 +542,10 @@
     position: absolute;
     min-width: 100%;
     overflow: hidden;
-
+    .ant-tabs-nav-operations {
+      position: unset;
+      display: none;
+    }
     .specificity-card .ant-row {
       background-color: rgba(211, 222, 231, 0.2);
       border-radius: 6px;

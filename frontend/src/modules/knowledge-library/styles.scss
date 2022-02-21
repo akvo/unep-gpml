@@ -212,6 +212,10 @@
     top: 0;
     min-width: 100%;
     overflow: hidden;
+    .ant-tabs-nav-operations {
+      position: unset;
+      display: none;
+    }
 
     .ant-drawer-mask {
       background-color: unset;
