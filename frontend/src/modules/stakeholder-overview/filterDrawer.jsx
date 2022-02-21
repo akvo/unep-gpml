@@ -126,7 +126,7 @@ const FilterDrawer = ({
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Network type</div>
-              {isEmpty("") ? (
+              {isEmpty(query?.topic) ? (
                 <Tag className="selection-card-type">All (default)</Tag>
               ) : (
                 <Tag
