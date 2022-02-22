@@ -204,6 +204,16 @@
         }
         .exta-info {
           margin-top: 40px;
+          .exta-info-head-title {
+            color: #09689a;
+            font-size: 18px;
+            font-weight: bold;
+            padding-left: 20px;
+          }
+          .ant-list {
+            padding-left: 20px !important;
+            margin-top: 20px;
+          }
           .ant-card-body {
             padding: 0px 10px;
           }
