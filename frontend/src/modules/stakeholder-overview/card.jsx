@@ -6,7 +6,7 @@ import { UIStore } from "../../store";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 import communityIcon from "../../images/stakeholder-overview/union-2-icon.svg";
 
-const ProfileCard = ({ profile, isValidUser }) => {
+const ProfileCard = ({ profile, isValidUser, profileType }) => {
   const { countries, seeking } = UIStore.useState((s) => ({
     countries: s.countries,
     seeking: s?.tags?.seeking,
@@ -65,15 +65,17 @@ const ProfileCard = ({ profile, isValidUser }) => {
                   alt={`${profile.firstName} ${profile.lastName}`}
                 />
               </div>
-              {profile?.affiliation && profile?.affiliation?.length !== 0 && (
-                <div className="affiliation-image-wrapper">
-                  <img
-                    className="affiliation-image"
-                    src={profile?.affiliation?.logo}
-                    alt={profile?.affiliation?.name}
-                  />
-                </div>
-              )}
+              {profile?.affiliation &&
+                profile?.affiliation?.length !== 0 &&
+                profileType !== "suggested-profiles" && (
+                  <div className="affiliation-image-wrapper">
+                    <img
+                      className="affiliation-image"
+                      src={profile?.affiliation?.logo}
+                      alt={profile?.affiliation?.name}
+                    />
+                  </div>
+                )}
             </div>
           )}
           <div className="profile-details-container">

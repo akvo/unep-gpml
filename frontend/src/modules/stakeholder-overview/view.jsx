@@ -388,6 +388,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                                 key={profile?.id}
                                 profile={profile}
                                 isValidUser={isValidUser}
+                                profileType="suggested-profiles"
                               />
                             ))}
                       </div>
@@ -416,6 +417,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                             key={profile?.id}
                             profile={profile}
                             isValidUser={isValidUser}
+                            profileType="all-profiles"
                           />
                         ))}
                       </div>
