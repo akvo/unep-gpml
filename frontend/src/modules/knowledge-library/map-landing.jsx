@@ -1,13 +1,12 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
 import { PageHeader } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { withRouter } from "react-router-dom";
 import Maps from "../map/Map";
 
-import isEmpty from "lodash/isEmpty";
-
 import api from "../../utils/api";
+import isEmpty from "lodash/isEmpty";
 import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const MapLanding = ({
@@ -30,10 +29,9 @@ const MapLanding = ({
     })
   );
   const [country, setCountry] = useState(null);
-
   const [multiCountry, setMultiCountry] = useState(null);
-
   const box = document.getElementsByClassName("resource-list-container");
+
   const isLoaded = () =>
     !isEmpty(countries) &&
     !isEmpty(landing?.map) &&
@@ -62,28 +60,48 @@ const MapLanding = ({
   }, []);
 
   return (
-    <Maps
-      box={box}
-      isLoaded={isLoaded}
-      isFilteredCountry={isFilteredCountry}
-      isDisplayedList={isDisplayedList}
-      listVisible={listVisible}
-      data={landing?.map || []}
-      clickEvents={clickCountry}
-      topic={query?.topic}
-      country={countries.find((x) => x.id === country)}
-      multiCountries={
-        multiCountry &&
-        !isEmpty(multiCountryCountries) &&
-        multiCountryCountries.find((x) => x.id === multiCountry)
-          ? multiCountryCountries
-              .find((x) => x.id === multiCountry)
-              ?.countries.map((country) =>
-                countries.find((x) => x.id === country.id)
-              )
-          : []
-      }
-    />
+    <>
+      {!isLoaded() && (
+        <h2 className="loading" id="map-loader">
+          <LoadingOutlined spin /> Loading
+        </h2>
+      )}
+      {!isDisplayedList && (
+        <div className="map-overlay">
+          <PageHeader
+            className="resource-list-header show-list"
+            ghost={false}
+            backIcon={
+              <img src={HideIcon} className="hide-icon show" alt="show-icon" />
+            }
+            onBack={() => setListVisible(true)}
+            title="Show List"
+          />
+        </div>
+      )}
+      <Maps
+        box={box}
+        isFilteredCountry={isFilteredCountry}
+        isDisplayedList={isDisplayedList}
+        listVisible={listVisible}
+        data={landing?.map || []}
+        clickEvents={clickCountry}
+        topic={query?.topic}
+        country={countries.find((x) => x.id === country)}
+        isLoaded={isLoaded}
+        multiCountries={
+          multiCountry &&
+          !isEmpty(multiCountryCountries) &&
+          multiCountryCountries.find((x) => x.id === multiCountry)
+            ? multiCountryCountries
+                .find((x) => x.id === multiCountry)
+                ?.countries.map((country) =>
+                  countries.find((x) => x.id === country.id)
+                )
+            : []
+        }
+      />
+    </>
   );
 };
 

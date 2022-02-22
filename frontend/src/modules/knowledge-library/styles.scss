@@ -585,6 +585,12 @@
     min-width: 300px;
   }
 
+  .resource-list-header.show-list {
+    position: absolute;
+    z-index: 999;
+    background-color: $grey05;
+  }
+
   .resource-list-header {
     justify-content: unset;
 
