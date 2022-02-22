@@ -11,7 +11,7 @@ import {
   Pagination,
 } from "antd";
 import { ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "./styles.scss";
 import { UIStore } from "../../store";
@@ -25,8 +25,8 @@ import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 
 // Icons
-import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 import SortIcon from "../../images/knowledge-library/sort-icon.svg";
+import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const ResourceList = ({
   view,
@@ -35,9 +35,9 @@ const ResourceList = ({
   filters,
   loading,
   pageSize,
-  hideListButtonVisible,
   updateQuery,
-  // setListVisible,
+  hideListButtonVisible,
+  setListVisible,
 }) => {
   const {
     profile,
@@ -135,21 +135,21 @@ const ResourceList = ({
               ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
               : { backgroundColor: "rgba(255, 255, 255, 1)" }
           }
-          // onBack={() => setListVisible(false)}
-          // backIcon={
-          //   hideListButtonVisible ? (
-          //     <img src={HideIcon} className="hide-icon hide" alt="hide-icon" />
-          //   ) : (
-          //     ""
-          //   )
-          // }
-          // title={
-          //   hideListButtonVisible ? (
-          //     <span className="hide-text">Hide List</span>
-          //   ) : (
-          //     ""
-          //   )
-          // }
+          onBack={() => setListVisible(false)}
+          backIcon={
+            hideListButtonVisible ? (
+              <img src={HideIcon} className="hide-icon hide" alt="hide-icon" />
+            ) : (
+              ""
+            )
+          }
+          title={
+            hideListButtonVisible ? (
+              <span className="hide-text">Hide List</span>
+            ) : (
+              ""
+            )
+          }
           const
           subTitle={
             <span className="result-number">
