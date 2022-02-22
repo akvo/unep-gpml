@@ -208,6 +208,28 @@
     padding: 0;
   }
 
+  .images-wrapper {
+    position: relative;
+  }
+
+  .affiliation-image-wrapper {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 30px;
+    bottom: 0;
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+    background-color: #fff;
+
+    .affiliation-image {
+      width: 100%;
+    }
+  }
+
   .all-profiles {
     padding-bottom: 34.66px;
 
@@ -285,7 +307,7 @@
       .image-wrapper {
         display: flex;
         align-items: center;
-
+        position: relative;
         border-radius: 50%;
         width: 100%;
         max-width: 150px;
@@ -294,6 +316,7 @@
         min-height: 150px;
         overflow: hidden;
         margin-right: 16.51px;
+        text-align: center;
       }
 
       .organisation-image {
@@ -302,7 +325,6 @@
 
       .profile-image {
         max-width: 150px;
-        height: 150px;
         object-fit: cover;
       }
 
