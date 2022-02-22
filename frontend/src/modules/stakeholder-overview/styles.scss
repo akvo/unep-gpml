@@ -226,10 +226,12 @@
 
   .card-container {
     padding: 16px 0px 34px 0px;
-    .title {
+    #title {
       font-size: 22px;
       text-transform: uppercase;
       margin-bottom: 13px;
+      text-align: center;
+      line-height: 30px;
     }
     &.green {
       background-color: #45bea5;
@@ -846,6 +848,9 @@
     .card-wrapper {
       grid-template-columns: repeat(2, 1fr);
     }
+    #title {
+      text-align: left !important;
+    }
   }
 
   @media (min-width: 1300px) {
@@ -853,9 +858,13 @@
       max-width: 100%;
     }
     .card-wrapper,
-    .title {
+    #title {
       max-width: 1440px;
       margin: auto;
+    }
+
+    #title {
+      padding-left: 12px;
     }
 
     .card-wrapper {
@@ -868,9 +877,13 @@
       max-width: 100%;
     }
     .card-wrapper,
-    .title {
+    #title {
       max-width: 1440px;
       margin: auto;
+    }
+
+    #title {
+      padding-left: 0;
     }
 
     .card-wrapper {

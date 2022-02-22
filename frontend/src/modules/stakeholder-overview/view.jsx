@@ -370,7 +370,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                 {/* Suggested profiles */}
                 {isValidUser && !isEmpty(suggestedProfiles) && (
                   <Col className="card-container green">
-                    <h3 className="title text-white ui container">
+                    <h3 id="title" className="title text-white ui container">
                       Suggested profiles
                     </h3>
 
