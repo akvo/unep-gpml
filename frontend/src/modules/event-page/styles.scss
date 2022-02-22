@@ -6,9 +6,6 @@
     .item-sidebar {
       width: 100%;
       height: 118px;
-      display: flex;
-      cursor: pointer;
-      padding: 0;
 
       p {
         margin-top: 10px;
@@ -20,24 +17,17 @@
 
       .item-menu {
         opacity: 0.5;
+        img {
+          height: unset;
+          width: unset;
+        }
       }
 
       &.active {
         background: rgba(5, 240, 129, 0.2);
-        border: 0;
 
         .item-menu {
           opacity: 1;
-        }
-
-        &::before {
-          content: " ";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 3px;
-          height: 118px;
-          background-color: $green01;
         }
       }
 

@@ -25,8 +25,35 @@ import SlideNext from "../../images/capacity-building/slide-next.svg";
 import LeftSidebar from "../left-sidebar/LeftSidebar";
 import { CapacityCard } from "./CapacityCard";
 
+import IconLibrary from "../../images/capacity-building/ic-knowledge-library.svg";
+import IconLearning from "../../images/capacity-building/ic-capacity-building.svg";
+import IconExchange from "../../images/capacity-building/ic-exchange.svg";
+import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
+
 const CapacityBuilding = () => {
   const slider = useRef();
+
+  const sidebar = [
+    {
+      id: 1,
+      title: "LIBRARY",
+      url: "/knowledge-library",
+      icon: IconLibrary,
+    },
+    {
+      id: 2,
+      title: "LEARNING",
+      url: "/capacity-building",
+      icon: IconLearning,
+    },
+    {
+      id: 4,
+      title: "Case studies",
+      url: "/case-studies",
+      icon: IconCaseStudies,
+    },
+  ];
+
   const prev = () => {
     slider.current.prev();
   };
@@ -52,7 +79,7 @@ const CapacityBuilding = () => {
       </Col>
       <Col span={24}>
         <div className="">
-          <LeftSidebar active={2}>
+          <LeftSidebar active={2} sidebar={sidebar}>
             <Row>
               <Col span={24} style={{ position: "relative" }}>
                 <Carousel className="pm_event_banner" ref={slider}>
