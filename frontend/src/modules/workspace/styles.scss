@@ -139,21 +139,10 @@ $bg-green-primary: #10f9b7;
 
       &.active {
         background: rgba(5, 240, 129, 0.2);
-        border: 0;
 
         img,
         p {
           opacity: 1;
-        }
-
-        &::before {
-          content: " ";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 3px;
-          height: 100px;
-          background-color: $green01;
         }
 
         &.disabled::before {
