@@ -1,21 +1,24 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
+import { PageHeader } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import Maps from "../map/Map";
-import api from "../../utils/api";
+
 import isEmpty from "lodash/isEmpty";
 
+import api from "../../utils/api";
+import HideIcon from "../../images/knowledge-library/hide-icon.svg";
+
 const MapLanding = ({
-  history,
   query,
   multiCountryCountries,
   listVisible,
   isDisplayedList,
   isFilteredCountry,
-
-  //Functions
   updateQuery,
   setToggleButton,
+  setListVisible,
 }) => {
   const { countries, landing, transnationalOptions } = UIStore.useState(
     (s) => ({

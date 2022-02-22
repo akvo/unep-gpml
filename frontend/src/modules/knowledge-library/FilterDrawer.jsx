@@ -322,7 +322,7 @@ const FilterDrawer = ({
             <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
               {/* Start date */}
               <DatePickerFilter
-                title="StartDate"
+                title="Start Date"
                 value={query?.startDate}
                 flag="startDate"
                 query={query}
@@ -336,7 +336,7 @@ const FilterDrawer = ({
               />
               {/* End date */}
               <DatePickerFilter
-                title="End date"
+                title="End Date"
                 value={query?.endDate}
                 flag="end-date"
                 query={query}

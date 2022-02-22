@@ -207,7 +207,14 @@
                                                    :summary "Edit stakeholder's data"
                                                    :swagger {:tags ["stakeholder"]}
                                                    :parameters #ig/ref :gpml.handler.stakeholder/patch-params
-                                                   :handler #ig/ref :gpml.handler.stakeholder/patch}}]]
+                                                   :handler #ig/ref :gpml.handler.stakeholder/patch}}
+                                          ["/associated-topics"
+                                           {:get {:middleware [#ig/ref :gpml.auth/auth-required
+                                                               #ig/ref :gpml.auth/approved-user]
+                                                  :summary "Get stakeholder associated topics"
+                                                  :swagger {:tags ["stakeholder"]}
+                                                  :parameters #ig/ref :gpml.handler.stakeholder-association/get-associated-topics-params
+                                                  :handler #ig/ref :gpml.handler.stakeholder-association/get-associated-topics}}]]]
                                         ["/landing"
                                          [""
                                           {:get {:summary "End-point for the landing page"
@@ -481,6 +488,8 @@
                                   :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.stakeholder/post-params {}
   :gpml.handler.stakeholder/put {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder-association/get-associated-topics {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder-association/get-associated-topics-params {}
   :gpml.handler.stakeholder/suggested-profiles {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/suggested-profiles-params {}
   :gpml.handler.currency/all {:db #ig/ref :duct.database/sql}
