@@ -25,6 +25,7 @@ insert into resource(
 --~ (when (contains? params :latest_amendment_date) ", latest_amendment_date")
 --~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :capacity_building) ", capacity_building")
+--~ (when (contains? params :subnational_city) ", subnational_city")
 )
 values(
     :title,
@@ -51,6 +52,7 @@ values(
 --~ (when (contains? params :latest_amendment_date) ", :latest_amendment_date")
 --~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :capacity_building) ", :capacity_building")
+--~ (when (contains? params :subnational_city) ", :subnational_city")
 )
 returning id;
 

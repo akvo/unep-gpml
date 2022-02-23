@@ -39,6 +39,7 @@
                                   status country geo_coverage_type
                                   geo_coverage_value implementing_mea
                                   geo_coverage_countries geo_coverage_country_groups
+                                  geo_coverage_value_subnational_city
                                   tags urls created_by image
                                   owners info_docs sub_content_type related_content topics
                                   attachments remarks mailjet-config
@@ -64,6 +65,7 @@
               :geo_coverage_value geo_coverage_value
               :geo_coverage_countries geo_coverage_countries
               :geo_coverage_country_groups geo_coverage_country_groups
+              :subnational_city geo_coverage_value_subnational_city
               :implementing_mea implementing_mea
               :attachments attachments
               :remarks remarks
@@ -136,6 +138,7 @@
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
+    [:geo_coverage_value_subnational_city string?]
     [:image {:optional true} string?]
     [:implementing_mea {:optional true} integer?]
     [:tags {:optional true}
