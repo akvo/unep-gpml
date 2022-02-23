@@ -1,5 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 import { Drawer, Menu, Button } from "antd";
 import { topicNames } from "../../utils/misc";
 import humps from "humps";
@@ -48,8 +49,9 @@ const ResponsiveMenu = withRouter(
           loginWithPopup();
         } else if (key === "logout") {
           logout({ returnTo: window.location.origin });
-        } else if (key === "data-hub") {
-          // do nothing
+        } else if (key === "data-hub" || key === "stakeholder-overview") {
+        } else if (key.includes("knowledge-library")) {
+          history.push(`/knowledge-library`);
         } else {
           history.push(`/${key}`);
         }
@@ -113,7 +115,7 @@ const ResponsiveMenu = withRouter(
             className="nav-link"
           >
             <Menu.Item
-              key="browse"
+              key="knowledge-library"
               className="nav-link"
               onClick={() => setFilterMenu([])}
             >
@@ -133,7 +135,7 @@ const ResponsiveMenu = withRouter(
                 const topic = humps.decamelize(name);
                 return (
                   <Menu.Item
-                    key={`browse?topic=${topic}`}
+                    key={`/knowledge-library?topic=${topic}`}
                     className="indent-right nav-link"
                     disabled={loading}
                     onClick={() => setFilterMenu([topic])}
@@ -152,7 +154,10 @@ const ResponsiveMenu = withRouter(
               })}
           </SubMenu>
           {/* Connect Stakeholders */}
-          <SubMenu
+          <Menu.Item key="stakeholder-overview" className="nav-link">
+            <Link to="/stakeholder-overview">Connect Stakeholders</Link>
+          </Menu.Item>
+          {/* <SubMenu
             key="connect-stakeholders"
             title="Connect Stakeholders"
             className="nav-link"
@@ -168,8 +173,8 @@ const ResponsiveMenu = withRouter(
                     disabled={loadingStakeholders}
                     onClick={() => setFilterMenu([topic])}
                   >
-                    {topicNames(name)}
-                    {/* <Button
+                    {topicNames(name)} */}
+          {/* <Button
                       className="badge-count"
                       size="small"
                       type="ghost"
@@ -177,7 +182,7 @@ const ResponsiveMenu = withRouter(
                       icon={count}
                       loading={loadingStakeholders}
                     /> */}
-                  </Menu.Item>
+          {/* </Menu.Item>
                 );
               })
             ) : (
@@ -191,14 +196,14 @@ const ResponsiveMenu = withRouter(
                   loading={loadingStakeholders}
                 />
               </Menu.Item>
-            )}
-            {/* <Menu.Item key="stakeholder" className="nav-link">
+            )} */}
+          {/* <Menu.Item key="stakeholder" className="nav-link">
               Individuals
             </Menu.Item>
             <Menu.Item key="organisation" className="nav-link">
               Entities
             </Menu.Item> */}
-          </SubMenu>
+          {/* </SubMenu> */}
           {/* Join GPML & Sign In */}
           {!isAuthenticated && (
             <>
