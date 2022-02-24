@@ -24,6 +24,7 @@ insert into policy(
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
 --~ (when (contains? params :topics) ", topics")
 --~ (when (contains? params :related_content) ", related_content")
+--~ (when (contains? params :subnational_city) ", subnational_city")
 )
 values(
     :title,
@@ -49,6 +50,7 @@ values(
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
 --~ (when (contains? params :topics) ", :topics")
 --~ (when (contains? params :related_content) ", :related_content")
+--~ (when (contains? params :subnational_city) ", :subnational_city")
 )
 returning id;
 
@@ -132,7 +134,7 @@ values :t*:urls RETURNING id;
 
 -- :name entity-connections-by-id
 -- :doc Get entity connections by id
-select orgpol.id, orgpol.association as role, org.name as entity
+select orgpol.id, orgpol.association as role, org.id as entity_id, org.name as entity, org.logo as image
  from organisation_policy orgpol
  left join organisation org
  on orgpol.organisation = org.id
@@ -140,7 +142,7 @@ select orgpol.id, orgpol.association as role, org.name as entity
 
 -- :name stakeholder-connections-by-id
 -- :doc Get stakeholder connections by id
-select sp.id, sp.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder
+select sp.id, sp.association as role, s.id as stakeholder_id, concat_ws(' ', s.first_name, s.last_name) as stakeholder, s.picture as image
   from stakeholder_policy sp
   left join stakeholder s
   on sp.stakeholder = s.id
@@ -153,7 +155,7 @@ select id, title
 
 -- :name related-content-by-id
 -- :doc Get related content by id
-select pol.id, pol.title from policy p
+select pol.id, pol.title, pol.abstract as description from policy p
   left join policy pol
   on pol.id = ANY(p.related_content)
   where p.id = :id

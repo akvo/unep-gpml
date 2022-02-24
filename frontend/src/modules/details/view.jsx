@@ -540,9 +540,7 @@ const DetailsView = ({
       it.topic === resourceTypeToTopicType(params.type)
   );
 
-  const isConnectStakeholders = ["organisation", "stakeholder"].includes(
-    params?.type
-  );
+  const isConnectStakeholders = ["stakeholder"].includes(params?.type);
   const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
 
   const isLoaded = useCallback(

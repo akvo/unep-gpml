@@ -20,6 +20,7 @@ insert into event(
 --~ (when (contains? params :capacity_building) ", capacity_building")
 --~ (when (contains? params :event_type) ", event_type")
 --~ (when (contains? params :recording) ", recording")
+--~ (when (contains? params :subnational_city) ", subnational_city")
 )
 values(
     :title,
@@ -41,6 +42,7 @@ values(
 --~ (when (contains? params :capacity_building) ", :capacity_building")
 --~ (when (contains? params :event_type) ", :event_type")
 --~ (when (contains? params :recording) ", :recording")
+--~ (when (contains? params :subnational_city) ", :subnational_city")
 ) RETURNING id;
 
 -- :name add-event-tags :<! :1
@@ -133,7 +135,7 @@ select count(*) from event where title like 'Dummy%';
 
 -- :name entity-connections-by-id
 -- :doc Get entity connections by id
-select oe.id, oe.association as role, org.name as entity
+select oe.id, oe.association as role, org.id as entity_id, org.name as entity, org.logo as image
  from organisation_event oe
  left join organisation org
  on oe.organisation = org.id
@@ -141,7 +143,7 @@ select oe.id, oe.association as role, org.name as entity
 
 -- :name stakeholder-connections-by-id
 -- :doc Get stakeholder connections by id
-select se.id, se.association as role, concat_ws(' ', s.first_name, s.last_name) as stakeholder
+select se.id, se.association as role, s.id as stakeholder_id, concat_ws(' ', s.first_name, s.last_name) as stakeholder, s.picture as image
   from stakeholder_event se
   left join stakeholder s
   on se.stakeholder = s.id
@@ -154,7 +156,7 @@ select id, title
 
 -- :name related-content-by-id
 -- :doc Get related content by id
-select ev.id, ev.title from event e
+select ev.id, ev.title, ev.description from event e
   left join event ev
   on ev.id = any(e.related_content)
 where e.id = :id

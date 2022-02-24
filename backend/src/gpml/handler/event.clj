@@ -1,14 +1,15 @@
 (ns gpml.handler.event
   (:require [clojure.java.jdbc :as jdbc]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.image :as handler.image]
+            [gpml.auth :as auth]
+            [gpml.email-util :as email]
             [gpml.db.event :as db.event]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
-            [gpml.handler.auth :as h.auth]
             [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.email-util :as email]
-            [gpml.auth :as auth]
+            [gpml.handler.auth :as h.auth]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.image :as handler.image]
+            [gpml.pg-util :as pg-util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -36,6 +37,7 @@
                                  description remarks geo_coverage_type
                                  country city geo_coverage_value photo
                                  geo_coverage_countries geo_coverage_country_groups
+                                 geo_coverage_value_subnational_city
                                  created_by mailjet-config owners url
                                  info_docs sub_content_type related_content
                                  entity_connections individual_connections]}]
@@ -49,6 +51,7 @@
               :geo_coverage_value geo_coverage_value
               :geo_coverage_countries geo_coverage_countries
               :geo_coverage_country_groups geo_coverage_country_groups
+              :subnational_city geo_coverage_value_subnational_city
               :city city
               :url url
               :country country
@@ -56,22 +59,26 @@
               :created_by created_by
               :info_docs info_docs
               :sub_content_type sub_content_type
-              :related_content related_content}
-        event-id (->> data (db.event/new-event conn) :id)]
+              :related_content (pg-util/->JDBCArray related_content "integer")}
+        event-id (->> data (db.event/new-event conn) :id)
+        individual_connections (conj individual_connections {:stakeholder created_by
+                                                             :role "owner"})
+        owners (distinct (remove nil? (flatten (conj owners
+                                                 (map #(when (= (:role %) "owner")
+                                                         (:stakeholder %))
+                                                   individual_connections)))))]
     (when (not-empty tags)
       (db.event/add-event-tags conn {:tags (map #(vector event-id %) tags)}))
-    (when (not-empty owners)
-      (doseq [stakeholder-id owners]
-        (h.auth/grant-topic-to-stakeholder! conn {:topic-id event-id
-                                                  :topic-type "event"
-                                                  :stakeholder-id stakeholder-id
-                                                  :roles ["owner"]})))
+    (doseq [stakeholder-id owners]
+      (h.auth/grant-topic-to-stakeholder! conn {:topic-id event-id
+                                                :topic-type "event"
+                                                :stakeholder-id stakeholder-id
+                                                :roles ["owner"]}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections event-id)]
         (db.favorite/new-organisation-association conn association)))
-    (when (not-empty individual_connections)
-      (doseq [association (expand-individual-associations individual_connections event-id)]
-        (db.favorite/new-association conn association)))
+    (doseq [association (expand-individual-associations individual_connections event-id)]
+      (db.favorite/new-association conn association))
     (when (not-empty urls)
       (let [lang-urls (map #(vector event-id
                                     (->> % :lang
@@ -105,6 +112,7 @@
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
+    [:geo_coverage_value_subnational_city string?]
     [:country {:optional true} integer?]
     [:city {:optional true} string?]
     [:url {:optional true} string?]

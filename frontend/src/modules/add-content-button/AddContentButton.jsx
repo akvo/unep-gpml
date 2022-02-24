@@ -7,7 +7,6 @@ import { ReactComponent as AddIcon } from "../../images/workspace/add-icon.svg";
 const AddContentButton = withRouter(({ history }) => {
   const [didMount, setDidMount] = useState(false);
   const pageHistory = history?.location?.pathname;
-  console.log(pageHistory);
 
   const displayButton =
     pageHistory === "/workspace" ||

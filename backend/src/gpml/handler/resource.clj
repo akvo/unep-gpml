@@ -10,6 +10,7 @@
             [gpml.handler.auth :as h.auth]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
+            [gpml.pg-util :as pg-util]
             [gpml.util :as util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
@@ -39,6 +40,7 @@
                                     value_remarks valid_from valid_to image
                                     geo_coverage_type geo_coverage_value
                                     geo_coverage_countries geo_coverage_country_groups
+                                    geo_coverage_value_subnational_city
                                     attachments country urls tags remarks
                                     created_by url mailjet-config owners
                                     info_docs sub_content_type related_content
@@ -58,6 +60,7 @@
               :geo_coverage_value geo_coverage_value
               :geo_coverage_countries geo_coverage_countries
               :geo_coverage_country_groups geo_coverage_country_groups
+              :subnational_city geo_coverage_value_subnational_city
               :country country
               :attachments attachments
               :remarks remarks
@@ -65,25 +68,29 @@
               :url url
               :info_docs info_docs
               :sub_content_type sub_content_type
-              :related_content related_content
+              :related_content (pg-util/->JDBCArray related_content "integer")
               :first_publication_date first_publication_date
               :latest_amendment_date latest_amendment_date}
-        resource-id (:id (db.resource/new-resource conn data))]
-    (when (not-empty owners)
-      (doseq [stakeholder-id owners]
-        (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
-                                                  :topic-type "resource"
-                                                  :stakeholder-id stakeholder-id
-                                                  :roles ["owner"]})))
+        resource-id (:id (db.resource/new-resource conn data))
+        individual_connections (conj individual_connections {:stakeholder created_by
+                                                             :role "owner"})
+        owners (distinct (remove nil? (flatten (conj owners
+                                                 (map #(when (= (:role %) "owner")
+                                                         (:stakeholder %))
+                                                   individual_connections)))))]
+    (doseq [stakeholder-id owners]
+      (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
+                                                :topic-type "resource"
+                                                :stakeholder-id stakeholder-id
+                                                :roles ["owner"]}))
     (when (not-empty tags)
       (db.resource/add-resource-tags conn {:tags
                                            (map #(vector resource-id %) tags)}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections resource-id)]
         (db.favorite/new-organisation-association conn association)))
-    (when (not-empty individual_connections)
-      (doseq [association (expand-individual-associations individual_connections resource-id)]
-        (db.favorite/new-association conn association)))
+    (doseq [association (expand-individual-associations individual_connections resource-id)]
+      (db.favorite/new-association conn association))
     (when (not-empty urls)
       (let [lang-urls (map #(vector resource-id
                                     (->> % :lang
@@ -153,6 +160,7 @@
           [:geo_coverage_type
            [:enum "global", "regional", "national", "transnational",
             "sub-national", "global with elements in specific areas"]]
+          [:geo_coverage_value_subnational_city string?]
           [:image {:optional true} string?]
           [:remarks {:optional true} string?]
           [:urls {:optional true}

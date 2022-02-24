@@ -10,11 +10,7 @@ import {
   Tooltip,
   Pagination,
 } from "antd";
-import {
-  UserOutlined,
-  ArrowRightOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
+import { ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 import "./styles.scss";
@@ -28,27 +24,34 @@ import humps from "humps";
 import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 
-import HideIcon from "../../images/knowledge-library/hide-icon.svg";
+// Icons
 import SortIcon from "../../images/knowledge-library/sort-icon.svg";
+import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const ResourceList = ({
-  filters,
-  setListVisible,
-  countData,
-  updateQuery,
-  loading,
+  view,
   results = [],
+  countData,
+  filters,
+  loading,
   pageSize,
+  updateQuery,
   hideListButtonVisible,
+  setListVisible,
 }) => {
-  const { profile, countries, tags, transnationalOptions } = UIStore.useState(
-    (s) => ({
-      profile: s.profile,
-      countries: s.countries,
-      tags: s.tags,
-      transnationalOptions: s.transnationalOptions,
-    })
-  );
+  const {
+    profile,
+    countries,
+    tags,
+    transnationalOptions,
+    stakeholders,
+  } = UIStore.useState((s) => ({
+    profile: s.profile,
+    countries: s.countries,
+    tags: s.tags,
+    transnationalOptions: s.transnationalOptions,
+    stakeholders: s.stakeholders,
+  }));
 
   const [allResults, setAllResults] = useState([]);
   const [isAscending, setIsAscending] = useState(null);
@@ -69,31 +72,53 @@ const ResourceList = ({
   const filteredTopics =
     filters?.topic?.length > 0
       ? filters?.topic?.filter((t) => topicsForTotal.indexOf(t) > -1)
-      : topicsForTotal;
+      : topicsForTotal.filter(
+          (t) => t !== "organisation" && t !== "stakeholder"
+        );
   const totalItems = filteredTopics.reduce(
     (acc, topic) =>
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
   );
 
-  const allTopicCount = countData.reduce((acc, topic) => acc + topic.count, 0);
+  const itemCount = loading
+    ? 0
+    : filters?.offset !== undefined
+    ? totalItems
+    : pageSize;
 
   const sortResults = () => {
     if (!isAscending) {
       const sortAscending = allResults.sort((result1, result2) => {
         if (result1?.title) {
-          return result1.title.localeCompare(result2.title);
+          return result1?.title
+            ?.trim()
+            .localeCompare(result2?.title?.trim(), "en", {
+              numeric: true,
+            });
         } else {
-          return result1?.name?.localeCompare(result2?.name);
+          return result1?.name
+            ?.trim()
+            .localeCompare(result2?.name?.trim(), "en", {
+              numeric: true,
+            });
         }
       });
       setAllResults(sortAscending);
     } else {
       const sortDescending = allResults.sort((result1, result2) => {
         if (result2?.title) {
-          return result2.title.localeCompare(result1.title);
+          return result2?.title
+            ?.trim()
+            .localeCompare(result1?.title?.trim(), "en", {
+              numeric: true,
+            });
         } else {
-          return result2?.name?.localeCompare(result1?.name);
+          return result2?.name
+            ?.trim()
+            .localeCompare(result1?.name?.trim(), "en", {
+              numeric: true,
+            });
         }
       });
       setAllResults(sortDescending);
@@ -113,6 +138,11 @@ const ResourceList = ({
         <PageHeader
           className="resource-list-header"
           ghost={false}
+          style={
+            view === "map"
+              ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
+              : { backgroundColor: "rgba(255, 255, 255, 1)" }
+          }
           onBack={() => setListVisible(false)}
           backIcon={
             hideListButtonVisible ? (
@@ -128,12 +158,13 @@ const ResourceList = ({
               ""
             )
           }
+          const
           subTitle={
             <span className="result-number">
               Showing{" "}
               {totalItems > pageSize + filters?.offset
-                ? pageSize + filters?.offset
-                : totalItems}{" "}
+                ? pageSize + Number(filters?.offset)
+                : itemCount}{" "}
               of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
             </span>
           }
@@ -153,17 +184,30 @@ const ResourceList = ({
           }
         />
       </Col>
-
-      <Col span={24} className="resource-list">
-        {!isLoaded() || loading ? (
-          <h2 className="loading">
-            <LoadingOutlined spin /> Loading
-          </h2>
-        ) : isLoaded() && !loading && !isEmpty(allResults) ? (
-          <ResourceItem results={allResults} />
-        ) : (
-          <h2 className="loading">There is no data to display</h2>
-        )}
+      <div>
+        <Col
+          span={24}
+          className="resource-list"
+          style={
+            isLoaded() &&
+            !loading &&
+            !isEmpty(allResults) && { overflowY: "auto" }
+          }
+        >
+          {!isLoaded() || loading ? (
+            <h2 className="loading">
+              <LoadingOutlined spin /> Loading
+            </h2>
+          ) : isLoaded() && !loading && !isEmpty(allResults) ? (
+            <ResourceItem
+              view={view}
+              results={allResults}
+              stakeholders={stakeholders}
+            />
+          ) : (
+            <h2 className="loading">There is no data to display</h2>
+          )}
+        </Col>
         <div className="page">
           {!isEmpty(allResults) && (
             <Pagination
@@ -177,23 +221,23 @@ const ResourceList = ({
           )}
           <div className="result-number">
             {totalItems > pageSize + filters?.offset
-              ? pageSize + filters?.offset
-              : totalItems}{" "}
-            of {allTopicCount || 0} result{allTopicCount > 1 ? "s" : ""}
+              ? pageSize + Number(filters?.offset)
+              : itemCount}{" "}
+            of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
           </div>
         </div>
-      </Col>
+      </div>
     </Row>
   );
 };
 
-const ResourceItem = ({ results }) => {
+const ResourceItem = ({ results, view, stakeholders }) => {
   return results.map((result) => {
     const { id, type } = result;
     const fullName = (data) =>
-      data.title
-        ? `${data.title} ${data.firstName} ${data.lastName}`
-        : `${data.firstName} ${data.lastName}`;
+      data?.title
+        ? `${data?.title} ${data?.firstName} ${data?.lastName}`
+        : `${data?.firstName} ${data?.lastName}`;
     const title =
       (type === "stakeholder" && fullName(result)) ||
       result.title ||
@@ -206,10 +250,39 @@ const ResourceItem = ({ results }) => {
       result.remarks ||
       "";
     const linkTo = `/${type}/${id}`;
+    const stakeholdersConnectionList = result?.stakeholderConnections;
+    const stakeholderCount = result?.stakeholderConnections?.length;
+
+    const getStakeholderCount = () => {
+      if (stakeholderCount > 3) {
+        return `${stakeholderCount - 3}+`;
+      } else {
+        return;
+      }
+    };
+
+    const stakeholderToDisplay = () => {
+      if (stakeholderCount > 3) {
+        return [
+          stakeholdersConnectionList[0],
+          stakeholdersConnectionList[1],
+          stakeholdersConnectionList[2],
+        ];
+      } else {
+        return stakeholdersConnectionList;
+      }
+    };
 
     return (
       <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
-        <Card className="resource-item">
+        <Card
+          className="resource-item"
+          style={
+            view === "map"
+              ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
+              : { backgroundColor: "rgba(255, 255, 255, 1)" }
+          }
+        >
           <div className="topic">{topicNames(type)}</div>
           <div className="item-body">
             <div className="title">{title}</div>
@@ -220,23 +293,43 @@ const ResourceItem = ({ results }) => {
           <div className="item-footer">
             <Space size={5}>
               <Avatar.Group
+                className="avatar-group"
                 maxCount={3}
                 maxStyle={{
                   color: "#f56a00",
                   backgroundColor: "#fde3cf",
                 }}
               >
-                {["a", "b"].map((b, i) => (
-                  <Tooltip key={`avatar-${i}`} title={b} placement="top">
-                    <Avatar
-                      style={{ backgroundColor: "#FFB800" }}
-                      icon={<UserOutlined />}
-                    />
-                  </Tooltip>
-                ))}
-              </Avatar.Group>{" "}
-              <span className="avatar-number">+42</span>
+                {result?.stakeholderConnections &&
+                  stakeholderToDisplay().map((stakeholder) => {
+                    const findStakeholder = stakeholders?.stakeholders?.find(
+                      (pers) => pers.id === stakeholder?.stakeholderId
+                    );
+
+                    return (
+                      <Tooltip
+                        key={stakeholder?.id}
+                        title={`${findStakeholder?.firstName} ${findStakeholder?.lastName}`}
+                        placement="top"
+                      >
+                        <object className="stakeholder-connection-avatar">
+                          <Link to={linkTo}>
+                            <Avatar
+                              style={{ backgroundColor: "#FFB800" }}
+                              icon={<img src={stakeholder?.image} />}
+                            />
+                          </Link>
+                        </object>
+                      </Tooltip>
+                    );
+                  })}
+              </Avatar.Group>
             </Space>
+            <span className="avatar-number">
+              {result?.stakeholderConnections?.length !== 0 &&
+                result?.stakeholderConnections !== null &&
+                getStakeholderCount()}
+            </span>
             <span className="read-more">
               Read more
               <ArrowRightOutlined />

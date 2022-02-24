@@ -2,6 +2,11 @@
   (:require [clojure.string :as str]
             [gpml.constants :refer [topics resource-types approved-user-topics]]
             [gpml.db.country-group :as db.country-group]
+            [gpml.db.event :as db.event]
+            [gpml.db.initiative :as db.initiative]
+            [gpml.db.policy :as db.policy]
+            [gpml.db.resource :as db.resource]
+            [gpml.db.technology :as db.technology]
             [gpml.db.topic :as db.topic]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
@@ -101,18 +106,73 @@
             filtered-topics (set (maybe-filter-private-topics t approved?))]
         (merge db-filter {:topic filtered-topics})))))
 
+(defn- result->result-with-connections [db {:keys [type] :as result}]
+  (case type
+    (or "technical_resource" "financing_resource" "action_plan")
+    (merge result
+      {:entity_connections (db.resource/entity-connections-by-id db (select-keys result [:id]))
+       :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys result [:id]))})
+
+    "event"
+    (merge result
+      {:entity_connections (db.event/entity-connections-by-id db (select-keys result [:id]))
+       :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys result [:id]))})
+
+    "project"
+    (merge result
+      {:entity_connections (db.initiative/entity-connections-by-id db (select-keys result [:id]))
+       :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys result [:id]))})
+
+    "policy"
+    (merge result
+      {:entity_connections (db.policy/entity-connections-by-id db (select-keys result [:id]))
+       :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys result [:id]))})
+
+    "technology"
+    (merge result
+      {:entity_connections (db.technology/entity-connections-by-id db (select-keys result [:id]))
+       :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys result [:id]))})
+
+    result))
+
 (defn browse-response [query db approved? admin]
-  (let [modified-filters (->> query
-                              (get-db-filter)
-                              (merge {:approved approved?
-                                      :admin admin})
-                              (modify-db-filter-topics))
-        modified-filters (if (:geo-coverage modified-filters)
-                         (let [transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-filters))})
-                                                  (map (comp str :id))
-                                                  set)]
-                           (assoc modified-filters :transnational transnational))
-                         modified-filters)
+  (let [{:keys [geo-coverage transnational] :as modified-filters} (->> query
+                                                                    (get-db-filter)
+                                                                    (merge {:approved approved?
+                                                                            :admin admin})
+                                                                    (modify-db-filter-topics))
+        modified-filters (cond
+                           (and (seq geo-coverage) (seq transnational))
+                           (let [country-group-countries (flatten
+                                                           (conj
+                                                             (map #(db.country-group/get-country-group-countries
+                                                                     db {:id (Integer/parseInt %)})
+                                                               (:transnational modified-filters))))
+                                 geo-coverage-countries (map (comp str :id) country-group-countries)
+                                 geo-coverage (map str geo-coverage)
+                                 transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-filters))})
+                                                     (map (comp str :id))
+                                                     set)]
+                             (assoc modified-filters :geo-coverage-countries (set (concat geo-coverage-countries geo-coverage))
+                                                     :transnational transnational))
+
+                           (seq geo-coverage)
+                           (let [transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-filters))})
+                                                 (map (comp str :id))
+                                                 set)]
+                             (assoc modified-filters :transnational transnational))
+
+                           (seq transnational)
+                           (let [country-group-countries (flatten
+                                                           (conj
+                                                             (map #(db.country-group/get-country-group-countries
+                                                                     db {:id (Integer/parseInt %)})
+                                                               (:transnational modified-filters))))
+                                 geo-coverage-countries (map (comp str :id) country-group-countries)]
+                             (assoc modified-filters :geo-coverage-countries (set geo-coverage-countries)))
+
+                           :else
+                           modified-filters)
         results (->> modified-filters
                      (db.topic/get-topics db)
                      (map (fn [{:keys [json topic]}]
@@ -121,7 +181,8 @@
                     (db.topic/get-topics db)
                     (filter #(or approved?
                                  (not (contains? approved-user-topics (:topic %))))))]
-    {:results results :counts counts}))
+    {:results (map #(result->result-with-connections db %) results)
+     :counts counts}))
 
 (defmethod ig/init-key :gpml.handler.browse/get [_ {:keys [db]}]
   (fn [{{:keys [query]} :parameters

@@ -11,12 +11,11 @@ import {
   Button,
 } from "antd";
 import { groupBy } from "lodash";
-import classNames from "classnames";
 
 const { Title } = Typography;
 
 import "./styles.scss";
-import { titleCase } from "../../utils/string";
+
 import Banner from "./Banner";
 import capacities from "./json/capacity-building.json";
 import slides from "./json/slider.json";
@@ -24,11 +23,37 @@ import slides from "./json/slider.json";
 import SlidePrev from "../../images/capacity-building/slide-prev.svg";
 import SlideNext from "../../images/capacity-building/slide-next.svg";
 import LeftSidebar from "../left-sidebar/LeftSidebar";
+import { CapacityCard } from "./CapacityCard";
 
-const { Content, Header } = Layout;
+import IconLibrary from "../../images/capacity-building/ic-knowledge-library.svg";
+import IconLearning from "../../images/capacity-building/ic-capacity-building.svg";
+import IconExchange from "../../images/capacity-building/ic-exchange.svg";
+import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
 
 const CapacityBuilding = () => {
   const slider = useRef();
+
+  const sidebar = [
+    {
+      id: 1,
+      title: "LIBRARY",
+      url: "/knowledge-library",
+      icon: IconLibrary,
+    },
+    {
+      id: 2,
+      title: "LEARNING",
+      url: "/capacity-building",
+      icon: IconLearning,
+    },
+    {
+      id: 4,
+      title: "Case studies",
+      url: "/case-studies",
+      icon: IconCaseStudies,
+    },
+  ];
+
   const prev = () => {
     slider.current.prev();
   };
@@ -53,8 +78,8 @@ const CapacityBuilding = () => {
         </div>
       </Col>
       <Col span={24}>
-        <div className="ui-container">
-          <LeftSidebar active={2}>
+        <div className="">
+          <LeftSidebar active={2} sidebar={sidebar}>
             <Row>
               <Col span={24} style={{ position: "relative" }}>
                 <Carousel className="pm_event_banner" ref={slider}>
@@ -85,7 +110,7 @@ const CapacityBuilding = () => {
                       title={<span className="text-green text-upper">{g}</span>}
                       extra={
                         <Button
-                          href="/browse"
+                          href="/knowledge-library"
                           target="_blank"
                           rel="noopener noreferrer"
                           type="ghost"
@@ -101,7 +126,7 @@ const CapacityBuilding = () => {
                           xs: 1,
                           sm: 1,
                           md: 1,
-                          lg: 3,
+                          lg: 2,
                           xl: 3,
                           xxl: 3,
                         }}
@@ -114,39 +139,7 @@ const CapacityBuilding = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                <Card
-                                  className={`card bg-color ${item.category_id}`}
-                                  bordered={false}
-                                  hoverable
-                                >
-                                  <Card.Grid
-                                    className={`left ${item.category_id}`}
-                                    hoverable
-                                  >
-                                    <div className="thumbnail">
-                                      <img
-                                        src={item.image}
-                                        alt={item.title}
-                                        className={classNames({
-                                          events: item.category_id === "events",
-                                        })}
-                                      />
-                                    </div>
-                                  </Card.Grid>
-                                  <Card.Grid
-                                    className={`right ${item.category_id}`}
-                                    hoverable={false}
-                                  >
-                                    <span
-                                      className={classNames("title", {
-                                        small: item.title.length > 100,
-                                      })}
-                                    >
-                                      {titleCase(item.title)}
-                                    </span>
-                                    <span className="see-more">See more</span>
-                                  </Card.Grid>
-                                </Card>
+                                <CapacityCard {...item} />
                               </a>
                             </List.Item>
                           );

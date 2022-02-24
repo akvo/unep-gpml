@@ -207,15 +207,16 @@ const Landing = withRouter(
           <div className="landing-banner">
             <div className="ui container">
               <h1>
-                Welcome to the Global Partnership on Marine Litter Digital
-                Platform!
+                Welcome to the Digital Platform on Marine Litter and Plastic
+                Pollution!
               </h1>
               <h2>Inform. Connect. Inspire.</h2>
               <div className="body-text">
-                A partly open-source, multi-stakeholder platform that compiles
+                A partly open-source, multi-stakeholder platform, powered by the
+                Global Partnership on Marine Litter (GPML), that compiles
                 different resources, connects stakeholders, and integrates data
                 to guide action towards the long term elimination of marine
-                litter and plastic pollution.{" "}
+                litter and plastic pollution.
               </div>
               {!hasProfile && (
                 <div>

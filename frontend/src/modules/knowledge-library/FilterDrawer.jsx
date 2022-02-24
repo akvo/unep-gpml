@@ -17,12 +17,22 @@ import { useAuth0 } from "@auth0/auth0-react";
 import moment from "moment";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
-import { topicTypes, topicNames, topicIcons } from "../../utils/misc";
+import { topicTypes, topicNames } from "../../utils/misc";
 import CountryTransnationalFilter from "./country-transnational-filter";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 import values from "lodash/values";
 import flatten from "lodash/flatten";
+
+// Import Icons as React component since the color of the icons changes when the card is selected
+import { ReactComponent as CapacityBuildingIcon } from "../../images/knowledge-library/capacity-building.svg";
+import { ReactComponent as ActionSelectedIcon } from "../../images/knowledge-library/action-selected.svg";
+import { ReactComponent as EventFlexibleIcon } from "../../images/knowledge-library/event-flexible.svg";
+import { ReactComponent as InitiativeIcon } from "../../images/knowledge-library/initiative.svg";
+import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/financing.svg";
+import { ReactComponent as PolicyIcon } from "../../images/knowledge-library/policy.svg";
+import { ReactComponent as TechnicalIcon } from "../../images/knowledge-library/technical.svg";
+import { ReactComponent as TechnologyIcon } from "../../images/knowledge-library/technology.svg";
 
 const FilterDrawer = ({
   filterVisible,
@@ -34,11 +44,9 @@ const FilterDrawer = ({
   setMultiCountryCountries,
 }) => {
   const {
-    profile,
     countries,
     tags,
     transnationalOptions,
-    sectorOptions,
     geoCoverageTypeOptions,
     languages,
     representativeGroup,
@@ -50,7 +58,7 @@ const FilterDrawer = ({
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     languages: s.languages,
-    representativeGroup: s.representativeGroup,
+    representativeGroup: s.sectorOptions,
   }));
   const { isAuthenticated } = useAuth0();
 
@@ -61,6 +69,33 @@ const FilterDrawer = ({
     !isEmpty(geoCoverageTypeOptions) &&
     !isEmpty(representativeGroup) &&
     !isEmpty(languages);
+
+  const topicIcons = (topic) => {
+    if (topic === "project") {
+      return <InitiativeIcon width="53" height="53" />;
+    }
+    if (topic === "actionPlan") {
+      return <ActionSelectedIcon width="53" height="53" />;
+    }
+    if (topic === "policy") {
+      return <PolicyIcon width="53" height="53" />;
+    }
+    if (topic === "technicalResource") {
+      return <TechnicalIcon width="53" height="53" />;
+    }
+    if (topic === "financingResource") {
+      return <FinancingIcon width="53" height="53" />;
+    }
+    if (topic === "event") {
+      return <EventFlexibleIcon width="53" height="53" />;
+    }
+    if (topic === "technology") {
+      return <TechnologyIcon width="53" height="53" />;
+    }
+    if (topic === "organisation") {
+      return <CapacityBuildingIcon width="53" height="53" />;
+    }
+  };
 
   const handleChangeResourceType = (flag, type) => {
     const val = query[flag];
@@ -83,7 +118,7 @@ const FilterDrawer = ({
   };
 
   const handleChangeCountry = (val) => {
-    updateQuery("country", query?.country ? [...query?.country, ...val] : val);
+    updateQuery("country", query?.country && val);
   };
 
   const handleDeselectCountry = (val) => {
@@ -106,6 +141,12 @@ const FilterDrawer = ({
           ]);
         });
     });
+
+    // const values = multiCountryCountries
+    //   ?.map((country) => country?.countries.map((country) => country.id))
+    //   .join(",");
+
+    // updateQuery("country", values);
   };
 
   const handleDeselectMultiCountry = (val) => {
@@ -117,29 +158,17 @@ const FilterDrawer = ({
 
   // populate options for tags dropdown
   const tagOpts = isLoaded()
-    ? flatten(values(tags))?.map((it) => ({ value: it.id, label: it.tag }))
+    ? flatten(values(tags))
+        ?.map((it) => ({ value: it.tag, label: it.tag }))
+        ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
     : [];
 
   // populate options for representative group options
   const representativeOpts = isLoaded()
     ? flatten(
-        representativeGroup?.map((x) => {
-          //  if child is an object
-          if (!Array.isArray(x?.childs) && x?.childs) {
-            return tags?.[x?.childs?.tags]?.map((it) => ({
-              value: it.id,
-              label: it.tag,
-            }));
-          }
-          // if child null
-          if (!x?.childs) {
-            return [{ value: x?.name, label: x?.name }];
-          }
-          return x?.childs?.map((x) => ({
-            value: x,
-            label: x,
-          }));
-        })
+        [...representativeGroup]
+          ?.map((x) => x)
+          ?.sort((repG1, repG2) => repG1?.localeCompare(repG2))
       )
     : [];
 
@@ -214,33 +243,6 @@ const FilterDrawer = ({
                   My Bookmarks
                 </Checkbox>
               </Space>
-              {/* <Select
-                className="collection-selector"
-                disabled={
-                  !isEmpty(query?.favorites)
-                    ? query.favorites[0] === "true"
-                      ? false
-                      : true
-                    : true
-                }
-                showSearch
-                allowClear
-                mode="multiple"
-                placeholder="My collections"
-                options={[]}
-                filterOption={(input, option) =>
-                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-                value={[]}
-                onChange={(val) => updateQuery("collections", val)}
-                onDeselect={(val) =>
-                  updateQuery(
-                    "collections",
-                    query?.collections?.filter((x) => x != val)
-                  )
-                }
-                virtual={false}
-              /> */}
             </Col>
           )}
           {/* Location */}
@@ -298,81 +300,20 @@ const FilterDrawer = ({
           <MultipleSelectFilter
             title="Tags"
             options={tagOpts || []}
-            value={query?.tag?.map((x) => parseInt(x)) || []}
+            value={query?.tag?.map((x) => x) || []}
             flag="tag"
             query={query}
             updateQuery={updateQuery}
           />
-          {/* Sectors */}
-          <MultipleSelectFilter
-            title="Sectors"
-            options={
-              isLoaded()
-                ? sectorOptions?.map((x) => ({ value: x, label: x }))
-                : []
-            }
-            value={query?.sector || []}
-            flag="sector"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          {/* Goals */}
-          <MultipleSelectFilter
-            title="Goals"
-            options={[]}
-            value={query?.goal || []}
-            flag="goal"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          {/* Representative group */}
           <MultipleSelectFilter
             title="Representative group"
-            options={representativeOpts}
-            value={
-              query?.representativeGroup?.map((x) =>
-                Number(x) ? parseInt(x) : x
-              ) || []
+            options={
+              isLoaded()
+                ? representativeOpts?.map((x) => ({ value: x, label: x }))
+                : []
             }
+            value={query?.representativeGroup || []}
             flag="representativeGroup"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          {/* Geo-coverage */}
-          <MultipleSelectFilter
-            title="Geo-coverage"
-            options={
-              isLoaded()
-                ? geoCoverageTypeOptions?.map((x) => ({ value: x, label: x }))
-                : []
-            }
-            value={query?.geoCoverage || []}
-            flag="geoCoverage"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          {/* Language */}
-          <MultipleSelectFilter
-            title="Language"
-            options={
-              isLoaded()
-                ? values(languages).map((x) => ({
-                    value: x.name,
-                    label: `${x.name} (${x.native})`,
-                  }))
-                : []
-            }
-            value={query?.language || []}
-            flag="language"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          {/* Rating */}
-          <MultipleSelectFilter
-            title="Rating"
-            options={[]}
-            value={query?.rating || []}
-            flag="rating"
             query={query}
             updateQuery={updateQuery}
           />
@@ -381,18 +322,9 @@ const FilterDrawer = ({
             <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
               {/* Start date */}
               <DatePickerFilter
-                title="Start date"
+                title="Start Date"
                 value={query?.startDate}
                 flag="startDate"
-                query={query}
-                updateQuery={updateQuery}
-                span={12}
-              />
-              {/* End date */}
-              <DatePickerFilter
-                title="End date"
-                value={query?.endDate}
-                flag="endDate"
                 query={query}
                 updateQuery={updateQuery}
                 span={12}
@@ -400,6 +332,18 @@ const FilterDrawer = ({
                   !isEmpty(query?.startDate)
                     ? moment(query?.startDate[0])
                     : null
+                }
+              />
+              {/* End date */}
+              <DatePickerFilter
+                title="End Date"
+                value={query?.endDate}
+                flag="end-date"
+                query={query}
+                updateQuery={updateQuery}
+                span={12}
+                startDate={
+                  !isEmpty(query?.endDate) ? moment(query?.endDate[0]) : null
                 }
               />
             </Row>

@@ -1,7 +1,22 @@
 @import "../../vars.scss";
+.multiselection-filter {
+  .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
+    margin-top: 30px;
+    top: 990px !important;
+  }
+}
+
+.info-resources {
+  padding-left: 20px;
+}
 
 #knowledge-library {
   position: relative;
+
+  .sidebar-mobile {
+    margin-bottom: 0;
+  }
+
   .ant-btn-icon-only {
     width: 100%;
     max-width: 35px;
@@ -21,11 +36,19 @@
     }
 
     .filter-tag {
+      .ant-space {
+        flex-wrap: wrap;
+        gap: 8px;
+        .ant-space-item {
+          margin-right: 0 !important;
+        }
+      }
       .ant-tag {
         display: flex;
         flex-direction: row-reverse;
         align-items: center;
         justify-content: space-between;
+
         color: #ffffff;
         font-weight: 700;
         padding: 5px 11px 5px 11px;
@@ -93,6 +116,7 @@
     }
 
     .select-wrapper {
+      display: none;
       padding: 0 !important;
       width: 100%;
       max-width: 194px;
@@ -175,9 +199,11 @@
     border-radius: 30px;
   }
 
-  .site-drawer-render-in-current-wrapper,
   .resource-main-container {
-    min-height: 100vh;
+    background-color: rgb(37, 91, 135);
+  }
+
+  .site-drawer-render-in-current-wrapper {
     height: 100%;
   }
 
@@ -186,6 +212,10 @@
     top: 0;
     min-width: 100%;
     overflow: hidden;
+    .ant-tabs-nav-operations {
+      position: unset;
+      display: none;
+    }
 
     .ant-drawer-mask {
       background-color: unset;
@@ -193,6 +223,7 @@
 
     .ant-drawer-content-wrapper {
       box-shadow: none;
+      height: 700px;
 
       .ant-drawer-header {
         background: $blue05;
@@ -265,7 +296,6 @@
 
       .ant-select-selector,
       .date-picker-container .ant-picker {
-        height: 34px;
         background: $grey05;
         border: 0;
         border-radius: 5px;
@@ -548,11 +578,20 @@
   }
 
   .resource-list-container {
-    background: $grey05;
+    position: absolute;
+    z-index: 3;
+    height: 700px;
+    max-width: 300px;
+    min-width: 300px;
+  }
+
+  .resource-list-header.show-list {
+    position: absolute;
+    z-index: 999;
+    background-color: $grey05;
   }
 
   .resource-list-header {
-    background: #fff;
     justify-content: unset;
 
     & span {
@@ -573,6 +612,7 @@
     .ant-page-header-heading-title,
     .sort-btn {
       color: $blue06;
+      background-color: transparent;
     }
 
     .ant-page-header-heading-title {
@@ -620,7 +660,9 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    height: 436px;
     align-items: center;
+    min-width: 300px;
     .resource-item-wrapper {
       width: 100%;
 
@@ -630,6 +672,12 @@
         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
         text-align: left;
         color: $black;
+
+        .ant-card-body {
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
+
         .topic {
           color: $green05;
           font-size: 12px;
@@ -646,10 +694,9 @@
             font-size: 14px;
           }
           .description {
+            display: none;
             font-weight: 400;
             color: $blue11;
-          }
-          .description {
             margin-top: 7px;
           }
 
@@ -660,6 +707,7 @@
 
           .avatar-number {
             font-size: 13px;
+            margin-left: 13px;
           }
         }
         .item-footer {
@@ -680,69 +728,91 @@
         }
       }
     }
+  }
 
-    // Pagination
-    .page {
-      padding: 1rem 0;
-      .result-number,
-      .ant-pagination-item a {
-        font-weight: 700;
-        font-size: 12px;
-      }
+  .avatar-group {
+    position: relative;
+    display: block;
+    height: 30px;
+    .stakeholder-connection-avatar {
+      position: absolute;
+    }
+    .stakeholder-connection-avatar:nth-of-type(1) {
+      left: 0;
+    }
+    .stakeholder-connection-avatar:nth-of-type(2) {
+      left: 22px;
+    }
+    .stakeholder-connection-avatar:nth-of-type(3) {
+      left: 44px;
+    }
+  }
 
-      .result-number {
-        text-align: center;
-        color: #000000;
-        margin-top: 12px;
-      }
+  // Pagination
+  .page {
+    padding: 2rem 0 1rem 10px;
+    text-align: center;
+    .result-number,
+    .ant-pagination-item a {
+      font-weight: 700;
+      font-size: 12px;
+    }
 
-      .ant-pagination-item {
-        width: 34px;
-        height: 34px;
-        margin-right: 2px;
+    .result-number {
+      text-align: center;
+      color: #000000;
+      margin-top: 12px;
+    }
+
+    .ant-pagination-item {
+      width: 34px;
+      height: 34px;
+      margin-right: 2px;
+      border-radius: 5px;
+      a {
+        width: 100%;
+        height: 100%;
+        color: #ffffff;
+
+        line-height: 31px;
         border-radius: 5px;
-        a {
-          width: 100%;
-          height: 100%;
-          color: #ffffff;
-
-          line-height: 31px;
-          border-radius: 5px;
-          background: $blue12;
-        }
-      }
-
-      .ant-pagination-item-ellipsis {
-        color: $blue12;
-        font-weight: 700;
-        margin-left: calc(10px - 2px);
-        margin-right: 10px;
-      }
-
-      .ant-pagination-item-active {
-        border: none;
-        a {
-          background: rgba(24, 22, 47, 0.26);
-        }
-      }
-      .ant-pagination-next {
-        background-image: url("../../images/knowledge-library/chevron-right.svg");
-        background-repeat: no-repeat;
-        background-position: center;
-        svg {
-          display: none;
-        }
-      }
-
-      .ant-pagination-prev {
-        display: none;
-      }
-
-      .ant-pagination-prev .ant-pagination-item-link,
-      .ant-pagination-next .ant-pagination-item-link {
-        border: none;
-        background-color: transparent;
+        background: $blue12;
       }
     }
+
+    .ant-pagination-item-ellipsis {
+      color: $blue12;
+      font-weight: 700;
+      margin-left: calc(10px - 2px);
+      margin-right: 10px;
+    }
+
+    .ant-pagination-item-active {
+      border: none;
+      a {
+        background: rgba(24, 22, 47, 0.26);
+      }
+    }
+    .ant-pagination-next {
+      background-image: url("../../images/knowledge-library/chevron-right.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      svg {
+        display: none;
+      }
+    }
+
+    .ant-pagination-prev {
+      display: none;
+    }
+
+    .ant-pagination-prev .ant-pagination-item-link,
+    .ant-pagination-next .ant-pagination-item-link {
+      border: none;
+      background-color: transparent;
+    }
+  }
+  .echarts-for-react.popular-topic-chart {
+    height: 1000% !important;
   }
 }

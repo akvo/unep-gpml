@@ -1,15 +1,16 @@
 (ns gpml.handler.policy
   (:require [clojure.java.jdbc :as jdbc]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.image :as handler.image]
+            [gpml.auth :as auth]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.db.policy :as db.policy]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.email-util :as email]
-            [integrant.core :as ig]
             [gpml.handler.auth :as h.auth]
-            [gpml.auth :as auth]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.image :as handler.image]
+            [gpml.pg-util :as pg-util]
+            [integrant.core :as ig]
             [ring.util.response :as resp]))
 
 (defn expand-entity-associations
@@ -38,6 +39,7 @@
                                   status country geo_coverage_type
                                   geo_coverage_value implementing_mea
                                   geo_coverage_countries geo_coverage_country_groups
+                                  geo_coverage_value_subnational_city
                                   tags urls created_by image
                                   owners info_docs sub_content_type related_content topics
                                   attachments remarks mailjet-config
@@ -56,19 +58,26 @@
               :owners owners
               :info_docs info_docs
               :sub_content_type sub_content_type
-              :related_content related_content
-              :topics topics
+              :related_content (pg-util/->JDBCArray related_content "integer")
+              :topics (pg-util/->JDBCArray topics "text")
               :image (handler.image/assoc-image conn image "policy")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
               :geo_coverage_countries geo_coverage_countries
               :geo_coverage_country_groups geo_coverage_country_groups
+              :subnational_city geo_coverage_value_subnational_city
               :implementing_mea implementing_mea
               :attachments attachments
               :remarks remarks
               :created_by created_by
               :review_status "SUBMITTED"}
-        policy-id (->> data (db.policy/new-policy conn) :id)]
+        policy-id (->> data (db.policy/new-policy conn) :id)
+        individual_connections (conj individual_connections {:stakeholder created_by
+                                                             :role "owner"})
+        owners (distinct (remove nil? (flatten (conj owners
+                                                 (map #(when (= (:role %) "owner")
+                                                         (:stakeholder %))
+                                                   individual_connections)))))]
     (when (not-empty tags)
       (db.policy/add-policy-tags
         conn {:tags (map #(vector policy-id %) tags)}))
@@ -80,18 +89,16 @@
                                          :id)
                                     (:url %)) urls)]
         (db.policy/add-policy-language-urls conn {:urls lang-urls})))
-    (when (not-empty owners)
-      (doseq [stakeholder-id owners]
-        (h.auth/grant-topic-to-stakeholder! conn {:topic-id policy-id
-                                                  :topic-type "policy"
-                                                  :stakeholder-id stakeholder-id
-                                                  :roles ["owner"]})))
+    (doseq [stakeholder-id owners]
+      (h.auth/grant-topic-to-stakeholder! conn {:topic-id policy-id
+                                                :topic-type "policy"
+                                                :stakeholder-id stakeholder-id
+                                                :roles ["owner"]}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections policy-id)]
         (db.favorite/new-organisation-association conn association)))
-    (when (not-empty individual_connections)
-      (doseq [association (expand-individual-associations individual_connections policy-id)]
-        (db.favorite/new-association conn association)))
+    (doseq [association (expand-individual-associations individual_connections policy-id)]
+      (db.favorite/new-association conn association))
     (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 policy-id data)]
@@ -131,6 +138,7 @@
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
+    [:geo_coverage_value_subnational_city string?]
     [:image {:optional true} string?]
     [:implementing_mea {:optional true} integer?]
     [:tags {:optional true}

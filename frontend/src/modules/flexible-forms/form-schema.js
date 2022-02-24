@@ -8,6 +8,77 @@ const {
 
 import { newGeoCoverageFormat } from "../../utils/geo";
 
+const sdgsOptions = [
+  {
+    goal: 1,
+    name: "No Poverty",
+  },
+  {
+    goal: 2,
+    name: "Zero Hunger",
+  },
+  {
+    goal: 3,
+    name: "Good Health and Well-being",
+  },
+  {
+    goal: 4,
+    name: "Quality Education",
+  },
+  {
+    goal: 5,
+    name: "Gender Equality",
+  },
+  {
+    goal: 6,
+    name: "Clean Water and Sanitation",
+  },
+  {
+    goal: 7,
+    name: "Affordable and Clean Energy",
+  },
+  {
+    goal: 8,
+    name: "Decent Jobs and Economic Growth",
+  },
+  {
+    goal: 9,
+    name: "Industry, Innovation and Infrastructure",
+  },
+  {
+    goal: 10,
+    name: "Reduced Inequalities",
+  },
+  {
+    goal: 11,
+    name: "Sustainable Cities and Communities",
+  },
+  {
+    goal: 12,
+    name: "Responsible Consumption and Production",
+  },
+  {
+    goal: 13,
+    name: "Climate Action",
+  },
+  {
+    goal: 14,
+    name: "Life Below Water",
+  },
+  {
+    goal: 15,
+    name: "Life on Land",
+  },
+  {
+    goal: 16,
+    name: "Peace and Justice - Strong Institutions",
+  },
+  {
+    goal: 17,
+    name: "Partnerships for the Goals",
+  },
+];
+
 export const schema = {
   initiative: {
     type: "object",
@@ -65,7 +136,7 @@ export const schema = {
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",
-                enum: ["global", "transnational", "national", "subnational"],
+                enum: ["global", "transnational", "national", "sub-national"],
                 enumNames: [
                   "Global",
                   "Transnational",
@@ -109,7 +180,7 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["subnational"],
+                  value: ["sub-national"],
                 },
               },
               geoCoverageValueSubnationalCity: {
@@ -117,7 +188,7 @@ export const schema = {
                 type: "string",
                 depend: {
                   id: "geoCoverageType",
-                  value: ["subnational"],
+                  value: ["sub-national"],
                 },
               },
             },
@@ -170,7 +241,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  // required: ["role", "entity"],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -248,45 +319,7 @@ export const schema = {
             type: "object",
             required: [],
             properties: {
-              S5_G1_4: {
-                title:
-                  "What is the MAIN focus of the initiative? (Please tick ALL that apply).",
-                type: "array",
-                dependency: [
-                  {
-                    value: ["4-0"],
-                    questions: ["S5_G1_4.1.1", "S5_G1_4.1.2"],
-                  },
-                  {
-                    value: ["4-1"],
-                    questions: ["S5_G1_4.2.1", "S5_G1_4.2.2"],
-                  },
-                  {
-                    value: ["4-2"],
-                    questions: ["S5_G1_4.3.1", "S5_G1_4.3.2"],
-                  },
-                  {
-                    value: ["4-3"],
-                    questions: [
-                      "S5_G1_4.4.1",
-                      "S5_G1_4.4.2",
-                      "S5_G1_4.4.3",
-                      "S5_G1_4.4.4",
-                      "S5_G1_4.4.5",
-                    ],
-                  },
-                ],
-                items: {
-                  enum: ["4-0", "4-1", "4-2", "4-3"],
-                  enumNames: [
-                    "LEGISLATION, STANDARDS, RULES (e.g., agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments).",
-                    "WORKING WITH PEOPLE (encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes).",
-                    "TECHNOLOGY and PROCESSES (new technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning).",
-                    "MONITORING and ANALYSIS (collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis).",
-                  ],
-                },
-                uniqueItems: true,
-              },
+              S5_G1_4: {},
               "S5_G1_4.1.1": {
                 title:
                   "Legislation, Standards and Rules. You have selected legislation, standards and rules as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",
@@ -590,6 +623,112 @@ export const schema = {
                 depend: {
                   id: "S5_G2_5",
                   value: ["5-6"],
+                },
+              },
+              S5_G2_7: {
+                title:
+                  "If yes, who do you report to? (Please tick ALL that apply):",
+                type: "array",
+                dependency: [
+                  {
+                    value: ["7-0"],
+                    questions: ["S5_G2_7.1.0"],
+                  },
+                  {
+                    value: ["7-1"],
+                    questions: ["S5_G2_7.1.1"],
+                  },
+                  {
+                    value: ["7-2"],
+                    questions: ["S5_G2_7.1.2"],
+                  },
+                  {
+                    value: ["7-3"],
+                    questions: ["S5_G2_7.2"],
+                  },
+                  {
+                    value: ["7-4"],
+                    questions: ["S5_G2_7.3"],
+                  },
+                ],
+                depend: {
+                  id: "S5_G2_5",
+                  value: ["5-0", "5-1"],
+                },
+                items: {
+                  enum: ["7-0", "7-1", "7-2", "7-3", "7-4"],
+                  enumNames: [
+                    "Global Sustainable Development Goals (SDGs)",
+                    "Regional Sustainable Development Goals (SDGs)",
+                    "National Sustainable Development Goals (SDGs)",
+                    "Multilateral Environmental Agreements (MEAs)",
+                    "Other",
+                  ],
+                },
+                uniqueItems: true,
+              },
+              "S5_G2_7.1.0": {
+                title:
+                  "Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):",
+                type: "array",
+                depend: {
+                  id: "S5_G2_7",
+                  value: ["7-0"],
+                },
+                items: {
+                  enum: sdgsOptions.map((x) => x.goal),
+                  enumNames: sdgsOptions.map((x) => x.name),
+                },
+                uniqueItems: true,
+              },
+              "S5_G2_7.1.1": {
+                title:
+                  "Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):",
+                type: "array",
+                depend: {
+                  id: "S5_G2_7",
+                  value: ["7-0"],
+                },
+                items: {
+                  enum: sdgsOptions.map((x) => x.goal),
+                  enumNames: sdgsOptions.map((x) => x.name),
+                },
+                uniqueItems: true,
+              },
+              "S5_G2_7.1.2": {
+                title:
+                  "Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):",
+                type: "array",
+                depend: {
+                  id: "S5_G2_7",
+                  value: ["7-0"],
+                },
+                items: {
+                  enum: sdgsOptions.map((x) => x.goal),
+                  enumNames: sdgsOptions.map((x) => x.name),
+                },
+                uniqueItems: true,
+              },
+              "S5_G2_7.2": {
+                title:
+                  "Which Multilateral Environmental Agreements (MEAs) does your initiative apply to? (Please tick ALL that apply):",
+                type: "array",
+                depend: {
+                  id: "S5_G2_7",
+                  value: ["7-3"],
+                },
+                items: {
+                  enum: [],
+                  enumNames: [],
+                },
+                uniqueItems: true,
+              },
+              "S5_G2_7.3": {
+                title: 'If you selected "Other", please specify.',
+                type: "string",
+                depend: {
+                  id: "S5_G2_7",
+                  value: ["7-4"],
                 },
               },
               S5_G2_8: {
@@ -917,7 +1056,7 @@ export const schema = {
                 subTitle: "Total Stakeholders Engaged",
                 title:
                   "How many different groups and organisations have you engaged with in total?",
-                type: "number",
+                type: "string",
               },
               S5_G4_34: {
                 title: "How many stakeholders have you engaged in total?",
@@ -933,23 +1072,13 @@ export const schema = {
                     questions: ["S5_G5_35.1"],
                   },
                 ],
-                enum: [
-                  "35-0",
-                  "35-1",
-                  "35-2",
-                  "35-3",
-                  "35-4",
-                  "35-5",
-                  "35-6",
-                  "35-7",
-                ],
+                enum: ["35-0", "35-1", "35-2", "35-3", "35-4", "35-6", "35-7"],
                 enumNames: [
                   "Crowdfunded",
                   "Voluntary donations",
                   "Public Financing",
                   "Private Sector",
                   "Mixed",
-                  "All of the above",
                   "Not applicable",
                   "Other",
                 ],
@@ -1088,15 +1217,15 @@ export const schema = {
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
-              "geoCoverageValueNational",
-              "geoCoverageValueSubnational",
-              "geoCoverageValueSubnationalCity",
+              // "geoCoverageValueNational",
+              // "geoCoverageValueSubnational",
+              // "geoCoverageValueSubnationalCity",
             ],
             properties: {
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",
-                enum: ["global", "transnational", "national", "subnational"],
+                enum: ["global", "transnational", "national", "sub-national"],
                 enumNames: [
                   "Global",
                   "Transnational",
@@ -1117,31 +1246,31 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["transnational"],
+                  value: ["transnational", "national", "sub-national"],
                 },
               },
-              geoCoverageValueNational: {
-                title: "National",
-                enum: [],
-                depend: {
-                  id: "geoCoverageType",
-                  value: ["national"],
-                },
-              },
-              geoCoverageValueSubnational: {
-                title: "Subnational",
-                enum: [],
-                depend: {
-                  id: "geoCoverageType",
-                  value: ["subnational"],
-                },
-              },
+              // geoCoverageValueNational: {
+              //   title: "National",
+              //   enum: [],
+              //   depend: {
+              //     id: "geoCoverageType",
+              //     value: ["national"],
+              //   },
+              // },
+              // geoCoverageValueSubnational: {
+              //   title: "Subnational",
+              //   enum: [],
+              //   depend: {
+              //     id: "geoCoverageType",
+              //     value: ["sub-national"],
+              //   },
+              // },
               geoCoverageValueSubnationalCity: {
                 title: "Subnational Area",
                 type: "string",
                 depend: {
                   id: "geoCoverageType",
-                  value: ["subnational"],
+                  value: ["sub-national"],
                 },
               },
             },
@@ -1184,7 +1313,7 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["individual"],
+            required: [],
             properties: {
               entity: {
                 title: "Entity connection",
@@ -1194,7 +1323,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  required: [],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -1273,15 +1402,9 @@ export const schema = {
             title: "",
             required: [],
             properties: {
-              firstPublicationDate: {
-                title: "First Publication Date",
+              publishYear: {
+                title: "Publication Year",
                 type: "string",
-                format: "date",
-              },
-              latestAmendmentDate: {
-                title: "Last Amendment Date",
-                type: "string",
-                format: "date",
               },
             },
           },
@@ -1354,15 +1477,15 @@ export const schema = {
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
-              "geoCoverageValueNational",
-              "geoCoverageValueSubnational",
+              // "geoCoverageValueNational",
+              // "geoCoverageValueSubnational",
               "geoCoverageValueSubnationalCity",
             ],
             properties: {
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",
-                enum: ["global", "transnational", "national", "subnational"],
+                enum: ["global", "transnational", "national", "sub-national"],
                 enumNames: [
                   "Global",
                   "Transnational",
@@ -1383,31 +1506,31 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["transnational"],
+                  value: ["transnational", "national", "sub-national"],
                 },
               },
-              geoCoverageValueNational: {
-                title: "National",
-                enum: [],
-                depend: {
-                  id: "geoCoverageType",
-                  value: ["national"],
-                },
-              },
-              geoCoverageValueSubnational: {
-                title: "Subnational",
-                enum: [],
-                depend: {
-                  id: "geoCoverageType",
-                  value: ["subnational"],
-                },
-              },
+              // geoCoverageValueNational: {
+              //   title: "National",
+              //   enum: [],
+              //   depend: {
+              //     id: "geoCoverageType",
+              //     value: ["national"],
+              //   },
+              // },
+              // geoCoverageValueSubnational: {
+              //   title: "Subnational",
+              //   enum: [],
+              //   depend: {
+              //     id: "geoCoverageType",
+              //     value: ["sub-national"],
+              //   },
+              // },
               geoCoverageValueSubnationalCity: {
                 title: "Subnational Area",
                 type: "string",
                 depend: {
                   id: "geoCoverageType",
-                  value: ["subnational"],
+                  value: ["sub-national"],
                 },
               },
             },
@@ -1460,7 +1583,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  required: [],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -1533,70 +1656,63 @@ export const schema = {
           value: ["S5"],
         },
         properties: {
-          S5_G1: {
-            title: "",
+          originalTitle: {
+            title: "Original Title",
+            type: "string",
+          },
+          dataSource: {
+            title: "Data Source",
+            type: "string",
+          },
+          typeOfLaw: {
+            title: "Type Of Law",
+            enum: [
+              "Miscellaneous",
+              "Legislation",
+              "Regulation",
+              "Constitution",
+            ],
+          },
+          recordNumber: {
+            title: "Record Number",
+            type: "string",
+          },
+          date: {
             type: "object",
+            title: "",
             required: [],
             properties: {
-              originalTitle: {
-                title: "Original Title",
+              firstPublicationDate: {
+                title: "First Publication Date",
                 type: "string",
+                format: "date",
               },
-              dataSource: {
-                title: "Data Source",
+              latestAmendmentDate: {
+                title: "Last Amendment Date",
                 type: "string",
-              },
-              typeOfLaw: {
-                title: "Type Of Law",
-                enum: [
-                  "Miscellaneous",
-                  "Legislation",
-                  "Regulation",
-                  "Constitution",
-                ],
-              },
-              recordNumber: {
-                title: "Record Number",
-                type: "string",
-              },
-              date: {
-                type: "object",
-                title: "",
-                required: [],
-                properties: {
-                  firstPublicationDate: {
-                    title: "First Publication Date",
-                    type: "string",
-                    format: "date",
-                  },
-                  latestAmendmentDate: {
-                    title: "Last Amendment Date",
-                    type: "string",
-                    format: "date",
-                  },
-                },
-              },
-              status: {
-                title: "Status",
-                enum: ["Repealed", "In force", "Not yet in force"],
-              },
-              implementingMea: {
-                title: "Implementing MEA",
-                enum: [],
-              },
-              topics: {
-                title: "Topics",
-                enum: [
-                  "Trade and Investment",
-                  "Chemicals and waste",
-                  "Biological diversity",
-                  "Marine and Freshwater",
-                  "Climate and Atmosphere",
-                  "Land and Agriculture",
-                  "Environmental Governance",
-                ],
+                format: "date",
               },
             },
+          },
+          status: {
+            title: "Status",
+            enum: ["Repealed", "In force", "Not yet in force"],
+          },
+          implementingMea: {
+            title: "Implementing MEA",
+            enum: [],
+          },
+          topics: {
+            title: "Topics",
+            enum: [
+              "Trade and Investment",
+              "Chemicals and waste",
+              "Biological diversity",
+              "Marine and Freshwater",
+              "Climate and Atmosphere",
+              "Land and Agriculture",
+              "Environmental Governance",
+            ],
           },
         },
       },
@@ -1650,15 +1766,15 @@ export const schema = {
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
-              "geoCoverageValueNational",
-              "geoCoverageValueSubnational",
-              "geoCoverageValueSubnationalCity",
+              // "geoCoverageValueNational",
+              // "geoCoverageValueSubnational",
+              // "geoCoverageValueSubnationalCity",
             ],
             properties: {
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",
-                enum: ["global", "transnational", "national", "subnational"],
+                enum: ["global", "transnational", "national", "sub-national"],
                 enumNames: [
                   "Global",
                   "Transnational",
@@ -1679,31 +1795,31 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["transnational"],
+                  value: ["transnational", "national", "sub-national"],
                 },
               },
-              geoCoverageValueNational: {
-                title: "National",
-                enum: [],
-                depend: {
-                  id: "geoCoverageType",
-                  value: ["national"],
-                },
-              },
-              geoCoverageValueSubnational: {
-                title: "Subnational",
-                enum: [],
-                depend: {
-                  id: "geoCoverageType",
-                  value: ["subnational"],
-                },
-              },
+              // geoCoverageValueNational: {
+              //   title: "National",
+              //   enum: [],
+              //   depend: {
+              //     id: "geoCoverageType",
+              //     value: ["national"],
+              //   },
+              // },
+              // geoCoverageValueSubnational: {
+              //   title: "Subnational",
+              //   enum: [],
+              //   depend: {
+              //     id: "geoCoverageType",
+              //     value: ["sub-national"],
+              //   },
+              // },
               geoCoverageValueSubnationalCity: {
                 title: "Subnational Area",
                 type: "string",
                 depend: {
                   id: "geoCoverageType",
-                  value: ["subnational"],
+                  value: ["sub-national"],
                 },
               },
             },
@@ -1746,7 +1862,7 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["individual"],
+            required: [],
             properties: {
               entity: {
                 title: "Entity connection",
@@ -1756,7 +1872,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  // required: ["role", "entity"],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -1918,15 +2034,15 @@ export const schema = {
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
-              "geoCoverageValueNational",
-              "geoCoverageValueSubnational",
-              "geoCoverageValueSubnationalCity",
+              // "geoCoverageValueNational",
+              // "geoCoverageValueSubnational",
+              // "geoCoverageValueSubnationalCity",
             ],
             properties: {
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",
-                enum: ["global", "transnational", "national", "subnational"],
+                enum: ["global", "transnational", "national", "sub-national"],
                 enumNames: [
                   "Global",
                   "Transnational",
@@ -1947,31 +2063,31 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["transnational"],
+                  value: ["transnational", "national", "sub-national"],
                 },
               },
-              geoCoverageValueNational: {
-                title: "National",
-                enum: [],
-                depend: {
-                  id: "geoCoverageType",
-                  value: ["national"],
-                },
-              },
-              geoCoverageValueSubnational: {
-                title: "Subnational Area",
-                enum: [],
-                depend: {
-                  id: "geoCoverageType",
-                  value: ["subnational"],
-                },
-              },
+              // geoCoverageValueNational: {
+              //   title: "National",
+              //   enum: [],
+              //   depend: {
+              //     id: "geoCoverageType",
+              //     value: ["national"],
+              //   },
+              // },
+              // geoCoverageValueSubnational: {
+              //   title: "Subnational Area",
+              //   enum: [],
+              //   depend: {
+              //     id: "geoCoverageType",
+              //     value: ["sub-national"],
+              //   },
+              // },
               geoCoverageValueSubnationalCity: {
                 title: "City",
                 type: "string",
                 depend: {
                   id: "geoCoverageType",
-                  value: ["subnational"],
+                  value: ["sub-national"],
                 },
               },
             },
@@ -2014,7 +2130,7 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["individual"],
+            required: [],
             properties: {
               entity: {
                 title: "Entity connection",
@@ -2024,7 +2140,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  required: [],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -2097,13 +2213,13 @@ export const schema = {
           value: ["S5"],
         },
         properties: {
-          S5_G1: {
-            title: "",
+          dateOne: {
             type: "object",
+            title: "",
             required: [],
             properties: {
               publishYear: {
-                title: "PUBLICATION YEAR",
+                title: "Publication Year",
                 type: "string",
               },
             },
@@ -2160,15 +2276,15 @@ export const schema = {
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
-              "geoCoverageValueNational",
-              "geoCoverageValueSubnational",
+              // "geoCoverageValueNational",
+              // "geoCoverageValueSubnational",
               "geoCoverageValueSubnationalCity",
             ],
             properties: {
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",
-                enum: ["global", "transnational", "national", "subnational"],
+                enum: ["global", "transnational", "national", "sub-national"],
                 enumNames: [
                   "Global",
                   "Transnational",
@@ -2189,31 +2305,31 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["transnational"],
+                  value: ["transnational", "national", "sub-national"],
                 },
               },
-              geoCoverageValueNational: {
-                title: "National",
-                enum: [],
-                depend: {
-                  id: "geoCoverageType",
-                  value: ["national"],
-                },
-              },
-              geoCoverageValueSubnational: {
-                title: "Subnational",
-                enum: [],
-                depend: {
-                  id: "geoCoverageType",
-                  value: ["subnational"],
-                },
-              },
+              // geoCoverageValueNational: {
+              //   title: "National",
+              //   enum: [],
+              //   depend: {
+              //     id: "geoCoverageType",
+              //     value: ["national"],
+              //   },
+              // },
+              // geoCoverageValueSubnational: {
+              //   title: "Subnational",
+              //   enum: [],
+              //   depend: {
+              //     id: "geoCoverageType",
+              //     value: ["sub-national"],
+              //   },
+              // },
               geoCoverageValueSubnationalCity: {
                 title: "Subnational Area",
                 type: "string",
                 depend: {
                   id: "geoCoverageType",
-                  value: ["subnational"],
+                  value: ["sub-national"],
                 },
               },
             },
@@ -2266,7 +2382,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  // required: ["role", "entity"],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -2412,15 +2528,15 @@ export const schema = {
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
-              "geoCoverageValueNational",
-              "geoCoverageValueSubnational",
+              // "geoCoverageValueNational",
+              // "geoCoverageValueSubnational",
               "geoCoverageValueSubnationalCity",
             ],
             properties: {
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",
-                enum: ["global", "transnational", "national", "subnational"],
+                enum: ["global", "transnational", "national", "sub-national"],
                 enumNames: [
                   "Global",
                   "Transnational",
@@ -2441,31 +2557,31 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["transnational"],
+                  value: ["transnational", "national", "sub-national"],
                 },
               },
-              geoCoverageValueNational: {
-                title: "National",
-                enum: [],
-                depend: {
-                  id: "geoCoverageType",
-                  value: ["national"],
-                },
-              },
-              geoCoverageValueSubnational: {
-                title: "Subnational",
-                enum: [],
-                depend: {
-                  id: "geoCoverageType",
-                  value: ["subnational"],
-                },
-              },
+              // geoCoverageValueNational: {
+              //   title: "National",
+              //   enum: [],
+              //   depend: {
+              //     id: "geoCoverageType",
+              //     value: ["national"],
+              //   },
+              // },
+              // geoCoverageValueSubnational: {
+              //   title: "Subnational",
+              //   enum: [],
+              //   depend: {
+              //     id: "geoCoverageType",
+              //     value: ["sub-national"],
+              //   },
+              // },
               geoCoverageValueSubnationalCity: {
                 title: "Subnational Area",
                 type: "string",
                 depend: {
                   id: "geoCoverageType",
-                  value: ["subnational"],
+                  value: ["sub-national"],
                 },
               },
             },
@@ -2518,7 +2634,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  required: ["role", "entity"],
+                  // required: ["role", "entity"],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -2590,28 +2706,22 @@ export const schema = {
           id: "tabs",
           value: ["S5"],
         },
+        required: [],
         properties: {
-          S5_G1: {
-            title: "",
-            type: "object",
-            required: [],
-            properties: {
-              yearFounded: {
-                title: "Year Founded",
-                type: "string",
-              },
-              organisationType: {
-                title: "ORGANISATION TYPE",
-                enum: [
-                  "Established Company",
-                  "Research Lab",
-                  "Academic Institution",
-                  "Startup",
-                  "Non-Profit Org",
-                  "Partnerships",
-                ],
-              },
-            },
+          yearFounded: {
+            title: "Year Founded",
+            type: "string",
+          },
+          organisationType: {
+            title: "ORGANISATION TYPE",
+            enum: [
+              "Established Company",
+              "Research Lab",
+              "Academic Institution",
+              "Startup",
+              "Non-Profit Org",
+              "Partnerships",
+            ],
           },
         },
       },

@@ -75,17 +75,49 @@
        e.reviewed_at,
        e.reviewed_by,
        e.review_status,
-       e.url AS initiative_url,
+       e.url,
        e.info_docs,
        e.sub_content_type,
        e.related_content,
        e.qimage,
-       btrim((e.q41_1)::text, '\"'::text) AS url,
+       btrim((e.q41_1)::text, '\"'::text) AS q41_1_url,
+       e.q24_subnational_city,
        NULL::text AS image,
        tag.tags,
        geo.geo_coverage_values,
        geo.geo_coverage_country_groups,
        geo.geo_coverage_countries")
+
+(def ^:const ^:private policy-topic-data-select-clause
+  "SELECT
+       e.abstract AS summary,
+       e.*,
+       geo.geo_coverage_values,
+       geo.geo_coverage_country_groups,
+       geo.geo_coverage_countries,
+       lang.languages,
+       tag.tags")
+
+(def ^:const ^:private event-topic-data-select-clause
+  "SELECT
+       e.description AS summary,
+       e.*,
+       geo.geo_coverage_values,
+       geo.geo_coverage_country_groups,
+       geo.geo_coverage_countries,
+       lang.languages,
+       tag.tags")
+
+(def ^:const ^:private technology-topic-data-select-clause
+  "SELECT
+       e.name AS title,
+       e.remarks AS summary,
+       e.*,
+       geo.geo_coverage_values,
+       geo.geo_coverage_country_groups,
+       geo.geo_coverage_countries,
+       lang.languages,
+       tag.tags")
 
 (def ^:const ^:private stakeholder-topic-data-select-clause
   "SELECT
@@ -362,6 +394,18 @@
                                            from-clause organisation-topic-data-geo-coverage-values-query
                                            order-by-clause]
 
+                           "policy" [policy-topic-data-select-clause
+                                     from-clause lang-query tags-query
+                                     geo-coverage-values-query order-by-clause]
+
+                           "event" [event-topic-data-select-clause
+                                    from-clause lang-query tags-query
+                                    geo-coverage-values-query order-by-clause]
+
+                           "technology" [technology-topic-data-select-clause
+                                         from-clause lang-query tags-query
+                                         geo-coverage-values-query order-by-clause]
+
                            [select-clause from-clause lang-query tags-query
                             geo-coverage-values-query order-by-clause])]
     (str/join " " query-statements)))
@@ -490,20 +534,30 @@
       (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))))))
 
 (defn generate-filter-topic-snippet
-  [params]
-  (str/join
-   " "
-   (list
-    "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz, (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM cte_topic t"
-    (when (and (:favorites params) (:user-id params) (:resource-types params))
-      "JOIN v_stakeholder_association a ON a.stakeholder = :user-id AND a.id = (t.json->>'id')::int AND (a.topic = t.topic OR (a.topic = 'resource' AND t.topic IN (:v*:resource-types)))")
-    (when (seq (:tag params))
-      "JOIN json_array_elements(t.json->'tags') tags ON true JOIN json_each_text(tags) tag ON LOWER(tag.value) = ANY(ARRAY[:v*:tag]::varchar[])")
-    (when (seq (:transnational params))
-      "join lateral json_array_elements(t.json->'geo_coverage_values') j on true")
-    "WHERE t.json->>'review_status'='APPROVED'"
-    (when (seq (:search-text params)) " AND t.search_text @@ to_tsquery(:search-text)")
-    (when (seq (:geo-coverage params)) " AND t.geo_coverage IN (:v*:geo-coverage) ")
-    (when (seq (:transnational params)) " AND t.json->>'geo_coverage_type'='transnational' AND t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:transnational)")
-    ;; NOTE: Empty strings in the tags column cause problems with using json_array_elements
-    (when (seq (:tag params)) " AND t.json->>'tags' <> ''"))))
+  [{:keys [favorites user-id tag transnational search-text geo-coverage resource-types geo-coverage-countries]}]
+  (let [geo-coverage? (seq geo-coverage)
+        geo-coverage-countries? (seq geo-coverage-countries)]
+    (str/join
+      " "
+      (list
+        "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz, (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM cte_topic t"
+        (when (and favorites user-id resource-types)
+          "JOIN v_stakeholder_association a ON a.stakeholder = :user-id AND a.id = (t.json->>'id')::int AND (a.topic = t.topic OR (a.topic = 'resource' AND t.topic IN (:v*:resource-types)))")
+        (when (seq tag)
+          "JOIN json_array_elements(t.json->'tags') tags ON true JOIN json_each_text(tags) tag ON LOWER(tag.value) = ANY(ARRAY[:v*:tag]::varchar[])")
+        (when (seq transnational)
+          "JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != ''")
+        "WHERE t.json->>'review_status'='APPROVED'"
+        (when (seq search-text) " AND t.search_text @@ to_tsquery(:search-text)")
+        (cond
+          (and geo-coverage? geo-coverage-countries?)
+          " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))"
+
+          geo-coverage?
+          " AND (t.geo_coverage IN (:v*:geo-coverage)
+            OR t.json->>'geo_coverage_type'='transnational' AND t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:transnational))"
+
+          geo-coverage-countries?
+          " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))")
+        ;; NOTE: Empty strings in the tags column cause problems with using json_array_elements
+        (when (seq tag) " AND t.json->>'tags' <> ''")))))

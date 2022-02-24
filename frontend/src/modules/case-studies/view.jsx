@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Button, Carousel, Row, Col, Layout, Select } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 
@@ -11,10 +11,37 @@ import SlideNext from "../../images/capacity-building/slide-next.svg";
 import DropdownIcon from "../../images/case-studies/ic_dropdown.svg";
 import { titleCase } from "../../utils/string";
 
+import IconLibrary from "../../images/capacity-building/ic-knowledge-library.svg";
+import IconLearning from "../../images/capacity-building/ic-capacity-building.svg";
+import IconExchange from "../../images/capacity-building/ic-exchange.svg";
+import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
+
 const { Header, Content } = Layout;
 
 const CaseStudies = () => {
   const [indexSlide, setIndexSlide] = useState(0);
+  const caseStudyReff = useRef();
+
+  const sidebar = [
+    {
+      id: 1,
+      title: "LIBRARY",
+      url: "/knowledge-library",
+      icon: IconLibrary,
+    },
+    {
+      id: 2,
+      title: "LEARNING",
+      url: "/capacity-building",
+      icon: IconLearning,
+    },
+    {
+      id: 4,
+      title: "Case studies",
+      url: "/case-studies",
+      icon: IconCaseStudies,
+    },
+  ];
 
   const slider = useRef();
   const prev = () => {
@@ -27,8 +54,15 @@ const CaseStudies = () => {
     setIndexSlide(index);
     slider.current.goTo(index);
   };
+
+  useEffect(() => {
+    window.scrollTo({
+      behavior: "smooth",
+      top: caseStudyReff.current.offsetTop,
+    });
+  }, []);
   return (
-    <Row id="case-study">
+    <Row id="case-study" ref={caseStudyReff}>
       <Col span={24} className="ui-header">
         <div className="ui-container">
           <Row gutter={[8, 16]}>
@@ -50,33 +84,38 @@ const CaseStudies = () => {
               </Select>
             </Col>
             <Col lg={18} md={24} className="text-right">
-              {datastudies[indexSlide].platform_link && (
-                <Button
-                  href={datastudies[indexSlide].platform_link}
-                  type="link"
-                  shape="round"
-                  className="green-border"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Learn More
-                </Button>
-              )}
-              <Button className="btn-download ml-1">
-                Download as pdf&nbsp;
-                <DownloadOutlined />
+              <Button
+                href={datastudies[indexSlide].platform_link || "#"}
+                type="link"
+                shape="round"
+                className="green-border"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Learn More
               </Button>
+              <a
+                href={
+                  "https://wedocs.unep.org/bitstream/handle/20.500.11822/38223/Case-studies.pdf?sequence=1&isAllowed=y"
+                }
+              >
+                <Button className="btn-download ml-1">
+                  Download as pdf&nbsp;
+                  <DownloadOutlined />
+                </Button>
+              </a>
             </Col>
           </Row>
         </div>
       </Col>
       <Col span={24}>
-        <div className="ui-container">
-          <LeftSidebar active={4}>
+        <div className="">
+          <LeftSidebar active={4} sidebar={sidebar}>
             <Carousel
               dots={false}
               ref={slider}
               afterChange={(index) => setIndexSlide(index)}
+              effect="fade"
             >
               {datastudies?.map((c, cx) => (
                 <CaseStudy {...c} key={cx} />
