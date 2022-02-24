@@ -7,9 +7,12 @@ import { ReactComponent as AddIcon } from "../../images/workspace/add-icon.svg";
 const AddContentButton = withRouter(({ history }) => {
   const [didMount, setDidMount] = useState(false);
   const pageHistory = history?.location?.pathname;
+  console.log(pageHistory);
 
   const displayButton =
-    pageHistory === "/workspace" || pageHistory === "/knowledge-library";
+    pageHistory === "/workspace" ||
+    pageHistory === "/knowledge-library" ||
+    pageHistory === "/events";
 
   // Note: this will fix the warning on the console
   useEffect(() => {
