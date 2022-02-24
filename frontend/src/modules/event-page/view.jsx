@@ -10,7 +10,7 @@ import IconCommunity from "../../images/events/community-icon.svg";
 
 const EventPage = () => {
   const sidebar = [
-    { id: 1, title: "Events", url: "", icon: IconEvent },
+    { id: 1, title: "Events", url: "/events", icon: IconEvent },
     {
       id: 2,
       title: "Community",
