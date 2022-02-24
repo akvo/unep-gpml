@@ -24,6 +24,7 @@ import LocationImage from "../../images/location.svg";
 import EntityImage from "../../images/entity.png";
 import FollowImage from "../../images/stakeholder/follow.png";
 import ResourceImage from "../../images/stakeholder/resource.png";
+import EditImage from "../../images/stakeholder/edit.png";
 import {
   LinkedinOutlined,
   TwitterOutlined,
@@ -32,6 +33,7 @@ import {
   UserOutlined,
   ArrowRightOutlined,
   LoadingOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import { withRouter, useHistory, Link } from "react-router-dom";
 import api from "../../utils/api";
@@ -43,6 +45,7 @@ import {
 import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const getType = (type) => {
   let t = "";
@@ -82,7 +85,18 @@ const CardComponent = ({ title, style, children, getRef }) => {
   );
 };
 
-const SharePanel = () => {
+const SharePanel = ({ profile, isAuthenticated, data, params }) => {
+  const noEditTopics = new Set(["stakeholder"]);
+
+  const canEdit = () =>
+    isAuthenticated &&
+    profile.reviewStatus === "APPROVED" &&
+    (profile.role === "ADMIN" ||
+      profile.id === params.createdBy ||
+      data.owners.includes(profile.id)) &&
+    ((params.type !== "project" && !noEditTopics.has(params.type)) ||
+      (params.type === "project" && params.id > 10000));
+
   return (
     <div className="sticky-panel">
       <div className="sticky-panel-item">
@@ -91,6 +105,13 @@ const SharePanel = () => {
           <h2>Follow</h2>
         </a>
       </div>
+
+      {canEdit() && (
+        <div className="sticky-panel-item">
+          <Avatar src={EditImage} />
+          <h2>Update</h2>
+        </div>
+      )}
     </div>
   );
 };
@@ -115,6 +136,7 @@ const StakeholderDetail = ({
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
   }));
+  const { isAuthenticated, loginWithPopup } = useAuth0();
   const history = useHistory();
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
@@ -437,7 +459,12 @@ const StakeholderDetail = ({
                       </Row>
                     </div>
                   </CardComponent>
-                  <SharePanel />
+                  <SharePanel
+                    profile={profile}
+                    isAuthenticated={isAuthenticated}
+                    data={data}
+                    params={params}
+                  />
                 </div>
               </div>
             </Col>
@@ -465,32 +492,38 @@ const StakeholderDetail = ({
                               <h4>{item.type}</h4>
                               <h6>{item.title}</h6>
                             </div>
-                            <div className="connection-wrapper">
-                              <Avatar.Group
-                                maxCount={2}
-                                maxPopoverTrigger="click"
-                                size="large"
-                                maxStyle={{
-                                  color: "#f56a00",
-                                  backgroundColor: "#fde3cf",
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <Avatar src={AvatarImage} />
-                                <Avatar src={AvatarImage} />
-                                <Tooltip title="Ant User" placement="top">
-                                  <Avatar
-                                    style={{ backgroundColor: "#87d068" }}
-                                    icon={<UserOutlined />}
-                                  />
-                                </Tooltip>
-                              </Avatar.Group>
-                              <Link to={`/${getType(item.type)}/${item.id}`}>
-                                <div className="read-more">
-                                  Read More <ArrowRightOutlined />
+                            {item.stakeholderConnections &&
+                              item.stakeholderConnections.length > 0 && (
+                                <div className="connection-wrapper">
+                                  <Avatar.Group
+                                    maxCount={2}
+                                    maxPopoverTrigger="click"
+                                    size="large"
+                                    maxStyle={{
+                                      color: "#f56a00",
+                                      backgroundColor: "#fde3cf",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {item.stakeholderConnections.map((item) => (
+                                      <Avatar
+                                        src={
+                                          item?.image
+                                            ? item.image
+                                            : `https://ui-avatars.com/api/?size=480&name=${item.stakeholder}`
+                                        }
+                                      />
+                                    ))}
+                                  </Avatar.Group>
+                                  <Link
+                                    to={`/${getType(item.type)}/${item.id}`}
+                                  >
+                                    <div className="read-more">
+                                      Read More <ArrowRightOutlined />
+                                    </div>
+                                  </Link>
                                 </div>
-                              </Link>
-                            </div>
+                              )}
                           </div>
                         </div>
                       </Col>
@@ -532,32 +565,38 @@ const StakeholderDetail = ({
                               <h4>{item.type}</h4>
                               <h6>{item.title}</h6>
                             </div>
-                            <div className="connection-wrapper">
-                              <Avatar.Group
-                                maxCount={2}
-                                maxPopoverTrigger="click"
-                                size="large"
-                                maxStyle={{
-                                  color: "#f56a00",
-                                  backgroundColor: "#fde3cf",
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <Avatar src={AvatarImage} />
-                                <Avatar src={AvatarImage} />
-                                <Tooltip title="Ant User" placement="top">
-                                  <Avatar
-                                    style={{ backgroundColor: "#87d068" }}
-                                    icon={<UserOutlined />}
-                                  />
-                                </Tooltip>
-                              </Avatar.Group>
-                              <Link to={`/${getType(item.type)}/${item.id}`}>
-                                <div className="read-more">
-                                  Read More <ArrowRightOutlined />
+                            {item.stakeholderConnections &&
+                              item.stakeholderConnections.length > 0 && (
+                                <div className="connection-wrapper">
+                                  <Avatar.Group
+                                    maxCount={2}
+                                    maxPopoverTrigger="click"
+                                    size="large"
+                                    maxStyle={{
+                                      color: "#f56a00",
+                                      backgroundColor: "#fde3cf",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {item.stakeholderConnections.map((item) => (
+                                      <Avatar
+                                        src={
+                                          item?.image
+                                            ? item.image
+                                            : `https://ui-avatars.com/api/?size=480&name=${item.stakeholder}`
+                                        }
+                                      />
+                                    ))}
+                                  </Avatar.Group>
+                                  <Link
+                                    to={`/${getType(item.type)}/${item.id}`}
+                                  >
+                                    <div className="read-more">
+                                      Read More <ArrowRightOutlined />
+                                    </div>
+                                  </Link>
                                 </div>
-                              </Link>
-                            </div>
+                              )}
                           </div>
                         </div>
                       </Col>
