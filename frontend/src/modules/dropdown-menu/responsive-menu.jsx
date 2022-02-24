@@ -155,7 +155,7 @@ const ResponsiveMenu = withRouter(
           </SubMenu>
           {/* Connect Stakeholders */}
           <Menu.Item key="stakeholder-overview" className="nav-link">
-            <Link to="/stakeholder-overview">Connect Stakeholders</Link>
+            <Link to="/events">Connect Stakeholders</Link>
           </Menu.Item>
           {/* <SubMenu
             key="connect-stakeholders"
