@@ -22,7 +22,7 @@ const LeftSidebar = ({ children, active = 1, sidebar }) => {
                 <Link
                   to={s.url}
                   className="item-menu"
-                  onClick={() => setActiveMenu(s.id)}
+                  onClick={() => setActiveMenu(s?.id)}
                 >
                   <img src={s?.icon} alt={s?.title} />
                   <p>{s?.title}</p>
@@ -31,7 +31,7 @@ const LeftSidebar = ({ children, active = 1, sidebar }) => {
                 <a
                   href="https://communities.gpmarinelitter.org/"
                   className="item-menu"
-                  onClick={() => setActiveMenu(s.id)}
+                  onClick={() => setActiveMenu(s?.id)}
                 >
                   <img src={s?.icon} alt={s?.title} />
                   <p>{s?.title}</p>
@@ -61,7 +61,7 @@ const LeftSidebar = ({ children, active = 1, sidebar }) => {
                     <Link
                       to={s.url}
                       className="item-menu"
-                      onClick={() => setActiveMenu(s.id)}
+                      onClick={() => setActiveMenu(s?.id)}
                     >
                       <img src={s?.icon} alt={s?.title} />
                       <p>{s?.title}</p>

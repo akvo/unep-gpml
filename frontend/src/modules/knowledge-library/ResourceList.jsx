@@ -91,26 +91,34 @@ const ResourceList = ({
     if (!isAscending) {
       const sortAscending = allResults.sort((result1, result2) => {
         if (result1?.title) {
-          return result1.title.localeCompare(result2.title, "en", {
-            numeric: true,
-          });
+          return result1?.title
+            ?.trim()
+            .localeCompare(result2?.title?.trim(), "en", {
+              numeric: true,
+            });
         } else {
-          return result1?.name?.localeCompare(result2?.name, "en", {
-            numeric: true,
-          });
+          return result1?.name
+            ?.trim()
+            .localeCompare(result2?.name?.trim(), "en", {
+              numeric: true,
+            });
         }
       });
       setAllResults(sortAscending);
     } else {
       const sortDescending = allResults.sort((result1, result2) => {
         if (result2?.title) {
-          return result2.title.localeCompare(result1.title, "en", {
-            numeric: true,
-          });
+          return result2?.title
+            ?.trim()
+            .localeCompare(result1?.title?.trim(), "en", {
+              numeric: true,
+            });
         } else {
-          return result2?.name?.localeCompare(result1?.name, "en", {
-            numeric: true,
-          });
+          return result2?.name
+            ?.trim()
+            .localeCompare(result1?.name?.trim(), "en", {
+              numeric: true,
+            });
         }
       });
       setAllResults(sortDescending);

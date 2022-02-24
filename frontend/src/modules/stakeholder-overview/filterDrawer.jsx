@@ -12,7 +12,6 @@ import { ReactComponent as BusinessIcon } from "../../images/stakeholder-overvie
 import { ReactComponent as AchievementIcon } from "../../images/stakeholder-overview/medal-icon.svg";
 import { ReactComponent as AgreementIcon } from "../../images/stakeholder-overview/agreement-icon.svg";
 import { ReactComponent as GPMLLogo } from "../../images/stakeholder-overview/gpml-logo.svg";
-
 import { ReactComponent as CommunityIcon } from "../../images/stakeholder-overview/community-outlined.svg";
 import { ReactComponent as UnionIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
@@ -22,7 +21,7 @@ const FilterDrawer = ({
   entities,
   query,
   updateQuery,
-  stakeholder,
+  entityCount,
 }) => {
   const {
     countries,
@@ -34,11 +33,9 @@ const FilterDrawer = ({
     seeking,
     offering,
   } = UIStore.useState((s) => ({
-    profile: s.profile,
     countries: s.countries,
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    mainContentType: s.mainContentType,
     representativeGroup: s.sectorOptions,
     stakeholders: s.stakeholders?.stakeholders,
     organisations: s.organisations,
@@ -51,20 +48,6 @@ const FilterDrawer = ({
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
     !isEmpty(representativeGroup);
-
-  const handleChangeType = (flag, type) => {
-    const val = query[flag];
-
-    let updateVal = [];
-    if (isEmpty(val)) {
-      updateVal = [type];
-    } else if (val.includes(type)) {
-      updateVal = val.filter((x) => x !== type);
-    } else {
-      updateVal = [...val, type];
-    }
-    updateQuery(flag, updateVal);
-  };
 
   const entityIcon = (name) => {
     if (name.toLowerCase() === "owner") {
@@ -101,6 +84,20 @@ const FilterDrawer = ({
     "is_member",
   ];
 
+  const handleChangeType = (flag, type) => {
+    const val = query[flag];
+
+    let updateVal = [];
+    if (isEmpty(val)) {
+      updateVal = [type];
+    } else if (val.includes(type)) {
+      updateVal = val.filter((x) => x !== type);
+    } else {
+      updateVal = [...val, type];
+    }
+    updateQuery(flag, updateVal);
+  };
+
   const countryOpts = countries
     .filter((country) => country.description === "Member State")
     .map((it) => ({ value: it.id, label: it.name }))
@@ -125,7 +122,7 @@ const FilterDrawer = ({
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Network type</div>
-              {isEmpty("") ? (
+              {isEmpty(query?.topic) ? (
                 <Tag className="selection-card-type">All (default)</Tag>
               ) : (
                 <Tag
@@ -152,6 +149,11 @@ const FilterDrawer = ({
                       <Space direction="vertical" align="center">
                         {networkIcon(type)}
                         <div className="topic-text">{networkNames(type)}</div>
+                        <div className="topic-text topic-counts">
+                          {type === "organisation"
+                            ? entityCount
+                            : stakeholders?.length}
+                        </div>
                       </Space>
                     </Card>
                   </Col>
@@ -327,12 +329,6 @@ const FilterDrawer = ({
           />
 
           <Col className="drawer-button-wrapper">
-            <Button
-              className="show-stakeholder-btn"
-              onClick={() => handleChangeType("topic", "stakeholder")}
-            >
-              Show stakeholders ({stakeholders?.length})
-            </Button>
             <Button
               className="clear-all-btn"
               onClick={() => {
