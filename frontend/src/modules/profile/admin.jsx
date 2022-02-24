@@ -798,7 +798,7 @@ const AdminSection = ({
         className="profile-tab-menu"
       >
         <TabPane
-          tab="Stakeholders"
+          tab="Individuals"
           key="stakeholders"
           className="profile-tab-pane"
         >
