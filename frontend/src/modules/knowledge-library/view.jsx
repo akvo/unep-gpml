@@ -24,6 +24,11 @@ import values from "lodash/values";
 import MapLanding from "./map-landing";
 import TopicView from "./TopicView";
 
+import IconLibrary from "../../images/capacity-building/ic-knowledge-library.svg";
+import IconLearning from "../../images/capacity-building/ic-capacity-building.svg";
+import IconExchange from "../../images/capacity-building/ic-exchange.svg";
+import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
+
 const { Option } = Select;
 // Global variable
 let tmid;
@@ -53,6 +58,27 @@ const KnowledgeLibrary = ({
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
   const [view, setView] = useState("map");
+
+  const sidebar = [
+    {
+      id: 1,
+      title: "LIBRARY",
+      url: "/knowledge-library",
+      icon: IconLibrary,
+    },
+    {
+      id: 2,
+      title: "LEARNING",
+      url: "/capacity-building",
+      icon: IconLearning,
+    },
+    {
+      id: 4,
+      title: "Case studies",
+      url: "/case-studies",
+      icon: IconCaseStudies,
+    },
+  ];
 
   const selectionValue = (
     <div className="selection-value">
@@ -247,7 +273,7 @@ const KnowledgeLibrary = ({
               setMultiCountryCountries={setMultiCountryCountries}
             />
           )}
-          <LeftSidebar active={1}>
+          <LeftSidebar active={1} sidebar={sidebar}>
             <Row className="resource-main-container">
               {/* Resource Main Content */}
               {listVisible && (

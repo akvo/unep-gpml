@@ -20,6 +20,7 @@ insert into technology(
 --~ (when (contains? params :info_docs) ", info_docs")
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
 --~ (when (contains? params :related_content) ", related_content")
+--~ (when (contains? params :subnational_city) ", subnational_city")
 )
 values(
     :name,
@@ -41,6 +42,7 @@ values(
 --~ (when (contains? params :info_docs) ", :info_docs")
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
 --~ (when (contains? params :related_content) ", :related_content")
+--~ (when (contains? params :subnational_city) ", :subnational_city")
 )
 returning id;
 

@@ -212,6 +212,10 @@
     top: 0;
     min-width: 100%;
     overflow: hidden;
+    .ant-tabs-nav-operations {
+      position: unset;
+      display: none;
+    }
 
     .ant-drawer-mask {
       background-color: unset;
@@ -579,6 +583,12 @@
     height: 700px;
     max-width: 300px;
     min-width: 300px;
+  }
+
+  .resource-list-header.show-list {
+    position: absolute;
+    z-index: 999;
+    background-color: $grey05;
   }
 
   .resource-list-header {

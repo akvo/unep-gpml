@@ -468,7 +468,9 @@ const Root = () => {
           <Route
             exact
             path="/about-us"
-            render={(props) => <AboutUs {...props} />}
+            render={(props) => (
+              <AboutUs {...props} countData={countData} filters={filters} />
+            )}
           />
           <Route
             exact
@@ -687,10 +689,13 @@ const Root = () => {
           <Route
             exact
             render={(props) => (
-              <StakeholderOverview {...props} loginWithPopup={loginWithPopup} />
+              <StakeholderOverview
+                {...props}
+                loginWithPopup={loginWithPopup}
+                filters={filters}
+                setFilters={setFilters}
+              />
             )}
-            filters={filters}
-            setFilters={setFilters}
             path="/stakeholder-overview"
           />
           <Route

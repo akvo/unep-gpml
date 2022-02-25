@@ -16,19 +16,19 @@ const Header = ({
   renderFilterTag,
   sortPeople,
   updateQuery,
+  view,
+  setView,
 }) => {
-  const [view, setView] = useState("map");
-
   const selectionValue = (
     <div className="selection-value">
       <button className="select-button">
         <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
       </button>
       <span className="label text-white">{`${view} view`}</span>
-      {view.toLowerCase().includes("map") ? (
-        <img src={GlobeOutlined} alt="globe-icon" />
-      ) : (
+      {view?.toLowerCase().includes("list") ? (
         <img src={TooltipOutlined} alt="tooltip-icon" />
+      ) : (
+        <img src={GlobeOutlined} alt="globe-icon" />
       )}
     </div>
   );
@@ -47,7 +47,7 @@ const Header = ({
             <Row type="flex" justify="space-between" align="middle">
               <Col lg={5} md={7} sm={9} className="search-box">
                 <Space>
-                  <Search updateQuery={updateQuery} />
+                  <Search updateQuery={updateQuery} setView={setView} />
                   <Button
                     onClick={() => setFilterVisible(!filterVisible)}
                     type="ghost"
@@ -68,37 +68,40 @@ const Header = ({
             </Row>
           </Col>
           {/* Map/Topic view dropdown */}
-          {/* <Col lg={2} md={4} sm={6} className="select-wrapper">
+          <Col lg={2} md={4} sm={6} className="select-wrapper">
             <Select
               className="view-selection"
               value={selectionValue}
               onChange={(val) => setView(val)}
             >
-              <Select.Option value="list">Map View</Select.Option>
-              <Select.Option value="topic">Topic View </Select.Option>
+              <Select.Option value="map">Map View</Select.Option>
+              <Select.Option value="list">List View </Select.Option>
             </Select>
-          </Col> */}
-          <Button className="sort-btn" onClick={sortPeople}>
-            <SortIcon />{" "}
-            <span>
-              Sort By:
-              <br />{" "}
-              {isAscending || isAscending === null ? (
-                <b>A&gt;Z</b>
-              ) : (
-                <b>Z&gt;A</b>
-              )}
-            </span>
-          </Button>
+          </Col>
+          {view === "list" && (
+            <Button className="sort-btn" onClick={sortPeople}>
+              <SortIcon />{" "}
+              <span>
+                Sort By:
+                <br />{" "}
+                {isAscending || isAscending === null ? (
+                  <b>A&gt;Z</b>
+                ) : (
+                  <b>Z&gt;A</b>
+                )}
+              </span>
+            </Button>
+          )}
         </Row>
       </div>
     </Col>
   );
 };
 
-const Search = withRouter(({ history, updateQuery }) => {
+const Search = withRouter(({ history, updateQuery, setView }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
+    setView("list");
     if (src) {
       history.push(`?q=${src.trim()}`);
       updateQuery("q", src.trim());
