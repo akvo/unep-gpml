@@ -59,7 +59,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
   const [filterVisible, setFilterVisible] = useState(false);
   const query = useQuery();
-  const [view, setView] = useState("list");
+  const [view, setView] = useState("card");
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
@@ -381,7 +381,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
           <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>
             <Col lg={24} xs={24} order={2}>
-              {view === "list" ? (
+              {view === "card" ? (
                 <>
                   {/* Suggested profiles */}
                   {isValidUser && !isEmpty(suggestedProfiles) && (
