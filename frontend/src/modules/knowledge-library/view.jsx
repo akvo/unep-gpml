@@ -363,6 +363,7 @@ const Search = withRouter(({ history, updateQuery }) => {
     } else {
       updateQuery("q", "");
     }
+    setSearch("");
   };
 
   return (
@@ -370,6 +371,7 @@ const Search = withRouter(({ history, updateQuery }) => {
       <Input
         className="input-src"
         placeholder="Search resources"
+        value={search}
         suffix={
           <Button
             onClick={() => handleSearch(search)}
