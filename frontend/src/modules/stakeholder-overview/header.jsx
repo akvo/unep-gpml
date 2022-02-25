@@ -25,7 +25,7 @@ const Header = ({
         <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
       </button>
       <span className="label text-white">{`${view} view`}</span>
-      {view?.toLowerCase().includes("list") ? (
+      {view?.toLowerCase().includes("card") ? (
         <img src={TooltipOutlined} alt="tooltip-icon" />
       ) : (
         <img src={GlobeOutlined} alt="globe-icon" />
@@ -75,10 +75,10 @@ const Header = ({
               onChange={(val) => setView(val)}
             >
               <Select.Option value="map">Map View</Select.Option>
-              <Select.Option value="list">List View </Select.Option>
+              <Select.Option value="card">Card View </Select.Option>
             </Select>
           </Col>
-          {view === "list" && (
+          {view === "card" && (
             <Button className="sort-btn" onClick={sortPeople}>
               <SortIcon />{" "}
               <span>
@@ -101,7 +101,7 @@ const Header = ({
 const Search = withRouter(({ history, updateQuery, setView }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
-    setView("list");
+    setView("card");
     if (src) {
       history.push(`?q=${src.trim()}`);
       updateQuery("q", src.trim());

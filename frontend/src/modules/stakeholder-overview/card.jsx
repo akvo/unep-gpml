@@ -71,7 +71,11 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                   <div className="affiliation-image-wrapper">
                     <img
                       className="affiliation-image"
-                      src={profile?.affiliation?.logo}
+                      src={
+                        profile?.affiliation?.logo
+                          ? profile?.affiliation?.logo
+                          : `https://ui-avatars.com/api/?size=480&name=${profile?.affiliation?.name}`
+                      }
                       alt={profile?.affiliation?.name}
                     />
                   </div>
