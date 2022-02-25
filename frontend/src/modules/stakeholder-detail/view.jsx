@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   useEffect,
   useRef,
@@ -242,15 +243,7 @@ const StakeholderDetail = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [
-    params,
-    profile,
-    isLoaded,
-    data,
-    history,
-    getOwnedResources,
-    getBookedResources,
-  ]);
+  }, [isLoaded]);
 
   if (!data) {
     return (
