@@ -164,7 +164,7 @@
             body (-> resp :body)
             results (:results body)
             counts (:counts body)]
-        (is (= 0 (count results)))
+        (is (= limit (count results)))
         (is (= 1 (count counts)))
         (is (= (-> counts first :topic) "technology"))))
 
@@ -173,12 +173,12 @@
                         (assoc
                          :approved? true
                          :user sth
-                         :parameters {:query {:topic "stakeholder"}}))
+                         :parameters {:query {:topic "stakeholder,technology"}}))
             resp (handler request)
             body (-> resp :body)
             results (:results body)
             counts (:counts body)]
-        (is (= 1 (count results)))
+        (is (= limit (count results)))
         (is (= (:id sth) (-> results first :id)))
         (is (= 2 (count counts)))
         (is (= #{"technology" "stakeholder"} (set (map :topic counts))))))
