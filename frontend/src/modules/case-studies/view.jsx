@@ -73,6 +73,7 @@ const CaseStudies = () => {
                 suffixIcon={
                   <img src={DropdownIcon} style={{ width: 30, height: 30 }} />
                 }
+                virtual={false}
                 size="large"
                 value={indexSlide}
               >
