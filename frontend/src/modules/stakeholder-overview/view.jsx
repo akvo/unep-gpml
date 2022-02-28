@@ -136,7 +136,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     api
       .get(url)
       .then((resp) => {
-        const sortSuggestedProfile = [...resp?.data?.suggestedProfiles].sort(
+        const sortSuggestedProfile = resp?.data?.suggestedProfiles.sort(
           (a, b) => Date.parse(b?.created) - Date.parse(a?.created)
         );
 
