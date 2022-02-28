@@ -559,6 +559,11 @@
   .site-drawer-render-in-current-wrapper {
     min-width: 100%;
     overflow: hidden;
+
+    .for-entity svg {
+      max-width: 30px;
+    }
+
     .ant-tabs-nav-operations {
       position: unset;
       display: none;

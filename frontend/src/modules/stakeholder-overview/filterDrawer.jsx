@@ -226,9 +226,16 @@ const FilterDrawer = ({
                           active: query?.is_member.length > 0,
                         })}
                       >
-                        <Space direction="vertical" align="center">
+                        <Space
+                          direction="vertical"
+                          align="center"
+                          className="for-entity"
+                        >
                           {entityIcon(name)}
                           <div className="topic-text">{entityName(name)}</div>
+                          <div className="topic-text topic-counts">
+                            {entityCount + stakeholders?.length}
+                          </div>
                         </Space>
                       </Card>
                     </Col>
