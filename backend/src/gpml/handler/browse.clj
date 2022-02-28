@@ -86,28 +86,40 @@
     [:int {:min 0}]]])
 
 (defn get-db-filter
-  [{:keys [q transnational country topic tag favorites user-id limit offset]}]
-  (merge {}
-         (when offset
-           {:offset offset})
-         (when limit
-           {:limit limit})
-         (when (and user-id favorites) {:user-id user-id
-                                        :favorites true
-                                        :resource-types resource-types})
-         (when (seq country)
-           {:geo-coverage (->> (set (str/split country #","))
-                               (map read-string))})
-         (when (seq transnational)
-           {:transnational  (set (map str (str/split transnational #",")))})
-         (when (seq topic)
-           {:topic (set (str/split topic #","))})
-         (when (seq tag)
-           {:tag (set (str/split tag #","))})
-         (when (seq q)
-           {:search-text (->> (str/trim q)
-                              (re-seq #"\w+")
-                              (str/join " & "))})))
+  [{:keys [q transnational country startDate endDate topic tag favorites user-id limit offset]}]
+  (cond-> {}
+    offset
+    (assoc :offset offset)
+
+    limit
+    (assoc :limit limit)
+
+    startDate
+    (assoc :start-date startDate)
+
+    endDate
+    (assoc :end-date endDate)
+
+    (and user-id favorites)
+    (assoc :user-id user-id :favorites true :resource-types resource-types)
+
+    (seq country)
+    (assoc :geo-coverage (->> (set (str/split country #","))
+                              (map read-string)))
+
+    (seq transnational)
+    (assoc :transnational (set (map str (str/split transnational #","))))
+
+    (seq topic)
+    (assoc :topic (set (str/split topic #",")))
+
+    (seq tag)
+    (assoc :tag (set (str/split tag #",")))
+
+    (seq q)
+    (assoc :search-text (->> (str/trim q)
+                             (re-seq #"\w+")
+                             (str/join " & ")))))
 
 (defn maybe-filter-private-topics [topics approved?]
   (or (and approved? topics)
