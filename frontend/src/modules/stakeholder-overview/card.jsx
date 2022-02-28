@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import { UIStore } from "../../store";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 import communityIcon from "../../images/stakeholder-overview/union-2-icon.svg";
+import { ReactComponent as GPMLIcon } from "../../images/stakeholder-overview/gpml-logo.svg";
+import { ReactComponent as MedalIcon } from "../../images/stakeholder-overview/medal-icon.svg";
+import { ReactComponent as AgreementIcon } from "../../images/stakeholder-overview/agreement-icon.svg";
 
 const ProfileCard = ({ profile, isValidUser, profileType }) => {
   const { countries, seeking } = UIStore.useState((s) => ({
@@ -85,7 +88,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
           <div className="profile-details-container">
             <ul className="profile-detail-list">
               <li className="list-item">
-                <h4 className="person-name">
+                <h4 className="profile-name">
                   {profile.firstName ? (
                     <>
                       <div>{profile.firstName}</div>
@@ -102,12 +105,26 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                 </span>
               </li>
               <li className="list-item">
-                {profile.entity_name && (
-                  <span className="entity-name">Entity Name</span>
-                )}
+                {profile?.type === "stakeholder"
+                  ? profile?.affiliation && (
+                      <span className="entity-name">
+                        {profile?.affiliation?.name}
+                      </span>
+                    )
+                  : profile?.representativeGroupCivilSociety && (
+                      <span className="organisation-type">
+                        {profile?.representativeGroupCivilSociety}
+                      </span>
+                    )}
               </li>
             </ul>
-
+            {/* <ul className="icons-list">
+              {profile?.isMember && (
+                <li>
+                  <GPMLIcon />
+                </li>
+              )}
+            </ul> */}
             <ul className="social-media-list">
               {profile.linkedIn && (
                 <li className="list-item">
