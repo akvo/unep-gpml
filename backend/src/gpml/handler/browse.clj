@@ -11,8 +11,9 @@
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
-(def country-re #"^\d+(,\d+)*$")
-(def topic-re (re-pattern (format "^(%1$s)((,(%1$s))+)?$" (str/join "|" topics))))
+(def ^:const country-re #"^\d+(,\d+)*$")
+(def ^:const date-iso-8601-re #"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
+(def ^:const topic-re (re-pattern (format "^(%1$s)((,(%1$s))+)?$" (str/join "|" topics))))
 
 (def query-params
   [:map
@@ -57,6 +58,22 @@
                           :type "boolean"
                           :allowEmptyValue true}}
     [:boolean]]
+   [:startDate {:optional true
+                :error/message "startDate should be in the ISO 8601 format i.e.: YYYY-MM-DD"
+                :swagger {:description "Flag to return events starting on or after startDate"
+                          :type "string"
+                          :allowEmptyValue true}}
+    [:and
+     [:string]
+     [:re date-iso-8601-re]]]
+   [:endDate {:optional true
+              :error/message "endDate should be in the ISO 8601 format i.e.: YYYY-MM-DD"
+              :swagger {:description "Flag to return events ending on or before endDate"
+                        :type "string"
+                        :allowEmptyValue true}}
+    [:and
+     [:string]
+     [:re date-iso-8601-re]]]
    [:limit {:optional true
             :swagger {:description "Limit the number of entries per page"
                       :type "int"
