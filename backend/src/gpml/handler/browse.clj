@@ -60,19 +60,19 @@
     [:boolean]]
    [:startDate {:optional true
                 :error/message "startDate should be in the ISO 8601 format i.e.: YYYY-MM-DD"
-                :swagger {:description "Flag to return events starting on or after startDate"
+                :swagger {:description "Events startDate in the format of ISO 8601 i.e.: YYYY-MM-DD"
                           :type "string"
                           :allowEmptyValue true}}
-    [:and
-     [:string]
+    [:or
+     [:string {:max 0}]
      [:re date-iso-8601-re]]]
    [:endDate {:optional true
               :error/message "endDate should be in the ISO 8601 format i.e.: YYYY-MM-DD"
-              :swagger {:description "Flag to return events ending on or before endDate"
+              :swagger {:description "Events endDate in the format of ISO 8601 i.e.: YYYY-MM-DD"
                         :type "string"
                         :allowEmptyValue true}}
-    [:and
-     [:string]
+    [:or
+     [:string {:max 0}]
      [:re date-iso-8601-re]]]
    [:limit {:optional true
             :swagger {:description "Limit the number of entries per page"
