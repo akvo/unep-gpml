@@ -25,6 +25,7 @@ import TransnationalImage from "../../images/transnational.svg";
 import EntityImage from "../../images/entity.png";
 import FollowImage from "../../images/stakeholder/follow.png";
 import ResourceImage from "../../images/stakeholder/resource.png";
+import EditImage from "../../images/stakeholder/edit.png";
 import {
   LinkedinOutlined,
   TwitterOutlined,
@@ -44,6 +45,7 @@ import {
 import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const getType = (type) => {
   let t = "";
@@ -83,7 +85,26 @@ const CardComponent = ({ title, style, children, getRef }) => {
   );
 };
 
-const SharePanel = () => {
+const SharePanel = ({
+  profile,
+  isAuthenticated,
+  data,
+  params,
+  relation,
+  handleRelationChange,
+  handleEditBtn,
+}) => {
+  const noEditTopics = new Set(["stakeholder"]);
+
+  const canEdit = () =>
+    isAuthenticated &&
+    profile.reviewStatus === "APPROVED" &&
+    (profile.role === "ADMIN" ||
+      profile.id === params.createdBy ||
+      data.owners.includes(profile.id)) &&
+    ((params.type !== "project" && !noEditTopics.has(params.type)) ||
+      (params.type === "project" && params.id > 10000));
+
   return (
     <div className="sticky-panel">
       <div className="sticky-panel-item">
@@ -92,6 +113,13 @@ const SharePanel = () => {
           <h2>Follow</h2>
         </a>
       </div>
+
+      {canEdit() && (
+        <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
+          <Avatar src={EditImage} />
+          <h2>Update</h2>
+        </div>
+      )}
     </div>
   );
 };
@@ -116,6 +144,7 @@ const StakeholderDetail = ({
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
   }));
+  const { isAuthenticated, loginWithPopup } = useAuth0();
   const history = useHistory();
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
@@ -193,6 +222,23 @@ const StakeholderDetail = ({
     },
     [params, history]
   );
+
+  const handleEditBtn = () => {
+    UIStore.update((e) => {
+      e.formEdit = {
+        ...e.formEdit,
+        entity: {
+          status: "edit",
+          id: params.id,
+        },
+      };
+      e.formStep = {
+        ...e.formStep,
+        entity: 1,
+      };
+    });
+    history.push(`/edit-entity/${params.id}`);
+  };
 
   useEffect(() => {
     isLoaded() &&
@@ -386,7 +432,14 @@ const StakeholderDetail = ({
                       </List>
                     </div>
                   </CardComponent>
-                  <SharePanel />
+                  <SharePanel
+                    profile={profile}
+                    isAuthenticated={isAuthenticated}
+                    data={data}
+                    params={params}
+                    relation={relation}
+                    handleEditBtn={handleEditBtn}
+                  />
                 </div>
               </div>
             </Col>
