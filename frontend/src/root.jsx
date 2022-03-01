@@ -286,13 +286,15 @@ const Root = () => {
       "event",
       "financing_resource",
     ];
-    if (query.topic.length === 0) {
-      searchParms.set(
-        "topic",
-        query?.startDate?.length !== 0 || query?.endDate?.length !== 0
-          ? "event"
-          : topic
-      );
+    if (query?.topic?.length === 0) {
+      if (
+        (query?.startDate && query?.startDate?.length !== 0) ||
+        (query?.endDate && query?.endDate?.length !== 0)
+      ) {
+        searchParms.set("topic", "event");
+      } else {
+        searchParms.set("topic", topic);
+      }
     }
     const url = `/browse?${String(searchParms)}`;
     api
