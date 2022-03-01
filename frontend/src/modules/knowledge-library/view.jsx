@@ -166,8 +166,8 @@ const KnowledgeLibrary = ({
       if (key === "startDate") {
         return `Start date ${value}`;
       }
-      if (key === "end-date") {
-        return `EndDate ${value}`;
+      if (key === "endDate") {
+        return `End date ${value}`;
       }
     };
     return Object.keys(query).map((key, index) => {
