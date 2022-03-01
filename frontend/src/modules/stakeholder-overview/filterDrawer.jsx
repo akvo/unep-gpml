@@ -21,7 +21,7 @@ const FilterDrawer = ({
   entities,
   query,
   updateQuery,
-  entityCount,
+  organisationCount,
 }) => {
   const {
     countries,
@@ -151,7 +151,7 @@ const FilterDrawer = ({
                         <div className="topic-text">{networkNames(type)}</div>
                         <div className="topic-text topic-counts">
                           {type === "organisation"
-                            ? entityCount
+                            ? organisationCount
                             : stakeholders?.length}
                         </div>
                       </Space>
@@ -234,7 +234,7 @@ const FilterDrawer = ({
                           {entityIcon(name)}
                           <div className="topic-text">{entityName(name)}</div>
                           <div className="topic-text topic-counts">
-                            {entityCount + stakeholders?.length}
+                            {organisationCount + stakeholders?.length}
                           </div>
                         </Space>
                       </Card>
