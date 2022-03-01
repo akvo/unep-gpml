@@ -234,7 +234,8 @@
 
   .all-profiles {
     padding-bottom: 34.66px;
-
+    padding-left: 30px;
+    padding-right: 30px;
     .person-role {
       display: none;
     }
@@ -249,7 +250,7 @@
   }
 
   .card-container {
-    padding: 16px 0px 34px 0px;
+    padding: 16px 30px 34px 30px;
     #title {
       font-size: 22px;
       text-transform: uppercase;
