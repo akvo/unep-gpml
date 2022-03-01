@@ -338,7 +338,7 @@ const FilterDrawer = ({
               <DatePickerFilter
                 title="End Date"
                 value={query?.endDate}
-                flag="end-date"
+                flag="endDate"
                 query={query}
                 updateQuery={updateQuery}
                 span={12}
