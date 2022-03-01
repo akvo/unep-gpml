@@ -3,9 +3,8 @@ import { Row, Col, Space, Drawer, Tag, Card, Select, Button } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
-import { useAuth0 } from "@auth0/auth0-react";
 import { UIStore } from "../../store";
-import { entityName } from "../../utils/misc";
+import { entityName, networkNames, networkTypes } from "../../utils/misc";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 
@@ -13,7 +12,6 @@ import { ReactComponent as BusinessIcon } from "../../images/stakeholder-overvie
 import { ReactComponent as AchievementIcon } from "../../images/stakeholder-overview/medal-icon.svg";
 import { ReactComponent as AgreementIcon } from "../../images/stakeholder-overview/agreement-icon.svg";
 import { ReactComponent as GPMLLogo } from "../../images/stakeholder-overview/gpml-logo.svg";
-
 import { ReactComponent as CommunityIcon } from "../../images/stakeholder-overview/community-outlined.svg";
 import { ReactComponent as UnionIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
@@ -23,26 +21,26 @@ const FilterDrawer = ({
   entities,
   query,
   updateQuery,
-  stakeholder,
+  entityCount,
 }) => {
   const {
     countries,
     transnationalOptions,
     geoCoverageTypeOptions,
     representativeGroup,
-    affiliations,
-    offering,
+    organisations,
+    stakeholders,
     seeking,
+    offering,
   } = UIStore.useState((s) => ({
-    profile: s.profile,
     countries: s.countries,
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    mainContentType: s.mainContentType,
     representativeGroup: s.sectorOptions,
-    affiliations: s.organisations,
-    offering: s.tags.offering,
+    stakeholders: s.stakeholders?.stakeholders,
+    organisations: s.organisations,
     seeking: s.tags.seeking,
+    offering: s.tags.offering,
   }));
 
   const isLoaded = () =>
@@ -50,19 +48,6 @@ const FilterDrawer = ({
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
     !isEmpty(representativeGroup);
-
-  const handleChangeType = (flag, type) => {
-    const val = query[flag];
-    let updateVal = [];
-    if (isEmpty(val)) {
-      updateVal = [type];
-    } else if (val.includes(type)) {
-      updateVal = val.filter((x) => x !== type);
-    } else {
-      updateVal = [...val, type];
-    }
-    updateQuery(flag, updateVal);
-  };
 
   const entityIcon = (name) => {
     if (name.toLowerCase() === "owner") {
@@ -78,6 +63,45 @@ const FilterDrawer = ({
       return <BusinessIcon />;
     }
   };
+
+  const networkIcon = (name) => {
+    if (name.toLowerCase() === "stakeholder") {
+      return <UnionIcon />;
+    }
+    if (name.toLowerCase() === "organisation") {
+      return <CommunityIcon />;
+    }
+  };
+
+  const filterQueries = [
+    "country",
+    "topic",
+    "representativeGroup",
+    "geoCoverage",
+    "seeking",
+    "offering",
+    "affiliation",
+    "is_member",
+  ];
+
+  const handleChangeType = (flag, type) => {
+    const val = query[flag];
+
+    let updateVal = [];
+    if (isEmpty(val)) {
+      updateVal = [type];
+    } else if (val.includes(type)) {
+      updateVal = val.filter((x) => x !== type);
+    } else {
+      updateVal = [...val, type];
+    }
+    updateQuery(flag, updateVal);
+  };
+
+  const countryOpts = countries
+    .filter((country) => country.description === "Member State")
+    .map((it) => ({ value: it.id, label: it.name }))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   return (
     <div className="site-drawer-render-in-current-wrapper">
@@ -98,14 +122,14 @@ const FilterDrawer = ({
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Network type</div>
-              {isEmpty("") ? (
+              {isEmpty(query?.topic) ? (
                 <Tag className="selection-card-type">All (default)</Tag>
               ) : (
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClose={() => updateQuery("entity", [])}
-                  onClick={() => updateQuery("entity", [])}
+                  onClose={() => updateQuery("topic", [])}
+                  onClick={() => updateQuery("topic", [])}
                 >
                   Clear selection
                 </Tag>
@@ -113,33 +137,28 @@ const FilterDrawer = ({
             </Space>
 
             <Row type="flex" gutter={[10, 10]}>
-              <Col span={6}>
-                <Card
-                  onClick={() => handleChangeType("entity", "")}
-                  className={classNames("drawer-card", {
-                    active: query?.entity?.includes(""),
-                  })}
-                >
-                  <Space direction="vertical" align="center">
-                    <UnionIcon />
-                    <div className="topic-text">Individuals</div>
-                  </Space>
-                </Card>
-              </Col>
-
-              <Col span={6}>
-                <Card
-                  onClick={() => handleChangeType("entity", "")}
-                  className={classNames("drawer-card", {
-                    active: query?.entity?.includes(""),
-                  })}
-                >
-                  <Space direction="vertical" align="center">
-                    <CommunityIcon />
-                    <div className="topic-text">Entities</div>
-                  </Space>
-                </Card>
-              </Col>
+              {networkTypes.map((type) => {
+                return (
+                  <Col span={6} key={type}>
+                    <Card
+                      onClick={() => handleChangeType("topic", type)}
+                      className={classNames("drawer-card", {
+                        active: query?.topic?.includes(type),
+                      })}
+                    >
+                      <Space direction="vertical" align="center">
+                        {networkIcon(type)}
+                        <div className="topic-text">{networkNames(type)}</div>
+                        <div className="topic-text topic-counts">
+                          {type === "organisation"
+                            ? entityCount
+                            : stakeholders?.length}
+                        </div>
+                      </Space>
+                    </Card>
+                  </Col>
+                );
+              })}
             </Row>
           </Col>
 
@@ -197,18 +216,26 @@ const FilterDrawer = ({
               <p className="specificity-title">For entities</p>
               {[entities[0]].map((entity) => {
                 const name = humps.decamelize(entity);
+
                 return (
                   name && (
                     <Col span={6} key={entity}>
                       <Card
-                        onClick={() => handleChangeType("entity", entity)}
+                        onClick={() => handleChangeType("is_member", entity)}
                         className={classNames("drawer-card", {
-                          active: query?.entity?.includes(entity),
+                          active: query?.is_member.length > 0,
                         })}
                       >
-                        <Space direction="vertical" align="center">
+                        <Space
+                          direction="vertical"
+                          align="center"
+                          className="for-entity"
+                        >
                           {entityIcon(name)}
                           <div className="topic-text">{entityName(name)}</div>
+                          <div className="topic-text topic-counts">
+                            {entityCount + stakeholders?.length}
+                          </div>
                         </Space>
                       </Card>
                     </Col>
@@ -223,14 +250,11 @@ const FilterDrawer = ({
             title="Affiliation"
             options={
               isLoaded()
-                ? affiliations?.map((org) => ({
-                    value: org?.name,
-                    label: org.name,
-                  }))
+                ? organisations?.map((x) => ({ value: x.id, label: x.name }))
                 : []
             }
-            value={query?.organisation || []}
-            flag="organisation"
+            value={query?.affiliation?.map((x) => parseInt(x)) || []}
+            flag="affiliation"
             query={query}
             updateQuery={updateQuery}
           />
@@ -252,13 +276,9 @@ const FilterDrawer = ({
           {/* Location */}
           <MultipleSelectFilter
             title="Location"
-            options={
-              isLoaded()
-                ? countries?.map((x) => ({ value: x.name, label: x.name }))
-                : []
-            }
-            value={query?.country || []}
-            flag="location"
+            options={countryOpts}
+            value={query?.country?.map((x) => parseInt(x)) || []}
+            flag="country"
             query={query}
             updateQuery={updateQuery}
           />
@@ -278,13 +298,10 @@ const FilterDrawer = ({
             title="What expertises are they offering?"
             options={
               isLoaded()
-                ? offering?.map((offer) => ({
-                    value: offer?.tag,
-                    label: offer.tag,
-                  }))
+                ? offering?.map((x) => ({ value: x.id, label: x.tag }))
                 : []
             }
-            value={query?.tag || []}
+            value={query?.offering?.map((x) => parseInt(x)) || []}
             flag="offering"
             query={query}
             updateQuery={updateQuery}
@@ -295,13 +312,10 @@ const FilterDrawer = ({
             title="What expertises are they seeking?"
             options={
               isLoaded()
-                ? seeking?.map((seek) => ({
-                    value: seek?.tag,
-                    label: seek.tag,
-                  }))
+                ? seeking?.map((x) => ({ value: x.id, label: x.tag }))
                 : []
             }
-            value={query?.tag || []}
+            value={query?.seeking?.map((x) => parseInt(x)) || []}
             flag="seeking"
             query={query}
             updateQuery={updateQuery}
@@ -323,13 +337,18 @@ const FilterDrawer = ({
 
           <Col className="drawer-button-wrapper">
             <Button
-              className="show-stakeholder-btn"
-              onClose={() => setFilterVisible(false)}
-              onClick={() => setFilterVisible(false)}
+              className="clear-all-btn"
+              onClick={() => {
+                const paramValueArr = filterQueries.map((query) => ({
+                  param: query,
+                  value: [],
+                }));
+
+                updateQuery(null, null, paramValueArr);
+              }}
             >
-              Show stakeholders ({stakeholder})
+              Clear all
             </Button>
-            <Button className="clear-all-btn">Clear all</Button>
           </Col>
         </Row>
       </Drawer>

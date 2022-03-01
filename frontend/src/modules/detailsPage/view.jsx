@@ -339,7 +339,13 @@ const renderBannerSection = (
           <div className="banner-wrapper">
             <div className="long-image">
               <img
-                src={data.image ? data.image : imageNotFound}
+                src={
+                  data.image
+                    ? data.image
+                    : data.qimage
+                    ? data.qimage
+                    : imageNotFound
+                }
                 className="resource-image"
               />
             </div>
@@ -747,9 +753,7 @@ const DetailsView = ({
                 <img src={ActionGreen} />
                 <div>
                   <Title level={2}>{topicNames(params?.type)}</Title>
-                  <Title level={4}>
-                    {params?.type !== "technology" ? data?.title : data?.name}
-                  </Title>
+                  <Title level={4}>{data?.title}</Title>
                 </div>
               </div>
             </Col>
@@ -937,11 +941,7 @@ const DetailsView = ({
                       marginBottom: "30px",
                     }}
                   >
-                    <p className="summary">
-                      {params?.type !== "technology"
-                        ? data?.summary
-                        : data?.remarks}
-                    </p>
+                    <p className="summary">{data?.summary}</p>
                   </CardComponent>
                 )}
 

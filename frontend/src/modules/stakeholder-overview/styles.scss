@@ -1,5 +1,9 @@
 @import "../../vars.scss";
 
+.blur {
+  filter: blur(13px);
+}
+
 #stakeholder-overview {
   padding: 0;
 
@@ -204,36 +208,58 @@
     padding: 0;
   }
 
-  .all-profiles {
-    padding: 26.79px 0 34.66px 0;
+  .images-wrapper {
+    position: relative;
+    height: max-content;
+    max-height: max-content;
+  }
 
+  .affiliation-image-wrapper {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 30px;
+    bottom: 0;
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+    background-color: #fff;
+
+    .affiliation-image {
+      width: 100%;
+    }
+  }
+
+  .all-profiles {
+    padding-bottom: 34.66px;
+    padding-left: 30px;
+    padding-right: 30px;
     .person-role {
       display: none;
+    }
+    .result-number {
+      padding-top: 16px;
+      padding-bottom: 16px;
+      max-width: max-content;
+      margin: auto;
+      font-size: 12px;
+      text-align: center;
     }
   }
 
   .card-container {
-    padding: 16px 0px 34px 0px;
-    .title {
+    padding: 16px 30px 34px 30px;
+    #title {
       font-size: 22px;
       text-transform: uppercase;
       margin-bottom: 13px;
+      text-align: center;
+      line-height: 30px;
     }
     &.green {
       background-color: #45bea5;
-    }
-
-    .icons-list {
-      display: flex;
-      gap: 5px;
-      align-items: center;
-      li {
-        color: #ffb800;
-        margin-bottom: 0 !important;
-        svg {
-          height: 37px;
-        }
-      }
     }
 
     .profile-card {
@@ -256,6 +282,19 @@
     max-width: 345px;
     border-radius: 10px;
 
+    .icons-list {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      li {
+        color: #ffb800;
+        margin-bottom: 0 !important;
+        svg {
+          height: 37px;
+        }
+      }
+    }
+
     span {
       display: block;
     }
@@ -271,7 +310,7 @@
       .image-wrapper {
         display: flex;
         align-items: center;
-
+        position: relative;
         border-radius: 50%;
         width: 100%;
         max-width: 150px;
@@ -280,6 +319,7 @@
         min-height: 150px;
         overflow: hidden;
         margin-right: 16.51px;
+        text-align: center;
       }
 
       .organisation-image {
@@ -288,6 +328,7 @@
 
       .profile-image {
         max-width: 150px;
+        object-fit: cover;
       }
 
       .profile-details-container {
@@ -299,14 +340,14 @@
           .list-item {
             margin-bottom: 11px;
 
-            .person-name,
+            .profile-name,
             .location,
             .entity-name {
               color: #255b87;
               font-weight: 700;
             }
 
-            .person-name,
+            .profile-name,
             .entity-name {
               font-size: 16px;
             }
@@ -326,8 +367,12 @@
             }
 
             .entity-name {
-              font-weight: 300;
-              text-transform: uppercase;
+              color: #255b87;
+            }
+
+            .organisation-type {
+              font-size: 12px;
+              color: #18162f;
             }
 
             .badge {
@@ -376,7 +421,6 @@
 
     .person-role {
       width: calc(100% - 6px);
-      // padding: 8px 21px 8px 21px;
       padding: 8px 10.5px 8px 10.5px;
       background: rgba(37, 91, 135, 0.24);
       border-radius: 0px 0px 12px 12px;
@@ -394,15 +438,11 @@
       }
     }
   }
-
   .sidebar {
     background-color: $bg-dark-primary;
     .item-sidebar {
       width: 100%;
       height: 118px;
-      display: flex;
-      cursor: pointer;
-      padding: 0;
 
       p {
         margin-top: 10px;
@@ -414,24 +454,17 @@
 
       .item-menu {
         opacity: 0.5;
+        img {
+          height: unset;
+          width: unset;
+        }
       }
 
       &.active {
         background: rgba(5, 240, 129, 0.2);
-        border: 0;
 
         .item-menu {
           opacity: 1;
-        }
-
-        &::before {
-          content: " ";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 3px;
-          height: 118px;
-          background-color: $green01;
         }
       }
 
@@ -510,21 +543,32 @@
   }
 
   // Drawer
+
+  .ant-row.body-wrapper {
+    position: relative;
+  }
+
   span.ant-input-affix-wrapper.input-src {
     border-radius: 30px;
   }
 
   .site-drawer-render-in-current-wrapper,
   .resource-main-container {
-    min-height: 100vh;
     height: 100%;
   }
 
   .site-drawer-render-in-current-wrapper {
-    position: absolute;
     min-width: 100%;
     overflow: hidden;
 
+    .for-entity svg {
+      max-width: 30px;
+    }
+
+    .ant-tabs-nav-operations {
+      position: unset;
+      display: none;
+    }
     .specificity-card .ant-row {
       background-color: rgba(211, 222, 231, 0.2);
       border-radius: 6px;
@@ -555,7 +599,6 @@
 
     .ant-drawer-content-wrapper {
       box-shadow: none;
-      height: max-content;
 
       .ant-drawer-header {
         background: $blue05;
@@ -769,7 +812,6 @@
         margin: auto;
       }
 
-      .show-stakeholder-btn,
       .clear-all-btn {
         width: 100%;
         height: unset;
@@ -782,10 +824,6 @@
         span {
           display: block;
         }
-      }
-
-      .show-stakeholder-btn {
-        border: 2px solid #34a6ff;
       }
 
       .clear-all-btn {
@@ -817,9 +855,22 @@
     margin: auto;
   }
 
+  .warning {
+    padding: 48px 32px;
+
+    text-align: center;
+
+    svg {
+      margin-bottom: 24px;
+    }
+  }
+
   @media (min-width: 700px) {
     .card-wrapper {
       grid-template-columns: repeat(2, 1fr);
+    }
+    #title {
+      text-align: left !important;
     }
   }
 
@@ -828,9 +879,13 @@
       max-width: 100%;
     }
     .card-wrapper,
-    .title {
+    #title {
       max-width: 1440px;
       margin: auto;
+    }
+
+    #title {
+      padding-left: 12px;
     }
 
     .card-wrapper {
@@ -843,9 +898,13 @@
       max-width: 100%;
     }
     .card-wrapper,
-    .title {
+    #title {
       max-width: 1440px;
       margin: auto;
+    }
+
+    #title {
+      padding-left: 0;
     }
 
     .card-wrapper {

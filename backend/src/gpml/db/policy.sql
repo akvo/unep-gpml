@@ -24,6 +24,7 @@ insert into policy(
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
 --~ (when (contains? params :topics) ", topics")
 --~ (when (contains? params :related_content) ", related_content")
+--~ (when (contains? params :subnational_city) ", subnational_city")
 )
 values(
     :title,
@@ -49,6 +50,7 @@ values(
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
 --~ (when (contains? params :topics) ", :topics")
 --~ (when (contains? params :related_content) ", :related_content")
+--~ (when (contains? params :subnational_city) ", :subnational_city")
 )
 returning id;
 

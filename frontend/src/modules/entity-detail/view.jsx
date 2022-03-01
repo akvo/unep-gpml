@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   useEffect,
   useRef,
@@ -22,6 +21,7 @@ import StickyBox from "react-sticky-box";
 import AvatarImage from "../../images/stakeholder/Avatar.png";
 import StakeholderRating from "../../images/stakeholder/stakeholder-rating.png";
 import LocationImage from "../../images/location.svg";
+import TransnationalImage from "../../images/transnational.svg";
 import EntityImage from "../../images/entity.png";
 import FollowImage from "../../images/stakeholder/follow.png";
 import ResourceImage from "../../images/stakeholder/resource.png";
@@ -34,7 +34,6 @@ import {
   UserOutlined,
   ArrowRightOutlined,
   LoadingOutlined,
-  EditOutlined,
 } from "@ant-design/icons";
 import { withRouter, useHistory, Link } from "react-router-dom";
 import api from "../../utils/api";
@@ -93,6 +92,7 @@ const SharePanel = ({
   params,
   relation,
   handleRelationChange,
+  handleEditBtn,
 }) => {
   const noEditTopics = new Set(["stakeholder"]);
 
@@ -105,38 +105,17 @@ const SharePanel = ({
     ((params.type !== "project" && !noEditTopics.has(params.type)) ||
       (params.type === "project" && params.id > 10000));
 
-  const handleChangeRelation = (relationType) => {
-    let association = relation ? [...relation.association] : [];
-    if (!association.includes(relationType)) {
-      association = [...association, relationType];
-    } else {
-      association = association.filter((it) => it !== relationType);
-    }
-    handleRelationChange({
-      topicId: parseInt(params.id),
-      association,
-      topic: resourceTypeToTopicType(params.type),
-    });
-  };
-
   return (
     <div className="sticky-panel">
-      <div
-        className="sticky-panel-item"
-        onClick={() => handleChangeRelation("interested in")}
-      >
-        <Avatar src={FollowImage} />
-        {relation &&
-        relation.association &&
-        relation.association.indexOf("interested in") !== -1 ? (
-          <h2>Unfollow</h2>
-        ) : (
+      <div className="sticky-panel-item">
+        <a href={`#`} target="_blank">
+          <Avatar src={FollowImage} />
           <h2>Follow</h2>
-        )}
+        </a>
       </div>
 
       {canEdit() && (
-        <div className="sticky-panel-item">
+        <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
           <Avatar src={EditImage} />
           <h2>Update</h2>
         </div>
@@ -175,7 +154,6 @@ const StakeholderDetail = ({
   const [bookedResourcesCount, setBookedResourcesCount] = useState(0);
   const [ownedResourcesPage, setOwnedResourcesPage] = useState(0);
   const [bookedResourcesPage, setBookedResourcesPage] = useState(0);
-  const [warningVisible, setWarningVisible] = useState(false);
 
   const relation = relations.find(
     (it) =>
@@ -239,11 +217,28 @@ const StakeholderDetail = ({
         })
         .catch((err) => {
           console.error(err);
-          // redirectError(err, history);
+          redirectError(err, history);
         });
     },
     [params, history]
   );
+
+  const handleEditBtn = () => {
+    UIStore.update((e) => {
+      e.formEdit = {
+        ...e.formEdit,
+        entity: {
+          status: "edit",
+          id: params.id,
+        },
+      };
+      e.formStep = {
+        ...e.formStep,
+        entity: 1,
+      };
+    });
+    history.push(`/edit-entity/${params.id}`);
+  };
 
   useEffect(() => {
     isLoaded() &&
@@ -272,35 +267,15 @@ const StakeholderDetail = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [isLoaded]);
-
-  const handleRelationChange = (relation) => {
-    if (!isAuthenticated) {
-      loginWithPopup();
-    }
-    if (profile.reviewStatus === "SUBMITTED") {
-      setWarningVisible(true);
-    }
-    if (isAuthenticated && profile.reviewStatus === undefined) {
-      setStakeholderSignupModalVisible(true);
-    }
-    if (profile.reviewStatus === "APPROVED") {
-      api.post("/favorite", relation).then((res) => {
-        const relationIndex = relations.findIndex(
-          (it) => it.topicId === relation.topicId
-        );
-        if (relationIndex !== -1) {
-          setRelations([
-            ...relations.slice(0, relationIndex),
-            relation,
-            ...relations.slice(relationIndex + 1),
-          ]);
-        } else {
-          setRelations([...relations, relation]);
-        }
-      });
-    }
-  };
+  }, [
+    params,
+    profile,
+    isLoaded,
+    data,
+    history,
+    getOwnedResources,
+    getBookedResources,
+  ]);
 
   if (!data) {
     return (
@@ -314,7 +289,7 @@ const StakeholderDetail = ({
   }
 
   return (
-    <div id="stakeholder-detail">
+    <div id="entity-detail">
       <StickyBox style={{ zIndex: 10 }}>
         <div className="topbar-container">
           <div className="ui container">
@@ -322,19 +297,16 @@ const StakeholderDetail = ({
               <Col xs={24} lg={24}>
                 <div className="topbar-wrapper">
                   <div className="topbar-image-holder">
-                    <img src={data?.picture} />
-                    <div className="topbar-entity-image-holder">
-                      <img
-                        src={
-                          data?.affiliation?.logo
-                            ? data?.affiliation?.logo
-                            : `https://ui-avatars.com/api/?background=0D8ABC&size=480&name=${data?.affiliation?.name}`
-                        }
-                      />
-                    </div>
+                    <img
+                      src={
+                        data?.logo
+                          ? data?.logo
+                          : `https://ui-avatars.com/api/?size=480&name=${data?.name}`
+                      }
+                    />
                   </div>
                   <div className="topbar-title-holder">
-                    <h1>{data?.firstName + " " + data?.lastName}</h1>
+                    <h1>{data?.name}</h1>
                     {/* <p>
                       <span>
                         <img src={StakeholderRating} />
@@ -363,23 +335,10 @@ const StakeholderDetail = ({
                         }
                       />
                     </List.Item>
-                    <List.Item>
+                    <List.Item className="location">
                       <List.Item.Meta
-                        avatar={
-                          <Avatar
-                            src={
-                              data?.affiliation?.logo
-                                ? data?.affiliation?.logo
-                                : `https://ui-avatars.com/api/?size=480&name=${data?.affiliation?.name}`
-                            }
-                          />
-                        }
-                        title={
-                          <Link to={`/organisation/${data?.affiliation?.id}`}>
-                            {data?.affiliation?.name}
-                          </Link>
-                        }
-                        description={"Entity"}
+                        avatar={<Avatar src={TransnationalImage} />}
+                        title={data?.geoCoverageType}
                       />
                     </List.Item>
                   </List>
@@ -452,7 +411,6 @@ const StakeholderDetail = ({
               <div className="description-container">
                 <div className="description-wrapper">
                   <CardComponent
-                    title={"Bio"}
                     style={{
                       height: "100%",
                       boxShadow: "none",
@@ -460,53 +418,18 @@ const StakeholderDetail = ({
                       width: "100%",
                     }}
                   >
-                    <p>{data?.about}</p>
+                    <p>{data?.program}</p>
                     <div className="exta-info">
-                      <Row gutter={[16, 16]}>
-                        <Col xs={12} lg={12}>
-                          {data?.seeking && (
-                            <CardComponent>
-                              <div class="ant-card-head-wrapper">
-                                <div class="ant-card-head-title">
-                                  Seeking{" "}
-                                  <span>
-                                    ({data?.seeking.split(",").length} Keywords)
-                                  </span>
-                                </div>
-                              </div>
-                              <List>
-                                {data?.seeking.split(",").map((str) => (
-                                  <List.Item>
-                                    <Typography.Text>{str}</Typography.Text>
-                                  </List.Item>
-                                ))}
-                              </List>
-                            </CardComponent>
-                          )}
-                        </Col>
-                        <Col xs={12} lg={12}>
-                          {data?.offering && (
-                            <CardComponent>
-                              <div class="ant-card-head-wrapper">
-                                <div class="ant-card-head-title">
-                                  Offering{" "}
-                                  <span>
-                                    ({data?.offering.split(",").length}{" "}
-                                    Keywords)
-                                  </span>
-                                </div>
-                              </div>
-                              <List>
-                                {data?.offering.split(",").map((str) => (
-                                  <List.Item>
-                                    <Typography.Text>{str}</Typography.Text>
-                                  </List.Item>
-                                ))}
-                              </List>
-                            </CardComponent>
-                          )}
-                        </Col>
-                      </Row>
+                      <div className="exta-info-head-title">
+                        Area of expertise
+                      </div>
+                      <List>
+                        {["Plastic", "Pollution"].map((str) => (
+                          <List.Item>
+                            <Typography.Text>{str}</Typography.Text>
+                          </List.Item>
+                        ))}
+                      </List>
                     </div>
                   </CardComponent>
                   <SharePanel
@@ -515,7 +438,7 @@ const StakeholderDetail = ({
                     data={data}
                     params={params}
                     relation={relation}
-                    handleRelationChange={handleRelationChange}
+                    handleEditBtn={handleEditBtn}
                   />
                 </div>
               </div>
@@ -544,38 +467,32 @@ const StakeholderDetail = ({
                               <h4>{item.type}</h4>
                               <h6>{item.title}</h6>
                             </div>
-                            {item.stakeholderConnections &&
-                              item.stakeholderConnections.length > 0 && (
-                                <div className="connection-wrapper">
-                                  <Avatar.Group
-                                    maxCount={2}
-                                    maxPopoverTrigger="click"
-                                    size="large"
-                                    maxStyle={{
-                                      color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    {item.stakeholderConnections.map((item) => (
-                                      <Avatar
-                                        src={
-                                          item?.image
-                                            ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.stakeholder}`
-                                        }
-                                      />
-                                    ))}
-                                  </Avatar.Group>
-                                  <Link
-                                    to={`/${getType(item.type)}/${item.id}`}
-                                  >
-                                    <div className="read-more">
-                                      Read More <ArrowRightOutlined />
-                                    </div>
-                                  </Link>
+                            <div className="connection-wrapper">
+                              <Avatar.Group
+                                maxCount={2}
+                                maxPopoverTrigger="click"
+                                size="large"
+                                maxStyle={{
+                                  color: "#f56a00",
+                                  backgroundColor: "#fde3cf",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <Avatar src={AvatarImage} />
+                                <Avatar src={AvatarImage} />
+                                <Tooltip title="Ant User" placement="top">
+                                  <Avatar
+                                    style={{ backgroundColor: "#87d068" }}
+                                    icon={<UserOutlined />}
+                                  />
+                                </Tooltip>
+                              </Avatar.Group>
+                              <Link to={`/${getType(item.type)}/${item.id}`}>
+                                <div className="read-more">
+                                  Read More <ArrowRightOutlined />
                                 </div>
-                              )}
+                              </Link>
+                            </div>
                           </div>
                         </div>
                       </Col>
@@ -617,38 +534,32 @@ const StakeholderDetail = ({
                               <h4>{item.type}</h4>
                               <h6>{item.title}</h6>
                             </div>
-                            {item.stakeholderConnections &&
-                              item.stakeholderConnections.length > 0 && (
-                                <div className="connection-wrapper">
-                                  <Avatar.Group
-                                    maxCount={2}
-                                    maxPopoverTrigger="click"
-                                    size="large"
-                                    maxStyle={{
-                                      color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    {item.stakeholderConnections.map((item) => (
-                                      <Avatar
-                                        src={
-                                          item?.image
-                                            ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.stakeholder}`
-                                        }
-                                      />
-                                    ))}
-                                  </Avatar.Group>
-                                  <Link
-                                    to={`/${getType(item.type)}/${item.id}`}
-                                  >
-                                    <div className="read-more">
-                                      Read More <ArrowRightOutlined />
-                                    </div>
-                                  </Link>
+                            <div className="connection-wrapper">
+                              <Avatar.Group
+                                maxCount={2}
+                                maxPopoverTrigger="click"
+                                size="large"
+                                maxStyle={{
+                                  color: "#f56a00",
+                                  backgroundColor: "#fde3cf",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <Avatar src={AvatarImage} />
+                                <Avatar src={AvatarImage} />
+                                <Tooltip title="Ant User" placement="top">
+                                  <Avatar
+                                    style={{ backgroundColor: "#87d068" }}
+                                    icon={<UserOutlined />}
+                                  />
+                                </Tooltip>
+                              </Avatar.Group>
+                              <Link to={`/${getType(item.type)}/${item.id}`}>
+                                <div className="read-more">
+                                  Read More <ArrowRightOutlined />
                                 </div>
-                              )}
+                              </Link>
+                            </div>
                           </div>
                         </div>
                       </Col>

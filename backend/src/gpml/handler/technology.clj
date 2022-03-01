@@ -38,6 +38,7 @@
                                       year_founded email country
                                       geo_coverage_type geo_coverage_value
                                       geo_coverage_countries geo_coverage_country_groups
+                                      geo_coverage_value_subnational_city
                                       tags url urls created_by image owners info_docs
                                       sub_content_type related_content
                                       logo attachments remarks mailjet-config
@@ -56,6 +57,7 @@
               :geo_coverage_value geo_coverage_value
               :geo_coverage_countries geo_coverage_countries
               :geo_coverage_country_groups geo_coverage_country_groups
+              :subnational_city geo_coverage_value_subnational_city
               :remarks remarks
               :attachments attachments
               :created_by created_by
@@ -128,6 +130,7 @@
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
+    [:geo_coverage_value_subnational_city string?]
     [:image {:optional true} string?]
     [:logo {:optional true} string?]
     [:tags {:optional true}

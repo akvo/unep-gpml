@@ -26,7 +26,8 @@
             [gpml.handler.util :as util]
             [gpml.model.topic :as model.topic]
             [clojure.string :as string]
-            [gpml.pg-util :as pg-util]))
+            [gpml.pg-util :as pg-util]
+            [clojure.set :as set]))
 
 (defn other-or-name [action]
   (when-let [actual-name (or
@@ -270,11 +271,13 @@
         {:entity_connections (db.initiative/entity-connections-by-id db (select-keys item [:id]))
          :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
-(defmethod extra-details "project" [_ db project]
+(defmethod extra-details "project" [_ db {:keys [related_content] :as project}]
   (merge
     {:entity_connections (db.initiative/entity-connections-by-id db (select-keys project [:id]))
      :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys project [:id]))
-     :related_content (expand-related-project-content db project)
+     :related_content (if (seq related_content)
+                        (expand-related-project-content db project)
+                        [])
      :tags (db.initiative/tags-by-id db (select-keys project [:id]))
      :type "Initiative"}
     (if (> (:id project) 10000)
@@ -288,11 +291,13 @@
         {:entity_connections (db.policy/entity-connections-by-id db (select-keys item [:id]))
          :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
-(defmethod extra-details "policy" [_ db policy]
+(defmethod extra-details "policy" [_ db {:keys [related_content] :as policy}]
   (merge
     {:entity_connections (db.policy/entity-connections-by-id db (select-keys policy [:id]))
      :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys policy [:id]))
-     :related_content (expand-related-policy-content db policy)
+     :related_content (if (seq related_content)
+                        (expand-related-policy-content db policy)
+                        [])
      :tags (db.policy/tags-by-id db (select-keys policy [:id]))
      :type "Policy"}
     (when-let [implementing-mea (:implementing_mea policy)]
@@ -305,11 +310,13 @@
         {:entity_connections (db.technology/entity-connections-by-id db (select-keys item [:id]))
          :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
-(defmethod extra-details "technology" [_ db technology]
+(defmethod extra-details "technology" [_ db {:keys [related_content] :as technology}]
   (merge
     {:entity_connections (db.technology/entity-connections-by-id db (select-keys technology [:id]))
      :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys technology [:id]))
-     :related_content (expand-related-technology-content db technology)
+     :related_content (if (seq related_content)
+                        (expand-related-technology-content db technology)
+                        [])
      :tags (db.technology/tags-by-id db (select-keys technology [:id]))
      :type "Technology"}
     (when-let [headquarters-country (:country technology)]
@@ -325,22 +332,28 @@
         {:entity_connections (db.resource/entity-connections-by-id db (select-keys item [:id]))
          :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
-(defmethod extra-details "technical_resource" [_ db resource]
+(defmethod extra-details "technical_resource" [_ db {:keys [related_content] :as resource}]
   {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
    :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys resource [:id]))
-   :related_content (expand-related-resource-content db resource)
+   :related_content (if (seq related_content)
+                      (expand-related-resource-content db resource)
+                      [])
    :tags (db.resource/tags-by-id db (select-keys resource [:id]))})
 
-(defmethod extra-details "financing_resource" [_ db resource]
+(defmethod extra-details "financing_resource" [_ db {:keys [related_content] :as resource}]
   {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
    :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys resource [:id]))
-   :related_content (expand-related-resource-content db resource)
+   :related_content (if (seq related_content)
+                      (expand-related-resource-content db resource)
+                      [])
    :tags (db.resource/tags-by-id db (select-keys resource [:id]))})
 
-(defmethod extra-details "action_plan" [_ db resource]
+(defmethod extra-details "action_plan" [_ db {:keys [related_content] :as resource}]
   {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
    :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys resource [:id]))
-   :related_content (expand-related-resource-content db resource)
+   :related_content (if (seq related_content)
+                      (expand-related-resource-content db resource)
+                      [])
    :tags (db.resource/tags-by-id db (select-keys resource [:id]))})
 
 (defn expand-related-entity-content [db event]
@@ -350,10 +363,12 @@
         {:entity_connections (db.event/entity-connections-by-id db (select-keys item [:id]))
          :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
-(defmethod extra-details "event" [_ db event]
+(defmethod extra-details "event" [_ db {:keys [related_content] :as event}]
   {:entity_connections (db.event/entity-connections-by-id db (select-keys event [:id]))
    :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys event [:id]))
-   :related_content (expand-related-entity-content db event)
+   :related_content (if (seq related_content)
+                      (expand-related-entity-content db event)
+                      [])
    :tags (db.event/tags-by-id db (select-keys event [:id]))
    :type "Event"})
 
@@ -481,7 +496,9 @@
         (if-let [data (db.detail/get-detail conn path)]
           (resp/response (merge
                            (adapt (merge
-                                    (dissoc (:json data) :related_content :tags :abstract :description)
+                                    (case topic
+                                      "technology" (dissoc (:json data) :related_content :tags :remarks :name)
+                                      (dissoc (:json data) :related_content :tags :abstract :description))
                                     (extra-details topic conn (:json data))))
                            {:owners (:owners data)}))
           util/not-found)
@@ -564,6 +581,16 @@
 (defn update-resource-image [conn image image-type resource-id]
   (-update-resource-picture conn image image-type resource-id false))
 
+(defn -update-initiative-picture [conn image image-type initiative-id]
+  (let [url (handler.image/assoc-image conn image image-type)]
+    (when-not (and image (= image url))
+      (db.detail/update-resource-table
+        conn
+        {:table image-type :id initiative-id :updates {:qimage url}}))))
+
+(defn update-initiative-image [conn image image-type initiative-id]
+  (-update-initiative-picture conn image image-type initiative-id))
+
 (defn update-resource-logo [conn image image-type resource-id]
   (-update-resource-picture conn image image-type resource-id true))
 
@@ -612,7 +639,8 @@
                           :resource_type)
                         (assoc :related_content (pg-util/->JDBCArray (:related_content updates) "integer"))
                         (merge (when (:topics updates)
-                                 {:topics (pg-util/->JDBCArray (:topics updates) "text")})))
+                                 {:topics (pg-util/->JDBCArray (:topics updates) "text")}))
+                        (set/rename-keys {:geo_coverage_value_subnational_city :subnational_city}))
         tags (remove nil? (:tags updates))
         urls (remove nil? (:urls updates))
         params {:table table :id id :updates table-columns}
@@ -643,10 +671,18 @@
 
 (defn update-initiative [conn id data]
   (let [params (merge {:id id} data)
+        tags (remove nil? (:tags data))
         status (jdbc/with-db-transaction [conn-tx conn]
-                 (let [status (db.detail/update-initiative conn-tx params)]
+                 (let [status (db.detail/update-initiative conn-tx (-> params
+                                                                     (assoc :related_content (pg-util/->JDBCArray (:related_content data) "integer"))
+                                                                     (dissoc :tags :entity_connections :individual_connections :urls :org :geo_coverage_countries
+                                                                       :geo_coverage_country_groups :qimage)))]
                    (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
                    status))]
+    (when (contains? data :qimage)
+      (update-initiative-image conn (:qimage data) "initiative" id))
+    (when-not (empty? tags)
+      (update-resource-tags conn "initiative" id tags))
     (when (contains? data :entity_connections)
       (update-resource-entity-connections conn (:entity_connections data) "initiative" id))
     (when (contains? data :individual_connections)

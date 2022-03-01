@@ -1,7 +1,6 @@
 (ns gpml.db.landing-test
   (:require [clojure.test :refer [deftest testing use-fixtures are is]]
             [clojure.java.jdbc :as jdbc]
-            [gpml.handler.organisation :as handler.organisation]
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.landing :as db.landing]
@@ -129,41 +128,8 @@
      :review_status "SUBMITTED"}
     org-data))
 
-(deftest test-organisation
-
-  (testing "Test organisation data for landing page"
-    (let [db-key :duct.database.sql/hikaricp
-          system (ig/init fixtures/*system* [db-key])
-          conn (-> system db-key :spec)
-          _ (add-country-data conn)
-          summary (fn [& orgs]
-                    (doseq [org orgs]
-                      (handler.organisation/create conn org))
-                    (let [summary (db.landing/summary conn)
-                          orgs-data (->> summary
-                                         (filter #(= "organisation" (:resource_type %)))
-                                         first)]
-                      (clojure.java.jdbc/execute! conn "delete from organisation_geo_coverage")
-                      (clojure.java.jdbc/execute! conn "delete from organisation")
-                      ((juxt :count :country_count) orgs-data)))]
-
-      (testing "Two orgs in one country"
-        (is (= [2 1] (summary (org spanish approved) (org spanish approved)))))
-
-      (testing "One org in a region"
-        (is (= [1 2] (summary (org approved asia)))))
-
-      (testing "One org in a region, another in a country"
-        (is (= [2 3] (summary (org approved spanish) (org approved asia))))
-        (is (= [2 2] (summary (org approved india) (org approved asia)))))
-
-      (testing "One global org"
-        (is (= [1 0] (summary (org approved {:geo_coverage_type "global"})))))
-
-      (testing "Unapproved org is not counted"
-        (is (= [0 0] (summary (org spanish) (org asia) (org {:geo_coverage_type "global"})))))
-
-      )))
+(defn get-country-group-ids [db country-id]
+  (db.country-group/get-country-groups-by-country db {:id country-id}))
 
 (deftest landing-counts
   (let [db-key :duct.database.sql/hikaricp
@@ -172,12 +138,15 @@
     (seeder/seed db {:country? true :resource? true})
     (testing "Landing counts match browse results"
       (let [counts (db.landing/map-counts db)
-            afg 4 ;; country_id
+            country-id 4
+            transnationals (set (map str (get-country-group-ids db country-id)))
             browse (db.topic/get-topics db {:topic #{"financing_resource"}
-                                               :geo-coverage [afg]})]
+                                            :geo-coverage [country-id]
+                                            :transnational transnationals
+                                            :count-only? true})]
         (is (= (->> counts
-                    (filter #(= afg (:id %)))
+                    (filter #(= country-id (:id %)))
                     first
                     :counts
                     :financing_resource)
-               (count browse)))))))
+              (:count (first browse))))))))

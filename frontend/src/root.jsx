@@ -53,6 +53,7 @@ import EntityFormView from "./modules/entity/view";
 import Workspace from "./modules/workspace/view";
 import EventPage from "./modules/event-page/view";
 import StakeholderDetail from "./modules/stakeholder-detail/view";
+import EntityDetail from "./modules/entity-detail/view";
 
 // Menu dropdown
 import AboutDropdownMenu from "./modules/dropdown-menu/about";
@@ -467,7 +468,9 @@ const Root = () => {
           <Route
             exact
             path="/about-us"
-            render={(props) => <AboutUs {...props} />}
+            render={(props) => (
+              <AboutUs {...props} countData={countData} filters={filters} />
+            )}
           />
           <Route
             exact
@@ -685,9 +688,14 @@ const Root = () => {
           />
           <Route
             exact
-            render={(props) => <StakeholderOverview {...props} />}
-            filters={filters}
-            setFilters={setFilters}
+            render={(props) => (
+              <StakeholderOverview
+                {...props}
+                loginWithPopup={loginWithPopup}
+                filters={filters}
+                setFilters={setFilters}
+              />
+            )}
             path="/stakeholder-overview"
           />
           <Route
@@ -717,7 +725,7 @@ const Root = () => {
           <Route
             path="/:type(organisation)/:id"
             render={(props) => (
-              <DetailsView
+              <EntityDetail
                 {...props}
                 setStakeholderSignupModalVisible={
                   setStakeholderSignupModalVisible

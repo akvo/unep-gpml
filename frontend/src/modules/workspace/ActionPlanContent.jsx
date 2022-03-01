@@ -18,9 +18,9 @@ const plans = [
         <p className="paragraph">
           The Digital Platform contains various guidance documents that can be
           used when creating an action plan, including the{" "}
-          <a href="https://digital.gpmarinelitter.org/technical_resource/253">
+          <Link to="/technical_resource/253">
             Marine Litter: Guidelines for designing action plans.
-          </a>{" "}
+          </Link>{" "}
           In addition, the following functionalities of the Digital Platform can
           be considered for this phase:
         </p>
@@ -53,13 +53,10 @@ const plans = [
           </li>
           <li>
             Calculation tools for providing national estimates, such as the{" "}
-            <a href="https://digital.gpmarinelitter.org/technical_resource/10084">
-              WFD Tool
-            </a>{" "}
-            and{" "}
-            <a href="https://digital.gpmarinelitter.org/technical_resource/138">
+            <Link to="/technical_resource/10084">WFD Tool</Link> and{" "}
+            <Link to="/technical_resource/138">
               ISWA plastic pollution calculator
-            </a>{" "}
+            </Link>{" "}
             , can be found under{" "}
             <Link to="/capacity-building">Tools & Toolkits</Link>.
           </li>
@@ -73,10 +70,8 @@ const plans = [
             The <Link to="/capacity-building">Capacity Building section</Link>{" "}
             contains <Link to="/capacity-building">Courses & Trainings</Link>{" "}
             and <Link to="/capacity-building">Events</Link>, such as the{" "}
-            <a href="https://digital.gpmarinelitter.org/technical_resource/149">
-              MOOC on Marine Litter
-            </a>{" "}
-            , webinars, and conferences, that provide training opportunities in
+            <Link to="/technical_resource/149">MOOC on Marine Litter</Link> ,
+            webinars, and conferences, that provide training opportunities in
             different areas.
           </li>
         </ul>
@@ -112,43 +107,43 @@ const plans = [
           <i>Regional action plans</i>
           <ul>
             <li>
-              <a href="https://digital.gpmarinelitter.org/action_plan/201">
+              <Link to="/action_plan/201">
                 OSPAR Commission, Regional Action Plan for Prevention and
                 Management of Marine Litter in the North-East Atlantic
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="https://digital.gpmarinelitter.org/action_plan/205">
+              <Link to="/action_plan/205">
                 SPREP , Pacific Regional Action Plan MARINE LITTER (2018?2025)
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="https://digital.gpmarinelitter.org/action_plan/10327">
+              <Link to="/action_plan/10327">
                 Strategic Action Plan for the Environmental Protection and
                 Rehabilitation of the Black Sea
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="https://digital.gpmarinelitter.org/action_plan/199">
+              <Link to="/action_plan/199">
                 Western Indian Ocean, Regional Action Plan on Marine Litter
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="https://digital.gpmarinelitter.org/action_plan/200">
+              <Link to="/action_plan/200">
                 NOWPAP Regional Action Plan on Marine Litter
-              </a>
+              </Link>
             </li>
             <i>National Action Plans</i>
             <li>
-              <a href="https://digital.gpmarinelitter.org/action_plan/207">
+              <Link to="/action_plan/207">
                 Canada: Strategy on Zero Plastic Waste, Phase 2
-              </a>
+              </Link>
             </li>
             <i>Sub national Action Plans</i>
             <li>
-              <a href="https://digital.gpmarinelitter.org/action_plan/10328">
+              <Link to="/action_plan/10328">
                 North Carolina Marine Debris Action Plan January 2020
-              </a>
+              </Link>
             </li>
           </ul>
           <li>
@@ -161,9 +156,7 @@ const plans = [
             as well as <Link to="/learning">Courses & Trainings</Link> that may
             be helpful in implementing education, awareness raising and capacity
             building actions. An example is the{" "}
-            <a href="https://digital.gpmarinelitter.org/technical_resource/149">
-              MOOC on Marine litter
-            </a>
+            <Link to="/technical_resource/149">MOOC on Marine litter</Link>
           </li>
         </ul>
       </>
@@ -184,10 +177,10 @@ const plans = [
         <ul>
           <li>
             Guidance documents for monitoring and assessment, including the{" "}
-            <a hreef="https://digital.gpmarinelitter.org/technical_resource/10024">
+            <Link to="/technical_resource/10024">
               GESAMP Guidelines for the Monitoring and Assessment of Plastic
               Litter in the Ocean
-            </a>{" "}
+            </Link>{" "}
             can be found under Technical Resources.
           </li>
           <li>

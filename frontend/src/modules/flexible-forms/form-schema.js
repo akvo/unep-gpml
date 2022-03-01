@@ -126,6 +126,7 @@ export const schema = {
             },
             required: [
               "geoCoverageType",
+              "S4_G2_23",
               "S4_G2_24.3",
               "S4_G2_24.3",
               "S4_G2_24.2",
@@ -133,6 +134,12 @@ export const schema = {
               "geoCoverageValueSubnationalCity",
             ],
             properties: {
+              S4_G2_23: {
+                title: "Select Location",
+                type: "string",
+                enum: ["23-0"],
+                enumNames: ["List of country"],
+              },
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",
@@ -1214,6 +1221,7 @@ export const schema = {
               value: 1,
             },
             required: [
+              "country",
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
@@ -1222,6 +1230,11 @@ export const schema = {
               // "geoCoverageValueSubnationalCity",
             ],
             properties: {
+              country: {
+                title: "Select Location",
+                enum: [],
+                enumNames: [],
+              },
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",
@@ -1474,6 +1487,7 @@ export const schema = {
               value: 1,
             },
             required: [
+              "country",
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
@@ -1482,6 +1496,11 @@ export const schema = {
               "geoCoverageValueSubnationalCity",
             ],
             properties: {
+              country: {
+                title: "Select Location",
+                enum: [],
+                enumNames: [],
+              },
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",
@@ -1763,6 +1782,7 @@ export const schema = {
               value: 1,
             },
             required: [
+              "country",
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
@@ -1771,6 +1791,11 @@ export const schema = {
               // "geoCoverageValueSubnationalCity",
             ],
             properties: {
+              country: {
+                title: "Select Location",
+                enum: [],
+                enumNames: [],
+              },
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",
@@ -2031,6 +2056,7 @@ export const schema = {
               value: 1,
             },
             required: [
+              "country",
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
@@ -2039,6 +2065,11 @@ export const schema = {
               // "geoCoverageValueSubnationalCity",
             ],
             properties: {
+              country: {
+                title: "Select Location",
+                enum: [],
+                enumNames: [],
+              },
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",
@@ -2273,6 +2304,7 @@ export const schema = {
               value: 1,
             },
             required: [
+              "country",
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
@@ -2281,6 +2313,11 @@ export const schema = {
               "geoCoverageValueSubnationalCity",
             ],
             properties: {
+              country: {
+                title: "Select Location",
+                enum: [],
+                enumNames: [],
+              },
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",
@@ -2525,6 +2562,7 @@ export const schema = {
               value: 1,
             },
             required: [
+              "country",
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
@@ -2533,6 +2571,11 @@ export const schema = {
               "geoCoverageValueSubnationalCity",
             ],
             properties: {
+              country: {
+                title: "Select Location",
+                enum: [],
+                enumNames: [],
+              },
               geoCoverageType: {
                 title: "Select Geo-Coverage Type",
                 type: "string",

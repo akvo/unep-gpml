@@ -20,6 +20,7 @@ insert into event(
 --~ (when (contains? params :capacity_building) ", capacity_building")
 --~ (when (contains? params :event_type) ", event_type")
 --~ (when (contains? params :recording) ", recording")
+--~ (when (contains? params :subnational_city) ", subnational_city")
 )
 values(
     :title,
@@ -41,6 +42,7 @@ values(
 --~ (when (contains? params :capacity_building) ", :capacity_building")
 --~ (when (contains? params :event_type) ", :event_type")
 --~ (when (contains? params :recording) ", :recording")
+--~ (when (contains? params :subnational_city) ", :subnational_city")
 ) RETURNING id;
 
 -- :name add-event-tags :<! :1

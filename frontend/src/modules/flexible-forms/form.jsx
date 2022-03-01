@@ -106,6 +106,7 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
+      data.country = parseInt(Object.keys(data.country)[0]);
 
       if (data.resourceType === "Financing Resource") {
         if (data.hasOwnProperty("valueCurrency")) {
@@ -386,7 +387,7 @@ const FlexibleForm = withRouter(
       if (status === "edit" || params?.id) {
         delete data.version;
         api
-          .put(`/detail/project/${id || params?.id}`, data)
+          .putRaw(`/detail/project/${id || params?.id}`, data)
           .then(() => {
             // scroll top
             window.scrollTo({ top: 0 });
@@ -419,10 +420,8 @@ const FlexibleForm = withRouter(
         ...formData,
         ...(capacityBuilding && { capacityBuilding: true }),
       };
-      console.log(formData);
-      transformFormData(data, formData, formSchema.schema.properties, true);
-      console.log(data);
 
+      transformFormData(data, formData, formSchema.schema.properties, true);
       data.version = parseInt(formSchema.schema.version);
 
       delete data?.S1;
@@ -432,6 +431,7 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
+      data.country = parseInt(Object.keys(data.country)[0]);
 
       if (data.geoCoverageType === "transnational") {
         if (
@@ -600,6 +600,7 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
+      data.country = parseInt(Object.keys(data.country)[0]);
 
       if (data.geoCoverageType === "transnational") {
         if (
@@ -686,6 +687,16 @@ const FlexibleForm = withRouter(
       }
 
       if (status === "add" && !params?.id) {
+        data?.image && data?.image === "" && delete data.image;
+      }
+
+      if (status === "edit" || params?.id) {
+        data?.image &&
+          data?.image.match(customFormats.url) &&
+          delete data.image;
+      }
+
+      if (status === "add" && !params?.id) {
         api
           .post("/event", data)
           .then(() => {
@@ -752,6 +763,7 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
+      data.country = parseInt(Object.keys(data.country)[0]);
 
       if (data.geoCoverageType === "transnational") {
         if (
@@ -832,6 +844,16 @@ const FlexibleForm = withRouter(
       if (data?.summary) {
         data.remarks = data?.summary;
         delete data.summary;
+      }
+
+      if (status === "add" && !params?.id) {
+        data?.image && data?.image === "" && delete data.image;
+      }
+
+      if (status === "edit" || params?.id) {
+        data?.image &&
+          data?.image.match(customFormats.url) &&
+          delete data.image;
       }
 
       if (status === "add" && !params?.id) {
