@@ -372,6 +372,31 @@
    :tags (db.event/tags-by-id db (select-keys event [:id]))
    :type "Event"})
 
+(defn- remove-nil-connections [{:keys [stakeholder_connections entity_connections] :as content}]
+  (let [empty-stakeholder-connections? (nil? (:id (first stakeholder_connections)))
+        empty-entity-connections? (nil? (:id (first entity_connections)))]
+    (cond
+      (not (and empty-stakeholder-connections? empty-entity-connections?))
+      (assoc content :stakeholder_connections (distinct stakeholder_connections)
+                     :entity_connections (distinct entity_connections))
+
+      (and empty-stakeholder-connections? empty-entity-connections?)
+      (assoc content :stakeholder_connections nil :entity_connections nil)
+
+      empty-stakeholder-connections?
+      (assoc content :stakeholder_connections nil)
+
+      empty-entity-connections?
+      (assoc content :entity_connections nil)
+
+      :else
+      content)))
+
+(defmethod extra-details "organisation" [_ db {:keys [id] :as organisation}]
+  (let [content (db.detail/get-content-by-org db (select-keys organisation [:id]))
+        normalised-content (map #(remove-nil-connections %) content)]
+    {:content (group-by :type normalised-content)}))
+
 (defmethod extra-details :nothing [_ _ _]
   nil)
 
