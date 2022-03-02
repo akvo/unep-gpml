@@ -180,6 +180,7 @@
             justify-content: center;
             display: flex;
             flex-direction: column;
+            padding: 10px 0px;
             a {
               text-align: center;
             }
@@ -190,6 +191,7 @@
             span {
               font-size: 30px;
               color: #ffffff;
+              overflow: initial;
             }
             h2 {
               font-size: 16px;

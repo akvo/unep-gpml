@@ -63,7 +63,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
-  const [entityCount, setEntityCount] = useState(0);
+  const [organisationCount, setOrganisationCount] = useState(0);
 
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -174,7 +174,6 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             .sort((a, b) => b?.type.localeCompare(a?.type))
         );
 
-        setEntityCount(organisationType?.count);
         if (
           query?.topic.length === 1 &&
           query?.topic.includes("organisation")
@@ -187,7 +186,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
           setResultCount(stakeholderType?.count);
         } else {
           setResultCount(
-            organisationType?.count || 0 + stakeholderType?.count || 0
+            organisationType?.count + stakeholderType?.count ||
+              organisationType?.count ||
+              0 + stakeholderType?.count ||
+              0
           );
         }
 
@@ -197,6 +199,18 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         console.error(err);
         redirectError(err, history);
       });
+  };
+
+  const getOrganisation = () => {
+    const searchParms = new URLSearchParams(window.location.search);
+    searchParms.set("topic", "organisation");
+    const url = `/browse?${String(searchParms)}`;
+    api.get(url).then((resp) => {
+      const organisationType = resp?.data?.counts?.find(
+        (count) => count?.topic === "organisation"
+      );
+      setOrganisationCount(organisationType?.count);
+    });
   };
 
   const itemCount = loading
@@ -231,6 +245,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
     setTimeout(() => {
       getSuggestedProfiles();
+      getOrganisation();
     }, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValidUser]);
@@ -376,7 +391,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             entities={entityRoleOptions}
             filterVisible={filterVisible}
             setFilterVisible={setFilterVisible}
-            entityCount={entityCount}
+            organisationCount={organisationCount}
           />
 
           <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>

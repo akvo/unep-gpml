@@ -529,17 +529,15 @@
     (str/join
      " "
      (list
-      "SELECT * FROM cte_results"
-      (when (some? (:topic params))
-        "WHERE topic = ANY(ARRAY[:v*:topic]::VARCHAR[])")
-      "ORDER BY
+      "SELECT * FROM cte_results
+       ORDER BY
        (COALESCE(json->>'start_date', json->>'created'))::timestamptz DESC,
        (json->>'id')::int DESC"
       (format "LIMIT %s" (or (and (contains? params :limit) (:limit params)) 50))
       (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))))))
 
 (defn generate-filter-topic-snippet
-  [{:keys [favorites user-id tag transnational search-text geo-coverage resource-types geo-coverage-countries]}]
+  [{:keys [favorites user-id topic tag start-date end-date transnational search-text geo-coverage resource-types geo-coverage-countries]}]
   (let [geo-coverage? (seq geo-coverage)
         geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
@@ -554,6 +552,19 @@
           "JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != ''")
         "WHERE t.json->>'review_status'='APPROVED'"
         (when (seq search-text) " AND t.search_text @@ to_tsquery(:search-text)")
+        (when (seq topic)
+          " AND topic IN (:v*:topic)")
+        (when (and (= (count topic) 1)
+                   (= (first topic) "event"))
+          (cond
+            (and (seq start-date) (seq end-date))
+            " AND (TO_DATE(json->>'start_date', 'YYYY-MM-DD'), (TO_DATE(json->>'end_date', 'YYYY-MM-DD'))) OVERLAPS
+                (:start-date::date, :end-date::date)"
+            (seq start-date)
+            " AND TO_DATE(json->>'start_date', 'YYYY-MM-DD') >= :start-date::date"
+
+            (seq end-date)
+            " AND TO_DATE(json->>'end_date', 'YYYY-MM-DD') <= :end-date::date"))
         (cond
           (and geo-coverage? geo-coverage-countries?)
           " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))"
