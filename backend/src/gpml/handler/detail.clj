@@ -392,7 +392,7 @@
       :else
       content)))
 
-(defmethod extra-details "organisation" [_ db {:keys [id] :as organisation}]
+(defmethod extra-details "organisation" [_ db organisation]
   (let [content (db.detail/get-content-by-org db (select-keys organisation [:id]))
         normalised-content (map #(remove-nil-connections %) content)]
     {:content (group-by :type normalised-content)}))
