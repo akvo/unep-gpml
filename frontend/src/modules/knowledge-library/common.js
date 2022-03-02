@@ -9,6 +9,7 @@ const useQuery = () => {
     tag: [],
     startDate: [],
     endDate: [],
+    transnational: [],
     // sector: [],
     // goal: [],
     representativeGroup: [],

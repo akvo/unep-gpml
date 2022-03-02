@@ -354,6 +354,10 @@ const Root = () => {
       clearTimeout(tmid);
       tmid = setTimeout(getResults(query), 1000);
     }
+
+    if (multiCountryCountries.length === 0) {
+      updateQuery("transnational", []);
+    }
     // NOTE: Since we are using `history` and `location`, the
     // dependency needs to be []. Ignore the linter warning, because
     // adding a dependency here on location makes the FE send multiple
