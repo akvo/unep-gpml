@@ -520,7 +520,12 @@
 (defn generate-get-topics
   [params]
   (if (:count-only? params)
-    "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic"
+    "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic
+     UNION ALL
+     SELECT 'gpml_member_entities' AS topic, COUNT(*)
+     FROM organisation
+     WHERE review_status='APPROVED' AND is_member=true
+     GROUP BY topic"
     (str/join
      " "
      (list
