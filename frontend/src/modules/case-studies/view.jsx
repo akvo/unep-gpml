@@ -73,6 +73,7 @@ const CaseStudies = () => {
                 suffixIcon={
                   <img src={DropdownIcon} style={{ width: 30, height: 30 }} />
                 }
+                virtual={false}
                 size="large"
                 value={indexSlide}
               >
@@ -115,7 +116,6 @@ const CaseStudies = () => {
               dots={false}
               ref={slider}
               afterChange={(index) => setIndexSlide(index)}
-              effect="fade"
             >
               {datastudies?.map((c, cx) => (
                 <CaseStudy {...c} key={cx} />
