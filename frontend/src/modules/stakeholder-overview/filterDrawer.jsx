@@ -22,6 +22,7 @@ const FilterDrawer = ({
   query,
   updateQuery,
   organisationCount,
+  GPMLMemberCount,
 }) => {
   const {
     countries,
@@ -199,7 +200,7 @@ const FilterDrawer = ({
                           {entityIcon(name)}
                           <div className="topic-text">{entityName(name)}</div>
                           <div className="topic-text topic-counts">
-                            {organisationCount + stakeholders?.length}
+                            {GPMLMemberCount}
                           </div>
                         </Space>
                       </Card>

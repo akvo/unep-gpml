@@ -64,6 +64,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const [results, setResults] = useState([]);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
   const [organisationCount, setOrganisationCount] = useState(0);
+  const [GPMLMemberCount, setGPMLMemberCount] = useState(0);
 
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -168,6 +169,12 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         const stakeholderType = resp?.data?.counts?.find(
           (count) => count?.topic === "stakeholder"
         );
+
+        const GPMLMemberCounts = resp?.data?.counts?.find(
+          (count) => count?.topic === "gpml_member_entities"
+        );
+        setGPMLMemberCount(GPMLMemberCounts.count);
+
         setResults(
           [...result]
             .sort((a, b) => Date.parse(b?.created) - Date.parse(a?.created))
@@ -392,6 +399,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             filterVisible={filterVisible}
             setFilterVisible={setFilterVisible}
             organisationCount={organisationCount}
+            GPMLMemberCount={GPMLMemberCount}
           />
 
           <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>
