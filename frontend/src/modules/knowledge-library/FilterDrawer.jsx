@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -129,7 +129,8 @@ const FilterDrawer = ({
   };
 
   const handleChangeMultiCountry = (val) => {
-    updateQuery("transnational", [...query?.transnational, ...val]);
+    updateQuery("transnational", [val]);
+
     // Fetch transnational countries
     val.forEach((id) => {
       const check = multiCountryCountries.find((x) => x.id === id);
@@ -141,12 +142,6 @@ const FilterDrawer = ({
           ]);
         });
     });
-
-    // const values = multiCountryCountries
-    //   ?.map((country) => country?.countries.map((country) => country.id))
-    //   .join(",");
-
-    // updateQuery("country", values);
   };
 
   const handleDeselectMultiCountry = (val) => {
@@ -269,6 +264,7 @@ const FilterDrawer = ({
                   closable
                   onClick={() => {
                     updateQuery("transnational", []);
+                    setMultiCountryCountries([]);
                   }}
                   onClose={() => updateQuery("transnational", [])}
                 >
