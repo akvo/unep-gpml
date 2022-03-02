@@ -286,8 +286,15 @@ const Root = () => {
       "event",
       "financing_resource",
     ];
-    if (query.topic.length === 0) {
-      searchParms.set("topic", topic);
+    if (query?.topic?.length === 0) {
+      if (
+        (query?.startDate && query?.startDate?.length !== 0) ||
+        (query?.endDate && query?.endDate?.length !== 0)
+      ) {
+        searchParms.set("topic", "event");
+      } else {
+        searchParms.set("topic", topic);
+      }
     }
     const url = `/browse?${String(searchParms)}`;
     api
@@ -355,7 +362,11 @@ const Root = () => {
       tmid = setTimeout(getResults(query), 1000);
     }
 
-    if (multiCountryCountries.length === 0) {
+    if (
+      multiCountryCountries.length === 0 &&
+      query?.transnational?.length !== 0 &&
+      history.location.pathname === "/knowledge-library"
+    ) {
       updateQuery("transnational", []);
     }
     // NOTE: Since we are using `history` and `location`, the

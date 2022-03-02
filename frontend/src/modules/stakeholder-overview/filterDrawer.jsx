@@ -21,7 +21,7 @@ const FilterDrawer = ({
   entities,
   query,
   updateQuery,
-  entityCount,
+  organisationCount,
 }) => {
   const {
     countries,
@@ -151,7 +151,7 @@ const FilterDrawer = ({
                         <div className="topic-text">{networkNames(type)}</div>
                         <div className="topic-text topic-counts">
                           {type === "organisation"
-                            ? entityCount
+                            ? organisationCount
                             : stakeholders?.length}
                         </div>
                       </Space>
@@ -161,41 +161,6 @@ const FilterDrawer = ({
               })}
             </Row>
           </Col>
-
-          {/* Specificity */}
-          {/* <Col span={24} className="specificity-card">
-            <Space align="middle">
-              <div className="filter-title">Specificity</div>
-              {isEmpty("") ? (
-                <Tag className="selection-card-type">All (default)</Tag>
-              ) : (
-                <Tag
-                  className="clear-selection"
-                  closable={true}
-                  onClose={() => updateQuery("entity", [])}
-                  onClick={() => updateQuery("entity", [])}
-                >
-                  Clear selection
-                </Tag>
-              )}
-            </Space>
-
-            <Row type="flex" gutter={[10, 10]}>
-              <p className="specificity-title">For individuals</p>
-              <Col span={6}>
-                <Card
-                  className={classNames("drawer-card", {
-                    active: query?.entity?.includes(""),
-                  })}
-                >
-                  <Space direction="vertical" align="center">
-                    <Badge />
-                    <div className="topic-text">Experts</div>
-                  </Space>
-                </Card>
-              </Col>
-            </Row>
-          </Col> */}
 
           {/* For entities */}
           <Col span={24} className="specificity-card">
@@ -234,7 +199,7 @@ const FilterDrawer = ({
                           {entityIcon(name)}
                           <div className="topic-text">{entityName(name)}</div>
                           <div className="topic-text topic-counts">
-                            {entityCount + stakeholders?.length}
+                            {organisationCount + stakeholders?.length}
                           </div>
                         </Space>
                       </Card>
@@ -282,16 +247,6 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-
-          {/* Goals */}
-          {/* <MultipleSelectFilter
-            title="Goals"
-            options={[]}
-            value={query?.goal || []}
-            flag="goal"
-            query={query}
-            updateQuery={updateQuery}
-          /> */}
 
           {/*Expertise to offer*/}
           <MultipleSelectFilter

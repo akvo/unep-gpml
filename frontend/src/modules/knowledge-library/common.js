@@ -9,13 +9,7 @@ const useQuery = () => {
     tag: [],
     startDate: [],
     endDate: [],
-    transnational: [],
-    // sector: [],
-    // goal: [],
     representativeGroup: [],
-    // geoCoverage: [],
-    // language: [],
-    // rating: [],
     q: "",
   };
   for (var key of srcParams.keys()) {
