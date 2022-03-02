@@ -884,10 +884,6 @@
       margin: auto;
     }
 
-    #title {
-      padding-left: 12px;
-    }
-
     .card-wrapper {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -909,6 +905,12 @@
 
     .card-wrapper {
       grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (min-width: 1700px) {
+    #title {
+      padding-left: 12px;
     }
   }
 }
