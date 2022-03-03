@@ -6,6 +6,9 @@ const useQuery = () => {
     topic: [],
     country: [],
     tag: [],
+    // get tag() {
+    //   return [this.seeking, this.offering].flat();
+    // },
     representativeGroup: [],
     geoCoverage: [],
     seeking: [],
