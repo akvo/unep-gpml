@@ -278,6 +278,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         newQuery["offset"] = 0;
       }
     }
+
+    newQuery["tag"] = [newQuery["offering"], newQuery["seeking"]].flat();
+
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
     history.push(`/stakeholder-overview?${newParams.toString()}`);
@@ -328,11 +331,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "seeking") {
-        const findSeeking = seeking.find((seek) => seek?.id == value);
+        const findSeeking = seeking.find((seek) => seek?.tag == value);
         return findSeeking?.tag;
       }
       if (key === "offering") {
-        const findOffering = offering.find((offer) => offer?.id == value);
+        const findOffering = offering.find((offer) => offer?.tag == value);
         return findOffering?.tag;
       }
     };
@@ -346,7 +349,8 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       ) {
         return;
       }
-      return query?.[key]
+
+      return key !== "tag" && query?.[key]
         ? query?.[key]?.map((x) => (
             <Tag
               className="result-box"
