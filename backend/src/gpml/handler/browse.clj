@@ -12,7 +12,6 @@
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
-(def ^:const country-re #"^\d+(,\d+)*$")
 (def ^:const topic-re (util.regex/comma-separated-enums-re topics))
 
 (def query-params
