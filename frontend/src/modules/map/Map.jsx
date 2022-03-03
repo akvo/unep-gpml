@@ -43,7 +43,7 @@ const ToolTipContent = ({ data, geo, path }) => {
   const dataToDisplay = () => {
     if (path === KNOWLEDGE_LIBRARY) {
       return {
-        initiative: data?.project,
+        project: data?.project,
         actionPlan: data?.actionPlan,
         policy: data?.policy,
         technicalResource: data?.technicalResource,
