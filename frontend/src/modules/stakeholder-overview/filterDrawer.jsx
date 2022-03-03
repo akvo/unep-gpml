@@ -254,10 +254,10 @@ const FilterDrawer = ({
             title="What expertises are they offering?"
             options={
               isLoaded()
-                ? offering?.map((x) => ({ value: x.id, label: x.tag }))
+                ? offering?.map((x) => ({ value: x.tag, label: x.tag }))
                 : []
             }
-            value={query?.offering?.map((x) => parseInt(x)) || []}
+            value={query?.offering || []}
             flag="offering"
             query={query}
             updateQuery={updateQuery}
@@ -268,10 +268,10 @@ const FilterDrawer = ({
             title="What expertises are they seeking?"
             options={
               isLoaded()
-                ? seeking?.map((x) => ({ value: x.id, label: x.tag }))
+                ? seeking?.map((x) => ({ value: x.tag, label: x.tag }))
                 : []
             }
-            value={query?.seeking?.map((x) => parseInt(x)) || []}
+            value={query?.seeking || []}
             flag="seeking"
             query={query}
             updateQuery={updateQuery}
