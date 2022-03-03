@@ -7,6 +7,8 @@ const useQuery = () => {
     transnational: [],
     topic: [],
     tag: [],
+    startDate: [],
+    endDate: [],
     representativeGroup: [],
     q: "",
   };

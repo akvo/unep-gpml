@@ -160,13 +160,15 @@ const ResourceList = ({
           }
           const
           subTitle={
-            <span className="result-number">
-              Showing{" "}
-              {totalItems > pageSize + filters?.offset
-                ? pageSize + Number(filters?.offset)
-                : itemCount}{" "}
-              of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
-            </span>
+            !loading && (
+              <span className="result-number">
+                Showing{" "}
+                {totalItems > pageSize + filters?.offset
+                  ? pageSize + Number(filters?.offset)
+                  : itemCount}{" "}
+                of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+              </span>
+            )
           }
           extra={
             <Button className="sort-btn" onClick={sortResults}>
@@ -208,8 +210,8 @@ const ResourceList = ({
             <h2 className="loading">There is no data to display</h2>
           )}
         </Col>
-        <div className="page">
-          {!isEmpty(allResults) && (
+        {!isEmpty(allResults) && (
+          <div className="page">
             <Pagination
               defaultCurrent={1}
               current={(filters?.offset || 0) / pageSize + 1}
@@ -218,14 +220,16 @@ const ResourceList = ({
               showSizeChanger={false}
               onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
             />
-          )}
-          <div className="result-number">
-            {totalItems > pageSize + filters?.offset
-              ? pageSize + Number(filters?.offset)
-              : itemCount}{" "}
-            of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+            {!loading && (
+              <div className="result-number">
+                {totalItems > pageSize + filters?.offset
+                  ? pageSize + Number(filters?.offset)
+                  : itemCount}{" "}
+                of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </div>
     </Row>
   );
