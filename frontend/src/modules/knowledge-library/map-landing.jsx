@@ -1,7 +1,6 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
 import { PageHeader } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 import Maps from "../map/Map";
 
@@ -39,8 +38,10 @@ const MapLanding = ({
 
   const clickCountry = (name) => {
     setToggleButton("list");
+
     const val = query["country"];
     let updateVal = [];
+
     if (isEmpty(val)) {
       updateVal = [name];
     } else if (val.includes(name)) {
@@ -61,11 +62,6 @@ const MapLanding = ({
 
   return (
     <>
-      {!isLoaded() && (
-        <h2 className="loading" id="map-loader">
-          <LoadingOutlined spin /> Loading
-        </h2>
-      )}
       {!isDisplayedList && (
         <div className="map-overlay">
           <PageHeader
@@ -81,6 +77,7 @@ const MapLanding = ({
       )}
       <Maps
         box={box}
+        query={query}
         isFilteredCountry={isFilteredCountry}
         isDisplayedList={isDisplayedList}
         listVisible={listVisible}
@@ -89,6 +86,7 @@ const MapLanding = ({
         topic={query?.topic}
         country={countries.find((x) => x.id === country)}
         isLoaded={isLoaded}
+        multiCountryCountries={multiCountryCountries}
         multiCountries={
           multiCountry &&
           !isEmpty(multiCountryCountries) &&

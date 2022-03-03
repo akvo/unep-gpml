@@ -210,6 +210,8 @@
 
   .images-wrapper {
     position: relative;
+    height: max-content;
+    max-height: max-content;
   }
 
   .affiliation-image-wrapper {
@@ -232,7 +234,8 @@
 
   .all-profiles {
     padding-bottom: 34.66px;
-
+    padding-left: 30px;
+    padding-right: 30px;
     .person-role {
       display: none;
     }
@@ -247,7 +250,7 @@
   }
 
   .card-container {
-    padding: 16px 0px 34px 0px;
+    padding: 16px 30px 34px 30px;
     #title {
       font-size: 22px;
       text-transform: uppercase;
@@ -257,19 +260,6 @@
     }
     &.green {
       background-color: #45bea5;
-    }
-
-    .icons-list {
-      display: flex;
-      gap: 5px;
-      align-items: center;
-      li {
-        color: #ffb800;
-        margin-bottom: 0 !important;
-        svg {
-          height: 37px;
-        }
-      }
     }
 
     .profile-card {
@@ -291,6 +281,19 @@
     height: fit-content;
     max-width: 345px;
     border-radius: 10px;
+
+    .icons-list {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      li {
+        color: #ffb800;
+        margin-bottom: 0 !important;
+        svg {
+          height: 37px;
+        }
+      }
+    }
 
     span {
       display: block;
@@ -337,14 +340,14 @@
           .list-item {
             margin-bottom: 11px;
 
-            .person-name,
+            .profile-name,
             .location,
             .entity-name {
               color: #255b87;
               font-weight: 700;
             }
 
-            .person-name,
+            .profile-name,
             .entity-name {
               font-size: 16px;
             }
@@ -364,8 +367,13 @@
             }
 
             .entity-name {
-              font-weight: 300;
-              text-transform: uppercase;
+              color: #255b87;
+            }
+
+            .organisation-type {
+              font-weight: 700;
+              font-size: 12px;
+              color: #18162f;
             }
 
             .badge {
@@ -553,6 +561,11 @@
   .site-drawer-render-in-current-wrapper {
     min-width: 100%;
     overflow: hidden;
+
+    .for-entity svg {
+      max-width: 30px;
+    }
+
     .ant-tabs-nav-operations {
       position: unset;
       display: none;
@@ -872,10 +885,6 @@
       margin: auto;
     }
 
-    #title {
-      padding-left: 12px;
-    }
-
     .card-wrapper {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -897,6 +906,12 @@
 
     .card-wrapper {
       grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (min-width: 1700px) {
+    #title {
+      padding-left: 12px;
     }
   }
 }

@@ -63,7 +63,8 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
-  const [entityCount, setEntityCount] = useState(0);
+  const [organisationCount, setOrganisationCount] = useState(0);
+  const [GPMLMemberCount, setGPMLMemberCount] = useState(0);
 
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -136,7 +137,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     api
       .get(url)
       .then((resp) => {
-        const sortSuggestedProfile = [...resp?.data?.suggestedProfiles].sort(
+        const sortSuggestedProfile = resp?.data?.suggestedProfiles.sort(
           (a, b) => Date.parse(b?.created) - Date.parse(a?.created)
         );
 
@@ -168,13 +169,18 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         const stakeholderType = resp?.data?.counts?.find(
           (count) => count?.topic === "stakeholder"
         );
+
+        const GPMLMemberCounts = resp?.data?.counts?.find(
+          (count) => count?.topic === "gpml_member_entities"
+        );
+        setGPMLMemberCount(GPMLMemberCounts.count);
+
         setResults(
           [...result]
             .sort((a, b) => Date.parse(b?.created) - Date.parse(a?.created))
             .sort((a, b) => b?.type.localeCompare(a?.type))
         );
 
-        setEntityCount(organisationType?.count);
         if (
           query?.topic.length === 1 &&
           query?.topic.includes("organisation")
@@ -185,10 +191,13 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
           query?.topic.includes("stakeholder")
         ) {
           setResultCount(stakeholderType?.count);
-        } else if (query?.topic.length === 0) {
-          setResultCount(organisationType?.count + stakeholderType?.count || 0);
         } else {
-          setResultCount(organisationType?.count + stakeholderType?.count || 0);
+          setResultCount(
+            organisationType?.count + stakeholderType?.count ||
+              organisationType?.count ||
+              0 + stakeholderType?.count ||
+              0
+          );
         }
 
         setLoading(false);
@@ -197,6 +206,18 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         console.error(err);
         redirectError(err, history);
       });
+  };
+
+  const getOrganisation = () => {
+    const searchParms = new URLSearchParams(window.location.search);
+    searchParms.set("topic", "organisation");
+    const url = `/browse?${String(searchParms)}`;
+    api.get(url).then((resp) => {
+      const organisationType = resp?.data?.counts?.find(
+        (count) => count?.topic === "organisation"
+      );
+      setOrganisationCount(organisationType?.count);
+    });
   };
 
   const itemCount = loading
@@ -231,6 +252,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
     setTimeout(() => {
       getSuggestedProfiles();
+      getOrganisation();
     }, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValidUser]);
@@ -256,6 +278,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         newQuery["offset"] = 0;
       }
     }
+
+    newQuery["tag"] = [newQuery["offering"], newQuery["seeking"]].flat();
+
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
     history.push(`/stakeholder-overview?${newParams.toString()}`);
@@ -306,11 +331,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "seeking") {
-        const findSeeking = seeking.find((seek) => seek?.id == value);
+        const findSeeking = seeking.find((seek) => seek?.tag == value);
         return findSeeking?.tag;
       }
       if (key === "offering") {
-        const findOffering = offering.find((offer) => offer?.id == value);
+        const findOffering = offering.find((offer) => offer?.tag == value);
         return findOffering?.tag;
       }
     };
@@ -324,7 +349,8 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       ) {
         return;
       }
-      return query?.[key]
+
+      return key !== "tag" && query?.[key]
         ? query?.[key]?.map((x) => (
             <Tag
               className="result-box"
@@ -376,7 +402,8 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             entities={entityRoleOptions}
             filterVisible={filterVisible}
             setFilterVisible={setFilterVisible}
-            entityCount={entityCount}
+            organisationCount={organisationCount}
+            GPMLMemberCount={GPMLMemberCount}
           />
 
           <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>

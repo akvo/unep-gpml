@@ -36,12 +36,14 @@ const unsettledTerritoryIsoCode = [
 ];
 
 const higlightColor = "#84b4cc";
+const KNOWLEDGE_LIBRARY = "/knowledge-library";
+const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
 
 const ToolTipContent = ({ data, geo, path }) => {
   const dataToDisplay = () => {
-    if (path === "/knowledge-library") {
+    if (path === KNOWLEDGE_LIBRARY) {
       return {
-        initiative: data?.project,
+        project: data?.project,
         actionPlan: data?.actionPlan,
         policy: data?.policy,
         technicalResource: data?.technicalResource,
@@ -63,7 +65,7 @@ const ToolTipContent = ({ data, geo, path }) => {
       <ul>
         {tTypes.map((topic) => {
           const dataToDisplayPerPath = () => {
-            if (path === "/knowledge-library") {
+            if (path === KNOWLEDGE_LIBRARY) {
               return topic !== "organisation" && topic !== "stakeholder";
             } else {
               return (
@@ -179,6 +181,7 @@ const Legend = ({ data, setFilterColor, selected }) => {
 
 const Maps = ({
   box,
+  query,
   data,
   topic,
   isLoaded,
@@ -188,6 +191,7 @@ const Maps = ({
   listVisible,
   isDisplayedList,
   isFilteredCountry,
+  multiCountryCountries,
 }) => {
   const history = useHistory();
   const path = history?.location?.pathname;
@@ -229,7 +233,7 @@ const Maps = ({
     (acc, curr) => {
       const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
       const values = () => {
-        if (path === "/knowledge-library") {
+        if (path === KNOWLEDGE_LIBRARY) {
           return sumValues({
             actionPlan: curr?.actionPlan,
             event: curr?.event,
@@ -240,7 +244,7 @@ const Maps = ({
             technology: curr?.technology,
           });
         }
-        if (path === "/stakeholder-overview") {
+        if (path === STAKEHOLDER_OVERVIEW) {
           return sumValues({
             organisation: curr?.organisation,
             stakeholder: curr?.stakeholder,
@@ -387,8 +391,31 @@ const Maps = ({
                         />
                       );
                     }
+
+                    // To get all countries in a multicountry selection being highlighted
+                    const filterMultiCountry =
+                      path === KNOWLEDGE_LIBRARY &&
+                      multiCountryCountries.filter((item) => {
+                        const transnationalQuery = query?.transnational?.map(
+                          (item) => Number(item)
+                        );
+                        return transnationalQuery?.includes(item?.id);
+                      });
+
+                    const multiCountrySelection =
+                      path === KNOWLEDGE_LIBRARY &&
+                      filterMultiCountry.map((transnational) =>
+                        transnational?.countries?.map((country) => country?.id)
+                      );
+
+                    const multiselection =
+                      path === KNOWLEDGE_LIBRARY &&
+                      multiCountrySelection.length !== 0 &&
+                      multiCountrySelection.flat();
+
                     const selectionCondition = () => {
                       const mapProps = Number(geo.properties.M49Code);
+
                       if (
                         typeof isFilteredCountry === "string" ||
                         typeof isFilteredCountry === "number"
@@ -398,7 +425,13 @@ const Maps = ({
                         const countryToFilter = isFilteredCountry.map((it) =>
                           Number(it)
                         );
-                        return countryToFilter.includes(mapProps);
+
+                        return (
+                          countryToFilter.includes(mapProps) ||
+                          (path === KNOWLEDGE_LIBRARY &&
+                            multiselection &&
+                            multiselection.includes(mapProps))
+                        );
                       }
                     };
 
@@ -466,9 +499,18 @@ const Maps = ({
                             setSelected(null);
                           }}
                           onClick={() => {
-                            !isLake &&
-                              !isUnsettled &&
-                              clickEvents(geo.properties.M49Code);
+                            if (path === KNOWLEDGE_LIBRARY) {
+                              !multiCountrySelection
+                                .flat()
+                                .includes(Number(geo.properties.M49Code)) &&
+                                !isLake &&
+                                !isUnsettled &&
+                                clickEvents(geo.properties.M49Code);
+                            } else {
+                              !isLake &&
+                                !isUnsettled &&
+                                clickEvents(geo.properties.M49Code);
+                            }
                           }}
                         />
                       </Fragment>

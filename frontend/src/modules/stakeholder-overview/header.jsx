@@ -108,6 +108,7 @@ const Search = withRouter(({ history, updateQuery, setView }) => {
     } else {
       updateQuery("q", "");
     }
+    setSearch("");
   };
 
   return (
@@ -115,6 +116,7 @@ const Search = withRouter(({ history, updateQuery, setView }) => {
       <Input
         className="input-src"
         placeholder="Search the community"
+        value={search}
         suffix={
           <Button
             onClick={() => handleSearch(search)}
@@ -125,7 +127,16 @@ const Search = withRouter(({ history, updateQuery, setView }) => {
           />
         }
         onPressEnter={(e) => handleSearch(e.target.value)}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          if (e.target.value.length >= 3) {
+            history.push(`?q=${e.target.value.trim()}`);
+            updateQuery("q", e.target.value.trim());
+          }
+          if (e.target.value.length === 0) {
+            updateQuery("q", "");
+          }
+        }}
       />
     </div>
   );

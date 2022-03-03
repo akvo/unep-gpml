@@ -74,6 +74,16 @@
     [:or
      [:string {:max 0}]
      [:re util.regex/date-iso-8601-re]]]
+   [:representativeGroup {:optional true
+                          :swagger {:description "Comma separated list of representative groups"
+                                    :type "string"
+                                    :allowEmptyValue true}}
+    string?]
+   [:affiliation {:optional true
+                  :swagger {:description "Comma separated list of affiliation ids (i.e., organisation ids)"
+                            :type "string"
+                            :allowEmptyValue true}}
+    string?]
    [:limit {:optional true
             :swagger {:description "Limit the number of entries per page"
                       :type "int"
@@ -86,7 +96,7 @@
     [:int {:min 0}]]])
 
 (defn get-db-filter
-  [{:keys [q transnational country startDate endDate topic tag favorites user-id limit offset]}]
+  [{:keys [q transnational country affiliation representativeGroup startDate endDate topic tag favorites user-id limit offset]}]
   (cond-> {}
     offset
     (assoc :offset offset)
@@ -115,6 +125,12 @@
 
     (seq tag)
     (assoc :tag (set (str/split tag #",")))
+
+    (seq affiliation)
+    (assoc :affiliation (set (map #(Integer/parseInt %) (str/split affiliation #","))))
+
+    (seq representativeGroup)
+    (assoc :representative-group (set (str/split representativeGroup #",")))
 
     (seq q)
     (assoc :search-text (->> (str/trim q)
