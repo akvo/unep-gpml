@@ -35,29 +35,28 @@ import { ReactComponent as TechnicalIcon } from "../../images/knowledge-library/
 import { ReactComponent as TechnologyIcon } from "../../images/knowledge-library/technology.svg";
 
 const FilterDrawer = ({
-  filterVisible,
-  setFilterVisible,
-  countData,
   query,
   updateQuery,
+  filterVisible,
+  setFilterVisible,
   multiCountryCountries,
   setMultiCountryCountries,
 }) => {
   const {
-    countries,
+    nav,
     tags,
+    countries,
     transnationalOptions,
     geoCoverageTypeOptions,
-    languages,
     representativeGroup,
   } = UIStore.useState((s) => ({
     profile: s.profile,
-    countries: s.countries,
+    nav: s.nav,
     tags: s.tags,
+    countries: s.countries,
     transnationalOptions: s.transnationalOptions,
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    languages: s.languages,
     representativeGroup: s.sectorOptions,
   }));
   const { isAuthenticated } = useAuth0();
@@ -67,8 +66,7 @@ const FilterDrawer = ({
     !isEmpty(countries) &&
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
-    !isEmpty(representativeGroup) &&
-    !isEmpty(languages);
+    !isEmpty(representativeGroup);
 
   const topicIcons = (topic) => {
     if (topic === "project") {
@@ -203,8 +201,10 @@ const FilterDrawer = ({
             <Row type="flex" gutter={[10, 10]}>
               {topicTypes.map((type) => {
                 const topic = humps.decamelize(type);
-                const count =
-                  countData?.find((it) => it.topic === topic)?.count || 0;
+                const count = nav.resourceCounts?.find((it) =>
+                  it.hasOwnProperty(type)
+                );
+
                 return (
                   <Col span={6} key={type}>
                     <Card
@@ -216,7 +216,7 @@ const FilterDrawer = ({
                       <Space direction="vertical" align="center">
                         {topicIcons(type)}
                         <div className="topic-text">{topicNames(type)}</div>
-                        <div className="topic-count">{count}</div>
+                        <div className="topic-count">{count[type]}</div>
                       </Space>
                     </Card>
                   </Col>
