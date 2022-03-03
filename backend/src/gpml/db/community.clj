@@ -1,7 +1,7 @@
 (ns gpml.db.community
   (:require [hugsql.core :as hugsql]))
 
-(declare get-comunity-members)
+(declare get-community-members)
 
 (hugsql/def-db-fns "gpml/db/community.sql")
 
