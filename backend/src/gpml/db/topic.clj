@@ -537,7 +537,7 @@
       (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))))))
 
 (defn generate-filter-topic-snippet
-  [{:keys [favorites user-id topic tag start-date end-date transnational search-text geo-coverage resource-types geo-coverage-countries]}]
+  [{:keys [favorites user-id topic tag representative-group affiliation start-date end-date transnational search-text geo-coverage resource-types geo-coverage-countries]}]
   (let [geo-coverage? (seq geo-coverage)
         geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
@@ -552,6 +552,10 @@
           "JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != ''")
         "WHERE t.json->>'review_status'='APPROVED'"
         (when (seq search-text) " AND t.search_text @@ to_tsquery(:search-text)")
+        (when (seq affiliation)
+          " AND (t.json->'affiliation'->>'id')::int IN (:v*:affiliation)")
+        (when (seq representative-group)
+          " AND (t.json->>'type' IN (:v*:representative-group) OR t.json->>'representation' IN (:v*:representative-group))")
         (when (seq topic)
           " AND topic IN (:v*:topic)")
         (when (and (= (count topic) 1)
