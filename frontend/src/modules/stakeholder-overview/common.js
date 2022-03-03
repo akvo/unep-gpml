@@ -11,7 +11,7 @@ const useQuery = () => {
     seeking: [],
     offering: [],
     affiliation: [],
-    is_member: [],
+    isMember: "",
     role: [],
     q: "",
   };
@@ -22,6 +22,7 @@ const useQuery = () => {
       .split(",")
       .filter((it) => it !== "");
   }
+
   return ret;
 };
 
