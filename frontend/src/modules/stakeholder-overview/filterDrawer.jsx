@@ -82,7 +82,7 @@ const FilterDrawer = ({
     "seeking",
     "offering",
     "affiliation",
-    "is_member",
+    "isMember",
   ];
 
   const handleChangeType = (flag, type) => {
@@ -187,9 +187,9 @@ const FilterDrawer = ({
                   name && (
                     <Col span={6} key={entity}>
                       <Card
-                        onClick={() => handleChangeType("is_member", entity)}
+                        onClick={() => handleChangeType("isMember", "true")}
                         className={classNames("drawer-card", {
-                          active: query?.is_member.length > 0,
+                          active: query?.isMember.includes("true"),
                         })}
                       >
                         <Space

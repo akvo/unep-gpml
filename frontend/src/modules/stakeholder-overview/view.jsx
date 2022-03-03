@@ -300,9 +300,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         );
         return findOrganisation?.name;
       }
-      if (key === "is_member") {
-        const findEntity = entityRoleOptions.find((x) => x == value);
-        const name = humps.decamelize(findEntity);
+      if (key === "isMember") {
+        // const findEntity = entityRoleOptions.find((x) => x == value);
+        const name = humps.decamelize("Owner");
         return entityName(name);
       }
 
