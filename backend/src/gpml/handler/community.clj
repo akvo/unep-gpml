@@ -6,7 +6,10 @@
             [ring.util.response :as resp]))
 
 (def ^:const community-network-types ["organisation" "stakeholder"])
+(def ^:const geo-coverage-types ["Transnational" "National" "Global"])
+(def ^:const geo-coverage-types-re (util.regex/comma-separated-enums-re geo-coverage-types))
 (def ^:const network-types-re (util.regex/comma-separated-enums-re community-network-types))
+(def ^:const default-api-limit 8)
 
 (def get-community-members-query-params
   [:map
@@ -28,6 +31,14 @@
     [:or
      [:string {:max 0}]
      [:re network-types-re]]]
+   [:geoCoverageType
+    {:optional true
+     :swagger {:description (format "Comma separated list of geo coverage types to filter: %s" (str/join "," geo-coverage-types))
+               :type "string"
+               :allowEmptyValue true}}
+    [:or
+     [:string {:max 0}]
+     [:re geo-coverage-types-re]]]
    [:tag
     {:optional true
      :swagger {:description "Comma separated list of tags"
@@ -67,8 +78,8 @@
     [:int {:min 0}]]])
 
 (defn api-params->opts
-  [{:keys [q country tag networkType representativeGroup geoCoverageType limit offset]
-    :or {limit 10
+  [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType limit offset]
+    :or {limit default-api-limit
          offset 0}}]
   (cond-> {}
     offset
@@ -81,7 +92,12 @@
     (assoc-in [:filters :representative-group] (set (str/split representativeGroup #",")))
 
     (seq geoCoverageType)
-    (assoc-in [:filters :geo-coverage-type] (set (str/split geoCoverageType #",")))
+    (assoc-in [:filters :geo-coverage-type] (->> (set (str/split geoCoverageType #","))
+                                                 (map str/lower-case)))
+
+    (seq affiliation)
+    (assoc-in [:filters :affiliation] (->> (set (str/split affiliation #","))
+                                           (map #(Integer/parseInt %))))
 
     (seq country)
     (assoc-in [:filters :country] (->> (set (str/split country #","))

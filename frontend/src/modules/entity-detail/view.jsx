@@ -16,6 +16,8 @@ import {
   List,
   Card,
   Pagination,
+  Modal,
+  notification,
 } from "antd";
 import StickyBox from "react-sticky-box";
 import AvatarImage from "../../images/stakeholder/Avatar.png";
@@ -27,13 +29,11 @@ import FollowImage from "../../images/stakeholder/follow.png";
 import ResourceImage from "../../images/stakeholder/resource.png";
 import EditImage from "../../images/stakeholder/edit.png";
 import {
-  LinkedinOutlined,
-  TwitterOutlined,
-  FilePdfOutlined,
-  MailOutlined,
+  LinkOutlined,
   UserOutlined,
   ArrowRightOutlined,
   LoadingOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import { withRouter, useHistory, Link } from "react-router-dom";
 import api from "../../utils/api";
@@ -93,6 +93,7 @@ const SharePanel = ({
   relation,
   handleRelationChange,
   handleEditBtn,
+  history,
 }) => {
   const noEditTopics = new Set(["stakeholder"]);
 
@@ -104,6 +105,11 @@ const SharePanel = ({
       data.owners.includes(profile.id)) &&
     ((params.type !== "project" && !noEditTopics.has(params.type)) ||
       (params.type === "project" && params.id > 10000));
+
+  const canDelete = () =>
+    isAuthenticated &&
+    profile.reviewStatus === "APPROVED" &&
+    profile.role === "ADMIN";
 
   return (
     <div className="sticky-panel">
@@ -118,6 +124,44 @@ const SharePanel = ({
         <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
           <Avatar src={EditImage} />
           <h2>Update</h2>
+        </div>
+      )}
+      {canDelete() && (
+        <div
+          className="sticky-panel-item"
+          onClick={() => {
+            Modal.error({
+              className: "popup-delete",
+              centered: true,
+              closable: true,
+              icon: <DeleteOutlined />,
+              title: "Are you sure you want to delete this entity?",
+              content: "Please be aware this action cannot be undone.",
+              okText: "Delete",
+              okType: "danger",
+              onOk() {
+                return api
+                  .delete(`/detail/${params.type}/${params.id}`)
+                  .then((res) => {
+                    notification.success({
+                      message: "Entity deleted successfully",
+                    });
+                    history.push({
+                      pathname: `/stakeholder-overview`,
+                    });
+                  })
+                  .catch((err) => {
+                    console.error(err);
+                    notification.error({
+                      message: "Oops, something went wrong",
+                    });
+                  });
+              },
+            });
+          }}
+        >
+          <DeleteOutlined />
+          <h2>Delete</h2>
         </div>
       )}
     </div>
@@ -347,57 +391,20 @@ const StakeholderDetail = ({
               <CardComponent title="Contact info">
                 <div className="list social-list">
                   <List itemLayout="horizontal">
-                    {data?.linkedIn && (
+                    {data?.url && (
                       <List.Item className="location">
                         <List.Item.Meta
-                          avatar={<LinkedinOutlined />}
+                          avatar={<LinkOutlined />}
                           title={
                             <a
                               href={
-                                data?.linkedIn.includes("https://")
-                                  ? data?.linkedIn
-                                  : "https://" + data?.linkedIn
+                                data?.url.includes("https://")
+                                  ? data?.url
+                                  : "https://" + data?.url
                               }
                               target="_blank"
                             >
-                              {data?.linkedIn}
-                            </a>
-                          }
-                        />
-                      </List.Item>
-                    )}
-                    {data?.twitter && (
-                      <List.Item className="location">
-                        <List.Item.Meta
-                          avatar={<TwitterOutlined />}
-                          title={
-                            <a
-                              href={
-                                data?.twitter.includes("https://")
-                                  ? data?.twitter
-                                  : "https://" + data?.twitter
-                              }
-                              target="_blank"
-                            >
-                              {data?.twitter}
-                            </a>
-                          }
-                        />
-                      </List.Item>
-                    )}
-                    {/* <List.Item className="location">
-                      <List.Item.Meta
-                        avatar={<FilePdfOutlined />}
-                        title="Link to CV"
-                      />
-                    </List.Item> */}
-                    {data?.email && (
-                      <List.Item className="location">
-                        <List.Item.Meta
-                          avatar={<MailOutlined />}
-                          title={
-                            <a href={`mailto:${data?.email}`} target="_blank">
-                              {data?.email}
+                              {data?.url}
                             </a>
                           }
                         />
@@ -423,13 +430,13 @@ const StakeholderDetail = ({
                       <div className="exta-info-head-title">
                         Area of expertise
                       </div>
-                      <List>
+                      {/* <List>
                         {["Plastic", "Pollution"].map((str) => (
                           <List.Item>
                             <Typography.Text>{str}</Typography.Text>
                           </List.Item>
                         ))}
-                      </List>
+                      </List> */}
                     </div>
                   </CardComponent>
                   <SharePanel
@@ -439,12 +446,13 @@ const StakeholderDetail = ({
                     params={params}
                     relation={relation}
                     handleEditBtn={handleEditBtn}
+                    history={history}
                   />
                 </div>
               </div>
             </Col>
           </Row>
-          <div>
+          {/* <div>
             {ownedResources.length > 0 && (
               <CardComponent
                 title={"Owned resources"}
@@ -510,8 +518,8 @@ const StakeholderDetail = ({
                 </div>
               </CardComponent>
             )}
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             {bookedResources.length > 0 && (
               <CardComponent
                 title={"Bookmarked resources"}
@@ -577,7 +585,7 @@ const StakeholderDetail = ({
                 </div>
               </CardComponent>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

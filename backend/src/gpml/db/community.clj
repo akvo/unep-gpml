@@ -23,7 +23,7 @@
                      (str " AND (affiliation->>'id')::int IN (:v*:filters.affiliation)")
 
                      (seq geo-coverage-type)
-                     (str " AND geo_coverage_type IN (:v*:filters.geo-coverage-type)")
+                     (str " AND geo_coverage_type = ANY(ARRAY[:v*:filters.geo-coverage-type]::geo_coverage_type[])")
 
                      (seq country)
                      (str " AND country IN (:v*:filters.country)")
