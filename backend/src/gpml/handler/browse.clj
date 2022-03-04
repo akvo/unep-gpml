@@ -8,12 +8,11 @@
             [gpml.db.resource :as db.resource]
             [gpml.db.technology :as db.technology]
             [gpml.db.topic :as db.topic]
+            [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
-(def ^:const country-re #"^\d+(,\d+)*$")
-(def ^:const date-iso-8601-re #"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
-(def ^:const topic-re (re-pattern (format "^(%1$s)((,(%1$s))+)?$" (str/join "|" topics))))
+(def ^:const topic-re (util.regex/comma-separated-enums-re topics))
 
 (def query-params
   [:map
@@ -24,7 +23,7 @@
                         :allowEmptyValue true}}
     [:or
      [:string {:max 0}]
-     [:re country-re]]]
+     [:re util.regex/comma-separated-numbers-re]]]
    [:transnational {:optional true
                     :swagger {:description "Comma separated list of transnational id"
                               :type "string"
@@ -32,7 +31,7 @@
                               :allowEmptyValue true}}
     [:or
      [:string {:max 0}]
-     [:re country-re]]]
+     [:re util.regex/comma-separated-numbers-re]]]
    [:topic {:optional true
             :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "," topics))
                       :type "string"
@@ -65,7 +64,7 @@
                           :allowEmptyValue true}}
     [:or
      [:string {:max 0}]
-     [:re date-iso-8601-re]]]
+     [:re util.regex/date-iso-8601-re]]]
    [:endDate {:optional true
               :error/message "endDate should be in the ISO 8601 format i.e.: YYYY-MM-DD"
               :swagger {:description "Events endDate in the format of ISO 8601 i.e.: YYYY-MM-DD"
@@ -73,7 +72,17 @@
                         :allowEmptyValue true}}
     [:or
      [:string {:max 0}]
-     [:re date-iso-8601-re]]]
+     [:re util.regex/date-iso-8601-re]]]
+   [:representativeGroup {:optional true
+                          :swagger {:description "Comma separated list of representative groups"
+                                    :type "string"
+                                    :allowEmptyValue true}}
+    string?]
+   [:affiliation {:optional true
+                  :swagger {:description "Comma separated list of affiliation ids (i.e., organisation ids)"
+                            :type "string"
+                            :allowEmptyValue true}}
+    string?]
    [:limit {:optional true
             :swagger {:description "Limit the number of entries per page"
                       :type "int"
@@ -86,7 +95,7 @@
     [:int {:min 0}]]])
 
 (defn get-db-filter
-  [{:keys [q transnational country startDate endDate topic tag favorites user-id limit offset]}]
+  [{:keys [q transnational country affiliation representativeGroup startDate endDate topic tag favorites user-id limit offset]}]
   (cond-> {}
     offset
     (assoc :offset offset)
@@ -115,6 +124,12 @@
 
     (seq tag)
     (assoc :tag (set (str/split tag #",")))
+
+    (seq affiliation)
+    (assoc :affiliation (set (map #(Integer/parseInt %) (str/split affiliation #","))))
+
+    (seq representativeGroup)
+    (assoc :representative-group (set (str/split representativeGroup #",")))
 
     (seq q)
     (assoc :search-text (->> (str/trim q)

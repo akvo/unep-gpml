@@ -149,29 +149,24 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   };
 
   const getResults = (query) => {
-    const topic = ["stakeholder", "organisation"];
-
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
-    if (query.topic.length === 0) {
-      searchParms.set("topic", topic);
-    }
-    const url = `/browse?${String(searchParms)}`;
+
+    const url = `/community?${String(searchParms)}`;
     api
       .get(url)
       .then((resp) => {
         const result = resp?.data?.results;
-
         const organisationType = resp?.data?.counts?.find(
-          (count) => count?.topic === "organisation"
+          (count) => count?.networkType === "organisation"
         );
 
         const stakeholderType = resp?.data?.counts?.find(
-          (count) => count?.topic === "stakeholder"
+          (count) => count?.networkType === "stakeholder"
         );
 
         const GPMLMemberCounts = resp?.data?.counts?.find(
-          (count) => count?.topic === "gpml_member_entities"
+          (count) => count?.networkType === "gpml_member_entities"
         );
         setGPMLMemberCount(GPMLMemberCounts.count);
 
@@ -182,13 +177,13 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         );
 
         if (
-          query?.topic.length === 1 &&
-          query?.topic.includes("organisation")
+          query?.networkType.length === 1 &&
+          query?.networkType.includes("organisation")
         ) {
           setResultCount(organisationType?.count || 0);
         } else if (
-          query?.topic.length === 1 &&
-          query?.topic.includes("stakeholder")
+          query?.networkType.length === 1 &&
+          query?.networkType.includes("stakeholder")
         ) {
           setResultCount(stakeholderType?.count);
         } else {
@@ -204,17 +199,17 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       })
       .catch((err) => {
         console.error(err);
-        redirectError(err, history);
+        // redirectError(err, history);
       });
   };
 
   const getOrganisation = () => {
     const searchParms = new URLSearchParams(window.location.search);
-    searchParms.set("topic", "organisation");
-    const url = `/browse?${String(searchParms)}`;
+    searchParms.set("networkType", "organisation");
+    const url = `/community?${String(searchParms)}`;
     api.get(url).then((resp) => {
       const organisationType = resp?.data?.counts?.find(
-        (count) => count?.topic === "organisation"
+        (count) => count?.networkType === "organisation"
       );
       setOrganisationCount(organisationType?.count);
     });
@@ -278,6 +273,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         newQuery["offset"] = 0;
       }
     }
+
+    newQuery["tag"] = [newQuery["offering"], newQuery["seeking"]].flat();
+
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
     history.push(`/stakeholder-overview?${newParams.toString()}`);
@@ -297,13 +295,12 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         );
         return findOrganisation?.name;
       }
-      if (key === "is_member") {
-        const findEntity = entityRoleOptions.find((x) => x == value);
-        const name = humps.decamelize(findEntity);
+      if (key === "isMember") {
+        const name = humps.decamelize("Owner");
         return entityName(name);
       }
 
-      if (key === "topic") {
+      if (key === "networkType") {
         return value === "stakeholder" ? "Individual" : "Entity";
       }
 
@@ -312,7 +309,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         return findCountry?.name;
       }
 
-      if (key === "geoCoverage") {
+      if (key === "geoCoverageType") {
         const findGeoCoverage = geoCoverageTypeOptions?.find((x) => ({
           value: x,
           label: x,
@@ -328,11 +325,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "seeking") {
-        const findSeeking = seeking.find((seek) => seek?.id == value);
+        const findSeeking = seeking.find((seek) => seek?.tag == value);
         return findSeeking?.tag;
       }
       if (key === "offering") {
-        const findOffering = offering.find((offer) => offer?.id == value);
+        const findOffering = offering.find((offer) => offer?.tag == value);
         return findOffering?.tag;
       }
     };
@@ -346,7 +343,8 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       ) {
         return;
       }
-      return query?.[key]
+
+      return key !== "tag" && query?.[key]
         ? query?.[key]?.map((x) => (
             <Tag
               className="result-box"

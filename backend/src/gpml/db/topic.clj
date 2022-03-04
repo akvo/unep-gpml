@@ -23,6 +23,22 @@
                         "stakeholder" ["first_name" "last_name" "about"]
                         "organisation" ["name" "program" "contribution" "expertise"]}})
 
+(def ^:const table-rename-mapping
+  "Some topics like financing_resource and project aren't the real table
+  names we want to query. Therefore, when passing the following topic
+  options as tables we need to rename them to their proper source
+  table."
+  {"financing_resource" "resource"
+   "action_plan" "resource"
+   "technical_resource" "resource"
+   "project" "initiative"})
+
+(defn- rename-tables
+  [tables]
+  (let [tables-to-rename (filter #(some #{%} (keys table-rename-mapping)) tables)
+        renamed-tables (set (map #(get table-rename-mapping %) tables-to-rename))]
+    (concat renamed-tables (remove #(some #{%} tables-to-rename) tables))))
+
 ;;======================= Data queries =================================
 (def ^:const ^:private organisation-topic-data-geo-coverage-values-query
   "LEFT JOIN (
@@ -501,8 +517,13 @@
                             ""
                             (:tables opts))))
 
-(defn generate-topic-query [params opts]
-  (let [topic-data-ctes (generate-ctes :data params opts)
+
+
+(defn generate-topic-query
+  [params opts]
+  (let [opts (merge generic-cte-opts (when (seq (:tables opts))
+                                       (update opts :tables rename-tables)))
+        topic-data-ctes (generate-ctes :data params opts)
         topic-geo-coverage-ctes (generate-ctes :geo params opts)
         topic-search-text-ctes (generate-ctes :search-text params opts)
         topic-ctes (generate-ctes :topic params opts)
@@ -537,7 +558,7 @@
       (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))))))
 
 (defn generate-filter-topic-snippet
-  [{:keys [favorites user-id topic tag start-date end-date transnational search-text geo-coverage resource-types geo-coverage-countries]}]
+  [{:keys [favorites user-id topic tag representative-group affiliation start-date end-date transnational search-text geo-coverage resource-types geo-coverage-countries]}]
   (let [geo-coverage? (seq geo-coverage)
         geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
@@ -552,6 +573,10 @@
           "JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != ''")
         "WHERE t.json->>'review_status'='APPROVED'"
         (when (seq search-text) " AND t.search_text @@ to_tsquery(:search-text)")
+        (when (seq affiliation)
+          " AND (t.json->'affiliation'->>'id')::int IN (:v*:affiliation)")
+        (when (seq representative-group)
+          " AND (t.json->>'type' IN (:v*:representative-group) OR t.json->>'representation' IN (:v*:representative-group))")
         (when (seq topic)
           " AND topic IN (:v*:topic)")
         (when (and (= (count topic) 1)
