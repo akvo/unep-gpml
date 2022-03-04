@@ -9,6 +9,7 @@
 (def ^:const geo-coverage-types ["Transnational" "National" "Global"])
 (def ^:const geo-coverage-types-re (util.regex/comma-separated-enums-re geo-coverage-types))
 (def ^:const network-types-re (util.regex/comma-separated-enums-re community-network-types))
+(def ^:const default-api-limit 8)
 
 (def get-community-members-query-params
   [:map
@@ -78,7 +79,7 @@
 
 (defn api-params->opts
   [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType limit offset]
-    :or {limit 8
+    :or {limit default-api-limit
          offset 0}}]
   (cond-> {}
     offset
