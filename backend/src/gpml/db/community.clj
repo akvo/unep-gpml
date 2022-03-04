@@ -7,11 +7,11 @@
 
 (defn get-community-members-query-and-filters
   [params]
-  (let [{:keys [count-only? limit offset filters]} params
+  (let [{:keys [count-only? limit page filters]} params
         {:keys [search-text network-type affiliation geo-coverage-type country tag representative-group]} filters
         pagination (when (and (not count-only?)
-                              limit offset)
-                     (format "LIMIT %d OFFSET %d" limit (* limit offset)))
+                              limit page)
+                     (format "LIMIT %d OFFSET %d" limit (* limit page)))
         tags-join (when (seq tag)
                     "JOIN json_array_elements(tags) ts ON TRUE
                      JOIN json_each_text(ts) t ON LOWER(t.value) = ANY (ARRAY[:v*:filters.tag]::VARCHAR[]) AND LOWER(t.value) IS NOT NULL")

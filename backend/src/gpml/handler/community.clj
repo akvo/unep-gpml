@@ -70,20 +70,20 @@
                :type "string"
                :allowEmptyValue true}}
     string?]
-   [:offset
+   [:page
     {:optional true
-     :swagger{:description "Number of items to skip when fetching entries"
+     :swagger{:description "Retrieve entries for a given page number"
               :type "int"
               :allowEmptyValue true}}
     [:int {:min 0}]]])
 
 (defn api-params->opts
-  [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType limit offset]
+  [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType limit page]
     :or {limit default-api-limit
-         offset 0}}]
+         page 0}}]
   (cond-> {}
-    offset
-    (assoc :offset offset)
+    page
+    (assoc :page page)
 
     limit
     (assoc :limit limit)
