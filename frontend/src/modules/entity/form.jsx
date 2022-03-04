@@ -306,9 +306,14 @@ const EntityForm = withRouter(
           data.geoCoverageValue.indexOf(undefined) !== -1
             ? []
             : data.geoCoverageValue;
-        data.geoCoverageCountries = data.geoCoverageCountries
-          ? data.geoCoverageCountries.map((x) => parseInt(x))
-          : [];
+
+        if (data.geoCoverageCountries && data.geoCoverageCountries.length > 0) {
+          data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+            parseInt(x)
+          );
+        } else {
+          delete data.geoCoverageCountries;
+        }
       }
 
       if (data.geoCoverageType === "national") {
