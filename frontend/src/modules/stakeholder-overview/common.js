@@ -7,6 +7,7 @@ const useQuery = () => {
     tag: [],
     isMember: "",
     q: "",
+    page: [],
   };
 
   for (var key of srcParams.keys()) {
