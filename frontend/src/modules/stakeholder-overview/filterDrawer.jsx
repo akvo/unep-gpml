@@ -23,6 +23,7 @@ const FilterDrawer = ({
   updateQuery,
   organisationCount,
   GPMLMemberCount,
+  setFilterCountries,
 }) => {
   const {
     countries,
@@ -306,7 +307,7 @@ const FilterDrawer = ({
                   param: query,
                   value: [],
                 }));
-
+                setFilterCountries([]);
                 updateQuery(null, null, paramValueArr);
               }}
             >

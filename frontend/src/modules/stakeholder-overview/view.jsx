@@ -50,7 +50,6 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     stakeholders: s.stakeholders?.stakeholders,
   }));
   const [filterCountries, setFilterCountries] = useState([]);
-
   const { isAuthenticated, isLoading } = useAuth0();
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
@@ -401,6 +400,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             setFilterVisible={setFilterVisible}
             organisationCount={organisationCount}
             GPMLMemberCount={GPMLMemberCount}
+            setFilterCountries={setFilterCountries}
           />
 
           <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>
