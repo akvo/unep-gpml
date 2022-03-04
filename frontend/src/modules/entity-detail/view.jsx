@@ -383,13 +383,13 @@ const StakeholderDetail = ({
                       <div className="exta-info-head-title">
                         Area of expertise
                       </div>
-                      <List>
+                      {/* <List>
                         {["Plastic", "Pollution"].map((str) => (
                           <List.Item>
                             <Typography.Text>{str}</Typography.Text>
                           </List.Item>
                         ))}
-                      </List>
+                      </List> */}
                     </div>
                   </CardComponent>
                   <SharePanel
@@ -404,7 +404,7 @@ const StakeholderDetail = ({
               </div>
             </Col>
           </Row>
-          <div>
+          {/* <div>
             {ownedResources.length > 0 && (
               <CardComponent
                 title={"Owned resources"}
@@ -470,8 +470,8 @@ const StakeholderDetail = ({
                 </div>
               </CardComponent>
             )}
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             {bookedResources.length > 0 && (
               <CardComponent
                 title={"Bookmarked resources"}
@@ -537,7 +537,7 @@ const StakeholderDetail = ({
                 </div>
               </CardComponent>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
