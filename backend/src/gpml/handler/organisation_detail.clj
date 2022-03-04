@@ -38,17 +38,15 @@
           params {:id (-> parameters :path :id)
                   :limit limit
                   :offset (* limit page)}
-          owned-content (db.organisation-detail/get-content-by-org conn params)
+          owned-content (map remove-nil-connections (db.organisation-detail/get-content-by-org conn params))
           associated-content (db.organisation-detail/get-associated-content-by-org conn params)
           api-associated-content (map #(remove-nil-connections %) associated-content)
           owned-content-count (db.organisation-detail/get-content-by-org conn (assoc params :count-only? true))
           associated-content-count (db.organisation-detail/get-associated-content-by-org
-                                     conn (assoc params :count-only? true))]
-      (resp/response {:result {:owned (group-by :type (map #(remove-nil-connections %) owned-content))
-                               :associated (into {} (for [[k v] (group-by :association api-associated-content)]
-                                                      [k (group-by :type v)]))}
-                      :count {:owned (-> owned-content-count first :count)
-                              :associated (-> associated-content-count first :count)}}))))
+                                    conn (assoc params :count-only? true))]
+      (resp/response {:results (concat owned-content api-associated-content)
+                      :count (+ (-> owned-content-count first :count)
+                                (-> associated-content-count first :count))}))))
 
 (defmethod ig/init-key ::get-content-params [_ _]
   {:path [:map [:id pos-int?]]
