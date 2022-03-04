@@ -294,11 +294,18 @@
                                                   :parameters {:path [:map [:id int?]]
                                                                :body #ig/ref :gpml.handler.organisation/put-params}
                                                   :handler #ig/ref :gpml.handler.organisation/put}}]
+                                          ["/members"
+                                           {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :summary "List all members belonging to a given organisation"
+                                                  :swagger {:tags ["organisation detail"]}
+                                                  :parameters #ig/ref :gpml.handler.organisation-detail/get-members-params
+                                                  :handler #ig/ref :gpml.handler.organisation-detail/get-members}}]
                                           ["/content"
                                            {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                #ig/ref :gpml.auth/auth-required]
                                                   :summary "List all content from a given organisation"
-                                                  :swagger {:tags ["organisation content"]}
+                                                  :swagger {:tags ["organisation detail"]}
                                                   :parameters #ig/ref :gpml.handler.organisation-detail/get-content-params
                                                   :handler #ig/ref :gpml.handler.organisation-detail/get-content}}]]]
                                         ["/favorite" {:middleware [#ig/ref :gpml.auth/auth-middleware
@@ -541,9 +548,11 @@
   :gpml.handler.detail/put-params {}
 
   :gpml.handler.list/get {:db #ig/ref :duct.database/sql}
-  
+
   :gpml.handler.organisation-detail/get-content {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation-detail/get-content-params {}
+  :gpml.handler.organisation-detail/get-members {:db #ig/ref :duct.database/sql}
+  :gpml.handler.organisation-detail/get-members-params {}
 
   :gpml.handler.activity/get-recent {:db #ig/ref :duct.database/sql}
   :gpml.handler.activity/get-response {}

@@ -49,7 +49,31 @@
                       :count {:owned (-> owned-content-count first :count)
                               :associated (-> associated-content-count first :count)}}))))
 
-(defmethod ig/init-key :gpml.handler.organisation-detail/get-content-params [_ _]
+(defmethod ig/init-key ::get-content-params [_ _]
+  {:path [:map [:id pos-int?]]
+   :query [:map
+           [:page {:optional true
+                   :default "0"}
+            string?]
+           [:limit {:optional true
+                    :default "3"}
+            string?]]})
+
+(defmethod ig/init-key ::get-members
+  [_ {:keys [db]}]
+  (fn [{:keys [parameters]}]
+    (let [conn (:spec db)
+          {:keys [limit page]} (api-organisation-detail-opts->organisation-detail-opts (:query parameters))
+          params {:id (-> parameters :path :id)
+                  :limit limit
+                  :offset (* limit page)}
+          members #_[{:id 1 :name "Dipti"}] (db.organisation-detail/get-org-members conn params)
+          members-count #_[{:count 1}]  (db.organisation-detail/get-org-members conn (assoc params :count-only? true))
+          ]
+      (resp/response {:members members
+                      :count (-> members-count first :count)}))))
+
+(defmethod ig/init-key ::get-members-params [_ _]
   {:path [:map [:id pos-int?]]
    :query [:map
            [:page {:optional true

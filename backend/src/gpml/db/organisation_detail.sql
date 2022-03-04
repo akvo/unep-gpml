@@ -216,3 +216,12 @@ SELECT
      WHERE affiliation = :id)
   GROUP BY t.id, orgt.association)
 --~(if (:count-only? params) "SELECT COUNT(*) FROM associated_content;" "SELECT * FROM associated_content LIMIT :limit OFFSET :offset;")
+
+-- :name get-org-members :? :*
+-- :doc Get all members belonging to a particular organisation
+WITH org_members AS(
+  SELECT
+    id, concat_ws(' ', s.first_name, s.last_name) as name, picture, email, linked_in, twitter, url, about
+  FROM stakeholder s
+  WHERE affiliation = :id)
+--~(if (:count-only? params) "SELECT COUNT(*) FROM org_members;" "SELECT * FROM org_members LIMIT :limit OFFSET :offset;")
