@@ -1,0 +1,50 @@
+-- :name get-community-members :? :*
+/* :require [clojure.string :as s]
+            [gpml.db.community]
+*/
+WITH community_members AS (
+    SELECT
+        o.id,
+        o.name,
+        'organisation' AS type,
+        o.country,
+        o.geo_coverage_type,
+        o.logo,
+        o.created,
+        NULL AS affiliation,
+        o.type AS representative_group,
+        json_agg(json_build_object(COALESCE(t.id, 0), t.tag)) AS tags,
+        o.review_status,
+        to_tsvector('english'::regconfig, COALESCE(o.name, '') || ' ' || COALESCE(o.program, '') || ' ' || COALESCE(o.contribution, '') || ' ' || COALESCE(o.expertise, '')) AS search_text,
+        o.is_member
+    FROM
+        organisation o
+        LEFT JOIN organisation_tag ot ON o.id = ot.organisation
+        LEFT JOIN tag t ON ot.tag = t.id
+    GROUP BY
+        o.id
+    UNION ALL
+    SELECT
+        s.id,
+        s.first_name || ' ' || last_name AS name,
+        'stakeholder' AS type,
+        s.country,
+        s.geo_coverage_type,
+        NULL AS logo,
+        s.created,
+        row_to_json(a.*) AS affiliation,
+        s.representation AS representative_group,
+        json_agg(json_build_object(COALESCE(t.id, 0), t.tag)) AS tags,
+        s.review_status,
+        to_tsvector('english'::regconfig, COALESCE(s.first_name, '') || ' ' || COALESCE(s.last_name, '') || ' ' || COALESCE(s.about, '')) AS search_text,
+        NULL as is_member
+    FROM
+        stakeholder s
+        LEFT JOIN organisation a ON s.affiliation = a.id
+        LEFT JOIN stakeholder_tag st ON s.id = st.stakeholder
+        LEFT JOIN tag t ON st.tag = t.id
+    GROUP BY
+        s.id,
+        a.*
+)
+--~(gpml.db.community/get-community-members-query-and-filters params)

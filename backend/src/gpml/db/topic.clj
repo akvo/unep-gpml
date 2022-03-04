@@ -23,6 +23,22 @@
                         "stakeholder" ["first_name" "last_name" "about"]
                         "organisation" ["name" "program" "contribution" "expertise"]}})
 
+(def ^:const table-rename-mapping
+  "Some topics like financing_resource and project aren't the real table
+  names we want to query. Therefore, when passing the following topic
+  options as tables we need to rename them to their proper source
+  table."
+  {"financing_resource" "resource"
+   "action_plan" "resource"
+   "technical_resource" "resource"
+   "project" "initiative"})
+
+(defn- rename-tables
+  [tables]
+  (let [tables-to-rename (filter #(some #{%} (keys table-rename-mapping)) tables)
+        renamed-tables (set (map #(get table-rename-mapping %) tables-to-rename))]
+    (concat renamed-tables (remove #(some #{%} tables-to-rename) tables))))
+
 ;;======================= Data queries =================================
 (def ^:const ^:private organisation-topic-data-geo-coverage-values-query
   "LEFT JOIN (
@@ -501,8 +517,13 @@
                             ""
                             (:tables opts))))
 
-(defn generate-topic-query [params opts]
-  (let [topic-data-ctes (generate-ctes :data params opts)
+
+
+(defn generate-topic-query
+  [params opts]
+  (let [opts (merge generic-cte-opts (when (seq (:tables opts))
+                                       (update opts :tables rename-tables)))
+        topic-data-ctes (generate-ctes :data params opts)
         topic-geo-coverage-ctes (generate-ctes :geo params opts)
         topic-search-text-ctes (generate-ctes :search-text params opts)
         topic-ctes (generate-ctes :topic params opts)
