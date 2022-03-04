@@ -19,7 +19,7 @@
         profile-data (db.topic-test/make-profile "John" "Doe" "john.doe@org.com")
         sth (db.stakeholder/new-stakeholder db profile-data)
         _ (db.stakeholder/update-stakeholder-status db (assoc sth :review_status "APPROVED"))
-        default-api-limit 10]
+        default-api-limit sut/default-api-limit]
     (seeder/seed db {:country? true :organisation? true})
 
     (testing "Retrieve community members list with default params"
