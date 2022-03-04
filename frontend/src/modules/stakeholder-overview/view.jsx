@@ -199,7 +199,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       })
       .catch((err) => {
         console.error(err);
-        redirectError(err, history);
+        // redirectError(err, history);
       });
   };
 
