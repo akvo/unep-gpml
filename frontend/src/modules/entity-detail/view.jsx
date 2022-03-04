@@ -27,10 +27,7 @@ import FollowImage from "../../images/stakeholder/follow.png";
 import ResourceImage from "../../images/stakeholder/resource.png";
 import EditImage from "../../images/stakeholder/edit.png";
 import {
-  LinkedinOutlined,
-  TwitterOutlined,
-  FilePdfOutlined,
-  MailOutlined,
+  LinkOutlined,
   UserOutlined,
   ArrowRightOutlined,
   LoadingOutlined,
@@ -347,57 +344,20 @@ const StakeholderDetail = ({
               <CardComponent title="Contact info">
                 <div className="list social-list">
                   <List itemLayout="horizontal">
-                    {data?.linkedIn && (
+                    {data?.url && (
                       <List.Item className="location">
                         <List.Item.Meta
-                          avatar={<LinkedinOutlined />}
+                          avatar={<LinkOutlined />}
                           title={
                             <a
                               href={
-                                data?.linkedIn.includes("https://")
-                                  ? data?.linkedIn
-                                  : "https://" + data?.linkedIn
+                                data?.url.includes("https://")
+                                  ? data?.url
+                                  : "https://" + data?.url
                               }
                               target="_blank"
                             >
-                              {data?.linkedIn}
-                            </a>
-                          }
-                        />
-                      </List.Item>
-                    )}
-                    {data?.twitter && (
-                      <List.Item className="location">
-                        <List.Item.Meta
-                          avatar={<TwitterOutlined />}
-                          title={
-                            <a
-                              href={
-                                data?.twitter.includes("https://")
-                                  ? data?.twitter
-                                  : "https://" + data?.twitter
-                              }
-                              target="_blank"
-                            >
-                              {data?.twitter}
-                            </a>
-                          }
-                        />
-                      </List.Item>
-                    )}
-                    {/* <List.Item className="location">
-                      <List.Item.Meta
-                        avatar={<FilePdfOutlined />}
-                        title="Link to CV"
-                      />
-                    </List.Item> */}
-                    {data?.email && (
-                      <List.Item className="location">
-                        <List.Item.Meta
-                          avatar={<MailOutlined />}
-                          title={
-                            <a href={`mailto:${data?.email}`} target="_blank">
-                              {data?.email}
+                              {data?.url}
                             </a>
                           }
                         />
