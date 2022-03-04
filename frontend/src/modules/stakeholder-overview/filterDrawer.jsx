@@ -76,9 +76,9 @@ const FilterDrawer = ({
 
   const filterQueries = [
     "country",
-    "topic",
+    "networkType",
     "representativeGroup",
-    "geoCoverage",
+    "geoCoverageType",
     "seeking",
     "offering",
     "affiliation",
@@ -123,14 +123,14 @@ const FilterDrawer = ({
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Network type</div>
-              {isEmpty(query?.topic) ? (
+              {isEmpty(query?.networkType) ? (
                 <Tag className="selection-card-type">All (default)</Tag>
               ) : (
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClose={() => updateQuery("topic", [])}
-                  onClick={() => updateQuery("topic", [])}
+                  onClose={() => updateQuery("networkType", [])}
+                  onClick={() => updateQuery("networkType", [])}
                 >
                   Clear selection
                 </Tag>
@@ -138,20 +138,24 @@ const FilterDrawer = ({
             </Space>
 
             <Row type="flex" gutter={[10, 10]}>
-              {networkTypes.map((type) => {
+              {networkTypes.map((networkType) => {
                 return (
-                  <Col span={6} key={type}>
+                  <Col span={6} key={networkType}>
                     <Card
-                      onClick={() => handleChangeType("topic", type)}
+                      onClick={() =>
+                        handleChangeType("networkType", networkType)
+                      }
                       className={classNames("drawer-card", {
-                        active: query?.topic?.includes(type),
+                        active: query?.networkType?.includes(networkType),
                       })}
                     >
                       <Space direction="vertical" align="center">
-                        {networkIcon(type)}
-                        <div className="topic-text">{networkNames(type)}</div>
+                        {networkIcon(networkType)}
+                        <div className="topic-text">
+                          {networkNames(networkType)}
+                        </div>
                         <div className="topic-text topic-counts">
-                          {type === "organisation"
+                          {networkType === "organisation"
                             ? organisationCount
                             : stakeholders?.length}
                         </div>
@@ -230,11 +234,14 @@ const FilterDrawer = ({
             title="Geo-coverage"
             options={
               isLoaded()
-                ? geoCoverageTypeOptions?.map((x) => ({ value: x, label: x }))
+                ? geoCoverageTypeOptions?.map((x) => ({
+                    value: x,
+                    label: x,
+                  }))
                 : []
             }
-            value={query?.geoCoverage || []}
-            flag="geoCoverage"
+            value={query?.geoCoverageType || []}
+            flag="geoCoverageType"
             query={query}
             updateQuery={updateQuery}
           />
