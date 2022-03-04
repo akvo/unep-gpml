@@ -280,19 +280,27 @@
                                                   :parameters {:body #ig/ref :gpml.handler.organisation/post-params}
                                                   :handler #ig/ref :gpml.handler.organisation/post}}]
                                          ["/{id}"
-                                          {:get {:summary "Get organisation by id"
-                                                 :swagger {:tags ["organisation"]}
-                                                 :parameters {:path [:map [:id int?]]}
-                                                 :handler #ig/ref :gpml.handler.organisation/get-id}
-                                           :put {:summary "Update organisation by id and body params"
-                                                 :swagger {:tags ["organisation"]
-                                                           :security [{:id_token []}]}
-                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required
-                                                              #ig/ref :gpml.auth/approved-user]
-                                                 :parameters {:path [:map [:id int?]]
-                                                              :body #ig/ref :gpml.handler.organisation/put-params}
-                                                 :handler #ig/ref :gpml.handler.organisation/put}}]]
+                                          [""
+                                           {:get {:summary "Get organisation by id"
+                                                  :swagger {:tags ["organisation"]}
+                                                  :parameters {:path [:map [:id int?]]}
+                                                  :handler #ig/ref :gpml.handler.organisation/get-id}
+                                            :put {:summary "Update organisation by id and body params"
+                                                  :swagger {:tags ["organisation"]
+                                                            :security [{:id_token []}]}
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required
+                                                               #ig/ref :gpml.auth/approved-user]
+                                                  :parameters {:path [:map [:id int?]]
+                                                               :body #ig/ref :gpml.handler.organisation/put-params}
+                                                  :handler #ig/ref :gpml.handler.organisation/put}}]
+                                          ["/content"
+                                           {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :summary "List all content from a given organisation"
+                                                  :swagger {:tags ["organisation content"]}
+                                                  :parameters #ig/ref :gpml.handler.organisation-detail/get-content-params
+                                                  :handler #ig/ref :gpml.handler.organisation-detail/get-content}}]]]
                                         ["/favorite" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                    #ig/ref :gpml.auth/auth-required]}
                                          [""
@@ -533,6 +541,9 @@
   :gpml.handler.detail/put-params {}
 
   :gpml.handler.list/get {:db #ig/ref :duct.database/sql}
+  
+  :gpml.handler.organisation-detail/get-content {:db #ig/ref :duct.database/sql}
+  :gpml.handler.organisation-detail/get-content-params {}
 
   :gpml.handler.activity/get-recent {:db #ig/ref :duct.database/sql}
   :gpml.handler.activity/get-response {}
