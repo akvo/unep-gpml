@@ -67,7 +67,7 @@
     [:int {:min 0}]]])
 
 (defn api-params->opts
-  [{:keys [q country tag networkType representativeGroup geoCoverageType limit offset]
+  [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType limit offset]
     :or {limit 10
          offset 0}}]
   (cond-> {}
@@ -82,6 +82,10 @@
 
     (seq geoCoverageType)
     (assoc-in [:filters :geo-coverage-type] (set (str/split geoCoverageType #",")))
+
+    (seq affiliation)
+    (assoc-in [:filters :affiliation] (->> (set (str/split affiliation #","))
+                                           (map #(Integer/parseInt %))))
 
     (seq country)
     (assoc-in [:filters :country] (->> (set (str/split country #","))
