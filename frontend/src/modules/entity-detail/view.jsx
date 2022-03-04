@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   useEffect,
   useRef,
@@ -46,6 +47,7 @@ import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
+import ProfileCard from "../stakeholder-overview/card";
 
 const getType = (type) => {
   let t = "";
@@ -225,19 +227,16 @@ const StakeholderDetail = ({
       const searchParms = new URLSearchParams();
       searchParms.set("limit", 3);
       searchParms.set("page", n);
-      searchParms.set("association", "owner");
-      const url = `/stakeholder/${params.id}/associated-topics?${String(
-        searchParms
-      )}`;
+      const url = `/organisation/${params.id}/content?${String(searchParms)}`;
       api
         .get(url)
         .then((d) => {
-          setOwnedResources(d.data.associatedTopics);
+          setOwnedResources(d.data.results);
           setOwnedResourcesCount(d.data.count);
         })
         .catch((err) => {
           console.error(err);
-          redirectError(err, history);
+          // redirectError(err, history);
         });
     },
     [params, history]
@@ -249,14 +248,11 @@ const StakeholderDetail = ({
       const searchParms = new URLSearchParams();
       searchParms.set("limit", 3);
       searchParms.set("page", n);
-      searchParms.set("association", "interested in");
-      const url = `/stakeholder/${params.id}/associated-topics?${String(
-        searchParms
-      )}`;
+      const url = `/organisation/${params.id}/members?${String(searchParms)}`;
       api
         .get(url)
         .then((d) => {
-          setBookedResources(d.data.associatedTopics);
+          setBookedResources(d.data.members);
           setBookedResourcesCount(d.data.count);
         })
         .catch((err) => {
@@ -311,15 +307,7 @@ const StakeholderDetail = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [
-    params,
-    profile,
-    isLoaded,
-    data,
-    history,
-    getOwnedResources,
-    getBookedResources,
-  ]);
+  }, [isLoaded]);
 
   if (!data) {
     return (
@@ -452,10 +440,10 @@ const StakeholderDetail = ({
               </div>
             </Col>
           </Row>
-          {/* <div>
+          <div>
             {ownedResources.length > 0 && (
               <CardComponent
-                title={"Owned resources"}
+                title={"Content on the platform"}
                 style={{
                   height: "100%",
                   boxShadow: "none",
@@ -464,8 +452,8 @@ const StakeholderDetail = ({
               >
                 <div style={{ padding: "0 10px" }}>
                   <Row gutter={[16, 16]}>
-                    {ownedResources.map((item) => (
-                      <Col xs={6} lg={8}>
+                    {ownedResources.slice(0, 3).map((item) => (
+                      <Col xs={6} lg={8} key={item.id}>
                         <div className="slider-card">
                           <div className="image-holder">
                             <img src={ResourceImage} />
@@ -518,11 +506,11 @@ const StakeholderDetail = ({
                 </div>
               </CardComponent>
             )}
-          </div> */}
-          {/* <div>
+          </div>
+          <div>
             {bookedResources.length > 0 && (
               <CardComponent
-                title={"Bookmarked resources"}
+                title={"Individuals"}
                 style={{
                   height: "100%",
                   boxShadow: "none",
@@ -530,49 +518,16 @@ const StakeholderDetail = ({
                 }}
               >
                 <div style={{ padding: "0 10px" }}>
-                  <Row gutter={[16, 16]}>
+                  <div className="card-wrapper ui container">
                     {bookedResources.map((item) => (
-                      <Col xs={6} lg={8}>
-                        <div className="slider-card">
-                          <div className="image-holder">
-                            <img src={ResourceImage} />
-                          </div>
-                          <div className="description-holder">
-                            <div>
-                              <h4>{item.type}</h4>
-                              <h6>{item.title}</h6>
-                            </div>
-                            <div className="connection-wrapper">
-                              <Avatar.Group
-                                maxCount={2}
-                                maxPopoverTrigger="click"
-                                size="large"
-                                maxStyle={{
-                                  color: "#f56a00",
-                                  backgroundColor: "#fde3cf",
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <Avatar src={AvatarImage} />
-                                <Avatar src={AvatarImage} />
-                                <Tooltip title="Ant User" placement="top">
-                                  <Avatar
-                                    style={{ backgroundColor: "#87d068" }}
-                                    icon={<UserOutlined />}
-                                  />
-                                </Tooltip>
-                              </Avatar.Group>
-                              <Link to={`/${getType(item.type)}/${item.id}`}>
-                                <div className="read-more">
-                                  Read More <ArrowRightOutlined />
-                                </div>
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      </Col>
+                      <ProfileCard
+                        key={item?.id}
+                        profile={item}
+                        isValidUser={true}
+                        profileType="suggested-profiles"
+                      />
                     ))}
-                  </Row>
+                  </div>
                   <div className="pagination-wrapper">
                     <Pagination
                       defaultCurrent={1}
@@ -585,7 +540,7 @@ const StakeholderDetail = ({
                 </div>
               </CardComponent>
             )}
-          </div> */}
+          </div>
         </div>
       </div>
     </div>
