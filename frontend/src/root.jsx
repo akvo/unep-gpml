@@ -654,7 +654,7 @@ const Root = () => {
 
           <Route
             path="/profile"
-            render={(props) => <ProfileView {...{ ...props }} />}
+            render={(props) => <ProfileView {...{ ...props, relations }} />}
           />
           <Route
             path="/entity-signup"
