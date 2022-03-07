@@ -238,13 +238,13 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     // setFilterCountries if user click from map to browse view
     query?.country &&
       query?.country.length > 0 &&
-      setFilterCountries(query.country);
+      setFilterCountries(query?.country);
 
     // Manage filters display
     !filters && setFilters(query);
     if (filters) {
       setFilters({ ...filters, topic: query.topic, tag: query.tag });
-      setFilterCountries(filters.country);
+      setFilterCountries(filters?.country);
     }
 
     setTimeout(() => {
