@@ -374,6 +374,10 @@ const Root = () => {
     ) {
       updateQuery("transnational", []);
     }
+
+    if (history.location.pathname === "/knowledge-library") {
+      updateQuery("favorites", false);
+    }
     // NOTE: Since we are using `history` and `location`, the
     // dependency needs to be []. Ignore the linter warning, because
     // adding a dependency here on location makes the FE send multiple
