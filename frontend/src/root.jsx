@@ -141,7 +141,7 @@ const disclaimerContent = {
   home: (
     <>
       <span>
-        The GPML Digital Platform Phase 2 is now live and currently a Beta
+        The GPML Digital Platform Phase 3 is now live and currently a Beta
         Version. Help us test the platform and let us know what you think at{" "}
         <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
           unep-gpmarinelitter@un.org
