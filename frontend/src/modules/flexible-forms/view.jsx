@@ -566,7 +566,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
 
     if (name === "relatedContent") {
-      res = value && value[0].id !== null ? value.map((x) => x.id) : "";
+      res =
+        value && value.length > 0 && value[0].id !== null
+          ? value.map((x) => x.id)
+          : "";
     }
 
     if (name === "stakeholderConnections") {

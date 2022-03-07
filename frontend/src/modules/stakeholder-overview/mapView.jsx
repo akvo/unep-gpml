@@ -46,7 +46,7 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
       isFilteredCountry={isFilteredCountry}
       dataToDisplay={[]}
       data={landing?.map || []}
-      topic={query?.topic}
+      topic={query?.networkType}
       isLoaded={isLoaded}
       multiCountryCountries={null}
       country={countries.find((x) => x.id === country)}

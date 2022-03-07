@@ -50,7 +50,6 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     stakeholders: s.stakeholders?.stakeholders,
   }));
   const [filterCountries, setFilterCountries] = useState([]);
-
   const { isAuthenticated, isLoading } = useAuth0();
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
@@ -82,6 +81,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   if (suggestedProfiles.length > 4) {
     suggestedProfiles.length = 4;
   }
+
+  const resultCounts =
+    results.length + ((filters?.page && pageSize * filters?.page) || 0);
 
   const sidebar = [
     { id: 1, title: "Events", url: "/events", icon: IconEvent },
@@ -217,7 +219,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
   const itemCount = loading
     ? 0
-    : filters?.offset !== undefined
+    : filters?.page !== undefined
     ? resultCount
     : pageSize;
 
@@ -263,14 +265,14 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       paramValueArr.forEach((pv) => {
         const { param, value } = pv;
         newQuery[param] = value;
-        if (param !== "offset") {
-          newQuery["offset"] = 0;
+        if (param !== "page") {
+          newQuery["page"] = 0;
         }
       });
     } else {
       newQuery[param] = value;
-      if (param !== "offset") {
-        newQuery["offset"] = 0;
+      if (param !== "page") {
+        newQuery["page"] = 0;
       }
     }
 
@@ -337,7 +339,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       // don't render if key is limit and offset
       if (
         key === "limit" ||
-        key === "offset" ||
+        key === "page" ||
         key === "q" ||
         key === "favorites"
       ) {
@@ -398,6 +400,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             setFilterVisible={setFilterVisible}
             organisationCount={organisationCount}
             GPMLMemberCount={GPMLMemberCount}
+            setFilterCountries={setFilterCountries}
           />
 
           <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>
@@ -443,8 +446,8 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                     ) : isLoaded() && !loading && !isEmpty(results) ? (
                       <>
                         <div className="result-number">
-                          {resultCount > pageSize + Number(filters?.offset)
-                            ? pageSize + Number(filters?.offset)
+                          {resultCount > pageSize + Number(filters?.page)
+                            ? resultCounts
                             : itemCount}{" "}
                           of {resultCount || 0} result
                           {resultCount > 1 ? "s" : ""}
@@ -468,13 +471,18 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                       {!isEmpty(results) && isValidUser && (
                         <Pagination
                           defaultCurrent={1}
-                          current={(filters?.offset || 0) / pageSize + 1}
+                          current={
+                            1 +
+                            (query?.page.length !== 0
+                              ? Number(query?.page[0])
+                              : 0)
+                          }
                           pageSize={pageSize}
                           total={resultCount}
                           showSizeChanger={false}
-                          onChange={(n, size) =>
-                            updateQuery("offset", (n - 1) * size)
-                          }
+                          onChange={(n) => {
+                            updateQuery("page", n - 1);
+                          }}
                         />
                       )}
                     </div>
