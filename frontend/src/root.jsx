@@ -292,6 +292,11 @@ const Root = () => {
         (query?.endDate && query?.endDate?.length !== 0)
       ) {
         searchParms.set("topic", "event");
+      } else if (
+        query?.hasOwnProperty("favorites") &&
+        query?.favorites === true
+      ) {
+        searchParms.set("topic", []);
       } else {
         searchParms.set("topic", topic);
       }
