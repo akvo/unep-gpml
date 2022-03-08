@@ -421,6 +421,29 @@
                                                  :swagger {:tags ["recent activities"] :security [{:id_token []}]}
                                                  :responses {200 {:body #ig/ref :gpml.handler.activity/get-response}}
                                                  :handler #ig/ref :gpml.handler.activity/get-recent}}]]
+                                        ["/connections"
+                                         ["/{stakeholder-type}/{topic-type}/{connection-id}"
+                                          {:delete {:summary "Delete the stakeholder connection entry"
+                                                    :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required]
+                                                    :swagger {:tags ["stakeholder association"]}
+                                                    :parameters {:path [:map
+                                                                        [:stakeholder-type #ig/ref :gpml.handler.stakeholder-association/types]
+                                                                        [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                        [:connection-id int?]]
+                                                                 :body #ig/ref :gpml.handler.stakeholder-association/put-params}
+                                                    :handler #ig/ref :gpml.handler.stakeholder-association/delete}
+                                           :put {:summary "Update the stakeholder connection entry"
+                                                 :middleware [;#ig/ref :gpml.auth/auth-middleware
+                                                              ;#ig/ref :gpml.auth/auth-required
+                                                              ]
+                                                 :swagger {:tags ["stakeholder association"]}
+                                                 :parameters {:path [:map
+                                                                     [:stakeholder-type #ig/ref :gpml.handler.stakeholder-association/types]
+                                                                     [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                     [:connection-id int?]]
+                                                              :body #ig/ref :gpml.handler.stakeholder-association/put-params}
+                                                 :handler #ig/ref :gpml.handler.stakeholder-association/put}}]]
                                         ["/community"
                                          {:get {:summary "Browse community members"
                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
@@ -513,6 +536,11 @@
   :gpml.handler.stakeholder/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder-association/get-associated-topics {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder-association/get-associated-topics-params {}
+  :gpml.handler.stakeholder-association/delete {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder-association/put {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder-association/types {}
+  :gpml.handler.stakeholder-association/put-params {}
+
   :gpml.handler.stakeholder/suggested-profiles {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/suggested-profiles-params {}
   :gpml.handler.currency/all {:db #ig/ref :duct.database/sql}
