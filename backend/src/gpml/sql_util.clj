@@ -68,6 +68,19 @@
 
               :else value))))))
 
+(defn generate-update-stakeholder-association [params]
+  ;; Code adapted from the HugSql example for generic update (https://www.hugsql.org/)
+  (str/join
+    ",\n"
+    (for [[field _] (:updates params)]
+      (let [key (name field)
+            value (str ":v:updates." key)]
+        (str (identifier-param-quote key {})
+          " = "
+          (if (= key "association")
+            (str value "::" (:topic params) "_" key)
+            value))))))
+
 (comment
   (generate-jsonb {:q3 1 :q4 "300" :q5 nil :created_by "John" :version 1})
   (generate-insert {:q3 1 :q4 "300" :q5 nil :created_by "John" :version 1})

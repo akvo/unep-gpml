@@ -2,6 +2,7 @@
 
 (def resource-types #{"financing_resource" "technical_resource" "action_plan"})
 (def approved-user-topics #{"stakeholder"})
+(def stakeholder-types #{"individual" "entity"})
 (def topics
   (vec
    (sort
