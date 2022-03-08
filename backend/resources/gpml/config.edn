@@ -422,7 +422,7 @@
                                                  :responses {200 {:body #ig/ref :gpml.handler.activity/get-response}}
                                                  :handler #ig/ref :gpml.handler.activity/get-recent}}]]
                                         ["/connections"
-                                         ["/{stakeholder-type}/{topic-type}/{connection-id}"
+                                         ["/{topic-type}/{stakeholder-type}/{connection-id}"
                                           {:delete {:summary "Delete the stakeholder connection entry"
                                                     :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                  #ig/ref :gpml.auth/auth-required]
@@ -430,13 +430,11 @@
                                                     :parameters {:path [:map
                                                                         [:stakeholder-type #ig/ref :gpml.handler.stakeholder-association/types]
                                                                         [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                        [:connection-id int?]]
-                                                                 :body #ig/ref :gpml.handler.stakeholder-association/put-params}
+                                                                        [:connection-id int?]]}
                                                     :handler #ig/ref :gpml.handler.stakeholder-association/delete}
                                            :put {:summary "Update the stakeholder connection entry"
-                                                 :middleware [;#ig/ref :gpml.auth/auth-middleware
-                                                              ;#ig/ref :gpml.auth/auth-required
-                                                              ]
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required]
                                                  :swagger {:tags ["stakeholder association"]}
                                                  :parameters {:path [:map
                                                                      [:stakeholder-type #ig/ref :gpml.handler.stakeholder-association/types]
