@@ -62,7 +62,7 @@
     :else topic-type))
 
 (defmethod ig/init-key ::delete [_ {:keys [db]}]
-  (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
+  (fn [{{:keys [path]} :parameters}]
     (let [conn (:spec db)
           stakeholder-type (stakeholder-type->api-stakeholder-type (:stakeholder-type path))
           topic (topic-type->api-topic-type (:topic-type path))
@@ -75,8 +75,7 @@
                                       {:deleted params}))))))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]
-  (fn [{{{:keys [stakeholder-type topic-type connection-id] :as path} :path body :body} :parameters
-        user :user}]
+  (fn [{{{:keys [stakeholder-type topic-type connection-id]} :path body :body} :parameters}]
     (let [conn (:spec db)
           stakeholder-type (stakeholder-type->api-stakeholder-type stakeholder-type)
           topic (topic-type->api-topic-type topic-type)
