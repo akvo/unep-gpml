@@ -462,32 +462,38 @@ const StakeholderDetail = ({
                               <h4>{item.type}</h4>
                               <h6>{item.title}</h6>
                             </div>
-                            <div className="connection-wrapper">
-                              <Avatar.Group
-                                maxCount={2}
-                                maxPopoverTrigger="click"
-                                size="large"
-                                maxStyle={{
-                                  color: "#f56a00",
-                                  backgroundColor: "#fde3cf",
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <Avatar src={AvatarImage} />
-                                <Avatar src={AvatarImage} />
-                                <Tooltip title="Ant User" placement="top">
-                                  <Avatar
-                                    style={{ backgroundColor: "#87d068" }}
-                                    icon={<UserOutlined />}
-                                  />
-                                </Tooltip>
-                              </Avatar.Group>
-                              <Link to={`/${getType(item.type)}/${item.id}`}>
-                                <div className="read-more">
-                                  Read More <ArrowRightOutlined />
+                            {item.stakeholderConnections &&
+                              item.stakeholderConnections.length > 0 && (
+                                <div className="connection-wrapper">
+                                  <Avatar.Group
+                                    maxCount={2}
+                                    maxPopoverTrigger="click"
+                                    size="large"
+                                    maxStyle={{
+                                      color: "#f56a00",
+                                      backgroundColor: "#fde3cf",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {item.stakeholderConnections.map((item) => (
+                                      <Avatar
+                                        src={
+                                          item?.image
+                                            ? item.image
+                                            : `https://ui-avatars.com/api/?size=480&name=${item.stakeholder}`
+                                        }
+                                      />
+                                    ))}
+                                  </Avatar.Group>
+                                  <Link
+                                    to={`/${getType(item.type)}/${item.id}`}
+                                  >
+                                    <div className="read-more">
+                                      Read More <ArrowRightOutlined />
+                                    </div>
+                                  </Link>
                                 </div>
-                              </Link>
-                            </div>
+                              )}
                           </div>
                         </div>
                       </Col>
@@ -517,7 +523,10 @@ const StakeholderDetail = ({
                 }}
               >
                 <div style={{ padding: "0 10px" }} className="individuals">
-                  <Row gutter={[16, 16]} style={{ width: "100%" }}>
+                  <Row
+                    gutter={[16, 16]}
+                    style={{ width: "100%", justifyContent: "space-between" }}
+                  >
                     {bookedResources.map((item) => (
                       <Col xs={6} lg={7} key={item.id}>
                         <div
