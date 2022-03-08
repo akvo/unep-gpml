@@ -238,13 +238,13 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     // setFilterCountries if user click from map to browse view
     query?.country &&
       query?.country.length > 0 &&
-      setFilterCountries(query.country);
+      setFilterCountries(query?.country);
 
     // Manage filters display
     !filters && setFilters(query);
     if (filters) {
       setFilters({ ...filters, topic: query.topic, tag: query.tag });
-      setFilterCountries(filters.country);
+      setFilterCountries(filters?.country);
     }
 
     setTimeout(() => {
@@ -406,7 +406,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
           <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>
             <Col lg={24} xs={24} order={2}>
               {view === "card" ? (
-                <>
+                <div
+                  style={{ height: results.length === pageSize && "1138.17px" }}
+                >
                   {/* Suggested profiles */}
                   {isValidUser && !isEmpty(suggestedProfiles) && (
                     <Col className="card-container green">
@@ -487,7 +489,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                       )}
                     </div>
                   </Col>
-                </>
+                </div>
               ) : (
                 <MapView
                   updateQuery={updateQuery}

@@ -38,18 +38,18 @@ const menuItems = [
     role: userRoles,
     icon: <UserOutlined />,
   },
-  {
-    key: "my-favourites",
-    name: "My Favourites",
-    role: userRoles,
-    icon: <BookOutlined />,
-  },
-  {
-    key: "my-network",
-    name: "My Network",
-    role: userRoles,
-    icon: <UsergroupAddOutlined />,
-  },
+  // {
+  //   key: "my-favourites",
+  //   name: "My Favourites",
+  //   role: userRoles,
+  //   icon: <BookOutlined />,
+  // },
+  // {
+  //   key: "my-network",
+  //   name: "My Network",
+  //   role: userRoles,
+  //   icon: <UsergroupAddOutlined />,
+  // },
   {
     key: "review-section",
     name: "Review Section",
@@ -64,9 +64,8 @@ const menuItems = [
   },
 ];
 
-const ProfileView = ({ ...props }) => {
+const ProfileView = ({ relations }) => {
   const { isAuthenticated, loginWithPopup } = useAuth0();
-
   const history = useHistory();
   const path = history.location.pathname;
 
@@ -316,7 +315,7 @@ const ProfileView = ({ ...props }) => {
       let menuText = "";
       switch (it.key) {
         case "my-favourites":
-          menuText = renderMenuText(it.name, 0);
+          menuText = renderMenuText(it.name, relations.length);
           break;
         case "my-network":
           menuText = renderMenuText(it.name, 0);

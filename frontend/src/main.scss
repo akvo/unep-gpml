@@ -360,7 +360,9 @@ h4 {
     }
 
     .logo {
-      width: 200px;
+      width: 100%;
+      max-width: 200px;
+      min-width: 100px;
     }
 
     .src {

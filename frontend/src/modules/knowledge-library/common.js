@@ -6,6 +6,7 @@ const useQuery = () => {
     country: [],
     transnational: [],
     topic: [],
+    tag: [],
     q: "",
   };
   for (var key of srcParams.keys()) {
