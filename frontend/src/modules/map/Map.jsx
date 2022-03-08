@@ -35,7 +35,7 @@ const unsettledTerritoryIsoCode = [
   "xxx",
 ];
 
-const higlightColor = "#84b4cc";
+const higlightColor = "#255B87";
 const KNOWLEDGE_LIBRARY = "/knowledge-library";
 const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
 
@@ -378,9 +378,9 @@ const Maps = ({
                           strokeWidth={0.8}
                           background={
                             isCountrySelected
-                              ? "#84b4cc"
+                              ? "#255B87"
                               : geo.properties.MAP_COLOR === selected
-                              ? "#84b4cc"
+                              ? "#255B87"
                               : fillColor(
                                   curr(topic, findData, path)
                                     ? curr(topic, findData, path)
@@ -453,11 +453,11 @@ const Maps = ({
                               : isPattern
                               ? "url(#lines)"
                               : isCountrySelected
-                              ? "#84b4cc"
+                              ? "#255B87"
                               : selected
                               ? geo.properties.MAP_COLOR === selected ||
                                 selectionCondition()
-                                ? "#84b4cc"
+                                ? "#255B87"
                                 : fillColor(
                                     curr(topic, findData, path)
                                       ? curr(topic, findData, path)
@@ -469,7 +469,7 @@ const Maps = ({
                                     : 0
                                 )
                               ? selectionCondition()
-                                ? "#84b4cc"
+                                ? "#255B87"
                                 : fillColor(
                                     curr(topic, findData, path)
                                       ? curr(topic, findData, path)
