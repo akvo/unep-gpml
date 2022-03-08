@@ -1,4 +1,4 @@
-#stakeholder-detail {
+#entity-detail {
   padding-bottom: 40px;
   min-height: calc(100vh - 145px);
   background: #edf2f7;
@@ -23,12 +23,7 @@
       display: flex;
       align-items: center;
       .topbar-image-holder {
-        background-image: url("../../images/stakeholder/individual-icn.svg");
-        background-repeat: no-repeat;
-        padding-left: 40px;
-        background-position: top left;
-        background-size: 30%;
-        position: relative;
+        margin-bottom: -50px;
         .topbar-entity-image-holder {
           width: 50px;
           height: 50px;
@@ -72,7 +67,7 @@
     }
   }
   .info-container {
-    margin-top: 50px;
+    margin-top: 80px;
     .card-wrapper {
       margin-bottom: 20px;
       .ant-card {
@@ -135,6 +130,7 @@
                 }
                 h4 {
                   margin-bottom: 0px;
+                  text-transform: capitalize;
                   a {
                     color: #34a6ff;
                   }
@@ -174,7 +170,7 @@
           border: 1px solid #d3dee7;
           box-sizing: border-box;
           border-radius: 0px 10px 10px 0px;
-          padding: 10px 0px;
+          padding: 20px 0px;
           .sticky-panel-item {
             border-bottom: 1px solid #094271;
             box-shadow: 0px 1px 0px #3872a0;
@@ -210,6 +206,16 @@
         }
         .exta-info {
           margin-top: 40px;
+          .exta-info-head-title {
+            color: #09689a;
+            font-size: 18px;
+            font-weight: bold;
+            padding-left: 20px;
+          }
+          .ant-list {
+            padding-left: 20px !important;
+            margin-top: 20px;
+          }
           .ant-card-body {
             padding: 0px 10px;
           }

@@ -8,11 +8,11 @@
             [gpml.db.resource :as db.resource]
             [gpml.db.technology :as db.technology]
             [gpml.db.topic :as db.topic]
+            [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
-(def country-re #"^\d+(,\d+)*$")
-(def topic-re (re-pattern (format "^(%1$s)((,(%1$s))+)?$" (str/join "|" topics))))
+(def ^:const topic-re (util.regex/comma-separated-enums-re topics))
 
 (def query-params
   [:map
@@ -23,7 +23,7 @@
                         :allowEmptyValue true}}
     [:or
      [:string {:max 0}]
-     [:re country-re]]]
+     [:re util.regex/comma-separated-numbers-re]]]
    [:transnational {:optional true
                     :swagger {:description "Comma separated list of transnational id"
                               :type "string"
@@ -31,7 +31,7 @@
                               :allowEmptyValue true}}
     [:or
      [:string {:max 0}]
-     [:re country-re]]]
+     [:re util.regex/comma-separated-numbers-re]]]
    [:topic {:optional true
             :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "," topics))
                       :type "string"
@@ -57,6 +57,32 @@
                           :type "boolean"
                           :allowEmptyValue true}}
     [:boolean]]
+   [:startDate {:optional true
+                :error/message "startDate should be in the ISO 8601 format i.e.: YYYY-MM-DD"
+                :swagger {:description "Events startDate in the format of ISO 8601 i.e.: YYYY-MM-DD"
+                          :type "string"
+                          :allowEmptyValue true}}
+    [:or
+     [:string {:max 0}]
+     [:re util.regex/date-iso-8601-re]]]
+   [:endDate {:optional true
+              :error/message "endDate should be in the ISO 8601 format i.e.: YYYY-MM-DD"
+              :swagger {:description "Events endDate in the format of ISO 8601 i.e.: YYYY-MM-DD"
+                        :type "string"
+                        :allowEmptyValue true}}
+    [:or
+     [:string {:max 0}]
+     [:re util.regex/date-iso-8601-re]]]
+   [:representativeGroup {:optional true
+                          :swagger {:description "Comma separated list of representative groups"
+                                    :type "string"
+                                    :allowEmptyValue true}}
+    string?]
+   [:affiliation {:optional true
+                  :swagger {:description "Comma separated list of affiliation ids (i.e., organisation ids)"
+                            :type "string"
+                            :allowEmptyValue true}}
+    string?]
    [:limit {:optional true
             :swagger {:description "Limit the number of entries per page"
                       :type "int"
@@ -69,28 +95,46 @@
     [:int {:min 0}]]])
 
 (defn get-db-filter
-  [{:keys [q transnational country topic tag favorites user-id limit offset]}]
-  (merge {}
-         (when offset
-           {:offset offset})
-         (when limit
-           {:limit limit})
-         (when (and user-id favorites) {:user-id user-id
-                                        :favorites true
-                                        :resource-types resource-types})
-         (when (seq country)
-           {:geo-coverage (->> (set (str/split country #","))
-                               (map read-string))})
-         (when (seq transnational)
-           {:transnational  (set (map str (str/split transnational #",")))})
-         (when (seq topic)
-           {:topic (set (str/split topic #","))})
-         (when (seq tag)
-           {:tag (set (str/split tag #","))})
-         (when (seq q)
-           {:search-text (->> (str/trim q)
-                              (re-seq #"\w+")
-                              (str/join " & "))})))
+  [{:keys [q transnational country affiliation representativeGroup startDate endDate topic tag favorites user-id limit offset]}]
+  (cond-> {}
+    offset
+    (assoc :offset offset)
+
+    limit
+    (assoc :limit limit)
+
+    startDate
+    (assoc :start-date startDate)
+
+    endDate
+    (assoc :end-date endDate)
+
+    (and user-id favorites)
+    (assoc :user-id user-id :favorites true :resource-types resource-types)
+
+    (seq country)
+    (assoc :geo-coverage (->> (set (str/split country #","))
+                              (map read-string)))
+
+    (seq transnational)
+    (assoc :transnational (set (map str (str/split transnational #","))))
+
+    (seq topic)
+    (assoc :topic (set (str/split topic #",")))
+
+    (seq tag)
+    (assoc :tag (set (str/split tag #",")))
+
+    (seq affiliation)
+    (assoc :affiliation (set (map #(Integer/parseInt %) (str/split affiliation #","))))
+
+    (seq representativeGroup)
+    (assoc :representative-group (set (str/split representativeGroup #",")))
+
+    (seq q)
+    (assoc :search-text (->> (str/trim q)
+                             (re-seq #"\w+")
+                             (str/join " & ")))))
 
 (defn maybe-filter-private-topics [topics approved?]
   (or (and approved? topics)

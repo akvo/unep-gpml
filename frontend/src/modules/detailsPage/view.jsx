@@ -753,9 +753,7 @@ const DetailsView = ({
                 <img src={ActionGreen} />
                 <div>
                   <Title level={2}>{topicNames(params?.type)}</Title>
-                  <Title level={4}>
-                    {params?.type !== "technology" ? data?.title : data?.name}
-                  </Title>
+                  <Title level={4}>{data?.title}</Title>
                 </div>
               </div>
             </Col>
@@ -943,11 +941,7 @@ const DetailsView = ({
                       marginBottom: "30px",
                     }}
                   >
-                    <p className="summary">
-                      {params?.type !== "technology"
-                        ? data?.summary
-                        : data?.remarks}
-                    </p>
+                    <p className="summary">{data?.summary}</p>
                   </CardComponent>
                 )}
 
@@ -989,55 +983,57 @@ const DetailsView = ({
                   />
                 )}
               </CardComponent>
-              <CardComponent
-                title={`Related content (${
-                  data?.relatedContent && data?.relatedContent.length
-                })`}
-                style={{
-                  marginBottom: "30px",
-                }}
-                getRef={relatedContent}
-              >
-                {data?.relatedContent.length > 0 && (
-                  <Row gutter={16} className="related-content">
-                    {data?.relatedContent.map((item) => (
-                      <Col span={12}>
-                        <Card
-                          title={data?.type ? data.type : ""}
-                          bordered={false}
-                        >
-                          <h4>{item.title}</h4>
-                          {/* <p>{item.description}</p> */}
-                          <div className="bottom-panel">
-                            <div>
-                              <Avatar.Group
-                                maxCount={2}
-                                size="large"
-                                maxStyle={{
-                                  color: "#f56a00",
-                                  backgroundColor: "#fde3cf",
-                                  cursor: "pointer",
-                                }}
-                              >
-                                {item?.stakeholderConnections?.map(
-                                  (connection, index) => (
-                                    <Avatar src={connection.image} />
-                                  )
-                                )}
-                              </Avatar.Group>
-                            </div>
-                            <a href={`/${params.type}/${item.id}`}>
-                              <div className="read-more">
-                                Read More <ArrowRightOutlined />
+              {data?.relatedContent && data?.relatedContent?.length > 0 && (
+                <CardComponent
+                  title={`Related content (${
+                    data?.relatedContent && data?.relatedContent.length
+                  })`}
+                  style={{
+                    marginBottom: "30px",
+                  }}
+                  getRef={relatedContent}
+                >
+                  {data?.relatedContent.length > 0 && (
+                    <Row gutter={16} className="related-content">
+                      {data?.relatedContent.map((item) => (
+                        <Col span={12}>
+                          <Card
+                            title={data?.type ? data.type : ""}
+                            bordered={false}
+                          >
+                            <h4>{item.title}</h4>
+                            {/* <p>{item.description}</p> */}
+                            <div className="bottom-panel">
+                              <div>
+                                <Avatar.Group
+                                  maxCount={2}
+                                  size="large"
+                                  maxStyle={{
+                                    color: "#f56a00",
+                                    backgroundColor: "#fde3cf",
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  {item?.stakeholderConnections?.map(
+                                    (connection, index) => (
+                                      <Avatar src={connection.image} />
+                                    )
+                                  )}
+                                </Avatar.Group>
                               </div>
-                            </a>
-                          </div>
-                        </Card>
-                      </Col>
-                    ))}
-                  </Row>
-                )}
-              </CardComponent>
+                              <a href={`/${params.type}/${item.id}`}>
+                                <div className="read-more">
+                                  Read More <ArrowRightOutlined />
+                                </div>
+                              </a>
+                            </div>
+                          </Card>
+                        </Col>
+                      ))}
+                    </Row>
+                  )}
+                </CardComponent>
+              )}
               {/* <CardComponent
                 title="Comments (0)"
                 style={{

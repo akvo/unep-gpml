@@ -11,7 +11,7 @@ import {
   Pagination,
 } from "antd";
 import { ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "./styles.scss";
 import { UIStore } from "../../store";
@@ -25,8 +25,8 @@ import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 
 // Icons
-import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 import SortIcon from "../../images/knowledge-library/sort-icon.svg";
+import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const ResourceList = ({
   view,
@@ -35,9 +35,9 @@ const ResourceList = ({
   filters,
   loading,
   pageSize,
-  hideListButtonVisible,
   updateQuery,
-  // setListVisible,
+  hideListButtonVisible,
+  setListVisible,
 }) => {
   const {
     profile,
@@ -91,26 +91,34 @@ const ResourceList = ({
     if (!isAscending) {
       const sortAscending = allResults.sort((result1, result2) => {
         if (result1?.title) {
-          return result1.title.localeCompare(result2.title, "en", {
-            numeric: true,
-          });
+          return result1?.title
+            ?.trim()
+            .localeCompare(result2?.title?.trim(), "en", {
+              numeric: true,
+            });
         } else {
-          return result1?.name?.localeCompare(result2?.name, "en", {
-            numeric: true,
-          });
+          return result1?.name
+            ?.trim()
+            .localeCompare(result2?.name?.trim(), "en", {
+              numeric: true,
+            });
         }
       });
       setAllResults(sortAscending);
     } else {
       const sortDescending = allResults.sort((result1, result2) => {
         if (result2?.title) {
-          return result2.title.localeCompare(result1.title, "en", {
-            numeric: true,
-          });
+          return result2?.title
+            ?.trim()
+            .localeCompare(result1?.title?.trim(), "en", {
+              numeric: true,
+            });
         } else {
-          return result2?.name?.localeCompare(result1?.name, "en", {
-            numeric: true,
-          });
+          return result2?.name
+            ?.trim()
+            .localeCompare(result1?.name?.trim(), "en", {
+              numeric: true,
+            });
         }
       });
       setAllResults(sortDescending);
@@ -135,30 +143,32 @@ const ResourceList = ({
               ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
               : { backgroundColor: "rgba(255, 255, 255, 1)" }
           }
-          // onBack={() => setListVisible(false)}
-          // backIcon={
-          //   hideListButtonVisible ? (
-          //     <img src={HideIcon} className="hide-icon hide" alt="hide-icon" />
-          //   ) : (
-          //     ""
-          //   )
-          // }
-          // title={
-          //   hideListButtonVisible ? (
-          //     <span className="hide-text">Hide List</span>
-          //   ) : (
-          //     ""
-          //   )
-          // }
+          onBack={() => setListVisible(false)}
+          backIcon={
+            hideListButtonVisible ? (
+              <img src={HideIcon} className="hide-icon hide" alt="hide-icon" />
+            ) : (
+              ""
+            )
+          }
+          title={
+            hideListButtonVisible ? (
+              <span className="hide-text">Hide List</span>
+            ) : (
+              ""
+            )
+          }
           const
           subTitle={
-            <span className="result-number">
-              Showing{" "}
-              {totalItems > pageSize + filters?.offset
-                ? pageSize + Number(filters?.offset)
-                : itemCount}{" "}
-              of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
-            </span>
+            !loading && (
+              <span className="result-number">
+                Showing{" "}
+                {totalItems > pageSize + filters?.offset
+                  ? pageSize + Number(filters?.offset)
+                  : itemCount}{" "}
+                of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+              </span>
+            )
           }
           extra={
             <Button className="sort-btn" onClick={sortResults}>
@@ -200,8 +210,8 @@ const ResourceList = ({
             <h2 className="loading">There is no data to display</h2>
           )}
         </Col>
-        <div className="page">
-          {!isEmpty(allResults) && (
+        {!isEmpty(allResults) && (
+          <div className="page">
             <Pagination
               defaultCurrent={1}
               current={(filters?.offset || 0) / pageSize + 1}
@@ -210,14 +220,16 @@ const ResourceList = ({
               showSizeChanger={false}
               onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
             />
-          )}
-          <div className="result-number">
-            {totalItems > pageSize + filters?.offset
-              ? pageSize + Number(filters?.offset)
-              : itemCount}{" "}
-            of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+            {!loading && (
+              <div className="result-number">
+                {totalItems > pageSize + filters?.offset
+                  ? pageSize + Number(filters?.offset)
+                  : itemCount}{" "}
+                of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </div>
     </Row>
   );

@@ -24,10 +24,13 @@ import values from "lodash/values";
 import MapLanding from "./map-landing";
 import TopicView from "./TopicView";
 
-import { redirectError } from "../error/error-util";
+import IconLibrary from "../../images/capacity-building/ic-knowledge-library.svg";
+import IconLearning from "../../images/capacity-building/ic-capacity-building.svg";
+import IconExchange from "../../images/capacity-building/ic-exchange.svg";
+import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
 
 const { Option } = Select;
-// Global variabel
+// Global variable
 let tmid;
 
 const KnowledgeLibrary = ({
@@ -53,8 +56,29 @@ const KnowledgeLibrary = ({
   setStakeholderSignupModalVisible,
 }) => {
   const [filterVisible, setFilterVisible] = useState(false);
-  // const [listVisible, setListVisible] = useState(true);
+  const [listVisible, setListVisible] = useState(true);
   const [view, setView] = useState("map");
+
+  const sidebar = [
+    {
+      id: 1,
+      title: "LIBRARY",
+      url: "/knowledge-library",
+      icon: IconLibrary,
+    },
+    {
+      id: 2,
+      title: "LEARNING",
+      url: "/capacity-building",
+      icon: IconLearning,
+    },
+    {
+      id: 4,
+      title: "Case studies",
+      url: "/case-studies",
+      icon: IconCaseStudies,
+    },
+  ];
 
   const selectionValue = (
     <div className="selection-value">
@@ -75,10 +99,8 @@ const KnowledgeLibrary = ({
     countries,
     tags,
     transnationalOptions,
-    sectorOptions,
-    geoCoverageTypeOptions,
+
     representativeGroup,
-    languages,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -91,7 +113,6 @@ const KnowledgeLibrary = ({
   }));
 
   const [toggleButton, setToggleButton] = useState("list");
-  const { innerWidth } = window;
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -145,8 +166,8 @@ const KnowledgeLibrary = ({
       if (key === "startDate") {
         return `Start date ${value}`;
       }
-      if (key === "end-date") {
-        return `EndDate ${value}`;
+      if (key === "endDate") {
+        return `End date ${value}`;
       }
     };
     return Object.keys(query).map((key, index) => {
@@ -242,56 +263,52 @@ const KnowledgeLibrary = ({
           {/* Filter Drawer */}
           {filterVisible && (
             <FilterDrawer
+              query={query}
+              updateQuery={(flag, val) => updateQuery(flag, val)}
               filters={filters}
               filterVisible={filterVisible}
               setFilterVisible={setFilterVisible}
-              countData={countData}
-              query={query}
-              updateQuery={(flag, val) => updateQuery(flag, val)}
               multiCountryCountries={multiCountryCountries}
               setMultiCountryCountries={setMultiCountryCountries}
             />
           )}
-          <LeftSidebar active={1}>
+          <LeftSidebar active={1} sidebar={sidebar}>
             <Row className="resource-main-container">
               {/* Resource Main Content */}
-              {/* {listVisible && ( */}
+              {listVisible && (
+                <Col
+                  lg={10}
+                  md={9}
+                  sm={12}
+                  xs={24}
+                  style={
+                    view === "map"
+                      ? {
+                          backgroundColor: "rgba(237, 242, 247, 0.3)",
+                        }
+                      : {
+                          backgroundColor: "rgba(237, 242, 247, 1)",
+                          position: "unset",
+                        }
+                  }
+                  className="resource-list-container"
+                >
+                  {/* Resource List */}
+                  <ResourceList
+                    view={view}
+                    filters={filters}
+                    countData={countData}
+                    updateQuery={updateQuery}
+                    loading={loading}
+                    results={results}
+                    pageSize={pageSize}
+                    hideListButtonVisible={view === "map"}
+                    listVisible={listVisible}
+                    setListVisible={setListVisible}
+                  />
+                </Col>
+              )}
               <Col
-                lg={10}
-                md={9}
-                sm={12}
-                xs={24}
-                style={
-                  view === "map"
-                    ? {
-                        backgroundColor: "rgba(237, 242, 247, 0.3)",
-                      }
-                    : {
-                        backgroundColor: "rgba(237, 242, 247, 1)",
-                        position: "unset",
-                      }
-                }
-                className="resource-list-container"
-              >
-                {/* Resource List */}
-                <ResourceList
-                  view={view}
-                  filters={filters}
-                  // setListVisible={setListVisible}
-                  countData={countData}
-                  updateQuery={updateQuery}
-                  loading={loading}
-                  results={results}
-                  pageSize={pageSize}
-                  hideListButtonVisible={view === "map"}
-                />
-              </Col>
-              {/* // )} */}
-              {/* Map/Topic View */}
-              <Col
-                // lg={listVisible ? 14 : 24}
-                // md={listVisible ? 15 : 24}
-                // sm={listVisible ? 12 : 24}
                 lg={14}
                 md={15}
                 sm={12}
@@ -317,11 +334,10 @@ const KnowledgeLibrary = ({
                       updateQuery,
                       multiCountryCountries,
                       setMultiCountryCountries,
-                      // setListVisible,
-                      // listVisible,
+                      setListVisible,
                     }}
                     isFilteredCountry={filterCountries}
-                    // isDisplayedList={listVisible}
+                    isDisplayedList={listVisible}
                   />
                 ) : (
                   <>
@@ -346,6 +362,7 @@ const Search = withRouter(({ history, updateQuery }) => {
     } else {
       updateQuery("q", "");
     }
+    setSearch("");
   };
 
   return (
@@ -353,6 +370,7 @@ const Search = withRouter(({ history, updateQuery }) => {
       <Input
         className="input-src"
         placeholder="Search resources"
+        value={search}
         suffix={
           <Button
             onClick={() => handleSearch(search)}

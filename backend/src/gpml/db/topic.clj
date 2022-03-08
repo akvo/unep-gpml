@@ -23,6 +23,22 @@
                         "stakeholder" ["first_name" "last_name" "about"]
                         "organisation" ["name" "program" "contribution" "expertise"]}})
 
+(def ^:const table-rename-mapping
+  "Some topics like financing_resource and project aren't the real table
+  names we want to query. Therefore, when passing the following topic
+  options as tables we need to rename them to their proper source
+  table."
+  {"financing_resource" "resource"
+   "action_plan" "resource"
+   "technical_resource" "resource"
+   "project" "initiative"})
+
+(defn- rename-tables
+  [tables]
+  (let [tables-to-rename (filter #(some #{%} (keys table-rename-mapping)) tables)
+        renamed-tables (set (map #(get table-rename-mapping %) tables-to-rename))]
+    (concat renamed-tables (remove #(some #{%} tables-to-rename) tables))))
+
 ;;======================= Data queries =================================
 (def ^:const ^:private organisation-topic-data-geo-coverage-values-query
   "LEFT JOIN (
@@ -101,6 +117,17 @@
 (def ^:const ^:private event-topic-data-select-clause
   "SELECT
        e.description AS summary,
+       e.*,
+       geo.geo_coverage_values,
+       geo.geo_coverage_country_groups,
+       geo.geo_coverage_countries,
+       lang.languages,
+       tag.tags")
+
+(def ^:const ^:private technology-topic-data-select-clause
+  "SELECT
+       e.name AS title,
+       e.remarks AS summary,
        e.*,
        geo.geo_coverage_values,
        geo.geo_coverage_country_groups,
@@ -391,6 +418,10 @@
                                     from-clause lang-query tags-query
                                     geo-coverage-values-query order-by-clause]
 
+                           "technology" [technology-topic-data-select-clause
+                                         from-clause lang-query tags-query
+                                         geo-coverage-values-query order-by-clause]
+
                            [select-clause from-clause lang-query tags-query
                             geo-coverage-values-query order-by-clause])]
     (str/join " " query-statements)))
@@ -486,8 +517,13 @@
                             ""
                             (:tables opts))))
 
-(defn generate-topic-query [params opts]
-  (let [topic-data-ctes (generate-ctes :data params opts)
+
+
+(defn generate-topic-query
+  [params opts]
+  (let [opts (merge generic-cte-opts (when (seq (:tables opts))
+                                       (update opts :tables rename-tables)))
+        topic-data-ctes (generate-ctes :data params opts)
         topic-geo-coverage-ctes (generate-ctes :geo params opts)
         topic-search-text-ctes (generate-ctes :search-text params opts)
         topic-ctes (generate-ctes :topic params opts)
@@ -505,21 +541,24 @@
 (defn generate-get-topics
   [params]
   (if (:count-only? params)
-    "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic"
+    "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic
+     UNION ALL
+     SELECT 'gpml_member_entities' AS topic, COUNT(*)
+     FROM organisation
+     WHERE review_status='APPROVED' AND is_member=true
+     GROUP BY topic"
     (str/join
      " "
      (list
-      "SELECT * FROM cte_results"
-      (when (some? (:topic params))
-        "WHERE topic = ANY(ARRAY[:v*:topic]::VARCHAR[])")
-      "ORDER BY
+      "SELECT * FROM cte_results
+       ORDER BY
        (COALESCE(json->>'start_date', json->>'created'))::timestamptz DESC,
        (json->>'id')::int DESC"
       (format "LIMIT %s" (or (and (contains? params :limit) (:limit params)) 50))
       (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))))))
 
 (defn generate-filter-topic-snippet
-  [{:keys [favorites user-id tag transnational search-text geo-coverage resource-types geo-coverage-countries]}]
+  [{:keys [favorites user-id topic tag representative-group affiliation start-date end-date transnational search-text geo-coverage resource-types geo-coverage-countries]}]
   (let [geo-coverage? (seq geo-coverage)
         geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
@@ -534,6 +573,23 @@
           "JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != ''")
         "WHERE t.json->>'review_status'='APPROVED'"
         (when (seq search-text) " AND t.search_text @@ to_tsquery(:search-text)")
+        (when (seq affiliation)
+          " AND (t.json->'affiliation'->>'id')::int IN (:v*:affiliation)")
+        (when (seq representative-group)
+          " AND (t.json->>'type' IN (:v*:representative-group) OR t.json->>'representation' IN (:v*:representative-group))")
+        (when (seq topic)
+          " AND topic IN (:v*:topic)")
+        (when (and (= (count topic) 1)
+                   (= (first topic) "event"))
+          (cond
+            (and (seq start-date) (seq end-date))
+            " AND (TO_DATE(json->>'start_date', 'YYYY-MM-DD'), (TO_DATE(json->>'end_date', 'YYYY-MM-DD'))) OVERLAPS
+                (:start-date::date, :end-date::date)"
+            (seq start-date)
+            " AND TO_DATE(json->>'start_date', 'YYYY-MM-DD') >= :start-date::date"
+
+            (seq end-date)
+            " AND TO_DATE(json->>'end_date', 'YYYY-MM-DD') <= :end-date::date"))
         (cond
           (and geo-coverage? geo-coverage-countries?)
           " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))"

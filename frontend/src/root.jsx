@@ -53,6 +53,7 @@ import EntityFormView from "./modules/entity/view";
 import Workspace from "./modules/workspace/view";
 import EventPage from "./modules/event-page/view";
 import StakeholderDetail from "./modules/stakeholder-detail/view";
+import EntityDetail from "./modules/entity-detail/view";
 
 // Menu dropdown
 import AboutDropdownMenu from "./modules/dropdown-menu/about";
@@ -140,7 +141,7 @@ const disclaimerContent = {
   home: (
     <>
       <span>
-        The GPML Digital Platform Phase 2 is now live and currently a Beta
+        The GPML Digital Platform Phase 3 is now live and currently a Beta
         Version. Help us test the platform and let us know what you think at{" "}
         <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
           unep-gpmarinelitter@un.org
@@ -285,8 +286,20 @@ const Root = () => {
       "event",
       "financing_resource",
     ];
-    if (query.topic.length === 0) {
-      searchParms.set("topic", topic);
+    if (query?.topic?.length === 0) {
+      if (
+        (query?.startDate && query?.startDate?.length !== 0) ||
+        (query?.endDate && query?.endDate?.length !== 0)
+      ) {
+        searchParms.set("topic", "event");
+      } else if (
+        query?.hasOwnProperty("favorites") &&
+        query?.favorites === true
+      ) {
+        searchParms.set("topic", []);
+      } else {
+        searchParms.set("topic", topic);
+      }
     }
     const url = `/browse?${String(searchParms)}`;
     api
@@ -352,6 +365,18 @@ const Root = () => {
       }
       clearTimeout(tmid);
       tmid = setTimeout(getResults(query), 1000);
+    }
+
+    if (
+      multiCountryCountries.length === 0 &&
+      query?.transnational?.length !== 0 &&
+      history.location.pathname === "/knowledge-library"
+    ) {
+      updateQuery("transnational", []);
+    }
+
+    if (history.location.pathname === "/knowledge-library") {
+      updateQuery("favorites", false);
     }
     // NOTE: Since we are using `history` and `location`, the
     // dependency needs to be []. Ignore the linter warning, because
@@ -467,7 +492,9 @@ const Root = () => {
           <Route
             exact
             path="/about-us"
-            render={(props) => <AboutUs {...props} />}
+            render={(props) => (
+              <AboutUs {...props} countData={countData} filters={filters} />
+            )}
           />
           <Route
             exact
@@ -627,7 +654,7 @@ const Root = () => {
 
           <Route
             path="/profile"
-            render={(props) => <ProfileView {...{ ...props }} />}
+            render={(props) => <ProfileView {...{ ...props, relations }} />}
           />
           <Route
             path="/entity-signup"
@@ -686,10 +713,13 @@ const Root = () => {
           <Route
             exact
             render={(props) => (
-              <StakeholderOverview {...props} loginWithPopup={loginWithPopup} />
+              <StakeholderOverview
+                {...props}
+                loginWithPopup={loginWithPopup}
+                filters={filters}
+                setFilters={setFilters}
+              />
             )}
-            filters={filters}
-            setFilters={setFilters}
             path="/stakeholder-overview"
           />
           <Route
@@ -719,7 +749,7 @@ const Root = () => {
           <Route
             path="/:type(organisation)/:id"
             render={(props) => (
-              <DetailsView
+              <EntityDetail
                 {...props}
                 setStakeholderSignupModalVisible={
                   setStakeholderSignupModalVisible

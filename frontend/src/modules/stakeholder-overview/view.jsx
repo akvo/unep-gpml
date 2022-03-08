@@ -15,10 +15,16 @@ import isEmpty from "lodash/isEmpty";
 import UnathenticatedPage from "./unathenticatedPage";
 
 // Components
-import LeftSidebar from "./leftSidebar";
+import LeftSidebar from "../left-sidebar/LeftSidebar";
 import ProfileCard from "./card";
 import Header from "./header";
 import FilterDrawer from "./filterDrawer";
+import MapView from "./mapView";
+
+// Icons
+import IconEvent from "../../images/events/event-icon.svg";
+import IconForum from "../../images/events/forum-icon.svg";
+import IconCommunity from "../../images/events/community-icon.svg";
 
 let tmid;
 
@@ -43,6 +49,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     offering: s.tags.offering,
     stakeholders: s.stakeholders?.stakeholders,
   }));
+  const [filterCountries, setFilterCountries] = useState([]);
   const { isAuthenticated, isLoading } = useAuth0();
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
@@ -51,10 +58,12 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
   const [filterVisible, setFilterVisible] = useState(false);
   const query = useQuery();
-
+  const [view, setView] = useState("card");
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
+  const [organisationCount, setOrganisationCount] = useState(0);
+  const [GPMLMemberCount, setGPMLMemberCount] = useState(0);
 
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -69,36 +78,55 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     languages: s.languages,
   }));
 
+  if (suggestedProfiles.length > 4) {
+    suggestedProfiles.length = 4;
+  }
+
+  const resultCounts =
+    results.length + ((filters?.page && pageSize * filters?.page) || 0);
+
+  const sidebar = [
+    { id: 1, title: "Events", url: "/events", icon: IconEvent },
+    {
+      id: 2,
+      title: "Community",
+      url: "/stakeholder-overview",
+      icon: IconCommunity,
+    },
+    { id: 3, title: "Forums", url: null, icon: IconForum },
+  ];
+
   const sortPeople = () => {
     const sortSuggestedProfiles = suggestedProfiles.sort((a, b) => {
       if (!isAscending) {
-        if (a.firstName) {
-          return a.firstName.localeCompare(b.firstName);
+        if (a?.firstName) {
+          return a?.firstName?.trim().localeCompare(b?.firstName?.trim());
         } else {
-          return a.name.localeCompare(b.name);
+          return a?.name?.trim().localeCompare(b?.name?.trim());
         }
       } else {
-        if (b.firstName) {
-          return b.firstName.localeCompare(a.firstName);
+        if (b?.firstName) {
+          return b?.firstName?.trim().localeCompare(a?.firstName?.trim());
         } else {
-          return b.name.localeCompare(a.name);
+          return b?.name?.trim().localeCompare(a?.name?.trim());
         }
       }
     });
 
     setSuggestedProfiles(sortSuggestedProfiles);
+
     const sortByName = results.sort((a, b) => {
       if (!isAscending) {
-        if (a.firstName) {
-          return a.firstName.localeCompare(b.firstName);
+        if (a?.firstName) {
+          return a?.firstName?.trim().localeCompare(b?.firstName?.trim());
         } else {
-          return a.name.localeCompare(b.name);
+          return a?.name?.trim().localeCompare(b?.name?.trim());
         }
       } else {
-        if (b.firstName) {
-          return b.firstName.localeCompare(a.firstName);
+        if (b?.firstName) {
+          return b?.firstName?.trim().localeCompare(a?.firstName?.trim());
         } else {
-          return b.name.localeCompare(a.name);
+          return b?.name?.trim().localeCompare(a?.name?.trim());
         }
       }
     });
@@ -111,7 +139,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     api
       .get(url)
       .then((resp) => {
-        const sortSuggestedProfile = [...resp?.data?.suggestedProfiles].sort(
+        const sortSuggestedProfile = resp?.data?.suggestedProfiles.sort(
           (a, b) => Date.parse(b?.created) - Date.parse(a?.created)
         );
 
@@ -123,57 +151,75 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   };
 
   const getResults = (query) => {
-    const topic = ["stakeholder", "organisation"];
-
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
-    if (query.topic.length === 0) {
-      searchParms.set("topic", topic);
-    }
-    const url = `/browse?${String(searchParms)}`;
+
+    const url = `/community?${String(searchParms)}`;
     api
       .get(url)
       .then((resp) => {
         const result = resp?.data?.results;
-
         const organisationType = resp?.data?.counts?.find(
-          (count) => count?.topic === "organisation"
+          (count) => count?.networkType === "organisation"
         );
+
         const stakeholderType = resp?.data?.counts?.find(
-          (count) => count?.topic === "stakeholder"
+          (count) => count?.networkType === "stakeholder"
         );
+
+        const GPMLMemberCounts = resp?.data?.counts?.find(
+          (count) => count?.networkType === "gpml_member_entities"
+        );
+        setGPMLMemberCount(GPMLMemberCounts.count);
+
         setResults(
           [...result]
             .sort((a, b) => Date.parse(b?.created) - Date.parse(a?.created))
             .sort((a, b) => b?.type.localeCompare(a?.type))
         );
+
         if (
-          query?.topic.length === 1 &&
-          query?.topic.includes("organisation")
+          query?.networkType.length === 1 &&
+          query?.networkType.includes("organisation")
         ) {
           setResultCount(organisationType?.count || 0);
         } else if (
-          query?.topic.length === 1 &&
-          query?.topic.includes("stakeholder")
+          query?.networkType.length === 1 &&
+          query?.networkType.includes("stakeholder")
         ) {
           setResultCount(stakeholderType?.count);
-        } else if (query?.topic.length === 0) {
-          setResultCount(organisationType?.count + stakeholderType?.count || 0);
         } else {
-          setResultCount(organisationType?.count + stakeholderType?.count || 0);
+          setResultCount(
+            organisationType?.count + stakeholderType?.count ||
+              organisationType?.count ||
+              0 + stakeholderType?.count ||
+              0
+          );
         }
 
         setLoading(false);
       })
       .catch((err) => {
         console.error(err);
-        redirectError(err, history);
+        // redirectError(err, history);
       });
+  };
+
+  const getOrganisation = () => {
+    const searchParms = new URLSearchParams(window.location.search);
+    searchParms.set("networkType", "organisation");
+    const url = `/community?${String(searchParms)}`;
+    api.get(url).then((resp) => {
+      const organisationType = resp?.data?.counts?.find(
+        (count) => count?.networkType === "organisation"
+      );
+      setOrganisationCount(organisationType?.count);
+    });
   };
 
   const itemCount = loading
     ? 0
-    : filters?.offset !== undefined
+    : filters?.page !== undefined
     ? resultCount
     : pageSize;
 
@@ -189,9 +235,23 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   }, [isLoading, isValidUser]); // eslint-disable-line
 
   useEffect(() => {
+    // setFilterCountries if user click from map to browse view
+    query?.country &&
+      query?.country.length > 0 &&
+      setFilterCountries(query?.country);
+
+    // Manage filters display
+    !filters && setFilters(query);
+    if (filters) {
+      setFilters({ ...filters, topic: query.topic, tag: query.tag });
+      setFilterCountries(filters?.country);
+    }
+
     setTimeout(() => {
       getSuggestedProfiles();
+      getOrganisation();
     }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValidUser]);
 
   const updateQuery = (param, value, paramValueArr) => {
@@ -205,21 +265,27 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       paramValueArr.forEach((pv) => {
         const { param, value } = pv;
         newQuery[param] = value;
-        if (param !== "offset") {
-          newQuery["offset"] = 0;
+        if (param !== "page") {
+          newQuery["page"] = 0;
         }
       });
     } else {
       newQuery[param] = value;
-      if (param !== "offset") {
-        newQuery["offset"] = 0;
+      if (param !== "page") {
+        newQuery["page"] = 0;
       }
     }
+
+    newQuery["tag"] = [newQuery["offering"], newQuery["seeking"]].flat();
+
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
     history.push(`/stakeholder-overview?${newParams.toString()}`);
     clearTimeout(tmid);
     tmid = setTimeout(getResults(newQuery), 1000);
+    if (param === "country") {
+      setFilterCountries(value);
+    }
   };
 
   // Here is the function to render filter tag
@@ -231,13 +297,12 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         );
         return findOrganisation?.name;
       }
-      if (key === "is_member") {
-        const findEntity = entityRoleOptions.find((x) => x == value);
-        const name = humps.decamelize(findEntity);
+      if (key === "isMember") {
+        const name = humps.decamelize("Owner");
         return entityName(name);
       }
 
-      if (key === "topic") {
+      if (key === "networkType") {
         return value === "stakeholder" ? "Individual" : "Entity";
       }
 
@@ -246,7 +311,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         return findCountry?.name;
       }
 
-      if (key === "geoCoverage") {
+      if (key === "geoCoverageType") {
         const findGeoCoverage = geoCoverageTypeOptions?.find((x) => ({
           value: x,
           label: x,
@@ -262,11 +327,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "seeking") {
-        const findSeeking = seeking.find((seek) => seek?.id == value);
+        const findSeeking = seeking.find((seek) => seek?.tag == value);
         return findSeeking?.tag;
       }
       if (key === "offering") {
-        const findOffering = offering.find((offer) => offer?.id == value);
+        const findOffering = offering.find((offer) => offer?.tag == value);
         return findOffering?.tag;
       }
     };
@@ -274,13 +339,14 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       // don't render if key is limit and offset
       if (
         key === "limit" ||
-        key === "offset" ||
+        key === "page" ||
         key === "q" ||
         key === "favorites"
       ) {
         return;
       }
-      return query?.[key]
+
+      return key !== "tag" && query?.[key]
         ? query?.[key]?.map((x) => (
             <Tag
               className="result-box"
@@ -309,14 +375,16 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     Boolean(!isEmpty(stakeholders) && !isEmpty(organisations));
 
   return (
-    <div id="stakeholder-overview">
+    <div id="stakeholder-overview" className="stakeholder-overview">
       {!isValidUser && <UnathenticatedPage loginWithPopup={loginWithPopup} />}
       <div className={isValidUser ? "" : "blur"}>
         {isValidUser && (
           <Header
+            view={view}
+            setView={setView}
             filterVisible={filterVisible}
-            isAscending={isAscending}
             setFilterVisible={setFilterVisible}
+            isAscending={isAscending}
             renderFilterTag={renderFilterTag}
             sortPeople={sortPeople}
             updateQuery={updateQuery}
@@ -330,83 +398,106 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             entities={entityRoleOptions}
             filterVisible={filterVisible}
             setFilterVisible={setFilterVisible}
+            organisationCount={organisationCount}
+            GPMLMemberCount={GPMLMemberCount}
+            setFilterCountries={setFilterCountries}
           />
 
-          <LeftSidebar isValidUser={isValidUser} />
-          <Col lg={22} xs={24} order={2}>
-            {/* Suggested profiles */}
-            {isValidUser && !isEmpty(suggestedProfiles) && (
-              <Col className="card-container green">
-                <h3 className="title text-white ui container">
-                  Suggested profiles
-                </h3>
+          <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>
+            <Col lg={24} xs={24} order={2}>
+              {view === "card" ? (
+                <div
+                  style={{ height: results.length === pageSize && "1138.17px" }}
+                >
+                  {/* Suggested profiles */}
+                  {isValidUser && !isEmpty(suggestedProfiles) && (
+                    <Col className="card-container green">
+                      <h3 id="title" className="title text-white ui container">
+                        Suggested profiles
+                      </h3>
 
-                {isEmpty(suggestedProfiles) ? (
-                  <h2 className="loading" id="stakeholder-loading">
-                    <LoadingOutlined spin /> Loading
-                  </h2>
-                ) : !isEmpty(suggestedProfiles) ? (
-                  <div className="card-wrapper ui container">
-                    {suggestedProfiles.length > 0 &&
-                      suggestedProfiles
-                        .slice(0, 4)
-                        .map((profile) => (
-                          <ProfileCard
-                            key={profile?.id}
-                            profile={profile}
-                            isValidUser={isValidUser}
-                          />
-                        ))}
-                  </div>
-                ) : (
-                  <h2 className="loading">There is no data to display</h2>
-                )}
-              </Col>
-            )}
-            {/* All profiles */}
-            <Col className="all-profiles">
-              {!isLoaded() || loading ? (
-                <h2 className="loading" id="stakeholder-loading">
-                  <LoadingOutlined spin /> Loading
-                </h2>
-              ) : isLoaded() && !loading && !isEmpty(results) ? (
-                <>
-                  <div className="result-number">
-                    {resultCount > pageSize + Number(filters?.offset)
-                      ? pageSize + Number(filters?.offset)
-                      : itemCount}{" "}
-                    of {resultCount || 0} result{resultCount > 1 ? "s" : ""}
-                  </div>
-                  <div className="card-wrapper ui container">
-                    {results.map((profile) => (
-                      <ProfileCard
-                        key={profile?.id}
-                        profile={profile}
-                        isValidUser={isValidUser}
-                      />
-                    ))}
-                  </div>
-                </>
+                      {isEmpty(suggestedProfiles) ? (
+                        <h2 className="loading" id="stakeholder-loading">
+                          <LoadingOutlined spin /> Loading
+                        </h2>
+                      ) : !isEmpty(suggestedProfiles) ? (
+                        <div className="card-wrapper ui container">
+                          {suggestedProfiles.length > 0 &&
+                            suggestedProfiles
+                              .slice(0, 4)
+                              .map((profile) => (
+                                <ProfileCard
+                                  key={profile?.id}
+                                  profile={profile}
+                                  isValidUser={isValidUser}
+                                  profileType="suggested-profiles"
+                                />
+                              ))}
+                        </div>
+                      ) : (
+                        <h2 className="loading">There is no data to display</h2>
+                      )}
+                    </Col>
+                  )}
+                  {/* All profiles */}
+                  <Col className="all-profiles">
+                    {!isLoaded() || loading ? (
+                      <h2 className="loading" id="stakeholder-loading">
+                        <LoadingOutlined spin /> Loading
+                      </h2>
+                    ) : isLoaded() && !loading && !isEmpty(results) ? (
+                      <>
+                        <div className="result-number">
+                          {resultCount > pageSize + Number(filters?.page)
+                            ? resultCounts
+                            : itemCount}{" "}
+                          of {resultCount || 0} result
+                          {resultCount > 1 ? "s" : ""}
+                        </div>
+                        <div className="card-wrapper ui container">
+                          {results.map((profile) => (
+                            <ProfileCard
+                              key={profile?.id}
+                              profile={profile}
+                              isValidUser={isValidUser}
+                              profileType="all-profiles"
+                            />
+                          ))}
+                        </div>
+                      </>
+                    ) : (
+                      <h2 className="loading">There is no data to display</h2>
+                    )}
+                    {/* Pagination */}
+                    <div className="page">
+                      {!isEmpty(results) && isValidUser && (
+                        <Pagination
+                          defaultCurrent={1}
+                          current={
+                            1 +
+                            (query?.page.length !== 0
+                              ? Number(query?.page[0])
+                              : 0)
+                          }
+                          pageSize={pageSize}
+                          total={resultCount}
+                          showSizeChanger={false}
+                          onChange={(n) => {
+                            updateQuery("page", n - 1);
+                          }}
+                        />
+                      )}
+                    </div>
+                  </Col>
+                </div>
               ) : (
-                <h2 className="loading">There is no data to display</h2>
+                <MapView
+                  updateQuery={updateQuery}
+                  isFilteredCountry={filterCountries}
+                />
               )}
-              {/* Pagination */}
-              <div className="page">
-                {!isEmpty(results) && isValidUser && (
-                  <Pagination
-                    defaultCurrent={1}
-                    current={(filters?.offset || 0) / pageSize + 1}
-                    pageSize={pageSize}
-                    total={resultCount}
-                    showSizeChanger={false}
-                    onChange={(n, size) =>
-                      updateQuery("offset", (n - 1) * size)
-                    }
-                  />
-                )}
-              </div>
             </Col>
-          </Col>
+          </LeftSidebar>
         </Row>
       </div>
     </div>

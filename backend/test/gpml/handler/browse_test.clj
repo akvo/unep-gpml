@@ -2,13 +2,14 @@
   (:require [clojure.string :as str]
             [clojure.test :refer [deftest testing is are use-fixtures]]
             [gpml.constants :refer [topics]]
-            [gpml.handler.browse :as browse]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.favorite :as db.favorite]
-            [gpml.fixtures :as fixtures]
-            [gpml.test-util :as test-util]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.topic-test :as db.topic-test]
+            [gpml.fixtures :as fixtures]
+            [gpml.handler.browse :as browse]
             [gpml.seeder.main :as seeder]
+            [gpml.test-util :as test-util]
+            [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
             [malli.core :as malli]
             [ring.mock.request :as mock]))
@@ -17,7 +18,7 @@
 
 (deftest query-params
   (testing "Country query parameter validation"
-    (let [valid? #(malli/validate [:re browse/country-re] %)]
+    (let [valid? #(malli/validate [:re util.regex/comma-separated-numbers-re] %)]
       (are [expected value] (= expected (valid? value))
         true "0,107"
         true "170,102"
@@ -164,7 +165,7 @@
             body (-> resp :body)
             results (:results body)
             counts (:counts body)]
-        (is (= 0 (count results)))
+        (is (= limit (count results)))
         (is (= 1 (count counts)))
         (is (= (-> counts first :topic) "technology"))))
 
@@ -173,12 +174,12 @@
                         (assoc
                          :approved? true
                          :user sth
-                         :parameters {:query {:topic "stakeholder"}}))
+                         :parameters {:query {:topic "stakeholder,technology"}}))
             resp (handler request)
             body (-> resp :body)
             results (:results body)
             counts (:counts body)]
-        (is (= 1 (count results)))
+        (is (= limit (count results)))
         (is (= (:id sth) (-> results first :id)))
         (is (= 2 (count counts)))
         (is (= #{"technology" "stakeholder"} (set (map :topic counts))))))

@@ -11,11 +11,37 @@ import SlideNext from "../../images/capacity-building/slide-next.svg";
 import DropdownIcon from "../../images/case-studies/ic_dropdown.svg";
 import { titleCase } from "../../utils/string";
 
+import IconLibrary from "../../images/capacity-building/ic-knowledge-library.svg";
+import IconLearning from "../../images/capacity-building/ic-capacity-building.svg";
+import IconExchange from "../../images/capacity-building/ic-exchange.svg";
+import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
+
 const { Header, Content } = Layout;
 
 const CaseStudies = () => {
   const [indexSlide, setIndexSlide] = useState(0);
   const caseStudyReff = useRef();
+
+  const sidebar = [
+    {
+      id: 1,
+      title: "LIBRARY",
+      url: "/knowledge-library",
+      icon: IconLibrary,
+    },
+    {
+      id: 2,
+      title: "LEARNING",
+      url: "/capacity-building",
+      icon: IconLearning,
+    },
+    {
+      id: 4,
+      title: "Case studies",
+      url: "/case-studies",
+      icon: IconCaseStudies,
+    },
+  ];
 
   const slider = useRef();
   const prev = () => {
@@ -47,6 +73,7 @@ const CaseStudies = () => {
                 suffixIcon={
                   <img src={DropdownIcon} style={{ width: 30, height: 30 }} />
                 }
+                virtual={false}
                 size="large"
                 value={indexSlide}
               >
@@ -84,12 +111,11 @@ const CaseStudies = () => {
       </Col>
       <Col span={24}>
         <div className="">
-          <LeftSidebar active={4}>
+          <LeftSidebar active={4} sidebar={sidebar}>
             <Carousel
               dots={false}
               ref={slider}
               afterChange={(index) => setIndexSlide(index)}
-              effect="fade"
             >
               {datastudies?.map((c, cx) => (
                 <CaseStudy {...c} key={cx} />

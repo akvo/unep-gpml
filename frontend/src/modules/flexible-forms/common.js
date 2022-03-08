@@ -162,6 +162,14 @@ const getSchema = ({
     prop.S5.properties.S5_G1.properties[
       "S5_G2_7.2"
     ].items.enumNames = meaOptions?.map((x) => x.name);
+
+    // country options
+    prop.S4.properties.S4_G2.properties["S4_G2_23"].enum = countries?.map(
+      (x) => x.id
+    );
+    prop.S4.properties.S4_G2.properties["S4_G2_23"].enumNames = countries?.map(
+      (x) => x.name
+    );
   } else {
     // geocoverage national options
     // prop.S4.properties.S4_G2.properties[
@@ -172,6 +180,13 @@ const getSchema = ({
     // ].enumNames = countries?.map((x) => x.name);
 
     // geocoverage transnational options
+    prop.S4.properties.S4_G2.properties["country"].enum = countries?.map(
+      (x) => x.id
+    );
+    prop.S4.properties.S4_G2.properties["country"].enumNames = countries?.map(
+      (x) => x.name
+    );
+
     prop.S4.properties.S4_G2.properties[
       "geoCoverageValueTransnational"
     ].enum = transnationalOptions?.map((x) => String(x.id));

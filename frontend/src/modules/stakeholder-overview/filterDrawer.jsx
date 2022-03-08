@@ -12,7 +12,6 @@ import { ReactComponent as BusinessIcon } from "../../images/stakeholder-overvie
 import { ReactComponent as AchievementIcon } from "../../images/stakeholder-overview/medal-icon.svg";
 import { ReactComponent as AgreementIcon } from "../../images/stakeholder-overview/agreement-icon.svg";
 import { ReactComponent as GPMLLogo } from "../../images/stakeholder-overview/gpml-logo.svg";
-
 import { ReactComponent as CommunityIcon } from "../../images/stakeholder-overview/community-outlined.svg";
 import { ReactComponent as UnionIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
@@ -22,7 +21,9 @@ const FilterDrawer = ({
   entities,
   query,
   updateQuery,
-  stakeholder,
+  organisationCount,
+  GPMLMemberCount,
+  setFilterCountries,
 }) => {
   const {
     countries,
@@ -34,11 +35,9 @@ const FilterDrawer = ({
     seeking,
     offering,
   } = UIStore.useState((s) => ({
-    profile: s.profile,
     countries: s.countries,
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    mainContentType: s.mainContentType,
     representativeGroup: s.sectorOptions,
     stakeholders: s.stakeholders?.stakeholders,
     organisations: s.organisations,
@@ -51,20 +50,6 @@ const FilterDrawer = ({
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
     !isEmpty(representativeGroup);
-
-  const handleChangeType = (flag, type) => {
-    const val = query[flag];
-
-    let updateVal = [];
-    if (isEmpty(val)) {
-      updateVal = [type];
-    } else if (val.includes(type)) {
-      updateVal = val.filter((x) => x !== type);
-    } else {
-      updateVal = [...val, type];
-    }
-    updateQuery(flag, updateVal);
-  };
 
   const entityIcon = (name) => {
     if (name.toLowerCase() === "owner") {
@@ -92,14 +77,28 @@ const FilterDrawer = ({
 
   const filterQueries = [
     "country",
-    "topic",
+    "networkType",
     "representativeGroup",
-    "geoCoverage",
+    "geoCoverageType",
     "seeking",
     "offering",
     "affiliation",
-    "is_member",
+    "isMember",
   ];
+
+  const handleChangeType = (flag, type) => {
+    const val = query[flag];
+
+    let updateVal = [];
+    if (isEmpty(val)) {
+      updateVal = [type];
+    } else if (val.includes(type)) {
+      updateVal = val.filter((x) => x !== type);
+    } else {
+      updateVal = [...val, type];
+    }
+    updateQuery(flag, updateVal);
+  };
 
   const countryOpts = countries
     .filter((country) => country.description === "Member State")
@@ -125,14 +124,14 @@ const FilterDrawer = ({
           <Col span={24}>
             <Space align="middle">
               <div className="filter-title">Network type</div>
-              {isEmpty("") ? (
+              {isEmpty(query?.networkType) ? (
                 <Tag className="selection-card-type">All (default)</Tag>
               ) : (
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClose={() => updateQuery("topic", [])}
-                  onClick={() => updateQuery("topic", [])}
+                  onClose={() => updateQuery("networkType", [])}
+                  onClick={() => updateQuery("networkType", [])}
                 >
                   Clear selection
                 </Tag>
@@ -140,18 +139,27 @@ const FilterDrawer = ({
             </Space>
 
             <Row type="flex" gutter={[10, 10]}>
-              {networkTypes.map((type) => {
+              {networkTypes.map((networkType) => {
                 return (
-                  <Col span={6} key={type}>
+                  <Col span={6} key={networkType}>
                     <Card
-                      onClick={() => handleChangeType("topic", type)}
+                      onClick={() =>
+                        handleChangeType("networkType", networkType)
+                      }
                       className={classNames("drawer-card", {
-                        active: query?.topic?.includes(type),
+                        active: query?.networkType?.includes(networkType),
                       })}
                     >
                       <Space direction="vertical" align="center">
-                        {networkIcon(type)}
-                        <div className="topic-text">{networkNames(type)}</div>
+                        {networkIcon(networkType)}
+                        <div className="topic-text">
+                          {networkNames(networkType)}
+                        </div>
+                        <div className="topic-text topic-counts">
+                          {networkType === "organisation"
+                            ? organisationCount
+                            : stakeholders?.length}
+                        </div>
                       </Space>
                     </Card>
                   </Col>
@@ -159,41 +167,6 @@ const FilterDrawer = ({
               })}
             </Row>
           </Col>
-
-          {/* Specificity */}
-          {/* <Col span={24} className="specificity-card">
-            <Space align="middle">
-              <div className="filter-title">Specificity</div>
-              {isEmpty("") ? (
-                <Tag className="selection-card-type">All (default)</Tag>
-              ) : (
-                <Tag
-                  className="clear-selection"
-                  closable={true}
-                  onClose={() => updateQuery("entity", [])}
-                  onClick={() => updateQuery("entity", [])}
-                >
-                  Clear selection
-                </Tag>
-              )}
-            </Space>
-
-            <Row type="flex" gutter={[10, 10]}>
-              <p className="specificity-title">For individuals</p>
-              <Col span={6}>
-                <Card
-                  className={classNames("drawer-card", {
-                    active: query?.entity?.includes(""),
-                  })}
-                >
-                  <Space direction="vertical" align="center">
-                    <Badge />
-                    <div className="topic-text">Experts</div>
-                  </Space>
-                </Card>
-              </Col>
-            </Row>
-          </Col> */}
 
           {/* For entities */}
           <Col span={24} className="specificity-card">
@@ -219,14 +192,21 @@ const FilterDrawer = ({
                   name && (
                     <Col span={6} key={entity}>
                       <Card
-                        onClick={() => handleChangeType("is_member", entity)}
+                        onClick={() => handleChangeType("isMember", "true")}
                         className={classNames("drawer-card", {
-                          active: query?.is_member.length > 0,
+                          active: query?.isMember.includes("true"),
                         })}
                       >
-                        <Space direction="vertical" align="center">
+                        <Space
+                          direction="vertical"
+                          align="center"
+                          className="for-entity"
+                        >
                           {entityIcon(name)}
                           <div className="topic-text">{entityName(name)}</div>
+                          <div className="topic-text topic-counts">
+                            {GPMLMemberCount}
+                          </div>
                         </Space>
                       </Card>
                     </Col>
@@ -255,11 +235,14 @@ const FilterDrawer = ({
             title="Geo-coverage"
             options={
               isLoaded()
-                ? geoCoverageTypeOptions?.map((x) => ({ value: x, label: x }))
+                ? geoCoverageTypeOptions?.map((x) => ({
+                    value: x,
+                    label: x,
+                  }))
                 : []
             }
-            value={query?.geoCoverage || []}
-            flag="geoCoverage"
+            value={query?.geoCoverageType || []}
+            flag="geoCoverageType"
             query={query}
             updateQuery={updateQuery}
           />
@@ -274,25 +257,15 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
 
-          {/* Goals */}
-          {/* <MultipleSelectFilter
-            title="Goals"
-            options={[]}
-            value={query?.goal || []}
-            flag="goal"
-            query={query}
-            updateQuery={updateQuery}
-          /> */}
-
           {/*Expertise to offer*/}
           <MultipleSelectFilter
             title="What expertises are they offering?"
             options={
               isLoaded()
-                ? offering?.map((x) => ({ value: x.id, label: x.tag }))
+                ? offering?.map((x) => ({ value: x.tag, label: x.tag }))
                 : []
             }
-            value={query?.offering?.map((x) => parseInt(x)) || []}
+            value={query?.offering || []}
             flag="offering"
             query={query}
             updateQuery={updateQuery}
@@ -303,10 +276,10 @@ const FilterDrawer = ({
             title="What expertises are they seeking?"
             options={
               isLoaded()
-                ? seeking?.map((x) => ({ value: x.id, label: x.tag }))
+                ? seeking?.map((x) => ({ value: x.tag, label: x.tag }))
                 : []
             }
-            value={query?.seeking?.map((x) => parseInt(x)) || []}
+            value={query?.seeking || []}
             flag="seeking"
             query={query}
             updateQuery={updateQuery}
@@ -328,19 +301,13 @@ const FilterDrawer = ({
 
           <Col className="drawer-button-wrapper">
             <Button
-              className="show-stakeholder-btn"
-              onClick={() => handleChangeType("topic", "stakeholder")}
-            >
-              Show stakeholders ({stakeholders?.length})
-            </Button>
-            <Button
               className="clear-all-btn"
               onClick={() => {
                 const paramValueArr = filterQueries.map((query) => ({
                   param: query,
                   value: [],
                 }));
-
+                setFilterCountries([]);
                 updateQuery(null, null, paramValueArr);
               }}
             >

@@ -7,14 +7,6 @@ const useQuery = () => {
     transnational: [],
     topic: [],
     tag: [],
-    startDate: [],
-    endDate: [],
-    // sector: [],
-    // goal: [],
-    representativeGroup: [],
-    // geoCoverage: [],
-    // language: [],
-    // rating: [],
     q: "",
   };
   for (var key of srcParams.keys()) {
