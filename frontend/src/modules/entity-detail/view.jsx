@@ -507,7 +507,7 @@ const StakeholderDetail = ({
               </CardComponent>
             )}
           </div>
-          <div>
+          {/* <div>
             {bookedResources.length > 0 && (
               <CardComponent
                 title={"Individuals"}
@@ -540,7 +540,7 @@ const StakeholderDetail = ({
                 </div>
               </CardComponent>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

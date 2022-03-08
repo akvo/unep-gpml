@@ -15,7 +15,6 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
   const isLoaded = () => !isEmpty(landing?.map);
   const [multiCountry, setMultiCountry] = useState(null);
   const [country, setCountry] = useState(null);
-
   const clickCountry = (name) => {
     const val = query["country"];
     let updateVal = [];
