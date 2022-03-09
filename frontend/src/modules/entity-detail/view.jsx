@@ -47,7 +47,6 @@ import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
-import ProfileCard from "../stakeholder-overview/card";
 
 const getType = (type) => {
   let t = "";
@@ -463,32 +462,38 @@ const StakeholderDetail = ({
                               <h4>{item.type}</h4>
                               <h6>{item.title}</h6>
                             </div>
-                            <div className="connection-wrapper">
-                              <Avatar.Group
-                                maxCount={2}
-                                maxPopoverTrigger="click"
-                                size="large"
-                                maxStyle={{
-                                  color: "#f56a00",
-                                  backgroundColor: "#fde3cf",
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <Avatar src={AvatarImage} />
-                                <Avatar src={AvatarImage} />
-                                <Tooltip title="Ant User" placement="top">
-                                  <Avatar
-                                    style={{ backgroundColor: "#87d068" }}
-                                    icon={<UserOutlined />}
-                                  />
-                                </Tooltip>
-                              </Avatar.Group>
-                              <Link to={`/${getType(item.type)}/${item.id}`}>
-                                <div className="read-more">
-                                  Read More <ArrowRightOutlined />
+                            {item.stakeholderConnections &&
+                              item.stakeholderConnections.length > 0 && (
+                                <div className="connection-wrapper">
+                                  <Avatar.Group
+                                    maxCount={2}
+                                    maxPopoverTrigger="click"
+                                    size="large"
+                                    maxStyle={{
+                                      color: "#f56a00",
+                                      backgroundColor: "#fde3cf",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {item.stakeholderConnections.map((item) => (
+                                      <Avatar
+                                        src={
+                                          item?.image
+                                            ? item.image
+                                            : `https://ui-avatars.com/api/?size=480&name=${item.stakeholder}`
+                                        }
+                                      />
+                                    ))}
+                                  </Avatar.Group>
+                                  <Link
+                                    to={`/${getType(item.type)}/${item.id}`}
+                                  >
+                                    <div className="read-more">
+                                      Read More <ArrowRightOutlined />
+                                    </div>
+                                  </Link>
                                 </div>
-                              </Link>
-                            </div>
+                              )}
                           </div>
                         </div>
                       </Col>
@@ -507,7 +512,7 @@ const StakeholderDetail = ({
               </CardComponent>
             )}
           </div>
-          {/* <div>
+          <div>
             {bookedResources.length > 0 && (
               <CardComponent
                 title={"Individuals"}
@@ -517,30 +522,55 @@ const StakeholderDetail = ({
                   borderRadius: "none",
                 }}
               >
-                <div style={{ padding: "0 10px" }}>
-                  <div className="card-wrapper ui container">
+                <div style={{ padding: "0 10px" }} className="individuals">
+                  <Row
+                    gutter={[16, 16]}
+                    style={{ width: "100%", justifyContent: "space-between" }}
+                  >
                     {bookedResources.map((item) => (
-                      <ProfileCard
-                        key={item?.id}
-                        profile={item}
-                        isValidUser={true}
-                        profileType="suggested-profiles"
-                      />
+                      <Col xs={6} lg={7} key={item.id}>
+                        <div
+                          className="slider-card"
+                          onClick={() => {
+                            history.push({
+                              pathname: `/stakeholder/${item.id}`,
+                            });
+                          }}
+                        >
+                          <Row style={{ width: "100%" }}>
+                            <Col xs={6} lg={14}>
+                              <div className="profile-image">
+                                <img
+                                  src={
+                                    item?.picture
+                                      ? item?.picture
+                                      : `https://ui-avatars.com/api/?size=480&name=${item?.name}`
+                                  }
+                                  alt={`${item.name}`}
+                                />
+                              </div>
+                            </Col>
+                            <Col xs={6} lg={10}>
+                              <div className="profile-detail">
+                                <h3>{item.name}</h3>
+                                <p>
+                                  <span>
+                                    <img src={LocationImage} />
+                                  </span>
+                                  Location
+                                </p>
+                                <h5>{data?.name}</h5>
+                              </div>
+                            </Col>
+                          </Row>
+                        </div>
+                      </Col>
                     ))}
-                  </div>
-                  <div className="pagination-wrapper">
-                    <Pagination
-                      defaultCurrent={1}
-                      current={bookedResourcesPage + 1}
-                      pageSize={3}
-                      total={bookedResourcesCount || 0}
-                      onChange={(n, size) => getBookedResources(n - 1)}
-                    />
-                  </div>
+                  </Row>
                 </div>
               </CardComponent>
             )}
-          </div> */}
+          </div>
         </div>
       </div>
     </div>

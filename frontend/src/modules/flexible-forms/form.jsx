@@ -1049,9 +1049,11 @@ const FlexibleForm = withRouter(
               ].entity[0].hasOwnProperty("entity"))) === true &&
           setDisabledBtn({ disabled: false, type: "primary" });
         requiredFilledIn.length !== 0 &&
-          ((initialFormData?.currentState?.data.S4[
-            "S4_G5"
-          ].individual[0].hasOwnProperty("role") &&
+          ((initialFormData?.currentState?.data.S4["S4_G5"].individual.length >
+            0 &&
+            initialFormData?.currentState?.data.S4[
+              "S4_G5"
+            ].individual[0].hasOwnProperty("role") &&
             initialFormData?.currentState?.data.S4[
               "S4_G5"
             ].individual[0].hasOwnProperty("stakeholder")) ||

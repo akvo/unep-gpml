@@ -1420,7 +1420,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                               key={item.code}
                             >
                               <Radio.Button
-                                value="large"
                                 className="custom-radio"
                                 id={item.code}
                                 value={item.code}
