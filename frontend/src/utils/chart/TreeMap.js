@@ -94,17 +94,17 @@ const TreeMap = (data, extra, selected) => {
         },
         label: {
           formatter: function (params) {
-            const value = params.data.count;
-            const name = params.data.name.split(" ");
+            const value = params?.data?.count;
+            const name = params?.data?.name?.split(" ");
             let nameTmp = [];
-            if (name.length > 2) {
+            if (name && name.length > 2) {
               nameTmp.push(name[0]);
               nameTmp.push(name[1]);
               nameTmp = [nameTmp.join(" ")];
               nameTmp.push(name[2]);
               nameTmp = nameTmp.join("\n");
             } else {
-              nameTmp = name.join("\n");
+              nameTmp = name && name.join("\n");
             }
             return `{name|${nameTmp}}\n\n{value|${value}}`;
           },
