@@ -321,15 +321,17 @@ const Landing = withRouter(
                   type="TREEMAP"
                   height={675}
                   className="popular-topic-chart"
-                  data={sortPopularTopic.map((x) => {
-                    return {
-                      id: x.id,
-                      name: x.topic,
-                      value: x.count > 100 ? x.count : x.count + 50,
-                      count: x.count,
-                      tag: x.tag,
-                    };
-                  })}
+                  data={sortPopularTopic
+                    .filter((tag) => tag.count > 0)
+                    .map((x) => {
+                      return {
+                        id: x.id,
+                        name: x.topic,
+                        value: x.count > 100 ? x.count : x.count + 50,
+                        count: x.count,
+                        tag: x.tag,
+                      };
+                    })}
                   onEvents={{
                     click: (e) => handlePopularTopicChartClick(e),
                   }}
