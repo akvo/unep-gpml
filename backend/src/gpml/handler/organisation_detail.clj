@@ -66,9 +66,8 @@
           params {:id (-> parameters :path :id)
                   :limit limit
                   :offset (* limit page)}
-          members #_[{:id 1 :name "Dipti"}] (db.organisation-detail/get-org-members conn params)
-          members-count #_[{:count 1}]  (db.organisation-detail/get-org-members conn (assoc params :count-only? true))
-          ]
+          members (db.organisation-detail/get-org-members conn params)
+          members-count  (db.organisation-detail/get-org-members conn (assoc params :count-only? true))]
       (resp/response {:members members
                       :count (-> members-count first :count)}))))
 
