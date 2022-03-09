@@ -8,7 +8,9 @@
         },
         "summary": {
           "ui:placeholder": "Description",
-          "ui:widget": "textarea"
+          "ui:widget": "textarea",
+          "ui:maxLength": 400,
+          "ui:showCount": true
         },
         "url": {
           "ui:addOnBefore": "https://",
@@ -387,7 +389,9 @@
         },
         "summary": {
           "ui:placeholder": "Description",
-          "ui:widget": "textarea"
+          "ui:widget": "textarea",
+          "ui:maxLength": 400,
+          "ui:showCount": true
         },
         "url": {
           "ui:addOnBefore": "https://",
@@ -616,7 +620,9 @@
         },
         "summary": {
           "ui:placeholder": "Description",
-          "ui:widget": "textarea"
+          "ui:widget": "textarea",
+          "ui:maxLength": 400,
+          "ui:showCount": true
         },
         "url": {
           "ui:addOnBefore": "https://",
@@ -869,7 +875,9 @@
         },
         "summary": {
           "ui:placeholder": "Description",
-          "ui:widget": "textarea"
+          "ui:widget": "textarea",
+          "ui:maxLength": 400,
+          "ui:showCount": true
         },
         "url": {
           "ui:addOnBefore": "https://",
@@ -1103,7 +1111,9 @@
         },
         "summary": {
           "ui:placeholder": "Description",
-          "ui:widget": "textarea"
+          "ui:widget": "textarea",
+          "ui:maxLength": 400,
+          "ui:showCount": true
         },
         "url": {
           "ui:addOnBefore": "https://",
@@ -1320,7 +1330,9 @@
         },
         "summary": {
           "ui:placeholder": "Description",
-          "ui:widget": "textarea"
+          "ui:widget": "textarea",
+          "ui:maxLength": 400,
+          "ui:showCount": true
         },
         "url": {
           "ui:addOnBefore": "https://",
@@ -1542,7 +1554,9 @@
         },
         "summary": {
           "ui:placeholder": "Description",
-          "ui:widget": "textarea"
+          "ui:widget": "textarea",
+          "ui:maxLength": 400,
+          "ui:showCount": true
         },
         "url": {
           "ui:addOnBefore": "https://",
