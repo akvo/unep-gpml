@@ -533,7 +533,7 @@ const StakeholderDetail = ({
                           className="slider-card"
                           onClick={() => {
                             history.push({
-                              pathname: `/stakeholder-overview`,
+                              pathname: `/stakeholder/${item.id}`,
                             });
                           }}
                         >
