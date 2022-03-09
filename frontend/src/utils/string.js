@@ -4,23 +4,23 @@ const replace1 = /###/g;
 const replace2 = /·/g;
 
 export const TrimText = ({ text, max = 400 }) => {
-  if (text.length < max) {
+  if (text && text.length < max) {
     return <div>{text}</div>;
   }
 
   let escaped = [];
-  escaped = text.match(escapeRegex) || escaped;
+  escaped = (text && text.match(escapeRegex)) || escaped;
   escaped.forEach((x, i) => {
     const replacer = x.replace(/\s/g, "###");
-    text = text.replace(x, replacer);
+    text = text && text.replace(x, replacer);
   });
 
-  let arrayText = text.split(" ");
-  arrayText = arrayText.filter((x) => x.length);
+  let arrayText = text && text.split(" ");
+  arrayText = arrayText && arrayText.filter((x) => x.length);
   text = "";
   let startIndex = 0;
 
-  while (text.length < max - 1 && arrayText[startIndex]) {
+  while (text.length < max - 1 && arrayText && arrayText[startIndex]) {
     text +=
       arrayText[startIndex].replace(replace1, " ").replace(replace2, "") + " ";
     startIndex++;
