@@ -35,3 +35,10 @@ DO UPDATE SET modified = now(), remarks = EXCLUDED.remarks
     WHERE o.organisation = EXCLUDED.organisation
 --~ (format "AND o.%1$s = EXCLUDED.%1$s" (or (:column_name params) (:topic params)))
       AND o.association = EXCLUDED.association
+
+-- :name get-associations :*
+-- :doc Gets all associations between an individual or organisation and a topic
+SELECT id
+ FROM :i:table
+ WHERE :i:column_name = :topic_id
+
