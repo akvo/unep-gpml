@@ -407,7 +407,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             <Col lg={24} xs={24} order={2}>
               {view === "card" ? (
                 <div
-                  style={{ height: results.length === pageSize && "1138.17px" }}
+                  style={{
+                    minHeight: results.length === pageSize && "1138.17px",
+                  }}
                 >
                   {/* Suggested profiles */}
                   {isValidUser && !isEmpty(suggestedProfiles) && (
