@@ -33,7 +33,9 @@ const CountryTransnationalFilter = ({
 
   const countryOpts = isLoaded()
     ? countries
-        .filter((country) => country.description === "Member State")
+        .filter(
+          (country) => country.description.toLowerCase() === "member state"
+        )
         .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
     : [];
