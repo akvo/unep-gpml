@@ -49,7 +49,7 @@ const FilterDrawer = ({
     countries,
     transnationalOptions,
     geoCoverageTypeOptions,
-    representativeGroup,
+
     mainContentType,
   } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -57,9 +57,7 @@ const FilterDrawer = ({
     tags: s.tags,
     countries: s.countries,
     transnationalOptions: s.transnationalOptions,
-    sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    representativeGroup: s.sectorOptions,
     mainContentType: s.mainContentType,
   }));
   const { isAuthenticated } = useAuth0();
@@ -69,7 +67,6 @@ const FilterDrawer = ({
     !isEmpty(countries) &&
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
-    !isEmpty(representativeGroup) &&
     !isEmpty(mainContentType);
 
   const mainContentOptions = isLoaded()
@@ -162,15 +159,6 @@ const FilterDrawer = ({
     ? flatten(values(tags))
         ?.map((it) => ({ value: it.tag, label: it.tag }))
         ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
-    : [];
-
-  // populate options for representative group options
-  const representativeOpts = isLoaded()
-    ? flatten(
-        [...representativeGroup]
-          ?.map((x) => x)
-          ?.sort((repG1, repG2) => repG1?.localeCompare(repG2))
-      )
     : [];
 
   return (
@@ -306,18 +294,6 @@ const FilterDrawer = ({
             options={tagOpts || []}
             value={query?.tag?.map((x) => x) || []}
             flag="tag"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          <MultipleSelectFilter
-            title="Representative group"
-            options={
-              isLoaded()
-                ? representativeOpts?.map((x) => ({ value: x, label: x }))
-                : []
-            }
-            value={query?.representativeGroup || []}
-            flag="representativeGroup"
             query={query}
             updateQuery={updateQuery}
           />
