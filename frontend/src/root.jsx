@@ -141,7 +141,7 @@ const disclaimerContent = {
   home: (
     <>
       <span>
-        The GPML Digital Platform Phase 2 is now live and currently a Beta
+        The GPML Digital Platform Phase 3 is now live and currently a Beta
         Version. Help us test the platform and let us know what you think at{" "}
         <a style={{ color: "white" }} href="mailto:unep-gpmarinelitter@un.org">
           unep-gpmarinelitter@un.org
@@ -292,6 +292,11 @@ const Root = () => {
         (query?.endDate && query?.endDate?.length !== 0)
       ) {
         searchParms.set("topic", "event");
+      } else if (
+        query?.hasOwnProperty("favorites") &&
+        query?.favorites === true
+      ) {
+        searchParms.set("topic", []);
       } else {
         searchParms.set("topic", topic);
       }
@@ -368,6 +373,10 @@ const Root = () => {
       history.location.pathname === "/knowledge-library"
     ) {
       updateQuery("transnational", []);
+    }
+
+    if (history.location.pathname === "/knowledge-library") {
+      updateQuery("favorites", false);
     }
     // NOTE: Since we are using `history` and `location`, the
     // dependency needs to be []. Ignore the linter warning, because
@@ -645,7 +654,7 @@ const Root = () => {
 
           <Route
             path="/profile"
-            render={(props) => <ProfileView {...{ ...props }} />}
+            render={(props) => <ProfileView {...{ ...props, relations }} />}
           />
           <Route
             path="/entity-signup"

@@ -126,7 +126,7 @@ const CountryTransnationalFilter = ({
 
 const ResourcesInfo = (data) => {
   const dataToDisplay = {
-    initiative: data?.data?.initiative,
+    project: data?.data?.project,
     actionPlan: data?.data?.actionPlan,
     policy: data?.data?.policy,
     technicalResource: data?.data?.technicalResource,
