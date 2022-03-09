@@ -14,14 +14,12 @@
 
 (def ^:const generic-cte-opts
   "Common set of options for all CTE generation functions."
-  {:tables ["event" "technology" "policy" "initiative" "resource" "stakeholder" "organisation"]
+  {:tables ["event" "technology" "policy" "initiative" "resource"]
    :search-text-fields {"event" ["title" "description" "remarks"]
                         "technology" ["name"]
                         "policy" ["title" "original_title" "abstract" "remarks"]
                         "initiative" ["q2" "q3"]
-                        "resource" ["title" "summary" "remarks"]
-                        "stakeholder" ["first_name" "last_name" "about"]
-                        "organisation" ["name" "program" "contribution" "expertise"]}})
+                        "resource" ["title" "summary" "remarks"]}})
 
 (def ^:const table-rename-mapping
   "Some topics like financing_resource and project aren't the real table
@@ -40,18 +38,6 @@
     (concat renamed-tables (remove #(some #{%} tables-to-rename) tables))))
 
 ;;======================= Data queries =================================
-(def ^:const ^:private organisation-topic-data-geo-coverage-values-query
-  "LEFT JOIN (
-       SELECT
-           og.organisation,
-           json_agg(COALESCE(c.iso_code, (cg.name)::bpchar)) AS geo_coverage_values
-       FROM
-            organisation_geo_coverage og
-            LEFT JOIN country c ON og.country = c.id
-            LEFT JOIN country_group cg ON og.country_group = cg.id
-    GROUP BY
-        og.organisation) geo ON e.id = geo.organisation")
-
 (def ^:const ^:private resource-topic-data-organisations-query
   "LEFT JOIN (
         SELECT
@@ -63,9 +49,6 @@
     GROUP BY
         ro.resource
    ) orgs ON e.id = orgs.resource")
-
-(def ^:const ^:private stakeholder-topic-data-organisation-query
-  "LEFT JOIN organisation o ON e.affiliation = o.id")
 
 (def ^:const ^:private generic-topic-data-select-clause
   "SELECT
@@ -134,45 +117,6 @@
        geo.geo_coverage_countries,
        lang.languages,
        tag.tags")
-
-(def ^:const ^:private stakeholder-topic-data-select-clause
-  "SELECT
-       e.id,
-       e.picture,
-       e.title,
-       e.first_name,
-       e.last_name,
-       CASE WHEN (e.public_email = TRUE) THEN
-           e.email
-       ELSE
-           ''::text
-       END AS email,
-       e.linked_in,
-       e.twitter,
-       e.url,
-       e.representation,
-       e.about,
-       e.geo_coverage_type,
-       e.created,
-       e.modified,
-       e.reviewed_at,
-       e.role,
-       e.cv,
-       e.reviewed_by,
-       e.review_status,
-       e.public_email,
-       e.country,
-       e.organisation_role,
-       geo.geo_coverage_values,
-       row_to_json(o.*) AS affiliation,
-       tag.tags,
-       geo.geo_coverage_country_groups,
-       geo.geo_coverage_countries")
-
-(def ^:const ^:private organisation-topic-data-select-clause
-  "SELECT
-       e.*,
-       geo.geo_coverage_values")
 
 (def ^:const ^:private resource-topic-data-organisations-field
   "orgs.organisations")
@@ -285,23 +229,18 @@
      where-cond])))
 
 ;;======================= Search Text queries =================================
-(def ^:const ^:private organisation-topic-search-text-where-cond
-  "WHERE (organisation.review_status = 'APPROVED'::public.review_status)")
-
 (defn generic-topic-search-text-query
-  [tsvector-str entity-name where-cond]
+  [tsvector-str entity-name]
   (format
    "SELECT
        id,
        to_tsvector('english'::regconfig, %s) AS search_text
     FROM
         %s
-    %s
     ORDER BY
         created"
    tsvector-str
-   entity-name
-   where-cond))
+   entity-name))
 
 (defn generic-topic-search-text-field-query
   [entity-name search-text-field]
@@ -401,15 +340,6 @@
                                          from-clause initiative-topic-data-tags-query
                                          geo-coverage-values-query order-by-clause]
 
-                           "stakeholder" [stakeholder-topic-data-select-clause from-clause
-                                          tags-query geo-coverage-values-query
-                                          stakeholder-topic-data-organisation-query
-                                          order-by-clause]
-
-                           "organisation" [organisation-topic-data-select-clause
-                                           from-clause organisation-topic-data-geo-coverage-values-query
-                                           order-by-clause]
-
                            "policy" [policy-topic-data-select-clause
                                      from-clause lang-query tags-query
                                      geo-coverage-values-query order-by-clause]
@@ -448,12 +378,9 @@
   the content table is `organisation` a `WHERE` condition is
   added. See `organisation-topic-search-text-where-cond`."
   [entity-name _ opts]
-  (let [where-cond (if-not (= "organisation" entity-name)
-                     ""
-                     organisation-topic-search-text-where-cond)
-        search-text-fields (get-in opts [:search-text-fields entity-name])
+  (let [search-text-fields (get-in opts [:search-text-fields entity-name])
         tsvector-str (generate-tsvector-str entity-name search-text-fields)]
-    (generic-topic-search-text-query tsvector-str entity-name where-cond)))
+    (generic-topic-search-text-query tsvector-str entity-name)))
 
 (defn build-topic-query
   "Generates SQL statements for querying topic information.
@@ -516,8 +443,6 @@
                                   (str cte-query " UNION ALL "))))
                             ""
                             (:tables opts))))
-
-
 
 (defn generate-topic-query
   [params opts]
