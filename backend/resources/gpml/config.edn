@@ -422,26 +422,33 @@
                                                  :responses {200 {:body #ig/ref :gpml.handler.activity/get-response}}
                                                  :handler #ig/ref :gpml.handler.activity/get-recent}}]]
                                         ["/connections"
-                                         ["/{topic-type}/{stakeholder-type}/{connection-id}"
-                                          {:delete {:summary "Delete the stakeholder connection entry"
-                                                    :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                 #ig/ref :gpml.auth/auth-required]
-                                                    :swagger {:tags ["stakeholder association"]}
-                                                    :parameters {:path [:map
-                                                                        [:stakeholder-type #ig/ref :gpml.handler.stakeholder-association/types]
-                                                                        [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                        [:connection-id int?]]}
-                                                    :handler #ig/ref :gpml.handler.stakeholder-association/delete}
-                                           :put {:summary "Update the stakeholder connection entry"
-                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required]
-                                                 :swagger {:tags ["stakeholder association"]}
-                                                 :parameters {:path [:map
-                                                                     [:stakeholder-type #ig/ref :gpml.handler.stakeholder-association/types]
-                                                                     [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                     [:connection-id int?]]
-                                                              :body #ig/ref :gpml.handler.stakeholder-association/put-params}
-                                                 :handler #ig/ref :gpml.handler.stakeholder-association/put}}]]
+                                         ["/{topic-type}"
+                                          ["/{topic-id}"
+                                           {:post {:summary "Insert or update stakeholder connections"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required
+                                                                #ig/ref :gpml.auth/approved-user]
+                                                   :swagger {:tags ["stakeholder association"]}
+                                                   :parameters
+                                                   {:path [:map
+                                                           [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                           [:topic-id int?]]
+                                                    :body #ig/ref :gpml.handler.stakeholder-association/post-params}
+                                                   :handler #ig/ref :gpml.handler.stakeholder-association/post}}]
+                                          ["/{stakeholder-type}/{connection-id}"
+                                           {:delete {:summary "Delete the stakeholder connection entry"
+                                                     :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                  #ig/ref :gpml.auth/auth-required
+                                                                  #ig/ref :gpml.auth/approved-user]
+                                                     :swagger {:tags ["stakeholder association"]}
+                                                     :parameters
+                                                     {:path
+                                                      [:map
+                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                       [:stakeholder-type
+                                                        #ig/ref :gpml.handler.stakeholder-association/types]
+                                                       [:connection-id int?]]}
+                                                     :handler #ig/ref :gpml.handler.stakeholder-association/delete}}]]]
                                         ["/community"
                                          {:get {:summary "Browse community members"
                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
@@ -535,9 +542,9 @@
   :gpml.handler.stakeholder-association/get-associated-topics {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder-association/get-associated-topics-params {}
   :gpml.handler.stakeholder-association/delete {:db #ig/ref :duct.database/sql}
-  :gpml.handler.stakeholder-association/put {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder-association/post {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder-association/types {}
-  :gpml.handler.stakeholder-association/put-params {}
+  :gpml.handler.stakeholder-association/post-params {}
 
   :gpml.handler.stakeholder/suggested-profiles {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/suggested-profiles-params {}

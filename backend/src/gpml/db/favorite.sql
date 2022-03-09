@@ -26,7 +26,6 @@ UPDATE :i:table SET modified=now(),
 --~ (#'gpml.sql-util/generate-update-stakeholder-association params)
  WHERE id = :id;
 
-
 -- :name new-organisation-association :!
 -- :doc Upserts a new relation between an organisation and a topic
 --~ (format "INSERT INTO organisation_%1$s AS o (organisation, %2$s, association, remarks)" (:topic params) (or (:column_name params) (:topic params)))
