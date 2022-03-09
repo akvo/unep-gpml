@@ -482,8 +482,18 @@
       (format "LIMIT %s" (or (and (contains? params :limit) (:limit params)) 50))
       (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))))))
 
+(defn- geo-coverage-values-generic-cond
+  [geo-coverage-value-param]
+  (format
+   "(SELECT COUNT(*)
+     FROM json_array_elements_text((CASE WHEN (json->>'geo_coverage_values' = '') IS NOT FALSE THEN '[]'::JSON
+                                         ELSE (json->>'geo_coverage_values')::JSON END))
+     WHERE value::TEXT IN (:v*:%s)) > 0" geo-coverage-value-param))
+
 (defn generate-filter-topic-snippet
-  [{:keys [favorites user-id topic tag representative-group affiliation start-date end-date transnational search-text geo-coverage resource-types geo-coverage-countries]}]
+  [{:keys [favorites user-id topic tag representative-group affiliation
+           start-date end-date _transnational search-text geo-coverage
+           resource-types geo-coverage-countries]}]
   (let [geo-coverage? (seq geo-coverage)
         geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
@@ -494,8 +504,6 @@
           "JOIN v_stakeholder_association a ON a.stakeholder = :user-id AND a.id = (t.json->>'id')::int AND (a.topic = t.topic OR (a.topic = 'resource' AND t.topic IN (:v*:resource-types)))")
         (when (seq tag)
           "JOIN json_array_elements(t.json->'tags') tags ON true JOIN json_each_text(tags) tag ON LOWER(tag.value) = ANY(ARRAY[:v*:tag]::varchar[])")
-        (when (seq transnational)
-          "JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != ''")
         "WHERE t.json->>'review_status'='APPROVED'"
         (when (seq search-text) " AND t.search_text @@ to_tsquery(:search-text)")
         (when (seq affiliation)
@@ -517,13 +525,14 @@
             " AND TO_DATE(json->>'end_date', 'YYYY-MM-DD') <= :end-date::date"))
         (cond
           (and geo-coverage? geo-coverage-countries?)
-          " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))"
+          (str " AND " (geo-coverage-values-generic-cond "geo-coverage-countries"))
 
           geo-coverage?
-          " AND (t.geo_coverage IN (:v*:geo-coverage)
-            OR t.json->>'geo_coverage_type'='transnational' AND t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:transnational))"
+          (str " AND (t.geo_coverage IN (:v*:geo-coverage)
+                 OR t.json->>'geo_coverage_type'='transnational'
+                 AND " (geo-coverage-values-generic-cond "transnational") ")")
 
           geo-coverage-countries?
-          " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))")
+          (str " AND " (geo-coverage-values-generic-cond "geo-coverage-countries")))
         ;; NOTE: Empty strings in the tags column cause problems with using json_array_elements
         (when (seq tag) " AND t.json->>'tags' <> ''")))))
