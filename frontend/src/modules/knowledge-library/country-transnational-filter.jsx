@@ -79,6 +79,7 @@ const CountryTransnationalFilter = ({
         <Select
           showSearch
           allowClear
+          virtual={false}
           mode={multiCountrySelectMode || ""}
           placeholder="Multi-Country"
           optionFilterProp="children"
