@@ -6,6 +6,7 @@ import {
   ArrowRightOutlined,
   RiseOutlined,
   UserOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import Chart from "../../utils/chart";
@@ -311,7 +312,7 @@ const Landing = withRouter(
           </div>
           <div className="body">
             <div className="chart-wrapper">
-              {sortPopularTopic.length !== 0 && (
+              {sortPopularTopic.length !== 0 ? (
                 <Chart
                   key="popular-topic"
                   title=""
@@ -334,6 +335,10 @@ const Landing = withRouter(
                   }}
                   selected={selectedTopic}
                 />
+              ) : (
+                <div className="loading">
+                  <LoadingOutlined spin /> Loading
+                </div>
               )}
             </div>
             {!isMobileScreen && (
