@@ -83,6 +83,11 @@
                             :type "string"
                             :allowEmptyValue true}}
     string?]
+   [:subContentType {:optional true
+                     :swagger {:description "Comma separated list of a topic's subContentTypes"
+                               :type "string"
+                               :allowEmptyValue true}}
+    string?]
    [:limit {:optional true
             :swagger {:description "Limit the number of entries per page"
                       :type "int"
@@ -95,7 +100,8 @@
     [:int {:min 0}]]])
 
 (defn get-db-filter
-  [{:keys [q transnational country affiliation representativeGroup startDate endDate topic tag favorites user-id limit offset]}]
+  [{:keys [limit offset startDate endDate user-id favorites country transnational
+           topic tag affiliation representativeGroup subContentType q]}]
   (cond-> {}
     offset
     (assoc :offset offset)
@@ -130,6 +136,9 @@
 
     (seq representativeGroup)
     (assoc :representative-group (set (str/split representativeGroup #",")))
+
+    (seq subContentType)
+    (assoc :sub-content-type (set (str/split subContentType #",")))
 
     (seq q)
     (assoc :search-text (->> (str/trim q)

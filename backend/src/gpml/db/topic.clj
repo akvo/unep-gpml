@@ -493,7 +493,7 @@
 (defn generate-filter-topic-snippet
   [{:keys [favorites user-id topic tag representative-group affiliation
            start-date end-date _transnational search-text geo-coverage
-           resource-types geo-coverage-countries]}]
+           resource-types geo-coverage-countries sub-content-type]}]
   (let [geo-coverage? (seq geo-coverage)
         geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
@@ -512,6 +512,8 @@
           " AND (t.json->>'type' IN (:v*:representative-group) OR t.json->>'representation' IN (:v*:representative-group))")
         (when (seq topic)
           " AND topic IN (:v*:topic)")
+        (when (seq sub-content-type)
+          " AND t.json->>'sub_content_type' IS NOT NULL AND t.json->>'sub_content_type' IN (:v*:sub-content-type)")
         (when (and (= (count topic) 1)
                    (= (first topic) "event"))
           (cond
