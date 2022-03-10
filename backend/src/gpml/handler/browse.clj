@@ -1,6 +1,6 @@
 (ns gpml.handler.browse
   (:require [clojure.string :as str]
-            [gpml.constants :refer [topics resource-types approved-user-topics]]
+            [gpml.constants :refer [topics resource-types]]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.event :as db.event]
             [gpml.db.initiative :as db.initiative]
