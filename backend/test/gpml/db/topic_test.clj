@@ -54,7 +54,6 @@
   (let [db (test-util/db-test-conn)
         _ (seeder/seed db {:country? true
                            :technology? true})
-        stakeholder-id (db.stakeholder/new-stakeholder db (make-profile "John" "Doe" "mail@org.com"))
         event-id (db.event/new-event db (event-sample db))]
     (testing "Simple text search"
       (is (not-empty (db.topic/get-topics db {:search-text "plastic"}))))
