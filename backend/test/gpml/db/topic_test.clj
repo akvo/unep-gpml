@@ -78,16 +78,6 @@
       (is (empty? (db.topic/get-topics db {:topic #{"policy"}}))))
     (testing "Filtering of unapproved events"
       (is (empty? (db.topic/get-topics db {:topic #{"event"}}))))
-    (testing "Filtering by stakeholders"
-      (is (empty? (db.topic/get-topics db {:topic #{"stakeholder"}}))))
-    (testing "Filtering of approved stakeholders"
-      (is (not-empty (do
-                       ;; Approve an event
-                       (db.stakeholder/update-stakeholder-status
-                        db
-                        (merge stakeholder-id {:review_status "APPROVED"}))
-                       (db.topic/get-topics db {:search-text "Lorem"
-                                                 :topic #{"stakeholder"}})))))
     (testing "Filtering of approved events"
       (is (not-empty (do
                        ;; Approve an event
