@@ -1,10 +1,7 @@
 (ns gpml.handler.stakeholder-association
   (:require [gpml.db.stakeholder-association :as db.stakeholder-association]
             [integrant.core :as ig]
-            [ring.util.response :as resp]
-            [gpml.db.favorite :as db.favorite]
-            [gpml.constants :as constants]
-            [clojure.java.jdbc :as jdbc]))
+            [ring.util.response :as resp]))
 
 (def ^:const associations
   #{"owner" "implementor" "partner" "donor" "interested in"})
