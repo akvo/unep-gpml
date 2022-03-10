@@ -575,26 +575,34 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     if (name === "stakeholderConnections") {
       res =
         value.length > 0
-          ? value.map((x) => ({ role: x.role, stakeholder: x.stakeholderId }))
+          ? value.map((x) => ({
+              role: x.role,
+              stakeholder: x.stakeholderId,
+              id: x.id,
+            }))
           : [{}];
     }
     if (name === "stakeholder_connections") {
       res =
         value.length > 0
-          ? value.map((x) => ({ role: x.role, stakeholder: x.stakeholder_id }))
+          ? value.map((x) => ({
+              role: x.role,
+              stakeholder: x.stakeholder_id,
+              id: x.id,
+            }))
           : [{}];
     }
 
     if (name === "entityConnections") {
       res =
         value.length > 0
-          ? value.map((x) => ({ role: x.role, entity: x.entityId }))
+          ? value.map((x) => ({ role: x.role, entity: x.entityId, id: x.id }))
           : [{}];
     }
     if (name === "entity_connections") {
       res =
         value.length > 0
-          ? value.map((x) => ({ role: x.role, entity: x.entity_id }))
+          ? value.map((x) => ({ role: x.role, entity: x.entity_id, id: x.id }))
           : [{}];
     }
 
@@ -666,8 +674,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     if (type === "item-array" && isObject && isArray) {
       res = value;
     }
-    console.log(name);
-    console.log(value);
     return res;
   };
 
@@ -717,25 +723,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
       if (state?.state.type === "initiative") {
         api.getRaw(`/initiative/${dataId}`).then((d) => {
-          // let newData = [];
-          // if (d.data.organisations) {
-          //   newData = d.data.organisations.map((item) => {
-          //     return {
-          //       role: "owner",
-          //       entityId: item.id,
-          //     };
-          //   });
-          // }
-          // d.data = {
-          //   ...d.data,
-          //   url:
-          //     d.data.languages && d.data.languages.length > 0
-          //       ? d.data.languages[0].url
-          //       : d.data.url,
-          //   entity_connections: [...d.data.entity_connections, ...newData],
-          // };
           initialFormData.update((e) => {
             e.data = revertFormData(JSON.parse(d.data));
+            e.editId = true;
+            e.type = "project";
           });
         });
       } else {
@@ -760,6 +751,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
           initialFormData.update((e) => {
             e.data = revertFormData(d.data);
+            e.editId = true;
+            e.type = state?.state.type;
           });
         });
       }
