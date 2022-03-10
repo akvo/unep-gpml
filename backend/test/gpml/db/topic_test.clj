@@ -4,7 +4,6 @@
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.event :as db.event]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.topic :as db.topic]
             [gpml.fixtures :as fixtures]
             [gpml.seeder.main :as seeder]
