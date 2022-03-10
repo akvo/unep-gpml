@@ -14,7 +14,6 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
   const box = document.getElementsByClassName("stakeholder-overview");
   const isLoaded = () => !isEmpty(landing?.map);
   const [multiCountry, setMultiCountry] = useState(null);
-
   const clickCountry = (name) => {
     const val = query["country"];
     let updateVal = [];

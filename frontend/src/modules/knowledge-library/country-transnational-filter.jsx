@@ -129,13 +129,23 @@ const CountryTransnationalFilter = ({
 
 const ResourcesInfo = (data) => {
   const dataToDisplay = {
-    project: data?.data?.project,
-    actionPlan: data?.data?.actionPlan,
-    policy: data?.data?.policy,
-    technicalResource: data?.data?.technicalResource,
-    financingResource: data?.data?.financingResource,
-    event: data?.data?.event,
-    technology: data?.data?.technology,
+    project: data?.data?.counts?.project,
+    actionPlan: data?.data?.counts?.actionPlan,
+    policy: data?.data?.counts?.policy,
+    technicalResource: data?.data?.counts?.technicalResource,
+    financingResource: data?.data?.counts?.financingResource,
+    event: data?.data?.counts?.event,
+    technology: data?.data?.counts?.technology,
+  };
+
+  const transantionalResources = {
+    project: data?.data?.transnationalCounts?.project,
+    actionPlan: data?.data?.transnationalCounts?.actionPlan,
+    policy: data?.data?.transnationalCounts?.policy,
+    technicalResource: data?.data?.transnationalCounts?.technicalResource,
+    financingResource: data?.data?.transnationalCounts?.financingResource,
+    event: data?.data?.transnationalCounts?.event,
+    technology: data?.data?.transnationalCounts?.technology,
   };
 
   return (
@@ -147,6 +157,11 @@ const ResourcesInfo = (data) => {
             <li key={topic}>
               <span>{topicNames(topic)}</span>:{" "}
               <b>{dataToDisplay?.[topic] ? dataToDisplay[topic] : 0}</b>
+              <b>
+                {" "}
+                {transantionalResources?.[topic] > 0 &&
+                  `(${transantionalResources[topic]})`}
+              </b>
             </li>
           )
         );

@@ -112,7 +112,7 @@
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
-    [:geo_coverage_value_subnational_city string?]
+    [:geo_coverage_value_subnational_city {:optional true} string?]
     [:country {:optional true} integer?]
     [:city {:optional true} string?]
     [:url {:optional true} string?]

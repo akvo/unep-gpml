@@ -45,18 +45,37 @@ const ToolTipContent = ({ data, geo, path }) => {
   const dataToDisplay = () => {
     if (path === KNOWLEDGE_LIBRARY) {
       return {
-        project: data?.project,
-        actionPlan: data?.actionPlan,
-        policy: data?.policy,
-        technicalResource: data?.technicalResource,
-        financingResource: data?.financingResource,
-        event: data?.event,
-        technology: data?.technology,
+        project: data?.counts?.project,
+        actionPlan: data?.counts?.actionPlan,
+        policy: data?.counts?.policy,
+        technicalResource: data?.counts?.technicalResource,
+        financingResource: data?.counts?.financingResource,
+        event: data?.counts?.event,
+        technology: data?.counts?.technology,
       };
     } else {
       return {
-        organisation: data?.organisation,
-        stakeholder: data?.stakeholder,
+        organisation: data?.counts?.organisation,
+        stakeholder: data?.counts?.stakeholder,
+      };
+    }
+  };
+
+  const transnationalData = () => {
+    if (path === KNOWLEDGE_LIBRARY) {
+      return {
+        project: data?.transnationalCounts?.project,
+        actionPlan: data?.transnationalCounts?.actionPlan,
+        policy: data?.transnationalCounts?.policy,
+        technicalResource: data?.transnationalCounts?.technicalResource,
+        financingResource: data?.transnationalCounts?.financingResource,
+        event: data?.transnationalCounts?.event,
+        technology: data?.transnationalCounts?.technology,
+      };
+    } else {
+      return {
+        organisation: data?.transnationalCounts?.organisation,
+        stakeholder: data?.transnationalCounts?.stakeholder,
       };
     }
   };
@@ -86,12 +105,18 @@ const ToolTipContent = ({ data, geo, path }) => {
             dataToDisplayPerPath() && (
               <li key={topic}>
                 <span>{topicNames(topic)}</span>
-                <b>{dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}</b>
+                <b className="tooltip-counts">
+                  {dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}
+                  {transnationalData()?.[topic] > 0 && (
+                    <div> ({transnationalData()?.[topic]})</div>
+                  )}
+                </b>
               </li>
             )
           );
         })}
       </ul>
+      <b className="tooltip-note">* Transnational resources in ()</b>
     </div>
   );
 };
@@ -188,7 +213,6 @@ const Maps = ({
   topic,
   isLoaded,
   clickEvents,
-  // country,
   multiCountries,
   listVisible,
   isDisplayedList,
@@ -254,19 +278,19 @@ const Maps = ({
       const values = () => {
         if (path === KNOWLEDGE_LIBRARY) {
           return sumValues({
-            actionPlan: curr?.actionPlan,
-            event: curr?.event,
-            financingResource: curr?.financingResource,
-            policy: curr?.policy,
-            project: curr?.project,
-            technicalResource: curr?.technicalResource,
-            technology: curr?.technology,
+            actionPlan: curr?.counts?.actionPlan,
+            event: curr?.counts?.event,
+            financingResource: curr?.counts?.financingResource,
+            policy: curr?.counts?.policy,
+            project: curr?.counts?.project,
+            technicalResource: curr?.counts?.technicalResource,
+            technology: curr?.counts?.technology,
           });
         }
         if (path === STAKEHOLDER_OVERVIEW) {
           return sumValues({
-            organisation: curr?.organisation,
-            stakeholder: curr?.stakeholder,
+            organisation: curr?.counts?.organisation,
+            stakeholder: curr?.counts?.stakeholder,
           });
         }
       };
@@ -401,8 +425,8 @@ const Maps = ({
                               : geo.properties.MAP_COLOR === selected
                               ? "#84b4cc"
                               : fillColor(
-                                  curr(topic, findData, path)
-                                    ? curr(topic, findData, path)
+                                  curr(topic, findData?.counts, path)
+                                    ? curr(topic, findData?.counts, path)
                                     : 0
                                 )
                           }
@@ -478,25 +502,25 @@ const Maps = ({
                                 selectionCondition()
                                 ? "#84b4cc"
                                 : fillColor(
-                                    curr(topic, findData, path)
-                                      ? curr(topic, findData, path)
+                                    curr(topic, findData?.counts, path)
+                                      ? curr(topic, findData?.counts, path)
                                       : 0
                                   )
                               : fillColor(
-                                  curr(topic, findData, path)
-                                    ? curr(topic, findData, path)
+                                  curr(topic, findData?.counts, path)
+                                    ? curr(topic, findData?.counts, path)
                                     : 0
                                 )
                               ? selectionCondition()
                                 ? "#84b4cc"
                                 : fillColor(
-                                    curr(topic, findData, path)
-                                      ? curr(topic, findData, path)
+                                    curr(topic, findData?.counts, path)
+                                      ? curr(topic, findData?.counts, path)
                                       : 0
                                   )
                               : fillColor(
-                                  curr(topic, findData, path)
-                                    ? curr(topic, findData, path)
+                                  curr(topic, findData?.counts, path)
+                                    ? curr(topic, findData?.counts, path)
                                     : 0
                                 )
                           }

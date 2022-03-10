@@ -594,33 +594,55 @@
 (defn update-resource-logo [conn image image-type resource-id]
   (-update-resource-picture conn image image-type resource-id true))
 
-(defn expand-entity-associations
-  [entity-connections table resource-id]
-  (vec (for [connection entity-connections]
-         {:column_name table
-          :topic table
-          :topic_id resource-id
-          :organisation (:entity connection)
-          :association (:role connection)
-          :remarks nil})))
+(defn expand-associations
+  [connections stakeholder-type topic topic-id]
+  (vec (for [connection connections]
+         (let [{:keys [id role]} connection
+               stakeholder-type-column (if (= stakeholder-type "organisation")
+                                         {:organisation (:entity connection)}
+                                         {:stakeholder (:stakeholder connection)})]
+           (if (pos-int? id)
+             {:id id
+              :table (str stakeholder-type "_" topic)
+              :topic topic
+              :updates (merge stakeholder-type-column {(keyword topic) topic-id
+                                                       :association role})}
+             (merge stakeholder-type-column {:column_name topic
+                                             :topic topic
+                                             :topic_id topic-id
+                                             :association role
+                                             :remarks nil}))))))
 
-(defn expand-individual-associations
-  [individual-connections table resource-id]
-  (vec (for [connection individual-connections]
-         {:column_name table
-          :topic table
-          :topic_id resource-id
-          :stakeholder (:stakeholder connection)
-          :association (:role connection)
-          :remarks nil})))
+(defn get-association-query-params [stakeholder-type topic topic-id]
+  {:column_name topic
+   :topic_id topic-id
+   :table (str stakeholder-type "_" topic)})
 
-(defn update-resource-entity-connections [conn entity_connections table resource-id]
-  (doseq [association (expand-entity-associations entity_connections table resource-id)]
-    (db.favorite/new-organisation-association conn association)))
-
-(defn update-resource-individual-connections [conn individual_connections table resource-id]
-  (doseq [association (expand-individual-associations individual_connections table resource-id)]
-    (db.favorite/new-association conn association)))
+(defn update-resource-connections [conn entity_connections individual_connections topic resource-id]
+  (let [existing-ecs (db.favorite/get-associations conn (get-association-query-params "organisation" topic resource-id))
+        delete-ecs (vec (set/difference
+                          (into #{} (map #(:id %) existing-ecs))
+                          (into #{} (remove nil? (map #(:id %) entity_connections)))))
+        existing-ics (db.favorite/get-associations conn (get-association-query-params "stakeholder" topic resource-id))
+        delete-ics (vec (set/difference
+                          (into #{} (map #(:id %) existing-ics))
+                          (into #{} (remove nil? (map #(:id %) individual_connections)))))]
+    (when-not (empty? delete-ecs)
+      (db.favorite/delete-associations conn {:table (str "organisation_" topic)
+                                             :ids delete-ecs}))
+    (when-not (empty? delete-ics)
+      (db.favorite/delete-associations conn {:table (str "stakeholder_" topic)
+                                             :ids delete-ics}))
+    (when (not-empty individual_connections)
+      (doseq [association (expand-associations individual_connections "stakeholder" topic resource-id)]
+        (if (contains? association :id)
+          (db.favorite/update-stakeholder-association conn association)
+          (db.favorite/new-association conn association))))
+    (when (not-empty entity_connections)
+      (doseq [association (expand-associations entity_connections "organisation" topic resource-id)]
+        (if (contains? association :id)
+          (db.favorite/update-stakeholder-association conn association)
+          (db.favorite/new-organisation-association conn association))))))
 
 (defn update-resource [conn topic-type id updates]
   (let [table (cond
@@ -663,10 +685,7 @@
     (update-resource-geo-coverage-values conn table id updates)
     (when (contains? #{"resource"} table)
       (update-resource-organisation conn table id org-id))
-    (when (contains? updates :entity_connections)
-      (update-resource-entity-connections conn (:entity_connections updates) table id))
-    (when (contains? updates :individual_connections)
-      (update-resource-individual-connections conn (:individual_connections updates) table id))
+    (update-resource-connections conn (:entity_connections updates) (:individual_connections updates) table id)
     status))
 
 (defn update-initiative [conn id data]
@@ -683,10 +702,7 @@
       (update-initiative-image conn (:qimage data) "initiative" id))
     (when-not (empty? tags)
       (update-resource-tags conn "initiative" id tags))
-    (when (contains? data :entity_connections)
-      (update-resource-entity-connections conn (:entity_connections data) "initiative" id))
-    (when (contains? data :individual_connections)
-      (update-resource-individual-connections conn (:individual_connections data) "initiative" id))
+    (update-resource-connections conn (:entity_connections data) (:individual_connections data) "initiative" id)
     status))
 
 (defmethod ig/init-key ::put [_ {:keys [db]}]
