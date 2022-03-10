@@ -134,9 +134,7 @@ const Landing = withRouter(
     const dateNow = moment().format("YYYY/MM/DD");
     const { innerWidth, innerHeight } = window;
     const profile = UIStore.useState((s) => s.profile);
-    const [selectedTopic, setSelectedTopic] = useState(
-      defTopic || "waste management"
-    );
+    const [selectedTopic, setSelectedTopic] = useState(null);
     const [event, setEvent] = useState([]);
     const [data, setData] = useState(null);
 
@@ -160,6 +158,11 @@ const Landing = withRouter(
       }
       return setWarningModalVisible(true);
     };
+
+    useEffect(() => {
+      setSelectedTopic(defTopic);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sortPopularTopic]);
 
     const generateEvent = useCallback(
       (filterDate, searchNextEvent = false) => {
