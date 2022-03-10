@@ -20,6 +20,8 @@ import { curr } from "./utils";
 
 import "./map-styles.scss";
 import { useHistory } from "react-router-dom";
+import { isEmpty } from "lodash";
+import { UIStore } from "../../store";
 const geoUrl = "/unep-gpml.topo.json";
 const lineBoundaries = "/new_country_line_boundaries.geojson";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
@@ -186,13 +188,17 @@ const Maps = ({
   topic,
   isLoaded,
   clickEvents,
-  country,
+  // country,
   multiCountries,
   listVisible,
   isDisplayedList,
   isFilteredCountry,
   multiCountryCountries,
 }) => {
+  const { countries } = UIStore.useState((s) => ({
+    countries: s.countries,
+  }));
+
   const history = useHistory();
   const path = history?.location?.pathname;
   const mapMaxZoom = 9.2;
@@ -200,6 +206,15 @@ const Maps = ({
   const [selected, setSelected] = useState(null);
   const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
+  const [countryToSelect, setCountryToSelect] = useState([]);
+
+  const country =
+    !isEmpty(countries) &&
+    countries.find((x) => {
+      if (countryToSelect.includes(x.id)) {
+        return x;
+      }
+    });
 
   const [position, setPosition] = useState({
     coordinates: [18.297325014768123, 2.4067378816508587],
@@ -223,6 +238,10 @@ const Maps = ({
       });
     }
   };
+
+  useEffect(() => {
+    setCountryToSelect(isFilteredCountry.map((x) => Number(x)));
+  }, [isFilteredCountry]);
 
   useEffect(() => {
     handleResize();

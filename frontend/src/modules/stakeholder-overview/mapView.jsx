@@ -14,7 +14,7 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
   const box = document.getElementsByClassName("stakeholder-overview");
   const isLoaded = () => !isEmpty(landing?.map);
   const [multiCountry, setMultiCountry] = useState(null);
-  const [country, setCountry] = useState(null);
+
   const clickCountry = (name) => {
     const val = query["country"];
     let updateVal = [];
@@ -48,7 +48,6 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
       topic={query?.networkType}
       isLoaded={isLoaded}
       multiCountryCountries={null}
-      country={countries.find((x) => x.id === country)}
       multiCountries={
         multiCountry &&
         !isEmpty(multiCountryCountries) &&
