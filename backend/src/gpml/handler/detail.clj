@@ -599,7 +599,7 @@
   (vec (for [connection connections]
          (let [{:keys [id role]} connection
                stakeholder-type-column (if (= stakeholder-type "organisation")
-                                         {:organisation (:organisation connection)}
+                                         {:organisation (:entity connection)}
                                          {:stakeholder (:stakeholder connection)})]
            (if (pos-int? id)
              {:id id
