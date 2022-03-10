@@ -4,7 +4,6 @@
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.event :as db.event]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.topic :as db.topic]
             [gpml.fixtures :as fixtures]
             [gpml.seeder.main :as seeder]
@@ -54,7 +53,6 @@
   (let [db (test-util/db-test-conn)
         _ (seeder/seed db {:country? true
                            :technology? true})
-        stakeholder-id (db.stakeholder/new-stakeholder db (make-profile "John" "Doe" "mail@org.com"))
         event-id (db.event/new-event db (event-sample db))]
     (testing "Simple text search"
       (is (not-empty (db.topic/get-topics db {:search-text "plastic"}))))
@@ -78,16 +76,6 @@
       (is (empty? (db.topic/get-topics db {:topic #{"policy"}}))))
     (testing "Filtering of unapproved events"
       (is (empty? (db.topic/get-topics db {:topic #{"event"}}))))
-    (testing "Filtering by stakeholders"
-      (is (empty? (db.topic/get-topics db {:topic #{"stakeholder"}}))))
-    (testing "Filtering of approved stakeholders"
-      (is (not-empty (do
-                       ;; Approve an event
-                       (db.stakeholder/update-stakeholder-status
-                        db
-                        (merge stakeholder-id {:review_status "APPROVED"}))
-                       (db.topic/get-topics db {:search-text "Lorem"
-                                                 :topic #{"stakeholder"}})))))
     (testing "Filtering of approved events"
       (is (not-empty (do
                        ;; Approve an event
