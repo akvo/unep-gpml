@@ -620,21 +620,19 @@
 
 (defn update-resource-connections [conn entity_connections individual_connections topic resource-id]
   (let [existing-ecs (db.favorite/get-associations conn (get-association-query-params "organisation" topic resource-id))
-        delete-ecs (set/difference
-                     (into #{} (map #(:id %) existing-ecs))
-                     (into #{} (remove nil? (map #(:id %) entity_connections))))
+        delete-ecs (vec (set/difference
+                          (into #{} (map #(:id %) existing-ecs))
+                          (into #{} (remove nil? (map #(:id %) entity_connections)))))
         existing-ics (db.favorite/get-associations conn (get-association-query-params "stakeholder" topic resource-id))
-        delete-ics (set/difference
-                     (into #{} (map #(:id %) existing-ics))
-                     (into #{} (remove nil? (map #(:id %) individual_connections))))]
-    (when (seq delete-ecs)
-      (for [delete-ec (seq delete-ecs)]
-        (db.favorite/delete-stakeholder-association conn {:topic (str "organisation_" topic)
-                                                          :id delete-ec})))
-    (when (seq delete-ics)
-      (for [delete-ic (seq delete-ics)]
-        (db.favorite/delete-stakeholder-association conn {:topic (str "stakeholder_" topic)
-                                                          :id delete-ic})))
+        delete-ics (vec (set/difference
+                          (into #{} (map #(:id %) existing-ics))
+                          (into #{} (remove nil? (map #(:id %) individual_connections)))))]
+    (when-not (empty? delete-ecs)
+      (db.favorite/delete-associations conn {:table (str "organisation_" topic)
+                                             :ids delete-ecs}))
+    (when-not (empty? delete-ics)
+      (db.favorite/delete-associations conn {:table (str "stakeholder_" topic)
+                                             :ids delete-ics}))
     (when (not-empty individual_connections)
       (doseq [association (expand-associations individual_connections "stakeholder" topic resource-id)]
         (if (contains? association :id)

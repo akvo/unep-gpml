@@ -20,6 +20,9 @@ AND :i:column_name = :topic_id
 -- :name delete-stakeholder-association :! :n
 DELETE FROM :i:topic WHERE id = :id
 
+-- :name delete-associations :! :n
+--~ (for [id (:ids params)] (format "DELETE FROM %1s WHERE id =  %2s" (:table params) id))
+
 -- :name update-stakeholder-association :! :n
 -- :require [gpml.sql-util]
 UPDATE :i:table SET modified=now(),
