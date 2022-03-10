@@ -114,12 +114,6 @@ const responsive = {
   },
 };
 
-// const sortPopularTopic = orderBy(
-//   popularTopics,
-//   ["count", "topic"],
-//   ["desc", "desc"]
-// );
-
 const Landing = withRouter(
   ({
     history,
