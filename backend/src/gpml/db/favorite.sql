@@ -20,12 +20,14 @@ AND :i:column_name = :topic_id
 -- :name delete-stakeholder-association :! :n
 DELETE FROM :i:topic WHERE id = :id
 
+-- :name delete-associations :! :n
+--~ (for [id (:ids params)] (format "DELETE FROM %1s WHERE id =  %2s" (:table params) id))
+
 -- :name update-stakeholder-association :! :n
 -- :require [gpml.sql-util]
 UPDATE :i:table SET modified=now(),
 --~ (#'gpml.sql-util/generate-update-stakeholder-association params)
  WHERE id = :id;
-
 
 -- :name new-organisation-association :!
 -- :doc Upserts a new relation between an organisation and a topic
@@ -36,3 +38,10 @@ DO UPDATE SET modified = now(), remarks = EXCLUDED.remarks
     WHERE o.organisation = EXCLUDED.organisation
 --~ (format "AND o.%1$s = EXCLUDED.%1$s" (or (:column_name params) (:topic params)))
       AND o.association = EXCLUDED.association
+
+-- :name get-associations :*
+-- :doc Gets all associations between an individual or organisation and a topic
+SELECT id
+ FROM :i:table
+ WHERE :i:column_name = :topic_id
+
