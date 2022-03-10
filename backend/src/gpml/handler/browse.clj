@@ -136,20 +136,6 @@
                              (re-seq #"\w+")
                              (str/join " & ")))))
 
-(defn maybe-filter-private-topics [topics approved?]
-  (or (and approved? topics)
-      (->> topics
-           (filter #(not (contains? approved-user-topics %)))
-           vec)))
-
-(defn modify-db-filter-topics [db-filter]
-  (let [approved? (:approved db-filter)]
-    (if approved?
-      db-filter
-      (let [t (or (:topic db-filter) topics)
-            filtered-topics (set (maybe-filter-private-topics t approved?))]
-        (merge db-filter {:topic filtered-topics})))))
-
 (defn- result->result-with-connections [db {:keys [type] :as result}]
   (case type
     (or "technical_resource" "financing_resource" "action_plan")
@@ -183,8 +169,7 @@
   (let [{:keys [geo-coverage transnational] :as modified-filters} (->> query
                                                                     (get-db-filter)
                                                                     (merge {:approved approved?
-                                                                            :admin admin})
-                                                                    (modify-db-filter-topics))
+                                                                            :admin admin}))
         modified-filters (cond
                            (and (seq geo-coverage) (seq transnational))
                            (let [country-group-countries (flatten
@@ -222,9 +207,7 @@
                      (map (fn [{:keys [json topic]}]
                             (assoc json :type topic))))
         counts (->> (assoc modified-filters :count-only? true)
-                    (db.topic/get-topics db)
-                    (filter #(or approved?
-                                 (not (contains? approved-user-topics (:topic %))))))]
+                    (db.topic/get-topics db))]
     {:results (map #(result->result-with-connections db %) results)
      :counts counts}))
 
