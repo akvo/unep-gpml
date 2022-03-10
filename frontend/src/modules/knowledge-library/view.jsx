@@ -267,6 +267,7 @@ const KnowledgeLibrary = ({
           {filterVisible && (
             <FilterDrawer
               query={query}
+              countData={countData}
               updateQuery={(flag, val) => updateQuery(flag, val)}
               filters={filters}
               filterVisible={filterVisible}

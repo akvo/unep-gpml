@@ -37,6 +37,7 @@ import { titleCase } from "../../utils/string";
 
 const FilterDrawer = ({
   query,
+  countData,
   updateQuery,
   filterVisible,
   setFilterVisible,
@@ -197,9 +198,8 @@ const FilterDrawer = ({
             <Row type="flex" gutter={[10, 10]}>
               {topicTypes.map((type) => {
                 const topic = humps.decamelize(type);
-                const count = nav.resourceCounts?.find((it) =>
-                  it.hasOwnProperty(type)
-                );
+                const count =
+                  countData?.find((it) => it.topic === topic)?.count || 0;
 
                 return (
                   <Col span={6} key={type}>
@@ -212,7 +212,7 @@ const FilterDrawer = ({
                       <Space direction="vertical" align="center">
                         {topicIcons(type)}
                         <div className="topic-text">{topicNames(type)}</div>
-                        <div className="topic-count">{count[type]}</div>
+                        <div className="topic-count">{count}</div>
                       </Space>
                     </Card>
                   </Col>
