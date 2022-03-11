@@ -258,6 +258,7 @@
 
 .map-tooltip {
   padding: 0 10px;
+  position: relative;
 
   .tooltip-note {
     font-size: 12px;
@@ -266,6 +267,11 @@
   .tooltip-counts {
     display: flex;
     align-items: center;
+  }
+
+  .transnational-count {
+    position: absolute;
+    right: -10px;
   }
 
   h3 {

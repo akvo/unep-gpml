@@ -108,7 +108,10 @@ const ToolTipContent = ({ data, geo, path }) => {
                 <b className="tooltip-counts">
                   {dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}
                   {transnationalData()?.[topic] > 0 && (
-                    <div> ({transnationalData()?.[topic]})</div>
+                    <div className="transnational-count">
+                      {" "}
+                      ({transnationalData()?.[topic]})
+                    </div>
                   )}
                 </b>
               </li>
@@ -116,7 +119,7 @@ const ToolTipContent = ({ data, geo, path }) => {
           );
         })}
       </ul>
-      <b className="tooltip-note">* Transnational resources in ()</b>
+      <b className="tooltip-note">&#42; Transnational resources in ()</b>
     </div>
   );
 };
