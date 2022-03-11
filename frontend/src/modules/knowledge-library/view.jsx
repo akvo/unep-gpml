@@ -321,6 +321,7 @@ const KnowledgeLibrary = ({
                 className="render-map-container map-main-wrapper"
                 style={{
                   background: view === "topic" ? "#255B87" : "#fff",
+                  flex: view === "topic" && "auto",
                 }}
               >
                 {view === "map" ? (
