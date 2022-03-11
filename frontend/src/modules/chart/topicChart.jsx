@@ -8,6 +8,7 @@ const TopicChart = ({
   height,
   defTopic,
   loadingId,
+  popularTags,
   selectedTopic,
   setSelectedTopic,
   sortPopularTopic,
@@ -20,15 +21,6 @@ const TopicChart = ({
   }, [sortPopularTopic]);
 
   useEffect(() => {
-    const popularTags = [
-      "plastics",
-      "waste management",
-      "marine litter",
-      "capacity building",
-      "product by design",
-      "source to sea",
-    ];
-
     const tagsFetch = popularTags.map((tag, i) => {
       const topicName = () => {
         if (tag === "plastics") {
@@ -50,6 +42,9 @@ const TopicChart = ({
 
         if (tag === "source to sea") {
           return "Source to Sea";
+        }
+        if (tag === "climate change") {
+          return "Climate Change";
         }
       };
       return api

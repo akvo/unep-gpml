@@ -10,6 +10,16 @@ const TopicView = ({ updateQuery }) => {
 
   const isMobileScreen = innerWidth <= 991;
 
+  const popularTags = [
+    "plastics",
+    "waste management",
+    "marine litter",
+    "capacity building",
+    "product by design",
+    "source to sea",
+    "climate change",
+  ];
+
   const handlePopularTopicChartClick = (params) => {
     const { name, tag } = params?.data;
     !isMobileScreen && setSelectedTopic(name?.toLowerCase());
@@ -23,6 +33,7 @@ const TopicView = ({ updateQuery }) => {
         defTopic,
         selectedTopic,
         setSelectedTopic,
+        popularTags,
         isMobileScreen,
         sortPopularTopic,
         setSortPopularTopic,

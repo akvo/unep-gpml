@@ -137,6 +137,15 @@ const Landing = withRouter(
     const isApprovedUser = profile?.reviewStatus === "APPROVED";
     const hasProfile = profile?.reviewStatus;
 
+    const popularTags = [
+      "plastics",
+      "waste management",
+      "marine litter",
+      "capacity building",
+      "product by design",
+      "source to sea",
+    ];
+
     const isMobileScreen = innerWidth <= 991;
 
     const handlePopularTopicChartClick = (params) => {
@@ -252,6 +261,7 @@ const Landing = withRouter(
                 defTopic,
                 selectedTopic,
                 setSelectedTopic,
+                popularTags,
                 isMobileScreen,
                 sortPopularTopic,
                 setSortPopularTopic,
