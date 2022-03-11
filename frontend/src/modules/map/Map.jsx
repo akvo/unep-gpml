@@ -42,6 +42,28 @@ const KNOWLEDGE_LIBRARY = "/knowledge-library";
 const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
 
 const ToolTipContent = ({ data, geo, path }) => {
+  const totalTransnational = () => {
+    const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
+
+    if (path === KNOWLEDGE_LIBRARY) {
+      return sumValues({
+        project: data?.transnationalCounts?.project,
+        actionPlan: data?.transnationalCounts?.actionPlan,
+        policy: data?.transnationalCounts?.policy,
+        technicalResource: data?.transnationalCounts?.technicalResource,
+        financingResource: data?.transnationalCounts?.financingResource,
+        event: data?.transnationalCounts?.event,
+        technology: data?.transnationalCounts?.technology,
+      });
+    }
+    if (path === STAKEHOLDER_OVERVIEW) {
+      return sumValues({
+        organisation: data?.transnationalCounts?.organisation,
+        stakeholder: data?.transnationalCounts?.stakeholder,
+      });
+    }
+  };
+
   const dataToDisplay = () => {
     if (path === KNOWLEDGE_LIBRARY) {
       return {
@@ -119,7 +141,9 @@ const ToolTipContent = ({ data, geo, path }) => {
           );
         })}
       </ul>
-      <b className="tooltip-note">&#42; Transnational resources in ()</b>
+      {totalTransnational() > 0 && (
+        <b className="tooltip-note">&#42; Transnational resources in ()</b>
+      )}
     </div>
   );
 };
