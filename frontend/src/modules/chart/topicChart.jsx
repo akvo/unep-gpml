@@ -7,6 +7,7 @@ import Chart from "../../utils/chart";
 const TopicChart = ({
   height,
   defTopic,
+  loadingId,
   selectedTopic,
   setSelectedTopic,
   sortPopularTopic,
@@ -94,11 +95,11 @@ const TopicChart = ({
             .filter((tag) => tag.count > 0)
             .map((x) => {
               return {
-                id: x.id,
-                name: x.topic,
-                value: x.count > 100 ? x.count : x.count + 50,
-                count: x.count,
-                tag: x.tag,
+                id: x?.id,
+                name: x?.topic,
+                value: x?.count > 100 ? x?.count : x?.count + 50,
+                count: x?.count,
+                tag: x?.tag,
               };
             })}
           onEvents={{
@@ -107,8 +108,10 @@ const TopicChart = ({
           selected={selectedTopic}
         />
       ) : (
-        <div className="loading">
-          <LoadingOutlined spin /> Loading
+        <div id={loadingId}>
+          <div className="loading">
+            <LoadingOutlined spin /> Loading
+          </div>
         </div>
       )}
     </div>

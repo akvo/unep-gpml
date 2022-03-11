@@ -12,12 +12,13 @@ const TopicView = ({ updateQuery }) => {
 
   const handlePopularTopicChartClick = (params) => {
     const { name, tag } = params?.data;
-    !isMobileScreen && setSelectedTopic(name.toLowerCase());
+    !isMobileScreen && setSelectedTopic(name?.toLowerCase());
     updateQuery("tag", [tag]);
   };
 
   return (
     <TopicChart
+      loadingId="knowledge-library-loading"
       {...{
         defTopic,
         selectedTopic,

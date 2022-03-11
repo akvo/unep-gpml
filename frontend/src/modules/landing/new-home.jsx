@@ -247,6 +247,7 @@ const Landing = withRouter(
           <div className="body">
             <TopicChart
               height={675}
+              loadingId="home-loading"
               {...{
                 defTopic,
                 selectedTopic,

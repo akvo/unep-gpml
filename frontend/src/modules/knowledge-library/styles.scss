@@ -116,7 +116,6 @@
     }
 
     .select-wrapper {
-      // display: none;
       padding: 0 !important;
       width: 100%;
       max-width: 194px;
@@ -653,6 +652,14 @@
         margin-right: 7px;
       }
     }
+  }
+
+  #knowledge-library-loading {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    max-width: fit-content;
+    height: 100vh;
   }
 
   .resource-list {
