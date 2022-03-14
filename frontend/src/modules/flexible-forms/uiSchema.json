@@ -761,6 +761,18 @@
     },
     "S5": {
       "classNames": "list-group",
+      "titleGroup": {
+        "originalTitle": {
+          "ui:placeholder": "Type in the policy original title",
+          "ui:span": 16
+        },
+        "lang": {
+          "ui:showSearch": true,
+          "ui:widget": "select",
+          "ui:placeholder": "Choose the language",
+          "ui:span": 8
+        }
+      },
       "originalTitle": {
         "ui:placeholder": "Type in the policy original title"
       },

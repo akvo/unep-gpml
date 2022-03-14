@@ -1,10 +1,12 @@
 import { UIStore } from "../../store";
 const {
   geoCoverageTypeOptions,
-  newGeoCoverageFormatStakeholder,
+  languages,
   entityRoleOptions,
   individualRoleOptions,
 } = UIStore.currentState;
+
+console.log(languages);
 
 import { newGeoCoverageFormat } from "../../utils/geo";
 
@@ -1675,9 +1677,24 @@ export const schema = {
           value: ["S5"],
         },
         properties: {
-          originalTitle: {
-            title: "Original Title",
-            type: "string",
+          titleGroup: {
+            type: "object",
+            title: "",
+            required: [],
+            properties: {
+              originalTitle: {
+                title: "Original Title",
+                type: "string",
+              },
+              lang: {
+                title: "LANGUAGES",
+                default: "en",
+                enum: Object.keys(languages).map((langCode) => langCode),
+                enumNames: Object.keys(languages).map(
+                  (langCode) => languages[langCode].name
+                ),
+              },
+            },
           },
           dataSource: {
             title: "Data Source",
