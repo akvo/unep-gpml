@@ -299,6 +299,7 @@
                         (expand-related-policy-content db policy)
                         [])
      :tags (db.policy/tags-by-id db (select-keys policy [:id]))
+     :language (db.policy/language-by-policy-id db (select-keys policy [:id]))
      :type "Policy"}
     (when-let [implementing-mea (:implementing_mea policy)]
       {:implementing_mea (:name (db.country-group/country-group-by-id db {:id implementing-mea}))})))
@@ -570,6 +571,13 @@
       :id id
       :organisation org-id})))
 
+(defn update-policy-language [conn language policy-id]
+  (let [lang-id (:id (db.language/language-by-iso-code conn (select-keys language [:iso_code])))]
+    (if-not (nil? lang-id)
+      (db.policy/add-language-to-policy conn {:id policy-id :language lang-id})
+      (db.policy/add-language-to-policy conn {:id policy-id
+                                              :language (:id (db.language/insert-new-language conn language))}))))
+
 (defn -update-resource-picture [conn image image-type resource-id logo?]
   (let [url (handler.image/assoc-image conn image image-type)
         image-key (if logo? :logo :image)]
@@ -651,7 +659,7 @@
         table-columns (-> updates
                         (dissoc
                           :tags :urls :geo_coverage_value :org
-                          :image :photo :logo
+                          :image :photo :logo :language
                           :geo_coverage_country_groups
                           :geo_coverage_countries
                           :entity_connections
@@ -673,6 +681,8 @@
                      (:id org)
                      (and (= -1 (:id org))
                           (handler.org/create conn org))))]
+    (when (and (contains? updates :language) (= topic-type "policy"))
+      (update-policy-language conn (:language updates) id))
     (when (contains? updates :image)
       (update-resource-image conn (:image updates) table id))
     (when (contains? updates :photo)

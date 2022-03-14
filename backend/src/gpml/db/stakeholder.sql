@@ -44,6 +44,7 @@ select
     s.representation,
     s.about,
     s.role,
+    s.job_title,
     s.cv,
     s.country,
     s.affiliation,
@@ -69,6 +70,7 @@ select
     s.representation,
     s.about,
     s.role,
+    s.job_title,
     s.cv,
     s.country,
     s.affiliation,
@@ -105,6 +107,7 @@ select
     s.organisation_role,
     s.about,
     s.role,
+    s.job_title,
     s.geo_coverage_type,
     geo.geo_coverage_values,
     c.name as country,
@@ -159,6 +162,7 @@ insert into stakeholder(
 --~ (when (contains? params :organisation_role) ",organisation_role")
 --~ (when (contains? params :public_email) ",public_email")
 --~ (when (contains? params :public_database) ",public_database")
+--~ (when (contains? params :job_title) ",job_title")
 --~ (when (contains? params :id) ",id")
 ) values(
     :picture,
@@ -177,6 +181,7 @@ insert into stakeholder(
 --~ (when (contains? params :organisation_role) ",:organisation_role")
 --~ (when (contains? params :public_email) ",:public_email")
 --~ (when (contains? params :public_database) ",:public_database")
+--~ (when (contains? params :job_title) ",:job_title")
 --~ (when (contains? params :id) ",:id")
 ) RETURNING id;
 
@@ -208,6 +213,7 @@ update stakeholder set
 --~ (when (contains? params :about) "about= :about,")
 --~ (when (contains? params :public_email) "public_email= :public_email::boolean,")
 --~ (when (contains? params :public_database) "public_database= :public_database::boolean,")
+--~ (when (contains? params :job_title) "job_title= :job_title,")
 --~ (when (contains? params :idp_usernames) "idp_usernames= :idp_usernames::jsonb,")
     modified = now()
 where id = :id;
