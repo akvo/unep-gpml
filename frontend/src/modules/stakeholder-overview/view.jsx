@@ -399,6 +399,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
               query,
               updateQuery,
               filterVisible,
+              setFilterVisible,
               organisationCount,
               GPMLMemberCount,
               setFilterCountries,
