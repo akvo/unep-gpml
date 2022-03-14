@@ -51,6 +51,7 @@ const FlexibleForm = withRouter(
       profile,
       selectedMainContentType,
       mainContentType,
+      languages,
     } = UIStore.currentState;
 
     const { status, id } = formEdit.flexible;
@@ -543,6 +544,16 @@ const FlexibleForm = withRouter(
       if (data?.summary) {
         data.abstract = data?.summary;
         delete data.summary;
+      }
+
+      if (data?.lang) {
+        let find = languages[Object.keys(data.lang)[0]];
+        data.language = {
+          english_name: find.name,
+          native_name: find.native,
+          iso_code: Object.keys(data.lang)[0],
+        };
+        delete data.lang;
       }
 
       if (status === "add" && !params?.id) {
