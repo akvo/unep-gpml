@@ -150,7 +150,7 @@ const Landing = withRouter(
 
     const handlePopularTopicChartClick = (params) => {
       const { name, tag } = params?.data;
-      !isMobileScreen && setSelectedTopic(name.toLowerCase());
+      !isMobileScreen && setSelectedTopic(name?.toLowerCase());
       isMobileScreen && history.push(`/browse?tag=${tag}`);
     };
 
