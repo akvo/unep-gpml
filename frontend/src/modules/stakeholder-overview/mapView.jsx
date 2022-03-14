@@ -41,8 +41,8 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
       clickEvents={clickCountry}
       listVisible={[]}
       isDisplayedList={[]}
-      isFilteredCountry={isFilteredCountry}
       dataToDisplay={[]}
+      isFilteredCountry={isFilteredCountry}
       data={landing?.map || []}
       topic={query?.networkType}
       isLoaded={isLoaded}

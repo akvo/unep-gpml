@@ -380,27 +380,30 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       <div className={isValidUser ? "" : "blur"}>
         {isValidUser && (
           <Header
-            view={view}
-            setView={setView}
-            filterVisible={filterVisible}
-            setFilterVisible={setFilterVisible}
-            isAscending={isAscending}
-            renderFilterTag={renderFilterTag}
-            sortPeople={sortPeople}
-            updateQuery={updateQuery}
+            {...{
+              view,
+              setView,
+              filterVisible,
+              setFilterVisible,
+              isAscending,
+              sortPeople,
+              renderFilterTag,
+              updateQuery,
+            }}
           />
         )}
         <Row type="flex" className="body-wrapper">
           {/* Filter Drawer */}
           <FilterDrawer
-            query={query}
-            updateQuery={updateQuery}
+            {...{
+              query,
+              updateQuery,
+              filterVisible,
+              organisationCount,
+              GPMLMemberCount,
+              setFilterCountries,
+            }}
             entities={entityRoleOptions}
-            filterVisible={filterVisible}
-            setFilterVisible={setFilterVisible}
-            organisationCount={organisationCount}
-            GPMLMemberCount={GPMLMemberCount}
-            setFilterCountries={setFilterCountries}
           />
 
           <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>

@@ -75,16 +75,18 @@ const MapLanding = ({
         </div>
       )}
       <Maps
-        box={box}
-        query={query}
-        isFilteredCountry={isFilteredCountry}
-        isDisplayedList={isDisplayedList}
-        listVisible={listVisible}
+        {...{
+          box,
+          query,
+          isFilteredCountry,
+          isDisplayedList,
+          listVisible,
+          multiCountryCountries,
+        }}
         data={landing?.map || []}
         clickEvents={clickCountry}
         topic={query?.topic}
         isLoaded={isLoaded}
-        multiCountryCountries={multiCountryCountries}
         multiCountries={
           multiCountry &&
           !isEmpty(multiCountryCountries) &&

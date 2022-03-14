@@ -272,16 +272,18 @@ const FilterDrawer = ({
             </Space>
             <div className="country-filter-tab-wrapper">
               <CountryTransnationalFilter
+                {...{
+                  multiCountryCountries,
+                  handleChangeCountry,
+                  handleDeselectCountry,
+                  handleChangeMultiCountry,
+                  handleDeselectMultiCountry,
+                }}
                 handleChangeTab={handleChangeLocationTab}
                 country={query?.country?.map((x) => parseInt(x)) || []}
-                handleChangeCountry={handleChangeCountry}
-                handleDeselectCountry={handleDeselectCountry}
                 multiCountry={
                   query?.transnational?.map((x) => parseInt(x)) || []
                 }
-                handleChangeMultiCountry={handleChangeMultiCountry}
-                handleDeselectMultiCountry={handleDeselectMultiCountry}
-                multiCountryCountries={multiCountryCountries}
                 multiCountryLabelCustomIcon={true}
                 countrySelectMode="multiple"
                 multiCountrySelectMode="multiple"
@@ -302,7 +304,7 @@ const FilterDrawer = ({
             options={
               isLoaded()
                 ? mainContentOptions.map((content) => ({
-                    label: content.name,
+                    label: content?.name,
                     options: content?.childs.map((child, i) => ({
                       label: child?.title,
                       value: child?.title,
