@@ -167,3 +167,14 @@ select t.id, t.tag from policy_tag pt
   on pt.tag = t.id
   where pt.policy = :id
 
+-- :name add-language-to-policy :! :n
+-- :doc Add language to policy
+update policy
+  set language = :language
+  where id = :id
+
+-- :name language-by-policy-id :? :1
+-- :doc Get language by policy id
+select l.* from language l
+  where id = (select p.language from policy p where p.id = :id)
+

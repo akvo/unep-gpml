@@ -14,3 +14,8 @@ select * from language where iso_code = :iso_code
 -- :doc Insert new language
 insert into language (english_name, native_name, iso_code)
 values(:english_name, :native_name, :iso_code)
+
+-- :name insert-new-language :<! :1
+-- :doc Insert new language returning id
+insert into language (english_name, native_name, iso_code)
+values(:english_name, :native_name, :iso_code) returning id

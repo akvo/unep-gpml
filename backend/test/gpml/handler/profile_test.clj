@@ -29,6 +29,7 @@
    :representation ""
    :org {:id org}
    :affiliation org
+   :job_title "Developer"
    :title "Mr"
    :about "Lorem Ipsum"
    :picture picture
@@ -92,6 +93,7 @@
               :cv "/cv/profile/1"
               :representation ""
               :title "Mr"
+              :job_title "Developer"
               :role "USER"
               :org (db.organisation/organisation-by-id db {:id 1})
               :twitter "johndoe"
@@ -138,6 +140,7 @@
               :cv "/cv/profile/1"
               :representation ""
               :title "Mr"
+              :job_title "Developer"
               :role "USER"
               :org (db.organisation/organisation-by-id db {:id 10001})
               :twitter "johndoe"
@@ -197,6 +200,7 @@
                                              :country (-> (:countries data) second :id)
                                              :first_name "Mark"
                                              :org {:id 1 :name "Akvo" :url "https://akvo.org"}
+                                             :job_title "Developer"
                                              :photo picture
                                              :cv picture
                                              :picture nil
@@ -221,6 +225,7 @@
               :cv "/cv/profile/2"
               :representation ""
               :role "USER"
+              :job_title "Developer"
               :about "Dolor sit Amet"
               :affiliation 1
               :reviewed_at nil
@@ -251,6 +256,7 @@
                                              :country (-> (:countries data) second :id)
                                              :first_name "Mark"
                                              :org {:id 1 :name "Akvo" :url "https://akvo.org"}
+                                             :job_title "Developer"
                                              :photo "https://lh3.googleusercontent.com"
                                              :cv nil
                                              :picture nil))))
@@ -269,6 +275,7 @@
               :photo "https://lh3.googleusercontent.com"
               :representation ""
               :role "USER"
+              :job_title "Developer"
               :about "Dolor sit Amet"
               :affiliation 1
               :reviewed_at nil
