@@ -33,6 +33,7 @@ import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/
 import { ReactComponent as PolicyIcon } from "../../images/knowledge-library/policy.svg";
 import { ReactComponent as TechnicalIcon } from "../../images/knowledge-library/technical.svg";
 import { ReactComponent as TechnologyIcon } from "../../images/knowledge-library/technology.svg";
+import { titleCase } from "../../utils/string";
 
 const FilterDrawer = ({
   query,
@@ -49,6 +50,7 @@ const FilterDrawer = ({
     transnationalOptions,
     geoCoverageTypeOptions,
     representativeGroup,
+    mainContentType,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     nav: s.nav,
@@ -58,6 +60,7 @@ const FilterDrawer = ({
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     representativeGroup: s.sectorOptions,
+    mainContentType: s.mainContentType,
   }));
   const { isAuthenticated } = useAuth0();
 
@@ -66,7 +69,12 @@ const FilterDrawer = ({
     !isEmpty(countries) &&
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
-    !isEmpty(representativeGroup);
+    !isEmpty(representativeGroup) &&
+    !isEmpty(mainContentType);
+
+  const mainContentOptions = isLoaded()
+    ? mainContentType.filter((content) => content.code !== "capacity_building")
+    : [];
 
   const topicIcons = (topic) => {
     if (topic === "project") {
@@ -310,6 +318,25 @@ const FilterDrawer = ({
             }
             value={query?.representativeGroup || []}
             flag="representativeGroup"
+            query={query}
+            updateQuery={updateQuery}
+          />
+          <MultipleSelectFilter
+            title="Sub-content type"
+            options={
+              isLoaded()
+                ? mainContentOptions.map((content) => ({
+                    label: content.name,
+                    options: content?.childs.map((child, i) => ({
+                      label: child?.title,
+                      value: child?.title,
+                      key: `${i}-${content.name}`,
+                    })),
+                  }))
+                : []
+            }
+            value={query?.subContentType || []}
+            flag="subContentType"
             query={query}
             updateQuery={updateQuery}
           />

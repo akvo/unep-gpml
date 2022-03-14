@@ -169,6 +169,9 @@ const KnowledgeLibrary = ({
       if (key === "endDate") {
         return `End date ${value}`;
       }
+      if (key === "subContentType") {
+        return value;
+      }
     };
     return Object.keys(query).map((key, index) => {
       // don't render if key is limit and offset
