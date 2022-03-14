@@ -130,7 +130,7 @@ const Landing = withRouter(
     const dateNow = moment().format("YYYY/MM/DD");
     const { innerWidth, innerHeight } = window;
     const profile = UIStore.useState((s) => s.profile);
-    const [selectedTopic, setSelectedTopic] = useState(defTopic);
+    const [selectedTopic, setSelectedTopic] = useState(null);
     const [event, setEvent] = useState([]);
     const [data, setData] = useState(null);
 
@@ -163,6 +163,11 @@ const Landing = withRouter(
       }
       return setWarningModalVisible(true);
     };
+
+    useEffect(() => {
+      setSelectedTopic(defTopic);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sortPopularTopic]);
 
     const generateEvent = useCallback(
       (filterDate, searchNextEvent = false) => {
@@ -204,6 +209,68 @@ const Landing = withRouter(
     useEffect(() => {
       UIStore.update((e) => {
         e.disclaimer = "home";
+      });
+    }, []);
+
+    useEffect(() => {
+      const popularTags = [
+        "plastics",
+        "waste management",
+        "marine litter",
+        "capacity building",
+        "product by design",
+        "source to sea",
+      ];
+
+      const tagsFetch = popularTags.map((tag, i) => {
+        const topicName = () => {
+          if (tag === "plastics") {
+            return "Plastics";
+          }
+          if (tag === "waste management") {
+            return "Waste Management";
+          }
+          if (tag === "marine litter") {
+            return "Marine Litter";
+          }
+
+          if (tag === "capacity building") {
+            return "Capacity Building";
+          }
+          if (tag === "product by design") {
+            return "Product by Design";
+          }
+
+          if (tag === "source to sea") {
+            return "Source to Sea";
+          }
+        };
+        return api
+          .get(`/browse?tag=${tag}`)
+          .then((resp) => ({
+            id: i,
+            items: resp?.data?.results,
+            topic: topicName(),
+            tag,
+            count: resp?.data?.counts
+              .filter((count) => count.topic !== "gpml_member_entities")
+              .reduce((curr, val) => curr + val?.count || 0, 0),
+            summary: resp.data.counts.filter(
+              (count) => count.topic !== "gpml_member_entities"
+            ),
+          }))
+          .catch((err) => {
+            console.error(err);
+          });
+      });
+
+      const tagResults = Promise.all(tagsFetch).then((results) => {
+        const sortedPopularTopics = orderBy(
+          results,
+          ["count", "topic"],
+          ["desc", "desc"]
+        );
+        setSortPopularTopic(sortedPopularTopics);
       });
     }, []);
 
