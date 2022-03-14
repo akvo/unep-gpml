@@ -38,7 +38,7 @@
       (are [expected value] (= expected (valid? value))
         true "technology,project"
         true "financing_resource,event"
-        true "stakeholder,event,policy"
+        true "event,policy"
         true (str/join "," topics)
         false "resource"
         false "technology,"
@@ -77,41 +77,6 @@
            {:search-text "eco"
             :geo-coverage [253]
             :topic #{"project" "event"}}))))
-
-(deftest db-filter-based-on-approved-status
-  (testing "Modifying topics for unapproved users"
-    (is (= (browse/modify-db-filter-topics
-            {:approved false
-             :search-text "eco"
-             :geo-coverage #{"253"}
-             :topic #{"project" "event" "stakeholder"}})
-
-           {:approved false
-            :search-text "eco"
-            :geo-coverage #{"253"}
-            :topic #{"project" "event"}}))
-
-    (is (= (browse/modify-db-filter-topics
-            {:approved false
-             :search-text "eco"
-             :geo-coverage #{"253"}})
-           {:approved false
-            :search-text "eco"
-            :geo-coverage #{"253"}
-            :topic #{"project" "event" "technology" "financing_resource"
-                     "technical_resource" "action_plan" "policy" "organisation"}})))
-
-  (testing "Topics for approved users unchanged"
-    (is (= (browse/modify-db-filter-topics
-            {:approved true
-             :search-text "eco"
-             :geo-coverage #{"253"}
-             :topic #{"project" "event" "stakeholder"}})
-
-           {:approved true
-            :search-text "eco"
-            :geo-coverage #{"253"}
-            :topic #{"project" "event" "stakeholder"}}))))
 
 (deftest browse-view-results
   (let [db (test-util/db-test-conn)
@@ -154,13 +119,13 @@
             results (:results body)
             counts (:counts body)]
         (is (= limit (count results)))
-        (is (= 2 (count counts)))
-        (is (= #{"technology" "stakeholder"} (set (map :topic counts))))))
+        (is (= 1 (count counts)))
+        (is (= #{"technology"} (set (map :topic counts))))))
 
     (testing "Query stakeholders WITHOUT LOGIN"
       (let [request (-> (mock/request :get "/")
                         (assoc
-                         :parameters {:query {:topic "stakeholder"}}))
+                         :parameters {:query {:topic "technology"}}))
             resp (handler request)
             body (-> resp :body)
             results (:results body)
@@ -174,15 +139,14 @@
                         (assoc
                          :approved? true
                          :user sth
-                         :parameters {:query {:topic "stakeholder,technology"}}))
+                         :parameters {:query {:topic "technology"}}))
             resp (handler request)
             body (-> resp :body)
             results (:results body)
             counts (:counts body)]
         (is (= limit (count results)))
-        (is (= (:id sth) (-> results first :id)))
-        (is (= 2 (count counts)))
-        (is (= #{"technology" "stakeholder"} (set (map :topic counts))))))
+        (is (= 1 (count counts)))
+        (is (= #{"technology"} (set (map :topic counts))))))
 
     (testing "Query for favorites WITHOUT LOGIN"
       (let [request (-> (mock/request :get "/")

@@ -20,6 +20,8 @@ import { curr } from "./utils";
 
 import "./map-styles.scss";
 import { useHistory } from "react-router-dom";
+import { isEmpty } from "lodash";
+import { UIStore } from "../../store";
 const geoUrl = "/unep-gpml.topo.json";
 const lineBoundaries = "/new_country_line_boundaries.geojson";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
@@ -40,21 +42,62 @@ const KNOWLEDGE_LIBRARY = "/knowledge-library";
 const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
 
 const ToolTipContent = ({ data, geo, path }) => {
+  const totalTransnational = () => {
+    const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
+
+    if (path === KNOWLEDGE_LIBRARY) {
+      return sumValues({
+        project: data?.transnationalCounts?.project,
+        actionPlan: data?.transnationalCounts?.actionPlan,
+        policy: data?.transnationalCounts?.policy,
+        technicalResource: data?.transnationalCounts?.technicalResource,
+        financingResource: data?.transnationalCounts?.financingResource,
+        event: data?.transnationalCounts?.event,
+        technology: data?.transnationalCounts?.technology,
+      });
+    }
+    if (path === STAKEHOLDER_OVERVIEW) {
+      return sumValues({
+        organisation: data?.transnationalCounts?.organisation,
+        stakeholder: data?.transnationalCounts?.stakeholder,
+      });
+    }
+  };
+
   const dataToDisplay = () => {
     if (path === KNOWLEDGE_LIBRARY) {
       return {
-        project: data?.project,
-        actionPlan: data?.actionPlan,
-        policy: data?.policy,
-        technicalResource: data?.technicalResource,
-        financingResource: data?.financingResource,
-        event: data?.event,
-        technology: data?.technology,
+        project: data?.counts?.project,
+        actionPlan: data?.counts?.actionPlan,
+        policy: data?.counts?.policy,
+        technicalResource: data?.counts?.technicalResource,
+        financingResource: data?.counts?.financingResource,
+        event: data?.counts?.event,
+        technology: data?.counts?.technology,
       };
     } else {
       return {
-        organisation: data?.organisation,
-        stakeholder: data?.stakeholder,
+        organisation: data?.counts?.organisation,
+        stakeholder: data?.counts?.stakeholder,
+      };
+    }
+  };
+
+  const transnationalData = () => {
+    if (path === KNOWLEDGE_LIBRARY) {
+      return {
+        project: data?.transnationalCounts?.project,
+        actionPlan: data?.transnationalCounts?.actionPlan,
+        policy: data?.transnationalCounts?.policy,
+        technicalResource: data?.transnationalCounts?.technicalResource,
+        financingResource: data?.transnationalCounts?.financingResource,
+        event: data?.transnationalCounts?.event,
+        technology: data?.transnationalCounts?.technology,
+      };
+    } else {
+      return {
+        organisation: data?.transnationalCounts?.organisation,
+        stakeholder: data?.transnationalCounts?.stakeholder,
       };
     }
   };
@@ -84,12 +127,23 @@ const ToolTipContent = ({ data, geo, path }) => {
             dataToDisplayPerPath() && (
               <li key={topic}>
                 <span>{topicNames(topic)}</span>
-                <b>{dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}</b>
+                <b className="tooltip-counts">
+                  {dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}
+                  {transnationalData()?.[topic] > 0 && (
+                    <div className="transnational-count">
+                      {" "}
+                      ({transnationalData()?.[topic]})
+                    </div>
+                  )}
+                </b>
               </li>
             )
           );
         })}
       </ul>
+      {totalTransnational() > 0 && (
+        <b className="tooltip-note">&#42; Transnational resources in ()</b>
+      )}
     </div>
   );
 };
@@ -186,13 +240,16 @@ const Maps = ({
   topic,
   isLoaded,
   clickEvents,
-  country,
   multiCountries,
   listVisible,
   isDisplayedList,
   isFilteredCountry,
   multiCountryCountries,
 }) => {
+  const { countries } = UIStore.useState((s) => ({
+    countries: s.countries,
+  }));
+
   const history = useHistory();
   const path = history?.location?.pathname;
   const mapMaxZoom = 9.2;
@@ -200,6 +257,15 @@ const Maps = ({
   const [selected, setSelected] = useState(null);
   const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
+  const [countryToSelect, setCountryToSelect] = useState([]);
+
+  const country =
+    !isEmpty(countries) &&
+    countries.find((x) => {
+      if (countryToSelect.includes(x.id)) {
+        return x;
+      }
+    });
 
   const [position, setPosition] = useState({
     coordinates: [18.297325014768123, 2.4067378816508587],
@@ -225,6 +291,10 @@ const Maps = ({
   };
 
   useEffect(() => {
+    setCountryToSelect(isFilteredCountry.map((x) => Number(x)));
+  }, [isFilteredCountry]);
+
+  useEffect(() => {
     handleResize();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
@@ -235,19 +305,19 @@ const Maps = ({
       const values = () => {
         if (path === KNOWLEDGE_LIBRARY) {
           return sumValues({
-            actionPlan: curr?.actionPlan,
-            event: curr?.event,
-            financingResource: curr?.financingResource,
-            policy: curr?.policy,
-            project: curr?.project,
-            technicalResource: curr?.technicalResource,
-            technology: curr?.technology,
+            actionPlan: curr?.counts?.actionPlan,
+            event: curr?.counts?.event,
+            financingResource: curr?.counts?.financingResource,
+            policy: curr?.counts?.policy,
+            project: curr?.counts?.project,
+            technicalResource: curr?.counts?.technicalResource,
+            technology: curr?.counts?.technology,
           });
         }
         if (path === STAKEHOLDER_OVERVIEW) {
           return sumValues({
-            organisation: curr?.organisation,
-            stakeholder: curr?.stakeholder,
+            organisation: curr?.counts?.organisation,
+            stakeholder: curr?.counts?.stakeholder,
           });
         }
       };
@@ -382,8 +452,8 @@ const Maps = ({
                               : geo.properties.MAP_COLOR === selected
                               ? "#255B87"
                               : fillColor(
-                                  curr(topic, findData, path)
-                                    ? curr(topic, findData, path)
+                                  curr(topic, findData?.counts, path)
+                                    ? curr(topic, findData?.counts, path)
                                     : 0
                                 )
                           }
@@ -459,25 +529,25 @@ const Maps = ({
                                 selectionCondition()
                                 ? "#255B87"
                                 : fillColor(
-                                    curr(topic, findData, path)
-                                      ? curr(topic, findData, path)
+                                    curr(topic, findData?.counts, path)
+                                      ? curr(topic, findData?.counts, path)
                                       : 0
                                   )
                               : fillColor(
-                                  curr(topic, findData, path)
-                                    ? curr(topic, findData, path)
+                                  curr(topic, findData?.counts, path)
+                                    ? curr(topic, findData?.counts, path)
                                     : 0
                                 )
                               ? selectionCondition()
                                 ? "#255B87"
                                 : fillColor(
-                                    curr(topic, findData, path)
-                                      ? curr(topic, findData, path)
+                                    curr(topic, findData?.counts, path)
+                                      ? curr(topic, findData?.counts, path)
                                       : 0
                                   )
                               : fillColor(
-                                  curr(topic, findData, path)
-                                    ? curr(topic, findData, path)
+                                  curr(topic, findData?.counts, path)
+                                    ? curr(topic, findData?.counts, path)
                                     : 0
                                 )
                           }

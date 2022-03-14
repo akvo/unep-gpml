@@ -6,6 +6,7 @@ import {
   ArrowRightOutlined,
   RiseOutlined,
   UserOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import Chart from "../../utils/chart";
@@ -27,6 +28,7 @@ import humps from "humps";
 import { topicNames } from "../../utils/misc";
 import sortBy from "lodash/sortBy";
 import api from "../../utils/api";
+import TopicChart from "../chart/topicChart";
 
 const cardSvg = [
   {
@@ -114,13 +116,6 @@ const responsive = {
   },
 };
 
-const sortPopularTopic = orderBy(
-  popularTopics,
-  ["count", "topic"],
-  ["desc", "desc"]
-);
-const defTopic = sortPopularTopic[0]?.topic?.toLocaleLowerCase();
-
 const Landing = withRouter(
   ({
     history,
@@ -129,21 +124,33 @@ const Landing = withRouter(
     loginWithPopup,
     setFilterMenu,
   }) => {
+    const [sortPopularTopic, setSortPopularTopic] = useState([]);
+    const defTopic = sortPopularTopic[0]?.topic?.toLocaleLowerCase();
+
     const dateNow = moment().format("YYYY/MM/DD");
     const { innerWidth, innerHeight } = window;
     const profile = UIStore.useState((s) => s.profile);
-    const [selectedTopic, setSelectedTopic] = useState(defTopic);
+    const [selectedTopic, setSelectedTopic] = useState(null);
     const [event, setEvent] = useState([]);
     const [data, setData] = useState(null);
 
     const isApprovedUser = profile?.reviewStatus === "APPROVED";
     const hasProfile = profile?.reviewStatus;
 
+    const popularTags = [
+      "plastics",
+      "waste management",
+      "marine litter",
+      "capacity building",
+      "product by design",
+      "source to sea",
+    ];
+
     const isMobileScreen = innerWidth <= 991;
 
     const handlePopularTopicChartClick = (params) => {
       const { name, tag } = params?.data;
-      !isMobileScreen && setSelectedTopic(name.toLowerCase());
+      !isMobileScreen && setSelectedTopic(name?.toLowerCase());
       isMobileScreen && history.push(`/browse?tag=${tag}`);
     };
 
@@ -156,6 +163,11 @@ const Landing = withRouter(
       }
       return setWarningModalVisible(true);
     };
+
+    useEffect(() => {
+      setSelectedTopic(defTopic);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sortPopularTopic]);
 
     const generateEvent = useCallback(
       (filterDate, searchNextEvent = false) => {
@@ -197,6 +209,68 @@ const Landing = withRouter(
     useEffect(() => {
       UIStore.update((e) => {
         e.disclaimer = "home";
+      });
+    }, []);
+
+    useEffect(() => {
+      const popularTags = [
+        "plastics",
+        "waste management",
+        "marine litter",
+        "capacity building",
+        "product by design",
+        "source to sea",
+      ];
+
+      const tagsFetch = popularTags.map((tag, i) => {
+        const topicName = () => {
+          if (tag === "plastics") {
+            return "Plastics";
+          }
+          if (tag === "waste management") {
+            return "Waste Management";
+          }
+          if (tag === "marine litter") {
+            return "Marine Litter";
+          }
+
+          if (tag === "capacity building") {
+            return "Capacity Building";
+          }
+          if (tag === "product by design") {
+            return "Product by Design";
+          }
+
+          if (tag === "source to sea") {
+            return "Source to Sea";
+          }
+        };
+        return api
+          .get(`/browse?tag=${tag}`)
+          .then((resp) => ({
+            id: i,
+            items: resp?.data?.results,
+            topic: topicName(),
+            tag,
+            count: resp?.data?.counts
+              .filter((count) => count.topic !== "gpml_member_entities")
+              .reduce((curr, val) => curr + val?.count || 0, 0),
+            summary: resp.data.counts.filter(
+              (count) => count.topic !== "gpml_member_entities"
+            ),
+          }))
+          .catch((err) => {
+            console.error(err);
+          });
+      });
+
+      const tagResults = Promise.all(tagsFetch).then((results) => {
+        const sortedPopularTopics = orderBy(
+          results,
+          ["count", "topic"],
+          ["desc", "desc"]
+        );
+        setSortPopularTopic(sortedPopularTopics);
       });
     }, []);
 
@@ -247,57 +321,54 @@ const Landing = withRouter(
             </h2>
           </div>
           <div className="body">
-            <div className="chart-wrapper">
-              <Chart
-                key="popular-topic"
-                title=""
-                type="TREEMAP"
-                height={675}
-                className="popular-topic-chart"
-                data={sortPopularTopic.map((x) => {
-                  return {
-                    id: x.id,
-                    name: x.topic,
-                    value: x.count > 100 ? x.count : x.count + 50,
-                    count: x.count,
-                    tag: x.tag,
-                  };
-                })}
-                onEvents={{
-                  click: (e) => handlePopularTopicChartClick(e),
-                }}
-                selected={selectedTopic}
-              />
-            </div>
+            <TopicChart
+              height={675}
+              loadingId="home-loading"
+              {...{
+                defTopic,
+                selectedTopic,
+                setSelectedTopic,
+                popularTags,
+                isMobileScreen,
+                sortPopularTopic,
+                setSortPopularTopic,
+                handlePopularTopicChartClick,
+              }}
+            />
             {!isMobileScreen && (
               <div className="content">
                 <div className="content-body">
-                  {sortPopularTopic
-                    .find((x) => x.topic.toLowerCase() === selectedTopic)
-                    .items.map((x, i) => {
-                      const { id, type, title, description } = x;
-                      const link = `/${humps.decamelize(type)}/${id}`;
-                      return (
-                        <Card
-                          key={`summary-${i}`}
-                          className="item-body"
-                          onClick={() => history.push(link)}
-                        >
-                          <div className="resource-label upper">
-                            {topicNames(humps.camelizeKeys(type))}
-                          </div>
-                          <div className="asset-title">{title}</div>
-                          <div className="body-text">
-                            {TrimText({ text: description, max: 250 })}
-                          </div>
-                          <span className="read-more">
-                            <Link to={link}>
-                              Read more <ArrowRightOutlined />
-                            </Link>
-                          </span>
-                        </Card>
-                      );
-                    })}
+                  {sortPopularTopic.length !== 0 &&
+                    sortPopularTopic
+                      .find((x) => x?.topic.toLowerCase() === selectedTopic)
+                      ?.items.slice(0, 3)
+                      ?.map((x, i) => {
+                        const { id, type, title, description, remarks } = x;
+                        const link = `/${humps.decamelize(type)}/${id}`;
+                        return (
+                          <Card
+                            key={`summary-${i}`}
+                            className="item-body"
+                            onClick={() => history.push(link)}
+                          >
+                            <div className="resource-label upper">
+                              {topicNames(humps.camelizeKeys(type))}
+                            </div>
+                            <div className="asset-title">{title || ""}</div>
+                            <div className="body-text">
+                              {TrimText({
+                                text: description || remarks,
+                                max: 250,
+                              })}
+                            </div>
+                            <span className="read-more">
+                              <Link to={link}>
+                                Read more <ArrowRightOutlined />
+                              </Link>
+                            </span>
+                          </Card>
+                        );
+                      })}
                 </div>
               </div>
             )}

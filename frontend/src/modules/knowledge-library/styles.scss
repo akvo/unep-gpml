@@ -116,7 +116,6 @@
     }
 
     .select-wrapper {
-      display: none;
       padding: 0 !important;
       width: 100%;
       max-width: 194px;
@@ -593,7 +592,8 @@
 
   .resource-list-header {
     justify-content: unset;
-
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
+    z-index: 999;
     & span {
       font-size: 12px;
     }
@@ -649,10 +649,19 @@
       display: flex;
       align-items: center;
       padding-left: 24px;
+      box-shadow: unset;
       img {
         margin-right: 7px;
       }
     }
+  }
+
+  #knowledge-library-loading {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    max-width: fit-content;
+    height: 100vh;
   }
 
   .resource-list {

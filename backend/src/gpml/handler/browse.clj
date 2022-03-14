@@ -1,6 +1,6 @@
 (ns gpml.handler.browse
   (:require [clojure.string :as str]
-            [gpml.constants :refer [topics resource-types approved-user-topics]]
+            [gpml.constants :refer [topics resource-types]]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.event :as db.event]
             [gpml.db.initiative :as db.initiative]
@@ -83,6 +83,11 @@
                             :type "string"
                             :allowEmptyValue true}}
     string?]
+   [:subContentType {:optional true
+                     :swagger {:description "Comma separated list of a topic's subContentTypes"
+                               :type "string"
+                               :allowEmptyValue true}}
+    string?]
    [:limit {:optional true
             :swagger {:description "Limit the number of entries per page"
                       :type "int"
@@ -95,7 +100,8 @@
     [:int {:min 0}]]])
 
 (defn get-db-filter
-  [{:keys [q transnational country affiliation representativeGroup startDate endDate topic tag favorites user-id limit offset]}]
+  [{:keys [limit offset startDate endDate user-id favorites country transnational
+           topic tag affiliation representativeGroup subContentType q]}]
   (cond-> {}
     offset
     (assoc :offset offset)
@@ -131,24 +137,13 @@
     (seq representativeGroup)
     (assoc :representative-group (set (str/split representativeGroup #",")))
 
+    (seq subContentType)
+    (assoc :sub-content-type (set (str/split subContentType #",")))
+
     (seq q)
     (assoc :search-text (->> (str/trim q)
                              (re-seq #"\w+")
                              (str/join " & ")))))
-
-(defn maybe-filter-private-topics [topics approved?]
-  (or (and approved? topics)
-      (->> topics
-           (filter #(not (contains? approved-user-topics %)))
-           vec)))
-
-(defn modify-db-filter-topics [db-filter]
-  (let [approved? (:approved db-filter)]
-    (if approved?
-      db-filter
-      (let [t (or (:topic db-filter) topics)
-            filtered-topics (set (maybe-filter-private-topics t approved?))]
-        (merge db-filter {:topic filtered-topics})))))
 
 (defn- result->result-with-connections [db {:keys [type] :as result}]
   (case type
@@ -183,8 +178,7 @@
   (let [{:keys [geo-coverage transnational] :as modified-filters} (->> query
                                                                     (get-db-filter)
                                                                     (merge {:approved approved?
-                                                                            :admin admin})
-                                                                    (modify-db-filter-topics))
+                                                                            :admin admin}))
         modified-filters (cond
                            (and (seq geo-coverage) (seq transnational))
                            (let [country-group-countries (flatten
@@ -222,9 +216,7 @@
                      (map (fn [{:keys [json topic]}]
                             (assoc json :type topic))))
         counts (->> (assoc modified-filters :count-only? true)
-                    (db.topic/get-topics db)
-                    (filter #(or approved?
-                                 (not (contains? approved-user-topics (:topic %))))))]
+                    (db.topic/get-topics db))]
     {:results (map #(result->result-with-connections db %) results)
      :counts counts}))
 

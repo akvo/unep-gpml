@@ -5,18 +5,25 @@
             [gpml.db.country :as db.country]
             [gpml.pg-util]))
 
-(declare map-counts summary)
+(declare map-counts summary map-transnational-counts)
 
 (hugsql/def-db-fns "gpml/db/landing.sql")
 
 (def topic-counts
   (->> constants/topics
-       (map #(assoc {} (keyword %) 0))
-       (apply merge)))
+       (map #(-> {}
+               (assoc-in [:counts (keyword %)] 0)
+               (assoc-in [:transnational_counts (keyword %)] 0)))
+       (apply merge-with into)))
 
 (defn map-counts-explicit [conn]
-  (let [counts (map-counts conn)]
-    (map #(merge-with + {:id (:id %)} topic-counts (:counts %)) counts)))
+  (let [map-counts (map-counts conn)
+        transnational-counts (map-transnational-counts conn)]
+    (reduce
+      (fn [acc [_ counts]]
+        (conj acc (merge-with into topic-counts (apply merge counts))))
+      []
+      (group-by :id (concat map-counts transnational-counts)))))
 
 (defn remap-counts [x]
   (assoc (dissoc x :id) :country_id (:id x)))

@@ -56,7 +56,7 @@
                                                  :parameters {:query [:map
                                                                       [:only {:optional true} [:enum "resources" "stakeholders" "tags" "entities"]]
                                                                       [:page {:optional true
-                                                                                   :default 1} int?]
+                                                                              :default 1} int?]
                                                                       [:limit {:optional true
                                                                                :default 10} int?]]}
                                                  :handler #ig/ref :gpml.handler.archive/get}}]]
@@ -72,8 +72,7 @@
                                                  :parameters {:query [:map
                                                                       [:only {:optional true} [:enum "resources" "stakeholders" "tags" "entities"]]
                                                                       [:review_status
-                                                                       {:optional true #_#_:default "SUBMITTED"
-                                                                        }
+                                                                       {:optional true #_#_:default "SUBMITTED"}
                                                                        [:enum "SUBMITTED" "APPROVED" "REJECTED"]]
                                                                       [:title {:optional true} string?]
                                                                       [:page {:optional true
@@ -89,8 +88,7 @@
                                           {:get {:summary "Get the details of a submission"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:path [:map [:submission string?] [:id int?]]}
-                                                 :handler #ig/ref :gpml.handler.submission/get-detail}}]
-                                         ]
+                                                 :handler #ig/ref :gpml.handler.submission/get-detail}}]]
                                         ["/reviewer" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                    #ig/ref :gpml.auth/auth-required
                                                                    #ig/ref :gpml.auth/approved-user
@@ -264,8 +262,7 @@
                                          [""
                                           {:get {:summary "List all non member organisations"
                                                  :swagger {:tags ["non-member-organisation"]}
-                                                 :handler #ig/ref :gpml.handler.non-member-organisation/get}}]
-]
+                                                 :handler #ig/ref :gpml.handler.non-member-organisation/get}}]]
                                         ["/organisation"
                                          [""
                                           {:get {:summary "List all organisations"
@@ -333,8 +330,8 @@
                                                    :swagger {:tags ["topic auth stakeholder"]
                                                              :security [{:id_token []}]}
                                                    :parameters {:path [:map
-                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                      [:topic-id int?]]
+                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                       [:topic-id int?]]
                                                                 :body [:map
                                                                        [:stakeholders
                                                                         [:vector [:map
@@ -343,22 +340,22 @@
                                                    :handler #ig/ref :gpml.handler.auth/post-topic-auth}}]
                                           ["/{stakeholder}"
                                            {:put {:summary "Update stakeholder auth roles"
-                                                   :swagger {:tags ["topic auth stakeholder"]
-                                                             :security [{:id_token []}]}
-                                                   :parameters {:path [:map
+                                                  :swagger {:tags ["topic auth stakeholder"]
+                                                            :security [{:id_token []}]}
+                                                  :parameters {:path [:map
                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                       [:topic-id int?]
                                                                       [:stakeholder int?]]
-                                                                :body [:map
-                                                                       [:roles [:vector [:enum "owner"]]]]}
-                                                   :handler #ig/ref :gpml.handler.auth/update-roles}
+                                                               :body [:map
+                                                                      [:roles [:vector [:enum "owner"]]]]}
+                                                  :handler #ig/ref :gpml.handler.auth/update-roles}
                                             :post {:summary "Add stakeholder auth roles to topic"
                                                    :swagger {:tags ["topic auth stakeholder"]
                                                              :security [{:id_token []}]}
                                                    :parameters {:path [:map
-                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                      [:topic-id int?]
-                                                                      [:stakeholder int?]]
+                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                       [:topic-id int?]
+                                                                       [:stakeholder int?]]
                                                                 :body [:map
                                                                        [:roles [:vector [:enum "owner"]]]]}
                                                    :handler #ig/ref :gpml.handler.auth/new-roles}
@@ -398,7 +395,7 @@
                                                               #ig/ref :gpml.auth/approved-user]
                                                  :summary "Edit the details for a specific resource"
                                                  :swagger {:tags ["resource detail"]
-                                                           :security[{:id_token []}]}
+                                                           :security [{:id_token []}]}
                                                  :parameters {:path [:map
                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                      [:topic-id int?]]
@@ -513,6 +510,7 @@
   :gpml.handler.stakeholder/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder-association/get-associated-topics {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder-association/get-associated-topics-params {}
+
   :gpml.handler.stakeholder/suggested-profiles {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/suggested-profiles-params {}
   :gpml.handler.currency/all {:db #ig/ref :duct.database/sql}
@@ -587,16 +585,13 @@
 
   :gpml.handler.monitoring/hikaricp
   {:hikari-cp #ig/ref :duct.database.sql/hikaricp
-   :metrics-collector #ig/ref :gpml.handler.monitoring/collector}
-
-  }
+   :metrics-collector #ig/ref :gpml.handler.monitoring/collector}}
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"
  :duct.profile/test  #duct/include "test"
  :duct.profile/prod
- {
-  :gpml.handler.main/handler {:collector #ig/ref :gpml.handler.monitoring/collector}
+ {:gpml.handler.main/handler {:collector #ig/ref :gpml.handler.monitoring/collector}
   :duct.server.http/jetty {:configurator #ig/ref :gpml.handler.monitoring/jetty-configurator}
   :duct.logger/timbre
   {:min-level     :warn
@@ -610,11 +605,8 @@
   {:dsn #duct/env "SENTRY_DSN"
    :env #duct/env "ENV_NAME"
    :host #duct/env "POD_NAME"
-   :version #duct/env "APP_VERSION"}
-
-  }
+   :version #duct/env "APP_VERSION"}}
 
  :duct.module/logging {}
  :duct.module/sql {}
- :duct.module/web {}
- }
+ :duct.module/web {}}

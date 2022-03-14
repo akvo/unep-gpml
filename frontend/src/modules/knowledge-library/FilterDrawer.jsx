@@ -37,6 +37,7 @@ import { titleCase } from "../../utils/string";
 
 const FilterDrawer = ({
   query,
+  countData,
   updateQuery,
   filterVisible,
   setFilterVisible,
@@ -49,7 +50,7 @@ const FilterDrawer = ({
     countries,
     transnationalOptions,
     geoCoverageTypeOptions,
-    representativeGroup,
+
     mainContentType,
   } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -57,9 +58,7 @@ const FilterDrawer = ({
     tags: s.tags,
     countries: s.countries,
     transnationalOptions: s.transnationalOptions,
-    sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    representativeGroup: s.sectorOptions,
     mainContentType: s.mainContentType,
   }));
   const { isAuthenticated } = useAuth0();
@@ -69,7 +68,6 @@ const FilterDrawer = ({
     !isEmpty(countries) &&
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
-    !isEmpty(representativeGroup) &&
     !isEmpty(mainContentType);
 
   const mainContentOptions = isLoaded()
@@ -164,15 +162,6 @@ const FilterDrawer = ({
         ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
     : [];
 
-  // populate options for representative group options
-  const representativeOpts = isLoaded()
-    ? flatten(
-        [...representativeGroup]
-          ?.map((x) => x)
-          ?.sort((repG1, repG2) => repG1?.localeCompare(repG2))
-      )
-    : [];
-
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
@@ -209,9 +198,8 @@ const FilterDrawer = ({
             <Row type="flex" gutter={[10, 10]}>
               {topicTypes.map((type) => {
                 const topic = humps.decamelize(type);
-                const count = nav.resourceCounts?.find((it) =>
-                  it.hasOwnProperty(type)
-                );
+                const count =
+                  countData?.find((it) => it.topic === topic)?.count || 0;
 
                 return (
                   <Col span={6} key={type}>
@@ -224,7 +212,7 @@ const FilterDrawer = ({
                       <Space direction="vertical" align="center">
                         {topicIcons(type)}
                         <div className="topic-text">{topicNames(type)}</div>
-                        <div className="topic-count">{count[type]}</div>
+                        <div className="topic-count">{count}</div>
                       </Space>
                     </Card>
                   </Col>
@@ -284,16 +272,18 @@ const FilterDrawer = ({
             </Space>
             <div className="country-filter-tab-wrapper">
               <CountryTransnationalFilter
+                {...{
+                  multiCountryCountries,
+                  handleChangeCountry,
+                  handleDeselectCountry,
+                  handleChangeMultiCountry,
+                  handleDeselectMultiCountry,
+                }}
                 handleChangeTab={handleChangeLocationTab}
                 country={query?.country?.map((x) => parseInt(x)) || []}
-                handleChangeCountry={handleChangeCountry}
-                handleDeselectCountry={handleDeselectCountry}
                 multiCountry={
                   query?.transnational?.map((x) => parseInt(x)) || []
                 }
-                handleChangeMultiCountry={handleChangeMultiCountry}
-                handleDeselectMultiCountry={handleDeselectMultiCountry}
-                multiCountryCountries={multiCountryCountries}
                 multiCountryLabelCustomIcon={true}
                 countrySelectMode="multiple"
                 multiCountrySelectMode="multiple"
@@ -310,23 +300,11 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
           <MultipleSelectFilter
-            title="Representative group"
-            options={
-              isLoaded()
-                ? representativeOpts?.map((x) => ({ value: x, label: x }))
-                : []
-            }
-            value={query?.representativeGroup || []}
-            flag="representativeGroup"
-            query={query}
-            updateQuery={updateQuery}
-          />
-          <MultipleSelectFilter
             title="Sub-content type"
             options={
               isLoaded()
                 ? mainContentOptions.map((content) => ({
-                    label: content.name,
+                    label: content?.name,
                     options: content?.childs.map((child, i) => ({
                       label: child?.title,
                       value: child?.title,

@@ -72,6 +72,7 @@
           valid? (fn [country-id] (->> landing
                                      (filter #(= country-id (:country_id %)))
                                      first
+                                     :counts
                                      :financing_resource))]
       (are [expected country-id] (= expected (valid? country-id))
         2 (-> (db.country/country-by-code conn {:name "ESP"}) :id)

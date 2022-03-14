@@ -380,34 +380,40 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       <div className={isValidUser ? "" : "blur"}>
         {isValidUser && (
           <Header
-            view={view}
-            setView={setView}
-            filterVisible={filterVisible}
-            setFilterVisible={setFilterVisible}
-            isAscending={isAscending}
-            renderFilterTag={renderFilterTag}
-            sortPeople={sortPeople}
-            updateQuery={updateQuery}
+            {...{
+              view,
+              setView,
+              filterVisible,
+              setFilterVisible,
+              isAscending,
+              sortPeople,
+              renderFilterTag,
+              updateQuery,
+            }}
           />
         )}
         <Row type="flex" className="body-wrapper">
           {/* Filter Drawer */}
           <FilterDrawer
-            query={query}
-            updateQuery={updateQuery}
+            {...{
+              query,
+              updateQuery,
+              filterVisible,
+              setFilterVisible,
+              organisationCount,
+              GPMLMemberCount,
+              setFilterCountries,
+            }}
             entities={entityRoleOptions}
-            filterVisible={filterVisible}
-            setFilterVisible={setFilterVisible}
-            organisationCount={organisationCount}
-            GPMLMemberCount={GPMLMemberCount}
-            setFilterCountries={setFilterCountries}
           />
 
           <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>
             <Col lg={24} xs={24} order={2}>
               {view === "card" ? (
                 <div
-                  style={{ height: results.length === pageSize && "1138.17px" }}
+                  style={{
+                    minHeight: results.length === pageSize && "1138.17px",
+                  }}
                 >
                   {/* Suggested profiles */}
                   {isValidUser && !isEmpty(suggestedProfiles) && (

@@ -16,33 +16,33 @@ import { ReactComponent as CommunityIcon } from "../../images/stakeholder-overvi
 import { ReactComponent as UnionIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
 const FilterDrawer = ({
-  filterVisible,
-  setFilterVisible,
-  entities,
   query,
   updateQuery,
+  entities,
+  filterVisible,
+  setFilterVisible,
   organisationCount,
   GPMLMemberCount,
   setFilterCountries,
 }) => {
   const {
-    countries,
-    transnationalOptions,
-    geoCoverageTypeOptions,
-    representativeGroup,
-    organisations,
-    stakeholders,
     seeking,
     offering,
+    countries,
+    stakeholders,
+    organisations,
+    representativeGroup,
+    transnationalOptions,
+    geoCoverageTypeOptions,
   } = UIStore.useState((s) => ({
-    countries: s.countries,
-    transnationalOptions: s.transnationalOptions,
-    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    representativeGroup: s.sectorOptions,
-    stakeholders: s.stakeholders?.stakeholders,
-    organisations: s.organisations,
     seeking: s.tags.seeking,
     offering: s.tags.offering,
+    countries: s.countries,
+    stakeholders: s.stakeholders?.stakeholders,
+    organisations: s.organisations,
+    representativeGroup: s.sectorOptions,
+    transnationalOptions: s.transnationalOptions,
+    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
   }));
 
   const isLoaded = () =>

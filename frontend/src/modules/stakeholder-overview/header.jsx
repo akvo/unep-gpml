@@ -10,14 +10,14 @@ import DownArrow from "../../images/knowledge-library/chevron-down.svg";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 
 const Header = ({
+  view,
+  setView,
   isAscending,
   filterVisible,
   setFilterVisible,
   renderFilterTag,
   sortPeople,
   updateQuery,
-  view,
-  setView,
 }) => {
   const selectionValue = (
     <div className="selection-value">
