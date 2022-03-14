@@ -1,7 +1,7 @@
 /* eslint-disable no-else-return */
 import React, { useState } from "react";
 import { utils } from "@rjsf/core";
-import { Select, Divider, Input } from "antd";
+import { Select, Divider, Input, List } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 import ModalAddEntity from "../../modules/flexible-forms/EntityModal/add-entity-modal";
@@ -122,6 +122,25 @@ const SelectWidget = ({
             </Select.Option>
           ))}
       </Select>
+      {formContext?.data.tagsList && formContext.data.tagsList.length > 0 && (
+        <div className="list tag-list">
+          <h5>Suggested tags</h5>
+          <List itemLayout="horizontal">
+            <List.Item>
+              <List.Item.Meta
+                title={
+                  <ul>
+                    {formContext.data.tagsList &&
+                      formContext.data.tagsList.map((tag) => (
+                        <li key={tag}>{tag}</li>
+                      ))}
+                  </ul>
+                }
+              />
+            </List.Item>
+          </List>
+        </div>
+      )}
       <ModalAddEntity
         visible={showModal}
         close={() => setShowModal(!showModal)}

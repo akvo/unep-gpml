@@ -50,6 +50,7 @@ const FlexibleForm = withRouter(
       formEdit,
       profile,
       selectedMainContentType,
+      mainContentType,
     } = UIStore.currentState;
 
     const { status, id } = formEdit.flexible;
@@ -61,6 +62,28 @@ const FlexibleForm = withRouter(
     const [dependValue, setDependValue] = useState([]);
     const [schema, setSchema] = useState(formSchema.schema);
     const [editCheck, setEditCheck] = useState(true);
+
+    useEffect(() => {
+      if (subContentType) {
+        let obj = mainContentType.find(
+          (o) => o.code === selectedMainContentType
+        );
+        let find = obj?.childs.find((o) => o.title === subContentType).tags;
+        if (find) {
+          initialFormData.update((e) => {
+            e.data = {
+              ...e.data,
+              tagsList: find,
+            };
+          });
+        }
+      }
+    }, [
+      subContentType,
+      mainContentType,
+      selectedMainContentType,
+      initialFormData,
+    ]);
 
     const handleOnSubmit = ({ formData }) => {
       if (mainType === "Policy") {

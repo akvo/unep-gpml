@@ -67,21 +67,25 @@ const mainContentType = [
     childs: [
       {
         title: "Legislation, standards, rules",
+        tags: ["initiatives", "policy", "legislation", "standards"],
         des:
           "Agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments).",
       },
       {
         title: "Working with people",
+        tags: ["initiatives", "working with people", "capacity building"],
         des:
           "Encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes",
       },
       {
         title: "Technology and Processes",
+        tags: ["initiatives", "technology and processes"],
         des:
           "New technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning.",
       },
       {
         title: "Monitoring and Analysis",
+        tags: ["initiatives", "monitoring and analysis"],
         des:
           "Collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis",
       },
@@ -93,11 +97,24 @@ const mainContentType = [
     code: "action",
     name: "Action Plan",
     childs: [
-      { title: "Global", des: "Worldwide Coverage" },
-      { title: "Transnational", des: "Covers two or more countries" },
-      { title: "National", des: "Covers an entire country" },
+      {
+        title: "Global",
+        tags: ["action Plan", "global"],
+        des: "Worldwide Coverage",
+      },
+      {
+        title: "Transnational",
+        tags: ["action Plan", "transnational"],
+        des: "Covers two or more countries",
+      },
+      {
+        title: "National",
+        tags: ["action Plan", "national"],
+        des: "Covers an entire country",
+      },
       {
         title: "Sub-national",
+        tags: ["action Plan", "sub-national"],
         des: "Covers part of a country e.g, city, or federal state",
       },
     ],
@@ -110,31 +127,37 @@ const mainContentType = [
     childs: [
       {
         title: "Legislations, Regulations & Standards",
+        tags: ["policy", "legislations, regulations & standards"],
         des:
           "Measures taken by governmental units to influence people by means of formulated rules and directives which mandate receivers act in accordance with what is ordered in these rules or directives.",
       },
       {
         title: "Prohibitive Regulations, Bans & Restrictions",
+        tags: ["policy", "legislations, regulations & standards"],
         des:
           "Rules of an obligatory nature that are negative, disallowing certain phenomena or actions.",
       },
       {
         title: "Strategies & Action Plans",
+        tags: ["policy", "strategies & action plans"],
         des:
           "Decisions designed to create favorable impact on key factors to create a desired outcome.",
       },
       {
         title: "Economic Instruments",
+        tags: ["policy", "economic instruments"],
         des:
           "Incentive measures bring about an intended behaviour or outcome as an alternative to command and control measures - legal codes and prescriptions.",
       },
       {
         title: "Certification, Licensing and Registration",
+        tags: ["policy", "certification, licensing, and registration"],
         des:
           "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard. ",
       },
       {
         title: "Policy Guidance and Information",
+        tags: ["policy", "policy guidance"],
         des:
           "Help and advice provided on a set of ideas or plans that is used as a basis for making decisions, especially in politics, economics, or business.",
       },
@@ -148,35 +171,45 @@ const mainContentType = [
     childs: [
       {
         title: "Equity Investment",
+        tags: ["financing resources", "equity investment"],
         des: "Money that is invested in a company in the form of shares.",
       },
       {
         title: "Venture Capital",
+        tags: ["financing resources", "venture capital"],
         des:
           "Money that is invested or is available for investment in a new company, especially one that involves risk.",
       },
       {
         title: "Loans",
+        tags: ["financing resources", "loans"],
         des:
           "An amount of money that is borrowed, often from a bank, and has to be paid back, usually with an extra charge for borrowing.",
       },
       {
         title: "Grants",
+        tags: ["financing resources", "grants"],
         des:
           "An amount of money that a government or other institution gives to an individual or to an organization for a particular purpose. ",
       },
       {
         title: "Blended finance",
+        tags: ["financing resources", "blended finance"],
         des:
           "The strategic use of development finance for the mobilisation of additional finance towards sustainable development.",
       },
       {
         title: "Multidonor trust fund",
+        tags: ["financing resources", "multidonor trust fund"],
         des:
           "A type of pooled funding involving multiple UN organisations and designed to receive contributions from donors to support specific national, regional or global results.",
       },
       {
         title: "Sustainable development bonds, green bonds and blue bonds",
+        tags: [
+          "financing resources",
+          "sustainable development bonds, green bonds, and blue bonds",
+        ],
         des:
           "Debt securities issued by private or public entities to finance activities or projects linked to sustainable development, green goals, or ocean goals.",
       },
@@ -190,41 +223,49 @@ const mainContentType = [
     childs: [
       {
         title: "Report & Assessment",
+        tags: ["technical resources", "report & assessment"],
         des:
           "A textual document made that present focused, salient content to a specific audience but is not limited to assessment reports, evaluation report, annual report, progress/quadrennial assessment report.",
       },
       {
         title: "Guidance Documents",
+        tags: ["technical resources", "guidance documents"],
         des:
           "A document that gives advice or help on how to do or understand something.",
       },
       {
         title: "Rules of Procedure and Mechanism",
+        tags: ["technical resources", "rules of procedure and mechanism"],
         des:
           "A natural or established process by which something takes place or is brought about.",
       },
       {
         title: "Tools & Toolkits",
+        tags: ["technical resources", "tools & toolkits"],
         des:
           "A resource or set of resources that helps you to do a particular activity.",
       },
       {
         title: "Working Document",
+        tags: ["technical resources", "working document"],
         des:
           "A type of technical report that is a work in progress, a preliminary form of a possible future document.",
       },
       {
         title: "Educational & Outreach resources",
+        tags: ["technical resources", "educational & outreach resources"],
         des:
           "Any resource – including print and non-print materials and online/open-access resources – which supports and enhances, directly or indirectly, learning, teaching and awareness raising.",
       },
       {
         title: "Courses & Trainings",
+        tags: ["technical resources", "courses & trainings"],
         des:
           "Unit of instruction comprising a sequence of educational activities in a particular field or range of related fields of education.",
       },
       {
         title: "Case studies",
+        tags: ["technical resources", "case study"],
         des:
           "Initiatives or projects that can be used as an example to show general principles.",
       },
@@ -238,31 +279,37 @@ const mainContentType = [
     childs: [
       {
         title: "Webinars & Seminars",
+        tags: ["events", "webinars & seminars"],
         des:
           "An online or face-to-face meeting of people to discuss and/or perform practical work in a subject or activity",
       },
       {
         title: "Workshops",
+        tags: ["events", "workshops"],
         des:
           "A meeting of people to discuss and/or perform practical work in a subject or activity",
       },
       {
         title: "Conferences",
+        tags: ["events", "conferences"],
         des:
           "Meetings, often lasting a few days, organized on a particular subject or to bring together people who have a common interest to exchange ideas and discuss issues, especially important public issues. ",
       },
       {
         title: "Challenges & Contests ",
+        tags: ["events", "challenges & contests"],
         des:
           "An activity done by a number of people or organizations, each of which is trying to do better than all of the others",
       },
       {
         title: "Courses & Trainings",
+        tags: ["events", "courses & trainings"],
         des:
           "Unit of instruction comprising a sequence of educational activities in a particular field or range of related fields of education. ",
       },
       {
         title: "Awareness Raising",
+        tags: ["events", "awareness raising"],
         des:
           "Awareness-raising is a process that seeks to inform and educate people about a topic or issue with the intention of influencing their attitudes, behaviours and beliefs towards the achievement of a defined purpose or goal.1 It can mobilize the power of public opinion in support of an issue and thereby influence the political will of decision makers.2 There are multiple awareness-raising strategies, methods and tools that can be used to convey and spread messages, and to gather the support necessary to influence public opinion. ",
       },
@@ -276,31 +323,37 @@ const mainContentType = [
     childs: [
       {
         title: "In market",
+        tags: ["technology", "in market"],
         des:
           "Within the geographical area that the provider offers the service",
       },
       {
         title: "Scale up",
+        tags: ["technology", "scale up"],
         des:
           "Involves obtaining a faster server with more powerful processors and more memory. This solution uses less network hardware, and consumes less power; but ultimately, for many platforms may only provide a short-term fix, especially if continued growth is expected",
       },
       {
         title: "Prototype",
+        tags: ["technology", "prototype"],
         des:
           "s the first complete solution to the original challenge. The first “prototype” is the first time all parts of a solution are tested together. It is the first time that the inter-dependencies of all components can be tested, analyzed, and refined. ",
       },
       {
         title: "Pilot",
+        tags: ["technology", "pilot"],
         des:
           "A solution that is to be tested on a small scale that is seen to be complete in its own right. Piloting can also be seen as the pre-scale phase of a new approach that focuses on quality, validation, time, cost, adverse events, and initial short-term impact.",
       },
       {
         title: "Development",
+        tags: ["technology", "development"],
         des:
           "The systematic use of scientific, technical, economic, and commercial knowledge to meet specific business objectives or requirements.",
       },
       {
         title: "Research",
+        tags: ["technology", "research"],
         des:
           "Creation of new knowledge and/or the use of existing knowledge in a new and creative way to generate new concepts, methodologies and understandings.",
       },
