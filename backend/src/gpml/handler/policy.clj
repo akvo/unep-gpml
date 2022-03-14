@@ -173,9 +173,9 @@
       [:map [:lang string?] [:url [:string {:min 1}]]]]]
     [:language {:optional true}
      [:map
-      [:name string?]
-      [:native string?]
-      [:code string?]]]
+      [:english_name string?]
+      [:native_name string?]
+      [:iso_code string?]]]
     auth/owners-schema]
    (into handler.geo/params-payload)))
 
