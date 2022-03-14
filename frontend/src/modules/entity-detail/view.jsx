@@ -112,13 +112,34 @@ const SharePanel = ({
     profile.reviewStatus === "APPROVED" &&
     profile.role === "ADMIN";
 
+  const handleChangeRelation = (relationType) => {
+    let association = relation ? [...relation.association] : [];
+    if (!association.includes(relationType)) {
+      association = [...association, relationType];
+    } else {
+      association = association.filter((it) => it !== relationType);
+    }
+    handleRelationChange({
+      topicId: parseInt(params.id),
+      association,
+      topic: resourceTypeToTopicType(params.type),
+    });
+  };
+
   return (
     <div className="sticky-panel">
-      <div className="sticky-panel-item">
-        <a href={`#`} target="_blank">
-          <Avatar src={FollowImage} />
+      <div
+        className="sticky-panel-item"
+        onClick={() => handleChangeRelation("interested in")}
+      >
+        <Avatar src={FollowImage} />
+        {relation &&
+        relation.association &&
+        relation.association.indexOf("interested in") !== -1 ? (
+          <h2>Unfollow</h2>
+        ) : (
           <h2>Follow</h2>
-        </a>
+        )}
       </div>
 
       {canEdit() && (
@@ -199,6 +220,7 @@ const StakeholderDetail = ({
   const [bookedResourcesCount, setBookedResourcesCount] = useState(0);
   const [ownedResourcesPage, setOwnedResourcesPage] = useState(0);
   const [bookedResourcesPage, setBookedResourcesPage] = useState(0);
+  const [warningVisible, setWarningVisible] = useState(false);
 
   const relation = relations.find(
     (it) =>
@@ -307,6 +329,34 @@ const StakeholderDetail = ({
     });
     window.scrollTo({ top: 0 });
   }, [isLoaded]);
+
+  const handleRelationChange = (relation) => {
+    if (!isAuthenticated) {
+      loginWithPopup();
+    }
+    if (profile.reviewStatus === "SUBMITTED") {
+      setWarningVisible(true);
+    }
+    if (isAuthenticated && profile.reviewStatus === undefined) {
+      setStakeholderSignupModalVisible(true);
+    }
+    if (profile.reviewStatus === "APPROVED") {
+      api.post("/favorite", relation).then((res) => {
+        const relationIndex = relations.findIndex(
+          (it) => it.topicId === relation.topicId
+        );
+        if (relationIndex !== -1) {
+          setRelations([
+            ...relations.slice(0, relationIndex),
+            relation,
+            ...relations.slice(relationIndex + 1),
+          ]);
+        } else {
+          setRelations([...relations, relation]);
+        }
+      });
+    }
+  };
 
   if (!data) {
     return (
@@ -434,6 +484,7 @@ const StakeholderDetail = ({
                     relation={relation}
                     handleEditBtn={handleEditBtn}
                     history={history}
+                    handleRelationChange={handleRelationChange}
                   />
                 </div>
               </div>

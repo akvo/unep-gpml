@@ -28,6 +28,7 @@ import ActionGreen from "../../images/action-green.png";
 import LeftImage from "../../images/sea-dark.jpg";
 import LocationImage from "../../images/location.svg";
 import TransnationalImage from "../../images/transnational.svg";
+import CityImage from "../../images/city-icn.svg";
 import LanguageImage from "../../images/language.svg";
 import TagsImage from "../../images/tags.svg";
 import ViewsImage from "../../images/views.svg";
@@ -822,12 +823,14 @@ const DetailsView = ({
                         title={data?.geoCoverageType}
                       />
                     </List.Item>
-                    {/* <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={LanguageImage} />}
-                        title={"English"}
-                      />
-                    </List.Item> */}
+                    {data?.subnationalCity && (
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={<Avatar src={CityImage} />}
+                          title={data?.subnationalCity}
+                        />
+                      </List.Item>
+                    )}
                   </List>
                 </div>
               </CardComponent>
