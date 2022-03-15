@@ -60,7 +60,7 @@ const FilterDrawer = ({
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     mainContentType: s.mainContentType,
-    representativeGroup: s.sectorOptions,
+    representativeGroup: s.representativeGroup,
   }));
   const { isAuthenticated } = useAuth0();
 
@@ -173,11 +173,7 @@ const FilterDrawer = ({
 
   // populate options for representative group options
   const representativeOpts = isLoaded()
-    ? flatten(
-        [...representativeGroup]
-          ?.map((x) => x)
-          ?.sort((repG1, repG2) => repG1?.localeCompare(repG2))
-      )
+    ? representativeGroup?.map((x) => ({ label: x?.name, value: x?.code }))
     : [];
 
   return (
@@ -341,7 +337,14 @@ const FilterDrawer = ({
             title="Representative group"
             options={
               isLoaded()
-                ? representativeOpts?.map((x) => ({ value: x, label: x }))
+                ? representativeOpts
+                    ?.sort((repG1, repG2) =>
+                      repG1?.label?.localeCompare(repG2?.label)
+                    )
+                    .map((x) => ({
+                      value: x?.value,
+                      label: x.label,
+                    }))
                 : []
             }
             value={query?.representativeGroup || []}
