@@ -220,6 +220,26 @@ const FilterDrawer = ({
               })}
             </Row>
           </Col>
+          {/* Sub-content type */}
+          <MultipleSelectFilter
+            title="Sub-content type"
+            options={
+              isLoaded()
+                ? mainContentOptions.map((content) => ({
+                    label: content?.name,
+                    options: content?.childs.map((child, i) => ({
+                      label: child?.title,
+                      value: child?.title,
+                      key: `${i}-${content.name}`,
+                    })),
+                  }))
+                : []
+            }
+            value={query?.subContentType || []}
+            flag="subContentType"
+            query={query}
+            updateQuery={updateQuery}
+          />
           {/* My Bookmarks */}
           {isAuthenticated && (
             <Col span={24}>
@@ -299,25 +319,7 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-          <MultipleSelectFilter
-            title="Sub-content type"
-            options={
-              isLoaded()
-                ? mainContentOptions.map((content) => ({
-                    label: content?.name,
-                    options: content?.childs.map((child, i) => ({
-                      label: child?.title,
-                      value: child?.title,
-                      key: `${i}-${content.name}`,
-                    })),
-                  }))
-                : []
-            }
-            value={query?.subContentType || []}
-            flag="subContentType"
-            query={query}
-            updateQuery={updateQuery}
-          />
+
           {/* Date Filter */}
           <Col span={24} className="date-picker-container">
             <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
