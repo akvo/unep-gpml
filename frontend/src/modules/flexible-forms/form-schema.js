@@ -6,8 +6,6 @@ const {
   individualRoleOptions,
 } = UIStore.currentState;
 
-console.log(languages);
-
 import { newGeoCoverageFormat } from "../../utils/geo";
 
 const sdgsOptions = [
