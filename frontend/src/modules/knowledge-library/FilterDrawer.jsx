@@ -50,7 +50,7 @@ const FilterDrawer = ({
     countries,
     transnationalOptions,
     geoCoverageTypeOptions,
-
+    representativeGroup,
     mainContentType,
   } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -60,15 +60,17 @@ const FilterDrawer = ({
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     mainContentType: s.mainContentType,
+    representativeGroup: s.sectorOptions,
   }));
   const { isAuthenticated } = useAuth0();
-
+console.log(UIStore.currentState);
   const isLoaded = () =>
     !isEmpty(tags) &&
     !isEmpty(countries) &&
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
-    !isEmpty(mainContentType);
+    !isEmpty(mainContentType) &&
+    !isEmpty(representativeGroup);
 
   const mainContentOptions = isLoaded()
     ? mainContentType.filter((content) => content.code !== "capacity_building")
@@ -160,6 +162,15 @@ const FilterDrawer = ({
     ? flatten(values(tags))
         ?.map((it) => ({ value: it.tag, label: it.tag }))
         ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
+    : [];
+
+  // populate options for representative group options
+  const representativeOpts = isLoaded()
+    ? flatten(
+        [...representativeGroup]
+          ?.map((x) => x)
+          ?.sort((repG1, repG2) => repG1?.localeCompare(repG2))
+      )
     : [];
 
   return (
@@ -319,7 +330,18 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-
+          <MultipleSelectFilter
+            title="Representative group"
+            options={
+              isLoaded()
+                ? representativeOpts?.map((x) => ({ value: x, label: x }))
+                : []
+            }
+            value={query?.representativeGroup || []}
+            flag="representativeGroup"
+            query={query}
+            updateQuery={updateQuery}
+          />
           {/* Date Filter */}
           <Col span={24} className="date-picker-container">
             <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
