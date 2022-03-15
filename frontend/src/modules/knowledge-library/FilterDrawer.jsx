@@ -63,7 +63,7 @@ const FilterDrawer = ({
     representativeGroup: s.sectorOptions,
   }));
   const { isAuthenticated } = useAuth0();
-console.log(UIStore.currentState);
+
   const isLoaded = () =>
     !isEmpty(tags) &&
     !isEmpty(countries) &&
@@ -158,9 +158,16 @@ console.log(UIStore.currentState);
   };
 
   // populate options for tags dropdown
+  const tagsWithoutSpace =
+    isLoaded() &&
+    flatten(values(tags)).map((it) => ({
+      value: it?.tag?.trim(),
+      label: it?.tag?.trim(),
+    }));
+
   const tagOpts = isLoaded()
-    ? flatten(values(tags))
-        ?.map((it) => ({ value: it.tag, label: it.tag }))
+    ? [...new Set(tagsWithoutSpace.map((s) => JSON.stringify(s)))]
+        .map((s) => JSON.parse(s))
         ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
     : [];
 
