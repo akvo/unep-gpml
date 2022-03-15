@@ -450,7 +450,7 @@ const Maps = ({
                             isCountrySelected
                               ? "#255B87"
                               : geo.properties.MAP_COLOR === selected
-                              ? "#255B87"
+                              ? "#84b4cc"
                               : fillColor(
                                   curr(topic, findData?.counts, path)
                                     ? curr(topic, findData?.counts, path)
@@ -522,17 +522,12 @@ const Maps = ({
                               ? "#cecece"
                               : isPattern
                               ? "url(#lines)"
+                              : geo.properties.MAP_COLOR === selected
+                              ? "#84b4cc"
                               : isCountrySelected
                               ? "#255B87"
-                              : selected
-                              ? geo.properties.MAP_COLOR === selected ||
-                                selectionCondition()
-                                ? "#255B87"
-                                : fillColor(
-                                    curr(topic, findData?.counts, path)
-                                      ? curr(topic, findData?.counts, path)
-                                      : 0
-                                  )
+                              : selectionCondition()
+                              ? "#255B87"
                               : fillColor(
                                   curr(topic, findData?.counts, path)
                                     ? curr(topic, findData?.counts, path)
