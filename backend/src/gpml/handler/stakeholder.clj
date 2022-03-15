@@ -66,6 +66,7 @@
                              non_member_organisation
                              cv
                              affiliation
+                             job_title
                              twitter picture
                              country
                              about]}]
@@ -83,7 +84,8 @@
    :public_email      (boolean public_email)
    :representation    ""
    :public_database   public_database
-   :affiliation       (or affiliation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation))})
+   :affiliation       (or affiliation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation))
+   :job_title job_title})
 
 (defn- create-profile
   [{:keys [id photo picture about
@@ -91,7 +93,7 @@
            non_member_organisation
            last_name idp_usernames
            linked_in cv twitter
-           affiliation representation
+           affiliation job_title representation
            country geo_coverage_type
            reviewed_at reviewed_by review_status
            organisation_role public_email]}
@@ -101,6 +103,7 @@
   {:id id
    :title title
    :affiliation (or affiliation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation))
+   :job_title job_title
    :first_name first_name
    :last_name last_name
    :idp_usernames idp_usernames

@@ -137,6 +137,11 @@ $bg-green-primary: #10f9b7;
         }
       }
 
+      img {
+        width: 32px;
+        height: 32px;
+      }
+
       &.active {
         background: rgba(5, 240, 129, 0.2);
 

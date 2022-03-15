@@ -17,6 +17,8 @@ import {
   List,
   Card,
   Pagination,
+  Modal,
+  notification,
 } from "antd";
 import StickyBox from "react-sticky-box";
 import AvatarImage from "../../images/stakeholder/Avatar.png";
@@ -35,6 +37,7 @@ import {
   ArrowRightOutlined,
   LoadingOutlined,
   EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import { withRouter, useHistory, Link } from "react-router-dom";
 import api from "../../utils/api";
@@ -92,6 +95,7 @@ const SharePanel = ({
   data,
   params,
   relation,
+  history,
   handleRelationChange,
 }) => {
   const noEditTopics = new Set(["stakeholder"]);
@@ -99,11 +103,7 @@ const SharePanel = ({
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
-    (profile.role === "ADMIN" ||
-      profile.id === params.createdBy ||
-      data.owners.includes(profile.id)) &&
-    ((params.type !== "project" && !noEditTopics.has(params.type)) ||
-      (params.type === "project" && params.id > 10000));
+    parseInt(profile.id) === parseInt(params.id);
 
   const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
@@ -118,6 +118,11 @@ const SharePanel = ({
       topic: resourceTypeToTopicType(params.type),
     });
   };
+
+  const canDelete = () =>
+    isAuthenticated &&
+    profile.reviewStatus === "APPROVED" &&
+    profile.role === "ADMIN";
 
   return (
     <div className="sticky-panel">
@@ -136,9 +141,55 @@ const SharePanel = ({
       </div>
 
       {canEdit() && (
-        <div className="sticky-panel-item">
+        <div
+          className="sticky-panel-item"
+          onClick={() => {
+            history.push({
+              pathname: `/profile`,
+            });
+          }}
+        >
           <Avatar src={EditImage} />
           <h2>Update</h2>
+        </div>
+      )}
+
+      {canDelete() && (
+        <div
+          className="sticky-panel-item"
+          onClick={() => {
+            Modal.error({
+              className: "popup-delete",
+              centered: true,
+              closable: true,
+              icon: <DeleteOutlined />,
+              title: "Are you sure you want to delete this entity?",
+              content: "Please be aware this action cannot be undone.",
+              okText: "Delete",
+              okType: "danger",
+              onOk() {
+                return api
+                  .delete(`/detail/${params.type}/${params.id}`)
+                  .then((res) => {
+                    notification.success({
+                      message: "Entity deleted successfully",
+                    });
+                    history.push({
+                      pathname: `/stakeholder-overview`,
+                    });
+                  })
+                  .catch((err) => {
+                    console.error(err);
+                    notification.error({
+                      message: "Oops, something went wrong",
+                    });
+                  });
+              },
+            });
+          }}
+        >
+          <DeleteOutlined />
+          <h2>Delete</h2>
         </div>
       )}
     </div>
@@ -515,6 +566,7 @@ const StakeholderDetail = ({
                     data={data}
                     params={params}
                     relation={relation}
+                    history={history}
                     handleRelationChange={handleRelationChange}
                   />
                 </div>

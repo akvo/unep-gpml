@@ -123,9 +123,6 @@ SELECT
   ON orgr.resource = r.id
   LEFT JOIN organisation o
   ON o.id = orgr.organisation AND orgr.resource = r.id
-  WHERE r.created_by IN
-    (SELECT id FROM stakeholder
-     WHERE affiliation = :id)
   GROUP BY r.id,ores.association
 UNION ALL
 SELECT
@@ -145,9 +142,6 @@ SELECT
   ON oe.event = e.id
   LEFT JOIN organisation o
   ON o.id = oe.organisation AND oe.event = e.id
-  WHERE e.created_by IN
-    (SELECT id FROM stakeholder
-     WHERE affiliation = :id)
   GROUP BY e.id, orge.association
 UNION ALL
 SELECT
@@ -167,9 +161,6 @@ SELECT
   ON oi.initiative = i.id
   LEFT JOIN organisation o
   ON o.id = oi.organisation AND oi.initiative = i.id
-  WHERE i.created_by IN
-    (SELECT id FROM stakeholder
-     WHERE affiliation = :id)
   GROUP BY i.id, orgi.association
 UNION ALL
 SELECT
@@ -189,9 +180,6 @@ SELECT
   ON op.policy = p.id
   LEFT JOIN organisation o
   ON o.id = op.organisation AND op.policy = p.id
-  WHERE p.created_by IN
-    (SELECT id FROM stakeholder
-     WHERE affiliation = :id)
   GROUP BY p.id, orgp.association
 UNION ALL
 SELECT
@@ -211,9 +199,6 @@ SELECT
   ON ot.technology = t.id
   LEFT JOIN organisation o
   ON o.id = ot.organisation AND ot.technology = t.id
-  WHERE t.created_by IN
-    (SELECT id FROM stakeholder
-     WHERE affiliation = :id)
   GROUP BY t.id, orgt.association)
 --~(if (:count-only? params) "SELECT COUNT(*) FROM associated_content;" "SELECT * FROM associated_content LIMIT :limit OFFSET :offset;")
 

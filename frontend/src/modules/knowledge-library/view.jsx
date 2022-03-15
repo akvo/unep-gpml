@@ -30,6 +30,7 @@ import IconExchange from "../../images/capacity-building/ic-exchange.svg";
 import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
 
 const { Option } = Select;
+
 // Global variable
 let tmid;
 
@@ -95,20 +96,18 @@ const KnowledgeLibrary = ({
   );
 
   const {
+    tags,
     profile,
     countries,
-    tags,
     transnationalOptions,
-
     representativeGroup,
   } = UIStore.useState((s) => ({
+    tags: s.tags,
     profile: s.profile,
     countries: s.countries,
-    tags: s.tags,
     transnationalOptions: s.transnationalOptions,
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    languages: s.languages,
     representativeGroup: s.sectorOptions,
   }));
 
@@ -168,6 +167,9 @@ const KnowledgeLibrary = ({
       }
       if (key === "endDate") {
         return `End date ${value}`;
+      }
+      if (key === "subContentType") {
+        return value;
       }
     };
     return Object.keys(query).map((key, index) => {
@@ -263,13 +265,16 @@ const KnowledgeLibrary = ({
           {/* Filter Drawer */}
           {filterVisible && (
             <FilterDrawer
-              query={query}
+              {...{
+                query,
+                countData,
+                filters,
+                filterVisible,
+                setFilterVisible,
+                multiCountryCountries,
+                setMultiCountryCountries,
+              }}
               updateQuery={(flag, val) => updateQuery(flag, val)}
-              filters={filters}
-              filterVisible={filterVisible}
-              setFilterVisible={setFilterVisible}
-              multiCountryCountries={multiCountryCountries}
-              setMultiCountryCountries={setMultiCountryCountries}
             />
           )}
           <LeftSidebar active={1} sidebar={sidebar}>
@@ -295,16 +300,18 @@ const KnowledgeLibrary = ({
                 >
                   {/* Resource List */}
                   <ResourceList
-                    view={view}
-                    filters={filters}
-                    countData={countData}
-                    updateQuery={updateQuery}
-                    loading={loading}
-                    results={results}
-                    pageSize={pageSize}
+                    {...{
+                      view,
+                      filters,
+                      results,
+                      countData,
+                      loading,
+                      pageSize,
+                      listVisible,
+                      updateQuery,
+                      setListVisible,
+                    }}
                     hideListButtonVisible={view === "map"}
-                    listVisible={listVisible}
-                    setListVisible={setListVisible}
                   />
                 </Col>
               )}
@@ -317,19 +324,20 @@ const KnowledgeLibrary = ({
                 className="render-map-container map-main-wrapper"
                 style={{
                   background: view === "topic" ? "#255B87" : "#fff",
+                  flex: view === "topic" && "auto",
                 }}
               >
                 {view === "map" ? (
                   <MapLanding
                     {...{
-                      countData,
                       query,
+                      countData,
+                      filters,
+                      setFilters,
                       setWarningModalVisible,
                       setStakeholderSignupModalVisible,
                       loginWithPopup,
                       isAuthenticated,
-                      filters,
-                      setFilters,
                       setToggleButton,
                       updateQuery,
                       multiCountryCountries,
@@ -341,7 +349,7 @@ const KnowledgeLibrary = ({
                   />
                 ) : (
                   <>
-                    <TopicView updateQuery={updateQuery} />
+                    <TopicView {...{ updateQuery }} />
                   </>
                 )}
               </Col>

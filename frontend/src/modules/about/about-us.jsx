@@ -11,6 +11,8 @@ import ourCommunity from "../../images/about-our-community.png";
 import DPIcons from "../../images/GPML---DP---icons.png";
 import featureComponent from "../../images/feature-component-graphic.png";
 import GpmlHistory from "../../images/GPML-history.png";
+import fullConceptDocImage from "../../images/full-concept-doc.png";
+import summaryDocImage from "../../images/summary-doc.png";
 
 import { UIStore } from "../../store";
 import { topicTypes } from "../../utils/misc";
@@ -217,25 +219,44 @@ const renderSectionInfo = () => {
           </p>
         </div>
         <div className="section-info-button-wrapper">
-          <Button
-            type="ghost"
-            className="btn-item"
-            onClick={(e) => {
-              window.location.href = "/GPML-One-pager-19.08i.pdf";
-            }}
-          >
-            Download Summary (1 Page)
-          </Button>
-          <Button
-            type="ghost"
-            className="btn-item"
-            onClick={(e) => {
-              window.location.href =
-                "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
-            }}
-          >
-            Download Full Concept Document
-          </Button>
+          <div className="doc-wrapper">
+            <img
+              src={summaryDocImage}
+              alt="summary-document"
+              onClick={(e) => {
+                window.location.href = "/GPML-One-pager-19.08i.pdf";
+              }}
+            />
+            <Button
+              type="ghost"
+              className="btn-item"
+              onClick={(e) => {
+                window.location.href = "/GPML-One-pager-19.08i.pdf";
+              }}
+            >
+              Download Summary (1 Page)
+            </Button>
+          </div>
+          <div className="doc-wrapper">
+            <img
+              src={fullConceptDocImage}
+              alt="full-concept-document"
+              onClick={(e) => {
+                window.location.href =
+                  "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
+              }}
+            />
+            <Button
+              type="ghost"
+              className="btn-item"
+              onClick={(e) => {
+                window.location.href =
+                  "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
+              }}
+            >
+              Download Full Concept Document
+            </Button>
+          </div>
         </div>
       </div>
     </div>

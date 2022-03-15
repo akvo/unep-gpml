@@ -107,6 +107,10 @@ export const schema = {
         "Please indicate if your Entity operates in a Subnational area only",
       type: "string",
     },
+    isMember: {
+      title: "Is Member?",
+      type: "boolean",
+    },
   },
 };
 
@@ -192,6 +196,13 @@ export const uiSchema = {
     "ui:mode": "multiple",
   },
   subnationalArea: {},
+  isMember: {
+    "ui:widget": "checkbox",
+    "ui:label": null,
+    "ui:options": {
+      classNames: "authorize-submission-checkbox",
+    },
+  },
   "ui:order": [
     "name",
     "representativeGroup",
@@ -210,5 +221,6 @@ export const uiSchema = {
     "geoCoverageCountries",
     "geoCoverageValueNational",
     "subnationalArea",
+    "isMember",
   ],
 };

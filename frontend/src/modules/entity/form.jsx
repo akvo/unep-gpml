@@ -179,6 +179,12 @@ const formDataMapping = [
     group: null,
     type: "array",
   },
+  {
+    key: "isMember",
+    name: "isMember",
+    group: null,
+    type: "boolean",
+  },
 ];
 
 export const entityData = new Store({ data: {}, editId: null });

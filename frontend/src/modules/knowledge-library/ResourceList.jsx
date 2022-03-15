@@ -40,15 +40,15 @@ const ResourceList = ({
   setListVisible,
 }) => {
   const {
+    tags,
     profile,
     countries,
-    tags,
     transnationalOptions,
     stakeholders,
   } = UIStore.useState((s) => ({
+    tags: s.tags,
     profile: s.profile,
     countries: s.countries,
-    tags: s.tags,
     transnationalOptions: s.transnationalOptions,
     stakeholders: s.stakeholders,
   }));

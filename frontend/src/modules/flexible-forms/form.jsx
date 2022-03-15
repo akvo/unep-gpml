@@ -50,6 +50,8 @@ const FlexibleForm = withRouter(
       formEdit,
       profile,
       selectedMainContentType,
+      mainContentType,
+      languages,
     } = UIStore.currentState;
 
     const { status, id } = formEdit.flexible;
@@ -61,6 +63,28 @@ const FlexibleForm = withRouter(
     const [dependValue, setDependValue] = useState([]);
     const [schema, setSchema] = useState(formSchema.schema);
     const [editCheck, setEditCheck] = useState(true);
+
+    useEffect(() => {
+      if (subContentType) {
+        let obj = mainContentType.find(
+          (o) => o.code === selectedMainContentType
+        );
+        let find = obj?.childs.find((o) => o.title === subContentType).tags;
+        if (find) {
+          initialFormData.update((e) => {
+            e.data = {
+              ...e.data,
+              tagsList: find,
+            };
+          });
+        }
+      }
+    }, [
+      subContentType,
+      mainContentType,
+      selectedMainContentType,
+      initialFormData,
+    ]);
 
     const handleOnSubmit = ({ formData }) => {
       if (mainType === "Policy") {
@@ -520,6 +544,16 @@ const FlexibleForm = withRouter(
       if (data?.summary) {
         data.abstract = data?.summary;
         delete data.summary;
+      }
+
+      if (data?.lang) {
+        let find = languages[Object.keys(data.lang)[0]];
+        data.language = {
+          english_name: find.name,
+          native_name: find.native,
+          iso_code: Object.keys(data.lang)[0],
+        };
+        delete data.lang;
       }
 
       if (status === "add" && !params?.id) {
@@ -1049,9 +1083,11 @@ const FlexibleForm = withRouter(
               ].entity[0].hasOwnProperty("entity"))) === true &&
           setDisabledBtn({ disabled: false, type: "primary" });
         requiredFilledIn.length !== 0 &&
-          ((initialFormData?.currentState?.data.S4[
-            "S4_G5"
-          ].individual[0].hasOwnProperty("role") &&
+          ((initialFormData?.currentState?.data.S4["S4_G5"].individual.length >
+            0 &&
+            initialFormData?.currentState?.data.S4[
+              "S4_G5"
+            ].individual[0].hasOwnProperty("role") &&
             initialFormData?.currentState?.data.S4[
               "S4_G5"
             ].individual[0].hasOwnProperty("stakeholder")) ||

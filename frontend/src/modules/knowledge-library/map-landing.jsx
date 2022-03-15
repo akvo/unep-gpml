@@ -27,10 +27,9 @@ const MapLanding = ({
       transnationalOptions: s.transnationalOptions,
     })
   );
-  const [country, setCountry] = useState(null);
+
   const [multiCountry, setMultiCountry] = useState(null);
   const box = document.getElementsByClassName("resource-list-container");
-
   const isLoaded = () =>
     !isEmpty(countries) &&
     !isEmpty(landing?.map) &&
@@ -76,17 +75,18 @@ const MapLanding = ({
         </div>
       )}
       <Maps
-        box={box}
-        query={query}
-        isFilteredCountry={isFilteredCountry}
-        isDisplayedList={isDisplayedList}
-        listVisible={listVisible}
+        {...{
+          box,
+          query,
+          isFilteredCountry,
+          isDisplayedList,
+          listVisible,
+          multiCountryCountries,
+        }}
         data={landing?.map || []}
         clickEvents={clickCountry}
         topic={query?.topic}
-        country={countries.find((x) => x.id === country)}
         isLoaded={isLoaded}
-        multiCountryCountries={multiCountryCountries}
         multiCountries={
           multiCountry &&
           !isEmpty(multiCountryCountries) &&

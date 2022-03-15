@@ -133,9 +133,7 @@ const NormalArrayFieldTemplate = ({
                             <DeleteOutlined
                               onClick={
                                 items.length !== 0 &&
-                                items[items.length - 1].onDropIndexClick(
-                                  items.length - 1
-                                )
+                                items[items.length - 1].onDropIndexClick(index)
                               }
                             />
                           </div>

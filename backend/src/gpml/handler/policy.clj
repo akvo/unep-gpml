@@ -40,7 +40,7 @@
                                   geo_coverage_value implementing_mea
                                   geo_coverage_countries geo_coverage_country_groups
                                   geo_coverage_value_subnational_city
-                                  tags urls created_by image
+                                  tags urls created_by image language
                                   owners info_docs sub_content_type related_content topics
                                   attachments remarks mailjet-config
                                   entity_connections individual_connections]}]
@@ -89,6 +89,12 @@
                                          :id)
                                     (:url %)) urls)]
         (db.policy/add-policy-language-urls conn {:urls lang-urls})))
+    (when (not-empty language)
+      (let [lang-id (:id (db.language/language-by-iso-code conn (select-keys language [:iso_code])))]
+        (if-not (nil? lang-id)
+          (db.policy/add-language-to-policy conn {:id policy-id :language lang-id})
+          (db.policy/add-language-to-policy conn {:id policy-id
+                                                  :language (:id (db.language/insert-new-language conn language))}))))
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! conn {:topic-id policy-id
                                                 :topic-type "policy"
@@ -138,7 +144,7 @@
     [:geo_coverage_type
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
-    [:geo_coverage_value_subnational_city string?]
+    [:geo_coverage_value_subnational_city {:optional true} string?]
     [:image {:optional true} string?]
     [:implementing_mea {:optional true} integer?]
     [:tags {:optional true}
@@ -165,6 +171,11 @@
     [:urls {:optional true}
      [:vector {:optional true}
       [:map [:lang string?] [:url [:string {:min 1}]]]]]
+    [:language {:optional true}
+     [:map
+      [:english_name string?]
+      [:native_name string?]
+      [:iso_code string?]]]
     auth/owners-schema]
    (into handler.geo/params-payload)))
 
