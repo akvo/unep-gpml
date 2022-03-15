@@ -25,6 +25,7 @@ import MapView from "./mapView";
 import IconEvent from "../../images/events/event-icon.svg";
 import IconForum from "../../images/events/forum-icon.svg";
 import IconCommunity from "../../images/events/community-icon.svg";
+import StakeholderList from "./stakeholderList";
 
 let tmid;
 
@@ -497,10 +498,28 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                   </Col>
                 </div>
               ) : (
-                <MapView
-                  updateQuery={updateQuery}
-                  isFilteredCountry={filterCountries}
-                />
+                <div className="stakeholder-map-wrapper">
+                  <MapView
+                    updateQuery={updateQuery}
+                    isFilteredCountry={filterCountries}
+                  />
+                  <StakeholderList
+                    {...{
+                      view,
+                      isAscending,
+                      sortPeople,
+                      results,
+                      pageSize,
+                      filters,
+                      loading,
+                      updateQuery,
+                      isLoaded,
+                      resultCount,
+                      query,
+                      resultCounts,
+                    }}
+                  />
+                </div>
               )}
             </Col>
           </LeftSidebar>
