@@ -486,22 +486,33 @@
                                     :topic topic}}))
         util/unauthorized))))
 
+(defn- get-detail
+  [conn table-name id]
+  (let [{:keys [json] :as result}
+        (if (some #{table-name} ["organisation" "stakeholder"])
+          (db.detail/get-entity-details conn {:entity-type table-name :id id})
+          (db.detail/get-topic-details conn {:topic-type table-name :topic-id id}))]
+    (-> result
+        (dissoc :json)
+        (merge json))))
+
 (defmethod ig/init-key ::get [_ {:keys [db]}]
   (cache-hierarchies! (:spec db))
   (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
-    (let [conn        (:spec db)
-          topic       (:topic-type path)
+    (let [conn (:spec db)
+          topic (:topic-type path)
+          id (:topic-id path)
           authorized? (and (or (model.topic/public? topic) approved?)
                            (some? (get-resource-if-allowed conn path user)))]
       (if authorized?
-        (if-let [data (db.detail/get-detail conn path)]
+        (if-let [data (get-detail conn topic id)]
           (resp/response (merge
-                           (adapt (merge
-                                    (case topic
-                                      "technology" (dissoc (:json data) :related_content :tags :remarks :name)
-                                      (dissoc (:json data) :related_content :tags :abstract :description))
-                                    (extra-details topic conn (:json data))))
-                           {:owners (:owners data)}))
+                          (adapt (merge
+                                  (case topic
+                                    "technology" (dissoc data :related_content :tags :remarks :name)
+                                    (dissoc data :related_content :tags :abstract :description))
+                                  (extra-details topic conn data)))
+                          {:owners (:owners data)}))
           util/not-found)
         util/unauthorized))))
 
