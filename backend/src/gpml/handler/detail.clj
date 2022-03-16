@@ -31,8 +31,8 @@
 
 (defn other-or-name [action]
   (when-let [actual-name (or
-                           (:value-entered action)
-                           (:name action))]
+                          (:value-entered action)
+                          (:name action))]
     {:name actual-name}))
 
 (defn first-child-replacing-other [_ action]
@@ -45,11 +45,11 @@
 (defn all-of-the-above [all-actions action]
   (let [result (first-child-replacing-other all-actions action)]
     (seq (map other-or-name
-           (if (= {:name "All of the above"} result)
-             (concat
-               (take-while #(not= "All of the above" (:name %)) (-> all-actions :children))
-               (next (drop-while #(not= "All of the above" (:name %)) (-> action :children))))
-             (:children action))))))
+              (if (= {:name "All of the above"} result)
+                (concat
+                 (take-while #(not= "All of the above" (:name %)) (-> all-actions :children))
+                 (next (drop-while #(not= "All of the above" (:name %)) (-> action :children))))
+                (:children action))))))
 
 (defn action-reported [_ action]
   (when-let [first-child (-> action :children first)]
@@ -57,33 +57,32 @@
       {:reports "Yes"}
       (let [reasons (seq (map other-or-name (:children first-child)))]
         (medley/assoc-some
-          {:reports (:name first-child)}
-          :reasons (if (= "Not applicable" (-> action :children last other-or-name))
-                     (cons {:name "Not applicable"} reasons)
-                     reasons))))))
+         {:reports (:name first-child)}
+         :reasons (if (= "Not applicable" (-> action :children last other-or-name))
+                    (cons {:name "Not applicable"} reasons)
+                    reasons))))))
 
 (defn nested-all-of-the-above [all-actions action]
   (let [all-sub-actions-by-id (into {} (map (juxt :id identity) (:children all-actions)))]
     (seq (map
-           (fn [sub-action]
-             (medley/assoc-some (other-or-name sub-action)
-               :options (all-of-the-above
-                          (get all-sub-actions-by-id (:id sub-action))
-                          sub-action)))
-           (:children action)))))
+          (fn [sub-action]
+            (medley/assoc-some (other-or-name sub-action)
+                               :options (all-of-the-above
+                                         (get all-sub-actions-by-id (:id sub-action))
+                                         sub-action)))
+          (:children action)))))
 
 (defn monitoring [_ action]
   (seq (map
-         (fn [{:keys [name value-entered]}]
-           (if (= "Other" name)
-             {:name value-entered}
-             (cond-> {:name name}
-               value-entered (assoc :options [{:name value-entered}]))))
-         (:children action))))
+        (fn [{:keys [name value-entered]}]
+          (if (= "Other" name)
+            {:name value-entered}
+            (cond-> {:name name}
+              value-entered (assoc :options [{:name value-entered}]))))
+        (:children action))))
 
 (def data-queries
-  {
-   ;; Types of Action (43374939)
+  {;; Types of Action (43374939)
    ;; TODO: also need to add the results of cell "AO" "AP" "AQ" ;; Deden mentioned AE
    :legislation_standards {:action-code 105885205
                            :format-fn #'nested-all-of-the-above}
@@ -171,9 +170,7 @@
    ;; In Kind Contributions: CD – CC
    ;:in_kind_contribution {:amount 43374827
    ;                       :currency 43374836}
-
    })
-
 (defonce cached-hierarchies (atom {}))
 
 (defmethod ig/init-key ::topics [_ _]
@@ -189,8 +186,8 @@
 (defn get-action-hierarchy [db action]
   (when-let [action (db.action/action-by-code db action)]
     (medley/assoc-some action
-      :action-detail (db.action-detail/action-detail-by-action-id db action)
-      :children (get-children db action))))
+                       :action-detail (db.action-detail/action-detail-by-action-id db action)
+                       :children (get-children db action))))
 
 (defn keep-actions [node actions-to-keep action-details]
   (if-let [children (:children node)]
@@ -203,64 +200,64 @@
         (if-let [action-detail-to-replace (:id (:action-detail node-with-updated-children))] ;; not sure if we want to remove the node if there is no action detail but it has children
           (when-let [action-detail (get action-details action-detail-to-replace)]
             (->
-              node-with-updated-children
-              (dissoc :action-detail)
-              (assoc :value-entered action-detail)))
+             node-with-updated-children
+             (dissoc :action-detail)
+             (assoc :value-entered action-detail)))
           node-with-updated-children)))
     (when (actions-to-keep (:id node))
       (if-let [action-detail-to-replace (:id (:action-detail node))]
         (when-let [action-detail (get action-details action-detail-to-replace)]
           (->
-            node
-            (dissoc :action-detail)
-            (assoc :value-entered action-detail)))
+           node
+           (dissoc :action-detail)
+           (assoc :value-entered action-detail)))
         node))))
 
 (defn keep-action-details [action-details-to-return _ action-details]
   (->> action-details-to-return
-    (keep (fn [action-detail-to-return]
-            (when-let [actual-value (get action-details (:id action-detail-to-return))]
-              (assoc action-detail-to-return :value actual-value))))
-    (map (fn [x] (dissoc x :code :parent :action)))))
+       (keep (fn [action-detail-to-return]
+               (when-let [actual-value (get action-details (:id action-detail-to-return))]
+                 (assoc action-detail-to-return :value actual-value))))
+       (map (fn [x] (dissoc x :code :parent :action)))))
 
 (defn remove-extra-keys [tree]
   (-> tree
-    (dissoc :code :parent)
-    (medley/update-existing :children #(map remove-extra-keys %))))
+      (dissoc :code :parent)
+      (medley/update-existing :children #(map remove-extra-keys %))))
 
 (defn details-for-project [db project]
   (let [project-actions (set (map :action (db.project/project-actions-id db project)))
         project-action-details (into {}
-                                 (map (juxt :action_detail :value))
-                                 (db.project/project-actions-details db project))
+                                     (map (juxt :action_detail :value))
+                                     (db.project/project-actions-details db project))
         triplets (map
-                   (fn [[query-name {:keys [fn-to-retrieve-data format-fn format-params]}]]
-                     (let [db-value (fn-to-retrieve-data project-actions project-action-details)]
-                       [query-name
-                        (if format-fn
-                          (format-fn format-params db-value)
-                          db-value)
-                        db-value]))
-                   @cached-hierarchies)]
+                  (fn [[query-name {:keys [fn-to-retrieve-data format-fn format-params]}]]
+                    (let [db-value (fn-to-retrieve-data project-actions project-action-details)]
+                      [query-name
+                       (if format-fn
+                         (format-fn format-params db-value)
+                         db-value)
+                       db-value]))
+                  @cached-hierarchies)]
     (into {} (cons
-               [:raw (into {} (map (juxt first last) triplets))]
-               (map (juxt first second) triplets)))))
+              [:raw (into {} (map (juxt first last) triplets))]
+              (map (juxt first second) triplets)))))
 
 (defn cache-hierarchies! [db]
   (reset! cached-hierarchies
-    (into {}
-      (map
-        (fn [[query-name query]]
-          [query-name (if (:action-code query)
-                        (let [hierarchy (get-action-hierarchy db {:code (:action-code query)})]
-                          (assoc query
-                            :format-params hierarchy
-                            :fn-to-retrieve-data (partial (comp remove-extra-keys #'keep-actions) hierarchy)))
-                        (let [action-details (db.action-detail/action-detail-by-codes db {:codes (:action-detail-codes query)})]
-                          (assoc query
-                            :format-params action-details
-                            :fn-to-retrieve-data (partial #'keep-action-details action-details))))]))
-      data-queries)))
+          (into {}
+                (map
+                 (fn [[query-name query]]
+                   [query-name (if (:action-code query)
+                                 (let [hierarchy (get-action-hierarchy db {:code (:action-code query)})]
+                                   (assoc query
+                                          :format-params hierarchy
+                                          :fn-to-retrieve-data (partial (comp remove-extra-keys #'keep-actions) hierarchy)))
+                                 (let [action-details (db.action-detail/action-detail-by-codes db {:codes (:action-detail-codes query)})]
+                                   (assoc query
+                                          :format-params action-details
+                                          :fn-to-retrieve-data (partial #'keep-action-details action-details))))]))
+                data-queries)))
 
 (defmulti extra-details (fn [topic-type _ _] topic-type) :default :nothing)
 
@@ -268,70 +265,70 @@
   (let [related_content (db.initiative/related-content-by-id db (select-keys project [:id]))]
     (for [item related_content]
       (merge item
-        {:entity_connections (db.initiative/entity-connections-by-id db (select-keys item [:id]))
-         :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys item [:id]))}))))
+             {:entity_connections (db.initiative/entity-connections-by-id db (select-keys item [:id]))
+              :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
 (defmethod extra-details "project" [_ db {:keys [related_content] :as project}]
   (merge
-    {:entity_connections (db.initiative/entity-connections-by-id db (select-keys project [:id]))
-     :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys project [:id]))
-     :related_content (if (seq related_content)
-                        (expand-related-project-content db project)
-                        [])
-     :tags (db.initiative/tags-by-id db (select-keys project [:id]))
-     :type "Initiative"}
-    (if (> (:id project) 10000)
-      (db.initiative/initiative-detail-by-id db project)
-      (details-for-project db project))))
+   {:entity_connections (db.initiative/entity-connections-by-id db (select-keys project [:id]))
+    :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys project [:id]))
+    :related_content (if (seq related_content)
+                       (expand-related-project-content db project)
+                       [])
+    :tags (db.initiative/tags-by-id db (select-keys project [:id]))
+    :type "Initiative"}
+   (if (> (:id project) 10000)
+     (db.initiative/initiative-detail-by-id db project)
+     (details-for-project db project))))
 
 (defn expand-related-policy-content [db policy]
   (let [related_content (db.policy/related-content-by-id db (select-keys policy [:id]))]
     (for [item related_content]
       (merge item
-        {:entity_connections (db.policy/entity-connections-by-id db (select-keys item [:id]))
-         :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys item [:id]))}))))
+             {:entity_connections (db.policy/entity-connections-by-id db (select-keys item [:id]))
+              :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
 (defmethod extra-details "policy" [_ db {:keys [related_content] :as policy}]
   (merge
-    {:entity_connections (db.policy/entity-connections-by-id db (select-keys policy [:id]))
-     :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys policy [:id]))
-     :related_content (if (seq related_content)
-                        (expand-related-policy-content db policy)
-                        [])
-     :tags (db.policy/tags-by-id db (select-keys policy [:id]))
-     :language (db.policy/language-by-policy-id db (select-keys policy [:id]))
-     :type "Policy"}
-    (when-let [implementing-mea (:implementing_mea policy)]
-      {:implementing_mea (:name (db.country-group/country-group-by-id db {:id implementing-mea}))})))
+   {:entity_connections (db.policy/entity-connections-by-id db (select-keys policy [:id]))
+    :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys policy [:id]))
+    :related_content (if (seq related_content)
+                       (expand-related-policy-content db policy)
+                       [])
+    :tags (db.policy/tags-by-id db (select-keys policy [:id]))
+    :language (db.policy/language-by-policy-id db (select-keys policy [:id]))
+    :type "Policy"}
+   (when-let [implementing-mea (:implementing_mea policy)]
+     {:implementing_mea (:name (db.country-group/country-group-by-id db {:id implementing-mea}))})))
 
 (defn expand-related-technology-content [db technology]
   (let [related_content (db.technology/related-content-by-id db (select-keys technology [:id]))]
     (for [item related_content]
       (merge item
-        {:entity_connections (db.technology/entity-connections-by-id db (select-keys item [:id]))
-         :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys item [:id]))}))))
+             {:entity_connections (db.technology/entity-connections-by-id db (select-keys item [:id]))
+              :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
 (defmethod extra-details "technology" [_ db {:keys [related_content] :as technology}]
   (merge
-    {:entity_connections (db.technology/entity-connections-by-id db (select-keys technology [:id]))
-     :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys technology [:id]))
-     :related_content (if (seq related_content)
-                        (expand-related-technology-content db technology)
-                        [])
-     :tags (db.technology/tags-by-id db (select-keys technology [:id]))
-     :type "Technology"}
-    (when-let [headquarters-country (:country technology)]
-      {:headquarters (gpml.db.country/country-by-id db {:id headquarters-country})})))
+   {:entity_connections (db.technology/entity-connections-by-id db (select-keys technology [:id]))
+    :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys technology [:id]))
+    :related_content (if (seq related_content)
+                       (expand-related-technology-content db technology)
+                       [])
+    :tags (db.technology/tags-by-id db (select-keys technology [:id]))
+    :type "Technology"}
+   (when-let [headquarters-country (:country technology)]
+     {:headquarters (gpml.db.country/country-by-id db {:id headquarters-country})})))
 
 (defmethod extra-details "stakeholder" [_ db stakeholder]
-    (:data (db.detail/get-stakeholder-tags db stakeholder)))
+  (:data (db.detail/get-stakeholder-tags db stakeholder)))
 
 (defn expand-related-resource-content [db resource]
   (let [related_content (db.resource/related-content-by-id db (select-keys resource [:id]))]
     (for [item related_content]
       (merge item
-        {:entity_connections (db.resource/entity-connections-by-id db (select-keys item [:id]))
-         :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys item [:id]))}))))
+             {:entity_connections (db.resource/entity-connections-by-id db (select-keys item [:id]))
+              :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
 (defmethod extra-details "technical_resource" [_ db {:keys [related_content] :as resource}]
   {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
@@ -361,8 +358,8 @@
   (let [related_content (db.event/related-content-by-id db (select-keys event [:id]))]
     (for [item related_content]
       (merge item
-        {:entity_connections (db.event/entity-connections-by-id db (select-keys item [:id]))
-         :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys item [:id]))}))))
+             {:entity_connections (db.event/entity-connections-by-id db (select-keys item [:id]))
+              :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
 (defmethod extra-details "event" [_ db {:keys [related_content] :as event}]
   {:entity_connections (db.event/entity-connections-by-id db (select-keys event [:id]))
@@ -419,46 +416,46 @@
                       (when (= "organisation" table)
                         ["delete from resource_organisation where organisation=?" (:topic-id path)])
                       (when (= "resource" table)
-                        ["delete from resource_organisation where resource=?" (:topic-id path)] )
+                        ["delete from resource_organisation where resource=?" (:topic-id path)])
                       [(format "delete from %s where id = ?" table) (:topic-id path)]])]
     (if (= "stakeholder" table)
       (into sqls
             (let [unep-admin (:id (first (jdbc/query conn  ["SELECT id from stakeholder where email=?" app-user-admin])))]
-             [["update event set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
-              ["update event set created_by=? where created_by=?" unep-admin (:topic-id path)]
-              ["update stakeholder_event set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+              [["update event set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update event set created_by=? where created_by=?" unep-admin (:topic-id path)]
+               ["update stakeholder_event set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
 
-              ["update initiative set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
-              ["update initiative set created_by=? where created_by=?" unep-admin (:topic-id path)]
+               ["update initiative set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update initiative set created_by=? where created_by=?" unep-admin (:topic-id path)]
 
-              ["update invitation set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+               ["update invitation set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
 
-              ["update organisation set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
-              ["update organisation set created_by=? where created_by=?" unep-admin (:topic-id path)]
-              ["update organisation set second_contact=? where second_contact=?" unep-admin (:topic-id path)]
-              ["update stakeholder_organisation set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+               ["update organisation set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update organisation set created_by=? where created_by=?" unep-admin (:topic-id path)]
+               ["update organisation set second_contact=? where second_contact=?" unep-admin (:topic-id path)]
+               ["update stakeholder_organisation set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
 
-              ["update policy set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
-              ["update policy set created_by=? where created_by=?" unep-admin (:topic-id path)]
-              ["update stakeholder_policy set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+               ["update policy set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update policy set created_by=? where created_by=?" unep-admin (:topic-id path)]
+               ["update stakeholder_policy set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
 
-              ["update project set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
-              ["update stakeholder_project set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+               ["update project set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update stakeholder_project set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
 
-              ["update resource set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
-              ["update resource set created_by=? where created_by=?" unep-admin (:topic-id path)]
-              ["update stakeholder_resource set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+               ["update resource set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update resource set created_by=? where created_by=?" unep-admin (:topic-id path)]
+               ["update stakeholder_resource set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
 
-              ["update review set assigned_by=? where assigned_by=?" unep-admin (:topic-id path)]
-              ["update review set reviewer=? where reviewer=?" unep-admin (:topic-id path)]
+               ["update review set assigned_by=? where assigned_by=?" unep-admin (:topic-id path)]
+               ["update review set reviewer=? where reviewer=?" unep-admin (:topic-id path)]
 
-              ["update technology set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
-              ["update technology set created_by=? where created_by=?" unep-admin (:topic-id path)]
-              ["update stakeholder_technology set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
+               ["update technology set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update technology set created_by=? where created_by=?" unep-admin (:topic-id path)]
+               ["update stakeholder_technology set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]
 
-              ["update stakeholder set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
-              ["update stakeholder_stakeholder set other_stakeholder=? where other_stakeholder=?" unep-admin (:topic-id path)]
-              ["update stakeholder_stakeholder set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]]))
+               ["update stakeholder set reviewed_by=? where reviewed_by=?" unep-admin (:topic-id path)]
+               ["update stakeholder_stakeholder set other_stakeholder=? where other_stakeholder=?" unep-admin (:topic-id path)]
+               ["update stakeholder_stakeholder set stakeholder=? where stakeholder=?" unep-admin (:topic-id path)]]))
       sqls)))
 
 (defmethod ig/init-key ::delete [_ {:keys [db app-user-admin]}]
@@ -604,8 +601,8 @@
   (let [url (handler.image/assoc-image conn image image-type)]
     (when-not (and image (= image url))
       (db.detail/update-resource-table
-        conn
-        {:table image-type :id initiative-id :updates {:qimage url}}))))
+       conn
+       {:table image-type :id initiative-id :updates {:qimage url}}))))
 
 (defn update-initiative-image [conn image image-type initiative-id]
   (-update-initiative-picture conn image image-type initiative-id))
@@ -640,12 +637,12 @@
 (defn update-resource-connections [conn entity_connections individual_connections topic resource-id]
   (let [existing-ecs (db.favorite/get-associations conn (get-association-query-params "organisation" topic resource-id))
         delete-ecs (vec (set/difference
-                          (into #{} (map #(:id %) existing-ecs))
-                          (into #{} (remove nil? (map #(:id %) entity_connections)))))
+                         (into #{} (map #(:id %) existing-ecs))
+                         (into #{} (remove nil? (map #(:id %) entity_connections)))))
         existing-ics (db.favorite/get-associations conn (get-association-query-params "stakeholder" topic resource-id))
         delete-ics (vec (set/difference
-                          (into #{} (map #(:id %) existing-ics))
-                          (into #{} (remove nil? (map #(:id %) individual_connections)))))]
+                         (into #{} (map #(:id %) existing-ics))
+                         (into #{} (remove nil? (map #(:id %) individual_connections)))))]
     (when-not (empty? delete-ecs)
       (db.favorite/delete-associations conn {:table (str "organisation_" topic)
                                              :ids delete-ecs}))
@@ -668,20 +665,20 @@
                 (contains? constants/resource-types topic-type) "resource"
                 :else topic-type)
         table-columns (-> updates
-                        (dissoc
-                          :tags :urls :geo_coverage_value :org
-                          :image :photo :logo :language
-                          :geo_coverage_country_groups
-                          :geo_coverage_countries
-                          :entity_connections
-                          :individual_connections
+                          (dissoc
+                           :tags :urls :geo_coverage_value :org
+                           :image :photo :logo :language
+                           :geo_coverage_country_groups
+                           :geo_coverage_countries
+                           :entity_connections
+                           :individual_connections
                           ;; NOTE: we ignore resource_type since
                           ;; we don't expect it to change!
-                          :resource_type)
-                        (assoc :related_content (pg-util/->JDBCArray (:related_content updates) "integer"))
-                        (merge (when (:topics updates)
-                                 {:topics (pg-util/->JDBCArray (:topics updates) "text")}))
-                        (set/rename-keys {:geo_coverage_value_subnational_city :subnational_city}))
+                           :resource_type)
+                          (assoc :related_content (pg-util/->JDBCArray (:related_content updates) "integer"))
+                          (merge (when (:topics updates)
+                                   {:topics (pg-util/->JDBCArray (:topics updates) "text")}))
+                          (set/rename-keys {:geo_coverage_value_subnational_city :subnational_city}))
         tags (remove nil? (:tags updates))
         urls (remove nil? (:urls updates))
         params {:table table :id id :updates table-columns}
@@ -714,9 +711,9 @@
         tags (remove nil? (:tags data))
         status (jdbc/with-db-transaction [conn-tx conn]
                  (let [status (db.detail/update-initiative conn-tx (-> params
-                                                                     (assoc :related_content (pg-util/->JDBCArray (:related_content data) "integer"))
-                                                                     (dissoc :tags :entity_connections :individual_connections :urls :org :geo_coverage_countries
-                                                                       :geo_coverage_country_groups :qimage)))]
+                                                                       (assoc :related_content (pg-util/->JDBCArray (:related_content data) "integer"))
+                                                                       (dissoc :tags :entity_connections :individual_connections :urls :org :geo_coverage_countries
+                                                                               :geo_coverage_country_groups :qimage)))]
                    (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
                    status))]
     (when (contains? data :qimage)
@@ -748,12 +745,10 @@
 (defmethod ig/init-key ::put-params [_ _]
   put-params)
 
-
 #_:clj-kondo/ignore
 (comment
 
-
-  ;;; Code that parses the questionnaire and matches a XLS column to a question
+;;; Code that parses the questionnaire and matches a XLS column to a question
   ;;; example (find-action "W")
   (require 'clojure.java.jdbc)
   (require 'dev)
@@ -770,9 +765,7 @@
                                         ;(map first)
                                         ;(clojure.pprint/print-table )
    (def all)
-   deref
-   )
-
+   deref)
 
   (do
 
@@ -783,10 +776,7 @@
                                         ;(remove (fn [xxxx] (=  {:id 100, :name "Reporting and Evaluations", :children [{:id 101, :name "Yes"}]} xxxx)))
          (map (juxt
                identity
-               (partial nested-all-of-the-above (-> cached-hierarchies deref :working_with_people :format-params))))
-         ))
-
-
+               (partial nested-all-of-the-above (-> cached-hierarchies deref :working_with_people :format-params))))))
 
   (get-action-hierarchy (dev/db-conn) {:code 43374905})
 
@@ -839,6 +829,4 @@
                node
                (assoc :action-detail (action-detail (:id node))
                       :action (action (:id node))))))
-       first)))
-
-  )
+       first))))
