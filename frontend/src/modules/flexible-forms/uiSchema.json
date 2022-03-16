@@ -67,7 +67,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },
@@ -449,7 +452,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },
@@ -680,7 +686,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },
@@ -947,7 +956,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },
@@ -1183,7 +1195,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },
@@ -1402,7 +1417,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },
@@ -1626,7 +1644,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },
