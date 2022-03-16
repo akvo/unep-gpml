@@ -209,7 +209,7 @@ const FilterDrawer = ({
         {/* Filter content */}
         <Row type="flex" gutter={[0, 24]}>
           {/* Resource type */}
-          <Col span={24}>
+          <Col span={24} className="resources-card-filter">
             <Space align="middle">
               <div className="filter-title">Resources type</div>
               {isEmpty(query?.topic) ? (

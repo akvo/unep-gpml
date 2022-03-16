@@ -121,7 +121,7 @@ const FilterDrawer = ({
       >
         {/* Filter content */}
         <Row type="flex" gutter={[0, 24]}>
-          <Col span={24}>
+          <Col span={24} className="network-card-filter">
             <Space align="middle">
               <div className="filter-title">Network type</div>
               {isEmpty(query?.networkType) ? (
