@@ -190,87 +190,8 @@ const Landing = withRouter(
     );
 
     useEffect(() => {
-      if (!data) {
-        api
-          .get("browse?topic=event")
-          .then((resp) => {
-            setData(resp.data);
-          })
-          .catch((err) => {
-            console.error(err);
-            setData([]);
-          });
-      }
-      if (data && data?.results) {
-        generateEvent(dateNow, true);
-      }
-    }, [data, dateNow, generateEvent]);
-
-    useEffect(() => {
       UIStore.update((e) => {
         e.disclaimer = "home";
-      });
-    }, []);
-
-    useEffect(() => {
-      const popularTags = [
-        "plastics",
-        "waste management",
-        "marine litter",
-        "capacity building",
-        "product by design",
-        "source to sea",
-      ];
-
-      const tagsFetch = popularTags.map((tag, i) => {
-        const topicName = () => {
-          if (tag === "plastics") {
-            return "Plastics";
-          }
-          if (tag === "waste management") {
-            return "Waste Management";
-          }
-          if (tag === "marine litter") {
-            return "Marine Litter";
-          }
-
-          if (tag === "capacity building") {
-            return "Capacity Building";
-          }
-          if (tag === "product by design") {
-            return "Product by Design";
-          }
-
-          if (tag === "source to sea") {
-            return "Source to Sea";
-          }
-        };
-        return api
-          .get(`/browse?tag=${tag}`)
-          .then((resp) => ({
-            id: i,
-            items: resp?.data?.results,
-            topic: topicName(),
-            tag,
-            count: resp?.data?.counts
-              .filter((count) => count.topic !== "gpml_member_entities")
-              .reduce((curr, val) => curr + val?.count || 0, 0),
-            summary: resp.data.counts.filter(
-              (count) => count.topic !== "gpml_member_entities"
-            ),
-          }))
-          .catch((err) => {
-            console.error(err);
-          });
-      });
-
-      const tagResults = Promise.all(tagsFetch).then((results) => {
-        const sortedPopularTopics = orderBy(
-          results,
-          ["count", "topic"],
-          ["desc", "desc"]
-        );
-        setSortPopularTopic(sortedPopularTopics);
       });
     }, []);
 
@@ -381,7 +302,7 @@ const Landing = withRouter(
             <h2>
               Featured Content{" "}
               <span className="see-more-link">
-                <Link to="/browse">
+                <Link to="/knowledge-library">
                   See all <RightOutlined />
                 </Link>
               </span>
