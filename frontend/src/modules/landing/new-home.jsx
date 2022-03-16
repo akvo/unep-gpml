@@ -133,6 +133,7 @@ const Landing = withRouter(
     const [selectedTopic, setSelectedTopic] = useState(null);
     const [event, setEvent] = useState([]);
     const [data, setData] = useState(null);
+    const [didMount, setDidMount] = useState(false);
 
     const isApprovedUser = profile?.reviewStatus === "APPROVED";
     const hasProfile = profile?.reviewStatus;
@@ -193,6 +194,12 @@ const Landing = withRouter(
       UIStore.update((e) => {
         e.disclaimer = "home";
       });
+    }, []);
+
+    // Note: this will fix the warning on the console
+    useEffect(() => {
+      setDidMount(true);
+      return () => setDidMount(false);
     }, []);
 
     return (

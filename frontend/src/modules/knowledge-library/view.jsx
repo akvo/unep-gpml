@@ -176,7 +176,6 @@ const KnowledgeLibrary = ({
     ) {
       updateQuery("transnational", []);
     }
-    console.log(multiCountryCountries.length);
 
     if (query?.favorites?.length > 0) {
       updateQuery("favorites", false);
