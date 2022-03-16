@@ -66,6 +66,7 @@ const SelectWidget = ({
     Array.isArray(currentValue) ? value.map(String) : String(value);
 
   const showEntity = uiSchema["ui:options"]?.["showEntity"];
+  const showTag = uiSchema["ui:options"]?.["ui:showTag"];
 
   const [showModal, setShowModal] = useState(false);
 
@@ -122,25 +123,29 @@ const SelectWidget = ({
             </Select.Option>
           ))}
       </Select>
-      {formContext?.data.tagsList && formContext.data.tagsList.length > 0 && (
-        <div className="list tag-list">
-          <h5>Suggested tags</h5>
-          <List itemLayout="horizontal">
-            <List.Item>
-              <List.Item.Meta
-                title={
-                  <ul>
-                    {formContext.data.tagsList &&
-                      formContext.data.tagsList.map((tag) => (
-                        <li key={tag}>{tag}</li>
-                      ))}
-                  </ul>
-                }
-              />
-            </List.Item>
-          </List>
-        </div>
-      )}
+      {formContext &&
+        formContext?.data &&
+        formContext?.data.tagsList &&
+        formContext.data.tagsList.length > 0 &&
+        showTag && (
+          <div className="list tag-list">
+            <h5>Suggested tags</h5>
+            <List itemLayout="horizontal">
+              <List.Item>
+                <List.Item.Meta
+                  title={
+                    <ul>
+                      {formContext.data.tagsList &&
+                        formContext.data.tagsList.map((tag) => (
+                          <li key={tag}>{tag}</li>
+                        ))}
+                    </ul>
+                  }
+                />
+              </List.Item>
+            </List>
+          </div>
+        )}
       <ModalAddEntity
         visible={showModal}
         close={() => setShowModal(!showModal)}
