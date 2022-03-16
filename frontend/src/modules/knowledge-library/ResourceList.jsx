@@ -55,6 +55,7 @@ const ResourceList = ({
 
   const [allResults, setAllResults] = useState([]);
   const [isAscending, setIsAscending] = useState(null);
+  const [didMount, setDidMount] = useState(false);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
 
@@ -131,6 +132,11 @@ const ResourceList = ({
       [...results].sort((a, b) => Date.parse(b.created) - Date.parse(a.created))
     );
   }, [results]);
+
+  useEffect(() => {
+    setDidMount(true);
+    return () => setDidMount(false);
+  }, []);
 
   return (
     <Row>
