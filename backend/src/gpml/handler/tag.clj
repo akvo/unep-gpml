@@ -46,3 +46,20 @@
 (defmethod ig/init-key :gpml.handler.tag/all [_ {:keys [db]}]
   (fn [_]
     (resp/response (all-tags (:spec db)))))
+
+(defmethod ig/init-key ::get-popular-topics-tags-params
+  [_ _]
+  {:query
+   [:map
+    [:limit
+     {:optional true
+      :default 5
+      :swagger {:description "Limit the number of popular topic tags results"
+                :type "int"
+                :allowEmptyValue true}}
+     pos-int?]]})
+
+(defmethod ig/init-key ::get-popular-topics-tags
+  [_ {:keys [db]}]
+  (fn [{{{:keys [limit]} :query} :parameters}]
+    (resp/response (db.tag/get-popular-topics-tags (:spec db) {:limit limit}))))

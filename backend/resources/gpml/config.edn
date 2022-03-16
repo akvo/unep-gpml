@@ -257,7 +257,12 @@
                                          ["/:topic-type"
                                           {:get {:summary "List tags by topic type"
                                                  :swagger {:tags ["tag"]}
-                                                 :handler #ig/ref :gpml.handler.tag/by-topic}}]]
+                                                 :handler #ig/ref :gpml.handler.tag/by-topic}}]
+                                         ["/topic/popular"
+                                          {:get {:summary "List popular topic tags"
+                                                 :swagger {:tags ["tag"]}
+                                                 :handler #ig/ref :gpml.handler.tag/get-popular-topics-tags
+                                                 :parameters #ig/ref :gpml.handler.tag/get-popular-topics-tags-params}}]]
                                         ["/non-member-organisation"
                                          [""
                                           {:get {:summary "List all non member organisations"
@@ -517,6 +522,8 @@
 
   :gpml.handler.tag/by-topic {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/all {:db #ig/ref :duct.database/sql}
+  :gpml.handler.tag/get-popular-topics-tags {:db #ig/ref :duct.database/sql}
+  :gpml.handler.tag/get-popular-topics-tags-params {}
 
   :gpml.handler.non-member-organisation/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation/get {:db #ig/ref :duct.database/sql}

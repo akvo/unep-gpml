@@ -1,5 +1,10 @@
 (ns gpml.constants)
 
+(def ^:const topic-tables
+  "The list of tables considered as topics in the current model of the
+  GPML platform as of 2022-03-16."
+  ["event" "technology" "policy" "initiative" "resource"])
+
 (def resource-types #{"financing_resource" "technical_resource" "action_plan"})
 (def approved-user-topics #{"stakeholder"})
 (def stakeholder-types #{"individual" "entity"})
