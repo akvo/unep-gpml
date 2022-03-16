@@ -108,7 +108,7 @@ const KnowledgeLibrary = ({
     transnationalOptions: s.transnationalOptions,
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    representativeGroup: s.sectorOptions,
+    representativeGroup: s.representativeGroup,
   }));
 
   const [toggleButton, setToggleButton] = useState("list");
@@ -158,9 +158,9 @@ const KnowledgeLibrary = ({
       }
       if (key === "representativeGroup") {
         const representativeGroups = representativeGroup.find(
-          (x) => x == value
+          (x) => x?.code?.toLowerCase() == value?.toLowerCase()
         );
-        return representativeGroups;
+        return representativeGroups?.name;
       }
       if (key === "startDate") {
         return `Start date ${value}`;

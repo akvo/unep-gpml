@@ -11,7 +11,9 @@ const AddContentButton = withRouter(({ history }) => {
   const displayButton =
     pageHistory === "/workspace" ||
     pageHistory === "/knowledge-library" ||
-    pageHistory === "/events";
+    pageHistory === "/events" ||
+    pageHistory === "/case-studies" ||
+    pageHistory === "/capacity-building";
 
   // Note: this will fix the warning on the console
   useEffect(() => {

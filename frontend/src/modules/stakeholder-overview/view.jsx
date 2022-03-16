@@ -50,13 +50,13 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     offering: s.tags.offering,
     stakeholders: s.stakeholders?.stakeholders,
   }));
+  const viewportWidth = document.documentElement.clientWidth;
+
   const [filterCountries, setFilterCountries] = useState([]);
   const { isAuthenticated, isLoading } = useAuth0();
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
-
   const isValidUser = isAuthenticated && isApprovedUser && hasProfile;
-
   const [filterVisible, setFilterVisible] = useState(false);
   const query = useQuery();
   const [view, setView] = useState("card");
@@ -413,7 +413,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
               {view === "card" ? (
                 <div
                   style={{
-                    minHeight: results.length === pageSize && "1138.17px",
+                    minHeight:
+                      viewportWidth < 1360 &&
+                      results.length === pageSize &&
+                      "1138.17px",
                   }}
                 >
                   {/* Suggested profiles */}

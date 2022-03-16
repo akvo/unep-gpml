@@ -50,7 +50,7 @@ const FilterDrawer = ({
     countries,
     transnationalOptions,
     geoCoverageTypeOptions,
-
+    representativeGroup,
     mainContentType,
   } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -60,6 +60,7 @@ const FilterDrawer = ({
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     mainContentType: s.mainContentType,
+    representativeGroup: s.representativeGroup,
   }));
   const { isAuthenticated } = useAuth0();
 
@@ -68,10 +69,28 @@ const FilterDrawer = ({
     !isEmpty(countries) &&
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
-    !isEmpty(mainContentType);
+    !isEmpty(mainContentType) &&
+    !isEmpty(representativeGroup);
 
   const mainContentOptions = isLoaded()
-    ? mainContentType.filter((content) => content.code !== "capacity_building")
+    ? mainContentType
+        .filter((content) => {
+          const resourceName = (name) => {
+            if (name === "event_flexible") {
+              return "event";
+            } else if (name === "financing") {
+              return "financing_resource";
+            } else if (name === "technical") {
+              return "technical_resource";
+            } else if (name === "action") {
+              return "action_plan";
+            } else {
+              return name;
+            }
+          };
+          return query?.topic.includes(resourceName(content.code));
+        })
+        .sort((a, b) => a?.code.localeCompare(b?.code))
     : [];
 
   const topicIcons = (topic) => {
@@ -118,7 +137,6 @@ const FilterDrawer = ({
 
   const handleChangeLocationTab = (key) => {
     const param = key === "country" ? "transnational" : "country";
-    // updateQuery(param, []);
   };
 
   const handleChangeCountry = (val) => {
@@ -156,10 +174,22 @@ const FilterDrawer = ({
   };
 
   // populate options for tags dropdown
+  const tagsWithoutSpace =
+    isLoaded() &&
+    flatten(values(tags)).map((it) => ({
+      value: it?.tag?.trim(),
+      label: it?.tag?.trim(),
+    }));
+
   const tagOpts = isLoaded()
-    ? flatten(values(tags))
-        ?.map((it) => ({ value: it.tag, label: it.tag }))
+    ? [...new Set(tagsWithoutSpace.map((s) => JSON.stringify(s)))]
+        .map((s) => JSON.parse(s))
         ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
+    : [];
+
+  // populate options for representative group options
+  const representativeOpts = isLoaded()
+    ? representativeGroup?.map((x) => ({ label: x?.name, value: x?.code }))
     : [];
 
   return (
@@ -179,7 +209,7 @@ const FilterDrawer = ({
         {/* Filter content */}
         <Row type="flex" gutter={[0, 24]}>
           {/* Resource type */}
-          <Col span={24}>
+          <Col span={24} className="resources-card-filter">
             <Space align="middle">
               <div className="filter-title">Resources type</div>
               {isEmpty(query?.topic) ? (
@@ -220,6 +250,32 @@ const FilterDrawer = ({
               })}
             </Row>
           </Col>
+          {/* Sub-content type */}
+          {query?.topic?.length > 0 && (
+            <MultipleSelectFilter
+              title="Sub-content type"
+              options={
+                isLoaded()
+                  ? mainContentOptions.map((content) => ({
+                      label: content?.name,
+                      options: content?.childs
+                        .map((child, i) => ({
+                          label: child?.title,
+                          value: child?.title,
+                          key: `${i}-${content.name}`,
+                        }))
+                        .sort((a, b) =>
+                          a?.label?.trim().localeCompare(b?.label?.trim())
+                        ),
+                    }))
+                  : []
+              }
+              value={query?.subContentType || []}
+              flag="subContentType"
+              query={query}
+              updateQuery={updateQuery}
+            />
+          )}
           {/* My Bookmarks */}
           {isAuthenticated && (
             <Col span={24}>
@@ -300,21 +356,21 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
           <MultipleSelectFilter
-            title="Sub-content type"
+            title="Representative group"
             options={
               isLoaded()
-                ? mainContentOptions.map((content) => ({
-                    label: content?.name,
-                    options: content?.childs.map((child, i) => ({
-                      label: child?.title,
-                      value: child?.title,
-                      key: `${i}-${content.name}`,
-                    })),
-                  }))
+                ? representativeOpts
+                    ?.sort((repG1, repG2) =>
+                      repG1?.label?.localeCompare(repG2?.label)
+                    )
+                    .map((x) => ({
+                      value: x?.value,
+                      label: x.label,
+                    }))
                 : []
             }
-            value={query?.subContentType || []}
-            flag="subContentType"
+            value={query?.representativeGroup || []}
+            flag="representativeGroup"
             query={query}
             updateQuery={updateQuery}
           />

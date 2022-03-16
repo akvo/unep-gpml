@@ -255,9 +255,19 @@ const Maps = ({
   const mapMaxZoom = 9.2;
   const mapMinZoom = 1.1500000000000024;
   const [selected, setSelected] = useState(null);
+  // const [selectedTerritory, setSelectedTerritory] = useState([]);
   const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
   const [countryToSelect, setCountryToSelect] = useState([]);
+
+  const selectedTerritory =
+    !isEmpty(countries) &&
+    countries
+      .filter((item) => {
+        const selectTerritory = isFilteredCountry?.map((item) => Number(item));
+        return selectTerritory?.includes(item?.id);
+      })
+      .map((country) => country.territory);
 
   const country =
     !isEmpty(countries) &&
@@ -450,7 +460,7 @@ const Maps = ({
                             isCountrySelected
                               ? "#255B87"
                               : geo.properties.MAP_COLOR === selected
-                              ? "#255B87"
+                              ? "#84b4cc"
                               : fillColor(
                                   curr(topic, findData?.counts, path)
                                     ? curr(topic, findData?.counts, path)
@@ -522,29 +532,15 @@ const Maps = ({
                               ? "#cecece"
                               : isPattern
                               ? "url(#lines)"
+                              : geo.properties.MAP_COLOR === selected
+                              ? "#84b4cc"
                               : isCountrySelected
                               ? "#255B87"
-                              : selected
-                              ? geo.properties.MAP_COLOR === selected ||
-                                selectionCondition()
-                                ? "#255B87"
-                                : fillColor(
-                                    curr(topic, findData?.counts, path)
-                                      ? curr(topic, findData?.counts, path)
-                                      : 0
-                                  )
-                              : fillColor(
-                                  curr(topic, findData?.counts, path)
-                                    ? curr(topic, findData?.counts, path)
-                                    : 0
+                              : selectionCondition() ||
+                                selectedTerritory.includes(
+                                  geo.properties.MAP_COLOR
                                 )
-                              ? selectionCondition()
-                                ? "#255B87"
-                                : fillColor(
-                                    curr(topic, findData?.counts, path)
-                                      ? curr(topic, findData?.counts, path)
-                                      : 0
-                                  )
+                              ? "#255B87"
                               : fillColor(
                                   curr(topic, findData?.counts, path)
                                     ? curr(topic, findData?.counts, path)
@@ -552,9 +548,19 @@ const Maps = ({
                                 )
                           }
                           onMouseEnter={() => {
-                            const { MAP_LABEL, MAP_COLOR } = geo.properties;
+                            const {
+                              MAP_LABEL,
+                              MAP_COLOR,
+                              M49Code,
+                            } = geo.properties;
                             if (!isLake && MAP_LABEL !== null) {
-                              setSelected(MAP_COLOR);
+                              if (
+                                !isFilteredCountry.includes(M49Code) &&
+                                !selectionCondition()
+                              ) {
+                                setSelected(MAP_COLOR);
+                              }
+
                               setContent(
                                 <ToolTipContent
                                   data={findData}

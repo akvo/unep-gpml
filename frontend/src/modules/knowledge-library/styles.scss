@@ -223,6 +223,8 @@
     .ant-drawer-content-wrapper {
       box-shadow: none;
       height: 700px;
+      max-width: 500px;
+      width: 100% !important;
 
       .ant-drawer-header {
         background: $blue05;
@@ -308,6 +310,13 @@
       }
 
       .date-picker-container {
+        .ant-row {
+          display: flex;
+          flex-wrap: wrap;
+          .ant-col {
+            max-width: 100% !important;
+          }
+        }
         input {
           font-style: italic;
         }
@@ -417,6 +426,12 @@
           color: $blue04;
           font-weight: 700;
           padding-right: 3px;
+        }
+      }
+
+      .resources-card-filter {
+        .ant-col {
+          max-width: 100%;
         }
       }
 
