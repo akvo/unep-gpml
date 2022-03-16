@@ -202,7 +202,6 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       })
       .catch((err) => {
         console.error(err);
-        // redirectError(err, history);
       });
   };
 
@@ -509,17 +508,18 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                   <StakeholderList
                     {...{
                       view,
+                      results,
                       isAscending,
                       sortPeople,
-                      results,
                       pageSize,
                       filters,
+                      itemCount,
                       loading,
                       updateQuery,
                       isLoaded,
                       resultCount,
-                      query,
                       resultCounts,
+                      query,
                     }}
                   />
                 </div>

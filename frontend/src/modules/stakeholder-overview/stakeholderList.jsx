@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, Row, Col, Pagination, Tag, PageHeader, Button } from "antd";
 import { TrimText } from "../../utils/string";
@@ -14,9 +14,6 @@ const StakeholderList = ({
   results,
   isAscending,
   sortPeople,
-  hideListButtonVisible = true,
-  setListVisible,
-  totalItems,
   pageSize,
   filters,
   itemCount,
@@ -27,104 +24,118 @@ const StakeholderList = ({
   resultCounts,
   query,
 }) => {
+  const [listVisible, setListVisible] = useState(true);
+
   return (
     <Row className="stakeholder-list ">
       <Col span={24}>
-        <PageHeader
-          className="resource-list-header"
-          ghost={false}
-          style={
-            view === "map"
-              ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
-              : { backgroundColor: "rgba(255, 255, 255, 1)" }
-          }
-          onBack={() => setListVisible(false)}
-          backIcon={
-            hideListButtonVisible ? (
-              <img src={HideIcon} className="hide-icon hide" alt="hide-icon" />
-            ) : (
-              ""
-            )
-          }
-          title={
-            hideListButtonVisible ? (
-              <span className="hide-text">Hide List</span>
-            ) : (
-              ""
-            )
-          }
-          subTitle={
-            !loading && (
-              <span className="result-number">
-                Showing{" "}
-                {resultCount > pageSize + Number(filters?.page)
-                  ? resultCounts
-                  : itemCount}{" "}
-                of {resultCount || 0} result
-                {resultCount > 1 ? "s" : ""}
-              </span>
-            )
-          }
-          extra={
-            <Button className="sort-btn" onClick={sortPeople}>
-              <img src={SortIcon} alt="sort-icon" />{" "}
-              <span>
-                Sort By:
-                <br />{" "}
-                {isAscending || isAscending === null ? (
-                  <b>A&gt;Z</b>
-                ) : (
-                  <b>Z&gt;A</b>
-                )}
-              </span>
-            </Button>
-          }
-        />
-      </Col>
-      <div style={{ paddingBottom: "70px" }}>
-        <Col
-          span={24}
-          className="resource-list"
-          style={
-            isLoaded() && !loading && !isEmpty(results) && { overflowY: "auto" }
-          }
-        >
-          {!isLoaded() || loading ? (
-            <h2 className="loading">
-              <LoadingOutlined spin /> Loading
-            </h2>
-          ) : isLoaded() && !loading && !isEmpty(results) ? (
-            <ResourceItem view={view} results={results} />
-          ) : (
-            <h2 className="loading">There is no data to display</h2>
-          )}
-        </Col>
-        {!isEmpty(results) && (
-          <div className="page">
-            <Pagination
-              defaultCurrent={1}
-              current={
-                1 + (query?.page.length !== 0 ? Number(query?.page[0]) : 0)
+        {!listVisible ? (
+          <div className="map-overlay">
+            <PageHeader
+              className="resource-list-header show-list"
+              ghost={false}
+              backIcon={
+                <img
+                  src={HideIcon}
+                  className="hide-icon show"
+                  alt="show-icon"
+                />
               }
-              pageSize={pageSize}
-              total={resultCount}
-              showSizeChanger={false}
-              onChange={(n) => {
-                updateQuery("page", n - 1);
-              }}
+              onBack={() => setListVisible(true)}
+              title="Show List"
             />
-            {!loading && (
-              <div className="result-number">
-                {resultCount > pageSize + Number(filters?.page)
-                  ? resultCounts
-                  : itemCount}{" "}
-                of {resultCount || 0} result
-                {resultCount > 1 ? "s" : ""}
-              </div>
-            )}
           </div>
+        ) : (
+          <PageHeader
+            className="resource-list-header"
+            ghost={false}
+            style={
+              view === "map"
+                ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
+                : { backgroundColor: "rgba(255, 255, 255, 1)" }
+            }
+            onBack={() => setListVisible(false)}
+            backIcon={
+              <img src={HideIcon} className="hide-icon hide" alt="hide-icon" />
+            }
+            title={<span className="hide-text">Hide List</span>}
+            subTitle={
+              !loading && (
+                <span className="result-number">
+                  Showing{" "}
+                  {resultCount > pageSize + Number(filters?.page)
+                    ? resultCounts
+                    : itemCount}{" "}
+                  of {resultCount || 0} result
+                  {resultCount > 1 ? "s" : ""}
+                </span>
+              )
+            }
+            extra={
+              <Button className="sort-btn" onClick={sortPeople}>
+                <img src={SortIcon} alt="sort-icon" />{" "}
+                <span>
+                  Sort By:
+                  <br />{" "}
+                  {isAscending || isAscending === null ? (
+                    <b>A&gt;Z</b>
+                  ) : (
+                    <b>Z&gt;A</b>
+                  )}
+                </span>
+              </Button>
+            }
+          />
         )}
-      </div>
+      </Col>
+      {listVisible && (
+        <div>
+          <Col
+            span={24}
+            className="resource-list"
+            style={
+              isLoaded() &&
+              !loading &&
+              !isEmpty(results) && { overflowY: "auto" }
+            }
+          >
+            {!isLoaded() || loading ? (
+              <h2 className="loading">
+                <LoadingOutlined spin /> Loading
+              </h2>
+            ) : isLoaded() && !loading && !isEmpty(results) ? (
+              <ResourceItem view={view} results={results} />
+            ) : (
+              <h2 className="loading">There is no data to display</h2>
+            )}
+          </Col>
+          {!isEmpty(results) && (
+            <div className="page">
+              <Pagination
+                defaultCurrent={1}
+                current={
+                  1 + (query?.page.length !== 0 ? Number(query?.page[0]) : 0)
+                }
+                pageSize={pageSize}
+                total={resultCount}
+                showSizeChanger={false}
+                onChange={(n) => {
+                  updateQuery("page", n - 1);
+                }}
+              />
+              {!loading && (
+                <div className="result-number">
+                  {resultCount > pageSize + Number(filters?.page)
+                    ? resultCounts
+                    : itemCount}{" "}
+                  of {resultCount || 0} result
+                  {resultCount > 1 ? "s" : ""}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </Row>
   );
 };
@@ -132,15 +143,10 @@ const StakeholderList = ({
 const ResourceItem = ({ results, view }) => {
   return results.map((result) => {
     const { id, type } = result;
-    const fullName = (data) =>
-      data?.title
-        ? `${data?.title} ${data?.firstName} ${data?.lastName}`
-        : `${data?.firstName} ${data?.lastName}`;
-    const title = result.name || `${result?.firstName} ${result?.lastName}`;
+
     const stakeholderName =
       result?.name || `${result?.firstName} ${result?.lastName}`;
 
-    ("");
     const linkTo = `/${type}/${id}`;
 
     return (
@@ -155,7 +161,7 @@ const ResourceItem = ({ results, view }) => {
         >
           <div className="topic">{topicNames(type)}</div>
           <div className="item-body">
-            <div className="title">{title}</div>
+            <div className="title">{stakeholderName}</div>
           </div>
         </Card>
       </Link>

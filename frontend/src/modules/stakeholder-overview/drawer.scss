@@ -90,12 +90,20 @@
     }
   }
 
+  .page {
+    padding: 2rem 0 1rem 10px !important;
+    text-align: center;
+    .ant-pagination-item {
+      margin-bottom: 2px;
+    }
+  }
+
   .resource-list {
     padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    height: 436px;
+    height: 480px;
     align-items: center;
     min-width: 300px;
     overflow-y: auto;
@@ -122,41 +130,8 @@
           margin-top: 5px;
 
           .title,
-          .description,
           .read-more {
             font-size: 14px;
-          }
-          .description {
-            display: none;
-            font-weight: 400;
-            color: $blue11;
-            margin-top: 7px;
-          }
-
-          .read-more,
-          .avatar-number {
-            color: $blue04;
-          }
-
-          .avatar-number {
-            font-size: 13px;
-            margin-left: 13px;
-          }
-        }
-        .item-footer {
-          margin-top: 14px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          .read-more {
-            font-size: 14px;
-          }
-          .read-more,
-          .avatar-number {
-            color: $blue04;
-          }
-          .avatar-number {
-            font-weight: 600;
           }
         }
       }
