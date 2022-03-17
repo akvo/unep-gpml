@@ -9,21 +9,66 @@
 
 (hugsql/def-db-fns "gpml/db/landing.sql")
 
+(defn- entity-count-by-geo-coverage-query
+  [entity-name geo-coverage-type]
+  (let [entity-col (if (= entity-name "resource")
+                     "REPLACE(LOWER(e.type), ' ', '_')"
+                     (str "'" entity-name "'"))
+        entity-count-col (if (= geo-coverage-type :transnational)
+                           "COUNT(cgc.country_group) AS entity_count"
+                           "COUNT(COALESCE(egc.country, cgc.country)) AS entity_count")
+        where-cond (if (= geo-coverage-type :transnational)
+                     ""
+                     (if (= entity-name "initiative")
+                       "AND e.q24->>'global'::text IS NULL"
+                       "AND e.geo_coverage_type <> 'global'"))]
+    (apply
+     format
+     "SELECT
+          %s AS entity,
+          COALESCE(egc.country, cgc.country) AS geo_coverage,
+          %s
+      FROM
+          %s e
+          LEFT JOIN %s_geo_coverage egc ON e.id = egc.%s
+          LEFT JOIN country_group_country cgc ON cgc.country_group = egc.country_group
+      WHERE
+           e.review_status = 'APPROVED' %s
+      GROUP BY
+           entity,
+           geo_coverage"
+     (flatten [entity-col entity-count-col (repeat 3 entity-name) where-cond]))))
+
+(defn generate-entity-count-by-geo-coverage-query-cte
+  [{:keys [cte-name geo-coverage-type]} _opts]
+  (str
+   "WITH "
+   cte-name
+   " AS ("
+   (reduce (fn [acc entity]
+             (let [query (entity-count-by-geo-coverage-query entity geo-coverage-type)]
+               (if (seq acc)
+                 (str acc " UNION ALL " query)
+                 query)))
+           ""
+           constants/geo-coverage-entity-tables)
+   ")"))
+
 (def topic-counts
   (->> constants/topics
        (map #(-> {}
-               (assoc-in [:counts (keyword %)] 0)
-               (assoc-in [:transnational_counts (keyword %)] 0)))
+                 (assoc-in [:counts (keyword %)] 0)
+                 (assoc-in [:transnational_counts (keyword %)] 0)))
        (apply merge-with into)))
 
 (defn map-counts-explicit [conn]
   (let [map-counts (map-counts conn)
         transnational-counts (map-transnational-counts conn)]
     (reduce
-      (fn [acc [_ counts]]
-        (conj acc (merge-with into topic-counts (apply merge counts))))
-      []
-      (group-by :id (concat map-counts transnational-counts)))))
+     (fn [acc [_ counts]]
+       (conj acc (merge-with into topic-counts (apply merge counts))))
+     []
+     (group-by :id (concat map-counts transnational-counts)))))
 
 (defn remap-counts [x]
   (assoc (dissoc x :id) :country_id (:id x)))
@@ -41,6 +86,4 @@
   (require 'dev)
   (def db (dev/db-conn))
 
-  (map-counts-include-all-countries db)
-
-  )
+  (map-counts-include-all-countries db))
