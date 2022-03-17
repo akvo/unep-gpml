@@ -19,7 +19,14 @@ const TopicChart = ({
     setSelectedTopic(defTopic);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortPopularTopic]);
-
+  useEffect(() => {
+    api
+      .get(`/tag/topic/popular`)
+      .then((resp) => console.log(resp, "resp"))
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
   useEffect(() => {
     const tagsFetch = popularTags.map((tag, i) => {
       const topicName = () => {
