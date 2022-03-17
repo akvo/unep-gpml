@@ -1,24 +1,16 @@
-import React, { useState } from "react";
+import { orderBy } from "lodash";
+import React, { useState, useEffect } from "react";
+import api from "../../utils/api";
 
 import TopicChart from "../chart/topicChart";
 
 const TopicView = ({ updateQuery }) => {
-  const [sortPopularTopic, setSortPopularTopic] = useState([]);
-  const defTopic = sortPopularTopic[0]?.topic?.toLocaleLowerCase();
+  const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
+  const defTopic = sortedPopularTopics[0]?.topic?.toLocaleLowerCase();
 
   const [selectedTopic, setSelectedTopic] = useState(defTopic);
 
   const isMobileScreen = innerWidth <= 991;
-
-  const popularTags = [
-    "plastics",
-    "waste management",
-    "marine litter",
-    "capacity building",
-    "product by design",
-    "source to sea",
-    "climate change",
-  ];
 
   const handlePopularTopicChartClick = (params) => {
     const { name, tag } = params?.data;
@@ -26,17 +18,41 @@ const TopicView = ({ updateQuery }) => {
     updateQuery("tag", [tag]);
   };
 
+  useEffect(() => {
+    setSelectedTopic(defTopic);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortedPopularTopics]);
+
+  useEffect(() => {
+    api
+      .get(`/tag/topic/popular`)
+      .then((resp) => {
+        const data = resp?.data.map((item, i) => {
+          return {
+            id: i,
+            topic: item?.tag,
+            tag: item?.tag,
+            count: item?.count,
+          };
+        });
+        const sorted = orderBy(data, ["count", "topic"], ["desc", "desc"]);
+
+        setSortedPopularTopics(sorted);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <TopicChart
       loadingId="knowledge-library-loading"
       {...{
-        defTopic,
         selectedTopic,
         setSelectedTopic,
-        popularTags,
         isMobileScreen,
-        sortPopularTopic,
-        setSortPopularTopic,
+        sortedPopularTopics,
         handlePopularTopicChartClick,
       }}
     />

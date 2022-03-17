@@ -124,35 +124,31 @@ const Landing = withRouter(
     loginWithPopup,
     setFilterMenu,
   }) => {
-    const [sortPopularTopic, setSortPopularTopic] = useState([]);
-    const defTopic = sortPopularTopic[0]?.topic?.toLocaleLowerCase();
+    const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
+
+    const [selectedTopic, setSelectedTopic] = useState(null);
 
     const dateNow = moment().format("YYYY/MM/DD");
     const { innerWidth, innerHeight } = window;
     const profile = UIStore.useState((s) => s.profile);
-    const [selectedTopic, setSelectedTopic] = useState(null);
     const [event, setEvent] = useState([]);
     const [data, setData] = useState(null);
     const [didMount, setDidMount] = useState(false);
+    const [resources, setResources] = useState(null);
 
     const isApprovedUser = profile?.reviewStatus === "APPROVED";
     const hasProfile = profile?.reviewStatus;
-
-    const popularTags = [
-      "plastics",
-      "waste management",
-      "marine litter",
-      "capacity building",
-      "product by design",
-      "source to sea",
-    ];
 
     const isMobileScreen = innerWidth <= 991;
 
     const handlePopularTopicChartClick = (params) => {
       const { name, tag } = params?.data;
-      !isMobileScreen && setSelectedTopic(name?.toLowerCase());
-      isMobileScreen && history.push(`/knowledge-library?tag=${tag}`);
+
+      if (!isMobileScreen) {
+        setSelectedTopic(name?.toLowerCase());
+      } else {
+        isMobileScreen && history.push(`/knowledge-library?tag=${tag}`);
+      }
     };
 
     const handleOurCommunityProfileClick = () => {
@@ -166,9 +162,9 @@ const Landing = withRouter(
     };
 
     useEffect(() => {
-      setSelectedTopic(defTopic);
+      getResources();
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sortPopularTopic]);
+    }, [selectedTopic]);
 
     const generateEvent = useCallback(
       (filterDate, searchNextEvent = false) => {
@@ -201,6 +197,48 @@ const Landing = withRouter(
       setDidMount(true);
       return () => setDidMount(false);
     }, []);
+
+    useEffect(() => {
+      api
+        .get(`/tag/topic/popular`)
+        .then((resp) => {
+          const data = resp?.data.map((item, i) => {
+            return {
+              id: i,
+              topic: item?.tag,
+              tag: item?.tag,
+              count: item?.count,
+            };
+          });
+
+          const sorted = orderBy(data, ["count", "topic"], ["desc", "desc"]);
+
+          setSortedPopularTopics(sorted);
+
+          const defaultTopic = sorted[0]?.topic?.toLocaleLowerCase();
+
+          setSelectedTopic(defaultTopic);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const getResources = async () => {
+      selectedTopic &&
+        (await api.get(`/browse?tag=${selectedTopic}&limit=3`).then((resp) => {
+          const data = resp?.data;
+
+          setResources({
+            items: data?.results,
+            summary: data?.counts.filter(
+              (count) => count.topic !== "gpml_member_entities"
+            ),
+          });
+        }));
+    };
 
     return (
       <div id="landing">
@@ -253,50 +291,42 @@ const Landing = withRouter(
               height={675}
               loadingId="home-loading"
               {...{
-                defTopic,
                 selectedTopic,
-                setSelectedTopic,
-                popularTags,
                 isMobileScreen,
-                sortPopularTopic,
-                setSortPopularTopic,
+                sortedPopularTopics,
                 handlePopularTopicChartClick,
               }}
             />
             {!isMobileScreen && (
               <div className="content">
                 <div className="content-body">
-                  {sortPopularTopic.length !== 0 &&
-                    sortPopularTopic
-                      .find((x) => x?.topic.toLowerCase() === selectedTopic)
-                      ?.items.slice(0, 3)
-                      ?.map((x, i) => {
-                        const { id, type, title, description, remarks } = x;
-                        const link = `/${humps.decamelize(type)}/${id}`;
-                        return (
-                          <Card
-                            key={`summary-${i}`}
-                            className="item-body"
-                            onClick={() => history.push(link)}
-                          >
-                            <div className="resource-label upper">
-                              {topicNames(humps.camelizeKeys(type))}
-                            </div>
-                            <div className="asset-title">{title || ""}</div>
-                            <div className="body-text">
-                              {TrimText({
-                                text: description || remarks,
-                                max: 250,
-                              })}
-                            </div>
-                            <span className="read-more">
-                              <Link to={link}>
-                                Read more <ArrowRightOutlined />
-                              </Link>
-                            </span>
-                          </Card>
-                        );
-                      })}
+                  {resources?.items?.map((x, i) => {
+                    const { id, type, title, description, remarks } = x;
+                    const link = `/${humps.decamelize(type)}/${id}`;
+                    return (
+                      <Card
+                        key={`summary-${i}`}
+                        className="item-body"
+                        onClick={() => history.push(link)}
+                      >
+                        <div className="resource-label upper">
+                          {topicNames(humps.camelizeKeys(type))}
+                        </div>
+                        <div className="asset-title">{title || ""}</div>
+                        <div className="body-text">
+                          {TrimText({
+                            text: description || remarks,
+                            max: 250,
+                          })}
+                        </div>
+                        <span className="read-more">
+                          <Link to={link}>
+                            Read more <ArrowRightOutlined />
+                          </Link>
+                        </span>
+                      </Card>
+                    );
+                  })}
                 </div>
               </div>
             )}
