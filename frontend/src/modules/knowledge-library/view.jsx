@@ -28,6 +28,7 @@ import IconLibrary from "../../images/capacity-building/ic-knowledge-library.svg
 import IconLearning from "../../images/capacity-building/ic-capacity-building.svg";
 import IconExchange from "../../images/capacity-building/ic-exchange.svg";
 import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
+import { titleCase } from "../../utils/string";
 
 const { Option } = Select;
 
@@ -196,7 +197,7 @@ const KnowledgeLibrary = ({
       if (key === "tag") {
         const findTag = flatten(values(tags)).find((x) => x.id == value);
 
-        return findTag ? findTag?.tag : value;
+        return findTag ? titleCase(findTag?.tag) : titleCase(value);
       }
       if (key === "country") {
         const findCountry = countries.find((x) => x.id == value);

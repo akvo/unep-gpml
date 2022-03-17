@@ -45,6 +45,7 @@ const TopicView = ({ updateQuery }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <TopicChart
       loadingId="knowledge-library-loading"

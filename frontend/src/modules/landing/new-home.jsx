@@ -1,34 +1,35 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect, useCallback } from "react";
-import { Button, Card, Avatar, Tooltip, Carousel as AntdCarousel } from "antd";
+import { Button, Card, Avatar, Tooltip } from "antd";
 import {
   RightOutlined,
   ArrowRightOutlined,
   RiseOutlined,
   UserOutlined,
-  LoadingOutlined,
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
-import Chart from "../../utils/chart";
-import EventCalendar from "../event-calendar/view";
+
 import Carousel from "react-multi-carousel";
 import "./new-styles.scss";
 import "react-multi-carousel/lib/styles.css";
 import moment from "moment";
 import imageNotFound from "../../images/image-not-found.png";
-import { TrimText } from "../../utils/string";
+
 import {
-  popularTopics,
   featuredContents,
   ourCommunity,
   benefit,
 } from "./new-home-static-content";
+
+import { TrimText } from "../../utils/string";
 import orderBy from "lodash/orderBy";
 import humps from "humps";
 import { topicNames } from "../../utils/misc";
 import sortBy from "lodash/sortBy";
 import api from "../../utils/api";
+
 import TopicChart from "../chart/topicChart";
+import EventCalendar from "../event-calendar/view";
 
 const cardSvg = [
   {
@@ -161,8 +162,23 @@ const Landing = withRouter(
       return setWarningModalVisible(true);
     };
 
+    const getResources = async () => {
+      selectedTopic &&
+        (await api.get(`/browse?tag=${selectedTopic}&limit=3`).then((resp) => {
+          const data = resp?.data;
+
+          setResources({
+            items: data?.results,
+            summary: data?.counts.filter(
+              (count) => count.topic !== "gpml_member_entities"
+            ),
+          });
+        }));
+    };
+
     useEffect(() => {
       getResources();
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedTopic]);
 
@@ -190,12 +206,6 @@ const Landing = withRouter(
       UIStore.update((e) => {
         e.disclaimer = "home";
       });
-    }, []);
-
-    // Note: this will fix the warning on the console
-    useEffect(() => {
-      setDidMount(true);
-      return () => setDidMount(false);
     }, []);
 
     useEffect(() => {
@@ -226,19 +236,11 @@ const Landing = withRouter(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getResources = async () => {
-      selectedTopic &&
-        (await api.get(`/browse?tag=${selectedTopic}&limit=3`).then((resp) => {
-          const data = resp?.data;
-
-          setResources({
-            items: data?.results,
-            summary: data?.counts.filter(
-              (count) => count.topic !== "gpml_member_entities"
-            ),
-          });
-        }));
-    };
+    // Note: this will fix the warning on the console
+    useEffect(() => {
+      setDidMount(true);
+      return () => setDidMount(false);
+    }, []);
 
     return (
       <div id="landing">
@@ -274,6 +276,7 @@ const Landing = withRouter(
             </div>
           </div>
         </div>
+
         {/* Popular Topics */}
         <div className="popular-topics ui container section-container">
           <div className="section-title">

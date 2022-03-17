@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { LoadingOutlined } from "@ant-design/icons";
-import api from "../../utils/api";
-import { orderBy } from "lodash";
 import Chart from "../../utils/chart";
 import { titleCase } from "../../utils/string";
 
