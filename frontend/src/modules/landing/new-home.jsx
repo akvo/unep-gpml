@@ -210,7 +210,7 @@ const Landing = withRouter(
 
     useEffect(() => {
       api
-        .get(`/tag/topic/popular`)
+        .get(`/tag/topic/popular?limit=6`)
         .then((resp) => {
           const data = resp?.data.map((item, i) => {
             return {

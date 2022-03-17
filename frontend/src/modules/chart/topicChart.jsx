@@ -11,7 +11,7 @@ const TopicChart = ({
   handlePopularTopicChartClick,
 }) => {
   return (
-    <div className="chart-wrapper">
+    <div className="chart-wrapper" style={{ width: "100%", height: "8%" }}>
       {sortedPopularTopics.length !== 0 ? (
         <Chart
           key="popular-topic"
