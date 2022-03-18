@@ -75,6 +75,7 @@ export const schema = {
       },
       required: [
         "orgName",
+        "organisationRole",
         "companyName",
         "newCompanyName",
         "newCompanyHeadquarter",
@@ -98,6 +99,18 @@ export const schema = {
           },
           title: "Search for a GPML Member Entity",
           enum: [],
+        },
+        organisationRole: {
+          depend: {
+            id: "privateCitizen",
+            value: false,
+            andDepend: {
+              id: "companyName",
+              value: "not-filled-in", // companyName not filled in
+            },
+          },
+          title: "Job Tilte",
+          type: "string",
         },
         orgDisabled: {
           depend: {
