@@ -66,8 +66,8 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                 <img
                   className="profile-image"
                   src={
-                    profile.logo
-                      ? profile.logo
+                    profile.picture
+                      ? profile.picture
                       : `https://ui-avatars.com/api/?size=480&name=${profile?.name}`
                   }
                   alt={profile?.name}
