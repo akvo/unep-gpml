@@ -883,7 +883,7 @@ const DetailsView = ({
                 </div>
               </CardComponent>
               <CardComponent
-                title="Connection"
+                title="Connections"
                 style={{
                   marginBottom: "30px",
                 }}
