@@ -44,9 +44,14 @@
 
     .form-meta {
       display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
 
+      .form-title {
+        margin-left: 0;
+      }
       .highlight {
         font-weight: 400;
         .ant-switch-small {
@@ -84,6 +89,20 @@
       .d-flex {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
+      }
+      @media (min-width: 484.55px) {
+        .form-title {
+          margin-left: 30px;
+        }
+      }
+
+      @media (min-width: 720px) {
+        gap: unset;
+        .d-flex {
+          flex-wrap: nowrap;
+          text-align: start;
+        }
       }
     }
 

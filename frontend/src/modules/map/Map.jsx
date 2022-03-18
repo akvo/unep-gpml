@@ -102,8 +102,18 @@ const ToolTipContent = ({ data, geo, path }) => {
     }
   };
 
+  const transnationalMaxValue = Math.max
+    .apply(null, Object.values(transnationalData()))
+    .toString();
+
+  const characterLength = transnationalMaxValue?.length;
+
   return (
-    <div key={`${geo.ISO3CD}-tooltip`} className="map-tooltip">
+    <div
+      key={`${geo.ISO3CD}-tooltip`}
+      style={{ paddingRight: `${(characterLength || 1) * 9}px` }}
+      className="map-tooltip"
+    >
       <h3>{geo.MAP_LABEL}</h3>
       <ul>
         {tTypes.map((topic) => {
@@ -130,7 +140,10 @@ const ToolTipContent = ({ data, geo, path }) => {
                 <b className="tooltip-counts">
                   {dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}
                   {transnationalData()?.[topic] > 0 && (
-                    <div className="transnational-count">
+                    <div
+                      className="transnational-count"
+                      style={{ right: "-5%" }}
+                    >
                       {" "}
                       ({transnationalData()?.[topic]})
                     </div>

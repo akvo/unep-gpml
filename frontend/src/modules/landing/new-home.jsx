@@ -1,34 +1,35 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect, useCallback } from "react";
-import { Button, Card, Avatar, Tooltip, Carousel as AntdCarousel } from "antd";
+import { Button, Card, Avatar, Tooltip } from "antd";
 import {
   RightOutlined,
   ArrowRightOutlined,
   RiseOutlined,
   UserOutlined,
-  LoadingOutlined,
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
-import Chart from "../../utils/chart";
-import EventCalendar from "../event-calendar/view";
+
 import Carousel from "react-multi-carousel";
 import "./new-styles.scss";
 import "react-multi-carousel/lib/styles.css";
 import moment from "moment";
 import imageNotFound from "../../images/image-not-found.png";
-import { TrimText } from "../../utils/string";
+
 import {
-  popularTopics,
   featuredContents,
   ourCommunity,
   benefit,
 } from "./new-home-static-content";
+
+import { TrimText } from "../../utils/string";
 import orderBy from "lodash/orderBy";
 import humps from "humps";
 import { topicNames } from "../../utils/misc";
 import sortBy from "lodash/sortBy";
 import api from "../../utils/api";
+
 import TopicChart from "../chart/topicChart";
+import EventCalendar from "../event-calendar/view";
 
 const cardSvg = [
   {
@@ -124,34 +125,31 @@ const Landing = withRouter(
     loginWithPopup,
     setFilterMenu,
   }) => {
-    const [sortPopularTopic, setSortPopularTopic] = useState([]);
-    const defTopic = sortPopularTopic[0]?.topic?.toLocaleLowerCase();
+    const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
+
+    const [selectedTopic, setSelectedTopic] = useState(null);
 
     const dateNow = moment().format("YYYY/MM/DD");
     const { innerWidth, innerHeight } = window;
     const profile = UIStore.useState((s) => s.profile);
-    const [selectedTopic, setSelectedTopic] = useState(null);
     const [event, setEvent] = useState([]);
     const [data, setData] = useState(null);
+    const [didMount, setDidMount] = useState(false);
+    const [resources, setResources] = useState(null);
 
     const isApprovedUser = profile?.reviewStatus === "APPROVED";
     const hasProfile = profile?.reviewStatus;
-
-    const popularTags = [
-      "plastics",
-      "waste management",
-      "marine litter",
-      "capacity building",
-      "product by design",
-      "source to sea",
-    ];
 
     const isMobileScreen = innerWidth <= 991;
 
     const handlePopularTopicChartClick = (params) => {
       const { name, tag } = params?.data;
-      !isMobileScreen && setSelectedTopic(name?.toLowerCase());
-      isMobileScreen && history.push(`/knowledge-library?tag=${tag}`);
+
+      if (!isMobileScreen) {
+        setSelectedTopic(name?.toLowerCase());
+      } else {
+        isMobileScreen && history.push(`/knowledge-library?tag=${tag}`);
+      }
     };
 
     const handleOurCommunityProfileClick = () => {
@@ -164,10 +162,25 @@ const Landing = withRouter(
       return setWarningModalVisible(true);
     };
 
+    const getResources = async () => {
+      selectedTopic &&
+        (await api.get(`/browse?tag=${selectedTopic}&limit=3`).then((resp) => {
+          const data = resp?.data;
+
+          setResources({
+            items: data?.results,
+            summary: data?.counts.filter(
+              (count) => count.topic !== "gpml_member_entities"
+            ),
+          });
+        }));
+    };
+
     useEffect(() => {
-      setSelectedTopic(defTopic);
+      getResources();
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sortPopularTopic]);
+    }, [selectedTopic]);
 
     const generateEvent = useCallback(
       (filterDate, searchNextEvent = false) => {
@@ -190,88 +203,43 @@ const Landing = withRouter(
     );
 
     useEffect(() => {
-      if (!data) {
-        api
-          .get("browse?topic=event")
-          .then((resp) => {
-            setData(resp.data);
-          })
-          .catch((err) => {
-            console.error(err);
-            setData([]);
-          });
-      }
-      if (data && data?.results) {
-        generateEvent(dateNow, true);
-      }
-    }, [data, dateNow, generateEvent]);
-
-    useEffect(() => {
       UIStore.update((e) => {
         e.disclaimer = "home";
       });
     }, []);
 
     useEffect(() => {
-      const popularTags = [
-        "plastics",
-        "waste management",
-        "marine litter",
-        "capacity building",
-        "product by design",
-        "source to sea",
-      ];
-
-      const tagsFetch = popularTags.map((tag, i) => {
-        const topicName = () => {
-          if (tag === "plastics") {
-            return "Plastics";
-          }
-          if (tag === "waste management") {
-            return "Waste Management";
-          }
-          if (tag === "marine litter") {
-            return "Marine Litter";
-          }
-
-          if (tag === "capacity building") {
-            return "Capacity Building";
-          }
-          if (tag === "product by design") {
-            return "Product by Design";
-          }
-
-          if (tag === "source to sea") {
-            return "Source to Sea";
-          }
-        };
-        return api
-          .get(`/browse?tag=${tag}`)
-          .then((resp) => ({
-            id: i,
-            items: resp?.data?.results,
-            topic: topicName(),
-            tag,
-            count: resp?.data?.counts
-              .filter((count) => count.topic !== "gpml_member_entities")
-              .reduce((curr, val) => curr + val?.count || 0, 0),
-            summary: resp.data.counts.filter(
-              (count) => count.topic !== "gpml_member_entities"
-            ),
-          }))
-          .catch((err) => {
-            console.error(err);
+      api
+        .get(`/tag/topic/popular?limit=6`)
+        .then((resp) => {
+          const data = resp?.data.map((item, i) => {
+            return {
+              id: i,
+              topic: item?.tag,
+              tag: item?.tag,
+              count: item?.count,
+            };
           });
-      });
 
-      const tagResults = Promise.all(tagsFetch).then((results) => {
-        const sortedPopularTopics = orderBy(
-          results,
-          ["count", "topic"],
-          ["desc", "desc"]
-        );
-        setSortPopularTopic(sortedPopularTopics);
-      });
+          const sorted = orderBy(data, ["count", "topic"], ["desc", "desc"]);
+
+          setSortedPopularTopics(sorted);
+
+          const defaultTopic = sorted[0]?.topic?.toLocaleLowerCase();
+
+          setSelectedTopic(defaultTopic);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Note: this will fix the warning on the console
+    useEffect(() => {
+      setDidMount(true);
+      return () => setDidMount(false);
     }, []);
 
     return (
@@ -308,6 +276,7 @@ const Landing = withRouter(
             </div>
           </div>
         </div>
+
         {/* Popular Topics */}
         <div className="popular-topics ui container section-container">
           <div className="section-title">
@@ -325,50 +294,42 @@ const Landing = withRouter(
               height={675}
               loadingId="home-loading"
               {...{
-                defTopic,
                 selectedTopic,
-                setSelectedTopic,
-                popularTags,
                 isMobileScreen,
-                sortPopularTopic,
-                setSortPopularTopic,
+                sortedPopularTopics,
                 handlePopularTopicChartClick,
               }}
             />
             {!isMobileScreen && (
               <div className="content">
                 <div className="content-body">
-                  {sortPopularTopic.length !== 0 &&
-                    sortPopularTopic
-                      .find((x) => x?.topic.toLowerCase() === selectedTopic)
-                      ?.items.slice(0, 3)
-                      ?.map((x, i) => {
-                        const { id, type, title, description, remarks } = x;
-                        const link = `/${humps.decamelize(type)}/${id}`;
-                        return (
-                          <Card
-                            key={`summary-${i}`}
-                            className="item-body"
-                            onClick={() => history.push(link)}
-                          >
-                            <div className="resource-label upper">
-                              {topicNames(humps.camelizeKeys(type))}
-                            </div>
-                            <div className="asset-title">{title || ""}</div>
-                            <div className="body-text">
-                              {TrimText({
-                                text: description || remarks,
-                                max: 250,
-                              })}
-                            </div>
-                            <span className="read-more">
-                              <Link to={link}>
-                                Read more <ArrowRightOutlined />
-                              </Link>
-                            </span>
-                          </Card>
-                        );
-                      })}
+                  {resources?.items?.map((x, i) => {
+                    const { id, type, title, description, remarks } = x;
+                    const link = `/${humps.decamelize(type)}/${id}`;
+                    return (
+                      <Card
+                        key={`summary-${i}`}
+                        className="item-body"
+                        onClick={() => history.push(link)}
+                      >
+                        <div className="resource-label upper">
+                          {topicNames(humps.camelizeKeys(type))}
+                        </div>
+                        <div className="asset-title">{title || ""}</div>
+                        <div className="body-text">
+                          {TrimText({
+                            text: description || remarks,
+                            max: 250,
+                          })}
+                        </div>
+                        <span className="read-more">
+                          <Link to={link}>
+                            Read more <ArrowRightOutlined />
+                          </Link>
+                        </span>
+                      </Card>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -381,7 +342,7 @@ const Landing = withRouter(
             <h2>
               Featured Content{" "}
               <span className="see-more-link">
-                <Link to="/browse">
+                <Link to="/knowledge-library">
                   See all <RightOutlined />
                 </Link>
               </span>

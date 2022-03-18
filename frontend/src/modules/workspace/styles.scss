@@ -216,9 +216,9 @@ $bg-green-primary: #10f9b7;
     .plan-list {
       display: flex;
       font-weight: bold;
-
       margin-bottom: 0;
       color: $blue03;
+      overflow-x: auto;
     }
 
     .plan-list-item {

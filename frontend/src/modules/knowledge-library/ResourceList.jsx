@@ -147,7 +147,10 @@ const ResourceList = ({
           style={
             view === "map"
               ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
-              : { backgroundColor: "rgba(255, 255, 255, 1)" }
+              : {
+                  backgroundColor: "rgba(255, 255, 255, 1)",
+                  minHeight: "112px",
+                }
           }
           onBack={() => setListVisible(false)}
           backIcon={
@@ -160,20 +163,25 @@ const ResourceList = ({
           title={
             hideListButtonVisible ? (
               <span className="hide-text">Hide List</span>
+            ) : view === "topic" ? (
+              <div style={{ minHeight: "32px", display: "block" }} />
             ) : (
               ""
             )
           }
           const
           subTitle={
-            !loading && (
+            !loading ? (
               <span className="result-number">
                 Showing{" "}
                 {totalItems > pageSize + filters?.offset
                   ? pageSize + Number(filters?.offset)
                   : itemCount}{" "}
-                of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+                of {totalItems || 0} result
+                {totalItems > 1 ? "s" : ""}
               </span>
+            ) : (
+              <div className="invisible-content" />
             )
           }
           extra={

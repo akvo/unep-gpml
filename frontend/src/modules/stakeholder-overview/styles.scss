@@ -4,6 +4,21 @@
   filter: blur(13px);
 }
 
+.popover-wrapper {
+  text-align: center;
+  h3,
+  h4 {
+    color: #255b87;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  h3 {
+    text-transform: uppercase;
+    color: #000;
+  }
+}
+
 #stakeholder-overview {
   padding: 0;
 
