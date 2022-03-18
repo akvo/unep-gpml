@@ -128,7 +128,7 @@ const EventCalendar = withRouter(({ history }) => {
           <h2>
             Upcoming Events{" "}
             <span className="see-more-link">
-              <Link to="/browse?topic=event">
+              <Link to="/knowledge-library?topic=event">
                 See all <RightOutlined />
               </Link>
             </span>
