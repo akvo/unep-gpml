@@ -804,25 +804,46 @@ const DetailsView = ({
               >
                 <div className="list geo-coverage">
                   <List itemLayout="horizontal">
-                    {data?.geoCoverageValues &&
-                      data?.geoCoverageValues.length > 0 && (
-                        <List.Item>
-                          <List.Item.Meta
-                            avatar={<Avatar src={LocationImage} />}
-                            title={renderCountries(
-                              data,
-                              countries,
-                              transnationalOptions
-                            )}
-                          />
-                        </List.Item>
-                      )}
+                    {data?.geoCoverageType !== "sub-national" && (
+                      <>
+                        {data?.geoCoverageValues &&
+                          data?.geoCoverageValues.length > 0 && (
+                            <List.Item>
+                              <List.Item.Meta
+                                avatar={<Avatar src={LocationImage} />}
+                                title={renderCountries(
+                                  data,
+                                  countries,
+                                  transnationalOptions
+                                )}
+                              />
+                            </List.Item>
+                          )}
+                      </>
+                    )}
                     <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar src={TransnationalImage} />}
                         title={data?.geoCoverageType}
                       />
                     </List.Item>
+                    {data?.geoCoverageType === "sub-national" && (
+                      <>
+                        {data?.geoCoverageValues &&
+                          data?.geoCoverageValues.length > 0 && (
+                            <List.Item>
+                              <List.Item.Meta
+                                avatar={<Avatar src={LocationImage} />}
+                                title={renderCountries(
+                                  data,
+                                  countries,
+                                  transnationalOptions
+                                )}
+                              />
+                            </List.Item>
+                          )}
+                      </>
+                    )}
                     {data?.subnationalCity && (
                       <List.Item>
                         <List.Item.Meta
