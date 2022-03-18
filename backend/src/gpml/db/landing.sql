@@ -1,38 +1,28 @@
 -- :name map-counts
--- :doc Get counts of resources
--- :require [gpml.db.topic]
-select mc.geo as id, json_object_agg(coalesce(mc.topic, 'project'), mc.count) as counts
-from (
-    select vt.geo_coverage as geo, topic, count(topic)
-    from (
-    --~ (#'gpml.db.topic/generate-topic-query {} gpml.db.topic/generic-cte-opts)
-    select * from cte_topic
-    ) vt
-    where vt.geo_coverage is not null
-    and ((vt.json->>'geo_coverage_type' = 'transnational') OR (vt.json->>'geo_coverage_type' = 'national') OR (vt.json->>'geo_coverage_type' = 'sub-national')
-         OR (vt.json->>'geo_coverage_type' = 'regional'))
-    GROUP BY geo, topic
-) AS mc GROUP BY geo ORDER BY geo
+-- :require [gpml.db.landing]
+--~(#'gpml.db.landing/generate-entity-count-by-geo-coverage-query-cte {:cte-name "entity_counts_by_country"} {})
+SELECT
+    geo_coverage AS id,
+    json_object_agg(entity, entity_count) AS counts
+FROM
+    entity_counts_by_country
+GROUP BY
+    geo_coverage
+ORDER BY
+    geo_coverage;
 
 -- :name map-transnational-counts
--- :require [gpml.db.topic]
-SELECT mtc.geo AS id, json_object_agg(COALESCE(mtc.topic, 'project'), mtc.count) AS transnational_counts
-FROM (
-    SELECT vt.geo_coverage AS geo, topic, count(topic)
-    FROM (
-    --~ (#'gpml.db.topic/generate-topic-query {} gpml.db.topic/generic-cte-opts)
-    SELECT * FROM cte_topic
-    ) vt
-    WHERE vt.geo_coverage is NOT NULL
-    AND (vt.json->>'geo_coverage_type' = 'transnational')
-    AND (SELECT COUNT(*) FROM json_array_elements_text((CASE WHEN (json->>'geo_coverage_values' = '') IS NOT FALSE THEN '[]'::JSON
-                                         ELSE (json->>'geo_coverage_values')::JSON END)) gcv
-         WHERE gcv.value::INT IN (SELECT cg.id FROM country_group cg
-                            LEFT JOIN country_group_country cgc
-                             ON cgc.country_group = cg.id
-                            WHERE cgc.country = vt.geo_coverage)) > 0
-    GROUP BY geo, topic
-) AS mtc GROUP BY geo ORDER BY geo;
+-- :require [gpml.db.landing]
+--~(#'gpml.db.landing/generate-entity-count-by-geo-coverage-query-cte {:cte-name "entity_counts_by_country_group" :geo-coverage-type :transnational} {})
+SELECT
+    geo_coverage AS id,
+    json_object_agg(entity, entity_count) AS transnational_counts
+FROM
+    entity_counts_by_country_group
+GROUP BY
+    geo_coverage
+ORDER BY
+    geo_coverage;
 
 -- :name summary
 -- :doc Get summary of count of entities and number of countries
