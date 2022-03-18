@@ -5,17 +5,22 @@
   .stakeholder-list {
     position: absolute;
     top: 0;
+    width: 100%;
     max-width: 300px;
     z-index: 999;
     background-color: rgba(237, 242, 247, 0.3);
+  }
+
+  .resource-item-wrapper {
+    width: 100%;
   }
 
   .resource-list-container {
     position: absolute;
     z-index: 3;
     height: 700px;
+    width: 100%;
     max-width: 300px;
-    min-width: 300px;
   }
 
   .resource-list-header.show-list {
@@ -59,6 +64,10 @@
 
     .ant-page-header-heading-left {
       flex-basis: 70%;
+      flex-wrap: wrap;
+      @media (min-width: 300px) {
+        flex-wrap: nowrap;
+      }
     }
 
     .ant-page-header-heading-extra {
@@ -105,7 +114,7 @@
     gap: 10px;
     height: 480px;
     align-items: center;
-    min-width: 300px;
+    width: 100%;
 
     .resource-item-wrapper {
       width: 100%;

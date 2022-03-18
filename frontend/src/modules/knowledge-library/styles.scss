@@ -595,8 +595,8 @@
     position: absolute;
     z-index: 3;
     height: 700px;
+    width: 100%;
     max-width: 300px;
-    min-width: 300px;
   }
 
   .resource-list-header.show-list {
@@ -640,6 +640,10 @@
 
     .ant-page-header-heading-left {
       flex-basis: 70%;
+      flex-wrap: wrap;
+      @media (min-width: 300px) {
+        flex-wrap: nowrap;
+      }
     }
 
     .ant-page-header-heading-extra {
@@ -682,13 +686,14 @@
   }
 
   .resource-list {
+    width: 100%;
     padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     height: 436px;
     align-items: center;
-    min-width: 300px;
+
     .resource-item-wrapper {
       width: 100%;
 
