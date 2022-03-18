@@ -278,7 +278,7 @@ const StakeholderDetail = ({
         })
         .catch((err) => {
           console.error(err);
-          redirectError(err, history);
+          // redirectError(err, history);
         });
     },
     [params, history]

@@ -595,8 +595,8 @@
     position: absolute;
     z-index: 3;
     height: 700px;
+    width: 100%;
     max-width: 300px;
-    min-width: 300px;
   }
 
   .resource-list-header.show-list {
@@ -640,6 +640,10 @@
 
     .ant-page-header-heading-left {
       flex-basis: 70%;
+      flex-wrap: wrap;
+      @media (min-width: 300px) {
+        flex-wrap: nowrap;
+      }
     }
 
     .ant-page-header-heading-extra {
@@ -649,7 +653,9 @@
     .ant-page-header-back {
       margin-right: 10px;
     }
-
+    .invisible-content {
+      min-height: 18.75px;
+    }
     .result-number {
       line-height: 16px;
       color: #181818;
@@ -680,13 +686,14 @@
   }
 
   .resource-list {
+    width: 100%;
     padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     height: 436px;
     align-items: center;
-    min-width: 300px;
+
     .resource-item-wrapper {
       width: 100%;
 
@@ -793,6 +800,7 @@
       width: 34px;
       height: 34px;
       margin-right: 2px;
+      margin-bottom: 2px;
       border-radius: 5px;
       a {
         width: 100%;

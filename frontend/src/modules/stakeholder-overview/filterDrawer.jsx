@@ -21,7 +21,7 @@ const FilterDrawer = ({
   entities,
   filterVisible,
   setFilterVisible,
-  organisationCount,
+  stakeholderCount,
   GPMLMemberCount,
   setFilterCountries,
 }) => {
@@ -29,7 +29,6 @@ const FilterDrawer = ({
     seeking,
     offering,
     countries,
-    stakeholders,
     organisations,
     representativeGroup,
     transnationalOptions,
@@ -38,7 +37,6 @@ const FilterDrawer = ({
     seeking: s.tags.seeking,
     offering: s.tags.offering,
     countries: s.countries,
-    stakeholders: s.stakeholders?.stakeholders,
     organisations: s.organisations,
     representativeGroup: s.sectorOptions,
     transnationalOptions: s.transnationalOptions,
@@ -157,8 +155,8 @@ const FilterDrawer = ({
                         </div>
                         <div className="topic-text topic-counts">
                           {networkType === "organisation"
-                            ? organisationCount
-                            : stakeholders?.length}
+                            ? stakeholderCount?.entity
+                            : stakeholderCount?.individual}
                         </div>
                       </Space>
                     </Card>
@@ -221,7 +219,9 @@ const FilterDrawer = ({
             title="Affiliation"
             options={
               isLoaded()
-                ? organisations?.map((x) => ({ value: x.id, label: x.name }))
+                ? organisations
+                    ?.map((x) => ({ value: x.id, label: x.name }))
+                    .filter((organisation) => organisation?.value > -1)
                 : []
             }
             value={query?.affiliation?.map((x) => parseInt(x)) || []}
@@ -290,7 +290,9 @@ const FilterDrawer = ({
             title="Representative group"
             options={
               isLoaded()
-                ? representativeGroup?.map((x) => ({ value: x, label: x }))
+                ? representativeGroup
+                    ?.map((x) => ({ value: x, label: x }))
+                    .sort((a, b) => a?.label?.localeCompare(b?.label))
                 : []
             }
             value={query?.representativeGroup || []}

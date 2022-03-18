@@ -1,5 +1,6 @@
 (ns gpml.db.topic
   (:require [clojure.string :as str]
+            [gpml.constants :as constants]
             [hugsql.core :as hugsql]))
 
 ;; FIXME: for some reason unknown to clj-kondo give 'unresolved var'
@@ -14,7 +15,7 @@
 
 (def ^:const generic-cte-opts
   "Common set of options for all CTE generation functions."
-  {:tables ["event" "technology" "policy" "initiative" "resource"]
+  {:tables constants/topic-tables
    :search-text-fields {"event" ["title" "description" "remarks"]
                         "technology" ["name"]
                         "policy" ["title" "original_title" "abstract" "remarks"]

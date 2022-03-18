@@ -36,3 +36,18 @@ select tg.category, t.id, t.tag
  from tag_category tg, tag t
 where tg.id = t.tag_category
 order by tg.category, t.tag
+
+-- :name get-popular-topics-tags :? :*
+-- :doc Get popular topics tags and their count based on the number of times they are used.
+-- :require [gpml.db.tag]
+--~(#'gpml.db.tag/generate-popular-topics-tags-count-cte {} {})
+SELECT
+    tag,
+    CAST(SUM(count) AS integer) AS count
+FROM
+    popular_topics_tags_count
+GROUP BY
+    tag
+ORDER BY
+    count DESC
+--~(if (:limit params) "LIMIT :limit;" ";")

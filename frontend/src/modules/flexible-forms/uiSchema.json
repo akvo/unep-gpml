@@ -20,10 +20,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "S4_G2_23": {
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -53,7 +49,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "S4_G2_23",
           "geoCoverageType",
           "S4_G2_24.3",
           "S4_G2_24.4",
@@ -67,7 +62,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },
@@ -401,11 +399,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "country": {
-          "ui:placeholder": "Choose the resource country",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -435,7 +428,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "country",
           "geoCoverageType",
           "geoCoverageValueTransnational",
           "geoCoverageCountries",
@@ -449,7 +441,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },
@@ -632,11 +627,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "country": {
-          "ui:placeholder": "Choose the resource country",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -666,7 +656,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "country",
           "geoCoverageType",
           "geoCoverageValueTransnational",
           "geoCoverageCountries",
@@ -680,7 +669,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },
@@ -899,11 +891,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "country": {
-          "ui:placeholder": "Choose the resource country",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -933,7 +920,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "country",
           "geoCoverageType",
           "geoCoverageValueTransnational",
           "geoCoverageCountries",
@@ -947,7 +933,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },
@@ -1135,11 +1124,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "country": {
-          "ui:placeholder": "Choose the resource country",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -1169,7 +1153,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "country",
           "geoCoverageType",
           "geoCoverageValueTransnational",
           "geoCoverageCountries",
@@ -1183,7 +1166,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },
@@ -1354,11 +1340,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "country": {
-          "ui:placeholder": "Choose the resource country",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -1388,7 +1369,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "country",
           "geoCoverageType",
           "geoCoverageValueTransnational",
           "geoCoverageCountries",
@@ -1402,7 +1382,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },
@@ -1578,11 +1561,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "country": {
-          "ui:placeholder": "Choose the resource country",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -1612,7 +1590,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "country",
           "geoCoverageType",
           "geoCoverageValueTransnational",
           "geoCoverageCountries",
@@ -1626,7 +1603,10 @@
           "ui:widget": "select",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Pick at least one tag"
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
         },
         "ui:order": ["tags"]
       },

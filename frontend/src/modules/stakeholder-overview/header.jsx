@@ -101,7 +101,6 @@ const Header = ({
 const Search = withRouter(({ history, updateQuery, setView }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
-    setView("card");
     if (src) {
       history.push(`?q=${src.trim()}`);
       updateQuery("q", src.trim());

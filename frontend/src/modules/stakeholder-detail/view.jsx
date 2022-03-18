@@ -95,6 +95,7 @@ const SharePanel = ({
   data,
   params,
   relation,
+  history,
   handleRelationChange,
 }) => {
   const noEditTopics = new Set(["stakeholder"]);
@@ -102,11 +103,7 @@ const SharePanel = ({
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
-    (profile.role === "ADMIN" ||
-      profile.id === params.createdBy ||
-      data.owners.includes(profile.id)) &&
-    ((params.type !== "project" && !noEditTopics.has(params.type)) ||
-      (params.type === "project" && params.id > 10000));
+    parseInt(profile.id) === parseInt(params.id);
 
   const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
@@ -144,7 +141,14 @@ const SharePanel = ({
       </div>
 
       {canEdit() && (
-        <div className="sticky-panel-item">
+        <div
+          className="sticky-panel-item"
+          onClick={() => {
+            history.push({
+              pathname: `/profile`,
+            });
+          }}
+        >
           <Avatar src={EditImage} />
           <h2>Update</h2>
         </div>
@@ -262,7 +266,7 @@ const StakeholderDetail = ({
         })
         .catch((err) => {
           console.error(err);
-          redirectError(err, history);
+          // redirectError(err, history);
         });
     },
     [params, history]
@@ -306,7 +310,7 @@ const StakeholderDetail = ({
         })
         .catch((err) => {
           console.error(err);
-          redirectError(err, history);
+          // redirectError(err, history);
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
@@ -562,6 +566,7 @@ const StakeholderDetail = ({
                     data={data}
                     params={params}
                     relation={relation}
+                    history={history}
                     handleRelationChange={handleRelationChange}
                   />
                 </div>
