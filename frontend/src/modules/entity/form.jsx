@@ -245,6 +245,7 @@ const EntityForm = withRouter(
         );
         // Manage form status, add/edit
         if (
+          profile?.role === "ADMIN" &&
           !isEmpty(profile) &&
           (status === "edit" || dataId) &&
           (editId !== dataId || Object.keys(data).includes("title") === 0)
@@ -259,6 +260,8 @@ const EntityForm = withRouter(
               e.editId = dataId;
             });
           });
+        } else {
+          history.push("/not-authorized");
         }
       }
       // Manage form status, add/edit
@@ -281,6 +284,7 @@ const EntityForm = withRouter(
       tags,
       transnationalOptions,
       representativeGroup,
+      history,
     ]);
 
     useEffect(() => {
