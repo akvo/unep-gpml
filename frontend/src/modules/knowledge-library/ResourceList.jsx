@@ -40,21 +40,22 @@ const ResourceList = ({
   setListVisible,
 }) => {
   const {
+    tags,
     profile,
     countries,
-    tags,
     transnationalOptions,
     stakeholders,
   } = UIStore.useState((s) => ({
+    tags: s.tags,
     profile: s.profile,
     countries: s.countries,
-    tags: s.tags,
     transnationalOptions: s.transnationalOptions,
     stakeholders: s.stakeholders,
   }));
 
   const [allResults, setAllResults] = useState([]);
   const [isAscending, setIsAscending] = useState(null);
+  const [didMount, setDidMount] = useState(false);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
 
@@ -132,6 +133,11 @@ const ResourceList = ({
     );
   }, [results]);
 
+  useEffect(() => {
+    setDidMount(true);
+    return () => setDidMount(false);
+  }, []);
+
   return (
     <Row>
       <Col span={24}>
@@ -141,7 +147,10 @@ const ResourceList = ({
           style={
             view === "map"
               ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
-              : { backgroundColor: "rgba(255, 255, 255, 1)" }
+              : {
+                  backgroundColor: "rgba(255, 255, 255, 1)",
+                  minHeight: "112px",
+                }
           }
           onBack={() => setListVisible(false)}
           backIcon={
@@ -154,20 +163,25 @@ const ResourceList = ({
           title={
             hideListButtonVisible ? (
               <span className="hide-text">Hide List</span>
+            ) : view === "topic" ? (
+              <div style={{ minHeight: "32px", display: "block" }} />
             ) : (
               ""
             )
           }
           const
           subTitle={
-            !loading && (
+            !loading ? (
               <span className="result-number">
                 Showing{" "}
                 {totalItems > pageSize + filters?.offset
                   ? pageSize + Number(filters?.offset)
                   : itemCount}{" "}
-                of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+                of {totalItems || 0} result
+                {totalItems > 1 ? "s" : ""}
               </span>
+            ) : (
+              <div className="invisible-content" />
             )
           }
           extra={

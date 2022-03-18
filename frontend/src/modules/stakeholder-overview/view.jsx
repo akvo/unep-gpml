@@ -25,6 +25,7 @@ import MapView from "./mapView";
 import IconEvent from "../../images/events/event-icon.svg";
 import IconForum from "../../images/events/forum-icon.svg";
 import IconCommunity from "../../images/events/community-icon.svg";
+import StakeholderList from "./stakeholderList";
 
 let tmid;
 
@@ -49,21 +50,24 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     offering: s.tags.offering,
     stakeholders: s.stakeholders?.stakeholders,
   }));
+  const viewportWidth = document.documentElement.clientWidth;
+
   const [filterCountries, setFilterCountries] = useState([]);
   const { isAuthenticated, isLoading } = useAuth0();
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
-
   const isValidUser = isAuthenticated && isApprovedUser && hasProfile;
-
   const [filterVisible, setFilterVisible] = useState(false);
   const query = useQuery();
   const [view, setView] = useState("card");
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
-  const [organisationCount, setOrganisationCount] = useState(0);
   const [GPMLMemberCount, setGPMLMemberCount] = useState(0);
+  const [stakeholderCount, setStakeholderCount] = useState({
+    individual: 0,
+    entity: 0,
+  });
 
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -159,6 +163,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       .get(url)
       .then((resp) => {
         const result = resp?.data?.results;
+
         const organisationType = resp?.data?.counts?.find(
           (count) => count?.networkType === "organisation"
         );
@@ -166,7 +171,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         const stakeholderType = resp?.data?.counts?.find(
           (count) => count?.networkType === "stakeholder"
         );
-
+        setStakeholderCount({
+          individual: stakeholderType?.count || 0,
+          entity: organisationType?.count || 0,
+        });
         const GPMLMemberCounts = resp?.data?.counts?.find(
           (count) => count?.networkType === "gpml_member_entities"
         );
@@ -201,20 +209,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       })
       .catch((err) => {
         console.error(err);
-        // redirectError(err, history);
       });
-  };
-
-  const getOrganisation = () => {
-    const searchParms = new URLSearchParams(window.location.search);
-    searchParms.set("networkType", "organisation");
-    const url = `/community?${String(searchParms)}`;
-    api.get(url).then((resp) => {
-      const organisationType = resp?.data?.counts?.find(
-        (count) => count?.networkType === "organisation"
-      );
-      setOrganisationCount(organisationType?.count);
-    });
   };
 
   const itemCount = loading
@@ -249,7 +244,6 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
     setTimeout(() => {
       getSuggestedProfiles();
-      getOrganisation();
     }, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValidUser]);
@@ -380,34 +374,43 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       <div className={isValidUser ? "" : "blur"}>
         {isValidUser && (
           <Header
-            view={view}
-            setView={setView}
-            filterVisible={filterVisible}
-            setFilterVisible={setFilterVisible}
-            isAscending={isAscending}
-            renderFilterTag={renderFilterTag}
-            sortPeople={sortPeople}
-            updateQuery={updateQuery}
+            {...{
+              view,
+              setView,
+              filterVisible,
+              setFilterVisible,
+              isAscending,
+              sortPeople,
+              renderFilterTag,
+              updateQuery,
+            }}
           />
         )}
         <Row type="flex" className="body-wrapper">
           {/* Filter Drawer */}
           <FilterDrawer
-            query={query}
-            updateQuery={updateQuery}
+            {...{
+              query,
+              updateQuery,
+              filterVisible,
+              setFilterVisible,
+              stakeholderCount,
+              GPMLMemberCount,
+              setFilterCountries,
+            }}
             entities={entityRoleOptions}
-            filterVisible={filterVisible}
-            setFilterVisible={setFilterVisible}
-            organisationCount={organisationCount}
-            GPMLMemberCount={GPMLMemberCount}
-            setFilterCountries={setFilterCountries}
           />
 
           <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>
             <Col lg={24} xs={24} order={2}>
               {view === "card" ? (
                 <div
-                  style={{ height: results.length === pageSize && "1138.17px" }}
+                  style={{
+                    minHeight:
+                      viewportWidth < 1360 &&
+                      results.length === pageSize &&
+                      "1138.17px",
+                  }}
                 >
                   {/* Suggested profiles */}
                   {isValidUser && !isEmpty(suggestedProfiles) && (
@@ -491,10 +494,29 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                   </Col>
                 </div>
               ) : (
-                <MapView
-                  updateQuery={updateQuery}
-                  isFilteredCountry={filterCountries}
-                />
+                <div className="stakeholder-map-wrapper">
+                  <MapView
+                    updateQuery={updateQuery}
+                    isFilteredCountry={filterCountries}
+                  />
+                  <StakeholderList
+                    {...{
+                      view,
+                      results,
+                      isAscending,
+                      sortPeople,
+                      pageSize,
+                      filters,
+                      itemCount,
+                      loading,
+                      updateQuery,
+                      isLoaded,
+                      resultCount,
+                      resultCounts,
+                      query,
+                    }}
+                  />
+                </div>
               )}
             </Col>
           </LeftSidebar>

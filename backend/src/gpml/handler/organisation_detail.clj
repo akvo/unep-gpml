@@ -38,15 +38,12 @@
           params {:id (-> parameters :path :id)
                   :limit limit
                   :offset (* limit page)}
-          owned-content (map remove-nil-connections (db.organisation-detail/get-content-by-org conn params))
           associated-content (db.organisation-detail/get-associated-content-by-org conn params)
           api-associated-content (map #(remove-nil-connections %) associated-content)
-          owned-content-count (db.organisation-detail/get-content-by-org conn (assoc params :count-only? true))
           associated-content-count (db.organisation-detail/get-associated-content-by-org
                                     conn (assoc params :count-only? true))]
-      (resp/response {:results (concat owned-content api-associated-content)
-                      :count (+ (-> owned-content-count first :count)
-                                (-> associated-content-count first :count))}))))
+      (resp/response {:results api-associated-content
+                      :count (-> associated-content-count first :count)}))))
 
 (defmethod ig/init-key ::get-content-params [_ _]
   {:path [:map [:id pos-int?]]
@@ -66,9 +63,8 @@
           params {:id (-> parameters :path :id)
                   :limit limit
                   :offset (* limit page)}
-          members #_[{:id 1 :name "Dipti"}] (db.organisation-detail/get-org-members conn params)
-          members-count #_[{:count 1}]  (db.organisation-detail/get-org-members conn (assoc params :count-only? true))
-          ]
+          members (db.organisation-detail/get-org-members conn params)
+          members-count  (db.organisation-detail/get-org-members conn (assoc params :count-only? true))]
       (resp/response {:members members
                       :count (-> members-count first :count)}))))
 

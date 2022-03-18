@@ -10,14 +10,14 @@ import DownArrow from "../../images/knowledge-library/chevron-down.svg";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 
 const Header = ({
+  view,
+  setView,
   isAscending,
   filterVisible,
   setFilterVisible,
   renderFilterTag,
   sortPeople,
   updateQuery,
-  view,
-  setView,
 }) => {
   const selectionValue = (
     <div className="selection-value">
@@ -101,7 +101,6 @@ const Header = ({
 const Search = withRouter(({ history, updateQuery, setView }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
-    setView("card");
     if (src) {
       history.push(`?q=${src.trim()}`);
       updateQuery("q", src.trim());

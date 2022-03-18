@@ -16,33 +16,31 @@ import { ReactComponent as CommunityIcon } from "../../images/stakeholder-overvi
 import { ReactComponent as UnionIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
 const FilterDrawer = ({
-  filterVisible,
-  setFilterVisible,
-  entities,
   query,
   updateQuery,
-  organisationCount,
+  entities,
+  filterVisible,
+  setFilterVisible,
+  stakeholderCount,
   GPMLMemberCount,
   setFilterCountries,
 }) => {
   const {
-    countries,
-    transnationalOptions,
-    geoCoverageTypeOptions,
-    representativeGroup,
-    organisations,
-    stakeholders,
     seeking,
     offering,
+    countries,
+    organisations,
+    representativeGroup,
+    transnationalOptions,
+    geoCoverageTypeOptions,
   } = UIStore.useState((s) => ({
-    countries: s.countries,
-    transnationalOptions: s.transnationalOptions,
-    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    representativeGroup: s.sectorOptions,
-    stakeholders: s.stakeholders?.stakeholders,
-    organisations: s.organisations,
     seeking: s.tags.seeking,
     offering: s.tags.offering,
+    countries: s.countries,
+    organisations: s.organisations,
+    representativeGroup: s.sectorOptions,
+    transnationalOptions: s.transnationalOptions,
+    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
   }));
 
   const isLoaded = () =>
@@ -121,7 +119,7 @@ const FilterDrawer = ({
       >
         {/* Filter content */}
         <Row type="flex" gutter={[0, 24]}>
-          <Col span={24}>
+          <Col span={24} className="network-card-filter">
             <Space align="middle">
               <div className="filter-title">Network type</div>
               {isEmpty(query?.networkType) ? (
@@ -157,8 +155,8 @@ const FilterDrawer = ({
                         </div>
                         <div className="topic-text topic-counts">
                           {networkType === "organisation"
-                            ? organisationCount
-                            : stakeholders?.length}
+                            ? stakeholderCount?.entity
+                            : stakeholderCount?.individual}
                         </div>
                       </Space>
                     </Card>
@@ -221,7 +219,9 @@ const FilterDrawer = ({
             title="Affiliation"
             options={
               isLoaded()
-                ? organisations?.map((x) => ({ value: x.id, label: x.name }))
+                ? organisations
+                    ?.map((x) => ({ value: x.id, label: x.name }))
+                    .filter((organisation) => organisation?.value > -1)
                 : []
             }
             value={query?.affiliation?.map((x) => parseInt(x)) || []}
@@ -290,7 +290,9 @@ const FilterDrawer = ({
             title="Representative group"
             options={
               isLoaded()
-                ? representativeGroup?.map((x) => ({ value: x, label: x }))
+                ? representativeGroup
+                    ?.map((x) => ({ value: x, label: x }))
+                    .sort((a, b) => a?.label?.localeCompare(b?.label))
                 : []
             }
             value={query?.representativeGroup || []}

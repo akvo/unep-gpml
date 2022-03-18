@@ -43,8 +43,8 @@
       (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
             new-tags (filter #(not (contains? % :id)) tags)
             tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
-            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags (map #(vector % tag-category) tags-to-db)}))]
-        (db.resource/add-resource-tags conn {:tags (map #(vector resource-id %) (concat tag-ids new-tag-ids))})
+            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
+        (db.resource/add-resource-tags conn {:tags (map #(vector resource-id %) (concat (remove nil? tag-ids) new-tag-ids))})
         (map
           #(email/notify-admins-pending-approval
              conn

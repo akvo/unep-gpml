@@ -28,8 +28,10 @@ import IconLibrary from "../../images/capacity-building/ic-knowledge-library.svg
 import IconLearning from "../../images/capacity-building/ic-capacity-building.svg";
 import IconExchange from "../../images/capacity-building/ic-exchange.svg";
 import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
+import { titleCase } from "../../utils/string";
 
 const { Option } = Select;
+
 // Global variable
 let tmid;
 
@@ -46,11 +48,15 @@ const KnowledgeLibrary = ({
   isAuthenticated,
   loginWithPopup,
   multiCountryCountries,
+  isLoading,
+  setLoading,
 
   //Functions
+  getResults,
   updateQuery,
   setFilters,
   setRelations,
+  setFilterCountries,
   setMultiCountryCountries,
   setWarningModalVisible,
   setStakeholderSignupModalVisible,
@@ -95,21 +101,19 @@ const KnowledgeLibrary = ({
   );
 
   const {
+    tags,
     profile,
     countries,
-    tags,
     transnationalOptions,
-
     representativeGroup,
   } = UIStore.useState((s) => ({
+    tags: s.tags,
     profile: s.profile,
     countries: s.countries,
-    tags: s.tags,
     transnationalOptions: s.transnationalOptions,
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    languages: s.languages,
-    representativeGroup: s.sectorOptions,
+    representativeGroup: s.representativeGroup,
   }));
 
   const [toggleButton, setToggleButton] = useState("list");
@@ -136,6 +140,54 @@ const KnowledgeLibrary = ({
     // NOTE: this are triggered when user click a topic from navigation menu
   }, [filterMenu]); // eslint-disable-line
 
+  useEffect(() => {
+    // setFilterCountries if user click from map to browse view
+    query?.country &&
+      query?.country.length > 0 &&
+      setFilterCountries(query.country);
+
+    // Manage filters display
+    !filters && setFilters(query);
+    if (filters) {
+      setFilters({ ...filters, topic: query.topic, tag: query.tag });
+      setFilterCountries(filters.country);
+    }
+
+    setLoading(true);
+    if (isLoading === false && !filters) {
+      setTimeout(getResults(query), 0);
+    }
+
+    if (isLoading === false && filters) {
+      const newParams = new URLSearchParams({
+        ...filters,
+        topic: query.topic,
+        tag: query.tag,
+      });
+      if (history.location.pathname === "/knowledge-library") {
+        history.push(`/knowledge-library?${newParams.toString()}`);
+      }
+      clearTimeout(tmid);
+      tmid = setTimeout(getResults(query), 1000);
+    }
+
+    if (
+      multiCountryCountries.length === 0 &&
+      query?.transnational?.length > 0
+    ) {
+      updateQuery("transnational", []);
+    }
+
+    if (query?.favorites?.length > 0) {
+      updateQuery("favorites", false);
+    }
+
+    // NOTE: Since we are using `history` and `location`, the
+    // dependency needs to be []. Ignore the linter warning, because
+    // adding a dependency here on location makes the FE send multiple
+    // requests to the backend.
+  }, [isLoading]); // eslint-disable-line
+
   // Here is the function to render filter tag
   const renderFilterTag = () => {
     const renderName = (key, value) => {
@@ -145,7 +197,7 @@ const KnowledgeLibrary = ({
       if (key === "tag") {
         const findTag = flatten(values(tags)).find((x) => x.id == value);
 
-        return findTag ? findTag?.tag : value;
+        return findTag ? titleCase(findTag?.tag) : titleCase(value);
       }
       if (key === "country") {
         const findCountry = countries.find((x) => x.id == value);
@@ -159,15 +211,18 @@ const KnowledgeLibrary = ({
       }
       if (key === "representativeGroup") {
         const representativeGroups = representativeGroup.find(
-          (x) => x == value
+          (x) => x?.code?.toLowerCase() == value?.toLowerCase()
         );
-        return representativeGroups;
+        return representativeGroups?.name;
       }
       if (key === "startDate") {
         return `Start date ${value}`;
       }
       if (key === "endDate") {
         return `End date ${value}`;
+      }
+      if (key === "subContentType") {
+        return value;
       }
     };
     return Object.keys(query).map((key, index) => {
@@ -263,13 +318,16 @@ const KnowledgeLibrary = ({
           {/* Filter Drawer */}
           {filterVisible && (
             <FilterDrawer
-              query={query}
+              {...{
+                query,
+                countData,
+                filters,
+                filterVisible,
+                setFilterVisible,
+                multiCountryCountries,
+                setMultiCountryCountries,
+              }}
               updateQuery={(flag, val) => updateQuery(flag, val)}
-              filters={filters}
-              filterVisible={filterVisible}
-              setFilterVisible={setFilterVisible}
-              multiCountryCountries={multiCountryCountries}
-              setMultiCountryCountries={setMultiCountryCountries}
             />
           )}
           <LeftSidebar active={1} sidebar={sidebar}>
@@ -295,16 +353,18 @@ const KnowledgeLibrary = ({
                 >
                   {/* Resource List */}
                   <ResourceList
-                    view={view}
-                    filters={filters}
-                    countData={countData}
-                    updateQuery={updateQuery}
-                    loading={loading}
-                    results={results}
-                    pageSize={pageSize}
+                    {...{
+                      view,
+                      filters,
+                      results,
+                      countData,
+                      loading,
+                      pageSize,
+                      listVisible,
+                      updateQuery,
+                      setListVisible,
+                    }}
                     hideListButtonVisible={view === "map"}
-                    listVisible={listVisible}
-                    setListVisible={setListVisible}
                   />
                 </Col>
               )}
@@ -317,19 +377,20 @@ const KnowledgeLibrary = ({
                 className="render-map-container map-main-wrapper"
                 style={{
                   background: view === "topic" ? "#255B87" : "#fff",
+                  flex: view === "topic" && "auto",
                 }}
               >
                 {view === "map" ? (
                   <MapLanding
                     {...{
-                      countData,
                       query,
+                      countData,
+                      filters,
+                      setFilters,
                       setWarningModalVisible,
                       setStakeholderSignupModalVisible,
                       loginWithPopup,
                       isAuthenticated,
-                      filters,
-                      setFilters,
                       setToggleButton,
                       updateQuery,
                       multiCountryCountries,
@@ -341,7 +402,7 @@ const KnowledgeLibrary = ({
                   />
                 ) : (
                   <>
-                    <TopicView updateQuery={updateQuery} />
+                    <TopicView {...{ updateQuery }} />
                   </>
                 )}
               </Col>

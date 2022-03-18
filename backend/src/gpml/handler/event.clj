@@ -41,8 +41,8 @@
       (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
             new-tags (filter #(not (contains? % :id)) tags)
             tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
-            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags (map #(vector % tag-category) tags-to-db)}))]
-        (db.event/add-event-tags conn {:tags (map #(vector event-id %) (concat tag-ids new-tag-ids))})
+            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
+        (db.event/add-event-tags conn {:tags (map #(vector event-id %) (concat (remove nil? tag-ids) new-tag-ids))})
         (map
           #(email/notify-admins-pending-approval
              conn

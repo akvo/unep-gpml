@@ -5,7 +5,7 @@
   margin-left: auto;
   margin-top: 16px;
   margin-bottom: 32px;
-  padding: 32px 70px;
+  padding: 20px 35px;
 
   p {
     font-size: 15px;
@@ -13,6 +13,7 @@
     margin-bottom: 15px;
   }
   a {
+    word-break: break-all;
     color: #00585f;
     margin-top: 15px;
     margin-bottom: 15px;
@@ -28,6 +29,11 @@
     background-color: #00585f;
     span {
       color: #ffff;
+    }
+  }
+  @media (min-width: 375px) {
+    .unathenticated-page {
+      padding: 32px 70px;
     }
   }
 }

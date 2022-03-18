@@ -1,6 +1,6 @@
 import { UIStore } from "../../store";
 import React, { useState, useEffect, useCallback } from "react";
-import { Button, Card, Avatar, Tooltip, Carousel as AntdCarousel } from "antd";
+import { Button, Card, Avatar, Tooltip } from "antd";
 import {
   RightOutlined,
   ArrowRightOutlined,
@@ -8,25 +8,28 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
-import Chart from "../../utils/chart";
-import EventCalendar from "../event-calendar/view";
+
 import Carousel from "react-multi-carousel";
 import "./new-styles.scss";
 import "react-multi-carousel/lib/styles.css";
 import moment from "moment";
 import imageNotFound from "../../images/image-not-found.png";
-import { TrimText } from "../../utils/string";
+
 import {
-  popularTopics,
   featuredContents,
   ourCommunity,
   benefit,
 } from "./new-home-static-content";
+
+import { TrimText } from "../../utils/string";
 import orderBy from "lodash/orderBy";
 import humps from "humps";
 import { topicNames } from "../../utils/misc";
 import sortBy from "lodash/sortBy";
 import api from "../../utils/api";
+
+import TopicChart from "../chart/topicChart";
+import EventCalendar from "../event-calendar/view";
 
 const cardSvg = [
   {
@@ -114,13 +117,6 @@ const responsive = {
   },
 };
 
-const sortPopularTopic = orderBy(
-  popularTopics,
-  ["count", "topic"],
-  ["desc", "desc"]
-);
-const defTopic = sortPopularTopic[0]?.topic?.toLocaleLowerCase();
-
 const Landing = withRouter(
   ({
     history,
@@ -129,12 +125,17 @@ const Landing = withRouter(
     loginWithPopup,
     setFilterMenu,
   }) => {
+    const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
+
+    const [selectedTopic, setSelectedTopic] = useState(null);
+
     const dateNow = moment().format("YYYY/MM/DD");
     const { innerWidth, innerHeight } = window;
     const profile = UIStore.useState((s) => s.profile);
-    const [selectedTopic, setSelectedTopic] = useState(defTopic);
     const [event, setEvent] = useState([]);
     const [data, setData] = useState(null);
+    const [didMount, setDidMount] = useState(false);
+    const [resources, setResources] = useState(null);
 
     const isApprovedUser = profile?.reviewStatus === "APPROVED";
     const hasProfile = profile?.reviewStatus;
@@ -143,8 +144,12 @@ const Landing = withRouter(
 
     const handlePopularTopicChartClick = (params) => {
       const { name, tag } = params?.data;
-      !isMobileScreen && setSelectedTopic(name.toLowerCase());
-      isMobileScreen && history.push(`/browse?tag=${tag}`);
+
+      if (!isMobileScreen) {
+        setSelectedTopic(name?.toLowerCase());
+      } else {
+        isMobileScreen && history.push(`/knowledge-library?tag=${tag}`);
+      }
     };
 
     const handleOurCommunityProfileClick = () => {
@@ -156,6 +161,26 @@ const Landing = withRouter(
       }
       return setWarningModalVisible(true);
     };
+
+    const getResources = async () => {
+      selectedTopic &&
+        (await api.get(`/browse?tag=${selectedTopic}&limit=3`).then((resp) => {
+          const data = resp?.data;
+
+          setResources({
+            items: data?.results,
+            summary: data?.counts.filter(
+              (count) => count.topic !== "gpml_member_entities"
+            ),
+          });
+        }));
+    };
+
+    useEffect(() => {
+      getResources();
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedTopic]);
 
     const generateEvent = useCallback(
       (filterDate, searchNextEvent = false) => {
@@ -178,26 +203,43 @@ const Landing = withRouter(
     );
 
     useEffect(() => {
-      if (!data) {
-        api
-          .get("browse?topic=event")
-          .then((resp) => {
-            setData(resp.data);
-          })
-          .catch((err) => {
-            console.error(err);
-            setData([]);
-          });
-      }
-      if (data && data?.results) {
-        generateEvent(dateNow, true);
-      }
-    }, [data, dateNow, generateEvent]);
-
-    useEffect(() => {
       UIStore.update((e) => {
         e.disclaimer = "home";
       });
+    }, []);
+
+    useEffect(() => {
+      api
+        .get(`/tag/topic/popular?limit=6`)
+        .then((resp) => {
+          const data = resp?.data.map((item, i) => {
+            return {
+              id: i,
+              topic: item?.tag,
+              tag: item?.tag,
+              count: item?.count,
+            };
+          });
+
+          const sorted = orderBy(data, ["count", "topic"], ["desc", "desc"]);
+
+          setSortedPopularTopics(sorted);
+
+          const defaultTopic = sorted[0]?.topic?.toLocaleLowerCase();
+
+          setSelectedTopic(defaultTopic);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Note: this will fix the warning on the console
+    useEffect(() => {
+      setDidMount(true);
+      return () => setDidMount(false);
     }, []);
 
     return (
@@ -234,6 +276,7 @@ const Landing = withRouter(
             </div>
           </div>
         </div>
+
         {/* Popular Topics */}
         <div className="popular-topics ui container section-container">
           <div className="section-title">
@@ -247,57 +290,46 @@ const Landing = withRouter(
             </h2>
           </div>
           <div className="body">
-            <div className="chart-wrapper">
-              <Chart
-                key="popular-topic"
-                title=""
-                type="TREEMAP"
-                height={675}
-                className="popular-topic-chart"
-                data={sortPopularTopic.map((x) => {
-                  return {
-                    id: x.id,
-                    name: x.topic,
-                    value: x.count > 100 ? x.count : x.count + 50,
-                    count: x.count,
-                    tag: x.tag,
-                  };
-                })}
-                onEvents={{
-                  click: (e) => handlePopularTopicChartClick(e),
-                }}
-                selected={selectedTopic}
-              />
-            </div>
+            <TopicChart
+              height={675}
+              loadingId="home-loading"
+              {...{
+                selectedTopic,
+                isMobileScreen,
+                sortedPopularTopics,
+                handlePopularTopicChartClick,
+              }}
+            />
             {!isMobileScreen && (
               <div className="content">
                 <div className="content-body">
-                  {sortPopularTopic
-                    .find((x) => x.topic.toLowerCase() === selectedTopic)
-                    .items.map((x, i) => {
-                      const { id, type, title, description } = x;
-                      const link = `/${humps.decamelize(type)}/${id}`;
-                      return (
-                        <Card
-                          key={`summary-${i}`}
-                          className="item-body"
-                          onClick={() => history.push(link)}
-                        >
-                          <div className="resource-label upper">
-                            {topicNames(humps.camelizeKeys(type))}
-                          </div>
-                          <div className="asset-title">{title}</div>
-                          <div className="body-text">
-                            {TrimText({ text: description, max: 250 })}
-                          </div>
-                          <span className="read-more">
-                            <Link to={link}>
-                              Read more <ArrowRightOutlined />
-                            </Link>
-                          </span>
-                        </Card>
-                      );
-                    })}
+                  {resources?.items?.map((x, i) => {
+                    const { id, type, title, description, remarks } = x;
+                    const link = `/${humps.decamelize(type)}/${id}`;
+                    return (
+                      <Card
+                        key={`summary-${i}`}
+                        className="item-body"
+                        onClick={() => history.push(link)}
+                      >
+                        <div className="resource-label upper">
+                          {topicNames(humps.camelizeKeys(type))}
+                        </div>
+                        <div className="asset-title">{title || ""}</div>
+                        <div className="body-text">
+                          {TrimText({
+                            text: description || remarks,
+                            max: 250,
+                          })}
+                        </div>
+                        <span className="read-more">
+                          <Link to={link}>
+                            Read more <ArrowRightOutlined />
+                          </Link>
+                        </span>
+                      </Card>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -310,7 +342,7 @@ const Landing = withRouter(
             <h2>
               Featured Content{" "}
               <span className="see-more-link">
-                <Link to="/browse">
+                <Link to="/knowledge-library">
                   See all <RightOutlined />
                 </Link>
               </span>

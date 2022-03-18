@@ -116,7 +116,6 @@
     }
 
     .select-wrapper {
-      display: none;
       padding: 0 !important;
       width: 100%;
       max-width: 194px;
@@ -224,6 +223,8 @@
     .ant-drawer-content-wrapper {
       box-shadow: none;
       height: 700px;
+      max-width: 500px;
+      width: 100% !important;
 
       .ant-drawer-header {
         background: $blue05;
@@ -309,6 +310,13 @@
       }
 
       .date-picker-container {
+        .ant-row {
+          display: flex;
+          flex-wrap: wrap;
+          .ant-col {
+            max-width: 100% !important;
+          }
+        }
         input {
           font-style: italic;
         }
@@ -418,6 +426,12 @@
           color: $blue04;
           font-weight: 700;
           padding-right: 3px;
+        }
+      }
+
+      .resources-card-filter {
+        .ant-col {
+          max-width: 100%;
         }
       }
 
@@ -581,8 +595,8 @@
     position: absolute;
     z-index: 3;
     height: 700px;
+    width: 100%;
     max-width: 300px;
-    min-width: 300px;
   }
 
   .resource-list-header.show-list {
@@ -593,7 +607,8 @@
 
   .resource-list-header {
     justify-content: unset;
-
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
+    z-index: 999;
     & span {
       font-size: 12px;
     }
@@ -625,6 +640,10 @@
 
     .ant-page-header-heading-left {
       flex-basis: 70%;
+      flex-wrap: wrap;
+      @media (min-width: 300px) {
+        flex-wrap: nowrap;
+      }
     }
 
     .ant-page-header-heading-extra {
@@ -634,7 +653,9 @@
     .ant-page-header-back {
       margin-right: 10px;
     }
-
+    .invisible-content {
+      min-height: 18.75px;
+    }
     .result-number {
       line-height: 16px;
       color: #181818;
@@ -649,20 +670,30 @@
       display: flex;
       align-items: center;
       padding-left: 24px;
+      box-shadow: unset;
       img {
         margin-right: 7px;
       }
     }
   }
 
+  #knowledge-library-loading {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    max-width: fit-content;
+    height: 100vh;
+  }
+
   .resource-list {
+    width: 100%;
     padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     height: 436px;
     align-items: center;
-    min-width: 300px;
+
     .resource-item-wrapper {
       width: 100%;
 
@@ -769,6 +800,7 @@
       width: 34px;
       height: 34px;
       margin-right: 2px;
+      margin-bottom: 2px;
       border-radius: 5px;
       a {
         width: 100%;

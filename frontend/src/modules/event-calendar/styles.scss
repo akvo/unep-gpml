@@ -22,10 +22,14 @@
   background-size: cover;
   .body {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     .content,
     .calendar {
-      width: 49%;
+      width: 100%;
+      @media (min-width: 600px) {
+        width: 49%;
+      }
     }
     .calendar {
       .ant-picker-calendar {
