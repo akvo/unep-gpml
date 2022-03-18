@@ -63,8 +63,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
-  const [organisationCount, setOrganisationCount] = useState(0);
   const [GPMLMemberCount, setGPMLMemberCount] = useState(0);
+  const [stakeholderCount, setStakeholderCount] = useState({
+    individual: 0,
+    entity: 0,
+  });
 
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -160,6 +163,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       .get(url)
       .then((resp) => {
         const result = resp?.data?.results;
+
         const organisationType = resp?.data?.counts?.find(
           (count) => count?.networkType === "organisation"
         );
@@ -167,7 +171,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         const stakeholderType = resp?.data?.counts?.find(
           (count) => count?.networkType === "stakeholder"
         );
-
+        setStakeholderCount({
+          individual: stakeholderType?.count || 0,
+          entity: organisationType?.count || 0,
+        });
         const GPMLMemberCounts = resp?.data?.counts?.find(
           (count) => count?.networkType === "gpml_member_entities"
         );
@@ -205,18 +212,6 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       });
   };
 
-  const getOrganisation = () => {
-    const searchParms = new URLSearchParams(window.location.search);
-    searchParms.set("networkType", "organisation");
-    const url = `/community?${String(searchParms)}`;
-    api.get(url).then((resp) => {
-      const organisationType = resp?.data?.counts?.find(
-        (count) => count?.networkType === "organisation"
-      );
-      setOrganisationCount(organisationType?.count);
-    });
-  };
-
   const itemCount = loading
     ? 0
     : filters?.page !== undefined
@@ -249,7 +244,6 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
     setTimeout(() => {
       getSuggestedProfiles();
-      getOrganisation();
     }, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValidUser]);
@@ -400,7 +394,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
               updateQuery,
               filterVisible,
               setFilterVisible,
-              organisationCount,
+              stakeholderCount,
               GPMLMemberCount,
               setFilterCountries,
             }}
