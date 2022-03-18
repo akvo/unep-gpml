@@ -613,6 +613,12 @@
       background-color: unset;
     }
 
+    .ant-drawer-open {
+      .ant-drawer-content {
+        border: 1px solid $blue09;
+      }
+    }
+
     .ant-drawer-content-wrapper {
       box-shadow: none;
       max-width: 500px;
@@ -630,7 +636,6 @@
       .ant-drawer-content {
         border-bottom-right-radius: 18px;
         box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.25);
-        border: 1px solid $blue09;
       }
 
       .ant-drawer-title,
