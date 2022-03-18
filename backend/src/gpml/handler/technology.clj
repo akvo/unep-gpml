@@ -3,8 +3,9 @@
             [gpml.auth :as auth]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
-            [gpml.db.technology :as db.technology]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.technology :as db.technology]
+            [gpml.db.tag :as db.tag]
             [gpml.email-util :as email]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.geo :as handler.geo]
@@ -32,6 +33,22 @@
           :stakeholder (:stakeholder connection)
           :association (:role connection)
           :remarks nil})))
+
+(defn add-tags [conn mailjet-config tags technology-id]
+  (let [tag-ids (map #(:id %) tags)]
+    (if-not (some nil? tag-ids)
+      (db.technology/add-technology-tags conn {:tags (map #(vector technology-id %) tag-ids)})
+      (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
+            new-tags (filter #(not (contains? % :id)) tags)
+            tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
+            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags (map #(vector % tag-category) tags-to-db)}))]
+        (db.technology/add-technology-tags conn {:tags (map #(vector technology-id %) (concat tag-ids new-tag-ids))})
+        (map
+          #(email/notify-admins-pending-approval
+             conn
+             mailjet-config
+             (merge % {:type "tag"}))
+          new-tags)))))
 
 (defn create-technology [conn {:keys [name organisation_type
                                       development_stage specifications_provided
@@ -84,8 +101,7 @@
     (doseq [association (expand-individual-associations individual_connections technology-id)]
       (db.favorite/new-association conn association))
     (when (not-empty tags)
-      (db.technology/add-technology-tags
-        conn {:tags (map #(vector technology-id %) tags)}))
+      (add-tags conn mailjet-config tags technology-id))
     (when (not-empty urls)
       (let [lang-urls (map #(vector technology-id
                                     (->> % :lang
@@ -134,7 +150,10 @@
     [:image {:optional true} string?]
     [:logo {:optional true} string?]
     [:tags {:optional true}
-     [:vector {:optional true} integer?]]
+     [:vector {:optional true}
+      [:map {:optional true}
+       [:id {:optional true} pos-int?]
+       [:tag string?]]]]
     [:url {:optional true} string?]
     [:info_docs {:optional true} string?]
     [:related_content {:optional true}

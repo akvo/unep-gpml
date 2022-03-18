@@ -2,6 +2,7 @@
   (:require [clojure.java.jdbc :as jdbc]
             [gpml.auth :as auth]
             [gpml.email-util :as email]
+            [gpml.db.tag :as db.tag]
             [gpml.db.event :as db.event]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
@@ -32,6 +33,22 @@
           :stakeholder (:stakeholder connection)
           :association (:role connection)
           :remarks nil})))
+
+(defn add-tags [conn mailjet-config tags event-id]
+  (let [tag-ids (map #(:id %) tags)]
+    (if-not (some nil? tag-ids)
+      (db.event/add-event-tags conn {:tags (map #(vector event-id %) tag-ids)})
+      (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
+            new-tags (filter #(not (contains? % :id)) tags)
+            tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
+            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags (map #(vector % tag-category) tags-to-db)}))]
+        (db.event/add-event-tags conn {:tags (map #(vector event-id %) (concat tag-ids new-tag-ids))})
+        (map
+          #(email/notify-admins-pending-approval
+             conn
+             mailjet-config
+             (merge % {:type "tag"}))
+          new-tags)))))
 
 (defn create-event [conn {:keys [tags urls title start_date end_date
                                  description remarks geo_coverage_type
@@ -68,7 +85,7 @@
                                                          (:stakeholder %))
                                                    individual_connections)))))]
     (when (not-empty tags)
-      (db.event/add-event-tags conn {:tags (map #(vector event-id %) tags)}))
+      (add-tags conn mailjet-config tags event-id))
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! conn {:topic-id event-id
                                                 :topic-type "event"
@@ -142,7 +159,10 @@
        [:url [:string {:min 1}]]]]]
     auth/owners-schema
     [:tags {:optional true}
-     [:vector {:optional true} integer?]]]
+     [:vector {:optional true}
+      [:map {:optional true}
+       [:id {:optional true} pos-int?]
+       [:tag string?]]]]]
    (into handler.geo/params-payload)))
 
 (defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db mailjet-config]}]

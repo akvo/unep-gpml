@@ -105,7 +105,7 @@ again, please visit this URL: %s/edit-%s/%s
         item-type (:type new-item)
         item-title (if (= item-type "stakeholder")
                      (get-user-full-name new-item)
-                     (or (:title new-item) (:name new-item)))
+                     (or (:title new-item) (:name new-item) (:tag new-item)))
         subject (format "[%s] New %s needs approval" (:app-name mailjet-config) item-type)
         sender unep-sender
         names (map get-user-full-name admins)
