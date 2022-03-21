@@ -270,20 +270,22 @@ const Maps = ({
   const mapMaxZoom = 9.2;
   const mapMinZoom = 1.1500000000000024;
   const [selected, setSelected] = useState(null);
-  // const [selectedTerritory, setSelectedTerritory] = useState([]);
+
   const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
   const [countryToSelect, setCountryToSelect] = useState([]);
   const [isShownLegend, setIsShownLegend] = useState(false);
 
-  const selectedTerritory =
-    !isEmpty(countries) &&
-    countries
-      .filter((item) => {
-        const selectTerritory = isFilteredCountry?.map((item) => Number(item));
-        return selectTerritory?.includes(item?.id);
-      })
-      .map((country) => country.territory);
+  const selectedTerritory = !isEmpty(countries)
+    ? countries
+        .filter((item) => {
+          const selectTerritory = isFilteredCountry?.map((item) =>
+            Number(item)
+          );
+          return selectTerritory?.includes(item?.id);
+        })
+        .map((country) => country.territory)
+    : [];
 
   const country =
     !isEmpty(countries) &&
@@ -467,8 +469,8 @@ const Maps = ({
               <Geographies key="map-geo" geography={geoUrl}>
                 {({ geographies }) =>
                   geographies.map((geo) => {
-                    const findData = data.find(
-                      (i) => i.countryId === Number(geo.properties.M49Code)
+                    const findData = data?.find(
+                      (i) => i?.countryId === Number(geo.properties.M49Code)
                     );
 
                     const isLake =
@@ -574,7 +576,7 @@ const Maps = ({
                               : isCountrySelected
                               ? "#255B87"
                               : selectionCondition() ||
-                                selectedTerritory.includes(
+                                selectedTerritory?.includes(
                                   geo.properties.MAP_COLOR
                                 )
                               ? "#255B87"
