@@ -98,6 +98,12 @@ const FilterDrawer = ({
     updateQuery(flag, updateVal);
   };
 
+  const queryToRefresh = Object.fromEntries(
+    Object.entries(query).filter(([key]) => key !== "page" && key !== "q")
+  );
+
+  const queryValues = Object.values(queryToRefresh).flat();
+
   const countryOpts = countries
     .filter((country) => country.description === "Member State")
     .map((it) => ({ value: it.id, label: it.name }))
@@ -303,14 +309,21 @@ const FilterDrawer = ({
 
           <Col className="drawer-button-wrapper">
             <Button
-              className="clear-all-btn"
+              disabled={queryValues.length === 0}
+              className={
+                queryValues.length > 0
+                  ? "clear-all-btn"
+                  : "clear-all-btn disabled"
+              }
               onClick={() => {
-                const paramValueArr = filterQueries.map((query) => ({
-                  param: query,
-                  value: [],
-                }));
-                setFilterCountries([]);
-                updateQuery(null, null, paramValueArr);
+                if (queryValues.length > 0) {
+                  const paramValueArr = filterQueries.map((query) => ({
+                    param: query,
+                    value: [],
+                  }));
+                  setFilterCountries([]);
+                  updateQuery(null, null, paramValueArr);
+                }
               }}
             >
               Clear all
