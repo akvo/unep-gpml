@@ -64,6 +64,32 @@ const mainContentType = [
   {
     code: "initiative",
     name: "Initiative",
+    examples: [
+      {
+        title: "Sustainable Industrial Zone Development",
+        link: "https://digital.gpmarinelitter.org/project/10031",
+      },
+      {
+        title: "Environmentally Sound Management and Destruction of PCBs",
+        link: "https://digital.gpmarinelitter.org/project/10033",
+      },
+      {
+        title: "Plastic Waste Management",
+        link: "https://digital.gpmarinelitter.org/project/10078",
+      },
+      {
+        title: "Make Lome Plastic Free",
+        link: "https://digital.gpmarinelitter.org/project/10149",
+      },
+      {
+        title: "SB 270: Statewide Bag Ban",
+        link: "https://digital.gpmarinelitter.org/project/10145",
+      },
+      {
+        title: "California Ocean Litter Prevention Strategy",
+        link: "https://digital.gpmarinelitter.org/project/10177",
+      },
+    ],
     childs: [
       {
         title: "Legislation, standards, rules",
@@ -96,6 +122,34 @@ const mainContentType = [
   {
     code: "action",
     name: "Action Plan",
+    examples: [
+      {
+        title:
+          "PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)",
+        link: "https://digital.gpmarinelitter.org/action_plan/10017",
+      },
+      {
+        title: "HELCOM Regional action plan on marine litter",
+        link: "https://digital.gpmarinelitter.org/action_plan/122",
+      },
+      {
+        title: "Gulf of Mexico Alliance Regional Action Plan",
+        link: "https://digital.gpmarinelitter.org/action_plan/260",
+      },
+      {
+        title:
+          "ASEAN Regional Action Plan for Combating Marine Debris in the ASEAN Member States (2021 – 2025)",
+        link: "https://digital.gpmarinelitter.org/action_plan/10008",
+      },
+      {
+        title: "COBSEA Regional Action Plan on Marine Litter 2019",
+        link: "https://digital.gpmarinelitter.org/action_plan/196",
+      },
+      {
+        title: "Marine Litter in the Black Sea Region",
+        link: "https://digital.gpmarinelitter.org/action_plan/194",
+      },
+    ],
     childs: [
       {
         title: "Global",
@@ -124,6 +178,33 @@ const mainContentType = [
   {
     code: "policy",
     name: "Policy",
+    examples: [
+      {
+        title: "Environmental Protection and Management Act",
+        link: "https://digital.gpmarinelitter.org/policy/2",
+      },
+      {
+        title: "Navigation Act 2012",
+        link: "https://digital.gpmarinelitter.org/policy/16",
+      },
+      {
+        title: "Waste Prevention and Management Act",
+        link: "https://digital.gpmarinelitter.org/policy/25",
+      },
+      {
+        title:
+          "Law on Waste Management of the Federation of Bosnia and Herzegovina",
+        link: "https://digital.gpmarinelitter.org/policy/28",
+      },
+      {
+        title: "Arctic Waters Pollution Prevention Act",
+        link: "https://digital.gpmarinelitter.org/policy/40",
+      },
+      {
+        title: "Prevention of Pollution of the Sea Order",
+        link: "https://digital.gpmarinelitter.org/policy/32",
+      },
+    ],
     childs: [
       {
         title: "Legislations, Regulations & Standards",
@@ -168,6 +249,35 @@ const mainContentType = [
   {
     code: "financing",
     name: "Financing Resource",
+    examples: [
+      {
+        title:
+          "Sustainable Development Bond on Sustainable Use of Oceans and Coastal Areas (“Blue Economy”)",
+        link: "https://digital.gpmarinelitter.org/financing_resource/50",
+      },
+      {
+        title:
+          "Project to tackle marine litter and plastic pollution in Southeast Asia (SEA)",
+        link: "https://digital.gpmarinelitter.org/financing_resource/56",
+      },
+      {
+        title: "Global Partnership on Marine Litter",
+        link: "https://digital.gpmarinelitter.org/financing_resource/58",
+      },
+      {
+        title: "AI for Earth Grant",
+        link: "https://digital.gpmarinelitter.org/financing_resource/71",
+      },
+      {
+        title:
+          "Norwegian Development Programme to Combat Marine Litter and Microplastics",
+        link: "https://digital.gpmarinelitter.org/financing_resource/248",
+      },
+      {
+        title: "Global Plastics Action Partnership (GPAP)",
+        link: "https://digital.gpmarinelitter.org/financing_resource/37",
+      },
+    ],
     childs: [
       {
         title: "Equity Investment",
@@ -220,6 +330,35 @@ const mainContentType = [
   {
     code: "technical",
     name: "Technical Resource",
+    examples: [
+      {
+        title: "Plastic Pollution Calculator",
+        link: "https://digital.gpmarinelitter.org/technical_resource/138",
+      },
+      {
+        title:
+          "Harmonization of Microplastics Monitoring Methodologies in the Ocean",
+        link: "https://digital.gpmarinelitter.org/technical_resource/10007",
+      },
+      {
+        title:
+          "Guidelines For The Monitoring And Assessment Of Plastic Litter In The Ocean",
+        link: "https://digital.gpmarinelitter.org/technical_resource/10024",
+      },
+      {
+        title: "Marine Litter Vital Graphics",
+        link: "https://digital.gpmarinelitter.org/technical_resource/109",
+      },
+      {
+        title:
+          "Study on industry involvement in the integrated approach to financing the sound management of chemicals and waste, prepared by the SAICM Secretariat",
+        link: "https://digital.gpmarinelitter.org/technical_resource/10033",
+      },
+      {
+        title: "Harm caused by Marine Litter",
+        link: "https://digital.gpmarinelitter.org/technical_resource/250",
+      },
+    ],
     childs: [
       {
         title: "Report & Assessment",
@@ -276,6 +415,33 @@ const mainContentType = [
   {
     code: "event_flexible",
     name: "Event",
+    examples: [
+      {
+        title: "SEA of Solutions 2021",
+        link: "https://digital.gpmarinelitter.org/event/10028",
+      },
+      {
+        title: "Glasgow Climate Change Conference",
+        link: "https://digital.gpmarinelitter.org/event/28",
+      },
+      {
+        title: "G-STIC Conference Second Edition",
+        link: "https://digital.gpmarinelitter.org/event/33",
+      },
+      {
+        title: "Reef Futures Symposium",
+        link: "https://digital.gpmarinelitter.org/event/30",
+      },
+      {
+        title: "Unleashing marine robots for good",
+        link: "https://digital.gpmarinelitter.org/event/10040",
+      },
+      {
+        title:
+          "Action for the Oceans – Youth leaders raising awareness for the Oceans, together!",
+        link: "https://digital.gpmarinelitter.org/event/36",
+      },
+    ],
     childs: [
       {
         title: "Webinars & Seminars",
@@ -320,6 +486,37 @@ const mainContentType = [
   {
     code: "technology",
     name: "Technology",
+    examples: [
+      {
+        title: "Waste Free Oceans",
+        link: "https://digital.gpmarinelitter.org/technology/56",
+      },
+      {
+        title:
+          "Ellipsis: Machine learning and aerial imagery to identify, map, and track plastic waste",
+        link: "https://digital.gpmarinelitter.org/technology/58",
+      },
+      {
+        title:
+          "Fishing for Litter: Ocean cleaning project that involves fishermen who collect debris during fishing activities",
+        link: "https://digital.gpmarinelitter.org/technology/59",
+      },
+      {
+        title:
+          "Plastic Odyssey: The Expedition Around The World To Fight Against Plastic Pollution",
+        link: "https://digital.gpmarinelitter.org/technology/64",
+      },
+      {
+        title:
+          "SeaChange: Converting ocean plastics to inert, non-toxic glass safe for marine life",
+        link: "https://digital.gpmarinelitter.org/technology/66",
+      },
+      {
+        title:
+          "The 3R Initiative: Credit-based market system to encourage plastic recycling and recovery",
+        link: "https://digital.gpmarinelitter.org/technology/75",
+      },
+    ],
     childs: [
       {
         title: "In market",
@@ -364,6 +561,34 @@ const mainContentType = [
   {
     code: "capacity_building",
     name: "Capacity Building",
+    examples: [
+      {
+        title: "Our Coast is Dying",
+        link: "https://digital.gpmarinelitter.org/project/10150",
+      },
+      {
+        title: "Massive Open Online Course (MOOC) on Marine Litter",
+        link: "https://digital.gpmarinelitter.org/technical_resource/149",
+      },
+      {
+        title: "Raising Awareness Amongst Students",
+        link: "https://digital.gpmarinelitter.org/project/10151",
+      },
+      {
+        title: "Ocean Innovation Challenge",
+        link: "https://digital.gpmarinelitter.org/project/10063",
+      },
+      {
+        title:
+          "Action for the Oceans – Youth leaders raising awareness for the Oceans, together!",
+        link: "https://digital.gpmarinelitter.org/event/36",
+      },
+      {
+        title:
+          "Preparing a Waste Management Plan - A Methodological Guidance Note",
+        link: "https://digital.gpmarinelitter.org/technical_resource/84",
+      },
+    ],
     childs: [
       {
         title: "Guidance Documents",

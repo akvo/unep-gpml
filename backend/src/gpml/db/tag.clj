@@ -9,6 +9,7 @@
          new-tag
          new-tags
          tag-by-category
+         tag-category-by-category-name
          all-tags
          get-popular-topics-tags)
 

@@ -5,6 +5,7 @@
             [gpml.db.language :as db.language]
             [gpml.db.policy :as db.policy]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.tag :as db.tag]
             [gpml.email-util :as email]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.geo :as handler.geo]
@@ -32,6 +33,22 @@
           :stakeholder (:stakeholder connection)
           :association (:role connection)
           :remarks nil})))
+
+(defn add-tags [conn mailjet-config tags policy-id]
+  (let [tag-ids (map #(:id %) tags)]
+    (if-not (some nil? tag-ids)
+      (db.policy/add-policy-tags conn {:tags (map #(vector policy-id %) tag-ids)})
+      (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
+            new-tags (filter #(not (contains? % :id)) tags)
+            tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
+            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
+        (db.policy/add-policy-tags conn {:tags (map #(vector policy-id %) (concat (remove nil? tag-ids) new-tag-ids))})
+        (map
+          #(email/notify-admins-pending-approval
+            conn
+            mailjet-config
+            (merge % {:type "tag"}))
+          new-tags)))))
 
 (defn create-policy [conn {:keys [title original_title abstract url
                                   data_source type_of_law record_number
@@ -79,8 +96,7 @@
                                                          (:stakeholder %))
                                                    individual_connections)))))]
     (when (not-empty tags)
-      (db.policy/add-policy-tags
-        conn {:tags (map #(vector policy-id %) tags)}))
+      (add-tags conn mailjet-config tags policy-id))
     (when (not-empty urls)
       (let [lang-urls (map #(vector policy-id
                                     (->> % :lang
@@ -148,7 +164,10 @@
     [:image {:optional true} string?]
     [:implementing_mea {:optional true} integer?]
     [:tags {:optional true}
-     [:vector {:optional true} integer?]]
+     [:vector {:optional true}
+      [:map {:optional true}
+       [:id {:optional true} pos-int?]
+       [:tag string?]]]]
     [:url {:optional true} string?]
     [:info_docs {:optional true} string?]
     [:sub_content_type {:optional true} string?]
