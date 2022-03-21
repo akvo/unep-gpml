@@ -837,8 +837,9 @@
       }
 
       .drawer-button-wrapper {
-        max-width: max-content;
-        margin: auto;
+        width: 100%;
+        display: flex;
+        justify-content: center;
       }
 
       .clear-all-btn {
@@ -850,13 +851,14 @@
         font-weight: 700;
         margin-bottom: 10px;
         border-radius: 20.5px;
+        border: 0;
+        box-shadow: unset;
         span {
           display: block;
         }
-      }
-
-      .clear-all-btn {
-        border: 0;
+        &:hover {
+          box-shadow: 0 0 9px rgba(0, 0, 0, 0.2);
+        }
       }
     }
   }
