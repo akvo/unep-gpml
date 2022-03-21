@@ -123,15 +123,17 @@ const StakeholderList = ({
                   updateQuery("page", n - 1);
                 }}
               />
-              {!loading && (
-                <div className="result-number">
-                  {resultCount > pageSize + Number(filters?.page)
-                    ? resultCounts
-                    : itemCount}{" "}
-                  of {resultCount || 0} result
-                  {resultCount > 1 ? "s" : ""}
-                </div>
-              )}
+
+              <div
+                className="result-number"
+                style={{ opacity: loading && "0" }}
+              >
+                {resultCount > pageSize + Number(filters?.page)
+                  ? resultCounts
+                  : itemCount}{" "}
+                of {resultCount || 0} result
+                {resultCount > 1 ? "s" : ""}
+              </div>
             </div>
           )}
         </div>
