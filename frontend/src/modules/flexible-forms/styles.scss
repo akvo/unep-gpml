@@ -390,6 +390,25 @@
             font-weight: 700;
           }
         }
+        .example-container {
+          .ant-list {
+            margin-top: 20px;
+          }
+          .ant-list-item {
+            background: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            a {
+              width: 100%;
+            }
+            .ant-list-item-meta-title {
+              color: #a5b0c9;
+              margin-bottom: 0;
+            }
+          }
+        }
       }
       .sub-content {
         background: #ffffff;
@@ -695,13 +714,14 @@
   position: absolute;
   height: 100%;
   right: -150vh;
-  background: #fff;
+  background: #edf2f7;
   width: 400px;
   box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.15);
   top: 0;
   padding: 10px 10px;
   transition: all 0.3s ease-out;
   z-index: 8;
+  overflow-y: auto;
   .hide-button {
     border: none;
     background-color: transparent;
