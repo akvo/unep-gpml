@@ -245,8 +245,8 @@
   }
 
   .map-buttons {
-    position: absolute;
-    z-index: 999;
+    // position: absolute;
+    // z-index: 999;
 
     button {
       margin-left: 10px;
@@ -254,12 +254,12 @@
   }
 
   .legends {
-    position: absolute;
-    bottom: 10px;
-    z-index: 999;
-    left: 20px;
-    border: 2px solid #daeaf1;
-    line-height: 10px;
+    // position: absolute;
+    // bottom: 10px;
+    // z-index: 999;
+    // left: 20px;
+    // border: 2px solid #daeaf1;
+    // line-height: 10px;
 
     .legend {
       cursor: pointer;

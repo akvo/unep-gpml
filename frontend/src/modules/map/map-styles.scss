@@ -23,6 +23,14 @@
   overflow: hidden;
   background-color: #eaf6fd;
 
+  .legend-button {
+    display: flex;
+    place-items: center;
+    justify-content: center;
+    max-width: max-content;
+    width: 35px;
+  }
+
   #map-loader {
     position: absolute;
     left: 50%;
@@ -148,25 +156,43 @@
   }
 
   .map-buttons {
-    top: 10px;
-    position: absolute;
     z-index: 999;
     display: flex;
-    left: 44% !important;
+    flex-direction: column;
+    align-self: flex-end;
+    margin-bottom: 10px;
 
     button {
       width: 35px;
-      margin-left: 10px;
     }
   }
 
-  .legends {
+  .map-a11y {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     position: absolute;
-    bottom: 120px;
-    left: calc(50% - (484px / 2));
+    top: 10px;
+    right: 10px;
+  }
+
+  .legend-wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-self: flex-end;
+  }
+
+  .legends {
     border: 2px solid #daeaf1;
     line-height: 10px;
     align-self: center;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    margin-right: 10px;
 
     .legend {
       cursor: pointer;

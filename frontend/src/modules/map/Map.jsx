@@ -13,6 +13,8 @@ import {
   ZoomOutOutlined,
   FullscreenOutlined,
   LoadingOutlined,
+  DoubleRightOutlined,
+  UnorderedListOutlined,
 } from "@ant-design/icons";
 import { PatternLines } from "@vx/pattern";
 import { topicNames, tTypes } from "../../utils/misc";
@@ -272,6 +274,7 @@ const Maps = ({
   const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
   const [countryToSelect, setCountryToSelect] = useState([]);
+  const [isShownLegend, setIsShownLegend] = useState(false);
 
   const selectedTerritory =
     !isEmpty(countries) &&
@@ -376,55 +379,76 @@ const Maps = ({
             height: `${mapPos.height}px`,
           }}
         >
-          <Legend
-            data={colorScale.thresholds()}
-            setFilterColor={setFilterColor}
-            selected={filterColor}
-            isDisplayedList={isDisplayedList}
-          />
-          <div
-            className="map-buttons"
-            style={{ left: listVisible ? "10px" : "330px" }}
-          >
-            <Tooltip title="zoom out">
-              <Button
-                type="secondary"
-                icon={<ZoomOutOutlined />}
-                onClick={() => {
-                  position.zoom > mapMinZoom &&
+          <div className="map-a11y">
+            <div
+              className="map-buttons"
+              style={{ left: listVisible ? "10px" : "330px" }}
+            >
+              <Tooltip placement="left" title="zoom out">
+                <Button
+                  type="secondary"
+                  icon={<ZoomOutOutlined />}
+                  onClick={() => {
+                    position.zoom > mapMinZoom &&
+                      setPosition({
+                        ...position,
+                        zoom: position.zoom - 0.3,
+                      });
+                  }}
+                  disabled={position.zoom <= mapMinZoom}
+                />
+              </Tooltip>
+              <Tooltip placement="left" title="zoom in">
+                <Button
+                  disabled={position.zoom >= mapMaxZoom}
+                  type="secondary"
+                  icon={<ZoomInOutlined />}
+                  onClick={() => {
                     setPosition({
                       ...position,
-                      zoom: position.zoom - 0.3,
+                      zoom: position.zoom + 0.3,
                     });
-                }}
-                disabled={position.zoom <= mapMinZoom}
-              />
-            </Tooltip>
-            <Tooltip title="zoom in">
-              <Button
-                disabled={position.zoom >= mapMaxZoom}
-                type="secondary"
-                icon={<ZoomInOutlined />}
-                onClick={() => {
-                  setPosition({
-                    ...position,
-                    zoom: position.zoom + 0.3,
-                  });
-                }}
-              />
-            </Tooltip>
-            <Tooltip title="reset zoom">
-              <Button
-                type="secondary"
-                icon={<FullscreenOutlined />}
-                onClick={() => {
-                  setPosition({
-                    coordinates: [18.297325014768123, 2.4067378816508587],
-                    zoom: mapMinZoom,
-                  });
-                }}
-              />
-            </Tooltip>
+                  }}
+                />
+              </Tooltip>
+              <Tooltip placement="left" title="reset zoom">
+                <Button
+                  type="secondary"
+                  icon={<FullscreenOutlined />}
+                  onClick={() => {
+                    setPosition({
+                      coordinates: [18.297325014768123, 2.4067378816508587],
+                      zoom: mapMinZoom,
+                    });
+                  }}
+                />
+              </Tooltip>
+            </div>
+            <div className="legend-wrapper">
+              {isShownLegend && (
+                <Legend
+                  data={colorScale.thresholds()}
+                  setFilterColor={setFilterColor}
+                  selected={filterColor}
+                  isDisplayedList={isDisplayedList}
+                />
+              )}
+              <Tooltip
+                placement="bottom"
+                title={isShownLegend ? "Hide" : "Show"}
+              >
+                <Button
+                  className="legend-button"
+                  onClick={() => setIsShownLegend(!isShownLegend)}
+                >
+                  {isShownLegend ? (
+                    <DoubleRightOutlined />
+                  ) : (
+                    <UnorderedListOutlined />
+                  )}
+                </Button>
+              </Tooltip>
+            </div>
           </div>
           <ComposableMap
             data-tip=""
