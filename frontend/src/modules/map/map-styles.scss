@@ -164,6 +164,8 @@
 
     button {
       width: 35px;
+      margin-right: 0;
+      margin-left: 0;
     }
   }
 
@@ -184,15 +186,25 @@
     align-self: flex-end;
   }
 
-  .legends {
-    border: 2px solid #daeaf1;
+  .legends,
+  .no-legend-warning {
     line-height: 10px;
-    align-self: center;
-    background-color: white;
     display: flex;
+    align-self: center;
     align-items: center;
-    padding: 4px;
     margin-right: 10px;
+    background-color: white;
+    border: 2px solid #daeaf1;
+  }
+
+  .no-legend-warning {
+    font-weight: 700;
+    height: 32px;
+    padding: 0 4px 0 4px;
+  }
+
+  .legends {
+    padding: 4px;
 
     .legend {
       cursor: pointer;

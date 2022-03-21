@@ -245,7 +245,7 @@ const Legend = ({ data, setFilterColor, selected }) => {
       </div>
     );
   }
-  return "";
+  return <div className="no-legend-warning">No legend</div>;
 };
 
 const Maps = ({
