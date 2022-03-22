@@ -89,7 +89,7 @@ const StakeholderList = ({
         )}
       </Col>
       {listVisible && (
-        <div className="resource-list-wrapper">
+        <div style={{ width: "100%" }}>
           <Col
             span={24}
             className="resource-list"
