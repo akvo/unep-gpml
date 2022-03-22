@@ -240,3 +240,28 @@ ul.sidebar-mobile {
     display: none;
   }
 }
+
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi) {
+  #mainNavigation {
+    width: 100px;
+    .sidebar {
+      .item-sidebar {
+        height: auto !important;
+        padding: 20px 0;
+        p {
+          margin-bottom: 0px;
+          font-size: 1em !important;
+        }
+        .item-menu img {
+          width: 30px !important;
+        }
+        &.active {
+          border-left: 6px solid #07e982;
+        }
+      }
+    }
+  }
+  #appWrapper {
+    width: calc(100% - 100px);
+  }
+}

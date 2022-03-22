@@ -623,7 +623,7 @@
     .ant-drawer-content-wrapper {
       box-shadow: none;
       max-width: 500px;
-      width: 100% !important;
+      // width: 100% !important;
 
       .ant-drawer-header {
         background: $blue05;
@@ -956,6 +956,112 @@
   @media (min-width: 1700px) {
     #title {
       padding-left: 12px;
+    }
+  }
+  @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi) {
+    #mainNavigation {
+      width: 100px;
+    }
+    #appWrapper {
+      width: calc(100% - 100px);
+    }
+    .sidebar {
+      .item-sidebar {
+        height: auto;
+        padding: 20px 0;
+        p {
+          margin-bottom: 0px;
+          font-size: 1em;
+        }
+        .item-menu img {
+          width: 30px;
+        }
+        &.active {
+          border-left: 6px solid #07e982;
+        }
+      }
+    }
+    .card-wrapper {
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: 15px;
+      margin-left: 1em !important;
+      margin-right: 1em !important;
+      max-width: fit-content;
+      width: auto;
+    }
+    .ui-header {
+      padding-bottom: 6px;
+    }
+    .card-container {
+      padding: 10px 10px 15px 10px;
+      #title {
+        margin-left: 1em !important;
+        font-size: 1.2em;
+        margin-bottom: 0.4em;
+      }
+      .profile-card {
+        .ant-card-body {
+          min-height: auto;
+        }
+        .person-role {
+          .seeking-text {
+            font-size: 1em;
+          }
+          .role-name {
+            font-size: 1em;
+          }
+        }
+      }
+    }
+    .profile-card {
+      .profile-icon-container {
+        img {
+          max-width: 45px;
+        }
+      }
+      .profile-details {
+        min-height: auto;
+        .profile-details-container {
+          .profile-detail-list {
+            .list-item {
+              .profile-name {
+                font-size: 0.9em;
+              }
+            }
+          }
+        }
+        .image-wrapper {
+          min-width: 8em;
+          min-height: 8em;
+          max-width: 8em;
+          max-height: 8em;
+        }
+      }
+    }
+    .all-profiles {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .ui-header .select-wrapper .view-selection {
+      height: auto;
+      .ant-select-selector {
+        height: 35px;
+      }
+    }
+    .ui-header .select-wrapper .view-selection .selection-value .select-button {
+      height: 30px;
+    }
+    .ui-header .select-wrapper .view-selection .selection-value {
+      padding-left: 6px;
+      .selection-arrow {
+        width: 20px;
+      }
+      img {
+        width: 25px;
+      }
+    }
+    .ui-header .sort-btn svg {
+      width: 25px;
     }
   }
 }
