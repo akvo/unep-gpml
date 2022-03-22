@@ -311,7 +311,6 @@ const Root = () => {
       })
       .catch((err) => {
         console.error(err);
-        redirectError(err, history);
       });
   };
 
