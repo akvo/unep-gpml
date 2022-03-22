@@ -130,7 +130,6 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
-      data.country = parseInt(Object.keys(data.country)[0]);
 
       if (data.resourceType === "Financing Resource") {
         if (data.hasOwnProperty("valueCurrency")) {
@@ -455,7 +454,6 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
-      data.country = parseInt(Object.keys(data.country)[0]);
 
       if (data.geoCoverageType === "transnational") {
         if (
@@ -634,7 +632,6 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
-      data.country = parseInt(Object.keys(data.country)[0]);
 
       if (data.geoCoverageType === "transnational") {
         if (
@@ -797,7 +794,6 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
-      data.country = parseInt(Object.keys(data.country)[0]);
 
       if (data.geoCoverageType === "transnational") {
         if (
