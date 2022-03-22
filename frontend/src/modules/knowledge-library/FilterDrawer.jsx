@@ -72,28 +72,28 @@ const FilterDrawer = ({
     !isEmpty(mainContentType) &&
     !isEmpty(representativeGroup);
 
-  const mainContentOptions = isLoaded()
-    ? mainContentType
-        .filter((content) => {
-          const resourceName = (name) => {
-            if (name === "initiative") {
-              return "project";
-            } else if (name === "event_flexible") {
-              return "event";
-            } else if (name === "financing") {
-              return "financing_resource";
-            } else if (name === "technical") {
-              return "technical_resource";
-            } else if (name === "action") {
-              return "action_plan";
-            } else {
-              return name;
-            }
-          };
-          return query?.topic.includes(resourceName(content.code));
-        })
-        .sort((a, b) => a?.code.localeCompare(b?.code))
-    : [];
+  // const mainContentOptions = isLoaded()
+  //   ? mainContentType
+  //       .filter((content) => {
+  //         const resourceName = (name) => {
+  //           if (name === "initiative") {
+  //             return "project";
+  //           } else if (name === "event_flexible") {
+  //             return "event";
+  //           } else if (name === "financing") {
+  //             return "financing_resource";
+  //           } else if (name === "technical") {
+  //             return "technical_resource";
+  //           } else if (name === "action") {
+  //             return "action_plan";
+  //           } else {
+  //             return name;
+  //           }
+  //         };
+  //         return query?.topic.includes(resourceName(content.code));
+  //       })
+  //       .sort((a, b) => a?.code.localeCompare(b?.code))
+  //   : [];
 
   const topicIcons = (topic) => {
     if (topic === "project") {
@@ -253,31 +253,31 @@ const FilterDrawer = ({
             </Row>
           </Col>
           {/* Sub-content type */}
-          {query?.topic?.length > 0 && (
-            <MultipleSelectFilter
-              title="Sub-content type"
-              options={
-                isLoaded()
-                  ? mainContentOptions.map((content) => ({
-                      label: content?.name,
-                      options: content?.childs
-                        .map((child, i) => ({
-                          label: child?.title,
-                          value: child?.title,
-                          key: `${i}-${content.name}`,
-                        }))
-                        .sort((a, b) =>
-                          a?.label?.trim().localeCompare(b?.label?.trim())
-                        ),
-                    }))
-                  : []
-              }
-              value={query?.subContentType || []}
-              flag="subContentType"
-              query={query}
-              updateQuery={updateQuery}
-            />
-          )}
+
+          <MultipleSelectFilter
+            title="Sub-content type"
+            options={
+              isLoaded()
+                ? mainContentType.map((content) => ({
+                    label: content?.name,
+                    options: content?.childs
+                      .map((child, i) => ({
+                        label: child?.title,
+                        value: child?.title,
+                        key: `${i}-${content.name}`,
+                      }))
+                      .sort((a, b) =>
+                        a?.label?.trim().localeCompare(b?.label?.trim())
+                      ),
+                  }))
+                : []
+            }
+            value={query?.subContentType || []}
+            flag="subContentType"
+            query={query}
+            updateQuery={updateQuery}
+          />
+
           {/* My Bookmarks */}
           {isAuthenticated && (
             <Col span={24}>
