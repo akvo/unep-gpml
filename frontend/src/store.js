@@ -10,6 +10,16 @@ const geoCoverageTypeOptions = [
   // "Global with elements in specific areas",
 ];
 
+const icons = {
+  action_plan: "action.svg",
+  project: "initiative.svg",
+  policy: "policy.svg",
+  technical_resource: "technical.svg",
+  financing_resource: "financing.svg",
+  technology: "technology.svg",
+  event: "event_flexible.svg",
+};
+
 const entityRole = ["Owner", "Implementor", "Partner", "Donor"];
 const individualRole = ["Owner", "Resource Editor"];
 
@@ -654,6 +664,7 @@ const UIStore = new Store({
   sectorOptions: sectorOptions,
   representativeGroup: representativeGroup,
   mainContentType: mainContentType,
+  icons: icons,
   selectedMainContentType: "initiative",
   landing: null,
   stakeholders: null,
