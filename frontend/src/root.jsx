@@ -311,7 +311,6 @@ const Root = () => {
       })
       .catch((err) => {
         console.error(err);
-        redirectError(err, history);
       });
   };
 
@@ -444,9 +443,7 @@ const Root = () => {
           <Route
             exact
             path="/about-us"
-            render={(props) => (
-              <AboutUs {...props} countData={countData} filters={filters} />
-            )}
+            render={(props) => <AboutUs {...props} />}
           />
           <Route
             exact
