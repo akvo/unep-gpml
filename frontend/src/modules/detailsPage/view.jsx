@@ -570,6 +570,7 @@ const DetailsView = ({
     regionOptions,
     meaOptions,
     transnationalOptions,
+    icons,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -577,6 +578,7 @@ const DetailsView = ({
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
+    icons: s.icons,
   }));
   const history = useHistory();
   const [data, setData] = useState(null);
@@ -1021,37 +1023,45 @@ const DetailsView = ({
                     <Row gutter={16} className="related-content">
                       {data?.relatedContent.map((item) => (
                         <Col span={12}>
-                          <Card
-                            title={data?.type ? data.type : ""}
-                            bordered={false}
-                          >
-                            <h4>{item.title}</h4>
-                            {/* <p>{item.description}</p> */}
-                            <div className="bottom-panel">
-                              <div>
-                                <Avatar.Group
-                                  maxCount={2}
-                                  size="large"
-                                  maxStyle={{
-                                    color: "#f56a00",
-                                    backgroundColor: "#fde3cf",
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  {item?.stakeholderConnections?.map(
-                                    (connection, index) => (
-                                      <Avatar src={connection.image} />
-                                    )
-                                  )}
-                                </Avatar.Group>
-                              </div>
-                              <a href={`/${params.type}/${item.id}`}>
-                                <div className="read-more">
-                                  Read More <ArrowRightOutlined />
-                                </div>
-                              </a>
+                          <div className="slider-card">
+                            <div className="image-holder">
+                              <img
+                                src={
+                                  require(`../../images/${icons[params.type]}`)
+                                    .default
+                                }
+                              />
                             </div>
-                          </Card>
+
+                            <div className="description-holder">
+                              <h4>{data?.type ? data.type : ""}</h4>
+                              <h6>{item.title}</h6>
+                              <div className="bottom-panel">
+                                <div>
+                                  <Avatar.Group
+                                    maxCount={2}
+                                    size="large"
+                                    maxStyle={{
+                                      color: "#f56a00",
+                                      backgroundColor: "#fde3cf",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {item?.stakeholderConnections?.map(
+                                      (connection, index) => (
+                                        <Avatar src={connection.image} />
+                                      )
+                                    )}
+                                  </Avatar.Group>
+                                </div>
+                                <a href={`/${params.type}/${item.id}`}>
+                                  <div className="read-more">
+                                    Read More <ArrowRightOutlined />
+                                  </div>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
                         </Col>
                       ))}
                     </Row>
