@@ -68,6 +68,9 @@ const defaultFormSchema = {
       order: 0,
       required: false,
     },
+    jobTitle: {
+      label: "Job Tilte",
+    },
     nonMemberOrganisation: {
       label: "Non Member Entity",
       control: "select",

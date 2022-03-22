@@ -388,6 +388,11 @@ const StakeholderDetail = ({
                   </div>
                   <div className="topbar-title-holder">
                     <h1>{data?.firstName + " " + data?.lastName}</h1>
+                    {data?.jobTitle && (
+                      <p className="role">
+                        {data?.jobTitle} @ {data?.affiliation?.name}
+                      </p>
+                    )}
                     {/* <p>
                       <span>
                         <img src={StakeholderRating} />
