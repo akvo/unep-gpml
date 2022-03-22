@@ -56,7 +56,8 @@
                                  geo_coverage_countries geo_coverage_country_groups
                                  geo_coverage_value_subnational_city
                                  created_by mailjet-config owners url
-                                 info_docs sub_content_type related_content
+                                 info_docs sub_content_type
+                                 recording related_content
                                  entity_connections individual_connections]}]
   (let [data {:title title
               :start_date start_date
@@ -76,6 +77,7 @@
               :created_by created_by
               :info_docs info_docs
               :sub_content_type sub_content_type
+              :recording recording
               :related_content (pg-util/->JDBCArray related_content "integer")}
         event-id (->> data (db.event/new-event conn) :id)
         individual_connections (conj individual_connections {:stakeholder created_by
