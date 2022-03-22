@@ -145,7 +145,6 @@ $green-primary: #4dffa5;
     }
   }
   #siteWrapper {
-    height: 800px;
     #appWrapper {
       background-color: #18162f;
     }
@@ -295,6 +294,15 @@ $green-primary: #4dffa5;
     }
   }
 }
+
+@media (min-width: 3000px) {
+  #case-study {
+    .case-studies-page {
+      height: 100vh;
+    }
+  }
+}
+
 @media screen and (min-width: 2560px) {
   // For 2K, Quad HD, QHD Displays
   #case-study {
@@ -336,6 +344,7 @@ $green-primary: #4dffa5;
     }
   }
 }
+
 @media screen and (min-width: 3840px) {
   //For 4K Displays (Ultra HD)
   #case-study {

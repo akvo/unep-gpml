@@ -25,6 +25,9 @@ h4 {
   width: 117px;
   height: auto;
   background-color: $bg-dark-primary;
+  @media (min-width: 3000px) {
+    height: 100vh;
+  }
 }
 
 #siteWrapper {

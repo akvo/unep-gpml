@@ -225,7 +225,9 @@
       height: 700px;
       max-width: 500px;
       width: 100% !important;
-
+      @media (min-width: 3000px) {
+        height: unset;
+      }
       .ant-drawer-header {
         background: $blue05;
       }
@@ -597,6 +599,9 @@
     height: 700px;
     width: 100%;
     max-width: 300px;
+    @media (min-width: 3000px) {
+      height: unset;
+    }
   }
 
   .resource-list-header.show-list {
@@ -693,7 +698,9 @@
     gap: 10px;
     height: 436px;
     align-items: center;
-
+    @media (min-width: 3000px) {
+      height: unset;
+    }
     .resource-item-wrapper {
       width: 100%;
 
