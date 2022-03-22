@@ -83,11 +83,10 @@ const Header = ({
               <SortIcon />{" "}
               <span>
                 Sort By:
-                <br />{" "}
                 {isAscending || isAscending === null ? (
-                  <b>A&gt;Z</b>
+                  <b style={{ paddingLeft: "1em" }}>A&gt;Z</b>
                 ) : (
-                  <b>Z&gt;A</b>
+                  <b style={{ paddingLeft: "1em" }}>Z&gt;A</b>
                 )}
               </span>
             </Button>
