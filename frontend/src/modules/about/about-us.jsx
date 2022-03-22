@@ -241,44 +241,26 @@ const renderSectionInfo = () => {
           </p>
         </div>
         <div className="section-info-button-wrapper">
-          <div className="doc-wrapper">
-            <img
-              src={summaryDocImage}
-              alt="summary-document"
-              onClick={(e) => {
-                window.location.href = "/GPML-One-pager-19.08i.pdf";
-              }}
-            />
-            <Button
-              type="ghost"
-              className="btn-item"
-              onClick={(e) => {
-                window.location.href = "/GPML-One-pager-19.08i.pdf";
-              }}
-            >
+          <a
+            target="_blank"
+            href="/GPML-One-pager-19.08i.pdf"
+            className="doc-wrapper"
+          >
+            <img src={summaryDocImage} alt="summary-document" />
+            <Button type="ghost" className="btn-item">
               Download Summary (1 Page)
             </Button>
-          </div>
-          <div className="doc-wrapper">
-            <img
-              src={fullConceptDocImage}
-              alt="full-concept-document"
-              onClick={(e) => {
-                window.location.href =
-                  "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
-              }}
-            />
-            <Button
-              type="ghost"
-              className="btn-item"
-              onClick={(e) => {
-                window.location.href =
-                  "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
-              }}
-            >
+          </a>
+          <a
+            target="_blank"
+            href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf"
+            className="doc-wrapper"
+          >
+            <img src={fullConceptDocImage} alt="full-concept-document" />
+            <Button type="ghost" className="btn-item">
               Download Full Concept Document
             </Button>
-          </div>
+          </a>
         </div>
       </div>
     </div>
