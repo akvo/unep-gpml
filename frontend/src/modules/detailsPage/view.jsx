@@ -859,32 +859,6 @@ const DetailsView = ({
               </CardComponent>
 
               <CardComponent
-                title="Tags"
-                style={{
-                  marginBottom: "30px",
-                }}
-              >
-                <div className="list tag-list">
-                  <List itemLayout="horizontal">
-                    {data?.tags && (
-                      <List.Item>
-                        <List.Item.Meta
-                          avatar={<Avatar src={TagsImage} />}
-                          title={
-                            <ul>
-                              {data?.tags &&
-                                data?.tags.map((tag) => (
-                                  <li key={tag.tag}>{tag.tag}</li>
-                                ))}
-                            </ul>
-                          }
-                        />
-                      </List.Item>
-                    )}
-                  </List>
-                </div>
-              </CardComponent>
-              <CardComponent
                 title="Connections"
                 style={{
                   marginBottom: "30px",
@@ -1008,6 +982,32 @@ const DetailsView = ({
                     dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
                   />
                 )}
+              </CardComponent>
+              <CardComponent
+                title="Tags"
+                style={{
+                  marginBottom: "30px",
+                }}
+              >
+                <div className="list tag-list">
+                  <List itemLayout="horizontal">
+                    {data?.tags && (
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={<Avatar src={TagsImage} />}
+                          title={
+                            <ul>
+                              {data?.tags &&
+                                data?.tags.map((tag) => (
+                                  <li key={tag.tag}>{tag.tag}</li>
+                                ))}
+                            </ul>
+                          }
+                        />
+                      </List.Item>
+                    )}
+                  </List>
+                </div>
               </CardComponent>
               {data?.relatedContent && data?.relatedContent?.length > 0 && (
                 <CardComponent
