@@ -1810,8 +1810,9 @@
     }
 
     & > header {
+      min-height: 70px;
       .logo {
-        width: 165px;
+        width: 150px;
       }
     }
   }
