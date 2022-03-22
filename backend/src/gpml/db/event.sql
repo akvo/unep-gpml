@@ -112,6 +112,8 @@ select
     e.languages,
     e.tags,
     e.url,
+    e.recording,
+    e.sub_content_type,
     e.review_status,
     (select json_agg(tag) from event_tag where event = :id) as tags,
     (select json_agg(coalesce(country, country_group))
