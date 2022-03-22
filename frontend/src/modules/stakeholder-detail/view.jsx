@@ -208,6 +208,7 @@ const StakeholderDetail = ({
     regionOptions,
     meaOptions,
     transnationalOptions,
+    icons,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -215,6 +216,7 @@ const StakeholderDetail = ({
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
+    icons: s.icons,
   }));
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const history = useHistory();
@@ -386,6 +388,11 @@ const StakeholderDetail = ({
                   </div>
                   <div className="topbar-title-holder">
                     <h1>{data?.firstName + " " + data?.lastName}</h1>
+                    {data?.jobTitle && (
+                      <p className="role">
+                        {data?.jobTitle} @ {data?.affiliation?.name}
+                      </p>
+                    )}
                     {/* <p>
                       <span>
                         <img src={StakeholderRating} />
@@ -589,7 +596,18 @@ const StakeholderDetail = ({
                       <Col xs={6} lg={8}>
                         <div className="slider-card">
                           <div className="image-holder">
-                            <img src={ResourceImage} />
+                            <img
+                              style={{ width: 60 }}
+                              src={
+                                require(`../../images/${
+                                  icons[
+                                    getType(item.type)
+                                      ? getType(item.type)
+                                      : "action_plan"
+                                  ]
+                                }`).default
+                              }
+                            />
                           </div>
                           <div className="description-holder">
                             <div>
@@ -662,7 +680,18 @@ const StakeholderDetail = ({
                       <Col xs={6} lg={8}>
                         <div className="slider-card">
                           <div className="image-holder">
-                            <img src={ResourceImage} />
+                            <img
+                              style={{ width: 60 }}
+                              src={
+                                require(`../../images/${
+                                  icons[
+                                    getType(item.type)
+                                      ? getType(item.type)
+                                      : "action_plan"
+                                  ]
+                                }`).default
+                              }
+                            />
                           </div>
                           <div className="description-holder">
                             <div>

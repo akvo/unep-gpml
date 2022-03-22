@@ -149,7 +149,6 @@
 
     (testing "Event editing"
       (let [event (db.event/new-event db event-data)
-            _ (prn event "event")
             edited-data (merge event-data {:title "New Event Title"})
             resp (handler (-> (mock/request :put "/")
                               (assoc :jwt-claims {:email "john@org"}

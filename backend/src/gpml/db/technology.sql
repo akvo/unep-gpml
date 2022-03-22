@@ -21,6 +21,7 @@ insert into technology(
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
 --~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :subnational_city) ", subnational_city")
+--~ (when (contains? params :headquarter) ", headquarter")
 )
 values(
     :name,
@@ -43,6 +44,7 @@ values(
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
 --~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :subnational_city) ", :subnational_city")
+--~ (when (contains? params :headquarter) ", :headquarter")
 )
 returning id;
 
@@ -63,6 +65,11 @@ select
     url,
     image,
     logo,
+    info_docs,
+    sub_content_type,
+    subnational_city,
+    headquarter,
+    related_content,
     created_by,
     COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners,
     (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
@@ -95,6 +102,10 @@ select
     url,
     image,
     logo,
+    info_docs,
+    sub_content_type,
+    subnational_city,
+    headquarter,
     (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
         from technology_language_url plu
         left join language l on l.id = plu.language
@@ -140,6 +151,10 @@ update technology set
 --~ (when (contains? params :url) "url = :url,")
 --~ (when (contains? params :image) "image = :image,")
 --~ (when (contains? params :logo) "logo = :logo,")
+--~ (when (contains? params :info_docs) "info_docs = :info_docs,")
+--~ (when (contains? params :sub_content_type) "sub_content_type = :sub_content_type,")
+--~ (when (contains? params :subnational_city) "subnational_city = :subnational_city,")
+--~ (when (contains? params :headquarter) "headquarter = :headquarter,")
 --~ (when (contains? params :created_by) "created_by = :created_by,")
 modified = now()
 where id = :id;

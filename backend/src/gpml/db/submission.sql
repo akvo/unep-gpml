@@ -53,6 +53,7 @@ data AS (
     WHERE 1=1
 --~ (when (= "entities" (:only params)) " AND  s.type IN ( 'organisation') ")
 --~ (when (= "stakeholders" (:only params)) " AND  s.type IN ('stakeholder') ")
+--~ (when (= "tags" (:only params)) " AND  s.type IN ('tag') ")
 --~ (when (= "resources" (:only params)) " AND  s.type NOT IN ('stakeholder', 'organisation') ")
 --~ (when (:title params) (str " AND s.title ILIKE '%" (:title params) "%' ") )
     ORDER BY s.created

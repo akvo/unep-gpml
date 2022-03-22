@@ -200,7 +200,7 @@ const ResourceList = ({
           }
         />
       </Col>
-      <div>
+      <div style={{ width: "100%" }}>
         <Col
           span={24}
           className="resource-list"
@@ -226,14 +226,16 @@ const ResourceList = ({
         </Col>
         {!isEmpty(allResults) && (
           <div className="page">
-            <Pagination
-              defaultCurrent={1}
-              current={(filters?.offset || 0) / pageSize + 1}
-              pageSize={pageSize}
-              total={totalItems}
-              showSizeChanger={false}
-              onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
-            />
+            {totalItems > 0 && (
+              <Pagination
+                defaultCurrent={1}
+                current={(filters?.offset || 0) / pageSize + 1}
+                pageSize={pageSize}
+                total={totalItems}
+                showSizeChanger={false}
+                onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
+              />
+            )}
             {!loading && (
               <div className="result-number">
                 {totalItems > pageSize + filters?.offset

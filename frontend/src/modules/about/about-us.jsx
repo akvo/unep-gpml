@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Image } from "antd";
 import { Link } from "react-router-dom";
 
@@ -15,53 +15,72 @@ import fullConceptDocImage from "../../images/full-concept-doc.png";
 import summaryDocImage from "../../images/summary-doc.png";
 
 import { UIStore } from "../../store";
-import { topicTypes } from "../../utils/misc";
 import sumBy from "lodash/sumBy";
 import isEmpty from "lodash/isEmpty";
-import humps from "humps";
+import api from "../../utils/api";
+
 const summary = [
-  {
-    name: "GPML Community",
-    value: ["organisation", "stakeholder"],
-    startValue: 0,
-    increment: "187",
-  },
   {
     name: "Data Layers",
     value: [],
     startValue: "71",
     increment: "12",
   },
-  {
-    name: "Resources",
-    value: topicTypes,
-    startValue: 0,
-    increment: "32",
-  },
 ];
 
-const AboutUs = (countData, filters) => {
-  const nav = UIStore.useState((s) => s.nav);
+const AboutUs = () => {
+  const { nav, stakeholders } = UIStore.useState((s) => {
+    return { nav: s.nav, stakeholders: s?.stakeholders };
+  });
 
-  const topicsForTotal = topicTypes.map((t) => humps.decamelize(t));
-
-  const filteredTopics =
-    filters?.topic?.length > 0
-      ? filters?.topic?.filter((t) => topicsForTotal.indexOf(t) > -1)
-      : topicsForTotal.filter(
-          (t) => t !== "organisation" && t !== "stakeholder"
-        );
-  const totalItems = filteredTopics.reduce(
-    (acc, topic) =>
-      acc +
-      (countData?.countData?.find((it) => it.topic === topic)?.count || 0),
+  const [resourcesCount, setResourcesCount] = useState([]);
+  const [entityCount, setEntityCount] = useState(0);
+  const [stakeholdersCount, setStakeholdersCount] = useState([]);
+  const [summary, setSummary] = useState([]);
+  const totalResources = resourcesCount.reduce(
+    (acc, val) => acc + Number(val?.count),
     0
   );
+
+  useEffect(() => {
+    const topic = [
+      "action_plan",
+      "project",
+      "policy",
+      "technical_resource",
+      "technology",
+      "event",
+      "financing_resource",
+    ];
+    api
+      .get(`/browse?topic=${topic}`)
+      .then((resp) => {
+        const data = resp?.data?.counts.filter(
+          (item) => item?.topic !== "gpml_member_entities"
+        );
+        const GPMLMember = resp?.data?.counts.filter(
+          (item) => item?.topic === "gpml_member_entities"
+        );
+        setResourcesCount(data);
+        setEntityCount(GPMLMember[0].count || 0);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setStakeholdersCount(
+      (stakeholders?.stakeholders?.length || 0) + entityCount
+    );
+  }, [stakeholders, entityCount]);
 
   return (
     <div id="about-us">
       {renderSectionIssue()}
-      {renderSectionSummary(nav, totalItems)}
+      {renderSectionSummary(nav, totalResources, stakeholdersCount)}
       {renderSectionMission()}
       {renderSectionInfo()}
       {renderSectionTimelineAndRoadmap()}
@@ -121,43 +140,46 @@ const renderSectionIssue = () => {
   );
 };
 
-const renderSectionSummary = (nav, totalItems) => {
+const renderSectionSummary = (nav, totalResources, stakeholderCount) => {
   const renderSummary = (nav) => {
     const isLoaded = () => Boolean(!isEmpty(nav));
 
-    return summary
-      .filter((sum) => sum?.name?.toLowerCase() !== "resources")
-      .map((x, i) => {
-        const { name, value, startValue } = x;
-        const navData =
-          isLoaded() &&
-          nav?.resourceCounts
-            ?.filter((x) => value.includes(Object.keys(x)[0]))
-            .map((x) => {
-              return {
-                name: Object.keys(x)[0],
-                count: x[Object.keys(x)[0]],
-              };
-            });
-        const total = sumBy(navData, "count");
+    return summary.map((x, i) => {
+      const { name, value, startValue } = x;
+      const navData =
+        isLoaded() &&
+        nav?.resourceCounts
+          ?.filter((x) => value.includes(Object.keys(x)[0]))
+          .map((x) => {
+            return {
+              name: Object.keys(x)[0],
+              count: x[Object.keys(x)[0]],
+            };
+          });
 
-        return (
-          <div className="item" key={`summary-${i}`}>
-            <div className="item-name text-green">{name}</div>
-            <div className="item-value text-white">
-              {isLoaded() ? total || startValue : 0}
-            </div>
+      const total = sumBy(navData, "count");
+
+      return (
+        <div className="item" key={`summary-${i}`}>
+          <div className="item-name text-green">{name}</div>
+          <div className="item-value text-white">
+            {isLoaded() ? total || startValue : 0}
           </div>
-        );
-      });
+        </div>
+      );
+    });
   };
   return (
     <div className="section-container section-summary-container">
       <div className="ui container section-summary-wrapper">
+        <div className="item">
+          <div className="item-name text-green">GPML Community</div>
+          <div className="item-value text-white">{stakeholderCount}</div>
+        </div>
         {renderSummary(nav)}
         <div className="item">
           <div className="item-name text-green">Resources</div>
-          <div className="item-value text-white">{totalItems}</div>
+          <div className="item-value text-white">{totalResources}</div>
         </div>
       </div>
     </div>
@@ -219,44 +241,26 @@ const renderSectionInfo = () => {
           </p>
         </div>
         <div className="section-info-button-wrapper">
-          <div className="doc-wrapper">
-            <img
-              src={summaryDocImage}
-              alt="summary-document"
-              onClick={(e) => {
-                window.location.href = "/GPML-One-pager-19.08i.pdf";
-              }}
-            />
-            <Button
-              type="ghost"
-              className="btn-item"
-              onClick={(e) => {
-                window.location.href = "/GPML-One-pager-19.08i.pdf";
-              }}
-            >
+          <a
+            target="_blank"
+            href="/GPML-One-pager-19.08i.pdf"
+            className="doc-wrapper"
+          >
+            <img src={summaryDocImage} alt="summary-document" />
+            <Button type="ghost" className="btn-item">
               Download Summary (1 Page)
             </Button>
-          </div>
-          <div className="doc-wrapper">
-            <img
-              src={fullConceptDocImage}
-              alt="full-concept-document"
-              onClick={(e) => {
-                window.location.href =
-                  "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
-              }}
-            />
-            <Button
-              type="ghost"
-              className="btn-item"
-              onClick={(e) => {
-                window.location.href =
-                  "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
-              }}
-            >
+          </a>
+          <a
+            target="_blank"
+            href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf"
+            className="doc-wrapper"
+          >
+            <img src={fullConceptDocImage} alt="full-concept-document" />
+            <Button type="ghost" className="btn-item">
               Download Full Concept Document
             </Button>
-          </div>
+          </a>
         </div>
       </div>
     </div>

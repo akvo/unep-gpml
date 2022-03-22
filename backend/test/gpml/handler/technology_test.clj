@@ -72,13 +72,25 @@
                     :id 10001
                     :image nil
                     :logo nil
+                    :headquarter nil
+                    :info_docs nil
+                    :sub_content_type nil
+                    :related_content []
+                    :subnational_city nil
                     :tags (map #(:id %) (:tags data))
                     :owners [(:id user)]
-                    :created_by 10001) technology-one))
+                    :created_by 10001)
+            technology-one))
       (is (= (assoc (new-technology data)
                     :id 10002
                     :image nil
                     :logo nil
+                    :headquarter nil
+                    :info_docs nil
+                    :sub_content_type nil
+                    :related_content []
+                    :subnational_city nil
                     :tags (map #(:id %) (:tags data))
                     :owners [(:id user)]
-                    :created_by 10001) technology-two)))))
+                    :created_by 10001)
+            technology-two)))))

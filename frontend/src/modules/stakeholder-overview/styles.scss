@@ -613,6 +613,12 @@
       background-color: unset;
     }
 
+    .ant-drawer-open {
+      .ant-drawer-content {
+        border: 1px solid $blue09;
+      }
+    }
+
     .ant-drawer-content-wrapper {
       box-shadow: none;
       max-width: 500px;
@@ -630,7 +636,6 @@
       .ant-drawer-content {
         border-bottom-right-radius: 18px;
         box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.25);
-        border: 1px solid $blue09;
       }
 
       .ant-drawer-title,
@@ -832,8 +837,9 @@
       }
 
       .drawer-button-wrapper {
-        max-width: max-content;
-        margin: auto;
+        width: 100%;
+        display: flex;
+        justify-content: center;
       }
 
       .clear-all-btn {
@@ -845,13 +851,21 @@
         font-weight: 700;
         margin-bottom: 10px;
         border-radius: 20.5px;
+        border: 0;
+        box-shadow: unset;
         span {
           display: block;
         }
-      }
 
-      .clear-all-btn {
-        border: 0;
+        &:hover {
+          box-shadow: 0 0 9px rgba(0, 0, 0, 0.2);
+        }
+
+        &.disabled:disabled {
+          background-color: unset;
+          box-shadow: unset;
+          cursor: not-allowed;
+        }
       }
     }
   }

@@ -63,7 +63,7 @@
       "ui:showSearch": true,
       "ui:allowClear": true
     },
-    "organisationRole": {
+    "jobTitle": {
       "ui:placeholder": "Enter Job Title"
     },
     "orgDisabled": {
@@ -108,7 +108,7 @@
     "ui:order": [
       "privateCitizen",
       "orgName",
-      "organisationRole",
+      "jobTitle",
       "orgDisabled",
       "companyName",
       "companyDisabled",
