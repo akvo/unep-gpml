@@ -52,6 +52,7 @@ const FilterDrawer = ({
     geoCoverageTypeOptions,
     representativeGroup,
     mainContentType,
+    organisations,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     nav: s.nav,
@@ -61,6 +62,7 @@ const FilterDrawer = ({
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     mainContentType: s.mainContentType,
     representativeGroup: s.representativeGroup,
+    organisations: s.organisations,
   }));
   const { isAuthenticated } = useAuth0();
 
@@ -70,7 +72,8 @@ const FilterDrawer = ({
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
     !isEmpty(mainContentType) &&
-    !isEmpty(representativeGroup);
+    !isEmpty(representativeGroup) &&
+    !isEmpty(organisations);
 
   // const mainContentOptions = isLoaded()
   //   ? mainContentType
@@ -357,8 +360,24 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
+
           <MultipleSelectFilter
-            title="Representative group"
+            title="Entities"
+            options={
+              isLoaded()
+                ? organisations
+                    ?.map((x) => ({ value: x.id, label: x.name }))
+                    .filter((organisation) => organisation?.value > -1)
+                : []
+            }
+            value={query?.entity?.map((x) => parseInt(x)) || []}
+            flag="entity"
+            query={query}
+            updateQuery={updateQuery}
+          />
+
+          <MultipleSelectFilter
+            title="Representative groups"
             options={
               isLoaded()
                 ? representativeOpts
@@ -369,6 +388,7 @@ const FilterDrawer = ({
                       value: x?.value,
                       label: x.label,
                     }))
+                    .sort((a, b) => a?.label.localeCompare(b?.label))
                 : []
             }
             value={query?.representativeGroup || []}

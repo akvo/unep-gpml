@@ -290,6 +290,22 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
+          {/* Entities */}
+          <MultipleSelectFilter
+            title="Entities"
+            options={
+              isLoaded()
+                ? organisations
+                    ?.map((x) => ({ value: x.id, label: x.name }))
+                    .filter((organisation) => organisation?.value > -1)
+                    .sort((a, b) => a?.label.localeCompare(b?.label))
+                : []
+            }
+            value={query?.affiliation?.map((x) => parseInt(x)) || []}
+            flag="affiliation"
+            query={query}
+            updateQuery={updateQuery}
+          />
 
           {/* Representative group */}
           <MultipleSelectFilter

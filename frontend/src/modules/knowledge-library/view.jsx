@@ -104,12 +104,14 @@ const KnowledgeLibrary = ({
     tags,
     profile,
     countries,
+    organisations,
     transnationalOptions,
     representativeGroup,
   } = UIStore.useState((s) => ({
     tags: s.tags,
     profile: s.profile,
     countries: s.countries,
+    organisations: s.organisations,
     transnationalOptions: s.transnationalOptions,
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
@@ -223,6 +225,12 @@ const KnowledgeLibrary = ({
       }
       if (key === "subContentType") {
         return value;
+      }
+      if (key === "entity") {
+        const findOrganisation = organisations.find(
+          (organisation) => organisation.id == value
+        );
+        return findOrganisation?.name;
       }
     };
     return Object.keys(query).map((key, index) => {
