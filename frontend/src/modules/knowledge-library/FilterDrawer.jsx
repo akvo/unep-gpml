@@ -76,7 +76,9 @@ const FilterDrawer = ({
     ? mainContentType
         .filter((content) => {
           const resourceName = (name) => {
-            if (name === "event_flexible") {
+            if (name === "initiative") {
+              return "project";
+            } else if (name === "event_flexible") {
               return "event";
             } else if (name === "financing") {
               return "financing_resource";
@@ -92,7 +94,7 @@ const FilterDrawer = ({
         })
         .sort((a, b) => a?.code.localeCompare(b?.code))
     : [];
-
+  console.log(mainContentType);
   const topicIcons = (topic) => {
     if (topic === "project") {
       return <InitiativeIcon width="53" height="53" />;
