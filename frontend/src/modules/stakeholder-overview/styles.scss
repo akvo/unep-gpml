@@ -34,7 +34,7 @@
   // Header
   .ui-header {
     background-color: rgba(0, 91, 112, 0.8);
-    padding: 6px calc(45px - 15px) 9px 38px;
+    padding: 5px calc(45px - 15px) 5px 38px;
 
     .ant-space.ant-space-horizontal.ant-space-align-center
       .ant-select-selector {
@@ -139,7 +139,6 @@
         padding-right: 0;
         border-radius: 10px;
         border: 0;
-        height: 60px;
 
         .selection-value,
         .ant-select-selection-item {
@@ -161,13 +160,11 @@
           height: 100%;
           align-items: center;
           justify-content: space-between;
-          padding-left: 4px;
           .label::first-letter {
             text-transform: uppercase;
           }
 
           .select-button {
-            height: 53px;
             max-width: 37px;
             border: 0;
             opacity: 0.2;
@@ -183,11 +180,11 @@
 
         .ant-select-selector {
           border: 0;
-          height: 60px;
           background: rgba(255, 255, 255, 0.1);
           border-radius: 10px;
           max-width: 100%;
-          padding-left: 0;
+          padding: 2px 5px;
+          height: auto;
         }
 
         .anticon.anticon-down {
@@ -206,6 +203,7 @@
       background-color: transparent;
       svg {
         margin-right: 7px;
+        width: 32px;
         circle,
         path {
           stroke: currentColor;
