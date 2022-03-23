@@ -201,7 +201,7 @@
       border: none;
       display: flex;
       align-items: center;
-      padding-left: 24px;
+      padding-left: 0px;
       color: #ffffff;
       font-weight: 700;
       background-color: transparent;
@@ -257,8 +257,8 @@
       display: none;
     }
     .result-number {
-      padding-top: 16px;
-      padding-bottom: 16px;
+      padding-top: 0.8em;
+      padding-bottom: 0.8em;
       max-width: max-content;
       margin: auto;
       font-size: 12px;
@@ -946,6 +946,11 @@
     }
   }
   @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+    .ant-btn-icon-only {
+      min-width: 25px;
+      min-height: 25px;
+      height: 25px;
+    }
     #mainNavigation {
       width: 100px;
     }
@@ -977,10 +982,22 @@
       width: auto;
     }
     .ui-header {
-      padding-bottom: 6px;
+      padding-bottom: 3px;
+      padding-bottom: 3px;
+      .ant-select-selector {
+        padding: 2px 5px !important;
+      }
+      .search-box {
+        .ant-input-affix-wrapper {
+          button {
+            width: 25px;
+            height: 25px;
+          }
+        }
+      }
     }
     .card-container {
-      padding: 10px 10px 15px 10px;
+      padding: 0px 10px 15px 10px;
       #title {
         margin-left: 1em !important;
         font-size: 1.2em;
@@ -1003,11 +1020,12 @@
     .profile-card {
       .profile-icon-container {
         img {
-          max-width: 45px;
+          max-width: 40px;
         }
       }
       .profile-details {
         min-height: auto;
+        padding: 10px 16px 6px 16px;
         .profile-details-container {
           .profile-detail-list {
             .list-item {
@@ -1018,10 +1036,10 @@
           }
         }
         .image-wrapper {
-          min-width: 8em;
-          min-height: 8em;
-          max-width: 8em;
-          max-height: 8em;
+          min-width: 7em;
+          min-height: 7em;
+          max-width: 7em;
+          max-height: 7em;
         }
       }
     }
