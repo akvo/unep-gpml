@@ -38,7 +38,7 @@ const FilterDrawer = ({
     offering: s.tags.offering,
     countries: s.countries,
     organisations: s.organisations,
-    representativeGroup: s.sectorOptions,
+    representativeGroup: s.representativeGroup,
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
   }));
@@ -108,6 +108,13 @@ const FilterDrawer = ({
     .filter((country) => country.description === "Member State")
     .map((it) => ({ value: it.id, label: it.name }))
     .sort((a, b) => a.label.localeCompare(b.label));
+
+  const representativeOpts = isLoaded()
+    ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
+        label: x?.name,
+        value: x?.code,
+      }))
+    : [];
 
   return (
     <div className="site-drawer-render-in-current-wrapper">
@@ -312,9 +319,10 @@ const FilterDrawer = ({
             title="Representative group"
             options={
               isLoaded()
-                ? representativeGroup
-                    ?.map((x) => ({ value: x, label: x }))
-                    .sort((a, b) => a?.label?.localeCompare(b?.label))
+                ? representativeOpts.map((x) => ({
+                    value: x?.value,
+                    label: x.label,
+                  }))
                 : []
             }
             value={query?.representativeGroup || []}

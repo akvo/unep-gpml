@@ -194,7 +194,10 @@ const FilterDrawer = ({
 
   // populate options for representative group options
   const representativeOpts = isLoaded()
-    ? representativeGroup?.map((x) => ({ label: x?.name, value: x?.code }))
+    ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
+        label: x?.name,
+        value: x?.code,
+      }))
     : [];
 
   return (
@@ -377,18 +380,13 @@ const FilterDrawer = ({
           />
 
           <MultipleSelectFilter
-            title="Representative groups"
+            title="Representative group"
             options={
               isLoaded()
-                ? representativeOpts
-                    ?.sort((repG1, repG2) =>
-                      repG1?.label?.localeCompare(repG2?.label)
-                    )
-                    .map((x) => ({
-                      value: x?.value,
-                      label: x.label,
-                    }))
-                    .sort((a, b) => a?.label.localeCompare(b?.label))
+                ? representativeOpts.map((x) => ({
+                    value: x?.value,
+                    label: x.label,
+                  }))
                 : []
             }
             value={query?.representativeGroup || []}

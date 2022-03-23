@@ -215,7 +215,9 @@ const KnowledgeLibrary = ({
         const representativeGroups = representativeGroup.find(
           (x) => x?.code?.toLowerCase() == value?.toLowerCase()
         );
-        return representativeGroups?.name;
+        return value.toLowerCase() === "other"
+          ? "Other"
+          : representativeGroups?.name;
       }
       if (key === "startDate") {
         return `Start date ${value}`;
