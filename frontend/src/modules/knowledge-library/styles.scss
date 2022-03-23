@@ -315,6 +315,10 @@
         font-weight: 700;
       }
 
+      .multiselection-filter .ant-select-selection-placeholder {
+        padding-left: 30px;
+      }
+
       .ant-select-selector,
       .date-picker-container .ant-picker {
         background: $grey05;
@@ -545,6 +549,9 @@
       }
 
       .country-filter-tab-wrapper {
+        .ant-select-selection-placeholder {
+          padding-left: 30px;
+        }
         .country-filter-tab {
           border: 1px solid #d7e6ee;
           border-radius: 3px;
