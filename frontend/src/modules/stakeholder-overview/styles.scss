@@ -881,7 +881,7 @@
 
   .card-wrapper-link {
     width: 100%;
-    max-width: 343px;
+    min-width: 250px;
     margin: auto;
   }
 
@@ -958,7 +958,7 @@
       padding-left: 12px;
     }
   }
-  @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi) {
+  @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
     #mainNavigation {
       width: 100px;
     }
