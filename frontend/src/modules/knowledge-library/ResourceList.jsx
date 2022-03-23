@@ -200,53 +200,49 @@ const ResourceList = ({
           }
         />
       </Col>
-      <div style={{ width: "100%" }}>
-        <Col
-          span={24}
-          className="resource-list"
-          style={
-            isLoaded() &&
-            !loading &&
-            !isEmpty(allResults) && { overflowY: "auto" }
-          }
-        >
-          {!isLoaded() || loading ? (
-            <h2 className="loading">
-              <LoadingOutlined spin /> Loading
-            </h2>
-          ) : isLoaded() && !loading && !isEmpty(allResults) ? (
-            <ResourceItem
-              view={view}
-              results={allResults}
-              stakeholders={stakeholders}
-            />
-          ) : (
-            <h2 className="loading">There is no data to display</h2>
-          )}
-        </Col>
-        {!isEmpty(allResults) && (
-          <div className="page">
-            {totalItems > 0 && (
-              <Pagination
-                defaultCurrent={1}
-                current={(filters?.offset || 0) / pageSize + 1}
-                pageSize={pageSize}
-                total={totalItems}
-                showSizeChanger={false}
-                onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
-              />
-            )}
-            {!loading && (
-              <div className="result-number">
-                {totalItems > pageSize + filters?.offset
-                  ? pageSize + Number(filters?.offset)
-                  : itemCount}{" "}
-                of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
-              </div>
-            )}
-          </div>
+      <Col
+        span={24}
+        className="resource-list"
+        style={
+          isLoaded() &&
+          !loading &&
+          !isEmpty(allResults) && { overflowY: "auto" }
+        }
+      >
+        {!isLoaded() || loading ? (
+          <h2 className="loading">
+            <LoadingOutlined spin /> Loading
+          </h2>
+        ) : isLoaded() && !loading && !isEmpty(allResults) ? (
+          <ResourceItem
+            view={view}
+            results={allResults}
+            stakeholders={stakeholders}
+          />
+        ) : (
+          <h2 className="loading">There is no data to display</h2>
         )}
-      </div>
+      </Col>
+      {!isEmpty(allResults) && (
+        <div className="page">
+          <Pagination
+            defaultCurrent={1}
+            current={(filters?.offset || 0) / pageSize + 1}
+            pageSize={pageSize}
+            total={totalItems}
+            showSizeChanger={false}
+            onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
+          />
+          {!loading && (
+            <div className="result-number">
+              {totalItems > pageSize + filters?.offset
+                ? pageSize + Number(filters?.offset)
+                : itemCount}{" "}
+              of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+            </div>
+          )}
+        </div>
+      )}
     </Row>
   );
 };

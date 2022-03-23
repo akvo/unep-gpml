@@ -378,7 +378,6 @@ const Maps = ({
           style={{
             overflow: "hidden",
             width: "auto",
-            height: `${mapPos.height}px`,
           }}
         >
           <div className="map-a11y">

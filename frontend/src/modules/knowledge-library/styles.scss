@@ -28,7 +28,7 @@
 
   .ui-header {
     background-color: rgba(0, 91, 112, 0.8);
-    padding: 6px 9px 9px 38px;
+    padding: 5px 9px 5px 38px;
 
     .ant-space.ant-space-horizontal.ant-space-align-center
       .ant-select-selector {
@@ -100,13 +100,17 @@
       }
 
       .ant-input-affix-wrapper {
-        padding: 0;
-        max-height: 32px;
-        padding-left: 11px;
+        padding-left: 10px;
+        padding-right: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        overflow: auto;
         button {
           color: #ffffff;
           background-color: $green05;
           border: 0;
+          height: 31px;
+          width: 31px;
           &:hover {
             background-color: $green01;
             color: $blue10;
@@ -136,7 +140,6 @@
         padding-right: 0;
         border-radius: 10px;
         border: 0;
-        height: 60px;
 
         .selection-value,
         .ant-select-selection-item {
@@ -158,13 +161,11 @@
           height: 100%;
           align-items: center;
           justify-content: space-between;
-          padding-left: 4px;
           .label::first-letter {
             text-transform: uppercase;
           }
 
           .select-button {
-            height: 53px;
             max-width: 37px;
             border: 0;
             opacity: 0.2;
@@ -180,11 +181,11 @@
 
         .ant-select-selector {
           border: 0;
-          height: 60px;
           background: rgba(255, 255, 255, 0.1);
           border-radius: 10px;
           max-width: 100%;
-          padding-left: 0;
+          padding: 4px 5px;
+          height: auto;
         }
 
         .anticon.anticon-down {
@@ -222,7 +223,7 @@
 
     .ant-drawer-content-wrapper {
       box-shadow: none;
-      height: 700px;
+      // height: 700px;
       max-width: 500px;
       width: 100% !important;
 
@@ -286,7 +287,6 @@
       .multiselection-filter .ant-select-selection-placeholder {
         font-size: 16px;
         color: $grey04;
-        padding-left: calc(44px - 9px);
       }
 
       .date-picker-container .ant-picker ::placeholder,
@@ -594,7 +594,7 @@
   .resource-list-container {
     position: absolute;
     z-index: 3;
-    height: 700px;
+    // height: 700px;
     width: 100%;
     max-width: 300px;
   }
@@ -847,5 +847,16 @@
   }
   .echarts-for-react.popular-topic-chart {
     height: 1000% !important;
+  }
+
+  @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+    .selection-value {
+      img {
+        width: 25px;
+      }
+      .selection-arrow {
+        width: 20px;
+      }
+    }
   }
 }

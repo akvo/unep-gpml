@@ -25,11 +25,7 @@ const Header = ({
         <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
       </button>
       <span className="label text-white">{`${view} view`}</span>
-      {view?.toLowerCase().includes("card") ? (
-        <img src={TooltipOutlined} alt="tooltip-icon" />
-      ) : (
-        <img src={GlobeOutlined} alt="globe-icon" />
-      )}
+      <img src={GlobeOutlined} alt="globe-icon" />
     </div>
   );
 
