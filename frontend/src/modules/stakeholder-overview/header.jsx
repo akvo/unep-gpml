@@ -25,11 +25,7 @@ const Header = ({
         <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
       </button>
       <span className="label text-white">{`${view} view`}</span>
-      {view?.toLowerCase().includes("card") ? (
-        <img src={TooltipOutlined} alt="tooltip-icon" />
-      ) : (
-        <img src={GlobeOutlined} alt="globe-icon" />
-      )}
+      <img src={GlobeOutlined} alt="globe-icon" />
     </div>
   );
 
@@ -60,6 +56,19 @@ const Header = ({
                       />
                     }
                   />
+                  {view === "card" && (
+                    <Button className="sort-btn" onClick={sortPeople}>
+                      <SortIcon />{" "}
+                      <span>
+                        Sort By:
+                        {isAscending || isAscending === null ? (
+                          <b style={{ paddingLeft: "1em" }}>A&gt;Z</b>
+                        ) : (
+                          <b style={{ paddingLeft: "1em" }}>Z&gt;A</b>
+                        )}
+                      </span>
+                    </Button>
+                  )}
                 </Space>
               </Col>
               <Col lg={19} md={17} sm={15} className="filter-tag">
@@ -78,19 +87,6 @@ const Header = ({
               <Select.Option value="card">Card View </Select.Option>
             </Select>
           </Col>
-          {view === "card" && (
-            <Button className="sort-btn" onClick={sortPeople}>
-              <SortIcon />{" "}
-              <span>
-                Sort By:
-                {isAscending || isAscending === null ? (
-                  <b style={{ paddingLeft: "1em" }}>A&gt;Z</b>
-                ) : (
-                  <b style={{ paddingLeft: "1em" }}>Z&gt;A</b>
-                )}
-              </span>
-            </Button>
-          )}
         </Row>
       </div>
     </Col>
