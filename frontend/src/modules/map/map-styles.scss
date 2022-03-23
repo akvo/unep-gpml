@@ -26,8 +26,8 @@
     display: flex;
     place-items: center;
     justify-content: center;
-    max-width: max-content;
     width: 35px;
+    height: 32px;
   }
 
   #map-loader {
@@ -163,6 +163,7 @@
 
     button {
       width: 35px;
+      height: 32px;
       margin-right: 0;
       margin-left: 0;
     }
@@ -181,7 +182,7 @@
     display: flex;
     align-items: center;
     flex-direction: row;
-    flex-wrap: wrap;
+
     align-self: flex-end;
   }
 
