@@ -49,6 +49,9 @@
     flex-direction: column-reverse;
     align-content: center;
     padding-bottom: 13px;
+    @media (min-width: 3000px) {
+      height: unset !important;
+    }
   }
 
   .resource-list-header.show-list {
@@ -290,6 +293,9 @@
         }
       }
     }
+  }
+  @media (min-width: 3000px) {
+    height: unset;
   }
 }
 

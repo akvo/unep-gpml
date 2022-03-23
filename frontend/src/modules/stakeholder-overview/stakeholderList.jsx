@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { Card, Row, Col, Pagination, Tag, PageHeader, Button } from "antd";
 import { TrimText } from "../../utils/string";
 import { isEmpty } from "lodash";
-import SortIcon from "../../images/knowledge-library/sort-icon.svg";
-import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 import { topicNames } from "../../utils/misc";
 import "./stakeholder-list.scss";
 import { LoadingOutlined } from "@ant-design/icons";
+import { ReactComponent as GPMLIcon } from "../../images/stakeholder-overview/gpml-logo.svg";
+import SortIcon from "../../images/knowledge-library/sort-icon.svg";
+import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const StakeholderList = ({
   view,
@@ -161,9 +162,31 @@ const ResourceItem = ({ results, view }) => {
               : { backgroundColor: "rgba(255, 255, 255, 1)" }
           }
         >
-          <div className="topic">{topicNames(type)}</div>
           <div className="item-body">
-            <div className="title">{stakeholderName}</div>
+            <div className="resource-image-wrapper">
+              <img
+                className="resource-item-image"
+                src={result?.logo || result?.picture}
+                alt=""
+              />
+            </div>
+            <div className="resource-details">
+              <b className="title">{stakeholderName}</b>
+              <div>
+                {result?.type === "stakeholder"
+                  ? result?.affiliation && (
+                      <span className="entity-name">
+                        {result?.affiliation?.name}
+                      </span>
+                    )
+                  : ""}
+              </div>
+              <div className="badge-wrapper">
+                {result.type === "organisation" && result.isMember && (
+                  <GPMLIcon />
+                )}
+              </div>
+            </div>
           </div>
         </Card>
       </Link>

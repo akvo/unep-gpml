@@ -52,6 +52,7 @@ const FilterDrawer = ({
     geoCoverageTypeOptions,
     representativeGroup,
     mainContentType,
+    organisations,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     nav: s.nav,
@@ -61,6 +62,7 @@ const FilterDrawer = ({
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     mainContentType: s.mainContentType,
     representativeGroup: s.representativeGroup,
+    organisations: s.organisations,
   }));
   const { isAuthenticated } = useAuth0();
 
@@ -70,28 +72,31 @@ const FilterDrawer = ({
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
     !isEmpty(mainContentType) &&
-    !isEmpty(representativeGroup);
+    !isEmpty(representativeGroup) &&
+    !isEmpty(organisations);
 
-  const mainContentOptions = isLoaded()
-    ? mainContentType
-        .filter((content) => {
-          const resourceName = (name) => {
-            if (name === "event_flexible") {
-              return "event";
-            } else if (name === "financing") {
-              return "financing_resource";
-            } else if (name === "technical") {
-              return "technical_resource";
-            } else if (name === "action") {
-              return "action_plan";
-            } else {
-              return name;
-            }
-          };
-          return query?.topic.includes(resourceName(content.code));
-        })
-        .sort((a, b) => a?.code.localeCompare(b?.code))
-    : [];
+  // const mainContentOptions = isLoaded()
+  //   ? mainContentType
+  //       .filter((content) => {
+  //         const resourceName = (name) => {
+  //           if (name === "initiative") {
+  //             return "project";
+  //           } else if (name === "event_flexible") {
+  //             return "event";
+  //           } else if (name === "financing") {
+  //             return "financing_resource";
+  //           } else if (name === "technical") {
+  //             return "technical_resource";
+  //           } else if (name === "action") {
+  //             return "action_plan";
+  //           } else {
+  //             return name;
+  //           }
+  //         };
+  //         return query?.topic.includes(resourceName(content.code));
+  //       })
+  //       .sort((a, b) => a?.code.localeCompare(b?.code))
+  //   : [];
 
   const topicIcons = (topic) => {
     if (topic === "project") {
@@ -189,7 +194,10 @@ const FilterDrawer = ({
 
   // populate options for representative group options
   const representativeOpts = isLoaded()
-    ? representativeGroup?.map((x) => ({ label: x?.name, value: x?.code }))
+    ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
+        label: x?.name,
+        value: x?.code,
+      }))
     : [];
 
   return (
@@ -251,31 +259,31 @@ const FilterDrawer = ({
             </Row>
           </Col>
           {/* Sub-content type */}
-          {query?.topic?.length > 0 && (
-            <MultipleSelectFilter
-              title="Sub-content type"
-              options={
-                isLoaded()
-                  ? mainContentOptions.map((content) => ({
-                      label: content?.name,
-                      options: content?.childs
-                        .map((child, i) => ({
-                          label: child?.title,
-                          value: child?.title,
-                          key: `${i}-${content.name}`,
-                        }))
-                        .sort((a, b) =>
-                          a?.label?.trim().localeCompare(b?.label?.trim())
-                        ),
-                    }))
-                  : []
-              }
-              value={query?.subContentType || []}
-              flag="subContentType"
-              query={query}
-              updateQuery={updateQuery}
-            />
-          )}
+
+          <MultipleSelectFilter
+            title="Sub-content type"
+            options={
+              isLoaded()
+                ? mainContentType.map((content) => ({
+                    label: content?.name,
+                    options: content?.childs
+                      .map((child, i) => ({
+                        label: child?.title,
+                        value: child?.title,
+                        key: `${i}-${content.name}`,
+                      }))
+                      .sort((a, b) =>
+                        a?.label?.trim().localeCompare(b?.label?.trim())
+                      ),
+                  }))
+                : []
+            }
+            value={query?.subContentType || []}
+            flag="subContentType"
+            query={query}
+            updateQuery={updateQuery}
+          />
+
           {/* My Bookmarks */}
           {isAuthenticated && (
             <Col span={24}>
@@ -355,18 +363,30 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
+
+          <MultipleSelectFilter
+            title="Entities"
+            options={
+              isLoaded()
+                ? organisations
+                    ?.map((x) => ({ value: x.id, label: x.name }))
+                    .filter((organisation) => organisation?.value > -1)
+                : []
+            }
+            value={query?.entity?.map((x) => parseInt(x)) || []}
+            flag="entity"
+            query={query}
+            updateQuery={updateQuery}
+          />
+
           <MultipleSelectFilter
             title="Representative group"
             options={
               isLoaded()
-                ? representativeOpts
-                    ?.sort((repG1, repG2) =>
-                      repG1?.label?.localeCompare(repG2?.label)
-                    )
-                    .map((x) => ({
-                      value: x?.value,
-                      label: x.label,
-                    }))
+                ? representativeOpts.map((x) => ({
+                    value: x?.value,
+                    label: x.label,
+                  }))
                 : []
             }
             value={query?.representativeGroup || []}
