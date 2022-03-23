@@ -38,6 +38,23 @@
       padding-left: 0;
     }
 
+    .sort-btn {
+      border: none;
+      display: flex;
+      align-items: center;
+      padding-left: 0px;
+      color: #ffffff;
+      font-weight: 700;
+      background-color: transparent;
+      svg {
+        width: 25px;
+        margin-right: 7px;
+      }
+      b {
+        padding-left: 1em;
+      }
+    }
+
     .filter-tag {
       .ant-space {
         flex-wrap: wrap;
