@@ -129,6 +129,7 @@
 
       .ant-select-open .selection-arrow {
         transform: rotate(180deg);
+        margin-top: -2px;
       }
 
       .select-button,
@@ -330,10 +331,10 @@
         position: relative;
         border-radius: 50%;
         width: 100%;
-        max-width: 150px;
-        max-height: 150px;
-        min-width: 150px;
-        min-height: 150px;
+        max-width: 9em;
+        max-height: 9em;
+        min-width: 9em;
+        min-height: 9em;
         overflow: hidden;
         margin-right: 16.51px;
         text-align: center;
@@ -356,7 +357,7 @@
         .profile-detail-list {
           .list-item {
             margin-bottom: 11px;
-
+            position: relative;
             .profile-name,
             .location,
             .entity-name {
@@ -373,13 +374,15 @@
               font-size: 12px;
               display: flex;
               align-items: center;
+              padding-left: 20px;
               &::before {
                 content: " ";
                 display: block;
                 width: 13px;
                 height: 18px;
                 background-image: url("../../images/stakeholder-overview/location-icon.svg");
-                margin-right: 6.43px;
+                position: absolute;
+                left: 0;
               }
             }
 
@@ -433,7 +436,7 @@
       padding: 6px 0 0 8.43px;
       img {
         position: absolute;
-        max-width: 58px;
+        max-width: 3.5em;
       }
     }
 
