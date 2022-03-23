@@ -373,7 +373,6 @@ const Maps = ({
           style={{
             overflow: "hidden",
             width: "auto",
-            height: `${mapPos.height}px`,
           }}
         >
           <Legend

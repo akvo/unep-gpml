@@ -103,13 +103,17 @@
       }
 
       .ant-input-affix-wrapper {
-        padding: 0;
-        max-height: 32px;
-        padding-left: 11px;
+        padding-left: 10px;
+        padding-right: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        overflow: auto;
         button {
           color: #ffffff;
-          background-color: $green05;
+          background-color: #1ca585;
           border: 0;
+          height: 31px;
+          width: 31px;
           &:hover {
             background-color: $green01;
             color: $blue10;
@@ -183,7 +187,7 @@
           background: rgba(255, 255, 255, 0.1);
           border-radius: 10px;
           max-width: 100%;
-          padding: 2px 5px;
+          padding: 4px 5px;
           height: auto;
         }
 
@@ -960,7 +964,7 @@
           width: 30px;
         }
         &.active {
-          border-left: 6px solid #07e982;
+          border-left: 2px solid #07e982;
         }
       }
     }
@@ -1025,17 +1029,7 @@
       padding-left: 10px;
       padding-right: 10px;
     }
-    .ui-header .select-wrapper .view-selection {
-      height: auto;
-      .ant-select-selector {
-        height: 35px;
-      }
-    }
-    .ui-header .select-wrapper .view-selection .selection-value .select-button {
-      height: 30px;
-    }
     .ui-header .select-wrapper .view-selection .selection-value {
-      padding-left: 6px;
       .selection-arrow {
         width: 20px;
       }
