@@ -2487,6 +2487,11 @@ export const schema = {
               },
             },
           },
+          recording: {
+            title: "Event Recording",
+            type: "string",
+            format: "url",
+          },
           eventType: {
             title: "Event Type",
             enum: ["Online", "In Person", "Hybrid"],

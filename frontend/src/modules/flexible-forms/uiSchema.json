@@ -1480,7 +1480,14 @@
       },
       "eventType": {
         "ui:placeholder": "Choose event type",
-        "ui:widget": "select"
+        "ui:widget": "select",
+        "ui:span": 12
+      },
+      "recording": {
+        "ui:addOnBefore": "https://",
+        "ui:widget": "URLWidget",
+        "ui:placeholder": "Url",
+        "ui:span": 12
       }
     }
   },
