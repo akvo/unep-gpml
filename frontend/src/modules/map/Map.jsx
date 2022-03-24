@@ -497,7 +497,7 @@ const Maps = ({
                           background={
                             isCountrySelected
                               ? "#255B87"
-                              : geo.properties.MAP_COLOR === selected
+                              : geo.properties.M49Code === selected
                               ? "#84b4cc"
                               : fillColor(
                                   curr(topic, findData?.counts, path)
@@ -570,15 +570,17 @@ const Maps = ({
                               ? "#cecece"
                               : isPattern
                               ? "url(#lines)"
-                              : geo.properties.MAP_COLOR === selected
-                              ? "#84b4cc"
-                              : isCountrySelected
-                              ? "#255B87"
-                              : selectionCondition() ||
-                                selectedTerritory?.includes(
-                                  geo.properties.MAP_COLOR
-                                )
-                              ? "#255B87"
+                              : geo.properties.M49Code === selected
+                              ? // : geo.properties.MAP_COLOR === selected
+                                "#84b4cc"
+                              : // : isCountrySelected
+                              // ? "#255B87"
+                              selectionCondition()
+                              ? //  ||
+                                //   selectedTerritory?.includes(
+                                //     geo.properties.MAP_COLOR
+                                //   )
+                                "#255B87"
                               : fillColor(
                                   curr(topic, findData?.counts, path)
                                     ? curr(topic, findData?.counts, path)
@@ -596,7 +598,8 @@ const Maps = ({
                                 !isFilteredCountry.includes(M49Code) &&
                                 !selectionCondition()
                               ) {
-                                setSelected(MAP_COLOR);
+                                setSelected(M49Code);
+                                // setSelected(MAP_COLOR);
                               }
 
                               setContent(
