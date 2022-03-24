@@ -31,6 +31,7 @@ import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 const ResourceList = ({
   view,
   results = [],
+  allResults,
   countData,
   filters,
   loading,
@@ -53,8 +54,6 @@ const ResourceList = ({
     stakeholders: s.stakeholders,
   }));
 
-  const [allResults, setAllResults] = useState([]);
-  const [isAscending, setIsAscending] = useState(null);
   const [didMount, setDidMount] = useState(false);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
@@ -88,51 +87,6 @@ const ResourceList = ({
     ? totalItems
     : pageSize;
 
-  const sortResults = () => {
-    if (!isAscending) {
-      const sortAscending = allResults.sort((result1, result2) => {
-        if (result1?.title) {
-          return result1?.title
-            ?.trim()
-            .localeCompare(result2?.title?.trim(), "en", {
-              numeric: true,
-            });
-        } else {
-          return result1?.name
-            ?.trim()
-            .localeCompare(result2?.name?.trim(), "en", {
-              numeric: true,
-            });
-        }
-      });
-      setAllResults(sortAscending);
-    } else {
-      const sortDescending = allResults.sort((result1, result2) => {
-        if (result2?.title) {
-          return result2?.title
-            ?.trim()
-            .localeCompare(result1?.title?.trim(), "en", {
-              numeric: true,
-            });
-        } else {
-          return result2?.name
-            ?.trim()
-            .localeCompare(result1?.name?.trim(), "en", {
-              numeric: true,
-            });
-        }
-      });
-      setAllResults(sortDescending);
-    }
-    setIsAscending(!isAscending);
-  };
-
-  useEffect(() => {
-    setAllResults(
-      [...results].sort((a, b) => Date.parse(b.created) - Date.parse(a.created))
-    );
-  }, [results]);
-
   useEffect(() => {
     setDidMount(true);
     return () => setDidMount(false);
@@ -149,7 +103,7 @@ const ResourceList = ({
               ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
               : {
                   backgroundColor: "rgba(255, 255, 255, 1)",
-                  minHeight: "112px",
+                  minHeight: "72px",
                 }
           }
           onBack={() => setListVisible(false)}
@@ -184,20 +138,20 @@ const ResourceList = ({
               <div className="invisible-content" />
             )
           }
-          extra={
-            <Button className="sort-btn" onClick={sortResults}>
-              <img src={SortIcon} alt="sort-icon" />{" "}
-              <span>
-                Sort By:
-                <br />{" "}
-                {isAscending || isAscending === null ? (
-                  <b>A&gt;Z</b>
-                ) : (
-                  <b>Z&gt;A</b>
-                )}
-              </span>
-            </Button>
-          }
+          // extra={
+          //   <Button className="sort-btn" onClick={sortResults}>
+          //     <img src={SortIcon} alt="sort-icon" />{" "}
+          //     <span>
+          //       Sort By:
+          //       <br />{" "}
+          //       {isAscending || isAscending === null ? (
+          //         <b>A&gt;Z</b>
+          //       ) : (
+          //         <b>Z&gt;A</b>
+          //       )}
+          //     </span>
+          //   </Button>
+          // }
         />
       </Col>
       <Col

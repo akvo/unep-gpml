@@ -21,6 +21,9 @@
     width: 100%;
     max-width: 35px;
     max-height: 35px;
+    min-width: 25px;
+    min-height: 25px;
+    height: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,6 +36,23 @@
     .ant-space.ant-space-horizontal.ant-space-align-center
       .ant-select-selector {
       padding-left: 0;
+    }
+
+    .sort-btn {
+      border: none;
+      display: flex;
+      align-items: center;
+      padding-left: 0px;
+      color: #ffffff;
+      font-weight: 700;
+      background-color: transparent;
+      svg {
+        width: 25px;
+        margin-right: 7px;
+      }
+      b {
+        padding-left: 1em;
+      }
     }
 
     .filter-tag {
@@ -110,8 +130,8 @@
           color: #ffffff;
           background-color: $green05;
           border: 0;
-          height: 31px;
-          width: 31px;
+          height: 25px;
+          width: 25px;
           &:hover {
             background-color: $green01;
             color: $blue10;
@@ -296,6 +316,10 @@
       .multiselection-filter .ant-select-selection-placeholder {
         font-style: italic;
         font-weight: 700;
+      }
+
+      .multiselection-filter .ant-select-selection-placeholder {
+        padding-left: 30px;
       }
 
       .ant-select-selector,
@@ -528,6 +552,9 @@
       }
 
       .country-filter-tab-wrapper {
+        .ant-select-selection-placeholder {
+          padding-left: 30px;
+        }
         .country-filter-tab {
           border: 1px solid #d7e6ee;
           border-radius: 3px;
@@ -792,6 +819,7 @@
   .page {
     padding: 2rem 0 1rem 10px;
     text-align: center;
+    width: 100%;
     .result-number,
     .ant-pagination-item a {
       font-weight: 700;
