@@ -856,11 +856,18 @@ const DetailsView = ({
                                 avatar={<Avatar src={LocationImage} />}
                                 title={
                                   <>
-                                    {renderGeoCoverageCountryGroups(
-                                      data,
-                                      countries,
-                                      transnationalOptions
-                                    )}
+                                    {data.geoCoverageCountryGroups &&
+                                    data.geoCoverageCountryGroups.length > 0
+                                      ? renderGeoCoverageCountryGroups(
+                                          data,
+                                          countries,
+                                          transnationalOptions
+                                        )
+                                      : renderCountries(
+                                          data,
+                                          countries,
+                                          transnationalOptions
+                                        )}
                                   </>
                                 }
                               />
