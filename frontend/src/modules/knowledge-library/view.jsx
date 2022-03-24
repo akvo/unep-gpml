@@ -30,6 +30,7 @@ import IconExchange from "../../images/capacity-building/ic-exchange.svg";
 import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { titleCase } from "../../utils/string";
+import { multicountryGroups } from "./multicountry";
 
 const { Option } = Select;
 
@@ -205,11 +206,14 @@ const KnowledgeLibrary = ({
         return findCountry?.name;
       }
       if (key === "transnational") {
-        const findTransnational = transnationalOptions.find(
-          (x) => x.id == value
-        );
+        const transnationalGroup = multicountryGroups
+          .map((multicountryGroup) => multicountryGroup.item)
+          .flat();
+
+        const findTransnational = transnationalGroup.find((x) => x.id == value);
         return findTransnational?.name;
       }
+
       if (key === "representativeGroup") {
         const representativeGroups = representativeGroup.find(
           (x) => x?.code?.toLowerCase() == value?.toLowerCase()
