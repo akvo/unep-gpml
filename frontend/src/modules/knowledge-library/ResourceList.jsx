@@ -38,7 +38,6 @@ const ResourceList = ({
   updateQuery,
   hideListButtonVisible,
   setListVisible,
-  allResults,
 }) => {
   const {
     tags,
