@@ -203,6 +203,8 @@ const FilterDrawer = ({
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
+        tabIndex=''
+        tabindex=''
         title="Choose your filters below"
         placement="left"
         visible={filterVisible}
