@@ -493,7 +493,7 @@ const StakeholderDetail = ({
           <div>
             {ownedResources.length > 0 && (
               <CardComponent
-                title={"Content on the platform"}
+                title={`Content on the platform (${ownedResourcesCount})`}
                 style={{
                   height: "100%",
                   boxShadow: "none",
@@ -566,7 +566,7 @@ const StakeholderDetail = ({
           <div>
             {bookedResources.length > 0 && (
               <CardComponent
-                title={"Individuals"}
+                title={`Individuals (${bookedResourcesCount})`}
                 style={{
                   height: "100%",
                   boxShadow: "none",
