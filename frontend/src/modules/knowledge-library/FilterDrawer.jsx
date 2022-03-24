@@ -75,28 +75,36 @@ const FilterDrawer = ({
     !isEmpty(representativeGroup) &&
     !isEmpty(organisations);
 
-  // const mainContentOptions = isLoaded()
-  //   ? mainContentType
-  //       .filter((content) => {
-  //         const resourceName = (name) => {
-  //           if (name === "initiative") {
-  //             return "project";
-  //           } else if (name === "event_flexible") {
-  //             return "event";
-  //           } else if (name === "financing") {
-  //             return "financing_resource";
-  //           } else if (name === "technical") {
-  //             return "technical_resource";
-  //           } else if (name === "action") {
-  //             return "action_plan";
-  //           } else {
-  //             return name;
-  //           }
-  //         };
-  //         return query?.topic.includes(resourceName(content.code));
-  //       })
-  //       .sort((a, b) => a?.code.localeCompare(b?.code))
-  //   : [];
+  const filteredMainContentOptions = isLoaded()
+    ? mainContentType
+        .filter((content) => {
+          const resourceName = (name) => {
+            if (name === "initiative") {
+              return "project";
+            } else if (name === "event_flexible") {
+              return "event";
+            } else if (name === "financing") {
+              return "financing_resource";
+            } else if (name === "technical") {
+              return "technical_resource";
+            } else if (name === "action") {
+              return "action_plan";
+            } else {
+              return name;
+            }
+          };
+          return query?.topic.includes(resourceName(content.code));
+        })
+        .sort((a, b) => a?.code.localeCompare(b?.code))
+    : [];
+
+  const mainContentOption = () => {
+    if (query?.topic.length > 0) {
+      return filteredMainContentOptions;
+    } else if (query?.topic.length === 0) {
+      return mainContentType;
+    }
+  };
 
   const topicIcons = (topic) => {
     if (topic === "project") {
@@ -203,6 +211,8 @@ const FilterDrawer = ({
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
+        tabIndex=""
+        tabindex=""
         title="Choose your filters below"
         placement="left"
         visible={filterVisible}
@@ -240,7 +250,7 @@ const FilterDrawer = ({
                   countData?.find((it) => it.topic === topic)?.count || 0;
 
                 return (
-                  <Col span={6} key={type}>
+                  <Col span={6} key={type} className="resource-card-wrapper">
                     <Card
                       onClick={() => handleChangeResourceType("topic", topic)}
                       className={classNames("resource-type-card", {
@@ -264,7 +274,7 @@ const FilterDrawer = ({
             title="Sub-content type"
             options={
               isLoaded()
-                ? mainContentType.map((content) => ({
+                ? mainContentOption().map((content) => ({
                     label: content?.name,
                     options: content?.childs
                       .map((child, i) => ({
