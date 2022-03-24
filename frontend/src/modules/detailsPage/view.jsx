@@ -21,6 +21,7 @@ import {
   Input,
   Button,
 } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 import { UIStore } from "../../store";
 import StickyBox from "react-sticky-box";
@@ -542,13 +543,53 @@ const renderItemValues = (
   );
 };
 
+const renderGeoCoverageCountryGroups = (
+  data,
+  countries,
+  transnationalOptions
+) => {
+  let dataCountries = null;
+  const newArray = [...new Set([...transnationalOptions, ...countries])];
+  dataCountries = data["geoCoverageCountryGroups"]?.map((x) => {
+    return {
+      name: newArray.find((it) => it.id === x)?.name,
+      countries: newArray.find((it) => it.id === x)?.countries
+        ? newArray.find((it) => it.id === x)?.countries
+        : [],
+    };
+  });
+  return (
+    <>
+      {dataCountries.map((item, index) => (
+        <span id={index}>
+          {(index ? ", " : " ") + item.name}{" "}
+          {data["geoCoverageCountryGroups"] && (
+            <Popover
+              className="popover-multi-country"
+              title={""}
+              content={
+                <ul className="list-country-group">
+                  {item.countries.map((name) => (
+                    <li id={name.id}>{name.name}</li>
+                  ))}
+                </ul>
+              }
+              placement="right"
+              arrowPointAtCenter
+            >
+              <InfoCircleOutlined />
+            </Popover>
+          )}
+        </span>
+      ))}
+    </>
+  );
+};
 const renderCountries = (data, countries, transnationalOptions) => {
   let dataCountries = null;
   const newArray = [...new Set([...transnationalOptions, ...countries])];
-  dataCountries = data["geoCoverageValues"]
-    ?.map((x) => {
-      return newArray.find((it) => it.id === x)?.name;
-    })
+  dataCountries = data["geoCoverageCountries"]
+    ?.map((x) => newArray.find((it) => it.id === x)?.name)
     .join(", ");
   return dataCountries;
 };
@@ -808,16 +849,20 @@ const DetailsView = ({
                   <List itemLayout="horizontal">
                     {data?.geoCoverageType !== "sub-national" && (
                       <>
-                        {data?.geoCoverageValues &&
-                          data?.geoCoverageValues.length > 0 && (
+                        {data?.geoCoverageCountryGroups &&
+                          data?.geoCoverageCountryGroups.length > 0 && (
                             <List.Item>
                               <List.Item.Meta
                                 avatar={<Avatar src={LocationImage} />}
-                                title={renderCountries(
-                                  data,
-                                  countries,
-                                  transnationalOptions
-                                )}
+                                title={
+                                  <>
+                                    {renderGeoCoverageCountryGroups(
+                                      data,
+                                      countries,
+                                      transnationalOptions
+                                    )}
+                                  </>
+                                }
                               />
                             </List.Item>
                           )}
