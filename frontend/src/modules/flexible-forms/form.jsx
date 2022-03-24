@@ -179,7 +179,14 @@ const FlexibleForm = withRouter(
 
       data.tags =
         formData.S4.S4_G3.tags &&
-        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            id: parseInt(x),
+            tag: Object.values(tags)
+              .flat()
+              .find((o) => o.id === parseInt(x)).tag,
+          };
+        });
 
       if (data?.publishYear) {
         const publishYear = new Date(data.publishYear);
@@ -334,7 +341,14 @@ const FlexibleForm = withRouter(
 
       data.tags =
         formData.S4.S4_G3.tags &&
-        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            id: parseInt(x),
+            tag: Object.values(tags)
+              .flat()
+              .find((o) => o.id === parseInt(x)).tag,
+          };
+        });
 
       delete data.qtags;
 
@@ -503,7 +517,14 @@ const FlexibleForm = withRouter(
 
       data.tags =
         formData.S4.S4_G3.tags &&
-        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            id: parseInt(x),
+            tag: Object.values(tags)
+              .flat()
+              .find((o) => o.id === parseInt(x)).tag,
+          };
+        });
 
       if (data.hasOwnProperty("firstPublicationDate")) {
         data.firstPublicationDate = data.firstPublicationDate;
@@ -681,7 +702,14 @@ const FlexibleForm = withRouter(
 
       data.tags =
         formData.S4.S4_G3.tags &&
-        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            id: parseInt(x),
+            tag: Object.values(tags)
+              .flat()
+              .find((o) => o.id === parseInt(x)).tag,
+          };
+        });
 
       if (data.hasOwnProperty("startDate")) {
         data.startDate = data.startDate;
@@ -845,7 +873,14 @@ const FlexibleForm = withRouter(
 
       data.tags =
         formData.S4.S4_G3.tags &&
-        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            id: parseInt(x),
+            tag: Object.values(tags)
+              .flat()
+              .find((o) => o.id === parseInt(x)).tag,
+          };
+        });
 
       if (data?.entity) {
         data.entityConnections = data.entity[0].hasOwnProperty("role")
