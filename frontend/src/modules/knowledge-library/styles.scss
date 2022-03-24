@@ -194,6 +194,24 @@
         }
       }
     }
+
+    .sort-btn {
+      border: none;
+      display: flex;
+      align-items: center;
+      padding-left: 0px;
+      color: #ffffff;
+      font-weight: 700;
+      background-color: transparent;
+      svg {
+        margin-right: 7px;
+        width: 32px;
+        circle,
+        path {
+          stroke: currentColor;
+        }
+      }
+    }
   }
 
   span.ant-input-affix-wrapper.input-src {
@@ -288,6 +306,7 @@
       .multiselection-filter .ant-select-selection-placeholder {
         font-size: 16px;
         color: $grey04;
+        padding-left: calc(44px - 9px);
       }
 
       .date-picker-container .ant-picker ::placeholder,
@@ -692,7 +711,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    height: 436px;
+    max-height: 45em;
     align-items: center;
 
     .resource-item-wrapper {
@@ -857,6 +876,75 @@
       }
       .selection-arrow {
         width: 20px;
+      }
+    }
+    .resource-main-container {
+      .ant-page-header {
+        padding: 2px 24px;
+      }
+      .resource-list {
+        gap: 5px;
+        .resource-item-wrapper {
+          .ant-card-body {
+            padding-top: 5px;
+            padding-bottom: 5px;
+          }
+          .item-body {
+            margin-top: 0px;
+          }
+          .item-footer {
+            margin-top: 5px;
+          }
+        }
+      }
+    }
+    .ui-header {
+      .sort-btn {
+        svg {
+          width: 25px;
+        }
+      }
+      .ant-btn-icon-only {
+        min-width: 25px;
+        min-height: 25px;
+        height: 25px;
+      }
+      .search-box {
+        .ant-input-affix-wrapper {
+          button {
+            width: 25px;
+            height: 25px;
+          }
+        }
+      }
+    }
+    .site-drawer-render-in-current-wrapper {
+      .ant-drawer-body {
+        padding: 10px;
+      }
+      .ant-drawer-content-wrapper {
+        .filter-title,
+        .favorites-checkbox {
+          margin-bottom: 5px;
+        }
+        .resources-card-filter {
+          padding-top: 5px !important;
+          padding-bottom: 5px !important;
+        }
+        .resource-type-card {
+          height: 100px;
+          .ant-card-body {
+            .ant-space {
+              gap: 1px;
+            }
+          }
+          .ant-space-item {
+            svg {
+              width: 40px;
+              height: 40px;
+            }
+          }
+        }
       }
     }
   }
