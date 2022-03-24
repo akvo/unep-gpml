@@ -63,8 +63,6 @@
         fkey (mapv #(:tbl %) (:deps fkeys))]
 
     ;; Sanity checks for DB foreign keys
-    (testing (str "foreign project_countries is available")
-      (is (.contains fkey "project_country")))
     (doseq [topic ["event" "organisation"
                    "policy" "resource"
                    "stakeholder" "technology"]]
