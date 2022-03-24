@@ -11,25 +11,30 @@ values(
 --~ (when (contains? params :id) ", :id")
 ) RETURNING id;
 
--- :name all-country-group :? :*
+-- :name all-country-groups :? :*
 -- :doc Get all country groups
-select * from country_group
-order by name;
+SELECT cg.*, json_agg(json_build_object('id', c.id, 'name', c.name)) AS countries
+FROM country_group cg
+JOIN country_group_country cgc
+ON cgc.country_group = cg.id
+JOIN country c
+ON cgc.country_group = cg.id
+AND cgc.country = c.id
+GROUP BY cg.id
+ORDER BY name;
 
 -- :name country-group-detail :? :*
 -- :doc Get country of country group
-select cg.*,
-case when count(c) = 0 then '[]' else json_agg(json_build_object('id',c.id,'name',c.name)) end as countries
-from country_group cg
-left join (
-    select c.name, c.id, cgc.country_group
-    from country_group_country cgc
-    left join country c on c.id = cgc.country
-    where c is not null
-) as c
-on c.country_group = cg.id
-where cg.id = :id
-group by cg.id
+SELECT cg.*, json_agg(json_build_object('id', c.id, 'name', c.name)) AS countries
+FROM country_group cg
+JOIN country_group_country cgc
+ON cgc.country_group = cg.id
+JOIN country c
+ON cgc.country_group = cg.id
+AND cgc.country = c.id
+WHERE cg.id = :id
+GROUP BY cg.id
+ORDER BY name;
 
 -- :name country-group-by-name :? :1
 -- :doc Get country group by name

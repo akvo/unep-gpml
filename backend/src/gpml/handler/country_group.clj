@@ -8,5 +8,5 @@
     (let [conn (:spec db)
           data (if id
                  (db.country-group/country-group-detail conn {:id id})
-                 (db.country-group/all-country-group conn))]
+                 (db.country-group/all-country-groups conn))]
       (resp/response (or data [])))))
