@@ -422,6 +422,10 @@
   }
 }
 
+.list-country-group {
+  max-height: 300px;
+  overflow-y: auto;
+}
 @media screen and (max-width: 1280px) {
   #details {
     .section-header {
