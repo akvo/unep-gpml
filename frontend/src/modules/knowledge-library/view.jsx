@@ -436,7 +436,6 @@ const KnowledgeLibrary = ({
                       updateQuery,
                       setListVisible,
                       isAscending,
-                      allResults,
                     }}
                     hideListButtonVisible={view === "map"}
                   />
