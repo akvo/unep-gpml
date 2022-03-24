@@ -4,6 +4,8 @@ import { Select, Tabs, Popover } from "antd";
 import { DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import isEmpty from "lodash/isEmpty";
 import { topicNames, tTypes } from "../../utils/misc";
+import { multicountryGroups } from "./multicountry";
+import { OptGroup } from "rc-select";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -104,23 +106,38 @@ const CountryTransnationalFilter = ({
             )
           }
         >
-          {multiCountryOpts.map(({ value, label }) => (
-            <Option key={`${value}-${label}`} value={value} label={label}>
-              <div>
-                {label}{" "}
-                {multiCountryLabelCustomIcon &&
-                  multiCountry.includes(value) && (
-                    <MultiCountryInfo
-                      data={landing}
-                      multiCountryCountries={
-                        multiCountryCountries.find((x) => x.id === value)
-                          ?.countries
-                      }
-                    />
-                  )}
-              </div>
-            </Option>
-          ))}
+          {multicountryGroups
+            .sort((a, b) => a.label.localeCompare(b.label))
+            .map((transnationalGroup) => (
+              <OptGroup
+                key={transnationalGroup.label}
+                label={transnationalGroup.label}
+                isSelectOptGroup={true}
+              >
+                {transnationalGroup.item
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((transnational) => {
+                    return (
+                      <Option key={transnational.id} value={transnational.id}>
+                        <div>
+                          {transnational.name}{" "}
+                          {multiCountryLabelCustomIcon &&
+                            multiCountry.includes(transnational.id) && (
+                              <MultiCountryInfo
+                                data={landing}
+                                multiCountryCountries={
+                                  multiCountryCountries.find(
+                                    (x) => x.id === transnational.id
+                                  )?.countries
+                                }
+                              />
+                            )}
+                        </div>
+                      </Option>
+                    );
+                  })}
+              </OptGroup>
+            ))}
         </Select>
       </TabPane>
     </Tabs>

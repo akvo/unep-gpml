@@ -566,6 +566,10 @@
 
         .country-filter-tab {
           margin-bottom: 1.5rem;
+          .ant-select-item.ant-select-item-group {
+            color: rgba(0, 0, 0, 0.45);
+          }
+
           .country-filter-tab-pane {
             padding: 0.5rem 1rem;
           }
