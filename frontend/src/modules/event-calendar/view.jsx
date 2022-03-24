@@ -245,6 +245,23 @@ const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
                       Read more <ArrowRightOutlined />
                     </Link>
                   </span>
+                  {x?.recording && (
+                    <span className="read-more">
+                      <a
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(
+                            x?.recording.includes("https://")
+                              ? x?.recording
+                              : "https://" + x?.recording,
+                            "_blank"
+                          );
+                        }}
+                      >
+                        Event Recording
+                      </a>
+                    </span>
+                  )}
                 </div>
               </Card>
             );
