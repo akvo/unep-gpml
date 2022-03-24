@@ -604,12 +604,12 @@ const StakeholderDetail = ({
                             <Col xs={6} lg={10}>
                               <div className="profile-detail">
                                 <h3>{item.name}</h3>
-                                <p>
+                                {/* <p>
                                   <span>
                                     <img src={LocationImage} />
                                   </span>
                                   Location
-                                </p>
+                                </p> */}
                                 <h5>{data?.name}</h5>
                               </div>
                             </Col>
@@ -618,6 +618,15 @@ const StakeholderDetail = ({
                       </Col>
                     ))}
                   </Row>
+                  <div className="pagination-wrapper">
+                    <Pagination
+                      defaultCurrent={1}
+                      current={bookedResourcesPage + 1}
+                      pageSize={3}
+                      total={bookedResourcesCount || 0}
+                      onChange={(n, size) => getBookedResources(n - 1)}
+                    />
+                  </div>
                 </div>
               </CardComponent>
             )}
