@@ -304,6 +304,10 @@ const KnowledgeLibrary = ({
     );
   }, [results]);
 
+  const filterTagValue = renderFilterTag()
+    .flat()
+    .filter((item) => item);
+
   return (
     <Row id="knowledge-library">
       {/* Header */}
@@ -347,9 +351,11 @@ const KnowledgeLibrary = ({
                     </Button>
                   </Space>
                 </Col>
-                <Col lg={19} md={17} sm={15} className="filter-tag">
-                  <Space direction="horizontal">{renderFilterTag()}</Space>
-                </Col>
+                {filterTagValue.length > 0 && (
+                  <Col lg={19} md={17} sm={15} className="filter-tag">
+                    <Space direction="horizontal">{renderFilterTag()}</Space>
+                  </Col>
+                )}
               </Row>
             </Col>
             {/* Map/Topic view dropdown */}

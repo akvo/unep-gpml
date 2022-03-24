@@ -29,6 +29,10 @@ const Header = ({
     </div>
   );
 
+  const filterTagValue = renderFilterTag()
+    .flat()
+    .filter((item) => item);
+
   return (
     <Col span={24} className="ui-header">
       <div className="ui-container">
@@ -71,9 +75,11 @@ const Header = ({
                   )}
                 </Space>
               </Col>
-              <Col lg={19} md={17} sm={15} className="filter-tag">
-                <Space direction="horizontal">{renderFilterTag()}</Space>
-              </Col>
+              {filterTagValue.length > 0 && (
+                <Col lg={19} md={17} sm={15} className="filter-tag">
+                  <Space direction="horizontal">{renderFilterTag()}</Space>
+                </Col>
+              )}
             </Row>
           </Col>
           {/* Map/Topic view dropdown */}
