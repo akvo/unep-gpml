@@ -23,7 +23,7 @@ const summary = [
   {
     name: "Data Layers",
     value: [],
-    startValue: "71",
+    startValue: "247",
     increment: "12",
   },
 ];

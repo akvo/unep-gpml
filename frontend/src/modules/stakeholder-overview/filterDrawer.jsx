@@ -38,7 +38,7 @@ const FilterDrawer = ({
     offering: s.tags.offering,
     countries: s.countries,
     organisations: s.organisations,
-    representativeGroup: s.sectorOptions,
+    representativeGroup: s.representativeGroup,
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
   }));
@@ -108,6 +108,13 @@ const FilterDrawer = ({
     .filter((country) => country.description === "Member State")
     .map((it) => ({ value: it.id, label: it.name }))
     .sort((a, b) => a.label.localeCompare(b.label));
+
+  const representativeOpts = isLoaded()
+    ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
+        label: x?.name,
+        value: x?.code,
+      }))
+    : [];
 
   return (
     <div className="site-drawer-render-in-current-wrapper">
@@ -290,15 +297,32 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
+          {/* Entities */}
+          <MultipleSelectFilter
+            title="Entities"
+            options={
+              isLoaded()
+                ? organisations
+                    ?.map((x) => ({ value: x.id, label: x.name }))
+                    .filter((organisation) => organisation?.value > -1)
+                    .sort((a, b) => a?.label.localeCompare(b?.label))
+                : []
+            }
+            value={query?.affiliation?.map((x) => parseInt(x)) || []}
+            flag="affiliation"
+            query={query}
+            updateQuery={updateQuery}
+          />
 
           {/* Representative group */}
           <MultipleSelectFilter
             title="Representative group"
             options={
               isLoaded()
-                ? representativeGroup
-                    ?.map((x) => ({ value: x, label: x }))
-                    .sort((a, b) => a?.label?.localeCompare(b?.label))
+                ? representativeOpts.map((x) => ({
+                    value: x?.value,
+                    label: x.label,
+                  }))
                 : []
             }
             value={query?.representativeGroup || []}

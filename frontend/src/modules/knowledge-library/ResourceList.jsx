@@ -25,7 +25,6 @@ import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 
 // Icons
-import SortIcon from "../../images/knowledge-library/sort-icon.svg";
 import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const ResourceList = ({
@@ -54,6 +53,7 @@ const ResourceList = ({
     stakeholders: s.stakeholders,
   }));
 
+  const [isAscending, setIsAscending] = useState(null);
   const [didMount, setDidMount] = useState(false);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
@@ -138,20 +138,6 @@ const ResourceList = ({
               <div className="invisible-content" />
             )
           }
-          // extra={
-          //   <Button className="sort-btn" onClick={sortResults}>
-          //     <img src={SortIcon} alt="sort-icon" />{" "}
-          //     <span>
-          //       Sort By:
-          //       <br />{" "}
-          //       {isAscending || isAscending === null ? (
-          //         <b>A&gt;Z</b>
-          //       ) : (
-          //         <b>Z&gt;A</b>
-          //       )}
-          //     </span>
-          //   </Button>
-          // }
         />
       </Col>
       <Col
