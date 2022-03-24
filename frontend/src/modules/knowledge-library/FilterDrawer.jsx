@@ -286,7 +286,7 @@ const FilterDrawer = ({
 
           {/* My Bookmarks */}
           {isAuthenticated && (
-            <Col span={24}>
+            <Col span={24} style={{ paddingTop: 5, paddingBottom: 5 }}>
               <Space align="middle">
                 <Checkbox
                   className="favorites-checkbox"
@@ -301,7 +301,7 @@ const FilterDrawer = ({
             </Col>
           )}
           {/* Location */}
-          <Col span={24}>
+          <Col span={24} style={{ paddingTop: 5, paddingBottom: 5 }}>
             <Space align="middle">
               <div className="filter-title">Location</div>
               {!isEmpty(query?.country) ? (
@@ -395,7 +395,11 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
           {/* Date Filter */}
-          <Col span={24} className="date-picker-container">
+          <Col
+            span={24}
+            className="date-picker-container"
+            style={{ paddingTop: 5, paddingBottom: 5 }}
+          >
             <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
               {/* Start date */}
               <DatePickerFilter
