@@ -849,18 +849,25 @@ const DetailsView = ({
                   <List itemLayout="horizontal">
                     {data?.geoCoverageType !== "sub-national" && (
                       <>
-                        {data?.geoCoverageCountryGroups &&
-                          data?.geoCoverageCountryGroups.length > 0 && (
+                        {data?.geoCoverageValues &&
+                          data?.geoCoverageValues.length > 0 && (
                             <List.Item>
                               <List.Item.Meta
                                 avatar={<Avatar src={LocationImage} />}
                                 title={
                                   <>
-                                    {renderGeoCoverageCountryGroups(
-                                      data,
-                                      countries,
-                                      transnationalOptions
-                                    )}
+                                    {data.geoCoverageCountryGroups &&
+                                    data.geoCoverageCountryGroups.length > 0
+                                      ? renderGeoCoverageCountryGroups(
+                                          data,
+                                          countries,
+                                          transnationalOptions
+                                        )
+                                      : renderCountries(
+                                          data,
+                                          countries,
+                                          transnationalOptions
+                                        )}
                                   </>
                                 }
                               />
