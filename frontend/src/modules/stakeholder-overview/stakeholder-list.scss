@@ -31,6 +31,7 @@
   }
 
   .resource-list-header {
+    padding: 2px 24px;
     justify-content: unset;
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
     z-index: 999;
@@ -112,10 +113,11 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    height: 436px;
+    gap: 5px;
+    // height: 436px;
     align-items: center;
     width: 100%;
+    max-height: 45em;
 
     .item-body {
       display: flex;
@@ -153,7 +155,7 @@
         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
         text-align: left;
         color: $black;
-        padding: 10px 24px 10px 24px;
+        padding: 5px 24px 5px 24px;
 
         .topic {
           color: $green05;

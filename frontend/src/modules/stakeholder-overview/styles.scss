@@ -93,7 +93,7 @@
 
       .filter-icon {
         display: block;
-        width: 30px;
+        width: 27px;
       }
 
       ::placeholder,
@@ -634,6 +634,10 @@
         background: $blue05;
       }
 
+      .ant-drawer-body {
+        padding: 10px;
+      }
+
       .collection-selector .ant-select-selector {
         background-image: url("../../images/knowledge-library/collection-icon.svg"),
           url("../../images/knowledge-library/chevron-down-grey.svg");
@@ -763,6 +767,8 @@
       }
 
       .network-card-filter {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
         .ant-col {
           max-width: 100%;
         }
@@ -967,30 +973,30 @@
     .ant-btn-icon-only {
       min-width: 25px;
       min-height: 25px;
-      height: 25px;
+      height: 27px;
     }
-    // #mainNavigation {
-    //   width: 100px;
-    // }
-    // #appWrapper {
-    //   width: calc(100% - 100px);
-    // }
-    // .sidebar {
-    //   .item-sidebar {
-    //     height: auto;
-    //     padding: 20px 0;
-    //     p {
-    //       margin-bottom: 0px;
-    //       font-size: 1em;
-    //     }
-    //     .item-menu img {
-    //       width: 30px;
-    //     }
-    //     &.active {
-    //       border-left: 2px solid #07e982;
-    //     }
-    //   }
-    // }
+    #mainNavigation {
+      width: 100px;
+    }
+    #appWrapper {
+      width: calc(100% - 100px);
+    }
+    .sidebar {
+      .item-sidebar {
+        height: auto;
+        padding: 20px 0;
+        p {
+          margin-bottom: 0px;
+          font-size: 1em;
+        }
+        .item-menu img {
+          width: 30px;
+        }
+        &.active {
+          border-left: 2px solid #07e982;
+        }
+      }
+    }
     .card-wrapper {
       grid-template-columns: repeat(4, 1fr);
       column-gap: 15px;
@@ -1066,7 +1072,7 @@
     }
     .ui-header .select-wrapper .view-selection .selection-value {
       .selection-arrow {
-        width: 20px;
+        width: 15px;
       }
       img {
         width: 25px;
