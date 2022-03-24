@@ -30,6 +30,7 @@ import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 const ResourceList = ({
   view,
   results = [],
+  allResults,
   countData,
   filters,
   loading,
@@ -103,7 +104,7 @@ const ResourceList = ({
               ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
               : {
                   backgroundColor: "rgba(255, 255, 255, 1)",
-                  minHeight: "112px",
+                  minHeight: "72px",
                 }
           }
           onBack={() => setListVisible(false)}
