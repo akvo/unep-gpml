@@ -203,8 +203,8 @@ const FilterDrawer = ({
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
-        tabIndex=''
-        tabindex=''
+        tabIndex=""
+        tabindex=""
         title="Choose your filters below"
         placement="left"
         visible={filterVisible}
@@ -242,7 +242,7 @@ const FilterDrawer = ({
                   countData?.find((it) => it.topic === topic)?.count || 0;
 
                 return (
-                  <Col span={6} key={type}>
+                  <Col span={6} key={type} className="resource-card-wrapper">
                     <Card
                       onClick={() => handleChangeResourceType("topic", topic)}
                       className={classNames("resource-type-card", {

@@ -119,8 +119,8 @@ const FilterDrawer = ({
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
-        tabIndex=''
-        tabindex=''
+        tabIndex=""
+        tabindex=""
         title="Choose your filters below"
         placement="left"
         visible={filterVisible}
@@ -154,7 +154,11 @@ const FilterDrawer = ({
             <Row type="flex" gutter={[10, 10]}>
               {networkTypes.map((networkType) => {
                 return (
-                  <Col span={6} key={networkType}>
+                  <Col
+                    span={6}
+                    key={networkType}
+                    className="resource-card-wrapper"
+                  >
                     <Card
                       onClick={() =>
                         handleChangeType("networkType", networkType)

@@ -973,28 +973,28 @@
       min-height: 25px;
       height: 27px;
     }
-    // #mainNavigation {
-    //   width: 100px;
-    // }
-    // #appWrapper {
-    //   width: calc(100% - 100px);
-    // }
-    // .sidebar {
-    //   .item-sidebar {
-    //     height: auto;
-    //     padding: 20px 0;
-    //     p {
-    //       margin-bottom: 0px;
-    //       font-size: 1em;
-    //     }
-    //     .item-menu img {
-    //       width: 30px;
-    //     }
-    //     &.active {
-    //       border-left: 2px solid #07e982;
-    //     }
-    //   }
-    // }
+    #mainNavigation {
+      width: 100px;
+    }
+    #appWrapper {
+      width: calc(100% - 100px);
+    }
+    .sidebar {
+      .item-sidebar {
+        height: auto;
+        padding: 20px 0;
+        p {
+          margin-bottom: 0px;
+          font-size: 1em;
+        }
+        .item-menu img {
+          width: 30px;
+        }
+        &.active {
+          border-left: 2px solid #07e982;
+        }
+      }
+    }
     .card-wrapper {
       grid-template-columns: repeat(4, 1fr);
       column-gap: 15px;
