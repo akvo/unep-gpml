@@ -115,10 +115,10 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    // height: 436px;
     align-items: center;
     width: 100%;
     max-height: 45em;
+    padding-bottom: 60px;
 
     .item-body {
       display: flex;
@@ -174,6 +174,15 @@
           }
         }
       }
+    }
+  }
+
+  @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+    .page {
+      padding: 1rem 0 1rem 10px !important;
+      position: absolute;
+      bottom: 0;
+      background-color: #fff;
     }
   }
 }

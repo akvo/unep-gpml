@@ -30,7 +30,7 @@ const StakeholderList = ({
   return (
     <div className="stakeholder-list ">
       <Row>
-        <Col span={24}>
+        {/* <Col span={24}>
           {!listVisible ? (
             <div className="map-overlay">
               <PageHeader
@@ -79,7 +79,7 @@ const StakeholderList = ({
               }
             />
           )}
-        </Col>
+        </Col> */}
         {listVisible && (
           <div style={{ width: "100%" }}>
             <Col
