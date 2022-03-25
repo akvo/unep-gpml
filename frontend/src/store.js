@@ -60,7 +60,7 @@ const representativeGroup = [
   },
   {
     code: "academia-research",
-    name: "Academia & Research",
+    name: "Academia and Research",
     childs: ["Public Institute", "Privately Owned"],
   },
   {

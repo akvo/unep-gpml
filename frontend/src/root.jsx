@@ -49,7 +49,7 @@ import Topic from "./modules/topics/topic";
 import AboutUs from "./modules/about/about-us";
 import Glossary from "./modules/glossary/glossary";
 import Error from "./modules/error/error";
-import EntityFormView from "./modules/entity/view";
+import EntityFormView from "./modules/entity-edit-signup/view";
 import Workspace from "./modules/workspace/view";
 import EventPage from "./modules/event-page/view";
 import StakeholderDetail from "./modules/stakeholder-detail/view";

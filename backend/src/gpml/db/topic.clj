@@ -1,6 +1,5 @@
 (ns gpml.db.topic
   (:require [clojure.string :as str]
-            [gpml.constants :as constants]
             [hugsql.core :as hugsql]))
 
 ;; FIXME: for some reason unknown to clj-kondo give 'unresolved var'
@@ -15,12 +14,14 @@
 
 (def ^:const generic-cte-opts
   "Common set of options for all CTE generation functions."
-  {:tables constants/topic-tables
+  {:tables ["event" "technology" "policy" "initiative" "resource" "stakeholder" "organisation"]
    :search-text-fields {"event" ["title" "description" "remarks"]
                         "technology" ["name"]
                         "policy" ["title" "original_title" "abstract" "remarks"]
                         "initiative" ["q2" "q3"]
-                        "resource" ["title" "summary" "remarks"]}})
+                        "resource" ["title" "summary" "remarks"]
+                        "stakeholder" ["first_name" "last_name" "about"]
+                        "organisation" ["name" "program" "contribution" "expertise"]}})
 
 (def ^:const table-rename-mapping
   "Some topics like financing_resource and project aren't the real table
@@ -39,6 +40,18 @@
     (concat renamed-tables (remove #(some #{%} tables-to-rename) tables))))
 
 ;;======================= Data queries =================================
+(def ^:const ^:private organisation-topic-data-geo-coverage-values-query
+  "LEFT JOIN (
+       SELECT
+           og.organisation,
+           json_agg(COALESCE(c.iso_code, (cg.name)::bpchar)) AS geo_coverage_values
+       FROM
+            organisation_geo_coverage og
+            LEFT JOIN country c ON og.country = c.id
+            LEFT JOIN country_group cg ON og.country_group = cg.id
+    GROUP BY
+        og.organisation) geo ON e.id = geo.organisation")
+
 (def ^:const ^:private resource-topic-data-organisations-query
   "LEFT JOIN (
         SELECT
@@ -50,6 +63,9 @@
     GROUP BY
         ro.resource
    ) orgs ON e.id = orgs.resource")
+
+(def ^:const ^:private stakeholder-topic-data-organisation-query
+  "LEFT JOIN organisation o ON e.affiliation = o.id")
 
 (def ^:const ^:private generic-topic-data-select-clause
   "SELECT
@@ -118,6 +134,45 @@
        geo.geo_coverage_countries,
        lang.languages,
        tag.tags")
+
+(def ^:const ^:private stakeholder-topic-data-select-clause
+  "SELECT
+       e.id,
+       e.picture,
+       e.title,
+       e.first_name,
+       e.last_name,
+       CASE WHEN (e.public_email = TRUE) THEN
+           e.email
+       ELSE
+           ''::text
+       END AS email,
+       e.linked_in,
+       e.twitter,
+       e.url,
+       e.representation,
+       e.about,
+       e.geo_coverage_type,
+       e.created,
+       e.modified,
+       e.reviewed_at,
+       e.role,
+       e.cv,
+       e.reviewed_by,
+       e.review_status,
+       e.public_email,
+       e.country,
+       e.organisation_role,
+       geo.geo_coverage_values,
+       row_to_json(o.*) AS affiliation,
+       tag.tags,
+       geo.geo_coverage_country_groups,
+       geo.geo_coverage_countries")
+
+(def ^:const ^:private organisation-topic-data-select-clause
+  "SELECT
+       e.*,
+       geo.geo_coverage_values")
 
 (def ^:const ^:private resource-topic-data-organisations-field
   "orgs.organisations")
@@ -230,18 +285,23 @@
      where-cond])))
 
 ;;======================= Search Text queries =================================
+(def ^:const ^:private organisation-topic-search-text-where-cond
+  "WHERE (organisation.review_status = 'APPROVED'::public.review_status)")
+
 (defn generic-topic-search-text-query
-  [tsvector-str entity-name]
+  [tsvector-str entity-name where-cond]
   (format
-   "SELECT
-       id,
-       to_tsvector('english'::regconfig, %s) AS search_text
-    FROM
-        %s
-    ORDER BY
-        created"
-   tsvector-str
-   entity-name))
+    "SELECT
+        id,
+        to_tsvector('english'::regconfig, %s) AS search_text
+     FROM
+         %s
+     %s
+     ORDER BY
+         created"
+    tsvector-str
+    entity-name
+    where-cond))
 
 (defn generic-topic-search-text-field-query
   [entity-name search-text-field]
@@ -353,6 +413,15 @@
                                          from-clause lang-query tags-query
                                          geo-coverage-values-query order-by-clause]
 
+                           "stakeholder" [stakeholder-topic-data-select-clause from-clause
+                                          tags-query geo-coverage-values-query
+                                          stakeholder-topic-data-organisation-query
+                                          order-by-clause]
+
+                           "organisation" [organisation-topic-data-select-clause
+                                           from-clause organisation-topic-data-geo-coverage-values-query
+                                           order-by-clause]
+
                            [select-clause from-clause lang-query tags-query
                             geo-coverage-values-query order-by-clause])]
     (str/join " " query-statements)))
@@ -374,14 +443,16 @@
   content table. Every query requires a collection of fields to
   build the `search_text`. See `generic-cte-opts` for reference on
   used fields for every content table.
-
   There is one exception to the generic query that is considered, when
   the content table is `organisation` a `WHERE` condition is
   added. See `organisation-topic-search-text-where-cond`."
   [entity-name _ opts]
-  (let [search-text-fields (get-in opts [:search-text-fields entity-name])
+  (let [where-cond (if-not (= "organisation" entity-name)
+                     ""
+                     organisation-topic-search-text-where-cond)
+        search-text-fields (get-in opts [:search-text-fields entity-name])
         tsvector-str (generate-tsvector-str entity-name search-text-fields)]
-    (generic-topic-search-text-query tsvector-str entity-name)))
+    (generic-topic-search-text-query tsvector-str entity-name where-cond)))
 
 (defn build-topic-query
   "Generates SQL statements for querying topic information.
@@ -483,18 +554,8 @@
       (format "LIMIT %s" (or (and (contains? params :limit) (:limit params)) 50))
       (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))))))
 
-(defn- geo-coverage-values-generic-cond
-  [geo-coverage-value-param]
-  (format
-   "(SELECT COUNT(*)
-     FROM json_array_elements_text((CASE WHEN (json->>'geo_coverage_values' = '') IS NOT FALSE THEN '[]'::JSON
-                                         ELSE (json->>'geo_coverage_values')::JSON END))
-     WHERE value::TEXT IN (:v*:%s)) > 0" geo-coverage-value-param))
-
 (defn generate-filter-topic-snippet
-  [{:keys [favorites user-id topic tag representative-group affiliation
-           start-date end-date _transnational search-text geo-coverage
-           resource-types geo-coverage-countries sub-content-type]}]
+  [{:keys [favorites user-id topic tag start-date end-date transnational search-text geo-coverage resource-types geo-coverage-countries]}]
   (let [geo-coverage? (seq geo-coverage)
         geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
@@ -505,37 +566,29 @@
           "JOIN v_stakeholder_association a ON a.stakeholder = :user-id AND a.id = (t.json->>'id')::int AND (a.topic = t.topic OR (a.topic = 'resource' AND t.topic IN (:v*:resource-types)))")
         (when (seq tag)
           "JOIN json_array_elements(t.json->'tags') tags ON true JOIN json_each_text(tags) tag ON LOWER(tag.value) = ANY(ARRAY[:v*:tag]::varchar[])")
+        (when (seq transnational)
+          "JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != ''")
         "WHERE t.json->>'review_status'='APPROVED'"
         (when (seq search-text) " AND t.search_text @@ to_tsquery(:search-text)")
-        (when (seq affiliation)
-          " AND (t.json->'affiliation'->>'id')::int IN (:v*:affiliation)")
-        (when (seq representative-group)
-          " AND (t.json->>'type' IN (:v*:representative-group) OR t.json->>'representation' IN (:v*:representative-group))")
         (when (seq topic)
           " AND topic IN (:v*:topic)")
-        (when (seq sub-content-type)
-          " AND t.json->>'sub_content_type' IS NOT NULL AND t.json->>'sub_content_type' IN (:v*:sub-content-type)")
         (when (and (= (count topic) 1)
-                   (= (first topic) "event"))
+                (= (first topic) "event"))
           (cond
             (and (seq start-date) (seq end-date))
             " AND (TO_DATE(json->>'start_date', 'YYYY-MM-DD'), (TO_DATE(json->>'end_date', 'YYYY-MM-DD'))) OVERLAPS
                 (:start-date::date, :end-date::date)"
             (seq start-date)
             " AND TO_DATE(json->>'start_date', 'YYYY-MM-DD') >= :start-date::date"
-
             (seq end-date)
             " AND TO_DATE(json->>'end_date', 'YYYY-MM-DD') <= :end-date::date"))
         (cond
           (and geo-coverage? geo-coverage-countries?)
-          (str " AND " (geo-coverage-values-generic-cond "geo-coverage-countries"))
-
+          " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))"
           geo-coverage?
-          (str " AND (t.geo_coverage IN (:v*:geo-coverage)
-                 OR t.json->>'geo_coverage_type'='transnational'
-                 AND " (geo-coverage-values-generic-cond "transnational") ")")
-
+          " AND (t.geo_coverage IN (:v*:geo-coverage)
+            OR t.json->>'geo_coverage_type'='transnational' AND t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:transnational))"
           geo-coverage-countries?
-          (str " AND " (geo-coverage-values-generic-cond "geo-coverage-countries")))
+          " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))")
         ;; NOTE: Empty strings in the tags column cause problems with using json_array_elements
         (when (seq tag) " AND t.json->>'tags' <> ''")))))

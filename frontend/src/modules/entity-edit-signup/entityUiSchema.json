@@ -1,0 +1,209 @@
+{
+  "S1": {
+    "ui:order": ["authorizeSubmission"],
+    "authorizeSubmission": {
+      "ui:widget": "checkbox",
+      "ui:label": null,
+      "ui:options": {
+        "classNames": "authorize-submission-checkbox"
+      }
+    }
+  },
+  "S2": {
+    "classNames": "list-group",
+    "title": {
+      "ui:widget": "select",
+      "ui:placeholder": "Title"
+    },
+    "lastName": {
+      "ui:placeholder": "Last name"
+    },
+    "firstName": {
+      "ui:placeholder": "First name"
+    },
+    "email": {
+      "ui:widget": "email",
+      "ui:placeholder": "Email",
+      "ui:disabled": true
+    },
+    "publicEmail": {
+      "ui:widget": "checkbox",
+      "ui:label": null
+    },
+    "linkedIn": {
+      "ui:placeholder": "Your LinkedIn username",
+      "ui:widget": "TextIconWidget",
+      "ui:icon": "linkedin"
+    },
+    "twitter": {
+      "ui:placeholder": "Your twitter username",
+      "ui:widget": "TextIconWidget",
+      "ui:icon": "twitter"
+    },
+    "photo": {
+      "ui:options": { "accept": "image/*" },
+      "ui:widget": "file"
+    },
+    "country": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search country",
+      "ui:showSearch": true
+    },
+    "S1_ExpertisesAndActivities": {
+      "classNames": "list-group-item",
+      "seeking": {
+        "ui:widget": "select",
+        "ui:placeholder": "Search",
+        "ui:mode": "multiple",
+        "ui:showSearch": true
+      },
+      "offering": {
+        "ui:widget": "select",
+        "ui:placeholder": "Search",
+        "ui:mode": "multiple",
+        "ui:showSearch": true
+      },
+      "about": {
+        "ui:placeholder": "",
+        "ui:widget": "textarea",
+        "ui:maxWord": 100
+      },
+      "cv": {
+        "ui:widget": "file",
+        "ui:options": {
+          "accept": ".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,application/pdf"
+        }
+      },
+      "ui:order": ["seeking", "offering", "about", "cv"]
+    },
+    "ui:order": [
+      "title",
+      "lastName",
+      "firstName",
+      "email",
+      "publicEmail",
+      "linkedIn",
+      "twitter",
+      "photo",
+      "country",
+      "S1_ExpertisesAndActivities"
+    ]
+  },
+  "S3": {
+    "classNames": "list-group",
+    "org.name": {
+      "ui:placeholder": "Organisation name"
+    },
+    "org.representativeGroup": {
+      "ui:widget": "radio"
+    },
+    "org.representativeGroupGovernment": {
+      "ui:placeholder": "Search Entity representative",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "org.representativeGroupPrivateSector": {
+      "ui:placeholder": "Search Entity representative",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "org.representativeGroupAcademiaResearch": {
+      "ui:placeholder": "Search Entity representative",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "org.representativeGroupCivilSociety": {
+      "ui:placeholder": "Search Entity representative",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "org.representativeGroupOther": {
+      "ui:placeholder": "Entity representative"
+    },
+    "org.program": {
+      "ui:placeholder": "Organisartion brief",
+      "ui:widget": "textarea",
+      "ui:maxWord": 200
+    },
+    "org.url": {
+      "ui:addOnBefore": "https://",
+      "ui:widget": "URLWidget",
+      "ui:placeholder": "Url"
+    },
+    "org.logo": {
+      "ui:options": { "accept": "image/*" },
+      "ui:widget": "file"
+    },
+    "ui:order": [
+      "org.name",
+      "org.representativeGroup",
+      "org.representativeGroupGovernment",
+      "org.representativeGroupPrivateSector",
+      "org.representativeGroupAcademiaResearch",
+      "org.representativeGroupCivilSociety",
+      "org.representativeGroupOther",
+      "org.program",
+      "org.url",
+      "org.logo"
+    ]
+  },
+  "S4": {
+    "classNames": "list-group",
+    "orgExpertise": {
+      "ui:placeholder": "Search",
+      "ui:widget": "select",
+      "ui:mode": "multiple",
+      "ui:showSearch": true
+    },
+    "orgContribution": {
+      "ui:widget": "checkboxes",
+      "ui:label": null
+    },
+    "ui:order": ["orgExpertise", "orgContribution"]
+  },
+  "S5": {
+    "ui:order": [
+      "orgHeadquarter",
+      "geoCoverageType",
+      "geoCoverageValueTransnational",
+      "geoCoverageCountries",
+      "geoCoverageValueNational",
+      "orgSubnationalArea",
+      "publicDatabase"
+    ],
+    "orgHeadquarter": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search",
+      "ui:showSearch": true
+    },
+    "geoCoverageType": {
+      "ui:placeholder": "Choose the coverage type",
+      "ui:widget": "select"
+    },
+    "geoCoverageValueTransnational": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
+    },
+    "geoCoverageCountries": {
+      "ui:placeholder": "Choose the Country",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
+    },
+    "geoCoverageValueNational": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "orgSubnationalArea": {},
+    "publicDatabase": {
+      "ui:widget": "checkbox",
+      "ui:label": null,
+      "ui:options": {
+        "classNames": "public-database-checkbox"
+      }
+    }
+  }
+}

@@ -210,6 +210,8 @@
       }
     }
     .connection-list {
+      max-height: 300px;
+      overflow-x: auto;
       .ant-list {
         &:first-child {
           border: 1px solid #edf2f7;
