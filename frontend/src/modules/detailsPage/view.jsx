@@ -272,6 +272,8 @@ const renderBannerSection = (
   allowBookmark,
   visible,
   handleVisible,
+  showLess,
+  setShowLess,
   relation,
   handleRelationChange
 ) => {
@@ -315,7 +317,16 @@ const renderBannerSection = (
                 borderRadius: "none",
               }}
             >
-              <p>{data.summary}</p>
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: showLess
+                    ? `${data.summary.slice(0, 400)}...`
+                    : data.summary,
+                }}
+              ></p>
+              <a className="view-more" onClick={() => setShowLess(!showLess)}>
+                Read {showLess ? "More" : "Less"}
+              </a>
             </CardComponent>
             <SharePanel
               data={data}
@@ -562,6 +573,7 @@ const DetailsView = ({
   const record = useRef(null);
   const document = useRef(null);
   const reviews = useRef(null);
+  const [showLess, setShowLess] = useState(true);
 
   const {
     profile,
@@ -777,6 +789,8 @@ const DetailsView = ({
               allowBookmark,
               visible,
               handleVisible,
+              showLess,
+              setShowLess,
               { ...{ handleRelationChange, relation } }
             )}
           </Row>
