@@ -8,6 +8,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+  body {
+    zoom: 95%;
+  }
+}
+
 body,
 button,
 a,
