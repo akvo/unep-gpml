@@ -200,6 +200,59 @@
   #bodyContent {
     background-color: #edf2f7 !important;
   }
+  .ui-header {
+    padding: 10px 16px 10px 16px;
+    h3.ant-typography {
+      margin-bottom: 0px;
+    }
+  }
+  @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+    .ui-header {
+      padding: 10px 16px 10px 16px;
+      h3.ant-typography {
+        margin-bottom: 0px;
+        font-size: 1.2em;
+      }
+    }
+    .pm_event_banner {
+      .event_details {
+        h2.ant-typography {
+          font-size: 1.2em;
+        }
+        h1.ant-typography {
+          font-size: 1.2em;
+        }
+      }
+      .banner_info {
+        .banner_img {
+          height: 200px;
+          img {
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+    .capacity-section {
+      min-height: auto;
+      .ant-page-header {
+        padding: 5px 24px;
+      }
+      .card {
+        min-height: 120px;
+        .title {
+          font-size: 1em;
+        }
+      }
+      .thumbnail {
+        img {
+          height: 120px;
+          object-fit: cover;
+          object-position: center;
+        }
+      }
+    }
+  }
 }
 /* (320x480) iPhone (Original, 3G, 3GS) */
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
