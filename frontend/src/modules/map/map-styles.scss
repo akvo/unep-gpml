@@ -344,14 +344,22 @@
 .map-tooltip {
   padding: 0 10px;
   position: relative;
+  .tooltip-count-wrapper {
+    width: 60px;
+  }
+  .tooltip-counts {
+    display: block;
+    color: #005c93;
+    text-align: right;
+  }
+
+  .tooltip-topic {
+    margin-right: 10px;
+    color: #7db0cb;
+  }
 
   .tooltip-note {
     font-size: 12px;
-  }
-
-  .tooltip-counts {
-    display: flex;
-    align-items: center;
   }
 
   .transnational-count {
@@ -376,9 +384,9 @@
     white-space: pre-wrap;
   }
 
-  li {
-    display: flex;
-    max-width: 170px;
+  tr {
+    // display: flex;
+    // max-width: 170px;
 
     &:not(:last-child) {
       border-bottom: 1px solid #e7f1f7;
