@@ -335,15 +335,14 @@ const KnowledgeLibrary = ({
                       }
                     />
                     <Button className="sort-btn" onClick={sortResults}>
-                      <SortIcon />{" "}
-                      <span>
-                        Sort By:{" "}
-                        {isAscending || isAscending === null ? (
-                          <b style={{ paddingLeft: "1em" }}>A&gt;Z</b>
-                        ) : (
-                          <b style={{ paddingLeft: "1em" }}>Z&gt;A</b>
-                        )}
-                      </span>
+                      <SortIcon
+                        style={{
+                          transform:
+                            isAscending || isAscending === null
+                              ? "initial"
+                              : "rotate(180deg)",
+                        }}
+                      />
                     </Button>
                   </Space>
                 </Col>

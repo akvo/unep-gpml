@@ -297,3 +297,12 @@
     }
   }
 }
+
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+  .event {
+    padding-top: 10px;
+    &.section-container {
+      zoom: 80%;
+    }
+  }
+}
