@@ -288,7 +288,7 @@ const StakeholderDetail = ({
     UIStore.update((e) => {
       e.formEdit = {
         ...e.formEdit,
-        entity: {
+        signUp: {
           status: "edit",
           id: params.id,
         },

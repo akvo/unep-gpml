@@ -550,7 +550,7 @@ const renderGeoCoverageCountryGroups = (
 ) => {
   let dataCountries = null;
   const newArray = [...new Set([...transnationalOptions, ...countries])];
-  dataCountries = data["geoCoverageCountryGroups"]?.map((x) => {
+  dataCountries = data["geoCoverageValues"]?.map((x) => {
     return {
       name: newArray.find((it) => it.id === x)?.name,
       countries: newArray.find((it) => it.id === x)?.countries
@@ -563,7 +563,7 @@ const renderGeoCoverageCountryGroups = (
       {dataCountries.map((item, index) => (
         <span id={index}>
           {(index ? ", " : " ") + item.name}{" "}
-          {data["geoCoverageCountryGroups"] && (
+          {item.countries && item.countries.length > 0 && (
             <Popover
               className="popover-multi-country"
               title={""}
@@ -849,32 +849,23 @@ const DetailsView = ({
                   <List itemLayout="horizontal">
                     {data?.geoCoverageType !== "sub-national" && (
                       <>
-                        {(data?.geoCoverageCountryGroups &&
-                          data?.geoCoverageCountryGroups.length > 0) ||
-                          (data?.geoCoverageCountries &&
-                            data?.geoCoverageCountries.length > 0 && (
-                              <List.Item>
-                                <List.Item.Meta
-                                  avatar={<Avatar src={LocationImage} />}
-                                  title={
-                                    <>
-                                      {data.geoCoverageCountryGroups &&
-                                      data.geoCoverageCountryGroups.length > 0
-                                        ? renderGeoCoverageCountryGroups(
-                                            data,
-                                            countries,
-                                            transnationalOptions
-                                          )
-                                        : renderCountries(
-                                            data,
-                                            countries,
-                                            transnationalOptions
-                                          )}
-                                    </>
-                                  }
-                                />
-                              </List.Item>
-                            ))}
+                        {data?.geoCoverageValues &&
+                          data?.geoCoverageValues.length > 0 && (
+                            <List.Item>
+                              <List.Item.Meta
+                                avatar={<Avatar src={LocationImage} />}
+                                title={
+                                  <>
+                                    {renderGeoCoverageCountryGroups(
+                                      data,
+                                      countries,
+                                      transnationalOptions
+                                    )}
+                                  </>
+                                }
+                              />
+                            </List.Item>
+                          )}
                       </>
                     )}
                     <List.Item>
